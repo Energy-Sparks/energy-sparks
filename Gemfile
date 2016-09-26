@@ -50,3 +50,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide
+# https://github.com/alphagov/govuk-lint
+gem 'govuk-lint'
