@@ -28,18 +28,18 @@ ActiveRecord::Schema.define(version: 20161003103415) do
 
   create_table "meters", force: :cascade do |t|
     t.integer  "school_id"
-    t.integer  "type"
+    t.integer  "meter_type"
     t.integer  "meter_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["meter_no"], name: "index_meters_on_meter_no", using: :btree
+    t.index ["meter_type"], name: "index_meters_on_meter_type", using: :btree
     t.index ["school_id"], name: "index_meters_on_school_id", using: :btree
-    t.index ["type"], name: "index_meters_on_type", using: :btree
   end
 
   create_table "schools", force: :cascade do |t|
     t.string   "name"
-    t.integer  "type"
+    t.integer  "school_type"
     t.text     "address"
     t.string   "postcode"
     t.integer  "eco_school_status"

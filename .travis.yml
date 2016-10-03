@@ -1,4 +1,12 @@
 language: ruby
+env:
+  - DB_PASSWORD=
+services:
+  - postgresql
+before_script:
+  - "psql -c 'create database energy_sparks_test;' -U postgres"
+  - "cp config/database.yml.travis config/database.yml"
+  - "rake db:migrate"
 deploy:
   provider: heroku
   api_key:
