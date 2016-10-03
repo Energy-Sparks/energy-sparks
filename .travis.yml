@@ -6,7 +6,7 @@ services:
 before_script:
   - "psql -c 'create database energy_sparks_test;' -U postgres"
   - "cp config/database.yml.travis config/database.yml"
-  - "rake db:migrate"
+  - "bundle exec rake db:migrate"
 deploy:
   provider: heroku
   api_key:
@@ -16,4 +16,4 @@ deploy:
   on:
     repo: BathHacked/energy-sparks
   run:
-    - "rake db:migrate"
+    - "bundle exec rake db:migrate"
