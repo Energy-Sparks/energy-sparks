@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>School:</strong>
+  <%= @meter.school %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @meter.type %>
+</p>
+
+<p>
+  <strong>Meter no:</strong>
+  <%= @meter.meter_no %>
+</p>
+
+<%= link_to 'Edit', edit_meter_path(@meter) %> |
+<%= link_to 'Back', meters_path %>

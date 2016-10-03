@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Meters</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>School</th>
+      <th>Type</th>
+      <th>Meter no</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @meters.each do |meter| %>
+      <tr>
+        <td><%= meter.school %></td>
+        <td><%= meter.type %></td>
+        <td><%= meter.meter_no %></td>
+        <td><%= link_to 'Show', meter %></td>
+        <td><%= link_to 'Edit', edit_meter_path(meter) %></td>
+        <td><%= link_to 'Destroy', meter, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Meter', new_meter_path %>
