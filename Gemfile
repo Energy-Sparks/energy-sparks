@@ -38,6 +38,8 @@ group :development, :test do
   gem "bullet"
   gem 'rspec-rails', '~> 3.5'
   gem 'rails-controller-testing'
+  gem 'pry'
+  gem "fakefs", require: "fakefs/safe"
 end
 
 group :development do
