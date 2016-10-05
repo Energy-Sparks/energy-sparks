@@ -10,6 +10,9 @@
 # Ignore RVM config
 /.ruby-gemset
 
+# Ignore local rubocop config
+/.rubocop.yml
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
