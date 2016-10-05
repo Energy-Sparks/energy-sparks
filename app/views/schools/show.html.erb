@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @school.name %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @school.type %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @school.address %>
+</p>
+
+<p>
+  <strong>Postcode:</strong>
+  <%= @school.postcode %>
+</p>
+
+<p>
+  <strong>Eco school status:</strong>
+  <%= @school.eco_school_status %>
+</p>
+
+<p>
+  <strong>Website:</strong>
+  <%= @school.website %>
+</p>
+
+<%= link_to 'Edit', edit_school_path(@school) %> |
+<%= link_to 'Back', schools_path %>
