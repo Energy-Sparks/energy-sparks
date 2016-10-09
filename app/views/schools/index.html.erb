@@ -1,8 +1,6 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Schools</h1>
 
-<table>
+<table class="table table-condensed">
   <thead>
     <tr>
       <th>Name</th>
@@ -19,7 +17,7 @@
     <% @schools.each do |school| %>
       <tr>
         <td><%= school.name %></td>
-        <td><%= school.type %></td>
+        <td><%= school.school_type %></td>
         <td><%= school.address %></td>
         <td><%= school.postcode %></td>
         <td><%= school.eco_school_status %></td>
