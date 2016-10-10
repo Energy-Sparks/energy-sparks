@@ -40,6 +40,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'pry'
   gem "fakefs", require: "fakefs/safe"
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -49,6 +50,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'annotate'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -57,3 +59,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide
 # https://github.com/alphagov/govuk-lint
 gem 'govuk-lint'
+
+# Use devise for authentication
+gem 'devise'
+
+# Use cancancan for authorization
+gem 'cancancan'
+
+# Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4.0.0.alpha3'

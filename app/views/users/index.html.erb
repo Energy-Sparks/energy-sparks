@@ -1,0 +1,28 @@
+<h1>Users</h1>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>School</th>
+      <th>Sign in count</th>
+      <th>Access locked</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td><%= user.school.try(:name) %></td>
+        <td><%= user.sign_in_count %></td>
+        <td><%= user.access_locked? ? 'Y' : '' %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
