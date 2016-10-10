@@ -5,6 +5,8 @@ class Ability
     user ||= User.new # guest user (not logged in)
     if user.admin?
       can :manage, User
+      can :manage, School
+      can :manage, Meter
     elsif user.school_admin?
     elsif user.guest?
     end
