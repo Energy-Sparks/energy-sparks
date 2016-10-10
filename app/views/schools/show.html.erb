@@ -7,7 +7,7 @@
 
 <p>
   <strong>Type:</strong>
-  <%= @school.school_type %>
+  <%= @school.school_type.titleize %>
 </p>
 
 <p>
@@ -30,5 +30,7 @@
   <%= @school.website %>
 </p>
 
-<%= link_to 'Edit', edit_school_path(@school) %> |
-<%= link_to 'Back', schools_path %>
+<div class="other-actions">
+  <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary' %>
+  <%= link_to 'Back', schools_path, class: 'btn btn-secondary' %>
+</div>

@@ -14,9 +14,10 @@
 #
 
 class School < ApplicationRecord
-  has_many :users
-  has_many :meters
+  has_many :users, dependent: :destroy
+  has_many :meters, dependent: :destroy
   has_many :meter_readings, through: :meter
 
   enum school_type: [:primary, :secondary]
+  validates_presence_of :name
 end

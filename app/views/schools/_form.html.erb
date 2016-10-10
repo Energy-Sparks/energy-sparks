@@ -11,37 +11,37 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :type %>
-    <%= f.number_field :school_type %>
+    <%= f.select :school_type, School.school_types.keys.map {|type| [type.titleize,type]}, {}, { class: 'form-control' } %><br>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :address %>
-    <%= f.text_area :address %>
+    <%= f.text_area :address, class: 'form-control' %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :postcode %>
-    <%= f.text_field :postcode %>
+    <%= f.text_field :postcode, class: 'form-control' %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :eco_school_status %>
-    <%= f.number_field :eco_school_status %>
+    <%= f.number_field :eco_school_status, class: 'form-control' %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :website %>
-    <%= f.text_field :website %>
+    <%= f.text_field :website, class: 'form-control' %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-primary' %>
   </div>
 <% end %>

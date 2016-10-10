@@ -22,7 +22,7 @@
 
 class Meter < ApplicationRecord
   belongs_to :school
-  has_many :meter_readings
+  has_many :meter_readings, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
 end
