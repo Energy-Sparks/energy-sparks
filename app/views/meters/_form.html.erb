@@ -11,22 +11,22 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :school_id %>
-    <%= f.text_field :school_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :type %>
-    <%= f.number_field :type %>
-  </div>
-
-  <div class="field">
+  <div class="form-group">
     <%= f.label :meter_no %>
-    <%= f.number_field :meter_no %>
+    <%= f.number_field :meter_no, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :type %>
+    <%= f.select :meter_type, Meter.meter_types.keys.map {|type| [type.titleize,type]}, {}, { class: 'form-control' } %><br>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :school_id %>
+    <%= f.select :school_id, options_from_collection_for_select(School.all, 'id', 'name', @meter.school_id), {}, { class: 'form-control' } %><br>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-primary' %>
   </div>
 <% end %>

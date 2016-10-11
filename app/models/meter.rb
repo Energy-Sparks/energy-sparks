@@ -25,4 +25,5 @@ class Meter < ApplicationRecord
   has_many :meter_readings, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
+  validates_presence_of :meter_no, :meter_type
 end

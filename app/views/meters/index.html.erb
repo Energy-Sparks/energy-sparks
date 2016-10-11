@@ -1,13 +1,11 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Meters</h1>
 
-<table>
+<table class="table table-condensed">
   <thead>
     <tr>
-      <th>School</th>
-      <th>Type</th>
       <th>Meter no</th>
+      <th>Type</th>
+      <th>School</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,12 +13,12 @@
   <tbody>
     <% @meters.each do |meter| %>
       <tr>
-        <td><%= meter.school %></td>
-        <td><%= meter.type %></td>
         <td><%= meter.meter_no %></td>
-        <td><%= link_to 'Show', meter %></td>
-        <td><%= link_to 'Edit', edit_meter_path(meter) %></td>
-        <td><%= link_to 'Destroy', meter, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= meter.meter_type.titleize %></td>
+        <td><%= meter.school.name %></td>
+        <td><%= link_to 'Show', meter, class: 'btn btn-info'  %></td>
+        <td><%= link_to 'Edit', edit_meter_path(meter), class: 'btn btn-primary' %></td>
+        <td><%= link_to 'Destroy', meter, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'  %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +26,4 @@
 
 <br>
 
-<%= link_to 'New Meter', new_meter_path %>
+<%= link_to 'New Meter', new_meter_path, class: 'btn btn-primary' %>
