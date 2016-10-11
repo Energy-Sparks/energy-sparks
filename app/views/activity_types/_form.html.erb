@@ -1,0 +1,27 @@
+<%= form_for(activity_type) do |f| %>
+  <% if activity_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(activity_type.errors.count, "error") %> prohibited this activity_type from being saved:</h2>
+
+      <ul>
+      <% activity_type.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

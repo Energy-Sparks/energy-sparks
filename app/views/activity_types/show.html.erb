@@ -1,0 +1,14 @@
+<p>
+  <strong>Name:</strong>
+  <%= @activity_type.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @activity_type.description %>
+</p>
+
+<div class="other-actions">
+  <%= link_to 'Edit', edit_activity_type_path(@activity_type), class: 'btn btn-primary' %> |
+  <%= link_to 'Back', activity_types_path, class: 'btn btn-secondary'  %>
+</div>

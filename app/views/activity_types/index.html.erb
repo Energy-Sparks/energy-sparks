@@ -1,0 +1,28 @@
+<h1>Activity Types</h1>
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @activity_types.each do |activity_type| %>
+      <tr>
+        <td><%= activity_type.name %></td>
+        <td><%= activity_type.description %></td>
+        <td><%= activity_type.description %></td>
+        <td><%= link_to 'Show', activity_type %></td>
+        <td><%= link_to 'Edit', edit_activity_type_path(activity_type) %></td>
+        <td><%= link_to 'Destroy', activity_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Activity Type', new_activity_type_path %>
