@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :activity do
-    school nil
-    activity_type nil
-    title "MyString"
-    description "MyText"
-    happened_on "2016-10-11"
+    school
+    activity_type
+    title 'test activity title'
+    description 'test activity description'
+    happened_on { Date.today - 1.days }
   end
 end
