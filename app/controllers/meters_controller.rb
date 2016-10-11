@@ -62,14 +62,15 @@ class MetersController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_meter
-      @meter = Meter.find(params[:id])
-    end
+private
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def meter_params
-      params.require(:meter).permit(:school_id, :type, :meter_no)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_meter
+    @meter = Meter.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def meter_params
+    params.require(:meter).permit(:school_id, :meter_type, :meter_no)
+  end
 end

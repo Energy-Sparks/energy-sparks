@@ -24,11 +24,11 @@ RSpec.describe SchoolsController, type: :controller do
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { name: 'test school' }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { name: nil }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -107,14 +107,14 @@ RSpec.describe SchoolsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          { name: 'new name'}
         }
 
         it "updates the requested school" do
           school = School.create! valid_attributes
           put :update, params: {id: school.to_param, school: new_attributes}, session: valid_session
           school.reload
-          skip("Add assertions for updated state")
+          expect(school.name).to eq new_attributes[:name]
         end
 
         it "assigns the requested school as @school" do

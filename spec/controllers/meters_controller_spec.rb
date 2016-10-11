@@ -24,11 +24,11 @@ RSpec.describe MetersController, type: :controller do
   # Meter. As you add validations to Meter, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { meter_no: 1234567, meter_type: :gas }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { meter_no: nil }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -106,15 +106,18 @@ RSpec.describe MetersController, type: :controller do
 
     describe "PUT #update" do
       context "with valid params" do
+        let!(:new_school) { FactoryGirl.create :school }
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          { meter_no: 12345, meter_type: :electricity, school_id: new_school.id }
         }
 
         it "updates the requested meter" do
           meter = Meter.create! valid_attributes
           put :update, params: {id: meter.to_param, meter: new_attributes}, session: valid_session
           meter.reload
-          skip("Add assertions for updated state")
+          expect(meter.meter_no).to eq new_attributes[:meter_no]
+          expect(meter.meter_type).to eq new_attributes[:meter_type].to_s
+          expect(meter.school_id).to eq new_attributes[:school_id]
         end
 
         it "assigns the requested meter as @meter" do
