@@ -7,6 +7,7 @@ class Ability
       can :manage, User
       can :manage, School
       can :manage, Meter
+      can :manage, ActivityType
     elsif user.school_admin?
     elsif user.guest?
     end

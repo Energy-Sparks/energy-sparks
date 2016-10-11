@@ -1,0 +1,26 @@
+<h1>Activity Types</h1>
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @activity_types.each do |activity_type| %>
+      <tr <%= raw 'class="bg-warning"' unless activity_type.active %> >
+        <td><%= activity_type.name %></td>
+        <td><%= activity_type.description %></td>
+        <td><%= link_to 'Show', activity_type, class: 'btn btn-info' %></td>
+        <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Activity Type', new_activity_type_path, class: 'btn btn-primary' %>
