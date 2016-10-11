@@ -17,10 +17,12 @@ class SchoolsController < ApplicationController
   # GET /schools/new
   def new
     @school = School.new
+    @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
+    @school.meters.build
   end
 
   # POST /schools
@@ -70,8 +72,19 @@ private
     @school = School.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def school_params
-    params.require(:school).permit(:name, :school_type, :address, :postcode, :eco_school_status, :website)
+    params.require(:school).permit(
+      :name,
+      :school_type,
+      :address,
+      :postcode,
+      :eco_school_status,
+      :website,
+      meters_attributes: meter_params
+    )
+  end
+
+  def meter_params
+    [:id, :meter_no, :meter_type, :active]
   end
 end

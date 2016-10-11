@@ -14,7 +14,7 @@ module Loader
         # TODO: needs something more realistic
         meter_no = 0
 
-        meter = Meter.find_or_create_by!(school: school, meter_type: meter_type, meter_no: meter_no)
+        meter = school.meters.find_or_create_by!(meter_type: meter_type, meter_no: meter_no)
 
         date = row[2]
         readings = row[4..-1]
@@ -22,8 +22,7 @@ module Loader
         readings.each_with_index do |reading, index|
           # read_at
           read_at = DateTime.strptime(date, "%d/%m/%Y") + (index * 30).minutes
-
-          MeterReading.find_or_create_by!(meter: meter, read_at: read_at, value: reading, unit: "kWh")
+          meter.meter_readings.find_or_create_by!(read_at: read_at, value: reading, unit: "kWh")
         end
       end
     end

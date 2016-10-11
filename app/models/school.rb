@@ -15,9 +15,11 @@
 
 class School < ApplicationRecord
   has_many :users, dependent: :destroy
-  has_many :meters, dependent: :destroy
-  has_many :meter_readings, through: :meter
+  has_many :meters, inverse_of: :school, dependent: :destroy
+  has_many :activities, inverse_of: :school, dependent: :destroy
+  has_many :meter_readings, through: :meters
 
   enum school_type: [:primary, :secondary]
   validates_presence_of :name
+  accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
 end
