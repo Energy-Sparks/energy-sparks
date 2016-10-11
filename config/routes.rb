@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :activities
   root to: 'home#index'
   get 'users/index', to: 'users#index'
   devise_for :users
