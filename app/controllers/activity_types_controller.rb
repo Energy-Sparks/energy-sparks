@@ -54,21 +54,24 @@ class ActivityTypesController < ApplicationController
   # DELETE /activity_types/1
   # DELETE /activity_types/1.json
   def destroy
-    @activity_type.destroy
+    # activity types should be marked inactive rather than deleted
+    # this method does NOT delete the activity type
+    # @activity_type.destroy
     respond_to do |format|
-      format.html { redirect_to activity_types_url, notice: 'Activity type was successfully destroyed.' }
+      format.html { redirect_to activity_types_url, notice: 'Activity type not deleted, please mark as inactive' }
       format.json { head :no_content }
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_activity_type
-      @activity_type = ActivityType.find(params[:id])
-    end
+private
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def activity_type_params
-      params.require(:activity_type).permit(:name, :description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_activity_type
+    @activity_type = ActivityType.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def activity_type_params
+    params.require(:activity_type).permit(:name, :description, :active)
+  end
 end

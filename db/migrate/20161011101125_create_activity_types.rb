@@ -3,6 +3,7 @@ class CreateActivityTypes < ActiveRecord::Migration[5.0]
     create_table :activity_types do |t|
       t.string :name
       t.text :description
+      t.boolean :active, default: true, index: true
 
       t.timestamps
     end

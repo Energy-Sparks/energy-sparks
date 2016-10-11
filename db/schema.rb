@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 20161011101125) do
   create_table "activity_types", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.boolean  "active",      default: true
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["active"], name: "index_activity_types_on_active", using: :btree
   end
 
   create_table "meter_readings", force: :cascade do |t|

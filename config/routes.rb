@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :activity_types
   root to: 'home#index'
   get 'users/index', to: 'users#index'
   devise_for :users
@@ -8,5 +7,6 @@ Rails.application.routes.draw do
 
   resources :meters
   resources :schools
+  resources :activity_types
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
