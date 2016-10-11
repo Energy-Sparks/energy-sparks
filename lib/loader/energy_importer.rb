@@ -38,7 +38,8 @@ module Loader
         #afterwards are at 30 hourly intervals _00_30 -> _23_30
         key = n == 0 ? "_24_00" : read_at.strftime("_%H_%M")
         value = reading[key]
-        MeterReading.find_or_create_by!(meter: meter, read_at: read_at, value: value, unit: "kWh")
+        r = MeterReading.find_or_create_by!(meter: meter, read_at: read_at)
+        r.update_attributes!({value: value, unit: "kWh"})
       end
 
     end

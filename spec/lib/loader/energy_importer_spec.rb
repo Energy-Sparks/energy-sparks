@@ -57,10 +57,29 @@ describe 'Loader::EnergyImporter' do
           '2016-08-01T00:30:00' => 0.11,
           '2016-08-01T23:30:00' => 0.384
       }
-
       values.each do |time, value|
         reading = @meter.meter_readings.where( read_at: DateTime.parse(time) ).first
         expect( reading.value ).to eql( value )
+      end
+
+    end
+  end
+
+  context "when reimporting" do
+    before(:each) do
+      @meter.meter_readings.create!(
+        read_at: DateTime.parse( '2016-08-01T00:00:00' ),
+        value: 0.99,
+        unit: "kWh"
+      )
+    end
+    it "should update existing readings" do
+      with_modified_env(@env) do
+        VCR.use_cassette 'socrata-energy-import' do
+          @importer.import_all_data_by_type(@school, "electricity", @since_date)
+        end
+        reading = @meter.meter_readings.where( read_at: DateTime.parse('2016-08-01T00:00:00') ).first
+        expect( reading.value ).to eql(0.322)
       end
 
     end
