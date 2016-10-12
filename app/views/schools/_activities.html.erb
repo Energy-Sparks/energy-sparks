@@ -1,0 +1,32 @@
+<table class="table table-striped">
+  <thead>
+    <tr><th colspan="5">Activities</th></tr>
+    <tr>
+      <th>On</th>
+      <th>Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>
+        <% if can? :manage, Activity %>
+          <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success btn-sm' %>
+        <% end %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @activities[0..5].each do |activity| %>
+      <tr>
+        <td><%= l activity.happened_on %></td>
+        <td><%= activity.activity_type.name %></td>
+        <td><%= activity.title %></td>
+        <td><%= simple_format activity.description %></td>
+        <td>
+          <% if can? :manage, activity %>
+            <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

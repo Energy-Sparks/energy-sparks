@@ -28,23 +28,10 @@
   <%= @school.website %>
 </p>
 
+<%= render 'activities' %>
+
 <% if can? :manage, @school %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Meter No</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @school.meters.each do |meter| %>
-        <tr class="<%= active(meter.active) %>" >
-          <td><%= meter.meter_no %></td>
-          <td><%= meter.meter_type.titleize %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render 'meters' %>
 <% end %>
 
 <div class="other-actions">

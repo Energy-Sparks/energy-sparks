@@ -1,5 +1,7 @@
-<h1>New Activity</h1>
+<h1>New activity for <%= @school.name %></h1>
 
 <%= render 'form', activity: @activity %>
 
-<%= link_to 'Back', activities_path %>
+<div class="other-actions">
+  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+</div>

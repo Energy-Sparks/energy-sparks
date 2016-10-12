@@ -12,6 +12,8 @@ class SchoolsController < ApplicationController
   # GET /schools/1
   # GET /schools/1.json
   def show
+    @activities = @school.activities.order(:happened_on).includes(:activity_type)
+    @meters = @school.meters.order(:meter_no)
   end
 
   # GET /schools/new

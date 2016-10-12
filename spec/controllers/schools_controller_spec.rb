@@ -31,42 +31,57 @@ RSpec.describe SchoolsController, type: :controller do
     { name: nil }
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # SchoolsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
   context "As an admin user" do
     before(:each) do
       sign_in_user(:admin)
     end
     describe "GET #index" do
       it "assigns all schools as @schools" do
-        school = School.create! valid_attributes
-        get :index, params: {}, session: valid_session
+        school = FactoryGirl.create :school
+        get :index, params: {}
         expect(assigns(:schools)).to eq([school])
       end
     end
 
     describe "GET #show" do
       it "assigns the requested school as @school" do
-        school = School.create! valid_attributes
-        get :show, params: {id: school.to_param}, session: valid_session
+        school = FactoryGirl.create :school
+        get :show, params: {id: school.to_param}
         expect(assigns(:school)).to eq(school)
+      end
+      it "assigns the school's meters as @meters" do
+        school = FactoryGirl.create :school
+        meter = FactoryGirl.create :meter, school_id: school.id
+        get :show, params: {id: school.to_param}
+        expect(assigns(:meters)).to include(meter)
+      end
+      it "assigns the latest activities as @activities" do
+        school = FactoryGirl.create :school
+        activity = FactoryGirl.create :activity, school_id: school.id
+        get :show, params: {id: school.to_param}
+        expect(assigns(:activities)).to include(activity)
+      end
+      it "does not include activities from other schools" do
+        school = FactoryGirl.create :school
+        other_school = FactoryGirl.create :school
+        activity = FactoryGirl.create :activity, school_id: school.id
+        activity_other_school = FactoryGirl.create :activity, school_id: other_school.id
+        get :show, params: {id: school.to_param}
+        expect(assigns(:activities)).not_to include activity_other_school
       end
     end
 
     describe "GET #new" do
       it "assigns a new school as @school" do
-        get :new, params: {}, session: valid_session
+        get :new, params: {}
         expect(assigns(:school)).to be_a_new(School)
       end
     end
 
     describe "GET #edit" do
       it "assigns the requested school as @school" do
-        school = School.create! valid_attributes
-        get :edit, params: {id: school.to_param}, session: valid_session
+        school = FactoryGirl.create :school
+        get :edit, params: {id: school.to_param}
         expect(assigns(:school)).to eq(school)
       end
     end
@@ -75,30 +90,30 @@ RSpec.describe SchoolsController, type: :controller do
       context "with valid params" do
         it "creates a new School" do
           expect {
-            post :create, params: {school: valid_attributes}, session: valid_session
+            post :create, params: {school: valid_attributes}
           }.to change(School, :count).by(1)
         end
 
         it "assigns a newly created school as @school" do
-          post :create, params: {school: valid_attributes}, session: valid_session
+          post :create, params: {school: valid_attributes}
           expect(assigns(:school)).to be_a(School)
           expect(assigns(:school)).to be_persisted
         end
 
         it "redirects to the created school" do
-          post :create, params: {school: valid_attributes}, session: valid_session
+          post :create, params: {school: valid_attributes}
           expect(response).to redirect_to(School.last)
         end
       end
 
       context "with invalid params" do
         it "assigns a newly created but unsaved school as @school" do
-          post :create, params: {school: invalid_attributes}, session: valid_session
+          post :create, params: {school: invalid_attributes}
           expect(assigns(:school)).to be_a_new(School)
         end
 
         it "re-renders the 'new' template" do
-          post :create, params: {school: invalid_attributes}, session: valid_session
+          post :create, params: {school: invalid_attributes}
           expect(response).to render_template("new")
         end
       end
@@ -111,35 +126,35 @@ RSpec.describe SchoolsController, type: :controller do
         }
 
         it "updates the requested school" do
-          school = School.create! valid_attributes
-          put :update, params: {id: school.to_param, school: new_attributes}, session: valid_session
+          school = FactoryGirl.create :school
+          put :update, params: {id: school.to_param, school: new_attributes}
           school.reload
           expect(school.name).to eq new_attributes[:name]
         end
 
         it "assigns the requested school as @school" do
-          school = School.create! valid_attributes
-          put :update, params: {id: school.to_param, school: valid_attributes}, session: valid_session
+          school = FactoryGirl.create :school
+          put :update, params: {id: school.to_param, school: valid_attributes}
           expect(assigns(:school)).to eq(school)
         end
 
         it "redirects to the school" do
-          school = School.create! valid_attributes
-          put :update, params: {id: school.to_param, school: valid_attributes}, session: valid_session
+          school = FactoryGirl.create :school
+          put :update, params: {id: school.to_param, school: valid_attributes}
           expect(response).to redirect_to(school)
         end
       end
 
       context "with invalid params" do
         it "assigns the school as @school" do
-          school = School.create! valid_attributes
-          put :update, params: {id: school.to_param, school: invalid_attributes}, session: valid_session
+          school = FactoryGirl.create :school
+          put :update, params: {id: school.to_param, school: invalid_attributes}
           expect(assigns(:school)).to eq(school)
         end
 
         it "re-renders the 'edit' template" do
-          school = School.create! valid_attributes
-          put :update, params: {id: school.to_param, school: invalid_attributes}, session: valid_session
+          school = FactoryGirl.create :school
+          put :update, params: {id: school.to_param, school: invalid_attributes}
           expect(response).to render_template("edit")
         end
       end
@@ -147,15 +162,15 @@ RSpec.describe SchoolsController, type: :controller do
 
     describe "DELETE #destroy" do
       it "destroys the requested school" do
-        school = School.create! valid_attributes
+        school = FactoryGirl.create :school
         expect {
-          delete :destroy, params: {id: school.to_param}, session: valid_session
+          delete :destroy, params: {id: school.to_param}
         }.to change(School, :count).by(-1)
       end
 
       it "redirects to the schools list" do
-        school = School.create! valid_attributes
-        delete :destroy, params: {id: school.to_param}, session: valid_session
+        school = FactoryGirl.create :school
+        delete :destroy, params: {id: school.to_param}
         expect(response).to redirect_to(schools_url)
       end
     end

@@ -1,0 +1,17 @@
+<table class="table table-striped">
+  <thead>
+    <tr><th colspan="2">Meters</th></tr>
+    <tr>
+      <th>Meter No</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @meters.each do |meter| %>
+      <tr class="<%= active(meter.active) %>" >
+        <td><%= meter.meter_no %></td>
+        <td><%= meter.meter_type.titleize %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

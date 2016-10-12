@@ -1,18 +1,6 @@
 class ActivitiesController < ApplicationController
   load_and_authorize_resource
-  before_action :set_activity, only: [:show, :edit, :update, :destroy]
-
-  # GET /activities
-  # GET /activities.json
-  def index
-    set_school
-    @activities = @school.activities.all
-  end
-
-  # GET /activities/1
-  # GET /activities/1.json
-  def show
-  end
+  before_action :set_activity, only: [:edit, :update, :destroy]
 
   # GET /activities/new
   def new

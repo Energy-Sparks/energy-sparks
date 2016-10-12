@@ -15,5 +15,6 @@
 #
 
 class ActivityType < ApplicationRecord
+  scope :active, -> { where(active: true) }
   validates_presence_of :name
 end
