@@ -65,6 +65,34 @@ describe 'Loader::EnergyImporter' do
     end
   end
 
+  context "when importing new data" do
+    it "should import all data if meters not read" do
+      #not read by default
+      expect( @importer.meters_last_read(@school) ).to eql(nil)
+    end
+
+    it "should use correct date" do
+      read_at = DateTime.now
+      @meter.meter_readings << create(:meter_reading, meter: @meter, read_at: read_at)
+      expect( @importer.meters_last_read(@school).utc.to_s ).to eql( read_at.utc.to_s )
+    end
+
+    it "should reimport data when there's a new meter" do
+      read_at = DateTime.now
+      @meter.meter_readings << create(:meter_reading, meter: @meter, read_at: read_at)
+
+      #new meter, so read all meters
+      new_meter = create(:meter, school: @school)
+      @school.meters << new_meter
+      expect( @importer.meters_last_read(@school) ).to eql( nil )
+
+      #need to read meters
+      new_meter.meter_readings << create(:meter_reading, meter: new_meter, read_at: DateTime.now)
+      expect( @importer.meters_last_read(@school).utc.to_s ).to eql( read_at.utc.to_s )
+    end
+
+  end
+
   context "when reimporting" do
     before(:each) do
       @meter.meter_readings.create!(
