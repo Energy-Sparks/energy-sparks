@@ -42,6 +42,19 @@ RSpec.describe ActivitiesController, type: :controller do
       sign_in_user(:admin)
     end
 
+    describe "GET #index" do
+      it "assigns all school's activities as @activities" do
+        activity = FactoryGirl.create :activity, school_id: school.id
+        get :index, params: { school_id: school.id }
+        expect(assigns(:activities)).to include activity
+      end
+      it "does not include activities from other schools" do
+        activity = FactoryGirl.create :activity, school_id: different_school.id
+        get :index, params: { school_id: school.id }
+        expect(assigns(:activities)).not_to include activity
+      end
+    end
+
     describe "GET #new" do
       it "assigns a new activity as @activity" do
         get :new, params: { school_id: school.id }

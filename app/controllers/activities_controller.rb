@@ -1,6 +1,13 @@
 class ActivitiesController < ApplicationController
   before_action :set_activity, only: [:edit, :update, :destroy]
 
+  # GET /activities
+  # GET /activities.json
+  def index
+    set_school
+    @activities = @school.activities.order(happened_on: :desc)
+  end
+
   # GET /activities/new
   def new
     set_school
