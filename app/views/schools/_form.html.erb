@@ -41,6 +41,38 @@
     <%= f.text_field :website, class: 'form-control' %>
   </div>
 
+  <h2>Meters</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Meter No</th>
+        <th>Type</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= f.fields_for :meters do |meter_form| %>
+        <tr>
+          <td>
+            <div class="form-group">
+              <%= meter_form.number_field :meter_no, class: 'form-control' %>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <%= meter_form.select :meter_type, Meter.meter_types.keys.map {|type| [type.titleize,type]}, { include_blank: true }, { class: 'form-control' } %>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <%= meter_form.check_box :active, class: 'form-control' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>
   </div>

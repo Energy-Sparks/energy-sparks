@@ -2,6 +2,7 @@
 #
 # Table name: meters
 #
+#  active     :boolean          default(TRUE)
 #  created_at :datetime         not null
 #  id         :integer          not null, primary key
 #  meter_no   :integer
@@ -21,9 +22,9 @@
 #
 
 class Meter < ApplicationRecord
-  belongs_to :school
-  has_many :meter_readings, dependent: :destroy
+  belongs_to :school, inverse_of: :meters
+  has_many :meter_readings, inverse_of: :meter, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
-  validates_presence_of :meter_no, :meter_type
+  validates_presence_of :school_id, :meter_no, :meter_type
 end

@@ -21,5 +21,6 @@
 #
 
 class MeterReading < ApplicationRecord
-  belongs_to :meter
+  belongs_to :meter, inverse_of: :meter_readings
+  has_one :school, through: :meter
 end

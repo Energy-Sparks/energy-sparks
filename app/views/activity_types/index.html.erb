@@ -11,7 +11,7 @@
 
   <tbody>
     <% @activity_types.each do |activity_type| %>
-      <tr <%= raw 'class="bg-warning"' unless activity_type.active %> >
+      <tr class="<%= active(activity_type.active) %>" >
         <td><%= activity_type.name %></td>
         <td><%= activity_type.description %></td>
         <td><%= link_to 'Show', activity_type, class: 'btn btn-info' %></td>

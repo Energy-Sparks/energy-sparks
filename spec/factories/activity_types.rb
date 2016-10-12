@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :activity_type do
-    name "MyString"
-    description "MyText"
+    name 'test activity_type name'
+    description 'test_activity_type description'
   end
 end
