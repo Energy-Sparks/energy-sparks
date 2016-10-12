@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://data.bathhacked.org/resource/fqa5-b8ri.json?$order=date%20DESC&$where=location=%27Moorland%20Rd%20Library%27%20AND%20date%20%3E=%20%272016-07-31T00:00:00%2B00:00%27
+    uri: https://data.bathhacked.org/resource/fqa5-b8ri.json?$order=date%20ASC&$where=location=%27Moorland%20Rd%20Library%27%20AND%20date%20%3E=%20%272016-07-31T00:00:00%2B00:00%27
     body:
       encoding: UTF-8
       string: 'null'
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 11 Oct 2016 16:31:35 GMT
+      - Wed, 12 Oct 2016 09:48:58 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -33,7 +33,7 @@ http_interactions:
       Connection:
       - keep-alive
       X-Socrata-Requestid:
-      - pwgvgh3hbbmtrhv3hv0tfca4
+      - 19mijf3ae9jy5ce9zqx4zlnrc
       Access-Control-Allow-Origin:
       - "*"
       Last-Modified:
@@ -111,5 +111,5 @@ http_interactions:
         }
          ]
     http_version: 
-  recorded_at: Tue, 11 Oct 2016 16:31:35 GMT
+  recorded_at: Wed, 12 Oct 2016 09:48:58 GMT
 recorded_with: VCR 3.0.3

@@ -64,7 +64,7 @@ module Loader
       where << " AND date >= '#{since_date.iso8601}'" if since_date
       {
           "$where" => where,
-          "$order" => "date DESC"
+          "$order" => "date ASC"
       }
     end
   end

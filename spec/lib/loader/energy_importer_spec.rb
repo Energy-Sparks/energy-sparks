@@ -19,7 +19,7 @@ describe 'Loader::EnergyImporter' do
   it "should generate correct query" do
     with_modified_env(@env) do
       query = @importer.query(@school, "electricity")
-      expect( query["$order"]  ).to eql("date DESC")
+      expect( query["$order"]  ).to eql("date ASC")
       expect( query["$where"] ).to eql("location='Moorland Rd Library'")
     end
   end
