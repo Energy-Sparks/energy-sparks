@@ -6,12 +6,12 @@ class Ability
     if user.admin?
       can :manage, User
       can :manage, School
-      can :manage, Meter
       can :manage, ActivityType
       can :manage, Activity
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
     elsif user.guest?
+      can :show, School
     end
     #
     # The first argument to `can` is the action you are giving the user
