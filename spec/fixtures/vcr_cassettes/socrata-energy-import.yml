@@ -1,0 +1,115 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://data.bathhacked.org/resource/fqa5-b8ri.json?$order=date%20ASC&$where=location=%27Moorland%20Rd%20Library%27%20AND%20date%20%3E=%272016-07-31T00:00:00%2B00:00%27
+    body:
+      encoding: UTF-8
+      string: 'null'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      X-App-Token:
+      - L6CdbDA4jpux40RfMV59Xzvgo
+      User-Agent:
+      - soda-ruby/0.2.21 (Linux/4.4.0-38-generic; Ruby/2.3.1-p112)
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 12 Oct 2016 11:37:35 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Socrata-Requestid:
+      - 5ghegwq81h3lsbiagljtyvmty
+      Access-Control-Allow-Origin:
+      - "*"
+      Last-Modified:
+      - Tue, 02 Aug 2016 22:10:03 CEST
+      X-Soda2-Warning:
+      - X-SODA2-Fields, X-SODA2-Types, and X-SODA2-Legacy-Types are deprecated
+      X-Soda2-Fields:
+      - '["date","_06_00","_05_30","_01_30","_02_00","_09_30","_20_30","totalunits","_19_00","_15_00","_22_00","_10_30","id","_14_30","_18_30","_04_30","_05_00","_00_30","_01_00","postcode","_21_30","_09_00","_08_30","_15_30","_16_00","_12_00","_11_30","_19_30","_03_30","_08_00","_04_00","_10_00","_22_30","_23_00","units","_07_30","_16_30","_17_00","_20_00","_13_00","_12_30","_07_00","_02_30","_03_00","_11_00","_24_00","_23_30","_06_30","_18_00","_21_00","location","_14_00","_13_30","_17_30"]'
+      X-Soda2-Types:
+      - '["calendar_date","number","number","number","number","number","number","number","number","number","number","number","text","number","number","number","number","number","number","text","number","number","number","number","number","number","number","number","number","number","number","number","number","number","text","number","number","number","number","number","number","number","number","number","number","number","number","number","number","number","text","number","number","number"]'
+      X-Soda2-Legacy-Types:
+      - 'true'
+      Age:
+      - '1602'
+      X-Socrata-Region:
+      - aws-eu-west-1-prod
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        [ {
+          "date" : "2016-08-01T00:00:00",
+          "_06_00" : "0.231",
+          "_05_30" : "0.339",
+          "_01_30" : "0.201",
+          "_02_00" : "0.13",
+          "_09_30" : "0.213",
+          "_20_30" : "0.243",
+          "totalunits" : "10.44",
+          "_19_00" : "0.247",
+          "_15_00" : "0.181",
+          "_22_00" : "0.302",
+          "_10_30" : "0.207",
+          "id" : "4b819cfc06498a7c8bc268f68e7b725d",
+          "_14_30" : "0.156",
+          "_18_30" : "0.231",
+          "_04_30" : "0.187",
+          "_05_00" : "0.212",
+          "_00_30" : "0.11",
+          "_01_00" : "0.108",
+          "postcode" : "BA2 3PL",
+          "_21_30" : "0.301",
+          "_09_00" : "0.329",
+          "_08_30" : "0.246",
+          "_15_30" : "0.182",
+          "_16_00" : "0.291",
+          "_12_00" : "0.162",
+          "_11_30" : "0.178",
+          "_19_30" : "0.328",
+          "_03_30" : "0.159",
+          "_08_00" : "0.242",
+          "_04_00" : "0.162",
+          "_10_00" : "0.219",
+          "_22_30" : "0.265",
+          "_23_00" : "0.33",
+          "units" : "kWh",
+          "_07_30" : "0.226",
+          "_16_30" : "0.18",
+          "_17_00" : "0.174",
+          "_20_00" : "0.219",
+          "_13_00" : "0.154",
+          "_12_30" : "0.259",
+          "_07_00" : "0.219",
+          "_02_30" : "0.135",
+          "_03_00" : "0.125",
+          "_11_00" : "0.188",
+          "_24_00" : "0.322",
+          "_23_30" : "0.384",
+          "_06_30" : "0.211",
+          "_18_00" : "0.204",
+          "_21_00" : "0.267",
+          "location" : "Moorland Rd Library",
+          "_14_00" : "0.16",
+          "_13_30" : "0.148",
+          "_17_30" : "0.173"
+        }
+         ]
+    http_version: 
+  recorded_at: Wed, 12 Oct 2016 11:37:35 GMT
+recorded_with: VCR 3.0.3
