@@ -7,11 +7,6 @@
     <li class="nav-item">
       <%= link_to "Schools", home_schools_path, class: 'nav-link' %>
     </li>
-    <% if user_signed_in? && current_user.manages_school? %>
-      <li class="nav-item">
-        <%= link_to "Your School", school_path(current_user.school), class: 'nav-link' %>
-      </li>
-    <% end %>
     <% if user_signed_in? && current_user.admin? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage</a>

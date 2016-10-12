@@ -7,7 +7,7 @@
       <th>Title</th>
       <th>Description</th>
       <th>
-        <% if can? :manage, Activity %>
+        <% if current_user.manages_school?(@school.id) %>
           <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success btn-sm' %>
         <% end %>
       </th>
