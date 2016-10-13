@@ -42,7 +42,6 @@ group :development, :test do
   gem "bullet"
   gem 'rspec-rails', '~> 3.5'
   gem 'rails-controller-testing'
-  gem 'pry'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_girl_rails'
   gem 'climate_control'
@@ -58,6 +57,14 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'annotate'
+  gem 'pry'
+end
+
+group :test do
+  gem 'webrat'
+  gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
+  gem 'pickle'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
