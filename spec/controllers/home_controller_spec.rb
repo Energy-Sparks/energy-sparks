@@ -19,12 +19,4 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe HomeController, type: :controller do
-
-  describe "GET #schools" do
-    it "assigns all schools as @schools" do
-      school = FactoryGirl.create :school
-      get :schools, params: {}
-      expect(assigns(:schools)).to eq([school])
-    end
-  end
 end

@@ -1,35 +1,24 @@
-<h1>Schools</h1>
-
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Address</th>
-      <th>Postcode</th>
-      <th>Eco school status</th>
-      <th>Website</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @schools.each do |school| %>
-      <tr>
-        <td><%= school.name %></td>
-        <td><%= school.school_type.try(:titleize) %></td>
-        <td><%= school.address %></td>
-        <td><%= school.postcode %></td>
-        <td><%= school.eco_school_status %></td>
-        <td><%= school.website %></td>
-        <td><%= link_to 'Show', school, class: 'btn btn-info' %></td>
-        <td><%= link_to 'Edit', edit_school_path(school), class: 'btn btn-primary' %></td>
-        <td><%= link_to 'Delete', school, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
-      </tr>
+<% @schools.each_slice(3) do |row| %>
+  <div class="row">
+    <% row.each do |school| %>
+      <div class="card col-md-3 offset-md-1">
+        <%= link_to school_path(school), class: 'school-card' do %>
+          <div class="card-block">
+            <h3 class="card-title"><%= school.name %></h3>
+            <%= school.school_type.try(:titleize) %>
+          </div>
+        <% end -%>
+        <%- if can? :manage, school -%>
+          <p class="pull-md-right">
+            <%= link_to 'Edit', edit_school_path(school), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Delete', school_path(school), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          </p>
+        <%- end -%>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+<% end %>
 
-<br>
-
-<%= link_to 'New School', new_school_path, class: 'btn btn-primary' %>
+<% if can? :manage, School -%>
+  <%= link_to 'New School', new_school_path, class: 'btn btn-primary' %>
+<% end %>
