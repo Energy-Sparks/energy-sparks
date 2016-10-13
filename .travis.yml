@@ -4,7 +4,7 @@ env:
 services:
   - postgresql
 before_script:
-  - "govuk-lint-ruby -R app lib"
+  - "bundle exec govuk-lint-ruby -R app lib"
   - "psql -c 'create database energy_sparks_test;' -U postgres"
   - "cp config/database.yml.travis config/database.yml"
   - "bundle exec rake db:migrate"
