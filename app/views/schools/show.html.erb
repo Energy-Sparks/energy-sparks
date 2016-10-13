@@ -11,9 +11,9 @@
       </div>
       <h4><%= @school.school_type.try(:titleize) %></h4>
       <address>
-        <%= simple_format(@school.address + "\n" + @school.postcode) %>
+        <%= simple_format "#{@school.address}\n#{@school.postcode}" %>
       </address>
-      <%= link_to 'School Website', @school.website, target: :new %>
+      <%= link_to('School Website', @school.website, target: :new) unless @school.website.blank? %>
       <%- if can? :manage, @school -%>
         <p class="pull-md-right">
           <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
