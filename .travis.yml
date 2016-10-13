@@ -4,6 +4,7 @@ env:
 services:
   - postgresql
 before_script:
+  - "govuk-lint-ruby -R app lib"
   - "psql -c 'create database energy_sparks_test;' -U postgres"
   - "cp config/database.yml.travis config/database.yml"
   - "bundle exec rake db:migrate"
@@ -11,7 +12,7 @@ deploy:
   provider: heroku
   api_key:
     secure: oYsK7QFt//WnPZcrjHLU7DaXNj8+hcTne6cU1fM8Gcx1+f/h/r4x4L2ifXDA0ZkCgNdwe9J+x8+6KiNaqiK/w1J+lMHhveYs53nPU+wEj+P7zS8b1KuTvVYyqmpjrWJTY/3yqTdViQjsqLbMsfMlYaLPtWQ5G+KMsiZr1mM0/Tlg0LLnWOj4RnSSfTQ0exQ2rElGCnGbgPDY+E8vLPsoIvyPO2/YgscWx2bCBh40SdHyEdBFDB2LjBHPLpWGbUPEhEy0jgd+AxfbTjWSwU3obsbL5THWjDXp6ZkeNcFLCbhq6RiYCECZoCNSMLmzPtxKLNyylLJk6WuTJfudyKzRzmlwqpsvi2ckTlldJ+2dFL2uzx+Is+YM77w9Qqof0Kis9VFjS1C25yFXANK5LMPPlVjeAEmrE+4b+R1qCo7eT2896M155jX3RgFZGBpeRJHaADW61P53DV6AirsEXizF/i30hRAfvWkRKbI4FVI1oRlWoxhfaMJtA9LiOGAV4CsN5bQHSB+aH/7lT299IsOD1eRmXKWdhUXw4AGC53lVnDekZU7Y3wSIRuSI4F7cF3cFsB1dqQq4sFUmTer2GyX9cjEJGENKZAC/c51reDYS8rioZjgsSJilV8Q39fN0zgEIp6GCmcj4RBxbsqL/bUrnGarfPwg0e8lDnWz1yl2sOl0=
-  app: 
+  app:
     master: energy-sparks-staging
   on:
     repo: BathHacked/energy-sparks
