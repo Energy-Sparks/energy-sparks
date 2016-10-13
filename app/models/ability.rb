@@ -13,6 +13,7 @@ class Ability
       can :manage, Activity, school_id: user.school_id
     elsif user.guest?
       can :show, School
+      can :show, Activity
     end
     #
     # The first argument to `can` is the action you are giving the user
