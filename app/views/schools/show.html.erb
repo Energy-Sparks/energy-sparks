@@ -1,42 +1,110 @@
-<p>
-  <strong>Name:</strong>
-  <%= @school.name %>
-</p>
+<div class="row">
+  <div class="col-md-2">
+    <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
+  </div>
+  <div class="card col-md-9 offset-md-1">
+    <div class="card-block">
+      <div class="card-title">
+        <h3><%= @school.name %>
+        <span class="pull-md-right">ECO-SCHOOL STATUS HERE</span>
+        </h3>
+      </div>
+      <h4><%= @school.school_type.try(:titleize) %></h4>
+      <address>
+        <%= simple_format "#{@school.address}\n#{@school.postcode}" %>
+      </address>
+      <%= link_to('School Website', @school.website, target: :new) unless @school.website.blank? %>
+      <%- if can? :manage, @school -%>
+        <p class="pull-md-right">
+          <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
+        </p>
+      <%- end -%>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Type:</strong>
-  <%= @school.school_type.titleize %>
-</p>
-
-<p>
-  <strong>Address:</strong>
-  <%= @school.address %>
-</p>
-
-<p>
-  <strong>Postcode:</strong>
-  <%= @school.postcode %>
-</p>
-
-<p>
-  <strong>Eco school status:</strong>
-  <%= @school.eco_school_status %>
-</p>
-
-<p>
-  <strong>Website:</strong>
-  <%= @school.website %>
-</p>
-
-<%= render 'activities' %>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card card-outline-success">
+      <div class="card-block">
+        <h3 class="card-title">Activities</h3>
+        <%= render 'activities' %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 offset-md-1">
+    <div class="card card-outline-info">
+      <div class="card-block">
+        <h3 class="card-title">
+          Stats 1
+          <span class="pull-md-right">
+            <%= link_to "?", root_url %>
+          </span>
+        </h3>
+        <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
+        A description of stat 1 here
+      </div>
+      <div class="card-footer text-md-center">
+        <%= link_to 'View daily usage',
+          usage_school_path(@school, period: :daily),
+          class: 'btn btn-primary btn-sm'
+        %>
+      </div>
+    </div>
+    <div class="card card-outline-info">
+      <div class="card-block">
+        <h3 class="card-title">
+          Stats 3
+          <span class="pull-md-right">
+            <%= link_to "?", root_url %>
+          </span>
+        </h3>
+        <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
+        A description of stat 3 here
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 offset-md-1">
+    <div class="card card-outline-info">
+      <div class="card-block">
+        <h3 class="card-title">
+          Stats 2
+          <span class="pull-md-right">
+            <%= link_to "?", root_url %>
+          </span>
+        </h3>
+        <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
+        A description of stat 2 here
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-block card-outline-info">
+        <h3 class="card-title">
+          Stats 4
+          <span class="pull-md-right">
+            <%= link_to "?", root_url %>
+          </span>
+        </h3>
+        <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
+        A description of stat 4 here
+      </div>
+  </div>
+  </div>
+</div>
 
 <% if can? :manage, @school %>
-  <%= render 'meters' %>
+  <div class="row">
+    <div class="card col-md-12">
+      <div class="card-block">
+        <div class="card-title">
+          <h3>Meters</h3>
+          <%= render 'meters' %>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <div class="other-actions">
-  <% if can? :manage, @school %>
-    <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary' %>
-  <% end %>
   <%= link_to 'Back', schools_path, class: 'btn btn-secondary' %>
 </div>

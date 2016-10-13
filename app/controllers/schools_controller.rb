@@ -1,12 +1,12 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_school, only: [:show, :edit, :update, :destroy]
+  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage]
 
   # GET /schools
   # GET /schools.json
   def index
-    @schools = School.all
+    @schools = School.order(:name)
   end
 
   # GET /schools/1
@@ -67,6 +67,15 @@ class SchoolsController < ApplicationController
     end
   end
 
+  # GET /schools/:id/usage
+  def usage
+    case params[:period]
+    when 'daily'
+      get_daily_usage(set_to_date)
+      return render 'daily_usage'
+    end
+  end
+
 private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -88,5 +97,24 @@ private
 
   def meter_params
     [:id, :meter_no, :meter_type, :active]
+  end
+
+  def set_to_date(default = Date.current - 1.day)
+    begin
+      to_date = Date.parse params[:to_date]
+    rescue
+      to_date = default
+    end
+    to_date
+  end
+
+  def get_daily_usage(to_date)
+    # daily usage for last week and week before last
+    @last_week = to_date - 6.days..to_date
+    @week_before_last = to_date - 13.days..to_date - 7.days
+    @electricity_lw = @school.daily_usage(:electricity, @last_week)
+    @gas_lw = @school.daily_usage(:gas, @last_week)
+    @electricity_wbl = @school.daily_usage(:electricity, @week_before_last)
+    @gas_wbl = @school.daily_usage(:gas, @week_before_last)
   end
 end

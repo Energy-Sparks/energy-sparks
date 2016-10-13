@@ -41,6 +41,6 @@ class User < ApplicationRecord
   enum role: [:guest, :school_admin, :admin]
 
   def manages_school?(sid = nil)
-    sid && school_admin? && school_id == sid
+    admin? || (sid && school_admin? && school_id == sid)
   end
 end
