@@ -67,6 +67,10 @@ class SchoolsController < ApplicationController
     end
   end
 
+  # GET /schools/:id/usage
+  def usage
+  end
+
 private
 
   # Use callbacks to share common setup or constraints between actions.

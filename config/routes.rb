@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :activity_types
   resources :schools do
     resources :activities
+    member do
+      get 'usage'
+    end
   end
 
   devise_for :users
