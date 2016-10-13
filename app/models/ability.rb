@@ -9,9 +9,11 @@ class Ability
       can :manage, ActivityType
       can :manage, Activity
     elsif user.school_admin?
+      can :index, School
       can :show, School
       can :manage, Activity, school_id: user.school_id
     elsif user.guest?
+      can :index, School
       can :show, School
       can :show, Activity
     end
