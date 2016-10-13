@@ -1,11 +1,17 @@
 class ActivitiesController < ApplicationController
-  before_action :set_activity, only: [:edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:index, :show]
+  before_action :set_activity, only: [:show, :edit, :update, :destroy]
 
   # GET /activities
   # GET /activities.json
   def index
     set_school
     @activities = @school.activities.order(happened_on: :desc)
+  end
+
+  # GET /activities/1
+  # GET /activities/1.json
+  def show
   end
 
   # GET /activities/new
@@ -28,7 +34,7 @@ class ActivitiesController < ApplicationController
     authorize! :create, @activity
     respond_to do |format|
       if @activity.save
-        format.html { redirect_to @school, notice: 'Activity was successfully created.' }
+        format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -43,7 +49,7 @@ class ActivitiesController < ApplicationController
     authorize! :update, @activity
     respond_to do |format|
       if @activity.update(activity_params)
-        format.html { redirect_to @school, notice: 'Activity was successfully updated.' }
+        format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully updated.' }
         format.json { render :show, status: :ok, location: @school }
       else
         format.html { render :edit }
@@ -58,7 +64,7 @@ class ActivitiesController < ApplicationController
     authorize! :destroy, @activity
     @activity.destroy
     respond_to do |format|
-      format.html { redirect_to @school, notice: 'Activity was successfully destroyed.' }
+      format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

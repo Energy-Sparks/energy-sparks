@@ -55,6 +55,14 @@ RSpec.describe ActivitiesController, type: :controller do
       end
     end
 
+    describe "GET #show" do
+      it "assigns the requested activity as @activity" do
+        activity = FactoryGirl.create :activity, school_id: school.id
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity)).to eq(activity)
+      end
+    end
+
     describe "GET #new" do
       it "assigns a new activity as @activity" do
         get :new, params: { school_id: school.id }
@@ -84,9 +92,9 @@ RSpec.describe ActivitiesController, type: :controller do
           expect(assigns(:activity)).to be_persisted
         end
 
-        it "redirects to the school" do
+        it "redirects to the activity" do
           post :create, params: { school_id: school.id, activity: valid_attributes}
-          expect(response).to redirect_to(school)
+          expect(response).to redirect_to(school_activity_path(school, Activity.last))
         end
       end
 
@@ -129,10 +137,10 @@ RSpec.describe ActivitiesController, type: :controller do
           expect(assigns(:activity)).to eq(activity)
         end
 
-        it "redirects to the school" do
+        it "redirects to the activity" do
           activity = Activity.create! valid_attributes
           put :update, params: { school_id: school.id, id: activity.to_param, activity: valid_attributes}
-          expect(response).to redirect_to(school)
+          expect(response).to redirect_to(school_activity_path(school, activity))
         end
       end
 
@@ -159,10 +167,10 @@ RSpec.describe ActivitiesController, type: :controller do
         }.to change(Activity, :count).by(-1)
       end
 
-      it "redirects to the school" do
+      it "redirects to the activity" do
         activity = Activity.create! valid_attributes
         delete :destroy, params: { school_id: school.id, id: activity.to_param}
-        expect(response).to redirect_to(school)
+        expect(response).to redirect_to(school_activity_path(school, activity))
       end
     end
   end

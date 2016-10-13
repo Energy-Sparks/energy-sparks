@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-success">
+        <h1>
+          <%= @school.name %> Activity
+          <% if can? :manage, @activity %>
+            <div class="pull-md-right">
+              <%= link_to 'Edit', edit_school_activity_path(@school, @activity), class: 'btn btn-primary' %>
+              <%= link_to 'Delete', school_activity_path(@school, @activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
+          <% end %>
+        </h1>
+      </div>
+      <div class="card-block">
+        <h3 class="card-title">
+          <%= @activity.title %>
+          <div class="pull-md-right">
+            <%= l @activity.happened_on %>
+            <%= @activity.activity_type.name %>
+          </div>
+        </h3>
+        <p class="card-text">
+          <%= simple_format @activity.description %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="other-actions">
+  <%= link_to 'Back', school_activities_path(@school), class: 'btn btn-secondary' %>
+</div>

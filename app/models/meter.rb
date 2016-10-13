@@ -29,12 +29,11 @@ class Meter < ApplicationRecord
   validates_presence_of :school_id, :meter_no, :meter_type
 
   def latest_reading
-    meter_readings.order("read_at DESC").limit(1).first
+    meter_readings.order('read_at DESC').limit(1).first
   end
 
   def last_read
     reading = latest_reading
-    return reading.present? ? reading.read_at : nil
+    reading.present? ? reading.read_at : nil
   end
-
 end

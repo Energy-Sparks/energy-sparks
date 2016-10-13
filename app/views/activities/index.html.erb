@@ -1,4 +1,4 @@
-<h1>Activity history for <%= @school.name %></h1>
+<h1><%= @school.name %> Activities</h1>
 
 <table class="table table-condensed">
   <thead>
@@ -6,7 +6,6 @@
       <th>On</th>
       <th>Type</th>
       <th>Title</th>
-      <th>Description</th>
       <th></th>
     </tr>
   </thead>
@@ -17,11 +16,11 @@
         <td><%= l activity.happened_on %></td>
         <td><%= activity.activity_type.name %></td>
         <td><%= activity.title %></td>
-        <td><%= simple_format activity.description %></td>
         <td>
+          <%= link_to 'Show', school_activity_path(@school, activity), class: 'btn btn-info' %>
           <% if can? :manage, activity %>
-            <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-primary btn-sm' %>
-            <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-primary' %>
+            <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           <% end %>
         </td>
       </tr>
@@ -31,6 +30,7 @@
 
 <br>
 
-<% if current_user.manages_school?(@school.id) %>
+<% if current_user && current_user.manages_school?(@school.id) %>
   <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-primary' %>
 <% end %>
+<%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
