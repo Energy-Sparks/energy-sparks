@@ -174,5 +174,13 @@ RSpec.describe SchoolsController, type: :controller do
         expect(response).to redirect_to(schools_url)
       end
     end
+
+    describe "GET #usage" do
+      it "assigns the requested school as @school" do
+        school = FactoryGirl.create :school
+        get :usage, params: {id: school.to_param}
+        expect(assigns(:school)).to eq(school)
+      end
+    end
   end
 end

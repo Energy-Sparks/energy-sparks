@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3>Daily power usage for <%= @school.name %></h3>
+        <ul class="nav nav-tabs card-header-tabs pull-md-left">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#gas-usage">Gas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#electricity-usage">Electricity</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-block">
+        <div class="tab-content">
+          <div class="tab-pane active" id="gas-usage" role="tabpanel">
+            details of gas usage
+          </div>
+          <div class="tab-pane" id="electricity-usage" role="tabpanel">
+            details of electricity usage
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
