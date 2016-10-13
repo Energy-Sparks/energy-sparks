@@ -10,7 +10,7 @@ development:
   username: postgres
   password: pgdev
 
-test:
+test: &test
   <<: *default
   host: localhost
   database: energy_sparks_test
@@ -23,3 +23,6 @@ production:
   host: <%= ENV['DB_HOST'] %>
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
+
+cucumber:
+  <<: *test
