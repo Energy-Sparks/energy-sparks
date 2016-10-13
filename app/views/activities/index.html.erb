@@ -1,30 +1,29 @@
-<p id="notice"><%= notice %></p>
+<h1>Activity history for <%= @school.name %></h1>
 
-<h1>Activities</h1>
-
-<table>
+<table class="table table-condensed">
   <thead>
     <tr>
-      <th>School</th>
-      <th>Activity type</th>
+      <th>On</th>
+      <th>Type</th>
       <th>Title</th>
       <th>Description</th>
-      <th>Happened on</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @activities.each do |activity| %>
       <tr>
-        <td><%= activity.school %></td>
-        <td><%= activity.activity_type %></td>
+        <td><%= l activity.happened_on %></td>
+        <td><%= activity.activity_type.name %></td>
         <td><%= activity.title %></td>
-        <td><%= activity.description %></td>
-        <td><%= activity.happened_on %></td>
-        <td><%= link_to 'Show', activity %></td>
-        <td><%= link_to 'Edit', edit_activity_path(activity) %></td>
-        <td><%= link_to 'Destroy', activity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= simple_format activity.description %></td>
+        <td>
+          <% if can? :manage, activity %>
+            <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +31,6 @@
 
 <br>
 
-<%= link_to 'New Activity', new_activity_path %>
+<% if current_user.manages_school?(@school.id) %>
+  <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-primary' %>
+<% end %>

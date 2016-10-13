@@ -1,27 +1,23 @@
 class ActivitiesController < ApplicationController
-  load_and_authorize_resource
-  before_action :set_activity, only: [:show, :edit, :update, :destroy]
+  before_action :set_activity, only: [:edit, :update, :destroy]
 
   # GET /activities
   # GET /activities.json
   def index
     set_school
-    @activities = @school.activities.all
-  end
-
-  # GET /activities/1
-  # GET /activities/1.json
-  def show
+    @activities = @school.activities.order(happened_on: :desc)
   end
 
   # GET /activities/new
   def new
     set_school
     @activity = @school.activities.new
+    authorize! :new, @activity
   end
 
   # GET /activities/1/edit
   def edit
+    authorize! :edit, @activity
   end
 
   # POST /activities
@@ -29,6 +25,7 @@ class ActivitiesController < ApplicationController
   def create
     set_school
     @activity = @school.activities.new(activity_params)
+    authorize! :create, @activity
     respond_to do |format|
       if @activity.save
         format.html { redirect_to @school, notice: 'Activity was successfully created.' }
@@ -43,6 +40,7 @@ class ActivitiesController < ApplicationController
   # PATCH/PUT /activities/1
   # PATCH/PUT /activities/1.json
   def update
+    authorize! :update, @activity
     respond_to do |format|
       if @activity.update(activity_params)
         format.html { redirect_to @school, notice: 'Activity was successfully updated.' }
@@ -57,6 +55,7 @@ class ActivitiesController < ApplicationController
   # DELETE /activities/1
   # DELETE /activities/1.json
   def destroy
+    authorize! :destroy, @activity
     @activity.destroy
     respond_to do |format|
       format.html { redirect_to @school, notice: 'Activity was successfully destroyed.' }

@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   resources :activity_types
   resources :schools do
-    resources :meters
     resources :activities
   end
 

@@ -1,6 +1,6 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :set_school, only: [:show, :edit, :update, :destroy]
 
   # GET /schools
@@ -12,6 +12,8 @@ class SchoolsController < ApplicationController
   # GET /schools/1
   # GET /schools/1.json
   def show
+    @activities = @school.activities.order(:happened_on).includes(:activity_type)
+    @meters = @school.meters.order(:meter_no)
   end
 
   # GET /schools/new

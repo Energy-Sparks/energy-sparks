@@ -28,24 +28,15 @@
   <%= @school.website %>
 </p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Meter No</th>
-      <th>Type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @school.meters.each do |meter| %>
-      <tr class="<%= active(meter.active) %>" >
-        <td><%= meter.meter_no %></td>
-        <td><%= meter.meter_type.titleize %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'activities' %>
+
+<% if can? :manage, @school %>
+  <%= render 'meters' %>
+<% end %>
 
 <div class="other-actions">
-  <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary' %>
+  <% if can? :manage, @school %>
+    <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary' %>
+  <% end %>
   <%= link_to 'Back', schools_path, class: 'btn btn-secondary' %>
 </div>
