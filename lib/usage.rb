@@ -8,14 +8,13 @@ module Usage
     return [] if meters.empty?
     daily_totals = []
     dates.each do |date|
-      supply_total = nil
+      supply_total = 0 # default if no meters or meter readings found
       meters.each do |meter|
-        first = meter.meter_readings.where('read_at > ? AND read_at <= ?',
+        first = meter.meter_readings.where('read_at >= ? AND read_at <= ?',
           date.beginning_of_day, date.end_of_day).order(read_at: :asc).limit(1).first
-        last = meter.meter_readings.where('read_at > ? AND read_at <= ?',
+        last = meter.meter_readings.where('read_at >= ? AND read_at <= ?',
           date.beginning_of_day, date.end_of_day).order(read_at: :desc).limit(1).first
         if first
-          supply_total ||= 0
           supply_total += (last.value - first.value)
         end
       end
