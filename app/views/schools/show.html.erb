@@ -45,7 +45,10 @@
         A description of stat 1 here
       </div>
       <div class="card-footer text-md-center">
-        <%= link_to 'View daily usage', usage_school_path(@school), class: 'btn btn-primary btn-sm' %>
+        <%= link_to 'View daily usage',
+          usage_school_path(@school, period: :daily),
+          class: 'btn btn-primary btn-sm'
+        %>
       </div>
     </div>
     <div class="card card-outline-info">
