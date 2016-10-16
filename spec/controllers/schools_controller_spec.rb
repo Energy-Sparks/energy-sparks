@@ -174,5 +174,58 @@ RSpec.describe SchoolsController, type: :controller do
         expect(response).to redirect_to(schools_url)
       end
     end
+
+    describe "GET #usage" do
+      context "period is 'daily'" do
+        let(:period) { :daily }
+        it "assigns the requested school as @school" do
+          school = FactoryGirl.create :school
+          get :usage, params: {id: school.to_param, period: period }
+          expect(assigns(:school)).to eq(school)
+        end
+        context "to_date is specified" do
+          let(:to_date) { Date.current - 1.days }
+          it "assigns the week ending on to_date as @last_week" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+            expect(assigns(:last_week)).to be_a_kind_of Range
+            expect(assigns(:last_week).last).to eq to_date
+          end
+          it "assigns week before last's date range as @week_before_last" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+            expect(assigns(:week_before_last)).to be_a_kind_of Range
+            expect(assigns(:week_before_last).last).to eq to_date - 7.days
+          end
+          it "assigns last week's electricity usage as @electricity_lw" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+            expect(assigns(:electricity_lw)).to be_a_kind_of Array
+          end
+          it "assigns last week's gas usage as @gas_lw" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+            expect(assigns(:gas_lw)).to be_a_kind_of Array
+          end
+          it "assigns week before_last's electricity usage as @electricity_wbl" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+            expect(assigns(:electricity_wbl)).to be_a_kind_of Array
+          end
+          it "assigns week before last's gas usage as @gas_wbl" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+            expect(assigns(:gas_wbl)).to be_a_kind_of Array
+          end
+        end
+        context "to_date is not specified" do
+          it "uses yesterday's date" do
+            school = FactoryGirl.create :school
+            get :usage, params: {id: school.to_param, period: period}
+            expect(assigns(:last_week).last).to eq Date.current - 1.days
+          end
+        end
+      end
+    end
   end
 end
