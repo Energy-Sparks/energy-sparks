@@ -63,6 +63,7 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    chartkick (2.1.1)
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -119,7 +120,6 @@ GEM
     gherkin (4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    googlecharts (1.6.12)
     govuk-lint (1.2.1)
       rubocop (~> 0.39.0)
       scss_lint
@@ -302,6 +302,7 @@ DEPENDENCIES
   bullet
   byebug
   cancancan
+  chartkick
   climate_control
   coffee-rails (~> 4.2)
   cucumber-rails
@@ -310,7 +311,6 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails
   fakefs
-  googlecharts
   govuk-lint
   jbuilder (~> 2.5)
   jquery-rails
