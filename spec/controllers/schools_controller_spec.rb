@@ -176,13 +176,13 @@ RSpec.describe SchoolsController, type: :controller do
     end
 
     describe "GET #usage" do
-      it "assigns the requested school as @school" do
-        school = FactoryGirl.create :school
-        get :usage, params: {id: school.to_param }
-        expect(assigns(:school)).to eq(school)
-      end
       context "period is 'daily'" do
         let(:period) { :daily }
+        it "assigns the requested school as @school" do
+          school = FactoryGirl.create :school
+          get :usage, params: {id: school.to_param, period: period }
+          expect(assigns(:school)).to eq(school)
+        end
         context "to_date is specified" do
           let(:to_date) { Date.current - 1.days }
           it "assigns the week ending on to_date as @last_week" do
