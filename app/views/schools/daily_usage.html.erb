@@ -19,13 +19,25 @@
               <p>There was a problem finding the gas usage, please
                 check the school's gas meter has been set up.</p>
             <% else %>
-              <%= image_tag Gchart.line data: [@gas_lw, @gas_wbl] %>
-              <p>
-                Details of gas usage from
-                <%= l @last_week.first %>-<%= l @last_week.last %><br>
-                (comparing with previous week
-                <%= l @week_before_last.first %>-<%= l @week_before_last.last %>)
-              </p>
+              <div id="chart_div" class="text-md-center">
+                <%= image_tag Gchart.bar(
+                    stacked: false,
+                    grouped: true,
+                    data: [@gas_lw, @gas_wbl],
+                    labels: @last_week.to_a.map { |dt| dt.strftime "%a" },
+                    bar_width_and_spacing: {spacing: 0, group_spacing: 20},
+                    bar_colors: '0000FF,00FFFF',
+                    size: '600x400',
+                    legend: ['Usage kWh', 'Previous week']
+                  )
+                %>
+                <p>
+                  Gas usage from
+                  <%= l @last_week.first %>-<%= l @last_week.last %><br>
+                  (comparing with previous week
+                  <%= l @week_before_last.first %>-<%= l @week_before_last.last %>)
+                </p>
+              </div>
               <h4>Readings</h4>
               <table class="table table-striped">
                 <thead>
@@ -52,13 +64,25 @@
               <p>There was a problem finding the electricity usage, please
                 check the school's electricity meter has been set up.</p>
             <% else %>
-              <%= image_tag Gchart.line data: [@electricity_lw, @electricity_wbl] %>
-              <p>
-                Details of electricity usage from
-                <%= l @last_week.first %>-<%= l @last_week.last %><br>
-                (comparing with previous week
-                <%= l @week_before_last.first %>-<%= l @week_before_last.last %>)
-              </p>
+              <div id="chart_div" class="text-md-center">
+                <%= image_tag Gchart.bar(
+                    stacked: false,
+                    grouped: true,
+                    data: [@electricity_lw, @electricity_wbl],
+                    labels: @last_week.to_a.map { |dt| dt.strftime "%a" },
+                    bar_width_and_spacing: {spacing: 0, group_spacing: 20},
+                    bar_colors: '0000FF,00FFFF',
+                    size: '600x400',
+                    legend: ['Usage kWh', 'Previous week']
+                  )
+                %>
+                <p>
+                  Electricity usage from
+                  <%= l @last_week.first %>-<%= l @last_week.last %><br>
+                  (comparing with previous week
+                  <%= l @week_before_last.first %>-<%= l @week_before_last.last %>)
+                </p>
+              </div>
               <h4>Readings</h4>
               <table class="table table-striped">
                 <thead>

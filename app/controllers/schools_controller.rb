@@ -72,6 +72,7 @@ class SchoolsController < ApplicationController
     case params[:period]
     when 'daily'
       get_daily_usage(set_to_date)
+      return render 'daily_usage'
     end
   end
 
