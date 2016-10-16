@@ -3,23 +3,14 @@ module Usage
   def daily_usage(supply = nil, dates = [])
     # supply and dates arguments required
     return [] if supply.blank? || dates.blank?
-    # get school's meters for this supply type
-    meters = self.meters.where(meter_type: supply)
-    return [] if meters.empty?
-    daily_totals = []
-    dates.each do |date|
-      supply_total = 0 # default if no meters or meter readings found
-      meters.each do |meter|
-        first = meter.meter_readings.where('read_at >= ? AND read_at <= ?',
-          date.beginning_of_day, date.end_of_day).order(read_at: :asc).limit(1).first
-        last = meter.meter_readings.where('read_at >= ? AND read_at <= ?',
-          date.beginning_of_day, date.end_of_day).order(read_at: :desc).limit(1).first
-        if first
-          supply_total += (last.value - first.value)
-        end
-      end
-      daily_totals << supply_total
-    end
-    daily_totals
+    self.meter_readings
+        .where('meters.meter_type = ?', Meter.meter_types[supply])
+        .where('read_at >= ? AND read_at <= ?',
+                dates.first.beginning_of_day,
+                dates.last.end_of_day
+              )
+        .group("read_at::date")
+        .order("read_at::date")
+        .sum(:value).to_a
   end
 end

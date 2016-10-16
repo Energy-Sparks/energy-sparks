@@ -69,18 +69,22 @@ describe 'Usage' do
       end
     end
     context 'if no readings are found for the date' do
-      it 'sets the array element to zero' do
+      it 'does not include the date' do
         # start the day before there are meter readings
-        dates = Date.today - 8.days..Date.today - 7.days
-        expect(school.daily_usage(supply, dates).first).to eq 0
+        dates = Date.today - 8.days..Date.today - 8.days
+        expect(school.daily_usage(supply, dates).length).to eq 0
       end
     end
-    it 'returns a total for each date in the date array' do
-      expect(school.daily_usage(supply, dates)).to eq [150,150,150,150,150,150,150]
-    end
-    it 'totals each of the schools meters for that supply' do
-      # should not have included gas supply for that date
-      expect(school.daily_usage(supply, dates).first).to eq 150
+    it 'returns a total of all reading values for each date in the date array' do
+      expect(school.daily_usage(supply, dates)).to eq [
+        [Date.today - 7.days, 650],
+        [Date.today - 6.days, 650],
+        [Date.today - 5.days, 650],
+        [Date.today - 4.days, 650],
+        [Date.today - 3.days, 650],
+        [Date.today - 2.days, 650],
+        [Date.today - 1.days, 650]
+      ]
     end
   end
 end
