@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :activities
     member do
       get 'usage'
+      get 'daily_usage', to: 'stats#daily_usage'
     end
   end
 

@@ -71,7 +71,7 @@ class SchoolsController < ApplicationController
   def usage
     case params[:period]
     when 'daily'
-      get_daily_usage(set_to_date)
+      set_to_date
       return render 'daily_usage'
     end
   end
@@ -101,20 +101,9 @@ private
 
   def set_to_date(default = Date.current - 1.day)
     begin
-      to_date = Date.parse params[:to_date]
+      @to_date = Date.parse params[:to_date]
     rescue
-      to_date = default
+      @to_date = default
     end
-    to_date
-  end
-
-  def get_daily_usage(to_date)
-    # daily usage for last week and week before last
-    @last_week = to_date - 6.days..to_date
-    @week_before_last = to_date - 13.days..to_date - 7.days
-    @electricity_lw = @school.daily_usage(:electricity, @last_week)
-    @gas_lw = @school.daily_usage(:gas, @last_week)
-    @electricity_wbl = @school.daily_usage(:electricity, @week_before_last)
-    @gas_wbl = @school.daily_usage(:gas, @week_before_last)
   end
 end
