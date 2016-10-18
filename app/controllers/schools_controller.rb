@@ -67,6 +67,15 @@ class SchoolsController < ApplicationController
     end
   end
 
+  # GET /schools/:id/usage
+  def usage
+    case params[:period]
+    when 'daily'
+      set_to_date
+      return render 'daily_usage'
+    end
+  end
+
 private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -88,5 +97,13 @@ private
 
   def meter_params
     [:id, :meter_no, :meter_type, :active]
+  end
+
+  def set_to_date(default = Date.current - 1.day)
+    begin
+      @to_date = Date.parse params[:to_date]
+    rescue
+      @to_date = default
+    end
   end
 end

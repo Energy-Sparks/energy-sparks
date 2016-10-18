@@ -174,5 +174,29 @@ RSpec.describe SchoolsController, type: :controller do
         expect(response).to redirect_to(schools_url)
       end
     end
+
+    describe "GET #usage" do
+      let!(:school) { FactoryGirl.create :school }
+      context "period is 'daily'" do
+        let(:period) { :daily }
+        it "assigns the requested school as @school" do
+          get :usage, params: {id: school.to_param, period: period }
+          expect(assigns(:school)).to eq(school)
+        end
+        context "to_date is specified" do
+          let(:to_date) { Date.current - 1.days }
+          it "assigns to_date to @to_date" do
+            get :usage, params: {id: school.to_param, period: period, to_date: to_date }
+            expect(assigns(:to_date)).to eq to_date
+          end
+        end
+        context "to_date is not specified" do
+          it "assigns yesterday's date to  @to_date" do
+            get :usage, params: {id: school.to_param, period: period}
+            expect(assigns(:to_date)).to eq Date.current - 1.days
+          end
+        end
+      end
+    end
   end
 end

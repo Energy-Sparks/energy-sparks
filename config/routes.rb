@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   resources :activity_types
   resources :schools do
     resources :activities
+    member do
+      get 'usage'
+      get 'daily_usage', to: 'stats#daily_usage'
+    end
   end
 
   devise_for :users
