@@ -1,7 +1,7 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_school, only: [:show, :edit, :update, :destroy]
+  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage]
 
   # GET /schools
   # GET /schools.json

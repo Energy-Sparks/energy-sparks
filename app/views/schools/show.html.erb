@@ -44,6 +44,12 @@
         <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
         A description of stat 1 here
       </div>
+      <div class="card-footer text-md-center">
+        <%= link_to 'View daily usage',
+          usage_school_path(@school, period: :daily),
+          class: 'btn btn-primary btn-sm'
+        %>
+      </div>
     </div>
     <div class="card card-outline-info">
       <div class="card-block">
