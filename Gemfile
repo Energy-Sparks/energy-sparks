@@ -82,3 +82,9 @@ gem 'cancancan'
 
 # Use bootstrap for responsive layout
 gem 'bootstrap', '~> 4.0.0.alpha3'
+
+# Use chartkick for usage graphs
+gem 'chartkick'
+
+# Use groupdate to group usage stats
+gem 'groupdate'
