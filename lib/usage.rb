@@ -3,7 +3,8 @@
 module Usage
   # daily_usage: get daily usage across all meters for a given
   # supply for a range of dates
-  def daily_usage(supply = nil, dates = [], date_format = nil)
+  def daily_usage(supply = nil, dates = nil, date_format = nil)
+    return nil unless dates
     datetime_range = (dates.first.beginning_of_day..dates.last.end_of_day)
     self.meter_readings
         .where('meters.meter_type = ?', Meter.meter_types[supply])
@@ -34,5 +35,19 @@ module Usage
         .first
         .try(:[], 'read_at')
         .try(:to_date)
+  end
+
+  # return the date range of the last full week with readings
+  def last_full_week(supply)
+    friday = self.last_friday_with_readings(supply)
+    friday.nil? ? nil : friday - 4.days..friday
+  end
+
+  # return day of the week with the most usage
+  # for last full week of readings
+  def day_most_usage(supply)
+    usage = daily_usage(supply, last_full_week(supply))
+    return nil unless usage
+    usage.sort { |a, b| a[1] <=> b[1] }.last
   end
 end
