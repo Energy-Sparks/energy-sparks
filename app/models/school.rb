@@ -14,6 +14,7 @@
 #
 
 class School < ApplicationRecord
+  include Usage
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy

@@ -35,18 +35,23 @@
   <div class="col-md-3 offset-md-1">
     <div class="card card-outline-info">
       <div class="card-block">
-        <h3 class="card-title">
-          Stats 1
+        <h4 class="card-title">
           <span class="pull-md-right">
             <%= link_to "?", root_url %>
           </span>
-        </h3>
-        <%= image_tag 'http://placehold.it/200x200', class: 'img-fluid' %>
-        A description of stat 1 here
+        </h4>
+        <div id="avg_weekday_usage">
+          <% avg = average_weekday_usage(:electricity) %>
+          <h1><strong><%= avg[1].to_i unless avg.nil? %></strong> kWh</h1>
+        </div>
+        <p>
+          Average weekday electricity usage
+          (week ending <%= l avg[0] unless avg.nil? %>)
+        </p>
       </div>
       <div class="card-footer text-md-center">
         <%= link_to 'View daily usage',
-          usage_school_path(@school, period: :daily),
+          usage_school_path(@school, period: :daily, to_date: avg[0]),
           class: 'btn btn-primary btn-sm'
         %>
       </div>
