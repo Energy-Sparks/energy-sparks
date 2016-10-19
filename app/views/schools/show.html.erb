@@ -50,9 +50,9 @@
         </p>
       </div>
       <div class="card-footer text-md-center">
-        <%= link_to 'View daily usage',
+        <%= link_to('View daily usage',
           usage_school_path(@school, period: :daily, to_date: avg_elect[0]),
-          class: 'btn btn-primary btn-sm'
+          class: 'btn btn-primary btn-sm') unless avg_elect.nil?
         %>
       </div>
     </div>
@@ -73,9 +73,9 @@
         </p>
       </div>
       <div class="card-footer text-md-center">
-        <%= link_to 'View daily usage',
+        <%= link_to('View daily usage',
           usage_school_path(@school, period: :daily, to_date: avg_gas[0]),
-          class: 'btn btn-primary btn-sm'
+          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
         %>
       </div>
     </div>
