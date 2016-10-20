@@ -5,19 +5,19 @@
         <h3>Hourly usage for <%= @school.name %></h3>
         <ul class="nav nav-tabs card-header-tabs pull-md-left">
           <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#gas-usage">Gas</a>
+            <a class="nav-link active" data-toggle="tab" href="#gas">Gas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#electricity-usage">Electricity</a>
+            <a class="nav-link" data-toggle="tab" href="#electricity">Electricity</a>
           </li>
         </ul>
       </div>
       <div class="card-block">
         <div class="tab-content">
-          <div class="tab-pane active" id="gas-usage" role="tabpanel">
+          <div class="tab-pane active" id="gas" role="tabpanel">
             <%= hourly_usage_chart(:gas, @to_date) %>
           </div>
-          <div class="tab-pane" id="electricity-usage" role="tabpanel">
+          <div class="tab-pane" id="electricity" role="tabpanel">
             <%= hourly_usage_chart(:electricity, @to_date) %>
           </div>
         </div>
