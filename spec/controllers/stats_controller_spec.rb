@@ -30,4 +30,10 @@ RSpec.describe StatsController, type: :controller do
       expect(JSON.parse(response.body)).not_to be_nil
     end
   end
+  describe "GET #hourly_usage" do
+    it "returns valid JSON" do
+      get :hourly_usage, params: { id: school.id, supply: :gas }
+      expect(JSON.parse(response.body)).not_to be_nil
+    end
+  end
 end

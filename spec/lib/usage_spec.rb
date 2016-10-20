@@ -1,4 +1,3 @@
-
 require 'rails_helper'
 require 'usage.rb'
 
@@ -135,7 +134,7 @@ describe 'Usage' do
     end
   end
 
-  describe "last_full_week" do
+  describe "#last_full_week" do
     it "returns a date range" do
       expect(school.last_full_week(:electricity)).to be_a_kind_of Range
       expect(school.last_full_week(:electricity).first).to be_a_kind_of Date
@@ -149,6 +148,36 @@ describe 'Usage' do
     end
     it "ends with a Friday" do
       expect(school.last_full_week(:electricity).last.friday?).to be_truthy
+    end
+  end
+
+  describe "#hourly_usage" do
+    context 'school has no meters for the supply' do
+      it 'sets the usage value to zero for each day' do
+        # test with invalid supply
+        supply = 999
+        expect(school.hourly_usage(supply, last_week).inject(0) { |a, e| a + e[1] }).to eq 0
+      end
+      it 'returns the average usage for each reading time across all dates' do
+        expect(school.hourly_usage(supply, last_week)).to eq [
+          ['01:00', 125],
+          ['23:00', 200]
+        ]
+      end
+    end
+  end
+
+  describe ".this_week" do
+    context 'no date is provided' do
+      it "defaults to the current date" do
+        expect(Usage.this_week().to_a).to include Date.current
+      end
+      it "starts on a Saturday" do
+        expect(Usage.this_week().first.saturday?).to be_truthy
+      end
+      it "ends on a Friday" do
+        expect(Usage.this_week().last.friday?).to be_truthy
+      end
     end
   end
 end

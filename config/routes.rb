@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     member do
       get 'usage'
       get 'daily_usage', to: 'stats#daily_usage'
+      get 'hourly_usage', to: 'stats#hourly_usage'
     end
   end
 

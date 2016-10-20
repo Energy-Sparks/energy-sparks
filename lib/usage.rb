@@ -13,6 +13,23 @@ module Usage
         .to_a
   end
 
+  # hourly_usage: get average reading at the same time
+  # across all meters for a given supply for a range of dates
+  def hourly_usage(supply = nil, dates = nil)
+    return nil unless dates
+    datetime_range = (dates.first.beginning_of_day..dates.last.end_of_day)
+    self.meter_readings
+        .where('meters.meter_type = ?', Meter.meter_types[supply])
+        .group_by_minute(
+          :read_at,
+          range: datetime_range,
+          format: '%H:%M',
+          series: false
+        )
+        .average(:value)
+        .to_a
+  end
+
   # last_reading: get date of the last reading on or before the given date
   def last_reading_date(supply, to_date)
     self.meter_readings
@@ -49,5 +66,11 @@ module Usage
     usage = daily_usage(supply, last_full_week(supply))
     return nil unless usage
     usage.sort { |a, b| a[1] <=> b[1] }.last
+  end
+
+  # return date range for week in which this date falls
+  def self.this_week(date = Date.current)
+    previous_sat = date - ((date.wday - 6) % 7) # Sun = 0, Sat = 6
+    previous_sat..previous_sat + 6.days # week runs from Sat to Fri
   end
 end

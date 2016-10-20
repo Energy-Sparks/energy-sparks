@@ -1,7 +1,7 @@
 class StatsController < ApplicationController
   skip_before_action :authenticate_user!
 
-  # GET /schools/:id/daily_usage_chart?supply=:supply&to_date=:to_date
+  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date
   def daily_usage
     this_week = school.daily_usage(
       supply,
@@ -19,6 +19,23 @@ class StatsController < ApplicationController
     render json: [
       { name: 'Usage', data: this_week },
       { name: 'Previous week', data: previous_week_series }
+    ]
+  end
+
+  # GET /schools/:id/hourly_usage?supply=:supply&to_date=:to_date
+  def hourly_usage
+    week = Usage.this_week(to_date).to_a
+    weekend = school.hourly_usage(
+      supply,
+      week[0]..week[1]
+    )
+    weekday = school.hourly_usage(
+      supply,
+      week[2]..week[6]
+    )
+    render json: [
+      { name: 'Weekday', data: weekday },
+      { name: 'Weekend', data: weekend }
     ]
   end
 

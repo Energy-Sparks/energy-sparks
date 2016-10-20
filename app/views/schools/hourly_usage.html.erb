@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3>Hourly usage for <%= @school.name %></h3>
+        <ul class="nav nav-tabs card-header-tabs pull-md-left">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#gas-usage">Gas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#electricity-usage">Electricity</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-block">
+        <div class="tab-content">
+          <div class="tab-pane active" id="gas-usage" role="tabpanel">
+            <%= hourly_usage_chart(:gas, @to_date) %>
+          </div>
+          <div class="tab-pane" id="electricity-usage" role="tabpanel">
+            <%= hourly_usage_chart(:electricity, @to_date) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="other-actions">
+  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+</div>

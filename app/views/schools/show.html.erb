@@ -53,27 +53,23 @@
         </div>
       </div>
       <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_elect[0]),
-          class: 'btn btn-primary btn-sm') unless avg_elect.nil?
+        <%= link_to_unless(avg_elect.nil?, 'Daily usage',
+          usage_school_path(@school, period: :daily, to_date: avg_elect[0], anchor: :electricity),
+          class: 'btn btn-primary btn-sm')
+        %>
+        <%= link_to_unless(avg_elect.nil?, 'Hourly usage',
+          usage_school_path(@school, period: :hourly, to_date: avg_elect[0], anchor: :electricity),
+          class: 'btn btn-primary btn-sm')
         %>
       </div>
     </div>
     <div class="card card-outline-info">
-      <div class="card-block">
-        <h3 class="card-title">
-          <span class="pull-md-right">
-            <%= link_to "?", root_url %>
-          </span>
-        </h3>
-        <h1><strong><%= day_most_usage(:electricity) %></strong></h1>
-        is when you used the most <strong>electricity</strong> last week
-      </div>
-      <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_elect[0]),
-          class: 'btn btn-primary btn-sm') unless avg_elect.nil?
-        %>
+      <div class="card-block text-md-center">
+        Why do you use the most electricity on a
+        <h1>
+          <strong><%= day_most_usage(:electricity) %></strong>
+          <br>?
+        </h1>
       </div>
     </div>
   </div>
@@ -98,27 +94,23 @@
         </div>
       </div>
       <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_gas[0]),
-          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
+        <%= link_to_unless(avg_gas.nil?, 'Daily usage',
+          usage_school_path(@school, period: :daily, to_date: avg_gas[0], anchor: :gas),
+          class: 'btn btn-primary btn-sm')
+        %>
+        <%= link_to_unless(avg_gas.nil?, 'Hourly usage',
+          usage_school_path(@school, period: :hourly, to_date: avg_gas[0], anchor: :gas),
+          class: 'btn btn-primary btn-sm')
         %>
       </div>
     </div>
     <div class="card card-outline-info">
-      <div class="card-block">
-        <h3 class="card-title">
-          <span class="pull-md-right">
-            <%= link_to "?", root_url %>
-          </span>
-        </h3>
-        <h1><strong><%= day_most_usage(:gas) %></strong></h1>
-        is when you used the most <strong>gas</strong> last week
-      </div>
-      <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_gas[0]),
-          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
-        %>
+      <div class="card-block text-md-center">
+        Why do you use the most gas on a
+        <h1>
+          <strong><%= day_most_usage(:gas) %></strong>
+          <br>?
+        </h1>
       </div>
     </div>
   </div>
