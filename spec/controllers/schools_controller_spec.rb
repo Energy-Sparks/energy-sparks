@@ -36,10 +36,15 @@ RSpec.describe SchoolsController, type: :controller do
       sign_in_user(:admin)
     end
     describe "GET #index" do
-      it "assigns all schools as @schools" do
-        school = FactoryGirl.create :school
+      it "assigns schools that are enrolled as @schools_enrolled" do
+        school = FactoryGirl.create :school, enrolled: true
         get :index, params: {}
-        expect(assigns(:schools)).to eq([school])
+        expect(assigns(:schools_enrolled)).to eq([school])
+      end
+      it "assigns schools that haven't enrolled as @schools_not_enrolled" do
+        school = FactoryGirl.create :school, enrolled: false
+        get :index, params: {}
+        expect(assigns(:schools_not_enrolled)).to eq([school])
       end
     end
 

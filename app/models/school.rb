@@ -5,6 +5,7 @@
 #  address           :text
 #  created_at        :datetime         not null
 #  eco_school_status :integer
+#  enrolled          :boolean          default(FALSE)
 #  id                :integer          not null, primary key
 #  name              :string
 #  postcode          :string
