@@ -32,95 +32,105 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3 offset-md-1">
-    <div class="card card-outline-info">
-      <div class="card-block">
-        <h4 class="card-title">
-          ELECTRICITY
-          <span class="pull-md-right">
-            <%= link_to "?", root_url %>
-          </span>
-        </h4>
-        <div id="avg_weekday_usage">
-          <% avg_elect = average_weekday_usage(:electricity) %>
-          <h1><strong><%= avg_elect[1].to_i unless avg_elect.nil? %></strong> kWh</h1>
+  <div class="col-md-9">
+    <% if @school.meters?(:electricity) %>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card card-outline-info">
+            <div class="card-block">
+              <h4 class="card-title">
+                ELECTRICITY
+                <span class="pull-sm-right">
+                  <%= link_to "?", root_url %>
+                </span>
+              </h4>
+              <div id="avg_weekday_usage">
+                <% avg_elect = average_weekday_usage(:electricity) %>
+                <h1><strong><%= avg_elect[1].to_i unless avg_elect.nil? %></strong> kWh</h1>
+              </div>
+              <p>
+                Average weekday electricity usage
+              </p>
+              <div class="small text-muted text-sm-center">
+                WEEK ENDING <%= l avg_elect[0] unless avg_elect.nil? %>
+              </div>
+            </div>
+            <div class="card-footer text-sm-center">
+              <%= link_to('Daily usage',
+                usage_school_path(@school, period: :daily, to_date: avg_elect[0], anchor: :electricity),
+                class: 'btn btn-primary btn-sm') unless avg_elect.nil?
+              %>
+            </div>
+          </div>
         </div>
-        <p>
-          Average weekday electricity usage
-        </p>
-        <div class="small text-muted text-md-center">
-          WEEK ENDING <%= l avg_elect[0] unless avg_elect.nil? %>
-        </div>
-      </div>
-      <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_elect[0]),
-          class: 'btn btn-primary btn-sm') unless avg_elect.nil?
-        %>
-      </div>
-    </div>
-    <div class="card card-outline-info">
-      <div class="card-block">
-        <h3 class="card-title">
-          <span class="pull-md-right">
-            <%= link_to "?", root_url %>
-          </span>
-        </h3>
-        <h1><strong><%= day_most_usage(:electricity) %></strong></h1>
-        is when you used the most <strong>electricity</strong> last week
-      </div>
-      <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_elect[0]),
-          class: 'btn btn-primary btn-sm') unless avg_elect.nil?
-        %>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3 offset-md-1">
-    <div class="card card-outline-info">
-      <div class="card-block">
-        <h4 class="card-title">
-          GAS
-          <span class="pull-md-right">
-            <%= link_to "?", root_url %>
-          </span>
-        </h4>
-        <div id="avg_weekday_usage">
-          <% avg_gas = average_weekday_usage(:gas) %>
-          <h1><strong><%= avg_gas[1].to_i unless avg_gas.nil? %></strong> kWh</h1>
-        </div>
-        <p>
-          Average weekday gas usage
-        </p>
-        <div class="small text-muted text-md-center">
-          WEEK ENDING <%= l avg_gas[0] unless avg_gas.nil? %>
+        <div class="col-sm-6">
+          <div class="card card-outline-info">
+            <div class="card-block text-sm-center">
+              Why do you use the most electricity on a
+              <h1>
+                <strong><%= day_most_usage(:electricity) %></strong>
+                <br>?
+              </h1>
+            </div>
+            <div class="card-footer text-sm-center">
+              <%= link_to('Hourly usage',
+                usage_school_path(@school, period: :hourly, to_date: avg_elect[0], anchor: :electricity),
+                class: 'btn btn-primary btn-sm') unless avg_elect.nil?
+              %>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_gas[0]),
-          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
-        %>
+    <% end %>
+    <% if @school.meters?(:gas) %>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card card-outline-info">
+            <div class="card-block">
+              <h4 class="card-title">
+                GAS
+                <span class="pull-sm-right">
+                  <%= link_to "?", root_url %>
+                </span>
+              </h4>
+              <div id="avg_weekday_usage">
+                <% avg_gas = average_weekday_usage(:gas) %>
+                <h1><strong><%= avg_gas[1].to_i unless avg_gas.nil? %></strong> kWh</h1>
+              </div>
+              <p>
+                Average weekday gas usage
+              </p>
+              <div class="small text-muted text-sm-center">
+                WEEK ENDING <%= l avg_gas[0] unless avg_gas.nil? %>
+              </div>
+            </div>
+            <div class="card-footer text-sm-center">
+              <%= link_to('Daily usage',
+                usage_school_path(@school, period: :daily, to_date: avg_gas[0], anchor: :gas),
+                class: 'btn btn-primary btn-sm') unless avg_gas.nil?
+              %>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card card-outline-info">
+            <div class="card-block text-sm-center">
+              Why do you use the most gas on a
+              <h1>
+                <strong><%= day_most_usage(:gas) %></strong>
+                <br>?
+              </h1>
+            </div>
+            <div class="card-footer text-sm-center">
+              <%= link_to('Hourly usage',
+                usage_school_path(@school, period: :hourly, to_date: avg_gas[0], anchor: :gas),
+                class: 'btn btn-primary btn-sm') unless avg_gas.nil?
+              %>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="card card-outline-info">
-      <div class="card-block">
-        <h3 class="card-title">
-          <span class="pull-md-right">
-            <%= link_to "?", root_url %>
-          </span>
-        </h3>
-        <h1><strong><%= day_most_usage(:gas) %></strong></h1>
-        is when you used the most <strong>gas</strong> last week
-      </div>
-      <div class="card-footer text-md-center">
-        <%= link_to('View daily usage',
-          usage_school_path(@school, period: :daily, to_date: avg_gas[0]),
-          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
-        %>
-      </div>
-    </div>
+    <% end %>
   </div>
 </div>
 

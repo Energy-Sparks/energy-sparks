@@ -69,11 +69,8 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/usage
   def usage
-    case params[:period]
-    when 'daily'
-      set_to_date
-      return render 'daily_usage'
-    end
+    set_to_date
+    render "#{params[:period]}_usage"
   end
 
 private
