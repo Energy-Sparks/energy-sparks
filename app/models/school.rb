@@ -23,4 +23,8 @@ class School < ApplicationRecord
   enum school_type: [:primary, :secondary]
   validates_presence_of :name
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
+
+  def meters?(supply = nil)
+    self.meters.where(meter_type: supply).any?
+  end
 end
