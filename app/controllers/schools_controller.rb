@@ -90,6 +90,7 @@ private
       :eco_school_status,
       :website,
       :enrolled,
+      :urn,
       meters_attributes: meter_params
     )
   end
