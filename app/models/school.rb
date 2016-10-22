@@ -27,6 +27,8 @@ class School < ApplicationRecord
   has_many :meter_readings, through: :meters
 
   enum school_type: [:primary, :secondary]
+  enum eco_school_status: [:bronze, :silver, :green]
+
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
