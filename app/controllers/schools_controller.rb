@@ -6,7 +6,8 @@ class SchoolsController < ApplicationController
   # GET /schools
   # GET /schools.json
   def index
-    @schools = School.order(:name)
+    @schools_enrolled = School.where(enrolled: true).order(:name)
+    @schools_not_enrolled = School.where(enrolled: false).order(:name)
   end
 
   # GET /schools/1
@@ -88,6 +89,7 @@ private
       :postcode,
       :eco_school_status,
       :website,
+      :enrolled,
       meters_attributes: meter_params
     )
   end
