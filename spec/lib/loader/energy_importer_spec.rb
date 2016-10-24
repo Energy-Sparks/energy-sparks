@@ -10,7 +10,7 @@ describe 'Loader::EnergyImporter' do
          "SOCRATA_ELECTRICITY_DATASET" => "fqa5-b8ri"
     }
     #not actually a local school but our test data doesn't contain one yet
-    @school = School.create!(name: "Moorland Rd Library")
+    @school = School.create!(urn: 12345, name: "Moorland Rd Library")
     @since_date = DateTime.parse( "2016-07-31T00:00:00" )
     @meter = Meter.create!( school: @school, meter_type: :electricity, meter_no: 123456789)
     @importer = Loader::EnergyImporter.new

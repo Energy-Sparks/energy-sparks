@@ -29,6 +29,8 @@ class School < ApplicationRecord
   enum school_type: [:primary, :secondary]
   enum eco_school_status: [:bronze, :silver, :green]
 
+  scope :enrolled, -> { where(enrolled: true) }
+
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }

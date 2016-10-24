@@ -8,16 +8,16 @@ module Loader
       raise 'File not found' unless File.exist?(csv_file)
       # school, meter_type, date, degree_days, readings...
       CSV.foreach(csv_file, headers: :first_row, return_headers: false) do |row|
-        school = School.find_or_create_by!(name: "School #{row[0]}", school_type: :primary)
-        meter_type = row[1] == 'electric' ? :electricity : :gas
+        school = School.find_or_create_by!(urn: row['urn'], name: "School #{row['school']}", school_type: :primary)
+        meter_type = row['type'] == 'electric' ? :electricity : :gas
 
         # TODO: needs something more realistic
         meter_no = 0
 
         meter = school.meters.find_or_create_by!(meter_type: meter_type, meter_no: meter_no)
 
-        date = row[2]
-        readings = row[4..-1]
+        date = row['date']
+        readings = row[5..-1]
 
         readings.each_with_index do |reading, index|
           # read_at
