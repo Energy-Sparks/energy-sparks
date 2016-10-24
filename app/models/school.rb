@@ -11,7 +11,12 @@
 #  postcode          :string
 #  school_type       :integer
 #  updated_at        :datetime         not null
+#  urn               :integer          not null
 #  website           :string
+#
+# Indexes
+#
+#  index_schools_on_urn  (urn) UNIQUE
 #
 
 class School < ApplicationRecord
@@ -22,7 +27,12 @@ class School < ApplicationRecord
   has_many :meter_readings, through: :meters
 
   enum school_type: [:primary, :secondary]
-  validates_presence_of :name
+  enum eco_school_status: [:bronze, :silver, :green]
+
+  scope :enrolled, -> { where(enrolled: true) }
+
+  validates_presence_of :urn, :name
+  validates_uniqueness_of :urn
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
 
   def meters?(supply = nil)

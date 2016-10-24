@@ -24,7 +24,7 @@ RSpec.describe SchoolsController, type: :controller do
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { name: 'test school' }
+    { urn: 12345, name: 'test school' }
   }
 
   let(:invalid_attributes) {
