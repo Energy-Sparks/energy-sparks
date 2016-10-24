@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  get 'about', to: 'home#about'
+  get 'contact', to: 'home#contact'
+  get 'enrol', to: 'home#enrol'
+  get 'datasets', to: 'home#datasets'
+
   resources :activity_types
   resources :schools do
     resources :activities

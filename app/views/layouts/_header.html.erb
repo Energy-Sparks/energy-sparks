@@ -7,6 +7,15 @@
     <li class="nav-item">
       <%= link_to "Schools", schools_path, class: 'nav-link' %>
     </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
+      <div class="dropdown-menu">
+        <%= link_to "Enrol your school", enrol_path, class: 'dropdown-item' %>
+        <%= link_to "About Energy Sparks", about_path, class: 'dropdown-item' %>
+        <%= link_to "Contact Energy Sparks", contact_path, class: 'dropdown-item' %>
+        <%= link_to "Datasets we use", datasets_path, class: 'dropdown-item' %>
+      </div>
+    </li>
     <% if user_signed_in? && current_user.admin? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage</a>
