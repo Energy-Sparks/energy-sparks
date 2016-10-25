@@ -88,3 +88,6 @@ gem 'chartkick'
 
 # Use groupdate to group usage stats
 gem 'groupdate'
+
+# Use redcarpet to convert markdown
+gem 'redcarpet'
