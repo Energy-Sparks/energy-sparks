@@ -13,16 +13,12 @@
 
   <div class="form-group">
     <%= f.label :happened_on %>
-    <%= f.date_select(
-          :happened_on,
-          { order: [:day, :month, :year],
-            prompt: true,
-            start_year: Date.today.year - 1,
-            end_year: Date.today.year
-          },
-          { class: 'form-control' }
-        )
-     %>
+    <%= text_field_tag(:activity_date_picker,
+      @activity.happened_on.try(:strftime, "%d/%m/%Y"),
+      placeholder: 'select date',
+      class: 'form-control'
+    ) %>
+    <%= f.hidden_field :happened_on %>
   </div>
 
   <div class="form-group">
