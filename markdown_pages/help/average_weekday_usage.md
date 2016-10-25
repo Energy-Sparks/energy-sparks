@@ -1,0 +1,1 @@
+# Average weekday usage
