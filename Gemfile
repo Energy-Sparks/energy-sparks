@@ -91,3 +91,9 @@ gem 'groupdate'
 
 # Use redcarpet to convert markdown
 gem 'redcarpet'
+
+# Use Trix editor for activity descriptions
+gem 'trix'
+
+# Use jquery UI for datepickers
+gem 'jquery-ui-rails'
