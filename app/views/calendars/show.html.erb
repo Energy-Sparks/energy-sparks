@@ -1,0 +1,10 @@
+<p>
+  <strong>Name:</strong>
+  <%= @calendar.name %>
+</p>
+
+
+<div class="other-actions">
+  <%= link_to 'Edit', edit_calendar_path(@calendar), class: 'btn btn-primary' %>
+  <%= link_to 'Back', calendars_path, class: 'btn btn-secondary'  %>
+</div>

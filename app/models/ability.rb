@@ -4,10 +4,11 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
     if user.admin?
-      can :manage, User
-      can :manage, School
-      can :manage, ActivityType
       can :manage, Activity
+      can :manage, ActivityType
+      can :manage, Calendar
+      can :manage, School
+      can :manage, User
     elsif user.school_admin?
       can :index, School
       can :show, School
