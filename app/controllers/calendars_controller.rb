@@ -17,10 +17,12 @@ class CalendarsController < ApplicationController
   # GET /calendars/new
   def new
     @calendar = Calendar.new
+    build_terms
   end
 
   # GET /calendars/1/edit
   def edit
+    build_terms
   end
 
   # POST /calendars
@@ -72,6 +74,18 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def calendar_params
-    params.require(:calendar).permit(:name)
+    params.require(:calendar).permit(:name, terms_attributes: term_params)
+  end
+
+  def term_params
+    [:id, :academic_year, :name, :start_date, :end_date, :_destroy]
+  end
+
+  def build_terms
+    number_to_build = 6 - @calendar.terms.count
+    number_to_build = 1 if number_to_build < 1
+    number_to_build.times do
+      @calendar.terms.build
+    end
   end
 end

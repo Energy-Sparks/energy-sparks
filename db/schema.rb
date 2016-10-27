@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026130009) do
+ActiveRecord::Schema.define(version: 20161026143322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,17 @@ ActiveRecord::Schema.define(version: 20161026130009) do
     t.index ["urn"], name: "index_schools_on_urn", unique: true, using: :btree
   end
 
+  create_table "terms", force: :cascade do |t|
+    t.integer  "calendar_id"
+    t.string   "academic_year"
+    t.string   "name",          null: false
+    t.date     "start_date",    null: false
+    t.date     "end_date",      null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["calendar_id"], name: "index_terms_on_calendar_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.integer  "school_id"
     t.string   "email",                  default: "", null: false
@@ -106,5 +117,6 @@ ActiveRecord::Schema.define(version: 20161026130009) do
   add_foreign_key "activities", "schools"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end

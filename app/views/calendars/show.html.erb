@@ -3,6 +3,27 @@
   <%= @calendar.name %>
 </p>
 
+<h4>Terms</h4>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Academic Year</th>
+      <th>Name</th>
+      <th>Start</th>
+      <th>End</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @calendar.terms.each do |term| %>
+      <tr>
+        <td><%= term.academic_year %></td>
+        <td><%= term.name %></td>
+        <td><%= l term.start_date %></td>
+        <td><%= l term.end_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <div class="other-actions">
   <%= link_to 'Edit', edit_calendar_path(@calendar), class: 'btn btn-primary' %>
