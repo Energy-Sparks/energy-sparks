@@ -9,16 +9,15 @@ module ApplicationHelper
       file_name = file.nil? ? 'default.md' : file + '.md'
       full_path = folder_dir.join file_name
       return "Sorry, we couldn't find that page. [File not found]" unless File.exist? full_path
-      render_markdown(full_path)
+      render_markdown File.read(full_path)
     else
       "Sorry, we couldn't find that page. [Folder not found]"
     end
   end
 
-  def render_markdown(path)
-    contents = File.read(path)
+  def render_markdown(content)
     renderer = Redcarpet::Render::HTML.new
     markdown = Redcarpet::Markdown.new(renderer, autolink: true)
-    markdown.render(contents).html_safe
+    markdown.render(content).html_safe
   end
 end
