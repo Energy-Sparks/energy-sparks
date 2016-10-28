@@ -25,12 +25,12 @@ class Calendar < ApplicationRecord
     new_calendar = Calendar.create(name: name)
     return new_calendar unless default && default.terms
     default.terms.each do |term|
-      new_calendar.terms.create({
+      new_calendar.terms.create(
         academic_year: term[:academic_year],
         name: term[:name],
         start_date: term[:start_date],
         end_date: term[:end_date]
-      })
+      )
     end
     new_calendar
   end
