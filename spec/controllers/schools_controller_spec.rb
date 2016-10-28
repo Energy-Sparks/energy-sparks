@@ -98,11 +98,14 @@ RSpec.describe SchoolsController, type: :controller do
             post :create, params: {school: valid_attributes}
           }.to change(School, :count).by(1)
         end
-
         it "assigns a newly created school as @school" do
           post :create, params: {school: valid_attributes}
           expect(assigns(:school)).to be_a(School)
           expect(assigns(:school)).to be_persisted
+        end
+        it "creates a calendar for the new School" do
+          post :create, params: {school: valid_attributes}
+          expect(assigns(:school).calendar).not_to be_nil
         end
 
         it "redirects to the created school" do

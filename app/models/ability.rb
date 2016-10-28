@@ -10,13 +10,14 @@ class Ability
       can :manage, School
       can :manage, User
     elsif user.school_admin?
-      can :index, School
-      can :show, School
       can :manage, Activity, school_id: user.school_id
-    elsif user.guest?
+      can :manage, Calendar, id: user.school.calendar_id
       can :index, School
       can :show, School
+    elsif user.guest?
       can :show, Activity
+      can :index, School
+      can :show, School
     end
     #
     # The first argument to `can` is the action you are giving the user
