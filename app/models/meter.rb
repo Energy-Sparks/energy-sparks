@@ -26,7 +26,7 @@ class Meter < ApplicationRecord
   has_many :meter_readings, inverse_of: :meter, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
-  validates_presence_of :school_id, :meter_no, :meter_type
+  validates_presence_of :school, :meter_no, :meter_type
 
   def latest_reading
     meter_readings.order('read_at DESC').limit(1).first
