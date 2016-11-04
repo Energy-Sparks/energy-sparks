@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026143322) do
+ActiveRecord::Schema.define(version: 20161028062344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,8 @@ ActiveRecord::Schema.define(version: 20161026143322) do
     t.datetime "updated_at",                        null: false
     t.boolean  "enrolled",          default: false
     t.integer  "urn",                               null: false
+    t.integer  "calendar_id"
+    t.index ["calendar_id"], name: "index_schools_on_calendar_id", using: :btree
     t.index ["urn"], name: "index_schools_on_urn", unique: true, using: :btree
   end
 
@@ -117,6 +119,7 @@ ActiveRecord::Schema.define(version: 20161026143322) do
   add_foreign_key "activities", "schools"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "schools", "calendars"
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end

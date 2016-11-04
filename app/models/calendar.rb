@@ -20,6 +20,21 @@ class Calendar < ApplicationRecord
     allow_destroy: true
   )
 
+  def self.create_calendar_from_default(name)
+    default = Calendar.joins('LEFT JOIN schools ON schools.calendar_id=calendars.id').first
+    new_calendar = Calendar.create(name: name)
+    return new_calendar unless default && default.terms
+    default.terms.each do |term|
+      new_calendar.terms.create(
+        academic_year: term[:academic_year],
+        name: term[:name],
+        start_date: term[:start_date],
+        end_date: term[:end_date]
+      )
+    end
+    new_calendar
+  end
+
 private
 
   def term_attributes_blank?(attributes)

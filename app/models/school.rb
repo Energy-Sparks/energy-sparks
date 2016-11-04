@@ -3,6 +3,7 @@
 # Table name: schools
 #
 #  address           :text
+#  calendar_id       :integer
 #  created_at        :datetime         not null
 #  eco_school_status :integer
 #  enrolled          :boolean          default(FALSE)
@@ -16,7 +17,12 @@
 #
 # Indexes
 #
-#  index_schools_on_urn  (urn) UNIQUE
+#  index_schools_on_calendar_id  (calendar_id)
+#  index_schools_on_urn          (urn) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_379253fa8b  (calendar_id => calendars.id)
 #
 
 class School < ApplicationRecord
@@ -25,6 +31,7 @@ class School < ApplicationRecord
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
+  belongs_to :calendar
 
   enum school_type: [:primary, :secondary]
   enum eco_school_status: [:bronze, :silver, :green]
