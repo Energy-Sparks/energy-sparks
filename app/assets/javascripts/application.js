@@ -1,7 +1,8 @@
 //= require jquery
-//= require bootstrap
 //= require jquery_ujs
 //= require jquery-ui
+//= require tether.min.js
+//= require bootstrap
 //= require turbolinks
 //= require chartkick
 //= require trix
