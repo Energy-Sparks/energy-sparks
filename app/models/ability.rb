@@ -14,10 +14,12 @@ class Ability
       can :manage, Calendar, id: user.school.calendar_id
       can :index, School
       can :show, School
+      can :usage, School
     elsif user.guest?
       can :show, Activity
       can :index, School
       can :show, School
+      can :usage, School
     end
     #
     # The first argument to `can` is the action you are giving the user
