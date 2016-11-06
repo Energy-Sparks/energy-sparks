@@ -49,30 +49,39 @@ RSpec.describe SchoolsController, type: :controller do
     end
 
     describe "GET #show" do
-      it "assigns the requested school as @school" do
-        school = FactoryGirl.create :school
-        get :show, params: {id: school.to_param}
-        expect(assigns(:school)).to eq(school)
+      context "the school is not enrolled" do
+        it "redirects to the enrol page" do
+          school = FactoryGirl.create :school, enrolled: false
+          get :show, params: {id: school.to_param}
+          expect(response).to redirect_to(enrol_path)
+        end
       end
-      it "assigns the school's meters as @meters" do
-        school = FactoryGirl.create :school
-        meter = FactoryGirl.create :meter, school_id: school.id
-        get :show, params: {id: school.to_param}
-        expect(assigns(:meters)).to include(meter)
-      end
-      it "assigns the latest activities as @activities" do
-        school = FactoryGirl.create :school
-        activity = FactoryGirl.create :activity, school_id: school.id
-        get :show, params: {id: school.to_param}
-        expect(assigns(:activities)).to include(activity)
-      end
-      it "does not include activities from other schools" do
-        school = FactoryGirl.create :school
-        other_school = FactoryGirl.create :school
-        activity = FactoryGirl.create :activity, school_id: school.id
-        activity_other_school = FactoryGirl.create :activity, school_id: other_school.id
-        get :show, params: {id: school.to_param}
-        expect(assigns(:activities)).not_to include activity_other_school
+      context "the school is enrolled" do
+        it "assigns the requested school as @school" do
+          school = FactoryGirl.create :school
+          get :show, params: {id: school.to_param}
+          expect(assigns(:school)).to eq(school)
+        end
+        it "assigns the school's meters as @meters" do
+          school = FactoryGirl.create :school
+          meter = FactoryGirl.create :meter, school_id: school.id
+          get :show, params: {id: school.to_param}
+          expect(assigns(:meters)).to include(meter)
+        end
+        it "assigns the latest activities as @activities" do
+          school = FactoryGirl.create :school
+          activity = FactoryGirl.create :activity, school_id: school.id
+          get :show, params: {id: school.to_param}
+          expect(assigns(:activities)).to include(activity)
+        end
+        it "does not include activities from other schools" do
+          school = FactoryGirl.create :school
+          other_school = FactoryGirl.create :school
+          activity = FactoryGirl.create :activity, school_id: school.id
+          activity_other_school = FactoryGirl.create :activity, school_id: other_school.id
+          get :show, params: {id: school.to_param}
+          expect(assigns(:activities)).not_to include activity_other_school
+        end
       end
     end
 
