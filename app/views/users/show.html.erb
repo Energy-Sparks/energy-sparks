@@ -1,0 +1,19 @@
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @user.role.titleize %>
+</p>
+
+<p>
+  <strong>School:</strong>
+  <%= @user.school.try(:name) %>
+</p>
+
+<div class="other-actions">
+  <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-primary' %>
+  <%= link_to 'Back', users_path, class: 'btn btn-secondary'  %>
+</div>

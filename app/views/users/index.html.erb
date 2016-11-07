@@ -15,14 +15,19 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.id %></td>
-        <td><%= user.email %></td>
-        <td><%= user.role %></td>
-        <td><%= user.school.try(:name) %></td>
-        <td><%= user.sign_in_count %></td>
-        <td><%= user.access_locked? ? 'Y' : '' %></td>
-        <td></td>
+          <td><%= user.id %></td>
+          <td><%= user.email %></td>
+          <td><%= user.role.titleize %></td>
+          <td><%= user.school.try(:name) %></td>
+          <td><%= user.sign_in_count %></td>
+          <td><%= user.access_locked? ? 'Y' : '' %></td>
+          <td>
+            <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= link_to 'New User', new_user_path, class: 'btn btn-primary' %>
