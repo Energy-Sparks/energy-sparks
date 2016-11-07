@@ -97,3 +97,6 @@ gem 'trix'
 
 # Use jquery UI for datepickers
 gem 'jquery-ui-rails'
+
+# Reputation/achievements/rankings
+gem 'merit'
