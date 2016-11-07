@@ -4,5 +4,6 @@ FactoryGirl.define do
     name 'test school'
     school_type :primary
     enrolled true
+    sash
   end
 end
