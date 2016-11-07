@@ -1,0 +1,21 @@
+<h1>Leaderboard</h1>
+
+<table class='table table-condensed'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Points</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @schools.each_with_index do |school, i| %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= school.sum_points %></td>
+        <td><%= i+1 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
