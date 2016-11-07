@@ -15,9 +15,14 @@ class Ability
       can :index, School
       can :show, School
       can :usage, School
+      can :achievements, School
+      can :leaderboard, School
+      can :manage, Activity, school_id: user.school_id
     elsif user.guest?
       can :show, Activity
       can :index, School
+      can :achievements, School
+      can :leaderboard, School
       can :show, School
       can :usage, School
     end
