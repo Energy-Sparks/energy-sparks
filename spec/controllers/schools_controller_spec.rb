@@ -83,6 +83,51 @@ RSpec.describe SchoolsController, type: :controller do
           expect(assigns(:activities)).not_to include activity_other_school
         end
       end
+      it "assigns the school's achievements as @badges" do
+        school = FactoryGirl.create :school
+        badge = FactoryGirl.create :badge
+        badges_sash = FactoryGirl.create :badges_sash, sash_id: school.sash_id, badge_id: badge.id
+
+        get :show, params: {id: school.to_param}
+        expect(assigns(:badges)).to include(badge)
+      end
+      it "doesn't include other schools badges" do
+        school = FactoryGirl.create :school
+        badge = FactoryGirl.create :badge
+        badges_sash = FactoryGirl.create :badges_sash, sash_id: school.sash_id, badge_id: badge.id
+
+        other_school = FactoryGirl.create :school
+        other_badge = FactoryGirl.create :badge
+        other_badges_sash = FactoryGirl.create :badges_sash, sash_id: other_school.sash_id, badge_id: other_badge.id
+
+        get :show, params: {id: school.to_param}
+        expect(assigns(:badges)).not_to include(other_badge)
+      end
+    end
+
+    describe "GET #achievements" do
+      it 'assigns achievements as @achievements' do
+        school = FactoryGirl.create :school
+        badge = FactoryGirl.create :badge
+        badges_sash = FactoryGirl.create :badges_sash, sash_id: school.sash_id, badge_id: badge.id
+
+        get :achievements, params: {id: school.to_param}
+        expect(assigns(:badges)).to include(badge)
+      end
+    end
+
+    describe 'GET #leaderboard' do
+      it 'assigns schools as @schools in points order' do
+        school_array = (1..3).collect do |_|
+          school = FactoryGirl.create :school
+          score = FactoryGirl.create :score, sash_id: school.sash_id
+          FactoryGirl.create :score_point, score_id: score.id
+          school
+        end
+
+        get :leaderboard
+        expect(School.top_scored).to match_array(school_array)
+      end
     end
 
     describe "GET #new" do
