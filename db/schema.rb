@@ -36,11 +36,54 @@ ActiveRecord::Schema.define(version: 20161028062344) do
     t.index ["active"], name: "index_activity_types_on_active", using: :btree
   end
 
+  create_table "badges_sashes", force: :cascade do |t|
+    t.integer  "badge_id"
+    t.integer  "sash_id"
+    t.boolean  "notified_user", default: false
+    t.datetime "created_at"
+    t.index ["badge_id", "sash_id"], name: "index_badges_sashes_on_badge_id_and_sash_id", using: :btree
+    t.index ["badge_id"], name: "index_badges_sashes_on_badge_id", using: :btree
+    t.index ["sash_id"], name: "index_badges_sashes_on_sash_id", using: :btree
+  end
+
   create_table "calendars", force: :cascade do |t|
     t.string   "name",                       null: false
     t.boolean  "deleted",    default: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+  end
+
+  create_table "merit_actions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "action_method"
+    t.integer  "action_value"
+    t.boolean  "had_errors",    default: false
+    t.string   "target_model"
+    t.integer  "target_id"
+    t.text     "target_data"
+    t.boolean  "processed",     default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "merit_activity_logs", force: :cascade do |t|
+    t.integer  "action_id"
+    t.string   "related_change_type"
+    t.integer  "related_change_id"
+    t.string   "description"
+    t.datetime "created_at"
+  end
+
+  create_table "merit_score_points", force: :cascade do |t|
+    t.integer  "score_id"
+    t.integer  "num_points", default: 0
+    t.string   "log"
+    t.datetime "created_at"
+  end
+
+  create_table "merit_scores", force: :cascade do |t|
+    t.integer "sash_id"
+    t.string  "category", default: "default"
   end
 
   create_table "meter_readings", force: :cascade do |t|
@@ -66,6 +109,11 @@ ActiveRecord::Schema.define(version: 20161028062344) do
     t.index ["school_id"], name: "index_meters_on_school_id", using: :btree
   end
 
+  create_table "sashes", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "schools", force: :cascade do |t|
     t.string   "name"
     t.integer  "school_type"
@@ -75,6 +123,8 @@ ActiveRecord::Schema.define(version: 20161028062344) do
     t.string   "website"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.integer  "sash_id"
+    t.integer  "level",             default: 0
     t.boolean  "enrolled",          default: false
     t.integer  "urn",                               null: false
     t.integer  "calendar_id"
