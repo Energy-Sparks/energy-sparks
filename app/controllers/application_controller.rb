@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
-  private
+private
 
   def set_ga_code
     @analytics_code = ENV['GOOGLE_ANALYTICS_CODE']
