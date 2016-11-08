@@ -50,10 +50,13 @@ RSpec.describe SchoolsController, type: :controller do
 
     describe "GET #show" do
       context "the school is not enrolled" do
-        it "redirects to the enrol page" do
-          school = FactoryGirl.create :school, enrolled: false
-          get :show, params: {id: school.to_param}
-          expect(response).to redirect_to(enrol_path)
+        context "user cannot manage school" do
+          it "redirects to the enrol page" do
+            sign_in_user(:guest)
+            school = FactoryGirl.create :school, enrolled: false
+            get :show, params: {id: school.to_param}
+            expect(response).to redirect_to(enrol_path)
+          end
         end
       end
       context "the school is enrolled" do

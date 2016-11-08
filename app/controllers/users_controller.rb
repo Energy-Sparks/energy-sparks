@@ -68,6 +68,6 @@ private
   end
 
   def set_schools_options
-    @schools = School.enrolled.order(:name)
+    @schools = School.order(:name)
   end
 end
