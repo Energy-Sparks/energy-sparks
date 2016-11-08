@@ -5,7 +5,6 @@ $(document).on 'turbolinks:load', ->
   $(".term_datepicker").datepicker
     dateFormat: 'dd/mm/yy'
     altFormat: 'yy-mm-dd'
-    maxDate: 0
     orientation: 'bottom'
   # set altField from data attribute
   $(".term_datepicker").each ->
