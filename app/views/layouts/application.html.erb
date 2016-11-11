@@ -7,6 +7,7 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag "https://www.google.com/jsapi" %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script>GoogleAnalytics.load_script(<%= @analytics_code %>);</script>
   </head>
 
   <body>
@@ -17,5 +18,6 @@
       <% end %>
       <%= yield %>
     </div>
+    <%= content_for :google_analytics %>
   </body>
 </html>
