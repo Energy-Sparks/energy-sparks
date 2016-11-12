@@ -3,6 +3,8 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index
+    @schools_enrolled = School.where(enrolled: true).count
+    @schools_eligible = School.count
   end
 
   def about

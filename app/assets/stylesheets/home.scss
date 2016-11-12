@@ -43,9 +43,12 @@ section h2 {
   margin: 0;
   font-size: 3em;
 }
-section.success {
+section.green {
   background: #18BC9C;
   color: white;
+}
+section.green a {
+  color: #fff;
 }
 @media (max-width: 767px) {
   section {

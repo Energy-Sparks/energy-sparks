@@ -17,7 +17,7 @@ Home
   </div>
 </header>
 
-<section class="">
+<section id="participating">
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-xs-center">
@@ -25,11 +25,18 @@ Home
         <hr class="bulb-primary">
       </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12 text-xs-center">
+        <h3><%= link_to "#{@schools_enrolled} schools", schools_path %> currently enrolled</h3>
+        <p>Energy Sparks is freely available for all schools in Bath & North East Somerset.</p>
+        <p>Find out more about <%= link_to "how to enroll", enrol_path %></p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- About Section -->
-<section class="success" id="about">
+<section class="green" id="get-involved">
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-xs-center">
@@ -42,20 +49,26 @@ Home
         <p>
           Energy Sparks helps make school energy usage data more accessible to everyone.
         <p>
-        <p>See your gas and electricity usage using simple easy to read charts, share them with parents and children, and work towards your
-          green flag status
+        <p>
+          See your gas and electricity usage using simple easy to read charts, share them with parents and children, and work towards
+          achieving Eco-School status
         </p>
       </div>
       <div class="col-lg-4">
-        <p>Energy Sparks is freely available for all schools in Bath & North East Somerset.</p>
-        <p>Contact us to learn how you can get involved</p>
+        <p>
+          Energy Sparks has been developed by the local community to support our schools
+        </p>
+        <p>
+          <%= link_to "Contact us", contact_path %> to learn how you can get involved and help support your local school or
+          contribute towards developing the application.
+        </p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Sponsors -->
-<section class="">
+<section id="sponsors">
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-xs-center">
@@ -64,13 +77,14 @@ Home
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-lg-12 text-xs-center">
+        <p>
+          Energy Sparks is sponsored by the Open Data Institute and Bath & North East Somerset Council
+        <p>
+        <p>
+          The application has been developed through a partnership between Bath: Hacked, Transition Bath and Resource Futures.
+        </p>
       </div>
-      <div class="col-sm-4">
-      </div>
-      <div class="col-sm-4">
-      </div>
-
     </div>
   </div>
 </section>
