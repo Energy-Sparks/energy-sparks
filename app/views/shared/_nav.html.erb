@@ -1,0 +1,37 @@
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-static-top">
+  <div class="container">
+    <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
+    <ul class="nav navbar-nav pull-xs-right">
+      <li class="nav-item">
+        <%= link_to "Schools", schools_path, class: 'nav-link' %>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+        <div class="dropdown-menu" aria-labelledby="aboutDropDown">
+          <%= link_to "Enrol your school", enrol_path, class: 'dropdown-item' %>
+          <%= link_to "About Energy Sparks", about_path, class: 'dropdown-item' %>
+          <%= link_to "Contact Energy Sparks", contact_path, class: 'dropdown-item' %>
+          <%= link_to "Datasets we use", datasets_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+      <% if user_signed_in? && current_user.admin? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage</a>
+            <div class="dropdown-menu">
+              <%= link_to "Activity Types", activity_types_path, class: 'dropdown-item' %>
+              <%= link_to "Calendars", calendars_path, class: 'dropdown-item' %>
+              <%= link_to "Users", users_path, class: 'dropdown-item' %>
+            </div>
+          </li>
+      <% end %>
+      <li class="nav-item">
+      <% if user_signed_in? %>
+          <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
+      <% else %>
+          <%= link_to "Sign In", new_user_session_path, class: 'nav-link'%>
+      <% end %>
+      </li>
+    </ul>
+  </div>
+</nav>
