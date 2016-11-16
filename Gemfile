@@ -43,7 +43,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'govuk-lint' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
-
+gem 'friendly_id', git: 'https://github.com/norman/friendly_id' # Pretties up URLs
 
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
