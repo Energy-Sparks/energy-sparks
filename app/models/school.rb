@@ -11,6 +11,7 @@
 #  name              :string
 #  postcode          :string
 #  school_type       :integer
+#  slug              :string
 #  updated_at        :datetime         not null
 #  urn               :integer          not null
 #  website           :string
@@ -41,6 +42,27 @@ class School < ApplicationRecord
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
+
+  extend FriendlyId
+  friendly_id :slug_candidates, use: [:finders, :slugged, :history]
+
+  def should_generate_new_friendly_id?
+    slug.blank? || name_changed? || postcode_changed?
+  end
+
+  # Prevent the generated urls from becoming too long
+  def normalize_friendly_id(string)
+    super[0..59]
+  end
+
+  # Try building a slug based on the following fields in increasing order of specificity.
+  def slug_candidates
+    [
+      :name,
+      [:postcode, :name],
+      [:urn, :name]
+    ]
+  end
 
   def meters?(supply = nil)
     self.meters.where(meter_type: supply).any?
