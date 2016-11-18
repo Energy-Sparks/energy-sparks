@@ -9,7 +9,7 @@ module Loader
       CSV.foreach(csv_file, headers: true) do |row|
         # create new school unless school with this URN exists
         unless School.find_by(urn: row['URN'])
-          school = School.create(
+          School.create(
             urn: row['URN'],
             name: row['Name'],
             school_type: row['Type'].try(:to_sym),

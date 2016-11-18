@@ -19,7 +19,6 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe SchoolsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
@@ -62,27 +61,27 @@ RSpec.describe SchoolsController, type: :controller do
       context "the school is enrolled" do
         it "assigns the requested school as @school" do
           school = FactoryGirl.create :school
-          get :show, params: {id: school.to_param}
+          get :show, params: { id: school.to_param }
           expect(assigns(:school)).to eq(school)
         end
         it "assigns the school's meters as @meters" do
           school = FactoryGirl.create :school
           meter = FactoryGirl.create :meter, school_id: school.id
-          get :show, params: {id: school.to_param}
+          get :show, params: { id: school.to_param }
           expect(assigns(:meters)).to include(meter)
         end
         it "assigns the latest activities as @activities" do
           school = FactoryGirl.create :school
           activity = FactoryGirl.create :activity, school_id: school.id
-          get :show, params: {id: school.to_param}
+          get :show, params: { id: school.to_param }
           expect(assigns(:activities)).to include(activity)
         end
         it "does not include activities from other schools" do
           school = FactoryGirl.create :school
           other_school = FactoryGirl.create :school
-          activity = FactoryGirl.create :activity, school_id: school.id
+          FactoryGirl.create :activity, school_id: school.id
           activity_other_school = FactoryGirl.create :activity, school_id: other_school.id
-          get :show, params: {id: school.to_param}
+          get :show, params: { id: school.to_param }
           expect(assigns(:activities)).not_to include activity_other_school
         end
       end
@@ -98,7 +97,7 @@ RSpec.describe SchoolsController, type: :controller do
     describe "GET #edit" do
       it "assigns the requested school as @school" do
         school = FactoryGirl.create :school
-        get :edit, params: {id: school.to_param}
+        get :edit, params: { id: school.to_param }
         expect(assigns(:school)).to eq(school)
       end
     end
@@ -107,33 +106,33 @@ RSpec.describe SchoolsController, type: :controller do
       context "with valid params" do
         it "creates a new School" do
           expect {
-            post :create, params: {school: valid_attributes}
+            post :create, params: { school: valid_attributes }
           }.to change(School, :count).by(1)
         end
         it "assigns a newly created school as @school" do
-          post :create, params: {school: valid_attributes}
+          post :create, params: { school: valid_attributes }
           expect(assigns(:school)).to be_a(School)
           expect(assigns(:school)).to be_persisted
         end
         it "creates a calendar for the new School" do
-          post :create, params: {school: valid_attributes}
+          post :create, params: { school: valid_attributes }
           expect(assigns(:school).calendar).not_to be_nil
         end
 
         it "redirects to the created school" do
-          post :create, params: {school: valid_attributes}
+          post :create, params: { school: valid_attributes }
           expect(response).to redirect_to(School.last)
         end
       end
 
       context "with invalid params" do
         it "assigns a newly created but unsaved school as @school" do
-          post :create, params: {school: invalid_attributes}
+          post :create, params: { school: invalid_attributes }
           expect(assigns(:school)).to be_a_new(School)
         end
 
         it "re-renders the 'new' template" do
-          post :create, params: {school: invalid_attributes}
+          post :create, params: { school: invalid_attributes }
           expect(response).to render_template("new")
         end
       end
@@ -142,25 +141,25 @@ RSpec.describe SchoolsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          { name: 'new name'}
+          { name: 'new name' }
         }
 
         it "updates the requested school" do
           school = FactoryGirl.create :school
-          put :update, params: {id: school.to_param, school: new_attributes}
+          put :update, params: { id: school.to_param, school: new_attributes }
           school.reload
           expect(school.name).to eq new_attributes[:name]
         end
 
         it "assigns the requested school as @school" do
           school = FactoryGirl.create :school
-          put :update, params: {id: school.to_param, school: valid_attributes}
+          put :update, params: { id: school.to_param, school: valid_attributes }
           expect(assigns(:school)).to eq(school)
         end
 
         it "redirects to the school" do
           school = FactoryGirl.create :school
-          put :update, params: {id: school.to_param, school: valid_attributes}
+          put :update, params: { id: school.to_param, school: valid_attributes }
           expect(response).to redirect_to(school)
         end
       end
@@ -168,13 +167,13 @@ RSpec.describe SchoolsController, type: :controller do
       context "with invalid params" do
         it "assigns the school as @school" do
           school = FactoryGirl.create :school
-          put :update, params: {id: school.to_param, school: invalid_attributes}
+          put :update, params: { id: school.to_param, school: invalid_attributes }
           expect(assigns(:school)).to eq(school)
         end
 
         it "re-renders the 'edit' template" do
           school = FactoryGirl.create :school
-          put :update, params: {id: school.to_param, school: invalid_attributes}
+          put :update, params: { id: school.to_param, school: invalid_attributes }
           expect(response).to render_template("edit")
         end
       end
@@ -184,13 +183,13 @@ RSpec.describe SchoolsController, type: :controller do
       it "destroys the requested school" do
         school = FactoryGirl.create :school
         expect {
-          delete :destroy, params: {id: school.to_param}
+          delete :destroy, params: { id: school.to_param }
         }.to change(School, :count).by(-1)
       end
 
       it "redirects to the schools list" do
         school = FactoryGirl.create :school
-        delete :destroy, params: {id: school.to_param}
+        delete :destroy, params: { id: school.to_param }
         expect(response).to redirect_to(schools_url)
       end
     end
@@ -199,33 +198,33 @@ RSpec.describe SchoolsController, type: :controller do
       let!(:school) { FactoryGirl.create :school }
       let(:period) { :daily }
       it "assigns the requested school as @school" do
-        get :usage, params: {id: school.to_param, period: period }
+        get :usage, params: { id: school.to_param, period: period }
         expect(assigns(:school)).to eq(school)
       end
       context "to_date is specified" do
         let(:to_date) { Date.current - 1.days }
         it "assigns to_date to @to_date" do
-          get :usage, params: {id: school.to_param, period: period, to_date: to_date }
+          get :usage, params: { id: school.to_param, period: period, to_date: to_date }
           expect(assigns(:to_date)).to eq to_date
         end
       end
       context "to_date is not specified" do
         it "assigns yesterday's date to  @to_date" do
-          get :usage, params: {id: school.to_param, period: period}
+          get :usage, params: { id: school.to_param, period: period }
           expect(assigns(:to_date)).to eq Date.current - 1.days
         end
       end
       context "period is 'daily'" do
         let(:period) { :daily }
         it "renders the daily_usage template" do
-          get :usage, params: {id: school.to_param, period: period }
+          get :usage, params: { id: school.to_param, period: period }
           expect(response).to render_template('daily_usage')
         end
       end
       context "period is 'hourly'" do
         let(:period) { :hourly }
         it "renders the hourly_usage template" do
-          get :usage, params: {id: school.to_param, period: period }
+          get :usage, params: { id: school.to_param, period: period }
           expect(response).to render_template('hourly_usage')
         end
       end

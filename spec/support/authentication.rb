@@ -1,4 +1,4 @@
-def sign_in_user(role=:guest, school_id=nil)
+def sign_in_user(role = :guest, school_id = nil)
   @request.env["devise.mapping"] = Devise.mappings[:user]
   user = FactoryGirl.create(:user, role: role, school_id: school_id)
   sign_in user
