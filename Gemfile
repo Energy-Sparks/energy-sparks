@@ -1,25 +1,54 @@
 source 'https://rubygems.org'
 
+# Rails/Core
+gem 'rails', '~> 5.0.0', '>= 5.0.0.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'puma', '~> 3.0' # Use Puma as the app server
+gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
-# Use Puma as the app server
-gem 'puma', '~> 3.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
+
+# Database/Data
+gem 'pg' # Use postgresql as the database for Active Record
+gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
+
+
+# Assets
+gem 'jquery-rails' # Use jquery as the JavaScript library
+gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
+gem 'sass-rails', '~> 5.0' # Use SCSS for stylesheets
+gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
+
+
+# Frontend
+gem 'bootstrap', '~> 4.0.0.alpha3' # Use bootstrap for responsive layout
+gem 'chartkick' # Use chartkick for usage graphs
+gem 'redcarpet' # Use redcarpet to convert markdown
+gem "font-awesome-rails" # Fonts
+
+
+# User input
+gem 'trix' # Use Trix editor for activity descriptions
+gem 'jquery-ui-rails' # Use jquery UI for datepickers
+
+
+# Auth & Users
+gem 'devise' # Use devise for authentication
+gem 'cancancan' # Use cancancan for authorization
+
+
+# Utils
+gem 'groupdate' # Use groupdate to group usage stats
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'govuk-lint' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
+gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
+gem 'friendly_id', git: 'https://github.com/norman/friendly_id' # Pretties up URLs
+
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -28,19 +57,11 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use postgresql as the database for Active Record
-gem 'pg'
-
-gem 'soda-ruby', :require => 'soda'
-gem 'dotenv-rails'
-gem 'whenever', :require => false
-gem "font-awesome-rails"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  # use bullet to optimise queries
-  gem "bullet"
+  gem "bullet" # use bullet to optimise queries
   gem 'rspec-rails', '~> 3.5'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
@@ -67,34 +88,3 @@ group :test do
   gem 'database_cleaner'
   gem 'pickle'
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-# Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide
-# https://github.com/alphagov/govuk-lint
-gem 'govuk-lint'
-
-# Use devise for authentication
-gem 'devise'
-
-# Use cancancan for authorization
-gem 'cancancan'
-
-# Use bootstrap for responsive layout
-gem 'bootstrap', '~> 4.0.0.alpha3'
-
-# Use chartkick for usage graphs
-gem 'chartkick'
-
-# Use groupdate to group usage stats
-gem 'groupdate'
-
-# Use redcarpet to convert markdown
-gem 'redcarpet'
-
-# Use Trix editor for activity descriptions
-gem 'trix'
-
-# Use jquery UI for datepickers
-gem 'jquery-ui-rails'
