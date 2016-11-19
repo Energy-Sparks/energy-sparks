@@ -89,6 +89,7 @@ RSpec.describe SchoolsController, type: :controller do
 
           get :show, params: { id: school.to_param }
           expect(assigns(:badges)).to include(school.badges.first)
+          expect(assigns(:badges)).not_to include(school.badges.last)
         end
         it "doesn't include other schools badges" do
           school_one, school_two = create_pair :school, :with_badges, badges_sashes: 2
@@ -96,6 +97,15 @@ RSpec.describe SchoolsController, type: :controller do
           get :show, params: { id: school_one.to_param }
           expect(assigns(:badges)).not_to include(school_two.badges.first)
         end
+      end
+    end
+
+    describe "GET #achievements" do
+      it 'assigns achievements as @achievements' do
+        school = create :school, :with_badges
+
+        get :achievements, params: { id: school.to_param }
+        expect(assigns(:badges)).to include(school.badges.first)
       end
     end
 
