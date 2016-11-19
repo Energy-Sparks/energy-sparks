@@ -73,6 +73,12 @@ class School < ApplicationRecord
     self.meters.where(meter_type: supply).any?
   end
 
+  def badges_by_date(order: :desc, limit: nil)
+    sash.badges_sashes.order(created_at: order)
+      .limit(limit)
+      .map(&:badge)
+  end
+
 private
 
   # Create Merit::Sash relation

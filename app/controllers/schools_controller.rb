@@ -16,6 +16,7 @@ class SchoolsController < ApplicationController
     redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order(:happened_on).includes(:activity_type)
     @meters = @school.meters.order(:meter_no)
+    @badges = @school.badges_by_date(limit: 6)
   end
 
   # GET /schools/new

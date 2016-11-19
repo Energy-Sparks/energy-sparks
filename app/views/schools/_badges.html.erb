@@ -1,0 +1,18 @@
+<div>
+  <h4>Achievements</h3>
+  <% if @badges.empty? %>
+    <p>No achievements have been awarded yet</p>
+  <% else %>
+    <% @badges.in_groups_of(3).each do |group| %>
+      <div class='row'>
+        <% group.each do |badge| %>
+          <div class='col-xs-3'>
+            <% if badge %>
+              <%= image_tag(badge.image) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
