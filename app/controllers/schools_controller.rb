@@ -24,6 +24,11 @@ class SchoolsController < ApplicationController
     @badges = @school.badges_by_date(order: :asc)
   end
 
+  # GET /schools/leaderboard
+  def leaderboard
+    @schools = School.top_scored
+  end
+
   # GET /schools/new
   def new
     @school = School.new

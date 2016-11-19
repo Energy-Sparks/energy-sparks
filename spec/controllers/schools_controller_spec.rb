@@ -109,6 +109,15 @@ RSpec.describe SchoolsController, type: :controller do
       end
     end
 
+    describe 'GET #leaderboard' do
+      it 'assigns schools as @schools in points order' do
+        schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
+
+        get :leaderboard
+        expect(School.top_scored.map(&:id)).to eq(schools.map(&:id))
+      end
+    end
+
     describe "GET #new" do
       it "assigns a new school as @school" do
         get :new, params: {}

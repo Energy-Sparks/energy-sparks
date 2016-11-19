@@ -33,4 +33,11 @@ describe School do
       )
     end
   end
+  describe '.top_scored' do
+    it 'returns an array of schools ordered by points' do
+      schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
+
+      expect(School.top_scored.map(&:id)).to eq(schools.map(&:id))
+    end
+  end
 end
