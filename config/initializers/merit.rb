@@ -26,8 +26,8 @@ end
 [
   {
     id: 1,
-    name: 'registered',
-    description: 'You registered with EnergySparks.',
+    name: 'enrolled',
+    description: 'You enrolled with EnergySparks.',
     custom_fields: {}
   }, {
     id: 2,
