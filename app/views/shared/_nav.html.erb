@@ -3,8 +3,12 @@
   <div class="container">
     <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
     <ul class="nav navbar-nav pull-xs-right">
-      <li class="nav-item">
-        <%= link_to "Schools", schools_path, class: 'nav-link' %>
+      <li class='nav-item dropdown'>
+        <a class='nav-link dropdown-toggle' data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false'>Schools</a>
+        <div class='dropdown-menu'>
+          <%= link_to 'Schools', schools_path, class: 'dropdown-item' %>
+          <%= link_to 'leaderboard', leaderboard_schools_path, class: 'dropdown-item'  %>
+        </div>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
