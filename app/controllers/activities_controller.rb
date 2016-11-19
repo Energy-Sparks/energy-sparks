@@ -64,7 +64,7 @@ class ActivitiesController < ApplicationController
     authorize! :destroy, @activity
     @activity.destroy
     respond_to do |format|
-      format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully destroyed.' }
+      format.html { redirect_to school_activities_path(@school), notice: 'Activity was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
