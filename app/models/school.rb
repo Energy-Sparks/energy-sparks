@@ -8,8 +8,10 @@
 #  eco_school_status :integer
 #  enrolled          :boolean          default(FALSE)
 #  id                :integer          not null, primary key
+#  level             :integer          default(0)
 #  name              :string
 #  postcode          :string
+#  sash_id           :integer
 #  school_type       :integer
 #  slug              :string
 #  updated_at        :datetime         not null
@@ -28,6 +30,10 @@
 
 class School < ApplicationRecord
   include Usage
+  extend FriendlyId
+  friendly_id :slug_candidates, use: [:finders, :slugged, :history]
+  has_merit
+
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy
@@ -43,8 +49,7 @@ class School < ApplicationRecord
   validates_uniqueness_of :urn
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
 
-  extend FriendlyId
-  friendly_id :slug_candidates, use: [:finders, :slugged, :history]
+  after_create :create_sash_relation
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
@@ -66,5 +71,13 @@ class School < ApplicationRecord
 
   def meters?(supply = nil)
     self.meters.where(meter_type: supply).any?
+  end
+
+private
+
+  # Create Merit::Sash relation
+  # Having the sash relation makes life easier elsewhere
+  def create_sash_relation
+    badges
   end
 end
