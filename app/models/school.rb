@@ -50,6 +50,7 @@ class School < ApplicationRecord
   accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
 
   after_create :create_sash_relation
+  after_create :create_calendar
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
@@ -100,6 +101,11 @@ class School < ApplicationRecord
   end
 
 private
+
+  def create_calendar
+    calendar = Calendar.create_calendar_from_default("#{name} Calendar")
+    self.update_attribute(:calendar_id, calendar.id)
+  end
 
   # Create Merit::Sash relation
   # Having the sash relation makes life easier elsewhere

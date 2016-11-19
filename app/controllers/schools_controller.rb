@@ -47,7 +47,6 @@ class SchoolsController < ApplicationController
 
     respond_to do |format|
       if @school.save
-        create_calendar
         format.html { redirect_to @school, notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
@@ -118,10 +117,5 @@ private
     rescue
       @to_date = default
     end
-  end
-
-  def create_calendar
-    new_calendar = Calendar.create_calendar_from_default("#{@school.name} Calendar")
-    @school.update_attribute(:calendar_id, new_calendar.id)
   end
 end
