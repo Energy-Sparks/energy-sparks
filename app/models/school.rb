@@ -74,6 +74,18 @@ class School < ApplicationRecord
     self.meters.where(meter_type: supply).any?
   end
 
+  def has_badge?(id)
+    sash.badge_ids.include?(id)
+  end
+
+  def current_term
+    calendar.terms.find_by('NOW()::DATE BETWEEN start_date AND end_date')
+  end
+
+  def last_term
+    calendar.terms.find_by('end_date <= ?', current_term.start_date)
+  end
+
   def badges_by_date(order: :desc, limit: nil)
     sash.badges_sashes.order(created_at: order)
       .limit(limit)
