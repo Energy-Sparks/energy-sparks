@@ -52,9 +52,18 @@ hr.bulb-light {
   border-color: white;
 }
 hr.bulb-light:after {
-  background-color: $light-blue;
+  background-color: $dark-orange;
   color: white;
 }
+
+.intro-text {
+  hr.bulb-light:after {
+    background-color: $light-blue;
+    color: white;
+  }
+
+}
+
 hr.bulb-primary {
   border-color: $dark-blue;
 }

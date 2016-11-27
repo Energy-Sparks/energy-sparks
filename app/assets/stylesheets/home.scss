@@ -43,12 +43,19 @@ section h2 {
   font-size: 3em;
 }
 section.highlight {
-  background: $light-blue;
+  background: $dark-orange;
   color: white;
+
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $dark-blue;
+    outline: none;
+  }
 }
-section.green a {
-  color: #fff;
-}
+
 @media (max-width: 767px) {
   section {
     padding: 75px 0;
