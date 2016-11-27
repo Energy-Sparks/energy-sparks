@@ -35,9 +35,6 @@ header .intro-text .intro {
 }
 
 
-section {
-  padding: 100px 0;
-}
 section h2 {
   margin: 0;
   font-size: 3em;
@@ -53,14 +50,5 @@ section.highlight {
   a.active {
     color: $dark-blue;
     outline: none;
-  }
-}
-
-@media (max-width: 767px) {
-  section {
-    padding: 75px 0;
-  }
-  section.first {
-    padding-top: 75px;
   }
 }
