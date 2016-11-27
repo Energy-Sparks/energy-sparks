@@ -13,7 +13,7 @@ class SchoolsController < ApplicationController
   # GET /schools/1
   # GET /schools/1.json
   def show
-    redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id) )
+    redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order(:happened_on).includes(:activity_type)
     @meters = @school.meters.order(:meter_no)
   end
