@@ -1,6 +1,6 @@
 header {
   text-align: center;
-  background: #18BC9C;
+  background: $light-blue;
   color: white;
 }
 header .container {
@@ -14,7 +14,6 @@ header img {
 header .intro-text .name {
   display: block;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
   font-weight: 700;
   font-size: 2em;
 }
@@ -43,8 +42,8 @@ section h2 {
   margin: 0;
   font-size: 3em;
 }
-section.green {
-  background: #18BC9C;
+section.highlight {
+  background: $light-blue;
   color: white;
 }
 section.green a {
