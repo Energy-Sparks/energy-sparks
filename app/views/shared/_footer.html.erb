@@ -1,13 +1,27 @@
 <!-- Footer -->
-<footer class="text-xs-center">
+<footer>
   <div class="footer-above">
     <div class="container">
       <div class="row">
-        <div class="footer-col col-md-4">
+        <div class="col-md-4">
+          <h4>Energy Sparks</h4>
+          <p class="small">
+            Energy Sparks supports schools in becoming more energy-efficient by providing better access to their
+            energy usage data.</p>
+          <p class="small">
+            Presenting usage data in easy to use and understand ways governors, teachers, parents
+            and pupils can be both better informed.
+          </p>
         </div>
-        <div class="footer-col col-md-4">
-          <h3>Around the Web</h3>
-          <ul class="list-inline">
+        <div class="col-md-4">
+          <p class="small">
+            Energy Sparks supports schools in gaining Eco award status by making it easier to use usage data in
+            a classroom setting and by building a record of activities held in and around the school
+          </p>
+          <p class="small">
+            For feedback and questions, please email leigh@bathhacked.org. Or contact us on social media
+          </p>
+          <ul class="text-xs-center list-inline">
             <li class="list-inline-item">
               <a href="https://www.facebook.com/energysparksbath" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
             </li>
@@ -19,7 +33,14 @@
             </li>
           </ul>
         </div>
-        <div class="footer-col col-md-4">
+        <div class="col-md-4">
+          <h4>Links</h4>
+          <ul class="list-unstyled">
+            <li><%= link_to "About", about_path %></li>
+            <li><%= link_to "Contact", contact_path %></li>
+            <li><%= link_to "Enrol", enrol_path %></li>
+            <li><%= link_to "Open data", datasets_path %></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -27,7 +48,7 @@
   <div class="footer-below">
     <div class="container">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="text-xs-center col-lg-12">
           Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>.
         </div>
       </div>

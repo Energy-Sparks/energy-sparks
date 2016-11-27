@@ -15,7 +15,7 @@ a:hover,
 a:focus,
 a:active,
 a.active {
-  color: #18BC9C;
+  color: $light-blue;
   outline: none;
 }
 
@@ -26,7 +26,6 @@ h4,
 h5,
 h6 {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
   font-weight: 700;
 }
 
@@ -53,13 +52,22 @@ hr.bulb-light {
   border-color: white;
 }
 hr.bulb-light:after {
-  background-color: #18BC9C;
+  background-color: $dark-orange;
   color: white;
 }
+
+.intro-text {
+  hr.bulb-light:after {
+    background-color: $light-blue;
+    color: white;
+  }
+
+}
+
 hr.bulb-primary {
-  border-color: #2C3E50;
+  border-color: $dark-blue;
 }
 hr.bulb-primary:after {
   background-color: white;
-  color: #2C3E50;
+  color: $dark-blue;
 }
