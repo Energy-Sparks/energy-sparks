@@ -71,3 +71,16 @@ hr.bulb-primary:after {
   background-color: white;
   color: $dark-blue;
 }
+
+section.padded-section {
+  padding: 100px 0;
+}
+
+@media (max-width: 767px) {
+  section {
+    padding: 75px 0;
+  }
+  section.first {
+    padding-top: 75px;
+  }
+}
