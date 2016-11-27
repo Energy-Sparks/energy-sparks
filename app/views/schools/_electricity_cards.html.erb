@@ -1,0 +1,53 @@
+<% if @school.meters?(:electricity) %>
+  <section id="electricity-cards">
+    <% avg_elect = average_weekday_usage(:electricity) %>
+
+    <h4>Electricity
+      <p class="text-muted pull-right">
+        <small>Week ending <%= l avg_elect[0] unless avg_elect.nil? %></small>
+      </p>
+    </h4>
+
+    <div class="card-deck-wrapper">
+      <div class="card-deck">
+
+        <div class="card ">
+          <div class="card-block">
+            <span class="pull-sm-right">
+                  <%= link_to "?", help_path(:average_weekday_usage), target: :new %>
+            </span>
+            <h4 class="card-title">
+              Average weekday electricity usage
+            </h4>
+            <p>
+              <strong><%= avg_elect[1].to_i unless avg_elect.nil? %></strong> kWh
+            </p>
+            <%= link_to('Daily usage',
+                        usage_school_path(@school, period: :daily, to_date: avg_elect[0], anchor: :electricity),
+                        class: 'btn btn-primary btn-sm') unless avg_elect.nil?
+            %>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-block">
+            <h4 class="card-title">
+              Did you know?
+            </h4>
+            <p>
+            You used most electricity on
+              <strong><%= day_most_usage(:electricity) %></strong>
+            </p>
+            <%= link_to('Hourly usage',
+                        usage_school_path(@school, period: :hourly, to_date: avg_elect[0], anchor: :electricity),
+                        class: 'btn btn-primary btn-sm') unless avg_elect.nil?
+            %>
+
+          </div>
+        </div>
+
+        </div>
+
+    </div>
+  </section>
+<% end %>
