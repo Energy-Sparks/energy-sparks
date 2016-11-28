@@ -23,3 +23,9 @@ every 1.day, :at => '6:00 am' do
   rake "loader:read_meters"
 end
 
+every :saturday, at: '12am' do
+  rake 'merit:weekly_energy_reduction'
+  rake 'merit:electricity_reduction'
+  rake 'merit:gas_reduction'
+  rake 'merit:activity_per_week'
+end
