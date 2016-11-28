@@ -21,6 +21,7 @@
 # Indexes
 #
 #  index_schools_on_calendar_id  (calendar_id)
+#  index_schools_on_sash_id      (sash_id)
 #  index_schools_on_urn          (urn) UNIQUE
 #
 # Foreign Keys
