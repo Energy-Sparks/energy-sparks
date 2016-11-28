@@ -12,7 +12,7 @@ describe School do
     expect(subject.slug).to eq(subject.name.parameterize)
   end
 
-  describe 'FriendlyID#slug_candidates'
+  describe 'FriendlyID#slug_candidates' do
     context 'when two schools have the same name' do
       it 'builds a different slug using :postcode and :name' do
         school = (create_list :school, 2).last

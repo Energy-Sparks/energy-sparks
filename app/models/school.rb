@@ -106,7 +106,7 @@ class School < ApplicationRecord
       end_date = Time.current
     end
 
-    School.select(:id, :name, 'SUM(num_points) AS sum_points')
+    School.select('schools.*, SUM(num_points) AS sum_points')
       .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
       .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
       .where('merit_score_points.created_at BETWEEN ? AND ?', start_date, end_date)

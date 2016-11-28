@@ -92,6 +92,12 @@ RSpec.describe ActivitiesController, type: :controller do
           expect(assigns(:activity)).to be_persisted
         end
 
+        it 'adds 10 points to the school' do
+          expect {
+            post :create, params: { school_id: school.id, activity: valid_attributes }
+          }.to change { school.points }.by(10)
+        end
+
         it "redirects to the activity" do
           post :create, params: { school_id: school.id, activity: valid_attributes }
           expect(response).to redirect_to(school_activity_path(school, Activity.last))
@@ -102,6 +108,12 @@ RSpec.describe ActivitiesController, type: :controller do
         it "assigns a newly created but unsaved activity as @activity" do
           post :create, params: { school_id: school.id, activity: invalid_attributes }
           expect(assigns(:activity)).to be_a_new(Activity)
+        end
+
+        it 'does not add 10 points to the school' do
+          expect {
+            post :create, params: { school_id: school.id, activity: invalid_attributes }
+          }.not_to change { school.points }
         end
 
         it "re-renders the 'new' template" do
@@ -167,10 +179,10 @@ RSpec.describe ActivitiesController, type: :controller do
         }.to change(Activity, :count).by(-1)
       end
 
-      it "redirects to the activity" do
+      it "redirects to the activities index" do
         activity = Activity.create! valid_attributes
         delete :destroy, params: { school_id: school.id, id: activity.to_param }
-        expect(response).to redirect_to(school_activity_path(school, activity))
+        expect(response).to redirect_to(school_activities_path(school))
       end
     end
   end

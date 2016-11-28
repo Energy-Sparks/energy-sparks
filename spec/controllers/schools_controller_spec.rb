@@ -53,7 +53,7 @@ RSpec.describe SchoolsController, type: :controller do
           it "redirects to the enrol page" do
             sign_in_user(:guest)
             school = FactoryGirl.create :school, enrolled: false
-            get :show, params: {id: school.to_param}
+            get :show, params: { id: school.to_param }
             expect(response).to redirect_to(enrol_path)
           end
         end
@@ -84,12 +84,11 @@ RSpec.describe SchoolsController, type: :controller do
           get :show, params: { id: school.to_param }
           expect(assigns(:activities)).not_to include activity_other_school
         end
-        it "assigns the school's 6 most recent achievements to @badges" do
+        it "assigns the school's achievements to @badges" do
           school = create :school, :with_badges, badges_sashes: 7
 
           get :show, params: { id: school.to_param }
           expect(assigns(:badges)).to include(school.badges.first)
-          expect(assigns(:badges)).not_to include(school.badges.last)
         end
         it "doesn't include other schools badges" do
           school_one, school_two = create_pair :school, :with_badges, badges_sashes: 2
