@@ -1,1 +1,56 @@
-<h1>Contact</h1>
+<% content_for :page_title do %>
+Contact us
+<% end %>
+<div class="application container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Contact us</h1>
+
+      <p>
+        If you have any questions or comments relating to EnergySparks then please email us at
+        <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> and one of the team will get in touch shortly.
+      </p>
+
+      <p>
+        If you find the service useful, have any questions about how to get involved, or any feedback or concerns then
+        please don't hesitate to get in touch. As a volunteer run project so we're keen to receive feedback and help
+        from the local community.
+      </p>
+
+      <p>
+        You can also contact us via social media:
+      </p>
+
+      <ul>
+        <li>You can find us on twitter <a href="https://twitter.com/energy_sparks">@energy_sparks</a></li>
+        <li>And on Facebook at <a href="https://www.facebook.com/energysparksbath/">@energysparksbath</a></li>
+      </ul>
+
+      <h3>Bug Reporting</h3>
+
+      <p>
+        If you are reporting a bug or problem with the service, please try and include as much detail in your email
+        as possible.
+      </p>
+
+      <p>
+        We also have an <a href="https://github.com/BathHacked/energy-sparks/issues/new">issue tracker</a> for
+        reporting bugs. Feel free to use that or just drop us an email.
+      </p>
+
+
+      <h3>Further information</h3>
+
+      <p>
+        In the meantime you can
+      <ul>
+        <li>Read <%= link_to "about EnergySparks", about_path %> and the goals of the project</li>
+        <li>Learn how to <%= link_to "enrol your school", enrol_path %></li>
+        <li>Discover what <%= link_to "open data", datasets_path %> we use in the service</li>
+      </ul>
+      </p>
+
+
+    </div>
+  </div>
+</div>
