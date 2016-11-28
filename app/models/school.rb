@@ -32,6 +32,8 @@ class School < ApplicationRecord
   include Usage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
+
+  include Merit::UsageCalculations
   has_merit
 
   has_many :users, dependent: :destroy
