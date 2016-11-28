@@ -7,9 +7,23 @@ body {
 p {
   font-size: 20px;
 }
+
 p.small {
   font-size: 16px;
 }
+
+li {
+  font-size: 20px;
+}
+
+footer li {
+  font-size: 14px;
+}
+
+nav li {
+  font-size: 14px;
+}
+
 a,
 a:hover,
 a:focus,
@@ -76,6 +90,11 @@ section.padded-section {
   padding: 100px 0;
 }
 
+div.padded-row {
+  padding: 20px 0;
+}
+
+
 @media (max-width: 767px) {
   section {
     padding: 75px 0;
@@ -83,4 +102,8 @@ section.padded-section {
   section.first {
     padding-top: 75px;
   }
+}
+
+div.bio {
+  border: none;
 }

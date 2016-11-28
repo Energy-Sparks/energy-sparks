@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
+  get 'team', to: 'home#team'
+
   get 'help/(:help_page)', to: 'home#help', as: :help
 
   resources :activity_types

@@ -18,4 +18,4 @@ Feature: Basic checks
 
   Scenario: user visits the Datasets page
     When I go to the datasets page
-    Then I should see "Datasets"
+    Then I should see "Open data"

@@ -1,1 +1,207 @@
-<h1>Datasets</h1>
+<% content_for :page_title do %>
+Datasets
+<% end %>
+<div class="application container">
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1 id="intro">Data used in EnergySparks</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>EnergySparks uses open data published by
+        local schools</strong></p>
+    </div>
+    <div class="col-md-8">
+      <p>
+        EnergySparks is built on open data. All of the data you can see in the application has been published under
+        an open licence. You are free to reuse the data for your own purposes. If you find useful insights then
+        please <%= link_to "share them with us", contact_path %> so we can help make the service better.
+      </p>
+      <p>
+        If you do <a href="#data-sources">reuse the data</a> then please <a href="#use-responsibly">use it responsibly</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1 id="data-sources">How is the data collected?</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>The data is collected by smart meters installed in schools.</strong></p>
+      <p>
+        <strong>The meter readings are transferred into
+          our data store and then imported in EnergySparks to create charts and summaries</strong></p>
+    </div>
+    <div class="col-md-8">
+      <p>
+        The raw energy usage data is <a href="https://en.wikipedia.org/wiki/Automatic_meter_reading">automatically collected</a>
+        by <a href="https://www.uswitch.com/gas-electricity/guides/smart-meters-explained/">smart meters</a> installed in
+        schools. The meters are owned and operated by the school's energy supplier. In Bath & North East Somerset, many
+        of the local schools are part of the council's energy scheme and use a single supplier.
+      </p>
+      <p>
+        A school may have several gas and electricity meters. These may be installed in different buildings or to serve
+        different parts of their premises. Currently not all schools have smart meters for both their
+        gas and electricity meters.
+      </p>
+      <p>
+        The meter readings are collected and stored by the energy supplier. These are then imported into a platform
+        known as <a href="https://www.systems-link.com/">Systems Link</a> which is licensed by the council. The platform
+        provides a variety of reporting options and is used to bill schools for their energy usage.
+      </p>
+      <p>
+        Data aggregated by Systems Link is published as open data into the <a href="https://data.bathhacked.org">Bath: Hacked
+        data store</a>. This provides a variety of ways to explore and analyse the data. Only data from schools that have
+        <%= link_to "enrolled in EnergySparks", enrol_path %> is published as open data.
+      </p>
+      <p>
+        The data is imported from the Bath: Hacked data store into a local database used by the Energy Sparks application.
+      </p>
+      <p>
+        As there are several steps involved in getting the readings published as open data there can be a delay in the
+        data being available. We estimate that on average it will take between 24-48 hours before the data is published.
+      </p>
+      <p>
+        Additional delays may arise if there are problems synchronising the data between the supplier and Systems Link,
+        or between Systems Link and the public data store.
+      </p>
+      <p>
+        Ideally fewer steps would be involved in making the data public. This would both reduce lead time and remove
+        potential points of failure. We will explore other integration options in future releases.
+      </p>
+    </div>
+  </div>
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1 id="reporting-problems">How can you report a problem with the data?</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>Please report data problem so that we can correct the data and the application</strong></p>
+    </div>
+    <div class="col-md-8">
+      <p>
+        If notice something unusual or potentially incorrect in the data shown in EnergySparks then
+        please <%= link_to "report it directly to us", contact_path %> in the first instance. We can identify whether the
+        issue is with how the data has been imported into the application or whether its an issue with the raw
+        data.
+      </p>
+      <p>
+        If you have already identified that there is a problem with <a href="#data-sources">the raw data in the
+        data store</a> then you can still <%= link_to "report it to us", contact_path %> so that we are aware of the
+        issue.
+      </p>
+      <p>
+        If you are a school who is using EnergySparks and no longer wish to be a part of the service, or want to stop
+        publishing your usage data as open data, then again <%= link_to "let us know", contact_path %> and we will
+        co-ordinate with the council to remove your data from EnergySparks and the Bath: Hacked data store.
+      </p>
+    </div>
+  </div>
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1 id="data-sources">Where is the source data?</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>The original data is openly licensed. It can be accessed, used and shared by anyone</strong></p>
+      <p>
+        <strong>The data can be downloaded or queried via an API</strong></p>
+    </div>
+    <div class="col-md-8">
+      <p>
+        The two primary sources of data used in EnergySparks can be found in:
+      </p>
+      <ul>
+        <li><a href="https://data.bathhacked.org/Government-and-Society/BANES-Energy-Data-Electricity/fqa5-b8ri">B&NES
+        Energy Data (Electricity)</a></li>
+        <li><a href="https://data.bathhacked.org/Environment/BANES-Energy-Usage-Gas/rd4k-3gss">B&NES
+          Energy Data (Gas)</a></li>
+      </ul>
+      <p>
+        These datasets are published by Bath & North East Somerset Council on behalf of themselves and the participating
+        school. It is reusable under <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/">
+        the Open Government Licence</a>.
+      </p>
+      <p>
+        These datasets contain energy usage data for all local council properties as well as <%= link_to "the schools enrolled
+        in EnergySparks", schools_path %>.
+      </p>
+      <p>
+        Each row in the dataset contains 24 hours worth of readings collected every 30 minutes by a single meter.
+      </p>
+      <p>
+        The <a href="https://data.bathhacked.org">Bath: Hacked data store</a> provides several ways to access the data
+        including downloading readings as a CSV or Excel file. It can also be queried directly using an API.
+      </p>
+    </div>
+  </div>
+
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1 id="use-responsibly">Using the data responsibly</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>We recommend thinking carefully about how you interpret the data</strong></p>
+    </div>
+    <div class="col-md-8">
+      <p>
+        Open data allows anyone to access and explore a dataset. But it is important to understand how a dataset
+        is collected and what it is measuring before beginning to use it. This page provides additional background
+        on the provenance of the data used in EnergySparks.
+      </p>
+      <p>
+        The degree to which an individual school is able to reduce or improve its energy consumption depends on a number
+        of different factors. All of these may impact how the data could or should be interpreted. If you are reusing
+        the energy data you should consider what these factors might be. For example:
+      </p>
+      <ul>
+        <li>A school may have already achieved significant reductions in the past, e.g as part of getting
+        Green Flag status. These schools may have to work much harder to see signficant reductions. For them the goal
+        is to keep usage low and stable</li>
+        <li>School buildings and facilities vary considerably. Some schools have older buildings which limit their
+        options for becoming more efficient. Some schools have have higher usage because they have swimming pools or
+        other facilities that others do not</li>
+        <li>Schools are used during the evening and weekends for other community activities and events. This can
+        change the energy usage profile of the school</li>
+      </ul>
+      <p>Weather conditions can also impact the amount of energy used by the school over the course of a day or week</p>
+      <p>
+        In short some care needs to be taken when comparing energy usage for even the same school across different
+        days and times of the year. Comparing schools against one another is also very difficult and is not recommended
+        unless you have accounted for differences in infrastructure, size and the usage profile of the buildings.
+      </p>
+      <p>
+        This is why we have focused EnergySparks on encouraging schools in becoming energy efficient, rather than
+        creating a ranking of local schools. Our gamification elements primarily measure behaviour change, not absolute
+        energy usage.
+      </p>
+      <p>
+        If you would like help with interpreting the data then <%= link_to "let us know", contact_path %>
+      </p>
+    </div>
+  </div>
+
+</div>
