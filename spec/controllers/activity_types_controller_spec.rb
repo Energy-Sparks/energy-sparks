@@ -19,7 +19,6 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ActivityTypesController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # ActivityType. As you add validations to ActivityType, be sure to
   # adjust the attributes here as well.
@@ -50,7 +49,7 @@ RSpec.describe ActivityTypesController, type: :controller do
     describe "GET #show" do
       it "assigns the requested activity_type as @activity_type" do
         activity_type = ActivityType.create! valid_attributes
-        get :show, params: {id: activity_type.to_param}
+        get :show, params: { id: activity_type.to_param }
         expect(assigns(:activity_type)).to eq(activity_type)
       end
     end
@@ -65,7 +64,7 @@ RSpec.describe ActivityTypesController, type: :controller do
     describe "GET #edit" do
       it "assigns the requested activity_type as @activity_type" do
         activity_type = ActivityType.create! valid_attributes
-        get :edit, params: {id: activity_type.to_param}
+        get :edit, params: { id: activity_type.to_param }
         expect(assigns(:activity_type)).to eq(activity_type)
       end
     end
@@ -74,30 +73,30 @@ RSpec.describe ActivityTypesController, type: :controller do
       context "with valid params" do
         it "creates a new ActivityType" do
           expect {
-            post :create, params: {activity_type: valid_attributes}
+            post :create, params: { activity_type: valid_attributes }
           }.to change(ActivityType, :count).by(1)
         end
 
         it "assigns a newly created activity_type as @activity_type" do
-          post :create, params: {activity_type: valid_attributes}
+          post :create, params: { activity_type: valid_attributes }
           expect(assigns(:activity_type)).to be_a(ActivityType)
           expect(assigns(:activity_type)).to be_persisted
         end
 
         it "redirects to the created activity_type" do
-          post :create, params: {activity_type: valid_attributes}
+          post :create, params: { activity_type: valid_attributes }
           expect(response).to redirect_to(ActivityType.last)
         end
       end
 
       context "with invalid params" do
         it "assigns a newly created but unsaved activity_type as @activity_type" do
-          post :create, params: {activity_type: invalid_attributes}
+          post :create, params: { activity_type: invalid_attributes }
           expect(assigns(:activity_type)).to be_a_new(ActivityType)
         end
 
         it "re-renders the 'new' template" do
-          post :create, params: {activity_type: invalid_attributes}
+          post :create, params: { activity_type: invalid_attributes }
           expect(response).to render_template("new")
         end
       end
@@ -106,12 +105,12 @@ RSpec.describe ActivityTypesController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          { name: 'new name', description: 'new description', active: false}
+          { name: 'new name', description: 'new description', active: false }
         }
 
         it "updates the requested activity_type" do
           activity_type = ActivityType.create! valid_attributes
-          put :update, params: {id: activity_type.to_param, activity_type: new_attributes}
+          put :update, params: { id: activity_type.to_param, activity_type: new_attributes }
           activity_type.reload
           expect(activity_type.name).to eq new_attributes[:name]
           expect(activity_type.description).to eq new_attributes[:description]
@@ -120,13 +119,13 @@ RSpec.describe ActivityTypesController, type: :controller do
 
         it "assigns the requested activity_type as @activity_type" do
           activity_type = ActivityType.create! valid_attributes
-          put :update, params: {id: activity_type.to_param, activity_type: valid_attributes}
+          put :update, params: { id: activity_type.to_param, activity_type: valid_attributes }
           expect(assigns(:activity_type)).to eq(activity_type)
         end
 
         it "redirects to the activity_type" do
           activity_type = ActivityType.create! valid_attributes
-          put :update, params: {id: activity_type.to_param, activity_type: valid_attributes}
+          put :update, params: { id: activity_type.to_param, activity_type: valid_attributes }
           expect(response).to redirect_to(activity_type)
         end
       end
@@ -134,13 +133,13 @@ RSpec.describe ActivityTypesController, type: :controller do
       context "with invalid params" do
         it "assigns the activity_type as @activity_type" do
           activity_type = ActivityType.create! valid_attributes
-          put :update, params: {id: activity_type.to_param, activity_type: invalid_attributes}
+          put :update, params: { id: activity_type.to_param, activity_type: invalid_attributes }
           expect(assigns(:activity_type)).to eq(activity_type)
         end
 
         it "re-renders the 'edit' template" do
           activity_type = ActivityType.create! valid_attributes
-          put :update, params: {id: activity_type.to_param, activity_type: invalid_attributes}
+          put :update, params: { id: activity_type.to_param, activity_type: invalid_attributes }
           expect(response).to render_template("edit")
         end
       end
@@ -150,13 +149,13 @@ RSpec.describe ActivityTypesController, type: :controller do
       it "does NOT destroy the requested activity_type" do
         activity_type = ActivityType.create! valid_attributes
         expect {
-          delete :destroy, params: {id: activity_type.to_param}
+          delete :destroy, params: { id: activity_type.to_param }
         }.to change(ActivityType, :count).by(0)
       end
 
       it "redirects to the activity_types list" do
         activity_type = ActivityType.create! valid_attributes
-        delete :destroy, params: {id: activity_type.to_param}
+        delete :destroy, params: { id: activity_type.to_param }
         expect(response).to redirect_to(activity_types_url)
       end
     end

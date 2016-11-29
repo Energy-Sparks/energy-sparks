@@ -19,7 +19,6 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe CalendarsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Calendar. As you add validations to Calendar, be sure to
   # adjust the attributes here as well.
@@ -107,7 +106,7 @@ RSpec.describe CalendarsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          { name: 'new name'}
+          { name: 'new name' }
         }
 
         it "updates the requested calendar" do

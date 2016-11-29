@@ -25,7 +25,7 @@ module SchoolsHelper
     return nil unless last_full_week
     # return the Friday's date and avarage usage
     # average = daily usage figures, summed, divided by 5
-    [last_full_week.last, @school.daily_usage(supply, last_full_week)
+    [last_full_week.last, @school.daily_usage(supply: supply, dates: last_full_week)
                                  .inject(0) { |a, e| a + e[1] } / 5
     ]
   end

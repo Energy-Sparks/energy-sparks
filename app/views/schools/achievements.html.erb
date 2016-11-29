@@ -1,0 +1,21 @@
+<% content_for :page_title do %>
+  #{@school.name}: Achievements
+<% end %>
+<h1><%= @school.name %>: Achievements</h1>
+
+<% if @badges.empty? %>
+  <p>No awards have been earnt yet</p>
+<% else %>
+  <% @badges.in_groups_of(6).each do |group| %>
+    <div class='row'>
+      <% group.each do |badge| %>
+        <div class='col-xs-2'>
+          <% if badge %>
+            <div><%= image_tag(badge.image) %></div>
+            <div><%= badge.name %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

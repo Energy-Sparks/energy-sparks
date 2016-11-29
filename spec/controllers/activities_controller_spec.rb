@@ -87,25 +87,37 @@ RSpec.describe ActivitiesController, type: :controller do
         end
 
         it "assigns a newly created activity as @activity" do
-          post :create, params: { school_id: school.id, activity: valid_attributes}
+          post :create, params: { school_id: school.id, activity: valid_attributes }
           expect(assigns(:activity)).to be_a(Activity)
           expect(assigns(:activity)).to be_persisted
         end
 
+        it 'adds 10 points to the school' do
+          expect {
+            post :create, params: { school_id: school.id, activity: valid_attributes }
+          }.to change { school.points }.by(10)
+        end
+
         it "redirects to the activity" do
-          post :create, params: { school_id: school.id, activity: valid_attributes}
+          post :create, params: { school_id: school.id, activity: valid_attributes }
           expect(response).to redirect_to(school_activity_path(school, Activity.last))
         end
       end
 
       context "with invalid params" do
         it "assigns a newly created but unsaved activity as @activity" do
-          post :create, params: { school_id: school.id, activity: invalid_attributes}
+          post :create, params: { school_id: school.id, activity: invalid_attributes }
           expect(assigns(:activity)).to be_a_new(Activity)
         end
 
+        it 'does not add 10 points to the school' do
+          expect {
+            post :create, params: { school_id: school.id, activity: invalid_attributes }
+          }.not_to change { school.points }
+        end
+
         it "re-renders the 'new' template" do
-          post :create, params: { school_id: school.id, activity: invalid_attributes}
+          post :create, params: { school_id: school.id, activity: invalid_attributes }
           expect(response).to render_template("new")
         end
       end
@@ -123,7 +135,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
         it "updates the requested activity" do
           activity = Activity.create! valid_attributes
-          put :update, params: { school_id: school.id, id: activity.to_param, activity: new_attributes}
+          put :update, params: { school_id: school.id, id: activity.to_param, activity: new_attributes }
           activity.reload
           expect(activity.title).to eq new_attributes[:title]
           expect(activity.description).to eq new_attributes[:description]
@@ -133,13 +145,13 @@ RSpec.describe ActivitiesController, type: :controller do
 
         it "assigns the requested activity as @activity" do
           activity = Activity.create! valid_attributes
-          put :update, params: { school_id: school.id, id: activity.to_param, activity: valid_attributes}
+          put :update, params: { school_id: school.id, id: activity.to_param, activity: valid_attributes }
           expect(assigns(:activity)).to eq(activity)
         end
 
         it "redirects to the activity" do
           activity = Activity.create! valid_attributes
-          put :update, params: { school_id: school.id, id: activity.to_param, activity: valid_attributes}
+          put :update, params: { school_id: school.id, id: activity.to_param, activity: valid_attributes }
           expect(response).to redirect_to(school_activity_path(school, activity))
         end
       end
@@ -147,13 +159,13 @@ RSpec.describe ActivitiesController, type: :controller do
       context "with invalid params" do
         it "assigns the activity as @activity" do
           activity = Activity.create! valid_attributes
-          put :update, params: { school_id: school.id, id: activity.to_param, activity: invalid_attributes}
+          put :update, params: { school_id: school.id, id: activity.to_param, activity: invalid_attributes }
           expect(assigns(:activity)).to eq(activity)
         end
 
         it "re-renders the 'edit' template" do
           activity = Activity.create! valid_attributes
-          put :update, params: { school_id: school.id, id: activity.to_param, activity: invalid_attributes}
+          put :update, params: { school_id: school.id, id: activity.to_param, activity: invalid_attributes }
           expect(response).to render_template("edit")
         end
       end
@@ -163,14 +175,14 @@ RSpec.describe ActivitiesController, type: :controller do
       it "destroys the requested activity" do
         activity = Activity.create! valid_attributes
         expect {
-          delete :destroy, params: { school_id: school.id, id: activity.to_param}
+          delete :destroy, params: { school_id: school.id, id: activity.to_param }
         }.to change(Activity, :count).by(-1)
       end
 
-      it "redirects to the activity" do
+      it "redirects to the activities index" do
         activity = Activity.create! valid_attributes
-        delete :destroy, params: { school_id: school.id, id: activity.to_param}
-        expect(response).to redirect_to(school_activity_path(school, activity))
+        delete :destroy, params: { school_id: school.id, id: activity.to_param }
+        expect(response).to redirect_to(school_activities_path(school))
       end
     end
   end

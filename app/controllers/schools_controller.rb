@@ -1,7 +1,7 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
-  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage]
+  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :achievements]
 
   # GET /schools
   # GET /schools.json
@@ -16,6 +16,17 @@ class SchoolsController < ApplicationController
     redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order(:happened_on).includes(:activity_type)
     @meters = @school.meters.order(:meter_no)
+    @badges = @school.badges_by_date(limit: 6)
+  end
+
+  # GET /schools/:id/badges
+  def achievements
+    @badges = @school.badges_by_date(order: :asc)
+  end
+
+  # GET /schools/leaderboard
+  def leaderboard
+    @schools = School.top_scored
   end
 
   # GET /schools/new
@@ -36,7 +47,6 @@ class SchoolsController < ApplicationController
 
     respond_to do |format|
       if @school.save
-        create_calendar
         format.html { redirect_to @school, notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
@@ -107,10 +117,5 @@ private
     rescue
       @to_date = default
     end
-  end
-
-  def create_calendar
-    new_calendar = Calendar.create_calendar_from_default("#{@school.name} Calendar")
-    @school.update_attribute(:calendar_id, new_calendar.id)
   end
 end

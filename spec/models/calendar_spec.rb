@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Calendar do
   describe '.create_calendar_from_default' do
-    let(:name) { 'new calendar'}
+    let(:name) { 'new calendar' }
     it "creates a new calendar" do
       expect {
         Calendar.create_calendar_from_default(name)
@@ -14,8 +14,8 @@ describe Calendar do
     end
     it "duplicates the terms from the default calendar (no school id)" do
       default_calendar = FactoryGirl.create :calendar
-      term1 = FactoryGirl.create :term, calendar_id: default_calendar.id
-      term2 = FactoryGirl.create :term, calendar_id: default_calendar.id
+      FactoryGirl.create :term, calendar_id: default_calendar.id
+      FactoryGirl.create :term, calendar_id: default_calendar.id
       calendar = Calendar.create_calendar_from_default(name)
       expect(calendar.terms.count).to eq 2
     end

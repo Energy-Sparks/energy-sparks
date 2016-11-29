@@ -37,7 +37,7 @@ describe 'Loader::Schools' do
     end
     it 'associates the calendar with the school' do
       Loader::Schools.load!(sample_file)
-       expect(School.last.calendar_id).to eq Calendar.last.id
+      expect(School.last.calendar_id).to eq Calendar.last.id
     end
   end
   context 'URN already exists in schools table' do
@@ -53,5 +53,4 @@ describe 'Loader::Schools' do
       expect(School.find_by(urn: existing.urn)).to eq existing
     end
   end
-
 end

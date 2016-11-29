@@ -12,4 +12,8 @@ private
   def set_ga_code
     @analytics_code = ENV['GOOGLE_ANALYTICS_CODE']
   end
+
+  def current_school
+    current_user.school if current_user.school_admin?
+  end
 end
