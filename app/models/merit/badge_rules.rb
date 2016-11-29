@@ -22,9 +22,7 @@ module Merit
 
     def initialize
       # Sign up to EnergySparks
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'enrolled', temporary: true do |school|
-        school.enrolled?
-      end
+      grant_on(['schools#create', 'schools#update'], to: :itself, badge: 'enrolled', temporary: true, &:enrolled?)
 
       # Sign up to eco-schools programme i.e. eco_school_status is not null
       grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-enrolled', temporary: true do |school|

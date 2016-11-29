@@ -14,9 +14,7 @@ module Merit
 
     def initialize
       # Sign up to EnergySparks
-      score 20, ['schools#create', 'schools#update'], to: :itself do |school|
-        school.enrolled?
-      end
+      score(20, ['schools#create', 'schools#update'], to: :itself, &:enrolled?)
 
       # Sign up to eco-schools programme i.e. eco_school_status is not null
       score 20, ['schools#create', 'schools#update'], to: :itself do |school|
@@ -32,9 +30,9 @@ module Merit
       score 10, to: :school, on: [
         'activities#create'
       ]
-      score (-10), to: :school, on: [
+      score(-10, to: :school, on: [
         'activities#destroy'
-      ]
+      ])
     end
   end
 end
