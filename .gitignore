@@ -27,5 +27,8 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+# Ignore code coverage output
+coverage
+
 .env
 
