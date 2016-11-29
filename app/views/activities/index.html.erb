@@ -1,36 +1,35 @@
-<h1><%= @school.name %> Activities</h1>
-
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>On</th>
-      <th>Type</th>
-      <th>Title</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @activities.each do |activity| %>
-      <tr>
-        <td><%= l activity.happened_on %></td>
-        <td><%= activity.activity_type.name %></td>
-        <td><%= activity.title %></td>
-        <td>
-          <%= link_to 'Show', school_activity_path(@school, activity), class: 'btn btn-info' %>
-          <% if can? :manage, activity %>
-            <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-primary' %>
-            <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<% if current_user && current_user.manages_school?(@school.id) %>
-  <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-primary' %>
+<% content_for :page_title do %>
+    <%= @school.name %> All Activities
 <% end %>
-<%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+
+<div class="row">
+  <div class="col-md-3">
+    <%= render partial: 'schools/description' %>
+  </div>
+  <div class="col-md-9 activity">
+
+  <h1>Recent Activities</h1>
+
+  <ul class="list-unstyled">
+    <% @activities.each do |activity| %>
+        <li>
+          <p><%= link_to activity.title, school_activity_path(@school, activity) %>
+          <span class="text-muted small pull-right"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
+          </p>
+        </li>
+    <% end %>
+
+  </ul>
+
+  <hr>
+
+  <% if current_user && current_user.manages_school?(@school.id) %>
+      <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+  <% end %>
+  <%= link_to 'School homepage', school_path(@school), class: 'btn btn-info' %>
+
+
+  </div>
+</div>
+
+
