@@ -1,35 +1,71 @@
 <section id="activity-cards">
 
-  <h4>Energy Saving Activities
-  </h4>
-
   <div class="card-deck-wrapper">
     <div class="card-deck">
-      <div class="card">
-        <table class="table table-striped table-condensed">
-          <tbody>
-          <% if @activities.empty? %>
-              <tr>
-                <td>No activities have been logged yet</td>
-              </tr>
-          <% else %>
-              <% @activities[0..2].each do |activity| %>
-                  <tr>
-                    <td>
-                      <%= l activity.happened_on %><br>
+
+      <% if @activities.empty? %>
+          <div class="card">
+            <div class="card-block">
+              <h4 class="card-title">
+                No activities have been recorded
+              </h4>
+              <p>
+                <% if current_user && current_user.manages_school?(@school.id) %>
+                    <%= link_to 'Add your first activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+                <% end %>
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-block">
+              <h4 class="card-title">
+                Did you know?
+              </h4>
+              <p>
+                <% if current_user && current_user.manages_school?(@school.id) %>
+                    Recording activities will score you points and award you badges for your energy saving efforts
+                <% else %>
+                    Schools score points and are awarded badges when they record their energy
+                    saving efforts
+                <% end %>
+              </p>
+            </div>
+          </div>
+      <% else %>
+          <div class="card">
+            <div class="card-block">
+              <h4 class="card-title">
+                You've recorded <%= @activities.size %> activities
+              </h4>
+              <p>
+                You have scored <%= @school.points %> points.
+              </p>
+              <p>
+                <%= link_to 'View the leaderboard', leaderboard_schools_path, class: 'btn btn-primary'  %>
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-block">
+              <h4 class="card-title">
+                Your most recent activities
+              </h4>
+              <ul class="list-unstyled">
+                <% @activities[0..2].each do |activity| %>
+                    <li>
                       <%= link_to activity.title, school_activity_path(@school, activity) %>
-                    </td>
-                  </tr>
-              <% end %>
-          <% end %>
-          </tbody>
-        </table>
-        <% if current_user && current_user.manages_school?(@school.id) %>
-            <%= link_to 'New', new_school_activity_path(@school), class: 'btn btn-primary btn-sm' %>
-        <% end %>
-        <%= link_to 'History', school_activities_path(@school), class: 'btn btn-primary btn-sm pull-md-right' %>
-      </div>
+                    </li>
+                <% end %>
+              </ul>
+              <%= link_to 'View all', school_activities_path(@school), class: 'btn btn-primary' %>
+
+            </div>
+          </div>
+
+      <% end %>
     </div>
   </div>
+
+
 </section>
 
