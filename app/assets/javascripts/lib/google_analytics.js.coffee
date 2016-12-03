@@ -1,7 +1,6 @@
 class @GoogleAnalytics
 
   @load_script: (ga_code) ->
-    console.log ga_code
     ((i, s, o, g, r, a, m) ->
       i['GoogleAnalyticsObject'] = r
       i[r] = i[r] or ->
