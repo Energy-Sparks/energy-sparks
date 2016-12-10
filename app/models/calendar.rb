@@ -24,7 +24,7 @@ class Calendar < ApplicationRecord
   )
 
   def self.default_calendar
-    Calendar.where(default: true).first
+    Calendar.find_by(default: true)
   end
 
   def self.create_calendar_from_default(name)
