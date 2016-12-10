@@ -13,7 +13,7 @@ describe Calendar do
       expect(calendar.name).to eq name
     end
     it "duplicates the terms from the default calendar (no school id)" do
-      default_calendar = FactoryGirl.create :calendar
+      default_calendar = FactoryGirl.create :calendar, default: true
       FactoryGirl.create :term, calendar_id: default_calendar.id
       FactoryGirl.create :term, calendar_id: default_calendar.id
       calendar = Calendar.create_calendar_from_default(name)

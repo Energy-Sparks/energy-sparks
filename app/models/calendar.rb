@@ -7,24 +7,31 @@
 #  id         :integer          not null, primary key
 #  name       :string           not null
 #  updated_at :datetime         not null
+#  default    :boolean
 #
 
 class Calendar < ApplicationRecord
   has_many :terms, inverse_of: :calendar, dependent: :destroy
 
   default_scope { where(deleted: false) }
+
   validates_presence_of :name
+
   accepts_nested_attributes_for(
     :terms,
     reject_if: :term_attributes_blank?,
     allow_destroy: true
   )
 
+  def self.default_calendar
+    Calendar.find_by(default: true)
+  end
+
   def self.create_calendar_from_default(name)
-    default = Calendar.joins('LEFT JOIN schools ON schools.calendar_id=calendars.id').first
+    default_calendar = Calendar.default_calendar
     new_calendar = Calendar.create(name: name)
-    return new_calendar unless default && default.terms
-    default.terms.each do |term|
+    return new_calendar unless default_calendar && default_calendar.terms
+    default_calendar.terms.each do |term|
       new_calendar.terms.create(
         academic_year: term[:academic_year],
         name: term[:name],
