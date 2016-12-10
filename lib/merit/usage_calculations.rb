@@ -29,7 +29,6 @@ module Merit
     # the number of weeks in the last term
     def activity_per_week?
       return false if last_term.blank?
-      
       start = last_term.start_date.beginning_of_week(:saturday)
       finish = last_term.end_date.end_of_week(:saturday)
 
