@@ -21,6 +21,7 @@ module Loader
     end
 
     def import_all_data_by_type(school, type, since_date = nil)
+      return unless school.meters?(type)
       find_readings(school, type, since_date) do |reading|
         import_reading(school, type, reading)
       end
