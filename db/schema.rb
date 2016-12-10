@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161210131421) do
+ActiveRecord::Schema.define(version: 20161210154449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20161210131421) do
   create_table "meters", force: :cascade do |t|
     t.integer  "school_id"
     t.integer  "meter_type"
-    t.integer  "meter_no"
+    t.bigint   "meter_no"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.boolean  "active",     default: true
@@ -136,10 +136,10 @@ ActiveRecord::Schema.define(version: 20161210131421) do
     t.string   "website"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.integer  "sash_id"
-    t.integer  "level",             default: 0
     t.boolean  "enrolled",          default: false
     t.integer  "urn",                               null: false
+    t.integer  "sash_id"
+    t.integer  "level",             default: 0
     t.integer  "calendar_id"
     t.string   "slug"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id", using: :btree
