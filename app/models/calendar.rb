@@ -23,8 +23,12 @@ class Calendar < ApplicationRecord
     allow_destroy: true
   )
 
+  def self.default_calendar
+    Calendar.where(default: true).first
+  end
+
   def self.create_calendar_from_default(name)
-    default_calendar = Calendar.where(default: true).first
+    default_calendar = Calendar.default_calendar
     new_calendar = Calendar.create(name: name)
     return new_calendar unless default_calendar && default_calendar.terms
     default_calendar.terms.each do |term|
