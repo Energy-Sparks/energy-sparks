@@ -43,7 +43,7 @@ class School < ApplicationRecord
   has_many :meter_readings, through: :meters
   belongs_to :calendar
 
-  enum school_type: [:primary, :secondary]
+  enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum eco_school_status: [:bronze, :silver, :green]
 
   scope :enrolled, -> { where(enrolled: true) }
