@@ -29,13 +29,12 @@ module Merit
     # the number of weeks in the last term
     def activity_per_week?
       return false if last_term.blank?
-
       start = last_term.start_date.beginning_of_week(:saturday)
       finish = last_term.end_date.end_of_week(:saturday)
 
       term_weeks = (finish - start).to_i / 7
       weeks_with_activity = activities
-          .where(created_at: start..finish)
+          .where(happened_on: start..finish)
           .group("DATE_TRUNC('week', activities.happened_on)")
           .count
           .length
