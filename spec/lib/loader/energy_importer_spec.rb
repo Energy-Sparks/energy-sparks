@@ -7,7 +7,8 @@ describe 'Loader::EnergyImporter' do
          "SOCRATA_STORE" => "data.bathhacked.org",
          "SOCRATA_TOKEN" => "L6CdbDA4jpux40RfMV59Xzvgo",
          "SOCRATA_GAS_DATASET" => "rd4k-3gss",
-         "SOCRATA_ELECTRICITY_DATASET" => "fqa5-b8ri"
+         "SOCRATA_ELECTRICITY_DATASET" => "fqa5-b8ri",
+         "SOCRATA_LIMIT" => "2000"
     }
     #real data
     @school = School.create!(urn: 109007, name: "Twerton Infant School")
@@ -22,6 +23,7 @@ describe 'Loader::EnergyImporter' do
       query = @importer.query(@school, "electricity")
       expect(query["$order"]).to eql("date ASC")
       expect(query["$where"]).to eql("(mpan='2200012581120' OR mpan='2200012581130')")
+      expect(query["$limit"]).to eql("2000")
     end
   end
 
@@ -31,6 +33,7 @@ describe 'Loader::EnergyImporter' do
       query = @importer.query(@school, "gas")
       expect(query["$order"]).to eql("date ASC")
       expect(query["$where"]).to eql("(mprn='1234')")
+      expect(query["$limit"]).to eql("2000")
     end
   end
 

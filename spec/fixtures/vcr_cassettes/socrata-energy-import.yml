@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://data.bathhacked.org/resource/fqa5-b8ri.json?$order=date%20ASC&$where=(mpan=%272200012581120%27%20OR%20mpan=%272200012581130%27)%20AND%20date%20%3E=%272016-12-07T00:00:00%2B00:00%27
+    uri: https://data.bathhacked.org/resource/fqa5-b8ri.json?$limit=2000&$order=date%20ASC&$where=(mpan=%272200012581120%27%20OR%20mpan=%272200012581130%27)%20AND%20date%20%3E=%272016-12-07T00:00:00%2B00:00%27
     body:
       encoding: UTF-8
       string: 'null'
@@ -14,7 +14,7 @@ http_interactions:
       X-App-Token:
       - L6CdbDA4jpux40RfMV59Xzvgo
       User-Agent:
-      - soda-ruby/0.2.21 (Linux/4.4.0-51-generic; Ruby/2.3.1-p112)
+      - soda-ruby/0.2.21 (Linux/4.4.0-53-generic; Ruby/2.3.1-p112)
       Content-Type:
       - application/json
   response:
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sat, 10 Dec 2016 16:31:42 GMT
+      - Sun, 11 Dec 2016 13:57:11 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -33,7 +33,7 @@ http_interactions:
       Connection:
       - keep-alive
       X-Socrata-Requestid:
-      - 8chd7rhyejln3dgedmzvvfw41
+      - 3ix9btmo4qf9islnle6tci0cl
       Access-Control-Allow-Origin:
       - "*"
       Last-Modified:
@@ -47,7 +47,7 @@ http_interactions:
       X-Soda2-Legacy-Types:
       - 'true'
       Age:
-      - '0'
+      - '2'
       X-Socrata-Region:
       - aws-eu-west-1-prod
     body:
@@ -171,5 +171,5 @@ http_interactions:
         }
          ]
     http_version: 
-  recorded_at: Sat, 10 Dec 2016 16:31:42 GMT
+  recorded_at: Sun, 11 Dec 2016 13:57:11 GMT
 recorded_with: VCR 3.0.3

@@ -89,7 +89,8 @@ module Loader
       where << " AND date >='#{since_date.iso8601}'" if since_date
       {
           "$where" => where,
-          "$order" => "date ASC"
+          "$order" => "date ASC",
+          "$limit" => ENV["SOCRATA_LIMIT"]
       }
     end
 
