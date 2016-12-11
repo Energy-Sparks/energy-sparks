@@ -5,7 +5,7 @@ module SchoolsHelper
       daily_usage_school_path(supply: supply, to_date: last_reading_date),
       xtitle: 'Date',
       ytitle: 'kWh',
-      colors: (supply == :electricity ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffac21))
+      colors: colours_for_supply(supply)
     )
   end
 
@@ -13,10 +13,14 @@ module SchoolsHelper
     last_reading_date = @school.last_reading_date(supply, to_date)
     line_chart(
       hourly_usage_school_path(supply: supply, to_date: last_reading_date),
-      xtitle: 'Time',
+      xtitle: 'Time of day',
       ytitle: 'kWh',
-      colors: (supply == :electricity ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffac21))
+      colors: colours_for_supply(supply)
     )
+  end
+
+  def colours_for_supply(supply)
+    supply == :electricity ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffac21)
   end
 
   # get last full week's average daily usage
