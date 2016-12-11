@@ -5,7 +5,7 @@ module SchoolsHelper
       daily_usage_school_path(supply: supply, to_date: last_reading_date),
       xtitle: 'Date',
       ytitle: 'kWh',
-      colors: %w(blue lightgrey)
+      colors: (supply == :electricity ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffac21))
     )
   end
 
@@ -15,7 +15,7 @@ module SchoolsHelper
       hourly_usage_school_path(supply: supply, to_date: last_reading_date),
       xtitle: 'Time',
       ytitle: 'kWh',
-      colors: %w(blue lightgrey)
+      colors: (supply == :electricity ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffac21))
     )
   end
 
