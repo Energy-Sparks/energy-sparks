@@ -7,20 +7,44 @@ describe 'Loader::EnergyImporter' do
          "SOCRATA_STORE" => "data.bathhacked.org",
          "SOCRATA_TOKEN" => "L6CdbDA4jpux40RfMV59Xzvgo",
          "SOCRATA_GAS_DATASET" => "rd4k-3gss",
-         "SOCRATA_ELECTRICITY_DATASET" => "fqa5-b8ri"
+         "SOCRATA_ELECTRICITY_DATASET" => "fqa5-b8ri",
+         "SOCRATA_LIMIT" => "2000"
     }
-    #not actually a local school but our test data doesn't contain one yet
-    @school = School.create!(urn: 12345, name: "Moorland Rd Library")
-    @since_date = DateTime.parse("2016-07-31T00:00:00")
-    @meter = Meter.create!(school: @school, meter_type: :electricity, meter_no: 123456789)
+    #real data
+    @school = School.create!(urn: 109007, name: "Twerton Infant School")
+    @since_date = DateTime.parse("2016-12-07T00:00:00")
+    @meter = Meter.create!(school: @school, meter_type: :electricity, meter_no: 2200012581130)
+    @meter = Meter.create!(school: @school, meter_type: :electricity, meter_no: 2200012581120)
     @importer = Loader::EnergyImporter.new
   end
 
-  it "should generate correct query" do
+  it "should generate correct query for electricity meters" do
     with_modified_env(@env) do
       query = @importer.query(@school, "electricity")
       expect(query["$order"]).to eql("date ASC")
-      expect(query["$where"]).to eql("location='Moorland Rd Library'")
+      expect(query["$where"]).to eql("(mpan='2200012581120' OR mpan='2200012581130')")
+      expect(query["$limit"]).to eql("2000")
+    end
+  end
+
+  it "should only query enabled meters" do
+    meter = Meter.find_by_meter_no(2200012581130)
+    meter.update_attributes!(active: false)
+    with_modified_env(@env) do
+      query = @importer.query(@school, "electricity")
+      expect(query["$order"]).to eql("date ASC")
+      expect(query["$where"]).to eql("(mpan='2200012581120')")
+      expect(query["$limit"]).to eql("2000")
+    end
+  end
+
+  it "should generate correct query for gas meters" do
+    Meter.create!(school: @school, meter_type: :gas, meter_no: 1234)
+    with_modified_env(@env) do
+      query = @importer.query(@school, "gas")
+      expect(query["$order"]).to eql("date ASC")
+      expect(query["$where"]).to eql("(mprn='1234')")
+      expect(query["$limit"]).to eql("2000")
     end
   end
 
@@ -43,7 +67,10 @@ describe 'Loader::EnergyImporter' do
       VCR.use_cassette 'socrata-energy-import' do
         @importer.import_all_data_by_type(@school, "electricity", @since_date)
       end
-      expect(@school.meter_readings.count).to eql(48)
+      #retrieved data contains one day of readings for two meters
+      expect(@school.meter_readings.count).to eql(96)
+      expect(@school.meters.first.meter_readings.count).to eql(48)
+      expect(@school.meters.last.meter_readings.count).to eql(48)
     end
   end
 
@@ -53,12 +80,13 @@ describe 'Loader::EnergyImporter' do
         @importer.import_all_data_by_type(@school, "electricity", @since_date)
       end
       values = {
-          '2016-08-01T00:00:00' => 0.322,
-          '2016-08-01T00:30:00' => 0.11,
-          '2016-08-01T23:30:00' => 0.384
+          '2016-12-08T00:00:00' => 0.913,
+          '2016-12-08T00:30:00' => 0.893,
+          '2016-12-08T23:30:00' => 1.072
       }
+      meter = Meter.find_by_meter_no(2200012581130)
       values.each do |time, value|
-        reading = @meter.meter_readings.where(read_at: DateTime.parse(time)).first
+        reading = meter.meter_readings.where(read_at: DateTime.parse(time)).first
         expect(reading.value).to eql(value)
       end
     end
@@ -72,13 +100,17 @@ describe 'Loader::EnergyImporter' do
 
     it "should use correct date" do
       read_at = DateTime.now
-      @meter.meter_readings << create(:meter_reading, meter: @meter, read_at: read_at)
+      @school.meters.each do |meter|
+        meter.meter_readings << create(:meter_reading, meter: meter, read_at: read_at)
+      end
       expect(@importer.meters_last_read(@school).utc.to_s).to eql(read_at.utc.to_s)
     end
 
     it "should reimport data when there's a new meter" do
       read_at = DateTime.now
-      @meter.meter_readings << create(:meter_reading, meter: @meter, read_at: read_at)
+      @school.meters.each do |meter|
+        meter.meter_readings << create(:meter_reading, meter: meter, read_at: read_at)
+      end
 
       #new meter, so read all meters
       new_meter = create(:meter, school: @school)
@@ -93,8 +125,9 @@ describe 'Loader::EnergyImporter' do
 
   context "when reimporting" do
     before(:each) do
+      @meter = Meter.find_by_meter_no(2200012581130)
       @meter.meter_readings.create!(
-        read_at: DateTime.parse('2016-08-01T00:00:00'),
+        read_at: DateTime.parse('2016-12-08T00:00:00'),
         value: 0.99,
         unit: "kWh"
       )
@@ -104,8 +137,8 @@ describe 'Loader::EnergyImporter' do
         VCR.use_cassette 'socrata-energy-import' do
           @importer.import_all_data_by_type(@school, "electricity", @since_date)
         end
-        reading = @meter.meter_readings.where(read_at: DateTime.parse('2016-08-01T00:00:00')).first
-        expect(reading.value).to eql(0.322)
+        reading = @meter.meter_readings.where(read_at: DateTime.parse('2016-12-08T00:00:00')).first
+        expect(reading.value).to eql(0.913)
       end
     end
   end

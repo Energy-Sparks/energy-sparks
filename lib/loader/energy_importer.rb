@@ -21,6 +21,7 @@ module Loader
     end
 
     def import_all_data_by_type(school, type, since_date = nil)
+      return unless school.meters?(type)
       find_readings(school, type, since_date) do |reading|
         import_reading(school, type, reading)
       end
@@ -41,10 +42,11 @@ module Loader
       end
     end
 
-    def import_reading(school, _type, reading)
-      # FIXME this needs to be resolved once the Socrata dataset has been fixed
-      # currently have to assume all readings for same meter
-      meter = school.meters.first
+    def import_reading(_school, type, reading)
+      column = meter_number_column(type)
+
+      meter = Meter.find_by_meter_no(reading[column])
+      return unless meter
 
       date = DateTime.parse(reading.date).utc
 
@@ -80,14 +82,20 @@ module Loader
       last_read.include?(nil) ? nil : last_read.sort.first
     end
 
-    def query(school, _type, since_date = nil)
-      where = "location='#{school.name}'"
+    def query(school, type, since_date = nil)
+      column = meter_number_column(type)
+      where = '(' + school.meters.where(meter_type: type, active: true).order(:meter_no).map { |m| "#{column}='#{m.meter_no}'" }.join(" OR ") + ')'
       # where << " AND date >='#{since_date.strftime("%Y-%m-%dT%H:%M:%S")}+00:00'" if since_date
       where << " AND date >='#{since_date.iso8601}'" if since_date
       {
           "$where" => where,
-          "$order" => "date ASC"
+          "$order" => "date ASC",
+          "$limit" => ENV["SOCRATA_LIMIT"]
       }
+    end
+
+    def meter_number_column(type)
+      type == "electricity" ? "mpan" : "mprn"
     end
   end
 end
