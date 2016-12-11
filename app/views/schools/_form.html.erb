@@ -56,6 +56,7 @@
     <thead>
       <tr>
         <th>Meter No</th>
+        <th>Name</th>
         <th>Type</th>
         <th>Active</th>
       </tr>
@@ -66,6 +67,11 @@
           <td>
             <div class="form-group">
               <%= meter_form.number_field :meter_no, class: 'form-control' %>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <%= meter_form.text_field :name, class: 'form-control' %>
             </div>
           </td>
           <td>

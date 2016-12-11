@@ -7,6 +7,7 @@
 #  id         :integer          not null, primary key
 #  meter_no   :integer
 #  meter_type :integer
+#  name       :string
 #  school_id  :integer
 #  updated_at :datetime         not null
 #

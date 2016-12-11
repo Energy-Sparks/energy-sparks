@@ -108,7 +108,7 @@ private
   end
 
   def meter_params
-    [:id, :meter_no, :meter_type, :active]
+    [:id, :meter_no, :meter_type, :active, :name]
   end
 
   def set_to_date(default = Date.current - 1.day)
