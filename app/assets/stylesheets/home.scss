@@ -4,7 +4,7 @@ header {
   color: white;
 }
 header .container {
-  padding-top: 100px;
+  padding-top: 50px;
   padding-bottom: 50px;
 }
 header img {
@@ -23,8 +23,8 @@ header .intro-text .intro {
 }
 @media (min-width: 768px) {
   header .container {
-    padding-top: 200px;
-    padding-bottom: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
   }
   header .intro-text .name {
     font-size: 4.75em;
@@ -33,7 +33,6 @@ header .intro-text .intro {
     font-size: 1.75em;
   }
 }
-
 
 section h2 {
   margin: 0;
