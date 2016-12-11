@@ -27,6 +27,17 @@ describe 'Loader::EnergyImporter' do
     end
   end
 
+  it "should only query enabled meters" do
+    meter = Meter.find_by_meter_no(2200012581130)
+    meter.update_attributes!(active: false)
+    with_modified_env(@env) do
+      query = @importer.query(@school, "electricity")
+      expect(query["$order"]).to eql("date ASC")
+      expect(query["$where"]).to eql("(mpan='2200012581120')")
+      expect(query["$limit"]).to eql("2000")
+    end
+  end
+
   it "should generate correct query for gas meters" do
     Meter.create!(school: @school, meter_type: :gas, meter_no: 1234)
     with_modified_env(@env) do

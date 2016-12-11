@@ -84,7 +84,7 @@ module Loader
 
     def query(school, type, since_date = nil)
       column = meter_number_column(type)
-      where = '(' + school.meters.where(meter_type: type).order(:meter_no).map { |m| "#{column}='#{m.meter_no}'" }.join(" OR ") + ')'
+      where = '(' + school.meters.where(meter_type: type, active: true).order(:meter_no).map { |m| "#{column}='#{m.meter_no}'" }.join(" OR ") + ')'
       # where << " AND date >='#{since_date.strftime("%Y-%m-%dT%H:%M:%S")}+00:00'" if since_date
       where << " AND date >='#{since_date.iso8601}'" if since_date
       {
