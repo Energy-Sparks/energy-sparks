@@ -2,10 +2,21 @@
 Contact us
 <% end %>
 <div class="application container">
-  <div class="row">
-    <div class="col-md-8">
+  <div class="row padded-row">
+    <div class="col-md-12">
       <h1>Contact us</h1>
+    </div>
+  </div>
 
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>Questions?</strong></p>
+      <p>
+    </div>
+
+    <div class="col-md-8">
       <p>
         If you have any questions or comments relating to EnergySparks then please email us at
         <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> and one of the team will get in touch shortly.
@@ -25,9 +36,15 @@ Contact us
         <li>You can find us on twitter <a href="https://twitter.com/energy_sparks">@energy_sparks</a></li>
         <li>And on Facebook at <a href="https://www.facebook.com/energysparksbath/">@energysparksbath</a></li>
       </ul>
-
-      <h3>Bug Reporting</h3>
-
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        <strong>Bug Reporting</strong></p>
+      <p>
+    </div>
+    <div class="col-md-8">
       <p>
         If you are reporting a bug or problem with the service, please try and include as much detail in your email
         as possible.
@@ -37,20 +54,23 @@ Contact us
         We also have an <a href="https://github.com/BathHacked/energy-sparks/issues/new">issue tracker</a> for
         reporting bugs. Feel free to use that or just drop us an email.
       </p>
-
-
-      <h3>Further information</h3>
-
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
       <p>
-        In the meantime you can
+        <strong>Further Information</strong></p>
+      <p>
+    </div>
+    <div class="col-md-8">
+      <p>
+        In the meantime you can:
       <ul>
         <li>Read <%= link_to "about EnergySparks", about_path %> and the goals of the project</li>
         <li>Learn how to <%= link_to "enrol your school", enrol_path %></li>
         <li>Discover what <%= link_to "open data", datasets_path %> we use in the service</li>
       </ul>
       </p>
-
-
     </div>
   </div>
 </div>
