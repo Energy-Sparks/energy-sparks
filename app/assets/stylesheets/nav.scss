@@ -1,3 +1,8 @@
+.navbar {
+  /* border-radius: 0.25rem; */
+  border-radius: 0;
+}
+
 .navbar-custom {
   background: $dark-blue;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -19,9 +24,11 @@
 .navbar-custom .navbar-nav {
   letter-spacing: 1px;
 }
+
 .navbar-custom .navbar-nav li a {
   color: white;
 }
+
 .navbar-custom .navbar-nav li a:hover {
   color: $light-blue;
   outline: none;
@@ -34,6 +41,7 @@
   color: white;
   background: $light-blue;
 }
+
 .navbar-custom .navbar-nav li.active a:hover,
 .navbar-custom .navbar-nav li.active a:focus,
 .navbar-custom .navbar-nav li.active a:active {
