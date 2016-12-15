@@ -15,11 +15,12 @@ module Usage
 
   # hourly_usage: get average reading at the same time
   # across all meters for a given supply for a range of dates
-  def hourly_usage(supply: nil, dates: nil)
+  def hourly_usage(supply: nil, dates: nil, meter: nil)
     return nil unless dates
     datetime_range = (dates.first.beginning_of_day..dates.last.end_of_day)
     self.meter_readings
         .where(conditional_supply(supply))
+        .where(conditional_meter(meter))
         .group_by_minute(
           :read_at,
           range: datetime_range,
@@ -78,5 +79,9 @@ private
 
   def conditional_supply(supply)
     { meters: { meter_type: Meter.meter_types[supply] } } if supply
+  end
+
+  def conditional_meter(meter)
+    { meters: { meter_no: meter } } if meter.present?
   end
 end

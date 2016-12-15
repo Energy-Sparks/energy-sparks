@@ -22,16 +22,18 @@ class StatsController < ApplicationController
     ]
   end
 
-  # GET /schools/:id/hourly_usage?supply=:supply&to_date=:to_date
+  # GET /schools/:id/hourly_usage?supply=:supply&to_date=:to_date&meter=:meter_no
   def hourly_usage
     week = Usage.this_week(to_date).to_a
     weekend = school.hourly_usage(
       supply: supply,
-      dates: week[0]..week[1]
+      dates: week[0]..week[1],
+      meter: meter
     )
     weekday = school.hourly_usage(
       supply: supply,
-      dates: week[2]..week[6]
+      dates: week[2]..week[6],
+      meter: meter
     )
     render json: [
       { name: 'Weekday', data: weekday },
@@ -44,6 +46,10 @@ private
   # Use callbacks to share common setup or constraints between actions.
   def school
     School.find(params[:id])
+  end
+
+  def meter
+    params[:meter]
   end
 
   def supply

@@ -37,4 +37,8 @@ class Meter < ApplicationRecord
     reading = latest_reading
     reading.present? ? reading.read_at : nil
   end
+
+  def display_name
+    name.present? ? name : meter_no
+  end
 end
