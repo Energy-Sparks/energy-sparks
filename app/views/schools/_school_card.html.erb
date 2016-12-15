@@ -8,7 +8,7 @@
     <%= school.school_type.try(:titleize) %>
   </div>
   <%- if can? :manage, school -%>
-      <p class="pull-md-right">
+      <p class="pull-right">
         <%= link_to 'Edit', edit_school_path(school), class: 'btn btn-primary btn-sm' %>
         <%= link_to 'Delete', school_path(school), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
       </p>
