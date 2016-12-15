@@ -14,7 +14,13 @@
 }
 .navbar-custom .navbar-brand {
   color: white;
+  padding-top: 0rem;
 }
+
+.navbar-custom .nav {
+  padding-top: 0.25rem;
+}
+
 .navbar-custom .navbar-brand:hover,
 .navbar-custom .navbar-brand:focus,
 .navbar-custom .navbar-brand:active,
