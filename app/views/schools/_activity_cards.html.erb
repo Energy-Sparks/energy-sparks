@@ -1,55 +1,79 @@
 <section id="activity-cards">
 
-  <div class="card-deck-wrapper">
+  <div class="card-deck-wrapper dashboard">
     <div class="card-deck">
 
       <% if @activities.empty? %>
           <div class="card">
-            <div class="card-block">
+            <div class="card-header">
               <h4 class="card-title">
-                No activities have been recorded
+                Record your first activity
               </h4>
+            </div>
+            <div class="card-block">
               <p>
                 <% if current_user && current_user.manages_school?(@school.id) %>
-                    <%= link_to 'Add your first activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+                    Recording activities will score you points for your energy saving efforts
+                <% else %>
+                    Schools score points and are awarded badges when they record their energy
+                    saving activities
                 <% end %>
               </p>
             </div>
+            <div class="card-footer text-xs-right">
+              <% if current_user && current_user.manages_school?(@school.id) %>
+                  <%= link_to 'Add an activity', new_school_activity_path(@school), class: 'btn btn-primary' %>
+              <% end %>
+            </div>
           </div>
           <div class="card">
-            <div class="card-block">
+            <div class="card-header">
               <h4 class="card-title">
                 Did you know?
               </h4>
+            </div>
+            <div class="card-block">
               <p>
                 <% if current_user && current_user.manages_school?(@school.id) %>
-                    Recording activities will score you points and award you badges for your energy saving efforts
+                    You will be awarded badges for recording your activities
                 <% else %>
-                    Schools score points and are awarded badges when they record their energy
+                    Schools are awarded badges when they record their energy
                     saving efforts
                 <% end %>
               </p>
             </div>
+            <div class="card-footer text-xs-right">
+              <% if current_user && current_user.manages_school?(@school.id) %>
+                  <%= link_to 'View achievements', achievements_school_path(@school), class: 'btn btn-primary' %>
+              <% end %>
+            </div>
           </div>
       <% else %>
           <div class="card">
-            <div class="card-block">
+            <div class="card-header">
               <h4 class="card-title">
-                You've recorded <%= @activities.size %> activities
+                You've scored
               </h4>
+            </div>
+            <div class="card-block">
+              <h2>
+                <%= @school.points %> points
+              </h2>
               <p>
-                You have scored <%= @school.points %> points.
+                scored from your activities
               </p>
-              <p>
-                <%= link_to 'View the leaderboard', leaderboard_schools_path, class: 'btn btn-primary'  %>
-              </p>
+            </div>
+            <div class="card-footer text-xs-right">
+              <%= link_to 'View the leaderboard', leaderboard_schools_path, class: 'btn btn-primary'  %>
             </div>
           </div>
           <div class="card">
-            <div class="card-block">
+            <div class="card-header">
               <h4 class="card-title">
-                Your most recent activities
+                Most recent activities
               </h4>
+            </div>
+            <div class="card-block">
               <ul class="list-unstyled">
                 <% @activities[0..2].each do |activity| %>
                     <li>
@@ -57,8 +81,9 @@
                     </li>
                 <% end %>
               </ul>
-              <%= link_to 'View all', school_activities_path(@school), class: 'btn btn-primary' %>
-
+            </div>
+            <div class="card-footer text-xs-right">
+              <%= link_to 'View activities', school_activities_path(@school), class: 'btn btn-primary' %>
             </div>
           </div>
 

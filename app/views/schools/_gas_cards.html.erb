@@ -8,13 +8,10 @@
         </p>
       </h4>
 
-      <div class="card-deck-wrapper">
+      <div class="card-deck-wrapper dashboard">
         <div class="card-deck">
           <div class="card">
             <div class="card-block">
-                <span class="pull-sm-right">
-                  <%= link_to "?", help_path(:average_weekday_usage), target: :new %>
-                </span>
 
               <h4 class="card-title">
                 Average weekday gas usage
@@ -24,14 +21,14 @@
               </p>
               <%= link_to('Daily usage',
                           usage_school_path(@school, period: :daily, to_date: avg_gas[0], anchor: :gas),
-                          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
+                          class: 'btn btn-primary float-right') unless avg_gas.nil?
               %>
 
             </div>
           </div>
 
           <div class="card">
-            <div class="card-block text-sm-center">
+            <div class="card-block">
               <h4 class="card-title">
                 Did you know?
               </h4>
