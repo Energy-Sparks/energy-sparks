@@ -11,37 +11,45 @@
       <div class="card-deck-wrapper dashboard">
         <div class="card-deck">
           <div class="card">
-            <div class="card-block">
-
-              <h4 class="card-title">
-                Average weekday gas usage
+            <div class="card-header">
+              <h4 class="card-title">Did you know?
               </h4>
-              <p>
+            </div>
+
+            <div class="card-block">
+              <h2>
                 <strong><%= avg_gas[1].to_i unless avg_gas.nil? %></strong> kWh
+              </h2>
+              <p>
+                are used on an average school day
               </p>
+            </div>
+            <div class="card-footer text-xs-right">
               <%= link_to('Daily usage',
                           usage_school_path(@school, period: :daily, to_date: avg_gas[0], anchor: :gas),
-                          class: 'btn btn-primary float-right') unless avg_gas.nil?
+                          class: 'btn btn-primary') unless avg_gas.nil?
               %>
-
             </div>
           </div>
 
           <div class="card">
-            <div class="card-block">
-              <h4 class="card-title">
-                Did you know?
-              </h4>
-              <p>
-                You used most gas on
-                <strong><%= day_most_usage(:gas) %></strong>
+            <div class="card-header">
+              <h4 class="card-title">Did you know?</h4>
+            </div>
 
+            <div class="card-block">
+              <h2>
+                <%= day_most_usage(:gas) %>
+              </h2>
+              <p>
+                is the day most gas is used
               </p>
+            </div>
+            <div class="card-footer text-xs-right">
               <%= link_to('Hourly usage',
                           usage_school_path(@school, period: :hourly, to_date: avg_gas[0], anchor: :gas),
-                          class: 'btn btn-primary btn-sm') unless avg_gas.nil?
+                          class: 'btn btn-primary') unless avg_gas.nil?
               %>
-
             </div>
           </div>
 
