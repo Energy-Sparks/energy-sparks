@@ -2,31 +2,38 @@
     <%= @school.name %> All Activities
 <% end %>
 
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1><%= @school.name %> Recent Activities</h1>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-3">
     <%= render partial: 'schools/description' %>
   </div>
   <div class="col-md-9 activity">
+    <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.</p>
 
-  <h1>Recent Activities</h1>
-
-  <ul class="list-unstyled">
     <% @activities.each do |activity| %>
-        <li>
-          <p><%= link_to activity.title, school_activity_path(@school, activity) %>
-          <span class="text-muted small pull-right"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
-          </p>
-        </li>
+        <div class="row">
+          <div class="col-md-9">
+            <%= link_to activity.title, school_activity_path(@school, activity) %>
+          </div>
+          <div class="col-md-3">
+            <p>
+              <span class="text-muted small pull-right"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
+            </p>
+          </div>
+        </div>
     <% end %>
-
-  </ul>
 
   <hr>
 
   <% if current_user && current_user.manages_school?(@school.id) %>
       <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success' %>
   <% end %>
-  <%= link_to 'School homepage', school_path(@school), class: 'btn btn-info' %>
+
 
 
   </div>
