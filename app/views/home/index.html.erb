@@ -25,7 +25,7 @@ Home
     </div>
     <div class="row">
       <div class="col-lg-12 text-xs-center">
-        <h3><%= link_to "#{@schools_enrolled} schools", schools_path %> currently enrolled</h3>
+        <h3><%= link_to pluralize(@schools_enrolled, "school"), schools_path %> currently enrolled</h3>
         <p>Energy Sparks is freely available for all schools in Bath & North East Somerset.</p>
         <p>Find out more about <%= link_to "how to enrol", enrol_path %></p>
       </div>

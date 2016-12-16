@@ -1,5 +1,4 @@
-<div typeof="School">
-  <h2 property="name"><%= @school.name %></h2>
+
   <address property="address" typeof="PostalAddress">
     <p>
       <span property="streetAddress"><%= @school.address %></span>
@@ -17,7 +16,7 @@
                 property: "url") unless @school.website.blank? %>
   </p>
   <p>
-    <%= link_to('Department of Education',
+    <%= link_to('Department for Education',
                 "http://www.education.gov.uk/edubase/establishment/summary.xhtml?urn=#{@school.urn}",
                 target: :new, property: "sameAs") %>
   </p>
@@ -42,4 +41,3 @@
   <%- if can? :manage, @school.calendar -%>
       <%= link_to('Calendar', edit_calendar_path(@school.calendar_id), class: 'btn btn-primary btn-sm') unless @school.calendar.nil? %>
   <%- end -%>
-</div>

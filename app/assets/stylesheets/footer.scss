@@ -10,16 +10,21 @@ footer .footer-above {
   background-color: $dark-blue;
 }
 footer .footer-below {
-  padding: 25px 0;
+  padding: 5px 0;
   background-color: $dark-blue;
 }
+
+footer p {
+  margin-right: 5px;
+}
+
 .btn-outline {
   color: white;
   font-size: 20px;
   border: solid 2px white;
   background: transparent;
   transition: all 0.3s ease-in-out;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 .btn-outline:hover,
 .btn-outline:focus,
