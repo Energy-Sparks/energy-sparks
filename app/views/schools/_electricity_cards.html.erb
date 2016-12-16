@@ -1,5 +1,5 @@
 <% if @school.meters?(:electricity) %>
-  <section id="electricity-cards" class="padded-section">
+  <section id="electricity-cards">
     <% avg_elect = average_weekday_usage(:electricity) %>
 
     <h4>Electricity
