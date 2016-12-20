@@ -7,4 +7,9 @@ namespace :loader do
       importer.import_new_data_for(school)
     end
   end
+
+  desc 'Load schools csv[:file_path]'
+  task :import_schools_csv, [:file_path] => [:environment] do |_t, args|
+    Loader::Schools.load!(args[:file_path])
+  end
 end
