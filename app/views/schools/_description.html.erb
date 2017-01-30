@@ -12,7 +12,7 @@
   <p>
     <%= link_to('Official school website',
                 @school.website,
-                target: :new,
+                  target: :new,
                 property: "url") unless @school.website.blank? %>
   </p>
   <p>
@@ -24,11 +24,11 @@
     <% if @school.eco_school_status.present? %>
         <% case @school.eco_school_status
              when "bronze" %>
-            <a href="http://www.eco-schools.org.uk/applyforanaward/bronzeaward">Bronze</a> Eco-Schools award
+            <a href="http://www.eco-schools.org.uk/howitworks/the-awards/bronze-award/" target="new">Bronze</a> Eco-Schools award
         <% when "silver" %>
-            <a href="http://www.eco-schools.org.uk/applyforanaward/silveraward">Silver</a> Eco-Schools award
+            <a href="http://www.eco-schools.org.uk/howitworks/the-awards/silver-award/" target="new">Silver</a> Eco-Schools award
         <% when "green" %>
-            <a href="http://www.eco-schools.org.uk/applyforanaward/greenflag">Greenflag</a> Eco-Schools award
+            <a href="http://www.eco-schools.org.uk/howitworks/the-awards/green-flag-award/" target="new">Greenflag</a> Eco-Schools award
         <% end %>
     <% else %>
         Not yet enrolled in the <a href="http://www.eco-schools.org.uk/" target="_blank">Eco-Schools</a> award
