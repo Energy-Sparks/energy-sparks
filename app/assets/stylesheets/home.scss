@@ -1,12 +1,16 @@
 header {
   text-align: center;
-  background: $light-blue;
   color: white;
+  background-image: url("home-background.jpg");
+  background-size: contain;
+  background-position: center;
 }
+
 header .container {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
 header img {
   display: block;
   margin: 0 auto 20px;
