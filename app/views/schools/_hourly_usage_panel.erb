@@ -1,21 +1,31 @@
 <% if @school.meters?(supply) %>
   <div class="row">
-  <%= form_tag "", method: :get, id: "#{supply}-chart-filter", class: "pull-right" do %>
-      <%= hidden_field_tag :period, "hourly" %>
-      <%= hidden_field_tag :to_date, @to_date %>
-      <%= hidden_field_tag :supply, supply %>
-      <%= select_tag :meter, content_tag(:option,'All',:value=>"")+options_from_collection_for_select(@school.meters_for_supply(supply), :meter_no, :display_name, selected: params[:meter]), class: "meter-filter" %>
-  <% end %>
+    <div class="col-md-12">
+      <% last_full_week = last_full_week(supply) %>
+      <h5>Average hourly usage between <%= l last_full_week.first %> and <%= l last_full_week.last %></h5>
+
+      Showing average <%= supply %> usage by hour of the day, for weekdays and weekends
+      <div class="pull-right">
+      Show usage for <%= form_tag "", method: :get, id: "#{supply}-chart-filter" do %>
+          <%= hidden_field_tag :period, "hourly" %>
+          <%= hidden_field_tag :to_date, @to_date %>
+          <%= hidden_field_tag :supply, supply %>
+          <%= select_tag :meter, content_tag(:option,'All Meters',:value=>"")+options_from_collection_for_select(@school.meters_for_supply(supply), :meter_no, :display_name, selected: params[:meter]), class: "meter-filter" %>
+      <% end %>
+      </div>
+    </div>
   </div>
   <div class="row">
-  <%= hourly_usage_chart(supply, @to_date, params[:meter]) %>
+    <div class="col-md-12">
+      <%= hourly_usage_chart(supply, @to_date, params[:meter]) %>
+    </div>
   </div>
 <% else %>
   <h4><%= supply.capitalize %> usage data is not available</h4>
   <p>
-    Unfortunately we don't have any data for the supply from this school
+    Unfortunately we don't have any data for the gas supply from this school.
   </p>
   <p>
-    Some schools don't have smart meters installed for both gas and electricity
+    Some schools don't have smart meters installed for both their gas and electricity supply.
   </p>
 <% end %>
