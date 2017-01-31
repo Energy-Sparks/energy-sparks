@@ -3,24 +3,26 @@ class StatsController < ApplicationController
 
   skip_before_action :authenticate_user!
 
-  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date
+  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:meter_no
   def daily_usage
     precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
     this_week = school.daily_usage(
       supply: supply,
       dates: to_date - 6.days..to_date,
-      date_format: '%a %d/%m/%y'
+      date_format: '%a %d/%m/%y',
+      meter: meter
     ).map(&precision)
     previous_week = school.daily_usage(
       supply: supply,
-      dates: to_date - 13.days..to_date - 7.days
+      dates: to_date - 13.days..to_date - 7.days,
+      meter: meter
     ).map(&precision)
     previous_week_series = previous_week.map.with_index do |day, index|
       # this week's dates with previous week's usage
       [this_week[index][0], day[1]]
     end
     render json: [
-      { name: 'Usage', data: this_week },
+      { name: 'This week', data: this_week },
       { name: 'Previous week', data: previous_week_series }
     ]
   end

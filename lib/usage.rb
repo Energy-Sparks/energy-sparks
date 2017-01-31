@@ -3,11 +3,12 @@
 module Usage
   # daily_usage: get daily usage across all meters for a given
   # supply for a range of dates
-  def daily_usage(supply: nil, dates: nil, date_format: nil)
+  def daily_usage(supply: nil, dates: nil, date_format: nil, meter: nil)
     return nil unless dates
     datetime_range = (dates.first.beginning_of_day..dates.last.end_of_day)
     self.meter_readings
         .where(conditional_supply(supply))
+        .where(conditional_meter(meter))
         .group_by_day(:read_at, range: datetime_range, format: date_format)
         .sum(:value)
         .to_a

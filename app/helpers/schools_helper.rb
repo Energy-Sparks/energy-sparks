@@ -1,8 +1,9 @@
 module SchoolsHelper
-  def daily_usage_chart(supply, to_date)
+  def daily_usage_chart(supply, to_date, meter = nil)
     last_reading_date = @school.last_reading_date(supply, to_date)
     column_chart(
-      daily_usage_school_path(supply: supply, to_date: last_reading_date),
+      daily_usage_school_path(supply: supply, to_date: last_reading_date, meter: meter),
+      id: "#{supply}-chart",
       xtitle: 'Date',
       ytitle: 'kWh',
       colors: colours_for_supply(supply)
@@ -33,6 +34,11 @@ module SchoolsHelper
     [last_full_week.last, @school.daily_usage(supply: supply, dates: last_full_week)
                                  .inject(0) { |a, e| a + e[1] } / 5
     ]
+  end
+
+  def last_full_week(supply)
+    last_full_week = @school.last_full_week(supply)
+    last_full_week.present? ? last_full_week : nil
   end
 
   # get day last week with most usage
