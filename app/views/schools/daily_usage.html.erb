@@ -1,9 +1,15 @@
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1>Daily usage for <%= @school.name %></h1>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-12">
+
     <div class="card">
       <div class="card-header">
-        <h3>Daily power usage for <%= @school.name %></h3>
-        <ul class="nav nav-tabs card-header-tabs pull-md-left">
+        <ul class="nav nav-tabs card-header-tabs float-md-left">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#gas">Gas</a>
           </li>
@@ -12,20 +18,19 @@
           </li>
         </ul>
       </div>
+
       <div class="card-block">
         <div class="tab-content">
           <div class="tab-pane active" id="gas" role="tabpanel">
-            <%= daily_usage_chart(:gas, @to_date) %>
+            <%= render partial: 'schools/daily_usage_panel', locals: {supply: "gas"} %>
           </div>
           <div class="tab-pane" id="electricity" role="tabpanel">
-            <%= daily_usage_chart(:electricity, @to_date) %>
+            <%= render partial: 'schools/daily_usage_panel', locals: {supply: "electricity"} %>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<div class="other-actions">
-  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+    </div>
+    <%= link_to 'School homepage', school_path(@school), class: 'btn btn-secondary' %>
+  </div>
 </div>

@@ -1,8 +1,9 @@
 module SchoolsHelper
-  def daily_usage_chart(supply, to_date)
+  def daily_usage_chart(supply, to_date, meter = nil)
     last_reading_date = @school.last_reading_date(supply, to_date)
     column_chart(
-      daily_usage_school_path(supply: supply, to_date: last_reading_date),
+      daily_usage_school_path(supply: supply, to_date: last_reading_date, meter: meter),
+      id: "#{supply}-chart",
       xtitle: 'Date',
       ytitle: 'kWh',
       colors: colours_for_supply(supply)
