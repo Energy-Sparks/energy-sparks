@@ -13,7 +13,7 @@
             <div class="card-block">
               <p>
                 <% if current_user && current_user.manages_school?(@school.id) %>
-                    Recording activities will score you points for your energy saving efforts
+                    Recording energy-saving activities will score you points for your energy saving efforts
                 <% else %>
                     Schools score points and are awarded badges when they record their energy
                     saving activities
@@ -35,7 +35,7 @@
             <div class="card-block">
               <p>
                 <% if current_user && current_user.manages_school?(@school.id) %>
-                    You will be awarded badges for recording your activities
+                    You will be awarded badges for recording your energy-saving activities
                 <% else %>
                     Schools are awarded badges when they record their energy
                     saving efforts
@@ -70,7 +70,7 @@
           <div class="card">
             <div class="card-header">
               <h4 class="card-title">
-                Most recent activities
+                Your recent energy-saving activities
               </h4>
             </div>
             <div class="card-block">
