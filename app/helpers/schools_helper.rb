@@ -37,8 +37,7 @@ module SchoolsHelper
 
   def last_full_week(supply)
     last_full_week = @school.last_full_week(supply)
-    puts last_full_week.inspect
-    return last_full_week.present? ? last_full_week : nil
+    last_full_week.present? ? last_full_week : nil
   end
 
   # get day last week with most usage
