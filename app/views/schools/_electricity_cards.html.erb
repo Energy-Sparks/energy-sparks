@@ -16,12 +16,13 @@
             </h4>
           </div>
           <div class="card-block">
-            <h2>
-              <%= avg_elect[1].to_i unless avg_elect.nil? %></strong> kWh
-            </h2>
             <p>
-              are used on an average school day
+              Last week your school used an average of
             </p>
+            <h3>
+              <%= avg_elect[1].to_i unless avg_elect.nil? %></strong> kWh per day
+            </h3>
+
           </div>
           <div class="card-footer text-xs-right">
             <%= link_to('Daily usage',
@@ -36,12 +37,12 @@
             <h4 class="card-title">Did you know?</h4>
           </div>
           <div class="card-block">
-            <h2>
-              <%= day_most_usage(:electricity) %>
-            </h2>
             <p>
-              is the day most electricity is used
+              Last week your school used most energy on
             </p>
+            <h3>
+              <%= day_most_usage(:electricity) %>
+            </h3>
           </div>
           <div class="card-footer text-xs-right">
             <%= link_to('Hourly usage',
