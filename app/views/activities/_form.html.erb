@@ -22,13 +22,22 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :activity_type_id %>
+    <%= f.label :activity_category_id %>
     <%= f.select(
+      :activity_category_id,
+      options_from_collection_for_select(
+        ActivityCategory.all, 'id', 'name', activity.activity_category_id),
+        { include_blank: true },
+        {class: 'form-control'}
+      )
+    %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :activity_type_id %>
+    <%= f.grouped_collection_select(
           :activity_type_id,
-          options_from_collection_for_select(
-            ActivityType.active, 'id', 'name', @activity.activity_type_id ),
-          { include_blank: true },
-          { class: 'form-control' }
+          ActivityCategory.order(:name), :activity_types, :name, :id, :name, {}, {class: 'form-control'}
         )
     %>
   </div>
