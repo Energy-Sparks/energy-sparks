@@ -13,11 +13,11 @@ $ ->
       $('footer, body').removeClass('footer-position')
 
   # Execute on page load
-  footerPosition()
+  #footerPosition()
 
-  setTimeout (->
-    footerPosition()
-  ), 2500
+  #setTimeout (->
+  #  footerPosition()
+  #), 2500
 
-  $(window).resize ->
-    footerPosition()
+  #$(window).resize ->
+  #  footerPosition()

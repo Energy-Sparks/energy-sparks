@@ -9,7 +9,12 @@ namespace :loader do
   end
 
   desc 'Load schools csv[:file_path]'
-  task :import_schools_csv, [:file_path] => [:environment] do |_t, args|
+  task :import_schools, [:file_path] => [:environment] do |_t, args|
     Loader::Schools.load!(args[:file_path])
+  end
+
+  desc 'Load activities csv[:file_path]'
+  task :import_activities, [:file_path] => [:environment] do |_t, args|
+    Loader::Activities.load!(args[:file_path])
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161211154744) do
+ActiveRecord::Schema.define(version: 20170202123109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,19 +21,29 @@ ActiveRecord::Schema.define(version: 20161211154744) do
     t.string   "title"
     t.text     "description"
     t.date     "happened_on"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "activity_category_id"
+    t.index ["activity_category_id"], name: "index_activities_on_activity_category_id", using: :btree
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id", using: :btree
     t.index ["school_id"], name: "index_activities_on_school_id", using: :btree
+  end
+
+  create_table "activity_categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "activity_types", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.boolean  "active",      default: true
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "active",               default: true
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "activity_category_id"
     t.index ["active"], name: "index_activity_types_on_active", using: :btree
+    t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id", using: :btree
   end
 
   create_table "badges_sashes", force: :cascade do |t|
@@ -181,8 +191,10 @@ ActiveRecord::Schema.define(version: 20161211154744) do
     t.index ["school_id"], name: "index_users_on_school_id", using: :btree
   end
 
+  add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
   add_foreign_key "activities", "schools"
+  add_foreign_key "activity_types", "activity_categories"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
   add_foreign_key "schools", "calendars"

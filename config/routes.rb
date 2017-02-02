@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'help/(:help_page)', to: 'home#help', as: :help
 
   resources :activity_types
+  resources :activity_categories
   resources :calendars
   resources :schools do
     resources :activities
