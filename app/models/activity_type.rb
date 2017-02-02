@@ -24,4 +24,5 @@ class ActivityType < ApplicationRecord
   belongs_to :activity_category
   scope :active, -> { where(active: true) }
   validates_presence_of :name, :activity_category_id
+  validates_uniqueness_of :name, scope: :activity_category_id
 end

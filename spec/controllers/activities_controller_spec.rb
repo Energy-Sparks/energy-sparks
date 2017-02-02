@@ -24,7 +24,7 @@ RSpec.describe ActivitiesController, type: :controller do
   let(:activity_type) { FactoryGirl.create :activity_type }
   let(:activity_type2) { FactoryGirl.create :activity_type }
   let(:activity_category) { FactoryGirl.create :activity_category }
-  
+
   let(:valid_attributes) {
     { school_id: school.id,
       activity_type_id: activity_type.id,
