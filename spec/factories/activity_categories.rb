@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :activity_category do
-    name "Learning"
+    sequence(:name) {|n| "Category#{n}"}
   end
 end
