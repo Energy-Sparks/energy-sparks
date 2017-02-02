@@ -7,7 +7,7 @@ module Loader
       raise 'File not found' unless File.exist?(csv_file)
       CSV.foreach(csv_file, headers: true) do |row|
         category = ActivityCategory.find_or_create_by!(name: row['Activity Category'])
-        activity_type = ActivityType.find_or_create_by!(name: row['Activity Type'], activity_category: category)
+        ActivityType.find_or_create_by!(name: row['Activity Type'], activity_category: category)
       end
     end
   end
