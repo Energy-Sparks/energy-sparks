@@ -6,6 +6,7 @@ class Ability
     if user.admin?
       can :manage, Activity
       can :manage, ActivityType
+      can :manage, ActivityCategory
       can :manage, Calendar
       can :manage, School
       can :manage, User
