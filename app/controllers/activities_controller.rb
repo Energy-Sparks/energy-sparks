@@ -83,6 +83,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_params
-    params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on)
+    params.require(:activity).permit(:school_id, :activity_type_id, :activity_category_id, :title, :description, :happened_on)
   end
 end

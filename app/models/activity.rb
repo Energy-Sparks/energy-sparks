@@ -29,5 +29,5 @@ class Activity < ApplicationRecord
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type
   belongs_to :activity_category
-  validates_presence_of :school_id, :activity_type_id, :title, :happened_on
+  validates_presence_of :school_id, :activity_type_id, :activity_category_id, :title, :happened_on
 end
