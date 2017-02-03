@@ -16,7 +16,6 @@ set :use_sudo,        false
 set :stage,           :production
 set :deploy_via,      :remote_cache
 set :deploy_to,       "/home/#{fetch(:user)}/apps/#{fetch(:application)}"
-set :scm,             :git
 
 set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_rsa.pub) }
 
@@ -56,6 +55,17 @@ set :puma_error_log,          "#{release_path}/log/puma.access.log"
 set :puma_preload_app,        true
 set :puma_worker_timeout,     nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+
+desc "Check that we can access everything"
+task :check_write_permissions do
+  on roles(:all) do |host|
+    if test("[ -w #{fetch(:deploy_to)} ]")
+      info "#{fetch(:deploy_to)} is writable on #{host}"
+    else
+      error "#{fetch(:deploy_to)} is not writable on #{host}"
+    end
+  end
+end
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
