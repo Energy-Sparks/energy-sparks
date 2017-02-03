@@ -90,3 +90,12 @@ group :test do
   gem 'pickle'
   gem 'simplecov', :require => false, :group => :test
 end
+
+#Capistrano gems
+group :development do
+  gem 'capistrano',         require: false
+  gem 'capistrano-rvm',     require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma',   require: false
+end

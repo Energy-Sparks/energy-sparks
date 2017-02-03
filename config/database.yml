@@ -17,6 +17,13 @@ test: &test
   username: postgres
   password: pgdev
 
+staging:
+  <<: *default
+  database: <%= ENV['DB_NAME'] %>
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+
 production:
   <<: *default
   database: <%= ENV['DB_NAME'] %>
