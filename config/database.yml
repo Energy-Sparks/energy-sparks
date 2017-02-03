@@ -19,17 +19,17 @@ test: &test
 
 staging:
   <<: *default
-  database: <%= ENV['DB_NAME'] %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['STAGING_DB_NAME'] %>
+  host: <%= ENV['STAGING_DB_HOST'] %>
+  username: <%= ENV['STAGING_DB_USER'] %>
+  password: <%= ENV['STAGING_DB_PASSWORD'] %>
 
 production:
   <<: *default
-  database: <%= ENV['DB_NAME'] %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['PRODUCTION_DB_NAME'] %>
+  host: <%= ENV['PRODUCTION_DB_HOST'] %>
+  username: <%= ENV['PRODUCTION_DB_USER'] %>
+  password: <%= ENV['PRODUCTION_DB_PASSWORD'] %>
 
 cucumber:
   <<: *test
