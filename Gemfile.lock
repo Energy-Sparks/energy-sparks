@@ -46,6 +46,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    airbrussh (1.1.2)
+      sshkit (>= 1.6.1, != 1.7.0)
     ambry (1.0.0)
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
@@ -64,6 +66,25 @@ GEM
       uniform_notifier (~> 1.10.0)
     byebug (9.0.5)
     cancancan (1.15.0)
+    capistrano (3.7.2)
+      airbrussh (>= 1.0.0)
+      capistrano-harrow
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 1.9.0)
+    capistrano-bundler (1.2.0)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-harrow (0.5.3)
+    capistrano-rails (1.2.2)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+    capistrano3-puma (1.2.1)
+      capistrano (~> 3.0)
+      puma (>= 2.6)
     capybara (2.10.1)
       addressable
       mime-types (>= 1.16)
@@ -167,6 +188,9 @@ GEM
     multi_json (1.12.1)
     multi_test (0.1.2)
     multipart-post (2.0.0)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (4.0.1)
     nio4r (1.2.1)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -279,6 +303,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sshkit (1.11.5)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     sys-uname (1.0.2)
       ffi (>= 1.0.0)
     thor (0.19.1)
@@ -328,6 +355,11 @@ DEPENDENCIES
   bullet
   byebug
   cancancan
+  capistrano
+  capistrano-bundler
+  capistrano-rails
+  capistrano-rvm
+  capistrano3-puma
   chartkick
   climate_control
   coffee-rails (~> 4.2)
