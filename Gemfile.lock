@@ -170,6 +170,7 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (2.0.2)
+    libv8 (3.16.14.17)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -245,6 +246,7 @@ GEM
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     redcarpet (3.3.4)
+    ref (2.0.0)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
     rspec-core (3.5.2)
@@ -308,6 +310,9 @@ GEM
       net-ssh (>= 2.8.0)
     sys-uname (1.0.2)
       ffi (>= 1.0.0)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
+      ref
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
@@ -367,6 +372,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
+  execjs
   factory_girl_rails
   fakefs
   font-awesome-rails
@@ -391,6 +397,7 @@ DEPENDENCIES
   soda-ruby
   spring
   spring-watcher-listen (~> 2.0.0)
+  therubyracer
   trix
   turbolinks (~> 5)
   tzinfo-data

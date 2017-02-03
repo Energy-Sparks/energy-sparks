@@ -48,7 +48,8 @@ gem 'merit' # Reputation/achievements/rankings
 
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'execjs'
+gem 'therubyracer', platforms: :ruby
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
