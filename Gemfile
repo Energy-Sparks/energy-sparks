@@ -46,6 +46,7 @@ gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in de
 gem 'friendly_id', git: 'https://github.com/norman/friendly_id' # Pretties up URLs
 gem 'merit' # Reputation/achievements/rankings
 
+gem 'mailgun_rails'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'execjs'
