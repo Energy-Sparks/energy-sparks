@@ -4,7 +4,12 @@
     <% if @badges.empty? %>
         <p>No achievements have been awarded yet</p>
     <% else %>
-        <%= image_tag("#{@badges.last.image}_on.png", height: 100, width: 100) %>
+        <%= image_tag("#{@badges.last.image}_on.png", height: 100, width: 100, title: @badges.last.custom_fields[:title]) %>
+        <p>
+          <strong>
+            <%= @badges.last.custom_fields[:title] %>
+          </strong>
+        </p>
         <p>
           <%= link_to 'See all badges', achievements_school_path(@school) %>
         </p>
