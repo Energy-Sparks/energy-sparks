@@ -27,67 +27,42 @@ end
   {
     id: 1,
     name: 'enrolled',
-    description: 'You enrolled with EnergySparks.',
-    custom_fields: {}
+    description: 'Enrol with EnergySparks',
+    custom_fields: {
+        image: 'badges/bulb',
+        title: 'Welcome'
+    }
   }, {
     id: 2,
     name: 'ten-activities',
-    description: 'You\'ve recorded 10 activities!',
-    custom_fields: {}
+    description: 'Record 10 activities',
+    custom_fields: {
+        image: 'badges/paper',
+        title: 'Note Taker'
+    }
   }, {
-    id: 3,
-    name: 'weekly-participiation',
-    description: 'You\'ve logged in every day this week!',
-    custom_fields: {}
-  }, {
-    id: 4,
-    name: 'solar-panels',
-    description: 'Solar panels have been installed at your school.',
-    custom_fields: {}
-  }, {
-    id: 5,
-    name: 'eco-enrolled',
-    description: 'Your school enrolled in the eco-school programme.',
-    custom_fields: {}
-  }, {
-    id: 6,
+    id: 16,
     name: 'eco-status-green',
-    description: 'Your school reached the top level in the eco-school programme!',
-    custom_fields: {}
+    description: 'Achieve green flag status',
+    custom_fields: {
+        image: 'badges/bulb',
+        title: 'Green Flag Award'
+    }
   }, {
-    id: 7,
-    name: 'number-one',
-    description: 'You\'re number one!',
-    custom_fields: {}
+    id: 14,
+    name: 'eco-status-bronze',
+    description: 'Receive a bronze award',
+    custom_fields: {
+        image: 'badges/bulb',
+        title: 'Bronze Award'
+    }
   }, {
-    id: 8,
-    name: 'activity-per-week',
-    description: 'You recorded an activity every week last term.',
-    custom_fields: {}
-  }, {
-    id: 9,
-    name: 'weekly-energy-reduction',
-    description: 'You reduced your total energy usage last week.',
-    custom_fields: {}
-  }, {
-    id: 10,
-    name: 'electricity-reduction-10',
-    description: 'You reduced your electricity usage by 10%.',
-    custom_fields: {}
-  }, {
-    id: 11,
-    name: 'electricity-reduction-20',
-    description: 'You reduced your electricity usage by 20%.',
-    custom_fields: {}
-  }, {
-    id: 12,
-    name: 'gas-reduction-10',
-    description: 'You reduced your gas usage by 10%.',
-    custom_fields: {}
-  }, {
-    id: 13,
-    name: 'gas-reduction-20',
-    description: 'You reduced your gas usage by 20%.',
-    custom_fields: {}
+    id: 15,
+    name: 'eco-status-silver',
+    description: 'Receive a silver award',
+    custom_fields: {
+        image: 'badges/bulb',
+        title: 'Silver Award'
+    }
   }
 ].each { |attrs| ::Merit::Badge.create! attrs }

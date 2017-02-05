@@ -1,19 +1,18 @@
-<div>
-  <h4>Achievements</h3>
-  <% if @badges.empty? %>
-    <p>No achievements have been awarded yet</p>
-  <% else %>
-    <% @badges.in_groups_of(3).each do |group| %>
-      <div class='row'>
-        <% group.each do |badge| %>
-          <div class='col-xs-3'>
-            <% if badge %>
-              <%= image_tag(badge.image) %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h5>Latest Badge</h5>
+    <% if @badges.empty? %>
+        <p>No achievements have been awarded yet</p>
+    <% else %>
+        <%= image_tag("#{@badges.last.image}_on.png", height: 100, width: 100, title: @badges.last.custom_fields[:title]) %>
+        <p>
+          <strong>
+            <%= @badges.last.custom_fields[:title] %>
+          </strong>
+        </p>
+        <p>
+          <%= link_to 'See all badges', achievements_school_path(@school) %>
+        </p>
     <% end %>
-  <% end %>
-  <%= link_to 'View all', achievements_school_path(@school), class: 'btn btn-primary btn-sm pull-md-right' %>
+  </div>
 </div>
