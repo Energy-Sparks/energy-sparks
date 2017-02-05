@@ -99,6 +99,10 @@ class School < ApplicationRecord
       .map(&:badge)
   end
 
+  def points_since(since = 1.month.ago)
+    self.score_points.where("created_at > '#{since}'").sum(:num_points)
+  end
+
   def self.top_scored(dates: nil, limit: nil)
     if dates.present?
       start_date = dates.first.beginning_of_day
