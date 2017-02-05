@@ -26,7 +26,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools/leaderboard
   def leaderboard
-    @schools = School.top_scored
+    @schools = School.leaderboard
   end
 
   # GET /schools/new
