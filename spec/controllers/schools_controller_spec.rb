@@ -113,7 +113,7 @@ RSpec.describe SchoolsController, type: :controller do
         schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
 
         get :leaderboard
-        expect(School.top_scored.map(&:id)).to eq(schools.map(&:id))
+        expect(School.leaderboard.map(&:id)).to eq(schools.map(&:id))
       end
     end
 
@@ -186,6 +186,15 @@ RSpec.describe SchoolsController, type: :controller do
           put :update, params: { id: school.to_param, school: valid_attributes }
           expect(assigns(:school)).to eq(school)
         end
+
+        it "awards points when enrolled" do
+          school = FactoryGirl.create :school
+          put :update, params: { id: school.to_param, school: {enrolled: true} }
+          school.reload
+          expect(school.enrolled).to be(true)
+          expect(school.points).to eql(20)
+        end
+
 
         it "redirects to the school" do
           school = FactoryGirl.create :school

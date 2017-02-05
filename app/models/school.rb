@@ -103,12 +103,12 @@ class School < ApplicationRecord
     self.score_points.where("created_at > '#{since}'").sum(:num_points)
   end
 
-  def self.leaderboard()
+  def self.leaderboard
     School.select('schools.*, SUM(num_points) AS sum_points')
         .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
         .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
         .where("schools.enrolled = true")
-        .order('sum_points DESC')
+        .order('sum_points DESC NULLS LAST')
         .group('schools.id, merit_scores.sash_id')
   end
 

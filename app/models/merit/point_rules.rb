@@ -13,8 +13,9 @@ module Merit
     include Merit::PointRulesMethods
 
     def initialize
-      # Sign up to EnergySparks
-      score(20, ['schools#create', 'schools#update'], to: :itself, &:enrolled?)
+      # Enroll in EnergySparks
+      enrolled = lambda { |school| school.enrolled? }
+      score(20, to: :itself, on: ['schools#update'], &enrolled)
 
       # Sign up to eco-schools programme i.e. eco_school_status is not null
       #score 20, ['schools#create', 'schools#update'], to: :itself do |school|
