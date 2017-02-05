@@ -1,21 +1,42 @@
 <% content_for :page_title do %>
-  <%= @school.name %>: Achievements
+  <%= @school.name %>: Badges
 <% end %>
-<h1><%= @school.name %>: Achievements</h1>
+<div class="application container">
 
-<% if @badges.empty? %>
-  <p>No awards have been earnt yet</p>
-<% else %>
-  <% @badges.in_groups_of(6).each do |group| %>
-    <div class='row'>
-      <% group.each do |badge| %>
-        <div class='col-xs-2'>
-          <% if badge %>
-            <div><%= image_tag(badge.image) %></div>
-            <div><%= badge.name %></div>
-          <% end %>
-        </div>
-      <% end %>
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1>Badges</h1>
     </div>
-  <% end %>
-<% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <% if @badges.empty? %>
+          <p>No badges awarded yet</p>
+      <% else %>
+          <% @all_badges.in_groups_of(4, false).each do |group| %>
+            <div class="row">
+              <% group.each do |badge| %>
+                  <div class="col-md-3">
+                    <div class="card badge">
+                      <div class="card-block">
+                        <% image = @badges.include?(badge) ? "#{badge.image}_on.png" : "#{badge.image}_off.png" %>
+                        <%= image_tag(image,
+                                      height: 100, width: 100,
+                                      class: 'card-image-top d-block mx-auto',
+                                      title: badge.description) %>
+                        <h5 class="card-title text-sm-center"><%= badge.custom_fields[:title] %></h5>
+                        <p class="small text-sm-center"><%= badge.description %></p>
+                      </div>
+                    </div>
+                  </div>
+            <% end %>
+            </div>
+          <% end %>
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

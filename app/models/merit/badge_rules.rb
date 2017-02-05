@@ -22,17 +22,41 @@ module Merit
 
     def initialize
       # Sign up to EnergySparks
-      grant_on(['schools#create', 'schools#update'], to: :itself, badge: 'enrolled', temporary: true, &:enrolled?)
+      enrolled = lambda { |school| school.enrolled? }
+      grant_on(['schools#create', 'schools#update'], to: :itself, badge: 'enrolled', temporary: true, &enrolled)
 
-      # Sign up to eco-schools programme i.e. eco_school_status is not null
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-enrolled', temporary: true do |school|
-        school.eco_school_status.present?
+      #Rankings
+      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-status-bronze', temporary: true do |school|
+        school.eco_school_status == 'bronze'
       end
 
-      # Gain highest eco-school ranking
+      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-status-silver', temporary: true do |school|
+        school.eco_school_status == 'silver'
+      end
+
       grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-status-green', temporary: true do |school|
         school.eco_school_status == 'green'
       end
+
+      #Activity (paper)
+      #Record an activity
+      #Record n activities
+      #Record activity in every category
+      #Record all activity types in category
+      #Record one activity a week for n weeks
+      #
+      #Added an historical activity
+      #Added link and/or video to activity
+      #
+      #Site (bulb)
+      #Logged in
+      #Logged in n times? / Regular visitor
+      #Viewed leaderboard
+      #Early adopter (within first 6 months of ES) (special icon)
+      #
+      #Data (graph)
+      #Explored different meters? E.g. trigger when generate graphs & signed in?
+      #Viewed graphs
 
       # Record 10 activities
       grant_on 'activities#create', badge: 'ten-activities', multiple: true, to: :school do |activity|
