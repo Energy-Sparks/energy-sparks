@@ -8,6 +8,7 @@
 #  description          :text
 #  id                   :integer          not null, primary key
 #  name                 :string
+#  score                :integer
 #  updated_at           :datetime         not null
 #
 # Indexes
@@ -23,6 +24,7 @@
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
   scope :active, -> { where(active: true) }
-  validates_presence_of :name, :activity_category_id
+  validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
+  validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 end

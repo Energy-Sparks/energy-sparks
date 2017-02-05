@@ -24,7 +24,7 @@ RSpec.describe ActivityTypesController, type: :controller do
   # ActivityType. As you add validations to ActivityType, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { name: 'test name', activity_category_id: activity_category.id, description: 'test description', active: true }
+    { name: 'test name', activity_category_id: activity_category.id, description: 'test description', active: true, score: 10 }
   }
 
   let(:invalid_attributes) {

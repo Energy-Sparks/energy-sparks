@@ -4,7 +4,9 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Description</th>
+      <th>Category</th>
+      <th>Score</th>
+      <th>Enabled?</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -12,9 +14,10 @@
   <tbody>
     <% @activity_types.each do |activity_type| %>
       <tr class="<%= active(activity_type.active) %>" >
-        <td><%= activity_type.name %></td>
-        <td><%= activity_type.description %></td>
-        <td><%= link_to 'Show', activity_type, class: 'btn btn-info' %></td>
+        <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
+        <td><%= activity_type.activity_category.name %></td>
+        <td><%= activity_type.score %></td>
+        <td><%= activity_type.active %></td>
         <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary' %></td>
       </tr>
     <% end %>

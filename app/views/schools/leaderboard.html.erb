@@ -1,24 +1,45 @@
 <% content_for :page_title do %>
-  LeaderBoard
+    Scoreboard
 <% end %>
-<h1>Leaderboard</h1>
+<div class="application container">
 
-<table class='table table-condensed'>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Points</th>
-      <th>Rank</th>
-    </tr>
-  </thead>
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1>Scoreboard</h1>
+    </div>
+  </div>
 
-  <tbody>
-    <% @schools.each_with_index do |school, i| %>
+  <div class="row">
+    <table id='scoreboard' class='table'>
+      <thead>
       <tr>
-        <td><%= link_to school.name, school_path(school) %></td>
-        <td><%= school.sum_points %></td>
-        <td><%= i+1 %></td>
+        <th>#</th>
+        <th>School</th>
+        <th>Score</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
+
+      <tbody>
+      <% @schools.each_with_index do |school, i| %>
+          <tr>
+            <th scope="row"><%= i+1 %></th>
+            <td><%= link_to school.name, school_path(school) %></td>
+            <td>
+              <%= school.sum_points %>
+              &nbsp;
+              <% if school.points_since > 0 %>
+                  <i class="fa fa-arrow-up"></i>
+              <% end %>
+            </td>
+            <td>
+
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+

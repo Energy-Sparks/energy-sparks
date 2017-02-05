@@ -66,3 +66,17 @@
 
 }
 
+#scoreboard {
+  thead {
+    th {
+      background: $gasDark;
+      color: white;
+      font-weight: bold;
+    }
+  }
+  .fa-arrow-up {
+    color: $green;
+  }
+}
+
+
