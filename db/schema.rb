@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170202123109) do
+ActiveRecord::Schema.define(version: 20170205124035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20170202123109) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.integer  "activity_category_id"
+    t.integer  "score"
     t.index ["active"], name: "index_activity_types_on_active", using: :btree
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id", using: :btree
   end

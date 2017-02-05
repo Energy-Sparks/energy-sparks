@@ -5,6 +5,8 @@
     <tr>
       <th>Name</th>
       <th>Description</th>
+      <th>Score</th>
+      <th>Enabled</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -14,6 +16,8 @@
       <tr class="<%= active(activity_type.active) %>" >
         <td><%= activity_type.name %></td>
         <td><%= activity_type.description %></td>
+        <td><%= activity_type.score %></td>
+        <td><%= activity_type.active %></td>
         <td><%= link_to 'Show', activity_type, class: 'btn btn-info' %></td>
         <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary' %></td>
       </tr>

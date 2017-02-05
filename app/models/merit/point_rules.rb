@@ -17,20 +17,23 @@ module Merit
       score(20, ['schools#create', 'schools#update'], to: :itself, &:enrolled?)
 
       # Sign up to eco-schools programme i.e. eco_school_status is not null
-      score 20, ['schools#create', 'schools#update'], to: :itself do |school|
-        school.eco_school_status.present?
-      end
+      #score 20, ['schools#create', 'schools#update'], to: :itself do |school|
+      #  school.eco_school_status.present?
+      #end
 
       # Gain highest eco-school ranking
-      score 50, ['schools#create', 'schools#update'], to: :itself do |school|
-        school.eco_school_status == 'green'
-      end
+      #score 50, ['schools#create', 'schools#update'], to: :itself do |school|
+      #  school.eco_school_status == 'green'
+      #end
+
+      activity_score = lambda { |activity| activity.activity_type.score }
+      negativity_activity_score = lambda { |activity| -activity.activity_type.score }
 
       # Award points schools and for activities
-      score 10, to: :school, on: [
+      score activity_score, to: :school, on: [
         'activities#create'
       ]
-      score(-10, to: :school, on: [
+      score(negativity_activity_score, to: :school, on: [
         'activities#destroy'
       ])
     end

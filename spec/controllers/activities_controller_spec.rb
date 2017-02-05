@@ -94,10 +94,10 @@ RSpec.describe ActivitiesController, type: :controller do
           expect(assigns(:activity)).to be_persisted
         end
 
-        it 'adds 10 points to the school' do
+        it 'adds correct points to the school' do
           expect {
             post :create, params: { school_id: school.id, activity: valid_attributes }
-          }.to change { school.points }.by(10)
+          }.to change { school.points }.by(activity_type.score)
         end
 
         it "redirects to the activity" do
