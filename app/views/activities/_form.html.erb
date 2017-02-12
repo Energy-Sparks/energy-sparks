@@ -15,6 +15,10 @@
 
   <div class="form-group">
     <%= f.label :happened_on, "When did you do the activity?" %>
+    <p class="small">
+      You can record a recent activity or even record older activities to build up a record of all of the
+      energy saving activities you've carried out as a school
+    </p>
     <%= text_field_tag(:activity_date_picker,
       @activity.happened_on.try(:strftime, "%d/%m/%Y"),
       placeholder: 'select date',
@@ -25,6 +29,9 @@
 
   <div class="form-group">
     <%= f.label :activity_category_id %>
+    <p class="small">
+      Choose the category that best describes your activity
+    </p>
     <%= f.collection_select(
       :activity_category_id,
       ActivityCategory.all,
@@ -38,6 +45,9 @@
 
   <div class="form-group">
     <%= f.label :activity_type_id, "Activity" %>
+    <p class="small">
+      How have you organised that activity?
+    </p>
     <%= f.grouped_collection_select(
           :activity_type_id,
           ActivityCategory.order(:name), :activity_types, :name, :id, :name, {}, {class: 'form-control'}

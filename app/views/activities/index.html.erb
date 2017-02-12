@@ -4,26 +4,23 @@
 
 <div class="row padded-row">
   <div class="col-md-12">
-    <h1><%= @school.name %> Recent Activities</h1>
+    <h1>Energy saving activities at <%= @school.name %></h1>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-3">
-    <%= render partial: 'schools/description' %>
-  </div>
-  <div class="col-md-9 activity">
+  <div class="col-md-12 activity">
     <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.</p>
 
     <% @activities.each do |activity| %>
         <div class="row">
-          <div class="col-md-9">
-            <%= link_to activity.title, school_activity_path(@school, activity) %>
-          </div>
           <div class="col-md-3">
             <p>
-              <span class="text-muted small pull-right"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
+              <span class="text-muted small"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
             </p>
+          </div>
+          <div class="col-md-9">
+            <%= link_to activity.title, school_activity_path(@school, activity) %>
           </div>
         </div>
     <% end %>
@@ -32,14 +29,14 @@
 
   <% if current_user && current_user.manages_school?(@school.id) %>
       <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+      <%= link_to 'School homepage', school_path(@school), class: 'btn btn-secondary' %>
   <% end %>
 
     <% if !user_signed_in?  %>
-        <p><%= link_to "Sign in", new_user_session_path%> to record a new energy-saving activity that has taken place in your school
+        <p><%= link_to "Sign in", new_user_session_path%> to record a new energy saving activity that has taken place in your school
     <% end %>
-
 
   </div>
 </div>
 
-
+<div class="other-actions"></div>
