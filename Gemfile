@@ -26,6 +26,7 @@ gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
 
+gem "highcharts-rails"
 
 # User input
 gem 'trix' # Use Trix editor for activity descriptions

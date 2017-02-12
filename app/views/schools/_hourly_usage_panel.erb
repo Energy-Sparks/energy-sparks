@@ -1,23 +1,42 @@
 <% if @school.meters?(supply) %>
   <div class="row">
     <div class="col-md-12">
-      <% last_full_week = last_full_week(supply) %>
-      <h5>Average hourly usage between <%= l last_full_week.first %> and <%= l last_full_week.last %></h5>
-
-      Showing average <%= supply %> usage by hour of the day, for weekdays and weekends
-      <div class="pull-right">
-      Show usage for <%= form_tag "", method: :get, id: "#{supply}-chart-filter" do %>
+      <%= form_tag "", method: :get, id: "#{supply}-chart-filter" do %>
           <%= hidden_field_tag :period, "hourly" %>
-          <%= hidden_field_tag :to_date, @to_date %>
           <%= hidden_field_tag :supply, supply %>
-          <%= select_tag :meter, content_tag(:option,'All Meters',:value=>"")+options_from_collection_for_select(@school.meters_for_supply(supply), :meter_no, :display_name, selected: params[:meter]), class: "meter-filter" %>
+
+          <%= hidden_field_tag :first_date, @first_date %>
+          <%= hidden_field_tag :to_date, @to_date %>
+
+          <h5>
+            Compare hourly <%= supply %> usage
+          </h5>
+
+          <div class="row">
+            <div class="col-md-3">
+              <%= text_field_tag(:first_date_picker,
+                                 @first_date,
+                                 class: 'form-control form-control-sm'
+                  ) %>
+            </div>
+            <div class="col-md-1"><span><strong>AND</strong></span></div>
+            <div class="col-md-3">
+              <%= text_field_tag(:to_date_picker,
+                                 @to_date,
+                                 class: 'form-control form-control-sm'
+                  ) %>
+            </div>
+            <div class="col-md-2 pull-right">
+              <%= select_tag :meter, content_tag(:option,'All Meters',:value=>"")+options_from_collection_for_select(@school.meters_for_supply(supply), :meter_no, :display_name, selected: params[:meter]), class: "meter-filter" %>
+            </div>
+          </div>
       <% end %>
-      </div>
+
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <%= hourly_usage_chart(supply, @to_date, params[:meter]) %>
+      <%= compare_hourly_usage_chart(supply, @first_date, @to_date, params[:meter]) %>
     </div>
   </div>
 <% else %>
