@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get 'achievements'
       get 'usage'
       get 'daily_usage', to: 'stats#daily_usage'
+      get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
       get 'hourly_usage', to: 'stats#hourly_usage'
     end
   end

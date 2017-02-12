@@ -45,8 +45,10 @@
             </h3>
           </div>
           <div class="card-footer text-xs-right">
+            <% to_date = @school.last_reading_date(:electricity, Date.current)  %>
+            <% first_date = to_date.present? ? to_date - 1 : nil %>
             <%= link_to('Hourly usage',
-                          usage_school_path(@school, period: :hourly, to_date: avg_elect[0], anchor: :electricity),
+                          usage_school_path(@school, period: :hourly, first_date: first_date, to_date: to_date, anchor: :electricity),
                           class: 'btn btn-primary') unless avg_elect.nil?
               %>
           </div>

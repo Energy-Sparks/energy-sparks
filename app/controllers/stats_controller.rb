@@ -27,7 +27,26 @@ class StatsController < ApplicationController
     ]
   end
 
+  #compare hourly usage across two dates
+  # GET /schools/:id/compare_hourly_usage?supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date
+  def compare_hourly_usage
+    precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
+    first_date = school.hourly_usage_for_date(supply: supply,
+        date: Date.parse(params[:first_date]),
+        meter: meter
+    ).map(&precision)
+    to_date = school.hourly_usage_for_date(supply: supply,
+        date: Date.parse(params[:to_date]),
+        meter: meter
+    ).map(&precision)
+    render json: [
+        { name: params[:first_date], data: first_date },
+        { name: params[:to_date], data: to_date }
+    ]
+  end
+
   # GET /schools/:id/hourly_usage?supply=:supply&to_date=:to_date&meter=:meter_no
+  # compares hourly usage by weekday/weekend for last full week
   def hourly_usage
     week = Usage.this_week(to_date).to_a
     precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }

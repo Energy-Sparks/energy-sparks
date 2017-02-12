@@ -14,6 +14,21 @@ module Usage
         .to_a
   end
 
+  def hourly_usage_for_date(supply: nil, date: nil, meter: nil)
+    datetime_range = (date.beginning_of_day..date.end_of_day)
+    self.meter_readings
+        .where(conditional_supply(supply))
+        .where(conditional_meter(meter))
+        .group_by_minute(:read_at,
+            range: datetime_range,
+            format: '%H:%M',
+            series: false
+        )
+        .sum(:value)
+        .to_a
+  end
+
+  # compare weekday/weekend hourly usage
   # hourly_usage: get average reading at the same time
   # across all meters for a given supply for a range of dates
   def hourly_usage(supply: nil, dates: nil, meter: nil)

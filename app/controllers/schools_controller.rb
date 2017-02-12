@@ -83,6 +83,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/usage
   def usage
+    set_first_date
     set_to_date
     render "#{params[:period]}_usage"
   end
@@ -111,6 +112,15 @@ private
   def meter_params
     [:id, :meter_no, :meter_type, :active, :name]
   end
+
+  def set_first_date(default = Date.current - 2.days)
+    begin
+      @first_date = Date.parse params[:first_date]
+    rescue
+      @first_date = default
+    end
+  end
+
 
   def set_to_date(default = Date.current - 1.day)
     begin

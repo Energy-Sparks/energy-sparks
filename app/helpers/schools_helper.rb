@@ -15,10 +15,28 @@ module SchoolsHelper
     )
   end
 
+  def compare_hourly_usage_chart(supply, first_date, to_date, meter = nil)
+    line_chart(compare_hourly_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter),
+          id: "#{supply}-chart",
+          xtitle: 'Time of day',
+          ytitle: 'kWh',
+          colors: colours_for_supply(supply),
+          library: {
+            xAxis: {
+                tickmarkPlacement: 'on'
+            },
+            yAxis: {
+                lineWidth: 1,
+                tickInterval: 2
+            }
+          }
+    )
+  end
+
+
   def hourly_usage_chart(supply, to_date, meter = nil)
     last_reading_date = @school.last_reading_date(supply, to_date)
-    line_chart(
-      hourly_usage_school_path(supply: supply, to_date: last_reading_date, meter: meter),
+    line_chart(hourly_usage_school_path(supply: supply, to_date: last_reading_date, meter: meter),
       id: "#{supply}-chart",
       xtitle: 'Time of day',
       ytitle: 'kWh',
