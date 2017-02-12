@@ -1,6 +1,6 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :achievements, :leaderboard]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :achievements]
 
   # GET /schools
