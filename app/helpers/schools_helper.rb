@@ -28,7 +28,8 @@ module SchoolsHelper
               tickmarkPlacement: 'on'
           },
           yAxis: {
-              lineWidth: 1
+              lineWidth: 1,
+              tickInterval: 2
           }
       }
     )
