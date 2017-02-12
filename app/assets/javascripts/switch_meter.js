@@ -5,5 +5,6 @@ $(function() {
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(this.form).serialize();
         chart.updateData(new_source);
+        chart.getChartObject().showLoading();
     });
 });
