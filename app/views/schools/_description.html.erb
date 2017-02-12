@@ -1,26 +1,21 @@
 
   <address property="address" typeof="PostalAddress">
-    <p>
+    <p class="small">
       <span property="streetAddress"><%= @school.address %></span>
       <br>
       <span property="postalCode"><%= @school.postcode %></span>
     </p>
   </address>
-  <p>
+  <p class="small">
     <%= @school.school_type.try(:titleize) %> school
   </p>
-  <p>
+  <p class="small">
     <%= link_to('Official school website',
                 @school.website,
                   target: :new,
                 property: "url") unless @school.website.blank? %>
   </p>
-  <p>
-    <%= link_to('Department for Education',
-                "http://www.education.gov.uk/edubase/establishment/summary.xhtml?urn=#{@school.urn}",
-                target: :new, property: "sameAs") %>
-  </p>
-  <p>
+  <p class="small">
     <% if @school.eco_school_status.present? %>
         <% case @school.eco_school_status
              when "bronze" %>
