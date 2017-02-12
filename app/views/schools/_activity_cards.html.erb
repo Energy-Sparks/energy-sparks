@@ -75,7 +75,7 @@
             </div>
             <div class="card-block">
               <ul class="list-unstyled">
-                <% @activities[0..2].each do |activity| %>
+                <% @activities[0..1].each do |activity| %>
                     <li>
                       <%= link_to activity.title, school_activity_path(@school, activity) %>
                     </li>
@@ -83,6 +83,9 @@
               </ul>
             </div>
             <div class="card-footer text-xs-right">
+              <% if current_user && current_user.manages_school?(@school) %>
+                <%= link_to 'New activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+              <% end %>
               <%= link_to 'View activities', school_activities_path(@school), class: 'btn btn-primary' %>
             </div>
           </div>
