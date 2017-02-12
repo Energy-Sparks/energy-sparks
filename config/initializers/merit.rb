@@ -43,7 +43,7 @@ end
   }, {
     id: 16,
     name: 'eco-status-green',
-    description: 'Achieve green flag status',
+    description: 'Achieve Ecoschool green flag status',
     custom_fields: {
         image: 'badges/bulb',
         title: 'Green Flag Award'
@@ -51,7 +51,7 @@ end
   }, {
     id: 14,
     name: 'eco-status-bronze',
-    description: 'Receive a bronze award',
+    description: 'Receive an Ecoschool bronze award',
     custom_fields: {
         image: 'badges/bulb',
         title: 'Bronze Award'
@@ -59,7 +59,7 @@ end
   }, {
     id: 15,
     name: 'eco-status-silver',
-    description: 'Receive a silver award',
+    description: 'Receive an Ecoschool silver award',
     custom_fields: {
         image: 'badges/bulb',
         title: 'Silver Award'
