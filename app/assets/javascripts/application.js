@@ -4,6 +4,9 @@
 //= require tether.min.js
 //= require bootstrap
 //= require turbolinks
+//= require highcharts
+//= require highcharts/modules/exporting
+//= require highcharts/modules/offline-exporting
 //= require chartkick
 //= require trix
 //= require_tree .

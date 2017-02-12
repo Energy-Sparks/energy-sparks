@@ -6,7 +6,12 @@ module SchoolsHelper
       id: "#{supply}-chart",
       xtitle: 'Date',
       ytitle: 'kWh',
-      colors: colours_for_supply(supply)
+      colors: colours_for_supply(supply),
+      library: {
+          yAxis: {
+              lineWidth: 1
+          }
+      }
     )
   end
 
@@ -17,7 +22,15 @@ module SchoolsHelper
       id: "#{supply}-chart",
       xtitle: 'Time of day',
       ytitle: 'kWh',
-      colors: colours_for_supply(supply)
+      colors: colours_for_supply(supply),
+      library: {
+          xAxis: {
+              tickmarkPlacement: 'on'
+          },
+          yAxis: {
+              lineWidth: 1
+          }
+      }
     )
   end
 
