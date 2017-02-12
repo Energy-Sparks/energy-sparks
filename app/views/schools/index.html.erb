@@ -6,6 +6,12 @@ Schools
     <div class="row padded-row">
       <div class="col-lg-12">
         <h2>Participating Schools</h2>
+
+        <p>
+          These schools are using Energy Sparks to reduce their energy usage. See their usage data, compare
+          scores and achievements and learn about their energy saving activities
+        </p>
+
       </div>
     </div>
     <% @schools_enrolled.each_slice(3) do |row| %>
@@ -29,6 +35,9 @@ Schools
     <div class="row padded-row">
       <div class="col-lg-12">
         <h3>Eligible Schools</h3>
+        <p>
+          The following schools have not yet enrolled. Read <%= link_to "how to get involved", enrol_path %>.
+        </p>
       </div>
     </div>
     <% @schools_not_enrolled.each_slice(3) do |row| %>

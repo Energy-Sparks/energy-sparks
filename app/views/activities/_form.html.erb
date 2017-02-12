@@ -1,8 +1,10 @@
 <%= form_for([@school, activity], html: {class: "activity-form"}) do |f| %>
   <% if activity.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(activity.errors.count, "error") %> prohibited this activity from being saved:</h2>
-
+      <h2>I'm afraid we couldn't save your activity</h2>
+      <p>
+        Please correct the following <%= pluralize(activity.errors.count, "error") %>
+      </p>
       <ul>
       <% activity.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -12,7 +14,11 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :happened_on %>
+    <%= f.label :happened_on, "When did you do the activity?" %>
+    <p class="small">
+      You can record a recent activity or even record older activities to build up a record of all of the
+      energy saving activities you've carried out as a school
+    </p>
     <%= text_field_tag(:activity_date_picker,
       @activity.happened_on.try(:strftime, "%d/%m/%Y"),
       placeholder: 'select date',
@@ -23,6 +29,9 @@
 
   <div class="form-group">
     <%= f.label :activity_category_id %>
+    <p class="small">
+      Choose the category that best describes your activity
+    </p>
     <%= f.collection_select(
       :activity_category_id,
       ActivityCategory.all,
@@ -35,7 +44,10 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :activity_type_id %>
+    <%= f.label :activity_type_id, "Activity" %>
+    <p class="small">
+      How have you organised that activity?
+    </p>
     <%= f.grouped_collection_select(
           :activity_type_id,
           ActivityCategory.order(:name), :activity_types, :name, :id, :name, {}, {class: 'form-control'}
@@ -44,17 +56,28 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :title %>
+    <%= f.label :title%>
+    <p class="small">
+      This is how your activity will appear in your activity list, so choose a clear title
+    </p>
     <%= f.text_field :title, class: 'form-control'  %>
   </div>
 
   <div class="form-group">
-    <%= f.label :description %>
+    <%= f.label :description, "Tell us more about what you did" %>
     <%= f.hidden_field :description %>
+    <p class="small">
+      Please tell us a bit more about your activity. Insert a link to your school website if you’ve published information, photos or videos
+      about your activity online.
+    </p>
+    <p class="small">
+      You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.
+    </p>
     <trix-editor input="activity_description"></trix-editor>
   </div>
 
   <div class="actions">
-    <%= f.submit class: 'btn btn-primary' %>
+    <%= f.submit "Save activity", class: 'btn btn-primary' %>
+    <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
   </div>
 <% end %>

@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.school.present?
+      return resource.school
+    end
+    root_path
+  end
+
 private
 
   def set_ga_code

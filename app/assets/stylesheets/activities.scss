@@ -1,3 +1,27 @@
 // Place all the styles related to the Activities controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.activity-form {
+  label {
+    font-weight: bold;
+  }
+}
+
+trix-editor {
+  min-height: 320px !important;
+}
+
+trix-toolbar .button_groups {
+  button.code {
+    display: none;
+  }
+  button.strike {
+    display: none;
+  }
+  button.increase {
+    display: none;
+  }
+  button.decrease {
+    display: none;
+  }
+}

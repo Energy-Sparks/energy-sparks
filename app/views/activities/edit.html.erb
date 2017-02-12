@@ -1,7 +1,21 @@
-<h1>Editing activity for <%= @school.name %></h1>
+<% content_for :page_title do %>
+    Update activity
+<% end %>
 
-<%= render 'form', activity: @activity %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1>Update your activity</h1>
+    <p>
+      Use the form below to update your activity
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= render 'form', activity: @activity %>
+  </div>
+</div>
 
 <div class="other-actions">
-  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
 </div>

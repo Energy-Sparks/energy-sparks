@@ -1,7 +1,21 @@
-<h1>New activity for <%= @school.name %></h1>
+<% content_for :page_title do %>
+    Record activity
+<% end %>
 
-<%= render 'form', activity: @activity %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1>Record a new energy saving activity</h1>
+    <p>
+      Tell us about an energy saving activity at your school. Every activity you record will score points for your school.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= render 'form', activity: @activity %>
+  </div>
+</div>
 
 <div class="other-actions">
-  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
 </div>
