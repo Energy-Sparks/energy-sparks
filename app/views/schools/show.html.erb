@@ -6,6 +6,14 @@
   <div class="row padded-row">
     <div class="col-md-12">
       <h1 property="name"><%= @school.name %></h1>
+      <p>
+        <%- if can? :manage, @school -%>
+          Record your energy saving activities, check your scores and latest achievements, and explore your energy usage data.
+        <% else %>
+          This school is using Energy Sparks to become more energy efficient. Explore their energy saving activities,
+          see their scores and achievements, and explore their energy usage data.
+        <%- end -%>
+      </p>
      </div>
   </div>
   <div class="row">
