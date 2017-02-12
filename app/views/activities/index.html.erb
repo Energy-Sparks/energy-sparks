@@ -34,6 +34,9 @@
       <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success' %>
   <% end %>
 
+    <% if !user_signed_in?  %>
+        <p>Is this your school? <%= link_to "Sign in", new_user_session_path%> to record a new energy-saving activity that has taken place in your school
+    <% end %>
 
 
   </div>

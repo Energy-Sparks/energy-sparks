@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     if resource.school.present?
       return resource.school
     end
-    return root_path
+    root_path
   end
 
 private
