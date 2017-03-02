@@ -15,7 +15,7 @@ class ActivityCategory < ApplicationRecord
 
   def sorted_activity_types
     types = activity_types.order(:name).to_a
-    other = types.index { |x| x.name.downcase == "other"}
+    other = types.index { |x| x.name.casecmp("other") == 0 }
     types.insert(-1, types.delete_at(other)) if other.present?
     types
   end
