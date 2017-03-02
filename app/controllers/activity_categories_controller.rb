@@ -5,7 +5,7 @@ class ActivityCategoriesController < ApplicationController
   # GET /activity_categories
   # GET /activity_categories.json
   def index
-    @activity_categories = ActivityCategory.all
+    @activity_categories = ActivityCategory.all.order(:name)
   end
 
   # GET /activity_categories/1

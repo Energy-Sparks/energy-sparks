@@ -34,7 +34,7 @@
     </p>
     <%= f.collection_select(
       :activity_category_id,
-      ActivityCategory.all,
+      ActivityCategory.all.order(:name),
       :id,
       :name,
       {},
@@ -50,7 +50,7 @@
     </p>
     <%= f.grouped_collection_select(
           :activity_type_id,
-          ActivityCategory.order(:name), :activity_types, :name, :id, :name, {}, {class: 'form-control'}
+          ActivityCategory.order(:name), :sorted_activity_types, :name, :id, :name, {}, {class: 'form-control'}
         )
     %>
   </div>
