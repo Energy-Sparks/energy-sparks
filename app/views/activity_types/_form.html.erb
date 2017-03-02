@@ -1,7 +1,7 @@
 <%= form_for(activity_type) do |f| %>
   <% if activity_type.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(activity_type.errors.count, "error") %> prohibited this activity_type from being saved:</h2>
+      <h2><%= pluralize(activity_type.errors.count, "error") %> prohibited this activity from being saved:</h2>
 
       <ul>
       <% activity_type.errors.full_messages.each do |message| %>

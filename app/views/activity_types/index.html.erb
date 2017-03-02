@@ -1,10 +1,10 @@
-<h1>Activity Types</h1>
+<h1>Activities</h1>
 
 <table class="table table-condensed">
   <thead>
     <tr>
-      <th>Name</th>
       <th>Category</th>
+      <th>Name</th>
       <th>Score</th>
       <th>Enabled?</th>
       <th colspan="2"></th>
@@ -14,8 +14,8 @@
   <tbody>
     <% @activity_types.each do |activity_type| %>
       <tr class="<%= active(activity_type.active) %>" >
-        <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
         <td><%= activity_type.activity_category.name %></td>
+        <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
         <td><%= activity_type.score %></td>
         <td><%= activity_type.active %></td>
         <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary' %></td>
@@ -26,4 +26,4 @@
 
 <br>
 
-<%= link_to 'New Activity Type', new_activity_type_path, class: 'btn btn-primary' %>
+<%= link_to 'New Activity', new_activity_type_path, class: 'btn btn-primary' %>
