@@ -21,13 +21,22 @@ require 'rails_helper'
 RSpec.describe ActivitiesController, type: :controller do
   let(:school) { FactoryGirl.create :school }
   let(:different_school) { FactoryGirl.create :school }
-  let(:activity_type) { FactoryGirl.create :activity_type }
-  let(:activity_type2) { FactoryGirl.create :activity_type }
   let(:activity_category) { FactoryGirl.create :activity_category }
+  let(:activity_type) { FactoryGirl.create(:activity_type, name: "One", activity_category: activity_category) }
+  let(:activity_type2) { FactoryGirl.create(:activity_type, name: "Two", activity_category: activity_category) }
 
   let(:valid_attributes) {
     { school_id: school.id,
       activity_type_id: activity_type.id,
+      activity_category_id: activity_category.id,
+      title: 'test title',
+      happened_on: Date.today
+    }
+  }
+
+  let(:valid_attributes2) {
+    { school_id: school.id,
+      activity_type_id: activity_type2.id,
       activity_category_id: activity_category.id,
       title: 'test title',
       happened_on: Date.today
@@ -100,10 +109,44 @@ RSpec.describe ActivitiesController, type: :controller do
           }.to change { school.points }.by(activity_type.score)
         end
 
+        it 'adds badge when activity created' do
+          post :create, params: { school_id: school.id, activity: valid_attributes }
+          school.reload
+          expect( school.badges.first.name ).to eql('first-activity')
+        end
+
         it "redirects to the activity" do
           post :create, params: { school_id: school.id, activity: valid_attributes }
           expect(response).to redirect_to(school_activity_path(school, Activity.last))
         end
+
+        it "assigns all-activities badge" do
+          post :create, params: { school_id: school.id, activity: valid_attributes }
+          #should now have first activity
+          post :create, params: { school_id: school.id, activity: valid_attributes2 }
+          #should now have all-activities, and all-categories
+          school.reload
+          expect( school.activities.length ).to eql(2)
+          expect( school.badges.length ).to eql(3)
+          expect( school.badges[0].name ).to eql('first-activity')
+          expect( school.badges[1].name ).to eql('all-categories')
+          expect( school.badges[2].name ).to eql('all-activities')
+        end
+
+        it "assigns badge for 10 activities" do
+          9.times do
+            post :create, params: { school_id: school.id, activity: valid_attributes }
+          end
+          #should now have
+          #first activity, all-activities, all-categories
+          school.reload
+          expect( school.badges.length ).to eql(3)
+          post :create, params: { school_id: school.id, activity: valid_attributes }
+          school.reload
+          expect( school.badges.length ).to eql(4)
+          expect( school.badges.last.name ).to eql('ten-activities')
+        end
+
       end
 
       context "with invalid params" do

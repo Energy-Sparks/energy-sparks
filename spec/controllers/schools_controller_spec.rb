@@ -195,6 +195,13 @@ RSpec.describe SchoolsController, type: :controller do
           expect(school.points).to eql(20)
         end
 
+        it "awards a badge when enrolled" do
+          school = FactoryGirl.create :school
+          put :update, params: { id: school.to_param, school: {enrolled: true} }
+          school.reload
+          expect(school.badges.first.name).to eql('enrolled')
+        end
+
 
         it "redirects to the school" do
           school = FactoryGirl.create :school

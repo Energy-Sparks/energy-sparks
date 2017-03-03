@@ -40,9 +40,29 @@ module Merit
 
       #Activity (paper)
       #Record an activity
-      #Record n activities
-      #Record activity in every category
-      #Record all activity types in category
+      grant_on 'activities#create', badge: 'first-activity', to: :school, temporary: true do |activity|
+        activity.school.activities.count >= 1
+      end
+
+      # Record n activities
+      # Record 10 activities
+      grant_on 'activities#create', badge: 'ten-activities', multiple: true, to: :school do |activity|
+        activity.school.activities.count.remainder(10).zero?
+      end
+
+      #Record an activity in every category
+      grant_on 'activities#create', badge: 'all-categories', to: :school, temporary: true do |activity|
+        counts = activity.school.activities.group(:activity_category_id).count
+        counts.keys.length == ActivityCategory.count
+      end
+
+      #Record one of every type of activity
+      grant_on 'activities#create', badge: 'all-activities', to: :school, temporary: true do |activity|
+        counts = activity.school.activities.group(:activity_type_id).count
+        counts.keys.length == ActivityType.count
+      end
+
+      #Record all activities within a category (except, "Other")
       #Record one activity a week for n weeks
       #
       #Added an historical activity
@@ -57,11 +77,6 @@ module Merit
       #Data (graph)
       #Explored different meters? E.g. trigger when generate graphs & signed in?
       #Viewed graphs
-
-      # Record 10 activities
-      grant_on 'activities#create', badge: 'ten-activities', multiple: true, to: :school do |activity|
-        activity.school.activities.count.remainder(10).zero?
-      end
     end
   end
 end
