@@ -10,8 +10,10 @@
         <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
         <div class="dropdown-menu" aria-labelledby="aboutDropDown">
           <%= link_to "About", about_path, class: 'dropdown-item' %>
-          <%= link_to "Contact", contact_path, class: 'dropdown-item' %>
           <%= link_to "Enrol", enrol_path, class: 'dropdown-item' %>
+          <%= link_to "Getting Started", getting_started_path, class: 'dropdown-item' %>
+          <%= link_to "Points and badges", points_and_badges_path, class: 'dropdown-item' %>
+          <%= link_to "Contact", contact_path, class: 'dropdown-item' %>
         </div>
       </li>
       <% if user_signed_in? && current_user.admin? %>
