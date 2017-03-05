@@ -70,6 +70,16 @@ end
       }
   },
   {
+      id: 6,
+      name: 'evidence',
+      description: 'Add a link to a web page, photo or video',
+      custom_fields: {
+          image: 'badges/paper',
+          title: 'Evidence'
+      }
+  },
+
+  {
       id: 16,
       name: 'eco-status-green',
       description: 'Achieve Ecoschool green flag status',

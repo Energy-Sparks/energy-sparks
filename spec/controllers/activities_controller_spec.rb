@@ -147,6 +147,12 @@ RSpec.describe ActivitiesController, type: :controller do
           expect( school.badges.last.name ).to eql('ten-activities')
         end
 
+        it "assigns evidence badge when there's a link" do
+          valid_attributes[:description] = "This is a test. <a href='http://example.org'>link</a>."
+          post :create, params: { school_id: school.id, activity: valid_attributes }
+          school.reload
+          expect( school.badges.last.name ).to eql('evidence')
+        end
       end
 
       context "with invalid params" do

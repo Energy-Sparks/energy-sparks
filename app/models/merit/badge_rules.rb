@@ -51,23 +51,30 @@ module Merit
       end
 
       #Record an activity in every category
-      grant_on 'activities#create', badge: 'all-categories', to: :school, temporary: true do |activity|
+      #FIX Record all activities within a category (except, "Other")
+      grant_on ['activities#create', 'activities#update'], badge: 'all-categories', to: :school, temporary: true do |activity|
         counts = activity.school.activities.group(:activity_category_id).count
         counts.keys.length == ActivityCategory.count
       end
 
       #Record one of every type of activity
-      grant_on 'activities#create', badge: 'all-activities', to: :school, temporary: true do |activity|
+      grant_on ['activities#create', 'activities#update'], badge: 'all-activities', to: :school, temporary: true do |activity|
         counts = activity.school.activities.group(:activity_type_id).count
         counts.keys.length == ActivityType.count
       end
 
-      #Record all activities within a category (except, "Other")
-      #Record one activity a week for n weeks
-      #
+      #These need to be scoped to a term
+      #Record at least one activity a week for 8 weeks. Permanent. Sharing
+      #Continuing to record at least one activity a week for 4 weeks. Temporary. Energy Monitor
+
+      #Added link and/or video to activity. Evidence
+      grant_on ['activities#create', 'activities#update'], badge: 'evidence', to: :school do |activity|
+        /<a href=/.match(activity.description).present?
+      end
+
+      #Record an "Other" activity?
       #Added an historical activity
-      #Added link and/or video to activity
-      #
+
       #Site (bulb)
       #Logged in
       #Logged in n times? / Regular visitor
