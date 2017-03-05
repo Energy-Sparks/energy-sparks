@@ -1,5 +1,6 @@
 class ActivityTypesController < ApplicationController
   load_and_authorize_resource
+  skip_before_action :authenticate_user!, only: [:show]
   before_action :set_activity_type, only: [:show, :edit, :update, :destroy]
 
   # GET /activity_types

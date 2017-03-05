@@ -1,5 +1,6 @@
 class ActivityCategoriesController < ApplicationController
   load_and_authorize_resource
+  skip_before_action :authenticate_user!, only: [:index]
   before_action :set_activity_category, only: [:show, :edit, :update, :destroy]
 
   # GET /activity_categories

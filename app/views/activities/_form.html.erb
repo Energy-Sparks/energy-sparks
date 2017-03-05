@@ -17,7 +17,7 @@
     <%= f.label :happened_on, "When did you do the activity?" %>
     <p class="small">
       You can record a recent activity or even record older activities to build up a record of all of the
-      energy saving activities you've carried out as a school
+      energy saving activities you've carried out as a school.
     </p>
     <%= text_field_tag(:activity_date_picker,
       @activity.happened_on.try(:strftime, "%d/%m/%Y"),

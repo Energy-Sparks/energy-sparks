@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
   get 'team', to: 'home#team'
+  get 'getting-started', to: 'home#getting_started'
+  get 'points-and-badges', to: 'home#badges'
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 

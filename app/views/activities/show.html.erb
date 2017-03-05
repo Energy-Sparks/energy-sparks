@@ -17,7 +17,7 @@
     </p>
 
     <p>
-      Activity category: <%= @activity.activity_category.name %>, <%= @activity.activity_type.name %>
+      Activity category: <%= @activity.activity_category.name %>, <%= link_to @activity.activity_type.name, activity_type_path(@activity.activity_type) %>
     </p>
   </div>
 </div>
