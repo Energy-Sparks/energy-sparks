@@ -5,7 +5,7 @@
         <p>No badges have been awarded yet</p>
     <% else %>
         <%= link_to achievements_school_path(@school) do %>
-        <%= image_tag("#{@badges.last.image}_on.png", height: 100, width: 100, title: @badges.last.custom_fields[:title]) %>
+        <%= image_tag("#{@badges.first.image}_on.png", height: 100, width: 100, title: @badges.first.custom_fields[:title]) %>
         <% end %>
         <p>
           <%= link_to 'See all badges', achievements_school_path(@school) %>
