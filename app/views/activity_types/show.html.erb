@@ -1,44 +1,57 @@
 <% content_for :page_title do %>
-    Activity Type: @activity_type.name
+    Activity Type: <%= @activity_type.name %>
 <% end %>
 
 <div class="row padded-row">
   <div class="col-md-12">
-    <h1><%= @activity_type.name %></h1>
+    <h1><%= @activity_type.activity_category.name %></h1>
+
+    <h3><%= @activity_type.name %></h3>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
+
     <% if @activity_type.description.present? %>
       <p><%= @activity_type.description %></p>
     <% else %>
-      <p><em>No description given, edit the activity type to add notes</em></p>
+      <p><em>No description given</em></p>
     <% end %>
 
-    <p>
-      <strong>Active:</strong>: <%= @activity_type.active %>
-    </p>
+    <h5>
+      Did you know?
+    </h5>
+    <ul>
+      <li>Recording this activity will score you <strong><%= @activity_type.score %></strong> points?</li>
+      <li><strong>
+          <%= Activity.select(:school_id).where(activity_type: @activity_type).distinct.count %></strong> schools have record this activity</li>
+      <li>This activity has been recorded <strong>
+        <%= Activity.where(activity_type: @activity_type).count %> times so far</li>
 
-    <p>
-      <strong>Number of schools that have recorded this activity:</strong>
-      <%= Activity.select(:school_id).where(activity_type: @activity_type).distinct.count %>
-
-    </p>
-    <p>
-      <strong>
-      Number of this type of activity recorded:</strong>
-      <%= Activity.where(activity_type: @activity_type).count %>
-    </p>
-
-
-    <div class="other-actions">
-      <%= link_to 'Edit', edit_activity_type_path(@activity_type), class: 'btn btn-primary' %>
-      <%= link_to 'All Types', activity_types_path, class: 'btn btn-secondary'  %>
-    </div>
-
+    </ul>
   </div>
 
 </div>
+
+<% if can? :manage, ActivityType %>
+    <div class="row">
+      <div class="col-md-12">
+
+        <p>
+          <strong>Currently active:</strong> <%= @activity_type.active %>
+        </p>
+
+        <div class="other-actions">
+          <%= link_to 'Edit', edit_activity_type_path(@activity_type), class: 'btn btn-primary' %>
+          <%= link_to 'All Types', activity_types_path, class: 'btn btn-secondary'  %>
+        </div>
+
+      </div>
+
+    </div>
+
+<% end %>
+
 
 
