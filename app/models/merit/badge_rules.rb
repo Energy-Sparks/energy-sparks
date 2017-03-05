@@ -95,8 +95,6 @@ module Merit
       #Data (graph)
       #Explored different meters? E.g. trigger when generate graphs & signed in?
       #Viewed graphs
-
-
     end
   end
 end
