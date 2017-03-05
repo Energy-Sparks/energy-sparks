@@ -31,7 +31,8 @@
 
   <div class="form-group">
     <%= f.label :description %>
-    <%= f.text_area :description, class: 'form-control' %>
+    <%= f.hidden_field :description %>
+    <trix-editor input="activity_type_description"></trix-editor>
   </div>
 
     <div class="form-group">

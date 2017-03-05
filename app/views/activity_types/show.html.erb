@@ -11,25 +11,34 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 activity_type">
 
     <% if @activity_type.description.present? %>
-      <p><%= @activity_type.description %></p>
+      <%= raw @activity_type.description %>
     <% else %>
       <p><em>No description given</em></p>
     <% end %>
 
+  </div>
+
+</div>
+
+<div class="row padded-row">
+  <div class="col-md-12">
     <h5>
       Did you know?
     </h5>
     <ul>
       <li>Recording this activity will score you <strong><%= @activity_type.score %></strong> points?</li>
       <li><strong>
-          <%= Activity.select(:school_id).where(activity_type: @activity_type).distinct.count %></strong> schools have record this activity</li>
+        <%= Activity.select(:school_id).where(activity_type: @activity_type).distinct.count %></strong> schools have record this activity</li>
       <li>This activity has been recorded <strong>
         <%= Activity.where(activity_type: @activity_type).count %> times so far</li>
 
     </ul>
+
+    <%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary'  %>
+
   </div>
 
 </div>
@@ -37,7 +46,7 @@
 <% if can? :manage, ActivityType %>
     <div class="row">
       <div class="col-md-12">
-
+        <h5>Admin Tools</h5>
         <p>
           <strong>Currently active:</strong> <%= @activity_type.active %>
         </p>
