@@ -25,44 +25,102 @@ end
 # if you don't "Id can't be blank (Ambry::AmbryError)" is thrown
 [
   {
-    id: 1,
-    name: 'enrolled',
-    description: 'Enrol with EnergySparks',
-    custom_fields: {
-        image: 'badges/bulb',
-        title: 'Welcome'
-    }
-  }, {
-    id: 2,
-    name: 'ten-activities',
-    description: 'Record 10 activities',
-    custom_fields: {
-        image: 'badges/paper',
-        title: 'Note Taker'
-    }
-  }, {
-    id: 16,
-    name: 'eco-status-green',
-    description: 'Achieve Ecoschool green flag status',
-    custom_fields: {
-        image: 'badges/green_award',
-        title: 'Green Flag Award'
-    }
-  }, {
-    id: 14,
-    name: 'eco-status-bronze',
-    description: 'Receive an Ecoschool bronze award',
-    custom_fields: {
-        image: 'badges/bronze_award',
-        title: 'Bronze Award'
-    }
-  }, {
-    id: 15,
-    name: 'eco-status-silver',
-    description: 'Receive an Ecoschool silver award',
-    custom_fields: {
-        image: 'badges/silver_award',
-        title: 'Silver Award'
-    }
+      id: 1,
+      name: 'enrolled',
+      description: 'Enrol with EnergySparks',
+      custom_fields: {
+          image: 'badges/bulb',
+          title: 'Welcome'
+      }
+  },
+  {
+      id: 2,
+      name: 'ten-activities',
+      description: 'Record 10 activities',
+      custom_fields: {
+          image: 'badges/paper',
+          title: 'Note Taker'
+      }
+  },
+  {
+      id: 3,
+      name: 'first-activity',
+      description: 'Record your first activity',
+      custom_fields: {
+          image: 'badges/paper',
+          title: 'Getting started'
+      }
+  },
+  {
+      id: 4,
+      name: 'all-categories',
+      description: 'Record one activity in each category',
+      custom_fields: {
+          image: 'badges/paper',
+          title: 'Action Plan'
+      }
+  },
+  {
+      id: 5,
+      name: 'all-activities',
+      description: 'Record every type of activity',
+      custom_fields: {
+          image: 'badges/paper',
+          title: 'Active School'
+      }
+  },
+  {
+      id: 6,
+      name: 'evidence',
+      description: 'Add a link to a web page, photo or video',
+      custom_fields: {
+          image: 'badges/paper',
+          title: 'Evidence'
+      }
+  },
+  {
+      id: 7,
+      name: 'first-steps',
+      description: 'Sign in for the first time',
+      custom_fields: {
+          image: 'badges/bulb',
+          title: 'First Steps'
+      }
+  },
+  {
+      id: 8,
+      name: 'player',
+      description: 'Explore the score board',
+      custom_fields: {
+          image: 'badges/bulb',
+          title: 'Player'
+      }
+  },
+  {
+      id: 16,
+      name: 'eco-status-green',
+      description: 'Achieve Ecoschool green flag status',
+      custom_fields: {
+          image: 'badges/green_award',
+          title: 'Green Flag Award'
+      }
+  },
+  {
+      id: 14,
+      name: 'eco-status-bronze',
+      description: 'Receive an Ecoschool bronze award',
+      custom_fields: {
+          image: 'badges/bronze_award',
+          title: 'Bronze Award'
+      }
+  },
+  {
+      id: 15,
+      name: 'eco-status-silver',
+      description: 'Receive an Ecoschool silver award',
+      custom_fields: {
+          image: 'badges/silver_award',
+          title: 'Silver Award'
+      }
   }
 ].each { |attrs| ::Merit::Badge.create! attrs }

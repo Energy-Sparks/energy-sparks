@@ -21,6 +21,6 @@ private
   end
 
   def current_school
-    current_user.school if current_user.school_admin?
+    current_user.school if current_user && current_user.school_admin?
   end
 end

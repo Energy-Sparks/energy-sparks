@@ -27,6 +27,10 @@ class SchoolsController < ApplicationController
 
   # GET /schools/leaderboard
   def leaderboard
+    #Added so merit can access the current user. Seems to require a variable with same name
+    #as controller
+    @school = current_user
+
     @schools = School.leaderboard
   end
 

@@ -15,7 +15,9 @@
 # The :temporary option indicates that if the condition doesn't hold but the
 # badge is granted, then it's removed. It's false by default (badges are kept
 # forever).
-
+#
+#
+# Note: changing the ordering here may impact some of the unit tests...
 module Merit
   class BadgeRules
     include Merit::BadgeRulesMethods
@@ -40,28 +42,64 @@ module Merit
 
       #Activity (paper)
       #Record an activity
-      #Record n activities
-      #Record activity in every category
-      #Record all activity types in category
-      #Record one activity a week for n weeks
-      #
-      #Added an historical activity
-      #Added link and/or video to activity
-      #
-      #Site (bulb)
-      #Logged in
-      #Logged in n times? / Regular visitor
-      #Viewed leaderboard
-      #Early adopter (within first 6 months of ES) (special icon)
-      #
-      #Data (graph)
-      #Explored different meters? E.g. trigger when generate graphs & signed in?
-      #Viewed graphs
+      grant_on 'activities#create', badge: 'first-activity', to: :school, temporary: true do |activity|
+        activity.school.activities.count >= 1
+      end
 
+      # Record n activities
       # Record 10 activities
       grant_on 'activities#create', badge: 'ten-activities', multiple: true, to: :school do |activity|
         activity.school.activities.count.remainder(10).zero?
       end
+
+      #Record an activity in every category
+      #FIX Record all activities within a category (except, "Other")
+      grant_on ['activities#create', 'activities#update'], badge: 'all-categories', to: :school, temporary: true do |activity|
+        counts = activity.school.activities.group(:activity_category_id).count
+        counts.keys.length == ActivityCategory.count
+      end
+
+      #Record one of every type of activity
+      grant_on ['activities#create', 'activities#update'], badge: 'all-activities', to: :school, temporary: true do |activity|
+        counts = activity.school.activities.group(:activity_type_id).count
+        counts.keys.length == ActivityType.count
+      end
+
+      #These need to be scoped to a term
+      #Record at least one activity a week for 8 weeks. Permanent. Sharing
+      #Continuing to record at least one activity a week for 4 weeks. Temporary. Energy Monitor
+
+      #Added link and/or video to activity. Evidence
+      grant_on ['activities#create', 'activities#update'], badge: 'evidence', to: :school do |activity|
+        /<a href=/.match(activity.description).present?
+      end
+
+      #Record an "Other" activity?
+
+      #Activities
+      #Added an historical activity
+      #But historical activities (>2 months ago) shouldn't score points
+
+      #Site (bulb)
+      #Logged in. Welcome!
+      #Logged in n times? / Regular visitor
+      grant_on 'sessions#create', badge: 'first-steps', model_name: 'User', to: :school do |user|
+        user.present? && user.school_admin? && user.sign_in_count > 0
+      end
+
+      #Site (bulb)
+      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school do |user|
+        user.present? && user.school_admin? && user.school.enrolled?
+      end
+
+      #Player, Viewed leaderboard
+
+      #Competitor
+      #Winner
+
+      #Data (graph)
+      #Explored different meters? E.g. trigger when generate graphs & signed in?
+      #Viewed graphs
     end
   end
 end
