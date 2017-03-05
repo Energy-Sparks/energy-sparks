@@ -78,7 +78,15 @@ end
           title: 'Evidence'
       }
   },
-
+  {
+      id: 7,
+      name: 'first-steps',
+      description: 'Sign in for the first time',
+      custom_fields: {
+          image: 'badges/bulb',
+          title: 'First Steps'
+      }
+  },
   {
       id: 16,
       name: 'eco-status-green',

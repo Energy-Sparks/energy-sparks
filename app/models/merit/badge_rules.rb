@@ -73,17 +73,30 @@ module Merit
       end
 
       #Record an "Other" activity?
+
+      #Activities
       #Added an historical activity
+      #But historical activities (>2 months ago) shouldn't score points
 
       #Site (bulb)
-      #Logged in
+      #Logged in. Welcome!
       #Logged in n times? / Regular visitor
-      #Viewed leaderboard
-      #Early adopter (within first 6 months of ES) (special icon)
-      #
+      grant_on 'sessions#create', badge: 'first-steps', model_name: 'User', to: :school do |user|
+        user.present? && user.school_admin? && user.sign_in_count > 0
+      end
+
+      #Site (bulb)
+      #Spark, first 10 schools
+      #Player, Viewed leaderboard
+
+      #Competitor
+      #Winner
+
       #Data (graph)
       #Explored different meters? E.g. trigger when generate graphs & signed in?
       #Viewed graphs
+
+
     end
   end
 end
