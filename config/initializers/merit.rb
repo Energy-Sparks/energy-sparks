@@ -88,6 +88,15 @@ end
       }
   },
   {
+      id: 8,
+      name: 'player',
+      description: 'Explore the score board',
+      custom_fields: {
+          image: 'badges/bulb',
+          title: 'Player'
+      }
+  },
+  {
       id: 16,
       name: 'eco-status-green',
       description: 'Achieve Ecoschool green flag status',

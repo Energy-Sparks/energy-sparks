@@ -15,7 +15,9 @@
 # The :temporary option indicates that if the condition doesn't hold but the
 # badge is granted, then it's removed. It's false by default (badges are kept
 # forever).
-
+#
+#
+# Note: changing the ordering here may impact some of the unit tests...
 module Merit
   class BadgeRules
     include Merit::BadgeRulesMethods
@@ -86,7 +88,11 @@ module Merit
       end
 
       #Site (bulb)
-      #Spark, first 10 schools
+      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school  do |user|
+        binding.pry
+        user.present? && user.school_admin? && user.school.enrolled?
+      end
+
       #Player, Viewed leaderboard
 
       #Competitor
