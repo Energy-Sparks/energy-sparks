@@ -8,11 +8,11 @@
       </h3>
       <%= school.address %> <%= school.postcode %>
     <% else %>
-        <h5 class="card-title">
+        <h6 class="card-title">
           <%= link_to school_path(school), class: 'school-card' do %>
               <%= school.name %>
           <% end -%>
-        </h5>
+        </h6>
     <% end %>
   </div>
 </div>
