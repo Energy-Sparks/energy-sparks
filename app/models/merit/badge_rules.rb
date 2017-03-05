@@ -88,8 +88,7 @@ module Merit
       end
 
       #Site (bulb)
-      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school  do |user|
-        binding.pry
+      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school do |user|
         user.present? && user.school_admin? && user.school.enrolled?
       end
 
