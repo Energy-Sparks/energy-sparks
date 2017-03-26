@@ -9,7 +9,7 @@ class StatsController < ApplicationController
     this_week = school.daily_usage(
       supply: supply,
       dates: to_date - 6.days..to_date,
-      date_format: '%a %d/%m/%y',
+      date_format: '%A',
       meter: meter
     ).map(&precision)
     previous_week = school.daily_usage(
@@ -23,7 +23,7 @@ class StatsController < ApplicationController
     end
     render json: [
       { name: 'This week', data: this_week },
-      { name: 'Previous week', data: previous_week_series }
+      { name: 'Last week', data: previous_week_series }
     ]
   end
 
@@ -31,17 +31,19 @@ class StatsController < ApplicationController
   # GET /schools/:id/compare_hourly_usage?supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date
   def compare_hourly_usage
     precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
+    from = Date.parse(params[:first_date])
+    to = Date.parse(params[:to_date])
     first_date = school.hourly_usage_for_date(supply: supply,
-        date: Date.parse(params[:first_date]),
+        date: from,
         meter: meter
     ).map(&precision)
     to_date = school.hourly_usage_for_date(supply: supply,
-        date: Date.parse(params[:to_date]),
+        date: to,
         meter: meter
     ).map(&precision)
     render json: [
-        { name: params[:first_date], data: first_date },
-        { name: params[:to_date], data: to_date }
+        { name: from.strftime('%A, %d %B %Y'), data: first_date },
+        { name: to.strftime('%A, %d %B %Y'), data: to_date }
     ]
   end
 
