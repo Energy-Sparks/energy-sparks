@@ -1,5 +1,4 @@
 class ReportsController < AdminController
-
   def index
   end
 
