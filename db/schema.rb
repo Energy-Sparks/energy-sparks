@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170205124035) do
+ActiveRecord::Schema.define(version: 20170611111653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,14 +146,16 @@ ActiveRecord::Schema.define(version: 20170205124035) do
     t.string   "postcode"
     t.integer  "eco_school_status"
     t.string   "website"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.boolean  "enrolled",          default: false
-    t.integer  "urn",                               null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.boolean  "enrolled",            default: false
+    t.integer  "urn",                                 null: false
     t.integer  "sash_id"
-    t.integer  "level",             default: 0
+    t.integer  "level",               default: 0
     t.integer  "calendar_id"
     t.string   "slug"
+    t.string   "gas_dataset"
+    t.string   "electricity_dataset"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id", using: :btree
     t.index ["sash_id"], name: "index_schools_on_sash_id", using: :btree
     t.index ["urn"], name: "index_schools_on_urn", unique: true, using: :btree

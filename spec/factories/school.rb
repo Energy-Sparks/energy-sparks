@@ -5,6 +5,8 @@ FactoryGirl.define do
     school_type :primary
     enrolled true
     postcode 'ab1 2cd'
+    gas_dataset 'gas-data'
+    electricity_dataset 'electricity-data'
     sash
 
     trait :with_badges do

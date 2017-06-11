@@ -2,21 +2,23 @@
 #
 # Table name: schools
 #
-#  address           :text
-#  calendar_id       :integer
-#  created_at        :datetime         not null
-#  eco_school_status :integer
-#  enrolled          :boolean          default(FALSE)
-#  id                :integer          not null, primary key
-#  level             :integer          default(0)
-#  name              :string
-#  postcode          :string
-#  sash_id           :integer
-#  school_type       :integer
-#  slug              :string
-#  updated_at        :datetime         not null
-#  urn               :integer          not null
-#  website           :string
+#  address             :text
+#  calendar_id         :integer
+#  created_at          :datetime         not null
+#  eco_school_status   :integer
+#  electricity_dataset :string
+#  enrolled            :boolean          default(FALSE)
+#  gas_dataset         :string
+#  id                  :integer          not null, primary key
+#  level               :integer          default(0)
+#  name                :string
+#  postcode            :string
+#  sash_id             :integer
+#  school_type         :integer
+#  slug                :string
+#  updated_at          :datetime         not null
+#  urn                 :integer          not null
+#  website             :string
 #
 # Indexes
 #
