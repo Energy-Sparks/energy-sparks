@@ -56,7 +56,7 @@ module SchoolsHelper
   end
 
   def colours_for_supply(supply)
-    supply == "electricity" ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffac21)
+    supply == "electricity" ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffee8f)
   end
 
   # get last full week's average daily usage
