@@ -31,6 +31,10 @@ Rails.application.routes.draw do
   devise_for :users, skip: :sessions
   scope :admin do
     resources :users
+    get 'reports', to: 'reports#index'
+    get 'reports/loading', to: 'reports#loading'
   end
+
+
 
 end

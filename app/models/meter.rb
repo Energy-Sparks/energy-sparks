@@ -29,6 +29,15 @@ class Meter < ApplicationRecord
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
 
+  def first_reading
+    meter_readings.order('read_at ASC').limit(1).first
+  end
+
+  def first_read
+    reading = first_reading
+    reading.present? ? reading.read_at : nil
+  end
+
   def latest_reading
     meter_readings.order('read_at DESC').limit(1).first
   end
