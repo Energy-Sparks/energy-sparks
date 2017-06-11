@@ -5,35 +5,35 @@
 
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1>Badges</h1>
+      <h1><%= @school.name %> Badges</h1>
+      <p><%= link_to @school.name, school_path(@school) %> are earning badges when they record their activities using EnergySparks.</p>
+      <p>As they earn badges they will light up on this page. Badges that are still to be earned are shown to help them plan
+      their next achievements.</p>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <% if @badges.empty? %>
-          <p>No badges awarded yet</p>
-      <% else %>
-          <% @all_badges.in_groups_of(4, false).each do |group| %>
-            <div class="row">
-              <% group.each do |badge| %>
-                  <div class="col-md-3">
-                    <div class="card badge">
-                      <div class="card-block">
-                        <% image = @badges.include?(badge) ? "#{badge.image}_on.png" : "#{badge.image}_off.png" %>
-                        <%= image_tag(image,
-                                      height: 100, width: 100,
-                                      class: 'card-image-top d-block mx-auto',
-                                      title: badge.description) %>
-                        <h5 class="card-title text-sm-center"><%= badge.custom_fields[:title] %></h5>
-                        <p class="small text-sm-center"><%= badge.description %></p>
-                      </div>
+      <% @all_badges.in_groups_of(4, false).each do |group| %>
+          <div class="row">
+            <% group.each do |badge| %>
+                <div class="col-md-3">
+                  <div class="card badge">
+                    <div class="card-block">
+                      <% image = @badges.include?(badge) ? "#{badge.image}_on.png" : "#{badge.image}_off.png" %>
+                      <%= image_tag(image,
+                                    height: 100, width: 100,
+                                    class: 'card-image-top d-block mx-auto',
+                                    title: badge.description) %>
+                      <h5 class="card-title text-sm-center"><%= badge.custom_fields[:title] %></h5>
+                      <p class="small text-sm-center"><%= badge.description %></p>
                     </div>
                   </div>
+                </div>
             <% end %>
-            </div>
-          <% end %>
+          </div>
       <% end %>
+
       <%= link_to 'School homepage', school_path(@school), class: 'btn btn-secondary' %>
 
     </div>
