@@ -65,12 +65,12 @@ module Loader
       SODA::Client.new(domain: ENV["SOCRATA_STORE"], app_token: ENV["SOCRATA_TOKEN"])
     end
 
-    def dataset(_school, type)
+    def dataset(school, type)
       case type
       when "electricity"
-        return ENV["SOCRATA_ELECTRICITY_DATASET"]
+        return school.electricity_dataset || ENV["SOCRATA_ELECTRICITY_DATASET"]
       when "gas"
-        return ENV["SOCRATA_GAS_DATASET"]
+        return school.gas_dataset || ENV["SOCRATA_GAS_DATASET"]
       else
         raise "unknown meter type"
       end

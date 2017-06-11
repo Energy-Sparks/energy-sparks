@@ -109,6 +109,8 @@ private
       :website,
       :enrolled,
       :urn,
+      :gas_dataset,
+      :electricity_dataset,
       meters_attributes: meter_params
     )
   end

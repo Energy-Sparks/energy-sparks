@@ -56,10 +56,24 @@ describe 'Loader::EnergyImporter' do
 
   it "should query correct dataset" do
     with_modified_env(@env) do
-      expect(@importer.dataset(nil, "electricity")).to eql("fqa5-b8ri")
-      expect(@importer.dataset(nil, "gas")).to eql("rd4k-3gss")
-      expect { @importer.dataset(nil, :foo) }.to raise_error(RuntimeError)
+      expect(@importer.dataset(@school, "electricity")).to eql("fqa5-b8ri")
+      expect(@importer.dataset(@school, "gas")).to eql("rd4k-3gss")
+      expect { @importer.dataset(@school, :foo) }.to raise_error(RuntimeError)
     end
+  end
+
+  it "should allow default dataset to be overridden" do
+    @school.update_attributes!({
+      "gas_dataset" => "gas-id",
+      "electricity_dataset" => "electricity-id"
+    })
+
+    with_modified_env(@env) do
+      expect(@importer.dataset(@school, "electricity")).to eql("electricity-id")
+      expect(@importer.dataset(@school, "gas")).to eql("gas-id")
+      expect { @importer.dataset(@schoo, :foo) }.to raise_error(RuntimeError)
+    end
+
   end
 
   it "should retrieve results" do
