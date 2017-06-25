@@ -92,7 +92,8 @@ describe 'Usage' do
       end
       it "returns the last date on/before the date specified" do
         expect(school.last_reading_date(:electricity, Date.today)).to eq Date.today - 1.days
-        expect(school.last_reading_date(:electricity, Date.today - 8.days)).to eq Date.today - 8.days
+        #should be the day before
+        expect(school.last_reading_date(:electricity, Date.today - 8.days)).to eq Date.today - 9.days
       end
     end
   end
@@ -130,6 +131,10 @@ describe 'Usage' do
       end
       it "returns an array whose second element is the value" do
         expect(school.day_most_usage(:electricity)[1]).to be_a_kind_of BigDecimal
+      end
+      it "returns the expected value" do
+        expect(school.day_most_usage(:electricity)[1].to_i).to eql(650)
+        expect(school.day_most_usage(:electricity)[0]).to eql(Date.yesterday)
       end
     end
   end
