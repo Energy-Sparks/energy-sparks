@@ -61,6 +61,16 @@ module Usage
         .try(:to_date)
   end
 
+  def earliest_reading_date(supply)
+    self.meter_readings
+        .where(conditional_supply(supply))
+        .order(read_at: :asc)
+        .limit(1)
+        .first
+        .try(:[], 'read_at')
+        .try(:to_date)
+  end
+
   def last_n_days_with_readings(supply, window = 7, to_date = Date.current)
     latest = self.last_reading_date(supply, to_date)
     latest.nil? ? nil : latest - window.days..latest
