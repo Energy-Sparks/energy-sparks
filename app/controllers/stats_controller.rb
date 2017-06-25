@@ -42,8 +42,9 @@ class StatsController < ApplicationController
         meter: meter
     ).map(&precision)
     render json: [
-        { name: from.strftime('%A, %d %B %Y'), data: first_date },
-        { name: to.strftime('%A, %d %B %Y'), data: to_date }
+        { name: to.strftime('%A, %d %B %Y'), data: to_date },
+        { name: from.strftime('%A, %d %B %Y'), data: first_date }
+
     ]
   end
 

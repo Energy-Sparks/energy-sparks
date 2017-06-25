@@ -1,29 +1,32 @@
 $(document).on("turbolinks:load", function() {
 
-    $("#first_date_picker").datepicker(
+    $(".first-date-picker").datepicker(
     {
         dateFormat: 'DD, d MM yy',
         altFormat: 'yy-mm-dd',
         altField: "#first_date",
 //        minDate: -42,
         maxDate: -1,
-        orientation: 'bottom'
+        orientation: 'bottom',
+        changeMonth: true,
+        changeYear: true
     });
 
-    $("#to_date_picker").datepicker(
+    $(".to-date-picker").datepicker(
         {
             dateFormat: 'DD, d MM yy',
             altFormat: 'yy-mm-dd',
             altField: "#to_date",
 //            minDate: -42,
             maxDate: -1,
-            orientation: 'bottom'
-    });
+            orientation: 'bottom',
+            changeMonth: true,
+            changeYear: true
+        });
 
 });
 
 function updateChart(el) {
-    console.log(el.id);
     chart_id = el.form.id.replace("-filter", "");
     chart = Chartkick.charts[chart_id];
     current_source = chart.getDataSource();
@@ -34,10 +37,10 @@ function updateChart(el) {
 $(document).on('change', '.meter-filter', function() {
     updateChart(this);
 });
-$(document).on('change', '#first_date_picker', function() {
+$(document).on('change', '.first-date-picker', function() {
     updateChart(this);
 });
-$(document).on('change', '#to_date_picker', function() {
+$(document).on('change', '.to-date-picker', function() {
     updateChart(this);
 });
 
