@@ -36,37 +36,18 @@ module SchoolsHelper
   end
 
 
-  def hourly_usage_chart(supply, to_date, meter = nil)
-    last_reading_date = @school.last_reading_date(supply, to_date)
-    line_chart(hourly_usage_school_path(supply: supply, to_date: last_reading_date, meter: meter),
-      id: "#{supply}-chart",
-      xtitle: 'Time of day',
-      ytitle: 'kWh',
-      colors: colours_for_supply(supply),
-      library: {
-          xAxis: {
-              tickmarkPlacement: 'on'
-          },
-          yAxis: {
-              lineWidth: 1,
-              tickInterval: 2
-          }
-      }
-    )
-  end
-
   def colours_for_supply(supply)
-    supply == "electricity" ? %w(#232b49 #3bc0f0) : %w(#ee7723 #ffee8f)
+    supply == "electricity" ? %w(#232b49 #3bc0f0) : %w(#ff4500 #ffac21)
   end
 
-  # get last full week's average daily usage
-  def average_weekday_usage(supply)
-    last_full_week = @school.last_full_week(supply)
-    return nil unless last_full_week
-    # return the Friday's date and avarage usage
-    # average = daily usage figures, summed, divided by 5
-    [last_full_week.last, @school.daily_usage(supply: supply, dates: last_full_week)
-                                 .inject(0) { |a, e| a + e[1] } / 5
+  # get n days average daily usage
+  def average_usage(supply, window = 7)
+    last_n_days = @school.last_n_days_with_readings(supply, window)
+    return nil unless last_n_days
+    # return the latest date and average usage
+    # average = daily usage figures, summed, divided by window
+    [last_n_days.last, @school.daily_usage(supply: supply, dates: last_n_days)
+                                 .inject(0) { |a, e| a + e[1] } / window
     ]
   end
 

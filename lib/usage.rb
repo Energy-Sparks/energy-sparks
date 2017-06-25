@@ -47,16 +47,33 @@ module Usage
         .to_a
   end
 
-  # last_reading: get date of the last reading on or before the given date
-  def last_reading_date(supply, to_date)
+  # Get date of the last reading up to the given date
+  # We take the start of the day because we're always interested in a full day
+  # of readings. Want to avoid showing updates when we might be loading data.
+  def last_reading_date(supply, to_date = Date.current)
     self.meter_readings
         .where(conditional_supply(supply))
-        .where('read_at <= ?', to_date.end_of_day)
+        .where('read_at <= ?', to_date.beginning_of_day)
         .order(read_at: :desc)
         .limit(1)
         .first
         .try(:[], 'read_at')
         .try(:to_date)
+  end
+
+  def earliest_reading_date(supply)
+    self.meter_readings
+        .where(conditional_supply(supply))
+        .order(read_at: :asc)
+        .limit(1)
+        .first
+        .try(:[], 'read_at')
+        .try(:to_date)
+  end
+
+  def last_n_days_with_readings(supply, window = 7, to_date = Date.current)
+    latest = self.last_reading_date(supply, to_date)
+    latest.nil? ? nil : latest - window.days..latest
   end
 
   # last_friday_with_readings: get date of the last friday which has readings
@@ -78,9 +95,9 @@ module Usage
   end
 
   # return day of the week with the most usage
-  # for last full week of readings
+  # for the last seven days of readings
   def day_most_usage(supply)
-    usage = daily_usage(supply: supply, dates: last_full_week(supply))
+    usage = daily_usage(supply: supply, dates: last_n_days_with_readings(supply))
     return nil unless usage
     usage.sort { |a, b| a[1] <=> b[1] }.last
   end

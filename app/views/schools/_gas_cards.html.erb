@@ -1,10 +1,11 @@
 <% if @school.meters?(:gas) %>
     <section id="gas-cards">
-      <% avg_gas = average_weekday_usage(:gas) %>
+      <% avg_gas = average_usage(:gas) %>
+      <% latest_reading_date = @school.last_reading_date(:gas) %>
 
       <h4>Gas
         <p class="text-muted pull-right">
-          <small>Week ending <%= l avg_gas[0] unless avg_gas .nil? %></small>
+          <small>Latest data <%= l latest_reading_date unless latest_reading_date.nil? %></small>
         </p>
       </h4>
 
@@ -18,17 +19,19 @@
 
             <div class="card-block">
               <p>
-                Last week your school used an average of
+                Recently your school used an average of
               </p>
               <h3>
                 <strong><%= avg_gas[1].to_i unless avg_gas.nil? %></strong> kWh per day
               </h3>
             </div>
             <div class="card-footer text-xs-right">
-              <%= link_to('Daily usage',
-                          usage_school_path(@school, period: :daily, to_date: avg_gas[0], anchor: :gas),
+              <% first_date = latest_reading_date.present? ? latest_reading_date - 1 : nil %>
+              <%= link_to('Hourly usage',
+                          usage_school_path(@school, period: :hourly, first_date: first_date, to_date: latest_reading_date, anchor: :gas),
                           class: 'btn btn-primary') unless avg_gas.nil?
               %>
+
             </div>
           </div>
 
@@ -39,17 +42,18 @@
 
             <div class="card-block">
               <p>
-                Last week your school used most energy on
+                Recently your school used most energy on
               </p>
               <h3>
                 <%= day_most_usage(:gas) %>
               </h3>
             </div>
             <div class="card-footer text-xs-right">
-              <%= link_to('Hourly usage',
-                          usage_school_path(@school, period: :hourly, to_date: avg_gas[0], anchor: :gas),
+              <%= link_to('Daily usage',
+                          usage_school_path(@school, period: :daily, to_date: latest_reading_date, anchor: :gas),
                           class: 'btn btn-primary') unless avg_gas.nil?
               %>
+
             </div>
           </div>
 

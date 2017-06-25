@@ -14,16 +14,16 @@
 
           <div class="row">
             <div class="col-md-3">
-              <%= text_field_tag(:first_date_picker,
-                                 @first_date,
-                                 class: 'form-control form-control-sm'
+              <%= text_field_tag("#{supply}-first-date-picker",
+                                 @first_date.strftime('%A, %e %B %Y'),
+                                 class: 'form-control form-control-sm first-date-picker'
                   ) %>
             </div>
             <div class="col-md-1"><span><strong>AND</strong></span></div>
             <div class="col-md-3">
-              <%= text_field_tag(:to_date_picker,
-                                 @to_date,
-                                 class: 'form-control form-control-sm'
+              <%= text_field_tag("#{supply}-to-date-picker",
+                                 @to_date.strftime('%A, %e %B %Y'),
+                                 class: 'form-control form-control-sm to-date-picker'
                   ) %>
             </div>
             <div class="col-md-2 pull-right">
@@ -39,6 +39,12 @@
       <%= compare_hourly_usage_chart(supply, @first_date, @to_date, params[:meter]) %>
     </div>
   </div>
+    <div class="row padded-row">
+      <div class="col-md-12">
+        EnergySparks currently holds <%= supply %> usage data for this school from <%= @school.earliest_reading_date(supply).strftime('%A, %e %B %Y') %> to <%= @school.last_reading_date(supply).strftime('%A, %e %B %Y') %>
+      </div>
+    </div>
+
 <% else %>
   <h4><%= supply.capitalize %> usage data is not available</h4>
   <p>

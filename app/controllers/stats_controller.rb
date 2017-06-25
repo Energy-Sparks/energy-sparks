@@ -22,8 +22,8 @@ class StatsController < ApplicationController
       [this_week[index][0], day[1]]
     end
     render json: [
-      { name: 'This week', data: this_week },
-      { name: 'Last week', data: previous_week_series }
+      { name: 'Latest 7 days', data: this_week },
+      { name: 'Previous 7 days', data: previous_week_series }
     ]
   end
 
@@ -42,8 +42,9 @@ class StatsController < ApplicationController
         meter: meter
     ).map(&precision)
     render json: [
-        { name: from.strftime('%A, %d %B %Y'), data: first_date },
-        { name: to.strftime('%A, %d %B %Y'), data: to_date }
+        { name: to.strftime('%A, %d %B %Y'), data: to_date },
+        { name: from.strftime('%A, %d %B %Y'), data: first_date }
+
     ]
   end
 

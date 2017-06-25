@@ -1,10 +1,11 @@
 <% if @school.meters?(:electricity) %>
   <section id="electricity-cards">
-    <% avg_elect = average_weekday_usage(:electricity) %>
+    <% avg_elect = average_usage(:electricity) %>
+    <% latest_reading_date = @school.last_reading_date(:electricity) %>
 
     <h4>Electricity
       <p class="text-muted pull-right">
-        <small>Week ending <%= l avg_elect[0] unless avg_elect.nil? %></small>
+        <small>Latest data <%= l latest_reading_date unless latest_reading_date.nil? %></small>
       </p>
     </h4>
 
@@ -17,7 +18,7 @@
           </div>
           <div class="card-block">
             <p>
-              Last week your school used an average of
+              Recently your school used an average of
             </p>
             <h3>
               <%= avg_elect[1].to_i unless avg_elect.nil? %></strong> kWh per day
@@ -25,10 +26,12 @@
 
           </div>
           <div class="card-footer text-xs-right">
-            <%= link_to('Daily usage',
-                        usage_school_path(@school, period: :daily, to_date: avg_elect[0], anchor: :electricity),
+            <% first_date = latest_reading_date.present? ? latest_reading_date - 1 : nil %>
+            <%= link_to('Hourly usage',
+                        usage_school_path(@school, period: :hourly, first_date: first_date, to_date: latest_reading_date, anchor: :electricity),
                         class: 'btn btn-primary') unless avg_elect.nil?
             %>
+
           </div>
         </div>
 
@@ -38,19 +41,17 @@
           </div>
           <div class="card-block">
             <p>
-              Last week your school used most energy on
+              Recently your school used most energy on
             </p>
             <h3>
               <%= day_most_usage(:electricity) %>
             </h3>
           </div>
           <div class="card-footer text-xs-right">
-            <% to_date = @school.last_reading_date(:electricity, Date.current)  %>
-            <% first_date = to_date.present? ? to_date - 1 : nil %>
-            <%= link_to('Hourly usage',
-                          usage_school_path(@school, period: :hourly, first_date: first_date, to_date: to_date, anchor: :electricity),
-                          class: 'btn btn-primary') unless avg_elect.nil?
-              %>
+            <%= link_to('Daily usage',
+                        usage_school_path(@school, period: :daily, to_date: latest_reading_date, anchor: :electricity),
+                        class: 'btn btn-primary') unless avg_elect.nil?
+            %>
           </div>
         </div>
 
