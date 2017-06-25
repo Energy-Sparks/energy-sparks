@@ -76,6 +76,18 @@ describe 'Loader::EnergyImporter' do
 
   end
 
+  it "should ignore empty override dataset" do
+    @school.update_attributes!({
+                                   "gas_dataset" => "",
+                                   "electricity_dataset" => ""
+                               })
+
+    with_modified_env(@env) do
+      expect(@importer.dataset(@school, "electricity")).to eql("fqa5-b8ri")
+      expect(@importer.dataset(@school, "gas")).to eql("rd4k-3gss")
+    end
+  end
+
   it "should retrieve results" do
     with_modified_env(@env) do
       VCR.use_cassette 'socrata-energy-import' do

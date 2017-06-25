@@ -68,9 +68,9 @@ module Loader
     def dataset(school, type)
       case type
       when "electricity"
-        return school.electricity_dataset || ENV["SOCRATA_ELECTRICITY_DATASET"]
+        return school.electricity_dataset.present? ? school.electricity_dataset : ENV["SOCRATA_ELECTRICITY_DATASET"]
       when "gas"
-        return school.gas_dataset || ENV["SOCRATA_GAS_DATASET"]
+        return school.gas_dataset.present? ? school.gas_dataset : ENV["SOCRATA_GAS_DATASET"]
       else
         raise "unknown meter type"
       end
