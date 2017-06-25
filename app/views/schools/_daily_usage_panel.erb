@@ -2,9 +2,10 @@
   <div class="row">
     <div class="col-md-12">
       <% last_full_week = last_full_week(supply) %>
-      <h5>Usage between <%= l last_full_week.first %> and <%= l last_full_week.last %></h5>
+      <% latest_reading_date = @school.last_reading_date(supply) %>
+      <h5>Compare usage for latest seven days with the previous week</h5>
 
-      Showing total <%= supply %> usage by day
+      Showing total <%= supply %> usage by day between <%= l latest_reading_date - 14.days %> and <%= l latest_reading_date %>
       <div class="pull-right">
       Show usage for <%= form_tag "", method: :get, id: "#{supply}-chart-filter" do %>
           <%= hidden_field_tag :period, "hourly" %>
