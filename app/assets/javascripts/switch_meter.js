@@ -4,7 +4,7 @@ $(document).on("turbolinks:load", function() {
     {
         dateFormat: 'DD, d MM yy',
         altFormat: 'yy-mm-dd',
-        altField: "#first_date",
+        altField: $(".first-date-picker").parents("form:first").find("#first_date"),
 //        minDate: -42,
         maxDate: -1,
         orientation: 'bottom',
@@ -16,7 +16,7 @@ $(document).on("turbolinks:load", function() {
         {
             dateFormat: 'DD, d MM yy',
             altFormat: 'yy-mm-dd',
-            altField: "#to_date",
+            altField: $(".first-date-picker").parents("form:first").find("#to_date"),
 //            minDate: -42,
             maxDate: -1,
             orientation: 'bottom',

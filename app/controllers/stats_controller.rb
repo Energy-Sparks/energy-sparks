@@ -35,11 +35,13 @@ class StatsController < ApplicationController
     to = Date.parse(params[:to_date])
     first_date = school.hourly_usage_for_date(supply: supply,
         date: from,
-        meter: meter
+        meter: meter,
+        scale: :kw
     ).map(&precision)
     to_date = school.hourly_usage_for_date(supply: supply,
         date: to,
-        meter: meter
+        meter: meter,
+        scale: :kw
     ).map(&precision)
     render json: [
         { name: to.strftime('%A, %d %B %Y'), data: to_date },
