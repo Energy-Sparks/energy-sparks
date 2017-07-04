@@ -14,8 +14,9 @@ module Usage
         .to_a
   end
 
-  def hourly_usage_for_date(supply: nil, date: nil, meter: nil)
+  def hourly_usage_for_date(supply: nil, date: nil, meter: nil, scale: :kwh)
     datetime_range = (date.beginning_of_day..date.end_of_day)
+    sum = scale == :kwh ? "value" : "2 * value"
     self.meter_readings
         .where(conditional_supply(supply))
         .where(conditional_meter(meter))
@@ -24,7 +25,7 @@ module Usage
             format: '%H:%M',
             series: false
         )
-        .sum(:value)
+        .sum(sum)
         .to_a
   end
 

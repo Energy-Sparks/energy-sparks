@@ -20,7 +20,7 @@ module SchoolsHelper
     line_chart(compare_hourly_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter),
           id: "#{supply}-chart",
           xtitle: 'Time of day',
-          ytitle: 'kWh',
+          ytitle: 'kW',
           height: '500px',
           colors: colours_for_supply(supply),
           library: {

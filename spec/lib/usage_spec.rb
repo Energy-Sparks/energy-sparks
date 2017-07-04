@@ -163,6 +163,8 @@ describe 'Usage' do
         supply = 999
         expect(school.hourly_usage(supply: supply, dates: last_week).inject(0) { |a, e| a + e[1] }).to eq 0
       end
+    end
+    context 'school has meters for this supply' do
       it 'returns the average usage for each reading time across all dates' do
         expect(school.hourly_usage(supply: supply, dates: last_week)).to eq [
           ['01:00', 125],
