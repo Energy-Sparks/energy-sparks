@@ -1,28 +1,31 @@
 $(document).on("turbolinks:load", function() {
 
-    $(".first-date-picker").datepicker(
-    {
-        dateFormat: 'DD, d MM yy',
-        altFormat: 'yy-mm-dd',
-        altField: $(".first-date-picker").parents("form:first").find(".first-date"),
-//        minDate: -42,
-        maxDate: -1,
-        orientation: 'bottom',
-        changeMonth: true,
-        changeYear: true
+    $.each(['gas', 'electricity'], function (idx, supply) {
+
+        $("#" + supply + "-first-date-picker").datepicker(
+            {
+                dateFormat: 'DD, d MM yy',
+                altFormat: 'yy-mm-dd',
+                altField: $("#" + supply + "-first-date"),
+                maxDate: -1,
+                orientation: 'bottom',
+                changeMonth: true,
+                changeYear: true
+            });
+
+        $("#" + supply + "-to-date-picker").datepicker(
+            {
+                dateFormat: 'DD, d MM yy',
+                altFormat: 'yy-mm-dd',
+                altField: $("#" + supply + "-to-date"),
+                maxDate: -1,
+                orientation: 'bottom',
+                changeMonth: true,
+                changeYear: true
+            });
+
     });
 
-    $(".to-date-picker").datepicker(
-        {
-            dateFormat: 'DD, d MM yy',
-            altFormat: 'yy-mm-dd',
-            altField: $(".first-date-picker").parents("form:first").find(".to-date"),
-//            minDate: -42,
-            maxDate: -1,
-            orientation: 'bottom',
-            changeMonth: true,
-            changeYear: true
-        });
 
 });
 
@@ -37,10 +40,7 @@ function updateChart(el) {
 $(document).on('change', '.meter-filter', function() {
     updateChart(this);
 });
-$(document).on('change', '.first-date-picker', function() {
-    updateChart(this);
-});
-$(document).on('change', '.to-date-picker', function() {
+$(document).on('change', '.date-picker', function() {
     updateChart(this);
 });
 

@@ -5,8 +5,8 @@
           <%= hidden_field_tag :period, "hourly" %>
           <%= hidden_field_tag :supply, supply %>
 
-          <%= hidden_field_tag :first_date, @first_date, class: "first-date" %>
-          <%= hidden_field_tag :to_date, @to_date, class: "to-date" %>
+          <%= hidden_field_tag :first_date, @first_date, id: "#{supply}-first-date" %>
+          <%= hidden_field_tag :to_date, @to_date, id: "#{supply}-to-date" %>
 
           <h5>
             Compare hourly <%= supply %> power consumption
@@ -16,14 +16,14 @@
             <div class="col-md-3">
               <%= text_field_tag("#{supply}-first-date-picker",
                                  @first_date.strftime('%A, %e %B %Y'),
-                                 class: 'form-control form-control-sm first-date-picker'
+                                 class: 'form-control form-control-sm date-picker'
                   ) %>
             </div>
             <div class="col-md-1"><span><strong>AND</strong></span></div>
             <div class="col-md-3">
               <%= text_field_tag("#{supply}-to-date-picker",
                                  @to_date.strftime('%A, %e %B %Y'),
-                                 class: 'form-control form-control-sm to-date-picker'
+                                 class: 'form-control form-control-sm date-picker'
                   ) %>
             </div>
             <div class="col-md-2 pull-right">
