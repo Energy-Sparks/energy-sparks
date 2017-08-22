@@ -4,9 +4,8 @@
 
 <div class="row padded-row">
   <div class="col-md-12">
-    <h1><%= @activity_type.activity_category.name %></h1>
-
-    <h3><%= @activity_type.name %></h3>
+    <h1><%= @activity_type.name %></h1>
+    <h3><%= @activity_type.activity_category.name %></h3>
   </div>
 </div>
 
@@ -29,7 +28,7 @@
       Did you know?
     </h5>
     <ul>
-      <li>Recording this activity will score you <strong><%= @activity_type.score %></strong> points?</li>
+      <li>Recording this activity will score you <strong><%= @activity_type.score %></strong> points? </li>
       <li><strong>
         <%= Activity.select(:school_id).where(activity_type: @activity_type).distinct.count %></strong> schools have record this activity</li>
       <li>This activity has been recorded <strong>
