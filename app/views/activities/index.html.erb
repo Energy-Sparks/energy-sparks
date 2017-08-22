@@ -10,7 +10,13 @@
 
 <div class="row">
   <div class="col-md-12 activity">
-    <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.</p>
+    <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.
+    </p>
+    <p>
+      <% if current_user && current_user.manages_school?(@school.id) %>
+        <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+      <% end %>
+    </p>
 
     <% @activities.each do |activity| %>
         <div class="row activity-overview">
@@ -42,7 +48,7 @@
 
   <% if current_user && current_user.manages_school?(@school.id) %>
       <%= link_to 'New Activity', new_school_activity_path(@school), class: 'btn btn-success' %>
-      <%= link_to 'School homepage', school_path(@school), class: 'btn btn-secondary' %>
+      <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
   <% end %>
 
     <% if !user_signed_in?  %>
