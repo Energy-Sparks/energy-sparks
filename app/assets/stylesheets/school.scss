@@ -1,16 +1,5 @@
-#activity-cards {
-  padding-bottom: 60px;
-
-  .dashboard {
-    .card {
-      border: 5px solid $green;
-    }
-    .btn {
-      background-color: $green;
-      border-color: $green;
-    }
-  }
-
+div.school-card-row {
+  padding-bottom: 30px;
 }
 
 .dashboard {
@@ -27,7 +16,7 @@
     .btn {
       font-size: 20px;
     }
-    .card-block {
+    .card-body {
       p {
         font-size: 18px;
       }
@@ -36,6 +25,22 @@
 
 
 }
+
+#activity-cards {
+  padding-bottom: 60px;
+
+  .dashboard {
+    .card {
+      border: 5px solid $green;
+    }
+    .btn {
+      background-color: $green;
+      border-color: $green;
+    }
+  }
+
+}
+
 
 #electricity-cards {
   padding-bottom: 35px;

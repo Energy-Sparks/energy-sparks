@@ -4,12 +4,12 @@
       <% latest_reading_date = @school.last_reading_date(:gas) %>
 
       <h4>Gas
-        <p class="text-muted pull-right">
+        <span class="text-muted pull-right">
           <small>Latest data <%= l latest_reading_date unless latest_reading_date.nil? %></small>
-        </p>
+        </span>
       </h4>
 
-      <div class="card-deck-wrapper dashboard">
+      <div class="dashboard">
         <div class="card-deck">
           <div class="card">
             <div class="card-header">
@@ -17,7 +17,7 @@
               </h4>
             </div>
 
-            <div class="card-block">
+            <div class="card-body">
               <p>
                 Recently your school used an average of
               </p>
@@ -25,7 +25,7 @@
                 <strong><%= avg_gas[1].to_i unless avg_gas.nil? %></strong> kWh per day
               </h3>
             </div>
-            <div class="card-footer text-xs-right">
+            <div class="card-footer text-right">
               <% first_date = latest_reading_date.present? ? @school.last_reading_date(:gas, latest_reading_date) - 7 : nil %>
               <%= link_to('Hourly usage',
                           usage_school_path(@school, period: :hourly, first_date: first_date, to_date: latest_reading_date, anchor: :gas),
@@ -40,7 +40,7 @@
               <h4 class="card-title">Did you know?</h4>
             </div>
 
-            <div class="card-block">
+            <div class="card-body">
               <p>
                 Recently your school used most energy on
               </p>
@@ -48,7 +48,7 @@
                 <%= day_most_usage(:gas) %>
               </h3>
             </div>
-            <div class="card-footer text-xs-right">
+            <div class="card-footer text-right">
               <%= link_to('Daily usage',
                           usage_school_path(@school, period: :daily, to_date: latest_reading_date, anchor: :gas),
                           class: 'btn btn-primary') unless avg_gas.nil?
