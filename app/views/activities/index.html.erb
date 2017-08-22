@@ -13,18 +13,31 @@
     <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.</p>
 
     <% @activities.each do |activity| %>
-        <div class="row">
+        <div class="row activity-overview">
           <div class="col-md-3">
+
             <p>
               <span class="text-muted small"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
+              <br>
+              <span class="text-muted small">
+                <%= activity.activity_category.name %>
+              </span>
+
             </p>
           </div>
           <div class="col-md-9">
-            <%= link_to activity.title, school_activity_path(@school, activity) %>
+            <div class="row">
+              <%= link_to activity.title, school_activity_path(@school, activity) %>
+            </div>
+
+            <div class="row">
+              <span class="text-muted small">
+                <%= activity.activity_type.name %>
+              </span>
+            </div>
           </div>
         </div>
     <% end %>
-
   <hr>
 
   <% if current_user && current_user.manages_school?(@school.id) %>

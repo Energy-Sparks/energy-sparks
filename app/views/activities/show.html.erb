@@ -5,6 +5,10 @@
 <div class="row padded-row">
   <div class="col-md-12">
     <h1><%= @activity.title %></h1>
+    <p class="text-muted">
+      <span><%= link_to @school.name, school_path(@school) %>, <%= @activity.happened_on.strftime("%A, %d %B %Y") %></span><br>
+      <span><%= link_to @activity.activity_type.name, activity_type_path(@activity.activity_type) %></span>
+    </p>
  </div>
 </div>
 
@@ -13,11 +17,7 @@
       <%= raw @activity.description %>
 
     <p>
-      Shared by <%= link_to @school.name, school_path(@school) %> on <%= @activity.happened_on.strftime("%A, %d %B %Y") %>
-    </p>
-
-    <p>
-      Activity category: <%= @activity.activity_category.name %>, <%= link_to @activity.activity_type.name, activity_type_path(@activity.activity_type) %>
+      Score <strong><%= @activity.activity_type.score %></strong> points.
     </p>
   </div>
 </div>
