@@ -79,6 +79,13 @@ RSpec.describe ActivitiesController, type: :controller do
         get :new, params: { school_id: school.id }
         expect(assigns(:activity)).to be_a_new(Activity)
       end
+      it "properly defaults the category and activity" do
+        get :new, params: { school_id: school.id, activity_type_id: activity_type2.id }
+        expect(assigns(:activity)).to be_a_new(Activity)
+        expect(assigns(:activity).activity_type).to eql(activity_type2)
+        expect(assigns(:activity).activity_category).to eql(activity_category)
+      end
+
     end
 
     describe "GET #edit" do
