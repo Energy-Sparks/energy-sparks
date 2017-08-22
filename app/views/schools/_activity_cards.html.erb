@@ -86,7 +86,9 @@
               <% if current_user && current_user.manages_school?(@school) %>
                 <%= link_to 'New activity', new_school_activity_path(@school), class: 'btn btn-success' %>
               <% end %>
-              <%= link_to 'View activities', school_activities_path(@school), class: 'btn btn-primary' %>
+              <%= link_to school_activities_path(@school), class: 'btn btn-primary' do %>
+                  View activities <span class="badge badge-success"><%= @school.activities.count %></span>
+              <% end %>
             </div>
           </div>
 
