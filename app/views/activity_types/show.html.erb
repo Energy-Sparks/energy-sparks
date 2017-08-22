@@ -24,25 +24,39 @@
 
 <div class="row padded-row">
   <div class="col-md-12">
-    <h5>
-      Did you know?
-    </h5>
-    <ul>
-      <li>Recording this activity will score you <strong><%= @activity_type.score %></strong> points? </li>
-      <li><strong>
-        <%= Activity.select(:school_id).where(activity_type: @activity_type).distinct.count %></strong> schools have record this activity</li>
-      <li>This activity has been recorded <strong>
-        <%= Activity.where(activity_type: @activity_type).count %> times so far</li>
+    <% if @recorded == 0 %>
+        <h5>
+          Be the first school to complete this activity!
+        </h5>
 
-    </ul>
+        <p>
+          This activity will score your school <strong><%= @activity_type.score %></strong> points!
+        </p>
+        <% if current_user && current_user.school_admin? %>
+            <%= link_to 'Complete this activity', new_school_activity_path(current_user.school, activity_type_id: @activity_type.id), class: 'btn btn-primary' %>
+        <% end %>
+
+  <% else %>
+        <h5>
+          Complete this activity at your school
+        </h5>
+        <p>
+          This activity will score your school <strong><%= @activity_type.score %></strong> points!
+        </p>
+        <p>
+          <%= pluralize(@school_count, 'school has', 'schools have') %> scored points for this activity </strong>.
+        </p>
+        <% if current_user && current_user.school_admin? %>
+            <%= link_to 'Complete this activity', new_school_activity_path(current_user.school, activity_type_id: @activity_type.id), class: 'btn btn-primary' %>
+        <% end %>
+
+    <% end %>
+  </div>
+</div>
 
     <%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary'  %>
 
-  </div>
-
-</div>
-
-<% if can? :manage, ActivityType %>
+    <% if can? :manage, ActivityType %>
     <div class="row">
       <div class="col-md-12">
         <h5>Admin Tools</h5>

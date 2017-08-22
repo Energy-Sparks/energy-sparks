@@ -12,6 +12,8 @@ class ActivityTypesController < ApplicationController
   # GET /activity_types/1
   # GET /activity_types/1.json
   def show
+    @recorded = Activity.where(activity_type: @activity_type).count
+    @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
   end
 
   # GET /activity_types/new
