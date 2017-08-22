@@ -1,15 +1,15 @@
 <div class="card">
-  <div class="card-block">
+  <div class="card-body">
     <% if school.enrolled? %>
       <h3 class="card-title">
-            <%= link_to school_path(school), class: 'school-card' do %>
-            <%= school.name %>
-        <% end -%>
+            <%= link_to school_path(school) do %>
+              <%= school.name %>
+            <% end -%>
       </h3>
-      <%= school.address %> <%= school.postcode %>
+      <div class="card-text"><%= school.address %> <%= school.postcode %></div>
     <% else %>
         <h6 class="card-title">
-          <%= link_to school_path(school), class: 'school-card' do %>
+          <%= link_to school_path(school) do %>
               <%= school.name %>
           <% end -%>
         </h6>
