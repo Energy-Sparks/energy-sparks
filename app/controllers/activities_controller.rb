@@ -18,6 +18,13 @@ class ActivitiesController < ApplicationController
   def new
     set_school
     @activity = @school.activities.new
+    if params[:activity_type_id].present?
+      activity_type = ActivityType.find( params[:activity_type_id] )
+      if activity_type.present?
+        @activity.activity_type = activity_type
+        @activity.activity_category = activity_type.activity_category
+      end
+    end
     authorize! :new, @activity
   end
 
