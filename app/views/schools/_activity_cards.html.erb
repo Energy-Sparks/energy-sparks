@@ -22,7 +22,7 @@
             </div>
             <div class="card-footer text-right">
               <% if current_user && current_user.manages_school?(@school.id) %>
-                  <%= link_to 'Add an activity', new_school_activity_path(@school), class: 'btn btn-primary' %>
+                  <%= link_to 'Choose an activity', suggest_activity_school_path(@school), class: 'btn btn-primary' %>
               <% end %>
             </div>
           </div>
@@ -84,7 +84,7 @@
             </div>
             <div class="card-footer text-right">
               <% if current_user && current_user.manages_school?(@school) %>
-                <%= link_to 'New activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+                <%= link_to 'Next activity', suggest_activity_school_path(@school), class: 'btn btn-success' %>
               <% end %>
               <%= link_to school_activities_path(@school), class: 'btn btn-primary' do %>
                   View activities <span class="badge badge-success"><%= @school.activities.count %></span>

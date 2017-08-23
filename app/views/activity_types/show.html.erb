@@ -38,7 +38,7 @@
           This activity will score your school <strong><%= @activity_type.score %></strong> points!
         </p>
         <% if current_user && current_user.school_admin? %>
-            <%= link_to 'Complete this activity', new_school_activity_path(current_user.school, activity_type_id: @activity_type.id), class: 'btn btn-primary' %>
+            <%= link_to 'Record this activity', new_school_activity_path(current_user.school, activity_type_id: @activity_type.id), class: 'btn btn-primary' %>
         <% end %>
 
   <% else %>
@@ -52,9 +52,8 @@
           <%= pluralize(@school_count, 'school has', 'schools have') %> scored points for this activity </strong>.
         </p>
         <% if current_user && current_user.school_admin? %>
-            <%= link_to 'Complete this activity', new_school_activity_path(current_user.school, activity_type_id: @activity_type.id), class: 'btn btn-primary' %>
+            <%= link_to 'Record this activity', new_school_activity_path(current_user.school, activity_type_id: @activity_type.id), class: 'btn btn-primary' %>
         <% end %>
-
     <% end %>
   </div>
 </div>
