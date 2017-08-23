@@ -26,7 +26,7 @@ Home
     <div class="row">
       <div class="col-lg-12 text-center">
         <h3><%= link_to pluralize(@schools_enrolled, "school"), schools_path %> currently enrolled</h3>
-        <p>Energy Sparks is freely available for all schools in Bath & North East Somerset.</p>
+        <p><%= t('application') %> is freely available for all schools in Bath & North East Somerset.</p>
         <p>Find out more about <%= link_to "how to enrol", enrol_path %></p>
       </div>
     </div>
@@ -45,7 +45,7 @@ Home
     <div class="row justify-content-center">
       <div class="col-lg-4">
         <p>
-          Energy Sparks helps make school energy usage data more accessible for everyone.
+          <%= t('application') %> helps make school energy usage data more accessible for everyone.
         <p>
         <p>
           See your gas and electricity usage using simple easy to read charts, share them with parents and children, and work towards
@@ -54,7 +54,7 @@ Home
       </div>
       <div class="col-lg-4">
         <p>
-          Energy Sparks has been developed by the local community to support our schools
+          <%= t('application') %> has been developed by the local community to support our schools
         </p>
         <p>
           <%= link_to "Contact us", contact_path %> to learn how you can get involved and help support your local school or
@@ -80,7 +80,7 @@ Home
           The application has been developed through a <%= link_to "partnership", team_path(anchor: "partners") %> between Bath: Hacked, Transition Bath and Resource Futures.
         </p>
         <p>
-          Energy Sparks is sponsored by the Open Data Institute, Bath & North East Somerset Council, Bath & West Community Energy and
+          <%= t('application') %> is sponsored by the Open Data Institute, Bath & North East Somerset Council, Bath & West Community Energy and
           the Naturesave Trust
         <p>
       </div>

@@ -5,19 +5,19 @@ Datasets
 
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1 id="intro">Data used in EnergySparks</h1>
+      <h1 id="intro">Data used in <%= t('application') %></h1>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-3 callout-text">
       <p>
-        <strong>EnergySparks uses open data published by
+        <strong><%= t('application') %> uses open data published by
         local schools</strong></p>
     </div>
     <div class="col-md-8">
       <p>
-        EnergySparks is built on open data. All of the data you can see in the application has been published under
+        <%= t('application') %> is built on open data. All of the data you can see in the application has been published under
         an open licence. You are free to reuse the data for your own purposes. If you find useful insights then
         please <%= link_to "share them with us", contact_path %> so we can help make the service better.
       </p>
@@ -39,7 +39,7 @@ Datasets
         <strong>The data is collected by smart meters installed in schools.</strong></p>
       <p>
         <strong>The meter readings are transferred into
-          our data store and then imported in EnergySparks to create charts and summaries</strong></p>
+          our data store and then imported in <%= t('application') %> to create charts and summaries</strong></p>
     </div>
     <div class="col-md-8">
       <p>
@@ -65,7 +65,7 @@ Datasets
         <%= link_to "enrolled in EnergySparks", enrol_path %> is published as open data.
       </p>
       <p>
-        The data is imported from the Bath: Hacked data store into a local database used by the Energy Sparks application.
+        The data is imported from the Bath: Hacked data store into a local database used by the <%= t('application') %> application.
       </p>
       <p>
         As there are several steps involved in getting the readings published as open data there can be a delay in the
@@ -95,7 +95,7 @@ Datasets
     </div>
     <div class="col-md-8">
       <p>
-        If notice something unusual or potentially incorrect in the data shown in EnergySparks then
+        If notice something unusual or potentially incorrect in the data shown in <%= t('application') %> then
         please <%= link_to "report it directly to us", contact_path %> in the first instance. We can identify whether the
         issue is with how the data has been imported into the application or whether its an issue with the raw
         data.
@@ -106,9 +106,9 @@ Datasets
         issue.
       </p>
       <p>
-        If you are a school who is using EnergySparks and no longer wish to be a part of the service, or want to stop
+        If you are a school who is using <%= t('application') %> and no longer wish to be a part of the service, or want to stop
         publishing your usage data as open data, then again <%= link_to "let us know", contact_path %> and we will
-        co-ordinate with the council to remove your data from EnergySparks and the Bath: Hacked data store.
+        co-ordinate with the council to remove your data from <%= t('application') %> and the Bath: Hacked data store.
       </p>
     </div>
   </div>
@@ -128,7 +128,7 @@ Datasets
     </div>
     <div class="col-md-8">
       <p>
-        The two primary sources of data used in EnergySparks can be found in:
+        The two primary sources of data used in <%= t('application') %> can be found in:
       </p>
       <ul>
         <li><a href="https://data.bathhacked.org/Government-and-Society/BANES-Energy-Data-Electricity/fqa5-b8ri">B&NES
@@ -171,7 +171,7 @@ Datasets
       <p>
         Open data allows anyone to access and explore a dataset. But it is important to understand how a dataset
         is collected and what it is measuring before beginning to use it. This page provides additional background
-        on the provenance of the data used in EnergySparks.
+        on the provenance of the data used in <%= t('application') %>.
       </p>
       <p>
         The degree to which an individual school is able to reduce or improve its energy consumption depends on a number
@@ -195,7 +195,7 @@ Datasets
         unless you have accounted for differences in infrastructure, size and the usage profile of the buildings.
       </p>
       <p>
-        This is why we have focused EnergySparks on encouraging schools in becoming energy efficient, rather than
+        This is why we have focused <%= t('application') %> on encouraging schools in becoming energy efficient, rather than
         creating a ranking of local schools. Our gamification elements primarily measure behaviour change, not absolute
         energy usage.
       </p>

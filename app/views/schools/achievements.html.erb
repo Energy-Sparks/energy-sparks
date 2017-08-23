@@ -6,7 +6,7 @@
   <div class="row padded-row">
     <div class="col-md-12">
       <h1><%= @school.name %> Badges</h1>
-      <p><%= link_to @school.name, school_path(@school) %> are earning badges when they record their activities using EnergySparks.</p>
+      <p><%= link_to @school.name, school_path(@school) %> are earning badges when they record their activities using <%= t('application') %>.</p>
       <p>As they earn badges they will light up on this page. Badges that are still to be earned are shown to help them plan
       their next achievements.</p>
     </div>

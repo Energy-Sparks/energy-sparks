@@ -5,9 +5,9 @@
 
 <title>
   <% if content_for?(:page_title) %>
-      <%= content_for(:page_title) %> | Energy Sparks
+      <%= content_for(:page_title) %> | <%= t('application') %>
   <% else %>
-      Energy Sparks
+      <%= t('application') %>
   <% end  %>
 </title>
 

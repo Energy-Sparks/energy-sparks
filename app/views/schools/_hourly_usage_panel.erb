@@ -41,7 +41,7 @@
   </div>
     <div class="row padded-row">
       <div class="col-md-12">
-        EnergySparks currently holds <%= supply %> usage data for this school from <%= @school.earliest_reading_date(supply).strftime('%A, %e %B %Y') %> to <%= @school.last_reading_date(supply).strftime('%A, %e %B %Y') %>
+        <%= t('application') %> currently holds <%= supply %> usage data for this school from <%= @school.earliest_reading_date(supply).strftime('%A, %e %B %Y') %> to <%= @school.last_reading_date(supply).strftime('%A, %e %B %Y') %>
       </div>
     </div>
 
