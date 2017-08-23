@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get :leaderboard, on: :collection
     member do
       get 'achievements'
+      get 'suggest_activity'
       get 'usage'
       get 'daily_usage', to: 'stats#daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'

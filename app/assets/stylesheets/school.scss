@@ -2,6 +2,48 @@ div.school-card-row {
   padding-bottom: 30px;
 }
 
+.activity-card {
+  border: 5px solid $green;
+
+  .card-header {
+    background-color: #fff;
+    border-bottom: 0px;
+  }
+
+  .card-footer {
+    background-color: #fff;
+    border-top: 0px;
+  }
+
+  .card-body {
+    padding-top: 0px;
+  }
+
+  .btn {
+    background-color: $green;
+    border-color: $green;
+  }
+}
+
+.secondary-card {
+  border: 5px solid grey;
+
+  .card-header {
+    background-color: #fff;
+    border-bottom: 0px;
+  }
+
+  .card-footer {
+    background-color: #fff;
+    border-top: 0px;
+  }
+
+  .card-body {
+    padding-top: 0px;
+  }
+
+}
+
 .dashboard {
   .card {
     .card-header {
