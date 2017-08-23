@@ -20,5 +20,4 @@ class ActivityCategory < ApplicationRecord
     types.insert(-1, types.delete_at(other)) if other.present?
     types
   end
-
 end

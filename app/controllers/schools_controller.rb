@@ -27,7 +27,6 @@ class SchoolsController < ApplicationController
 
   def suggest_activity
     @activity_categories = ActivityCategory.all.order(:name)
-
   end
 
   # GET /schools/leaderboard
