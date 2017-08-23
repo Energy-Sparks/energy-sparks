@@ -20,7 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  application: "Energy Sparks"
   date:
     formats:
       default: "%d/%m/%Y"
