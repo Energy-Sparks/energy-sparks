@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     member do
       get 'achievements'
       get 'suggest_activity'
+      get 'data_explorer'
       get 'usage'
       get 'daily_usage', to: 'stats#daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'

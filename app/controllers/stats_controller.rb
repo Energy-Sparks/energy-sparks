@@ -27,27 +27,43 @@ class StatsController < ApplicationController
     ]
   end
 
+  #CURRENT
   #compare hourly usage across two dates
-  # GET /schools/:id/compare_hourly_usage?supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date
+  # GET /schools/:id/compare_hourly_usage?comparison=type&supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date&second_meter=meter_no
   def compare_hourly_usage
     precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
-    from = Date.parse(params[:first_date])
-    to = Date.parse(params[:to_date])
-    first_date = school.hourly_usage_for_date(supply: supply,
+    if comparison == "whole-school"
+      from = first_date
+      to = to_date
+      first_date = school.hourly_usage_for_date(supply: supply,
+          date: from,
+          meter: meter,
+          scale: :kw
+      ).map(&precision)
+      to_date = school.hourly_usage_for_date(supply: supply,
+          date: to,
+          meter: meter,
+          scale: :kw
+      ).map(&precision) unless to.nil?
+      data = [ { name: from.strftime('%A, %d %B %Y'), data: first_date } ]
+      data << { name: to.strftime('%A, %d %B %Y'), data: to_date } unless to.nil?
+    else
+      from = first_date()
+      first_meter = school.hourly_usage_for_date(supply: supply,
         date: from,
         meter: meter,
         scale: :kw
-    ).map(&precision)
-    to_date = school.hourly_usage_for_date(supply: supply,
-        date: to,
-        meter: meter,
-        scale: :kw
-    ).map(&precision)
-    render json: [
-        { name: to.strftime('%A, %d %B %Y'), data: to_date },
-        { name: from.strftime('%A, %d %B %Y'), data: first_date }
+      ).map(&precision)
 
-    ]
+      second_m = school.hourly_usage_for_date(supply: supply,
+        date: from,
+        meter: second_meter,
+        scale: :kw
+      ).map(&precision) unless second_meter.nil?
+      data = [ { name: from.strftime('%A, %d %B %Y'), data: first_meter } ]
+      data << { name: from.strftime('%A, %d %B %Y'), data: second_m } unless second_meter.nil?
+    end
+    render json: data
   end
 
   # GET /schools/:id/hourly_usage?supply=:supply&to_date=:to_date&meter=:meter_no
@@ -80,16 +96,29 @@ private
   end
 
   def meter
-    params[:meter]
+    params[:first_meter]
+  end
+
+  def second_meter
+    params[:second_meter].present? ? params[:second_meter] : nil
   end
 
   def supply
     params[:supply]
   end
 
+  def first_date
+    Date.parse(params[:first_date])
+  end
+
   def to_date
     Date.parse(params[:to_date])
   rescue
-    Date.current
+    nil
   end
+
+  def comparison
+    params[:comparison] || "whole-school"
+  end
+
 end

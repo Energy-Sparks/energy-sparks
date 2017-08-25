@@ -18,7 +18,7 @@ module SchoolsHelper
 
   def compare_hourly_usage_chart(supply, first_date, to_date, meter = nil)
     line_chart(compare_hourly_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter),
-          id: "#{supply}-chart",
+          id: "chart",
           xtitle: 'Time of day',
           ytitle: 'kW',
           height: '500px',
@@ -37,7 +37,7 @@ module SchoolsHelper
 
 
   def colours_for_supply(supply)
-    supply == "electricity" ? %w(#232b49 #3bc0f0) : %w(#ff4500 #ffac21)
+    supply == "electricity" ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
   end
 
   # get n days average daily usage
