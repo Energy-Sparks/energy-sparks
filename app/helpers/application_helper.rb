@@ -22,11 +22,9 @@ module ApplicationHelper
   end
 
   def options_from_collection_for_select_with_data(collection, value_method, text_method, selected = nil, data = {})
-    puts "HERE"
-    puts data.inspect
     options = collection.map do |element|
       [element.send(text_method), element.send(value_method), data.map do |k, v|
-        {"data-#{k}" => element.send(v)}
+        { "data-#{k}" => element.send(v) }
       end
       ].flatten
     end

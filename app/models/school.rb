@@ -84,7 +84,7 @@ class School < ApplicationRecord
   end
 
   def both_supplies?
-    return meters?(:electricity) && meters?(:gas)
+    meters?(:electricity) && meters?(:gas)
   end
 
   def has_badge?(id)

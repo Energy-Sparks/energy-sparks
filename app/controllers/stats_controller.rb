@@ -35,7 +35,7 @@ class StatsController < ApplicationController
     if comparison == "whole-school"
       from = first_date
       to = to_date
-      first_date = school.hourly_usage_for_date(supply: supply,
+      from_date = school.hourly_usage_for_date(supply: supply,
           date: from,
           meter: meter,
           scale: :kw
@@ -45,10 +45,10 @@ class StatsController < ApplicationController
           meter: meter,
           scale: :kw
       ).map(&precision) unless to.nil?
-      data = [ { name: from.strftime('%A, %d %B %Y'), data: first_date } ]
+      data = [{ name: from.strftime('%A, %d %B %Y'), data: from_date }]
       data << { name: to.strftime('%A, %d %B %Y'), data: to_date } unless to.nil?
     else
-      from = first_date()
+      from = first_date
       first_meter = school.hourly_usage_for_date(supply: supply,
         date: from,
         meter: meter,
@@ -60,7 +60,7 @@ class StatsController < ApplicationController
         meter: second_meter,
         scale: :kw
       ).map(&precision) unless second_meter.nil?
-      data = [ { name: from.strftime('%A, %d %B %Y'), data: first_meter } ]
+      data = [{ name: from.strftime('%A, %d %B %Y'), data: first_meter }]
       data << { name: from.strftime('%A, %d %B %Y'), data: second_m } unless second_meter.nil?
     end
     render json: data
@@ -120,5 +120,4 @@ private
   def comparison
     params[:comparison] || "whole-school"
   end
-
 end
