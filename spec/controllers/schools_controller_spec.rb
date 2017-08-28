@@ -254,12 +254,6 @@ RSpec.describe SchoolsController, type: :controller do
           expect(assigns(:to_date)).to eq to_date
         end
       end
-      context "to_date is not specified" do
-        it "assigns yesterday's date to  @to_date" do
-          get :usage, params: { id: school.to_param, period: period }
-          expect(assigns(:to_date)).to eq Date.current - 1.days
-        end
-      end
       context "period is 'daily'" do
         let(:period) { :daily }
         it "renders the daily_usage template" do

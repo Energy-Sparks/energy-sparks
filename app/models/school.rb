@@ -83,6 +83,10 @@ class School < ApplicationRecord
     self.meters.where(meter_type: supply).any?
   end
 
+  def both_supplies?
+    meters?(:electricity) && meters?(:gas)
+  end
+
   def has_badge?(id)
     sash.badge_ids.include?(id)
   end

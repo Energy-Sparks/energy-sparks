@@ -1,7 +1,7 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :achievements, :leaderboard]
-  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :achievements, :suggest_activity]
+  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :achievements, :suggest_activity, :data_explorer]
 
   # GET /schools
   # GET /schools.json
@@ -91,6 +91,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/usage
   def usage
+    set_supply
     set_first_date
     set_to_date
     render "#{params[:period]}_usage"
@@ -123,20 +124,23 @@ private
     [:id, :meter_no, :meter_type, :active, :name]
   end
 
-  def set_first_date(default = Date.current - 2.days)
+  def set_supply
+    @supply = params[:supply].present? ? params[:supply] : "electricity"
+  end
+
+  def set_first_date
     begin
       @first_date = Date.parse params[:first_date]
     rescue
-      @first_date = default
+      @first_date = @school.last_reading_date(@supply)
     end
   end
 
-
-  def set_to_date(default = Date.current - 1.day)
+  def set_to_date
     begin
       @to_date = Date.parse params[:to_date]
     rescue
-      @to_date = default
+      @to_date = nil
     end
   end
 end

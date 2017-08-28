@@ -1,36 +1,188 @@
-<div class="row padded-row">
-  <div class="col-md-12">
-    <h1>Power consumption for <%= @school.name %></h1>
+<% content_for :page_title do %>
+    Explore usage data for <%= @school.name %>
+<% end %>
+<div class="application container charts">
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1>Power consumption for <%= @school.name %></h1>
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-12">
+  <div class="row">
+    <div class="col-md-12">
+      <%= compare_hourly_usage_chart(@supply, @first_date, @to_date, params[:meter]) %>
+    </div>
+  </div>
 
-    <div class="card">
-      <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs float-md-left">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#gas">Gas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#electricity">Electricity</a>
-          </li>
-        </ul>
-      </div>
+  <div style="display: none;">
+    <span id="electricity-start" data-date="<%= @school.earliest_reading_date("electricity") %>"></span>
+    <span id="electricity-end" data-date="<%= @school.last_reading_date("electricity") %>"></span>
+    <span id="gas-start" data-date="<%= @school.earliest_reading_date("gas") %>"></span>
+    <span id="gas-end" data-date="<%= @school.last_reading_date("gas") %>"></span>
+  </div>
 
+  <%= form_tag "", method: :get, id: "chart-filter" do %>
+      <%= hidden_field_tag :comparison, "whole-school" %>
+      <%= hidden_field_tag :period, "hourly" %>
+      <%= hidden_field_tag :supply, @supply %>
+
+      <%= hidden_field_tag :first_date, @first_date, id: "first-date" %>
+      <%= hidden_field_tag :to_date, @to_date, id: "to-date" %>
+
+      <%= hidden_field_tag :first_meter, "all", id: "first-meter" %>
+      <%= hidden_field_tag :second_meter, "", id: "second-meter" %>
+
+
+  <div class="card-deck">
+    <div class="card <%= @supply %>-card">
+      <div class="card-header"></div>
       <div class="card-body">
-        <div class="tab-content">
-          <div class="tab-pane active" id="gas" role="tabpanel">
-            <%= render partial: 'schools/hourly_usage_panel', locals: {supply: "gas"} %>
-          </div>
-          <div class="tab-pane" id="electricity" role="tabpanel">
-            <%= render partial: 'schools/hourly_usage_panel', locals: {supply: "electricity"} %>
+        <h4 class="card-title">Select Energy Type
+        </h4>
+
+        <% Meter.meter_types.keys.each_with_index do |type| %>
+
+            <% disabled = @school.meters?(type) %>
+
+            <div class="form-check <%= disabled ? "" : "disabled" %>">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="supplyType"
+                       id="supply-type-<%= type %>>" value="<%= type %>"
+                <%= @supply == type ? "checked" : "" %>
+                <%= disabled ? "" : "disabled" %> >
+                <%= type.capitalize %>
+              </label>
+            </div>
+        <% end %>
+
+      </div>
+      <div class="card-footer">
+        <% if @school.both_supplies? %>
+          We have both gas and electricity data for this school
+        <% else %>
+          We only have <%= @school.meters.first.meter_type %> usage data for this school
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card <%= @supply %>-card">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <h4 class="card-title">
+          Compare usage
+        </h4>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="compare" id="compare-whole-school" value="whole-school" checked>
+            Across the whole school
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="compare" id="compare-within-school" value="within-school">
+            Within the school
+          </label>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        Compare usage across the whole school on different days, or compare usage within
+        the school on a specific day
+      </div>
+    </div>
+    <div class="card <%= @supply %>-card" id="whole-school">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <h4 class="card-title">
+          Which dates do you want to compare?
+        </h4>
+
+        <p class="card-text">
+          First day
+        </p>
+        <div class="form-group">
+          <div class="indicator-light <%= @supply %>-light">
+            <div class="input-group">
+            <%= text_field_tag("first-date-picker",
+                           @first_date.strftime('%A, %e %B %Y'),
+                           class: 'form-control date-picker first-date-picker'
+            ) %>
+              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            </div>
           </div>
         </div>
-      </div>
+        <p class="card-text">
+          Second day
+        </p>
+        <div class="form-group">
+          <div class="indicator-dark <%= @supply %>-dark">
+            <div class="input-group">
+            <%= text_field_tag("to-date-picker",
+                           @to_date.present? ? @to_date.strftime('%A, %e %B %Y') : nil,
+                           class: 'form-control date-picker to-date-picker'
+            ) %>
+              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        </div>
+        <p class="card-text">
+          Which meter shall we show?
+        </p>
+        <div class="form-group">
+        <%= select_tag :meter,
+                       content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(@school.meters,
+                       :meter_no, :display_name, params[:meter], { "supply-type" => :meter_type }), class: "form-control custom-select meter-filter" %>
+        </div>
 
+      </div>
+      <div class="card-footer">
+
+      </div>
     </div>
-    <%= link_to 'School homepage', school_path(@school), class: 'btn btn-secondary' %>
+    <div class="card <%= @supply %>-card" id="within-school" style="display: none;">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <h4 class="card-title">
+          Choose which meters to compare
+        </h4>
+        <p class="card-text">
+          Compare this meter
+        </p>
+        <div class="form-group">
+        <div class="indicator-light <%= @supply %>-light"><%= select_tag :meter,
+                       content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(@school.meters,
+                         :meter_no, :display_name, params[:meter], { "supply-type" => :meter_type }) , class: "form-control custom-select meter-filter" %></div>
+        </div>
+
+        <p class="card-text">
+          With this meter
+        </p>
+        <div class="form-group">
+          <div class="indicator-dark <%= @supply %>-dark"><%= select_tag :second_meter,
+                       content_tag(:option,'None',:value=>"")+options_from_collection_for_select_with_data(@school.meters,
+                         :meter_no, :display_name, params[:meter], { "supply-type" => :meter_type }), class: "form-control custom-select second-meter-filter" %></div>
+        </div>
+        <p class="card-text">Which date shall we show?</p>
+        <div class="form-group">
+          <div class="indicator-light <%= @supply %>-light">
+            <div class="input-group">
+              <%= text_field_tag("first-date-picker",
+                                 @first_date.strftime('%A, %e %B %Y'),
+                                 class: 'form-control date-picker first-date-picker'
+                  ) %>
+              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+
+      </div>
+    </div>
+
   </div>
+
+  <% end %>
 </div>

@@ -25,6 +25,68 @@ div.school-card-row {
   }
 }
 
+.gas-card {
+  border: 5px solid $gasLight;
+
+  .card-header {
+    background-color: #fff;
+    border-bottom: 0px;
+  }
+
+  .card-footer {
+    background-color: #fff;
+    border-top: 0px;
+  }
+
+  .card-body {
+    padding-top: 0px;
+  }
+
+  .btn {
+    background-color: $gasDark;
+    border-color: $gasDark;
+  }
+}
+
+.electricity-card {
+  border: 5px solid $electricLight;
+
+  .card-header {
+    background-color: #fff;
+    border-bottom: 0px;
+  }
+
+  .card-footer {
+    background-color: #fff;
+    border-top: 0px;
+  }
+
+  .card-body {
+    padding-top: 0px;
+  }
+
+  .btn {
+    background-color: $electricDark;
+    border-color: $electricDark;
+  }
+}
+
+.electricity-light {
+  border: 2px solid $electricLight;
+}
+
+.electricity-dark {
+  border: 2px solid $electricDark;
+}
+
+.gas-light {
+  border: 2px solid $gasLight;
+}
+
+.gas-dark {
+  border: 2px solid $gasDark;
+}
+
 .secondary-card {
   border: 5px solid grey;
 
