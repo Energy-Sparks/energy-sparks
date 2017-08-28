@@ -21,6 +21,9 @@
 
 en:
   application: "Energy Sparks"
+  charts:
+    hourly-usage-link: "View usage by day"
+    weekly-usage-link: "View usage by week"
   date:
     formats:
       default: "%d/%m/%Y"
