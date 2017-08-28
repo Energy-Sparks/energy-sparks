@@ -30,7 +30,6 @@ class StatsController < ApplicationController
   #compare hourly usage across two dates
   # GET /schools/:id/compare_hourly_usage?comparison=type&supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date&second_meter=meter_no
   def compare_hourly_usage
-    precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
     from = first_date
     data = []
     if comparison == "whole-school"
