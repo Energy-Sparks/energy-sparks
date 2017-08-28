@@ -1,6 +1,6 @@
 class StatsController < ApplicationController
   include ActionView::Helpers::NumberHelper
-
+  include SchoolsHelper
   skip_before_action :authenticate_user!
 
   # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:meter_no
@@ -27,41 +27,26 @@ class StatsController < ApplicationController
     ]
   end
 
-  #CURRENT
   #compare hourly usage across two dates
   # GET /schools/:id/compare_hourly_usage?comparison=type&supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date&second_meter=meter_no
   def compare_hourly_usage
     precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
+    from = first_date
+    data = []
     if comparison == "whole-school"
-      from = first_date
-      to = to_date
-      from_date = school.hourly_usage_for_date(supply: supply,
-          date: from,
-          meter: meter,
-          scale: :kw
-      ).map(&precision)
-      to_date = school.hourly_usage_for_date(supply: supply,
-          date: to,
-          meter: meter,
-          scale: :kw
-      ).map(&precision) unless to.nil?
-      data = [{ name: from.strftime('%A, %d %B %Y'), data: from_date }]
-      data << { name: to.strftime('%A, %d %B %Y'), data: to_date } unless to.nil?
+      first_series = hourly_usage_to_precision(school, supply, from, meter)
+      data << { name: from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      if to_date.present?
+        second_series = hourly_usage_to_precision(school, supply, to_date, meter)
+        data << { name: to_date.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series }
+      end
     else
-      from = first_date
-      first_meter = school.hourly_usage_for_date(supply: supply,
-        date: from,
-        meter: meter,
-        scale: :kw
-      ).map(&precision)
-
-      second_m = school.hourly_usage_for_date(supply: supply,
-        date: from,
-        meter: second_meter,
-        scale: :kw
-      ).map(&precision) unless second_meter.nil?
-      data = [{ name: from.strftime('%A, %d %B %Y'), data: first_meter }]
-      data << { name: from.strftime('%A, %d %B %Y'), data: second_m } unless second_meter.nil?
+      first_series = hourly_usage_to_precision(school, supply, from, meter)
+      data << { name: meter + " " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      if second_meter.present?
+        second_series = hourly_usage_to_precision(school, supply, from, second_meter)
+        data << { name: second_meter + " " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
+      end
     end
     render json: data
   end
@@ -91,6 +76,7 @@ private
   end
 
   def to_date
+    return nil unless params[:to_date].present?
     Date.parse(params[:to_date])
   rescue
     nil

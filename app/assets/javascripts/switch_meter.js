@@ -1,5 +1,7 @@
 $(document).on("turbolinks:load", function() {
 
+    var initialised = false;
+
     function datetoCdate(date) {
         parts = date.split("-");
         if (parts.length < 3) {
@@ -16,6 +18,7 @@ $(document).on("turbolinks:load", function() {
             selectDefaultDate: true,
             onSelect: function(dates) {
                 $("#first-date").val(dates);
+                if (initialised) updateChart(this);
             }
         });
     });
@@ -27,24 +30,27 @@ $(document).on("turbolinks:load", function() {
             selectDefaultDate: true,
             onSelect: function(dates) {
                 $("#to-date").val(dates);
+                if (initialised) updateChart(this);
             }
         });
     });
 
-    supply = $("input[name=supplyType]:checked").val();
-    setMinMaxDates(supply);
-    enableMeters(supply, false);
-
+    //only run this on charts pages
+    if ($(".charts").length > 0) {
+        supply = $("input[name=supplyType]:checked").val();
+        setMinMaxDates(supply);
+        enableMeters(supply, false);
+        initialised = true;
+    }
 
     function updateChart(el) {
         chart = Chartkick.charts["chart"];
         current_source = chart.getDataSource();
-
-        console.log($(el.form).serialize());
-
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
         chart.updateData(new_source);
-        chart.getChartObject().showLoading();
+        if (chart.getChartObject()) {
+            chart.getChartObject().showLoading();
+        }
     }
 
     function enableMeters(supply, force) {
@@ -67,8 +73,13 @@ $(document).on("turbolinks:load", function() {
     }
 
     function setMinMaxDates(supply) {
+        console.log("Setting min/max " + supply);
+
         min = datetoCdate( $("#" + supply + "-start").attr("data-date") );
         max = datetoCdate( $("#" + supply + "-end").attr("data-date") );
+
+        console.log(min);
+        console.log(max);
 
         //just in case date isn't valid
         if (min == null || max == null) {
@@ -76,6 +87,13 @@ $(document).on("turbolinks:load", function() {
         }
 
         $(".date-picker").each(function() {
+            selected_date = $(this).calendarsPicker("getDate");
+            if (selected_date.length > 0 && selected_date > max) {
+                $(this).calendarsPicker("setDate", max);
+            }
+            if (selected_date.length > 0 && selected_date < min) {
+                $(this).calendarsPicker("setDate", min);
+            }
             $(this).calendarsPicker("option", {
                 minDate: min,
                 maxDate: max
@@ -133,11 +151,6 @@ $(document).on("turbolinks:load", function() {
 
     $(document).on('change', '.second-meter-filter', function() {
         $("#second-meter").val($(this).val());
-        updateChart(this);
-    });
-
-    //TODO this could be merged in with the onSelect, or that could be moved here for consistency
-    $(document).on('change', '.date-picker', function() {
         updateChart(this);
     });
 

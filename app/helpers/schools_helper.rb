@@ -35,9 +35,17 @@ module SchoolsHelper
     )
   end
 
-
   def colours_for_supply(supply)
     supply == "electricity" ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
+  end
+
+  def hourly_usage_to_precision(school, supply, date, meter, scale=:kw, to_precision=1)
+    precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: to_precision)] }
+    school.hourly_usage_for_date(supply: supply,
+      date: date,
+      meter: meter,
+      scale: scale
+    ).map(&precision)
   end
 
   # get n days average daily usage
