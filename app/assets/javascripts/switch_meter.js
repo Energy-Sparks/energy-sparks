@@ -44,6 +44,7 @@ $(document).on("turbolinks:load", function() {
     }
 
     function updateChart(el) {
+        console.trace();
         chart = Chartkick.charts["chart"];
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
@@ -63,8 +64,7 @@ $(document).on("turbolinks:load", function() {
             $("option[data-supply-type='gas']").show();
         }
         if (force == true) {
-            //TODO what about existing state on within school?
-            //TODO also update value of hidden form field
+            //when switching, reset state, so select all meters and no second selection
             $(".meter-filter option[value='all']").prop("selected", true);
             $("#second_meter option:first").prop("selected", true);
 
@@ -103,6 +103,7 @@ $(document).on("turbolinks:load", function() {
 
     //TODO tidy up the code
     $(document).on('change', 'input[type=radio][name=supplyType]', function() {
+        initialised = false;
         if (this.value == 'electricity') {
             $(".card").removeClass("gas-card");
 
@@ -129,6 +130,7 @@ $(document).on("turbolinks:load", function() {
         enableMeters(this.value, true);
         setMinMaxDates(this.value);
         updateChart(this);
+        initialised = true;
     });
 
     $(document).on('change', 'input[type=radio][name=compare]', function() {
@@ -141,7 +143,7 @@ $(document).on("turbolinks:load", function() {
             $("#within-school").hide();
             $("#whole-school").show();
         }
-
+        updateChart(this);
     });
 
     $(document).on('change', '.meter-filter', function() {
