@@ -155,6 +155,9 @@ $(document).on("turbolinks:load", function() {
             $("div.indicator-dark").removeClass("gas-dark");
             $("div.indicator-dark").addClass("electricity-dark");
 
+            $("#gas-interpretation").hide();
+            $("#electricity-interpretation").show();
+
             $(".card").addClass("electricity-card");
         } else {
             $("option[data-supply-type='electricity']").hide();
@@ -166,6 +169,9 @@ $(document).on("turbolinks:load", function() {
             $("div.indicator-light").addClass("gas-light");
             $("div.indicator-dark").removeClass("electricity-dark");
             $("div.indicator-dark").addClass("gas-dark");
+
+            $("#electricity-interpretation").hide();
+            $("#gas-interpretation").show();
 
             $(".card").addClass("gas-card");
         }
