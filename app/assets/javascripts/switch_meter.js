@@ -31,47 +31,53 @@ $(document).on("turbolinks:load", function() {
         return $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]))
     }
 
-    $(".first-date-picker").each( function() {
-        $(this).calendarsPicker({
-            dateFormat: 'DD, d MM yyyy',
-            defaultDate: datetoCdate( $("#first-date").val() ),
-            selectDefaultDate: true,
-            onSelect: function(dates) {
-                $("#first-date").val(dates);
-                if (initialised) updateChart(this);
-            }
-        });
-    });
-
-    $(".to-date-picker").each( function() {
-        $(this).calendarsPicker({
-            dateFormat: 'DD, d MM yyyy',
-            defaultDate: datetoCdate( $("#to-date").val() ),
-            selectDefaultDate: true,
-            onSelect: function(dates) {
-                $("#to-date").val(dates);
-                if (initialised) updateChart(this);
-            }
-        });
-    });
-
     //only run this on charts pages
     if ($(".charts").length > 0) {
+        console.log("init function");
         supply = $("input[name=supplyType]:checked").val();
+
+        $(".first-date-picker").each( function() {
+            $(this).calendarsPicker({
+                dateFormat: 'DD, d MM yyyy',
+                defaultDate: datetoCdate( $("#first-date").val() ),
+                selectDefaultDate: true,
+                onSelect: function(dates) {
+                    console.log("select first-date");
+                    $("#first-date").val(dates);
+                    if (initialised) updateChart(this);
+                }
+            });
+        });
+
+        $(".to-date-picker").each( function() {
+            $(this).calendarsPicker({
+                dateFormat: 'DD, d MM yyyy',
+                defaultDate: datetoCdate( $("#to-date").val() ),
+                selectDefaultDate: true,
+                onSelect: function(dates) {
+                    console.log("select second-date");
+                    $("#to-date").val(dates);
+                    if (initialised) updateChart(this);
+                }
+            });
+        });
+
         setMinMaxDates(supply);
         enableMeters(supply, false);
         explain();
+        console.log("done");
         initialised = true;
     }
 
     function updateChart(el) {
+        console.trace();
         explain();
         chart = Chartkick.charts["chart"];
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
         chart.updateData(new_source);
         if (chart.getChartObject()) {
-            chart.getChartObject().showLoading();
+            //chart.getChartObject().showLoading();
         }
     }
 
@@ -161,12 +167,18 @@ $(document).on("turbolinks:load", function() {
             $("#comparison").val("within-school");
             $("#whole-school").hide();
             $("#within-school").show();
+            $("#first-meter").val($("#within-school #meter").val());
+            $("#first-date").val($("#within-school #first-date-picker").val());
+
         } else {
             $("#comparison").val("whole-school");
             $("#within-school").hide();
             $("#whole-school").show();
+            $("#first-meter").val($("#whole-school #meter").val());
+            $("#first-date").val($("#whole-school #first-date-picker").val());
+
         }
-        $("#first-meter").val($("#within-school #meter").val());
+
         explain();
         updateChart(this);
     });

@@ -28,7 +28,7 @@
           <div class="card-footer text-right">
             <%= link_to('Hourly usage',
                         usage_school_path(@school, period: :hourly, supply: :electricity),
-                        class: 'btn btn-primary') unless avg_elect.nil?
+                        class: 'btn btn-primary', "data-turbolinks": false) unless avg_elect.nil?
             %>
 
           </div>
@@ -49,7 +49,7 @@
           <div class="card-footer text-right">
             <%= link_to('Daily usage',
                         usage_school_path(@school, period: :daily, to_date: latest_reading_date, anchor: :electricity),
-                        class: 'btn btn-primary') unless avg_elect.nil?
+                        class: 'btn btn-primary', "data-turbolinks": false) unless avg_elect.nil?
             %>
           </div>
         </div>
