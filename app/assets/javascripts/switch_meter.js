@@ -4,9 +4,9 @@ $(document).on("turbolinks:load", function() {
     var explainTemplate = Handlebars.compile("Graphing {{supply}} consumption on {{first_date}} " +
         "{{#if whole_school}}{{#if second_date}}and {{second_date}}{{/if}}{{/if}}" +
         " for {{first_meter}}{{#unless whole_school}}{{#if second_meter}} and {{second_meter}}{{/if}}{{/unless}}.");
+    var dataRangesTemplate = Handlebars.compile("{{supply }} data is available from {{min}} to {{max}}");
 
     function explain() {
-        console.log("explaining");
         whole_school = $("input[type=radio][name=compare]:checked").val() == "whole-school";
         first_meter = whole_school ? $("#whole-school #meter option:selected").text() : $("#within-school #meter option:selected").text();
         first_date = whole_school ? $("#whole-school #first-date-picker").val() : $("#within-school #first-date-picker").val()
@@ -20,7 +20,6 @@ $(document).on("turbolinks:load", function() {
             first_date: first_date,
             second_date: $("#to-date-picker").val() == "" ? null : $("#to-date-picker").val()
         };
-        console.log(data);
         $("#graph-explainer").html( explainTemplate(data) );
     }
 
@@ -32,10 +31,9 @@ $(document).on("turbolinks:load", function() {
         return $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]))
     }
 
-    //TODO what if there aren't any dates?
     $(".first-date-picker").each( function() {
         $(this).calendarsPicker({
-            dateFormat: 'DD, d MM yy',
+            dateFormat: 'DD, d MM yyyy',
             defaultDate: datetoCdate( $("#first-date").val() ),
             selectDefaultDate: true,
             onSelect: function(dates) {
@@ -47,7 +45,7 @@ $(document).on("turbolinks:load", function() {
 
     $(".to-date-picker").each( function() {
         $(this).calendarsPicker({
-            dateFormat: 'DD, d MM yy',
+            dateFormat: 'DD, d MM yyyy',
             defaultDate: datetoCdate( $("#to-date").val() ),
             selectDefaultDate: true,
             onSelect: function(dates) {
@@ -104,6 +102,12 @@ $(document).on("turbolinks:load", function() {
         if (min == null || max == null) {
             return;
         }
+
+        $("#data-availability").html( dataRangesTemplate({
+            supply: $("input[type=radio][name=supplyType]:checked").parent("label").text(),
+            min: min.formatDate('DD, d MM yyyy'),
+            max: max.formatDate('DD, d MM yyyy')
+        }));
 
         $(".date-picker").each(function() {
             selected_date = $(this).calendarsPicker("getDate");
