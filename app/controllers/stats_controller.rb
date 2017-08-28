@@ -66,27 +66,6 @@ class StatsController < ApplicationController
     render json: data
   end
 
-  # GET /schools/:id/hourly_usage?supply=:supply&to_date=:to_date&meter=:meter_no
-  # compares hourly usage by weekday/weekend for last full week
-  def hourly_usage
-    week = Usage.this_week(to_date).to_a
-    precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
-    weekend = school.hourly_usage(
-      supply: supply,
-      dates: week[0]..week[1],
-      meter: meter
-    ).map(&precision)
-    weekday = school.hourly_usage(
-      supply: supply,
-      dates: week[2]..week[6],
-      meter: meter
-    ).map(&precision)
-    render json: [
-      { name: 'Weekday', data: weekday },
-      { name: 'Weekend', data: weekend }
-    ]
-  end
-
 private
 
 
