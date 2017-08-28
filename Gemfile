@@ -37,6 +37,7 @@ gem 'jquery-ui-rails' # Use jquery UI for datepickers
 gem 'devise' # Use devise for authentication
 gem 'cancancan' # Use cancancan for authorization
 
+gem 'handlebars_assets'
 
 # Utils
 gem 'groupdate' # Use groupdate to group usage stats

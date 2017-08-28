@@ -6,6 +6,9 @@
   <div class="row padded-row">
     <div class="col-md-12">
       <h1>Power consumption for <%= @school.name %></h1>
+      <p>
+        Explore power consumption for <%= link_to @school.name, school_path(@school), id: "school" %>
+      </p>
     </div>
   </div>
 
@@ -22,6 +25,12 @@
     <span id="gas-end" data-date="<%= @school.last_reading_date("gas") %>"></span>
   </div>
 
+  <div class="row">
+    <div class="col-md-12">
+      <p class="text-center" id="graph-explainer">
+      </p>
+    </div>
+  </div>
   <%= form_tag "", method: :get, id: "chart-filter" do %>
       <%= hidden_field_tag :comparison, "whole-school" %>
       <%= hidden_field_tag :period, "hourly" %>
@@ -137,7 +146,7 @@
 
       </div>
       <div class="card-footer">
-
+        <span id="data-availability"></span>
       </div>
     </div>
     <div class="card <%= @supply %>-card" id="within-school" style="display: none;">

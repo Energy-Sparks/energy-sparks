@@ -14,4 +14,5 @@
 //= require jquery.calendars.plus.min.js
 //= require jquery.plugin.min.js
 //= require jquery.calendars.picker.min.js
+//= require handlebars
 //= require_tree .
