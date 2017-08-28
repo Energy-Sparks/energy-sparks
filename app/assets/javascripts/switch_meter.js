@@ -1,6 +1,28 @@
 $(document).on("turbolinks:load", function() {
 
     var initialised = false;
+    var explainTemplate = Handlebars.compile("Graphing {{supply}} consumption on {{first_date}} " +
+        "{{#if whole_school}}{{#if second_date}}and {{second_date}}{{/if}}{{/if}}" +
+        " for {{first_meter}}{{#unless whole_school}}{{#if second_meter}} and {{second_meter}}{{/if}}{{/unless}}.");
+
+    function explain() {
+        console.log("explaining");
+        whole_school = $("input[type=radio][name=compare]:checked").val() == "whole-school";
+        first_meter = whole_school ? $("#whole-school #meter option:selected").text() : $("#within-school #meter option:selected").text();
+        first_date = whole_school ? $("#whole-school #first-date-picker").val() : $("#within-school #first-date-picker").val()
+        data = {
+            whole_school: whole_school,
+            supply: $("#supply").val(),
+            first_meter: first_meter,
+            second_meter: $("#second_meter option:selected").val() == "" ? null : $("#second_meter option:selected").text(),
+            school: $("#school").html(),
+            homepage: $("#school").attr("href"),
+            first_date: first_date,
+            second_date: $("#to-date-picker").val() == "" ? null : $("#to-date-picker").val()
+        };
+        console.log(data);
+        $("#graph-explainer").html( explainTemplate(data) );
+    }
 
     function datetoCdate(date) {
         parts = date.split("-");
@@ -40,11 +62,12 @@ $(document).on("turbolinks:load", function() {
         supply = $("input[name=supplyType]:checked").val();
         setMinMaxDates(supply);
         enableMeters(supply, false);
+        explain();
         initialised = true;
     }
 
     function updateChart(el) {
-        console.trace();
+        explain();
         chart = Chartkick.charts["chart"];
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
@@ -53,6 +76,7 @@ $(document).on("turbolinks:load", function() {
             chart.getChartObject().showLoading();
         }
     }
+
 
     function enableMeters(supply, force) {
         if (supply == "electricity") {
@@ -73,13 +97,8 @@ $(document).on("turbolinks:load", function() {
     }
 
     function setMinMaxDates(supply) {
-        console.log("Setting min/max " + supply);
-
         min = datetoCdate( $("#" + supply + "-start").attr("data-date") );
         max = datetoCdate( $("#" + supply + "-end").attr("data-date") );
-
-        console.log(min);
-        console.log(max);
 
         //just in case date isn't valid
         if (min == null || max == null) {
@@ -143,6 +162,8 @@ $(document).on("turbolinks:load", function() {
             $("#within-school").hide();
             $("#whole-school").show();
         }
+        $("#first-meter").val($("#within-school #meter").val());
+        explain();
         updateChart(this);
     });
 

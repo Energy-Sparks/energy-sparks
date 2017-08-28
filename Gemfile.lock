@@ -160,6 +160,10 @@ GEM
       scss_lint
     groupdate (3.0.2)
       activesupport (>= 3)
+    handlebars_assets (0.23.2)
+      execjs (~> 2.0)
+      sprockets (>= 2.0.0)
+      tilt (>= 1.2)
     hashdiff (0.3.0)
     hashie (3.4.6)
     highcharts-rails (5.0.7)
@@ -399,6 +403,7 @@ DEPENDENCIES
   friendly_id!
   govuk-lint
   groupdate
+  handlebars_assets
   highcharts-rails
   jbuilder (~> 2.5)
   jquery-rails
