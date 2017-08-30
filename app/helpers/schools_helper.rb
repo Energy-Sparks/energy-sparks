@@ -1,9 +1,8 @@
 module SchoolsHelper
-  def daily_usage_chart(supply, to_date, meter = nil)
-    last_reading_date = @school.last_reading_date(supply, to_date)
+  def daily_usage_chart(supply, first_date, to_date, meter = nil)
     column_chart(
-      daily_usage_school_path(supply: supply, to_date: last_reading_date, meter: meter),
-      id: "#{supply}-chart",
+      compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter),
+      id: "chart",
       xtitle: 'Date',
       ytitle: 'kWh',
       height: '500px',
