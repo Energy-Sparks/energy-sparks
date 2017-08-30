@@ -43,10 +43,15 @@ $(document).on("turbolinks:load", function() {
     //the explanation and then triggers the data load
     function updateChart(el) {
         explain();
+        if ($("#supply").val() == "electricity") {
+            colors = ["#3bc0f0","#232b49"]
+        } else {
+            colors = ["#ffac21", "#ff4500"]
+        }
         chart = Chartkick.charts["chart"];
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
-        chart.updateData(new_source);
+        chart.updateData(new_source, {colors: colors});
         if (chart.getChartObject()) {
             chart.getChartObject().showLoading();
         }
