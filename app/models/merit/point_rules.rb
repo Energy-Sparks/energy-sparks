@@ -14,8 +14,8 @@ module Merit
 
     def initialize
       # Enroll in EnergySparks
-      enrolled = lambda { |school| school.enrolled? }
-      score(20, to: :itself, on: ['schools#update'], &enrolled)
+      #enrolled = lambda { |school| school.enrolled? }
+      #score(20, to: :itself, on: ['schools#update'], &enrolled)
 
       activity_score = lambda { |activity| activity.activity_type.score }
       negativity_activity_score = lambda { |activity| -activity.activity_type.score }
