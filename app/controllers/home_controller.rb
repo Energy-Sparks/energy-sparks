@@ -7,7 +7,10 @@ class HomeController < ApplicationController
     @schools_eligible = School.count
   end
 
-  def about
+  def for_teachers
+  end
+
+  def for_pupils
   end
 
   def contact

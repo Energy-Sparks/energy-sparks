@@ -4,8 +4,8 @@ Feature: Basic checks
     When I go to the home page
     Then I should see "Energy Sparks"
 
-  Scenario: user visits the About page
-    When I go to the about page
+  Scenario: user visits the for teachers page
+    When I go to the for teachers page
     Then I should see "About"
 
   Scenario: user visits the Contact page
