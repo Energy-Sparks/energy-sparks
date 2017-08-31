@@ -110,7 +110,6 @@ private
       :school_type,
       :address,
       :postcode,
-      :eco_school_status,
       :website,
       :enrolled,
       :urn,

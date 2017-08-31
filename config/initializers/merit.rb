@@ -95,32 +95,5 @@ end
           image: 'badges/bulb',
           title: 'Player'
       }
-  },
-  {
-      id: 16,
-      name: 'eco-status-green',
-      description: 'Achieve Ecoschool green flag status',
-      custom_fields: {
-          image: 'badges/green_award',
-          title: 'Green Flag Award'
-      }
-  },
-  {
-      id: 14,
-      name: 'eco-status-bronze',
-      description: 'Receive an Ecoschool bronze award',
-      custom_fields: {
-          image: 'badges/bronze_award',
-          title: 'Bronze Award'
-      }
-  },
-  {
-      id: 15,
-      name: 'eco-status-silver',
-      description: 'Receive an Ecoschool silver award',
-      custom_fields: {
-          image: 'badges/silver_award',
-          title: 'Silver Award'
-      }
   }
 ].each { |attrs| ::Merit::Badge.create! attrs }

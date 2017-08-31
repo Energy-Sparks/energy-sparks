@@ -28,7 +28,6 @@ describe 'Loader::Schools' do
       expect(school.address).to eq "Spring Lane, Larkhall, Bath"
       expect(school.postcode).to eq "BA1 6NY"
       expect(school.website).to eq "http://www.stsaviours-infants.org/website"
-      expect(school.green?).to be_truthy
     end
     it 'creates a new calendar' do
       expect {

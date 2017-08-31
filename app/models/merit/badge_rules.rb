@@ -27,19 +27,6 @@ module Merit
       enrolled = lambda { |school| school.enrolled? }
       grant_on(['schools#create', 'schools#update'], to: :itself, badge: 'enrolled', temporary: true, &enrolled)
 
-      #Rankings
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-status-bronze', temporary: true do |school|
-        school.eco_school_status == 'bronze'
-      end
-
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-status-silver', temporary: true do |school|
-        school.eco_school_status == 'silver'
-      end
-
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'eco-status-green', temporary: true do |school|
-        school.eco_school_status == 'green'
-      end
-
       #Activity (paper)
       #Record an activity
       grant_on 'activities#create', badge: 'first-activity', to: :school, temporary: true do |activity|

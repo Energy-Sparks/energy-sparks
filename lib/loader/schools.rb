@@ -15,8 +15,7 @@ module Loader
             school_type: row['Type'].try(:to_sym),
             address: row['Address'],
             postcode: row['Postcode'],
-            website: row['Website'],
-            eco_school_status: row['Ecoschool Status'].try(:to_sym)
+            website: row['Website']
           )
         end
       end

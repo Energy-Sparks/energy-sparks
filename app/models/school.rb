@@ -5,7 +5,6 @@
 #  address             :text
 #  calendar_id         :integer
 #  created_at          :datetime         not null
-#  eco_school_status   :integer
 #  electricity_dataset :string
 #  enrolled            :boolean          default(FALSE)
 #  gas_dataset         :string
@@ -46,7 +45,6 @@ class School < ApplicationRecord
   belongs_to :calendar
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
-  enum eco_school_status: [:bronze, :silver, :green]
 
   scope :enrolled, -> { where(enrolled: true) }
 
