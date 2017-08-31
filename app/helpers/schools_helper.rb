@@ -34,6 +34,10 @@ module SchoolsHelper
     )
   end
 
+  def kid_date(date)
+    date.strftime('%A, %d %B %Y')
+  end
+
   def colours_for_supply(supply)
     supply == "electricity" ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
   end

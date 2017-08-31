@@ -9,7 +9,7 @@ class StatsController < ApplicationController
     data = []
     if comparison == "whole-school"
       first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
-      data << { name: 'Latest 7 days', color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: 'Week starting ' + kid_date(from), color: colours_for_supply(supply)[0], data: first_series }
       if to_date.present?
         second_series = daily_usage_to_precision(school, supply, to_date..to_date + 6.days, meter)
 
@@ -18,18 +18,18 @@ class StatsController < ApplicationController
           # this week's dates with previous week's usage
           [first_series[index][0], day[1]]
         end
-        data << { name: 'Previous 7 days', color: colours_for_supply(supply)[1], data: second_series }
+        data << { name: 'Week starting ' + kid_date(to_date), color: colours_for_supply(supply)[1], data: second_series }
       end
     else
       first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
-      data << { name: meter + " ending " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: "Meter Number " + meter, color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
-        second_series = daily_usage_to_precision(school, supply, from..from + 6.days  , second_meter)
+        second_series = daily_usage_to_precision(school, supply, from..from + 6.days, second_meter)
         second_series = second_series.map.with_index do |day, index|
           # this week's dates with previous week's usage
           [first_series[index][0], day[1]]
         end
-        data << { name: second_meter + " ending " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series }
+        data << { name: "Meter Number " + second_meter, color: colours_for_supply(supply)[1], data: second_series }
       end
     end
 
@@ -43,17 +43,17 @@ class StatsController < ApplicationController
     data = []
     if comparison == "whole-school"
       first_series = hourly_usage_to_precision(school, supply, from, meter)
-      data << { name: from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: kid_date(from), color: colours_for_supply(supply)[0], data: first_series }
       if to_date.present?
         second_series = hourly_usage_to_precision(school, supply, to_date, meter)
-        data << { name: to_date.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series }
+        data << { name: kid_date(to_date), color: colours_for_supply(supply)[1], data: second_series }
       end
     else
       first_series = hourly_usage_to_precision(school, supply, from, meter)
-      data << { name: meter + " " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: "Meter Number " + meter, color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
         second_series = hourly_usage_to_precision(school, supply, from, second_meter)
-        data << { name: second_meter + " " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
+        data << { name: "Meter Number " + second_meter, color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
       end
     end
     render json: data
