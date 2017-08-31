@@ -15,7 +15,7 @@
                 <% if current_user && current_user.manages_school?(@school.id) %>
                     Recording energy-saving activities will score you points for your energy saving efforts
                 <% else %>
-                    Schools score points and are awarded badges when they record their energy
+                    Schools score points and receive awards when they record their energy
                     saving activities
                 <% end %>
               </p>
@@ -35,16 +35,16 @@
             <div class="card-body">
               <p>
                 <% if current_user && current_user.manages_school?(@school.id) %>
-                    You will be awarded badges for recording your energy-saving activities
+                    You will receive awards for recording your energy-saving activities
                 <% else %>
-                    Schools are awarded badges when they record their energy
+                    Schools receive awards when they record their energy
                     saving efforts
                 <% end %>
               </p>
             </div>
             <div class="card-footer text-right">
               <% if current_user && current_user.manages_school?(@school.id) %>
-                  <%= link_to 'View achievements', achievements_school_path(@school), class: 'btn btn-primary' %>
+                  <%= link_to 'View awards', awards_school_path(@school), class: 'btn btn-primary' %>
               <% end %>
             </div>
           </div>

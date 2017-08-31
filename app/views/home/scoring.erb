@@ -5,7 +5,7 @@
 
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1 id="intro">Points and badges</h1>
+      <h1 id="intro">Points and awards</h1>
     </div>
   </div>
 
@@ -39,18 +39,18 @@
 
   <div class="row">
     <div class="col-md-3 callout-text">
-      <h5>Badges</h5>
+      <h5>Awards</h5>
     </div>
     <div class="col-md-8">
       <p>
-        As you use the <%= t('application') %> and record more activities you will also be awarded badges.
-        Badges help mark milestones and celebrate other aspects of your journey to become more energy efficient.
+        As you use the <%= t('application') %> and record more activities you will also receive awards.
+        Awards help mark milestones and celebrate other aspects of your journey to become more energy efficient.
       </p>
       <p>
-        You can use badges to help motivate staff and pupils to take part in activities.
+        You can use awards to help motivate staff and pupils to take part in activities.
       </p>
       <p>
-        Your most recently awarded badge is is always displayed on
+        Your most recent award is always displayed on
         <% if current_user.present? && current_user.school_admin? %>
             <%= link_to "your school homepage", school_path(current_user.school) %>.
         <% else %>
@@ -58,9 +58,9 @@
         <% end %>
         You can also view a
         <% if current_user.present? && current_user.school_admin? %>
-            <%= link_to "list of current badges", achievements_school_path(current_user.school) %>
+            <%= link_to "list of current awards", awards_school_path(current_user.school) %>
         <% else %>
-            list of current badges
+            list of awards you can receive.
         <% end %>
       </p>
     </div>

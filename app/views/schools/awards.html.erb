@@ -1,14 +1,14 @@
 <% content_for :page_title do %>
-  <%= @school.name %>: Badges
+  <%= @school.name %>: Awards
 <% end %>
 <div class="application container">
 
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1><%= @school.name %> Badges</h1>
-      <p><%= link_to @school.name, school_path(@school) %> are earning badges when they record their activities using <%= t('application') %>.</p>
-      <p>As they earn badges they will light up on this page. Badges that are still to be earned are shown to help them plan
-      their next achievements.</p>
+      <h1><%= @school.name %> Awards</h1>
+      <p><%= link_to @school.name, school_path(@school) %> are earning awards when they record their activities using <%= t('application') %>.</p>
+      <p>As they earn an award it will be revealed on this page. Awards that are still to be earned are shown to help them plan
+      their next activities.</p>
     </div>
   </div>
 
