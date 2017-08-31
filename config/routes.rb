@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
-  get 'about', to: 'home#about'
+  get 'for-teachers', to: 'home#for_teachers'
+  get 'for-pupils', to: 'home#for_pupils'
+
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
