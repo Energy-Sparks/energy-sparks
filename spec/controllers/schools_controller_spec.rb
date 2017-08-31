@@ -186,15 +186,7 @@ RSpec.describe SchoolsController, type: :controller do
           put :update, params: { id: school.to_param, school: valid_attributes }
           expect(assigns(:school)).to eq(school)
         end
-
-        it "awards points when enrolled" do
-          school = FactoryGirl.create :school
-          put :update, params: { id: school.to_param, school: {enrolled: true} }
-          school.reload
-          expect(school.enrolled).to be(true)
-          expect(school.points).to eql(20)
-        end
-
+        
         it "awards a badge when enrolled" do
           school = FactoryGirl.create :school
           put :update, params: { id: school.to_param, school: {enrolled: true} }
