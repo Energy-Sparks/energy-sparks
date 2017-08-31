@@ -1,7 +1,7 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :achievements, :leaderboard]
-  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :achievements, :suggest_activity, :data_explorer]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :leaderboard]
+  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
 
   # GET /schools
   # GET /schools.json
@@ -19,8 +19,8 @@ class SchoolsController < ApplicationController
     @badges = @school.badges_by_date(limit: 6)
   end
 
-  # GET /schools/:id/badges
-  def achievements
+  # GET /schools/:id/awards
+  def awards
     @all_badges = Merit::Badge.all.to_a.sort { |a, b| a <=> b }
     @badges = @school.badges_by_date(order: :asc)
   end

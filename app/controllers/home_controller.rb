@@ -19,7 +19,7 @@ class HomeController < ApplicationController
   def getting_started
   end
 
-  def badges
+  def scoring
   end
 
   def help

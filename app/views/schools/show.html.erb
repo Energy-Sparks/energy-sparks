@@ -8,10 +8,10 @@
       <h1 property="name"><%= @school.name %></h1>
       <p>
         <%- if can? :manage, @school -%>
-          Record your energy saving activities, check your scores and latest achievements, and explore your energy usage data.
+          Record your energy saving activities, check your scores and latest awards, and explore your energy usage data.
         <% else %>
           This school is using <%= t('application') %> to become more energy efficient. Explore their energy saving activities,
-          see their scores and achievements, and explore their energy usage data.
+          see their scores and awards, and explore their energy usage data.
         <%- end -%>
       </p>
      </div>
@@ -19,7 +19,7 @@
   <div class="row">
     <div class="col-md-3">
       <%= render partial: 'schools/description' %>
-      <%= render partial: 'schools/badges' %>
+      <%= render partial: 'schools/awards' %>
     </div>
     <div class="col-md-9">
       <%= render partial: 'schools/activity_cards' %>

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'datasets', to: 'home#datasets'
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
-  get 'points-and-badges', to: 'home#badges'
+  get 'scoring', to: 'home#scoring'
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     resources :activities
     get :leaderboard, on: :collection
     member do
-      get 'achievements'
+      get 'awards'
       get 'suggest_activity'
       get 'data_explorer'
       get 'usage'
