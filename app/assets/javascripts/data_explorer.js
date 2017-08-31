@@ -4,9 +4,13 @@ $(document).on("turbolinks:load", function() {
     var initialised = false;
 
     //template used to explain the graphs
-    var explainTemplate = Handlebars.compile("Graphing {{supply}} consumption on {{first_date}} " +
-        "{{#if whole_school}}{{#if second_date}}and {{second_date}}{{/if}}{{/if}}" +
+    var explainHourlyTemplate = Handlebars.compile("Graphing {{supply}} consumption on {{first_date}}" +
+        "{{#if whole_school}}{{#if second_date}} and {{second_date}}{{/if}}{{/if}}" +
         " for {{first_meter}}{{#unless whole_school}}{{#if second_meter}} and {{second_meter}}{{/if}}{{/unless}}.");
+    var explainDailyTemplate = Handlebars.compile("Graphing {{supply}} consumption for the week{{#if whole_school}}{{#if second_date}}s{{/if}}{{/if}} starting {{first_date}}" +
+        "{{#if whole_school}}{{#if second_date}} and {{second_date}}{{/if}}{{/if}}" +
+        " for {{first_meter}}{{#unless whole_school}}{{#if second_meter}} and {{second_meter}}{{/if}}{{/unless}}.");
+
     //template for updating data availability
     var dataRangesTemplate = Handlebars.compile("{{supply }} data is available from {{min}} to {{max}}");
 
@@ -25,7 +29,12 @@ $(document).on("turbolinks:load", function() {
             first_date: first_date,
             second_date: $("#to-date-picker").val() == "" ? null : $("#to-date-picker").val()
         };
-        $("#graph-explainer").html( explainTemplate(data) );
+        if ($("#daily-usage").length > 0) {
+            $("#graph-explainer").html( explainDailyTemplate(data) );
+        } else {
+            $("#graph-explainer").html( explainHourlyTemplate(data) );
+        }
+
     }
 
     //create a Cdate object used by the calendar picker
