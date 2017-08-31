@@ -24,7 +24,7 @@ class StatsController < ApplicationController
       first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
       data << { name: meter + " ending " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
-        second_series = daily_usage_to_precision(school, supply, from..from + 6.days, second_meter)
+        second_series = daily_usage_to_precision(school, supply, from..from + 6.days  , second_meter)
         second_series = second_series.map.with_index do |day, index|
           # this week's dates with previous week's usage
           [first_series[index][0], day[1]]
