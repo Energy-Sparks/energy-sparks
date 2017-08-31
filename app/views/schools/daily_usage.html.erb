@@ -47,7 +47,7 @@
         <%= render partial: 'schools/supply_type_card', locals: {supply: @supply, school: @school} %>
         <%= render partial: 'schools/comparison_type_card', locals: {supply: @supply, school: @school} %>
         <%= render partial: 'schools/whole_school_card',
-                   locals: {supply: @supply, school: @school, first_date: @first_date, to_date: @to_date, meter: params[:meter], first_option: "First week", second_option: "Second_week"} %>
+                   locals: {supply: @supply, school: @school, first_date: @first_date, to_date: @to_date, meter: params[:meter], first_option: "First week", second_option: "Second Week"} %>
         <%= render partial: 'schools/within_school_card',
                    locals: {supply: @supply, school: @school, first_date: @first_date, meter: params[:meter], second_meter: params[:second_meter], date_option: "Which week shall we show?"} %>
       </div>
