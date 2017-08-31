@@ -17,16 +17,6 @@ module Merit
       enrolled = lambda { |school| school.enrolled? }
       score(20, to: :itself, on: ['schools#update'], &enrolled)
 
-      # Sign up to eco-schools programme i.e. eco_school_status is not null
-      #score 20, ['schools#create', 'schools#update'], to: :itself do |school|
-      #  school.eco_school_status.present?
-      #end
-
-      # Gain highest eco-school ranking
-      #score 50, ['schools#create', 'schools#update'], to: :itself do |school|
-      #  school.eco_school_status == 'green'
-      #end
-
       activity_score = lambda { |activity| activity.activity_type.score }
       negativity_activity_score = lambda { |activity| -activity.activity_type.score }
 
