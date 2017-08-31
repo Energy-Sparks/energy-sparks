@@ -4,9 +4,13 @@ $(document).on("turbolinks:load", function() {
     var initialised = false;
 
     //template used to explain the graphs
-    var explainTemplate = Handlebars.compile("Graphing {{supply}} consumption on {{first_date}} " +
-        "{{#if whole_school}}{{#if second_date}}and {{second_date}}{{/if}}{{/if}}" +
+    var explainHourlyTemplate = Handlebars.compile("Graphing {{supply}} consumption on {{first_date}}" +
+        "{{#if whole_school}}{{#if second_date}} and {{second_date}}{{/if}}{{/if}}" +
         " for {{first_meter}}{{#unless whole_school}}{{#if second_meter}} and {{second_meter}}{{/if}}{{/unless}}.");
+    var explainDailyTemplate = Handlebars.compile("Graphing {{supply}} consumption for the week{{#if whole_school}}{{#if second_date}}s{{/if}}{{/if}} starting {{first_date}}" +
+        "{{#if whole_school}}{{#if second_date}} and {{second_date}}{{/if}}{{/if}}" +
+        " for {{first_meter}}{{#unless whole_school}}{{#if second_meter}} and {{second_meter}}{{/if}}{{/unless}}.");
+
     //template for updating data availability
     var dataRangesTemplate = Handlebars.compile("{{supply }} data is available from {{min}} to {{max}}");
 
@@ -25,7 +29,12 @@ $(document).on("turbolinks:load", function() {
             first_date: first_date,
             second_date: $("#to-date-picker").val() == "" ? null : $("#to-date-picker").val()
         };
-        $("#graph-explainer").html( explainTemplate(data) );
+        if ($("#daily-usage").length > 0) {
+            $("#graph-explainer").html( explainDailyTemplate(data) );
+        } else {
+            $("#graph-explainer").html( explainHourlyTemplate(data) );
+        }
+
     }
 
     //create a Cdate object used by the calendar picker
@@ -43,10 +52,15 @@ $(document).on("turbolinks:load", function() {
     //the explanation and then triggers the data load
     function updateChart(el) {
         explain();
+        if ($("#supply").val() == "electricity") {
+            colors = ["#3bc0f0","#232b49"]
+        } else {
+            colors = ["#ffac21", "#ff4500"]
+        }
         chart = Chartkick.charts["chart"];
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
-        chart.updateData(new_source);
+        chart.updateData(new_source, {colors: colors});
         if (chart.getChartObject()) {
             chart.getChartObject().showLoading();
         }
@@ -106,41 +120,92 @@ $(document).on("turbolinks:load", function() {
         });
     }
 
+    /**
+     * Highlight entire week when selecting a date
+     * Select the first day of the week
+     * Display a status bar to explain picking operation
+     * Adapted from: http://keith-wood.name/datepick.HTML#extend
+     *
+     @param {jQuery} picker The completed datepicker division.
+     @param {BaseCalendar} calendar The calendar implementation.
+     @param {object} inst The current instance settings.
+     */
+    function selectWeek(picker, calendar, inst) {
+        //HIGHLIGHT WEEK
+        var renderer = inst.options.renderer;
+        picker.find(renderer.daySelector + ' a, ' + renderer.daySelector + ' span').hover(function () {
+                $(this).parents('tr').find(renderer.daySelector + ' *').addClass(renderer.highlightedClass);
+            },
+            function () {
+                $(this).parents('tr').find(renderer.daySelector + ' *').removeClass(renderer.highlightedClass);
+            });
+
+        //SHOW A STATUS MESSAGE
+        var isTR = (inst.options.renderer.selectedClass === 'ui-state-active');
+        //for dates that can't be selected
+        var defaultStatus = "No data for this week";
+        var status = $('<div class="' + (!isTR ? 'calendars-status' :
+                'ui-datepicker-status ui-widget-header ui-helper-clearfix ui-corner-all') + '">' +
+            defaultStatus + '</div>').insertAfter(picker.find('.calendars-month-row:last,.ui-datepicker-row-break:last'));
+        picker.find('*[title]').each(function () {
+            //if the day has a title its selectable
+            if ($(this).attr('title')) {
+                var title = "Select this week";
+            }
+            $(this).removeAttr('title').hover(
+                function () {
+                    status.text(title || defaultStatus);
+                },
+                function () {
+                    status.text(defaultStatus);
+                });
+        });
+
+        //SELECT START OF WEEK
+        //There's an issue where if user selects very first week of the data
+        var target = $(this);
+        picker.find('td a').each(function () {
+            $(this).click(function () {
+                var selected_date = target.calendarsPicker('retrieveDate', this);
+                var start_of_week = selected_date.add(0 - selected_date.dayOfWeek(), "d");
+                var dates = [start_of_week];
+                target.calendarsPicker('setDate', dates).calendarsPicker('hide');
+                target.blur();
+            }).replaceAll(this);
+        });
+    }
+
+    function datePickerConfig(selector) {
+        config = {
+            dateFormat: 'DD, d MM yyyy',
+            defaultDate: datetoCdate( $(selector).val() ),
+            selectDefaultDate: true,
+            onSelect: function(dates) {
+                $(selector).val(dates);
+                if (initialised) updateChart(this);
+            }
+        }
+        if ($("#daily-usage").length > 0) {
+            config["onShow"] = selectWeek;
+        }
+        return config
+    }
+
     //Initialise this page
     if ($(".charts").length > 0) {
-        console.log("init function");
         supply = $("input[name=supplyType]:checked").val();
 
         $(".first-date-picker").each( function() {
-            $(this).calendarsPicker({
-                dateFormat: 'DD, d MM yyyy',
-                defaultDate: datetoCdate( $("#first-date").val() ),
-                selectDefaultDate: true,
-                onSelect: function(dates) {
-                    console.log("select first-date");
-                    $("#first-date").val(dates);
-                    if (initialised) updateChart(this);
-                }
-            });
+            $(this).calendarsPicker(datePickerConfig("#first-date"));
         });
 
         $(".to-date-picker").each( function() {
-            $(this).calendarsPicker({
-                dateFormat: 'DD, d MM yyyy',
-                defaultDate: datetoCdate( $("#to-date").val() ),
-                selectDefaultDate: true,
-                onSelect: function(dates) {
-                    console.log("select second-date");
-                    $("#to-date").val(dates);
-                    if (initialised) updateChart(this);
-                }
-            });
+            $(this).calendarsPicker(datePickerConfig("#to-date"));
         });
 
         setMinMaxDates(supply);
         enableMeters(supply, false);
         explain();
-        console.log("done");
         initialised = true;
     }
 

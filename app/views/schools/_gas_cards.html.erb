@@ -49,7 +49,7 @@
             </div>
             <div class="card-footer text-right">
               <%= link_to(t('charts.weekly-usage-link'),
-                          usage_school_path(@school, period: :daily, to_date: latest_reading_date, anchor: :gas),
+                          usage_school_path(@school, period: :daily, supply: :gas),
                           class: 'btn btn-primary', title: "See how the school's energy use varies over a chosen week", "data-turbolinks": false) unless avg_gas.nil?
               %>
 

@@ -22,9 +22,10 @@ Rails.application.routes.draw do
       get 'suggest_activity'
       get 'data_explorer'
       get 'usage'
-      get 'daily_usage', to: 'stats#daily_usage'
+#      get 'daily_usage', to: 'stats#daily_usage'
+      get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
-      get 'hourly_usage', to: 'stats#hourly_usage'
+#      get 'hourly_usage', to: 'stats#hourly_usage'
     end
   end
 

@@ -1,7 +1,7 @@
 <% content_for :page_title do %>
     Explore usage data for <%= @school.name %>
 <% end %>
-<div class="application container charts">
+<div class="application container charts" id="hourly-usage">
 
   <div class="row padded-row">
     <div class="col-md-12">
@@ -42,196 +42,17 @@
       <%= hidden_field_tag :first_meter, "all", id: "first-meter" %>
       <%= hidden_field_tag :second_meter, "", id: "second-meter" %>
 
-
-  <div class="card-deck">
-    <div class="card <%= @supply %>-card">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h4 class="card-title">Select Energy Type
-        </h4>
-
-        <% Meter.meter_types.keys.each_with_index do |type| %>
-
-            <% disabled = @school.meters?(type) %>
-
-            <div class="form-check <%= disabled ? "" : "disabled" %>">
-              <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="supplyType"
-                       id="supply-type-<%= type %>>" value="<%= type %>"
-                <%= @supply == type ? "checked" : "" %>
-                <%= disabled ? "" : "disabled" %> >
-                <%= type.capitalize %>
-              </label>
-            </div>
-        <% end %>
-
+      <div class="card-deck">
+        <%= render partial: 'schools/supply_type_card', locals: {supply: @supply, school: @school} %>
+        <%= render partial: 'schools/comparison_type_card', locals: {supply: @supply, school: @school} %>
+        <%= render partial: 'schools/whole_school_card',
+                   locals: {supply: @supply, school: @school, first_date: @first_date, to_date: @to_date, meter: params[:meter], first_option: "First day", second_option: "Second_day"} %>
+        <%= render partial: 'schools/within_school_card',
+                   locals: {supply: @supply, school: @school, first_date: @first_date, meter: params[:meter], second_meter: params[:second_meter], date_option: "Which date shall we show?"} %>
       </div>
-      <div class="card-footer">
-        <% if @school.both_supplies? %>
-          We have both gas and electricity data for this school
-        <% else %>
-          We only have <%= @school.meters.first.meter_type %> usage data for this school
-        <% end %>
-      </div>
-    </div>
-
-    <div class="card <%= @supply %>-card">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h4 class="card-title">
-          Compare usage
-        </h4>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="compare" id="compare-whole-school" value="whole-school" checked>
-            Across the whole school
-          </label>
-        </div>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="compare" id="compare-within-school" value="within-school">
-            Within the school
-          </label>
-        </div>
-
-      </div>
-      <div class="card-footer">
-        Compare usage across the whole school on different days, or compare usage within
-        the school on a specific day
-      </div>
-    </div>
-    <div class="card <%= @supply %>-card" id="whole-school">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h4 class="card-title">
-          Which dates do you want to compare?
-        </h4>
-
-        <p class="card-text">
-          First day
-        </p>
-        <div class="form-group">
-          <div class="indicator-light <%= @supply %>-light">
-            <div class="input-group">
-            <%= text_field_tag("first-date-picker",
-                           @first_date.strftime('%A, %e %B %Y'),
-                           class: 'form-control date-picker first-date-picker'
-            ) %>
-              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            </div>
-          </div>
-        </div>
-        <p class="card-text">
-          Second day
-        </p>
-        <div class="form-group">
-          <div class="indicator-dark <%= @supply %>-dark">
-            <div class="input-group">
-            <%= text_field_tag("to-date-picker",
-                           @to_date.present? ? @to_date.strftime('%A, %e %B %Y') : nil,
-                           class: 'form-control date-picker to-date-picker'
-            ) %>
-              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            </div>
-          </div>
-        </div>
-        <p class="card-text">
-          Which meter shall we show?
-        </p>
-        <div class="form-group">
-        <%= select_tag :meter,
-                       content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(@school.meters,
-                       :meter_no, :display_name, params[:meter], { "supply-type" => :meter_type }), class: "form-control custom-select meter-filter" %>
-        </div>
-
-      </div>
-      <div class="card-footer">
-        <span id="data-availability"></span>
-      </div>
-    </div>
-    <div class="card <%= @supply %>-card" id="within-school" style="display: none;">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h4 class="card-title">
-          Choose which meters to compare
-        </h4>
-        <p class="card-text">
-          Compare this meter
-        </p>
-        <div class="form-group">
-        <div class="indicator-light <%= @supply %>-light"><%= select_tag :meter,
-                       content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(@school.meters,
-                         :meter_no, :display_name, params[:meter], { "supply-type" => :meter_type }) , class: "form-control custom-select meter-filter" %></div>
-        </div>
-
-        <p class="card-text">
-          With this meter
-        </p>
-        <div class="form-group">
-          <div class="indicator-dark <%= @supply %>-dark"><%= select_tag :second_meter,
-                       content_tag(:option,'None',:value=>"")+options_from_collection_for_select_with_data(@school.meters,
-                         :meter_no, :display_name, params[:meter], { "supply-type" => :meter_type }), class: "form-control custom-select second-meter-filter" %></div>
-        </div>
-        <p class="card-text">Which date shall we show?</p>
-        <div class="form-group">
-          <div class="indicator-light <%= @supply %>-light">
-            <div class="input-group">
-              <%= text_field_tag("first-date-picker",
-                                 @first_date.strftime('%A, %e %B %Y'),
-                                 class: 'form-control date-picker first-date-picker'
-                  ) %>
-              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="card-footer">
-
-      </div>
-    </div>
-
-  </div>
 
   <% end %>
 
-  <div class="row padded-row">
-    <div class="col-md-12">
-      <h4>What does the data tell you?</h4>
-      <div id="electricity-interpretation" style="<%= @supply == "electricity" ? '' : 'display: none' %>">
-        <ul>
-          <li>When are the peaks in electricity use? Do they mostly occur at the same time each day? Why do you
-            think these occur? Think about food being prepared in the school kitchens, dishwashers running, kettles
-            running in the staff room, photocopiers running, hot water heating switching on, electric heating...</li>
-          <li>
-            Can you think of ways to reduce the peaks in electricity use?
-          </li>
-          <li>
-            Do you see a reduction in electricity when some classes are out of school on a trip or outdoor
-            learning?
-          </li>
-          <li>
-            Can you work out what electricity is used for overnight, at the weekends and the school holidays? Can
-            you write a list of all the equipment which might be left on outside of school hours, and then investigate
-            whether they can be switched off?
-          </li>
-        </ul>
-      </div>
+  <%= render partial: 'schools/interpretation', locals: {supply: @supply} %>
 
-      <div id="gas-interpretation" style="<%= @supply == "gas"  ? '' : 'display: none' %>">
-        <ul>
-          <li>Do you know what gas is used for at your school? Is it used for heating the building and hot water, and
-            cooking in the school kitchen?</li>
-          <li>Compare gas use during the summer and winter</li>
-          <li>When are the times of day when most gas is used? What is happening then? Is there a peak in gas use
-            across lunchtime, if gas is used for cooking in the school kitchens? During the winter there will also be a
-            peak in gas use in the morning as the school heats up ready for the pupils and teachers to arrive.</li>
-          <li>Does gas heat all of your school, or just some buildings or areas?</li>
-          <li>How much does your gas use reduce at the weekend or in the school holidays? </li>
-          <li>Are there times of day when no gas is used? These are most likely to be overnight, although during
-            very cold weather some heating may be necessary overnight to prevent the school pipes from freezing.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
 </div>

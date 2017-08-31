@@ -4,27 +4,36 @@ class StatsController < ApplicationController
   skip_before_action :authenticate_user!
 
   # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:meter_no
-  def daily_usage
-    precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: 1)] }
-    this_week = school.daily_usage(
-      supply: supply,
-      dates: to_date - 6.days..to_date,
-      date_format: '%A',
-      meter: meter
-    ).map(&precision)
-    previous_week = school.daily_usage(
-      supply: supply,
-      dates: to_date - 13.days..to_date - 7.days,
-      meter: meter
-    ).map(&precision)
-    previous_week_series = previous_week.map.with_index do |day, index|
-      # this week's dates with previous week's usage
-      [this_week[index][0], day[1]]
+  def compare_daily_usage
+    from = first_date
+    data = []
+    if comparison == "whole-school"
+      first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
+      data << { name: 'Week starting ' + kid_date(from), color: colours_for_supply(supply)[0], data: first_series }
+      if to_date.present?
+        second_series = daily_usage_to_precision(school, supply, to_date..to_date + 6.days, meter)
+
+        #TODO better labelling
+        second_series = second_series.map.with_index do |day, index|
+          # this week's dates with previous week's usage
+          [first_series[index][0], day[1]]
+        end
+        data << { name: 'Week starting ' + kid_date(to_date), color: colours_for_supply(supply)[1], data: second_series }
+      end
+    else
+      first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
+      data << { name: "Meter Number " + meter, color: colours_for_supply(supply)[0], data: first_series }
+      if second_meter.present?
+        second_series = daily_usage_to_precision(school, supply, from..from + 6.days, second_meter)
+        second_series = second_series.map.with_index do |day, index|
+          # this week's dates with previous week's usage
+          [first_series[index][0], day[1]]
+        end
+        data << { name: "Meter Number " + second_meter, color: colours_for_supply(supply)[1], data: second_series }
+      end
     end
-    render json: [
-      { name: 'Latest 7 days', data: this_week },
-      { name: 'Previous 7 days', data: previous_week_series }
-    ]
+
+    render json: data
   end
 
   #compare hourly usage across two dates
@@ -34,17 +43,17 @@ class StatsController < ApplicationController
     data = []
     if comparison == "whole-school"
       first_series = hourly_usage_to_precision(school, supply, from, meter)
-      data << { name: from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: kid_date(from), color: colours_for_supply(supply)[0], data: first_series }
       if to_date.present?
         second_series = hourly_usage_to_precision(school, supply, to_date, meter)
-        data << { name: to_date.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series }
+        data << { name: kid_date(to_date), color: colours_for_supply(supply)[1], data: second_series }
       end
     else
       first_series = hourly_usage_to_precision(school, supply, from, meter)
-      data << { name: meter + " " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: "Meter Number " + meter, color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
         second_series = hourly_usage_to_precision(school, supply, from, second_meter)
-        data << { name: second_meter + " " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
+        data << { name: "Meter Number " + second_meter, color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
       end
     end
     render json: data

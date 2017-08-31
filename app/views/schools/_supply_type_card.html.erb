@@ -1,0 +1,30 @@
+<div class="card <%= supply %>-card">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <h4 class="card-title">Select Energy Type
+    </h4>
+
+    <% Meter.meter_types.keys.each_with_index do |type| %>
+
+        <% disabled = school.meters?(type) %>
+
+        <div class="form-check <%= disabled ? "" : "disabled" %>">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="supplyType"
+                   id="supply-type-<%= type %>>" value="<%= type %>"
+                   <%= supply == type ? "checked" : "" %>
+                   <%= disabled ? "" : "disabled" %> >
+            <%= type.capitalize %>
+          </label>
+        </div>
+    <% end %>
+
+  </div>
+  <div class="card-footer">
+    <% if school.both_supplies? %>
+        We have both gas and electricity data for this school
+    <% else %>
+        We only have <%= school.meters.first.meter_type %> usage data for this school
+    <% end %>
+  </div>
+</div>
