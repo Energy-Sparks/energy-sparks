@@ -8,10 +8,10 @@ class StatsController < ApplicationController
     from = first_date
     data = []
     if comparison == "whole-school"
-      first_series = daily_usage_to_precision(school, supply, from - 6.days..from, meter)
+      first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
       data << { name: 'Latest 7 days', color: colours_for_supply(supply)[0], data: first_series }
       if to_date.present?
-        second_series = daily_usage_to_precision(school, supply, to_date - 13.days..to_date - 7.days, meter)
+        second_series = daily_usage_to_precision(school, supply, to_date..to_date + 6.days, meter)
 
         #TODO better labelling
         second_series = second_series.map.with_index do |day, index|
@@ -21,10 +21,10 @@ class StatsController < ApplicationController
         data << { name: 'Previous 7 days', color: colours_for_supply(supply)[1], data: second_series }
       end
     else
-      first_series = daily_usage_to_precision(school, supply, from - 6.days..from, meter)
+      first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
       data << { name: meter + " ending " + from.strftime('%A, %d %B %Y'), color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
-        second_series = daily_usage_to_precision(school, supply, from - 6.days..from, second_meter)
+        second_series = daily_usage_to_precision(school, supply, from..from + 6.days, second_meter)
         second_series = second_series.map.with_index do |day, index|
           # this week's dates with previous week's usage
           [first_series[index][0], day[1]]

@@ -94,7 +94,7 @@ class SchoolsController < ApplicationController
     set_supply
     set_first_date
     set_to_date
-    render "#{params[:period]}_usage"
+    render "#{period}_usage"
   end
 
 private
@@ -128,19 +128,44 @@ private
     @supply = params[:supply].present? ? params[:supply] : "electricity"
   end
 
+  def period
+    params[:period]
+  end
+
   def set_first_date
-    begin
-      @first_date = Date.parse params[:first_date]
-    rescue
-      @first_date = @school.last_reading_date(@supply)
+    if period == "hourly"
+      begin
+        @first_date = Date.parse params[:first_date]
+      rescue
+        @first_date = @school.last_reading_date(@supply)
+      end
+    else
+      begin
+        @first_date = Date.parse params[:first_date]
+      rescue
+        @first_date = @school.last_reading_date(@supply)
+      end
+      #ensure we're looking at beginning of the week
+      @first_date = @first_date.beginning_of_week(:sunday) if @first_date.present?
     end
   end
 
   def set_to_date
-    begin
-      @to_date = Date.parse params[:to_date]
-    rescue
-      @to_date = nil
+    if period == "hourly"
+      begin
+        @to_date = Date.parse params[:to_date]
+      rescue
+        @to_date = nil
+      end
+    else
+      begin
+        @to_date = Date.parse params[:to_date]
+      rescue
+        last_reading = @school.last_reading_date(@supply)
+        @to_date = last_reading - 7.days if last_reading.present?
+      end
+      #ensure we're looking at beginning of the week
+      @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
     end
   end
 end

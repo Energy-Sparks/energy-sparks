@@ -251,7 +251,7 @@ RSpec.describe SchoolsController, type: :controller do
         let(:to_date) { Date.current - 1.days }
         it "assigns to_date to @to_date" do
           get :usage, params: { id: school.to_param, period: period, to_date: to_date }
-          expect(assigns(:to_date)).to eq to_date
+          expect(assigns(:to_date)).to eq to_date.beginning_of_week(:sunday)
         end
       end
       context "period is 'daily'" do
