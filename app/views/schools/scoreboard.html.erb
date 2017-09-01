@@ -6,6 +6,9 @@
   <div class="row padded-row">
     <div class="col-md-12">
       <h1>Scoreboard</h1>
+      <p>
+        See how well each of our <%= t('application') %> schools are recording their energy saving activities!
+      </p>
     </div>
   </div>
 
@@ -13,26 +16,30 @@
     <table id='scoreboard' class='table'>
       <thead>
       <tr>
-        <th>#</th>
-        <th>School</th>
-        <th>Score</th>
+        <th><h4>Position</h4></th>
+        <th><h4>School</h4></th>
+        <th><h4>Score</h4></th>
       </tr>
       </thead>
 
       <tbody>
       <% @schools.each_with_index do |school, i| %>
           <tr>
-            <th scope="row"><%= i+1 %></th>
-            <td><%= link_to school.name, school_path(school) %></td>
+            <td scope="row">
+              <h2><span class="badge badge-primary"><%= i+1 %></span></h2>
+            </td>
+
+            <td><h2>
+              <%= link_to school.name, school_path(school) %></h2></td>
+
             <td>
-              <%= school.sum_points %>
+              <h2>
+              <span class="badge badge-success"><%= school.sum_points %></span>
               &nbsp;
               <% if school.points_since > 0 %>
-                  <i class="fa fa-arrow-up"></i>
+                  <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
               <% end %>
-            </td>
-            <td>
-
+              </h2>
             </td>
           </tr>
       <% end %>
