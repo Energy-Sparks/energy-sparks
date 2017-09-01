@@ -29,7 +29,7 @@ module Merit
       end
 
       #2 Score some points and then view the score board
-      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school do |user|
+      grant_on ['schools#scoreboard'], badge: 'player', model_name: 'User', to: :school do |user|
         user.present? && user.enrolled_school_admin? && user.school.points >= 10
       end
 

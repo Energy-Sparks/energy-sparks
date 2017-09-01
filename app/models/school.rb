@@ -113,7 +113,7 @@ class School < ApplicationRecord
     @activity_categories = ActivityCategory.all.order(:name).to_a
   end
 
-  def self.leaderboard
+  def self.scoreboard
     School.select('schools.*, SUM(num_points) AS sum_points')
         .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
         .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')

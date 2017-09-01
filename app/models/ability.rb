@@ -17,7 +17,7 @@ class Ability
       can :show, School
       can :usage, School
       can :awards, School
-      can :leaderboard, School
+      can :scoreboard, School
       can :manage, Activity, school_id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
@@ -27,7 +27,7 @@ class Ability
       can :show, ActivityType
       can :index, School
       can :awards, School
-      can :leaderboard, School
+      can :scoreboard, School
       can :show, School
       can :usage, School
     end
