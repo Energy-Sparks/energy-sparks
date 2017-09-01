@@ -193,7 +193,7 @@ GEM
       actionmailer (>= 3.2.13)
       json (>= 1.7.7)
       rest-client (>= 1.6.7)
-    merit (2.4.0)
+    merit (3.0.0)
       ambry (~> 1.0.0)
     method_source (0.8.2)
     mime-types (3.1)
