@@ -115,6 +115,7 @@ private
       :urn,
       :gas_dataset,
       :electricity_dataset,
+      :competition_role,
       meters_attributes: meter_params
     )
   end

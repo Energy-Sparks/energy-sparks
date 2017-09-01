@@ -23,70 +23,124 @@ module Merit
     include Merit::BadgeRulesMethods
 
     def initialize
-      # Sign up to EnergySparks
-      enrolled = lambda { |school| school.enrolled? }
-      grant_on(['schools#create', 'schools#update'], to: :itself, badge: 'enrolled', temporary: true, &enrolled)
+      #1 Enrol and then sign in for the first time
+      grant_on 'sessions#create', badge: 'welcome', model_name: 'User', to: :school do |user|
+        user.present? && user.enrolled_school_admin? && user.sign_in_count > 0
+      end
 
-      #Activity (paper)
-      #Record an activity
-      grant_on 'activities#create', badge: 'first-activity', to: :school, temporary: true do |activity|
+      #2 Score some points and then view the score board
+      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school do |user|
+        user.present? && user.enrolled_school_admin? && user.school.points >= 10
+      end
+
+      #3 Data scientist
+      #Award this if the school has creates an activity with data-scientist badge_name
+      grant_on ['activities#create', 'activities#update'],
+               badge: 'data-scientist', to: :school, temporary: true do |activity|
+        Activity.where(activity_type: ActivityType.find_by_badge_name("data-scientist"), school: activity.school).count > 0
+      end
+
+      #4 Competitor
+      competitor_check = lambda { |school, role| school.competition_role == role }
+      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'competitor', temporary: true do |school|
+        competitor_check.call(school, "competitor")
+      end
+
+      #5 Winner
+      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'winner', temporary: true do |school|
+        competitor_check.call(school, "winner")
+      end
+
+      #6 Beginner
+      grant_on 'activities#create', badge: 'beginner', to: :school, temporary: true do |activity|
         activity.school.activities.count >= 1
       end
 
-      # Record n activities
-      # Record 10 activities
-      grant_on 'activities#create', badge: 'ten-activities', multiple: true, to: :school do |activity|
-        activity.school.activities.count.remainder(10).zero?
-      end
-
-      #Record an activity in every category
-      #FIX Record all activities within a category (except, "Other")
-      grant_on ['activities#create', 'activities#update'], badge: 'all-categories', to: :school, temporary: true do |activity|
-        counts = activity.school.activities.group(:activity_category_id).count
-        counts.keys.length == ActivityCategory.count
-      end
-
-      #Record one of every type of activity
-      grant_on ['activities#create', 'activities#update'], badge: 'all-activities', to: :school, temporary: true do |activity|
-        counts = activity.school.activities.group(:activity_type_id).count
-        counts.keys.length == ActivityType.count
-      end
-
-      #These need to be scoped to a term
-      #Record at least one activity a week for 8 weeks. Permanent. Sharing
-      #Continuing to record at least one activity a week for 4 weeks. Temporary. Energy Monitor
-
-      #Added link and/or video to activity. Evidence
+      #7 Evidence. Added link and/or video to activity
       grant_on ['activities#create', 'activities#update'], badge: 'evidence', to: :school do |activity|
         /<a href=/.match(activity.description).present?
       end
 
-      #Record an "Other" activity?
-
-      #Activities
-      #Added an historical activity
-      #But historical activities (>2 months ago) shouldn't score points
-
-      #Site (bulb)
-      #Logged in. Welcome!
-      #Logged in n times? / Regular visitor
-      grant_on 'sessions#create', badge: 'first-steps', model_name: 'User', to: :school do |user|
-        user.present? && user.school_admin? && user.sign_in_count > 0
+      #8 Reporter. 20 Activities
+      grant_on 'activities#create', badge: 'reporter-20', temporary: true, to: :school do |activity|
+        activity.school.activities.count >= 10
       end
 
-      #Site (bulb)
-      grant_on ['schools#leaderboard'], badge: 'player', model_name: 'User', to: :school do |user|
-        user.present? && user.school_admin? && user.school.enrolled?
+      #9 Reporter. 50 Activities
+      grant_on 'activities#create', badge: 'reporter-50', temporary: true, to: :school do |activity|
+        activity.school.activities.count >= 50
       end
 
-      #Player, Viewed leaderboard
+      #10 Reporter. 100 Activities
+      grant_on 'activities#create', badge: 'reporter-100', temporary: true, to: :school do |activity|
+        activity.school.activities.count >= 100
+      end
 
-      #Competitor
-      #Winner
+      category_check = lambda { |school, badge_name, count|
+        counts = school.activities.where(activity_category: ActivityCategory.find_by_badge_name(badge_name)).group(:activity_type_id).count
+        counts.keys.length > count
+      }
 
-      #Data (graph)
-      #Explored different meters? E.g. trigger when generate graphs & signed in?
-      #Viewed graphs
+      #11 Investigator. Record 5 different types of activity in the "Investigating energy usage" category
+      grant_on ['activities#create', 'activities#update'],
+               badge: 'investigator', to: :school, temporary: true do |activity|
+        category_check.call(activity.school, "investigator", 5)
+      end
+
+      #12 Learner	Record 5 different types of activity in the "Learning" category
+      grant_on ['activities#create', 'activities#update'],
+               badge: 'learner', to: :school, temporary: true do |activity|
+        category_check.call(activity.school, "learner", 5)
+      end
+
+      #13 Communicator	Record 5 different types of activity in the "Spreading the message" category
+      grant_on ['activities#create', 'activities#update'],
+               badge: 'communicator', to: :school, temporary: true do |activity|
+        category_check.call(activity.school, "communicator", 5)
+      end
+
+      #14 Energy Saver	Record 5 different types of activity in the "Taking action around the school" category
+      grant_on ['activities#create', 'activities#update'],
+               badge: 'energy-saver', to: :school, temporary: true do |activity|
+        category_check.call(activity.school, "energy-saver", 5)
+      end
+
+      #15 Teamwork	Record 5 different types of activity in the "Whole-school activities" category
+      grant_on ['activities#create', 'activities#update'],
+               badge: 'teamwork', to: :school, temporary: true do |activity|
+        category_check.call(activity.school, "teamwork", 5)
+      end
+
+      #16 Explorer	Record one activity in each category
+      grant_on ['activities#create', 'activities#update'], badge: 'explorer', to: :school, temporary: true do |activity|
+        counts = activity.school.activities.group(:activity_category_id).count
+        counts.keys.length == ActivityCategory.count
+      end
+
+      period_check = lambda {|school, from_date, to_date, count|
+        counts = school.activities.where("happened_on >= ? and happened_on <= ?", from_date, to_date).group_by_week(:happened_on).count
+        counts.keys.length >= count
+      }
+
+      #17 Autumn Term	At least 8 activities in different weeks
+      grant_on ['activities#create', 'activities#update'], badge: 'autumn-term', to: :school, temporary: true do |activity|
+        period_check.call(activity.school, Date.parse("#{Time.zone.today.year}-09-01"), Date.parse("#{Time.zone.today.year}-12-31"), 8)
+      end
+
+      #18 Spring Term	At least one activity per week
+      grant_on ['activities#create', 'activities#update'], badge: 'spring-term', to: :school, temporary: true do |activity|
+        period_check.call(activity.school, Date.parse("#{Time.zone.today.year}-01-01"), Date.parse("#{Time.zone.today.year}-03-31"), 8)
+      end
+
+      #19 Summer Term	At least one activity per week
+      grant_on ['activities#create', 'activities#update'], badge: 'summer-term', to: :school, temporary: true do |activity|
+        period_check.call(activity.school, Date.parse("#{Time.zone.today.year}-04-01"), Date.parse("#{Time.zone.today.year}-07-01"), 8)
+      end
+
+      #20 Graduate	Get all term badges
+      grant_on ['activities#create', 'activities#update'], badge: 'graduate', to: :school, temporary: true do |activity|
+        activity.school.badges.include?(Merit::Badge.find(17)) && activity.school.badges.include?(Merit::Badge.find(18)) && activity.school.badges.include?(Merit::Badge.find(19))
+      end
     end
   end
 end

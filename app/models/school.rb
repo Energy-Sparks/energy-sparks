@@ -4,6 +4,7 @@
 #
 #  address             :text
 #  calendar_id         :integer
+#  competition_role    :integer
 #  created_at          :datetime         not null
 #  electricity_dataset :string
 #  enrolled            :boolean          default(FALSE)
@@ -45,6 +46,7 @@ class School < ApplicationRecord
   belongs_to :calendar
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
+  enum competition_role: [:not_competing, :competitor, :winner]
 
   scope :enrolled, -> { where(enrolled: true) }
 

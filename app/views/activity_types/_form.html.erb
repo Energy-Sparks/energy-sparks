@@ -1,39 +1,39 @@
 <%= form_for(activity_type) do |f| %>
-  <% if activity_type.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(activity_type.errors.count, "error") %> prohibited this activity from being saved:</h2>
+    <% if activity_type.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(activity_type.errors.count, "error") %> prohibited this activity from being saved:</h2>
 
-      <ul>
-      <% activity_type.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% activity_type.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
     </div>
-  <% end %>
 
-  <div class="form-group">
-    <%= f.label :name %>
-    <%= f.text_field :name, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :activity_category_id %>
-    <%= f.select(
-      :activity_category_id,
-      options_from_collection_for_select(
-        ActivityCategory.all, 'id', 'name', @activity_type.activity_category_id ),
-              { include_blank: false },
-              { class: 'form-control' }
-      )
-    %>
-  </div>
+    <div class="form-group">
+      <%= f.label :activity_category_id %>
+      <%= f.select(
+              :activity_category_id,
+              options_from_collection_for_select(
+                  ActivityCategory.all, 'id', 'name', @activity_type.activity_category_id),
+              {include_blank: false},
+              {class: 'form-control'}
+          )
+      %>
+    </div>
 
 
-  <div class="form-group">
-    <%= f.label :description %>
-    <%= f.hidden_field :description %>
-    <trix-editor input="activity_type_description"></trix-editor>
-  </div>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.hidden_field :description %>
+      <trix-editor input="activity_type_description"></trix-editor>
+    </div>
 
     <div class="form-group">
       <%= f.label :score %>
@@ -41,12 +41,17 @@
     </div>
 
 
-  <div class="form-group">
-    <%= f.label :active %>
-    <%= f.check_box :active, class: 'form-control' %>
-  </div>
+    <div class="form-group">
+      <%= f.label :badge_name %>
+      <%= f.text_field :badge_name, class: 'form-control' %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit class: 'btn btn-primary' %>
-  </div>
+    <div class="form-group">
+      <%= f.label :active %>
+      <%= f.check_box :active, class: 'form-control' %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
 <% end %>

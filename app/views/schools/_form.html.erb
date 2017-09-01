@@ -46,6 +46,15 @@
     <%= f.check_box :enrolled, class: 'form-control' %>
   </div>
 
+    <div class="form-group">
+      <%= f.label :competition_role %>
+      <%= f.select :competition_role,
+                   School.competition_roles.keys.map { |role| [role.titleize, role] },
+                   {},
+                   {class: 'form-control'}
+      %>
+    </div>
+
   <div class="form-group">
     <%= f.label :electricity_dataset %>
     <%= f.text_field :electricity_dataset, class: 'form-control' %>

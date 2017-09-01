@@ -76,6 +76,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_type_params
-    params.require(:activity_type).permit(:name, :description, :active, :activity_category_id, :score)
+    params.require(:activity_type).permit(:name, :description, :active, :activity_category_id, :score, :badge_name)
   end
 end

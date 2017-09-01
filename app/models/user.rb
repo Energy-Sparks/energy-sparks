@@ -43,4 +43,9 @@ class User < ApplicationRecord
   def manages_school?(sid = nil)
     admin? || (sid && school_admin? && school_id == sid)
   end
+
+  #is the user an administrator of an enrolled school?
+  def enrolled_school_admin?
+    school_admin? && school.enrolled?
+  end
 end

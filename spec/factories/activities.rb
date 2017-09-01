@@ -6,5 +6,6 @@ FactoryGirl.define do
     title 'test activity title'
     description 'test activity description'
     happened_on { Date.today - 1.days }
+
   end
 end
