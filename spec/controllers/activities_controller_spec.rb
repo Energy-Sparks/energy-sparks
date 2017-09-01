@@ -108,7 +108,7 @@ RSpec.describe ActivitiesController, type: :controller do
         expect(assigns(:activity)).to be_a_new(Activity)
       end
 
-      it 'does not add 10 points to the school' do
+      it 'does not add points to the school' do
         school.reload
         expect( school.points ).to eql(0)
       end
@@ -162,6 +162,13 @@ RSpec.describe ActivitiesController, type: :controller do
       before(:each) {
         second_category
       }
+
+      it "doesn't add points for older activities" do
+        valid_attributes[:happened_on] = valid_attributes[:happened_on] - 7.months
+        post :create, params: { school_id: school.id, activity: valid_attributes }
+        school.reload
+        expect(school.points).to eql(0)
+      end
 
       it "awards explorer badge" do
         post :create, params: { school_id: school.id, activity: valid_attributes }

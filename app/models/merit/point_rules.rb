@@ -21,12 +21,12 @@ module Merit
       negativity_activity_score = lambda { |activity| -activity.activity_type.score }
 
       # Award points schools and for activities
-      score activity_score, to: :school, on: [
-        'activities#create'
-      ]
-      score(negativity_activity_score, to: :school, on: [
-        'activities#destroy'
-      ])
+      recent = lambda { |activity| activity.happened_on > Time.zone.today - 6.months }
+      score(activity_score, to: :school, on: ['activities#create'], &recent)
+      #Note: this does mean that if we delete an activity that's > 6 months old we won't
+      #remove the points. Difficult to do anything else for the minute unless we can track
+      #why points were awarded
+      score(negativity_activity_score, to: :school, on: ['activities#destroy'], &recent)
     end
   end
 end
