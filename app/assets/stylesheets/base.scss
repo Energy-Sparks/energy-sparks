@@ -8,6 +8,11 @@ body {
   //}
 }
 
+address {
+  display: inline !important;
+  font-size: initial;
+}
+
 label {
   font-size: 20px;
 }
