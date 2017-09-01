@@ -25,9 +25,9 @@
 
   <div class="row padded-row">
     <div class="col-md-3">
-    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+    <div class="nav flex-column nav-pills card-header-pills" id="v-pills-tab" role="tablist">
       <% @activity_categories.each_with_index do |activity_category, idx| %>
-          <a class="nav-link <%= idx == 0 ? 'active' : '' %>"
+          <a class="border nav-link <%= idx == 0 ? 'active' : '' %>"
              id="v-pills-cat<%= activity_category.id %>-tab"
              data-toggle="pill"
              href="#v-pills-cat<%= activity_category.id %>"
