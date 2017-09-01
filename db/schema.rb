@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170831152648) do
+ActiveRecord::Schema.define(version: 20170901145506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170831152648) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "description"
+    t.string   "badge_name"
   end
 
   create_table "activity_types", force: :cascade do |t|
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170831152648) do
     t.datetime "updated_at",                          null: false
     t.integer  "activity_category_id"
     t.integer  "score"
+    t.string   "badge_name"
     t.index ["active"], name: "index_activity_types_on_active", using: :btree
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id", using: :btree
   end
@@ -156,6 +158,7 @@ ActiveRecord::Schema.define(version: 20170831152648) do
     t.string   "slug"
     t.string   "gas_dataset"
     t.string   "electricity_dataset"
+    t.integer  "competition_role"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id", using: :btree
     t.index ["sash_id"], name: "index_schools_on_sash_id", using: :btree
     t.index ["urn"], name: "index_schools_on_urn", unique: true, using: :btree

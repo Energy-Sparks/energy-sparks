@@ -2,6 +2,7 @@
 #
 # Table name: activity_categories
 #
+#  badge_name  :string
 #  created_at  :datetime         not null
 #  description :string
 #  id          :integer          not null, primary key
@@ -13,6 +14,7 @@ class ActivityCategory < ApplicationRecord
   has_many :activity_types
   validates_presence_of :name
   validates_uniqueness_of :name
+  validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
 
   def sorted_activity_types(by: :name)
     types = activity_types.order(by).to_a

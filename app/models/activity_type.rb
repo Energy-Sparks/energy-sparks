@@ -4,6 +4,7 @@
 #
 #  active               :boolean          default(TRUE)
 #  activity_category_id :integer
+#  badge_name           :string
 #  created_at           :datetime         not null
 #  description          :text
 #  id                   :integer          not null, primary key
@@ -26,5 +27,6 @@ class ActivityType < ApplicationRecord
   scope :active, -> { where(active: true) }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
+  validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 end
