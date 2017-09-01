@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :calendars
   resources :schools do
     resources :activities
-    get :leaderboard, on: :collection
+    get :scoreboard, on: :collection
     member do
       get 'awards'
       get 'suggest_activity'

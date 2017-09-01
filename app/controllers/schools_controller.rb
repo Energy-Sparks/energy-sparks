@@ -1,6 +1,6 @@
 class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :leaderboard]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
 
   # GET /schools
@@ -29,13 +29,13 @@ class SchoolsController < ApplicationController
     @activity_categories = ActivityCategory.all.order(:name)
   end
 
-  # GET /schools/leaderboard
-  def leaderboard
+  # GET /schools/scoreboard
+  def scoreboard
     #Added so merit can access the current user. Seems to require a variable with same name
     #as controller
     @school = current_user
 
-    @schools = School.leaderboard
+    @schools = School.scoreboard
   end
 
   # GET /schools/new

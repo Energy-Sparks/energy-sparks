@@ -12,12 +12,12 @@ RSpec.describe SchoolsController, type: :controller do
     {name: nil}
   }
 
-  describe 'GET #leaderboard' do
+  describe 'GET #scoreboard' do
     it 'assigns schools as @schools in points order' do
       schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
 
-      get :leaderboard
-      expect(School.leaderboard.map(&:id)).to eq(schools.map(&:id))
+      get :scoreboard
+      expect(School.scoreboard.map(&:id)).to eq(schools.map(&:id))
     end
 
     context "as a school administrator" do
@@ -30,12 +30,12 @@ RSpec.describe SchoolsController, type: :controller do
       end
 
       it 'doesnt award a badge if school has zero points' do
-        get :leaderboard
+        get :scoreboard
         expect(school.badges.length).to eql(0)
       end
       it 'grants the a badge if school has 10 points' do
         school.add_points(20)
-        get :leaderboard
+        get :scoreboard
         school.reload
         expect(school.badges.length).to eql(1)
         expect(school.badges.first.name).to eql("player")
