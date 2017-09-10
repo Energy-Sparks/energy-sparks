@@ -22,14 +22,14 @@ class StatsController < ApplicationController
       end
     else
       first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter)
-      data << { name: "Meter Number " + meter, color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: "Meter Number #{meter_display_name(meter)}", color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
         second_series = daily_usage_to_precision(school, supply, from..from + 6.days, second_meter)
         second_series = second_series.map.with_index do |day, index|
           # this week's dates with previous week's usage
           [first_series[index][0], day[1]]
         end
-        data << { name: "Meter Number " + second_meter, color: colours_for_supply(supply)[1], data: second_series }
+        data << { name: "Meter Number #{meter_display_name(second_meter)}", color: colours_for_supply(supply)[1], data: second_series }
       end
     end
 
@@ -50,10 +50,10 @@ class StatsController < ApplicationController
       end
     else
       first_series = hourly_usage_to_precision(school, supply, from, meter)
-      data << { name: "Meter Number " + meter, color: colours_for_supply(supply)[0], data: first_series }
+      data << { name: "Meter Number #{meter_display_name(meter)}", color: colours_for_supply(supply)[0], data: first_series }
       if second_meter.present?
         second_series = hourly_usage_to_precision(school, supply, from, second_meter)
-        data << { name: "Meter Number " + second_meter, color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
+        data << { name: "Meter Number #{meter_display_name(second_meter)}", color: colours_for_supply(supply)[1], data: second_series } unless second_series.nil?
       end
     end
     render json: data
