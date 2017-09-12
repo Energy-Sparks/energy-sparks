@@ -44,6 +44,36 @@ RSpec.describe SchoolsController, type: :controller do
 
   end
 
+  describe 'GET #suggest_activity' do
+    let(:school) { FactoryGirl.create :school }
+
+    context "as a guest user" do
+      it "is not authorised" do
+        get :suggest_activity, params: { id: school.to_param }
+        expect(response).to have_http_status(:redirect  )
+      end
+    end
+    context "as a school administrator" do
+      let(:school) {
+        school = FactoryGirl.create :school, enrolled: true
+      }
+      let(:activity_category) { FactoryGirl.create :activity_category }
+      let(:activity_type) { FactoryGirl.create(:activity_type, name: "One", activity_category: activity_category) }
+
+      before(:each) do
+        sign_in_user(:school_admin, school.id)
+      end
+      it "is authorised" do
+        activity_category
+        get :suggest_activity, params: { id: school.to_param }
+        expect(response).to_not have_http_status(:redirect  )
+        expect(assigns(:activity_categories)).to include(activity_category)
+      end
+
+    end
+
+  end
+
   describe "GET #index" do
     it "assigns schools that are enrolled as @schools_enrolled" do
       school = FactoryGirl.create :school, enrolled: true
