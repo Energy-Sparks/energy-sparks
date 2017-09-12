@@ -18,6 +18,7 @@ class Ability
       can :usage, School
       can :awards, School
       can :scoreboard, School
+      can :suggest_activity, School
       can :manage, Activity, school_id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
