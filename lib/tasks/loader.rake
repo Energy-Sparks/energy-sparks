@@ -1,11 +1,13 @@
 namespace :loader do
   desc 'Load energy usage data for all schools'
   task read_meters: [:environment] do
+    puts Time.now
     importer = Loader::EnergyImporter.new
     School.enrolled.each do |school|
       puts "Reading meters for #{school.urn} - #{school.name}"
       importer.import_new_data_for(school)
     end
+    puts Time.now
   end
 
   task :import_school_readings, [:date] => [:environment] do |_t, args|
