@@ -2,52 +2,43 @@ require "cgi"
 
 module Loader
   class EnergyImporter
-    # (re)import all data for a school
-    def import_all_data!(school)
-      Meter.meter_types.keys.each do |type|
-        import_all_data_by_type(school, type, nil)
-      end
-    end
-
-    def import_all_data_for(school, since_date = nil)
+    #import data for school, starting at a specified date
+    #used to onboard school without having to load entire archive of data
+    def import_all_data_for(school, since_date)
       Meter.meter_types.keys.each do |type|
         import_all_data_by_type(school, type, since_date)
       end
     end
 
+    #import data for all active meters, using date since meter was last read
     def import_new_data_for(school)
-      since_date = meters_last_read(school)
-      import_all_data_for(school, since_date)
+      Meter.meter_types.keys.each do |type|
+        import_all_data_by_type(school, type)
+      end
     end
 
     def import_all_data_by_type(school, type, since_date = nil)
       return unless school.meters?(type)
-      find_readings(school, type, since_date) do |reading|
-        import_reading(school, type, reading)
+      find_readings(school, type, since_date) do |meter, reading|
+        import_reading(meter, type, reading)
       end
-    end
-
-    def import_new_data_by_type(school, type)
-      since_date = meters_last_read(school)
-      import_all_data_by_type(school, type, since_date)
     end
 
     def find_readings(school, type, since_date = nil)
-      # yield a reading
-      dataset = dataset(school, type)
-      query = query(school, type, since_date)
-
-      client.get(dataset, query).each do |result|
-        yield result
+      meters(school, type).each do |meter|
+        since_date = since_date.present? ? since_date : meter.last_read
+        puts "Reading meter #{meter.meter_no} for data since #{since_date}"
+        dataset = dataset(school, type)
+        query = query(meter, type, since_date)
+        client.get(dataset, query).each do |result|
+          yield meter, result
+        end
       end
     end
 
-    def import_reading(_school, type, reading)
+    def import_reading(meter, type, reading)
       column = meter_number_column(type)
-
-      meter = Meter.find_by_meter_no(reading[column])
-      return unless meter
-
+      raise "unexpected meter number" unless meter.meter_no == reading[column].to_i
       date = DateTime.parse(reading.date).utc
 
       48.times.each do |n|
@@ -65,6 +56,10 @@ module Loader
       SODA::Client.new(domain: ENV["SOCRATA_STORE"], app_token: ENV["SOCRATA_TOKEN"])
     end
 
+    def meters(school, type)
+      school.meters.where(meter_type: type, active: true)
+    end
+
     def dataset(school, type)
       case type
       when "electricity"
@@ -76,15 +71,9 @@ module Loader
       end
     end
 
-    def meters_last_read(school)
-      last_read = []
-      school.meters.each do |m| last_read.push(m.last_read) end
-      last_read.include?(nil) ? nil : last_read.sort.first
-    end
-
-    def query(school, type, since_date = nil)
+    def query(meter, type, since_date = nil)
       column = meter_number_column(type)
-      where = '(' + school.meters.where(meter_type: type, active: true).order(:meter_no).map { |m| "#{column}='#{m.meter_no}'" }.join(" OR ") + ')'
+      where = '(' + "#{column}='#{meter.meter_no}'" + ')'
       # where << " AND date >='#{since_date.strftime("%Y-%m-%dT%H:%M:%S")}+00:00'" if since_date
       where << " AND date >='#{since_date.iso8601}'" if since_date
       {

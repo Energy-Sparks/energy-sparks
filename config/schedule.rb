@@ -19,6 +19,10 @@
 
 # Learn more: http://github.com/javan/whenever
 
+job_type :rake, "cd :path && :environment_variable=:environment :bundle_command rake :task :output"
+
+set :output, "log/jobs.log"
+
 every 1.day, :at => '6:00 am' do
   rake "loader:read_meters"
 end
