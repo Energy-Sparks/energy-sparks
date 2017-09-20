@@ -20,28 +20,28 @@ describe 'Loader::EnergyImporter' do
 
   it "should generate correct query for electricity meters" do
     with_modified_env(@env) do
-      query = @importer.query(@school, "electricity")
-      expect(query["$order"]).to eql("date ASC")
-      expect(query["$where"]).to eql("(mpan='2200012581120' OR mpan='2200012581130')")
-      expect(query["$limit"]).to eql("2000")
-    end
-  end
-
-  it "should only query enabled meters" do
-    meter = Meter.find_by_meter_no(2200012581130)
-    meter.update_attributes!(active: false)
-    with_modified_env(@env) do
-      query = @importer.query(@school, "electricity")
+      query = @importer.query(@meter, "electricity")
       expect(query["$order"]).to eql("date ASC")
       expect(query["$where"]).to eql("(mpan='2200012581120')")
       expect(query["$limit"]).to eql("2000")
     end
   end
 
-  it "should generate correct query for gas meters" do
+  it "should only query enabled meters" do
+    expect( @importer.meters(@school, :gas).length ).to eql(0)
+    expect( @importer.meters(@school, :electricity).length ).to eql(2)
+
+    @meter.update_attributes!({active: false})
+    expect( @importer.meters(@school, :electricity).length ).to eql(1)
+
     Meter.create!(school: @school, meter_type: :gas, meter_no: 1234)
+    expect( @importer.meters(@school, :gas).length ).to eql(1)
+  end
+
+  it "should generate correct query for gas meters" do
+    m = Meter.create!(school: @school, meter_type: :gas, meter_no: 1234)
     with_modified_env(@env) do
-      query = @importer.query(@school, "gas")
+      query = @importer.query(m, "gas")
       expect(query["$order"]).to eql("date ASC")
       expect(query["$where"]).to eql("(mprn='1234')")
       expect(query["$limit"]).to eql("2000")
@@ -118,36 +118,46 @@ describe 'Loader::EnergyImporter' do
     end
   end
 
-  context "when importing new data" do
-    it "should import all data if meters not read" do
-      #not read by default
-      expect(@importer.meters_last_read(@school)).to eql(nil)
-    end
-
-    it "should use correct date" do
-      read_at = DateTime.now
-      @school.meters.each do |meter|
-        meter.meter_readings << create(:meter_reading, meter: meter, read_at: read_at)
+  it "should import all data for school" do
+    with_modified_env(@env) do
+      VCR.use_cassette 'socrata-energy-import' do
+        @importer.import_all_data_for(@school, @since_date)
       end
-      expect(@importer.meters_last_read(@school).utc.to_s).to eql(read_at.utc.to_s)
-    end
-
-    it "should reimport data when there's a new meter" do
-      read_at = DateTime.now
-      @school.meters.each do |meter|
-        meter.meter_readings << create(:meter_reading, meter: meter, read_at: read_at)
+      values = {
+          '2016-12-08T00:00:00' => 0.913,
+          '2016-12-08T00:30:00' => 0.893,
+          '2016-12-08T23:30:00' => 1.072
+      }
+      meter = Meter.find_by_meter_no(2200012581130)
+      values.each do |time, value|
+        reading = meter.meter_readings.where(read_at: DateTime.parse(time)).first
+        expect(reading.value).to eql(value)
       end
-
-      #new meter, so read all meters
-      new_meter = create(:meter, school: @school)
-      @school.meters << new_meter
-      expect(@importer.meters_last_read(@school)).to eql(nil)
-
-      #need to read meters
-      new_meter.meter_readings << create(:meter_reading, meter: new_meter, read_at: DateTime.now)
-      expect(@importer.meters_last_read(@school).utc.to_s).to eql(read_at.utc.to_s)
+      meter = Meter.find_by_meter_no(2200012581120)
+      expect( meter.meter_readings.size ).to eql(48)
     end
   end
+
+  it "should import only new data for school" do
+    with_modified_env(@env) do
+      VCR.use_cassette 'socrata-energy-import' do
+        @importer.import_new_data_for(@school)
+      end
+      values = {
+          '2016-12-08T00:00:00' => 0.913,
+          '2016-12-08T00:30:00' => 0.893,
+          '2016-12-08T23:30:00' => 1.072
+      }
+      meter = Meter.find_by_meter_no(2200012581130)
+      values.each do |time, value|
+        reading = meter.meter_readings.where(read_at: DateTime.parse(time)).first
+        expect(reading.value).to eql(value)
+      end
+      meter = Meter.find_by_meter_no(2200012581120)
+      expect( meter.meter_readings.size ).to eql(48)
+    end
+  end
+
 
   context "when reimporting" do
     before(:each) do
