@@ -28,7 +28,7 @@ end
         name: 'welcome',
         description: 'Enrol with EnergySparks and then sign in for the first time',
         custom_fields: {
-            image: 'badges/bulb',
+            image: 'badges/01-Welcome.png',
             title: 'Welcome'
         }
     },
@@ -37,7 +37,7 @@ end
         name: 'player',
         description: 'Score some points and then explore the score board',
         custom_fields: {
-            image: 'badges/bulb',
+            image: 'badges/02-Player.png',
             title: 'Player'
         }
     },
@@ -46,7 +46,7 @@ end
         name: 'data-scientist',
         description: 'Explore the graphs, then record an activity',
         custom_fields: {
-            image: 'badges/bulb',
+            image: 'badges/03-Data-Scientist.png',
             title: 'Data Scientist'
         }
     },
@@ -55,7 +55,7 @@ end
         name: 'competitor',
         description: 'Take part in an Energy Sparks competition',
         custom_fields: {
-            image: 'badges/bulb',
+            image: 'badges/04-Competitor.png',
             title: 'Competitor'
         }
     },
@@ -64,7 +64,7 @@ end
         name: 'winner',
         description: 'Win an Energy Sparks competition',
         custom_fields: {
-            image: 'badges/bulb',
+            image: 'badges/05-Winner.png',
             title: 'Winner!'
         }
     },
@@ -73,7 +73,7 @@ end
         name: 'beginner',
         description: 'Record your first activity',
         custom_fields: {
-            image: 'badges/bulb',
+            image: 'badges/06-Beginner.png',
             title: 'Beginner'
         }
     },
@@ -82,7 +82,7 @@ end
         name: 'evidence',
         description: 'Add a link to a web page, photo or video',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/07-Evidence.png',
             title: 'Evidence'
         }
     },
@@ -91,7 +91,7 @@ end
         name: 'reporter-20',
         description: 'Record 20 activities',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/08-Reporter-20.png',
             title: 'Reporter (20)'
         }
     },
@@ -100,7 +100,7 @@ end
         name: 'reporter-50',
         description: 'Record 50 activities',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/09-Reporter-50.png',
             title: 'Reporter (50)'
         }
     },
@@ -109,7 +109,7 @@ end
         name: 'reporter-100',
         description: 'Record 100 activities',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/10-Reporter-100.png',
             title: 'Reporter (100)'
         }
     },
@@ -118,7 +118,7 @@ end
         name: 'investigator',
         description: 'Record 5 different types of activity in the "Investigating energy usage" category',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/11-Investigator.png',
             title: 'Investigator'
         }
     },
@@ -127,7 +127,7 @@ end
         name: 'learner',
         description: 'Record 5 different types of activity in the "Learning" category',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/12-Learner.png',
             title: 'Learner'
         }
     },
@@ -136,7 +136,7 @@ end
         name: 'communicator',
         description: 'Record 5 different types of activity in the "Spreading the message" category',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/13-Communicator.png',
             title: 'Communicator'
         }
     },
@@ -145,7 +145,7 @@ end
         name: 'energy-saver',
         description: 'Record 5 different types of activity in the "Taking action around the school" category',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/14-Energy-Saver.png',
             title: 'Energy Saver'
         }
     },
@@ -154,7 +154,7 @@ end
         name: 'teamwork',
         description: 'Record 5 different types of activity in the "Whole-school activities" category',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/15-Teamwork.png',
             title: 'Teamwork'
         }
     },
@@ -163,7 +163,7 @@ end
         name: 'explorer',
         description: 'Record one activity in each category',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/16-Explorer.png',
             title: 'Explorer'
         }
     },
@@ -172,7 +172,7 @@ end
         name: 'autumn-term',
         description: 'At least one activity per week',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/17-Autumn-Term.png',
             title: 'Autumn Term'
         }
     },
@@ -181,7 +181,7 @@ end
         name: 'spring-term',
         description: 'At least one activity per week',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/18-Spring-Term.png',
             title: 'Spring Term'
         }
     },
@@ -190,7 +190,7 @@ end
         name: 'summer-term',
         description: 'At least one activity per week',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/19-Summer-Term.png',
             title: 'Summer Term'
         }
     },
@@ -199,7 +199,7 @@ end
         name: 'graduate',
         description: 'Collect all the term badges',
         custom_fields: {
-            image: 'badges/paper',
+            image: 'badges/20-Graduate.png',
             title: 'Graduate'
         }
     }
