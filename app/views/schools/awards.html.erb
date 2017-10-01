@@ -19,7 +19,7 @@
             <% group.each do |badge| %>
                 <div class="col-md-3">
                   <div class="card award">
-                    <% image = @badges.include?(badge) ? "#{badge.image}_on.png" : "#{badge.image}_off.png" %>
+                    <% image = @badges.include?(badge) ? "#{badge.image}" : "#{badge.image}" %>
                     <%= image_tag(image,
                                   height: 100, width: 100,
                                   class: 'card-image-top d-block mx-auto',
