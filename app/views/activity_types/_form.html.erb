@@ -51,6 +51,44 @@
       <%= f.check_box :active, class: 'form-control' %>
     </div>
 
+    <div class="form-group">
+      <%= f.label "Repeatable?" %>
+      <%= f.check_box :repeatable, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label "Uses data?" %>
+      <%= f.check_box :data_driven, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label "Custom ('Other')?" %>
+      <%= f.check_box :custom, class: 'form-control' %>
+    </div>
+
+    <h2>Suggested Next Activities</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Delete?</th>
+        </tr>
+      </thead>
+      <tbody>
+      <%= f.fields_for :activity_type_suggestions do |suggestion| %>
+          <tr>
+            <td>
+              <%= suggestion.collection_select :suggested_type_id, ActivityType.all, :id, :name, include_blank: true, class: 'form-control' %>
+            </td>
+            <td>
+              <%= suggestion.check_box :_destroy, class: 'form-control' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+
     <div class="actions">
       <%= f.submit class: 'btn btn-primary' %>
     </div>

@@ -19,10 +19,12 @@ class ActivityTypesController < ApplicationController
   # GET /activity_types/new
   def new
     @activity_type = ActivityType.new
+    @activity_type.activity_type_suggestions.build
   end
 
   # GET /activity_types/1/edit
   def edit
+    @activity_type.activity_type_suggestions.build
   end
 
   # POST /activity_types
@@ -76,6 +78,18 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_type_params
-    params.require(:activity_type).permit(:name, :description, :active, :activity_category_id, :score, :badge_name)
+    params.require(:activity_type).permit(:name,
+        :description,
+        :active,
+        :activity_category_id,
+        :score,
+        :badge_name,
+        :repeatable,
+        :data_driven,
+        activity_type_suggestions_attributes: suggestions_params)
+  end
+
+  def suggestions_params
+    [:id, :suggested_type_id, :_destroy]
   end
 end

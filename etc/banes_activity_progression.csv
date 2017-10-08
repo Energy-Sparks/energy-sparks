@@ -1,0 +1,53 @@
+id,category,name,score,data_driven,repeatable,custom,suggestion_1,suggestion_2,suggestion_3,suggestion_4,suggestion_5
+,,Starting Activities for all new schools,,,,,1,33,58,59,46
+1,Learning,Pupils learn where energy comes from and its impact on the environment,10,,,,2,3,8,33,58
+2,Learning,Pupils learn about renewable sources of energy,10,,,,3,8,33,58,6
+3,Learning,Pupils learn about ways of saving energy (eg insulation),10,,,,8,33,58,6,59
+6,Learning,Pupils use energy data during maths lessons,10,1,1,,59,46,13,45,49
+8,Learning,Pupils learn about appliances that use energy at home and school,10,,,,33,58,6,59,42
+9,Taking action around the school,Staff implement measures from their energy survey (all B&NES schools have a survey),30,,1,,13,12,11,17,20
+10,Taking action around the school,Pupils run a campaign to switch off electrical equipment overnight,30,,1,,12,11,23,27,31
+11,Taking action around the school,Lights and appliances are labelled to show which should be left on or turned off,5,,,,12,10,37,38,34
+12,Taking action around the school,Pupil energy monitors are appointed in all classes,5,,,,11,13,10,37,38
+13,Taking action around the school,Thermometers are put in each classroom to monitor room temperature,5,,,,45,49,48,35,12
+14,Taking action around the school,Pupils make draught proofing equipment,5,,,,13,12,17,39,35
+15,Taking action around the school,Staff improve efficiency of school lighting,30,,,,57,46,47,31,30
+16,Taking action around the school,Staff and governors improve insulation,50,,,,14,35,39,45,56
+17,Taking action around the school,Staff check boiler controls are optimal,30,,,,35,39,43,44,45
+18,Spreading the message,Pupils meet with kitchen staff to discuss their role in saving energy,10,,,,19,20,21,23,30
+19,Spreading the message,Pupils meet with the caretaker or site manager to discuss their role in saving energy,10,,,,20,21,23,30,34
+20,Spreading the message,Pupils meet with the headteacher and school governors to discuss introducing an energy policy,10,,,,21,23,30,34,41
+21,Spreading the message,Pupils meet with the office staff to discuss their role in saving energy,10,,,,23,30,34,41,31
+23,Spreading the message,Pupils communicate with lunchtime supervisors and cleaning staff about saving energy,10,,,,30,34,41,31,24
+24,Spreading the message,Pupils or staff run an assembly about saving energy,10,,1,,34,41,31,24,27
+26,Spreading the message,Pupils meet the Business Manager to discuss the school's energy usage and bills,10,,,,19,20,21,23,18
+27,Spreading the message,The school has a prominent display showing up-to-date information about saving energy,20,,,,30,31,34,36,42
+30,Spreading the message,Do a creative activity themed around energy saving,10,,1,,31,34,36,42,58
+31,Spreading the message,Pupils share their ideas about saving energy with parents and the local community,10,,1,,34,36,42,58,45
+33,Spreading the message,The school appoints a team of adults and pupils to lead on energy efficiency (eg Energy Team),20,,,,58,6,59,46,13
+34,Whole-school activities,The school holds a themed event focusing on energy use,30,,1,,36,42,58,45,46
+35,Whole-school activities,The school introduces a policy on classroom temperature,30,,,,39,45,48,49,50
+36,Whole-school activities,The school runs a longer term switch-off campaign at school (eg Switch Off Fortnight),50,,1,,42,58,45,46,47
+37,Whole-school activities,The school introduces a system to reward classes for energy efficiency,10,,,,45,46,47,48,49
+38,Whole-school activities,The school introduces a policy on switching off lights and IT,30,,,,46,47,57,58,24
+39,Whole-school activities,The school introduces a policy on closing external doors and windows when the heating is on,30,,,,48,49,56,58,24
+40,Whole-school activities,Teachers discuss energy efficiency in a staff meeting,20,,1,,41,15,16,17,24
+41,Whole-school activities,Governors discuss energy efficiency in Governors' meeting,20,,1,,15,16,17,24,27
+42,Investigating energy usage,Pupils investigate how much energy their families use at home,10,,1,,31,14,58,36,30
+43,Investigating energy usage,Pupils investigate the school's thermostats,10,1,1,,44,45,48,49,50
+44,Investigating energy usage,Pupils investigate whether the the school's heating and hot water is switched off during the school holidays,10,1,1,,58,50,19,26,31
+45,Investigating energy usage,Pupils carry out a spot check of classroom temperatures,5,1,1,,43,48,49,56,35
+46,Investigating energy usage,Pupils carry out a spot check to see if lights or electrical items are left on at lunch time,5,1,1,,13,45,49,26,20
+47,Investigating energy usage,Pupils carry out a spot check to see if lights or IT are left on after school,5,1,1,,13,45,49,26,20
+48,Investigating energy usage,Pupils monitor whether adults and pupils are wearing warmer clothes inside the school building during winter,5,1,1,,49,56,50,17,39
+49,Investigating energy usage,Pupils monitor whether outside doors and windows are closed during cold weather,5,1,1,,56,50,17,39,43
+50,Investigating energy usage,Pupils review school heating timings,10,1,1,,17,39,43,16,14
+51,Learning,Other (please specify),5,,1,1,1,2,3,6,8
+52,Taking action around the school,Other (please specify),5,,1,1,9,10,11,12,13
+53,Spreading the message,Other (please specify),5,,1,1,18,19,20,21,23
+54,Investigating energy usage,Other (please specify),5,,1,1,42,43,44,45,46
+55,Whole-school activities,Other (please specify),10,,1,1,34,35,36,37,38
+56,Taking action around the school,Pupils run a campaign to close doors and windows when the heating is on,30,,1,,50,48,49,45,34
+57,Taking action around the school,Pupils run a campaign to switch off lights and use natural light on sunny days,30,,1,,38,11,12,15,40
+58,Learning,Pupils review energy usage charts,5,1,1,,6,59,46,13,45
+59,Investigating energy usage,Collect data on key times in the school day when energy use changes,10,1,1,,46,13,45,49,26

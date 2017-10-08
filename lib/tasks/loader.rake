@@ -29,4 +29,9 @@ namespace :loader do
   task :import_activities, [:file_path] => [:environment] do |_t, args|
     Loader::Activities.load!(args[:file_path])
   end
+
+  desc 'Load activity progression csv[:file_path]'
+  task :import_activity_progression, [:file_path] => [:environment] do |_t, args|
+    Loader::Activities.load_progression!(args[:file_path])
+  end
 end
