@@ -26,7 +26,23 @@ class SchoolsController < ApplicationController
   end
 
   def suggest_activity
-    @activity_categories = ActivityCategory.all.order(:name)
+    @first = @school.activities.empty?
+    @suggestions = []
+    if @first
+      ActivityTypeSuggestion.initial.order(:id).each do |ats|
+        @suggestions << ats.suggested_type
+      end
+    else
+      last_activity_type = @school.activities.order(:created_at).last.activity_type
+      last_activity_type.activity_type_suggestions.each do |ats|
+        @suggestions << ats.suggested_type
+      end
+    end
+    #ensure minimum of five suggestions
+    if @suggestions.length < 5
+      more = ActivityType.where(active: true, custom: false, data_driven: true, repeatable: true).sample(5 - @suggestions.length)
+      @suggestions = @suggestions + more
+    end
   end
 
   # GET /schools/scoreboard

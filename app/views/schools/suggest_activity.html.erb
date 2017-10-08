@@ -44,29 +44,31 @@
     <div class="col-md-12">
       <h2>Some suggested activities for your school</h2>
       <p>
-        Here are some suggested activities for your school. We've chosen one activity from each category. You can also
-        see how many points you can earn from each activity.
+        <% if @first %>
+          Here are some starting activities that will help you start to save energy.
+        <% else %>
+          Here are some suggested next activities for your school.
+        <% end %>
       </p>
     </div>
   </div>
 
-  <% @activity_categories.in_groups_of(3, nil) do |group| %>
+  <% @suggestions.in_groups_of(3, nil) do |group| %>
       <div class="card-deck <%= group.include?(nil) ? 'padded-row' : ''%>">
-        <% group.each do |category| %>
-            <% if category.present? %>
-                <% activity = category.activity_types.where("name != ?", "Other").sample(1).first %>
+        <% group.each do |activity_type| %>
+            <% if activity_type.present? %>
                 <div class="card activity-card">
                   <div class="card-header">
-                    <p><span class="badge badge-success"><%= activity.score %></span>
-                    <span class="badge badge-secondary"><%= category.name %></span></p>
+                    <p><span class="badge badge-success"><%= activity_type.score %></span>
+                    <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
                   </div>
                   <div class="card-body">
-                    <h4 class="card-title"><%= activity.name %></h4>
+                    <h4 class="card-title"><%= activity_type.name %></h4>
                     <p class="card-text">
                     </p>
                   </div>
                   <div class="card-footer text-right">
-                    <%= link_to 'Read about this activity', activity_type_path(activity), class: 'btn btn-primary' %>
+                    <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
                   </div>
                 </div>
             <% else %>

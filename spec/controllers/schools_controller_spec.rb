@@ -58,16 +58,16 @@ RSpec.describe SchoolsController, type: :controller do
         school = FactoryGirl.create :school, enrolled: true
       }
       let(:activity_category) { FactoryGirl.create :activity_category }
-      let(:activity_type) { FactoryGirl.create(:activity_type, name: "One", activity_category: activity_category) }
+      let(:activity_type) { FactoryGirl.create(:activity_type, name: "One", data_driven: true, activity_category: activity_category) }
 
       before(:each) do
         sign_in_user(:school_admin, school.id)
       end
       it "is authorised" do
-        activity_category
+        activity_type
         get :suggest_activity, params: { id: school.to_param }
         expect(response).to_not have_http_status(:redirect  )
-        expect(assigns(:activity_categories)).to include(activity_category)
+        expect(assigns(:suggestions)).to include(activity_type)
       end
 
     end
