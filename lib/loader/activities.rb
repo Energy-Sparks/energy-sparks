@@ -22,10 +22,10 @@ module Loader
       CSV.foreach(csv_file, headers: true) do |row|
         if row['id'].blank?
           5.times do |i|
-            ActivityTypeSuggestion.create!(activity_type_id: nil, suggested_type_id: row["suggestion_#{i+1}"].to_i)
+            ActivityTypeSuggestion.create!(activity_type_id: nil, suggested_type_id: row["suggestion_#{i + 1}"].to_i)
           end
         else
-          at = ActivityType.find_by_id( row['id'])
+          at = ActivityType.find_by_id(row['id'])
           puts "Activity #{row['id']} not found" unless at
           if at
             #new properties
@@ -36,8 +36,8 @@ module Loader
 
             #now suggestions
             5.times do |i|
-              suggested = ActivityType.find_by_id( row["suggestion_#{i+1}"] )
-              puts "Skipping suggestion suggestion_#{i+1} (#{row["suggestion_#{i+1}"]}) for #{at.id}" unless suggested
+              suggested = ActivityType.find_by_id(row["suggestion_#{i + 1}"])
+              puts "Skipping suggestion suggestion_#{i + 1} (#{row["suggestion_#{i + 1}"]}) for #{at.id}" unless suggested
               ActivityTypeSuggestion.create!(activity_type: at, suggested_type: suggested) if suggested
             end
 
