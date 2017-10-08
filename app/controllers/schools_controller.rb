@@ -35,7 +35,7 @@ class SchoolsController < ApplicationController
     else
       last_activity_type = @school.activities.order(:created_at).last.activity_type
       last_activity_type.activity_type_suggestions.each do |ats|
-        @suggestions << ats.suggested_type
+        @suggestions << ats.suggested_type unless @school.activities.exists?(activity_type: ats.suggested_type)
       end
     end
     #ensure minimum of five suggestions
