@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170901145506) do
+ActiveRecord::Schema.define(version: 20171008132125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,11 +41,13 @@ ActiveRecord::Schema.define(version: 20170901145506) do
     t.string   "name"
     t.text     "description"
     t.boolean  "active",               default: true
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "activity_category_id"
     t.integer  "score"
     t.string   "badge_name"
+    t.boolean  "repeatable",           default: true
+    t.boolean  "data_driven",          default: false
     t.index ["active"], name: "index_activity_types_on_active", using: :btree
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id", using: :btree
   end

@@ -6,9 +6,11 @@
 #  activity_category_id :integer
 #  badge_name           :string
 #  created_at           :datetime         not null
+#  data_driven          :boolean          default(FALSE)
 #  description          :text
 #  id                   :integer          not null, primary key
 #  name                 :string
+#  repeatable           :boolean          default(TRUE)
 #  score                :integer
 #  updated_at           :datetime         not null
 #
@@ -25,6 +27,8 @@
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
   scope :active, -> { where(active: true) }
+  scope :repeatable, -> { where(repeatable: true)}
+  scope :data_driven, -> { where(data_driven: true)}
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
