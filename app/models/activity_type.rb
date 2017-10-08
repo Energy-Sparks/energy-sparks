@@ -6,6 +6,7 @@
 #  activity_category_id :integer
 #  badge_name           :string
 #  created_at           :datetime         not null
+#  custom               :boolean          default(FALSE)
 #  data_driven          :boolean          default(FALSE)
 #  description          :text
 #  id                   :integer          not null, primary key

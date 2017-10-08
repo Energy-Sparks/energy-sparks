@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171008134359) do
+ActiveRecord::Schema.define(version: 20171008150902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20171008134359) do
     t.string   "badge_name"
     t.boolean  "repeatable",           default: true
     t.boolean  "data_driven",          default: false
+    t.boolean  "custom",               default: false
     t.index ["active"], name: "index_activity_types_on_active", using: :btree
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id", using: :btree
   end
