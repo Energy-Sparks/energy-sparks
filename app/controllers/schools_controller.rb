@@ -29,12 +29,14 @@ class SchoolsController < ApplicationController
     @first = @school.activities.empty?
     @suggestions = []
     if @first
-      ActivityTypeSuggestion.initial.each do |ats|
+      ActivityTypeSuggestion.initial.order(:id).each do |ats|
         @suggestions << ats.suggested_type
       end
     else
       last_activity_type = @school.activities.order(:created_at).last.activity_type
-      @suggestions = last_activity_type.suggested_types
+      last_activity_type.activity_type_suggestions.each do |ats|
+        @suggestions << ats.suggested_type
+      end
     end
     #ensure minimum of five suggestions
     if @suggestions.length < 5
