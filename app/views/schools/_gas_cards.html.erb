@@ -19,11 +19,14 @@
 
             <div class="card-body">
               <p>
-                Recently your school used an average of
+                Based on our latest data, your school uses an average of
               </p>
               <h2>
                 <strong><%= avg_gas[1].to_i unless avg_gas.nil? %></strong> kWh per day
               </h2>
+              <p class="text-muted">
+                Since <%= kid_date_no_year(avg_gas[0] - 7.days) %>
+              </p>
             </div>
             <div class="card-footer text-right">
               <%= link_to(t('charts.hourly-usage-link'),
@@ -41,11 +44,14 @@
 
             <div class="card-body">
               <p>
-                Recently your school used most energy on
+                Based on our latest data, your school uses most energy on
               </p>
               <h2>
                 <%= day_most_usage(:gas) %>
               </h2>
+              <p class="text-muted">
+                Since <%= kid_date_no_year(avg_gas[0] - 7.days) %>
+              </p>
             </div>
             <div class="card-footer text-right">
               <%= link_to(t('charts.weekly-usage-link'),
