@@ -58,9 +58,11 @@ $(document).on("turbolinks:load", function() {
             colors = ["#ffac21", "#ff4500"]
         }
         chart = Chartkick.charts["chart"];
+        options = chart.options;
+        options["colors"] = colors;
         current_source = chart.getDataSource();
         new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
-        chart.updateData(new_source, {colors: colors});
+        chart.updateData(new_source, options);
         if (chart.getChartObject()) {
             chart.getChartObject().showLoading();
         }
