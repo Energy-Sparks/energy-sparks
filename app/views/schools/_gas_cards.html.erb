@@ -4,7 +4,7 @@
       <% latest_reading_date = @school.last_reading_date(:gas) %>
 
       <h4>Gas
-        <span class="text-muted pull-right">
+        <span class="pull-right">
           <small>Latest data <%= l latest_reading_date unless latest_reading_date.nil? %></small>
         </span>
       </h4>
