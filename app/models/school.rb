@@ -75,6 +75,10 @@ class School < ApplicationRecord
     ]
   end
 
+  def active_meters
+    meters.where(active: true)
+  end
+
   def meters_for_supply(supply)
     self.meters.where(meter_type: supply)
   end
