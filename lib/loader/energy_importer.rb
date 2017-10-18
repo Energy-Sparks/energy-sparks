@@ -26,10 +26,10 @@ module Loader
 
     def find_readings(school, type, since_date = nil)
       meters(school, type).each do |meter|
-        since_date = since_date.present? ? since_date : meter.last_read
-        puts "Reading meter #{meter.meter_no} for data since #{since_date}"
+        sdate = since_date.present? ? since_date : meter.last_read
+        puts "Reading meter #{meter.meter_no} for data since #{sdate}"
         dataset = dataset(school, type)
-        query = query(meter, type, since_date)
+        query = query(meter, type, sdate)
         client.get(dataset, query).each do |result|
           yield meter, result
         end
