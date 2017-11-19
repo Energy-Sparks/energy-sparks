@@ -20,6 +20,14 @@ namespace :loader do
     end
   end
 
+  desc 'Import data for a single meter'
+  task :import_meter, [:meter_no, :date] => [:environment] do |_t, args|
+    since_date = Date.parse(args[:date])
+    meter = Meter.find_by_meter_no(args[:meter_no])
+    importer = Loader::EnergyImporter.new
+    importer.import_new_meter(meter, since_date)
+  end
+
   desc 'Load schools csv[:file_path]'
   task :import_schools, [:file_path] => [:environment] do |_t, args|
     Loader::Schools.load!(args[:file_path])
