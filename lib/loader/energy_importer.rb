@@ -24,6 +24,12 @@ module Loader
       end
     end
 
+    def import_new_meter(meter, since_date = nil)
+      find_readings_for_meter(meter, since_date) do |_meter, reading|
+        import_reading(meter, meter.meter_type, reading)
+      end
+    end
+
     def find_readings(school, type, since_date = nil)
       meters(school, type).each do |meter|
         sdate = since_date.present? ? since_date : meter.last_read
@@ -33,6 +39,16 @@ module Loader
         client.get(dataset, query).each do |result|
           yield meter, result
         end
+      end
+    end
+
+    def find_readings_for_meter(meter, since_date = nil)
+      sdate = since_date.present? ? since_date : meter.last_read
+      puts "Reading meter #{meter.meter_no} for data since #{sdate}"
+      dataset = dataset(meter.school, meter.meter_type)
+      query = query(meter, meter.meter_type, sdate)
+      client.get(dataset, query).each do |result|
+        yield meter, result
       end
     end
 
