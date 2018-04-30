@@ -23,7 +23,7 @@ gem 'turbolinks', '~> 5'
 
 
 # Frontend
-gem 'bootstrap', '~> 4.0.0.beta' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4.0.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
