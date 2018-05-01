@@ -119,6 +119,9 @@ describe 'Usage' do
   end
 
   describe "#day_most_usage" do
+
+
+
     context 'no previous readings are found' do
       it "returns nil" do
         new_school = FactoryGirl.create :school
@@ -126,6 +129,11 @@ describe 'Usage' do
       end
     end
     context "readings are found" do
+      before(:each) do
+        # Update the last one, else sort doesn't work as they all have the same value
+        MeterReading.order(:read_at).last.update(value: 300)
+      end
+
       it "returns an array whose first element is the date" do
         expect(school.day_most_usage(:electricity)[0]).to be_a_kind_of Date
       end
@@ -133,7 +141,7 @@ describe 'Usage' do
         expect(school.day_most_usage(:electricity)[1]).to be_a_kind_of BigDecimal
       end
       it "returns the expected value" do
-        expect(school.day_most_usage(:electricity)[1].to_i).to eql(650)
+        expect(school.day_most_usage(:electricity)[1].to_i).to eql(750)
         expect(school.day_most_usage(:electricity)[0]).to eql(Date.yesterday)
       end
     end
