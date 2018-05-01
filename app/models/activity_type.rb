@@ -22,7 +22,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_60d4f5f88d  (activity_category_id => activity_categories.id)
+#  fk_rails_...  (activity_category_id => activity_categories.id)
 #
 
 class ActivityType < ApplicationRecord

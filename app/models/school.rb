@@ -28,7 +28,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_379253fa8b  (calendar_id => calendars.id)
+#  fk_rails_...  (calendar_id => calendars.id)
 #
 
 class School < ApplicationRecord
