@@ -72,7 +72,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'

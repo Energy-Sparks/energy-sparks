@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :activity_category do
     sequence(:name) {|n| "Category#{n}"}
   end

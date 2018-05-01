@@ -22,7 +22,7 @@ RSpec.describe SchoolsController, type: :controller do
 
     context "as a school administrator" do
       let(:school) {
-        school = FactoryGirl.create :school, enrolled: true
+        school = FactoryBot.create :school, enrolled: true
       }
 
       before(:each) do
@@ -45,7 +45,7 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe 'GET #suggest_activity' do
-    let(:school) { FactoryGirl.create :school }
+    let(:school) { FactoryBot.create :school }
 
     context "as a guest user" do
       it "is not authorised" do
@@ -55,10 +55,10 @@ RSpec.describe SchoolsController, type: :controller do
     end
     context "as a school administrator" do
       let(:school) {
-        school = FactoryGirl.create :school, enrolled: true
+        school = FactoryBot.create :school, enrolled: true
       }
-      let(:activity_category) { FactoryGirl.create :activity_category }
-      let(:activity_type) { FactoryGirl.create(:activity_type, name: "One", data_driven: true, activity_category: activity_category) }
+      let(:activity_category) { FactoryBot.create :activity_category }
+      let(:activity_type) { FactoryBot.create(:activity_type, name: "One", data_driven: true, activity_category: activity_category) }
 
       before(:each) do
         sign_in_user(:school_admin, school.id)
@@ -76,12 +76,12 @@ RSpec.describe SchoolsController, type: :controller do
 
   describe "GET #index" do
     it "assigns schools that are enrolled as @schools_enrolled" do
-      school = FactoryGirl.create :school, enrolled: true
+      school = FactoryBot.create :school, enrolled: true
       get :index, params: {}
       expect(assigns(:schools_enrolled)).to eq([school])
     end
     it "assigns schools that haven't enrolled as @schools_not_enrolled" do
-      school = FactoryGirl.create :school, enrolled: false
+      school = FactoryBot.create :school, enrolled: false
       get :index, params: {}
       expect(assigns(:schools_not_enrolled)).to eq([school])
     end
@@ -95,34 +95,34 @@ RSpec.describe SchoolsController, type: :controller do
       context "when the school is not enrolled" do
         it "redirects to the enrol page" do
           sign_in_user(:guest)
-          school = FactoryGirl.create :school, enrolled: false
+          school = FactoryBot.create :school, enrolled: false
           get :show, params: {id: school.to_param}
           expect(response).to redirect_to(enrol_path)
         end
       end
       context "the school is enrolled" do
         it "assigns the requested school as @school" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           get :show, params: {id: school.to_param}
           expect(assigns(:school)).to eq(school)
         end
         it "assigns the school's meters as @meters" do
-          school = FactoryGirl.create :school
-          meter = FactoryGirl.create :meter, school_id: school.id
+          school = FactoryBot.create :school
+          meter = FactoryBot.create :meter, school_id: school.id
           get :show, params: {id: school.to_param}
           expect(assigns(:meters)).to include(meter)
         end
         it "assigns the latest activities as @activities" do
-          school = FactoryGirl.create :school
-          activity = FactoryGirl.create :activity, school_id: school.id
+          school = FactoryBot.create :school
+          activity = FactoryBot.create :activity, school_id: school.id
           get :show, params: {id: school.to_param}
           expect(assigns(:activities)).to include(activity)
         end
         it "does not include activities from other schools" do
-          school = FactoryGirl.create :school
-          other_school = FactoryGirl.create :school
-          FactoryGirl.create :activity, school_id: school.id
-          activity_other_school = FactoryGirl.create :activity, school_id: other_school.id
+          school = FactoryBot.create :school
+          other_school = FactoryBot.create :school
+          FactoryBot.create :activity, school_id: school.id
+          activity_other_school = FactoryBot.create :activity, school_id: other_school.id
           get :show, params: {id: school.to_param}
           expect(assigns(:activities)).not_to include activity_other_school
         end
@@ -158,7 +158,7 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe "GET #usage" do
-    let!(:school) { FactoryGirl.create :school }
+    let!(:school) { FactoryBot.create :school }
     let(:period) { :daily }
     it "assigns the requested school as @school" do
       get :usage, params: {id: school.to_param, period: period}
@@ -201,7 +201,7 @@ RSpec.describe SchoolsController, type: :controller do
 
     describe "GET #edit" do
       it "assigns the requested school as @school" do
-        school = FactoryGirl.create :school
+        school = FactoryBot.create :school
         get :edit, params: {id: school.to_param}
         expect(assigns(:school)).to eq(school)
       end
@@ -250,32 +250,32 @@ RSpec.describe SchoolsController, type: :controller do
         }
 
         it "updates the requested school" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: new_attributes}
           school.reload
           expect(school.name).to eq new_attributes[:name]
         end
 
         it "assigns the requested school as @school" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: valid_attributes}
           expect(assigns(:school)).to eq(school)
         end
 
         it "redirects to the school" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: valid_attributes}
           expect(response).to redirect_to(school)
         end
 
         it "awards competitor badge" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: {competition_role: "competitor"}}
           school.reload
           expect(school.badges[0].name).to eql("competitor")
         end
         it "awards winner badge" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: {competition_role: "winner"}}
           school.reload
           expect(school.badges[0].name).to eql("winner")
@@ -285,13 +285,13 @@ RSpec.describe SchoolsController, type: :controller do
 
       context "with invalid params" do
         it "assigns the school as @school" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: invalid_attributes}
           expect(assigns(:school)).to eq(school)
         end
 
         it "re-renders the 'edit' template" do
-          school = FactoryGirl.create :school
+          school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: invalid_attributes}
           expect(response).to render_template("edit")
         end
@@ -300,14 +300,14 @@ RSpec.describe SchoolsController, type: :controller do
 
     describe "DELETE #destroy" do
       it "destroys the requested school" do
-        school = FactoryGirl.create :school
+        school = FactoryBot.create :school
         expect {
           delete :destroy, params: {id: school.to_param}
         }.to change(School, :count).by(-1)
       end
 
       it "redirects to the schools list" do
-        school = FactoryGirl.create :school
+        school = FactoryBot.create :school
         delete :destroy, params: {id: school.to_param}
         expect(response).to redirect_to(schools_url)
       end

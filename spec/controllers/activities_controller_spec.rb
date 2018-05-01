@@ -19,11 +19,11 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ActivitiesController, type: :controller do
-  let(:school) { FactoryGirl.create :school }
-  let(:different_school) { FactoryGirl.create :school }
-  let(:activity_category) { FactoryGirl.create :activity_category }
-  let(:activity_type) { FactoryGirl.create(:activity_type, name: "One", activity_category: activity_category) }
-  let(:activity_type2) { FactoryGirl.create(:activity_type, name: "Two", activity_category: activity_category) }
+  let(:school) { FactoryBot.create :school }
+  let(:different_school) { FactoryBot.create :school }
+  let(:activity_category) { FactoryBot.create :activity_category }
+  let(:activity_type) { FactoryBot.create(:activity_type, name: "One", activity_category: activity_category) }
+  let(:activity_type2) { FactoryBot.create(:activity_type, name: "Two", activity_category: activity_category) }
 
   let(:valid_attributes) {
     { school_id: school.id,
@@ -40,12 +40,12 @@ RSpec.describe ActivitiesController, type: :controller do
 
   describe "GET #index" do
     it "assigns all school's activities as @activities" do
-      activity = FactoryGirl.create :activity, school_id: school.id
+      activity = FactoryBot.create :activity, school_id: school.id
       get :index, params: { school_id: school.id }
       expect(assigns(:activities)).to include activity
     end
     it "does not include activities from other schools" do
-      activity = FactoryGirl.create :activity, school_id: different_school.id
+      activity = FactoryBot.create :activity, school_id: different_school.id
       get :index, params: { school_id: school.id }
       expect(assigns(:activities)).not_to include activity
     end
@@ -53,7 +53,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
   describe "GET #show" do
     it "assigns the requested activity as @activity" do
-      activity = FactoryGirl.create :activity, school_id: school.id
+      activity = FactoryBot.create :activity, school_id: school.id
       get :show, params: { school_id: school.id, id: activity.to_param }
       expect(assigns(:activity)).to eq(activity)
     end
@@ -89,7 +89,7 @@ RSpec.describe ActivitiesController, type: :controller do
     end
 
     it "assigns the requested activity as @activity" do
-      activity = FactoryGirl.create :activity, school_id: school.id
+      activity = FactoryBot.create :activity, school_id: school.id
       get :edit, params: { school_id: school.id, id: activity.to_param }
       expect(assigns(:activity)).to eq(activity)
     end
@@ -149,7 +149,7 @@ RSpec.describe ActivitiesController, type: :controller do
     end
 
     context "when granting awards" do
-      let(:second_category) { FactoryGirl.create :activity_category }
+      let(:second_category) { FactoryBot.create :activity_category }
 
       let(:valid_attributes2) {
         { school_id: school.id,
@@ -204,7 +204,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
       it "assigns reporter badge for 20 activities" do
         19.times do
-          FactoryGirl.create(:activity, valid_attributes)
+          FactoryBot.create(:activity, valid_attributes)
         end
         #create the 20th
         post :create, params: { school_id: school.id, activity: valid_attributes }
@@ -216,7 +216,7 @@ RSpec.describe ActivitiesController, type: :controller do
 
       it "assigns reporter badge for 50 activities" do
         49.times do
-          FactoryGirl.create(:activity, valid_attributes)
+          FactoryBot.create(:activity, valid_attributes)
         end
         post :create, params: { school_id: school.id, activity: valid_attributes }
         school.reload
@@ -226,7 +226,7 @@ RSpec.describe ActivitiesController, type: :controller do
       end
       it "assigns reporter badge for 100 activities" do
         99.times do
-          FactoryGirl.create(:activity, valid_attributes)
+          FactoryBot.create(:activity, valid_attributes)
         end
         post :create, params: { school_id: school.id, activity: valid_attributes }
         school.reload
@@ -244,7 +244,7 @@ RSpec.describe ActivitiesController, type: :controller do
           end
           it "doesn't award for 5 of the same activities" do
             5.times do |i|
-              FactoryGirl.create(:activity, school: school, activity_type: activity_type, activity_category: activity_category )
+              FactoryBot.create(:activity, school: school, activity_type: activity_type, activity_category: activity_category )
             end
             #create a further activity to trigger merit
             post :create, params: { school_id: school.id, activity: valid_attributes }
@@ -253,8 +253,8 @@ RSpec.describe ActivitiesController, type: :controller do
           end
           it "awards #{badge_name} for 5 different activities" do
             5.times do |i|
-              activity_type = FactoryGirl.create(:activity_type, name: i, activity_category: activity_category)
-              FactoryGirl.create(:activity, school: school, activity_type: activity_type, activity_category: activity_category )
+              activity_type = FactoryBot.create(:activity_type, name: i, activity_category: activity_category)
+              FactoryBot.create(:activity, school: school, activity_type: activity_type, activity_category: activity_category )
             end
 
             #create a further activity to trigger merit
@@ -270,7 +270,7 @@ RSpec.describe ActivitiesController, type: :controller do
         context "when awarding #{badge[0]}" do
           it "doesn't award #{badge[0]} for activities in same week" do
             8.times do |i|
-              FactoryGirl.create(:activity,
+              FactoryBot.create(:activity,
                                  school: school, activity_type: activity_type, activity_category: activity_category)
             end
             #create a further activity to trigger merit
@@ -281,7 +281,7 @@ RSpec.describe ActivitiesController, type: :controller do
           it "awards #{badge[0]} for activities on different weeks" do
             8.times do |i|
               date = Date.parse("#{Date.today.year}-#{badge[1]}-01") + i.weeks
-              FactoryGirl.create(:activity,
+              FactoryBot.create(:activity,
                                  school: school, activity_type: activity_type, activity_category: activity_category,
                                  happened_on: date)
             end
@@ -298,7 +298,7 @@ RSpec.describe ActivitiesController, type: :controller do
       it "awards graduate badge" do
         50.times do |i|
           date = Date.parse("#{Date.today.year}-01-01") + i.weeks
-          FactoryGirl.create(:activity,
+          FactoryBot.create(:activity,
                              school: school, activity_type: activity_type, activity_category: activity_category,
                              happened_on: date)
         end

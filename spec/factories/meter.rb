@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :meter do
     school
     meter_no 1234567
