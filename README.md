@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/BathHacked/energy-sparks.svg?branch=master)](https://travis-ci.org/BathHacked/energy-sparks)
+
 # Energy Sparks
 
 Energy Sparks is an open source application that is designed to help schools improve their energy efficiency.
