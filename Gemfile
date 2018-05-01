@@ -93,7 +93,7 @@ group :test do
   gem 'webrat'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
-  gem 'pickle'
+  gem 'pickle', '~> 0.5.4'
   gem 'simplecov', :require => false, :group => :test
 end
 
