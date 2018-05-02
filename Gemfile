@@ -42,7 +42,7 @@ gem 'groupdate' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
-gem 'friendly_id', git: 'https://github.com/norman/friendly_id' # Pretties up URLs
+gem 'friendly_id' # Pretties up URLs
 gem 'merit', '3.0.0' # Reputation/achievements/rankings
 
 # Email service
@@ -59,7 +59,6 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'
-
 end
 
 group :development do
@@ -76,10 +75,9 @@ group :development do
 end
 
 group :test do
-  gem 'webrat'
-  gem 'cucumber-rails', :require => false
+  gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem 'pickle', '~> 0.5.4'
   gem 'simplecov', :require => false, :group => :test
 end
 
