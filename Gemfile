@@ -75,7 +75,6 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', require: false
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
