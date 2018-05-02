@@ -4,7 +4,7 @@ ruby '2.5.1'
 
 # Rails/Core
 gem 'rails', '~> 5.1.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'puma', '~> 3.0' # Use Puma as the app server
+gem 'puma' # Use Puma as the app server
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 
 
@@ -15,15 +15,14 @@ gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
-gem 'sass-rails', '~> 5.0' # Use SCSS for stylesheets
-gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
+gem 'sass-rails'# Use SCSS for stylesheets
+gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 
 
 # Frontend
-gem 'bootstrap', '~> 4.0.0' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
