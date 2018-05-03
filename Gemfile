@@ -59,6 +59,9 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'
+
+  # Reduce log noise in dev and test
+  gem 'lograge'
 end
 
 group :development do
