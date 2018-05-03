@@ -10,10 +10,6 @@
 //= require popper
 //= require bootstrap
 
-// Don't think this is required
-// require tether.min.js
-
-
 //= require turbolinks
 
 //= require highcharts
@@ -28,8 +24,9 @@
 //= require jquery.plugin.min.js
 //= require jquery.calendars.picker.min.js
 
-// This is used but slight overkill I think
+// This is used (handlebars) but slight overkill I think
 //= require handlebars
+
 //= require activities
 //= require activity_types
 //= require calendars
@@ -37,5 +34,3 @@
 //= require open_tab
 //= require schools
 //= require users
-
-//= require lib/google_analytics
