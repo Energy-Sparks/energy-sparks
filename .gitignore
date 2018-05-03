@@ -33,6 +33,9 @@ coverage
 .env
 *.txt
 
+# Don't commit assets!
+public/assets
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
