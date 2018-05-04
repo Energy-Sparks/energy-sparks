@@ -45,6 +45,11 @@ gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in de
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '3.0.0' # Reputation/achievements/rankings
 
+# Exception handling
+gem 'rollbar'
+gem 'oj'
+
+
 # Email service
 gem 'mailgun_rails'
 

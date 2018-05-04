@@ -194,6 +194,7 @@ GEM
     nio4r (2.3.0)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
+    oj (3.5.1)
     orm_adapter (0.5.0)
     parser (2.5.1.0)
       ast (~> 2.4.0)
@@ -251,6 +252,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rollbar (2.15.6)
+      multi_json
     rspec-core (3.7.1)
       rspec-support (~> 3.7.0)
     rspec-expectations (3.7.0)
@@ -393,12 +396,14 @@ DEPENDENCIES
   lograge
   mailgun_rails
   merit (= 3.0.0)
+  oj
   pg
   pry
   puma
   rails (~> 5.1.0)
   rails-controller-testing
   redcarpet
+  rollbar
   rspec-rails (~> 3.5)
   sass-rails
   selenium-webdriver
