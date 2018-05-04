@@ -1,5 +1,4 @@
 module SchoolsHelper
-
   def meter_and_data?(school, meter_type)
     school.meters?(meter_type) && school.last_reading_date(meter_type).present?
   end
