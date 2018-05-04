@@ -32,6 +32,8 @@ coverage
 
 .env
 *.txt
+*.sql
+
 
 # Don't commit assets!
 public/assets

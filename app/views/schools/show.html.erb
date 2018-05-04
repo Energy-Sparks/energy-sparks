@@ -41,9 +41,9 @@
 
     <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
-      <%= render partial: 'schools/electricity_cards' %>
-      <%= render partial: 'schools/gas_cards' %>
-    </div>
-  </div>
 
+      <%= render 'schools/meter_cards', meter_type: :electricity, school: @school if @school.meters?(:electricity) %>
+
+      <%= render 'schools/meter_cards', meter_type: :gas, school: @school if @school.meters?(:gas) %>
+  </div>
 </div>

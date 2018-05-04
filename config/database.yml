@@ -7,15 +7,11 @@ development:
   <<: *default
   host: localhost
   database: energy_sparks_development
-  username: postgres
-  password: pgdev
 
 test: &test
   <<: *default
   host: localhost
   database: energy_sparks_test
-  username: postgres
-  password: pgdev
 
 staging:
   <<: *default

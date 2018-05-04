@@ -1,8 +1,9 @@
 language: ruby
+cache: bundler
 env:
   - DB_PASSWORD=
 global:
-  - CC_TEST_REPORTER_ID=787a2f89b15c637323c7340d65ec17e898ac44480706b4b4122ea040c2a88f1d
+  - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd
 services:
   - postgresql
 before_script:
@@ -16,8 +17,8 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - bundle exec rspec
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+after_success:
+  - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 deploy:
   provider: heroku
   api_key:

@@ -45,6 +45,11 @@ gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in de
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '3.0.0' # Reputation/achievements/rankings
 
+# Exception handling
+gem 'rollbar'
+gem 'oj'
+
+
 # Email service
 gem 'mailgun_rails'
 
@@ -59,6 +64,9 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'
+
+  # Reduce log noise in dev and test
+  gem 'lograge'
 end
 
 group :development do
@@ -76,6 +84,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'simplecov', :require => false, :group => :test
