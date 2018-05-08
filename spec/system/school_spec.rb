@@ -32,13 +32,6 @@ RSpec.describe "school", type: :system do
 
       it 'shows me a school page' do
         click_on(school_name)
-        # expect(page.has_content? school_name).to be true
-        # expect(school.meters?(:gas)).to be true
-        # expect(school.meters?(:electricity)).to be false
-        # expect(school.last_reading_date(:electricity)).to be nil
-        # expect(school.last_reading_date(:gas)).to be nil
-
-        # pp page.text
         expect(page.has_content? "Gas").to be true
         expect(page.has_content? "Electricity").to be false
 
