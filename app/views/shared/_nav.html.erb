@@ -1,5 +1,6 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-custom">
+  <%= render 'shared/test_site_warning' if request.host.include?('test') %>
   <div class="container">
     <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
     <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,9 +44,9 @@
         <% end %>
         <li class="nav-item">
           <% if user_signed_in? %>
-              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
           <% else %>
-              <%= link_to "Sign In", new_user_session_path, class: 'nav-link'%>
+            <%= link_to "Sign In", new_user_session_path, class: 'nav-link'%>
           <% end %>
         </li>
       </ul>
