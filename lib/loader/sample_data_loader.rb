@@ -11,8 +11,11 @@ module Loader
         school = School.find_or_create_by!(urn: row['urn'], name: "School #{row['school']}", school_type: :primary)
         meter_type = row['type'] == 'electric' ? :electricity : :gas
 
-        # TODO: needs something more realistic
-        meter_no = 0
+        if meter_type == :electricity
+          meter_no = 13.times.map{rand(10)}.join
+        else
+          meter_no = 10.times.map{rand(10)}.join
+        end
 
         meter = school.meters.find_or_create_by!(meter_type: meter_type, meter_no: meter_no)
 
