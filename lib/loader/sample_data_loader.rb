@@ -11,13 +11,7 @@ module Loader
         school = School.find_or_create_by!(urn: row['urn'], name: "School #{row['school']}", school_type: :primary)
         meter_type = row['type'] == 'electric' ? :electricity : :gas
 
-        meter_no = if meter_type == :electricity
-                     13.times.map { rand(10) }.join
-                   else
-                     10.times.map { rand(10) }.join
-                   end
-
-        meter = school.meters.find_or_create_by!(meter_type: meter_type, meter_no: meter_no)
+        meter = school.meters.find_or_create_by!(meter_type: meter_type, meter_no: generate_meter_number(meter_type))
 
         date = row['date']
         readings = row[5..-1]
@@ -27,6 +21,14 @@ module Loader
           read_at = DateTime.strptime(date, "%d/%m/%Y") + (index * 30).minutes
           meter.meter_readings.find_or_create_by!(read_at: read_at, value: reading, unit: "kWh")
         end
+      end
+    end
+
+    def self.generate_meter_number(meter_type)
+      if meter_type == :electricity
+        13.times.map { rand(10) }.join
+      else
+        10.times.map { rand(10) }.join
       end
     end
   end
