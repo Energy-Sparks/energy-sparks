@@ -27,6 +27,9 @@
 
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
+
+  acts_as_taggable_on :key_stages
+
   scope :active, -> { where(active: true) }
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
