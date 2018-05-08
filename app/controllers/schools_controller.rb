@@ -132,7 +132,7 @@ private
       :gas_dataset,
       :electricity_dataset,
       :competition_role,
-      :key_stage_ids => [],
+      key_stage_ids: [],
       meters_attributes: meter_params
     )
   end
