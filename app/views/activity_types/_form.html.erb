@@ -66,6 +66,12 @@
       <%= f.check_box :custom, class: 'form-control' %>
     </div>
 
+    <h2>Key Stages</h2>
+
+      <%= f.collection_check_boxes(:key_stage_ids, ActsAsTaggableOn::Tag.all.order(:name), :id, :name) do |b| %>
+        <%= b.label(class:"label-checkbox") { b.check_box + b.text } %>
+    <% end %>
+
     <h2>Suggested Next Activities</h2>
     <table>
       <thead>

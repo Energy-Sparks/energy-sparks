@@ -86,6 +86,7 @@ private
         :badge_name,
         :repeatable,
         :data_driven,
+        key_stage_ids: [],
         activity_type_suggestions_attributes: suggestions_params)
   end
 
