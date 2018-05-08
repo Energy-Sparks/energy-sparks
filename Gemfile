@@ -49,6 +49,7 @@ gem 'merit', '3.0.0' # Reputation/achievements/rankings
 gem 'rollbar'
 gem 'oj'
 
+gem 'acts-as-taggable-on'
 
 # Email service
 gem 'mailgun_rails'
