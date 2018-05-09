@@ -6,6 +6,7 @@ class ActivityTypesController < ApplicationController
   # GET /activity_types
   # GET /activity_types.json
   def index
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @activity_types = ActivityType.all.includes(:activity_category).order("activity_categories.name", :name)
   end
 
