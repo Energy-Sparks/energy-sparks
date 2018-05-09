@@ -6,8 +6,11 @@ RSpec.describe "school", type: :system do
   let!(:school) { create(:school, name: school_name)}
   let!(:admin)  { create(:user, role: 'admin')}
   let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
+  let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
   let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
+  let!(:ks2_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks2_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
   let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
+  let!(:ks3_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks3_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
 
   it 'shows me a school page' do
     visit root_path
