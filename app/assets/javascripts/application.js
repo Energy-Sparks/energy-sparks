@@ -28,6 +28,7 @@
 //= require handlebars
 
 //= require activities
+//= require activity_categories
 //= require activity_types
 //= require calendars
 //= require data_explorer

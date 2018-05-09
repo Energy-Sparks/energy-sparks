@@ -7,7 +7,6 @@ class ActivityCategoriesController < ApplicationController
   # GET /activity_categories.json
   def index
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
-    @key_stage_tags << ActsAsTaggableOn::Tag.new(name: 'All')
     @activity_categories = ActivityCategory.all.order(:name)
   end
 

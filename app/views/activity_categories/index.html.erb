@@ -21,6 +21,25 @@
     </div>
   </div>
 
+  <div class="">
+    <%= form_tag activity_categories_path, method: :get do %>
+        <fieldset id="checkbox-container">
+          <%= collection_check_boxes :tag, :ids, @key_stage_tags, :id, :name, { multiple: true } do |b| %>
+            <div class="form-check form-check-inline">
+              <%= b.check_box(class: "form-check-input") %>
+              <%= b.label(class: "form-check-label") do %>
+                <%= b.object.name %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+       
+        <%= submit_tag "Filter Activity Types", class: 'btn btn-primary' %>
+      </fieldset>
+    <% end %>
+    <button id="check_all_filters" class="btn btn-success">Check All</button>
+  </div>
+
   <div class="row padded-row">
     <div class="col-md-3">
       <div class="nav flex-column nav-pills card-header-pills" id="v-pills-tab" role="tablist">
