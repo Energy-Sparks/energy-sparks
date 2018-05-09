@@ -11,6 +11,7 @@ rake loader:import_activity_progression"[etc/banes_activity_progression.csv]"
 rake loader:import_schools"[etc/banes-eligible-schools.csv]"
 
 rake db:migrate
+rake db:migrate RAILS_ENV=test
 
 rake development:load_banes_default_calendar
 rake development:active_freshford_with_meters

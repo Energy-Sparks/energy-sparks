@@ -56,12 +56,14 @@ class SchoolsController < ApplicationController
 
   # GET /schools/new
   def new
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @school = School.new
     @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @school.meters.build
   end
 

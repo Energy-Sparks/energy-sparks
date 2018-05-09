@@ -4,8 +4,12 @@ RSpec.describe "activity type", type: :system do
   let!(:admin)  { create(:user, role: 'admin')}
   let!(:activity_category) { create(:activity_category)}
   let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
+  let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
   let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
+  let!(:ks2_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks2_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
   let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
+  let!(:ks3_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks3_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
+  let!(:random_tag) { ActsAsTaggableOn::Tag.create(name: 'Random') }
 
   it 'can not access it unless logged in' do
     visit new_activity_type_path
@@ -17,6 +21,13 @@ RSpec.describe "activity type", type: :system do
       sign_in(admin)
       visit new_activity_type_path
       expect(ActivityType.count).to be 0
+    end
+
+    it 'should only show KS tags' do
+      expect(page.has_content?(ks1_tag.name)).to be true
+      expect(page.has_content?(ks2_tag.name)).to be true
+      expect(page.has_content?(ks3_tag.name)).to be true
+      expect(page.has_content?(random_tag.name)).to_not be true
     end
 
     it 'can add a new activity for KS1' do

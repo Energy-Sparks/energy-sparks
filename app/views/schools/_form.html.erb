@@ -66,7 +66,7 @@
   </div>
 
   <h2>Key Stages</h2>
-  <%= f.collection_check_boxes(:key_stage_ids, ActsAsTaggableOn::Tag.all.order(:name), :id, :name) do |b| %>
+  <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
     <%= b.label(class:"label-checkbox") { b.check_box + b.text } %>
   <% end %>
 

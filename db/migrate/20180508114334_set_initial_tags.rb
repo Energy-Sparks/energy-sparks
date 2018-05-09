@@ -11,5 +11,8 @@ class SetInitialTags < ActiveRecord::Migration[5.1]
     end
 
     ActsAsTaggableOn::Tag.create(name: 'KS3')
+
+    # Create a dummy tagging for KS3 otherwise we can't easily get it back when we create our check list of stages etc
+    ActsAsTaggableOn::Tagging.create(tag_id: 3, taggable_type: nil, taggable_id: nil, context: 'key_stages')
   end
 end
