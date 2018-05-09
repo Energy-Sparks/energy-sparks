@@ -6,7 +6,7 @@ namespace :development do
 
   desc 'Load banes-default-calendar'
   task load_banes_default_calendar: [:environment] do
-    default_calendar = Calendar.where( name: "Default Calendar", default: true ).first_or_create
+    Calendar.where(name: "Default Calendar", default: true).first_or_create
     Loader::Calendars.load!("etc/banes-default-calendar.csv")
   end
 
@@ -17,4 +17,3 @@ namespace :development do
     Meter.create(school: school, meter_type: :electricity, active: true, name: "Electricity", meter_no: 2000006183919)
   end
 end
-
