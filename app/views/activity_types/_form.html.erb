@@ -1,4 +1,4 @@
-<%= form_for(activity_type) do |f| %>
+<%= form_for(activity_type, html: { id: 'activity_type_form' }) do |f| %>
     <% if activity_type.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(activity_type.errors.count, "error") %> prohibited this activity from being saved:</h2>
@@ -28,7 +28,6 @@
       %>
     </div>
 
-
     <div class="form-group">
       <%= f.label :description %>
       <%= f.hidden_field :description %>
@@ -46,30 +45,23 @@
       <%= f.text_field :badge_name, class: 'form-control' %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :active %>
-      <%= f.check_box :active, class: 'form-control' %>
-    </div>
+    <%= render 'custom_checkbox', f: f, field_name: :active %>
+    <%= render 'custom_checkbox', f: f, field_name: :repeatable, label_text: 'Repeatable?' %>
+    <%= render 'custom_checkbox', f: f, field_name: :data_driven, label_text: 'Uses data?' %>
+    <%= render 'custom_checkbox', f: f, field_name: :custom, label_text: "Custom ('Other')" %>
 
-    <div class="form-group">
-      <%= f.label "Repeatable?" %>
-      <%= f.check_box :repeatable, class: 'form-control' %>
-    </div>
 
-    <div class="form-group">
-      <%= f.label "Uses data?" %>
-      <%= f.check_box :data_driven, class: 'form-control' %>
-    </div>
+   <h2>Key Stages</h2>
+   <p>Please select which Key Stages this activity is for.</p>
 
-    <div class="form-group">
-      <%= f.label "Custom ('Other')?" %>
-      <%= f.check_box :custom, class: 'form-control' %>
-    </div>
-
-    <h2>Key Stages</h2>
     <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
-      <%= b.label(class:"label-checkbox") { b.check_box + b.text } %>
-    <% end %>
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <%= b.check_box(class: "custom-control-input") %>
+              <%= b.label(class: "custom-control-label") do %>
+                <%= b.object.name %>
+              <% end %>
+            </div>
+          <% end %>
 
     <h2>Suggested Next Activities</h2>
     <table>
