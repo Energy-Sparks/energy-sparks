@@ -80,7 +80,7 @@ private
   end
 
   def activity_category_filter_params
-    params.permit(key_stage_tag: { key_stage_names: []})
+    params.permit(key_stage_tag: { key_stage_names: [] })
   end
 
   def work_out_which_filters_to_set
