@@ -23,14 +23,14 @@ class ActivityCategory < ApplicationRecord
     types
   end
 
-  def sorted_activity_types_with_key_stages(by: :name, array_of_key_stages_names: array_of_key_stages_names)
-    unless array_of_key_stages_names.nil?
+  def sorted_activity_types_with_key_stages(by: :name, array_of_key_stages_names: %w(KS1, KS2))
+    if array_of_key_stages_names.nil?
+      sorted_activity_types(by: :name)
+    else
       types = activity_types.where(active: true).tagged_with(array_of_key_stages_names, any: :true).order(by).to_a
       other = types.index { |x| x.name.casecmp("other") == 0 }
       types.insert(-1, types.delete_at(other)) if other.present?
       types
-    else
-      sorted_activity_types(by: :name)
     end
   end
 end
