@@ -27,6 +27,9 @@
 
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
+
+  acts_as_taggable_on :key_stages
+
   scope :active, -> { where(active: true) }
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
@@ -39,4 +42,8 @@ class ActivityType < ApplicationRecord
   has_many :suggested_types, through: :activity_type_suggestions
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
+
+  def key_stages
+    key_stage_list.to_a.sort.join(', ')
+  end
 end

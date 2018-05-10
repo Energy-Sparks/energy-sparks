@@ -39,6 +39,8 @@ class School < ApplicationRecord
   include Merit::UsageCalculations
   has_merit
 
+  acts_as_taggable_on :key_stages
+
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy

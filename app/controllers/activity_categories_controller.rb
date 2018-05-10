@@ -6,6 +6,8 @@ class ActivityCategoriesController < ApplicationController
   # GET /activity_categories
   # GET /activity_categories.json
   def index
+    @key_stage_filter_names = work_out_which_filters_to_set
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @activity_categories = ActivityCategory.all.order(:name)
   end
 
@@ -75,5 +77,27 @@ private
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_category_params
     params.require(:activity_category).permit(:name, :description, :badge_name)
+  end
+
+  def activity_category_filter_params
+    params.permit(key_stage_tag: { key_stage_names: []})
+  end
+
+  def work_out_which_filters_to_set
+    key_stage_tag = activity_category_filter_params[:key_stage_tag]
+
+    if key_stage_tag.nil?
+      if current_user.nil? || current_user.school.nil?
+        # TODO remove this hardcoding
+        %w(KS1 KS2 KS3)
+      else
+        # Set for the school defaults
+        current_user.school.key_stage_list
+      end
+    else
+      filters = key_stage_tag[:key_stage_names]
+      filters.delete("")
+      filters
+    end
   end
 end

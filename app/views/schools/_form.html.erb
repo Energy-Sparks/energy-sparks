@@ -65,6 +65,11 @@
     <%= f.text_field :gas_dataset, class: 'form-control' %>
   </div>
 
+  <h2>Key Stages</h2>
+  <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
+    <%= b.label(class:"label-checkbox") { b.check_box + b.text } %>
+  <% end %>
+
   <h2>Meters</h2>
   <table>
     <thead>
