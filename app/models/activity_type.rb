@@ -42,4 +42,8 @@ class ActivityType < ApplicationRecord
   has_many :suggested_types, through: :activity_type_suggestions
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
+
+  def key_stages
+    key_stage_list.to_a.sort.join(', ')
+  end
 end
