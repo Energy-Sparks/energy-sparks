@@ -23,11 +23,11 @@ RSpec.describe "activity type", type: :system, js: true do
       expect(page.has_content?(activity_type_2.name)).to_not be true
     end
 
-    it 'shows cat 2 activity types if selected' do
+    pending 'shows cat 2 activity types if selected' do
       click_on('cat2')
       assert_text(activity_type_2.name)
       expect(page.has_content?(activity_type_1.name)).to_not be true
       expect(page.has_content?(activity_type_2.name)).to be true
-    end 
+    end
   end
 end
