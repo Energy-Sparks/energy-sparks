@@ -42,18 +42,13 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :enrolled %>
-    <%= f.check_box :enrolled, class: 'form-control' %>
+    <%= f.label :competition_role %>
+    <%= f.select :competition_role,
+                 School.competition_roles.keys.map { |role| [role.titleize, role] },
+                 {},
+                 {class: 'form-control'}
+    %>
   </div>
-
-    <div class="form-group">
-      <%= f.label :competition_role %>
-      <%= f.select :competition_role,
-                   School.competition_roles.keys.map { |role| [role.titleize, role] },
-                   {},
-                   {class: 'form-control'}
-      %>
-    </div>
 
   <div class="form-group">
     <%= f.label :electricity_dataset %>
@@ -65,9 +60,17 @@
     <%= f.text_field :gas_dataset, class: 'form-control' %>
   </div>
 
+  <%= render 'shared/custom_checkbox', f: f, field_name: :enrolled %>
+
   <h2>Key Stages</h2>
+  <p>Please select which Key Stages this school teaches.</p>
   <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
-    <%= b.label(class:"label-checkbox") { b.check_box + b.text } %>
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <%= b.check_box(class: "custom-control-input") %>
+      <%= b.label(class: "custom-control-label") do %>
+        <%= b.object.name %>
+      <% end %>
+    </div>
   <% end %>
 
   <h2>Meters</h2>

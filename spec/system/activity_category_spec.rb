@@ -82,7 +82,7 @@ RSpec.describe "activity type", type: :system do
       expect(page.has_content?(activity_type_2.name)).to be true
     end
 
-    it 'shows cat 2 activity types if selected', js: true do
+    it 'shows cat 2 activity types if selected' do
       expect(page).to have_checked_field('KS1')
       expect(page).to have_checked_field('KS2')
       expect(page).to have_checked_field('KS3') # or have_unchecked_field

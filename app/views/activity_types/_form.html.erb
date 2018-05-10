@@ -45,23 +45,22 @@
       <%= f.text_field :badge_name, class: 'form-control' %>
     </div>
 
-    <%= render 'custom_checkbox', f: f, field_name: :active %>
-    <%= render 'custom_checkbox', f: f, field_name: :repeatable, label_text: 'Repeatable?' %>
-    <%= render 'custom_checkbox', f: f, field_name: :data_driven, label_text: 'Uses data?' %>
-    <%= render 'custom_checkbox', f: f, field_name: :custom, label_text: "Custom ('Other')" %>
-
+    <%= render 'shared/custom_checkbox', f: f, field_name: :active %>
+    <%= render 'shared/custom_checkbox', f: f, field_name: :repeatable, label_text: 'Repeatable?' %>
+    <%= render 'shared/custom_checkbox', f: f, field_name: :data_driven, label_text: 'Uses data?' %>
+    <%= render 'shared/custom_checkbox', f: f, field_name: :custom, label_text: "Custom ('Other')" %>
 
    <h2>Key Stages</h2>
    <p>Please select which Key Stages this activity is for.</p>
 
     <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <%= b.check_box(class: "custom-control-input") %>
-              <%= b.label(class: "custom-control-label") do %>
-                <%= b.object.name %>
-              <% end %>
-            </div>
-          <% end %>
+      <div class="custom-control custom-checkbox custom-control-inline">
+        <%= b.check_box(class: "custom-control-input") %>
+        <%= b.label(class: "custom-control-label") do %>
+          <%= b.object.name %>
+        <% end %>
+      </div>
+    <% end %>
 
     <h2>Suggested Next Activities</h2>
     <table>
