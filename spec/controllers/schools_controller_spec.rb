@@ -53,25 +53,47 @@ RSpec.describe SchoolsController, type: :controller do
         expect(response).to have_http_status(:redirect  )
       end
     end
-    context "as a school administrator" do
-      let(:school) {
-        school = FactoryBot.create :school, enrolled: true
-      }
-      let(:activity_category) { FactoryBot.create :activity_category }
-      let(:activity_type) { FactoryBot.create(:activity_type, name: "One", data_driven: true, activity_category: activity_category) }
+    context "as an authorised school administrator" do
 
-      before(:each) do
-        sign_in_user(:school_admin, school.id)
-      end
-      it "is authorised" do
-        activity_type
-        get :suggest_activity, params: { id: school.to_param }
-        expect(response).to_not have_http_status(:redirect  )
-        expect(assigns(:suggestions)).to include(activity_type)
+      let(:school) { school = create :school, enrolled: true }
+      let(:activity_category) { create :activity_category }
+      let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true) }
+      
+      before(:each) { sign_in_user(:school_admin, school.id) }
+
+      context "with a single activity type" do
+        it "is authorised" do
+          get :suggest_activity, params: { id: school.to_param }
+          expect(response).to_not have_http_status(:redirect  )
+          expect(assigns(:suggestions)).to match_array(activity_types)
+        end
       end
 
+      context "with no activity types set for the school" do 
+        it "suggests any 5 if no suggestions" do
+          get :suggest_activity, params: { id: school.to_param }
+          expect(assigns(:suggestions)).to match_array(activity_types)
+        end
+      end
+
+      context "with initial suggestions" do 
+        let!(:activity_types_with_suggestions) { create_list(:activity_type, 5, :as_initial_suggestions)}
+        it "suggests the first five initial suggestions" do
+          get :suggest_activity, params: { id: school.to_param }
+          expect(assigns(:suggestions)).to match_array(activity_types_with_suggestions)
+        end
+      end
+
+      context "with suggestions based on last activity type" do 
+        let!(:activity_type_with_further_suggestions) { create :activity_type, :with_further_suggestions, number_of_suggestions: 5 }
+        let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
+
+        it "suggests the five follow ons from original" do
+          get :suggest_activity, params: { id: school.to_param }
+          expect(assigns(:suggestions)).to match_array(last_activity.activity_type.activity_type_suggestions.map(&:suggested_type))
+        end
+      end  
     end
-
   end
 
   describe "GET #index" do
