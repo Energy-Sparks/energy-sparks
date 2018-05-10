@@ -77,4 +77,7 @@ private
   def activity_category_params
     params.require(:activity_category).permit(:name, :description, :badge_name)
   end
+
+  def activity_category_filter_params
+  end
 end

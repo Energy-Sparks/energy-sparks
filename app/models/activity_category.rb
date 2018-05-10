@@ -21,12 +21,12 @@ class ActivityCategory < ApplicationRecord
     sort_types(types)
   end
 
-  def sorted_activity_types_with_key_stages(by: :name, array_of_key_stages_names:)
+  def sorted_activity_types_with_key_stages(by: :name, array_of_key_stages_names: %w(KS1 KS2))
     types = activity_types.where(active: true).tagged_with(array_of_key_stages_names, any: :true).order(by).to_a
     sort_types(types)
   end
 
-  private
+private
 
   # Other should always be last
   def sort_types(types)
