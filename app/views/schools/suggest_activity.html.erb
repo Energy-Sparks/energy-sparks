@@ -50,46 +50,63 @@
           Here are some suggested next activities for your school.
         <% end %>
       </p>
+      <p>By default the activities are appropriate for the Key Stages set for your school.</p>
+    </div>
+  </div>
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <%= form_tag suggest_activity_school_path, method: :get do %>
+        <%= collection_check_boxes :key_stage_tag, :key_stage_names, @key_stage_tags, :name, :name, { multiple: true } do |b| %>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <%= b.check_box( checked: (@key_stage_filter_names.include?(b.object.name)), class: "custom-control-input") %>
+            <%= b.label(class: "custom-control-label") do %>
+              <%= b.object.name %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
+      <% end %>
     </div>
   </div>
 
   <% @suggestions.in_groups_of(3, nil) do |group| %>
       <div class="card-deck <%= group.include?(nil) ? 'padded-row' : ''%>">
         <% group.each do |activity_type| %>
-            <% if activity_type.present? %>
-                <div class="card activity-card">
-                  <div class="card-header">
-                    <p><span class="badge badge-success"><%= activity_type.score %></span>
-                    <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
-                  </div>
-                  <div class="card-body">
-                    <h4 class="card-title"><%= activity_type.name %></h4>
-                    <p class="card-text">
-                    </p>
-                  </div>
-                  <div class="card-footer text-right">
-                    <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
-                  </div>
-                </div>
-            <% else %>
-                <div class="card secondary-card">
-                  <div class="card-header">
+          <% if activity_type.present? %>
+            <div class="card activity-card">
+              <div class="card-header">
+                <p><span class="badge badge-success"><%= activity_type.score %></span>
+                <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
+              </div>
+              <div class="card-body">
+                <h4 class="card-title"><%= "#{activity_type.name} (#{activity_type.key_stages})" %></h4>
+                <p class="card-text">
+                </p>
+              </div>
+              <div class="card-footer text-right">
+                <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
+              </div>
+            </div>
+          <% else %>
+            <div class="card secondary-card">
+              <div class="card-header">
 
-                  </div>
-                  <div class="card-body">
-                    <h4 class="card-title">Want some other suggestions?</h4>
-                    <p class="card-text">
-                      You can also design your own activities, you can still score points for these when you
-                      record them using the <%= link_to 'activity form', new_school_activity_path(@school) %>. For more
-                      ideas have a look at our full list of activities.
-                    </p>
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">Want some other suggestions?</h4>
+                <p class="card-text">
+                  You can also design your own activities, you can still score points for these when you
+                  record them using the <%= link_to 'activity form', new_school_activity_path(@school) %>. For more
+                  ideas have a look at our full list of activities.
+                </p>
 
-                  </div>
-                  <div class="card-footer text-right">
-                    <%= link_to 'View the full list of activities', activity_categories_path, class: 'btn btn-secondary' %>
-                  </div>
-                </div>
-            <% end %>
+              </div>
+              <div class="card-footer text-right">
+                <%= link_to 'View the full list of activities', activity_categories_path, class: 'btn btn-secondary' %>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
   <% end %>

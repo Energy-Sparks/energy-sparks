@@ -1,4 +1,6 @@
 class SchoolsController < ApplicationController
+  include KeyStageFilterable
+
   load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
@@ -27,8 +29,10 @@ class SchoolsController < ApplicationController
   end
 
   def suggest_activity
+    @key_stage_filter_names = work_out_which_filters_to_set
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggesterWithKeyStages.new(@school).suggest
+    @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filter_names).suggest
   end
 
   # GET /schools/scoreboard
