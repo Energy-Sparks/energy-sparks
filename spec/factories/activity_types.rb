@@ -22,8 +22,7 @@ FactoryBot.define do
 
       after(:create) do |original_activity_type, evaluator|
         evaluator.number_of_suggestions.times do |index|
-
-          follow_on_activity_type = create :activity_type, key_stages: evaluator.key_stages
+          follow_on_activity_type = create :activity_type, key_stages: evaluator.key_stages, score: 33
           create :activity_type_suggestion, activity_type: original_activity_type, suggested_type: follow_on_activity_type
         end
       end
