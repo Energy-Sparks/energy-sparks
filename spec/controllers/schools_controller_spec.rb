@@ -55,10 +55,14 @@ RSpec.describe SchoolsController, type: :controller do
     end
     context "as an authorised school administrator" do
 
-      let(:school) { school = create :school, enrolled: true }
+      let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
+      let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
+      let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
+      let!(:school) { create :school, enrolled: true, key_stages: [ks1_tag, ks3_tag] }
+
       let(:activity_category) { create :activity_category }
-      let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true) }
-      
+      let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1_tag, ks2_tag]) }
+
       before(:each) { sign_in_user(:school_admin, school.id) }
 
       context "with a single activity type" do
@@ -69,22 +73,22 @@ RSpec.describe SchoolsController, type: :controller do
         end
       end
 
-      context "with no activity types set for the school" do 
+      context "with no activity types set for the school" do
         it "suggests any 5 if no suggestions" do
           get :suggest_activity, params: { id: school.to_param }
           expect(assigns(:suggestions)).to match_array(activity_types)
         end
       end
 
-      context "with initial suggestions" do 
-        let!(:activity_types_with_suggestions) { create_list(:activity_type, 5, :as_initial_suggestions)}
+      context "with initial suggestions" do
+        let!(:activity_types_with_suggestions) { create_list(:activity_type, 5, :as_initial_suggestions, key_stages: [ks1_tag, ks2_tag])}
         it "suggests the first five initial suggestions" do
           get :suggest_activity, params: { id: school.to_param }
           expect(assigns(:suggestions)).to match_array(activity_types_with_suggestions)
         end
       end
 
-      context "with suggestions based on last activity type" do 
+      context "with suggestions based on last activity type" do
         let!(:activity_type_with_further_suggestions) { create :activity_type, :with_further_suggestions, number_of_suggestions: 5 }
         let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
 
@@ -92,7 +96,7 @@ RSpec.describe SchoolsController, type: :controller do
           get :suggest_activity, params: { id: school.to_param }
           expect(assigns(:suggestions)).to match_array(last_activity.activity_type.activity_type_suggestions.map(&:suggested_type))
         end
-      end  
+      end
     end
   end
 
@@ -305,11 +309,11 @@ RSpec.describe SchoolsController, type: :controller do
 
       end
 
-      context "adds a meter" do 
+      context "adds a meter" do
         let(:new_attributes) {
-          { 
-            meters_attributes: 
-              [{ meter_no: 1234, meter_type: 'gas', name: 'gas name' }]  
+          {
+            meters_attributes:
+              [{ meter_no: 1234, meter_type: 'gas', name: 'gas name' }]
           }
         }
 

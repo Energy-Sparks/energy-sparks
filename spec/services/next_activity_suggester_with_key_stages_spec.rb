@@ -45,8 +45,6 @@ describe NextActivitySuggesterWithKeyStages do
       ks2_this_one = activity_type_with_further_suggestions.suggested_types.third
       ks2_this_one.update(key_stages: [ks2_tag], name: 'DROP ME')
 
-      activity_type_with_further_suggestions.suggested_types.order(:id).each { |st| pp st.key_stages }
-
       result = subject.suggest
       expected = activity_type_with_further_suggestions.suggested_types.reject {|ats| ats.id == ks2_this_one.id }
 

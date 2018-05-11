@@ -2,6 +2,7 @@ class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
+  before_action :set_key_stage_tags, only: [:new, :edit]
 
   # GET /schools
   # GET /schools.json
@@ -27,7 +28,7 @@ class SchoolsController < ApplicationController
 
   def suggest_activity
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggester.new(@school, @first).suggest
+    @suggestions = NextActivitySuggesterWithKeyStages.new(@school).suggest
   end
 
   # GET /schools/scoreboard
@@ -41,14 +42,12 @@ class SchoolsController < ApplicationController
 
   # GET /schools/new
   def new
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @school = School.new
     @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @school.meters.build
   end
 
@@ -101,6 +100,10 @@ class SchoolsController < ApplicationController
   end
 
 private
+
+  def set_key_stage_tags
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_school
