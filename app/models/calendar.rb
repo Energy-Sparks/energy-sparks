@@ -2,16 +2,20 @@
 #
 # Table name: calendars
 #
-#  created_at :datetime         not null
-#  deleted    :boolean          default(FALSE)
-#  id         :integer          not null, primary key
-#  name       :string           not null
-#  updated_at :datetime         not null
-#  default    :boolean
+#  based_on_id :integer
+#  created_at  :datetime         not null
+#  default     :boolean
+#  deleted     :boolean          default(FALSE)
+#  end_year    :integer
+#  id          :integer          not null, primary key
+#  name        :string           not null
+#  start_year  :integer
+#  updated_at  :datetime         not null
 #
 
 class Calendar < ApplicationRecord
   has_many :terms, inverse_of: :calendar, dependent: :destroy
+  has_many :calendar_events
 
   default_scope { where(deleted: false) }
 

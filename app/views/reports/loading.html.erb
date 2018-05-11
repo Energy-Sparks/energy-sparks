@@ -28,10 +28,10 @@
                 <%= meter.meter_type %>
               </td>
               <td>
-                <%= nice_dates(meter.first_read) %>
+                <%= nice_date_times(meter.first_read) %>
               </td>
               <td>
-                <%= nice_dates(meter.last_read) %>
+                <%= nice_date_times(meter.last_read) %>
               </td>
             </tr>
           <% end %>

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :activity_types
   resources :activity_categories
   resources :calendars
+  resources :old_calendars
   resources :schools do
     resources :activities
     get :scoreboard, on: :collection

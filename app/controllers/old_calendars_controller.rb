@@ -6,7 +6,7 @@ class CalendarsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @calendars = Calendar.all.order(created_at: :desc)
+    @calendars = Calendar.all
   end
 
   # GET /calendars/1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180508114334) do
+ActiveRecord::Schema.define(version: 20180511154035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,12 +71,32 @@ ActiveRecord::Schema.define(version: 20180508114334) do
     t.index ["sash_id"], name: "index_badges_sashes_on_sash_id"
   end
 
+  create_table "calendar_event_types", force: :cascade do |t|
+    t.text "description"
+    t.text "alias"
+    t.boolean "term_time", default: true
+    t.boolean "holiday", default: false
+    t.boolean "occupied", default: true
+  end
+
+  create_table "calendar_events", force: :cascade do |t|
+    t.bigint "calendar_id"
+    t.bigint "calendar_event_type_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
+    t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
+  end
+
   create_table "calendars", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "default"
+    t.integer "start_year"
+    t.integer "end_year"
+    t.integer "based_on_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -240,6 +260,8 @@ ActiveRecord::Schema.define(version: 20180508114334) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "calendar_events", "calendar_event_types"
+  add_foreign_key "calendar_events", "calendars"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
   add_foreign_key "schools", "calendars"
