@@ -26,7 +26,7 @@ private
   def get_initial_suggestions
     ActivityTypeSuggestion.initial.order(:id).each do |ats|
       # If suggested type has a key stage which is in the list, add it
-      @suggestions << ats.suggested_type if (ats.suggested_type.key_stage_list & @key_stages).any?
+      @suggestions << ats.suggested_type if this_suggested_list_is_appropriate_to_key_stages?(ats.suggested_type)
     end
   end
 
@@ -34,17 +34,22 @@ private
     last_activity_type = @school.activities.order(:created_at).last.activity_type
 
     last_activity_type.activity_type_suggestions.each do |ats|
-      if ! @school.activities.exists?(activity_type: ats.suggested_type) && (ats.suggested_type.key_stage_list & @key_stages).any?
-        @suggestions << ats.suggested_type# unless @school.activities.exists?(activity_type: ats.suggested_type)
+      if this_activity_type_has_not_been_done_before_or_is_repeatable?(ats.suggested_type) && this_suggested_list_is_appropriate_to_key_stages?(ats.suggested_type)
+        @suggestions << ats.suggested_type
       end
     end
   end
 
   def top_up_if_not_enough_suggestions
-    # pp "HEre  ActivityType.random_suggestions.count #{ActivityType.random_suggestions.count} "
-    # pp "random tagged: ActivityType.random_suggestions.tagged_with(@key_stages, any: :true).count #{ActivityType.random_suggestions.tagged_with(@key_stages, any: :true).count}"
-    # pp "suggestion count: #{@suggestions.count}"
     more = ActivityType.random_suggestions.tagged_with(@key_stages, any: :true).sample(NUMBER_OF_SUGGESTIONS - @suggestions.length)
     @suggestions += more
+  end
+
+  def this_activity_type_has_not_been_done_before_or_is_repeatable?(suggested_type)
+    suggested_type.repeatable || @school.activities.where(activity_type: suggested_type).empty?
+  end
+
+  def this_suggested_list_is_appropriate_to_key_stages?(suggested_type)
+    (suggested_type.key_stage_list & @key_stages).any?
   end
 end
