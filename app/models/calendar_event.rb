@@ -22,5 +22,4 @@
 class CalendarEvent < ApplicationRecord
   belongs_to :calendar
   belongs_to :calendar_event_type
-  
 end
