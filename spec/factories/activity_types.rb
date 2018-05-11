@@ -17,13 +17,15 @@ FactoryBot.define do
     trait :with_further_suggestions do
       transient do
         number_of_suggestions 1
+        key_stages { [ActsAsTaggableOn::Tag.where(name: 'KS1').first_or_create] }
       end
 
       after(:create) do |original_activity_type, evaluator|
         evaluator.number_of_suggestions.times do |index|
-          blah = create :activity_type
-          create :activity_type_suggestion, activity_type: original_activity_type, suggested_type: blah
-      end
+
+          follow_on_activity_type = create :activity_type, key_stages: evaluator.key_stages
+          create :activity_type_suggestion, activity_type: original_activity_type, suggested_type: follow_on_activity_type
+        end
       end
     end
   end
