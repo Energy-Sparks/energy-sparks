@@ -1,7 +1,10 @@
 class SchoolsController < ApplicationController
+  include KeyStageFilterable
+
   load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
+  before_action :set_key_stage_tags, only: [:new, :edit]
 
   # GET /schools
   # GET /schools.json
@@ -26,23 +29,10 @@ class SchoolsController < ApplicationController
   end
 
   def suggest_activity
+    @key_stage_filter_names = work_out_which_filters_to_set
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @first = @school.activities.empty?
-    @suggestions = []
-    if @first
-      ActivityTypeSuggestion.initial.order(:id).each do |ats|
-        @suggestions << ats.suggested_type
-      end
-    else
-      last_activity_type = @school.activities.order(:created_at).last.activity_type
-      last_activity_type.activity_type_suggestions.each do |ats|
-        @suggestions << ats.suggested_type unless @school.activities.exists?(activity_type: ats.suggested_type)
-      end
-    end
-    #ensure minimum of five suggestions
-    if @suggestions.length < 5
-      more = ActivityType.where(active: true, custom: false, data_driven: true, repeatable: true).sample(5 - @suggestions.length)
-      @suggestions = @suggestions + more
-    end
+    @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filter_names).suggest
   end
 
   # GET /schools/scoreboard
@@ -56,14 +46,12 @@ class SchoolsController < ApplicationController
 
   # GET /schools/new
   def new
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @school = School.new
     @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @school.meters.build
   end
 
@@ -116,6 +104,10 @@ class SchoolsController < ApplicationController
   end
 
 private
+
+  def set_key_stage_tags
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_school

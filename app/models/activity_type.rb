@@ -30,9 +30,12 @@ class ActivityType < ApplicationRecord
 
   acts_as_taggable_on :key_stages
 
+  where(active: true, custom: false, data_driven: true, repeatable: true)
+
   scope :active, -> { where(active: true) }
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
+  scope :random_suggestions, -> { active.repeatable.data_driven }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true

@@ -55,7 +55,13 @@ GEM
     autoprefixer-rails (8.4.1)
       execjs
     bcrypt (3.1.11)
+    better_errors (2.4.0)
+      coderay (>= 1.0.0)
+      erubi (>= 1.0.0)
+      rack (>= 0.9.0)
     bindex (0.5.0)
+    binding_of_caller (0.8.0)
+      debug_inspector (>= 0.0.1)
     bootstrap (4.1.1)
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
@@ -105,6 +111,7 @@ GEM
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
     database_cleaner (1.7.0)
+    debug_inspector (0.0.3)
     devise (4.4.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -311,6 +318,8 @@ GEM
       sys-uname (~> 1.0.2)
     spring (2.0.2)
       activesupport (>= 4.2)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
@@ -369,6 +378,8 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on
   annotate
+  better_errors
+  binding_of_caller
   bootstrap (~> 4.1.0)
   bullet
   byebug
@@ -414,6 +425,7 @@ DEPENDENCIES
   simplecov
   soda-ruby
   spring
+  spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   trix
   turbolinks (~> 5)
