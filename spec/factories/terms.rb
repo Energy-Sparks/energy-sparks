@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :term do
     calendar nil
     academic_year "2015-16"

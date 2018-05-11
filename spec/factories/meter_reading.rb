@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :meter_reading do
     meter
     read_at Date.yesterday

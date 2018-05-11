@@ -41,13 +41,13 @@ describe 'Loader::Schools' do
   end
   context 'URN already exists in schools table' do
     it 'does not add a new school record' do
-      FactoryGirl.create :school, urn: '109154'
+      FactoryBot.create :school, urn: '109154'
       expect {
         Loader::Schools.load!(sample_file)
       }.to change(School, :count).by(1)
     end
     it 'does not change the existing school record' do
-      existing = FactoryGirl.create :school, urn: '109154', name: 'existing school'
+      existing = FactoryBot.create :school, urn: '109154', name: 'existing school'
       Loader::Schools.load!(sample_file)
       expect(School.find_by(urn: existing.urn)).to eq existing
     end

@@ -28,7 +28,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_379253fa8b  (calendar_id => calendars.id)
+#  fk_rails_...  (calendar_id => calendars.id)
 #
 
 class School < ApplicationRecord
@@ -38,6 +38,8 @@ class School < ApplicationRecord
 
   include Merit::UsageCalculations
   has_merit
+
+  acts_as_taggable_on :key_stages
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy

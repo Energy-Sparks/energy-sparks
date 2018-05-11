@@ -1,5 +1,6 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-custom">
+  <%= render 'shared/test_site_warning' if request.host.include?('test') %>
   <div class="container">
     <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
     <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +14,9 @@
         <li class="nav-item">
           <%= link_to "Scoreboard", scoreboard_schools_path, class: 'nav-link' %>
         </li>
-
+        <li class="nav-item">
+          <a href="http://blog.energysparks.uk" class="nav-link">Blog</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
           <div class="dropdown-menu" aria-labelledby="aboutDropDown">
@@ -41,9 +44,9 @@
         <% end %>
         <li class="nav-item">
           <% if user_signed_in? %>
-              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
           <% else %>
-              <%= link_to "Sign In", new_user_session_path, class: 'nav-link'%>
+            <%= link_to "Sign In", new_user_session_path, class: 'nav-link'%>
           <% end %>
         </li>
       </ul>
