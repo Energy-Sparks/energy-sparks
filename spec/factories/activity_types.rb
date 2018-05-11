@@ -3,6 +3,9 @@ FactoryBot.define do
     activity_category
     sequence(:name) {|n| "test activity_type name #{n}"}
     score 25
+    active true
+    data_driven true
+    repeatable true
     description 'test_activity_type description'
 
     trait :as_initial_suggestions do
