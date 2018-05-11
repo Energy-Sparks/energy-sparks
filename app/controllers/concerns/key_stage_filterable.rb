@@ -28,6 +28,4 @@ private
       current_user.school.key_stage_list
     end
   end
-
-
 end
