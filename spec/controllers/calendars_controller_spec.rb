@@ -18,7 +18,7 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe CalendarsController, type: :controller do
+describe CalendarsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Calendar. As you add validations to Calendar, be sure to
   # adjust the attributes here as well.
@@ -35,7 +35,7 @@ RSpec.describe CalendarsController, type: :controller do
   # CalendarsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  context "As an admin user" do
+  pending "As an admin user" do
     before(:each) do
       sign_in_user(:admin)
     end
