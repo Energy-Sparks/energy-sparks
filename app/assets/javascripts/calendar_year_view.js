@@ -86,14 +86,15 @@ $(function() {
         mouseOnDay: function(e) {
             if(e.events.length > 0) {
                 var content = '';
-                
                 for(var i in e.events) {
+                    var startDate = e.events[i].startDate;
+                    var endDate = e.events[i].endDate;
                     content += '<div class="event-tooltip-content">'
                                     + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                                    + '<div class="event-location">' + e.events[i].startDate + '</div>'
+                                    + '<div class="event-location">' + startDate.toDateString() + ' - ' + endDate.toDateString() + '</div>'
                                 + '</div>';
                 }
-            
+       
                 $(e.element).popover({
                     trigger: 'manual',
                     container: 'body',
