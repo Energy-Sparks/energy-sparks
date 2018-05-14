@@ -1,4 +1,4 @@
-class CalendarsController < ApplicationController
+class OldCalendarsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!
   before_action :set_calendar, only: [:show, :edit, :update, :destroy]
