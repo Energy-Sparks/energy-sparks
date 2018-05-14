@@ -30,6 +30,8 @@
 # Ignore code coverage output
 coverage
 
+profiles
+
 .env
 *.txt
 *.sql
