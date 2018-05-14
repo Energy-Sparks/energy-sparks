@@ -20,7 +20,9 @@ private
   end
 
   def default_filters
-    if current_user.nil? || current_user.school.nil?
+    if @school
+      @school.key_stage_list
+    elsif current_user.nil? || current_user.school.nil?
       # TODO remove this hardcoding
       %w(KS1 KS2 KS3)
     else
