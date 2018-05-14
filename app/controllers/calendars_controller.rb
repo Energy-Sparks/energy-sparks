@@ -12,6 +12,8 @@ class CalendarsController < ApplicationController
   # GET /calendars/1
   # GET /calendars/1.json
   def show
+    # TODO Hard coding
+    @calendar = Calendar.last
   end
 
   # GET /calendars/new

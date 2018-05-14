@@ -34,4 +34,5 @@
 //= require users
 
 //= require bootstrap-year-calendar
+//= require calendar_year_view
 
