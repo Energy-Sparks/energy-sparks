@@ -1,5 +1,6 @@
-$(document).on("turbolinks:load", function() {
+"use strict"
 
+$(document).ready(function() {
     //set to true after we've initialised the page
     var initialised = false;
 

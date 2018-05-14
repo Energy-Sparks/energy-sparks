@@ -1,4 +1,6 @@
-$(document).on("turbolinks:load", function() {
+"use strict"
+
+$(document).ready(function() {
   if ($(".activity-form").length) {
     var activity_types;
     activity_types = $('#activity_activity_type_id').html();

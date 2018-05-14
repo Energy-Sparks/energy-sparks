@@ -1,4 +1,6 @@
-$(document).on('turbolinks:load', function() {
+"use strict"
+
+$(document).ready(function() {
   $(".term_datepicker").datepicker({
     dateFormat: 'dd/mm/yy',
     altFormat: 'yy-mm-dd',
