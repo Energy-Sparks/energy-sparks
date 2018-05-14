@@ -10,8 +10,6 @@
 //= require popper
 //= require bootstrap
 
-//= require turbolinks
-
 //= require highcharts
 //= require highcharts/modules/exporting
 //= require highcharts/modules/offline-exporting
