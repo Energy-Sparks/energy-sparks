@@ -1,5 +1,6 @@
 class Schools::CalendarsController < CalendarsController
-    before_action :set_school
+  before_action :set_school
+
   def show
     @template = @school.calendar.template?
   end
@@ -8,6 +9,7 @@ class Schools::CalendarsController < CalendarsController
   end
 
 private
+
   def set_school
     @school = School.find(params[:school_id])
   end
