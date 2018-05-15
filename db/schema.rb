@@ -61,13 +61,6 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
-  create_table "areas", force: :cascade do |t|
-    t.text "title"
-    t.text "description"
-    t.integer "parent_area_id"
-    t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
-  end
-
   create_table "badges_sashes", id: :serial, force: :cascade do |t|
     t.integer "badge_id"
     t.integer "sash_id"
@@ -79,11 +72,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "area_id"
+    t.bigint "group_id"
     t.date "holiday_date"
     t.text "title"
     t.text "notes"
-    t.index ["area_id"], name: "index_bank_holidays_on_area_id"
+    t.index ["group_id"], name: "index_bank_holidays_on_group_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -115,7 +108,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "start_year"
     t.integer "end_year"
     t.integer "based_on_id"
-    t.integer "area_id"
+    t.integer "group_id"
     t.boolean "template", default: false
   end
 
@@ -131,6 +124,13 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "groups", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.integer "parent_group_id"
+    t.index ["parent_group_id"], name: "index_groups_on_parent_group_id"
+  end
+
   create_table "merit_actions", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "action_method"
@@ -140,8 +140,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
@@ -157,13 +157,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
     t.integer "sash_id"
     t.string "category", default: "default"
-    t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
   end
 
   create_table "meter_readings", id: :serial, force: :cascade do |t|
@@ -191,8 +189,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "schools", id: :serial, force: :cascade do |t|
@@ -203,15 +201,16 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
     t.string "electricity_dataset"
     t.integer "competition_role"
+    t.integer "group_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true

@@ -2,12 +2,12 @@
 #
 # Table name: calendars
 #
-#  area_id     :integer
 #  based_on_id :integer
 #  created_at  :datetime         not null
 #  default     :boolean
 #  deleted     :boolean          default(FALSE)
 #  end_year    :integer
+#  group_id    :integer
 #  id          :integer          not null, primary key
 #  start_year  :integer
 #  template    :boolean          default(FALSE)
@@ -16,7 +16,7 @@
 #
 
 class Calendar < ApplicationRecord
-  belongs_to :area
+  belongs_to :group
   has_many :calendar_events, dependent: :destroy
   has_many :terms, inverse_of: :calendar, dependent: :destroy
 

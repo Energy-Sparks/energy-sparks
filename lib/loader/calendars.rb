@@ -5,9 +5,9 @@ module Loader
     # load default calendar from csv
     def self.load!(csv_file = 'etc/banes-default-calendar.csv')
       raise 'File not found' unless File.exist?(csv_file)
-      england = Area.where(title: 'England and Wales').first_or_create
-      area = Area.where(title: 'Bristol and North East Somerset (BANES)', parent_area: england).first_or_create
-      calendar = Calendar.where(default: true, area: area, title: area.title, template: true).first_or_create
+      england = Group.where(title: 'England and Wales').first_or_create
+      group = Group.where(title: 'Bristol and North East Somerset (BANES)', parent_group: england).first_or_create
+      calendar = Calendar.where(default: true, group: group, title: group.title, template: true).first_or_create
 
       CalendarEventType.where(title: 'Term 1', description: 'Autumn Half Term 1', occupied: true, term_time: true).first_or_create
       CalendarEventType.where(title: 'Term 2', description: 'Autumn Half Term 2', occupied: true, term_time: true).first_or_create

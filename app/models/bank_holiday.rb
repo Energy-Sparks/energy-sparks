@@ -2,7 +2,7 @@
 #
 # Table name: bank_holidays
 #
-#  area_id      :bigint(8)
+#  group_id     :bigint(8)
 #  holiday_date :date
 #  id           :bigint(8)        not null, primary key
 #  notes        :text
@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_bank_holidays_on_area_id  (area_id)
+#  index_bank_holidays_on_group_id  (group_id)
 #
+
 class BankHoliday < ApplicationRecord
-  belongs_to :area
+  belongs_to :group
 end
