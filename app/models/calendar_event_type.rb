@@ -8,6 +8,7 @@
 #  id          :bigint(8)        not null, primary key
 #  occupied    :boolean          default(TRUE)
 #  term_time   :boolean          default(TRUE)
+#  title       :text
 #
 
 class CalendarEventType < ApplicationRecord

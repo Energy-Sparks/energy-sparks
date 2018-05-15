@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
+    t.text "title"
     t.text "description"
     t.text "alias"
     t.boolean "term_time", default: true
@@ -115,6 +116,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "end_year"
     t.integer "based_on_id"
     t.integer "area_id"
+    t.boolean "template", default: false
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|

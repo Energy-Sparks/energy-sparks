@@ -10,16 +10,23 @@
 #  end_year    :integer
 #  id          :integer          not null, primary key
 #  start_year  :integer
+#  template    :boolean          default(FALSE)
 #  title       :string           not null
 #  updated_at  :datetime         not null
 #
 
 class Calendar < ApplicationRecord
   belongs_to :area
-  has_many :calendar_events
+  has_many :calendar_events, dependent: :destroy
   has_many :terms, inverse_of: :calendar, dependent: :destroy
 
+  belongs_to  :based_on, class_name: 'Calendar'
+  has_many    :calendars, class_name: 'Calendar', foreign_key: :based_on_id
+
   default_scope { where(deleted: false) }
+
+  scope :template, -> { where(template: true) }
+  scope :custom, -> { where(template: false) }
 
   validates_presence_of :title
 

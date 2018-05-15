@@ -1,0 +1,21 @@
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% calendars.each do |calendar| %>
+      <tr>
+        <td><%= calendar.title %></td>
+        <td class="pull-md-right">
+          <%= link_to 'Show', calendar, class: 'btn btn-info' %>
+          <%= link_to 'Edit', edit_calendar_path(calendar), class: 'btn btn-primary' %>
+          <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

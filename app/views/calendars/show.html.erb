@@ -1,24 +1,21 @@
-<p>
-  <strong>Name:</strong>
-  <%= @calendar.name %>
-</p>
+<h1>Calendar: <%= @calendar.title %></h1>
 
-<h4>Events</h4>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Event</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @calendar.calendar_events.each do |calendar_event| %>
-      <tr>
-        <td><%= calendar_event.calendar_event_type.description %></td>
-        <td><%= nice_dates(calendar_event.start_date) %></td>
-        <td><%= nice_dates(calendar_event.end_date) %></td>
-      </tr>
+<% if @calendar.template? %>
+  <h2>Calendar Template with <%= @calendar.calendars.count %> dependent calendars </h2>
+  <p>This calendar is a template to the following calendars:</p>
+  <ul>
+    <%= @calendar.calendars.each do |calendar| %>
+      <li><%= link_to calendar.title, calendar_path(calendar) %></li>
     <% end %>
-  </tbody>
-</table>
+  </ul>
+
+<%= link_to 'All Calendars', calendars_path %>
+
+<% else %>
+  <h2>Based on: <%= @calendar.based_on.title %></h2>
+
+<% end %>
+
+<div id="calendar" class="calendar"></div>
+
+

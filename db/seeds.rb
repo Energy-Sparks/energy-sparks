@@ -6,22 +6,22 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Calendar.create!( title: "Default Calendar", default: true )
+# Calendar.create!( title: "Default Calendar", default: true )
 
-calendar = Calendar.create(title: 'BANES', default: true, start_year: 2017, end_year: 2018)
-term1 = CalendarEventType.create(description: 'Autumn Half Term 1')
-term2 = CalendarEventType.create(description: 'Autumn Half Term 2')
-term3 = CalendarEventType.create(description: 'Spring Half Term 1')
-term4 = CalendarEventType.create(description: 'Spring Half Term 2')
-term5 = CalendarEventType.create(description: 'Summer Half Term 1')
-term6 = CalendarEventType.create(description: 'Autumn Half Term 2')
+# calendar = Calendar.create(title: 'BANES', default: true, start_year: 2017, end_year: 2018)
+term1 = CalendarEventType.create(title: 'Term 1', description: 'Autumn Half Term 1')
+term2 = CalendarEventType.create(title: 'Term 2', description: 'Autumn Half Term 2')
+term3 = CalendarEventType.create(title: 'Term 3', description: 'Spring Half Term 1')
+term4 = CalendarEventType.create(title: 'Term 4', description: 'Spring Half Term 2')
+term5 = CalendarEventType.create(title: 'Term 5', description: 'Summer Half Term 1')
+term6 = CalendarEventType.create(title: 'Term 6', description: 'Autumn Half Term 2')
 
-CalendarEvent.create(calendar: calendar, calendar_event_type: term1, start_date: '2017-09-04', end_date: '2017-10-20')
-CalendarEvent.create(calendar: calendar, calendar_event_type: term2, start_date: '2017-10-30', end_date: '2017-12-15')
-CalendarEvent.create(calendar: calendar, calendar_event_type: term3, start_date: '2018-01-02', end_date: '2018-02-09')
-CalendarEvent.create(calendar: calendar, calendar_event_type: term4, start_date: '2018-02-19', end_date: '2018-03-23')
-CalendarEvent.create(calendar: calendar, calendar_event_type: term5, start_date: '2018-04-09', end_date: '2018-05-25')
-CalendarEvent.create(calendar: calendar, calendar_event_type: term6, start_date: '2018-06-04', end_date: '2018-07-24')
+# CalendarEvent.create(calendar: calendar, calendar_event_type: term1, start_date: '2017-09-04', end_date: '2017-10-20')
+# CalendarEvent.create(calendar: calendar, calendar_event_type: term2, start_date: '2017-10-30', end_date: '2017-12-15')
+# CalendarEvent.create(calendar: calendar, calendar_event_type: term3, start_date: '2018-01-02', end_date: '2018-02-09')
+# CalendarEvent.create(calendar: calendar, calendar_event_type: term4, start_date: '2018-02-19', end_date: '2018-03-23')
+# CalendarEvent.create(calendar: calendar, calendar_event_type: term5, start_date: '2018-04-09', end_date: '2018-05-25')
+# CalendarEvent.create(calendar: calendar, calendar_event_type: term6, start_date: '2018-06-04', end_date: '2018-07-24')
 
 
 # "2015-16 Term 1",2015-09-02,2015-10-21

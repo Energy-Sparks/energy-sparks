@@ -6,14 +6,14 @@ class CalendarsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @calendars = Calendar.all.order(created_at: :desc)
+    @template_calendars = Calendar.template
+    @customised_calendars = Calendar.custom
+ #   @calendars = Calendar.all.order(created_at: :desc)
   end
 
   # GET /calendars/1
   # GET /calendars/1.json
   def show
-    # TODO Hard coding
-    @calendar = Calendar.last
   end
 
   # GET /calendars/new
