@@ -1,13 +1,26 @@
 <h1>Calendar: <%= @calendar.title %></h1>
 
 <% if @calendar.template? %>
-  <h2>Calendar Template with <%= @calendar.calendars.count %> dependent calendars </h2>
+  <h4>Calendar Template with <%= @calendar.calendars.count %> dependent calendars </h4>
+  <h4> and <%= @calendar.schools.count %> schools </h4>
+
+  <% if @calendar.calendars.any? %>
   <p>This calendar is a template to the following calendars:</p>
   <ul>
     <%= @calendar.calendars.each do |calendar| %>
       <li><%= link_to calendar.title, calendar_path(calendar) %></li>
     <% end %>
   </ul>
+  <% end %>
+
+  <% if @calendar.schools.any? %>
+  <p>This calendar is allocated to the following schools:</p>
+  <ul>
+    <% @calendar.schools.each do |school| %>
+      <li><%= link_to school.name, school_path(school) %></li>
+    <% end %>
+  </ul>
+  <% end %>
 
 <%= link_to 'All Calendars', calendars_path %>
 
@@ -17,5 +30,3 @@
 <% end %>
 
 <div id="calendar" class="calendar"></div>
-
-

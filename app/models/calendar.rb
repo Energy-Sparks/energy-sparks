@@ -23,6 +23,8 @@ class Calendar < ApplicationRecord
   belongs_to  :based_on, class_name: 'Calendar'
   has_many    :calendars, class_name: 'Calendar', foreign_key: :based_on_id
 
+  has_many    :schools
+
   default_scope { where(deleted: false) }
 
   scope :template, -> { where(template: true) }
