@@ -24,6 +24,9 @@ class CalendarsController < ApplicationController
 
   # GET /calendars/1/edit
   def edit
+    if @calendar.template?
+      redirect_to calendar_path(@calendar)
+    end
     build_terms
   end
 
