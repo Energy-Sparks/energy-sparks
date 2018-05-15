@@ -54,4 +54,3 @@ private
     attributes[:name].blank? && attributes[:start_date].blank? && attributes[:end_date].blank?
   end
 end
-
