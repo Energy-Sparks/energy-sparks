@@ -22,6 +22,7 @@ namespace :loader do
     CalendarEventType.where(title: 'Term 5', description: 'Summer Half Term 1', occupied: true, term_time: true).first_or_create
     CalendarEventType.where(title: 'Term 6', description: 'Autumn Half Term 2', occupied: true, term_time: true).first_or_create
     # Load Bank Holidays
+    Loader::BankHolidays.load!("etc/bank_holidays/england-and-wales.json")
 
     # Load BANES calendar
     Loader::Calendars.load!("etc/banes-default-calendar.csv")
