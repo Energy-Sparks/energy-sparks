@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "calendars", id: :serial, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "title", null: false
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "start_year"
     t.integer "end_year"
     t.integer "based_on_id"
+    t.integer "area_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|

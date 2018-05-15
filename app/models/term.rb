@@ -21,6 +21,6 @@
 #
 
 class Term < ApplicationRecord
-  belongs_to :calendar, inverse_of: :terms
-  validates_presence_of :name, :start_date, :end_date
+  # belongs_to :calendar, inverse_of: :terms
+  # validates_presence_of :name, :start_date, :end_date
 end

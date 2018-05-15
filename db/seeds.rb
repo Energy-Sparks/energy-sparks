@@ -6,9 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Calendar.create!( name: "Default Calendar", default: true )
+Calendar.create!( title: "Default Calendar", default: true )
 
-calendar = Calendar.create(name: 'BANES', default: true, start_year: 2017, end_year: 2018)
+calendar = Calendar.create(title: 'BANES', default: true, start_year: 2017, end_year: 2018)
 term1 = CalendarEventType.create(description: 'Autumn Half Term 1')
 term2 = CalendarEventType.create(description: 'Autumn Half Term 2')
 term3 = CalendarEventType.create(description: 'Spring Half Term 1')
