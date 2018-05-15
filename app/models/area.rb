@@ -12,4 +12,7 @@
 #  index_areas_on_parent_id  (parent_id)
 #
 class Area < ApplicationRecord
+
+
+
 end
