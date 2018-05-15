@@ -4,12 +4,6 @@ namespace :development do
     Loader::SampleDataLoader.load!(args[:csv_file])
   end
 
-  desc 'Load banes-default-calendar'
-  task load_banes_default_calendar: [:environment] do
-    Calendar.where(name: "Default Calendar", default: true).first_or_create
-    Loader::Calendars.load!("etc/banes-default-calendar.csv")
-  end
-
   task active_freshford_with_meters: [:environment] do
     school = School.find_by(urn: 109195)
     school.update(enrolled: true)

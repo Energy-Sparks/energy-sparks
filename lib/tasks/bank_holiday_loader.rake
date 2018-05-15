@@ -11,5 +11,4 @@ namespace :loader do
     end
     puts Time.zone.now
   end
-
 end

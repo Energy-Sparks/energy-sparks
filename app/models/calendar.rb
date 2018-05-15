@@ -46,7 +46,7 @@ class Calendar < ApplicationRecord
   #   new_calendar
   # end
 
-private
+#private
 
   # def term_attributes_blank?(attributes)
   #   attributes[:title].blank? && attributes[:start_date].blank? && attributes[:end_date].blank?

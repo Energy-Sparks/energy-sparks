@@ -12,7 +12,6 @@
 #
 #  index_bank_holidays_on_area_id  (area_id)
 #
-
 class BankHoliday < ApplicationRecord
-  belongs_to  :area
+  belongs_to :area
 end
