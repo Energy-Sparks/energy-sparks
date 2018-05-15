@@ -18,7 +18,6 @@
 class Calendar < ApplicationRecord
   belongs_to :group
   has_many :calendar_events, dependent: :destroy
-  has_many :terms, inverse_of: :calendar, dependent: :destroy
 
   belongs_to  :based_on, class_name: 'Calendar'
   has_many    :calendars, class_name: 'Calendar', foreign_key: :based_on_id
@@ -32,11 +31,9 @@ class Calendar < ApplicationRecord
 
   validates_presence_of :title
 
-  accepts_nested_attributes_for(
-    :terms,
-    reject_if: :term_attributes_blank?,
-    allow_destroy: true
-  )
+  def terms
+    calendar_events.eager_load(:calendar_event_type).where('calendar_event_types.term_time = true')
+  end
 
   def self.default_calendar
     Calendar.find_by(default: true)
@@ -55,11 +52,5 @@ class Calendar < ApplicationRecord
       )
     end
     new_calendar
-  end
-
-private
-
-  def term_attributes_blank?(attributes)
-    attributes[:name].blank? && attributes[:start_date].blank? && attributes[:end_date].blank?
   end
 end

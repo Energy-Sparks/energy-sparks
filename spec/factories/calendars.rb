@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :calendar do
-    name "Test Calendar"
+    title "Test Calendar"
     default false
   end
 end
