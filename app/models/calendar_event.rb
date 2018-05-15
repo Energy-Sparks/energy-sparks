@@ -4,9 +4,11 @@
 #
 #  calendar_event_type_id :bigint(8)
 #  calendar_id            :bigint(8)
+#  description            :text
 #  end_date               :date
 #  id                     :bigint(8)        not null, primary key
 #  start_date             :date
+#  title                  :text
 #
 # Indexes
 #

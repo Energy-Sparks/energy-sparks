@@ -3,7 +3,7 @@ class CreateAreas < ActiveRecord::Migration[5.2]
     create_table :areas do |t|
       t.text      :title
       t.text      :description
-      t.integer   :parent_id, index: true
+      t.integer   :parent_area_id, index: true
     end
   end
 end

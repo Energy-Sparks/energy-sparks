@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   create_table "areas", force: :cascade do |t|
     t.text "title"
     t.text "description"
-    t.integer "parent_id"
-    t.index ["parent_id"], name: "index_areas_on_parent_id"
+    t.integer "parent_area_id"
+    t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
   create_table "badges_sashes", id: :serial, force: :cascade do |t|
@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   create_table "calendar_events", force: :cascade do |t|
     t.bigint "calendar_id"
     t.bigint "calendar_event_type_id"
+    t.text "title"
+    t.text "description"
     t.date "start_date"
     t.date "end_date"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
