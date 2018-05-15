@@ -1,0 +1,5 @@
+---
+pre_commits:
+  GitHooks::PreCommit::TrailingWhitespace:
+  GitHooks::PreCommit::Rubocop:
+    use_stash: false
