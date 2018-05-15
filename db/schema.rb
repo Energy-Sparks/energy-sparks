@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_11_154035) do
+ActiveRecord::Schema.define(version: 2018_05_15_085639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,13 @@ ActiveRecord::Schema.define(version: 2018_05_11_154035) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
+  create_table "areas", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.integer "parent_id"
+    t.index ["parent_id"], name: "index_areas_on_parent_id"
+  end
+
   create_table "badges_sashes", id: :serial, force: :cascade do |t|
     t.integer "badge_id"
     t.integer "sash_id"
@@ -69,6 +76,14 @@ ActiveRecord::Schema.define(version: 2018_05_11_154035) do
     t.index ["badge_id", "sash_id"], name: "index_badges_sashes_on_badge_id_and_sash_id"
     t.index ["badge_id"], name: "index_badges_sashes_on_badge_id"
     t.index ["sash_id"], name: "index_badges_sashes_on_sash_id"
+  end
+
+  create_table "bank_holidays", force: :cascade do |t|
+    t.bigint "area_id"
+    t.date "holiday_date"
+    t.text "title"
+    t.text "notes"
+    t.index ["area_id"], name: "index_bank_holidays_on_area_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
