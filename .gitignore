@@ -30,5 +30,17 @@
 # Ignore code coverage output
 coverage
 
-.env
+profiles
 
+.env
+*.txt
+*.sql
+.DS_Store
+
+# Don't commit assets!
+public/assets
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

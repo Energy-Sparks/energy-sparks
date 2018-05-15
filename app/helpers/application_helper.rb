@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def nice_dates(datetime)
+    return "" if datetime.nil?
+    "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
+  end
+
   def active(bool = true)
     bool ? '' : 'bg-warning'
   end

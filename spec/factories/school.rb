@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :school do
     sequence(:urn)
     name 'test school'

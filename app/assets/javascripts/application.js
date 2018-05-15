@@ -1,18 +1,34 @@
+
+// Usual Jquery stuff
+
 //= require jquery
-//= require popper
 //= require jquery_ujs
-//= require jquery-ui
-//= require tether.min.js
+//= require jquery-ui/widgets/datepicker
+
+// Popper is a requirement for bootstrap and is included either in the bootstrap gem
+// or as a dependency
+//= require popper
 //= require bootstrap
-//= require turbolinks
+
 //= require highcharts
 //= require highcharts/modules/exporting
 //= require highcharts/modules/offline-exporting
 //= require chartkick
+
 //= require trix
+
 //= require jquery.calendars.min.js
 //= require jquery.calendars.plus.min.js
 //= require jquery.plugin.min.js
 //= require jquery.calendars.picker.min.js
+
+// This is used (handlebars) but slight overkill I think
 //= require handlebars
-//= require_tree .
+
+//= require activities
+//= require activity_types
+//= require calendars
+//= require data_explorer
+//= require open_tab
+//= require schools
+//= require users

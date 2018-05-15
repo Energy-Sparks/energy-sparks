@@ -28,7 +28,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_e7d0538b2c  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id)
 #
 
 class User < ApplicationRecord

@@ -1,4 +1,8 @@
 module SchoolsHelper
+  def meter_and_data?(school, meter_type)
+    school.meters?(meter_type) && school.last_reading_date(meter_type).present?
+  end
+
   def daily_usage_chart(supply, first_date, to_date, meter = nil)
     column_chart(
       compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter),

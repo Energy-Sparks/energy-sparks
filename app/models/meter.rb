@@ -5,7 +5,7 @@
 #  active     :boolean          default(TRUE)
 #  created_at :datetime         not null
 #  id         :integer          not null, primary key
-#  meter_no   :integer
+#  meter_no   :bigint(8)
 #  meter_type :integer
 #  name       :string
 #  school_id  :integer
@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_d7c2c5413f  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id)
 #
 
 class Meter < ApplicationRecord
@@ -28,6 +28,7 @@ class Meter < ApplicationRecord
 
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
+  validates_uniqueness_of :meter_no
 
   def first_reading
     meter_readings.order('read_at ASC').limit(1).first
