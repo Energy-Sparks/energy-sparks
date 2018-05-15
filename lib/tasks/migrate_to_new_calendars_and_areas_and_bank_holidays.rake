@@ -1,7 +1,6 @@
 namespace :loader do
   desc 'Load energy usage data for all schools'
   task calendar_migration: [:environment] do
-
     # Create areas
     puts "Create areas"
     england = Group.where(title: 'England and Wales').first_or_create
@@ -14,7 +13,6 @@ namespace :loader do
     CalendarEventType.delete_all
     Calendar.delete_all
 
-
     # Create calendar event types
     puts "Create calendar event types"
     CalendarEventType.where(title: 'Term 1', description: 'Autumn Half Term 1', occupied: true, term_time: true).first_or_create
@@ -25,12 +23,10 @@ namespace :loader do
     CalendarEventType.where(title: 'Term 6', description: 'Autumn Half Term 2', occupied: true, term_time: true).first_or_create
     # Load Bank Holidays
 
-
     # Load BANES calendar
     Loader::Calendars.load!("etc/banes-default-calendar.csv")
 
     # Update schools to have BANES calendar as default
     School.all.update(calendar: Calendar.first, group: banes)
-
   end
 end
