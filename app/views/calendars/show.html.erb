@@ -3,6 +3,8 @@
 
 <div id="calendar" class="calendar"></div>
 
+<%= render 'event_modal' %>
+
 
 <% if @calendar.template? %>
   <h4>Calendar Template with <%= @calendar.calendars.count %> dependent calendars </h4>

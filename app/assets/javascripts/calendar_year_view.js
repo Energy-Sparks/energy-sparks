@@ -6,8 +6,8 @@ $(document).ready(function() {
       $('#event-modal input[name="event-index"]').val(event ? event.id : '');
       $('#event-modal input[name="event-name"]').val(event ? event.name : '');
       $('#event-modal input[name="event-location"]').val(event ? event.location : '');
-      $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
-      $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
+      // $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
+      // $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
       $('#event-modal').modal();
     }
 

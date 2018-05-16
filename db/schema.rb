@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.text "title"
     t.text "description"
     t.text "alias"
+    t.text "colour"
     t.boolean "term_time", default: true
     t.boolean "holiday", default: false
     t.boolean "occupied", default: true
