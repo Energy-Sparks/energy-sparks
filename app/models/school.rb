@@ -153,7 +153,7 @@ class School < ApplicationRecord
 private
 
   def create_calendar
-    calendar = Calendar.where(template: true).first
+    calendar = Calendar.find_by(template: true)
     self.update_attribute(:calendar_id, calendar.id) if calendar
     # calendar = Calendar.create_calendar_from_default("#{name} Calendar")
     # self.update_attribute(:calendar_id, calendar.id)
