@@ -28,7 +28,7 @@
 
   <div class="form-group">
     <%= f.label :calendar_id %>
-    <%= f.select :calendar_id, options_from_collection_for_select(Calendar.template, 'id', 'title', @school.calendar.id),{}, { class: 'form-control' }%>
+    <%= f.select :calendar_id, options_from_collection_for_select(Calendar.template, 'id', 'title', (@school.calendar.id if @school.calendar)),{}, { class: 'form-control' }%>
   </div>
 
   <div class="form-group">
