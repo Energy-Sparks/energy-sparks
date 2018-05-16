@@ -13,7 +13,7 @@ class CalendarFactory
     @existing_calendar.calendar_events.each do |calendar_event|
       new_calendar_event = calendar_event.dup
       new_calendar.calendar_events << new_calendar_event
-    end 
+    end
     new_calendar.save
     new_calendar
   end
