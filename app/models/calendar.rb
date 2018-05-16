@@ -31,6 +31,8 @@ class Calendar < ApplicationRecord
 
   validates_presence_of :title
 
+  accepts_nested_attributes_for :calendar_events, reject_if: proc { |attributes| attributes[:title].blank? }, allow_destroy: true
+
   def terms
     calendar_events.eager_load(:calendar_event_type).where('calendar_event_types.term_time = true')
   end

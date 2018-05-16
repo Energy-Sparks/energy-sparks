@@ -5,7 +5,7 @@ class CalendarFactory
     @template = template
   end
 
-  def create
+  def build
     new_calendar = @existing_calendar.dup
     new_calendar.group = @group
     new_calendar.template = @template
@@ -14,7 +14,6 @@ class CalendarFactory
       new_calendar_event = calendar_event.dup
       new_calendar.calendar_events << new_calendar_event
     end
-    new_calendar.save
     new_calendar
   end
 end

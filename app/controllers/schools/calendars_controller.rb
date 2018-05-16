@@ -6,6 +6,7 @@ class Schools::CalendarsController < CalendarsController
   end
 
   def new
+    @calendar = CalendarFactory.new(@school.calendar).build
   end
 
 private

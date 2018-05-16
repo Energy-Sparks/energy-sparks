@@ -2,3 +2,5 @@
 <p><%= link_to 'All Calendars', calendars_path %></p>
 <p>This school, <%= @school.name %> is currently using a default calendar</p>
 <p>You can customise the calendar here</p>
+
+<%= render 'form', calendar: @calendar %>
