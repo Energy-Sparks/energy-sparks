@@ -9,6 +9,7 @@
 #  electricity_dataset :string
 #  enrolled            :boolean          default(FALSE)
 #  gas_dataset         :string
+#  group_id            :integer
 #  id                  :integer          not null, primary key
 #  level               :integer          default(0)
 #  name                :string
@@ -46,6 +47,7 @@ class School < ApplicationRecord
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
   belongs_to :calendar
+  belongs_to :group
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]
@@ -151,8 +153,10 @@ class School < ApplicationRecord
 private
 
   def create_calendar
-    calendar = Calendar.create_calendar_from_default("#{name} Calendar")
-    self.update_attribute(:calendar_id, calendar.id)
+    calendar = Calendar.find_by(template: true)
+    self.update_attribute(:calendar_id, calendar.id) if calendar
+    # calendar = Calendar.create_calendar_from_default("#{name} Calendar")
+    # self.update_attribute(:calendar_id, calendar.id)
   end
 
   # Create Merit::Sash relation

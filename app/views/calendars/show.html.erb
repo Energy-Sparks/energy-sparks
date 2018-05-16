@@ -1,31 +1,35 @@
-<p>
-  <strong>Name:</strong>
-  <%= @calendar.name %>
-</p>
+<h1>Calendar: <%= @calendar.title %></h1>
 
-<h4>Terms</h4>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Academic Year</th>
-      <th>Name</th>
-      <th>Start</th>
-      <th>End</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @calendar.terms.each do |term| %>
-      <tr>
-        <td><%= term.academic_year %></td>
-        <td><%= term.name %></td>
-        <td><%= l term.start_date %></td>
-        <td><%= l term.end_date %></td>
-      </tr>
+<% if @calendar.template? %>
+  <p>This calendar is a template calendar, it currently has <%= @calendar.schools.count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>
+<% end %>
+<p><%= link_to 'All Calendars', calendars_path %></p>
+<div id="calendar" class="calendar"></div>
+
+<%= render 'event_modal' %>
+
+
+<% if @calendar.template? %>
+  <% if @calendar.calendars.any? %>
+  <p>This calendar is a template to the following calendars:</p>
+  <ul>
+    <%= @calendar.calendars.each do |calendar| %>
+      <li><%= link_to calendar.title, calendar_path(calendar) %></li>
     <% end %>
-  </tbody>
-</table>
+  </ul>
+  <% end %>
 
-<div class="other-actions">
-  <%= link_to 'Edit', edit_calendar_path(@calendar), class: 'btn btn-primary' %>
-  <%= link_to 'Back', calendars_or_school, class: 'btn btn-secondary'  %>
-</div>
+  <% if @calendar.schools.any? %>
+  <h3>This calendar is allocated to the following schools:</h3>
+  <ul>
+    <% @calendar.schools.each do |school| %>
+      <li><%= link_to school.name, school_path(school) %></li>
+    <% end %>
+  </ul>
+  <% end %>
+
+
+<% else %>
+  <h2>Based on: <%= @calendar.based_on.title %></h2>
+
+<% end %>

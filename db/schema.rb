@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180508114334) do
+ActiveRecord::Schema.define(version: 2018_05_15_085639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,12 +71,46 @@ ActiveRecord::Schema.define(version: 20180508114334) do
     t.index ["sash_id"], name: "index_badges_sashes_on_sash_id"
   end
 
+  create_table "bank_holidays", force: :cascade do |t|
+    t.bigint "group_id"
+    t.date "holiday_date"
+    t.text "title"
+    t.text "notes"
+    t.index ["group_id"], name: "index_bank_holidays_on_group_id"
+  end
+
+  create_table "calendar_event_types", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.text "alias"
+    t.text "colour"
+    t.boolean "term_time", default: true
+    t.boolean "holiday", default: false
+    t.boolean "occupied", default: true
+  end
+
+  create_table "calendar_events", force: :cascade do |t|
+    t.bigint "calendar_id"
+    t.bigint "calendar_event_type_id"
+    t.text "title"
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
+    t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
+  end
+
   create_table "calendars", id: :serial, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "title", null: false
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "default"
+    t.integer "start_year"
+    t.integer "end_year"
+    t.integer "based_on_id"
+    t.integer "group_id"
+    t.boolean "template", default: false
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -89,6 +123,13 @@ ActiveRecord::Schema.define(version: 20180508114334) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.integer "parent_group_id"
+    t.index ["parent_group_id"], name: "index_groups_on_parent_group_id"
   end
 
   create_table "merit_actions", id: :serial, force: :cascade do |t|
@@ -172,6 +213,7 @@ ActiveRecord::Schema.define(version: 20180508114334) do
     t.string "gas_dataset"
     t.string "electricity_dataset"
     t.integer "competition_role"
+    t.integer "group_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -240,6 +282,8 @@ ActiveRecord::Schema.define(version: 20180508114334) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "calendar_events", "calendar_event_types"
+  add_foreign_key "calendar_events", "calendars"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
   add_foreign_key "schools", "calendars"

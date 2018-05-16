@@ -3,6 +3,8 @@ require 'loader/schools.rb'
 
 describe 'Loader::Schools' do
   let!(:sample_file) { 'spec/fixtures/schools-sample.csv' }
+  let!(:calendar) { create :calendar_with_terms, template: true }
+
   # "URN","Name","Type","Address","Postcode","Website","Ecoschool Status"
   # 109153,"St Saviour’s CofE Junior School","primary","Brookleaze Place, Larkhall, Bath","BA1 6RB","http://www.stsaviours-jun.co.uk/",
   # 109154,"St Saviour’s CofE Infant School","primary","Spring Lane, Larkhall, Bath","BA1 6NY","http://www.stsaviours-infants.org/website","green"
@@ -30,6 +32,7 @@ describe 'Loader::Schools' do
       expect(school.website).to eq "http://www.stsaviours-infants.org/website"
     end
     it 'creates a new calendar' do
+      pending "No longer creates calendar - can be removed"
       expect {
         Loader::Schools.load!(sample_file)
       }.to change(Calendar, :count).by(2)

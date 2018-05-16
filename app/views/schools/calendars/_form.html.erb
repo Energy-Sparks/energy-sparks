@@ -1,0 +1,76 @@
+<%= form_for(calendar) do |f| %>
+  <% if calendar.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(calendar.errors.count, "error") %> prohibited this calendar from being saved:</h2>
+
+      <ul>
+      <% calendar.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control', value: @school.name %>
+  </div>
+
+  <h2>Terms</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Academic Year</th>
+        <th>Term Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= f.fields_for :calendar_events do |ff| %>
+
+        <% if ff.object.calendar_event_type.term_time %>
+        <tr>
+          <td>
+            <div class="form-group">
+              <%= ff.text_field :title, class: 'form-control' %>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <%= text_field_tag("term_start_date_picker_#{ff.index}",
+                ff.object.start_date.try(:strftime, "%d/%m/%Y"),
+                placeholder: 'select date',
+                class: 'form-control term_datepicker',
+                data: { altfield: "#calendar_terms_attributes_#{ff.index}_start_date" }
+              ) %>
+              <%= ff.hidden_field :start_date %>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <%= text_field_tag("term_end_date_picker_#{ff.index}".to_sym,
+                ff.object.end_date.try(:strftime, "%d/%m/%Y"),
+                placeholder: 'select date',
+                class: 'form-control term_datepicker',
+                data: { altfield: "#calendar_terms_attributes_#{ff.index}_end_date" }
+              ) %>
+              <%= ff.hidden_field :end_date %>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <%= ff.check_box :_destroy, class: 'form-control' %>
+            </div>
+          </td>
+        </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

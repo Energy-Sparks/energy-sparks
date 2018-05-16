@@ -1,7 +1,12 @@
 module ApplicationHelper
-  def nice_dates(datetime)
+  def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
+  end
+
+  def nice_dates(date)
+    return "" if date.nil?
+    "#{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')} "
   end
 
   def active(bool = true)

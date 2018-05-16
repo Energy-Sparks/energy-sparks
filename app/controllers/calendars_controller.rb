@@ -6,7 +6,9 @@ class CalendarsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @calendars = Calendar.all
+    @template_calendars = Calendar.template
+    @customised_calendars = Calendar.custom
+ #   @calendars = Calendar.all.order(created_at: :desc)
   end
 
   # GET /calendars/1
@@ -22,6 +24,9 @@ class CalendarsController < ApplicationController
 
   # GET /calendars/1/edit
   def edit
+    if @calendar.template?
+      redirect_to calendar_path(@calendar)
+    end
     build_terms
   end
 

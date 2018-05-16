@@ -122,6 +122,8 @@ private
       :postcode,
       :website,
       :enrolled,
+      :calendar_id,
+      :group_id,
       :urn,
       :gas_dataset,
       :electricity_dataset,

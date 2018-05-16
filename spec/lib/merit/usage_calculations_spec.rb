@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'MeritUsageCalculations' do
   let(:today) { Time.zone.today.beginning_of_day }
-  subject { create :school }
+  let(:calendar) { create :calendar_with_terms, template: true }
+  subject { create :school, calendar: calendar }
   let(:gas_meter) { create :meter, school_id: subject.id }
 
   describe '#weekly_energy_reduction?' do

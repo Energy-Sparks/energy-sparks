@@ -16,7 +16,11 @@ Rails.application.routes.draw do
   resources :activity_types
   resources :activity_categories
   resources :calendars
+  resources :old_calendars
   resources :schools do
+    scope module: :schools do
+      resources :calendars
+    end
     resources :activities
     get :scoreboard, on: :collection
     member do

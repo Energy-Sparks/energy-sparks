@@ -17,10 +17,10 @@ $(document).ready(function() {
 
     //explain the current state of the form, to help explain what the graph is currently showing
     function explain() {
-        whole_school = $("input[type=radio][name=compare]:checked").val() == "whole-school";
-        first_meter = whole_school ? $("#whole-school #meter option:selected").text() : $("#within-school #meter option:selected").text();
-        first_date = whole_school ? $("#whole-school #first-date-picker").val() : $("#within-school #first-date-picker").val()
-        data = {
+        var whole_school = $("input[type=radio][name=compare]:checked").val() == "whole-school";
+        var first_meter = whole_school ? $("#whole-school #meter option:selected").text() : $("#within-school #meter option:selected").text();
+        var first_date = whole_school ? $("#whole-school #first-date-picker").val() : $("#within-school #first-date-picker").val()
+        var data = {
             whole_school: whole_school,
             supply: $("#supply").val(),
             first_meter: first_meter,
@@ -41,11 +41,12 @@ $(document).ready(function() {
     //create a Cdate object used by the calendar picker
     //have to use these objects when setting min/max dates when using a custom data format
     function datetoCdate(date) {
-        parts = date.split("-");
-        if (parts.length < 3) {
-            return null;
+      if (date.length) {
+        var parts = date.split("-");
+        if (parts.length > 2) {
+          $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
         }
-        return $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]))
+      }
     }
 
     //called by event handlers that need to update the graph
@@ -94,8 +95,8 @@ $(document).ready(function() {
     //if the currently selected date is greater (or lower) than the new min/max
     //then the dates are updated. otherwise the control sets an empty value
     function setMinMaxDates(supply) {
-        min = datetoCdate( $("#" + supply + "-start").attr("data-date") );
-        max = datetoCdate( $("#" + supply + "-end").attr("data-date") );
+        var min = datetoCdate( $("#" + supply + "-start").attr("data-date") );
+        var max = datetoCdate( $("#" + supply + "-end").attr("data-date") );
 
         //just in case date isn't valid
         if (min == null || max == null) {
@@ -179,15 +180,19 @@ $(document).ready(function() {
     }
 
     function datePickerConfig(selector) {
-        config = {
+        var defaultDate = datetoCdate( $(selector).val() );
+        var config = {
             dateFormat: 'DD, d MM yyyy',
-            defaultDate: datetoCdate( $(selector).val() ),
             selectDefaultDate: true,
             onSelect: function(dates) {
                 $(selector).val(dates);
                 if (initialised) updateChart(this);
             }
         }
+        if (defaultDate !== undefined && defaultDate.length) {
+          config.defaultDate = defaultDate;
+        }
+
         if ($("#daily-usage").length > 0) {
             config["onShow"] = selectWeek;
         }
