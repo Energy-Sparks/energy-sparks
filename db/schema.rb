@@ -140,8 +140,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
@@ -157,11 +157,13 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
+    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
     t.integer "sash_id"
     t.string "category", default: "default"
+    t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
   end
 
   create_table "meter_readings", id: :serial, force: :cascade do |t|
@@ -189,8 +191,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "schools", id: :serial, force: :cascade do |t|
@@ -201,10 +203,10 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enrolled", default: false
-    t.integer "urn", null: false
     t.integer "sash_id"
     t.integer "level", default: 0
+    t.boolean "enrolled", default: false
+    t.integer "urn", null: false
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
