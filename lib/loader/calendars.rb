@@ -10,7 +10,7 @@ module Loader
       group = Group.where(title: 'Bristol and North East Somerset (BANES)', parent_group: england).first_or_create
 
       data_hash = CSV.foreach(csv_file, headers: true, header_converters: :symbol).select { |row| !row.empty? }.map(&:to_h)
-      CalendarFactory.new(data_hash, group, true).create
+      CalendarFactoryFromEventHash.new(data_hash, group, true).create
     end
   end
 end

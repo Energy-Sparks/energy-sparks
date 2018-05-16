@@ -1,0 +1,57 @@
+class CalendarFactoryFromEventHash
+  def initialize(event_hash, group, template = false)
+    @event_hash = event_hash
+    @group = group
+    @template = template
+  end
+
+  def create
+    @calendar = Calendar.where(default: @template, group: @group, title: @group.title, template: @template).first_or_create
+
+    make_sure_calendar_event_types_created
+
+    @event_hash.each do |event|
+      event_type = CalendarEventType.select { |cet| event[:term].include? cet.title }.first
+      @calendar.calendar_events.create(title: event[:term], start_date: event[:start_date], end_date: event[:end_date], calendar_event_type: event_type)
+    end
+
+    create_bank_holidays
+    create_dummy_inset_day
+  end
+
+private
+
+  def create_dummy_inset_day
+    @calendar.calendar_events.create(title: 'Insert Day', start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: @inset_day_type)
+  end
+
+  def create_bank_holidays
+    find_bank_holidays(@group).each do |bh|
+      calendar_event_type = CalendarEventType.find_by(description: bh.title)
+      @calendar.calendar_events.create(title: bh.title, start_date: bh.holiday_date, end_date: bh.holiday_date, calendar_event_type: calendar_event_type)
+    end
+  end
+
+  def find_bank_holidays(group)
+    bhs = BankHoliday.where(group: group)
+    return bhs if bhs.any?
+    find_bank_holidays(group.parent_group)
+  end
+
+
+  def make_sure_calendar_event_types_created
+    term_colour = 'rgb(245, 187, 0)'
+    CalendarEventType.where(title: 'Term 1', description: 'Autumn Half Term 1', occupied: true, term_time: true, colour: term_colour).first_or_create
+    CalendarEventType.where(title: 'Term 2', description: 'Autumn Half Term 2', occupied: true, term_time: true, colour: term_colour).first_or_create
+    CalendarEventType.where(title: 'Term 3', description: 'Spring Half Term 1', occupied: true, term_time: true, colour: term_colour).first_or_create
+    CalendarEventType.where(title: 'Term 4', description: 'Spring Half Term 2', occupied: true, term_time: true, colour: term_colour).first_or_create
+    CalendarEventType.where(title: 'Term 5', description: 'Summer Half Term 1', occupied: true, term_time: true, colour: term_colour).first_or_create
+    CalendarEventType.where(title: 'Term 6', description: 'Autumn Half Term 2', occupied: true, term_time: true, colour: term_colour).first_or_create
+
+    @inset_day_type = CalendarEventType.where(title: 'Inset Day', description: 'Training day', occupied: true, term_time: false, colour: 'rgb(255, 74, 50)').first_or_create
+
+    BankHoliday.pluck(:title).uniq.each do |bh_title|
+      CalendarEventType.where(title: 'Bank Holiday', description: bh_title, occupied: false, term_time: false, colour: 'rgb(255, 74, 50)').first_or_create
+    end
+  end
+end
