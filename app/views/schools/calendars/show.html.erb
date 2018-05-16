@@ -1,9 +1,10 @@
 <h1>Calendar: <%= @calendar.title %></h1>
 <p><%= link_to 'All Calendars', calendars_path %></p>
 <p>This school, <%= @school.name %> is currently using a default calendar: <%= link_to @calendar.title, calendar_path(@calendar) %></p>
-<p>If you want to customise the calendar, to add training days or known school closures, you can create your own calendar, based on the default.</p>
-<p><%= link_to 'Customise', new_school_calendar_path(@school), class: 'btn btn-success' %></p>
 
+<p>If you want to customise the calendar, you can change to a different default calendar, or to add training days or known school closures, you can create your own calendar, based on a default.</p>
+<p><%= link_to 'Customise', new_school_calendar_path(@school), class: 'btn btn-success' %></p>
+<p><%= link_to 'Change default calendar', edit_school_path(@school), class: 'btn btn-primary' %></p>
 
 <div id="calendar" class="calendar"></div>
 

@@ -26,8 +26,8 @@ class Calendar < ApplicationRecord
 
   default_scope { where(deleted: false) }
 
-  scope :template, -> { where(template: true) }
-  scope :custom, -> { where(template: false) }
+  scope :template,  -> { where(template: true) }
+  scope :custom,    -> { where(template: false) }
 
   validates_presence_of :title
 
