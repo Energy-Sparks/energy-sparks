@@ -235,6 +235,9 @@ RSpec.describe SchoolsController, type: :controller do
 
     describe "POST #create" do
       context "with valid params" do
+
+        let!(:calendar) { create :calendar, template: true }
+
         it "creates a new School" do
           expect {
             post :create, params: {school: valid_attributes}

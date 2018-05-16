@@ -16,9 +16,14 @@ class CalendarFactory
     end
 
     create_bank_holidays
+    create_dummy_inset_day
   end
 
 private
+
+  def create_dummy_inset_day
+    @calendar.calendar_events.create(title: 'Insert Day', start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: @inset_day_type)
+  end
 
   def create_bank_holidays
     find_bank_holidays(@group).each do |bh|
@@ -43,6 +48,8 @@ private
     CalendarEventType.where(title: 'Term 4', description: 'Spring Half Term 2', occupied: true, term_time: true).first_or_create
     CalendarEventType.where(title: 'Term 5', description: 'Summer Half Term 1', occupied: true, term_time: true).first_or_create
     CalendarEventType.where(title: 'Term 6', description: 'Autumn Half Term 2', occupied: true, term_time: true).first_or_create
+
+    @inset_day_type = CalendarEventType.where(title: 'Inset Day', description: 'Training day', occupied: true, term_time: false).first_or_create
 
     BankHoliday.pluck(:title).uniq.each do |bh_title|
       CalendarEventType.where(title: 'Bank Holiday', description: bh_title, occupied: false, term_time: false).first_or_create
