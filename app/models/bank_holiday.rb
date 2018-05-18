@@ -18,5 +18,5 @@
 #
 
 class BankHoliday < ApplicationRecord
-  belongs_to :group
+  belongs_to :area
 end

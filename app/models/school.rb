@@ -51,7 +51,7 @@ class School < ApplicationRecord
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
   belongs_to :calendar
-  belongs_to :group
+  belongs_to :calendar_area, class_name: 'Area'
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]

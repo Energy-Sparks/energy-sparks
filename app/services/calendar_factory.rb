@@ -1,13 +1,13 @@
 class CalendarFactory
-  def initialize(existing_calendar, group = existing_calendar.group, template = false)
+  def initialize(existing_calendar, area = existing_calendar.area, template = false)
     @existing_calendar = existing_calendar
-    @group = group
+    @area = area
     @template = template
   end
 
   def build
     new_calendar = @existing_calendar.dup
-    new_calendar.group = @group
+    new_calendar.area = @area
     new_calendar.template = @template
 
     @existing_calendar.calendar_events.each do |calendar_event|

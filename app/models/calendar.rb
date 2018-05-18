@@ -14,7 +14,7 @@
 #
 
 class Calendar < ApplicationRecord
-  belongs_to :group
+  belongs_to :area
   has_many :calendar_events, dependent: :destroy
 
   belongs_to  :based_on, class_name: 'Calendar'

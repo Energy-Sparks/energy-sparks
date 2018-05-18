@@ -29,12 +29,12 @@ class CalendarEvent < ApplicationRecord
   belongs_to :calendar
   belongs_to :calendar_event_type
 
-  def in_academic_year_starting?(start_year_of_academic_year)
-    return false if calendar_event_type.term_time == false
-    if start_date.month > 8 # Autumn Term
-      start_date.year == start_year_of_academic_year
-    else
-      start_date.year == start_year_of_academic_year + 1
-    end
-  end
+  # def in_academic_year_starting?(start_year_of_academic_year)
+  #   return false if calendar_event_type.term_time == false
+  #   if start_date.month > 8 # Autumn Term
+  #     start_date.year == start_year_of_academic_year
+  #   else
+  #     start_date.year == start_year_of_academic_year + 1
+  #   end
+  # end
 end
