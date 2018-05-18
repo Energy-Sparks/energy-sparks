@@ -32,8 +32,8 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :group_id %>
-    <%= f.select :group_id, options_from_collection_for_select(Group.all, 'id', 'title', (@school.group.id if @school.group)),{}, { class: 'form-control' }%>
+    <%= f.label :calendar_area_id, 'Calendar Area' %>
+    <%= f.select :calendar_area_id, options_from_collection_for_select(Area.all, 'id', 'title', (@school.calendar_area.id if @school.calendar_area)),{}, { class: 'form-control' }%>
   </div>
 
   <div class="form-group">
