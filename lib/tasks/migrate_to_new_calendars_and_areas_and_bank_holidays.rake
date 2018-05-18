@@ -36,5 +36,7 @@ namespace :loader do
 
     # Update schools to have BANES calendar as default
     School.all.update(calendar: Calendar.first, calendar_area: banes)
+
+    Calendar.all.each { | calendar| HolidayFactory.new(calendar).build }
   end
 end
