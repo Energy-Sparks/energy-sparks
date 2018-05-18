@@ -1,6 +1,12 @@
-<h1>Customise Calendar for: <%= @school.name %></h1>
+<h1>Customise Calendar<h1>
+<h2><%= @school.name %></h2>
 <p><%= link_to 'All Calendars', calendars_path %></p>
-<p>This school, <%= @school.name %> is currently using a default calendar</p>
-<p>You can customise the calendar here</p>
+<% if @school.calendar.template %>
+  <p>This school, <%= @school.name %> is currently using a default calendar, so this customised calendar will be initially populated with the dates from that default calendar.</p>
+  <p>If you want to change the default calendar before creating a customised calendar, you can do that here: <%= link_to 'Change to a different default calendar', edit_school_path(@school), class: 'btn btn-primary' %></p>
+<% end %>
 
+
+<p>You can customise the calendar here</p>
 <%= render 'form', calendar: @calendar %>
+
