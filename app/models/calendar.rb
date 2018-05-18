@@ -2,14 +2,12 @@
 #
 # Table name: calendars
 #
+#  area_id     :integer
 #  based_on_id :integer
 #  created_at  :datetime         not null
 #  default     :boolean
 #  deleted     :boolean          default(FALSE)
-#  end_year    :integer
-#  group_id    :integer
 #  id          :integer          not null, primary key
-#  start_year  :integer
 #  template    :boolean          default(FALSE)
 #  title       :string           not null
 #  updated_at  :datetime         not null

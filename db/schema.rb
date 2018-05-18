@@ -15,6 +15,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "academic_years", force: :cascade do |t|
+    t.date "start_year"
+    t.date "end_year"
+  end
+
   create_table "activities", id: :serial, force: :cascade do |t|
     t.integer "school_id"
     t.integer "activity_type_id"
@@ -61,6 +66,18 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
+  create_table "areas", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.integer "parent_area_id"
+    t.boolean "calendar", default: true
+    t.boolean "temperature", default: false
+    t.boolean "solar_irradiance", default: false
+    t.boolean "solar_pv", default: false
+    t.boolean "met_office", default: false
+    t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
+  end
+
   create_table "badges_sashes", id: :serial, force: :cascade do |t|
     t.integer "badge_id"
     t.integer "sash_id"
@@ -72,11 +89,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "group_id"
+    t.bigint "area_id"
     t.date "holiday_date"
     t.text "title"
     t.text "notes"
-    t.index ["group_id"], name: "index_bank_holidays_on_group_id"
+    t.index ["area_id"], name: "index_bank_holidays_on_area_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -84,18 +101,20 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.text "description"
     t.text "alias"
     t.text "colour"
-    t.boolean "term_time", default: true
+    t.boolean "term_time", default: false
     t.boolean "holiday", default: false
-    t.boolean "occupied", default: true
+    t.boolean "school_occupied", default: false
   end
 
   create_table "calendar_events", force: :cascade do |t|
+    t.bigint "academic_year_id"
     t.bigint "calendar_id"
     t.bigint "calendar_event_type_id"
     t.text "title"
     t.text "description"
     t.date "start_date"
     t.date "end_date"
+    t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
   end
@@ -106,10 +125,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "default"
-    t.integer "start_year"
-    t.integer "end_year"
     t.integer "based_on_id"
-    t.integer "group_id"
+    t.integer "area_id"
     t.boolean "template", default: false
   end
 
@@ -123,13 +140,6 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
-  end
-
-  create_table "groups", force: :cascade do |t|
-    t.text "title"
-    t.text "description"
-    t.integer "parent_group_id"
-    t.index ["parent_group_id"], name: "index_groups_on_parent_group_id"
   end
 
   create_table "merit_actions", id: :serial, force: :cascade do |t|
@@ -213,7 +223,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.string "gas_dataset"
     t.string "electricity_dataset"
     t.integer "competition_role"
-    t.integer "group_id"
+    t.integer "calendar_area_id"
+    t.integer "temperature_area_id"
+    t.integer "solar_irradiance_area_id"
+    t.integer "solar_pv_area_id"
+    t.integer "met_office_area_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -282,6 +296,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "bank_holidays", "areas"
+  add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "meter_readings", "meters"
