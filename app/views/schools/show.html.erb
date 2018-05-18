@@ -22,7 +22,7 @@
             <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
         <%- end -%>
         <%- if can? :manage, @school.calendar -%>
-            <%= link_to('Calendar', edit_calendar_path(@school.calendar_id), class: 'btn btn-primary btn-sm') unless @school.calendar.nil? %>
+            <%= link_to('Calendar', school_calendar_path(@school, @school.calendar), class: 'btn btn-primary btn-sm') unless @school.calendar.nil? %>
         <%- end -%>
 
       </p>

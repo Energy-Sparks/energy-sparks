@@ -13,6 +13,8 @@ rake db:migrate RAILS_ENV=test
 
 rake loader:bank_holidays
 rake development:load_banes_default_calendar
+rake development:load_sheffield_default_calendar
+
 rake loader:import_schools"[etc/banes-eligible-schools.csv]"
 
 

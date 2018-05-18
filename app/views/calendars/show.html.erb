@@ -1,15 +1,15 @@
 <h1>Calendar: <%= @calendar.title %></h1>
-<p><%= link_to 'All Calendars', calendars_path %></p>
 
+<% if @calendar.template? %>
+  <p>This calendar is a template calendar, it currently has <%= @calendar.schools.count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>
+<% end %>
+<p><%= link_to 'All Calendars', calendars_path %></p>
 <div id="calendar" class="calendar"></div>
 
 <%= render 'event_modal' %>
 
 
 <% if @calendar.template? %>
-  <h4>Calendar Template with <%= @calendar.calendars.count %> dependent calendars </h4>
-  <h4> and <%= @calendar.schools.count %> schools </h4>
-
   <% if @calendar.calendars.any? %>
   <p>This calendar is a template to the following calendars:</p>
   <ul>
@@ -20,7 +20,7 @@
   <% end %>
 
   <% if @calendar.schools.any? %>
-  <p>This calendar is allocated to the following schools:</p>
+  <h3>This calendar is allocated to the following schools:</h3>
   <ul>
     <% @calendar.schools.each do |school| %>
       <li><%= link_to school.name, school_path(school) %></li>
