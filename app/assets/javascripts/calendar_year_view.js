@@ -3,11 +3,14 @@
 $(document).ready(function() {
   if ($("#calendar").length) {
     function editEvent(event) {
+      console.log('edit');
+      console.log(event);
+      console.log(event.name);
       $('#event-modal input[name="event-index"]').val(event ? event.id : '');
       $('#event-modal input[name="event-name"]').val(event ? event.name : '');
       $('#event-modal input[name="event-location"]').val(event ? event.location : '');
 
-        $('#event-modal input[name="event-start-date"]').datepicker({
+      $('#event-modal input[name="event-start-date"]').datepicker({
     dateFormat: 'dd/mm/yy',
     altFormat: 'yy-mm-dd',
     orientation: 'bottom'
@@ -76,6 +79,7 @@ $(document).ready(function() {
       $('#calendar').calendar({
         enableContextMenu: true,
         enableRangeSelection: true,
+        style: 'background',
         contextMenuItems:[
         {
           text: 'Update',
