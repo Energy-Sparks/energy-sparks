@@ -123,7 +123,7 @@ private
       :website,
       :enrolled,
       :calendar_id,
-      :group_id,
+      :calendar_area_id,
       :urn,
       :gas_dataset,
       :electricity_dataset,

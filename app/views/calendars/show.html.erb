@@ -20,9 +20,9 @@
   <% end %>
 
   <% if @calendar.schools.any? %>
-  <h3>This calendar is allocated to the following schools:</h3>
+  <h3>This calendar is allocated to the following enrolled schools:</h3>
   <ul>
-    <% @calendar.schools.each do |school| %>
+    <% @calendar.schools.where(enrolled: true).each do |school| %>
       <li><%= link_to school.name, school_path(school) %></li>
     <% end %>
   </ul>

@@ -2,24 +2,28 @@
 #
 # Table name: schools
 #
-#  address             :text
-#  calendar_id         :integer
-#  competition_role    :integer
-#  created_at          :datetime         not null
-#  electricity_dataset :string
-#  enrolled            :boolean          default(FALSE)
-#  gas_dataset         :string
-#  group_id            :integer
-#  id                  :integer          not null, primary key
-#  level               :integer          default(0)
-#  name                :string
-#  postcode            :string
-#  sash_id             :integer
-#  school_type         :integer
-#  slug                :string
-#  updated_at          :datetime         not null
-#  urn                 :integer          not null
-#  website             :string
+#  address                  :text
+#  calendar_area_id         :integer
+#  calendar_id              :integer
+#  competition_role         :integer
+#  created_at               :datetime         not null
+#  electricity_dataset      :string
+#  enrolled                 :boolean          default(FALSE)
+#  gas_dataset              :string
+#  id                       :integer          not null, primary key
+#  level                    :integer          default(0)
+#  met_office_area_id       :integer
+#  name                     :string
+#  postcode                 :string
+#  sash_id                  :integer
+#  school_type              :integer
+#  slug                     :string
+#  solar_irradiance_area_id :integer
+#  solar_pv_area_id         :integer
+#  temperature_area_id      :integer
+#  updated_at               :datetime         not null
+#  urn                      :integer          not null
+#  website                  :string
 #
 # Indexes
 #
@@ -47,7 +51,7 @@ class School < ApplicationRecord
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
   belongs_to :calendar
-  belongs_to :group
+  belongs_to :calendar_area, class_name: 'Area'
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]

@@ -7,7 +7,8 @@
       <tr>
         <th>Name</th>
         <th>Dependent Calendars</th>
-        <th>Dependent Schools</th>
+        <th>Dependent Enrolled Schools</th>
+        <th>Total Dependent Schools</th>
         <th></th>
       </tr>
     </thead>
@@ -17,8 +18,8 @@
         <tr>
           <td><%= calendar.title %></td>
           <td><%= calendar.calendars.count %></td>
+          <td><%= calendar.schools.where(enrolled: true).count %></td>
           <td><%= calendar.schools.count %></td>
-
           <td class="pull-md-right">
             <%= link_to 'Show', calendar, class: 'btn btn-info' %>
             <%= link_to 'Edit', edit_calendar_path(calendar), class: 'btn btn-primary' %>
