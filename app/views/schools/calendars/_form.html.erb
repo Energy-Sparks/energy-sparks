@@ -29,42 +29,48 @@
       <!-- add show active to div class for active one -->
       <div class="tab-pane <%= 'active show' if academic_year.start_date.year == Time.now.year %>" id="academic-year-<%= academic_year.start_date.year %>" role="tabpanel" aria-labelledby="academic-year-<%= academic_year.start_date.year %>-tab">
         <hr class="mb-4">
-        <div class="row">
-          <div class="col-7"><label>Term title</label></div>
-          <div class="col"><label>Start Date </label></div>
-          <div class="col"><label>End Date </label></div>
-          <div class="col"><label>Delete</label></div>
-        </div>
 
-        <%= f.fields_for :calendar_events, f.object.calendar_events.select { |event| event.academic_year ==  academic_year } do |ff| %>
-          <% if ff.object.calendar_event_type.term_time %>
-            <div class="form-group row">
-              <div class="col-7">
-                 <%= ff.text_field :title, class: 'form-control' %>
+        <% if f.object.calendar_events.select { |event| event.calendar_event_type.term_time }.any? %>
+
+          <div class="row">
+            <div class="col-7"><label>Term title</label></div>
+            <div class="col"><label>Start Date </label></div>
+            <div class="col"><label>End Date </label></div>
+            <div class="col"><label>Delete</label></div>
+          </div>
+
+          <%= f.fields_for :calendar_events, f.object.calendar_events.select { |event| event.academic_year ==  academic_year } do |ff| %>
+            <% if ff.object.calendar_event_type.term_time %>
+              <div class="form-group row">
+                <div class="col-7">
+                   <%= ff.text_field :title, class: 'form-control' %>
+                </div>
+                <div class="col">
+                  <%= text_field_tag("term_start_date_picker_#{ff.index}",
+                            ff.object.start_date.try(:strftime, "%d/%m/%Y"),
+                            placeholder: 'select date',
+                            class: 'form-control term_datepicker',
+                            data: { altfield: "#calendar_terms_attributes_#{ff.index}_start_date" }
+                          ) %>
+                  <%= ff.hidden_field :start_date %>
+                </div>
+                <div class="col">
+                  <%= text_field_tag("term_end_date_picker_#{ff.index}".to_sym,
+                        ff.object.end_date.try(:strftime, "%d/%m/%Y"),
+                        placeholder: 'select date',
+                        class: 'form-control term_datepicker',
+                        data: { altfield: "#calendar_terms_attributes_#{ff.index}_end_date" }
+                      ) %>
+                  <%= ff.hidden_field :end_date %>
+                </div>
+                <div class="col">
+                  <%= ff.check_box :_destroy, class: 'form-control' %>
+                </div>
               </div>
-              <div class="col">
-                <%= text_field_tag("term_start_date_picker_#{ff.index}",
-                          ff.object.start_date.try(:strftime, "%d/%m/%Y"),
-                          placeholder: 'select date',
-                          class: 'form-control term_datepicker',
-                          data: { altfield: "#calendar_terms_attributes_#{ff.index}_start_date" }
-                        ) %>
-                <%= ff.hidden_field :start_date %>
-              </div>
-              <div class="col">
-                <%= text_field_tag("term_end_date_picker_#{ff.index}".to_sym,
-                      ff.object.end_date.try(:strftime, "%d/%m/%Y"),
-                      placeholder: 'select date',
-                      class: 'form-control term_datepicker',
-                      data: { altfield: "#calendar_terms_attributes_#{ff.index}_end_date" }
-                    ) %>
-                <%= ff.hidden_field :end_date %>
-              </div>
-              <div class="col">
-                <%= ff.check_box :_destroy, class: 'form-control' %>
-              </div>
-            </div>
+            <% end %>
           <% end %>
+        <% else %>
+          <p>The default calendar has no terms set for this academic year</p>
         <% end %>
       </div>
    <% end %>
