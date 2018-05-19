@@ -14,4 +14,14 @@
 
 class CalendarEventType < ApplicationRecord
   has_many :calendar_events
+
+  INSET_DAY = 'Inset Day'.freeze
+
+  def self.inset_day
+    find_by(title: INSET_DAY)
+  end
+
+  def display_title
+    "#{title} - #{description}"
+  end
 end
