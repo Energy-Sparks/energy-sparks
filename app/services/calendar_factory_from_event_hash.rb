@@ -13,7 +13,7 @@ class CalendarFactoryFromEventHash
     @event_hash.each do |event|
       event_type = CalendarEventType.select { |cet| event[:term].include? cet.title }.first
 
-      academic_year = AcademicYear.where('start_date < ? and end_date > ?', Date.parse(event[:start_date]), Date.parse(event[:start_date])).first
+      academic_year = AcademicYear.where('start_date <= ? and end_date >= ?', Date.parse(event[:start_date]), Date.parse(event[:start_date])).first
       @calendar.calendar_events.create(title: event[:term], start_date: event[:start_date], end_date: event[:end_date], calendar_event_type: event_type, academic_year: academic_year)
     end
 
