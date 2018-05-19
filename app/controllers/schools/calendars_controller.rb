@@ -11,6 +11,11 @@ class Schools::CalendarsController < CalendarsController
     @calendar = calendar_factory.build
   end
 
+  def edit
+    calendar_factory = CalendarFactory.new(@calendar)
+    @academic_years = calendar_factory.get_academic_years
+  end
+
   # POST /calendars
   # POST /calendars.json
   def create
@@ -23,6 +28,20 @@ class Schools::CalendarsController < CalendarsController
         format.json { render :show, status: :created, location: @calendar }
       else
         format.html { render :new }
+        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /calendars/1
+  # PATCH/PUT /calendars/1.json
+  def update
+    respond_to do |format|
+      if @calendar.update(calendar_params)
+        format.html { redirect_to  [@school, @calendar], notice: 'Calendar was successfully updated.' }
+        format.json { render :show, status: :ok, location: @calendar }
+      else
+        format.html { render :edit }
         format.json { render json: @calendar.errors, status: :unprocessable_entity }
       end
     end
