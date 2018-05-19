@@ -1,4 +1,4 @@
-<%= form_for(calendar) do |f| %>
+<%= form_for([@school, calendar]) do |f| %>
   <% if calendar.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(calendar.errors.count, "error") %> prohibited this calendar from being saved:</h2>
@@ -36,11 +36,11 @@
             <div class="col-7"><label>Term title</label></div>
             <div class="col"><label>Start Date </label></div>
             <div class="col"><label>End Date </label></div>
-            <div class="col"><label>Delete</label></div>
           </div>
 
           <%= f.fields_for :calendar_events, f.object.calendar_events.select { |event| event.academic_year ==  academic_year }.sort_by(&:start_date) do |ff| %>
             <% if ff.object.calendar_event_type.term_time %>
+              <%= ff.hidden_field :calendar_event_type_id, value: ff.object.calendar_event_type.id %>
               <div class="form-group row">
                 <div class="col-7">
                    <%= ff.text_field :title, class: 'form-control' %>
@@ -50,7 +50,7 @@
                             ff.object.start_date.try(:strftime, "%d/%m/%Y"),
                             placeholder: 'select date',
                             class: 'form-control term_datepicker',
-                            data: { altfield: "#calendar_terms_attributes_#{ff.index}_start_date" }
+                            data: { altfield: "#calendar_calendar_events_attributes_#{ff.index}_start_date" }
                           ) %>
                   <%= ff.hidden_field :start_date %>
                 </div>
@@ -59,12 +59,9 @@
                         ff.object.end_date.try(:strftime, "%d/%m/%Y"),
                         placeholder: 'select date',
                         class: 'form-control term_datepicker',
-                        data: { altfield: "#calendar_terms_attributes_#{ff.index}_end_date" }
+                        data: { altfield: "#calendar_calendar_events_attributes_#{ff.index}_end_date" }
                       ) %>
                   <%= ff.hidden_field :end_date %>
-                </div>
-                <div class="col">
-                  <%= ff.check_box :_destroy, class: 'form-control' %>
                 </div>
               </div>
             <% end %>
