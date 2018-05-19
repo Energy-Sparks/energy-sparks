@@ -24,7 +24,7 @@ class CalendarFactoryFromEventHash
 private
 
   def create_dummy_inset_day
-    @calendar.calendar_events.create(title: 'Insert Day', start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: @inset_day_type, academic_year: AcademicYear.find_by(start_date: '01-09-2018'))
+    @calendar.calendar_events.create(title: CalendarEventType::INSET_DAY, start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: @inset_day_type, academic_year: AcademicYear.find_by(start_date: '01-09-2018'))
   end
 
   def create_bank_holidays
@@ -50,7 +50,7 @@ private
     CalendarEventType.where(title: 'Term 5', description: 'Summer Half Term 1', school_occupied: true, term_time: true, colour: term_colour).first_or_create
     CalendarEventType.where(title: 'Term 6', description: 'Autumn Half Term 2', school_occupied: true, term_time: true, colour: term_colour).first_or_create
 
-    @inset_day_type = CalendarEventType.where(title: 'Inset Day', description: 'Training day', school_occupied: true, term_time: false, colour: 'rgb(255, 74, 50)').first_or_create
+    @inset_day_type = CalendarEventType.where(title: CalendarEventType::INSET_DAY, description: 'Training day', school_occupied: true, term_time: false, colour: 'rgb(255, 74, 50)').first_or_create
 
     BankHoliday.pluck(:title).uniq.each do |bh_title|
       CalendarEventType.where(title: 'Bank Holiday', description: bh_title, school_occupied: false, term_time: false, colour: 'rgb(255, 74, 50)').first_or_create

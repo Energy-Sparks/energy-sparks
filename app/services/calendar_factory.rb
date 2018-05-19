@@ -9,6 +9,7 @@ class CalendarFactory
     @new_calendar = @existing_calendar.dup
     @new_calendar.area = @area
     @new_calendar.template = @template
+    @new_calendar.based_on = @existing_calendar
 
     @academic_years = get_academic_years
     first_academic_year = @academic_years.order(:start_date).first
