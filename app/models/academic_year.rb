@@ -11,7 +11,7 @@ class AcademicYear < ApplicationRecord
   has_many :calendar_events
 
   def self.current
-    find_by('start_date <= ? and end_date >= ?', Date.today, Date.today)
+    find_by('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today)
   end
 
   def title
