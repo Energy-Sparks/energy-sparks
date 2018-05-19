@@ -6,10 +6,9 @@ class Schools::CalendarsController < CalendarsController
   end
 
   def new
-    @first_template_term = @school.calendar.calendar_events.first.start_date
-    @last_template_term = @school.calendar.calendar_events.last.end_date
-    @academic_years = AcademicYear.where('start_date <= ? and end_date >= ?', @last_template_term + 1.year, @first_template_term - 1.year)
-    @calendar = CalendarFactory.new(@school.calendar).build
+    calendar_factory = CalendarFactory.new(@school.calendar)
+    @academic_years = calendar_factory.get_academic_years
+    @calendar = calendar_factory.build
   end
 
   # POST /calendars
@@ -17,7 +16,6 @@ class Schools::CalendarsController < CalendarsController
   def create
     @calendar = Calendar.new(calendar_params)
 
-    # oijoij
     respond_to do |format|
       if @calendar.save
         @school.update(calendar: @calendar)
@@ -38,7 +36,7 @@ private
   end
 
   def calendar_event_params
-    [:id, :title, :start_date, :end_date, :calendar_event_type_id]
+    [:id, :title, :start_date, :end_date, :calendar_event_type_id, :academic_year_id]
   end
 
   def set_school

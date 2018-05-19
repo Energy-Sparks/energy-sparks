@@ -41,6 +41,7 @@
           <%= f.fields_for :calendar_events, f.object.calendar_events.select { |event| event.academic_year ==  academic_year }.sort_by(&:start_date) do |ff| %>
             <% if ff.object.calendar_event_type.term_time %>
               <%= ff.hidden_field :calendar_event_type_id, value: ff.object.calendar_event_type.id %>
+              <%= ff.hidden_field :academic_year_id, value: academic_year.id %>
               <div class="form-group row">
                 <div class="col-7">
                    <%= ff.text_field :title, class: 'form-control' %>
