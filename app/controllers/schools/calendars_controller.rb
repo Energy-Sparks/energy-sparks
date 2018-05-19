@@ -8,7 +8,7 @@ class Schools::CalendarsController < CalendarsController
   def new
     @first_template_term = @school.calendar.calendar_events.first.start_date
     @last_template_term = @school.calendar.calendar_events.last.end_date
-    @academic_years = AcademicYear.where('start_date < ? and end_date > ?', @last_template_term + 1.year, @first_template_term - 1.year)
+    @academic_years = AcademicYear.where('start_date <= ? and end_date >= ?', @last_template_term + 1.year, @first_template_term - 1.year)
     @calendar = CalendarFactory.new(@school.calendar).build
   end
 

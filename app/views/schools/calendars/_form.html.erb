@@ -39,7 +39,7 @@
             <div class="col"><label>Delete</label></div>
           </div>
 
-          <%= f.fields_for :calendar_events, f.object.calendar_events.select { |event| event.academic_year ==  academic_year } do |ff| %>
+          <%= f.fields_for :calendar_events, f.object.calendar_events.select { |event| event.academic_year ==  academic_year }.sort_by(&:start_date) do |ff| %>
             <% if ff.object.calendar_event_type.term_time %>
               <div class="form-group row">
                 <div class="col-7">

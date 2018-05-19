@@ -122,7 +122,6 @@ private
       :postcode,
       :website,
       :enrolled,
-      :calendar_id,
       :calendar_area_id,
       :urn,
       :gas_dataset,
