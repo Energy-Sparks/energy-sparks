@@ -45,4 +45,3 @@ private
     @school = School.find(params[:school_id])
   end
 end
-
