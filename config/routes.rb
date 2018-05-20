@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
   end
-
+  resources :calendar_events
   resources :old_calendars
   resources :schools do
     scope module: :schools do

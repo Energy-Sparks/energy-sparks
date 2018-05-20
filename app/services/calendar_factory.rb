@@ -17,6 +17,7 @@ class CalendarFactory
 
     @existing_calendar.calendar_events.each do |calendar_event|
       new_calendar_event = calendar_event.dup
+      pp new_calendar_event.calendar_event_type.title
       @new_calendar.calendar_events << new_calendar_event
     end
 

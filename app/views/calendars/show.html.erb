@@ -8,12 +8,11 @@
 
 <%= render 'event_modal' %>
 
-
 <% if @calendar.template? %>
   <% if @calendar.calendars.any? %>
   <p>This calendar is a template to the following calendars:</p>
   <ul>
-    <%= @calendar.calendars.each do |calendar| %>
+    <% @calendar.calendars.each do |calendar| %>
       <li><%= link_to calendar.title, calendar_path(calendar) %></li>
     <% end %>
   </ul>
