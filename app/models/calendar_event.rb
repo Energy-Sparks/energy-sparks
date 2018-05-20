@@ -29,6 +29,10 @@ class CalendarEvent < ApplicationRecord
   belongs_to :calendar
   belongs_to :calendar_event_type
 
+  scope :terms,       -> { joins(:calendar_event_type).merge(CalendarEventType.term) }
+  scope :inset_days,  -> { joins(:calendar_event_type).merge(CalendarEventType.inset_day) }
+  scope :holidays,    -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
+
   # def in_academic_year_starting?(start_year_of_academic_year)
   #   return false if calendar_event_type.term_time == false
   #   if start_date.month > 8 # Autumn Term

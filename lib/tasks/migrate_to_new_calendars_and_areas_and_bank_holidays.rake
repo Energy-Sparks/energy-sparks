@@ -25,7 +25,7 @@ namespace :loader do
     CalendarEventType.where(title: 'Term 5', description: 'Summer Half Term 1', school_occupied: true, term_time: true, colour: term_colour).first_or_create
     CalendarEventType.where(title: 'Term 6', description: 'Autumn Half Term 2', school_occupied: true, term_time: true, colour: term_colour).first_or_create
 
-    (1990..2030).each { |year| AcademicYear.where(start_date: Date.parse("01-09-#{year}"), end_date: "31-08-#{year + 1}").first_or_create }
+    AcademicYearFactory.new.create(1990, 2023)
 
     # Load Bank Holidays
     Loader::BankHolidays.load!("etc/bank_holidays/england-and-wales.json")

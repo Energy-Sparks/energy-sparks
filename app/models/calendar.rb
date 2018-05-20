@@ -38,7 +38,15 @@ class Calendar < ApplicationRecord
   end
 
   def terms
-    calendar_events.eager_load(:calendar_event_type).where('calendar_event_types.term_time = true')
+    calendar_events.terms
+  end
+
+  def holidays
+    calendar_events.holidays
+  end
+
+  def inset_days
+    calendar_events.inset_days
   end
 
   def self.default_calendar
