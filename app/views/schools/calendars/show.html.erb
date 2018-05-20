@@ -8,7 +8,6 @@
   <%= link_to 'Edit', edit_school_calendar_path(@school, @school.calendar), class: 'btn btn-success' %>
 </p>
 <p><%= link_to 'Add event', new_calendar_calendar_event_path(@school.calendar), class: 'btn btn-success' %>
-<p><%= link_to 'Change to a different default calendar', edit_school_path(@school), class: 'btn btn-primary' %></p>
 
 <div id="calendar" class="calendar"></div>
 
