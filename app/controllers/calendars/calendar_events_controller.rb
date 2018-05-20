@@ -49,15 +49,16 @@ class Calendars::CalendarEventsController < ApplicationController
   # PATCH/PUT /calendars/1
   # PATCH/PUT /calendars/1.json
   def update
-    # respond_to do |format|
-    #   if @calendar.update(calendar_params)
-    #     format.html { redirect_to @calendar, notice: 'Calendar was successfully updated.' }
-    #     format.json { render :show, status: :ok, location: @calendar }
-    #   else
-    #     format.html { render :edit }
-    #     format.json { render json: @calendar.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    school_id = calendar_event_params[:school_id]
+    respond_to do |format|
+      if @calendar_event.update(calendar_event_params.except(:school_id))
+        format.html { redirect_to school_calendar_path(school_id, @calendar), notice: 'Calendar Event was successfully created.' }
+        format.json { render :show, status: :created, location: @calendar }
+      else
+        format.html { render :new }
+        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /calendars/1
@@ -79,18 +80,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def calendar_event_params
-    params.require(:calendar_event).permit(:title, :academic_year_id, :calendar_event_type_id, :start_date, :end_date)
-  end
-
-  def term_params
-    [:id, :academic_year, :name, :start_date, :end_date, :_destroy]
-  end
-
-  def build_terms
-    number_to_build = 6 - @calendar.terms.count
-    number_to_build = 1 if number_to_build < 1
-    number_to_build.times do
-      @calendar.terms.build
-    end
+    params.require(:calendar_event).permit(:title, :academic_year_id, :calendar_event_type_id, :start_date, :end_date, :school_id)
   end
 end

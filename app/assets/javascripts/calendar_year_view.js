@@ -13,22 +13,26 @@ $(document).ready(function() {
         var lastEvent =  event.events[event.events.length - 1];
         startDate = lastEvent.startDate;
         endDate = lastEvent.endDate;
+        var calendarId =  $('#calendar_event_calendar_id').val();
+
+
+        $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
 
         $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
-        $('#event-modal input[name="event-name"]').val(lastEvent.name);   
+        $('#event-modal input[name="calendar_event[title]"]').val(lastEvent.name);   
       } else {
         startDate = event.startDate;
         endDate = event.endDate;
       }
       $('#event-modal input[name="event-index"]').val(event ? event.id : '');
-      $('#event-modal input[name="event-start-date"]').val(startDate ? startDate.toLocaleDateString("en-GB") : '');
-      $('#event-modal input[name="event-start-date"]').datepicker({
+      $('#event-modal input[name="calendar_event[start_date]"]').val(startDate ? startDate.toLocaleDateString("en-GB") : '');
+      $('#event-modal input[name="calendar_event[start_date]"]').datepicker({
         dateFormat: 'dd/mm/yy',
         altFormat: 'yy-mm-dd',
         orientation: 'bottom'
       });
-      $('#event-modal input[name="event-end-date"]').val(endDate ? endDate.toLocaleDateString("en-GB") : '');
-      $('#event-modal input[name="event-end-date"]').datepicker({
+      $('#event-modal input[name="calendar_event[end_date]"]').val(endDate ? endDate.toLocaleDateString("en-GB") : '');
+      $('#event-modal input[name="calendar_event[end_date]"]').datepicker({
         dateFormat: 'dd/mm/yy',
         altFormat: 'yy-mm-dd',
         orientation: 'bottom'
