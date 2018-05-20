@@ -2,37 +2,33 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">Add or edit Calendar Event</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <input name="event-index" type="hidden">
-          <form class="form-horizontal">
+          <%= form_for(CalendarEvent.new, class:"form-horizontal") do |f| %>
             <div class="form-group">
-              <label for="min-date" class="col-sm-4 control-label">Name</label>
-              <div class="col-sm-7">
-                <input name="event-name" class="form-control" type="text">
-              </div>
+              <label for="inputAddress">Name</label>
+              <input name="event-name" class="form-control" type="text">
             </div>
             <div class="form-group">
-              <label for="min-date" class="col-sm-4 control-label">Location</label>
-              <div class="col-sm-7">
-                <input name="event-location" class="form-control" type="text">
+              <label for="inputAddress">Event Type</label>
+              <%= f.select   :calendar_event_type_id, options_from_collection_for_select(CalendarEventType.all, 'id', 'display_title',nil) ,{}, { class: 'form-control' } %>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Start Date</label>
+                <input name="event-start-date" class="form-control" value="2012-04-05" type="text">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">End Date</label>
+                <input name="event-end-date" class="form-control" value="2012-04-19" type="text">
               </div>
             </div>
-            <div class="form-group">
-              <label for="min-date" class="col-sm-4 control-label">Dates</label>
-              <div class="col-sm-7">
-                <div class="input-group input-daterange" data-provide="datepicker">
-                  <input name="event-start-date" class="form-control" value="2012-04-05" type="text">
-                  <span class="input-group-addon">to</span>
-                  <input name="event-end-date" class="form-control" value="2012-04-19" type="text">
-                </div>
-              </div>
-            </div>
-          </form>
+          <% end %>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary">Save changes</button>

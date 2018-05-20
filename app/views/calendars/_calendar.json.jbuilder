@@ -3,7 +3,8 @@
 
 json.calendar_events @calendar.calendar_events do |event|
   json.id event.id
-  json.name event.calendar_event_type.description
+  json.calendarEventTypeId event.calendar_event_type.id
+  json.name "#{event.calendar_event_type.description} - #{event.title}"
   json.color event.calendar_event_type.colour
   json.startDate event.start_date
   json.endDate event.end_date

@@ -4,19 +4,36 @@ $(document).ready(function() {
   if ($("#calendar").length) {
     function editEvent(event) {
       console.log('edit');
-      console.log(event);
-      console.log(event.name);
-      $('#event-modal input[name="event-index"]').val(event ? event.id : '');
-      $('#event-modal input[name="event-name"]').val(event ? event.name : '');
-      $('#event-modal input[name="event-location"]').val(event ? event.location : '');
 
+      var startDate = null;
+      var endDate = null;
+       
+      if (event.events.length) {
+
+        var lastEvent =  event.events[event.events.length - 1];
+        startDate = lastEvent.startDate;
+        endDate = lastEvent.endDate;
+
+        $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
+        $('#event-modal input[name="event-name"]').val(lastEvent.name);   
+      } else {
+        startDate = event.startDate;
+        endDate = event.endDate;
+      }
+      $('#event-modal input[name="event-index"]').val(event ? event.id : '');
+      $('#event-modal input[name="event-start-date"]').val(startDate ? startDate.toLocaleDateString("en-GB") : '');
       $('#event-modal input[name="event-start-date"]').datepicker({
-    dateFormat: 'dd/mm/yy',
-    altFormat: 'yy-mm-dd',
-    orientation: 'bottom'
-  });
-      // $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
-      // $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
+        dateFormat: 'dd/mm/yy',
+        altFormat: 'yy-mm-dd',
+        orientation: 'bottom'
+      });
+      $('#event-modal input[name="event-end-date"]').val(endDate ? endDate.toLocaleDateString("en-GB") : '');
+      $('#event-modal input[name="event-end-date"]').datepicker({
+        dateFormat: 'dd/mm/yy',
+        altFormat: 'yy-mm-dd',
+        orientation: 'bottom'
+      });
+
       $('#event-modal').modal();
     }
 
@@ -91,7 +108,7 @@ $(document).ready(function() {
         }
         ],
         selectRange: function(e) {
-          editEvent({ startDate: e.startDate, endDate: e.endDate });
+          editEvent({ startDate: e.startDate, endDate: e.endDate, events: e.events });
         },
         mouseOnDay: function(e) {
           if(e.events.length > 0) {
@@ -132,7 +149,6 @@ $(document).ready(function() {
 
     var currentPath = window.location.pathname;
     var dataUrl = window.location.pathname + '.json';
-
     $.ajax({
       url: dataUrl,
       dataType: "json",
@@ -142,8 +158,8 @@ $(document).ready(function() {
         for (var i = 0; i < returnedData.length; i++) {
           data.push({
             id: returnedData[i].id,
+            calendarEventTypeId: returnedData[i].calendarEventTypeId,
             name: returnedData[i].name,
-            location: returnedData[i].location,
             startDate: new Date(returnedData[i].startDate),
             endDate: new Date(returnedData[i].endDate),
             color: returnedData[i].color

@@ -747,8 +747,7 @@
 
 					if(items[i].click) {
 						(function(index) {
-              // CHanged from click
-							menuItem.mouseup(function() {
+							menuItem.click(function() {
 								items[index].click(evt);
 							});
 						})(i);
