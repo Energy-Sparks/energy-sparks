@@ -19,10 +19,15 @@ class CalendarFactoryFromEventHash
 
     create_bank_holidays
     create_dummy_inset_day
+    create_holidays_between_terms
     @calendar
   end
 
 private
+
+  def create_holidays_between_terms
+    HolidayFactory.new(@calendar).create
+  end
 
   def create_dummy_inset_day
     inset_day_type = CalendarEventType.find_by(title: CalendarEventType::INSET_DAY)
