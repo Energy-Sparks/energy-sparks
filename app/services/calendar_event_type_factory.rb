@@ -23,7 +23,7 @@ class CalendarEventTypeFactory
     CalendarEventType.where(title: 'Holiday', description: 'Holiday', holiday: true, colour: holiday_colour, school_occupied: false, term_time: false).first_or_create
 
     CalendarEventType.where(title: "In school #{CalendarEventType::INSET_DAY}", description: 'Training day in school', school_occupied: true, term_time: false, inset_day: true, colour: inset_day_colour).first_or_create
-    CalendarEventType.where(title: "Out of school #{CalendarEventType::INSET_DAY}", description: 'Training day out of school', school_occupied: false, term_time: false, inset_day: true, colour: inset_day_colour).first_or_create
+    CalendarEventType.where(title: "Out of school #{CalendarEventType::INSET_DAY}", description: 'Training day out of school', school_occupied: false, term_time: false, inset_day: true, colour: inset_day_out_colour).first_or_create
 
     CalendarEventType.all
   end
