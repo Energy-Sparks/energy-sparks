@@ -4,7 +4,7 @@ namespace :loader do
     # Create areas
     puts "Create areas"
     england =   Area.where(title: 'England and Wales').first_or_create
-    banes =     Area.where(title: 'Bristol and North East Somerset (BANES)', parent_area: england).first_or_create
+    banes =     Area.where(title: 'Bath and North East Somerset (BANES)', parent_area: england).first_or_create
     sheff =     Area.where(title: 'Sheffield', parent_area: england).first_or_create
 
     puts "Reset database"

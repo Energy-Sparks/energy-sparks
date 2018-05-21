@@ -4,7 +4,7 @@ namespace :development do
   desc 'Load banes-default-calendar'
   task load_banes_default_calendar: [:environment] do
     england = Area.where(title: 'England and Wales').first_or_create
-    area = Area.where(title: 'Bristol and North East Somerset (BANES)', parent_area: england).first_or_create
+    area = Area.where(title: 'Bath and North East Somerset (BANES)', parent_area: england).first_or_create
     Loader::Calendars.load!("etc/banes-default-calendar.csv", area)
   end
 
