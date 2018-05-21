@@ -2,6 +2,7 @@ class Calendars::CalendarEventsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!
   before_action :set_calendar
+  before_action set_calendar_event: [:edit, :destroy]
 
   # GET /calendars
   # GET /calendars.json
@@ -15,7 +16,6 @@ class Calendars::CalendarEventsController < ApplicationController
   end
 
   def edit
-    @calendar_event = CalendarEvent.find(params[:id])
   end
 
   # POST /calendars
@@ -34,12 +34,10 @@ class Calendars::CalendarEventsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /calendars/1
-  # PATCH/PUT /calendars/1.json
   def update
     respond_to do |format|
       if @calendar_event.update(calendar_event_params)
-        format.html { redirect_to calendar_path(@calendar), notice: 'Calendar Event was successfully created.' }
+        format.html { redirect_to calendar_path(@calendar), notice: 'Event was successfully updated.' }
         format.json { render :show, status: :created, location: @calendar }
       else
         format.html { render :new }
@@ -48,19 +46,20 @@ class Calendars::CalendarEventsController < ApplicationController
     end
   end
 
-  # DELETE /calendars/1
-  # DELETE /calendars/1.json
   def destroy
-    # @calendar.update_attribute(:deleted, true)
-    # respond_to do |format|
-    #   format.html { redirect_to calendars_url, notice: 'Calendar was marked as deleted.' }
-    #   format.json { head :no_content }
-    # end
+    @calendar_event.destroy
+    respond_to do |format|
+      format.html { redirect_to calendar_calendar_events_path(@calendar), notice: 'Event was successfully deleted.' }
+      format.json { head :no_content }
+    end
   end
 
 private
 
-  # Use callbacks to share common setup or constraints between actions.
+  def set_calendar_event
+    @calendar_event = CalendarEvent.find(params[:id])
+  end
+
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
   end
