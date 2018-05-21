@@ -6,7 +6,7 @@ class Calendars::CalendarEventsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq
+    academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq.sort_by(&:to_i).reject(&:nil?)
     @academic_years = AcademicYear.find(academic_year_ids)
     @calendar_events = @calendar.calendar_events.order(:start_date)
   end

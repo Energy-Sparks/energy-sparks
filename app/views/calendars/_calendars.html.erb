@@ -14,7 +14,6 @@
         <td><%= calendar.based_on.title unless calendar.based_on.nil? %></td>
         <td class="pull-md-right">
           <%= link_to 'Show', calendar, class: 'btn btn-info' %>
-          <%= link_to 'Edit', edit_calendar_path(calendar), class: 'btn btn-primary' %>
           <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
         </td>
       </tr>

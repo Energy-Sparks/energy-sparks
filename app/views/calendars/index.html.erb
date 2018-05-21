@@ -20,7 +20,6 @@
           <td><%= School.enrolled.joins(:calendar).where('calendars.based_on_id = ?', calendar.id).count %></td>
           <td class="pull-md-right">
             <%= link_to 'Show', calendar, class: 'btn btn-info' %>
-            <%= link_to 'Edit', edit_calendar_path(calendar), class: 'btn btn-primary' %>
             <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </td>
         </tr>
