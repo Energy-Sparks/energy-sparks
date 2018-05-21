@@ -49,10 +49,9 @@ class Calendars::CalendarEventsController < ApplicationController
   # PATCH/PUT /calendars/1
   # PATCH/PUT /calendars/1.json
   def update
-    school_id = calendar_event_params[:school_id]
     respond_to do |format|
-      if @calendar_event.update(calendar_event_params.except(:school_id))
-        format.html { redirect_to school_calendar_path(school_id, @calendar), notice: 'Calendar Event was successfully created.' }
+      if @calendar_event.update(calendar_event_params)
+        format.html { redirect_to calendar_path(@calendar), notice: 'Calendar Event was successfully created.' }
         format.json { render :show, status: :created, location: @calendar }
       else
         format.html { render :new }

@@ -9,7 +9,6 @@
       </div>
       <%= form_for([@calendar, CalendarEvent.last], class:"form-horizontal", html: { id: 'event_form', calendar_id: @calendar.id} ) do |f| %>
       <%= f.hidden_field :calendar_id, value: @calendar.id %>
-      <%= f.hidden_field :school_id, value: @school.id if @school %>
 
       <div class="modal-body">
         <input name="event-index" type="hidden">     
