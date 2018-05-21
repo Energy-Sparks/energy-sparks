@@ -1,4 +1,6 @@
 <h1>Calendars</h1>
+<p>Select a calendar to edit it.</p>
+<p><b>Note:</b> - updating a template calendar does not automatically update any dependent calendars in it's area</p>
 
 <% if @template_calendars.any? %>
   <h2>Template Calendars for Area</h2>
@@ -18,9 +20,11 @@
           <td><%= calendar.title %></td>
           <td><%= calendar.calendars.count %></td>
           <td><%= School.enrolled.joins(:calendar).where('calendars.based_on_id = ?', calendar.id).count %></td>
-          <td class="pull-md-right">
+          <td>
+            <div class='btn-group'>
             <%= link_to 'Show', calendar, class: 'btn btn-info' %>
             <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
           </td>
         </tr>
       <% end %>

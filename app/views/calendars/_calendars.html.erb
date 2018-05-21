@@ -1,4 +1,4 @@
-<table class="table table-condensed">
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Name</th>
@@ -12,9 +12,11 @@
       <tr>
         <td><%= calendar.title %></td>
         <td><%= calendar.based_on.title unless calendar.based_on.nil? %></td>
-        <td class="pull-md-right">
-          <%= link_to 'Show', calendar, class: 'btn btn-info' %>
-          <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Show', calendar, class: 'btn btn-info' %>
+            <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+          </div>
         </td>
       </tr>
     <% end %>

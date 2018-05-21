@@ -16,68 +16,15 @@
   <p>And is based on: <%= link_to "#{@calendar.based_on.title} calendar", calendar_path(@calendar.based_on) %></p>
 <% end %>
 
-
 <h3>This calendar is editable</h3>
 <p>You can amend the events, like the term times by clicking on them, updating the dates and saving the changes. You can also add a new event, like an inset day for example by clicking on the 'Add Event to calendar' button</p>
 
 <p><%= link_to 'Add Event to calendar', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %></p>
 
+<p>You can switch to a list view, which also allows you to delete events here</p>
 <p><%= link_to 'List view', calendar_calendar_events_path(@calendar), class: 'btn btn-success' %></p>
 
-<div class='my-legend'>
-<div class='legend-title'>Calendar colours</div>
-  <div class='legend-scale'>
-    <ul class='legend-labels'>
-      <li><span style='background:rgb(59,192,240);'></span>Bank Holiday</li>
-      <li><span style='background:rgb(255,238,143);'></span>Term Time</li>
-      <li><span style='background:rgb(92,184,92);'></span>Holiday</li>
-      <li><span style='background:rgb(255,69,0);'></span>Inset Day (in school)</li>
-      <li><span style='background:rgb(92,184,92);'></span>Inset Day (out school)</li>
-    </ul>
-  </div>
-</div>
-
-<style type='text/css'>
-  .my-legend .legend-title {
-    text-align: left;
-    margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 120%;
-    }
-  .my-legend .legend-scale ul {
-    margin: 0;
-    padding: 0;
-    float: left;
-    list-style: none;
-    }
-  .my-legend .legend-scale ul li {
-    display: block;
-    float: left;
-    width: 175px;
-    margin-bottom: 6px;
-    text-align: center;
-    font-size: 120%;
-    list-style: none;
-    }
-  .my-legend ul.legend-labels li span {
-    display: block;
-    float: left;
-    height: 30px;
-    width: 175px;
-    }
-  .my-legend .legend-source {
-    font-size: 70%;
-    color: #999;
-    clear: both;
-    }
-  .my-legend a {
-    color: #777;
-    }
-  .my-legend {
-    padding-bottom: 100px;
-    align-content: center;
-  }
-</style>
+<%= render 'legend' %>
 
 <div id="calendar" class="calendar"></div>
 
