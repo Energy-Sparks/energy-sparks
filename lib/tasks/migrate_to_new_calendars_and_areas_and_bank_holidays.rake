@@ -21,7 +21,7 @@ namespace :loader do
     ActiveRecord::Base.connection.reset_pk_sequence!('calendar_event')
     ActiveRecord::Base.connection.reset_pk_sequence!('calendar')
     ActiveRecord::Base.connection.reset_pk_sequence!('academic_year')
-    
+
     # Load Bank Holidays
     puts "Load bank holidays"
     Loader::BankHolidays.load!("etc/bank_holidays/england-and-wales.json")
@@ -37,7 +37,7 @@ namespace :loader do
     puts "Load banes calendar"
     Loader::Calendars.load!("etc/banes-default-calendar.csv", banes)
 
-    puts "Load sheffield calendar"  
+    puts "Load sheffield calendar"
     Loader::Calendars.load!("etc/sheffield-default-calendar.csv", sheff)
 
     # Update schools to have BANES calendar as default
