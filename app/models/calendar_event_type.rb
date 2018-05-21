@@ -21,7 +21,7 @@ class CalendarEventType < ApplicationRecord
 
   scope :term,          -> { where(term_time: true) }
   scope :inset_day,     -> { where(inset_day: true) }
-  scope :holiday,       -> { find_by(holiday: true) }
+  scope :holiday,       -> { where(holiday: true) }
   scope :bank_holiday,  -> { where(bank_holiday: true) }
 
   def display_title

@@ -1,33 +1,30 @@
 require 'rails_helper'
 
-
 describe Calendar do
   include CalendarData
 
   describe '.create_calendar_from_default' do
-    let!(:area) { create(:area) }
-    let!(:academic_years) { AcademicYearFactory.new(1990, 2023).create }
-    let!(:calendar) { CalendarFactoryFromEventHash.new(CalendarData::EXAMPLE_CALENDAR_HASH, area) }
+    let!(:area) { create(:area, title: 'AREA') }
+    let!(:academic_years) { AcademicYearFactory.new(2017, 1019).create }
+    let!(:bank_holiday) { create :bank_holiday, title: 'Good Friday', holiday_date: "2012-04-06" }  
+    let!(:calendar_events) { CalendarEventTypeFactory.create }
 
-    it 'creates full calendar with academic years' do 
-      pp calendar
+    let(:autumn_terms) { 
+      [{ term: "2017-18 Term 1", start_date: "2017-09-04", end_date: "2017-10-20" },
+      { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
+    }
+    let!(:calendar)       { CalendarFactoryFromEventHash.new(autumn_terms, area).create }
+
+    it 'creates a calendar with academic years' do 
+      expect(calendar.calendar_events.count).to be 4
+      expect(calendar.holidays.count).to be 1
+      expect(calendar.bank_holidays.count).to be 1
     end
-    # let(:title) { 'new calendar' }
-    # it "creates a new calendar" do
-    #   expect {
-    #     Calendar.create_calendar_from_default(name)
-    #   }.to change(Calendar, :count).by(1)
-    # end
-    # it "sets the name from the parameter" do
-    #   calendar = Calendar.create_calendar_from_default(name)
-    #   expect(calendar.name).to eq name
-    # end
-    # it "duplicates the terms from the default calendar (no school id)" do
-    #   default_calendar = FactoryBot.create :calendar, default: true
-    #   FactoryBot.create :term, calendar_id: default_calendar.id
-    #   FactoryBot.create :term, calendar_id: default_calendar.id
-    #   calendar = Calendar.create_calendar_from_default(name)
-    #   expect(calendar.terms.count).to eq 2
-    # end
+
+    it 'creates a holiday between the terms' do 
+      expect(calendar.calendar_events.count).to be 4
+      expect(calendar.holidays.first.start_date).to eq calendar.terms.first.end_date + 1.day
+      expect(calendar.holidays.first.end_date).to eq calendar.terms.second.start_date - 1.day
+    end
   end
 end

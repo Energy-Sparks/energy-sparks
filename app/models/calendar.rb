@@ -47,6 +47,10 @@ class Calendar < ApplicationRecord
     calendar_events.holidays
   end
 
+  def bank_holidays
+    calendar_events.bank_holidays
+  end
+
   def inset_days
     calendar_events.inset_days
   end

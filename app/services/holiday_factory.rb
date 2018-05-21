@@ -6,7 +6,7 @@ class HolidayFactory
   def create
     raise ArgumentError unless CalendarEventType.where(holiday: true).any?
 
-    holiday_type = CalendarEventType.holiday
+    holiday_type = CalendarEventType.holiday.first
     events = @calendar.calendar_events
     terms = events.eager_load(:calendar_event_type).where('calendar_event_types.term_time = true').order(start_date: :asc)
 
@@ -17,7 +17,7 @@ class HolidayFactory
       next_term = terms[index + 1]
       next if next_term.nil?
       #pp "create holiday for #{term.end_date} #{next_term.start_date}"
-      CalendarEvent.where(calendar: @calendar, calendar_event_type: holiday_type, start_date: term.end_date, end_date: next_term.start_date).first_or_create
+      CalendarEvent.where(calendar: @calendar, calendar_event_type: holiday_type, start_date: term.end_date + 1.day, end_date: next_term.start_date - 1.day).first_or_create
     end
   end
 end
