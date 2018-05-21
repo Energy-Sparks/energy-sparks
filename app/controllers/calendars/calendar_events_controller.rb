@@ -6,28 +6,16 @@ class Calendars::CalendarEventsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @template_calendars = Calendar.template
-    @customised_calendars = Calendar.custom
- #   @calendars = Calendar.all.order(created_at: :desc)
+    academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq
+    @academic_years = AcademicYear.find(academic_year_ids)
+    @calendar_events = @calendar.calendar_events.order(:start_date)
   end
 
-  # GET /calendars/1
-  # GET /calendars/1.json
-  def show
-  end
-
-  # GET /calendars/new
   def new
-    # @calendar = Calendar.new
-    # build_terms
   end
 
-  # GET /calendars/1/edit
   def edit
-    # if @calendar.template?
-    #   redirect_to calendar_path(@calendar)
-    # end
-    # build_terms
+    @calendar_event = CalendarEvent.find(params[:id])
   end
 
   # POST /calendars

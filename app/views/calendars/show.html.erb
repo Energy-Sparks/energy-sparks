@@ -15,10 +15,14 @@
 <% unless @calendar.based_on.nil? %>
   <p>And is based on: <%= link_to "#{@calendar.based_on.title} calendar", calendar_path(@calendar.based_on) %></p>
 <% end %>
-<p><%= link_to 'All Calendars', calendars_path %></p>
+
 
 <h3>This calendar is editable</h3>
-<p>You can amend the events, like the term times by clicking on them, updating the dates and saving the changes</p>
+<p>You can amend the events, like the term times by clicking on them, updating the dates and saving the changes. You can also add a new event, like an inset day for example by clicking on the 'Add Event to calendar' button</p>
+
+<p><%= link_to 'Add Event to calendar', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %></p>
+
+<p><%= link_to 'List view', calendar_calendar_events_path(@calendar), class: 'btn btn-success' %></p>
 
 <div id="calendar" class="calendar"></div>
 
