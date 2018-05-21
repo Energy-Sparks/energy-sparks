@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Based on</th>
       <th></th>
     </tr>
   </thead>
@@ -10,6 +11,7 @@
     <% calendars.each do |calendar| %>
       <tr>
         <td><%= calendar.title %></td>
+        <td><%= calendar.based_on.title unless calendar.based_on.nil? %></td>
         <td class="pull-md-right">
           <%= link_to 'Show', calendar, class: 'btn btn-info' %>
           <%= link_to 'Edit', edit_calendar_path(calendar), class: 'btn btn-primary' %>

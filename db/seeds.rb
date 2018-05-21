@@ -9,12 +9,12 @@
 # Calendar.create!( title: "Default Calendar", default: true )
 
 # calendar = Calendar.create(title: 'BANES', default: true, start_year: 2017, end_year: 2018)
-term1 = CalendarEventType.create(title: 'Term 1', description: 'Autumn Half Term 1')
-term2 = CalendarEventType.create(title: 'Term 2', description: 'Autumn Half Term 2')
-term3 = CalendarEventType.create(title: 'Term 3', description: 'Spring Half Term 1')
-term4 = CalendarEventType.create(title: 'Term 4', description: 'Spring Half Term 2')
-term5 = CalendarEventType.create(title: 'Term 5', description: 'Summer Half Term 1')
-term6 = CalendarEventType.create(title: 'Term 6', description: 'Autumn Half Term 2')
+# term1 = CalendarEventType.create(title: 'Term 1', description: 'Autumn Half Term 1')
+# term2 = CalendarEventType.create(title: 'Term 2', description: 'Autumn Half Term 2')
+# term3 = CalendarEventType.create(title: 'Term 3', description: 'Spring Half Term 1')
+# term4 = CalendarEventType.create(title: 'Term 4', description: 'Spring Half Term 2')
+# term5 = CalendarEventType.create(title: 'Term 5', description: 'Summer Half Term 1')
+# term6 = CalendarEventType.create(title: 'Term 6', description: 'Autumn Half Term 2')
 
 # CalendarEvent.create(calendar: calendar, calendar_event_type: term1, start_date: '2017-09-04', end_date: '2017-10-20')
 # CalendarEvent.create(calendar: calendar, calendar_event_type: term2, start_date: '2017-10-30', end_date: '2017-12-15')

@@ -104,6 +104,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.boolean "term_time", default: false
     t.boolean "holiday", default: false
     t.boolean "school_occupied", default: false
+    t.boolean "bank_holiday", default: false
+    t.boolean "inset_day", default: false
   end
 
   create_table "calendar_events", force: :cascade do |t|
