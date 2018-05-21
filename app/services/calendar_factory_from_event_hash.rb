@@ -30,8 +30,8 @@ private
   end
 
   def create_bank_holidays
+    calendar_event_type = CalendarEventType.bank_holiday.first
     find_bank_holidays(@area).each do |bh|
-      calendar_event_type = CalendarEventType.find_by(description: bh.title)
       @calendar.calendar_events.create(title: bh.title, start_date: bh.holiday_date, end_date: bh.holiday_date, calendar_event_type: calendar_event_type)
     end
   end

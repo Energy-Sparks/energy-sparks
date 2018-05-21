@@ -4,7 +4,7 @@ namespace :loader do
     # Create areas
     puts "Create areas"
     england =   Area.where(title: 'England and Wales').first_or_create
-    banes =     Area.where(title: 'Bristol and North East Somerset (BANES)', parent_area: england).first_or_create
+    banes =     Area.where(title: 'Bath and North East Somerset (BANES)', parent_area: england).first_or_create
     sheff =     Area.where(title: 'Sheffield', parent_area: england).first_or_create
 
     puts "Reset database"
@@ -55,6 +55,6 @@ namespace :loader do
     # Create calendars based on banes calendar
     puts "Create DUMMY INSET DAY"
     inset_day_type = CalendarEventType.inset_day.find_by(school_occupied: true)
-    banes_calendar.calendar_events.create(title: CalendarEventType::INSET_DAY, start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: inset_day_type, academic_year: AcademicYear.find_by(start_date: '01-09-2018'))
+    banes_calendar.calendar_events.create(title: CalendarEventType::INSET_DAY, start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: inset_day_type, academic_year: AcademicYear.find_by(start_date: '01-09-2017'))
   end
 end
