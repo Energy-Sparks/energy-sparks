@@ -1,6 +1,7 @@
 class CalendarFactory
-  def initialize(existing_calendar, area = existing_calendar.area, template = false)
+  def initialize(existing_calendar, title = existing_calendar.title, area = existing_calendar.area, template = false)
     @existing_calendar = existing_calendar
+    @title = title
     @area = area
     @template = template
   end
@@ -8,22 +9,27 @@ class CalendarFactory
   def build
     @new_calendar = @existing_calendar.dup
     @new_calendar.area = @area
+    @new_calendar.title = @title
     @new_calendar.template = @template
     @new_calendar.based_on = @existing_calendar
 
     @academic_years = get_academic_years
-    first_academic_year = @academic_years.order(:start_date).first
-    create_padding_events(first_academic_year)
+    # first_academic_year = @academic_years.order(:start_date).first
+    # create_padding_events(first_academic_year)
 
     @existing_calendar.calendar_events.each do |calendar_event|
       new_calendar_event = calendar_event.dup
-      pp new_calendar_event.calendar_event_type.title
       @new_calendar.calendar_events << new_calendar_event
     end
 
-    last_academic_year = @academic_years.order(:start_date).last
-    create_padding_events(last_academic_year)
+    # last_academic_year = @academic_years.order(:start_date).last
+    # create_padding_events(last_academic_year)
 
+    @new_calendar
+  end
+
+  def create
+    build.save!
     @new_calendar
   end
 

@@ -31,6 +31,8 @@ class Calendar < ApplicationRecord
 
   accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
 
+# c.calendar_events.joins(:calendar_event_type).group('calendar_event_types.title').order('calendar_event_types.title').count
+
   def reject_calendar_events(attributes)
     end_date_date = Date.parse(attributes[:end_date])
     end_date_default = end_date_date.month == 8 && end_date_date.day == 31
