@@ -1,3 +1,3 @@
-class MetOfficeForecase < DataFeed
+class DataFeeds::MetOfficeForecast < DataFeed
 
 end

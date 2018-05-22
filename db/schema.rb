@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_15_085639) do
+ActiveRecord::Schema.define(version: 2018_05_22_102311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,12 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "based_on_id"
     t.integer "area_id"
     t.boolean "template", default: false
+  end
+
+  create_table "data_feeds", force: :cascade do |t|
+    t.text "type", null: false
+    t.text "title"
+    t.text "description"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|

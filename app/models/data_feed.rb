@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: data_feeds
+#
+#  description :text
+#  id          :bigint(8)        not null, primary key
+#  title       :text
+#  type        :text             not null
+#
+
 class DataFeed < ApplicationRecord
 end
 
