@@ -29,12 +29,33 @@ class CalendarEvent < ApplicationRecord
   belongs_to :calendar
   belongs_to :calendar_event_type
 
-  # def in_academic_year_starting?(start_year_of_academic_year)
-  #   return false if calendar_event_type.term_time == false
-  #   if start_date.month > 8 # Autumn Term
-  #     start_date.year == start_year_of_academic_year
-  #   else
-  #     start_date.year == start_year_of_academic_year + 1
-  #   end
-  # end
+  scope :terms,         -> { joins(:calendar_event_type).merge(CalendarEventType.term) }
+  scope :inset_days,    -> { joins(:calendar_event_type).merge(CalendarEventType.inset_day) }
+  scope :holidays,      -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
+  scope :bank_holidays, -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
+
+  after_update :update_neighbour_start, if: :saved_change_to_end_date?
+  after_update :update_neighbour_end,   if: :saved_change_to_start_date?
+
+private
+
+  def update_neighbour_start
+    if calendar_event_type.term_time
+      following_holiday = calendar.holidays.find_by(start_date: end_date_before_last_save + 1.day)
+      following_holiday.update(start_date: end_date + 1.day) if following_holiday.present?
+    elsif calendar_event_type.holiday
+      following_term = calendar.terms.find_by(start_date: end_date_before_last_save + 1.day)
+      following_term.update(start_date: end_date + 1.day) if following_term.present?
+    end
+  end
+
+  def update_neighbour_end
+    if calendar_event_type.term_time
+      previous_holiday = calendar.holidays.find_by(end_date: start_date_before_last_save - 1.day)
+      previous_holiday.update(end_date: start_date - 1.day) if previous_holiday.present?
+    elsif calendar_event_type.holiday
+      previous_term = calendar.terms.find_by(end_date: start_date_before_last_save - 1.day)
+      previous_term.update(end_date: start_date - 1.day) if previous_term.present?
+    end
+  end
 end

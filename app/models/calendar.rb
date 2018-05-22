@@ -29,10 +29,30 @@ class Calendar < ApplicationRecord
 
   validates_presence_of :title
 
-  accepts_nested_attributes_for :calendar_events, reject_if: proc { |attributes| attributes[:title].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
+
+# c.calendar_events.joins(:calendar_event_type).group('calendar_event_types.title').order('calendar_event_types.title').count
+
+  def reject_calendar_events(attributes)
+    end_date_date = Date.parse(attributes[:end_date])
+    end_date_default = end_date_date.month == 8 && end_date_date.day == 31
+    attributes[:title].blank? || attributes[:start_date].blank? || end_date_default
+  end
 
   def terms
-    calendar_events.eager_load(:calendar_event_type).where('calendar_event_types.term_time = true')
+    calendar_events.terms
+  end
+
+  def holidays
+    calendar_events.holidays
+  end
+
+  def bank_holidays
+    calendar_events.bank_holidays
+  end
+
+  def inset_days
+    calendar_events.inset_days
   end
 
   def self.default_calendar
@@ -52,5 +72,17 @@ class Calendar < ApplicationRecord
       )
     end
     new_calendar
+  end
+
+  def first_event_date
+    calendar_events.first.start_date
+  end
+
+  def last_event_date
+    calendar_events.last.end_date
+  end
+
+  def academic_years(with_padding = 1)
+    AcademicYear.where('start_date <= ? and end_date >= ?', last_event_date + with_padding.year, first_event_date - with_padding.year)
   end
 end

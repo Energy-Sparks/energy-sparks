@@ -15,7 +15,12 @@ Rails.application.routes.draw do
 
   resources :activity_types
   resources :activity_categories
-  resources :calendars
+  resources :calendars do
+    scope module: :calendars do
+      resources :calendar_events
+    end
+  end
+  resources :calendar_events
   resources :old_calendars
   resources :schools do
     scope module: :schools do

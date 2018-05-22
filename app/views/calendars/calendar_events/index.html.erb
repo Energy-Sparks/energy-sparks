@@ -1,0 +1,43 @@
+<h1><%= @calendar.title %></h1>
+<p><%= link_to 'Calendar view', calendar_path(@calendar), class: 'btn btn-success' %></p>
+<p><%= link_to 'Add Event to calendar', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %></p>
+<p>This shows the calendar events in a list - click on the title to edit the event</p>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <% @academic_years.each do |academic_year| %>
+      <a class="nav-item nav-link <%= 'active' if academic_year == AcademicYear.current %>" id="nav-academic-year-<%= academic_year.start_date.year %>-tab" data-toggle="tab" href="#academic-year-<%= academic_year.start_date.year %>" role="tab" aria-controls="academic-year-<%= academic_year.start_date.year %>" aria-selected="<%= academic_year == AcademicYear.current %>">
+        <%= academic_year.start_date.year %> - <%= academic_year.end_date.year %>
+      </a>
+    <% end %>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <% @academic_years.each do |academic_year| %>
+    <!-- add show active to div class for active one -->
+    <div class="tab-pane <%= 'active show' if academic_year == AcademicYear.current %>" id="academic-year-<%= academic_year.start_date.year %>" role="tabpanel" aria-labelledby="academic-year-<%= academic_year.start_date.year %>-tab">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type of Event</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @calendar_events.where(academic_year: academic_year).each do |calendar_event| %>
+            <tr scope="row">
+              <td><%= calendar_event.title %></td>
+              <td><%= calendar_event.calendar_event_type.title %></td>
+              <td><%= nice_dates(calendar_event.start_date) %></td>
+              <td><%= nice_dates(calendar_event.end_date) %></td>
+              <td><div class="btn-group"><%= link_to 'Edit', edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-warning' %><%= link_to 'Delete', calendar_calendar_event_path(@calendar, calendar_event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></div></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

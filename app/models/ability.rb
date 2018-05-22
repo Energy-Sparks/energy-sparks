@@ -8,6 +8,7 @@ class Ability
       can :manage, ActivityType
       can :manage, ActivityCategory
       can :manage, Calendar
+      can :manage, CalendarEvent
       can :manage, School
       can :manage, User
     elsif user.school_admin?

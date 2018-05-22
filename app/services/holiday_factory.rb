@@ -3,8 +3,10 @@ class HolidayFactory
     @calendar = calendar
   end
 
-  def build
-    holiday_type = CalendarEventType.where(title: 'Holiday', holiday: true, colour: 'rgb(68, 183, 62)', school_occupied: false, term_time: false).first_or_create
+  def create
+    raise ArgumentError unless CalendarEventType.where(holiday: true).any?
+
+    holiday_type = CalendarEventType.holiday.first
     events = @calendar.calendar_events
     terms = events.eager_load(:calendar_event_type).where('calendar_event_types.term_time = true').order(start_date: :asc)
 

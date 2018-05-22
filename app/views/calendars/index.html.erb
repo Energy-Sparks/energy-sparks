@@ -1,14 +1,15 @@
 <h1>Calendars</h1>
+<p>Select a calendar to edit it.</p>
+<p><b>Note:</b> - updating a template calendar does not automatically update any dependent calendars in it's area</p>
 
 <% if @template_calendars.any? %>
-  <h2>Calendar Templates for Area</h2>
+  <h2>Template Calendars for Area</h2>
     <table class="table table-condensed">
     <thead>
       <tr>
         <th>Name</th>
         <th>Dependent Calendars</th>
-        <th>Dependent Enrolled Schools</th>
-        <th>Total Dependent Schools</th>
+        <th>Dependent School calendars</th>
         <th></th>
       </tr>
     </thead>
@@ -18,12 +19,12 @@
         <tr>
           <td><%= calendar.title %></td>
           <td><%= calendar.calendars.count %></td>
-          <td><%= calendar.schools.where(enrolled: true).count %></td>
-          <td><%= calendar.schools.count %></td>
-          <td class="pull-md-right">
+          <td><%= School.enrolled.joins(:calendar).where('calendars.based_on_id = ?', calendar.id).count %></td>
+          <td>
+            <div class='btn-group'>
             <%= link_to 'Show', calendar, class: 'btn btn-info' %>
-            <%= link_to 'Edit', edit_calendar_path(calendar), class: 'btn btn-primary' %>
             <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
           </td>
         </tr>
       <% end %>
@@ -34,7 +35,7 @@
 <% end %>
 
 <% if @customised_calendars.any? %>
-  <h2>Customised Calendars for Schools</h2>
+  <h2>Calendars for Enrolled Schools</h2>
   <%= render 'calendars', calendars: @customised_calendars %>
 <% else %>
   <h2>There are no Customised Calendars </h2>

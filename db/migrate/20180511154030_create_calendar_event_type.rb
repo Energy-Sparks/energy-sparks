@@ -8,6 +8,8 @@ class CreateCalendarEventType < ActiveRecord::Migration[5.1]
       t.boolean :term_time,         default: false
       t.boolean :holiday,           default: false
       t.boolean :school_occupied,   default: false
+      t.boolean :bank_holiday,      default: false
+      t.boolean :inset_day,         default: false
     end
   end
 end
