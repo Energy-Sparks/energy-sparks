@@ -18,6 +18,6 @@ module EnergySparks
 
     config.eager_load_paths << Rails.root.join('lib/')
     # Pull in folders without namespacing
-    #config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
+    config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
   end
 end

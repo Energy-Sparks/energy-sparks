@@ -248,12 +248,12 @@ end
 
 # MAIN
 
-@areas.each do |area|
-  temperatures, solar_insolence = process_area(area)
+# @areas.each do |area|
+#   temperatures, solar_insolence = process_area(area)
 
-  write_csv(area[:temperature_csv_file_name], temperatures, area[:csv_format])
-  write_csv(area[:solar_csv_file_name], solar_insolence, area[:csv_format])
+#   write_csv(area[:temperature_csv_file_name], temperatures, area[:csv_format])
+#   write_csv(area[:solar_csv_file_name], solar_insolence, area[:csv_format])
 
-end
+# end
 
 
