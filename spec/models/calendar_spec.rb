@@ -1,42 +1,17 @@
 require 'rails_helper'
 
 describe Calendar do
-  include CalendarData
+  include_context 'calendar data'
 
   describe 'does lots of good calendar work' do
-    let!(:area) { create(:area, title: 'AREA') }
-    let!(:academic_years) { AcademicYearFactory.new(2017, 1019).create }
-    let!(:bank_holiday) { create :bank_holiday, title: 'Good Friday', holiday_date: "2012-04-06" }  
- 
-    let!(:calendar_events) { CalendarEventTypeFactory.create }
 
-    let(:autumn_terms) { 
-      [{ term: "2017-18 Term 1", start_date: "2017-09-04", end_date: "2017-10-20" },
-      { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
-    }
-    let!(:calendar)       { CalendarFactoryFromEventHash.new(autumn_terms, area).create }
-    let!(:random_before_holiday) { 
-      CalendarEvent.create(
-        title: 'random holiday', 
-        calendar: calendar,
-        calendar_event_type: CalendarEventType.holiday.first,
-        start_date: '01/01/2017',
-        end_date: '01/02/2017')}
-    let!(:random_after_holiday) { 
-      CalendarEvent.create(
-        title: 'random holiday 2', 
-        calendar: calendar,
-        calendar_event_type: CalendarEventType.holiday.first,
-        start_date: '16/12/2017',
-        end_date: '20/12/2017')}
-
-    it 'creates a calendar with academic years' do 
+    it 'creates a calendar with academic years' do
       expect(calendar.calendar_events.count).to be 6
       expect(calendar.holidays.count).to be 3
       expect(calendar.bank_holidays.count).to be 1
     end
 
-    it 'creates a holiday between the terms' do 
+    it 'creates a holiday between the terms' do
       expect(calendar.calendar_events.count).to be 6
       does_holiday_fit_space_between_terms?(calendar)
     end
