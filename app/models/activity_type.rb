@@ -35,7 +35,7 @@ class ActivityType < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
-  scope :random_suggestions, -> { active.repeatable.data_driven }
+  scope :random_suggestions, -> { active.repeatable }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true

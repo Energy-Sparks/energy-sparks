@@ -4,7 +4,6 @@ FactoryBot.define do
     sequence(:name) {|n| "test activity_type name #{n}"}
     score 25
     active true
-    data_driven true
     repeatable true
     description 'test_activity_type description'
 
