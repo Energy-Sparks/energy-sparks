@@ -67,14 +67,10 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
   end
 
   create_table "areas", force: :cascade do |t|
+    t.text "type", null: false
     t.text "title"
     t.text "description"
     t.integer "parent_area_id"
-    t.boolean "calendar", default: true
-    t.boolean "temperature", default: false
-    t.boolean "solar_irradiance", default: false
-    t.boolean "solar_pv", default: false
-    t.boolean "met_office", default: false
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
@@ -89,11 +85,11 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
   end
 
   create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "area_id"
+    t.integer "calendar_area_id"
     t.date "holiday_date"
     t.text "title"
     t.text "notes"
-    t.index ["area_id"], name: "index_bank_holidays_on_area_id"
+    t.index ["calendar_area_id"], name: "index_bank_holidays_on_calendar_area_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -128,7 +124,7 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
     t.datetime "updated_at", null: false
     t.boolean "default"
     t.integer "based_on_id"
-    t.integer "area_id"
+    t.integer "calendar_area_id"
     t.boolean "template", default: false
   end
 
@@ -159,8 +155,8 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
@@ -176,11 +172,13 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
+    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
     t.integer "sash_id"
     t.string "category", default: "default"
+    t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
   end
 
   create_table "meter_readings", id: :serial, force: :cascade do |t|
@@ -208,8 +206,8 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "schools", id: :serial, force: :cascade do |t|
@@ -220,10 +218,10 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enrolled", default: false
-    t.integer "urn", null: false
     t.integer "sash_id"
     t.integer "level", default: 0
+    t.boolean "enrolled", default: false
+    t.integer "urn", null: false
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -302,7 +300,6 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "bank_holidays", "areas"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"

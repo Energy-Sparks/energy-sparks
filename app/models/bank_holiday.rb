@@ -2,21 +2,17 @@
 #
 # Table name: bank_holidays
 #
-#  area_id      :bigint(8)
-#  holiday_date :date
-#  id           :bigint(8)        not null, primary key
-#  notes        :text
-#  title        :text
+#  calendar_area_id :integer
+#  holiday_date     :date
+#  id               :bigint(8)        not null, primary key
+#  notes            :text
+#  title            :text
 #
 # Indexes
 #
-#  index_bank_holidays_on_area_id  (area_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (area_id => areas.id)
+#  index_bank_holidays_on_calendar_area_id  (calendar_area_id)
 #
 
 class BankHoliday < ApplicationRecord
-  belongs_to :area
+  belongs_to :calendar_area
 end

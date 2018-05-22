@@ -6,7 +6,7 @@ class CalendarFactoryFromEventHash
   end
 
   def create
-    @calendar = Calendar.where(default: @template, area: @area, title: @area.title, template: @template).first_or_create
+    @calendar = Calendar.where(default: @template, calendar_area: @area, title: @area.title, template: @template).first_or_create
 
     raise ArgumentError unless CalendarEventType.any?
 
@@ -37,7 +37,7 @@ private
   end
 
   def find_bank_holidays(area)
-    bhs = BankHoliday.where(area: area)
+    bhs = BankHoliday.where(calendar_area: area)
     return bhs if bhs.any?
     find_bank_holidays(area.parent_area)
   end

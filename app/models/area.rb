@@ -2,15 +2,11 @@
 #
 # Table name: areas
 #
-#  calendar         :boolean          default(TRUE)
-#  description      :text
-#  id               :bigint(8)        not null, primary key
-#  met_office       :boolean          default(FALSE)
-#  parent_area_id   :integer
-#  solar_irradiance :boolean          default(FALSE)
-#  solar_pv         :boolean          default(FALSE)
-#  temperature      :boolean          default(FALSE)
-#  title            :text
+#  description    :text
+#  id             :bigint(8)        not null, primary key
+#  parent_area_id :integer
+#  title          :text
+#  type           :text             not null
 #
 # Indexes
 #

@@ -3,9 +3,9 @@ namespace :loader do
   task calendar_migration: [:environment] do
     # Create areas
     puts "Create areas"
-    england =   Area.where(title: 'England and Wales').first_or_create
-    banes =     Area.where(title: 'Bath and North East Somerset (BANES)', parent_area: england).first_or_create
-    sheff =     Area.where(title: 'Sheffield', parent_area: england).first_or_create
+    england =   CalendarArea.where(title: 'England and Wales').first_or_create
+    banes =     CalendarArea.where(title: 'Bath and North East Somerset (BANES)', parent_area: england).first_or_create
+    sheff =     CalendarArea.where(title: 'Sheffield', parent_area: england).first_or_create
 
     puts "Reset database"
     # Clear calendars
@@ -44,7 +44,7 @@ namespace :loader do
     puts "Update all schools to banes"
     School.all.update(calendar_area: banes)
 
-    banes_calendar = Calendar.find_by!(template: true, area: banes)
+    banes_calendar = Calendar.find_by!(template: true, calendar_area: banes)
 
     puts "Create calendars for enrolled schools"
     School.enrolled.each do |school|

@@ -1,3 +1,3 @@
 FactoryBot.define do
-  factory :area
+  factory :calendar_area
 end
