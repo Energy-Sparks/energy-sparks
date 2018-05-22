@@ -1,5 +1,5 @@
 class CalendarFactory
-  def initialize(existing_calendar, title = existing_calendar.title, area = existing_calendar.area, template = false)
+  def initialize(existing_calendar, title = existing_calendar.title, area = existing_calendar.calendar_area, template = false)
     @existing_calendar = existing_calendar
     @title = title
     @area = area
@@ -8,7 +8,7 @@ class CalendarFactory
 
   def build
     @new_calendar = @existing_calendar.dup
-    @new_calendar.area = @area
+    @new_calendar.calendar_area = @area
     @new_calendar.title = @title
     @new_calendar.template = @template
     @new_calendar.based_on = @existing_calendar

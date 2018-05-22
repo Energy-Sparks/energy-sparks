@@ -2,19 +2,19 @@
 #
 # Table name: calendars
 #
-#  area_id     :integer
-#  based_on_id :integer
-#  created_at  :datetime         not null
-#  default     :boolean
-#  deleted     :boolean          default(FALSE)
-#  id          :integer          not null, primary key
-#  template    :boolean          default(FALSE)
-#  title       :string           not null
-#  updated_at  :datetime         not null
+#  based_on_id      :integer
+#  calendar_area_id :integer
+#  created_at       :datetime         not null
+#  default          :boolean
+#  deleted          :boolean          default(FALSE)
+#  id               :integer          not null, primary key
+#  template         :boolean          default(FALSE)
+#  title            :string           not null
+#  updated_at       :datetime         not null
 #
 
 class Calendar < ApplicationRecord
-  belongs_to :area
+  belongs_to :calendar_area
   has_many :calendar_events, dependent: :destroy
 
   belongs_to  :based_on, class_name: 'Calendar'

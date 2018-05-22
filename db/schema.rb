@@ -67,14 +67,10 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "areas", force: :cascade do |t|
+    t.text "type", null: false
     t.text "title"
     t.text "description"
     t.integer "parent_area_id"
-    t.boolean "calendar", default: true
-    t.boolean "temperature", default: false
-    t.boolean "solar_irradiance", default: false
-    t.boolean "solar_pv", default: false
-    t.boolean "met_office", default: false
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
@@ -89,11 +85,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "area_id"
+    t.integer "calendar_area_id"
     t.date "holiday_date"
     t.text "title"
     t.text "notes"
-    t.index ["area_id"], name: "index_bank_holidays_on_area_id"
+    t.index ["calendar_area_id"], name: "index_bank_holidays_on_calendar_area_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -128,7 +124,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.datetime "updated_at", null: false
     t.boolean "default"
     t.integer "based_on_id"
-    t.integer "area_id"
+    t.integer "calendar_area_id"
     t.boolean "template", default: false
   end
 
@@ -296,7 +292,6 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "bank_holidays", "areas"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
