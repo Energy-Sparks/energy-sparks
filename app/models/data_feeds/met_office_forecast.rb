@@ -1,0 +1,3 @@
+class MetOfficeForecase < DataFeed
+
+end

@@ -1,0 +1,4 @@
+class DataFeed < ApplicationRecord
+end
+
+
