@@ -7,7 +7,7 @@ describe CalendarFactoryFromEventHash do
     it 'creates full calendar with academic years' do
       expect(Calendar.count).to be 1
 
-      area = Area.create(title: 'this new area')
+      area = CalendarArea.create(title: 'this new area')
       calendar = CalendarFactoryFromEventHash.new(EXAMPLE_CALENDAR_HASH, area).create
 
       expect(Calendar.count).to be 2

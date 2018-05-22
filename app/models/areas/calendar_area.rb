@@ -14,9 +14,9 @@
 #
 
 class CalendarArea < Area
-  has_many :schools
-  has_many :calendars
-  has_many :bank_holidays
+  has_many    :schools
+  has_many    :calendars
+  has_many    :bank_holidays
   belongs_to  :parent_calendar_area, class_name: 'CalendarArea'
   has_many    :child_calendar_areas, class_name: 'CalendarArea', foreign_key: :parent_area_id
 end
