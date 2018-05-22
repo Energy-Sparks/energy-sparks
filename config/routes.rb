@@ -20,12 +20,8 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
   end
-  resources :calendar_events
-  resources :old_calendars
+
   resources :schools do
-    scope module: :schools do
-      resources :calendars
-    end
     resources :activities
     get :scoreboard, on: :collection
     member do
@@ -33,10 +29,11 @@ Rails.application.routes.draw do
       get 'suggest_activity'
       get 'data_explorer'
       get 'usage'
-#      get 'daily_usage', to: 'stats#daily_usage'
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
-#      get 'hourly_usage', to: 'stats#hourly_usage'
+
+#     get 'daily_usage', to: 'stats#daily_usage'
+#     get 'hourly_usage', to: 'stats#hourly_usage'
     end
   end
 
@@ -48,7 +45,4 @@ Rails.application.routes.draw do
     get 'reports', to: 'reports#index'
     get 'reports/loading', to: 'reports#loading'
   end
-
-
-
 end
