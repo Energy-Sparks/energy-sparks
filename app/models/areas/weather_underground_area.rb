@@ -14,5 +14,5 @@
 #
 
 class WeatherUndergroundArea < Area
-  has_many :data_feeds#, as: :regional_area#, class_name: 'WeatherUndergroundArea'
+  has_many :data_feeds
 end

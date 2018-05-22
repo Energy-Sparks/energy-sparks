@@ -5,6 +5,7 @@ class CreateDataFeed < ActiveRecord::Migration[5.2]
       t.integer :area_id
       t.text    :title
       t.text    :description
+      t.hstore  :configuration, default: {}, null: false
     end
   end
 end
