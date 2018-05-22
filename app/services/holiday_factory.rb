@@ -16,7 +16,7 @@ class HolidayFactory
 
       holiday_start_date = term.end_date + 1.day
       holiday_end_date = next_term.start_date - 1.day
-      pp "create holiday for #{holiday_start_date} #{holiday_end_date}"
+
       CalendarEvent.where(calendar: @calendar, calendar_event_type: holiday_type, start_date: holiday_start_date, end_date: holiday_end_date).first_or_create
     end
   end
