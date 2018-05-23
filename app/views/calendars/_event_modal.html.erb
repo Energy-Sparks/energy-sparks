@@ -1,0 +1,42 @@
+<div class="modal" tabindex="-1" id="event-modal" role="dialog" data-calendar=<%= @calendar.id %>>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Calendar Event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%= form_for([@calendar, CalendarEvent.last], class:"form-horizontal", html: { id: 'event_form', calendar_id: @calendar.id} ) do |f| %>
+      <%= f.hidden_field :calendar_id, value: @calendar.id %>
+
+      <div class="modal-body">
+        <input name="event-index" type="hidden">     
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, class: 'form-control' %>
+
+        </div>
+        <div class="form-group">
+          <label for="inputAddress">Event Type</label>
+          <%= f.select   :calendar_event_type_id, options_from_collection_for_select(CalendarEventType.all, 'id', 'display_title',nil) ,{}, { class: 'form-control' } %>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+          <%= f.label :start_date %>
+          <%= f.text_field :start_date, class: 'form-control' %>
+          </div>
+          <div class="form-group col-md-6">
+          <%= f.label :end_date %>
+          <%= f.text_field :end_date, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -17,10 +17,8 @@
 #
 # Foreign Keys
 #
-#  fk_rails_44a7a07537  (calendar_id => calendars.id)
+#  fk_rails_...  (calendar_id => calendars.id)
 #
 
 class Term < ApplicationRecord
-  belongs_to :calendar, inverse_of: :terms
-  validates_presence_of :name, :start_date, :end_date
 end

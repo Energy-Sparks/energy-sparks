@@ -2,23 +2,28 @@
 #
 # Table name: schools
 #
-#  address             :text
-#  calendar_id         :integer
-#  competition_role    :integer
-#  created_at          :datetime         not null
-#  electricity_dataset :string
-#  enrolled            :boolean          default(FALSE)
-#  gas_dataset         :string
-#  id                  :integer          not null, primary key
-#  level               :integer          default(0)
-#  name                :string
-#  postcode            :string
-#  sash_id             :integer
-#  school_type         :integer
-#  slug                :string
-#  updated_at          :datetime         not null
-#  urn                 :integer          not null
-#  website             :string
+#  address                  :text
+#  calendar_area_id         :integer
+#  calendar_id              :integer
+#  competition_role         :integer
+#  created_at               :datetime         not null
+#  electricity_dataset      :string
+#  enrolled                 :boolean          default(FALSE)
+#  gas_dataset              :string
+#  id                       :integer          not null, primary key
+#  level                    :integer          default(0)
+#  met_office_area_id       :integer
+#  name                     :string
+#  postcode                 :string
+#  sash_id                  :integer
+#  school_type              :integer
+#  slug                     :string
+#  solar_irradiance_area_id :integer
+#  solar_pv_area_id         :integer
+#  temperature_area_id      :integer
+#  updated_at               :datetime         not null
+#  urn                      :integer          not null
+#  website                  :string
 #
 # Indexes
 #
@@ -28,7 +33,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_379253fa8b  (calendar_id => calendars.id)
+#  fk_rails_...  (calendar_id => calendars.id)
 #
 
 class School < ApplicationRecord
@@ -39,11 +44,14 @@ class School < ApplicationRecord
   include Merit::UsageCalculations
   has_merit
 
+  acts_as_taggable_on :key_stages
+
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
   belongs_to :calendar
+  belongs_to :calendar_area
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]
@@ -149,8 +157,10 @@ class School < ApplicationRecord
 private
 
   def create_calendar
-    calendar = Calendar.create_calendar_from_default("#{name} Calendar")
-    self.update_attribute(:calendar_id, calendar.id)
+    calendar = Calendar.find_by(template: true)
+    self.update_attribute(:calendar_id, calendar.id) if calendar
+    # calendar = Calendar.create_calendar_from_default("#{name} Calendar")
+    # self.update_attribute(:calendar_id, calendar.id)
   end
 
   # Create Merit::Sash relation

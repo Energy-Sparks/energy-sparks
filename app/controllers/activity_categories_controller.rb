@@ -1,4 +1,6 @@
 class ActivityCategoriesController < ApplicationController
+  include KeyStageFilterable
+
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index]
   before_action :set_activity_category, only: [:show, :edit, :update, :destroy]
@@ -6,6 +8,8 @@ class ActivityCategoriesController < ApplicationController
   # GET /activity_categories
   # GET /activity_categories.json
   def index
+    @key_stage_filter_names = work_out_which_filters_to_set
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @activity_categories = ActivityCategory.all.order(:name)
   end
 

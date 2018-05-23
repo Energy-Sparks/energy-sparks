@@ -18,12 +18,14 @@ class ActivityTypesController < ApplicationController
 
   # GET /activity_types/new
   def new
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @activity_type = ActivityType.new
     @activity_type.activity_type_suggestions.build
   end
 
   # GET /activity_types/1/edit
   def edit
+    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @activity_type.activity_type_suggestions.build
   end
 
@@ -86,6 +88,7 @@ private
         :badge_name,
         :repeatable,
         :data_driven,
+        key_stage_ids: [],
         activity_type_suggestions_attributes: suggestions_params)
   end
 

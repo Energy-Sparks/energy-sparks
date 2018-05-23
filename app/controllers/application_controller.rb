@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 private
 
   def set_ga_code
-    @analytics_code = ENV['GOOGLE_ANALYTICS_CODE']
+    @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']
   end
 
   def current_school

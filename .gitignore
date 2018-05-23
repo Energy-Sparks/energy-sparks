@@ -31,11 +31,11 @@
 coverage
 
 profiles
-
 .env
 *.txt
 *.sql
-.DS_Store
+*.DS_Store
+**/*csv
 
 # Don't commit assets!
 public/assets

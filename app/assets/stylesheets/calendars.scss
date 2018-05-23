@@ -1,3 +1,31 @@
-// Place all the styles related to the Calendars controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+div#ui-datepicker-div {
+    z-index: 1151 !important;
+}
+
+div.calendar-legend {
+
+    padding-bottom: 50px;
+    align-content: center;
+
+    .legend-scale ul {
+        margin: 0;
+        padding: 0;
+        float: left;
+        list-style: none;
+    }
+    .legend-scale ul li {
+        display: block;
+        float: left;
+        width: 175px;
+        margin-bottom: 6px;
+        text-align: center;
+        font-size: 120%;
+        list-style: none;
+    }
+    ul.legend-labels li span {
+        display: block;
+        float: left;
+        height: 30px;
+        width: 175px;
+    }
+}

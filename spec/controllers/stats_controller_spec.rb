@@ -22,7 +22,7 @@ RSpec.describe StatsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
-  let!(:school) { FactoryGirl.create :school }
+  let!(:school) { FactoryBot.create :school }
   describe "GET #daily_usage" do
     it "returns valid JSON"
     #do
