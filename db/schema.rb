@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_22_102311) do
+ActiveRecord::Schema.define(version: 2018_05_23_133605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -127,6 +127,17 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
     t.integer "based_on_id"
     t.integer "calendar_area_id"
     t.boolean "template", default: false
+  end
+
+  create_table "data_feed_readings", force: :cascade do |t|
+    t.bigint "data_feed_id"
+    t.datetime "at"
+    t.decimal "value"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["at"], name: "index_data_feed_readings_on_at"
+    t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
   end
 
   create_table "data_feeds", force: :cascade do |t|
@@ -304,6 +315,7 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
   add_foreign_key "schools", "calendars"

@@ -10,7 +10,7 @@ module DataFeeds
       @min_temperature = -15.0
       @max_minutes_between_samples = 120
       @max_solar_onsolence = 2000.0
-      @csv_format = :portrait
+      @csv_format = :landscape
     end
 
     def import
@@ -20,6 +20,8 @@ module DataFeeds
           pp area
           pp "Running for #{area[:name]}"
           temperatures, solar_insolence = process_area(area)
+
+          pp temperatures
 
           write_csv(area[:temperature_csv_file_name], temperatures, @csv_format)
           write_csv(area[:solar_csv_file_name], solar_insolence, @csv_format)
@@ -46,7 +48,7 @@ module DataFeeds
             elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
               temperature_index = header.index('TemperatureC')
               solar_index = header.index('SolarRadiationWatts/m^2')
-              datetime = DateTime.parse.in_time_zone(line_components[0])
+              datetime =  Time.zone.parse(line_components[0])
               temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
               solar_string = solar_index.nil? ? nil : line_components[solar_index]
               solar_value = solar_string.nil? ? nil : solar_string.to_f
@@ -87,8 +89,14 @@ module DataFeeds
       temperatures = []
       solar_insolance = []
 
+      start_time = @start_date.to_datetime
+      end_time = @end_date.to_datetime
+
       date_times = rawdata.keys
       mins30step = (1.to_f / 48)
+
+      pp @start_date.to_datetime
+      pp @end_date.to_datetime
 
       @start_date.to_datetime.step(@end_date.to_datetime, mins30step).each do |datetime|
         closest = date_times.bsearch { |x| x >= datetime }
@@ -98,12 +106,15 @@ module DataFeeds
         time_after = date_times[index]
         minutes_between_samples = (time_after - time_before) * 24 * 60
 
+    #    binding.pry
+
         if minutes_between_samples <= @max_minutes_between_samples
           # process temperatures
 
           temp_before = rawdata[date_times[index - 1]][0]
           temp_after = rawdata[date_times[index]][0]
           temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime).round(2)
+
           temperatures.push(temp_val)
 
           # process solar insolence
@@ -203,7 +214,7 @@ module DataFeeds
           dates.each do |date|
             line = date.strftime('%Y-%m-%d') << ','
             (0..47).each do |half_hour_index|
-              datetime = DateTime.new.in_time_zone(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0)
+              datetime = DateTime.new(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0)
               if data.key?(datetime)
                 if data[datetime].nil?
                   line << ','
