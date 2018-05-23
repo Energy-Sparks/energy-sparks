@@ -16,27 +16,26 @@
       </thead>
       <tbody>
         <% @schools.each do |school| %>
-            <% school.meters.each do |meter| %>
-              <tr>
-                <td>
-                  <%= link_to(school.name, school_path(school)) %>
-                </td>
-                <td>
-                  <%= meter.display_name %>
-                </td>
-                <td>
-                  <%= meter.meter_type %>
-                </td>
-                <td>
-                  <%= meter.first_read %>
-                </td>
-                <td>
-                  <%= meter.last_read %>
-                </td>
-              </tr>
-            <% end %>
+          <% school.meters.each do |meter| %>
+            <tr>
+              <td>
+                <%= link_to(school.name, school_path(school)) %>
+              </td>
+              <td>
+                <%= meter.display_name %>
+              </td>
+              <td>
+                <%= meter.meter_type %>
+              </td>
+              <td>
+                <%= nice_date_times(meter.first_read) %>
+              </td>
+              <td>
+                <%= nice_date_times(meter.last_read) %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
-
       </tbody>
     </table>
   </div>

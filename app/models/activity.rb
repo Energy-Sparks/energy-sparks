@@ -20,9 +20,9 @@
 #
 # Foreign Keys
 #
-#  fk_rails_24e9fd5314  (activity_type_id => activity_types.id)
-#  fk_rails_2b31042778  (activity_category_id => activity_categories.id)
-#  fk_rails_31b7c63acf  (school_id => schools.id)
+#  fk_rails_...  (activity_category_id => activity_categories.id)
+#  fk_rails_...  (activity_type_id => activity_types.id)
+#  fk_rails_...  (school_id => schools.id)
 #
 
 class Activity < ApplicationRecord

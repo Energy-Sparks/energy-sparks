@@ -35,8 +35,8 @@ profiles
 .env
 *.txt
 *.sql
-
 *.DS_Store
+**/*csv
 
 # Don't commit assets!
 public/assets

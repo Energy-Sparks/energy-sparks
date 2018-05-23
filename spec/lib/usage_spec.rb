@@ -2,47 +2,47 @@ require 'rails_helper'
 require 'usage.rb'
 
 describe 'Usage' do
-  let!(:school) { FactoryGirl.create :school }
+  let!(:school) { FactoryBot.create :school }
   let!(:supply) { :electricity }
-  let!(:electricity_meter_1) { FactoryGirl.create :meter, school_id: school.id, meter_type: supply }
-  let!(:electricity_meter_2) { FactoryGirl.create :meter, school_id: school.id, meter_type: supply }
-  let!(:gas_meter_1) { FactoryGirl.create :meter, school_id: school.id, meter_type: :gas }
+  let!(:electricity_meter_1) { FactoryBot.create :meter, school_id: school.id, meter_type: supply }
+  let!(:electricity_meter_2) { FactoryBot.create :meter, school_id: school.id, meter_type: supply }
+  let!(:gas_meter_1) { FactoryBot.create :meter, school_id: school.id, meter_type: :gas }
   let!(:last_week) { Date.today - 7.days..Date.today - 1.days }
   let!(:week_before) { Date.today - 14.days..Date.today - 8.days }
   before(:each) do
     [last_week, week_before].each do |week|
       week.each do |date|
-        FactoryGirl.create(
+        FactoryBot.create(
           :meter_reading,
           meter_id: electricity_meter_1.id,
           read_at: DateTime.parse("#{date} 01:00").utc,
           value: 100
         )
-        FactoryGirl.create(
+        FactoryBot.create(
           :meter_reading,
           meter_id: electricity_meter_1.id,
           read_at: DateTime.parse("#{date} 23:00").utc,
           value: 200
         )
-        FactoryGirl.create(
+        FactoryBot.create(
           :meter_reading,
           meter_id: electricity_meter_2.id,
           read_at: DateTime.parse("#{date} 01:00").utc,
           value: 150
         )
-        FactoryGirl.create(
+        FactoryBot.create(
           :meter_reading,
           meter_id: electricity_meter_2.id,
           read_at: DateTime.parse("#{date} 23:00").utc,
           value: 200
         )
-        FactoryGirl.create(
+        FactoryBot.create(
           :meter_reading,
           meter_id: gas_meter_1.id,
           read_at: DateTime.parse("#{date} 01:00").utc,
           value: 10
         )
-        FactoryGirl.create(
+        FactoryBot.create(
           :meter_reading,
           meter_id: gas_meter_1.id,
           read_at: DateTime.parse("#{date} 23:00").utc,
@@ -82,7 +82,7 @@ describe 'Usage' do
   describe '#last_reading_date' do
     context 'no previous readings are found' do
       it "returns nil" do
-        new_school = FactoryGirl.create :school
+        new_school = FactoryBot.create :school
         expect(new_school.last_reading_date(:electricity, Date.today)).to be_nil
       end
     end
@@ -101,7 +101,7 @@ describe 'Usage' do
   describe '#last_friday_with_readings' do
     context 'no previous readings are found' do
       it "returns nil" do
-        new_school = FactoryGirl.create :school
+        new_school = FactoryBot.create :school
         expect(new_school.last_friday_with_readings(:electricity)).to be_nil
       end
     end
@@ -119,13 +119,21 @@ describe 'Usage' do
   end
 
   describe "#day_most_usage" do
+
+
+
     context 'no previous readings are found' do
       it "returns nil" do
-        new_school = FactoryGirl.create :school
+        new_school = FactoryBot.create :school
         expect(new_school.day_most_usage(:electricity)).to be_nil
       end
     end
     context "readings are found" do
+      before(:each) do
+        # Update the last one, else sort doesn't work as they all have the same value
+        MeterReading.order(:read_at).last.update(value: 300)
+      end
+
       it "returns an array whose first element is the date" do
         expect(school.day_most_usage(:electricity)[0]).to be_a_kind_of Date
       end
@@ -133,7 +141,7 @@ describe 'Usage' do
         expect(school.day_most_usage(:electricity)[1]).to be_a_kind_of BigDecimal
       end
       it "returns the expected value" do
-        expect(school.day_most_usage(:electricity)[1].to_i).to eql(650)
+        expect(school.day_most_usage(:electricity)[1].to_i).to eql(750)
         expect(school.day_most_usage(:electricity)[0]).to eql(Date.yesterday)
       end
     end

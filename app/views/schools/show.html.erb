@@ -22,7 +22,7 @@
             <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
         <%- end -%>
         <%- if can? :manage, @school.calendar -%>
-            <%= link_to('Calendar', edit_calendar_path(@school.calendar_id), class: 'btn btn-primary btn-sm') unless @school.calendar.nil? %>
+            <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm')  %>
         <%- end -%>
 
       </p>
@@ -41,9 +41,9 @@
 
     <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
-      <%= render partial: 'schools/electricity_cards' %>
-      <%= render partial: 'schools/gas_cards' %>
-    </div>
-  </div>
 
+      <%= render 'schools/meter_cards', meter_type: :electricity, school: @school if @school.meters?(:electricity) %>
+
+      <%= render 'schools/meter_cards', meter_type: :gas, school: @school if @school.meters?(:gas) %>
+  </div>
 </div>
