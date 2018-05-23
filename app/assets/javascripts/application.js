@@ -33,6 +33,7 @@
 //= require schools
 //= require users
 
+// from https://github.com/neivars/bootstrap-year-calendar
 //= require bootstrap-year-calendar
 //= require calendar_year_view
 
