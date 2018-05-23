@@ -17,7 +17,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_457104cd53  (meter_id => meters.id)
+#  fk_rails_...  (meter_id => meters.id)
 #
 
 class MeterReading < ApplicationRecord

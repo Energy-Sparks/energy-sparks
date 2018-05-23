@@ -1,0 +1,43 @@
+<%= form_for([calendar, calendar_event]) do |f| %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :academic_year_id, 'Academic Year' %>
+    <%= f.select :academic_year_id, options_from_collection_for_select(AcademicYear.all, 'id', 'title', AcademicYear.current.id),{}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :calendar_event_type_id, 'Event Type' %>
+    <%= f.select :calendar_event_type_id, options_from_collection_for_select(CalendarEventType.all, 'id', 'display_title',  calendar_event.calendar_event_type.nil? ? 1 : calendar_event.calendar_event_type.id),{}, { class: 'form-control' } %>  
+  </div>
+
+  <div class="form-group row">
+
+    <div class="col">
+      <%= f.label :start_date %>
+      <%= text_field_tag("start_date_picker_#{f.index}",
+                f.object.start_date.try(:strftime, "%d/%m/%Y"),
+                placeholder: 'select date',
+                class: 'form-control term_datepicker',
+                data: { altfield: "#calendar_event_start_date" }
+              ) %>
+      <%= f.hidden_field :start_date %>
+    </div>
+    <div class="col">
+      <%= f.label :end_date %>
+      <%= text_field_tag("end_date_picker_#{f.index}".to_sym,
+                        f.object.end_date.try(:strftime, "%d/%m/%Y"),
+                        placeholder: 'select date',
+                        class: 'form-control term_datepicker',
+                        data: { altfield: "#calendar_event_end_date" }
+                      ) %>
+                  <%= f.hidden_field :end_date %>
+
+    </div>
+  </div>
+    <%= f.submit class: 'btn btn-primary' %>
+
+<% end %>

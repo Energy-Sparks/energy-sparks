@@ -14,7 +14,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_8e4909da04  (activity_type_id => activity_types.id)
+#  fk_rails_...  (activity_type_id => activity_types.id)
 #
 
 class ActivityTypeSuggestion < ApplicationRecord

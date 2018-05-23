@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe School do
-  subject { create :school }
+
   let(:today) { Time.zone.today }
+  let(:calendar) { create :calendar_with_terms, template: true }
+  subject { create :school, calendar: calendar }
 
   it 'is valid with valid attributes' do
     expect(subject).to be_valid
@@ -42,6 +44,7 @@ describe School do
   end
 
   describe '#current_term' do
+
     it 'returns the current term' do
       current_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(3), end_date: today.tomorrow
       expect(subject.current_term).to eq(current_term)
@@ -49,6 +52,7 @@ describe School do
   end
 
   describe '#last_term' do
+
     it 'returns the term preceeding #current_term' do
       create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(3), end_date: today.tomorrow
       last_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(6), end_date: today.yesterday.months_ago(3)

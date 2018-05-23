@@ -19,7 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ActivityTypesController, type: :controller do
-  let(:activity_category) { FactoryGirl.create :activity_category }
+  let(:activity_category) { FactoryBot.create :activity_category }
   # This should return the minimal set of attributes required to create a valid
   # ActivityType. As you add validations to ActivityType, be sure to
   # adjust the attributes here as well.

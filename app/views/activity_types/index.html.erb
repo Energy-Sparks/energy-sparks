@@ -1,29 +1,34 @@
 <h1>Activities</h1>
-
-<table class="table table-condensed">
+<div class="container">
+<div class="row">
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Category</th>
-      <th>Name</th>
-      <th>Score</th>
-      <th>Enabled?</th>
-      <th colspan="2"></th>
+      <th scope="col">Category</th>
+      <th scope="col">Name</th>
+      <th scope="col">Score</th>
+      <th scope="col">Key Stages</th>
+      <th scope="col"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @activity_types.each do |activity_type| %>
-      <tr class="<%= active(activity_type.active) %>" >
+      <tr class="<%= active(activity_type.active) %>" scope="row" >
         <td><%= activity_type.activity_category.name %></td>
         <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
         <td><%= activity_type.score %></td>
-        <td><%= activity_type.active %></td>
-        <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary' %></td>
+        <td><%= activity_type.key_stage_list %></td>
+        <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+</div>
 
-<br>
-
-<%= link_to 'New Activity', new_activity_type_path, class: 'btn btn-primary' %>
+</div>
+<div class="container">
+<div class="row">
+  <%= link_to 'New Activity', new_activity_type_path, class: 'btn btn-primary' %>
+</div>
+</div>

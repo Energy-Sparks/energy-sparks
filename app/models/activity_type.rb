@@ -22,14 +22,20 @@
 #
 # Foreign Keys
 #
-#  fk_rails_60d4f5f88d  (activity_category_id => activity_categories.id)
+#  fk_rails_...  (activity_category_id => activity_categories.id)
 #
 
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
+
+  acts_as_taggable_on :key_stages
+
+  where(active: true, custom: false, data_driven: true, repeatable: true)
+
   scope :active, -> { where(active: true) }
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
+  scope :random_suggestions, -> { active.repeatable }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
@@ -39,4 +45,8 @@ class ActivityType < ApplicationRecord
   has_many :suggested_types, through: :activity_type_suggestions
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
+
+  def key_stages
+    key_stage_list.to_a.sort.join(', ')
+  end
 end
