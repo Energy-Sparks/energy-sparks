@@ -14,5 +14,5 @@
 #
 
 class WeatherUndergroundArea < Area
-  has_many :data_feeds
+  has_many :data_feeds, class_name: 'DataFeeds::WeatherUnderground', foreign_key: :area_id
 end

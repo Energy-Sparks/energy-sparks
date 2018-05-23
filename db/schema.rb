@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2018_05_22_102311) do
     t.integer "area_id"
     t.text "title"
     t.text "description"
-    t.hstore "configuration", default: {}, null: false
+    t.json "configuration", default: {}, null: false
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
