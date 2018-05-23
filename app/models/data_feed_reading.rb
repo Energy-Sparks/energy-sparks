@@ -5,6 +5,7 @@
 #  at           :datetime
 #  created_at   :datetime         not null
 #  data_feed_id :bigint(8)
+#  feed_type    :integer
 #  id           :bigint(8)        not null, primary key
 #  unit         :string
 #  updated_at   :datetime         not null
@@ -22,4 +23,6 @@
 
 class DataFeedReading < ApplicationRecord
   belongs_to :data_feed
+
+  enum feed_type: [:solar_insolence, :temperature]
 end

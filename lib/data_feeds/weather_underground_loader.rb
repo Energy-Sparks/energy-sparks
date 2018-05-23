@@ -10,7 +10,7 @@ module DataFeeds
       @min_temperature = -15.0
       @max_minutes_between_samples = 120
       @max_solar_onsolence = 2000.0
-      @csv_format = :landscape
+      @csv_format = :portrait
     end
 
     def import
@@ -25,6 +25,14 @@ module DataFeeds
 
           write_csv(area[:temperature_csv_file_name], temperatures, @csv_format)
           write_csv(area[:solar_csv_file_name], solar_insolence, @csv_format)
+
+          temperatures.each do |datetime, value|
+            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature)
+          end
+
+          solar_insolence.each do |datetime, value|
+            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_insolence)
+          end
         end
       end
     end
@@ -209,7 +217,8 @@ module DataFeeds
           dates.each do |date|
             line = date.strftime('%Y-%m-%d') << ','
             (0..47).each do |half_hour_index|
-              datetime = Time.zone.local(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0)
+              datetime = Time.zone.local(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0).to_datetime
+
               if data.key?(datetime)
                 if data[datetime].nil?
                   line << ','
