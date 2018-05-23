@@ -29,36 +29,35 @@ module DataFeeds
       end
     end
 
-    # PURE
-    def get_raw_temperature_and_solar_data(station_name, start_date, end_date, max_temp, min_temp, max_solar)
+    def get_raw_temperature_and_solar_data(station_name, start_date, end_date)
       puts "Getting data for #{station_name} between #{start_date} and #{end_date}"
       data = {}
       (start_date..end_date).each do |date|
-          puts "Processing #{date} #{station_name}"
-          url = generate_single_day_station_history_url(station_name, date)
-          puts "HTTP request for                     #{url}"
-          header = []
-          web_page = open(url){ |f|
-            line_num = 0
-            f.each_line do |line|
-              line_components = line.split(',')
-              if line_num == 1
-                header = line_components
-              elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
-                temperature_index = header.index('TemperatureC')
-                solar_index = header.index('SolarRadiationWatts/m^2')
-                datetime = DateTime.parse(line_components[0])
-                temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
-                solar_string = solar_index.nil? ? nil : line_components[solar_index]
-                solar_value = solar_string.nil? ? nil : solar_string.to_f
-                solar_value = solar_value.nil? ? nil : (solar_value < max_solar ? solar_value : nil)
-                if !temperature.nil? && temperature <= max_temp && temperature >= min_temp  # only use data if the temperature is within range
-                  data[datetime] = [temperature, solar_value]
-                end
+        puts "Processing #{date} #{station_name}"
+        url = generate_single_day_station_history_url(station_name, date)
+        puts "HTTP request for                     #{url}"
+        header = []
+        open(url) do |f|
+          line_num = 0
+          f.each_line do |line|
+            line_components = line.split(',')
+            if line_num == 1
+              header = line_components
+            elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
+              temperature_index = header.index('TemperatureC')
+              solar_index = header.index('SolarRadiationWatts/m^2')
+              datetime = DateTime.parse(line_components[0])
+              temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
+              solar_string = solar_index.nil? ? nil : line_components[solar_index]
+              solar_value = solar_string.nil? ? nil : solar_string.to_f
+              solar_value = solar_value.nil? ? nil : (solar_value < @max_solar_onsolence ? solar_value : nil)
+              if !temperature.nil? && temperature <= @max_temperature && temperature >= @min_temperature  # only use data if the temperature is within range
+                data[datetime] = [temperature, solar_value]
               end
-              line_num += 1
             end
-          }
+            line_num += 1
+          end
+        end
       end
       puts "got #{data.length} observations"
       data
@@ -80,19 +79,19 @@ module DataFeeds
     end
 
     # PURE
-    def interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata, start_date, end_date, max_minutes_between_samples)
+    def interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata)
       puts "station_name = #{station_name}"
-      puts "Interpolating data onto 30min boundaries for #{station_name} between #{start_date} and #{end_date} => #{rawdata.length} samples"
+      puts "Interpolating data onto 30min boundaries for #{station_name} between #{@start_date} and #{@end_date} => #{rawdata.length} samples"
       temperatures = []
       solar_insolance = []
 
-      start_time = start_date.to_datetime
-      end_time = end_date.to_datetime
+      start_time = @start_date.to_datetime
+      end_time = @end_date.to_datetime
 
       date_times = rawdata.keys
       mins30step = (1.to_f/48)
 
-      start_date.to_datetime.step(end_date.to_datetime, mins30step).each do |datetime|
+      start_time.step(end_time, mins30step).each do |datetime|
 
         closest = date_times.bsearch{|x| x >= datetime }
         index = date_times.index(closest)
@@ -101,7 +100,7 @@ module DataFeeds
         time_after = date_times[index]
         minutes_between_samples = (time_after - time_before) * 24 * 60
 
-        if minutes_between_samples <= max_minutes_between_samples
+        if minutes_between_samples <= @max_minutes_between_samples
           # process temperatures
 
           temp_before = rawdata[date_times[index-1]][0]
@@ -141,7 +140,7 @@ module DataFeeds
 
       # QUESTION - is weight not actually used? Doesn't seem to be in this block
       area[:weather_stations_for_temperature].each do |station_name, _weight|
-        rawdata = get_raw_temperature_and_solar_data(station_name, start_date-1, end_date+1, max_temp, min_temp, max_solar)
+        rawdata = get_raw_temperature_and_solar_data(station_name, start_date-1, end_date+1)
         if !rawdata.empty?
           rawstationdata[station_name] = rawdata
         else
@@ -152,7 +151,7 @@ module DataFeeds
       # process the raw data onto 30 minute boundaries
       processeddata = {}
       rawstationdata.each do |station_name, rawdata|
-        processeddata[station_name] = interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata, start_date, end_date, max_minutes_between_samples)
+        processeddata[station_name] = interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata)
       end
 
       # take temperatures, solar from muliple weather stations and calculate a weighted average across a number of local weather stations
