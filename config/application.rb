@@ -20,8 +20,9 @@ module EnergySparks
     # Pull in folders without namespacing
     config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
 
-    config.time_zone = 'London'
+    #config.time_zone = 'London'
     # optional - note it can be only :utc or :local (default is :utc)
-    config.active_record.default_timezone = :local
+    # HAS to be UTC for group by date to work
+    config.active_record.default_timezone = :utc
   end
 end
