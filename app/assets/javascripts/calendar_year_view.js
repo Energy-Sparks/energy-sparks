@@ -2,115 +2,51 @@
 
 $(document).ready(function() {
   if ($("#calendar").length) {
+
+    function setUpDatePickers(input_field_name) {
+      $('#event-modal input[name="' + input_field_name + '"]').datepicker({
+        dateFormat: 'dd/mm/yy',
+        altFormat: 'yy-mm-dd',
+        orientation: 'bottom'
+      });
+    }
+
     function editEvent(event) {
-      console.log('edit');
 
       var startDate = null;
       var endDate = null;
-       
-      if (event.events.length) {
 
+      if (event.events.length) {
         var lastEvent =  event.events[event.events.length - 1];
         startDate = lastEvent.startDate;
         endDate = lastEvent.endDate;
         var calendarId =  $('#calendar_event_calendar_id').val();
 
-
         $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
 
         $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
-        $('#event-modal input[name="calendar_event[title]"]').val(lastEvent.name);   
+        $('#event-modal input[name="calendar_event[title]"]').val(lastEvent.name);
       } else {
         startDate = event.startDate;
         endDate = event.endDate;
       }
       $('#event-modal input[name="event-index"]').val(event ? event.id : '');
       $('#event-modal input[name="calendar_event[start_date]"]').val(startDate ? startDate.toLocaleDateString("en-GB") : '');
-      $('#event-modal input[name="calendar_event[start_date]"]').datepicker({
-        dateFormat: 'dd/mm/yy',
-        altFormat: 'yy-mm-dd',
-        orientation: 'bottom'
-      });
+      setUpDatePickers("calendar_event[start_date]");
       $('#event-modal input[name="calendar_event[end_date]"]').val(endDate ? endDate.toLocaleDateString("en-GB") : '');
-      $('#event-modal input[name="calendar_event[end_date]"]').datepicker({
-        dateFormat: 'dd/mm/yy',
-        altFormat: 'yy-mm-dd',
-        orientation: 'bottom'
-      });
+      setUpDatePickers("calendar_event[end_date]");
 
       $('#event-modal').modal();
-    }
-
-    function deleteEvent(event) {
-      var dataSource = $('#calendar').data('calendar').getDataSource();
-
-      for(var i in dataSource) {
-        if(dataSource[i].id == event.id) {
-          dataSource.splice(i, 1);
-          break;
-        }
-      }
-
-      $('#calendar').data('calendar').setDataSource(dataSource);
-    }
-
-    function saveEvent() {
-      var event = {
-        id: $('#event-modal input[name="event-index"]').val(),
-        name: $('#event-modal input[name="event-name"]').val(),
-        location: $('#event-modal input[name="event-location"]').val(),
-        startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-        endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
-      }
-
-      var dataSource = $('#calendar').data('calendar').getDataSource();
-
-      if(event.id) {
-        for(var i in dataSource) {
-          if(dataSource[i].id == event.id) {
-            dataSource[i].name = event.name;
-            dataSource[i].location = event.location;
-            dataSource[i].startDate = event.startDate;
-            dataSource[i].endDate = event.endDate;
-          }
-        }
-      }
-      else
-      {
-        var newId = 0;
-        for(var i in dataSource) {
-          if(dataSource[i].id > newId) {
-            newId = dataSource[i].id;
-          }
-        }
-
-        newId++;
-        event.id = newId;
-
-        dataSource.push(event);
-      }
-
-      $('#calendar').data('calendar');
-      $('#event-modal').modal('hide');
     }
 
     $(function() {
       var currentYear = new Date().getFullYear();
 
       $('#calendar').calendar({
-        enableContextMenu: true,
+        enableContextMenu: false,
         enableRangeSelection: true,
         style: 'background',
-        contextMenuItems:[
-        {
-          text: 'Update',
-          click: editEvent
-        },
-        {
-          text: 'Delete',
-          click: deleteEvent
-        }
-        ],
+        //contextMenuItems:[{ text: 'Update', click: editEvent }],
         selectRange: function(e) {
           editEvent({ startDate: e.startDate, endDate: e.endDate, events: e.events });
         },
@@ -145,14 +81,11 @@ $(document).ready(function() {
           $(e.element).popover('hide');
         },
       });
-
-      $('#save-event').click(function() {
-        saveEvent();
-      });
     });
 
     var currentPath = window.location.pathname;
     var dataUrl = window.location.pathname + '.json';
+
     $.ajax({
       url: dataUrl,
       dataType: "json",
