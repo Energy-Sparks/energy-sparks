@@ -1,28 +1,16 @@
 module DataFeeds
   class WeatherUndergroundLoader
     # This will actually fire up and get the data
+    # Default start and end dates can be removed once all working
     def initialize(start_date = Date.new(2018, 4, 13), end_date = Date.new(2018, 4, 13))
       @start_date = start_date
       @end_date = end_date
-      #@weather_stations_for_solar = configuration["weather_stations_for_solar"]
-
       @method = :weighted_average
       @max_temperature = 38.0
       @min_temperature = -15.0
       @max_minutes_between_samples = 120
       @max_solar_onsolence = 2000.0
       @csv_format = :portrait
-
-      # @weighted_weather_stations_for_temperature = {
-      #     'ISOMERSE15'  => 0.5,
-      #     'IBRISTOL11'  => 0.2,
-      #     'ISOUTHGL2'   => 0.1,
-      #     'IENGLAND120' => 0.1,
-      #     'IBATH9'      => 0.1,
-      #     'IBASTWER2'   => 0.1,
-      #     'ISWAINSW2'   => 0.1,
-      #     'IBASMIDF2'   => 0.1
-      # }
     end
 
     def import
@@ -48,40 +36,44 @@ module DataFeeds
         url = generate_single_day_station_history_url(station_name, date)
         puts "HTTP request for                     #{url}"
         header = []
-        web_page = open(url) { |f|
-            line_num = 0
+        open(url) do |f|
+          line_num = 0
 
-            f.each_line do |line|
-              line_components = line.split(',')
-              if line_num == 1
-                header = line_components
-              elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
-                temperature_index = header.index('TemperatureC')
-                solar_index = header.index('SolarRadiationWatts/m^2')
-                datetime = DateTime.parse(line_components[0])
-                temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
-                solar_string = solar_index.nil? ? nil : line_components[solar_index]
-                solar_value = solar_string.nil? ? nil : solar_string.to_f
-                solar_value = solar_value.nil? ? nil : (solar_value < @max_solar_onsolence ? solar_value : nil)
-                if !temperature.nil? && temperature <= @max_temperature && temperature >= @min_temperature  # only use data if the temperature is within range
-                  data[datetime] = [temperature, solar_value]
-                end
+          f.each_line do |line|
+            line_components = line.split(',')
+            if line_num == 1
+              header = line_components
+            elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
+              temperature_index = header.index('TemperatureC')
+              solar_index = header.index('SolarRadiationWatts/m^2')
+              datetime = DateTime.parse.in_time_zone(line_components[0])
+              temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
+              solar_string = solar_index.nil? ? nil : line_components[solar_index]
+              solar_value = solar_string.nil? ? nil : solar_string.to_f
+              solar_value = if solar_value.nil?
+                              nil
+                            elsif solar_value < @max_solar_onsolence
+                              solar_value
+                            end
+              if !temperature.nil? && temperature <= @max_temperature && temperature >= @min_temperature # only use data if the temperature is within range
+                data[datetime] = [temperature, solar_value]
               end
-              line_num += 1
             end
-            }
+            line_num += 1
+          end
+        end
       end
       puts "got #{data.length} observations"
       data
     end
 
     def generate_single_day_station_history_url(station_name, date)
-    sprintf(
-      "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
-      station_name,
-      date.year,
-      date.month,
-      date.day)
+      sprintf(
+        "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
+        station_name,
+        date.year,
+        date.month,
+        date.day)
     end
 
     def simple_interpolate(val1, val0, t1, t0, tx)
@@ -137,8 +129,6 @@ module DataFeeds
       rawstationdata = {}
 
       # QUESTION - is weight not actually used? Doesn't seem to be in this block
-      pp area[:weather_stations_for_temperature]
-       pp area[:weather_stations_for_temperature].class
       area[:weather_stations_for_temperature].each do |station_name, _weight|
         rawdata = get_raw_temperature_and_solar_data(station_name, @start_date - 1, @end_date + 1)
         if !rawdata.empty?
@@ -213,7 +203,7 @@ module DataFeeds
           dates.each do |date|
             line = date.strftime('%Y-%m-%d') << ','
             (0..47).each do |half_hour_index|
-              datetime = DateTime.new(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0)
+              datetime = DateTime.new.in_time_zone(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0)
               if data.key?(datetime)
                 if data[datetime].nil?
                   line << ','
