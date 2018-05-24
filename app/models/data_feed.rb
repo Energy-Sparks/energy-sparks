@@ -17,10 +17,10 @@ class DataFeed < ApplicationRecord
   has_many    :data_feed_readings
 
   def to_csv(feed_type, start_date = DateTime.yesterday - 1, end_date = DateTime.yesterday)
-    readings = data_feed_readings.where(feed_type: feed_type)
+    readings = data_feed_readings.where(feed_type: feed_type).where('at >= ? and at <= ?', start_date, end_date)
 
     CSV.generate(headers: true) do |csv|
-      csv << ['DateTime','Value']
+      csv << %w(DateTime Value)
       readings.each do |f|
         csv << [f.at.strftime('%Y-%m-%d %H:%M'), f.value]
       end

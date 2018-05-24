@@ -1,6 +1,5 @@
 module DataFeeds
   class WeatherUndergroundCsvWriter
-
     def initialize(filename, data, orientation = :landscape)
       @filename = filename
       @data = data

@@ -12,6 +12,8 @@ Style/RescueStandardError:
   Enabled: false
 Style/EmptyMethod:
   Enabled: false
+Style/FormatStringToken:
+  Enabled: false
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 Layout/MultilineArrayBraceLayout:
