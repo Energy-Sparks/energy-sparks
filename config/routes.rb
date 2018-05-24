@@ -45,4 +45,6 @@ Rails.application.routes.draw do
     get 'reports', to: 'reports#index'
     get 'reports/loading', to: 'reports#loading'
   end
+
+  match '*unmatched', to: 'application#route_not_found', via: :all
 end

@@ -39,7 +39,10 @@ class ActivityTypesController < ApplicationController
         format.html { redirect_to @activity_type, notice: 'Activity type was successfully created.' }
         format.json { render :show, status: :created, location: @activity_type }
       else
-        format.html { render :new }
+        format.html do
+          @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+          render :new
+        end
         format.json { render json: @activity_type.errors, status: :unprocessable_entity }
       end
     end

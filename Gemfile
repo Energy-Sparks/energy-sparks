@@ -41,7 +41,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
-
 gem 'merit', '3.0.0' # Reputation/achievements/rankings
 
 # Exception handling
