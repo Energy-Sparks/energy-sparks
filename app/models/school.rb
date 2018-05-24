@@ -50,6 +50,8 @@ class School < ApplicationRecord
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
+  has_many :school_times, inverse_of: :school, dependent: :destroy
+
   belongs_to :calendar
   belongs_to :calendar_area
 
@@ -60,7 +62,9 @@ class School < ApplicationRecord
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
-  accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
+
+  accepts_nested_attributes_for :meters,        reject_if: proc { |attributes| attributes[:meter_no].blank? }
+  accepts_nested_attributes_for :school_times,  reject_if: proc { |attributes| attributes[:school_times].blank? }
 
   after_create :create_sash_relation
   after_create :create_calendar
