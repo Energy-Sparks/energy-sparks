@@ -64,7 +64,7 @@ class School < ApplicationRecord
   validates_uniqueness_of :urn
 
   accepts_nested_attributes_for :meters,        reject_if: proc { |attributes| attributes[:meter_no].blank? }
-  accepts_nested_attributes_for :school_times,  reject_if: proc { |attributes| attributes[:school_times].blank? }
+  accepts_nested_attributes_for :school_times,  reject_if: proc { |attributes| attributes[:opening_time].blank? }
 
   after_create :create_sash_relation
   after_create :create_calendar
