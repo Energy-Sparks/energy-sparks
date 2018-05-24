@@ -31,7 +31,6 @@
 coverage
 
 profiles
-
 .env
 *.txt
 *.sql
