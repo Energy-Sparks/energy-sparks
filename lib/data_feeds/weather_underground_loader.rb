@@ -17,14 +17,11 @@ module DataFeeds
       WeatherUndergroundArea.all.each do |wua|
         wua.data_feeds.each do |data_feed|
           area = data_feed.configuration.symbolize_keys
-          pp area
           pp "Running for #{area[:name]}"
           temperatures, solar_insolence = process_area(area)
 
-          pp temperatures
-
-          write_csv(area[:temperature_csv_file_name], temperatures, @csv_format)
-          write_csv(area[:solar_csv_file_name], solar_insolence, @csv_format)
+          WeatherUndergroundCsvWriter.new(area[:temperature_csv_file_name], temperatures, @csv_format).write_csv
+          WeatherUndergroundCsvWriter.new(area[:solar_csv_file_name], solar_insolence, @csv_format).write_csv
 
           temperatures.each do |datetime, value|
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature)
@@ -37,103 +34,6 @@ module DataFeeds
       end
     end
 
-    def get_raw_temperature_and_solar_data(station_name, start_date, end_date)
-      puts "Getting data for #{station_name} between #{start_date} and #{end_date}"
-      data = {}
-      (start_date..end_date).each do |date|
-        puts "Processing #{date} #{station_name}"
-        url = generate_single_day_station_history_url(station_name, date)
-        puts "HTTP request for                     #{url}"
-        header = []
-        open(url) do |f|
-          line_num = 0
-          f.each_line do |line|
-            line_components = line.split(',')
-            if line_num == 1
-              header = line_components
-            elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
-              temperature_index = header.index('TemperatureC')
-              solar_index = header.index('SolarRadiationWatts/m^2')
-              datetime = Time.zone.parse(line_components[0]).to_datetime
-
-              temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
-              solar_string = solar_index.nil? ? nil : line_components[solar_index]
-              solar_value = solar_string.nil? ? nil : solar_string.to_f
-              solar_value = if solar_value.nil?
-                              nil
-                            elsif solar_value < @max_solar_onsolence
-                              solar_value
-                            end
-              if !temperature.nil? && temperature <= @max_temperature && temperature >= @min_temperature # only use data if the temperature is within range
-                data[datetime] = [temperature, solar_value]
-              end
-            end
-            line_num += 1
-          end
-        end
-      end
-      puts "got #{data.length} observations"
-      data
-    end
-
-    # PURE
-    def generate_single_day_station_history_url(station_name, date)
-      sprintf(
-        "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
-        station_name,
-        date.year,
-        date.month,
-        date.day)
-    end
-
-    def simple_interpolate(val1, val0, t1, t0, tx)
-      t_prop = (tx - t0) / (t1 - t0)
-      val0 + (val1 - val0) * t_prop
-    end
-
-    def interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata)
-      puts "station_name = #{station_name}"
-      puts "Interpolating data onto 30min boundaries for #{station_name} between #{@start_date} and #{@end_date} => #{rawdata.length} samples"
-      temperatures = []
-      solar_insolance = []
-
-      start_time = @start_date.to_datetime
-      end_time = @end_date.to_datetime
-
-      date_times = rawdata.keys
-      mins30step = (1.to_f / 48)
-
-      start_time.step(end_time, mins30step).each do |datetime|
-        closest = date_times.bsearch { |x| x >= datetime }
-        index = date_times.index(closest)
-
-        time_before = date_times[index - 1]
-        time_after = date_times[index]
-        minutes_between_samples = (time_after - time_before) * 24 * 60
-
-        if minutes_between_samples <= @max_minutes_between_samples
-          # process temperatures
-
-          temp_before = rawdata[date_times[index - 1]][0]
-          temp_after = rawdata[date_times[index]][0]
-          temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime).round(2)
-          temperatures.push(temp_val)
-
-          # process solar insolence
-
-          solar_before = rawdata[date_times[index - 1]][1]
-          solar_after = rawdata[date_times[index]][1]
-          solar_val = simple_interpolate(solar_after.to_f, solar_before.to_f, time_after, time_before, datetime).round(2)
-          solar_insolance.push(solar_val)
-        else
-          temperatures.push(nil)
-          solar_insolance.push(nil)
-        end
-      end
-      [temperatures, solar_insolance]
-    end
-
-
     def process_area(area)
       puts '=' * 80
       puts area.inspect
@@ -142,7 +42,6 @@ module DataFeeds
       # load the raw data from webpages for each station (one day at a time)
       rawstationdata = {}
 
-      # QUESTION - is weight not actually used? Doesn't seem to be in this block
       area[:weather_stations_for_temperature].each do |station_name, _weight|
         rawdata = get_raw_temperature_and_solar_data(station_name, @start_date - 1, @end_date + 1)
         if !rawdata.empty?
@@ -200,43 +99,99 @@ module DataFeeds
       [temperatures, solar_insolence]
     end
 
-    def unique_list_of_dates_from_datetimes(datetimes)
-      dates = {}
-      datetimes.each do |datetime|
-        dates[datetime.to_date] = true
-      end
-      dates.keys
-    end
+    def get_raw_temperature_and_solar_data(station_name, start_date, end_date)
+      puts "Getting data for #{station_name} between #{start_date} and #{end_date}"
+      data = {}
+      (start_date..end_date).each do |date|
+        puts "Processing #{date} #{station_name}"
+        url = generate_single_day_station_history_url(station_name, date)
+        puts "HTTP request for                     #{url}"
+        header = []
+        open(url) do |f|
+          line_num = 0
+          f.each_line do |line|
+            line_components = line.split(',')
+            if line_num == 1
+              header = line_components
+            elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
+              temperature_index = header.index('TemperatureC')
+              solar_index = header.index('SolarRadiationWatts/m^2')
+              datetime = Time.zone.parse(line_components[0]).to_datetime
 
-    def write_csv(filename, data, orientation)
-      # implemented using file operations as roo & write_xlsx don't seem to support writing csv and spreadsheet/csv have BOM issues on Ruby 2.5
-      puts "Writing csv file #{filename}: #{data.length} items in format #{orientation}"
-      File.open(filename, 'w') do |file|
-        if orientation == :landscape
-          dates = unique_list_of_dates_from_datetimes(data.keys)
-          dates.each do |date|
-            line = date.strftime('%Y-%m-%d') << ','
-            (0..47).each do |half_hour_index|
-              datetime = Time.zone.local(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0).to_datetime
-
-              if data.key?(datetime)
-                if data[datetime].nil?
-                  line << ','
-                else
-                  line << data[datetime].to_s << ','
-                end
+              temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
+              solar_string = solar_index.nil? ? nil : line_components[solar_index]
+              solar_value = solar_string.nil? ? nil : solar_string.to_f
+              solar_value = if solar_value.nil?
+                              nil
+                            elsif solar_value < @max_solar_onsolence
+                              solar_value
+                            end
+              if !temperature.nil? && temperature <= @max_temperature && temperature >= @min_temperature # only use data if the temperature is within range
+                data[datetime] = [temperature, solar_value]
               end
             end
-            file.puts(line)
-          end
-        else
-          line = []
-          data.each do |datetime, value|
-            line << datetime.strftime('%Y-%m-%d %H:%M:%S') << ',' << value.to_s << '\n'
-            file.puts(line)
+            line_num += 1
           end
         end
       end
+      puts "got #{data.length} observations"
+      data
+    end
+
+    def generate_single_day_station_history_url(station_name, date)
+      sprintf(
+        "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
+        station_name,
+        date.year,
+        date.month,
+        date.day)
+    end
+
+    def simple_interpolate(val1, val0, t1, t0, tx)
+      t_prop = (tx - t0) / (t1 - t0)
+      val0 + (val1 - val0) * t_prop
+    end
+
+    def interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata)
+      puts "station_name = #{station_name}"
+      puts "Interpolating data onto 30min boundaries for #{station_name} between #{@start_date} and #{@end_date} => #{rawdata.length} samples"
+      temperatures = []
+      solar_insolance = []
+
+      start_time = @start_date.to_datetime
+      end_time = @end_date.to_datetime
+
+      date_times = rawdata.keys
+      mins30step = (1.to_f / 48)
+
+      start_time.step(end_time, mins30step).each do |datetime|
+        closest = date_times.bsearch { |x| x >= datetime }
+        index = date_times.index(closest)
+
+        time_before = date_times[index - 1]
+        time_after = date_times[index]
+        minutes_between_samples = (time_after - time_before) * 24 * 60
+
+        if minutes_between_samples <= @max_minutes_between_samples
+          # process temperatures
+
+          temp_before = rawdata[date_times[index - 1]][0]
+          temp_after = rawdata[date_times[index]][0]
+          temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime).round(2)
+          temperatures.push(temp_val)
+
+          # process solar insolence
+
+          solar_before = rawdata[date_times[index - 1]][1]
+          solar_after = rawdata[date_times[index]][1]
+          solar_val = simple_interpolate(solar_after.to_f, solar_before.to_f, time_after, time_before, datetime).round(2)
+          solar_insolance.push(solar_val)
+        else
+          temperatures.push(nil)
+          solar_insolance.push(nil)
+        end
+      end
+      [temperatures, solar_insolance]
     end
   end
 end
