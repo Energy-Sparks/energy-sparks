@@ -26,7 +26,14 @@ class ActivityTypesController < ApplicationController
   # GET /activity_types/1/edit
   def edit
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
-    @activity_type.activity_type_suggestions.build
+
+    number_of_suggestions_so_far = @activity_type.activity_type_suggestions.count
+    if number_of_suggestions_so_far > 8
+      @activity_type.activity_type_suggestions.build
+    else
+      # Top up to 8
+      (0..(7 - number_of_suggestions_so_far)).each { @activity_type.activity_type_suggestions.build }
+    end
   end
 
   # POST /activity_types
