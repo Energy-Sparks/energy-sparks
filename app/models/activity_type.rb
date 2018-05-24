@@ -49,4 +49,8 @@ class ActivityType < ApplicationRecord
   def key_stages
     key_stage_list.to_a.sort.join(', ')
   end
+
+  def name_with_key_stages
+    "#{name} (#{key_stages})"
+  end
 end

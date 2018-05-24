@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
+  def route_not_found
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+  end
+
 private
 
   def set_ga_code

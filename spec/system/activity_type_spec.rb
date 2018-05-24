@@ -50,6 +50,22 @@ RSpec.describe "activity type", type: :system do
       expect(ActivityType.count).to be 1
     end
 
+    it 'can does not crash if you forget the score' do
+      fill_in('Name', with: 'New activity')
+      first('input#activity_type_description', visible: false).set("the description")
+      fill_in('Badge name', with: 'Badddddger')
+
+      check('KS1')
+
+      click_on('Create Activity type')
+
+      expect(page.has_content?('Badddddger'))
+      expect(page.has_content?("Score can't be blank"))
+     
+      expect(page.has_content?("Activity type was successfully created.")).to_not be true
+      expect(ActivityType.count).to be 0
+    end
+
     it 'can edit a new activity and add KS2 and KS3' do
       activity_type = create(:activity_type, activity_category: activity_category)
       visit edit_activity_type_path(activity_type)
