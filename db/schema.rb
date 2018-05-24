@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_15_085639) do
+ActiveRecord::Schema.define(version: 2018_05_23_133605) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "academic_years", force: :cascade do |t|
@@ -128,6 +129,26 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.boolean "template", default: false
   end
 
+  create_table "data_feed_readings", force: :cascade do |t|
+    t.bigint "data_feed_id"
+    t.integer "feed_type"
+    t.datetime "at"
+    t.decimal "value"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["at"], name: "index_data_feed_readings_on_at"
+    t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
+  end
+
+  create_table "data_feeds", force: :cascade do |t|
+    t.text "type", null: false
+    t.integer "area_id"
+    t.text "title"
+    t.text "description"
+    t.json "configuration", default: {}, null: false
+  end
+
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -149,8 +170,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
@@ -166,13 +187,11 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
     t.integer "sash_id"
     t.string "category", default: "default"
-    t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
   end
 
   create_table "meter_readings", id: :serial, force: :cascade do |t|
@@ -200,8 +219,8 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "schools", id: :serial, force: :cascade do |t|
@@ -212,10 +231,10 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -297,6 +316,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
   add_foreign_key "schools", "calendars"
