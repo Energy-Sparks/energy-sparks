@@ -8,7 +8,7 @@ class DataFeedsController < AdminController
     feed = DataFeed.find(feed_id)
     data = feed.to_csv(feed_type, start_date, end_date)
     respond_to do |format|
-      format.csv { send_data data,  filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv" }
+      format.csv { send_data data, filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv" }
     end
   end
 end
