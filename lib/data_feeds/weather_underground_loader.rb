@@ -30,6 +30,9 @@ module DataFeeds
           solar_insolence.each do |datetime, value|
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_insolence)
           end
+
+          File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(:temperature, @start_date, @end_date)) }
+          File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(:solar_insolence, @start_date, @end_date)) }
         end
       end
     end
