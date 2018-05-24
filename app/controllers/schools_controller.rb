@@ -128,8 +128,13 @@ private
       :electricity_dataset,
       :competition_role,
       key_stage_ids: [],
-      meters_attributes: meter_params
+      meters_attributes: meter_params,
+      school_times_attributes: school_time_params
     )
+  end
+
+  def school_time_params
+    [:id, :day, :opening_time, :closing_time]
   end
 
   def meter_params

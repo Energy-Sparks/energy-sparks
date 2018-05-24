@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_23_133605) do
+ActiveRecord::Schema.define(version: 2018_05_24_200523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -223,6 +223,14 @@ ActiveRecord::Schema.define(version: 2018_05_23_133605) do
     t.datetime "updated_at"
   end
 
+  create_table "school_times", force: :cascade do |t|
+    t.bigint "school_id"
+    t.integer "opening_time", default: 850
+    t.integer "closing_time", default: 1520
+    t.integer "day"
+    t.index ["school_id"], name: "index_school_times_on_school_id"
+  end
+
   create_table "schools", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "school_type"
@@ -319,6 +327,7 @@ ActiveRecord::Schema.define(version: 2018_05_23_133605) do
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
