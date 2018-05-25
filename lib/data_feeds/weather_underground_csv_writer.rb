@@ -8,8 +8,8 @@ module DataFeeds
 
     def write_csv
       # implemented using file operations as roo & write_xlsx don't seem to support writing csv and spreadsheet/csv have BOM issues on Ruby 2.5
-      puts "Writing csv file #{@filename}: #{@data.length} items in format #{@orientation}"
-      File.open(@filename, 'w') do |file|
+      puts "Writing csv file public/downloads/#{@filename}: #{@data.length} items in format #{@orientation}"
+      File.open("public/downloads/#{@filename}", 'w') do |file|
         if @orientation == :landscape
           write_landscape(file)
         else

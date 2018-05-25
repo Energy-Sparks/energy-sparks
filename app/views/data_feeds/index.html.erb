@@ -2,7 +2,7 @@
  <table class="table">
   <thead>
     <tr>
-      <th>Data Feed</th><th>Type</th><th>Download</th><th>Last reading</th>
+      <th>Data Feed</th><th>Type</th><th>Download from DB</th><th>Download from Rake job</th><th>Last reading</th>
     </tr>
   </thead>
   <tbody>
@@ -11,7 +11,8 @@
         <tr class=<%#= class_for_last_date(feed_type_readings.sort_by { |r| r.at }.limit(1).first) %>>
           <td><%= data_feed.title %></td>
           <td><%= feed_type.humanize %></td>
-          <td><%= link_to 'Download last day as CSV', data_feed_path(data_feed, feed_type: feed_type) %></td>
+          <td><%= link_to 'Download last day as CSV from DB', data_feed_path(data_feed, feed_type: feed_type) %></td>
+          <td><%= link_to 'Download last produced CSV from rake', "public/downloads/bath#{feed_type}data.csv" %></td>
           <td><%= nice_dates feed_type_readings.sort_by { |r| r.at }.last.at %></td>
         </tr>
 
