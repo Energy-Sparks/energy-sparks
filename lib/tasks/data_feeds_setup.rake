@@ -1,11 +1,13 @@
 namespace :data_feeds do
   desc 'Set up data feeds'
   task setup: [:environment] do
-    WeatherUndergroundArea.delete_all
-    DataFeeds::WeatherUnderground.delete_all
+    # WeatherUndergroundArea.delete_all
+    # SolarPvTuosArea.delete_all
+    # DataFeeds::WeatherUnderground.delete_all
+    # DataFeeds::SolarPvTuosArea.delete_all
 
     wua = WeatherUndergroundArea.where(title: 'Bath').first_or_create
-    pp wua.class
+    pva = SolarPvTuosArea.where(title: 'Bath').first_or_create
 
     bath_config = {
       # TODO - switch to symbols and Ruby 1.9 hash format
@@ -32,7 +34,21 @@ namespace :data_feeds do
         csv_format: :portrait
       }
 
-    wu = DataFeeds::WeatherUnderground.where(title: 'Weather Underground', area: wua).first_or_create
+    wu = DataFeeds::WeatherUnderground.where(title: 'Weather Underground Bath', area: wua).first_or_create
     wu.update(configuration: bath_config)
+
+    bath_pv_config = {
+      name: 'Bath',
+      latitude: 51.39,
+      longitude: -2.37,
+      proxies: [
+                  { id: 152, name: 'Iron Acton', code: 'IROA', latitude: 51.56933, longitude: -2.47937 },
+                  { id: 198, name: 'Melksham', code: 'MELK', latitude: 51.39403, longitude: -2.14938 },
+                  { id: 253, name: 'Seabank', code: 'SEAB', latitude: 51.53663, longitude: -2.66869 }
+                ]
+    }
+
+    pv = DataFeeds::SolarPvTuos.where(title: 'Solar PV Tuos Bath', area: pva).first_or_create
+    pv.update(configuration: bath_pv_config)
   end
 end
