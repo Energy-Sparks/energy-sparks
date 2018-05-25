@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <%= f.label :calendar_event_type_id, 'Event Type' %>
-    <%= f.select :calendar_event_type_id, options_from_collection_for_select(CalendarEventType.all, 'id', 'display_title',  calendar_event.calendar_event_type.nil? ? 1 : calendar_event.calendar_event_type.id),{}, { class: 'form-control' } %>  
+    <%= f.select :calendar_event_type_id, options_from_collection_for_select(CalendarEventType.all, 'id', 'display_title',  calendar_event.calendar_event_type.nil? ? 1 : calendar_event.calendar_event_type.id),{}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group row">
@@ -34,7 +34,7 @@
                         class: 'form-control term_datepicker',
                         data: { altfield: "#calendar_event_end_date" }
                       ) %>
-                  <%= f.hidden_field :end_date %>
+      <%= f.hidden_field :end_date %>
 
     </div>
   </div>
