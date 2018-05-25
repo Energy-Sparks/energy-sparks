@@ -18,12 +18,14 @@
           <td><%= user.id %></td>
           <td><%= user.email %></td>
           <td><%= user.role.titleize %></td>
-          <td><%= user.school.try(:name) %></td>
+          <td><%= link_to user.school.name, school_path(user.school) if user.school %></td>
           <td><%= user.sign_in_count %></td>
           <td><%= user.access_locked? ? 'Y' : '' %></td>
           <td>
-            <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary btn-sm' %>
-            <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary btn-sm' %>
+              <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            </div>
           </td>
       </tr>
     <% end %>
