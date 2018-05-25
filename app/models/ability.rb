@@ -13,14 +13,18 @@ class Ability
       can :manage, User
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
-#      can :manage, Calendar, id: user.school.try(:calendar_id)
+      can :manage, Calendar, id: user.school.try(:calendar_id)
+      can :manage, School
+      can :read, ActivityCategory
+      can :show, ActivityType
+    elsif user.school_user?
+      can :manage, Activity, school_id: user.school_id
       can :index, School
       can :show, School
       can :usage, School
       can :awards, School
       can :scoreboard, School
       can :suggest_activity, School
-      can :manage, Activity, school_id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
     elsif user.guest?

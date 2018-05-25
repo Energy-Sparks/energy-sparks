@@ -1,5 +1,4 @@
 require 'csv'
-
 # == Schema Information
 #
 # Table name: data_feeds
@@ -10,6 +9,10 @@ require 'csv'
 #  id            :bigint(8)        not null, primary key
 #  title         :text
 #  type          :text             not null
+#
+# Indexes
+#
+#  index_data_feeds_on_area_id  (area_id)
 #
 
 class DataFeed < ApplicationRecord

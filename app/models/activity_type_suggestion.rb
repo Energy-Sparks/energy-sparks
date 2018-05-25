@@ -10,7 +10,8 @@
 #
 # Indexes
 #
-#  index_activity_type_suggestions_on_activity_type_id  (activity_type_id)
+#  index_activity_type_suggestions_on_activity_type_id   (activity_type_id)
+#  index_activity_type_suggestions_on_suggested_type_id  (suggested_type_id)
 #
 # Foreign Keys
 #

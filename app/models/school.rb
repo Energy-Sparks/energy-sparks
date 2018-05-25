@@ -131,9 +131,9 @@ class School < ApplicationRecord
     self.score_points.where("created_at > '#{since}'").sum(:num_points)
   end
 
-  def suggest_activities
-    @activity_categories = ActivityCategory.all.order(:name).to_a
-  end
+  # def suggest_activities
+  #   @activity_categories = ActivityCategory.all.order(:name).to_a
+  # end
 
   def self.scoreboard
     School.select('schools.*, SUM(num_points) AS sum_points')
