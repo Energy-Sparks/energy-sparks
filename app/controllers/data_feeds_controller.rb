@@ -1,4 +1,11 @@
 class DataFeedsController < ApplicationController
+  load_and_authorize_resource
+  skip_before_action :authenticate_user!
+
+  def index
+    @data_feeds = DataFeed.all
+  end
+
   def show
     feed_id     = params[:id]
     feed_type   = params[:feed_type]

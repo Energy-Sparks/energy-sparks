@@ -1,0 +1,21 @@
+<h1>Data Feeds</h1>
+ <table class="table">
+  <thead>
+    <tr>
+      <th>Data Feed</th><th>Type</th><th>Download</th><th>Last reading</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data_feeds.each do |data_feed| %>
+      <% data_feed.data_feed_readings.group_by { |p| p.feed_type }.each do |feed_type, feed_type_readings| %>
+        <tr class=<%#= class_for_last_date(feed_type_readings.sort_by { |r| r.at }.limit(1).first) %>>
+          <td><%= data_feed.title %></td>
+          <td><%= feed_type.humanize %></td>
+          <td><%= link_to 'Download last day as CSV', data_feed_path(data_feed, feed_type: feed_type) %></td>
+          <td><%= nice_dates feed_type_readings.sort_by { |r| r.at }.last.at %></td>
+        </tr>
+
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
