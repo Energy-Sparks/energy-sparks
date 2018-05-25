@@ -13,26 +13,18 @@
       <div class="card-deck">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">Did you know?
-            </h4>
+            <h4 class="card-title">Did you know?</h4>
           </div>
           <div class="card-body">
-            <p>
-              Based on our latest data, your school uses an average of
-            </p>
-            <h2>
-              <%= avg_usage_of_utlity_type[1].to_i unless avg_usage_of_utlity_type.nil? %></strong> kWh per day
-            </h2>
-            <p class="text-muted">
-              Since <%= kid_date_no_year(avg_usage_of_utlity_type[0] - 7.days) %>
-            </p>
+            <p>Based on our latest data, your school uses an average of</p>
+            <h2><%= avg_usage_of_utlity_type[1].to_i unless avg_usage_of_utlity_type.nil? %></strong> kWh per day </h2>
+            <p class="text-muted"> Since <%= kid_date_no_year(avg_usage_of_utlity_type[0] - 7.days) %></p>
           </div>
           <div class="card-footer text-right">
             <%= link_to(t('charts.hourly-usage-link'),
-                        usage_school_path(@school, period: :hourly, supply: meter_type),
-                        class: 'btn btn-primary', title: "See how the school's energy use varies over a chosen day", "data-turbolinks": false) unless avg_usage_of_utlity_type.nil?
+                 usage_school_path(@school, period: :hourly, supply: meter_type),
+                 class: 'btn btn-primary', title: "See how the school's energy use varies over a chosen day", "data-turbolinks": false) unless avg_usage_of_utlity_type.nil?
             %>
-
           </div>
         </div>
 
@@ -41,21 +33,15 @@
             <h4 class="card-title">Did you know?</h4>
           </div>
           <div class="card-body">
-            <p>
-              Based on our latest data, your school uses most energy on
+            <p>Based on our latest data, your school uses most energy on</p>
+            <h2><%= day_most_usage(meter_type) %></h2>
+            <p class="text-muted">Since <%= kid_date_no_year(avg_usage_of_utlity_type[0] - 7.days) %>
             </p>
-            <h2>
-              <%= day_most_usage(meter_type) %>
-            </h2>
-            <p class="text-muted">
-              Since <%= kid_date_no_year(avg_usage_of_utlity_type[0] - 7.days) %>
-            </p>
-
           </div>
           <div class="card-footer text-right">
             <%= link_to(t('charts.weekly-usage-link'),
-                        usage_school_path(@school, period: :daily, supply: meter_type),
-                        class: 'btn btn-primary', title: "See how the school's energy use varies over a chosen week", "data-turbolinks": false) unless avg_usage_of_utlity_type.nil?
+                  usage_school_path(@school, period: :daily, supply: meter_type),
+                  class: 'btn btn-primary', title: "See how the school's energy use varies over a chosen week", "data-turbolinks": false) unless avg_usage_of_utlity_type.nil?
             %>
           </div>
         </div>
