@@ -14,4 +14,3 @@ namespace :data_feeds do
     p "New readings for #{start_date} - #{end_date} - records #{new_readings.count}"
   end
 end
-
