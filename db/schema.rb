@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_093143) do
+ActiveRecord::Schema.define(version: 2018_05_25_121500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_093143) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["activity_type_id"], name: "index_activity_type_suggestions_on_activity_type_id"
+    t.index ["suggested_type_id"], name: "index_activity_type_suggestions_on_suggested_type_id"
   end
 
   create_table "activity_types", id: :serial, force: :cascade do |t|
@@ -127,6 +128,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_093143) do
     t.integer "based_on_id"
     t.integer "calendar_area_id"
     t.boolean "template", default: false
+    t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end
 
   create_table "data_feed_readings", force: :cascade do |t|
@@ -146,6 +148,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_093143) do
     t.text "title"
     t.text "description"
     t.json "configuration", default: {}, null: false
+    t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -171,6 +174,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_093143) do
     t.boolean "processed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
   create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
@@ -179,6 +183,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_093143) do
     t.integer "related_change_id"
     t.string "description"
     t.datetime "created_at"
+    t.index ["related_change_id", "related_change_type"], name: "merit_activity_logs_for_related_changes"
   end
 
   create_table "merit_score_points", id: :serial, force: :cascade do |t|

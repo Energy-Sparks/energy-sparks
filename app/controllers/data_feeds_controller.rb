@@ -1,4 +1,4 @@
-class DataFeedsController < AdminController
+class DataFeedsController < ApplicationController
   def show
     feed_id     = params[:id]
     feed_type   = params[:feed_type]

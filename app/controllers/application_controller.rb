@@ -7,12 +7,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
-  def after_sign_in_path_for(resource)
-    if resource.school.present?
-      return resource.school
-    end
-    root_path
-  end
+  # def after_sign_in_path_for(resource)
+  #   if resource.school.present?
+  #     return resource.school
+  #   end
+  #   root_path
+  # end
 
   def route_not_found
     render file: Rails.public_path.join('404.html'), status: :not_found, layout: false

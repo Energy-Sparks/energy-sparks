@@ -9,6 +9,10 @@
 #  title         :text
 #  type          :text             not null
 #
+# Indexes
+#
+#  index_data_feeds_on_area_id  (area_id)
+#
 
 class DataFeeds::WeatherUnderground < DataFeed
   belongs_to :weather_underground_area
