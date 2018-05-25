@@ -18,4 +18,13 @@ class DataFeedsController < ApplicationController
       format.csv { send_data data, filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv" }
     end
   end
+
+  def destroy
+    @data_feed = DataFeed.find(params[:id])
+    @data_feed.delete
+    respond_to do |format|
+      format.html { redirect_to data_feeds_path, notice: 'Data feed was deleted.' }
+      format.json { head :no_content }
+    end
+  end
 end
