@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
-  get 'data-feeds/:id', to: 'data_feeds#show', defaults: { format: :csv }
+  get 'data-feeds', to: 'data_feeds#index'
+  get 'data-feeds/:id', to: 'data_feeds#show', defaults: { format: :csv }, as: :data_feed
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 

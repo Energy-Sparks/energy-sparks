@@ -29,4 +29,12 @@ class DataFeed < ApplicationRecord
       end
     end
   end
+
+  def last_reading
+    data_feed_readings.order(at: :desc).limit(1).first
+  end
+
+  def last_reading_time
+    last_reading.at
+  end
 end

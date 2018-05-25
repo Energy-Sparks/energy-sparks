@@ -18,19 +18,19 @@ namespace :data_feeds do
         { # weight for averaging, selection: the weather station names are found by browsing weather underground local station data
           'ISOMERSE15'  => 0.5,
           'IBRISTOL11'  => 0.2,
-          # 'ISOUTHGL2'   => 0.1,
-          # 'IENGLAND120' => 0.1,
-          # 'IBATH9'      => 0.1,
-          # 'IBASTWER2'   => 0.1,
-          # 'ISWAINSW2'   => 0.1,
-          # 'IBASMIDF2'   => 0.1
+          'ISOUTHGL2'   => 0.1,
+          'IENGLAND120' => 0.1,
+          'IBATH9'      => 0.1,
+          'IBASTWER2'   => 0.1,
+          'ISWAINSW2'   => 0.1,
+          'IBASMIDF2'   => 0.1
         },
         weather_stations_for_solar: # has to be a temperature station for the moment - saves loading twice
         {
           'ISOMERSE15' => 0.5
         },
         temperature_csv_file_name: 'bathtemperaturedata.csv',
-        solar_csv_file_name: 'bathsolardata.csv',
+        solar_csv_file_name: 'bathsolar_insolencedata.csv',
         csv_format: :portrait
       }
 

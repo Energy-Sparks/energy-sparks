@@ -11,6 +11,7 @@ class Ability
       can :manage, CalendarEvent
       can :manage, School
       can :manage, User
+      can :manage, DataFeed
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
