@@ -14,7 +14,8 @@ class Ability
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
-      can :manage, School
+      can :manage, School, id: user.school_id
+      can :show, School
       can :read, ActivityCategory
       can :show, ActivityType
     elsif user.school_user?
