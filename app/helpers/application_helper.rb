@@ -45,4 +45,16 @@ module ApplicationHelper
 
     options_for_select(options, select_deselect)
   end
+
+  def class_for_last_date(last_date)
+    if last_date.nil?
+      "table-light"
+    elsif last_date < Time.zone.now - 30.days
+      "table-danger"
+    elsif last_date < Time.zone.now - 5.days
+      "table-warning"
+    else
+      "table-success"
+    end
+  end
 end
