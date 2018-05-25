@@ -38,7 +38,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
-  enum role: [:guest, :school_admin, :admin, :school_user]
+  enum role: [:guest, :school_user, :admin, :school_admin]
 
   def manages_school?(sid = nil)
     admin? || (sid && school_admin_or_user? && school_id == sid)
