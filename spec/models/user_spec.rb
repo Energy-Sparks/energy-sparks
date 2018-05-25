@@ -17,7 +17,7 @@ describe User do
     context "when is a school user" do
       let(:school) { create(:school) }
       let(:another_school) { create(:school) }
-      let(:user) { create(:user, role: :school_admin, school: school) }
+      let(:user) { create(:user, role: :school_user, school: school) }
 
       %w(ActivityType ActivityCategory Calendar CalendarEvent School User).each do |thing|
         it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }

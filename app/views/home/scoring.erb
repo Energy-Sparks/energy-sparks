@@ -27,7 +27,7 @@
       <p>
         By recording your energy saving activities you can score points.
         Your current score is always displayed on
-        <% if current_user.present? && current_user.school_admin? %>
+        <% if current_user.try(:school_admin_or_user?) %>
             <%= link_to "your school homepage", school_path(current_user.school) %>
         <% else %>
             your school homepage
@@ -51,14 +51,14 @@
       </p>
       <p>
         Your most recent award is always displayed on
-        <% if current_user.present? && current_user.school_admin? %>
-            <%= link_to "your school homepage", school_path(current_user.school) %>.
+        <% if current_user.try(:school_admin_or_user?) %>
+          <%= link_to "your school homepage", school_path(current_user.school) %>.
         <% else %>
             your school homepage.
         <% end %>
         You can also view a
-        <% if current_user.present? && current_user.school_admin? %>
-            <%= link_to "list of current awards", awards_school_path(current_user.school) %>
+        <% if current_user.try(:school_admin_or_user?) %>
+          <%= link_to "list of current awards", awards_school_path(current_user.school) %>
         <% else %>
             list of awards you can receive.
         <% end %>
