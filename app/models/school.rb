@@ -2,28 +2,32 @@
 #
 # Table name: schools
 #
-#  address                  :text
-#  calendar_area_id         :integer
-#  calendar_id              :integer
-#  competition_role         :integer
-#  created_at               :datetime         not null
-#  electricity_dataset      :string
-#  enrolled                 :boolean          default(FALSE)
-#  gas_dataset              :string
-#  id                       :integer          not null, primary key
-#  level                    :integer          default(0)
-#  met_office_area_id       :integer
-#  name                     :string
-#  postcode                 :string
-#  sash_id                  :integer
-#  school_type              :integer
-#  slug                     :string
-#  solar_irradiance_area_id :integer
-#  solar_pv_area_id         :integer
-#  temperature_area_id      :integer
-#  updated_at               :datetime         not null
-#  urn                      :integer          not null
-#  website                  :string
+#  address                     :text
+#  calendar_area_id            :integer
+#  calendar_id                 :integer
+#  competition_role            :integer
+#  created_at                  :datetime         not null
+#  electricity_dataset         :string
+#  enrolled                    :boolean          default(FALSE)
+#  floor_area                  :decimal(, )
+#  gas_dataset                 :string
+#  id                          :integer          not null, primary key
+#  level                       :integer          default(0)
+#  met_office_area_id          :integer
+#  name                        :string
+#  number_of_pupils            :integer
+#  postcode                    :string
+#  sash_id                     :integer
+#  school_type                 :integer
+#  slug                        :string
+#  solar_irradiance_area_id    :integer
+#  solar_pv_aread_id           :integer
+#  solar_pv_tuos_area_id       :integer
+#  temperature_area_id         :integer
+#  updated_at                  :datetime         not null
+#  urn                         :integer          not null
+#  weather_underground_area_id :integer
+#  website                     :string
 #
 # Indexes
 #
@@ -54,6 +58,8 @@ class School < ApplicationRecord
 
   belongs_to :calendar
   belongs_to :calendar_area
+  belongs_to :weather_underground_area
+  belongs_to :solar_pv_tuos_area
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]

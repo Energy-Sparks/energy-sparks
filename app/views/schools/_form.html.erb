@@ -12,25 +12,67 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :urn %>
-    <%= f.number_field :urn, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control' %>
   </div>
 
   <div class="form-group">
-    <%= f.label :school_type %>
-    <%= f.select :school_type, School.school_types.keys.map {|type| [type.titleize,type]}, {}, { class: 'form-control' } %>
+    <%= f.label :urn, 'Unique Reference Number (URN)' %>
+    <%= f.number_field :urn, class: 'form-control' %>
   </div>
 
+  <h2>School Type</h2>
+  <div class="form-group">
+    <% School.school_types.keys.each do |school_type| %>
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
+        <%= f.label "school_type_#{school_type.to_sym}", school_type.to_sym.capitalize,  class: "form-check-label" %>
+      </div>
+    <% end %>
+  </div>
+
+  <p>Please select which Key Stages this school teaches.</p>
+  <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <%= b.check_box(class: "custom-control-input") %>
+      <%= b.label(class: "custom-control-label") do %>
+        <%= b.object.name %>
+      <% end %>
+    </div>
+  <% end %>
+  <hr/>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :number_of_pupils %>
+      <%= f.number_field :number_of_pupils, class: 'form-control' %>
+    </div>
+    <div class="form-group col-md-6">
+      <%= f.label :floor_area, 'Floor area in square metres' %>
+      <%= f.number_field :floor_area, class: 'form-control' %>
+    </div>
+  </div>
+
+  <h2>Calendar and Data Feed configuration</h2>
+  <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
   <div class="form-group">
     <%= f.label :calendar_area_id, 'Calendar Area' %>
     <%= f.select :calendar_area_id, options_from_collection_for_select(CalendarArea.all, 'id', 'title', (@school.calendar_area.id if @school.calendar_area)),{}, { class: 'form-control' }%>
   </div>
 
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :weather_underground_area_id, 'Weather Underground Data Feed Area' %>
+      <%= f.select :weather_underground_area_id, options_from_collection_for_select(WeatherUndergroundArea.all, 'id', 'title', (@school.weather_underground_area.id if @school.weather_underground_area)),{}, { class: 'form-control' }%>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
+      <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all, 'id', 'title', (@school.solar_pv_tuos_area_id.id if @school.solar_pv_tuos_area_id)),{}, { class: 'form-control' }%>
+    </div>
+  </div>
+
+  <h2>Address</h2>
   <div class="form-group">
     <%= f.label :address %>
     <%= f.text_area :address, class: 'form-control' %>
@@ -66,17 +108,6 @@
   </div>
 
   <%= render 'shared/custom_checkbox', f: f, field_name: :enrolled %>
-
-  <h2>Key Stages</h2>
-  <p>Please select which Key Stages this school teaches.</p>
-  <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
-    <div class="custom-control custom-checkbox custom-control-inline">
-      <%= b.check_box(class: "custom-control-input") %>
-      <%= b.label(class: "custom-control-label") do %>
-        <%= b.object.name %>
-      <% end %>
-    </div>
-  <% end %>
 
   <h2>School Times</h2>
   <p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format without a separating colon.</p>
