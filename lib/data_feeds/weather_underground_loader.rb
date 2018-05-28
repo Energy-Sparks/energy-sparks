@@ -171,6 +171,10 @@ module DataFeeds
         closest = date_times.bsearch { |x| x >= datetime }
         index = date_times.index(closest)
 
+        puts "datetime #{datetime}"
+        puts "closest: #{closest}"
+        puts "index: #{index}"
+
         time_before = date_times[index - 1]
         time_after = date_times[index]
         minutes_between_samples = (time_after - time_before) * 24 * 60
