@@ -200,9 +200,9 @@ module DataFeeds
 
           puts "datetime #{start_time}"
           puts "datetime #{end_time}"
-          puts "datetime #{date_times}" 
-          puts "datetime #{mins30step}"           
-        
+          puts "datetime #{date_times}"
+          puts "datetime #{mins30step}"
+
           puts "datetime #{datetime}"
           puts "closest: #{closest}"
           puts "index: #{index}"
