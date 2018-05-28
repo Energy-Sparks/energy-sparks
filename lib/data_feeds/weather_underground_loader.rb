@@ -171,29 +171,42 @@ module DataFeeds
         closest = date_times.bsearch { |x| x >= datetime }
         index = date_times.index(closest)
 
-        puts "datetime #{datetime}"
-        puts "closest: #{closest}"
-        puts "index: #{index}"
+        if !index.nil?
 
-        time_before = date_times[index - 1]
-        time_after = date_times[index]
-        minutes_between_samples = (time_after - time_before) * 24 * 60
+          time_before = date_times[index - 1]
+          time_after = date_times[index]
+          minutes_between_samples = (time_after - time_before) * 24 * 60
 
-        if minutes_between_samples <= @max_minutes_between_samples
-          # process temperatures
+          if minutes_between_samples <= @max_minutes_between_samples
+            # process temperatures
 
-          temp_before = rawdata[date_times[index - 1]][0]
-          temp_after = rawdata[date_times[index]][0]
-          temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime).round(2)
-          temperatures.push(temp_val)
+            temp_before = rawdata[date_times[index - 1]][0]
+            temp_after = rawdata[date_times[index]][0]
+            temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime).round(2)
+            temperatures.push(temp_val)
 
-          # process solar insolence
+            # process solar insolence
 
-          solar_before = rawdata[date_times[index - 1]][1]
-          solar_after = rawdata[date_times[index]][1]
-          solar_val = simple_interpolate(solar_after.to_f, solar_before.to_f, time_after, time_before, datetime).round(2)
-          solar_insolance.push(solar_val)
+            solar_before = rawdata[date_times[index - 1]][1]
+            solar_after = rawdata[date_times[index]][1]
+            solar_val = simple_interpolate(solar_after.to_f, solar_before.to_f, time_after, time_before, datetime).round(2)
+            solar_insolance.push(solar_val)
+          else
+            temperatures.push(nil)
+            solar_insolance.push(nil)
+          end
         else
+          puts "index is nil for"
+
+          puts "datetime #{start_time}"
+          puts "datetime #{end_time}"
+          puts "datetime #{date_times}" 
+          puts "datetime #{mins30step}"           
+        
+          puts "datetime #{datetime}"
+          puts "closest: #{closest}"
+          puts "index: #{index}"
+
           temperatures.push(nil)
           solar_insolance.push(nil)
         end
