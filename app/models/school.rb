@@ -55,6 +55,7 @@ class School < ApplicationRecord
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
   has_many :school_times, inverse_of: :school, dependent: :destroy
+  has_many :contacts,     inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
   belongs_to :calendar_area
