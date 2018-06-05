@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Data feed">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">DateTime</Data></Cell>
+        <Cell><Data ss:Type="String">Value</Data></Cell>
+      </Row>
+    <% @readings.each do |reading| %>
+      <Row>
+        <Cell><Data ss:Type="Number"><%= reading.at %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= reading.value %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
+

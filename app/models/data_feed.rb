@@ -19,12 +19,10 @@ class DataFeed < ApplicationRecord
   belongs_to  :area
   has_many    :data_feed_readings, dependent: :destroy
 
-  def to_csv(feed_type, start_date = DateTime.yesterday - 1, end_date = DateTime.yesterday)
-    readings = data_feed_readings.where(feed_type: feed_type).where('at >= ? and at <= ?', start_date, end_date)
-
-    CSV.generate(headers: true) do |csv|
+  def to_csv(output_readings)
+    CSV.generate(headers: true, col_sep: "\t", encoding: 'ISO-8859-1') do |csv|
       csv << %w(DateTime Value)
-      readings.each do |f|
+      output_readings.each do |f|
         csv << [f.at.strftime('%Y-%m-%d %H:%M'), f.value]
       end
     end
@@ -36,5 +34,9 @@ class DataFeed < ApplicationRecord
 
   def last_reading_time
     last_reading.at
+  end
+
+  def readings(feed_type, start_date = DateTime.yesterday - 1, end_date = DateTime.yesterday)
+    data_feed_readings.where(feed_type: feed_type).where('at >= ? and at <= ?', start_date, end_date)
   end
 end
