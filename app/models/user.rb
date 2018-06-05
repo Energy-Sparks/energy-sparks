@@ -38,14 +38,18 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
-  enum role: [:guest, :school_admin, :admin]
+  enum role: [:guest, :school_user, :admin, :school_admin]
 
   def manages_school?(sid = nil)
-    admin? || (sid && school_admin? && school_id == sid)
+    admin? || (sid && school_admin_or_user? && school_id == sid)
   end
 
   #is the user an administrator of an enrolled school?
   def enrolled_school_admin?
-    school_admin? && school.enrolled?
+    school_admin_or_user? && school.enrolled?
+  end
+
+  def school_admin_or_user?
+    school_admin? || school_user?
   end
 end

@@ -123,13 +123,22 @@ private
       :website,
       :enrolled,
       :calendar_area_id,
+      :weather_underground_area_id,
+      :solar_pv_tuos_area_id,
       :urn,
       :gas_dataset,
       :electricity_dataset,
       :competition_role,
+      :number_of_pupils,
+      :floor_area,
       key_stage_ids: [],
-      meters_attributes: meter_params
+      meters_attributes: meter_params,
+      school_times_attributes: school_time_params
     )
+  end
+
+  def school_time_params
+    [:id, :day, :opening_time, :closing_time]
   end
 
   def meter_params
