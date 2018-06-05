@@ -1,0 +1,36 @@
+
+<h1>Editing School Alert</h1>
+
+<div class="row">
+  <%= form_for([@school, @alert]) do |f| %>
+    <% if @alert.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
+
+        <ul>
+        <% @alert.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <h2><%= @alert.alert_type.title %></h2>
+    <p>Send a message to these contacts when this alert is triggered.</p> 
+    <%= f.collection_check_boxes(:contact_ids, @school.contacts, :id, :display_name) do |b| %>
+      <div class="custom-control custom-checkbox custom-control-inline">
+        <%= b.check_box(class: "custom-control-input") %>
+        <%= b.label(class: "custom-control-label") do %>
+          <%= b.object.display_name %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= f.submit "Save alert", class: 'btn btn-primary' %>
+  <% end %>
+</div>
+
+
+<div class="other-actions">
+  <%= link_to 'Back', school_alerts_path(@school), class: 'btn btn-secondary' %>
+</div>
