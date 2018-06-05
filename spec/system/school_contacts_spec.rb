@@ -10,26 +10,35 @@ RSpec.describe "school", type: :system do
     before(:each) do
       sign_in(admin)
       visit root_path
-      expect(page.has_content? 'Sign Out').to be true
+      expect(page).to have_content 'Sign Out'
       click_on('Schools')
-      expect(page.has_content? "Participating Schools").to be true
+      expect(page).to have_content "Participating Schools"
     end
 
     describe 'no contacts' do
       it 'shows me an empty contacts page' do
-        click_on(school_name)
-        expect(page.has_content? "Contacts").to be true
-        click_on "Contacts"
+        visit school_contacts_path(school)
+        expect(page).to have_content "No contacts are currently set up for this school."
+      end
+
+       it 'allows me to add a new one' do
+        visit school_contacts_path(school)
+        expect(page).to have_content "No contacts are currently set up for this school."
+
+        click_on('New Contact')
+        fill_in('Name', with: 'Arthur Boggitt')
+        fill_in('Email address', with: 'arthur@boggithall.test')
+        click_on('Save')
+        expect(page.current_path).to eq school_contacts_path(school)
+        expect(page).to have_content 'Arthur Boggitt was successfully created'
       end
     end
 
     describe 'existing contacts' do
-      let!(:contact) { create(:contact_with_name_email) }
+      let!(:contact) { create(:contact_with_name_email, school: school) }
       it 'shows me the contacts on the page' do
-        click_on(school_name)
-        expect(page.has_content? "Contacts").to be true
-        click_on "Contacts"
-         expect(page.has_content? contact.name).to be true
+        visit school_contacts_path(school)
+        expect(page).to have_content contact.name
       end
     end
   end

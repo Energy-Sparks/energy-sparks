@@ -11,9 +11,9 @@ RSpec.describe "school alerts", type: :system do
     before(:each) do
       sign_in(admin)
       visit root_path
-      expect(page.has_content? 'Sign Out').to be true
+      expect(page).to have_content  'Sign Out'
       click_on('Schools')
-      expect(page.has_content? "Participating Schools").to be true
+      expect(page).to have_content  "Participating Schools"
     end
 
     describe 'shows alerts' do
@@ -24,31 +24,32 @@ RSpec.describe "school alerts", type: :system do
         expect(alert.alert_type.sub_category).to be_in AlertType.sub_categories.keys
         expect(alert.school).to eq school
         click_on(school_name)
-        expect(page.has_content? alerts_button).to be true
+        expect(page).to have_content alerts_button
         click_on alerts_button
-        expect(page.has_content? alert.alert_type.title).to be true
-        expect(page.has_content? 'No one allocated').to be true
+        expect(page).to have_content alert.alert_type.title
+        expect(page).to have_content 'No one allocated'
       end
 
       it 'shows me a page with an allocated contact' do
         contact = create(:contact_with_name_email)
         alert.contacts << contact
         click_on(school_name)
-        expect(page.has_content? alerts_button).to be true
+        expect(page).to have_content alerts_button
         click_on alerts_button
-        expect(page.has_content? alert.alert_type.title).to be true
-        expect(page.has_content? contact.name).to be true
+        expect(page).to have_content alert.alert_type.title
+        expect(page).to have_content contact.name
       end
     end
 
     describe 'existing contacts' do
-      let!(:contact) { create(:contact_with_name_email) }
+      let!(:contact) { create(:contact_with_name_email, school: school) }
+      let!(:alert) { create(:alert, school: school, contacts: [contact]) } 
 
       it 'shows me the contacts on the page' do
         click_on(school_name)
-        expect(page.has_content? alerts_button).to be true
+        expect(page).to have_content alerts_button
         click_on alerts_button
-        expect(page.has_content? contact.name).to be true
+        expect(page).to have_content contact.name
       end
     end
   end

@@ -11,34 +11,39 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Mobile Phone Number</th>
-          <th>Email Address</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @contacts.each do |contact| %>
-          <tr scope="row">
-            <td><%= contact.name %></td>
-            <td><%= contact.description %></td>
-            <td><%= contact.mobile_phone_number %></td>
-            <td><%= contact.email_address %></td>
-            <td>
-              <div class="btn-group">
-                <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
-                <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-              </div>
-            </td>
+<% unless @contacts.empty? %>
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Mobile Phone Number</th>
+            <th>Email Address</th>
+            <th>Actions</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @contacts.each do |contact| %>
+            <tr scope="row">
+              <td><%= contact.name %></td>
+              <td><%= contact.description %></td>
+              <td><%= contact.mobile_phone_number %></td>
+              <td><%= contact.email_address %></td>
+              <td>
+                <div class="btn-group">
+                  <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+                  <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+
+<% else %>
+  <p>No contacts are currently set up for this school.</p>
+<% end %>
