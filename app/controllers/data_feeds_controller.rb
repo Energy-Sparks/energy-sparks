@@ -13,9 +13,11 @@ class DataFeedsController < ApplicationController
     end_date    = params[:end_date] || Date.yesterday
 
     feed = DataFeed.find(feed_id)
-    data = feed.to_csv(feed_type, start_date, end_date)
+    @readings = feed.readings(feed_type, start_date, end_date)
+    data = feed.to_csv(@readings)
     respond_to do |format|
       format.csv { send_data data, filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv" }
+      format.xls 
     end
   end
 
