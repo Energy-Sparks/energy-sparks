@@ -21,7 +21,7 @@
         </div>
       <% end %>
 
-      <p>Energy Sparks will send a message to these contacts when the alert is triggered. You can add more contacts using the Add new contact button.</p> 
+      <p>Energy Sparks will send a message to each of these contacts when the alert is triggered. You can add more contacts using the Add new contact button.</p> 
       <%= f.collection_check_boxes(:contact_ids, @school.contacts, :id, :display_name) do |b| %>
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= b.check_box(class: "custom-control-input") %>
