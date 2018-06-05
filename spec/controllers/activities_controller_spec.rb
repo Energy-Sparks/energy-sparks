@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe ActivitiesController, type: :controller do
   let(:school) { create :school }
   let(:different_school) { create :school }
-  let(:activity_category) { create :activity_category }
-  let(:activity_type) { create(:activity_type, name: "One", activity_category: activity_category, data_driven: true) }
+  let!(:activity_category) { create :activity_category }
+  let!(:activity_type) { create(:activity_type, name: "One", activity_category: activity_category, data_driven: true) }
   let(:activity_type2) { create(:activity_type, name: "Two", activity_category: activity_category) }
 
   let(:valid_attributes) {
@@ -132,11 +132,12 @@ RSpec.describe ActivitiesController, type: :controller do
 
     context "when granting awards" do
       let(:second_category) { create :activity_category }
+      let(:activity_type3) { create(:activity_type, name: "Two", activity_category: second_category) }
+  
 
       let(:valid_attributes2) {
         { school_id: school.id,
-          activity_type_id: activity_type2.id,
-          activity_category_id: second_category.id,
+          activity_type_id: activity_type3.id,
           title: 'test title',
           happened_on: Date.today
         }
