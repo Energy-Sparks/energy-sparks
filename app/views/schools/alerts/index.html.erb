@@ -33,7 +33,7 @@
             <td><%= alert.alert_type.title %></td>  
             <td><%= alert.display_sub_category %></td>
             <td><%= alert.alert_type.long_term ? 'Long' : 'Short' %></td>
-            <td><%= pluralize(alert.alert_type.daily_frequency, 'day') if alert.alert_type.daily_frequency > 0 %></td>
+            <td><%= pluralize(alert.alert_type.daily_frequency, 'day') if alert.alert_type.daily_frequency && alert.alert_type.daily_frequency > 0 %></td>
             <td><%= alert.alert_type.analysis_description %></td>
             <td><%= alert.contacts.any? ? alert.contacts.pluck(:name).join(', ') : 'No one allocated' %></td>
             <td><%= link_to 'Edit', edit_school_alert_path(@school, alert), class: 'btn btn-warning' %></td>
