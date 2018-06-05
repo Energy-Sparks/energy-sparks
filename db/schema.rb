@@ -80,9 +80,9 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
   end
 
   create_table "alerts", force: :cascade do |t|
-    t.bigint "alert_types_id"
+    t.bigint "alert_type_id"
     t.bigint "school_id"
-    t.index ["alert_types_id"], name: "index_alerts_on_alert_types_id"
+    t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
@@ -365,7 +365,7 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "alerts", "alert_types", column: "alert_types_id"
+  add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"

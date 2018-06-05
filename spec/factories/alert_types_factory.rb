@@ -12,9 +12,10 @@
 #  sub_category         :integer
 #  title                :text
 #
-class AlertType < ApplicationRecord
-  has_many :alerts
-
-  enum category: [:electricity, :gas]
-  enum sub_category: [:hot_water, :heating, :frost_protection, :optimum_start, :heating_turn_on_off, :heating_off, :change_in_consumption, :change_in_baseload_consumption]
+FactoryBot.define do
+  factory :alert_type do
+    sequence(:title) {|n| "Alert Type #{n}"}
+    category { AlertType.categories.keys.sample }
+    sub_category { AlertType.sub_categories.keys.sample }
+  end
 end

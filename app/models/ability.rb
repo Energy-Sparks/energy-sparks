@@ -7,6 +7,8 @@ class Ability
       can :manage, Activity
       can :manage, ActivityType
       can :manage, ActivityCategory
+      can :manage, Alert
+      can :manage, Contact
       can :manage, Calendar
       can :manage, CalendarEvent
       can :manage, School
@@ -16,6 +18,8 @@ class Ability
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
       can :manage, School, id: user.school_id
+      can :manage, Alert, school_id: user.school_id
+      can :manage, Contact, school_id: user.school_id
       can :show, School
       can :read, ActivityCategory
       can :show, ActivityType

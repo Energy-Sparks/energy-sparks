@@ -25,6 +25,10 @@ Rails.application.routes.draw do
 
   resources :schools do
     resources :activities
+    scope module: :schools do
+      resources :contacts
+      resources :alerts
+    end
     get :scoreboard, on: :collection
     member do
       get 'awards'
