@@ -39,5 +39,4 @@ class DataFeed < ApplicationRecord
   def readings(feed_type, start_date = DateTime.yesterday - 1, end_date = DateTime.yesterday)
     data_feed_readings.where(feed_type: feed_type).where('at >= ? and at <= ?', start_date, end_date)
   end
-
 end

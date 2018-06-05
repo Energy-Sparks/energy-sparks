@@ -17,7 +17,7 @@ class DataFeedsController < ApplicationController
     data = feed.to_csv(@readings)
     respond_to do |format|
       format.csv { send_data data, filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv" }
-      format.xls 
+      format.xls
     end
   end
 
