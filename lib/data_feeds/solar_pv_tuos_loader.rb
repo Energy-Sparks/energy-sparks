@@ -40,7 +40,8 @@ module DataFeeds
               DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv)
             end
 
-            File.open("from-db-#{filename}", 'w') { |file| file.write(data_feed.to_csv(:solar_pv, @start_date, @end_date)) }
+            pv_readings = data_feed.readings(:solar_pv, @start_date, @end_date)
+            File.open("from-db-#{filename}", 'w') { |file| file.write(data_feed.to_csv(pv_readings)) }
           end
         end
       end
