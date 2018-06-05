@@ -11,28 +11,26 @@ module DataFeeds
       @max_minutes_between_samples = 120
       @max_solar_onsolence = 2000.0
       @csv_format = :portrait
+
+      @dates = split_time_period_into_chunks # process data in chunks to avoid timeout
     end
 
     def import
-      pp "No action yet"
       SolarPvTuosArea.all.each do |sa|
         sa.data_feeds.each do |data_feed|
-          area = data_feed.configuration.deep_symbolize_keys
-
-          area_name = area[:name]
-          config_data = area
+          config_data = data_feed.configuration.deep_symbolize_keys
+          area_name = config_data[:name]
 
           latitude = config_data[:latitude]
           longitude = config_data[:longitude]
           filename = "#{area_name.downcase}solar_pvdata.csv"
 
-          dates = split_time_period_into_chunks # process data in chunks to avoid timeout
-          dates.each do |date_range_chunk|
+          @dates.each do |date_range_chunk|
             start_date, end_date = date_range_chunk
             puts
             puts "========================Processing a chunk of data between #{start_date} #{end_date}=============================="
             puts
-            regional_data = download_data_for_area(area_name, latitude, longitude, start_date, end_date, area[:proxies])
+            regional_data = download_data_for_area(latitude, longitude, start_date, end_date, config_data[:proxies])
             pv_data = process_regional_data(regional_data, start_date, end_date)
 
             WeatherUndergroundCsvWriter.new(filename, pv_data, @csv_format).write_csv
@@ -101,7 +99,7 @@ module DataFeeds
       download_data(url)
     end
 
-    def download_data_for_area(_area_name, latitude, longitude, start_date, end_date, proxies)
+    def download_data_for_area(latitude, longitude, start_date, end_date, proxies)
       region_data = {}
       proxies.each do |proxy|
         pp proxy
