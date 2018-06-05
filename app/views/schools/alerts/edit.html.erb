@@ -3,8 +3,12 @@
 <% if @school.contacts.empty? %>
   <p>Please create some contacts so that you can allocate them to this alert</p>
   <p><%= link_to 'New Contact', new_school_contact_path(@school), class: 'btn btn-secondary' %></p>
+  <div class="other-actions">
+    <%= link_to 'Back', school_alerts_path(@school), class: 'btn btn-secondary' %>
+  </div>
+
 <% else %>
-  <div class="row">
+
     <%= form_for([@school, @alert]) do |f| %>
       <% if @alert.errors.any? %>
         <div id="error_explanation">
@@ -17,10 +21,7 @@
         </div>
       <% end %>
 
-      
-
-
-      <p>Send a message to these contacts when this alert is triggered.</p> 
+      <p>Energy Sparks will send a message to these contacts when the alert is triggered. You can add more contacts using the Add new contact button.</p> 
       <%= f.collection_check_boxes(:contact_ids, @school.contacts, :id, :display_name) do |b| %>
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= b.check_box(class: "custom-control-input") %>
@@ -29,13 +30,16 @@
           <% end %>
         </div>
       <% end %>
-
-      <%= f.submit "Save alert", class: 'btn btn-primary' %>
+      <div class="row other-actions">
+        <p>
+          <%= f.submit "Save alert", class: 'btn btn-primary' %>
+          <%= link_to 'Add new contact', new_school_contact_path(@school), class: 'btn btn-success' %>         
+          <%= link_to 'Back', school_alerts_path(@school), class: 'btn btn-secondary' %>
+        </p>
+      </div>
     <% end %>
-  </div>
+
 
 <% end %>
 
-<div class="other-actions">
-  <%= link_to 'Back', school_alerts_path(@school), class: 'btn btn-secondary' %>
-</div>
+
