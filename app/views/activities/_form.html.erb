@@ -30,28 +30,19 @@
   <div class="form-group">
     <%= f.label :activity_category_id %>
     <p class="small">
-      Choose the category that best describes your activity
+       How have you organised that activity?
     </p>
-    <%= f.collection_select(
-      :activity_category_id,
+    <%= f.grouped_collection_select(
+      :activity_type_id,
       ActivityCategory.all.order(:name),
+      :activity_types,
+      :name,
       :id,
       :name,
       {},
-      {class: 'form-control'}
-      )
-    %>
-  </div>
+      { class: 'form-control'}
 
-  <div class="form-group">
-    <%= f.label :activity_type_id, "Activity" %>
-    <p class="small">
-      How have you organised that activity?
-    </p>
-    <%= f.grouped_collection_select(
-          :activity_type_id,
-          ActivityCategory.order(:name), :sorted_activity_types, :name, :id, :name, {}, {class: 'form-control'}
-        )
+      )
     %>
   </div>
 
