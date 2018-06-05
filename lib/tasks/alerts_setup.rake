@@ -8,10 +8,8 @@ namespace :alerts do
     AlertTypeFactory.new(data_hash).create
 
     School.enrolled.each do |school|
-      if school.alerts.empty?
-        AlertType.all.each do |alert_type|
-          school.alerts.create(alert_type: alert_type)
-        end
+      AlertType.all.each do |alert_type|
+        school.alerts.create(alert_type: alert_type) unless school.alerts.where(alert_type: alert_type).exists?
       end
     end
     # puts data_hash.class
