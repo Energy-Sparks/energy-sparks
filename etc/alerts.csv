@@ -1,23 +1,26 @@
-﻿Category,Sub-category,Alert,Term,Sample Message,Analysis,Frequency,,
-Gas,Hot Water,Hot Water Inefficient,Long,"Your hot water system is only x% efficient, click here for suggestions on how to improve","Scan across August Holidays historically looking for in and out of holiday use, return an efficiency measure",7d,,
-Gas,Hot Water,Hot Water Left on Over Holidays and Weekends,Long,"You often leave your hot water on over holidays and weekends, this is costing you £5 and £6 respectively, click here for suggesitons on how to reduce this","Scan all weekends and holidays, sum up gas usage when temp above 4C (heating frost protection)",7d,,
-Gas,Hot Water,Hot water left on over holidays,Short,Warning: you have left your hot water on over the holidays,"If in a holiday, and have full day of data, and not frosty, alert message if gas usage above a threshold",1d,,
-Gas,Heating,Left on over holidays and weekends,Long,"You often leave your Heating on over holidays and weekends, this is costing you £5 and £6 respectively, click here for suggesitons on how to reduce this","Scan all weekends and holidays, sum up gas usage when temp above 4C (heating frost protection)",,,
-Gas,Frost Protection,Frost protection using too much gas,Long,"Your frost protection system may be using too much gas, please check its settings","Scan all winter weekends and holidays where temperature below and above 4C, determine weekends where fronst protection on, analyse usage, return dates when on; potentially extend of school days out of hours",7d,,
-Gas,Optimum Start,Optimum Start Starting Too Early,Long,Your boiler is starting too early in the morning,"Develop basic heat up model, back out proportion of heat used before occupancy time (seem associated gdoc)",7d,,
-Gas,Heating Turn On/Off,Advanced warning of warm or cold weather,Short,"The weather forecast for next week suggests an average temperature of X, you should consider turning your boiler on/off","Some form of heuristic looking at the next 5 working days weather, ex holidays",1d,,
-Gas,Heating Off,Upcoming holiday,Short,"There is a holiday coming up, please remeber to turn the heating off",", some reference to whether frost protection is configured?",1d,,
-Gas ,Change in consumption,Usage up or down,Short,"Your gas usage has increased by x% since last week, please investigate (if this continues for the rest of the year it might cost an additional Y%)",Requires regression based model to adjust for temperatures,1d,,
-Electricity,Change in consumption,Usage up or down,Short,"Your electricity usage has increased by x% since last week, please investigate (if this continues for the rest of the year it might cost an additional Y%)",Requires regression based model to adjust for temperatures,1d,,
-Electricity,Change in baseload consumption,Out of hours usage up or down,Short & long,"Your out of hours usage has increased by x% since last week, please investigate (if this continues for the rest of the year it might cost an additional Y%)",,7d,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
+﻿Title,Category,Sub Category,Analysis,Short/long term,Sample Message,Frequency
+Hot Water Inefficient,Gas,Hot water,"Scan across August Holidays historically looking for in and out of holiday use, return an efficiency measure",Long,"Your hot water system is only x% efficient, click here for suggestions on how to improve",7d
+Hot Water Left on Over Holidays and Weekends,Gas,Hot water,"Scan all weekends and holidays, sum up gas usage when temp above 4C (heating frost protection)",Long,"You often leave your hot water on over holidays and weekends, this is costing you £5 and £6 respectively, click here for suggesitons on how to reduce this",7d
+Hot water left on over holidays,Gas,Hot water,"If in a holiday, and have full day of data, and not frosty, alert message if gas usage above a threshold",Short,Warning: you have left your hot water on over the holidays,1d
+Left on over holidays and weekends,Gas,Heating,"Scan all weekends and holidays, sum up gas usage when temp above 4C (heating frost protection)",Long,"You often leave your Heating on over holidays and weekends, this is costing you £5 and £6 respectively, click here for suggesitons on how to reduce this",
+Frost protection using too much gas,Gas,Frost protection,"Scan all winter weekends and holidays where temperature below and above 4C, determine weekends where fronst protection on, analyse usage, return dates when on; potentially extend of school days out of hours",Long,"Your frost protection system may be using too much gas, please check its settings",7d
+Optimum Start Starting Too Early,Gas,Optimum start,"Develop basic heat up model, back out proportion of heat used before occupancy time (seem associated gdoc)",Long,Your boiler is starting too early in the morning,7d
+Advanced warning of warm or cold weather,Gas,Heating turn on off,"Some form of heuristic looking at the next 5 working days weather, ex holidays",Short,"The weather forecast for next week suggests an average temperature of X, you should consider turning your boiler on/off",1d
+Upcoming holiday,Gas,Heating off,", some reference to whether frost protection is configured?",Short,"There is a holiday coming up, please remeber to turn the heating off",1d
+Usage up or down,Gas,Change in consumption,Requires regression based model to adjust for temperatures,Short,"Your gas usage has increased by x% since last week, please investigate (if this continues for the rest of the year it might cost an additional Y%)",1d
+Usage up or down,Electricity,Change in consumption,Requires regression based model to adjust for temperatures,Short,"Your electricity usage has increased by x% since last week, please investigate (if this continues for the rest of the year it might cost an additional Y%)",1d
+Out of hours usage up or down,Electricity,Change in baseload consumption,,Short & long,"Your out of hours usage has increased by x% since last week, please investigate (if this continues for the rest of the year it might cost an additional Y%)",7d
+Electricity baseload too high,Electricity,Baseload,Compare average electricity baseload over last year with benchmarks from other schools,Long,,
+Electricity baseload has changed,Electricity,Baseload,Compare this week's electricity baseload with average baseload over the year,Short,,
+Electricity consumption has changed,Electricity,,Compares this week's electricity consumption with the week before,Short,,
+Electricity out of hours usage too high,Electricity,,Compares this year's out of hours electricity usage as a percent with benchmarks from other schools,Long,,
+Gas out of hours usage too high,Gas,,Compares this year's out of hours gas  usage as a percent with benchmarks from other schools,Long,,
+Electricity usage high,Electricity,,Compares this year's electricity usage with benchmarks from other schools on both per floor area and per pupil basis,Long,,
+Gas usage high,Gas,,Compares this year's gas usage with benchmarks from other schools on both per floor area and per pupil basis,Long,,
+Gas consumption has changed,Gas,,Compares this week's gas consumption with the week before (automatically adjusting the comparison to account for changes in external ambient temperatures,Short,,
+Weekend gas consumption,Gas,,Reports weekend gas consumption above a threshold accounting for the impact of boiler frost protection,Short,,
+Holiday coming up,,,Notifies the school a holiday is coming up and suggests a list of appliances/boilers to switch off,Short,,
+Turn heating on/off,Gas,Heating,"Looks at next 10 days weather forecast for the local area and notifies school if it is warm enough to turn the heating off next week, or cold enough for it to be turned on",Short,,
+Hot water efficiency,Gas,Hot water,Compares the school's hot water efficiency with benchmarks,Long,,
+Heating coming on too early in the morning,Gas,Heating,Calculates when the heating has come on on average for the latest day for which we have smart meter data and reports if it has come on too early accounting for frost protection,Short,,
+Thermostatic Control,Gas,heating,"Calculates how good the schools thermostatic control was over the last  year, and makes recommendations",Long,,

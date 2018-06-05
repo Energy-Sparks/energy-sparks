@@ -16,5 +16,5 @@ class AlertType < ApplicationRecord
   has_many :alerts
 
   enum category: [:electricity, :gas]
-  enum sub_category: [:hot_water, :heating, :frost_protection, :optimum_start, :heating_turn_on_off, :heating_off, :change_in_consumption, :change_in_baseload_consumption]
+  enum sub_category: [:hot_water, :heating, :frost_protection, :optimum_start, :heating_turn_on_off, :heating_off, :change_in_consumption, :change_in_baseload_consumption, :baseload]
 end

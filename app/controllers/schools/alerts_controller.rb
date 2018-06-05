@@ -7,7 +7,7 @@ class Schools::AlertsController < ApplicationController
   before_action set_alert: [:edit, :update]
 
   def index
-    @alerts = @school.alerts
+    @alerts = @school.alerts.eager_load(:alert_type).order('alert_types.category')
   end
 
   def edit
