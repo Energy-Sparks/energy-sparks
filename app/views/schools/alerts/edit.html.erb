@@ -1,4 +1,3 @@
-
 <h1>Editing School Alert</h1>
 
 <div class="row">
@@ -6,11 +5,10 @@
     <% if @alert.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
-
         <ul>
-        <% @alert.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
+          <% @alert.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
         </ul>
       </div>
     <% end %>
@@ -29,7 +27,6 @@
     <%= f.submit "Save alert", class: 'btn btn-primary' %>
   <% end %>
 </div>
-
 
 <div class="other-actions">
   <%= link_to 'Back', school_alerts_path(@school), class: 'btn btn-secondary' %>

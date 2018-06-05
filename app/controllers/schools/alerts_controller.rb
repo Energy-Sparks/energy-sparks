@@ -1,12 +1,11 @@
 class Schools::AlertsController < ApplicationController
-
   load_and_authorize_resource :alert
   load_and_authorize_resource :school, find_by: :slug
 
   skip_before_action :authenticate_user!
   before_action :set_school
   before_action set_alert: [:edit, :update]
- 
+
   def index
     @alerts = @school.alerts
   end
@@ -17,9 +16,9 @@ class Schools::AlertsController < ApplicationController
 
   def update
     if @alert.update(alert_params)
-       redirect_to school_alerts_path(@school), notice: 'Alert was successfully updated.'
+      redirect_to school_alerts_path(@school), notice: 'Alert was successfully updated.'
     else
-       render :edit
+      render :edit
     end
   end
 

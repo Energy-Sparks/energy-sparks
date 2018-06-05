@@ -24,10 +24,10 @@ class Alert < ApplicationRecord
   has_and_belongs_to_many :contacts
 
   accepts_nested_attributes_for :contacts, reject_if: :reject_contacts
-  
+
 private
+
   def reject_contacts
     attributes[:name].blank? && attributes[:description].blank?
   end
 end
-

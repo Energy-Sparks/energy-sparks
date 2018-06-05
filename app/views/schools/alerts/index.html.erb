@@ -6,39 +6,38 @@
   <div class="row padded-row">
     <div class="col-md-12">
       <h1 property="name"><%= @school.name %> Alerts</h1>
+      <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
     </div>
   </div>
 </div>
 
 <div class="row">
   <div class="table-responsive">
-
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Sub Category</th>
-            <th>Analysis</th>
-            <th>Long Term</th>
-            <th>Contacts</th>
-            <th>Actions</th>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Sub Category</th>
+          <th>Analysis</th>
+          <th>Long Term</th>
+          <th>Contacts</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @alerts.each do |alert| %>
+          <tr scope="row">
+            <td><%= alert.alert_type.title %></td>
+            <td><%= alert.alert_type.category.humanize %></td>
+            <td><%= alert.alert_type.sub_category.humanize %></td>
+            <td><%= alert.alert_type.analysis_description %></td>
+            <td><%= alert.alert_type.long_term %></td>
+            <td><%= alert.contacts.any? ? alert.contacts.pluck(:name).join(', ') : 'No one allocated' %></td>
+            <td><%= link_to 'Edit', edit_school_alert_path(@school, alert), class: 'btn btn-warning' %></td>
           </tr>
-        </thead>
-        <tbody>
-          <% @school.alerts.each do |alert| %>
-            <tr scope="row">
-              <td><%= alert.alert_type.title %></td>
-              <td><%= alert.alert_type.category.humanize %></td>
-              <td><%= alert.alert_type.sub_category.humanize %></td>
-              <td><%= alert.alert_type.analysis_description %></td>
-              <td><%= alert.alert_type.long_term %></td>
-              <td><%= alert.contacts.any? ? alert.contacts.pluck(:name).join(', ') : 'No one allocated' %></td>
-              <td><%= link_to 'Edit', edit_school_alert_path(@school, alert), class: 'btn btn-warning' %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-
-    </div>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+</div>
