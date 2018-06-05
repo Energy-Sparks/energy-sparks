@@ -4,9 +4,9 @@
     <tr>
       <th>Data Feed</th>
       <th>Type</th>
-      <th>Download from DB CSV</th>
+      <th><!-- Download from DB CSV --></th>
       <th>Download from DB XLS</th>
-      <th>Download from DB (month) CSV</th>
+      <th><!-- Download from DB (month) CSV --></th>
       <th>Download from DB (month) XLS</th>
       <th>Download from Rake job</th>
       <th>Last update</th>
@@ -18,11 +18,11 @@
         <tr class=<%= class_for_last_date(feed_type_readings.sort_by { |r| r.at }.first.at) %>>
           <td><%= data_feed.title %></td>
           <td><%= feed_type.humanize %></td>
-          <td><%= link_to 'Download last day as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, format: :csv) %></td>
-          <td><%= link_to 'Download last day as XLS from DB', data_feed_path(data_feed, feed_type: feed_type, format: :xls) %></td>
+          <td><%#= link_to 'Download last day as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, format: :csv) %></td>
+          <td><%= link_to 'Download last day as XLSX from DB', data_feed_path(data_feed, feed_type: feed_type, format: :xlsx) %></td>
 
-          <td><%= link_to 'Download last month as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, start_date: Date.today - 1.month, end_date: Date.today, format: :csv) %></td>
-          <td><%= link_to 'Download last month as XLS from DB', data_feed_path(data_feed, feed_type: feed_type, start_date: Date.today - 1.month, end_date: Date.today, format: :xls) %></td>
+          <td><%#= link_to 'Download last month as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, start_date: Date.today - 1.month, end_date: Date.today, format: :csv) %></td>
+          <td><%= link_to 'Download last month as XLSX from DB', data_feed_path(data_feed, feed_type: feed_type, start_date: Date.today - 1.month, end_date: Date.today, format: :xlsx) %></td>
 
           <td><%= link_to 'Download last produced CSV from rake', "/public/downloads/bath#{feed_type}data.csv" %></td>
           <td><%= nice_dates feed_type_readings.sort_by { |r| r.at }.last.at %></td>
