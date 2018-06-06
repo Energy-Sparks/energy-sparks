@@ -207,8 +207,8 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
+    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
@@ -259,8 +260,8 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -279,10 +280,10 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enrolled", default: false
-    t.integer "urn", null: false
     t.integer "sash_id"
     t.integer "level", default: 0
+    t.boolean "enrolled", default: false
+    t.integer "urn", null: false
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -291,6 +292,7 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
     t.integer "calendar_area_id"
     t.integer "temperature_area_id"
     t.integer "solar_irradiance_area_id"
+    t.integer "solar_pv_area_id"
     t.integer "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"
