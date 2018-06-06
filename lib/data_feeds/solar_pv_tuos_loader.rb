@@ -26,20 +26,7 @@ module DataFeeds
           filename = "#{area_name.downcase}solar_pvdata.csv"
 
           @dates.each do |date_range_chunk|
-            start_date, end_date = date_range_chunk
-            puts
-            puts "========================Processing a chunk of data between #{start_date} #{end_date}=============================="
-            puts
-            regional_data = download_data_for_area(latitude, longitude, start_date, end_date, config_data[:proxies])
-            pv_data = process_regional_data(regional_data, start_date, end_date)
-
-            WeatherUndergroundCsvWriter.new(filename, pv_data, @csv_format).write_csv
-            pv_data.each do |datetime, value|
-              DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv)
-            end
-
-            pv_readings = data_feed.readings(:solar_pv, @start_date, @end_date)
-            File.open("from-db-#{filename}", 'w') { |file| file.write(data_feed.to_csv(pv_readings)) }
+            process_data_for_each_chunk(config_data, data_feed, date_range_chunk, filename, latitude, longitude)
           end
         end
       end
@@ -135,40 +122,7 @@ module DataFeeds
       end_time = Time.zone.local(end_date.year, end_date.month, end_date.day, 23, 30, 0).to_datetime # want to iterate to last 30 mins of day (inclusive)
 
       start_time.step(end_time, thirty_minutes_step).each do |dt_30mins|
-        pv_values_for_30mins = []
-        names = regional_data.keys
-
-        # get data for a given 30 minute period for all 'regions'
-        regional_data.values.each do |region_data|
-          # puts "Looking for data for #{dt_30mins}"
-          pv_data = region_data[:data]
-          pv_yield = pv_data[dt_30mins]
-          pv_values_for_30mins.push(pv_yield)
-        end
-
-        # processing this data, try to discard data, then return a weighted average
-        median_pv = median(pv_values_for_30mins) # use median as best value for checking bad data against
-        yield_diff_criteria = 0.2
-
-        loop_count = 0
-        pv_yield_sum = 0.0
-        distance_sum = 0.0
-        pv_values_for_30mins.each do |pv_yield|
-          if pv_yield.nil?
-            puts "Warning no PV yield data for #{dt_30mins}"
-            loop_count += 1
-            next
-          end
-          if pv_yield > median_pv + yield_diff_criteria || pv_yield < median_pv - yield_diff_criteria
-            puts "Rejecting sample for #{names[loop_count]} on #{dt_30mins} value #{pv_yield}"
-          else
-            pv_yield_sum += pv_yield * distances[loop_count]
-            distance_sum += distances[loop_count]
-          end
-          loop_count += 1
-        end
-        weighted_pv_yield = pv_yield_sum / distance_sum
-        averaged_pv_yields[dt_30mins] = weighted_pv_yield
+        process_30_minute_steps(averaged_pv_yields, distances, dt_30mins, regional_data)
         # puts "average yield for #{dt_30mins} = #{weighted_pv_yield}"
       end
       averaged_pv_yields # {datetime} = yield
@@ -191,6 +145,62 @@ module DataFeeds
         dates.push([date, last_date])
       end
       dates
+    end
+
+    private
+
+    def process_data_for_each_chunk(config_data, data_feed, date_range_chunk, filename, latitude, longitude)
+      start_date, end_date = date_range_chunk
+      puts
+      puts "========================Processing a chunk of data between #{start_date} #{end_date}=============================="
+      puts
+      regional_data = download_data_for_area(latitude, longitude, start_date, end_date, config_data[:proxies])
+      pv_data = process_regional_data(regional_data, start_date, end_date)
+
+      WeatherUndergroundCsvWriter.new(filename, pv_data, @csv_format).write_csv
+      pv_data.each do |datetime, value|
+        DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv)
+      end
+
+      pv_readings = data_feed.readings(:solar_pv, @start_date, @end_date)
+      File.open("from-db-#{filename}", 'w') {|file| file.write(data_feed.to_csv(pv_readings))}
+    end
+
+    def process_30_minute_steps(averaged_pv_yields, distances, dt_30mins, regional_data)
+      pv_values_for_30mins = []
+      names = regional_data.keys
+
+      # get data for a given 30 minute period for all 'regions'
+      regional_data.values.each do |region_data|
+        # puts "Looking for data for #{dt_30mins}"
+        pv_data = region_data[:data]
+        pv_yield = pv_data[dt_30mins]
+        pv_values_for_30mins.push(pv_yield)
+      end
+
+      # processing this data, try to discard data, then return a weighted average
+      median_pv = median(pv_values_for_30mins) # use median as best value for checking bad data against
+      yield_diff_criteria = 0.2
+
+      loop_count = 0
+      pv_yield_sum = 0.0
+      distance_sum = 0.0
+      pv_values_for_30mins.each do |pv_yield|
+        if pv_yield.nil?
+          puts "Warning no PV yield data for #{dt_30mins}"
+          loop_count += 1
+          next
+        end
+        if pv_yield > median_pv + yield_diff_criteria || pv_yield < median_pv - yield_diff_criteria
+          puts "Rejecting sample for #{names[loop_count]} on #{dt_30mins} value #{pv_yield}"
+        else
+          pv_yield_sum += pv_yield * distances[loop_count]
+          distance_sum += distances[loop_count]
+        end
+        loop_count += 1
+      end
+      weighted_pv_yield = pv_yield_sum / distance_sum
+      averaged_pv_yields[dt_30mins] = weighted_pv_yield
     end
   end
 end
