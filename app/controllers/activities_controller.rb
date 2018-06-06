@@ -38,6 +38,10 @@ class ActivitiesController < ApplicationController
   def create
     set_school
     @activity = @school.activities.new(activity_params)
+
+    if @activity.activity_type
+      @activity.activity_category_id = @activity.activity_type.activity_category_id
+    end
     authorize! :create, @activity
     respond_to do |format|
       if @activity.save
@@ -90,6 +94,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_params
-    params.require(:activity).permit(:school_id, :activity_type_id, :activity_category_id, :title, :description, :happened_on)
+    params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on)
   end
 end
