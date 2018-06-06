@@ -147,7 +147,7 @@ module DataFeeds
       dates
     end
 
-    private
+  private
 
     def process_data_for_each_chunk(config_data, data_feed, date_range_chunk, filename, latitude, longitude)
       start_date, end_date = date_range_chunk
@@ -173,9 +173,7 @@ module DataFeeds
       # get data for a given 30 minute period for all 'regions'
       regional_data.values.each do |region_data|
         # puts "Looking for data for #{dt_30mins}"
-        pv_data = region_data[:data]
-        pv_yield = pv_data[dt_30mins]
-        pv_values_for_30mins.push(pv_yield)
+        get_pv_values_for_30_mins(dt_30mins, pv_values_for_30mins, region_data)
       end
 
       # processing this data, try to discard data, then return a weighted average
@@ -201,6 +199,12 @@ module DataFeeds
       end
       weighted_pv_yield = pv_yield_sum / distance_sum
       averaged_pv_yields[dt_30mins] = weighted_pv_yield
+    end
+
+    def get_pv_values_for_30_mins(dt_30mins, pv_values_for_30mins, region_data)
+      pv_data = region_data[:data]
+      pv_yield = pv_data[dt_30mins]
+      pv_values_for_30mins.push(pv_yield)
     end
   end
 end
