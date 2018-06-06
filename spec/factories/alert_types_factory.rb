@@ -17,5 +17,6 @@ FactoryBot.define do
     sequence(:title) {|n| "Alert Type #{n}"}
     category { AlertType.categories.keys.sample }
     sub_category { AlertType.sub_categories.keys.sample }
+    frequency { AlertType.frequencies.keys.sample }
   end
 end
