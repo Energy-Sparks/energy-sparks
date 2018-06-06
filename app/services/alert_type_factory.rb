@@ -10,7 +10,7 @@ class AlertTypeFactory
       subcategory = alert[:sub_category].parameterize.underscore.to_sym unless alert[:sub_category].nil?
       frequency   = alert[:frequency].parameterize.underscore.to_sym
 
-      al = AlertType.where(title: alert[:title], category: category, sub_category: subcategory, analysis: alert[:analysis], description: alert[:description], frequency: frequency).first_or_create
+      AlertType.where(title: alert[:title], category: category, sub_category: subcategory, analysis: alert[:analysis], description: alert[:description], frequency: frequency).first_or_create
     end
   end
 end
