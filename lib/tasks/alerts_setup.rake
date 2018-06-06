@@ -13,6 +13,8 @@ namespace :alerts do
       end
     end
     # puts data_hash.class
+    puts "We now have #{AlertType.count} alert types"
+    puts "We now have #{Alert.count} alerts"
     puts Time.zone.now
   end
 end
