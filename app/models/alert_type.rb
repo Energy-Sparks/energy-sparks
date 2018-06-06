@@ -13,8 +13,8 @@
 #  title                :text
 #
 class AlertType < ApplicationRecord
-  has_many :alerts
+  has_many :alerts, dependent: :destroy
 
   enum category: [:electricity, :gas]
-  enum sub_category: [:hot_water, :heating, :frost_protection, :optimum_start, :heating_turn_on_off, :heating_off, :change_in_consumption, :change_in_baseload_consumption, :baseload]
+  enum sub_category: [:hot_water, :heating, :baseload]
 end
