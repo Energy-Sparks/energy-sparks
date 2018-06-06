@@ -291,7 +291,6 @@ ActiveRecord::Schema.define(version: 2018_06_04_124312) do
     t.integer "calendar_area_id"
     t.integer "temperature_area_id"
     t.integer "solar_irradiance_area_id"
-    t.integer "solar_pv_area_id"
     t.integer "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"
