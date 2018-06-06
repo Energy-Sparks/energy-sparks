@@ -2,9 +2,7 @@
   <% if activity.errors.any? %>
     <div id="error_explanation">
       <h2>I'm afraid we couldn't save your activity</h2>
-      <p>
-        Please correct the following <%= pluralize(activity.errors.count, "error") %>
-      </p>
+      <p>Please correct the following <%= pluralize(activity.errors.count, "error") %></p>
       <ul>
       <% activity.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -15,10 +13,7 @@
 
   <div class="form-group">
     <%= f.label :happened_on, "When did you do the activity?" %>
-    <p class="small">
-      You can record a recent activity or even record older activities to build up a record of all of the
-      energy saving activities you've carried out as a school.
-    </p>
+    <p class="small"> You can record a recent activity or even record older activities to build up a record of all of the energy saving activities you've carried out as a school.</p>
     <%= text_field_tag(:activity_date_picker,
       @activity.happened_on.try(:strftime, "%d/%m/%Y"),
       placeholder: 'select date',
@@ -28,51 +23,32 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :activity_category_id %>
-    <p class="small">
-      Choose the category that best describes your activity
-    </p>
-    <%= f.collection_select(
-      :activity_category_id,
+    <%= f.label :activity_type %>
+    <p class="small">Specify the Energy Sparks activity type to earn the correct number of points for your efforts</p>
+    <%= f.grouped_collection_select(
+      :activity_type_id,
       ActivityCategory.all.order(:name),
+      :activity_types,
+      :name,
       :id,
       :name,
       {},
-      {class: 'form-control'}
+      { class: 'form-control'}
       )
     %>
   </div>
 
   <div class="form-group">
-    <%= f.label :activity_type_id, "Activity" %>
-    <p class="small">
-      How have you organised that activity?
-    </p>
-    <%= f.grouped_collection_select(
-          :activity_type_id,
-          ActivityCategory.order(:name), :sorted_activity_types, :name, :id, :name, {}, {class: 'form-control'}
-        )
-    %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :title%>
-    <p class="small">
-      This is how your activity will appear in your activity list, so choose a clear title
-    </p>
+    <%= f.label :title %>
+    <p class="small">This is how your activity will appear in your activity list, so choose a clear title</p>
     <%= f.text_field :title, class: 'form-control'  %>
   </div>
 
   <div class="form-group">
     <%= f.label :description, "Tell us more about what you did" %>
     <%= f.hidden_field :description %>
-    <p class="small">
-      Please tell us a bit more about your activity. Insert a link to your school website if you’ve published information, photos or videos
-      about your activity online.
-    </p>
-    <p class="small">
-      You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.
-    </p>
+    <p class="small">Please tell us a bit more about your activity. Insert a link to your school website if you’ve published information, photos or videos about your activity online.</p>
+    <p class="small">You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.</p>
     <trix-editor input="activity_description"></trix-editor>
   </div>
 

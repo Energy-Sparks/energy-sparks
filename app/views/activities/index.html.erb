@@ -27,12 +27,12 @@
           </div>
           <div class="col-md-9">
             <div class="row">
-              <%= link_to activity.title, school_activity_path(@school, activity) %>
+              <%= link_to activity.display_name, school_activity_path(@school, activity) %>
             </div>
 
             <div class="row">
               <span class="text-muted small">
-                <%= activity.activity_type.name %>
+                <%= activity.title %>
               </span>
             </div>
           </div>

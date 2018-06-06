@@ -4,7 +4,7 @@ RSpec.describe UsersController, type: :controller do
   let(:valid_attributes) {
     { email: 'school@test.com',
       password: 'testpassword',
-      role: :school_admin
+      role: :school_user
     }
   }
   let(:invalid_attributes) {

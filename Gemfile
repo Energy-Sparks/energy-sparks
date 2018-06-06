@@ -25,6 +25,11 @@ gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
 gem "highcharts-rails"
 
+# Spreadsheet export
+gem 'rubyzip', '>= 1.2.1'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx_rails'
+
 # JS Templating
 gem 'handlebars_assets'
 

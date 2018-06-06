@@ -12,25 +12,67 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :urn %>
-    <%= f.number_field :urn, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class: 'form-control' %>
   </div>
 
   <div class="form-group">
-    <%= f.label :school_type %>
-    <%= f.select :school_type, School.school_types.keys.map {|type| [type.titleize,type]}, {}, { class: 'form-control' } %>
+    <%= f.label :urn, 'Unique Reference Number (URN)' %>
+    <%= f.number_field :urn, class: 'form-control' %>
   </div>
 
+  <h2>School Type</h2>
+  <div class="form-group">
+    <% School.school_types.keys.each do |school_type| %>
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
+        <%= f.label "school_type_#{school_type.to_sym}", school_type.to_sym.capitalize,  class: "form-check-label" %>
+      </div>
+    <% end %>
+  </div>
+
+  <p>Please select which Key Stages this school teaches.</p>
+  <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <%= b.check_box(class: "custom-control-input") %>
+      <%= b.label(class: "custom-control-label") do %>
+        <%= b.object.name %>
+      <% end %>
+    </div>
+  <% end %>
+  <hr/>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :number_of_pupils %>
+      <%= f.number_field :number_of_pupils, class: 'form-control' %>
+    </div>
+    <div class="form-group col-md-6">
+      <%= f.label :floor_area, 'Floor area in square metres' %>
+      <%= f.number_field :floor_area, class: 'form-control' %>
+    </div>
+  </div>
+
+  <h2>Calendar and Data Feed configuration</h2>
+  <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
   <div class="form-group">
     <%= f.label :calendar_area_id, 'Calendar Area' %>
     <%= f.select :calendar_area_id, options_from_collection_for_select(CalendarArea.all, 'id', 'title', (@school.calendar_area.id if @school.calendar_area)),{}, { class: 'form-control' }%>
   </div>
 
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :weather_underground_area_id, 'Weather Underground Data Feed Area' %>
+      <%= f.select :weather_underground_area_id, options_from_collection_for_select(WeatherUndergroundArea.all, 'id', 'title', (@school.weather_underground_area.id if @school.weather_underground_area)),{}, { class: 'form-control' }%>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
+      <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all, 'id', 'title', (@school.solar_pv_tuos_area.id if @school.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
+    </div>
+  </div>
+
+  <h2>Address</h2>
   <div class="form-group">
     <%= f.label :address %>
     <%= f.text_area :address, class: 'form-control' %>
@@ -67,54 +109,76 @@
 
   <%= render 'shared/custom_checkbox', f: f, field_name: :enrolled %>
 
-  <h2>Key Stages</h2>
-  <p>Please select which Key Stages this school teaches.</p>
-  <%= f.collection_check_boxes(:key_stage_ids, @key_stage_tags, :id, :name) do |b| %>
-    <div class="custom-control custom-checkbox custom-control-inline">
-      <%= b.check_box(class: "custom-control-input") %>
-      <%= b.label(class: "custom-control-label") do %>
-        <%= b.object.name %>
-      <% end %>
+  <h2>School Times</h2>
+  <p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format without a separating colon.</p>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <label for="firstName">Day</label>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="lastName">Opening Time</label>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="lastName">Closing Time</label>
+    </div>
+  </div>
+  <%= f.fields_for :school_times, f.object.school_times.order(:day) do |ff| %>
+      <%= ff.hidden_field :id, value: ff.object.id %>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <%= ff.hidden_field :day, value: ff.object.day %>
+        <%= ff.object.day.capitalize %>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <%= ff.number_field :opening_time, value: ('%04d' % ff.object.opening_time) %>
+      </div>
+      <div class="col-md-3 mb-3">
+        <%= ff.number_field :closing_time, value: ('%04d' % ff.object.closing_time) %>
+      </div>
     </div>
   <% end %>
 
-  <h2>Meters</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Meter No</th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Active</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= f.fields_for :meters do |meter_form| %>
-        <tr>
-          <td>
-            <div class="form-group">
-              <%= meter_form.number_field :meter_no, class: 'form-control' %>
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
-              <%= meter_form.text_field :name, class: 'form-control' %>
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
-              <%= meter_form.select :meter_type, Meter.meter_types.keys.map {|type| [type.titleize,type]}, { include_blank: true }, { class: 'form-control' } %>
-            </div>
-          </td>
-          <td>
-            <div class="form-group">
-              <%= meter_form.check_box :active, class: 'form-control' %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <h2>New Meters</h2>
+  <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)</p>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <label for="firstName">Meter Point Number</label>
+    </div>
+    <div class="col-md-5 mb-3">
+      <label for="firstName">Meter Name</label>
+    </div>
+    <div class="col-md-2 mb-3">
+      <label for="firstName">Meter Type</label>
+    </div>
+    <div class="col-md-1 mb-3">
+      <label for="lastName">Active?</label>
+    </div>
+  </div>
+  <%= f.fields_for :meters do |meter_form| %>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <%= meter_form.number_field :meter_no, class: 'form-control' %>
+      </div>
+      <div class="col-md-5 mb-3">
+        <%= meter_form.text_field :name, class: 'form-control' %>
+      </div>
+      <div class="col-md-2 mb-3">
+        <% Meter.meter_types.keys.each do |meter_type| %>
+          <div class="form-check form-check-inline">
+            <%= meter_form.radio_button :meter_type, meter_type, class: "form-check-input" %>
+            <%= meter_form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
+          </div>
+        <% end %>
+
+      </div>
+      <div class="col-md-1 mb-3">
+        <div class="form-check">
+          <%= meter_form.check_box :active, class: 'form-check-input' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>

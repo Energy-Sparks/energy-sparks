@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
 
+  resources :data_feeds
+
   get 'help/(:help_page)', to: 'home#help', as: :help
 
   resources :activity_types

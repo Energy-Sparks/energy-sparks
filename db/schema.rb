@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_15_085639) do
+ActiveRecord::Schema.define(version: 2018_05_25_121500) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "academic_years", force: :cascade do |t|
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["activity_type_id"], name: "index_activity_type_suggestions_on_activity_type_id"
+    t.index ["suggested_type_id"], name: "index_activity_type_suggestions_on_suggested_type_id"
   end
 
   create_table "activity_types", id: :serial, force: :cascade do |t|
@@ -126,6 +128,27 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "based_on_id"
     t.integer "calendar_area_id"
     t.boolean "template", default: false
+    t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
+  end
+
+  create_table "data_feed_readings", force: :cascade do |t|
+    t.bigint "data_feed_id"
+    t.integer "feed_type"
+    t.datetime "at"
+    t.decimal "value"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["at"], name: "index_data_feed_readings_on_at"
+    t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
+  end
+
+  create_table "data_feeds", force: :cascade do |t|
+    t.text "type", null: false
+    t.integer "area_id"
+    t.text "title"
+    t.text "description"
+    t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -151,6 +174,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.boolean "processed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
   create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
@@ -159,6 +183,7 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "related_change_id"
     t.string "description"
     t.datetime "created_at"
+    t.index ["related_change_id", "related_change_type"], name: "merit_activity_logs_for_related_changes"
   end
 
   create_table "merit_score_points", id: :serial, force: :cascade do |t|
@@ -204,6 +229,14 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "school_times", force: :cascade do |t|
+    t.bigint "school_id"
+    t.integer "opening_time", default: 850
+    t.integer "closing_time", default: 1520
+    t.integer "day"
+    t.index ["school_id"], name: "index_school_times_on_school_id"
+  end
+
   create_table "schools", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "school_type"
@@ -226,6 +259,10 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
     t.integer "solar_irradiance_area_id"
     t.integer "solar_pv_area_id"
     t.integer "met_office_area_id"
+    t.integer "number_of_pupils"
+    t.decimal "floor_area"
+    t.integer "weather_underground_area_id"
+    t.integer "solar_pv_tuos_area_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -297,8 +334,10 @@ ActiveRecord::Schema.define(version: 2018_05_15_085639) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
