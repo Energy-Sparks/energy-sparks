@@ -42,3 +42,6 @@ public/assets
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# RubyMine
+.idea
