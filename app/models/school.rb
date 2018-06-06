@@ -2,28 +2,32 @@
 #
 # Table name: schools
 #
-#  address                  :text
-#  calendar_area_id         :integer
-#  calendar_id              :integer
-#  competition_role         :integer
-#  created_at               :datetime         not null
-#  electricity_dataset      :string
-#  enrolled                 :boolean          default(FALSE)
-#  gas_dataset              :string
-#  id                       :integer          not null, primary key
-#  level                    :integer          default(0)
-#  met_office_area_id       :integer
-#  name                     :string
-#  postcode                 :string
-#  sash_id                  :integer
-#  school_type              :integer
-#  slug                     :string
-#  solar_irradiance_area_id :integer
-#  solar_pv_area_id         :integer
-#  temperature_area_id      :integer
-#  updated_at               :datetime         not null
-#  urn                      :integer          not null
-#  website                  :string
+#  address                     :text
+#  calendar_area_id            :integer
+#  calendar_id                 :integer
+#  competition_role            :integer
+#  created_at                  :datetime         not null
+#  electricity_dataset         :string
+#  enrolled                    :boolean          default(FALSE)
+#  floor_area                  :decimal(, )
+#  gas_dataset                 :string
+#  id                          :integer          not null, primary key
+#  level                       :integer          default(0)
+#  met_office_area_id          :integer
+#  name                        :string
+#  number_of_pupils            :integer
+#  postcode                    :string
+#  sash_id                     :integer
+#  school_type                 :integer
+#  slug                        :string
+#  solar_irradiance_area_id    :integer
+#  solar_pv_area_id            :integer
+#  solar_pv_tuos_area_id       :integer
+#  temperature_area_id         :integer
+#  updated_at                  :datetime         not null
+#  urn                         :integer          not null
+#  weather_underground_area_id :integer
+#  website                     :string
 #
 # Indexes
 #
@@ -50,8 +54,12 @@ class School < ApplicationRecord
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
+  has_many :school_times, inverse_of: :school, dependent: :destroy
+
   belongs_to :calendar
   belongs_to :calendar_area
+  belongs_to :weather_underground_area
+  belongs_to :solar_pv_tuos_area
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]
@@ -60,7 +68,9 @@ class School < ApplicationRecord
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
-  accepts_nested_attributes_for :meters, reject_if: proc { |attributes| attributes[:meter_no].blank? }
+
+  accepts_nested_attributes_for :meters,        reject_if: proc { |attributes| attributes[:meter_no].blank? }
+  accepts_nested_attributes_for :school_times,  reject_if: proc { |attributes| attributes[:opening_time].blank? }
 
   after_create :create_sash_relation
   after_create :create_calendar
@@ -121,9 +131,9 @@ class School < ApplicationRecord
     self.score_points.where("created_at > '#{since}'").sum(:num_points)
   end
 
-  def suggest_activities
-    @activity_categories = ActivityCategory.all.order(:name).to_a
-  end
+  # def suggest_activities
+  #   @activity_categories = ActivityCategory.all.order(:name).to_a
+  # end
 
   def self.scoreboard
     School.select('schools.*, SUM(num_points) AS sum_points')

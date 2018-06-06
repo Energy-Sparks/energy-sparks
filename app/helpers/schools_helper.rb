@@ -93,6 +93,6 @@ module SchoolsHelper
   # get day last week with most usage
   def day_most_usage(supply)
     day = @school.day_most_usage(supply)
-    day.nil? ? '?' : day[0].strftime('%A')
+    day.nil? ? '?' : "#{day[0].strftime('%A')} #{day[0].day.ordinalize} #{day[0].strftime('%B')} "
   end
 end

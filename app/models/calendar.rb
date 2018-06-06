@@ -12,6 +12,10 @@
 #  title            :string           not null
 #  updated_at       :datetime         not null
 #
+# Indexes
+#
+#  index_calendars_on_based_on_id  (based_on_id)
+#
 
 class Calendar < ApplicationRecord
   belongs_to  :calendar_area
@@ -59,20 +63,20 @@ class Calendar < ApplicationRecord
     Calendar.find_by(default: true)
   end
 
-  def self.create_calendar_from_default(name)
-    default_calendar = Calendar.default_calendar
-    new_calendar = Calendar.create(title: name)
-    return new_calendar unless default_calendar && default_calendar.terms
-    default_calendar.terms.each do |term|
-      new_calendar.terms.create(
-        academic_year: term[:academic_year],
-        name: term[:name],
-        start_date: term[:start_date],
-        end_date: term[:end_date]
-      )
-    end
-    new_calendar
-  end
+  # def self.create_calendar_from_default(name)
+  #   default_calendar = Calendar.default_calendar
+  #   new_calendar = Calendar.create(title: name)
+  #   return new_calendar unless default_calendar && default_calendar.terms
+  #   default_calendar.terms.each do |term|
+  #     new_calendar.terms.create(
+  #       academic_year: term[:academic_year],
+  #       name: term[:name],
+  #       start_date: term[:start_date],
+  #       end_date: term[:end_date]
+  #     )
+  #   end
+  #   new_calendar
+  # end
 
   def first_event_date
     calendar_events.first.start_date
@@ -82,7 +86,7 @@ class Calendar < ApplicationRecord
     calendar_events.last.end_date
   end
 
-  def academic_years(with_padding = 1)
-    AcademicYear.where('start_date <= ? and end_date >= ?', last_event_date + with_padding.year, first_event_date - with_padding.year)
-  end
+  # def academic_years(with_padding = 1)
+  #   AcademicYear.where('start_date <= ? and end_date >= ?', last_event_date + with_padding.year, first_event_date - with_padding.year)
+  # end
 end

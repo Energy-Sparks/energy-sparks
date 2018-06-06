@@ -47,10 +47,10 @@
       <ol>
         <li>
           sign in and visit your school’s
-          <% if current_user.present? && current_user.school_admin? %>
-              <%= link_to "homepage", school_path(current_user.school) %>
+          <% if current_user.try(:school_admin_or_user?) %>
+            <%= link_to "homepage", school_path(current_user.school) %>
           <% else %>
-              homepage
+            homepage
           <% end %>
 
         </li>
@@ -84,7 +84,7 @@
       </p>
       <p>
         Don’t forget to look at
-        <% if current_user.present? && current_user.school_admin? %>
+        <% if current_user.try(:school_admin_or_user?) %>
             <%= link_to "your gas and electricity usage charts", school_path(current_user.school) %>
         <% else %>
             your gas and electricity usage charts

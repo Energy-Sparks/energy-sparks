@@ -26,7 +26,7 @@ RSpec.describe SchoolsController, type: :controller do
       }
 
       before(:each) do
-        sign_in_user(:school_admin, school.id)
+        sign_in_user(:school_user, school.id)
       end
 
       it 'doesnt award a badge if school has zero points' do
@@ -63,7 +63,7 @@ RSpec.describe SchoolsController, type: :controller do
       let(:activity_category) { create :activity_category }
       let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1_tag, ks2_tag]) }
 
-      before(:each) { sign_in_user(:school_admin, school.id) }
+      before(:each) { sign_in_user(:school_user, school.id) }
 
       context "with a single activity type" do
         it "is authorised" do
