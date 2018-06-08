@@ -49,6 +49,10 @@ class Meter < ApplicationRecord
   end
 
   def display_name
-    name.present? ? "#{meter_no} (#{name})" : meter_no.to_s
+    name.present? ? "#{meter_no} (#{name})" : display_meter_number
+  end
+
+  def display_meter_number
+    meter_no.present? ? meter_no : meter_type.to_s
   end
 end
