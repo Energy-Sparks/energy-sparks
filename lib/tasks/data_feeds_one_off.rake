@@ -25,7 +25,7 @@ namespace :data_feeds do
 
   def import_feed(data_feed_id, csv_file, feed_type)
 
-    DataFeedReading.where(feed_type: feed_type).delete_all
+ #   DataFeedReading.where(feed_type: feed_type).delete_all
 
     items = []
     DataFeedReading.transaction do
