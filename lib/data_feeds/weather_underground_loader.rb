@@ -9,7 +9,7 @@ module DataFeeds
       @max_temperature = 38.0
       @min_temperature = -15.0
       @max_minutes_between_samples = 120
-      @max_solar_onsolence = 2000.0
+      @max_solar_irradiation = 2000.0
       @csv_format = :portrait
     end
 
@@ -18,23 +18,23 @@ module DataFeeds
         wua.data_feeds.each do |data_feed|
           area = data_feed.configuration.symbolize_keys
           pp "Running for #{area[:name]}"
-          temperatures, solar_insolence = process_area(area)
+          temperatures, solar_irradiation = process_area(area)
 
           WeatherUndergroundCsvWriter.new(area[:temperature_csv_file_name], temperatures, @csv_format).write_csv
-          WeatherUndergroundCsvWriter.new(area[:solar_csv_file_name], solar_insolence, @csv_format).write_csv
+          WeatherUndergroundCsvWriter.new(area[:solar_csv_file_name], solar_irradiation, @csv_format).write_csv
 
           temperatures.each do |datetime, value|
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature)
           end
 
-          solar_insolence.each do |datetime, value|
-            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_insolence)
+          solar_irradiation.each do |datetime, value|
+            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation)
           end
 
           temperature_readings = data_feed.readings(:temperature, @start_date, @end_date)
           File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(temperature_readings)) }
-          solar_insolence_readings = data_feed.readings(:solar_insolence, @start_date, @end_date)
-          File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_insolence_readings)) }
+          solar_irradiation_readings = data_feed.readings(:solar_irradiation, @start_date, @end_date)
+          File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_irradiation_readings)) }
         end
       end
     end
@@ -64,7 +64,7 @@ module DataFeeds
 
       # take temperatures, solar from muliple weather stations and calculate a weighted average across a number of local weather stations
       temperatures = {}
-      solar_insolence = {}
+      solar_irradiation = {}
       if @method == :weighted_average # for every 30 minutes in period loop through all the station data averaging
         mins30step = (1.to_f / 48)
 
@@ -95,13 +95,13 @@ module DataFeeds
           avg_temp = sample_weight_temp > 0.0 ? (avg_sum_temp / sample_weight_temp).round(2) : nil
           avg_solar = sample_weight_solar > 0.0 ? (avg_sum_solar / sample_weight_solar).round(2) : nil
           temperatures[datetime] = avg_temp
-          solar_insolence[datetime] = avg_solar
+          solar_irradiation[datetime] = avg_solar
           loop_count += 1
         end
       else
         raise "Unknown weather station processing method for #{area[:name]} @method"
       end
-      [temperatures, solar_insolence]
+      [temperatures, solar_irradiation]
     end
 
     def get_raw_temperature_and_solar_data(station_name, start_date, end_date)
@@ -128,7 +128,7 @@ module DataFeeds
               solar_value = solar_string.nil? ? nil : solar_string.to_f
               solar_value = if solar_value.nil?
                               nil
-                            elsif solar_value < @max_solar_onsolence
+                            elsif solar_value < @max_solar_irradiation
                               solar_value
                             end
               if !temperature.nil? && temperature <= @max_temperature && temperature >= @min_temperature # only use data if the temperature is within range
