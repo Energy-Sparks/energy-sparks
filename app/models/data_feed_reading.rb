@@ -24,5 +24,5 @@
 class DataFeedReading < ApplicationRecord
   belongs_to :data_feed
 
-  enum feed_type: [:solar_insolence, :temperature, :solar_pv]
+  enum feed_type: [:solar_irradiation, :temperature, :solar_pv]
 end
