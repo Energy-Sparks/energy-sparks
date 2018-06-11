@@ -33,7 +33,8 @@ profiles
 *.sql
 **/*.csv
 *.DS_Store
-**/*csv
+*csv
+!etc/**/*csv
 
 # Don't commit assets!
 public/assets
