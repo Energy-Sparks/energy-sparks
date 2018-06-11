@@ -37,8 +37,8 @@ namespace :loader do
     puts "Load banes calendar"
     Loader::Calendars.load!("etc/banes-default-calendar.csv", banes)
 
-    puts "Load sheffield calendar"
-    Loader::Calendars.load!("etc/sheffield-default-calendar.csv", sheff)
+    # puts "Load sheffield calendar"
+    # Loader::Calendars.load!("etc/sheffield-default-calendar.csv", sheff)
 
     # Update schools to have BANES calendar as default
     puts "Update all schools to banes"
@@ -53,8 +53,8 @@ namespace :loader do
     end
 
     # Create calendars based on banes calendar
-    puts "Create DUMMY INSET DAY"
-    inset_day_type = CalendarEventType.inset_day.find_by(school_occupied: true)
-    banes_calendar.calendar_events.create(title: CalendarEventType::INSET_DAY, start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: inset_day_type, academic_year: AcademicYear.find_by(start_date: '01-09-2017'))
+    # puts "Create DUMMY INSET DAY"
+    # inset_day_type = CalendarEventType.inset_day.find_by(school_occupied: true)
+    # banes_calendar.calendar_events.create(title: CalendarEventType::INSET_DAY, start_date: '2018-07-01', end_date: '2018-07-01', calendar_event_type: inset_day_type, academic_year: AcademicYear.find_by(start_date: '01-09-2017'))
   end
 end
