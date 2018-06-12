@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
+
+gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+
 # Rails/Core
 gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
