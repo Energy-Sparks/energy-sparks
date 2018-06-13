@@ -1,13 +1,9 @@
 require 'dashboard'
 
 class Schools::ChartDataController < ApplicationController
-
-
   def show
-
     chart_manager = ChartManager.new(aggregate_school)
     render json: chart_manager.run_standard_charts
-
   end
 
   def excel
@@ -23,7 +19,6 @@ class Schools::ChartDataController < ApplicationController
     # response.content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     # send_data excel, filename: "#{aggregate_school.name}-charts-test.xlsx"
   end
-
 
   def holidays
     render json: aggregate_school.holidays
@@ -59,6 +54,6 @@ private
     @school = School.find_by_slug(params[:school_id])
     authorize! :show, @school
     meter_collection = MeterCollection.new(@school)
-    aggregate_school = AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+    AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
   end
 end
