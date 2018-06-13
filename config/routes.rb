@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get :gas_meters, to: 'chart_data#gas_meters'
       get :aggregated_electricity_meters, to: 'chart_data#aggregated_electricity_meters'
       get :aggregated_gas_meters, to: 'chart_data#aggregated_gas_meters'
+      get :charts, to: 'chart_data#charts'
     end
 
     get :scoreboard, on: :collection

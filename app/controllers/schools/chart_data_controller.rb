@@ -1,9 +1,13 @@
 require 'dashboard'
 
 class Schools::ChartDataController < ApplicationController
+
+  def charts
+  end
+
   def show
     chart_manager = ChartManager.new(aggregate_school)
-    render json: chart_manager.run_standard_charts
+    render json: chart_manager.run_standard_chart(:group_by_week_gas)
   end
 
   def excel
