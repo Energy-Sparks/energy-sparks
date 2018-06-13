@@ -28,7 +28,18 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
+      get :chart_data, to: 'chart_data#show'
+      get :excel, to: 'chart_data#excel'
+      get :holidays, to: 'chart_data#holidays'
+      get :temperatures, to: 'chart_data#temperatures'
+      get :solar_pv, to: 'chart_data#solar_pv'
+      get :solar_irradiance, to: 'chart_data#solar_irradiance'
+      get :electricity_meters, to: 'chart_data#electricity_meters'
+      get :gas_meters, to: 'chart_data#gas_meters'
+      get :aggregated_electricity_meters, to: 'chart_data#aggregated_electricity_meters'
+      get :aggregated_gas_meters, to: 'chart_data#aggregated_gas_meters'
     end
+
     get :scoreboard, on: :collection
     member do
       get 'awards'
