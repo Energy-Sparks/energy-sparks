@@ -67,7 +67,6 @@ var commonOptions = {
   },
   plotOptions: {
     column: {
-      stacking: 'normal',
       dataLabels: {
         color: '#232b49'
       }
@@ -103,10 +102,12 @@ var chart_17 = Highcharts.chart('chart_17', commonOptions );
 var chart_18 = Highcharts.chart('chart_18', commonOptions );
 
 function updateData(c, d) {
+  console.log(d);
   if (d.data !== null) {
-
+    // console.log(d.title);
+    // console.log(d.data.chart1_type);
     c.setTitle({ text: d.title});
-    if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column') {
+    if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column' || d.data.chart1_type == 'line') {
 
       x_axis = d.data.x_axis
       c.xAxis[0].setCategories(x_axis);
@@ -114,10 +115,19 @@ function updateData(c, d) {
       if (d.data.chart1_type == 'bar') {
         c.update({ chart: { inverted: true }});
       }
-    seriesData = d.series_data;
-    Object.keys(seriesData).forEach(function (key) {
-      c.addSeries(seriesData[key]);
-    });
+
+      if (d.chart_type != 'electricity_by_month_acyear_0_1') {
+        c.update({  plotOptions: { column: { stacking: 'normal'}}});
+      }
+
+      if (d.data.chart1_type == 'line') {
+        c.update({ yAxis: [{ min: -1000,  title: { text: 'kWh' }}]});
+      }
+
+      seriesData = d.series_data;
+      Object.keys(seriesData).forEach(function (key) {
+        c.addSeries(seriesData[key]);
+      });
 
     } else if (d.data.chart1_type == 'pie') {
       c.addSeries(d.series_data);

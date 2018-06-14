@@ -15,7 +15,7 @@ class Schools::ChartDataController < ApplicationController
       :gas_latest_years,
       :gas_latest_academic_years,
       :gas_by_day_of_week,
-      :electricity_by_day_of_weekgas_kw,
+      :electricity_by_day_of_week,
       :electricity_by_month_acyear_0_1,
       :thermostatic,
       :cusum,
@@ -26,6 +26,7 @@ class Schools::ChartDataController < ApplicationController
       :group_by_week_gas_kwh_pupil,
       :group_by_week_gas_co2_floor_area,
       :group_by_week_gas_library_books
+
     ].map do |chart_type|
    # @output = [:group_by_week_electricity].map do |chart_type|
       { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
