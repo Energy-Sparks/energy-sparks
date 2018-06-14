@@ -11,7 +11,7 @@ class Schools::ChartDataController < ApplicationController
       { chart_type: chart_type, data:  chart_manager.run_standard_chart(chart_type)}
     end
     respond_to do |format|
-      format.html { render json: @output }
+    #  format.html { render json: @output }
       format.json
     end
 
