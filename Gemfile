@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-
-gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+# Temporary here
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Rails/Core
 gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
