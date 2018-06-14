@@ -1,20 +1,17 @@
 require 'dashboard'
 
 class Schools::ChartDataController < ApplicationController
-
   def charts
   end
 
   def show
     chart_manager = ChartManager.new(aggregate_school)
     @output = [:benchmark, :daytype_breakdown, :group_by_week_gas, :group_by_week_electricity].map do |chart_type|
-      { chart_type: chart_type, data:  chart_manager.run_standard_chart(chart_type)}
+      { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
     end
     respond_to do |format|
-    #  format.html { render json: @output }
       format.json
     end
-
   end
 
   def excel
