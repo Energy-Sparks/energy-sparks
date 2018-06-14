@@ -33,6 +33,19 @@ json.charts @output.each do |chart|
 
       json.series_data series_array
 
+    elsif chart_data[:chart1_type] == :line
+
+      x_data_hash = chart[:data][:x_data]
+
+      series_array = x_data_hash.map do |data_type, data|
+        { name: data_type, color: '#ff4500', type: chart_data[:chart1_type], data: data }
+      end
+
+     # binding.pry
+
+      json.series_data series_array
+
+
     elsif chart_data[:chart1_type] == :pie
       x_data_hash = chart[:data][:x_data]
       data_points = x_data_hash.map do |data_type, data|
