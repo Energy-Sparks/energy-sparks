@@ -94,6 +94,15 @@ class School < ApplicationRecord
     ]
   end
 
+  # TODO integrate this analytics
+  def heat_meters
+    meters.where(meter_type: :gas)
+  end
+
+  def electricity_meters
+    meters.where(meter_type: :electricity)
+  end
+
   def active_meters
     meters.where(active: true)
   end

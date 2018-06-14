@@ -1,0 +1,92 @@
+<div id="chart_1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script>
+
+var commonOptions = {
+  title: {
+    text: "Loading data..."
+  },
+  xAxis: {},
+  yAxis: [{
+    min: 0,
+    title: {
+      text: 'Pounds'
+    },
+    stackLabels: {
+      style: {
+        fontWeight: 'bold',
+        color: '#232b49'
+      }
+    }
+  }, {
+    min: 0,
+    title: {
+      text: '°C'
+    },
+    stackLabels: {
+      enabled: true,
+      style: {
+        fontWeight: 'bold',
+        color: '#232b49'
+      }
+    },
+    opposite: true
+  }],
+  legend: {
+    align: 'right',
+    x: -60,
+    verticalAlign: 'top',
+    y: 25,
+    floating: false,
+    backgroundColor: 'white',
+    borderColor: '#232b49',
+    borderWidth: 1,
+    shadow: false
+  },
+  tooltip: {
+    headerFormat: '<b>{point.x}</b><br/>',
+    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+  },
+  plotOptions: {
+    column: {
+      stacking: 'normal',
+      dataLabels: {
+        color: '#232b49'
+      }
+    }
+  },
+}
+
+var chart_1 = Highcharts.chart('chart_1', commonOptions );
+var chart_2 = Highcharts.chart('chart_2', commonOptions );
+// var chart_3 = Highcharts.chart('chart_3', commonOptions );
+
+function updateData(c, d) {
+  if (d.data !== null) {
+    x_axis = d.data.x_axis
+    c.xAxis[0].setCategories(x_axis);
+
+    c.setTitle({ text: d.title});
+    seriesData = d.series_data;
+    Object.keys(seriesData).forEach(function (key) {
+      c.addSeries(seriesData[key]);
+    });
+  } else {
+    console.log('d.data is null');
+  }
+}
+
+$(document).ready(function() {
+ $.ajax({
+    url: 'chart_data.json',
+    type: 'GET',
+    async: true,
+    dataType: "json",
+    success: function (returnedData) {
+      updateData(chart_1, returnedData.charts[2]);
+      updateData(chart_2, returnedData.charts[3]);
+    }
+  });
+ });
+</script>

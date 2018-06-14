@@ -30,6 +30,13 @@ class Meter < ApplicationRecord
   validates_presence_of :school, :meter_no, :meter_type
   validates_uniqueness_of :meter_no
 
+  # TODO integrate this analytics
+  attr_accessor :amr_data, :floor_area, :number_of_pupils
+
+  def fuel_type
+    meter_type.to_sym
+  end
+
   def first_reading
     meter_readings.order('read_at ASC').limit(1).first
   end
