@@ -1,5 +1,7 @@
+<div id="chart_0" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="chart_1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="chart_2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <script>
 
@@ -54,24 +56,49 @@ var commonOptions = {
       dataLabels: {
         color: '#232b49'
       }
+    },
+     pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+            enabled: false
+        },
+        showInLegend: true
     }
   },
 }
-
+var chart_0 = Highcharts.chart('chart_0', commonOptions );
 var chart_1 = Highcharts.chart('chart_1', commonOptions );
 var chart_2 = Highcharts.chart('chart_2', commonOptions );
-// var chart_3 = Highcharts.chart('chart_3', commonOptions );
+var chart_3 = Highcharts.chart('chart_3', commonOptions );
+
 
 function updateData(c, d) {
   if (d.data !== null) {
-    x_axis = d.data.x_axis
-    c.xAxis[0].setCategories(x_axis);
 
     c.setTitle({ text: d.title});
+    if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column') {
+
+      x_axis = d.data.x_axis
+      c.xAxis[0].setCategories(x_axis);
+
+      if (d.data.chart1_type == 'bar') {
+        c.update({ chart: { inverted: true }});
+      }
     seriesData = d.series_data;
     Object.keys(seriesData).forEach(function (key) {
       c.addSeries(seriesData[key]);
     });
+
+    } else if (d.data.chart1_type == 'pie') {
+      c.addSeries(d.series_data);
+      c.update({chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+      }});
+    }
   } else {
     console.log('d.data is null');
   }
@@ -84,8 +111,10 @@ $(document).ready(function() {
     async: true,
     dataType: "json",
     success: function (returnedData) {
-      updateData(chart_1, returnedData.charts[2]);
-      updateData(chart_2, returnedData.charts[3]);
+      updateData(chart_0, returnedData.charts[0]);
+      updateData(chart_1, returnedData.charts[1]);
+      updateData(chart_2, returnedData.charts[2]);
+      updateData(chart_3, returnedData.charts[3]);
     }
   });
  });
