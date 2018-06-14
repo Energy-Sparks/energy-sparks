@@ -1,5 +1,4 @@
 json.charts @output.each do |chart|
-
   chart_data = chart[:data]
   json.chart_type chart[:chart_type]
   json.data chart_data
