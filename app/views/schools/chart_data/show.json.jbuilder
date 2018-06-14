@@ -1,8 +1,10 @@
 json.charts @output.each do |chart|
-  json.chart_type chart[:chart_type]
-  json.data chart[:data]
 
-  if chart[:chart_type] == :group_by_week_gas
+  chart_data = chart[:data]
+  json.chart_type chart[:chart_type]
+  json.data chart_data
+
+  if chart_data != nil && chart_data[:chart1_type] == :column
     colour_hash = { 'Degree Days' => '#232b49', 'School Day Closed' => '#3bc0f0', 'School Day Open' => '#5cb85c', 'Holiday' => '#ff4500', 'Weekend' => '#ffac21' }
 
     x_data_hash = chart[:data][:x_data]

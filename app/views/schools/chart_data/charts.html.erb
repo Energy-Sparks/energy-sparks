@@ -1,7 +1,9 @@
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
 <script>
 
-var chart_1 = Highcharts.chart('container', {
+var commonOptions = {
   title: {
     text: "Loading data..."
   },
@@ -54,7 +56,26 @@ var chart_1 = Highcharts.chart('container', {
       }
     }
   },
-});
+}
+
+var chart_1 = Highcharts.chart('chart_1', commonOptions );
+var chart_2 = Highcharts.chart('chart_2', commonOptions );
+// var chart_3 = Highcharts.chart('chart_3', commonOptions );
+
+function updateData(c, d) {
+  if (d.data !== null) {
+    x_axis = d.data.x_axis
+    c.xAxis[0].setCategories(x_axis);
+
+    c.setTitle({ text: d.title});
+    seriesData = d.series_data;
+    Object.keys(seriesData).forEach(function (key) {
+      c.addSeries(seriesData[key]);
+    });
+  } else {
+    console.log('d.data is null');
+  }
+}
 
 $(document).ready(function() {
  $.ajax({
@@ -62,19 +83,10 @@ $(document).ready(function() {
     type: 'GET',
     async: true,
     dataType: "json",
-    success: function (data) {
-      group_by_week_gas = data.charts[2];
-
-      x_axis = group_by_week_gas.data.x_axis
-      chart_1.xAxis[0].setCategories(x_axis);
-
-      chart_1.setTitle({ text: group_by_week_gas.title});
-      seriesData = group_by_week_gas.series_data;
-      Object.keys(seriesData).forEach(function (key) {
-        chart_1.addSeries(seriesData[key]);
-      });
+    success: function (returnedData) {
+      updateData(chart_1, returnedData.charts[2]);
+      updateData(chart_2, returnedData.charts[3]);
     }
   });
  });
-
 </script>
