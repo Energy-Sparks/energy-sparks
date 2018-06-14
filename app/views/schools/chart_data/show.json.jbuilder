@@ -5,18 +5,17 @@ json.charts @output.each do |chart|
 
   if chart_data != nil
 
-      json.title chart_data[:title]
+    json.title chart_data[:title]
 
-      colour_hash = {
-        'Degree Days' => '#232b49',
-        'School Day Closed' => '#3bc0f0',
-        'School Day Open' => '#5cb85c',
-        'Holiday' => '#ff4500',
-        'Weekend' => '#ffac21',
-        'electricity' => '#ff4500',
-        'gas' => '#3bc0f0'
-      }
-
+    colour_hash = {
+      'Degree Days' => '#232b49',
+      'School Day Closed' => '#3bc0f0',
+      'School Day Open' => '#5cb85c',
+      'Holiday' => '#ff4500',
+      'Weekend' => '#ffac21',
+      'electricity' => '#ff4500',
+      'gas' => '#3bc0f0'
+    }
 
     if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
@@ -34,7 +33,7 @@ json.charts @output.each do |chart|
 
       json.series_data series_array
 
-     elsif chart_data[:chart1_type] == :pie
+    elsif chart_data[:chart1_type] == :pie
       x_data_hash = chart[:data][:x_data]
       data_points = x_data_hash.map do |data_type, data|
         { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], y: data[0] }
@@ -42,44 +41,6 @@ json.charts @output.each do |chart|
 
       series_array = { name: chart_data[:title], colorByPoint: true, data: data_points }
       json.series_data series_array
-
     end
-
-
-
   end
 end
-
- # series: [{
- #        name: 'Brands',
- #        colorByPoint: true,
- #        data: [{
- #            name: 'Chrome',
- #            y: 61.41,
- #            sliced: true,
- #            selected: true
- #        }, {
- #            name: 'Internet Explorer',
- #            y: 11.84
- #        }, {
- #            name: 'Firefox',
- #            y: 10.85
- #        }, {
- #            name: 'Edge',
- #            y: 4.67
- #        }, {
- #            name: 'Safari',
- #            y: 4.18
- #        }, {
- #            name: 'Sogou Explorer',
- #            y: 1.64
- #        }, {
- #            name: 'Opera',
- #            y: 1.6
- #        }, {
- #            name: 'QQ',
- #            y: 1.2
- #        }, {
- #            name: 'Other',
- #            y: 2.61
- #        }]
