@@ -28,7 +28,13 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
-      get :chart_data, to: 'chart_data#show'
+
+      get :test1, to: 'chart_data#test1'
+      get :test2, to: 'chart_data#test2'
+      get :test3, to: 'chart_data#test3'
+      get :test4, to: 'chart_data#test4'
+      get :test5, to: 'chart_data#test5'
+
       get :excel, to: 'chart_data#excel'
       get :holidays, to: 'chart_data#holidays'
       get :temperatures, to: 'chart_data#temperatures'
@@ -38,7 +44,7 @@ Rails.application.routes.draw do
       get :gas_meters, to: 'chart_data#gas_meters'
       get :aggregated_electricity_meters, to: 'chart_data#aggregated_electricity_meters'
       get :aggregated_gas_meters, to: 'chart_data#aggregated_gas_meters'
-      get :charts, to: 'chart_data#charts'
+
     end
 
     get :scoreboard, on: :collection
