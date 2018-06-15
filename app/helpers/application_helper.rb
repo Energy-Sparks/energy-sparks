@@ -61,9 +61,9 @@ module ApplicationHelper
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)
-        link_to link_text, link_path, :class => 'nav-link active'
+        link_to link_text, link_path, class: 'nav-link active'
       else
-        link_to link_text, link_path, :class => 'nav-link'
+        link_to link_text, link_path, class: 'nav-link'
       end
     end
   end

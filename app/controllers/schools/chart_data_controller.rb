@@ -4,7 +4,7 @@ class Schools::ChartDataController < ApplicationController
   before_action :authorise_school
 
   def test1
-   @output =  sort_these_charts([:benchmark, :daytype_breakdown, :group_by_week_gas, :group_by_week_electricity])
+    @output = sort_these_charts([:benchmark, :daytype_breakdown, :group_by_week_gas, :group_by_week_electricity])
     respond_to do |format|
       format.html
       format.json { render :chart_data }
@@ -12,7 +12,7 @@ class Schools::ChartDataController < ApplicationController
   end
 
   def test2
-    @output =  sort_these_charts([:gas_latest_years,  :gas_latest_academic_years, :gas_by_day_of_week])
+    @output = sort_these_charts([:gas_latest_years, :gas_latest_academic_years, :gas_by_day_of_week])
     respond_to do |format|
       format.html
       format.json { render :chart_data }
@@ -20,7 +20,7 @@ class Schools::ChartDataController < ApplicationController
   end
 
   def test3
-    @output =  sort_these_charts([:electricity_by_day_of_week,  :electricity_by_month_acyear_0_1, :baseload])
+    @output = sort_these_charts([:electricity_by_day_of_week, :electricity_by_month_acyear_0_1, :baseload])
     respond_to do |format|
       format.html
       format.json { render :chart_data }
@@ -28,7 +28,7 @@ class Schools::ChartDataController < ApplicationController
   end
 
   def test4
-    @output =  sort_these_charts([:thermostatic, :cusum, :intraday_line, :gas_kw])
+    @output = sort_these_charts([:thermostatic, :cusum, :intraday_line, :gas_kw])
     respond_to do |format|
       format.html
       format.json { render :chart_data }
@@ -36,7 +36,7 @@ class Schools::ChartDataController < ApplicationController
   end
 
   def test5
-    @output =  sort_these_charts([:group_by_week_gas_kwh, :group_by_week_gas_kwh_pupil, :group_by_week_gas_co2_floor_area, :group_by_week_gas_library_books])
+    @output = sort_these_charts([:group_by_week_gas_kwh, :group_by_week_gas_kwh_pupil, :group_by_week_gas_co2_floor_area, :group_by_week_gas_library_books])
     respond_to do |format|
       format.html
       format.json { render :chart_data }
