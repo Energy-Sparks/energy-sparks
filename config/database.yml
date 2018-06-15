@@ -8,6 +8,12 @@ development:
   host: localhost
   database: energy_sparks_development
 
+profile:
+  <<: *default
+  host: localhost
+  database: energy_sparks_development
+
+
 test: &test
   <<: *default
   host: localhost
