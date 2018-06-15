@@ -17,6 +17,8 @@ json.charts @output.each do |chart|
       'gas' => '#3bc0f0'
     }
 
+    json.y_axis_label chart_data[:y_axis_label]
+
     if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
       x_data_hash = chart[:data][:x_data]
