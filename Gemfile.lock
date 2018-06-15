@@ -397,7 +397,6 @@ GEM
     rubocop-rspec (1.19.0)
       rubocop (>= 0.51.0)
     ruby-ole (1.2.12.1)
-    ruby-prof (0.17.0)
     ruby-progressbar (1.9.0)
     ruby-sun-times (0.1.5)
     rubyvis (0.6.1)
@@ -558,7 +557,6 @@ DEPENDENCIES
   redcarpet
   rollbar
   rspec-rails (~> 3.5)
-  ruby-prof
   rubyzip (>= 1.2.1)
   sass-rails
   selenium-webdriver
