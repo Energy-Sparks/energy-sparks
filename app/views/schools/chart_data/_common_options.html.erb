@@ -13,7 +13,7 @@ var commonOptions = {
   },
   xAxis: {},
   yAxis: [{
-    min: 0,
+   // min: 0,
     title: {
       text: 'Pounds'
     },
@@ -81,7 +81,7 @@ function updateData(c, d) {
       c.xAxis[0].setCategories(x_axis);
 
       if (d.data.chart1_type == 'bar') {
-        c.update({ chart: { inverted: true }});
+        c.update({ chart: { inverted: true }, plotOptions: { bar: { stacking: 'normal'}}});
       }
 
       if (d.chart_type != 'electricity_by_month_acyear_0_1') {
@@ -89,7 +89,11 @@ function updateData(c, d) {
       }
 
       if (d.data.chart1_type == 'line') {
-        c.update({ yAxis: [{ min: -1000,  title: { text: 'kWh' }}]});
+    //    c.update({ yAxis: [{ min: -1000,  title: { text: 'kWh' }}]});
+      }
+
+      if (d.data.y_axis_label.length) {
+        c.update({ yAxis: [{ title: { text: d.data.y_axis_label }}]});
       }
 
       seriesData = d.series_data;
