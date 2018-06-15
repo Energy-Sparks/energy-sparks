@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
+# Temporary here
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+
 # Rails/Core
 gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
@@ -29,6 +32,9 @@ gem "highcharts-rails"
 gem 'rubyzip', '>= 1.2.1'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
+
+# For bulk record import in CSV etc
+gem 'activerecord-import'
 
 # JS Templating
 gem 'handlebars_assets'
