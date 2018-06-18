@@ -27,12 +27,12 @@ class Schools::ChartDataController < ApplicationController
   'Castle Primary School'             => :electric_and_gas,
   'Freshford C of E Primary'          => :electric_and_gas,
   'Marksbury C of E Primary School'   => :electric_only,
-  'Paulton Junior School'             => :electric_and_gas_and_pv,
+  'Paulton Junior School'             => :electric_and_gas,
   'Pensford Primary'                  => :electric_only,
   'Roundhill School'                  => :electric_and_gas,
   'Saltford C of E Primary School'    => :electric_and_gas,
   'St Johns Primary'                  => :electric_and_gas,
-  'Stanton Drew Primary School'       => :electric_and_gas_and_storage_heater,
+  'Stanton Drew Primary School'       => :electric_and_gas,
   'Twerton Infant School'             => :electric_and_gas,
   'Westfield Primary'                 => :electric_and_gas
 }

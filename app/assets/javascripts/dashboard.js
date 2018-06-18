@@ -1,75 +1,3 @@
-
-<style>
-.highcharts-loading {
-  opacity: 1!important;
-}
-.highcharts-loading-inner {
-  display: block;
-}
-
-.highcharts-loading-inner,
-.highcharts-loading-inner:before,
-.highcharts-loading-inner:after {
-  background: #dfdfdf;
-  -webkit-animation: load1 1s infinite ease-in-out;
-  animation: load1 1s infinite ease-in-out;
-  width: 1em;
-  height: 4em;
-}
-.highcharts-loading-inner {
-  color: #dfdfdf;
-  text-indent: -9999em;
-  margin: 0 auto;
-  top: 50%!important;
-  position: relative;
-  font-size: 11px;
-  -webkit-transform: translate3d(-50%, -50%, 0);
-  -ms-transform: translate3d(-50%, -50%, 0);
-  transform: translate3d(-50%, -50%, 0);
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
-}
-.highcharts-loading-inner:before,
-.highcharts-loading-inner:after {
-  position: absolute;
-  top: 0;
-  content: '';
-}
-.highcharts-loading-inner:before {
-  left: -1.5em;
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-.highcharts-loading-inner:after {
-  left: 1.5em;
-}
-@-webkit-keyframes load1 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 0;
-    height: 4em;
-  }
-  40% {
-    box-shadow: 0 -2em;
-    height: 5em;
-  }
-}
-@keyframes load1 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 0;
-    height: 4em;
-  }
-  40% {
-    box-shadow: 0 -2em;
-    height: 5em;
-  }
-}
-</style>
-
-<script>
 var commonOptions = {
   title: {
     text: "Loading data..."
@@ -133,10 +61,8 @@ var commonOptions = {
 }
 
 function updateData(c, d) {
-  console.log(d);
   if (d.data !== null) {
-    // console.log(d.title);
-    // console.log(d.data.chart1_type);
+
     c.setTitle({ text: d.title});
     if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column' || d.data.chart1_type == 'line') {
 
@@ -202,4 +128,3 @@ $(document).ready(function() {
     }
   });
 });
-</script>
