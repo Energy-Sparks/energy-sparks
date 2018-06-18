@@ -1,3 +1,5 @@
+"use strict"
+
 var commonOptions = {
   title: {
     text: "Loading data..."
@@ -66,7 +68,7 @@ function updateData(c, d) {
     c.setTitle({ text: d.title});
     if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column' || d.data.chart1_type == 'line') {
 
-      x_axis = d.data.x_axis
+      var x_axis = d.data.x_axis
       c.xAxis[0].setCategories(x_axis);
 
       if (d.data.chart1_type == 'bar') {
@@ -85,7 +87,7 @@ function updateData(c, d) {
         c.update({ yAxis: [{ title: { text: d.data.y_axis_label }}]});
       }
 
-      seriesData = d.series_data;
+      var seriesData = d.series_data;
       Object.keys(seriesData).forEach(function (key) {
         c.addSeries(seriesData[key]);
       });
