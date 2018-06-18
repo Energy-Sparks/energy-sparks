@@ -1,12 +1,3 @@
-
-<%= render 'nav' %>
-
-<div id="chart_0" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<div id="chart_1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<div id="chart_2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-<script>
-
 var commonOptions = {
   title: {
     text: "Loading data..."
@@ -70,10 +61,8 @@ var commonOptions = {
 }
 
 function updateData(c, d) {
-  console.log(d);
   if (d.data !== null) {
-    // console.log(d.title);
-    // console.log(d.data.chart1_type);
+
     c.setTitle({ text: d.title});
     if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column' || d.data.chart1_type == 'line') {
 
@@ -117,36 +106,25 @@ function updateData(c, d) {
 
 $(document).ready(function() {
 
-var chart_0 = Highcharts.chart('chart_0', commonOptions );
-var chart_1 = Highcharts.chart('chart_1', commonOptions );
-var chart_2 = Highcharts.chart('chart_2', commonOptions );
-var chart_3 = null;
+  $("div.analysis-chart").each(function(){
+    var this_id = this.id;
+    var this_chart = Highcharts.chart(this_id, commonOptions );
+    this_chart.showLoading();
+    console.log(this.id);
+  });
 
-if ($('div#chart_3').length) {
-  console.log('hello');
-  chart_3 = Highcharts.chart('chart_3', commonOptions );
-}
-
-
-
- $.ajax({
+  $.ajax({
     type: 'GET',
     async: true,
     dataType: "json",
     success: function (returnedData) {
-      if (returnedData.charts[0]) {
-        updateData(chart_0, returnedData.charts[0]);
-      }
-      if (returnedData.charts[1]) {
-        updateData(chart_1, returnedData.charts[1]);
-      }
-      if (returnedData.charts[2]) {
-        updateData(chart_2, returnedData.charts[2]);
-      }
-      if (returnedData.charts[3]) {
-        updateData(chart_3, returnedData.charts[3]);
+      var numberOfCharts = returnedData.charts.length;
+      for (var i = 0; i < numberOfCharts; i++) {
+          var this_chart = $("div.analysis-chart")[i];
+          var chart = $('div#' + this_chart.id).highcharts();
+          chart.hideLoading();
+          updateData(chart, returnedData.charts[i])
       }
     }
   });
- });
-</script>
+});

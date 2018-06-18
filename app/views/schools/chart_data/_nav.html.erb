@@ -1,20 +1,10 @@
 <div class="row">
 <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <%= nav_link('Main Dashboard', school_test1_path) %>
+  <% @nav_array.each do |nav| %>
+  <li>
+    <%= nav_link(nav[:name], send("school_#{nav[:path]}")) %>
   </li>
-  <li class="nav-item">
-    <%= nav_link('Gas Usage', school_test2_path) %>
-  </li>
-  <li class="nav-item">
-    <%= nav_link('Electricity Usage', school_test3_path) %>
-  </li>
-  <li class="nav-item">
-    <%= nav_link('Gas details', school_test4_path) %>
-  </li>
-  <li class="nav-item">
-    <%= nav_link('Gas Usage By Week', school_test5_path) %>
-  </li>
+  <% end %>
 </ul>
 
 </div>
