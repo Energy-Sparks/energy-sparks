@@ -32,13 +32,10 @@ class Meter < ApplicationRecord
 
   # TODO integrate this analytics
   attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
+  attr_writer :sub_meters
 
   def sub_meters
     @sub_meters ||= []
-  end
-
-  def sub_meters=(array)
-    @sub_meters = array
   end
 
   def fuel_type

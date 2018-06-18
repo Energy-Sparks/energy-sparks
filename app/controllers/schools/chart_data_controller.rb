@@ -5,43 +5,43 @@ class Schools::ChartDataController < ApplicationController
   before_action :set_nav
 
   DASHBOARD_PAGE_GROUPS = {
-    main_dashboard_electric:          {name:   'Main Dashboard', charts: %i[benchmark_electric] },
-    electricity_year:                 {name:   'Electricity Year', charts: %i[benchmark_electric] },
-    electricity_longterm:             {name:   'Electricity Analysis -long term', charts: %i[daytype_breakdown_electricity group_by_week_electricity electricity_by_day_of_week baseload electricity_by_month_year_0_1 intraday_line_school_days intraday_line_holidays intraday_line_weekends] },
-    gas_thermostatic:                 {name:   'Gas Detail (thermostatic)', charts: %i[daytype_breakdown_gas group_by_week_gas gas_by_day_of_week thermostatic cusum] },
-    recent_electric:                  {name:   'Electricity Recent', charts: %i[intraday_line_school_days intraday_line_school_days_last5weeks intraday_line_school_days_6months intraday_line_school_last7days baseload_lastyear] },
-    main_dashboard_electric_and_gas:  {name:   'Main Dashboard', charts: %i[benchmark daytype_breakdown_electricity daytype_breakdown_gas group_by_week_electricity group_by_week_gas] },
-    electric_and_gas_year:            {name:   'Electricity & Gas Year', charts: %i[benchmark] },
-    recent_electric_and_gas:          {name:   'Recent Electricity & Gas', charts: %i[benchmark] }
-  }
+    main_dashboard_electric:          { name:   'Main Dashboard', charts: %i[benchmark_electric] },
+    electricity_year:                 { name:   'Electricity Year', charts: %i[benchmark_electric] },
+    electricity_longterm:             { name:   'Electricity Analysis -long term', charts: %i[daytype_breakdown_electricity group_by_week_electricity electricity_by_day_of_week baseload electricity_by_month_year_0_1 intraday_line_school_days intraday_line_holidays intraday_line_weekends] },
+    gas_thermostatic:                 { name:   'Gas Detail (thermostatic)', charts: %i[daytype_breakdown_gas group_by_week_gas gas_by_day_of_week thermostatic cusum] },
+    recent_electric:                  { name:   'Electricity Recent', charts: %i[intraday_line_school_days intraday_line_school_days_last5weeks intraday_line_school_days_6months intraday_line_school_last7days baseload_lastyear] },
+    main_dashboard_electric_and_gas:  { name:   'Main Dashboard', charts: %i[benchmark daytype_breakdown_electricity daytype_breakdown_gas group_by_week_electricity group_by_week_gas] },
+    electric_and_gas_year:            { name:   'Electricity & Gas Year', charts: %i[benchmark] },
+    recent_electric_and_gas:          { name:   'Recent Electricity & Gas', charts: %i[benchmark] }
+  }.freeze
 
   SCHOOL_REPORT_GROUPS = {
-    electric_only: %i[ main_dashboard_electric electricity_year electricity_longterm recent_electric],
-    electric_and_gas: %i[ main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric],
-    electric_and_gas_and_pv: %i[ main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric_and_gas],
-    electric_and_gas_and_storage_heater: %i[ main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric_and_gas]
-  }
+    electric_only: %i[main_dashboard_electric electricity_year electricity_longterm recent_electric],
+    electric_and_gas: %i[main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric],
+    electric_and_gas_and_pv: %i[main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric_and_gas],
+    electric_and_gas_and_storage_heater: %i[main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric_and_gas]
+  }.freeze
 
   SCHOOLS = {
-  'Bishop Sutton Primary School'      => :electric_and_gas,
-  'Castle Primary School'             => :electric_and_gas,
-  'Freshford C of E Primary'          => :electric_and_gas,
-  'Marksbury C of E Primary School'   => :electric_only,
-  'Paulton Junior School'             => :electric_and_gas,
-  'Pensford Primary'                  => :electric_only,
-  'Roundhill School'                  => :electric_and_gas,
-  'Saltford C of E Primary School'    => :electric_and_gas,
-  'St Johns Primary'                  => :electric_and_gas,
-  'Stanton Drew Primary School'       => :electric_and_gas,
-  'Twerton Infant School'             => :electric_and_gas,
-  'Westfield Primary'                 => :electric_and_gas
-}
+    'Bishop Sutton Primary School'      => :electric_and_gas,
+    'Castle Primary School'             => :electric_and_gas,
+    'Freshford C of E Primary'          => :electric_and_gas,
+    'Marksbury C of E Primary School'   => :electric_only,
+    'Paulton Junior School'             => :electric_and_gas,
+    'Pensford Primary'                  => :electric_only,
+    'Roundhill School'                  => :electric_and_gas,
+    'Saltford C of E Primary School'    => :electric_and_gas,
+    'St Johns Primary'                  => :electric_and_gas,
+    'Stanton Drew Primary School'       => :electric_and_gas_and_storage_heater,
+    'Twerton Infant School'             => :electric_and_gas,
+    'Westfield Primary'                 => :electric_and_gas
+  }.freeze
 
   def set_nav
     dashboard_set = SCHOOLS[@school.name.strip]
     pages = SCHOOL_REPORT_GROUPS[dashboard_set]
     @nav_array = pages.map do |page|
-      { name: DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path"}
+      { name: DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
     end
   end
 
