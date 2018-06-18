@@ -29,11 +29,15 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alerts
 
-      get :test1, to: 'chart_data#test1'
-      get :test2, to: 'chart_data#test2'
-      get :test3, to: 'chart_data#test3'
-      get :test4, to: 'chart_data#test4'
-      get :test5, to: 'chart_data#test5'
+      get :dashboard, to: 'chart_data#dashboard'
+      get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
+      get :electricity_year, to: 'chart_data#electricity_year'
+      get :electricity_longterm, to: 'chart_data#electricity_longterm'
+      get :recent_electric, to: 'chart_data#recent_electric'
+      get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
+      get :gas_thermostatic, to: 'chart_data#gas_thermostatic'
+      get :recent_electric_and_gas, to: 'chart_data#recent_electric_and_gas'
+      get :electric_and_gas_year, to: 'chart_data#electric_and_gas_year'
 
       get :excel, to: 'chart_data#excel'
       get :holidays, to: 'chart_data#holidays'

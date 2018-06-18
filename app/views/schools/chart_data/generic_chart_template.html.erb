@@ -1,0 +1,9 @@
+<h1><%= @title %></h1>
+
+<%= render 'nav' %>
+
+<% @number_of_charts.times do |number| %>
+  <div id="chart_<%= number %>" style="min-width: 310px; height: 400px; margin: 0 auto" class="analysis-chart"></div>
+<% end %>
+
+<%= render 'common_options' %>
