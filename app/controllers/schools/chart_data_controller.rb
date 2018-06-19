@@ -7,7 +7,7 @@ class Schools::ChartDataController < ApplicationController
   DASHBOARD_PAGE_GROUPS = {
     main_dashboard_electric:          { name:   'Main Dashboard', charts: %i[benchmark_electric] },
     electricity_year:                 { name:   'Electricity Year', charts: %i[benchmark_electric] },
-    electricity_longterm:             { name:   'Electricity Analysis -long term', charts: %i[daytype_breakdown_electricity group_by_week_electricity electricity_by_day_of_week baseload electricity_by_month_year_0_1 intraday_line_school_days intraday_line_holidays intraday_line_weekends] },
+    electricity_longterm:             { name:   'Electricity Analysis long term', charts: %i[daytype_breakdown_electricity group_by_week_electricity electricity_by_day_of_week baseload electricity_by_month_year_0_1 intraday_line_school_days intraday_line_holidays intraday_line_weekends] },
     gas_thermostatic:                 { name:   'Gas Detail (thermostatic)', charts: %i[daytype_breakdown_gas group_by_week_gas gas_by_day_of_week thermostatic cusum] },
     recent_electric:                  { name:   'Electricity Recent', charts: %i[intraday_line_school_days intraday_line_school_days_last5weeks intraday_line_school_days_6months intraday_line_school_last7days baseload_lastyear] },
     main_dashboard_electric_and_gas:  { name:   'Main Dashboard', charts: %i[benchmark daytype_breakdown_electricity daytype_breakdown_gas group_by_week_electricity group_by_week_gas] },
@@ -95,8 +95,6 @@ class Schools::ChartDataController < ApplicationController
     @number_of_charts = @charts.size
     @output = sort_these_charts(@charts)
 
-    pp @output
-
     respond_to do |format|
       format.html { render :generic_chart_template }
       format.json { render :chart_data }
@@ -163,78 +161,3 @@ private
     AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
   end
 end
-
-
-
-  # schools = {
-  #   'Bishop Sutton Primary School'      => :electric_and_gas,
-  #   'Castle Primary School'             => :electric_and_gas,
-  #   'Freshford C of E Primary'          => :electric_and_gas,
-  #   'Marksbury C of E Primary School'   => :electric_only,
-  #   'Paulton Junior School'             => :electric_and_gas_and_pv,
-  #   'Pensford Primary'                  => :electric_only,
-  #   'Roundhill School'                  => :electric_and_gas,
-  #   'Saltford C of E Primary School'    => :electric_and_gas,
-  #   'St Johns Primary'                  => :electric_and_gas,
-  #   'Stanton Drew Primary School'       => :electric_and_gas_and_storage_heater,
-  #   'Twerton Infant School'             => :electric_and_gas,
-  #   'Westfield Primary'                 => :electric_and_gas
-  # }
-
-
-
-# electric_only: %i[ main_dashboard_electric electricity_year electricity_longterm recent_electric],
-# electric_and_gas: %i[ main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric],
-# electric_and_gas_and_pv: %i[ main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric_and_gas],
-# electric_and_gas_and_storage_heater: %i[ main_dashboard_electric_and_gas electric_and_gas_year electricity_longterm gas_thermostatic recent_electric_and_gas]
-          # name:   'Main Dashboard',
-          #                     charts: %i[
-          #                       benchmark
-          #                       daytype_breakdown_electricity
-          #                       daytype_breakdown_gas
-          #                       group_by_week_electricity
-          #                       group_by_week_gas
-          #                     ]
-          #                   },
-
-#action_name
-      # get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
-      # get :electricity_year, to: 'chart_data#electricity_year'
-      # get :electricity_longterm, to: 'chart_data#electricity_longterm'
-      # get :recent_electric, to: 'chart_data#recent_electric'
-      # get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
-      # get :gas_thermostatic, to: 'chart_data#gas_thermostatic'
-      # get :recent_electric_and_gas, to: 'chart_data#recent_electric_and_gas'
-      # get :electric_and_gas_year, to: 'chart_data#electric_and_gas_year'
-
-  # def show
-  #   chart_manager = ChartManager.new(aggregate_school)
-  #   @output = [
-  #     :benchmark,
-  #     :daytype_breakdown,
-  #     :group_by_week_gas,
-  #     :group_by_week_electricity,
-  #     :group_by_week_gas_kwh_pupil,
-  #     :gas_latest_years,
-  #     :gas_latest_academic_years,
-  #     :gas_by_day_of_week,
-  #     :electricity_by_day_of_week,
-  #     :electricity_by_month_acyear_0_1,
-  #     :thermostatic,
-  #     :cusum,
-  #     :baseload,
-  #     :intraday_line,
-  #     :gas_kw,
-  #     :group_by_week_gas_kwh,
-  #     :group_by_week_gas_kwh_pupil,
-  #     :group_by_week_gas_co2_floor_area,
-  #     :group_by_week_gas_library_books
-
-  #   ].map do |chart_type|
-  #  # @output = [:group_by_week_electricity].map do |chart_type|
-  #     { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
-  #   end
-  #   respond_to do |format|
-  #     format.json
-  #   end
-  # end
