@@ -9,7 +9,11 @@ json.charts @output.each do |chart|
     'Holiday' => '#ff4500',
     'Weekend' => '#ffac21',
     'electricity' => '#ff4500',
-    'gas' => '#3bc0f0'
+    'gas' => '#3bc0f0',
+    'Heating Day' => '#3bc0f0',
+    'Non Heating Day' => '#5cb85c',
+    'Heating Day Model' => '#ff4500',
+    'Non Heating Day Model' => '#ffac21'
   }
 
   json.anaylsis_type      chart[:chart_type]
@@ -23,6 +27,8 @@ json.charts @output.each do |chart|
 
   x_data_hash = chart[:data][:x_data]
 
+  series_array = []
+
   if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
@@ -35,6 +41,15 @@ json.charts @output.each do |chart|
       y_data_hash.each do |data_type, data|
         series_array << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
       end
+    end
+
+  elsif chart_data[:chart1_type] == :scatter
+
+    x_data_hash.each do |data_type, data|
+      scatter_data = chart_data[:x_axis].each_with_index.collect do |one_x_axis_point, index|
+        [one_x_axis_point, data[index]]
+      end
+      series_array << { name: data_type, color: colour_hash[data_type], data: scatter_data }
     end
 
   elsif chart_data[:chart1_type] == :line
