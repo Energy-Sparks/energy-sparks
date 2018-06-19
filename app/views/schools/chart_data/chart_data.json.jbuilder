@@ -22,8 +22,8 @@ json.charts @output.each do |chart|
     if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
       x_data_hash = chart[:data][:x_data]
-      series_array = x_data_hash.map do |data_type, data|
-        { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], data: data }
+      series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
+        { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], data: data, index: index }
       end
 
       if chart[:data][:y2_data] != nil
