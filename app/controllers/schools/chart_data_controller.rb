@@ -33,7 +33,7 @@ class Schools::ChartDataController < ApplicationController
     'Roundhill School'                  => :electric_and_gas,
     'Saltford C of E Primary School'    => :electric_and_gas,
     'St Johns Primary'                  => :electric_and_gas,
-    'Stanton Drew Primary School'       => :electric_and_gas_and_storage_heater,
+    'Stanton Drew Primary School'       => :electric_only,
     'Twerton Infant School'             => :electric_and_gas,
     'Westfield Primary'                 => :electric_and_gas
   }.freeze
