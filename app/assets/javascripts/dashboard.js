@@ -22,16 +22,36 @@ var commonOptions = {
     shadow: false
   },
   plotOptions: {
+    bar: {
+      stacking: 'normal',
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '£ {point.y:.2f}'
+      }
+    },
     column: {
       dataLabels: {
         color: '#232b49'
+      },
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.y:.2f} kWh'
       }
     },
     pie: {
         allowPointSelect: true,
         cursor: 'pointer',
         dataLabels: { enabled: false },
-        showInLegend: true
+        showInLegend: true,
+        tooltip: {
+          headerFormat: '<b>{point.key}</b><br>',
+          pointFormat: '{point.y:.2f} kWh'
+        }
+    },
+    line: {
+        tooltip: {
+          headerFormat: '<b>{point.key}</b><br>',
+          pointFormat: '{point.y:.2f} kW' }
     },
     scatter: {
         marker: {
@@ -52,7 +72,7 @@ var commonOptions = {
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x} cm, {point.y} kg'
+            pointFormat: '{point.x}, {point.y}'
         }
     }
   }
@@ -85,13 +105,13 @@ function updateData(c, d, chartDiv) {
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
 
-    console.log('bar or column or line');
+    console.log('bar or column or line ' + subChartType);
     c.xAxis[0].setCategories(xAxisCategories);
 
     // BAR Charts
     if (chartType == 'bar') {
       console.log('bar');
-      c.update({ chart: { inverted: true }, plotOptions: { bar: { stacking: 'normal'}}, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     }
 
     // Column charts
@@ -105,11 +125,16 @@ function updateData(c, d, chartDiv) {
       if (y2AxisLabel !== undefined && y2AxisLabel == 'Degree Days') {
         console.log('Yaxis - Degree days');
         c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+        c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
       }
     }
 
     Object.keys(seriesData).forEach(function (key) {
-      console.log(seriesData[key].name);
+      console.log('Series data name: ' + seriesData[key].name);
+
+      if (seriesData[key].name == 'CUSUM') {
+        c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
+      }
       c.addSeries(seriesData[key]);
     });
 
