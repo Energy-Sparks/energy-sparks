@@ -11,7 +11,7 @@ json.charts @output.each do |chart|
     'electricity' => '#ff4500',
     'gas' => '#3bc0f0',
     'Heating Day' => '#3bc0f0',
-    'Non Heating Day' =>'#5cb85c',
+    'Non Heating Day' => '#5cb85c',
     'Heating Day Model' => '#ff4500',
     'Non Heating Day Model' => '#ffac21'
   }
@@ -46,11 +46,10 @@ json.charts @output.each do |chart|
   elsif chart_data[:chart1_type] == :scatter
 
     x_data_hash.each do |data_type, data|
-
       scatter_data = chart_data[:x_axis].each_with_index.collect do |one_x_axis_point, index|
         [one_x_axis_point, data[index]]
       end
-      series_array << { name: data_type, color: colour_hash[data_type], data: scatter_data}
+      series_array << { name: data_type, color: colour_hash[data_type], data: scatter_data }
     end
 
   elsif chart_data[:chart1_type] == :line
