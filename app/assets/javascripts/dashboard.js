@@ -2,38 +2,17 @@
 
 var commonOptions = {
   title: {
-    text: "Loading data..."
+    text: "Loading data...",
+    // floating: true,
+    // x: 0,
+    // y: -60
   },
   xAxis: {},
-  yAxis: {},
-  // yAxis: [{
-  //  // min: 0,
-  //   title: {
-  //     text: 'Pounds'
-  //   },
-  //   stackLabels: {
-  //     style: {
-  //       fontWeight: 'bold',
-  //       color: '#232b49'
-  //     }
-  //   }
-  // }, {
-  //   min: 0,
-  //   title: {
-  //     text: '°C'
-  //   },
-  //   stackLabels: {
-  //     enabled: true,
-  //     style: {
-  //       fontWeight: 'bold',
-  //       color: '#232b49'
-  //     }
-  //   },
-  //   opposite: true
-  // }],
+  yAxis: { showEmpty: false },
   legend: {
     align: 'right',
     x: -60,
+    margin: 30,
     verticalAlign: 'top',
     y: 25,
     floating: false,
@@ -42,10 +21,10 @@ var commonOptions = {
     borderWidth: 1,
     shadow: false
   },
-  tooltip: {
-    headerFormat: '<b>{point.x}</b><br/>',
-    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-  },
+  // tooltip: {
+  //   headerFormat: '<b>{point.x}</b><br/>',
+  //   pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+  // },
   plotOptions: {
     column: {
       dataLabels: {
@@ -55,33 +34,102 @@ var commonOptions = {
      pie: {
         allowPointSelect: true,
         cursor: 'pointer',
-        dataLabels: {
-            enabled: false
-        },
+        dataLabels: { enabled: false },
         showInLegend: true
     }
   },
 }
 
-function updateData(c, d) {
-  if (d.data !== null) {
 
-    c.setTitle({ text: d.title});
-    if (d.data.chart1_type == 'bar' || d.data.chart1_type == 'column' || d.data.chart1_type == 'line') {
+// anaylsis_type: "daytype_breakdown_electricity"
+// ​
+// chart1_subtype: null
+// ​
+// chart1_type: "pie"
+// ​
+// series_data: Object { name: "Breakdown by type of day/time: Electricity 41,485 kWh", colorByPoint: true, data: (4) […] }
+// ​
+// title: "Breakdown by type of day/time: Electricity 41,485 kWh"
+// ​
+// y_axis_label: "kWh"
 
-      var x_axis = d.data.x_axis
-      c.xAxis[0].setCategories(x_axis);
 
-      if (d.data.chart1_type == 'bar') {
-        c.update({ chart: { inverted: true }, plotOptions: { bar: { stacking: 'normal'}}});
+function updateData(c, d, chartDiv) {
+
+  c.setTitle({ text: d.title});
+
+  var chartType = d.chart1_type;
+  var subChartType = d.chart1_subtype;
+  var seriesData = d.series_data;
+  var yAxisLabel = d.y_axis_label;
+  var y2AxisLabel = d.y2_axis_label;
+  var xAxisCategories = d.x_axis_categories;
+  var adviceHeader = d.advice_header;
+  var adviceFooter = d.advice_footer;
+
+  if (adviceHeader !== undefined && adviceHeader !== 'null') {
+    console.log()
+    chartDiv.before('<div>' + adviceHeader + '</div>');
+  }
+
+  if (adviceFooter !== undefined && adviceFooter !== 'null') {
+    chartDiv.after('<div>' + adviceFooter + '</div>');
+  }
+
+  console.log("################################");
+  console.log(d.title);
+  console.log("################################");
+
+
+    if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
+
+      console.log('bar or column or line');
+      c.xAxis[0].setCategories(xAxisCategories);
+      //console.log(xAxisCategories);
+
+      if (chartType == 'bar') {
+        console.log('bar');
+        c.update({ chart: { inverted: true }, plotOptions: { bar: { stacking: 'normal'}}, yAxis: [{title: { text: 'Pounds' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
       }
 
-      if (d.data.chart1_type == 'column') {
+      if (chartType == 'column') {
+        console.log('column');
+        console.log(subChartType);
+        console.log(yAxisLabel);
 
-        if (d.data.y2_data !== undefined) {
+        if (subChartType == 'stacked') {
+          c.update({ chart: { plotOptions: { bar: { stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]}});
+        }
+
+       // c.update({yAxis: [{ title: { text: 'Pounds' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}}]});
 
 
-          if (Object.keys(d.data.y2_data)[0] == 'Degree Days') {
+        if (y2AxisLabel !== undefined && y2AxisLabel == 'Degree Days') {
+          console.log('Yaxis - Degree days');
+          c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+
+
+
+  //        c.update({yAxis: [{ title: { text: 'Pounds' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}}]});
+
+
+          // }, {
+        //   min: 0,
+        //   title: {
+        //     text: '°C'
+        //   },
+        //   stackLabels: {
+        //     enabled: true,
+        //     style: {
+        //       fontWeight: 'bold',
+        //       color: '#232b49'
+        //     }
+        //   },
+        //   opposite: true
+        // }
+
+// {yAxis: [{title: { text: 'Pounds' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }] }
+
 
    // c.update({yAxis: [{
 
@@ -125,8 +173,7 @@ function updateData(c, d) {
 
 
 
-        }
-        console.log(d.data.y2_data);
+     //   console.log(d.data.y2_data);
         // if (d.data.)
         // c.update(yAxis: [{
 
@@ -186,30 +233,31 @@ function updateData(c, d) {
 
 
 
-      if (d.chart_type != 'electricity_by_month_acyear_0_1') {
+      if (chartType != 'electricity_by_month_acyear_0_1') {
+        console.log("it isn't electricity_by_month_acyear_0_1");
+
         c.update({  plotOptions: { column: { stacking: 'normal'}}});
       }
 
-      if (d.data.chart1_type == 'line') {
+      if (chartType == 'line') {
+        console.log('it is a line');
     //    c.update({ yAxis: [{ min: -1000,  title: { text: 'kWh' }}]});
       }
 
-
-
-      var seriesData = d.series_data;
       Object.keys(seriesData).forEach(function (key) {
         console.log(seriesData[key].name);
         c.addSeries(seriesData[key]);
       });
 
 
-      if (d.data.y_axis_label.length) {
-        c.update({ yAxis: [{ title: { text: d.data.y_axis_label }}]});
+      if (yAxisLabel.length) {
+        console.log('we have a yAxisLabel ' + yAxisLabel);
+        c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
       }
 
 
-    } else if (d.data.chart1_type == 'pie') {
-      c.addSeries(d.series_data);
+    } else if (chartType == 'pie') {
+      c.addSeries(seriesData);
       c.update({chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -217,9 +265,6 @@ function updateData(c, d) {
         type: 'pie'
       }});
     }
-  } else {
-    console.log('d.data is null');
-  }
 }
 
 $(document).ready(function() {
@@ -239,9 +284,12 @@ $(document).ready(function() {
       var numberOfCharts = returnedData.charts.length;
       for (var i = 0; i < numberOfCharts; i++) {
           var this_chart = $("div.analysis-chart")[i];
-          var chart = $('div#' + this_chart.id).highcharts();
+          var chartDiv = $('div#' + this_chart.id);
+          var chart = chartDiv.highcharts();
           chart.hideLoading();
-          updateData(chart, returnedData.charts[i])
+       //   console.log(returnedData.new_charts[i]);
+          var chartData = returnedData.charts[i];
+          if (chartData !== undefined) { updateData(chart, chartData, chartDiv); }
       }
     }
   });
