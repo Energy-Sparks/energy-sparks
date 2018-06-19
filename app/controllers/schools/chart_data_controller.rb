@@ -11,6 +11,7 @@ class Schools::ChartDataController < ApplicationController
     gas_thermostatic:                 { name:   'Gas Detail (thermostatic)', charts: %i[daytype_breakdown_gas group_by_week_gas gas_by_day_of_week thermostatic cusum] },
     recent_electric:                  { name:   'Electricity Recent', charts: %i[intraday_line_school_days intraday_line_school_days_last5weeks intraday_line_school_days_6months intraday_line_school_last7days baseload_lastyear] },
     main_dashboard_electric_and_gas:  { name:   'Main Dashboard', charts: %i[benchmark daytype_breakdown_electricity daytype_breakdown_gas group_by_week_electricity group_by_week_gas] },
+#    main_dashboard_electric_and_gas:  { name:   'Main Dashboard', charts: %i[benchmark] },
     electric_and_gas_year:            { name:   'Electricity & Gas Year', charts: %i[benchmark] },
     recent_electric_and_gas:          { name:   'Recent Electricity & Gas', charts: %i[benchmark] }
   }.freeze
@@ -93,6 +94,8 @@ class Schools::ChartDataController < ApplicationController
     @charts = DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
     @number_of_charts = @charts.size
     @output = sort_these_charts(@charts)
+
+    pp @output
 
     respond_to do |format|
       format.html { render :generic_chart_template }
