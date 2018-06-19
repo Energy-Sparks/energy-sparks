@@ -5,31 +5,32 @@ var commonOptions = {
     text: "Loading data..."
   },
   xAxis: {},
-  yAxis: [{
-   // min: 0,
-    title: {
-      text: 'Pounds'
-    },
-    stackLabels: {
-      style: {
-        fontWeight: 'bold',
-        color: '#232b49'
-      }
-    }
-  }, {
-    min: 0,
-    title: {
-      text: '°C'
-    },
-    stackLabels: {
-      enabled: true,
-      style: {
-        fontWeight: 'bold',
-        color: '#232b49'
-      }
-    },
-    opposite: true
-  }],
+  yAxis: {},
+  // yAxis: [{
+  //  // min: 0,
+  //   title: {
+  //     text: 'Pounds'
+  //   },
+  //   stackLabels: {
+  //     style: {
+  //       fontWeight: 'bold',
+  //       color: '#232b49'
+  //     }
+  //   }
+  // }, {
+  //   min: 0,
+  //   title: {
+  //     text: '°C'
+  //   },
+  //   stackLabels: {
+  //     enabled: true,
+  //     style: {
+  //       fontWeight: 'bold',
+  //       color: '#232b49'
+  //     }
+  //   },
+  //   opposite: true
+  // }],
   legend: {
     align: 'right',
     x: -60,
@@ -75,9 +76,115 @@ function updateData(c, d) {
         c.update({ chart: { inverted: true }, plotOptions: { bar: { stacking: 'normal'}}});
       }
 
-      // if (d.data.chart1_type == 'column') {
-      //   c.update({ chart: { legend: { reversed: true }}});
-      // }
+      if (d.data.chart1_type == 'column') {
+
+        if (d.data.y2_data !== undefined) {
+
+
+          if (Object.keys(d.data.y2_data)[0] == 'Degree Days') {
+
+   // c.update({yAxis: [{
+
+   //        title: {
+   //          text: 'Pounds'
+   //        },
+   //        stackLabels: {
+   //          style: {
+   //            fontWeight: 'bold',
+   //            color: '#232b49'
+   //          }
+   //        }
+   //      // }, {
+   //      //   min: 0,
+   //      //   title: {
+   //      //     text: '°C'
+   //      //   },
+   //      //   stackLabels: {
+   //      //     enabled: true,
+   //      //     style: {
+   //      //       fontWeight: 'bold',
+   //      //       color: '#232b49'
+   //      //     }
+   //      //   },
+   //      //   opposite: true
+   //      // }
+   //    }]});
+
+
+
+
+      } else {
+        // c.update( {yAxis: [
+        //       {
+        //         title: { text: 'Pounds' },
+        //         stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}
+        //       }
+        //     ]});
+
+       }
+
+
+
+        }
+        console.log(d.data.y2_data);
+        // if (d.data.)
+        // c.update(yAxis: [{
+
+        //   title: {
+        //     text: 'Pounds'
+        //   },
+        //   stackLabels: {
+        //     style: {
+        //       fontWeight: 'bold',
+        //       color: '#232b49'
+        //     }
+        //   }
+        // }, {
+        //   min: 0,
+        //   title: {
+        //     text: '°C'
+        //   },
+        //   stackLabels: {
+        //     enabled: true,
+        //     style: {
+        //       fontWeight: 'bold',
+        //       color: '#232b49'
+        //     }
+        //   },
+        //   opposite: true
+        // }]);
+
+      }
+
+
+
+// yAxis: [{
+//    // min: 0,
+//     title: {
+//       text: 'Pounds'
+//     },
+//     stackLabels: {
+//       style: {
+//         fontWeight: 'bold',
+//         color: '#232b49'
+//       }
+//     }
+//   }, {
+//     min: 0,
+//     title: {
+//       text: '°C'
+//     },
+//     stackLabels: {
+//       enabled: true,
+//       style: {
+//         fontWeight: 'bold',
+//         color: '#232b49'
+//       }
+//     },
+//     opposite: true
+//   }],
+
+
 
       if (d.chart_type != 'electricity_by_month_acyear_0_1') {
         c.update({  plotOptions: { column: { stacking: 'normal'}}});
@@ -87,15 +194,19 @@ function updateData(c, d) {
     //    c.update({ yAxis: [{ min: -1000,  title: { text: 'kWh' }}]});
       }
 
-      if (d.data.y_axis_label.length) {
-        c.update({ yAxis: [{ title: { text: d.data.y_axis_label }}]});
-      }
+
 
       var seriesData = d.series_data;
       Object.keys(seriesData).forEach(function (key) {
         console.log(seriesData[key].name);
         c.addSeries(seriesData[key]);
       });
+
+
+      if (d.data.y_axis_label.length) {
+        c.update({ yAxis: [{ title: { text: d.data.y_axis_label }}]});
+      }
+
 
     } else if (d.data.chart1_type == 'pie') {
       c.addSeries(d.series_data);
