@@ -1,5 +1,4 @@
 json.charts @output.each do |chart|
-
   chart_data = chart[:data]
   next if chart_data.nil?
 
