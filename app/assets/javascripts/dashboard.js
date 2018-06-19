@@ -75,6 +75,10 @@ function updateData(c, d) {
         c.update({ chart: { inverted: true }, plotOptions: { bar: { stacking: 'normal'}}});
       }
 
+      // if (d.data.chart1_type == 'column') {
+      //   c.update({ chart: { legend: { reversed: true }}});
+      // }
+
       if (d.chart_type != 'electricity_by_month_acyear_0_1') {
         c.update({  plotOptions: { column: { stacking: 'normal'}}});
       }
@@ -89,6 +93,7 @@ function updateData(c, d) {
 
       var seriesData = d.series_data;
       Object.keys(seriesData).forEach(function (key) {
+        console.log(seriesData[key].name);
         c.addSeries(seriesData[key]);
       });
 
