@@ -27,13 +27,35 @@ var commonOptions = {
         color: '#232b49'
       }
     },
-     pie: {
+    pie: {
         allowPointSelect: true,
         cursor: 'pointer',
         dataLabels: { enabled: false },
         showInLegend: true
+    },
+    scatter: {
+        marker: {
+            radius: 5,
+            states: {
+                hover: {
+                    enabled: true,
+                    lineColor: 'rgb(100,100,100)'
+                }
+            }
+        },
+        states: {
+            hover: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x} cm, {point.y} kg'
+        }
     }
-  },
+  }
 }
 
 function updateData(c, d, chartDiv) {
@@ -95,6 +117,16 @@ function updateData(c, d, chartDiv) {
       console.log('we have a yAxisLabel ' + yAxisLabel);
       c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
     }
+
+  // Scatter
+  } else if (chartType == 'scatter') {
+    console.log('scatter');
+    c.update({chart: { type: 'scatter' }});
+
+    Object.keys(seriesData).forEach(function (key) {
+      console.log(seriesData[key].name);
+      c.addSeries(seriesData[key]);
+    });
 
   // Pie
   } else if (chartType == 'pie') {
