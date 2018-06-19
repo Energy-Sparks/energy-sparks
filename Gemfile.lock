@@ -12,7 +12,7 @@ GIT
 PATH
   remote: ../energy-sparks_analytics
   specs:
-    energy-sparks_analytics (0.2.0)
+    energy-sparks_analytics (0.3.0)
       activesupport (~> 5.2.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
