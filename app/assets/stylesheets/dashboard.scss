@@ -11,6 +11,16 @@ div.analysis-chart {
   padding-top: 50px;
 }
 
+div.analysis-chart.pie-chart {
+  height: 400px;
+  line-height: 400px;
+}
+
+
+h3.analysis {
+  padding-top: 50px;
+}
+
 .highcharts-loading {
   opacity: 1!important;
 }
