@@ -72,17 +72,21 @@ var commonOptions = {
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x}, {point.y}'
+            pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
         }
     }
   }
 }
 
-function updateData(c, d, chartDiv) {
+function updateData(c, d, chartDiv, index) {
 
   c.setTitle({ text: null });
+  if (index == 0) {
+    chartDiv.before('<h3 class="analysis">' + d.title + '</h3>');
+  } else {
+    chartDiv.before('<hr/><h3 class="analysis">' + d.title + '</h3>');
+  }
 
-  chartDiv.before('<hr/><h3 class="analysis">' + d.title + '</h3>');
 
   var chartType = d.chart1_type;
   var subChartType = d.chart1_subtype;
@@ -150,6 +154,11 @@ function updateData(c, d, chartDiv) {
     console.log('scatter');
     c.update({chart: { type: 'scatter' }});
 
+    if (yAxisLabel.length) {
+      console.log('we have a yAxisLabel ' + yAxisLabel);
+      c.update({ xAxis: [{ title: { text: 'Degree Days' }}], yAxis: [{ title: { text: yAxisLabel }}]});
+    }
+
     Object.keys(seriesData).forEach(function (key) {
       console.log(seriesData[key].name);
       c.addSeries(seriesData[key]);
@@ -184,14 +193,14 @@ $(document).ready(function() {
     dataType: "json",
     success: function (returnedData) {
       var numberOfCharts = returnedData.charts.length;
-      for (var i = 0; i < numberOfCharts; i++) {
-        var this_chart = $("div.analysis-chart")[i];
+      for (var index = 0; index < numberOfCharts; index++) {
+        var this_chart = $("div.analysis-chart")[index];
         var chartDiv = $('div#' + this_chart.id);
         var chart = chartDiv.highcharts();
         chart.hideLoading();
 
-        var chartData = returnedData.charts[i];
-        if (chartData !== undefined) { updateData(chart, chartData, chartDiv); }
+        var chartData = returnedData.charts[index];
+        if (chartData !== undefined) { updateData(chart, chartData, chartDiv, index); }
       }
     }
   });
