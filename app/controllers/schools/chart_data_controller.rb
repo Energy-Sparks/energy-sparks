@@ -25,18 +25,18 @@ class Schools::ChartDataController < ApplicationController
   }.freeze
 
   SCHOOLS = {
-    'Bishop Sutton Primary School'      => :electric_and_gas,
-    'Castle Primary School'             => :electric_and_gas,
-    'Freshford C of E Primary'          => :electric_and_gas,
-    'Marksbury C of E Primary School'   => :electric_only,
-    'Paulton Junior School'             => :electric_and_gas,
-    'Pensford Primary'                  => :electric_only,
-    'Roundhill School'                  => :electric_and_gas,
-    'Saltford C of E Primary School'    => :electric_and_gas,
-    'St Johns Primary'                  => :electric_and_gas,
-    'Stanton Drew Primary School'       => :electric_only,
-    'Twerton Infant School'             => :electric_and_gas,
-    'Westfield Primary'                 => :electric_and_gas
+    'Bishop Sutton Primary School'          => :electric_and_gas,
+    'Castle Primary School'                 => :electric_and_gas,
+    'Freshford C of E Primary School'       => :electric_and_gas,
+    'Marksbury C of E Primary School'       => :electric_only,
+    'Paulton Junior School'                 => :electric_and_gas,
+    'Pensford Primary School'               => :electric_only,
+    'Roundhill Primary School'              => :electric_and_gas,
+    'Saltford C of E Primary School'        => :electric_and_gas,
+    'St Johns Catholic Primary School Bath' => :electric_and_gas,
+    'Stanton Drew Primary School'           => :electric_only,
+    'Twerton Infant School'                 => :electric_and_gas,
+    'Westfield Primary School'              => :electric_and_gas
   }.freeze
 
   def set_nav
