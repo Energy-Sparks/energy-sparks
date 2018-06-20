@@ -80,7 +80,9 @@ var commonOptions = {
 
 function updateData(c, d, chartDiv) {
 
-  c.setTitle({ text: d.title});
+  c.setTitle({ text: null });
+
+  chartDiv.before('<hr/><h3 class="analysis">' + d.title + '</h3>');
 
   var chartType = d.chart1_type;
   var subChartType = d.chart1_subtype;
@@ -155,8 +157,11 @@ function updateData(c, d, chartDiv) {
 
   // Pie
   } else if (chartType == 'pie') {
+    chartDiv.addClass('pie-chart');
+
     c.addSeries(seriesData);
     c.update({chart: {
+      height: 300,
       plotBackgroundColor: null,
       plotBorderWidth: null,
       plotShadow: false,
