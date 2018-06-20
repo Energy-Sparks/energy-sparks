@@ -3,22 +3,16 @@
 var commonOptions = {
   title: {
     text: "Loading data...",
-    // floating: true,
-    // x: 0,
-    // y: -60
   },
   xAxis: { showEmpty: false },
   yAxis: { showEmpty: false },
   legend: {
     align: 'center',
-    x: -60,
-    margin: 30,
+    x: -30,
+    margin: 20,
     verticalAlign: 'bottom',
-    //y: 25,
     floating: false,
     backgroundColor: 'white',
-    borderColor: '#232b49',
-    borderWidth: 1,
     shadow: false
   },
   plotOptions: {
@@ -39,41 +33,42 @@ var commonOptions = {
       }
     },
     pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: { enabled: false },
-        showInLegend: true,
-        tooltip: {
-          headerFormat: '<b>{point.key}</b><br>',
-          pointFormat: '{point.y:.2f} kWh'
-        }
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: { enabled: false },
+      showInLegend: true,
+      tooltip: {
+        headerFormat: '<b>{point.key}</b><br>',
+        pointFormat: '{point.y:.2f} kWh'
+      }
     },
     line: {
-        tooltip: {
-          headerFormat: '<b>{point.key}</b><br>',
-          pointFormat: '{point.y:.2f} kW' }
+      tooltip: {
+        headerFormat: '<b>{point.key}</b><br>',
+        pointFormat: '{point.y:.2f} kW'
+      }
     },
     scatter: {
-        marker: {
-            radius: 5,
-            states: {
-                hover: {
-                    enabled: true,
-                    lineColor: 'rgb(100,100,100)'
-                }
-            }
-        },
+      marker: {
+        radius: 5,
         states: {
-            hover: {
-                marker: {
-                    enabled: false
-                }
-            }
-        },
-        tooltip: {
-            headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
+          hover: {
+            enabled: true,
+            lineColor: 'rgb(100,100,100)'
+          }
         }
+      },
+      states: {
+        hover: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
+      }
     }
   }
 }
@@ -84,9 +79,8 @@ function updateData(c, d, chartDiv, index) {
   if (index == 0) {
     chartDiv.before('<h3 class="analysis">' + d.title + '</h3>');
   } else {
-    chartDiv.before('<hr/><h3 class="analysis">' + d.title + '</h3>');
+    chartDiv.before('<hr class="analysis"/><h3 class="analysis">' + d.title + '</h3>');
   }
-
 
   var chartType = d.chart1_type;
   var subChartType = d.chart1_subtype;
