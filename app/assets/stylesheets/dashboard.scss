@@ -25,8 +25,8 @@ div.analysis-chart.pie-chart {
   background-color: $dark-blue !important;
 }
 
-h3.analysis {
-  padding-top: 50px;
+h3.analysis, hr.analysis {
+  margin-top: 40px;
 }
 
 .highcharts-loading {
