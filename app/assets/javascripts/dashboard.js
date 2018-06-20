@@ -170,7 +170,7 @@ function updateData(c, d, chartDiv, index) {
 
     c.addSeries(seriesData);
     c.update({chart: {
-      height: 300,
+      height: 450,
       plotBackgroundColor: null,
       plotBorderWidth: null,
       plotShadow: false,
