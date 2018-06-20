@@ -32,9 +32,7 @@ json.charts @output.each do |chart|
   if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
-      if data_type.start_with?('Energy')
-        data_type = data_type.scan(/\d+|[A-Za-z]+/).drop(1).each_slice(4).to_a.map { |bit| bit.join(' ') }.join(' - ')
-      end
+      data_type = tidy_energy_label(data_type)
       { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], data: data, index: index }
     end
 
@@ -60,9 +58,7 @@ json.charts @output.each do |chart|
     colour_options = ['#5cb85c', '#ffac21']
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
-      if data_type.start_with?('Energy')
-        data_type = data_type.scan(/\d+|[A-Za-z]+/).drop(1).each_slice(4).to_a.map { |bit| bit.join(' ') }.join(' - ')
-      end
+      data_type = tidy_energy_label(data_type)
       { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
     end
 

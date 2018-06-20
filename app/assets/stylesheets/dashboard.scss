@@ -16,6 +16,14 @@ div.analysis-chart.pie-chart {
   line-height: 400px;
 }
 
+.table-success, .table-success > th, .table-success > td {
+  background-color: $green !important;
+  color: #fff;
+}
+
+.table .thead-dark th {
+  background-color: $dark-blue !important;
+}
 
 h3.analysis {
   padding-top: 50px;
