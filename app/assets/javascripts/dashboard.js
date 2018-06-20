@@ -7,14 +7,14 @@ var commonOptions = {
     // x: 0,
     // y: -60
   },
-  xAxis: {},
+  xAxis: { showEmpty: false },
   yAxis: { showEmpty: false },
   legend: {
-    align: 'right',
+    align: 'center',
     x: -60,
     margin: 30,
-    verticalAlign: 'top',
-    y: 25,
+    verticalAlign: 'bottom',
+    //y: 25,
     floating: false,
     backgroundColor: 'white',
     borderColor: '#232b49',

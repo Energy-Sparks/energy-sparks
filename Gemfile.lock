@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: b37dfe362574cc3750533ab1d7afabec2d889119
+  revision: acd13f47c7a5ceaf0ee6aa85ae94fe65d16dde98
   branch: integration
   specs:
-    energy-sparks_analytics (0.3.6)
+    energy-sparks_analytics (0.3.7)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       html-table (~> 1.5.1)
@@ -441,7 +441,7 @@ GEM
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)
@@ -536,7 +536,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.3.6)!
+  energy-sparks_analytics (~> 0.3.7)!
   factory_bot_rails
   fakefs
   font-awesome-rails
