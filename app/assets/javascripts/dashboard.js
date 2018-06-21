@@ -190,13 +190,15 @@ $(document).ready(function() {
       success: function (returnedData) {
         var numberOfCharts = returnedData.charts.length;
         for (var index = 0; index < numberOfCharts; index++) {
-          var this_chart = $("div.analysis-chart")[index];
+
+          var chartData = returnedData.charts[index];
+
+          var this_chart = $("div.analysis-chart")[chartData.chart_index];
           var chartDiv = $('div#' + this_chart.id);
           var chart = chartDiv.highcharts();
           chart.hideLoading();
 
-          var chartData = returnedData.charts[index];
-          if (chartData !== undefined) { updateData(chart, chartData, chartDiv, index); }
+          if (chartData !== undefined) { updateData(chart, chartData, chartDiv, chartData.chart_index); }
         }
 
         // Check all have loaded
@@ -205,6 +207,7 @@ $(document).ready(function() {
           if ($('div#chart_' + index + ' div.highcharts-container div.highcharts-loading-hidden').length == 0) {
             var titleH3 = $('div#chart_wrapper_' + index + ' h3');
             var currentText = titleH3.text();
+            if (index !== 0) { titleH3.before('<hr class="analysis"/>'); }
             titleH3.text('There was a problem ' + currentText);
             $('div#chart_' + index).remove();
           }
