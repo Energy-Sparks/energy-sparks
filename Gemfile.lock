@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 605cf10bda5ee2ebe862099f9adac706e4f0f631
+  revision: 74c944a6dd9c4281de1d31b5722cfdc805060a41
   branch: integration
   specs:
-    energy-sparks_analytics (0.5.0)
+    energy-sparks_analytics (0.5.1)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       html-table (~> 1.5.1)
@@ -536,7 +536,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.5.0)!
+  energy-sparks_analytics (~> 0.5.1)!
   factory_bot_rails
   fakefs
   font-awesome-rails
