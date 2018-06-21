@@ -1,9 +1,7 @@
 "use strict"
 
 var commonOptions = {
-  title: {
-    text: "Loading data...",
-  },
+  title: { text: null },
   xAxis: { showEmpty: false },
   yAxis: { showEmpty: false },
   legend: {
@@ -75,11 +73,13 @@ var commonOptions = {
 
 function updateData(c, d, chartDiv, index) {
 
-  c.setTitle({ text: null });
+  var titleH3 = $('div#chart_wrapper_' + index + ' h3');
+
   if (index == 0) {
-    chartDiv.before('<h3 class="analysis">' + d.title + '</h3>');
+    titleH3.text(d.title);
   } else {
-    chartDiv.before('<hr class="analysis"/><h3 class="analysis">' + d.title + '</h3>');
+    titleH3.before('<hr class="analysis"/>');
+    titleH3.text(d.title);
   }
 
   var chartType = d.chart1_type;
@@ -197,6 +197,17 @@ $(document).ready(function() {
 
           var chartData = returnedData.charts[index];
           if (chartData !== undefined) { updateData(chart, chartData, chartDiv, index); }
+        }
+
+        // Check all have loaded
+        var numberOfChartsOnPage = $('div.analysis-chart').length;
+        for (var index = 0; index < numberOfChartsOnPage; index++) {
+          if ($('div#chart_' + index + ' div.highcharts-container div.highcharts-loading-hidden').length == 0) {
+            var titleH3 = $('div#chart_wrapper_' + index + ' h3');
+            var currentText = titleH3.text();
+            titleH3.text('There was a problem ' + currentText);
+            $('div#chart_' + index).remove();
+          }
         }
       }
     });

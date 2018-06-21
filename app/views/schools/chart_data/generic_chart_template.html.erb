@@ -9,5 +9,8 @@
 <%= render 'nav' %>
 
 <% @number_of_charts.times do |number| %>
-  <div id="chart_<%= number %>" class="analysis-chart"></div>
+  <div id="chart_wrapper_<%= number %>">
+    <h3 class="analysis">Loading: <%= @charts[number].to_s.humanize %></h3>
+    <div id="chart_<%= number %>" class="analysis-chart"></div>
+  </div>
 <% end %>
