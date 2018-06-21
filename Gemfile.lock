@@ -12,8 +12,9 @@ GIT
 PATH
   remote: ../energy-sparks_analytics
   specs:
-    energy-sparks_analytics (0.1.0)
+    energy-sparks_analytics (0.5.0)
       activesupport (~> 5.2.0)
+      chroma (~> 0.2.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       mechanize (~> 2.7.6)
@@ -143,6 +144,7 @@ GEM
     chartkick (2.3.4)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
+    chroma (0.2.0)
     chromedriver-helper (1.2.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)

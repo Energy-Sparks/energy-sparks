@@ -5,8 +5,10 @@ default: &default
 
 development:
   <<: *default
-  host: localhost
-  database: energy_sparks_development
+  host: <%= ENV['DEV_DB_HOST'] || 'localhost' %>
+  database: <%= ENV['DEV_DB_NAME'] || 'energy_sparks_development' %>
+  username: <%= ENV['DEV_DB_USERNAME'] %>
+  password: <%= ENV['DEV_DB_PASSWORD'] %>
 
 profile:
   <<: *default
@@ -25,6 +27,8 @@ staging:
   host: <%= ENV['STAGING_DB_HOST'] %>
   username: <%= ENV['STAGING_DB_USER'] %>
   password: <%= ENV['STAGING_DB_PASSWORD'] %>
+
+
 
 production:
     <<: *default
