@@ -35,7 +35,7 @@ class Schools::ChartDataController < ApplicationController
     'Saltford C of E Primary School'        => :electric_and_gas,
     'St Johns Catholic Primary School Bath' => :electric_and_gas,
     'Stanton Drew Primary School'           => :electric_only,
-    'Twerton Infant School'                 => :electric_and_gas,
+    'Twerton Infant School'                 => :electric_only,
     'Westfield Primary School'              => :electric_and_gas
   }.freeze
 
