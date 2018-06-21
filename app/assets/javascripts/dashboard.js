@@ -175,27 +175,30 @@ function updateData(c, d, chartDiv, index) {
 
 $(document).ready(function() {
 
-  $("div.analysis-chart").each(function(){
-    var this_id = this.id;
-    var this_chart = Highcharts.chart(this_id, commonOptions );
-    this_chart.showLoading();
-  });
+  if ($("div.analysis-chart").length ) {
 
-  $.ajax({
-    type: 'GET',
-    async: true,
-    dataType: "json",
-    success: function (returnedData) {
-      var numberOfCharts = returnedData.charts.length;
-      for (var index = 0; index < numberOfCharts; index++) {
-        var this_chart = $("div.analysis-chart")[index];
-        var chartDiv = $('div#' + this_chart.id);
-        var chart = chartDiv.highcharts();
-        chart.hideLoading();
+    $("div.analysis-chart").each(function(){
+      var this_id = this.id;
+      var this_chart = Highcharts.chart(this_id, commonOptions );
+      this_chart.showLoading();
+    });
 
-        var chartData = returnedData.charts[index];
-        if (chartData !== undefined) { updateData(chart, chartData, chartDiv, index); }
+    $.ajax({
+      type: 'GET',
+      async: true,
+      dataType: "json",
+      success: function (returnedData) {
+        var numberOfCharts = returnedData.charts.length;
+        for (var index = 0; index < numberOfCharts; index++) {
+          var this_chart = $("div.analysis-chart")[index];
+          var chartDiv = $('div#' + this_chart.id);
+          var chart = chartDiv.highcharts();
+          chart.hideLoading();
+
+          var chartData = returnedData.charts[index];
+          if (chartData !== undefined) { updateData(chart, chartData, chartDiv, index); }
+        }
       }
-    }
-  });
+    });
+  }
 });
