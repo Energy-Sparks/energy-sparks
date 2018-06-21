@@ -1,4 +1,10 @@
+
+# Hacky
+chart_index = -1
+
 json.charts @output.each do |chart|
+
+  chart_index = chart_index + 1
   chart_data = chart[:data]
   next if chart_data.nil?
 
@@ -16,6 +22,7 @@ json.charts @output.each do |chart|
     'Non Heating Day Model' => '#ffac21'
   }
 
+  json.chart_index        chart_index
   json.anaylsis_type      chart[:chart_type]
   json.title              chart_data[:title]
   json.chart1_type        chart_data[:chart1_type]
