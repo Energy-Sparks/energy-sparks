@@ -1,0 +1,36 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  host: localhost
+  database: energy_sparks_development
+
+test: &test
+  <<: *default
+  host: localhost
+  database: energy_sparks_test
+
+staging:
+  <<: *default
+  database: <%= ENV['STAGING_DB_NAME'] %>
+  host: <%= ENV['STAGING_DB_HOST'] %>
+  username: <%= ENV['STAGING_DB_USER'] %>
+  password: <%= ENV['STAGING_DB_PASSWORD'] %>
+
+
+
+production:
+    <<: *default
+    adapter: postgresql
+    encoding: unicode
+    database: <%= ENV['RDS_DB_NAME'] %>
+    username: <%= ENV['RDS_USERNAME'] %>
+    password: <%= ENV['RDS_PASSWORD'] %>
+    host: <%= ENV['RDS_HOSTNAME'] %>
+    port: <%= ENV['RDS_PORT'] %>
+
+cucumber:
+  <<: *test

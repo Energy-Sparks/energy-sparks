@@ -7,9 +7,6 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore db config
-config/database.yml
-
 # Ignore RVM config
 /.ruby-gemset
 
