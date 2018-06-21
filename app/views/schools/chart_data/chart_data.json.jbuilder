@@ -1,9 +1,7 @@
-
 # Hacky
 chart_index = -1
 
 json.charts @output.each do |chart|
-
   chart_index = chart_index + 1
   chart_data = chart[:data]
   next if chart_data.nil?
