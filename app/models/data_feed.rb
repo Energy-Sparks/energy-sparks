@@ -28,6 +28,10 @@ class DataFeed < ApplicationRecord
     end
   end
 
+  def first_reading(feed_type)
+    data_feed_readings.where(feed_type: feed_type).order(at: :asc).limit(1).first
+  end
+
   def last_reading
     data_feed_readings.order(at: :desc).limit(1).first
   end
