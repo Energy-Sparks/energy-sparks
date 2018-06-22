@@ -10,13 +10,14 @@ class ReportsController < AdminController
     @meter = Meter.includes(:meter_readings).find(params[:meter_id])
     @first_reading = @meter.first_reading
     @reading_summary = @meter.meter_readings.order(Arel.sql('read_at::date')).group('read_at::date').count
-    @missing_array = (@first_reading.read_at.to_date..Date.today).collect do |day|
+    @missing_array = (@first_reading.read_at.to_date..Time.zone.today).collect do |day|
       if ! @reading_summary.key?(day)
-        [ day, 'No readings' ]
+        [day, 'No readings']
       elsif @reading_summary.key?(day) && @reading_summary[day] < 48
-        [ day, 'Partial readings' ]
+        [day, 'Partial readings']
       end
-    end.reject! { |c| c.blank? }
+    end
+    @missing_array.reject!(&:blank?)
   end
 
   # def data_feed_index
@@ -37,8 +38,8 @@ class ReportsController < AdminController
   # end
 
   def data_feed_show
-    feed_id     = params[:id]
-    @feed_type   = params[:feed_type].to_sym
+    feed_id = params[:id]
+    @feed_type = params[:feed_type].to_sym
 
     @data_feed = DataFeed.find(feed_id)
     @first_read = @data_feed.first_reading(@feed_type)
@@ -51,18 +52,19 @@ class ReportsController < AdminController
   end
 
   def get_data_feed_readings(data_feed, feed_type)
-    reading_summary = data_feed.data_feed_readings.where(feed_type: feed_type).order(Arel.sql('at::date')).group('at::date').count
+    data_feed.data_feed_readings.where(feed_type: feed_type).order(Arel.sql('at::date')).group('at::date').count
   end
 
   def get_missing_array(first_reading, reading_summary)
-    (first_reading.at.to_date..Date.today).collect do |day|
+    missing_array = (first_reading.at.to_date..Time.zone.today).collect do |day|
       if ! reading_summary.key?(day)
-        [ day, 'No readings' ]
+        [day, 'No readings']
       elsif reading_summary.key?(day) && reading_summary[day] < 48
-        [ day, 'Partial readings' ]
+        [day, 'Partial readings']
       elsif reading_summary.key?(day) && reading_summary[day] > 48
-        [ day, 'Too many readings!' ]
+        [day, 'Too many readings!']
       end
-    end.reject! { |c| c.blank? }
+    end
+    missing_array.reject!(&:blank?)
   end
 end
