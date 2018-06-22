@@ -9,7 +9,7 @@ class ReportsController < AdminController
   def amr_data_show
     @meter = Meter.includes(:meter_readings).find(params[:meter_id])
     @first_reading = @meter.first_reading
-    @reading_summary = @meter.meter_readings.order('read_at::date').group('read_at::date').count
+    @reading_summary = @meter.meter_readings.order(Arel.sql('read_at::date')).group('read_at::date').count
     @missing_array = (@first_reading.read_at.to_date..Date.today).collect do |day|
       if ! @reading_summary.key?(day)
         [ day, 'No readings' ]
