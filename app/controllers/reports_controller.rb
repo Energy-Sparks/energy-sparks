@@ -19,7 +19,50 @@ class ReportsController < AdminController
     end.reject! { |c| c.blank? }
   end
 
+  # def data_feed_index
+  #   @weather_underground = DataFeeds::WeatherUnderground.includes(:data_feed_readings).first
+  #   @solar_pv = DataFeeds::SolarPvTuos.includes(:data_feed_readings).first
+
+  #   @temperature_first_read = @weather_underground.first_reading(:temperature)
+  #   @solar_irradiation_first_read = @weather_underground.first_reading(:solar_irradiation)
+  #   @solar_pv_first_read = @solar_pv.first_reading(:solar_pv)
+
+  #   @temperature_reading_summary = get_data_feed_readings(@weather_underground, :temperature)
+  #   @solar_irradiation_reading_summary = get_data_feed_readings(@weather_underground, :solar_irradiation)
+  #   @solar_pv_reading_summary = get_data_feed_readings(@solar_pv, :solar_pv)
+
+  #   @temp_missing = get_missing_array(@temperature_first_read, @temperature_reading_summary)
+  #   @solar_irradiation_missing = get_missing_array(@solar_irradiation_first_read, @solar_irradiation_reading_summary)
+  #   @solar_pv_missing = get_missing_array(@solar_pv_first_read, @solar_pv_reading_summary)
+  # end
+
+  def data_feed_show
+    feed_id     = params[:id]
+    @feed_type   = params[:feed_type].to_sym
+
+    @data_feed = DataFeed.find(feed_id)
+    @first_read = @data_feed.first_reading(@feed_type)
+    @reading_summary = get_data_feed_readings(@data_feed, @feed_type)
+    @missing_array = get_missing_array(@first_read, @reading_summary)
+  end
+
   def loading
     @schools = School.enrolled.order(:name)
+  end
+
+  def get_data_feed_readings(data_feed, feed_type)
+    reading_summary = data_feed.data_feed_readings.where(feed_type: feed_type).order(Arel.sql('at::date')).group('at::date').count
+  end
+
+  def get_missing_array(first_reading, reading_summary)
+    (first_reading.at.to_date..Date.today).collect do |day|
+      if ! reading_summary.key?(day)
+        [ day, 'No readings' ]
+      elsif reading_summary.key?(day) && reading_summary[day] < 48
+        [ day, 'Partial readings' ]
+      elsif reading_summary.key?(day) && reading_summary[day] > 48
+        [ day, 'Too many readings!' ]
+      end
+    end.reject! { |c| c.blank? }
   end
 end

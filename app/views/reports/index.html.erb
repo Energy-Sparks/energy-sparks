@@ -9,12 +9,12 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3">
-      <ul>
-        <li><%= link_to "AMR Report", reports_amr_data_index_path %></li>
-        <li><%= link_to "Loading Report", reports_loading_path %></li>
-      </ul>
-    </div>
+    <ul>
+      <li><%= link_to "AMR Report", reports_amr_data_index_path %></li>
+      <li><%= link_to "Loading Report", reports_loading_path %></li>
+      <li><%= link_to "Weather Data Feed Report", reports_data_feed_show_path(DataFeeds::WeatherUnderground.first, :temperature) %></li>
+      <li><%= link_to "Solar Irradiation Data Feed Report", reports_data_feed_show_path(DataFeeds::WeatherUnderground.first, :solar_irradiation) %></li>
+      <li><%= link_to "Solar PV Data Feed Report", reports_data_feed_show_path(DataFeeds::SolarPvTuos.first, :solar_pv) %></li>
+    </ul>
   </div>
-
 </div>
