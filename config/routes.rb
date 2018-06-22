@@ -46,6 +46,9 @@ Rails.application.routes.draw do
     resources :users
     get 'reports', to: 'reports#index'
     get 'reports/loading', to: 'reports#loading'
+    get 'reports/amr_data_index', to: 'reports#amr_data_index'
+    get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show
+
   end
 
   match '*unmatched', to: 'application#route_not_found', via: :all
