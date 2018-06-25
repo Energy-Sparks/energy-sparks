@@ -61,14 +61,32 @@ $(document).ready(function() {
     chart = Chartkick.charts["chart"];
     options = chart.options;
     options["colors"] = colors;
-    options["ytitle"] = $('input[name=measurement]:checked').val();
+    var measurement = $('input[name=measurement]:checked').val();
+    options["ytitle"] = measurement;
 
     current_source = chart.getDataSource();
     new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
-    console.log(new_source);
+
+    var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
+
+    var stateObj = { measurement: measurement };
+    history.pushState(stateObj, measurement, updatedURL);
+
     chart.updateData(new_source, options);
     if (chart.getChartObject()) {
       chart.getChartObject().showLoading();
+    }
+  }
+
+  // From https://stackoverflow.com/questions/5999118/how-can-i-add-or-update-a-query-string-parameter
+  function updateQueryStringParameter(uri, key, value) {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+      return uri.replace(re, '$1' + key + "=" + value + '$2');
+    }
+    else {
+      return uri + separator + key + "=" + value;
     }
   }
 
