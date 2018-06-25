@@ -30,6 +30,9 @@ gem 'rubyzip', '>= 1.2.1'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 
+# For bulk record import in CSV etc
+gem 'activerecord-import'
+
 # JS Templating
 gem 'handlebars_assets'
 
