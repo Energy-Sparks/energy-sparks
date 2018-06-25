@@ -1,16 +1,13 @@
 module SchoolsHelper
 
-  def initialize
-    pp "HELLO"
-  end
-
-
   def meter_and_data?(school, meter_type)
     school.meters?(meter_type) && school.last_reading_date(meter_type).present?
   end
 
-  def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kWh')
-    measurement = 'kWh' if measurement.nil?
+  def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
+    measurement = 'kwh' if measurement.nil?
+    measurement = 'kwh' if measurement == 'kWh'
+    measurement = '£' if measurement == 'pounds'
 
     column_chart(
       compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
