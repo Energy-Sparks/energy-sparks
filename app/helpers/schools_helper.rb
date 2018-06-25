@@ -1,5 +1,4 @@
 module SchoolsHelper
-
   def meter_and_data?(school, meter_type)
     school.meters?(meter_type) && school.last_reading_date(meter_type).present?
   end
@@ -63,7 +62,7 @@ module SchoolsHelper
     meter.present? ? meter.display_name : meter
   end
 
-  def daily_usage_to_precision(school, supply, dates, meter, to_precision = 1, measurement)
+  def daily_usage_to_precision(school, supply, dates, meter, measurement, to_precision = 1)
     measurement_symbol = measurement.to_sym
     fuel_type = supply.to_sym
 
