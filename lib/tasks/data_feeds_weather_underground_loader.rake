@@ -4,13 +4,13 @@ namespace :data_feeds do
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 1
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday
 
-    old_readings = DataFeedReading.where(feed_type: [:solar_insolence, :temperature]).where('at >= ? and at <= ?', start_date, end_date)
+    old_readings = DataFeedReading.where(feed_type: [:solar_irradiation, :temperature]).where('at >= ? and at <= ?', start_date, end_date)
     p "Clear out readings for #{start_date} - #{end_date} - records #{old_readings.count}"
     old_readings.delete_all
 
     p "Now import"
     DataFeeds::WeatherUndergroundLoader.new(start_date, end_date).import
-    new_readings = DataFeedReading.where(feed_type: [:solar_insolence, :temperature]).where('at >= ? and at <= ?', start_date, end_date)
+    new_readings = DataFeedReading.where(feed_type: [:solar_irradiation, :temperature]).where('at >= ? and at <= ?', start_date, end_date)
     p "New readings for #{start_date} - #{end_date} - records #{new_readings.count}"
   end
 end
