@@ -26,7 +26,7 @@
 
 class CalendarEvent < ApplicationRecord
   belongs_to :academic_year
-  belongs_to :calendar
+  belongs_to :calendar, touch: true
   belongs_to :calendar_event_type
 
   scope :terms,         -> { joins(:calendar_event_type).merge(CalendarEventType.term) }

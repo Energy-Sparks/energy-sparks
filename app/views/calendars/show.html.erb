@@ -1,4 +1,5 @@
 <h1>Calendar: <%= @calendar.title %></h1>
+<p><%= link_to 'All calendars', calendars_path %></p>
 
 <% if @calendar.template? %>
   <p>This calendar is a template calendar, it currently has <%= School.enrolled.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>

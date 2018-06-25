@@ -7,8 +7,7 @@ class CalendarsController < ApplicationController
   # GET /calendars.json
   def index
     @template_calendars = Calendar.template
-    @customised_calendars = Calendar.custom
- #   @calendars = Calendar.all.order(created_at: :desc)
+    @customised_calendars = Calendar.custom.includes(:schools).order('schools.name')
   end
 
   # GET /calendars/1
