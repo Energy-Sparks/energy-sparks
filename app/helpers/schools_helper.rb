@@ -118,11 +118,11 @@ module SchoolsHelper
     BENCHMARK_GAS_USAGE_PER_M2 = 115_000.0 / 1_200.0
   end
 
-  def convert_measurement(from_unit, to_unit, fuel_type, from_value, round = true)
+  def convert_measurement(from_unit, to_unit, fuel_type, from_value)
     from_scaling = scale_unit_from_kwh(from_unit, fuel_type)
     to_scaling = scale_unit_from_kwh(to_unit, fuel_type)
     val = from_value * to_scaling / from_scaling
-    round ? scale_num(val) : val
+    scale_num(val)
   end
 
   def scale_num(number)
