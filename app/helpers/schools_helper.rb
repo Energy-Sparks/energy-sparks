@@ -184,13 +184,13 @@ module SchoolsHelper
   def scale_to_pound(fuel_type)
     case fuel_type
     when :electricity, :storage_heater
-      unit_scale = BenchmarkMetrics::ELECTRICITY_PRICE # 12p/kWh long term average
+      BenchmarkMetrics::ELECTRICITY_PRICE # 12p/kWh long term average
     when :gas, :heat # TODO(PH,1Jun2018) - rationalise heat versus gas
-      unit_scale = BenchmarkMetrics::GAS_PRICE # 3p/kWh long term average
+      BenchmarkMetrics::GAS_PRICE # 3p/kWh long term average
     when :oil
-      unit_scale = BenchmarkMetrics::OIL_PRICE # 5p/kWh long term average
+      BenchmarkMetrics::OIL_PRICE # 5p/kWh long term average
     when :solar_pv
-      unit_scale = -1 * scale_unit_from_kwh(:£, :electricity)
+      -1 * scale_unit_from_kwh(:£, :electricity)
     else
       raise EnergySparksUnexpectedStateException.new("Error: £: unknown fuel type #{fuel_type}") unless fuel_type.nil?
       raise EnergySparksUnexpectedStateException.new('Error: £: nil fuel type')
