@@ -63,6 +63,7 @@ $(document).ready(function() {
     options["colors"] = colors;
     current_source = chart.getDataSource();
     new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
+    console.log(new_source);
     chart.updateData(new_source, options);
     if (chart.getChartObject()) {
       chart.getChartObject().showLoading();
@@ -292,6 +293,27 @@ $(document).ready(function() {
       $("#first-date").val($("#whole-school #first-date-picker").val());
 
     }
+    explain();
+    updateChart(this);
+  });
+
+
+  $(document).on('change', 'input[type=radio][name=measurement]', function() {
+    // if (this.value === "within-school") {
+    //   $("#comparison").val("within-school");
+    //   $("#whole-school").hide();
+    //   $("#within-school").show();
+    //   $("#first-meter").val($("#within-school #meter").val());
+    //   $("#first-date").val($("#within-school #first-date-picker").val());
+
+    // } else {
+    //   $("#comparison").val("whole-school");
+    //   $("#within-school").hide();
+    //   $("#whole-school").show();
+    //   $("#first-meter").val($("#whole-school #meter").val());
+    //   $("#first-date").val($("#whole-school #first-date-picker").val());
+
+    // }
     explain();
     updateChart(this);
   });
