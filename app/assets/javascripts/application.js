@@ -11,8 +11,8 @@
 //= require bootstrap
 
 //= require highcharts
-//= require highcharts/modules/exporting
-//= require highcharts/modules/offline-exporting
+//= require highcharts-modules/exporting
+//= require highcharts-modules/offline-exporting
 //= require chartkick
 
 //= require trix
