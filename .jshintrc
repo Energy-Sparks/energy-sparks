@@ -1,0 +1,8 @@
+{
+    "globals": {
+        "$": false
+    },
+    "browser": true,
+    "validthis": true // Tolerate using this in a non-constructor
+
+}

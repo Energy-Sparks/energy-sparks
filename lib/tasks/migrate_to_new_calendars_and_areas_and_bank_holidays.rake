@@ -17,9 +17,9 @@ namespace :loader do
 
     ActiveRecord::Base.connection.reset_pk_sequence!('terms')
     ActiveRecord::Base.connection.reset_pk_sequence!('calendar_event_types')
-    ActiveRecord::Base.connection.reset_pk_sequence!('calendar_event')
-    ActiveRecord::Base.connection.reset_pk_sequence!('calendar')
-    ActiveRecord::Base.connection.reset_pk_sequence!('academic_year')
+    ActiveRecord::Base.connection.reset_pk_sequence!('calendar_events')
+    ActiveRecord::Base.connection.reset_pk_sequence!('calendars')
+    ActiveRecord::Base.connection.reset_pk_sequence!('academic_years')
 
     # Load Bank Holidays
     puts "Load bank holidays"
