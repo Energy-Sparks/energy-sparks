@@ -4,15 +4,26 @@ module SchoolsHelper
   end
 
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
-    measurement = 'kwh' if measurement.nil?
-    measurement = 'kwh' if measurement == 'kWh'
-    measurement = '£' if measurement == 'pounds'
+    case measurement
+    when 'kwh'
+      ytitle = 'Energy (kWh)'
+    when 'pounds'
+      ytitle = 'Cost (£)'
+      measurement = '£'
+    when '£'
+      ytitle = 'Cost (£)'
+    when 'co2'
+      ytitle = 'Carbon Dioxide emissions (kg)'
+    else
+      measurement = 'kwh'
+      ytitle = 'Energy (kWh)'
+    end
 
     column_chart(
       compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
       id: "chart",
-      xtitle: 'Date',
-      ytitle: measurement,
+      xtitle: 'Day of the week',
+      ytitle: ytitle,
       height: '500px',
       colors: colours_for_supply(supply),
       library: {

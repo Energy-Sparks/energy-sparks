@@ -62,8 +62,9 @@ $(document).ready(function() {
     var chart = Chartkick.charts.chart;
     var options = chart.options;
     options.colors = colors;
-    var measurement = $('input[name=measurement]:checked').val();
-    options.ytitle = measurement;
+    var measurementField = $('input[name=measurement]:checked')
+    var measurement = measurementField.val();
+    options.ytitle = measurementField.parent()[0].innerText;
 
     var current_source = chart.getDataSource();
     var new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
