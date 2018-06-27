@@ -4,20 +4,7 @@ module SchoolsHelper
   end
 
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
-    case measurement
-    when 'kwh'
-      ytitle = 'Energy (kWh)'
-    when 'pounds'
-      ytitle = 'Cost (£)'
-      measurement = '£'
-    when '£'
-      ytitle = 'Cost (£)'
-    when 'co2'
-      ytitle = 'Carbon Dioxide emissions (kg)'
-    else
-      measurement = 'kwh'
-      ytitle = 'Energy (kWh)'
-    end
+    measurement, ytitle = sort_out_y_title_and_measurement(measurement)
 
     column_chart(
       compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
@@ -33,6 +20,24 @@ module SchoolsHelper
           }
       }
     )
+  end
+
+  def sort_out_y_title_and_measurement(measurement)
+    case measurement
+    when 'kwh'
+      ytitle = 'Energy (kWh)'
+    when 'pounds'
+      ytitle = 'Cost (£)'
+      measurement = '£'
+    when '£'
+      ytitle = 'Cost (£)'
+    when 'co2'
+      ytitle = 'Carbon Dioxide emissions (kg)'
+    else
+      measurement = 'kwh'
+      ytitle = 'Energy (kWh)'
+    end
+    [measurement, ytitle]
   end
 
   def compare_hourly_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kW')
