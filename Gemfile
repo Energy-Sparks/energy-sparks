@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-# Temporary here
 gem 'energy-sparks_analytics', '~> 0.5.5', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Rails/Core
@@ -52,7 +51,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
-gem 'merit', '3.0.0' # Reputation/achievements/rankings
+gem 'merit', git: 'https://github.com/jamesjefferies/merit.git', branch: 'rails-5.2-tweaks-specify-base-controller' # Reputation/achievements/rankings
 
 # Exception handling
 gem 'rollbar'
