@@ -1,3 +1,4 @@
+"use strict";
 
 $(document).ready(function() {
   //set to true after we've initialised the page
@@ -18,7 +19,7 @@ $(document).ready(function() {
   function explain() {
     var whole_school = $("input[type=radio][name=compare]:checked").val() == "whole-school";
     var first_meter = whole_school ? $("#whole-school #meter option:selected").text() : $("#within-school #meter option:selected").text();
-    var first_date = whole_school ? $("#whole-school #first-date-picker").val() : $("#within-school #first-date-picker").val()
+    var first_date = whole_school ? $("#whole-school #first-date-picker").val() : $("#within-school #first-date-picker").val();
     var data = {
       whole_school: whole_school,
       supply: $("#supply").val(),
@@ -41,10 +42,10 @@ $(document).ready(function() {
   //have to use these objects when setting min/max dates when using a custom data format
   function datetoCdate(date) {
     if (date.length) {
-    var parts = date.split("-");
-    if (parts.length > 2) {
-      $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
-    }
+      var parts = date.split("-");
+      if (parts.length > 2) {
+        $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+      }
     }
   }
 
@@ -53,19 +54,20 @@ $(document).ready(function() {
   //the explanation and then triggers the data load
   function updateChart(el) {
     explain();
+    // default gas
+    var colors = ["#ffac21", "#ff4500"];
     if ($("#supply").val() == "electricity") {
-      colors = ["#3bc0f0","#232b49"]
-    } else {
-      colors = ["#ffac21", "#ff4500"]
+      colors = ["#3bc0f0","#232b49"];
     }
-    chart = Chartkick.charts["chart"];
-    options = chart.options;
-    options["colors"] = colors;
-    var measurement = $('input[name=measurement]:checked').val();
-    options["ytitle"] = measurement;
+    var chart = Chartkick.charts.chart;
+    var options = chart.options;
+    options.colors = colors;
+    var measurementField = $('input[name=measurement]:checked')
+    var measurement = measurementField.val();
+    options.ytitle = measurementField.parent()[0].innerText;
 
-    current_source = chart.getDataSource();
-    new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
+    var current_source = chart.getDataSource();
+    var new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
 
     var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
 
@@ -130,7 +132,7 @@ $(document).ready(function() {
     }));
 
     $(".date-picker").each(function() {
-      selected_date = $(this).calendarsPicker("getDate");
+      var selected_date = $(this).calendarsPicker("getDate");
       if (selected_date.length > 0 && selected_date > max) {
         $(this).calendarsPicker("setDate", max);
       }
@@ -208,20 +210,20 @@ $(document).ready(function() {
         $(selector).val(dates);
         if (initialised) updateChart(this);
       }
-    }
+    };
     if (defaultDate !== undefined && defaultDate.length) {
       config.defaultDate = defaultDate;
     }
 
     if ($("#daily-usage").length > 0) {
-      config["onShow"] = selectWeek;
+      config.onShow = selectWeek;
     }
-    return config
+    return config;
   }
 
   //Initialise this page
   if ($(".charts").length > 0) {
-    supply = $("input[name=supplyType]:checked").val();
+    var supply = $("input[name=supplyType]:checked").val();
 
     $(".first-date-picker").each( function() {
       $(this).calendarsPicker(datePickerConfig("#first-date"));
@@ -239,7 +241,7 @@ $(document).ready(function() {
 
   //TODO tidy up the code
   $(document).on('change', 'input[type=radio][name=supplyType]', function() {
-    initialised = false;
+    var initialised = false;
     if (this.value == 'electricity') {
       $(".card").removeClass("gas-card");
 
@@ -297,43 +299,7 @@ $(document).ready(function() {
     updateChart(this);
   });
 
-  $(document).on('change', 'input[type=radio][name=compare]', function() {
-    if (this.value === "within-school") {
-      $("#comparison").val("within-school");
-      $("#whole-school").hide();
-      $("#within-school").show();
-      $("#first-meter").val($("#within-school #meter").val());
-      $("#first-date").val($("#within-school #first-date-picker").val());
-
-    } else {
-      $("#comparison").val("whole-school");
-      $("#within-school").hide();
-      $("#whole-school").show();
-      $("#first-meter").val($("#whole-school #meter").val());
-      $("#first-date").val($("#whole-school #first-date-picker").val());
-
-    }
-    explain();
-    updateChart(this);
-  });
-
-
   $(document).on('change', 'input[type=radio][name=measurement]', function() {
-    // if (this.value === "within-school") {
-    //   $("#comparison").val("within-school");
-    //   $("#whole-school").hide();
-    //   $("#within-school").show();
-    //   $("#first-meter").val($("#within-school #meter").val());
-    //   $("#first-date").val($("#within-school #first-date-picker").val());
-
-    // } else {
-    //   $("#comparison").val("whole-school");
-    //   $("#within-school").hide();
-    //   $("#whole-school").show();
-    //   $("#first-meter").val($("#whole-school #meter").val());
-    //   $("#first-date").val($("#whole-school #first-date-picker").val());
-
-    // }
     explain();
     updateChart(this);
   });
@@ -347,7 +313,4 @@ $(document).ready(function() {
     $("#second-meter").val($(this).val());
     updateChart(this);
   });
-
 });
-
-

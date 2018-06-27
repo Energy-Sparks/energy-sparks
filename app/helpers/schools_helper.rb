@@ -4,15 +4,26 @@ module SchoolsHelper
   end
 
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
-    measurement = 'kwh' if measurement.nil?
-    measurement = 'kwh' if measurement == 'kWh'
-    measurement = '£' if measurement == 'pounds'
+    case measurement
+    when 'kwh'
+      ytitle = 'Energy (kWh)'
+    when 'pounds'
+      ytitle = 'Cost (£)'
+      measurement = '£'
+    when '£'
+      ytitle = 'Cost (£)'
+    when 'co2'
+      ytitle = 'Carbon Dioxide emissions (kg)'
+    else
+      measurement = 'kwh'
+      ytitle = 'Energy (kWh)'
+    end
 
     column_chart(
       compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
       id: "chart",
-      xtitle: 'Date',
-      ytitle: measurement,
+      xtitle: 'Day of the week',
+      ytitle: ytitle,
       height: '500px',
       colors: colours_for_supply(supply),
       library: {
@@ -118,11 +129,11 @@ module SchoolsHelper
     BENCHMARK_GAS_USAGE_PER_M2 = 115_000.0 / 1_200.0
   end
 
-  def convert_measurement(from_unit, to_unit, fuel_type, from_value, round = true)
+  def convert_measurement(from_unit, to_unit, fuel_type, from_value)
     from_scaling = scale_unit_from_kwh(from_unit, fuel_type)
     to_scaling = scale_unit_from_kwh(to_unit, fuel_type)
     val = from_value * to_scaling / from_scaling
-    round ? scale_num(val) : val
+    scale_num(val)
   end
 
   def scale_num(number)
@@ -137,57 +148,63 @@ module SchoolsHelper
     end
   end
 
-  # def self.convert_multiple(from_unit, to_units, fuel_type, from_value, round = true)
-  #   converted_values = []
-  #   to_units.each do |to_unit|
-  #     converted_values.push(convert(from_unit, to_unit, fuel_type, from_value))
-  #   end
-  #   converted_values
-  # end
-
   # convert from kwh to a different unit
   # - fuel_type: :gas, :electricity is required for £ & CO2 conversion
   def scale_unit_from_kwh(unit, fuel_type)
-    unit_scale = nil
     case unit
     when :kwh
-      unit_scale = 1.0
+      scale_to_kwh
     when :kw
-      unit_scale = 2.0 # kWh in 30 mins, but perhap better to raise error
+      scale_to_kw
     when :co2 # https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2018
-      case fuel_type
-      when :electricity, :storage_heater
-        unit_scale = 0.283 # 283g/kWh UK Grid Intensity
-      when :gas, :heat # TODO(PH,1Jun2018) - rationalise heat versus gas
-        unit_scale = 0.204 # 204g/kWh
-      when :oil
-        unit_scale = 0.285 # 285g/kWh
-      when :solar_pv
-        unit_scale = 0.040 # 40g/kWh - life cycle costs TODO(PH,14Jun2018) find reference to current UK official figures
-      else
-        raise "Error: CO2: unknown fuel type #{fuel_type}" unless fuel_type.nil?
-        raise 'Error: CO2: nil fuel type'
-      end
+      scale_to_co2(fuel_type)
     when :£
-      case fuel_type
-      when :electricity, :storage_heater
-        unit_scale = BenchmarkMetrics::ELECTRICITY_PRICE # 12p/kWh long term average
-      when :gas, :heat # TODO(PH,1Jun2018) - rationalise heat versus gas
-        unit_scale = BenchmarkMetrics::GAS_PRICE # 3p/kWh long term average
-      when :oil
-        unit_scale = BenchmarkMetrics::OIL_PRICE # 5p/kWh long term average
-      when :solar_pv
-        unit_scale = -1 * scale_unit_from_kwh(:£, :electricity)
-      else
-        raise EnergySparksUnexpectedStateException.new("Error: £: unknown fuel type #{fuel_type}") unless fuel_type.nil?
-        raise EnergySparksUnexpectedStateException.new('Error: £: nil fuel type')
-      end
+      scale_to_pound(fuel_type)
     when :library_books
-      unit_scale = scale_unit_from_kwh(:£, fuel_type) / 5.0 # £5 per library book
+      scale_unit_from_kwh(:£, fuel_type) / 5.0 # £5 per library book
     else
       raise "Error: unknown unit type #{unit}" unless unit.nil?
       raise 'Error: nil unit type'
     end
-    unit_scale
+  end
+
+  def scale_to_kwh
+    1.0
+  end
+
+  def scale_to_kw
+    2.0 # kWh in 30 mins, but perhap better to raise error
+  end
+
+  def scale_to_co2(fuel_type)
+    case fuel_type
+    when :electricity, :storage_heater
+      0.283 # 283g/kWh UK Grid Intensity
+    when :gas, :heat # TODO(PH,1Jun2018) - rationalise heat versus gas
+      0.204 # 204g/kWh
+    when :oil
+      0.285 # 285g/kWh
+    when :solar_pv
+      0.040 # 40g/kWh - life cycle costs TODO(PH,14Jun2018) find reference to current UK official figures
+    else
+      raise "Error: CO2: unknown fuel type #{fuel_type}" unless fuel_type.nil?
+      raise 'Error: CO2: nil fuel type'
+    end
+  end
+
+  def scale_to_pound(fuel_type)
+    case fuel_type
+    when :electricity, :storage_heater
+      BenchmarkMetrics::ELECTRICITY_PRICE # 12p/kWh long term average
+    when :gas, :heat # TODO(PH,1Jun2018) - rationalise heat versus gas
+      BenchmarkMetrics::GAS_PRICE # 3p/kWh long term average
+    when :oil
+      BenchmarkMetrics::OIL_PRICE # 5p/kWh long term average
+    when :solar_pv
+      -1 * scale_unit_from_kwh(:£, :electricity)
+    else
+      raise EnergySparksUnexpectedStateException.new("Error: £: unknown fuel type #{fuel_type}") unless fuel_type.nil?
+      raise EnergySparksUnexpectedStateException.new('Error: £: nil fuel type')
+    end
   end
 end
