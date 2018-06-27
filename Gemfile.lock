@@ -12,7 +12,7 @@ GIT
 PATH
   remote: ../energy-sparks_analytics
   specs:
-    energy-sparks_analytics (0.5.0)
+    energy-sparks_analytics (0.5.5)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       html-table (~> 1.5.1)
@@ -205,8 +205,6 @@ GEM
       tilt (>= 1.2)
     hashdiff (0.3.7)
     hashie (3.5.7)
-    highcharts-rails (6.0.3)
-      railties (>= 3.1)
     html-table (1.5.1)
       strongtyping
       structured_warnings (~> 0.3.0)
@@ -278,7 +276,7 @@ GEM
     net-ssh (4.2.0)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.8.2)
+    nokogiri (1.8.3)
       mini_portile2 (~> 2.3.0)
     ntlm-http (0.1.1)
     oj (3.6.0)
@@ -542,7 +540,6 @@ DEPENDENCIES
   govuk-lint
   groupdate (= 4.0.1)
   handlebars_assets
-  highcharts-rails
   jbuilder (~> 2.5)
   jquery-rails
   jquery-ui-rails

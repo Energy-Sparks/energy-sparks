@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-
 gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Rails/Core
@@ -26,7 +25,7 @@ gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
-gem "highcharts-rails"
+# Highcharts now included directly
 
 # Spreadsheet export
 gem 'rubyzip', '>= 1.2.1'
