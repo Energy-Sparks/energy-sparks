@@ -381,7 +381,14 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
+<<<<<<< HEAD
   add_foreign_key "aggregated_meter_readings", "meters"
+=======
+<<<<<<< HEAD
+=======
+  add_foreign_key "aggregated_meter_readings", "meters"
+>>>>>>> socrata-update
+>>>>>>> dashboard-part-1
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
   add_foreign_key "calendar_events", "academic_years"
