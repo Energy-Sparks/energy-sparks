@@ -9,7 +9,7 @@
 #  meter_no            :bigint(8)
 #  meter_serial_number :text
 #  meter_type          :integer
-#  mpan_mprn           :integer
+#  mpan_mprn           :bigint(8)
 #  name                :string
 #  number_of_pupils    :integer
 #  school_id           :integer
