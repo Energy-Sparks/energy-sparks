@@ -4,8 +4,8 @@ namespace :socrata do
   desc 'Verify and update against socrata data'
   task update: [:environment] do
     #check_and_update('gas-sorted-socrata.csv', :mprn)
-    check_and_update('electricity-sorted-socrata.csv', :mpan)
-    #check_and_update('13678903-gas-sorted-socrata.csv', :mprn)
+    #check_and_update('electricity-sorted-socrata.csv', :mpan)
+    check_and_update('13678903-gas-sorted-socrata.csv', :mprn)
   end
 
   def check_and_update(csv_file, meter_id_type)
@@ -25,8 +25,11 @@ namespace :socrata do
 # ab7525885b3a669f89e889e6f9ca9a18,11/01/2014 12:00:00 AM,##(SCHOOL'S RESPONSIBILITY) Westfield Childrens Centre,BA3 3XX,kWh,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.4,0.3,0,0,0.1,0,0,0.1,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9219585408,M016A0818309A6
 
     CSV.foreach(csv_file, headers: true, header_converters: [:downcase, :symbol]).select { |row| !row.empty? }.each do |row|
-
-      date = DateTime.strptime(row[:date], "%d/%m/%Y").utc
+      if meter_id_type == :mpan
+        date = DateTime.strptime(row[:date], "%d/%m/%Y").utc
+      else
+         date = DateTime.strptime(row[:date], "%m/%d/%Y").utc
+      end
       mpan_mprn = row[meter_id_type].to_i
       if current_meter_number != mpan_mprn
         # Summarise previous meter
@@ -38,7 +41,7 @@ namespace :socrata do
           pp "Skip this, not a school meter #{row[:location]} #{mpan_mprn}"
         else
           pp "new meter meter_id: #{meter.meter_no} from #{row[:location]} "
-          meter.update(meter_serial_number: row[:MSID], mpan_mprn: row[meter_id_type])
+          meter.update(meter_serial_number: row[:msid], mpan_mprn: row[meter_id_type]) if meter.meter_serial_number.nil?
         end
 
         current_meter_number = mpan_mprn
