@@ -8,11 +8,13 @@ json.charts @output.each do |chart|
 
   colour_hash = {
     'Degree Days' => '#232b49',
+    'Temperature' => '#232b49',
     'School Day Closed' => '#3bc0f0',
     'School Day Open' => '#5cb85c',
     'Holiday' => '#ff4500',
     'Weekend' => '#ffac21',
     'electricity' => '#ff4500',
+    '' => '#ff4500',
     'gas' => '#3bc0f0',
     'Heating Day' => '#3bc0f0',
     'Non Heating Day' => '#5cb85c',
