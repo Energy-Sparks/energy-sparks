@@ -3,7 +3,6 @@ require 'dashboard'
 class Schools::ChartDataController < ApplicationController
   before_action :authorise_school
   before_action :set_nav
-  before_action :render_generic_chart_template, only: [DashboardConfiguration::DASHBOARD_PAGE_GROUPS.keys]
 
   def set_nav
     @dashboard_set = @school.fuel_types
