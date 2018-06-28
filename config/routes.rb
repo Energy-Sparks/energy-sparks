@@ -31,13 +31,20 @@ Rails.application.routes.draw do
 
       get :dashboard, to: 'chart_data#dashboard'
       get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
-      get :electricity_year, to: 'chart_data#electricity_year'
-      get :electricity_longterm, to: 'chart_data#electricity_longterm'
-      get :recent_electric, to: 'chart_data#recent_electric'
+      get :electricity_detail, to: 'chart_data#electricity_detail'
+      get :gas_detail, to: 'chart_data#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
-      get :gas_thermostatic, to: 'chart_data#gas_thermostatic'
-      get :recent_electric_and_gas, to: 'chart_data#recent_electric_and_gas'
-      get :electric_and_gas_year, to: 'chart_data#electric_and_gas_year'
+      get :boiler_control, to: 'chart_data#boiler_control'
+      get :simulator, to: 'chart_data#simulator'
+
+
+      # get :electricity_year, to: 'chart_data#electricity_year'
+      # get :electricity_longterm, to: 'chart_data#electricity_longterm'
+      # get :recent_electric, to: 'chart_data#recent_electric'
+      #  get :gas_thermostatic, to: 'chart_data#gas_thermostatic'
+      # get :recent_electric_and_gas, to: 'chart_data#recent_electric_and_gas'
+      # get :electric_and_gas_year, to: 'chart_data#electric_and_gas_year'
+
 
       get :excel, to: 'chart_data#excel'
       get :holidays, to: 'chart_data#holidays'

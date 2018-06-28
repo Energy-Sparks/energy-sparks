@@ -119,6 +119,10 @@ class School < ApplicationRecord
     meters?(:electricity) && meters?(:gas)
   end
 
+  def fuel_types
+    both_supplies? ? :electric_and_gas : :electric_only
+  end
+
   def has_badge?(id)
     sash.badge_ids.include?(id)
   end
