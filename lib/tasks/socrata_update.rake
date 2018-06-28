@@ -25,11 +25,12 @@ namespace :socrata do
 # ab7525885b3a669f89e889e6f9ca9a18,11/01/2014 12:00:00 AM,##(SCHOOL'S RESPONSIBILITY) Westfield Childrens Centre,BA3 3XX,kWh,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.4,0.3,0,0,0.1,0,0,0.1,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9219585408,M016A0818309A6
 
     CSV.foreach(csv_file, headers: true, header_converters: [:downcase, :symbol]).select { |row| !row.empty? }.each do |row|
-      if meter_id_type == :mpan
-        date = DateTime.strptime(row[:date], "%d/%m/%Y").utc
-      else
-         date = DateTime.strptime(row[:date], "%m/%d/%Y").utc
-      end
+      date = if meter_id_type == :mpan
+               DateTime.strptime(row[:date], "%d/%m/%Y").utc
+             else
+               DateTime.strptime(row[:date], "%m/%d/%Y").utc
+             end
+
       mpan_mprn = row[meter_id_type].to_i
       if current_meter_number != mpan_mprn
         # Summarise previous meter
