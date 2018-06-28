@@ -41,11 +41,23 @@ class Schools::ChartDataController < ApplicationController
     render_generic_chart_template
   end
 
+  def chart
+    chart_type = params[:chart_type]
+    chart_type = chart_type.to_sym if chart_type.instance_of? String
+    @charts = [chart_type]
+    @title = chart_type.to_s.humanize
+    actual_chart_render(@charts)
+  end
+
   def render_generic_chart_template
     @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
     @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-    @number_of_charts = @charts.size
-    @output = sort_these_charts(@charts)
+    actual_chart_render(@charts)
+  end
+
+  def actual_chart_render(charts)
+    @number_of_charts = charts.size
+    @output = sort_these_charts(charts)
 
     respond_to do |format|
       format.html { render :generic_chart_template }

@@ -180,7 +180,25 @@ $(document).ready(function() {
     $("div.analysis-chart").each(function(){
       var this_id = this.id;
       var this_chart = Highcharts.chart(this_id, commonOptions );
+      var chartType = $(this).data('chart-type');
+      console.log(chartType);
+      var currentPath = window.location.href
+      var dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
+      console.log(dataPath);
       this_chart.showLoading();
+
+
+
+    Highcharts.ajax({
+        url: dataPath,
+        success: function(data) {
+
+            options.series[0].data = data;
+            Highcharts.Chart('container', options);
+        }
+    });
+
+
     });
 
     $.ajax({

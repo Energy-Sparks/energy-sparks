@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
-  enable_extension "tablefunc"
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -69,8 +68,6 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
-<<<<<<< HEAD
-=======
   create_table "aggregated_meter_readings", force: :cascade do |t|
     t.bigint "meter_id"
     t.decimal "readings", array: true
@@ -81,14 +78,15 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.index ["meter_id"], name: "index_aggregated_meter_readings_on_meter_id"
   end
 
->>>>>>> socrata-update
   create_table "alert_types", force: :cascade do |t|
     t.integer "category"
     t.integer "sub_category"
-    t.integer "frequency"
     t.text "title"
-    t.text "description"
-    t.text "analysis"
+    t.boolean "short_term"
+    t.boolean "long_term"
+    t.text "sample_message"
+    t.text "analysis_description"
+    t.integer "daily_frequency"
   end
 
   create_table "alerts", force: :cascade do |t|
@@ -311,6 +309,7 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.integer "calendar_area_id"
     t.integer "temperature_area_id"
     t.integer "solar_irradiance_area_id"
+    t.integer "solar_pv_area_id"
     t.integer "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"
@@ -384,10 +383,7 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
-<<<<<<< HEAD
-=======
   add_foreign_key "aggregated_meter_readings", "meters"
->>>>>>> socrata-update
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
   add_foreign_key "calendar_events", "academic_years"
