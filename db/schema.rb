@@ -264,7 +264,7 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
     t.string "name"
-    t.integer "mpan_mprn"
+    t.bigint "mpan_mprn"
     t.text "meter_serial_number"
     t.boolean "solar_pv", default: false
     t.boolean "storage_heaters", default: false
