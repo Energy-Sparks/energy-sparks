@@ -21,7 +21,6 @@
 #  school_type                 :integer
 #  slug                        :string
 #  solar_irradiance_area_id    :integer
-#  solar_pv_area_id            :integer
 #  solar_pv_tuos_area_id       :integer
 #  temperature_area_id         :integer
 #  updated_at                  :datetime         not null
