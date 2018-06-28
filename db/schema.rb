@@ -69,8 +69,6 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
-<<<<<<< HEAD
-=======
   create_table "aggregated_meter_readings", force: :cascade do |t|
     t.bigint "meter_id"
     t.decimal "readings", array: true
@@ -81,7 +79,6 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.index ["meter_id"], name: "index_aggregated_meter_readings_on_meter_id"
   end
 
->>>>>>> socrata-update
   create_table "alert_types", force: :cascade do |t|
     t.integer "category"
     t.integer "sub_category"
