@@ -58,6 +58,7 @@ class Schools::ChartDataController < ApplicationController
   def actual_chart_render(charts)
     @number_of_charts = charts.size
     @output = sort_these_charts(charts)
+    aggregate_school
 
     respond_to do |format|
       format.html { render :generic_chart_template }
@@ -121,7 +122,15 @@ private
   end
 
   def aggregate_school
-    meter_collection = MeterCollection.new(@school)
-    AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+    if Rails.cache.exist?(@school.name)
+      pp "FROM cache"
+      Rails.cache.fetch(@school.name)
+    else
+      pp "FROM scratch"
+      meter_collection = MeterCollection.new(@school)
+      aggregated_meter_collection = AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+      Rails.cache.write(@school.name, aggregated_meter_collection)
+      aggregated_meter_collection
+    end
   end
 end
