@@ -1,11 +1,14 @@
 require 'csv'
 
 namespace :socrata do
-  desc 'Verify and update against socrata data'
-  task update: [:environment] do
-    #check_and_update('gas-sorted-socrata.csv', :mprn)
-    #check_and_update('electricity-sorted-socrata.csv', :mpan)
-    check_and_update('13678903-gas-sorted-socrata.csv', :mprn)
+  desc 'Verify gas and update against socrata data'
+  task update_gas: [:environment] do
+    check_and_update('gas-sorted-socrata.csv', :mprn)
+  end
+
+  desc 'Verify electricity and update against socrata data'
+  task update_electricity: [:environment] do
+    check_and_update('electricity-sorted-socrata.csv', :mpan)
   end
 
   def check_and_update(csv_file, meter_id_type)
@@ -63,18 +66,15 @@ namespace :socrata do
         MeterReading.transaction do
           if current_total != total
             datetime = date + 30.minutes
-            #              pp "Discrepancy: #{meter.meter_no} #{date} Total in db: #{current_total} total in file: #{total}"
+
             (6..(48 + 5)).each do |n|
               db_readings = meter.meter_readings.find_by(read_at: datetime)
 
               file_value = row[n].to_f
               if db_readings
-        #       pp "At: #{datetime} db_value: #{db_readings.value} file_value #{file_value}" if db_readings.value.to_f != file_value
-        #       pp db_readings
                 db_readings.update(value: file_value) if db_readings.value.to_f != file_value
               else
                 meter.meter_readings.create(read_at: datetime, value: file_value, unit: 'kWh')
-          #      pp "At: #{datetime} NOTHING in db file_value #{file_value}"
               end
               datetime = datetime + 30.minutes
             end

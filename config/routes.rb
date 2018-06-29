@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alerts
 
+      get :chart, to: 'chart_data#chart'
       get :dashboard, to: 'chart_data#dashboard'
       get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
       get :electricity_detail, to: 'chart_data#electricity_detail'

@@ -71,13 +71,15 @@ var commonOptions = {
   }
 }
 
-function updateData(c, d, chartDiv, index) {
+function chartSuccess(d, c, chartIndex) {
 
-  var titleH3 = $('div#chart_wrapper_' + index + ' h3');
+  var chartDiv = c.renderTo;
+  var $chartDiv = $(chartDiv);
+  var titleH3 = $chartDiv.prev('h3');
 
-  if (index == 0) {
-    titleH3.text(d.title);
-  } else {
+   if (chartIndex == 0) {
+     titleH3.text(d.title);
+   } else {
     titleH3.before('<hr class="analysis"/>');
     titleH3.text(d.title);
   }
@@ -92,11 +94,11 @@ function updateData(c, d, chartDiv, index) {
   var adviceFooter = d.advice_footer;
 
   if (adviceHeader !== undefined) {
-    chartDiv.before('<div>' + adviceHeader + '</div>');
+    $chartDiv.before('<div>' + adviceHeader + '</div>');
   }
 
   if (adviceFooter !== undefined) {
-    chartDiv.after('<div>' + adviceFooter + '</div>');
+    $chartDiv.after('<div>' + adviceFooter + '</div>');
   }
 
   console.log("################################");
@@ -160,7 +162,7 @@ function updateData(c, d, chartDiv, index) {
 
   // Pie
   } else if (chartType == 'pie') {
-    chartDiv.addClass('pie-chart');
+    $chartDiv.addClass('pie-chart');
 
     c.addSeries(seriesData);
     c.update({chart: {
@@ -171,48 +173,38 @@ function updateData(c, d, chartDiv, index) {
       type: 'pie'
     }});
   }
+  c.hideLoading();
 }
 
 $(document).ready(function() {
-
   if ($("div.analysis-chart").length ) {
-
     $("div.analysis-chart").each(function(){
-      var this_id = this.id;
-      var this_chart = Highcharts.chart(this_id, commonOptions );
-      this_chart.showLoading();
-    });
+      var thisId = this.id;
+      var thisChart = Highcharts.chart(thisId, commonOptions );
+      var chartType = $(this).data('chart-type');
+      var chartIndex = $(this).data('chart-index');
+      console.log(chartType);
+      var currentPath = window.location.href
+      var dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
+      console.log(dataPath);
+      thisChart.showLoading();
 
-    $.ajax({
-      type: 'GET',
-      async: true,
-      dataType: "json",
-      success: function (returnedData) {
-        var numberOfCharts = returnedData.charts.length;
-        for (var index = 0; index < numberOfCharts; index++) {
-
-          var chartData = returnedData.charts[index];
-
-          var this_chart = $("div.analysis-chart")[chartData.chart_index];
-          var chartDiv = $('div#' + this_chart.id);
-          var chart = chartDiv.highcharts();
-          chart.hideLoading();
-
-          if (chartData !== undefined) { updateData(chart, chartData, chartDiv, chartData.chart_index); }
+      $.ajax({
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        url: dataPath,
+        success: function (returnedData) {
+          chartSuccess(returnedData.charts[0], thisChart, chartIndex);
+        },
+        error: function(broken) {
+          console.log("broken");
+          var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
+          titleH3.text('There was a problem ' + currentText);
+          $('div#chart_' + chartIndex).remove();
         }
-
-        // Check all have loaded
-        var numberOfChartsOnPage = $('div.analysis-chart').length;
-        for (var index = 0; index < numberOfChartsOnPage; index++) {
-          if ($('div#chart_' + index + ' div.highcharts-container div.highcharts-loading-hidden').length == 0) {
-            var titleH3 = $('div#chart_wrapper_' + index + ' h3');
-            var currentText = titleH3.text();
-            if (index !== 0) { titleH3.before('<hr class="analysis"/>'); }
-            titleH3.text('There was a problem ' + currentText);
-            $('div#chart_' + index).remove();
-          }
-        }
-      }
+      });
     });
   }
 });
+

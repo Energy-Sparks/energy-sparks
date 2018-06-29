@@ -41,17 +41,14 @@ class Schools::ChartDataController < ApplicationController
     render_generic_chart_template
   end
 
-  def render_generic_chart_template
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-    @number_of_charts = @charts.size
-    @output = sort_these_charts(@charts)
-
-    respond_to do |format|
-      format.html { render :generic_chart_template }
-      format.json { render :chart_data }
-    end
+  def chart
+    chart_type = params[:chart_type]
+    chart_type = chart_type.to_sym if chart_type.instance_of? String
+    @charts = [chart_type]
+    @title = chart_type.to_s.humanize
+    actual_chart_render(@charts)
   end
+
 
   def excel
     reportmanager = ReportManager.new(aggregate_school)
@@ -95,6 +92,23 @@ class Schools::ChartDataController < ApplicationController
 
 private
 
+  def render_generic_chart_template
+    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
+    actual_chart_render(@charts)
+  end
+
+  def actual_chart_render(charts)
+    @number_of_charts = charts.size
+    @output = sort_these_charts(charts)
+    aggregate_school
+
+    respond_to do |format|
+      format.html { render :generic_chart_template }
+      format.json { render :chart_data }
+    end
+  end
+
   def sort_these_charts(array_of_chart_types_as_symbols)
     chart_manager = ChartManager.new(aggregate_school)
 
@@ -109,7 +123,10 @@ private
   end
 
   def aggregate_school
-    meter_collection = MeterCollection.new(@school)
-    AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
+    Rails.cache.fetch(cache_key, expires_in: 1.day) do
+      meter_collection = MeterCollection.new(@school)
+      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+    end
   end
 end
