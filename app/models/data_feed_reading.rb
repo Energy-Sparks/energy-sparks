@@ -13,8 +13,10 @@
 #
 # Indexes
 #
+#  data_feed_readings_at_index               (date_trunc('day'::text, at))
 #  index_data_feed_readings_on_at            (at)
 #  index_data_feed_readings_on_data_feed_id  (data_feed_id)
+#  index_data_feed_readings_on_feed_type     (feed_type)
 #
 # Foreign Keys
 #
