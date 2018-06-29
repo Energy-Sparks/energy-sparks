@@ -49,22 +49,6 @@ class Schools::ChartDataController < ApplicationController
     actual_chart_render(@charts)
   end
 
-  def render_generic_chart_template
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-    actual_chart_render(@charts)
-  end
-
-  def actual_chart_render(charts)
-    @number_of_charts = charts.size
-    @output = sort_these_charts(charts)
-    aggregate_school
-
-    respond_to do |format|
-      format.html { render :generic_chart_template }
-      format.json { render :chart_data }
-    end
-  end
 
   def excel
     reportmanager = ReportManager.new(aggregate_school)
@@ -108,6 +92,23 @@ class Schools::ChartDataController < ApplicationController
 
 private
 
+  def render_generic_chart_template
+    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
+    actual_chart_render(@charts)
+  end
+
+  def actual_chart_render(charts)
+    @number_of_charts = charts.size
+    @output = sort_these_charts(charts)
+    aggregate_school
+
+    respond_to do |format|
+      format.html { render :generic_chart_template }
+      format.json { render :chart_data }
+    end
+  end
+
   def sort_these_charts(array_of_chart_types_as_symbols)
     chart_manager = ChartManager.new(aggregate_school)
 
@@ -122,15 +123,10 @@ private
   end
 
   def aggregate_school
-    if Rails.cache.exist?(@school.name)
-      pp "FROM cache"
-      Rails.cache.fetch(@school.name)
-    else
-      pp "FROM scratch"
+    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
+    Rails.cache.fetch(cache_key, expires_in: 1.day) do
       meter_collection = MeterCollection.new(@school)
-      aggregated_meter_collection = AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-      Rails.cache.write(@school.name, aggregated_meter_collection)
-      aggregated_meter_collection
+      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
     end
   end
 end
