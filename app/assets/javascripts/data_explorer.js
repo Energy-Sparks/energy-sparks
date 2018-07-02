@@ -44,7 +44,7 @@ $(document).ready(function() {
     if (date.length) {
       var parts = date.split("-");
       if (parts.length > 2) {
-        $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+        return $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
       }
     }
   }
@@ -235,7 +235,6 @@ $(document).ready(function() {
     $(".to-date-picker").each( function() {
       $(this).calendarsPicker(datePickerConfig("#to-date"));
     });
-
     setMinMaxDates(supply);
     enableMeters(supply, false);
     explain();
