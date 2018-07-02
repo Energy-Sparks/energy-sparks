@@ -44,7 +44,7 @@ $(document).ready(function() {
     if (date.length) {
       var parts = date.split("-");
       if (parts.length > 2) {
-        $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+        return $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
       }
     }
   }
@@ -62,19 +62,22 @@ $(document).ready(function() {
     var chart = Chartkick.charts.chart;
     var options = chart.options;
     options.colors = colors;
-    var measurementField = $('input[name=measurement]:checked')
+    var measurementField = $('input[name=measurement]:checked');
     var measurement = measurementField.val();
-    options.ytitle = measurementField.parent()[0].innerText;
 
-    var current_source = chart.getDataSource();
-    var new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
+    if (measurement) {
+      options.ytitle = measurementField.parent()[0].innerText;
 
-    var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
+      var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
 
-    var stateObj = { measurement: measurement };
-    history.pushState(stateObj, measurement, updatedURL);
+      var stateObj = { measurement: measurement };
+      history.pushState(stateObj, measurement, updatedURL);
+    }
 
-    chart.updateData(new_source, options);
+    var currentSource = chart.getDataSource();
+    var newSource = currentSource.split("?")[0] + "?" + $(el.form).serialize();
+
+    chart.updateData(newSource, options);
     if (chart.getChartObject()) {
       chart.getChartObject().showLoading();
     }
@@ -232,7 +235,6 @@ $(document).ready(function() {
     $(".to-date-picker").each( function() {
       $(this).calendarsPicker(datePickerConfig("#to-date"));
     });
-
     setMinMaxDates(supply);
     enableMeters(supply, false);
     explain();
