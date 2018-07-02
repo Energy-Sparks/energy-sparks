@@ -62,19 +62,22 @@ $(document).ready(function() {
     var chart = Chartkick.charts.chart;
     var options = chart.options;
     options.colors = colors;
-    var measurementField = $('input[name=measurement]:checked')
+    var measurementField = $('input[name=measurement]:checked');
     var measurement = measurementField.val();
-    options.ytitle = measurementField.parent()[0].innerText;
 
-    var current_source = chart.getDataSource();
-    var new_source = current_source.split("?")[0] + "?" + $(el.form).serialize();
+    if (measurement) {
+      options.ytitle = measurementField.parent()[0].innerText;
 
-    var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
+      var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
 
-    var stateObj = { measurement: measurement };
-    history.pushState(stateObj, measurement, updatedURL);
+      var stateObj = { measurement: measurement };
+      history.pushState(stateObj, measurement, updatedURL);
+    }
 
-    chart.updateData(new_source, options);
+    var currentSource = chart.getDataSource();
+    var newSource = currentSource.split("?")[0] + "?" + $(el.form).serialize();
+
+    chart.updateData(newSource, options);
     if (chart.getChartObject()) {
       chart.getChartObject().showLoading();
     }
