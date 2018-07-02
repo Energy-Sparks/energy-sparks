@@ -158,13 +158,13 @@ private
       begin
         @first_date = Date.parse params[:first_date]
       rescue
-        @first_date = @school.last_reading_date(@supply)
+        @first_date = get_last_reading_date_with_readings #@school.last_reading_date(@supply)
       end
     else
       begin
         @first_date = Date.parse params[:first_date]
       rescue
-        @first_date = @school.last_reading_date(@supply)
+        @first_date = get_last_reading_date_with_readings #@school.last_reading_date(@supply)
       end
       #ensure we're looking at beginning of the week
       @first_date = @first_date.beginning_of_week(:sunday) if @first_date.present?
@@ -188,5 +188,19 @@ private
       #ensure we're looking at beginning of the week
       @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
     end
+  end
+
+  # TODO this is all to do with the half hour thing
+  def get_last_reading_date_with_readings
+    first_go = @school.last_reading_date(@supply)
+    if first_go && @school.meter_readings.where(read_at: first_go.all_day).where(conditional_supply(@supply)).count == 1
+      @school.last_reading_date(@supply, first_go - 1.day)
+    else
+      first_go
+    end
+  end
+
+  def conditional_supply(supply)
+    { meters: { meter_type: Meter.meter_types[supply] } } if supply
   end
 end
