@@ -49,7 +49,6 @@ class Schools::ChartDataController < ApplicationController
     actual_chart_render(@charts)
   end
 
-
   def excel
     reportmanager = ReportManager.new(aggregate_school)
     worksheets = reportmanager.run_reports(reportmanager.standard_reports)
