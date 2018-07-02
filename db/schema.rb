@@ -81,12 +81,10 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
   create_table "alert_types", force: :cascade do |t|
     t.integer "category"
     t.integer "sub_category"
+    t.integer "frequency"
     t.text "title"
-    t.boolean "short_term"
-    t.boolean "long_term"
-    t.text "sample_message"
-    t.text "analysis_description"
-    t.integer "daily_frequency"
+    t.text "description"
+    t.text "analysis"
   end
 
   create_table "alerts", force: :cascade do |t|
