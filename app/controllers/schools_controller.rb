@@ -193,7 +193,7 @@ private
   # TODO this is all to do with the half hour thing
   def get_last_reading_date_with_readings
     first_go = @school.last_reading_date(@supply)
-    if first_go && @school.meter_readings.where(read_at: first_go.all_day).where(conditional_supply(@supply)).count == 1
+    if first_go && @school.meter_readings.where(read_at: first_go.all_day).where(conditional_supply(@supply)).count < 48
       @school.last_reading_date(@supply, first_go - 1.day)
     else
       first_go
