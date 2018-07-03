@@ -47,8 +47,8 @@ class Meter < ApplicationRecord
 
   def fuel_type
     meter_type.to_sym
-  end 
- 
+  end
+
   def any_aggregated?
     aggregated_meter_readings.any?
   end
