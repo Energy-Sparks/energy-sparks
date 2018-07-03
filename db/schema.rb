@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.bigint "meter_id"
     t.decimal "readings", array: true
     t.date "when", null: false
+    t.text "unit"
     t.decimal "total", default: "0.0"
     t.boolean "verified", default: false
     t.boolean "substitute", default: false

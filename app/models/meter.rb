@@ -31,6 +31,7 @@
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   has_many :meter_readings, inverse_of: :meter, dependent: :destroy
+  has_many :aggregated_meter_readings, inverse_of: :meter, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
@@ -46,6 +47,10 @@ class Meter < ApplicationRecord
 
   def fuel_type
     meter_type.to_sym
+  end 
+ 
+  def any_aggregated?
+    aggregated_meter_readings.any?
   end
 
   def first_reading
