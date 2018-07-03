@@ -30,6 +30,8 @@ namespace :socrata do
 
     values = []
     columns = [:meter_id, :read_at, :value, :unit]
+    amr_columns = [:meter_id, :readings, :total, :verified, :when, :unit]
+    amr_values = []
 
     CSV.foreach(csv_file, headers: true, header_converters: [:downcase, :symbol]).each do |row|
       date, meter_id_type = if meter.meter_type == 'electricity'
@@ -41,15 +43,20 @@ namespace :socrata do
       mpan_mprn = row[meter_id_type].to_i
       datetime = date + 30.minutes
 
+      array_of_readings = []
 
       (6..(48 + 5)).each do |n|
         file_value = row[n].to_f
         values << [meter.id, datetime, file_value, 'kWh']
         datetime = datetime + 30.minutes
+        array_of_readings << file_value
       end
+
+      amr_values << [meter.id, array_of_readings, row[:total], true, date, 'kWh']
     end
 
     MeterReading.import columns, values, validate: false
+    AggregatedMeterReading.import amr_columns, amr_values, validate: false
     pp "#{DateTime.current} Finished #{csv_file}"
   end
 end

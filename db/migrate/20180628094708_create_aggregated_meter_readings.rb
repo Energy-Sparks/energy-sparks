@@ -4,6 +4,7 @@ class CreateAggregatedMeterReadings < ActiveRecord::Migration[5.2]
       t.references  :meter,       foreign_key: true
       t.decimal     :readings,    array: true
       t.date        :when,        null: false
+      t.text        :unit
       t.decimal     :total,       default: 0.0
       t.boolean     :verified,    default: false
       t.boolean     :substitute,  default: false

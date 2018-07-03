@@ -31,10 +31,15 @@
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   has_many :meter_readings, inverse_of: :meter, dependent: :destroy
+  has_many :aggregated_meter_readings, inverse_of: :meter, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
   validates_uniqueness_of :meter_no
+
+  def any_aggregated?
+    aggregated_meter_readings.any?
+  end
 
   def first_reading
     meter_readings.order('read_at ASC').limit(1).first
