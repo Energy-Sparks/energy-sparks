@@ -1,5 +1,5 @@
 <h1>Energy Dashboard for <%= @school.name %></h1>
- <p><%= @school.name %> is a <%= @school.school_type %> school near <%= @school.address %>
+ <p><%= @school.name %> is a <%= @school.school_type %> school near <%= @school.postcode %>
  <% if @school.number_of_pupils && @school.floor_area %>
   with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floor_area %>m<sup>2</sup>.
  <% else %>
