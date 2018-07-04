@@ -116,6 +116,15 @@ function chartSuccess(d, c, chartIndex) {
       c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     }
 
+    // LINE charts
+    if (chartType == 'line') {
+      if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
+        console.log('Yaxis - Temperature');
+        c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+        c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+      }
+    }
+
     // Column charts
     if (chartType == 'column') {
       console.log('column: ' + subChartType);
