@@ -47,6 +47,16 @@ a.active {
   outline: none;
 }
 
+/* Else you can't see it! */
+tr.table-success  a,
+                  a:hover,
+                  a:focus,
+                  a:active,
+                  a.active {
+                    color: white;
+                    outline: none;
+                  }
+
 h1,
 h2,
 h3,
