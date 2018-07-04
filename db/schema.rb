@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_28_101157) do
+ActiveRecord::Schema.define(version: 2018_07_04_102432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
-  enable_extension "tablefunc"
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -73,6 +72,7 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.bigint "meter_id"
     t.decimal "readings", array: true
     t.date "when", null: false
+    t.text "unit"
     t.decimal "total", default: "0.0"
     t.boolean "verified", default: false
     t.boolean "substitute", default: false
