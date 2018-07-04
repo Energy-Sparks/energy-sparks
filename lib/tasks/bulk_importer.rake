@@ -3,8 +3,10 @@ require 'csv'
 namespace :socrata do
   desc 'Verify gas and update against socrata data'
 
-  task bulk_import: [:environment] do
-    school = School.find(53)
+  task :bulk_import, [:urn] => [:environment] do |_t, args|
+    urn = args[:urn] || 109328 # St Marks
+    school = School.find_by(urn: urn)
+    pp "Running for school #{school.name}"
     delete_and_insert(school)
   end
 
@@ -34,11 +36,11 @@ namespace :socrata do
     amr_values = []
 
     CSV.foreach(csv_file, headers: true, header_converters: [:downcase, :symbol]).each do |row|
-      date, meter_id_type = if meter.meter_type == 'electricity'
-                              [DateTime.strptime(row[:date], "%d/%m/%Y").utc, :electricity]
-                            else
-                              [DateTime.strptime(row[:date], "%m/%d/%Y").utc, :gas]
-                            end
+      date = if meter.meter_type == 'electricity'
+               DateTime.strptime(row[:date], "%d/%m/%Y").utc
+             else
+               DateTime.strptime(row[:date], "%m/%d/%Y").utc
+             end
 
       datetime = date + 30.minutes
 
