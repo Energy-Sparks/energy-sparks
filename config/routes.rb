@@ -84,6 +84,7 @@ Rails.application.routes.draw do
  #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show
+    get 'reports/:meter_id/show_aggregated', to: 'reports#aggregated_amr_data_show', as: :reports_aggregated_amr_data_show
   end
 
   match '*unmatched', to: 'application#route_not_found', via: :all

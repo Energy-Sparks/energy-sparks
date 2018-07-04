@@ -20,6 +20,21 @@ class ReportsController < AdminController
     @missing_array.reject!(&:blank?)
   end
 
+  def aggregated_amr_data_show
+    @meter = Meter.includes(:aggregated_meter_readings).find(params[:meter_id])
+    @first_reading = @meter.first_reading
+    @reading_summary = @meter.aggregated_meter_readings.order(:when).pluck(:when, :readings).map {|day| { day[0] => day[1].count }}
+    @reading_summary = @reading_summary.inject(:merge!)
+    @missing_array = (@first_reading.read_at.to_date..Time.zone.today).collect do |day|
+      if ! @reading_summary.key?(day)
+        [day, 'No readings']
+      elsif @reading_summary.key?(day) && @reading_summary[day] < 48
+        [day, 'Partial readings']
+      end
+    end
+    @missing_array.reject!(&:blank?)
+  end
+
   # def data_feed_index
   #   @weather_underground = DataFeeds::WeatherUnderground.includes(:data_feed_readings).first
   #   @solar_pv = DataFeeds::SolarPvTuos.includes(:data_feed_readings).first
