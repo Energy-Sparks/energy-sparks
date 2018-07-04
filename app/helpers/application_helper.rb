@@ -68,8 +68,16 @@ module ApplicationHelper
     end
   end
 
-  def tidy_energy_label(current_label)
-    if current_label.start_with?('Energy') && current_label.length > 6
+  def label_is_energy_plus?(label)
+    label.start_with?('Energy') && label.length > 6
+  end
+
+  def label_is_temperature_plus?(label)
+    label.start_with?('Temperature') && label.length > 11
+  end
+
+  def tidy_label(current_label)
+    if label_is_energy_plus?(current_label) || label_is_temperature_plus?(current_label)
       date_to_and_from = current_label.scan(/\d+|[A-Za-z]+/).drop(1).each_slice(4).to_a
 
       if date_to_and_from.size > 1 && date_to_and_from[0][3] != date_to_and_from[1][3]

@@ -50,7 +50,7 @@ json.charts @output.each do |chart|
   if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
-      data_type = tidy_energy_label(data_type)
+      data_type = tidy_label(data_type)
       { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], data: data, index: index }
     end
 
@@ -76,9 +76,21 @@ json.charts @output.each do |chart|
     colour_options = ['#5cb85c', '#ffac21']
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
-      data_type = tidy_energy_label(data_type)
+      data_type = tidy_label(data_type)
       { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
     end
+
+    if chart_data[:y2_data] != nil && chart_data[:y2_chart_type] == :line
+      y2_axis_label = chart_data[:y2_data].keys[0]
+      y2_axis_label = 'Temperature' if y2_axis_label.start_with?('Temp')
+      json.y2_axis_label y2_axis_label
+      y_data_hash = chart[:data][:y2_data]
+      y_data_hash.each do |data_type, data|
+        data_type = tidy_label(data_type)
+        series_array << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
+      end
+    end
+
 
   elsif chart_data[:chart1_type] == :pie
 
