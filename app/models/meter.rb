@@ -78,4 +78,9 @@ class Meter < ApplicationRecord
   def display_meter_number
     meter_no.present? ? meter_no : meter_type.to_s
   end
+
+  # TODO Temp from load from amr code
+  def meter_correction_rules
+    { auto_insert_missing_readings: :weekends } if meter_type == 'gas'
+  end
 end
