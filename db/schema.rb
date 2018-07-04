@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_28_101157) do
+ActiveRecord::Schema.define(version: 2018_07_04_102432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -308,7 +308,6 @@ ActiveRecord::Schema.define(version: 2018_06_28_101157) do
     t.integer "calendar_area_id"
     t.integer "temperature_area_id"
     t.integer "solar_irradiance_area_id"
-    t.integer "solar_pv_area_id"
     t.integer "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"

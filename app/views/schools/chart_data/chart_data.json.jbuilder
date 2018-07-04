@@ -1,3 +1,12 @@
+# $yellow: #ffee8f;       /* yellow rgb(255,238,143) */
+# $light-orange: #ffac21; /* orange  rgb(255,172,33) */
+# $dark-orange: #ff4500;  /* almost red; rgb(255,69,0) */
+
+# $light-blue: #3bc0f0;   /* cyanish rgb(59,192,240) */
+# $dark-blue: #232b49;    /* very dark blue rgb(35,43,73) */
+
+# $green: #5cb85c;        /* nice green rgb(92,184,92) */
+
 # Hacky
 chart_index = -1
 
@@ -7,19 +16,21 @@ json.charts @output.each do |chart|
   next if chart_data.nil?
 
   colour_hash = {
-    'Degree Days' => '#232b49',
-    'Temperature' => '#232b49',
-    'School Day Closed' => '#3bc0f0',
-    'School Day Open' => '#5cb85c',
-    'Holiday' => '#ff4500',
-    'Weekend' => '#ffac21',
+    SeriesNames::DEGREEDAYS => '#232b49',
+    SeriesNames::TEMPERATURE => '#232b49',
+    SeriesNames::SCHOOLDAYCLOSED => '#3bc0f0',
+    SeriesNames::SCHOOLDAYOPEN => '#5cb85c',
+    SeriesNames::HOLIDAY => '#ff4500',
+    SeriesNames::WEEKEND => '#ffac21',
     'electricity' => '#ff4500',
     '' => '#ff4500',
     'gas' => '#3bc0f0',
-    'Heating Day' => '#3bc0f0',
-    'Non Heating Day' => '#5cb85c',
-    'Heating Day Model' => '#ff4500',
-    'Non Heating Day Model' => '#ffac21'
+    SeriesNames::HEATINGDAY => '#3bc0f0',
+    SeriesNames::NONHEATINGDAY => '#5cb85c',
+    SeriesNames::HEATINGDAYMODEL => '#ff4500',
+    SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
+    SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
+    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
   }
 
   json.chart_index        chart_index
