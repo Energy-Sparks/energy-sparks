@@ -3,8 +3,13 @@ require 'csv'
 namespace :socrata do
   desc 'Verify gas and update against socrata data'
 
-  task bulk_import: [:environment] do
-    school = School.find(53)
+  task :import_school_readings, [:date] => [:environment] do |_t, args|
+    since_date = Date.parse(args[:date])
+
+  task :bulk_import, [:urn] => [:environment] do |_t, args|
+    urn = args[:urn] || 109328 # St Marks
+    school = School.find_by(urn: urn)
+    pp "Running for school #{school.name}"
     delete_and_insert(school)
   end
 
