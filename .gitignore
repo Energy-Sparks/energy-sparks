@@ -31,7 +31,6 @@ profiles
 .env
 *.txt
 *.sql
-**/*.csv
 *.DS_Store
 *csv
 !etc/**/*csv

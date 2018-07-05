@@ -123,7 +123,7 @@
     </div>
   </div>
   <%= f.fields_for :school_times, f.object.school_times.order(:day) do |ff| %>
-      <%= ff.hidden_field :id, value: ff.object.id %>
+    <%= ff.hidden_field :id, value: ff.object.id %>
     <div class="row">
       <div class="col-md-3 mb-3">
         <%= ff.hidden_field :day, value: ff.object.day %>

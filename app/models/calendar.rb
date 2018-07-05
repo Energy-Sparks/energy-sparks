@@ -35,8 +35,6 @@ class Calendar < ApplicationRecord
 
   accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
 
-# c.calendar_events.joins(:calendar_event_type).group('calendar_event_types.title').order('calendar_event_types.title').count
-
   def reject_calendar_events(attributes)
     end_date_date = Date.parse(attributes[:end_date])
     end_date_default = end_date_date.month == 8 && end_date_date.day == 31
@@ -63,21 +61,6 @@ class Calendar < ApplicationRecord
     Calendar.find_by(default: true)
   end
 
-  # def self.create_calendar_from_default(name)
-  #   default_calendar = Calendar.default_calendar
-  #   new_calendar = Calendar.create(title: name)
-  #   return new_calendar unless default_calendar && default_calendar.terms
-  #   default_calendar.terms.each do |term|
-  #     new_calendar.terms.create(
-  #       academic_year: term[:academic_year],
-  #       name: term[:name],
-  #       start_date: term[:start_date],
-  #       end_date: term[:end_date]
-  #     )
-  #   end
-  #   new_calendar
-  # end
-
   def first_event_date
     calendar_events.first.start_date
   end
@@ -85,8 +68,7 @@ class Calendar < ApplicationRecord
   def last_event_date
     calendar_events.last.end_date
   end
-
-  # def academic_years(with_padding = 1)
-  #   AcademicYear.where('start_date <= ? and end_date >= ?', last_event_date + with_padding.year, first_event_date - with_padding.year)
-  # end
 end
+
+# As a reminder!
+# c.calendar_events.joins(:calendar_event_type).group('calendar_event_types.title').order('calendar_event_types.title').count
