@@ -36,8 +36,8 @@ Rails.application.routes.draw do
       get :gas_detail, to: 'chart_data#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
       get :boiler_control, to: 'chart_data#boiler_control'
-      get :simulator, to: 'chart_data#simulator'
 
+      resources :simulators
 
       # get :electricity_year, to: 'chart_data#electricity_year'
       # get :electricity_longterm, to: 'chart_data#electricity_longterm'

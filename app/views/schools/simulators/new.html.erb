@@ -1,0 +1,65 @@
+<h1>Welcome to the <%= @school.name %> Electricity Simulator</h1>
+
+<p>Simulate changes to your school by altering these figures to see what effect it would have on your energy usage</p>
+
+<div class="row">
+  <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+    <% @simulator_configuration.each do |key, value| %>
+      <% if value[:editable] %>
+        <li class="nav-item">
+          <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>"><%= @simulator_configuration[key][:title] %></a>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+<!-- active for active, disabled for disabled -->
+<!-- aria-selected="true" -->
+
+<%= form_for school_simulators_path(@school) do |f| %>
+
+<div class="row">
+  <div class="tab-content" id="simulator-tab-content">
+    <% @simulator_configuration.each do |key, value| %>
+
+      <% if value[:title] == 'ICT' %>
+
+      <% else %>
+
+        <% if value[:editable] %>
+        <div class="tab-pane fade" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
+            <% value[:editable].each do |key| %>
+              <% if value[key].instance_of? Array %>
+
+
+              <div class="form-group">
+                  <% value[key].each do |thing| %>
+                    <div class="form-check form-check-inline">
+                      <%= thing %>
+                      <%= f.radio_button key, nil, class: "form-check-input" %>
+                      <%= f.label "#{thing.to_sym}", thing.to_sym.capitalize,  class: "form-check-label" %>
+                    </div>
+                  <% end %>
+                </div>
+
+              <% else %>
+                <div class="form-group">
+                  <%= f.label key %>
+                  <%= f.text_field key, class: 'form-control', value: value[key] %>
+                </div>
+              <% end %>
+
+
+            <% end %>
+            <p><%#= value %></p>
+        </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<!-- active for active one and show "tab-pane fade show active" -->
+
+<% end %>
+<p><%#= pp @simulator_configuration %></p>
+

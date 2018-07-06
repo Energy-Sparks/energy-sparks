@@ -20,6 +20,8 @@
 
       <p class="float-right">
         <%= link_to 'Dashboard', school_dashboard_path(@school), class: 'btn btn-success btn-sm' %>
+        <%= link_to 'Simulator', new_school_simulator_path(@school), class: 'btn btn-success btn-sm' %>
+
         <%- if can? :manage, @school -%>
           <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
           <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
