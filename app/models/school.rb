@@ -54,6 +54,8 @@ class School < ApplicationRecord
   has_many :activities, inverse_of: :school, dependent: :destroy
   has_many :meter_readings, through: :meters
   has_many :school_times, inverse_of: :school, dependent: :destroy
+  has_many :contacts,     inverse_of: :school, dependent: :destroy
+  has_many :alerts,       inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
   belongs_to :calendar_area
@@ -92,6 +94,15 @@ class School < ApplicationRecord
     ]
   end
 
+  # TODO integrate this analytics
+  def heat_meters
+    meters.where(meter_type: :gas)
+  end
+
+  def electricity_meters
+    meters.where(meter_type: :electricity)
+  end
+
   def active_meters
     meters.where(active: true)
   end
@@ -106,6 +117,10 @@ class School < ApplicationRecord
 
   def both_supplies?
     meters?(:electricity) && meters?(:gas)
+  end
+
+  def fuel_types
+    both_supplies? ? :electric_and_gas : :electric_only
   end
 
   def has_badge?(id)

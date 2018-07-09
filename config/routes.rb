@@ -25,6 +25,20 @@ Rails.application.routes.draw do
 
   resources :schools do
     resources :activities
+    scope module: :schools do
+      resources :contacts
+      resources :alerts
+
+      get :chart, to: 'chart_data#chart'
+      get :dashboard, to: 'chart_data#dashboard'
+      get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
+      get :electricity_detail, to: 'chart_data#electricity_detail'
+      get :gas_detail, to: 'chart_data#gas_detail'
+      get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
+      get :boiler_control, to: 'chart_data#boiler_control'
+      get :simulator, to: 'chart_data#simulator'
+    end
+
     get :scoreboard, on: :collection
     member do
       get 'awards'
@@ -50,6 +64,7 @@ Rails.application.routes.draw do
  #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show
+    get 'reports/:meter_id/show_aggregated', to: 'reports#aggregated_amr_data_show', as: :reports_aggregated_amr_data_show
   end
 
   match '*unmatched', to: 'application#route_not_found', via: :all
