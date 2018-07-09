@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
-
 # Rails/Core
 gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
@@ -13,6 +11,9 @@ gem 'bootsnap'
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
+
+# Dashboard analytics
+gem 'energy-sparks_analytics', '~> 0.7.7', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library

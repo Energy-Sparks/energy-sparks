@@ -1,4 +1,26 @@
 GIT
+  remote: https://github.com/PhilipTB/energy-sparks_analytics.git
+  revision: 6fdec9f27ef8f00600b74a270d7f336a68445c64
+  branch: integration
+  specs:
+    energy-sparks_analytics (0.7.7)
+      activesupport (~> 5.2.0)
+      chroma (~> 0.2.0)
+      html-table (~> 1.5.1)
+      interpolate (~> 0.3.0)
+      mechanize (~> 2.7.6)
+      pry-byebug (~> 3.6.0)
+      require_all (~> 2.0.0)
+      roo (~> 2.7.1)
+      roo-xls (~> 1.2.0)
+      rspec (~> 3.7.0)
+      ruby-sun-times (~> 0.1.5)
+      soda-ruby (~> 0.2.25)
+      statsample (~> 2.1.0)
+      structured_warnings (~> 0.3.0)
+      write_xlsx (~> 0.85.5)
+
+GIT
   remote: https://github.com/jamesjefferies/merit.git
   revision: faff626716d34a0755bf5c4cadd7fc0d96956160
   branch: rails-5.2-tweaks-specify-base-controller
@@ -16,26 +38,6 @@ GIT
       mimemagic (~> 0.3)
       nokogiri (>= 1.6.6)
       rubyzip (>= 1.2.1)
-
-PATH
-  remote: ../energy-sparks_analytics
-  specs:
-    energy-sparks_analytics (0.6.2)
-      activesupport (~> 5.2.0)
-      chroma (~> 0.2.0)
-      html-table (~> 1.5.1)
-      interpolate (~> 0.3.0)
-      mechanize (~> 2.7.6)
-      pry-byebug (~> 3.6.0)
-      require_all (~> 2.0.0)
-      roo (~> 2.7.1)
-      roo-xls (~> 1.2.0)
-      rspec (~> 3.7.0)
-      ruby-sun-times (~> 0.1.5)
-      soda-ruby (~> 0.2.25)
-      statsample (~> 2.1.0)
-      structured_warnings (~> 0.3.0)
-      write_xlsx (~> 0.85.5)
 
 GEM
   remote: https://rubygems.org/
@@ -538,7 +540,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics!
+  energy-sparks_analytics (~> 0.7.7)!
   factory_bot_rails
   fakefs
   font-awesome-rails
