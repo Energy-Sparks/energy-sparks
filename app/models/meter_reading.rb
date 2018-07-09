@@ -23,4 +23,9 @@
 class MeterReading < ApplicationRecord
   belongs_to :meter, inverse_of: :meter_readings
   has_one :school, through: :meter
+
+  # Alias as we have inconsistencies with column names
+  def at
+    read_at
+  end
 end
