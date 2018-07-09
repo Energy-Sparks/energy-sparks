@@ -57,4 +57,44 @@ module ApplicationHelper
       "table-success"
     end
   end
+
+  def nav_link(link_text, link_path)
+    content_tag(:li) do
+      if current_page?(link_path)
+        link_to link_text, link_path, class: 'nav-link active'
+      else
+        link_to link_text, link_path, class: 'nav-link'
+      end
+    end
+  end
+
+  def label_is_energy_plus?(label)
+    label.start_with?('Energy') && label.length > 6
+  end
+
+  def label_is_temperature_plus?(label)
+    label.start_with?('Temperature') && label.length > 11
+  end
+
+  def tidy_label(current_label)
+    if label_is_energy_plus?(current_label)
+      current_label = sort_out_dates_when_tidying_labels(current_label)
+    end
+    current_label
+  end
+
+  def tidy_and_keep_label(current_label)
+    label_bit = current_label.scan(/\d+|[A-Za-z]+/).shift
+    label_bit + ' ' + sort_out_dates_when_tidying_labels(current_label)
+  end
+
+  def sort_out_dates_when_tidying_labels(current_label)
+    date_to_and_from = current_label.scan(/\d+|[A-Za-z]+/).drop(1).each_slice(4).to_a
+
+    if date_to_and_from.size > 1 && date_to_and_from[0][3] != date_to_and_from[1][3]
+      date_to_and_from[0].delete_at(0)
+      date_to_and_from[1].delete_at(0)
+    end
+    date_to_and_from.map { |bit| bit.join(' ') }.join(' - ')
+  end
 end

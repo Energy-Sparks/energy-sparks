@@ -10,32 +10,16 @@ class ReportsController < AdminController
     @meter = Meter.includes(:meter_readings).find(params[:meter_id])
     @first_reading = @meter.first_reading
     @reading_summary = @meter.meter_readings.order(Arel.sql('read_at::date')).group('read_at::date').count
-    @missing_array = (@first_reading.read_at.to_date..Time.zone.today).collect do |day|
-      if ! @reading_summary.key?(day)
-        [day, 'No readings']
-      elsif @reading_summary.key?(day) && @reading_summary[day] < 48
-        [day, 'Partial readings']
-      end
-    end
-    @missing_array.reject!(&:blank?)
+    @missing_array = get_missing_array(@first_reading, @reading_summary)
   end
 
-  # def data_feed_index
-  #   @weather_underground = DataFeeds::WeatherUnderground.includes(:data_feed_readings).first
-  #   @solar_pv = DataFeeds::SolarPvTuos.includes(:data_feed_readings).first
-
-  #   @temperature_first_read = @weather_underground.first_reading(:temperature)
-  #   @solar_irradiation_first_read = @weather_underground.first_reading(:solar_irradiation)
-  #   @solar_pv_first_read = @solar_pv.first_reading(:solar_pv)
-
-  #   @temperature_reading_summary = get_data_feed_readings(@weather_underground, :temperature)
-  #   @solar_irradiation_reading_summary = get_data_feed_readings(@weather_underground, :solar_irradiation)
-  #   @solar_pv_reading_summary = get_data_feed_readings(@solar_pv, :solar_pv)
-
-  #   @temp_missing = get_missing_array(@temperature_first_read, @temperature_reading_summary)
-  #   @solar_irradiation_missing = get_missing_array(@solar_irradiation_first_read, @solar_irradiation_reading_summary)
-  #   @solar_pv_missing = get_missing_array(@solar_pv_first_read, @solar_pv_reading_summary)
-  # end
+  def aggregated_amr_data_show
+    @meter = Meter.includes(:aggregated_meter_readings).find(params[:meter_id])
+    @first_reading = @meter.first_reading
+    @reading_summary = @meter.aggregated_meter_readings.order(:when).pluck(:when, :readings).map {|day| { day[0] => day[1].count }}
+    @reading_summary = @reading_summary.inject(:merge!)
+    @missing_array = get_missing_array(@first_reading, @reading_summary)
+  end
 
   def data_feed_show
     feed_id = params[:id]
