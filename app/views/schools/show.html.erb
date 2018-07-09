@@ -19,16 +19,19 @@
       </h6>
 
       <p class="float-right">
-        <%= link_to 'Dashboard', school_dashboard_path(@school), class: 'btn btn-success btn-sm' %>
-        <%= link_to 'Simulator', new_school_simulator_path(@school), class: 'btn btn-success btn-sm' %>
+        <% if user_signed_in? %>
+          <%= link_to 'Dashboard', school_dashboard_path(@school), class: 'btn btn-success btn-sm' %>
+        	<%= link_to 'Simulator', new_school_simulator_path(@school), class: 'btn btn-success btn-sm' %>
+        <% end %>
 
         <%- if can? :manage, @school -%>
           <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
         <%- end -%>
+        <%# if user_signed_in? && current_user.admin? %>
+          <%#= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
+        <%# end %>
 
         <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm') if can? :manage, @school.calendar %>
-
       </p>
 
       <p>
