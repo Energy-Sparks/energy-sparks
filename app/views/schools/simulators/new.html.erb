@@ -1,65 +1,143 @@
 <h1>Welcome to the <%= @school.name %> Electricity Simulator</h1>
-
 <p>Simulate changes to your school by altering these figures to see what effect it would have on your energy usage</p>
-
 <div class="row">
   <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
-    <% @simulator_configuration.each do |key, value| %>
+    <% @simulator_configuration.each_with_index do |(key, value), index| %>
       <% if value[:editable] %>
         <li class="nav-item">
-          <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>"><%= @simulator_configuration[key][:title] %></a>
+          <a class="nav-link <%= 'active' if index == 0 %>" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
+            <%= @simulator_configuration[key][:title] %>
+          </a>
         </li>
       <% end %>
     <% end %>
   </ul>
 </div>
+<!-- HACK -->
+<div class="row">
+  <p></p>
+</div>
 <!-- active for active, disabled for disabled -->
 <!-- aria-selected="true" -->
-
 <%= form_for school_simulators_path(@school) do |f| %>
+  <div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted">Chart</span>
+            </h4>
+            <div id="chart-container"></div>
+            <div id="chart-container-2"></div>
+<script>
 
-<div class="row">
-  <div class="tab-content" id="simulator-tab-content">
-    <% @simulator_configuration.each do |key, value| %>
+  var chartConfig = {
 
-      <% if value[:title] == 'ICT' %>
+    title: {
+        text: 'Solar Employment Growth by Sector, 2010-2016'
+    },
 
-      <% else %>
+    subtitle: {
+        text: 'Source: thesolarfoundation.com'
+    },
 
-        <% if value[:editable] %>
-        <div class="tab-pane fade" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
-            <% value[:editable].each do |key| %>
-              <% if value[key].instance_of? Array %>
+    yAxis: {
+        title: {
+            text: 'Number of Employees'
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
 
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 2010
+        }
+    },
 
-              <div class="form-group">
-                  <% value[key].each do |thing| %>
-                    <div class="form-check form-check-inline">
-                      <%= thing %>
-                      <%= f.radio_button key, nil, class: "form-check-input" %>
-                      <%= f.label "#{thing.to_sym}", thing.to_sym.capitalize,  class: "form-check-label" %>
+    series: [{
+        name: 'Installation',
+        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+    }, {
+        name: 'Manufacturing',
+        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+    }, {
+        name: 'Sales & Distribution',
+        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+    }, {
+        name: 'Project Development',
+        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+    }, {
+        name: 'Other',
+        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+}
+            Highcharts.chart('chart-container', chartConfig);
+            Highcharts.chart('chart-container-2', chartConfig);
+</script>
+
+    </div>
+    <div class="col-md-8 order-md-1">
+      <h4 class="mb-3">Edit these values</h4>
+        <% @simulator_configuration.each_with_index do |(key, value), index| %>
+          <% if value[:title] == 'ICT' %>
+          <% else %>
+            <% if value[:editable] %>
+              <div class="tab-pane  collapse <%= index == 0 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
+                <% value[:editable].each do |key| %>
+                  <% if value[key].instance_of? Array %>
+                    <div class="d-block my-3">
+                    <% value[key].each do |thing| %>
+                      <div class="custom-control custom-radio">
+                        <%= radio_button_tag key, thing.downcase.parameterize, {}, class: "custom-control-input" %>
+                        <label class="custom-control-label" for='<%= "#{key}_#{thing.downcase.parameterize}" %>'><%= thing.humanize %></label>
+                      </div>
+                    <% end %>
+                    </div>
+                  <% else %>
+                    <div class="mb-3">
+                      <%= f.label key %>
+                      <%= f.text_field key, class: 'form-control', value: value[key] %>
+                      <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                      </div>
                     </div>
                   <% end %>
-                </div>
-
-              <% else %>
-                <div class="form-group">
-                  <%= f.label key %>
-                  <%= f.text_field key, class: 'form-control', value: value[key] %>
-                </div>
-              <% end %>
-
-
+                <% end %>
+              </div>
             <% end %>
-            <p><%#= value %></p>
-        </div>
+          <% end %>
         <% end %>
-      <% end %>
-    <% end %>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Update simulator</button>
+      </div>
+
+
+
+
+      <p>
+        <%#= pp @simulator_configuration %>
+      </p>
+
+
   </div>
-</div>
-<!-- active for active one and show "tab-pane fade show active" -->
-
-<% end %>
-<p><%#= pp @simulator_configuration %></p>
-
+   <% end %>
