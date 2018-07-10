@@ -27,7 +27,7 @@
       </h4>
       <% @number_of_charts.times do |number| %>
         <div id="chart_wrapper_<%= number %>">
-          <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+          <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json?which=<%= number %>" data-no-advice></div>
         </div>
       <% end %>
     </div>

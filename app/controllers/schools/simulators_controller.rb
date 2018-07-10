@@ -44,16 +44,25 @@ class Schools::SimulatorsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        chart_manager = ChartManager.new(aggregate_school)
-        simulator = ElectricitySimulator.new(aggregate_school)
+
+        local_school = aggregate_school
+
+        simulator = ElectricitySimulator.new(local_school)
         pp simulator.default_simulator_parameters
 
         simulator.simulate(simulator.default_simulator_parameters)
 
+        chart_manager = ChartManager.new(local_school)
+
+        if params[:which] == '0'
         @output = [
           { chart_type: chart_type, data: chart_manager.run_chart(chart_config, chart_type, true) },
+        ]
+        else
+        @output = [
           { chart_type: chart_type, data: chart_manager.run_chart(chart_config_2, chart_type, true) },
         ]
+        end
 
         render 'schools/chart_data/chart_data'
       end
