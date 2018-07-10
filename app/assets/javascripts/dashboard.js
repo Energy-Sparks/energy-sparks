@@ -153,32 +153,34 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
   }});
 }
 
-function chartSuccess(d, c, chartIndex) {
+function chartSuccess(d, c, chartIndex, noAdvice) {
 
   var chartDiv = c.renderTo;
   var $chartDiv = $(chartDiv);
-  var titleH3 = $chartDiv.prev('h3');
-
-   if (chartIndex == 0) {
-     titleH3.text(d.title);
-   } else {
-    titleH3.before('<hr class="analysis"/>');
-    titleH3.text(d.title);
-  }
-
   var chartType = d.chart1_type;
   var seriesData = d.series_data;
   var yAxisLabel = d.y_axis_label;
 
-  var adviceHeader = d.advice_header;
-  var adviceFooter = d.advice_footer;
+  if (! noAdvice) {
+    var titleH3 = $chartDiv.prev('h3');
 
-  if (adviceHeader !== undefined) {
-    $chartDiv.before('<div>' + adviceHeader + '</div>');
-  }
+    if (chartIndex == 0) {
+      titleH3.text(d.title);
+    } else {
+      titleH3.before('<hr class="analysis"/>');
+      titleH3.text(d.title);
+    }
 
-  if (adviceFooter !== undefined) {
-    $chartDiv.after('<div>' + adviceFooter + '</div>');
+    var adviceHeader = d.advice_header;
+    var adviceFooter = d.advice_footer;
+
+    if (adviceHeader !== undefined) {
+      $chartDiv.before('<div>' + adviceHeader + '</div>');
+    }
+
+    if (adviceFooter !== undefined) {
+      $chartDiv.after('<div>' + adviceFooter + '</div>');
+    }
   }
 
   console.log("################################");
@@ -206,9 +208,14 @@ $(document).ready(function() {
       var thisChart = Highcharts.chart(thisId, commonOptions );
       var chartType = $(this).data('chart-type');
       var chartIndex = $(this).data('chart-index');
+      var dataPath = $(this).data('chart-json');
+      var noAdvice = $(this).is("[data-no-advice]");
+
+      if (dataPath == undefined) {
+        var currentPath = window.location.href
+        dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
+      }
       console.log(chartType);
-      var currentPath = window.location.href
-      var dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
       console.log(dataPath);
       thisChart.showLoading();
 
@@ -218,7 +225,7 @@ $(document).ready(function() {
         dataType: "json",
         url: dataPath,
         success: function (returnedData) {
-          chartSuccess(returnedData.charts[0], thisChart, chartIndex);
+          chartSuccess(returnedData.charts[0], thisChart, chartIndex, noAdvice);
         },
         error: function(broken) {
           console.log("broken");

@@ -21,83 +21,17 @@
 <!-- aria-selected="true" -->
 <%= form_for school_simulators_path(@school) do |f| %>
   <div class="row">
-    <div class="col-md-4 order-md-2 mb-4">
+    <div class="col-md-8 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-muted">Chart</span>
-            </h4>
-            <div id="chart-container"></div>
-            <div id="chart-container-2"></div>
-<script>
-
-  var chartConfig = {
-
-    title: {
-        text: 'Solar Employment Growth by Sector, 2010-2016'
-    },
-
-    subtitle: {
-        text: 'Source: thesolarfoundation.com'
-    },
-
-    yAxis: {
-        title: {
-            text: 'Number of Employees'
-        }
-    },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-            pointStart: 2010
-        }
-    },
-
-    series: [{
-        name: 'Installation',
-        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-    }, {
-        name: 'Manufacturing',
-        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-    }, {
-        name: 'Sales & Distribution',
-        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-    }, {
-        name: 'Project Development',
-        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-    }, {
-        name: 'Other',
-        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-    }],
-
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                }
-            }
-        }]
-    }
-
-}
-            Highcharts.chart('chart-container', chartConfig);
-            Highcharts.chart('chart-container-2', chartConfig);
-</script>
-
+        <span class="text-muted">Chart</span>
+      </h4>
+      <% @number_of_charts.times do |number| %>
+        <div id="chart_wrapper_<%= number %>">
+          <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+        </div>
+      <% end %>
     </div>
-    <div class="col-md-8 order-md-1">
+    <div class="col-md-4 order-md-1">
       <h4 class="mb-3">Edit these values</h4>
         <% @simulator_configuration.each_with_index do |(key, value), index| %>
           <% if value[:title] == 'ICT' %>
@@ -129,6 +63,7 @@
           <% end %>
         <% end %>
         <button class="btn btn-primary btn-lg btn-block" type="submit">Update simulator</button>
+        <button class="btn btn-success btn-lg btn-block" type="submit">See results</button>
       </div>
 
 

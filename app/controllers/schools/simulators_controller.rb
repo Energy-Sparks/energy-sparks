@@ -11,7 +11,56 @@ class Schools::SimulatorsController < ApplicationController
 
   def new
     @simulator_configuration = ElectricitySimulatorConfiguration.new
+    @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
+
+        chart_type = :intraday_line_school_days_6months
+
+        chart_config = {
+          name:             'Intraday (Comparison 6 months apart)',
+          chart1_type:      :line,
+          series_breakdown: :none,
+          timescale:        [{ schoolweek: 0 }],
+          x_axis:           :intraday,
+          meter_definition: :allelectricity,
+          filter:            { daytype: :occupied },
+          yaxis_units:      :kw,
+          yaxis_scaling:    :none
+        }
+
+        chart_config_2 = {
+          name:             'Intraday (Comparison 6 months apart)',
+          chart1_type:      :line,
+          series_breakdown: :none,
+          timescale:        [{ schoolweek: 0 }],
+          x_axis:           :intraday,
+          meter_definition: :electricity_simulator,
+          filter:            { daytype: :occupied },
+          yaxis_units:      :kw,
+          yaxis_scaling:    :none
+        }
+
+    @number_of_charts = @charts.size
+
+    respond_to do |format|
+      format.html
+      format.json do
+        chart_manager = ChartManager.new(aggregate_school)
+        simulator = ElectricitySimulator.new(aggregate_school)
+        pp simulator.default_simulator_parameters
+
+        simulator.simulate(simulator.default_simulator_parameters)
+
+        @output = [
+          { chart_type: chart_type, data: chart_manager.run_chart(chart_config, chart_type, true) },
+          { chart_type: chart_type, data: chart_manager.run_chart(chart_config_2, chart_type, true) },
+        ]
+
+        render 'schools/chart_data/chart_data'
+      end
+    end
+
   end
+
 
   def edit
 
@@ -32,16 +81,3 @@ class Schools::SimulatorsController < ApplicationController
 end
 
 
-    # intraday_line_school_days_6months:  {
-    #   name:             'Intraday (Comparison 6 months apart)',
-    #   chart1_type:      :line,
-    #   series_breakdown: :none,
-    #   timescale:        [{ schoolweek: 0 }, { schoolweek: -20 }],
-    #   x_axis:           :intraday,
-    #   meter_definition: :allelectricity,
-    #   filter:            { daytype: :occupied },
-    #   yaxis_units:      :kw,
-    #   yaxis_scaling:    :none
-    # },
-
-   # electricity_simulator
