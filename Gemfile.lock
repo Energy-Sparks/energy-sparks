@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 6fdec9f27ef8f00600b74a270d7f336a68445c64
+  revision: 60702a53c5c2e3b52fe27bc8c545ed4ceedb3c20
   branch: integration
   specs:
-    energy-sparks_analytics (0.7.7)
+    energy-sparks_analytics (0.7.8)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       html-table (~> 1.5.1)
@@ -284,7 +284,7 @@ GEM
     net-ssh (5.0.2)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.8.3)
+    nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     ntlm-http (0.1.1)
     oj (3.6.3)
@@ -540,7 +540,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.7.7)!
+  energy-sparks_analytics (~> 0.7.8)!
   factory_bot_rails
   fakefs
   font-awesome-rails
