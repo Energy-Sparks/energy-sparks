@@ -3,6 +3,30 @@ require 'dashboard'
 class Schools::SimulatorsController < ApplicationController
   before_action :authorise_school
 
+  CHART_CONFIG_FOR_SCHOOL = {
+    name:             'Intraday (Comparison 6 months apart)',
+    chart1_type:      :line,
+    series_breakdown: :none,
+    timescale:        [{ schoolweek: 0 }],
+    x_axis:           :intraday,
+    meter_definition: :allelectricity,
+    filter:            { daytype: :occupied },
+    yaxis_units:      :kw,
+    yaxis_scaling:    :none
+  }.freeze
+
+  CHART_CONFIG_FOR_SIMULATOR = {
+    name:             'Intraday (Comparison 6 months apart)',
+    chart1_type:      :line,
+    series_breakdown: :none,
+    timescale:        [{ schoolweek: 0 }],
+    x_axis:           :intraday,
+    meter_definition: :electricity_simulator,
+    filter:            { daytype: :occupied },
+    yaxis_units:      :kw,
+    yaxis_scaling:    :none
+  }.freeze
+
   def index
   end
 
@@ -10,40 +34,27 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def create
-    existing =  ElectricitySimulatorConfiguration.new
-    updates = simulator_params.to_h.symbolize_keys
+    simulator_configuration = ElectricitySimulatorConfiguration.new
+    updated_simulator_configuration = simulator_params.to_h.symbolize_keys
 
-    updates.each do |key, value|
-
-      existing.each do |k,v|
+    updated_simulator_configuration.each do |key, value|
+      simulator_configuration.each do |_k, v|
         if v.key?(key)
-          pp "found it! #{value} "
           v[key] = convert_to_correct_format(value)
-          pp "found it! #{v[key]} "
           break
         end
       end
     end
+
     respond_to do |format|
       format.json do
         local_school = aggregate_school
 
         simulator = ElectricitySimulator.new(local_school)
-        chart_config_two = {
-          name:             'Intraday (Comparison 6 months apart)',
-          chart1_type:      :line,
-          series_breakdown: :none,
-          timescale:        [{ schoolweek: 0 }],
-          x_axis:           :intraday,
-          meter_definition: :electricity_simulator,
-          filter:            { daytype: :occupied },
-          yaxis_units:      :kw,
-          yaxis_scaling:    :none
-        }
 
-        simulator.simulate(existing)
+        simulator.simulate(simulator_configuration)
         chart_manager = ChartManager.new(local_school)
-        @output = [{ chart_type: :intraday_line_school_days_6months, data: chart_manager.run_chart(chart_config_two, :intraday_line_school_days_6months, true) }]
+        @output = [{ chart_type: :intraday_line_school_days_6months, data: chart_manager.run_chart(CHART_CONFIG_FOR_SIMULATOR, :intraday_line_school_days_6months, true) }]
         render 'schools/chart_data/chart_data'
       end
     end
@@ -63,57 +74,32 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def simulator_params
-    editable = ElectricitySimulatorConfiguration.new.map { |key, value|  value[:editable] }.compact.flatten
+    editable = ElectricitySimulatorConfiguration.new.map { |_key, value| value[:editable] }.compact.flatten
     params.require(:simulator).permit(editable)
   end
 
   def new
     @simulator = Simulator.new
-    @simulator_configuration = ElectricitySimulatorConfiguration.new
+
+    local_school = aggregate_school
+    @actual_simulator = ElectricitySimulator.new(local_school)
+    @simulator_configuration = @actual_simulator.default_simulator_parameters
+    @actual_simulator.simulate(@simulator_configuration)
+
     @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
 
     chart_type = :intraday_line_school_days_6months
-
-    chart_config = {
-      name:             'Intraday (Comparison 6 months apart)',
-      chart1_type:      :line,
-      series_breakdown: :none,
-      timescale:        [{ schoolweek: 0 }],
-      x_axis:           :intraday,
-      meter_definition: :allelectricity,
-      filter:            { daytype: :occupied },
-      yaxis_units:      :kw,
-      yaxis_scaling:    :none
-    }
-
-    chart_config_two = {
-      name:             'Intraday (Comparison 6 months apart)',
-      chart1_type:      :line,
-      series_breakdown: :none,
-      timescale:        [{ schoolweek: 0 }],
-      x_axis:           :intraday,
-      meter_definition: :electricity_simulator,
-      filter:            { daytype: :occupied },
-      yaxis_units:      :kw,
-      yaxis_scaling:    :none
-    }
 
     @number_of_charts = @charts.size
 
     respond_to do |format|
       format.html
       format.json do
-        local_school = aggregate_school
-
-        simulator = ElectricitySimulator.new(local_school)
-        simulator.simulate(simulator.default_simulator_parameters)
-
         chart_manager = ChartManager.new(local_school)
-
         @output = if params[:which] == '0'
-                    [{ chart_type: chart_type, data: chart_manager.run_chart(chart_config, chart_type, true) }]
+                    [{ chart_type: chart_type, data: chart_manager.run_chart(CHART_CONFIG_FOR_SCHOOL, chart_type, true) }]
                   else
-                    [{ chart_type: chart_type, data: chart_manager.run_chart(chart_config_two, chart_type, true) }]
+                    [{ chart_type: chart_type, data: chart_manager.run_chart(CHART_CONFIG_FOR_SIMULATOR, chart_type, true) }]
                   end
 
         render 'schools/chart_data/chart_data'
