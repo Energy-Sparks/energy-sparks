@@ -38,8 +38,8 @@ class Meter < ApplicationRecord
   validates_uniqueness_of :meter_no
 
   # TODO integrate this analytics
-  attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation, :meter_correction_rules
-  attr_writer :sub_meters
+  attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
+  attr_writer :sub_meters, :meter_correction_rules
 
   def sub_meters
     @sub_meters ||= []

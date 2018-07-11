@@ -1,0 +1,70 @@
+<h1>Welcome to the <%= @school.name %> Electricity Simulator</h1>
+<p>Simulate changes to your school by altering these figures to see what effect it would have on your energy usage</p>
+<div class="row">
+  <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+    <% @simulator_configuration.each_with_index do |(key, value), index| %>
+      <% if value[:editable] %>
+        <li class="nav-item">
+          <a class="nav-link <%= 'active' if index == 0 %>" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
+            <%= @simulator_configuration[key][:title] %>
+          </a>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+<!-- HACK -->
+<div class="row">
+  <p></p>
+</div>
+<!-- active for active, disabled for disabled -->
+<!-- aria-selected="true" -->
+
+<%= form_for [@school, @simulator], method: :post, format: :json do |f| %>
+  <div class="row">
+    <div class="col-md-8 order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Charts</span>
+      </h4>
+      <% @number_of_charts.times do |number| %>
+        <div id="chart_wrapper_<%= number %>">
+          <div id="chart_<%= number %>" class="analysis-chart simulator-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-4 order-md-1">
+      <h4 class="mb-3">Edit these values</h4>
+      <% @simulator_configuration.each_with_index do |(key, value), index| %>
+        <% if value[:title] == 'ICT' %>
+        <% else %>
+          <% if value[:editable] %>
+            <div class="tab-pane  collapse <%= index == 0 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
+              <% value[:editable].each do |key| %>
+                <% if value[key].instance_of? Array %>
+                  <div class="d-block my-3">
+                  <% value[key].each do |thing| %>
+                    <div class="custom-control custom-radio">
+                      <%= radio_button_tag key, thing.downcase.parameterize, {}, class: "custom-control-input" %>
+                      <label class="custom-control-label" for='<%= "#{key}_#{thing.downcase.parameterize}" %>'><%= thing.humanize %></label>
+                    </div>
+                  <% end %>
+                  </div>
+                <% else %>
+                  <div class="mb-3">
+                    <%= f.label key %>
+                    <%= f.text_field key, class: 'form-control', value: value[key] %>
+                    <div class="invalid-feedback">
+                          Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+      <button class="btn btn-primary btn-lg btn-block" type="submit" id="update-simulator">Update simulator</button>
+      <button class="btn btn-success btn-lg btn-block" type="submit" id="submit-simulator">See results</button>
+    </div>
+  </div>
+<% end %>

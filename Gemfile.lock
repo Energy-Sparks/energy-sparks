@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: d8b9e99e4fd12556874f2d7a2be1ca67b86102e1
+  revision: bff9b62ae5ead49e64eae1187de18d9ccc24389e
   branch: integration
   specs:
-    energy-sparks_analytics (0.7.7)
+    energy-sparks_analytics (0.7.8)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       html-table (~> 1.5.1)
@@ -74,7 +74,7 @@ GEM
       activemodel (= 5.2.0)
       activesupport (= 5.2.0)
       arel (>= 9.0)
-    activerecord-import (0.24.0)
+    activerecord-import (0.25.0)
       activerecord (>= 3.2)
     activestorage (5.2.0)
       actionpack (= 5.2.0)
@@ -99,7 +99,7 @@ GEM
       io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
-    autoprefixer-rails (8.6.4)
+    autoprefixer-rails (8.6.5)
       execjs
     awesome_print (1.8.0)
     axlsx_rails (0.5.2)
@@ -124,6 +124,9 @@ GEM
     bullet (5.7.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
+    bundler-audit (0.6.0)
+      bundler (~> 1.2)
+      thor (~> 0.18)
     byebug (10.0.2)
     cancancan (2.2.0)
     capistrano (3.11.0)
@@ -162,6 +165,7 @@ GEM
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
     coderay (1.1.2)
+    colorize (0.8.1)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.2)
     crack (0.4.3)
@@ -195,7 +199,10 @@ GEM
     factory_bot_rails (4.10.0)
       factory_bot (~> 4.10.0)
       railties (>= 3.0.0)
-    fakefs (0.14.2)
+    fakefs (0.16.0)
+    fasterer (0.4.1)
+      colorize (~> 0.7)
+      ruby_parser (~> 3.11.0)
     ffi (1.9.25)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
@@ -223,6 +230,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
+    iniparse (1.4.4)
     interpolate (0.3.0)
     io-like (0.3.0)
     jbuilder (2.7.0)
@@ -284,13 +292,16 @@ GEM
     net-ssh (5.0.2)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.8.3)
+    nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     ntlm-http (0.1.1)
-    oj (3.6.3)
+    oj (3.6.4)
     orm_adapter (0.5.0)
+    overcommit (0.45.0)
+      childprocess (~> 0.6, >= 0.6.3)
+      iniparse (~> 1.4)
     parallel (1.12.1)
-    parser (2.5.1.0)
+    parser (2.5.1.2)
       ast (~> 2.4.0)
     pg (1.0.0)
     popper_js (1.12.9)
@@ -407,6 +418,8 @@ GEM
     ruby-ole (1.2.12.1)
     ruby-progressbar (1.9.0)
     ruby-sun-times (0.1.5)
+    ruby_parser (3.11.0)
+      sexp_processor (~> 4.9)
     rubyvis (0.6.1)
     rubyzip (1.2.1)
     safe_yaml (1.0.4)
@@ -427,6 +440,7 @@ GEM
     selenium-webdriver (3.13.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
+    sexp_processor (4.11.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -452,7 +466,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.16.1)
+    sshkit (1.17.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     statsample (2.1.0)
@@ -470,7 +484,7 @@ GEM
     structured_warnings (0.3.0)
     sys-uname (1.0.3)
       ffi (>= 1.0.0)
-    test-prof (0.5.0)
+    test-prof (0.6.0)
     text-table (1.2.4)
     thor (0.20.0)
     thread_safe (0.3.6)
@@ -479,7 +493,7 @@ GEM
       rails
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.12)
+    uglifier (4.1.14)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
@@ -526,6 +540,7 @@ DEPENDENCIES
   bootsnap
   bootstrap (~> 4.1.0)
   bullet
+  bundler-audit
   byebug
   cancancan
   capistrano
@@ -540,9 +555,10 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.7.7)!
+  energy-sparks_analytics (~> 0.7.8)!
   factory_bot_rails
   fakefs
+  fasterer
   font-awesome-rails
   friendly_id
   govuk-lint
@@ -556,6 +572,7 @@ DEPENDENCIES
   mailgun_rails
   merit!
   oj
+  overcommit
   pg
   pry
   puma

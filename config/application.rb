@@ -20,9 +20,6 @@ module EnergySparks
     # Pull in folders without namespacing
     config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
 
-    # Add local analytics
-    config.autoload_paths += ['/Users/james/energy-sparks_analytics'] if Rails.env.development?
-
     #config.time_zone = 'London'
     # optional - note it can be only :utc or :local (default is :utc)
     # HAS to be UTC for group by date to work

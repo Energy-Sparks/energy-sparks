@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-
-gem 'energy-sparks_analytics', '~> 0.7.7', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
-
 # Rails/Core
 gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
@@ -14,6 +11,9 @@ gem 'bootsnap'
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
+
+# Dashboard analytics
+ gem 'energy-sparks_analytics', '~> 0.7.8', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -92,6 +92,9 @@ group :development do
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+  gem 'overcommit'
+  gem 'fasterer'
+  gem 'bundler-audit'
 end
 
 group :test do
@@ -111,4 +114,3 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
 end
-

@@ -36,27 +36,8 @@ Rails.application.routes.draw do
       get :gas_detail, to: 'chart_data#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
       get :boiler_control, to: 'chart_data#boiler_control'
-      get :simulator, to: 'chart_data#simulator'
 
-
-      # get :electricity_year, to: 'chart_data#electricity_year'
-      # get :electricity_longterm, to: 'chart_data#electricity_longterm'
-      # get :recent_electric, to: 'chart_data#recent_electric'
-      #  get :gas_thermostatic, to: 'chart_data#gas_thermostatic'
-      # get :recent_electric_and_gas, to: 'chart_data#recent_electric_and_gas'
-      # get :electric_and_gas_year, to: 'chart_data#electric_and_gas_year'
-
-
-      get :excel, to: 'chart_data#excel'
-      get :holidays, to: 'chart_data#holidays'
-      get :temperatures, to: 'chart_data#temperatures'
-      get :solar_pv, to: 'chart_data#solar_pv'
-      get :solar_irradiance, to: 'chart_data#solar_irradiance'
-      get :electricity_meters, to: 'chart_data#electricity_meters'
-      get :gas_meters, to: 'chart_data#gas_meters'
-      get :aggregated_electricity_meters, to: 'chart_data#aggregated_electricity_meters'
-      get :aggregated_gas_meters, to: 'chart_data#aggregated_gas_meters'
-
+      resources :simulators
     end
 
     get :scoreboard, on: :collection
@@ -73,7 +54,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, controllers: {sessions: "sessions"}
+  devise_for :users, controllers: { sessions: "sessions" }
 
   devise_for :users, skip: :sessions
   scope :admin do

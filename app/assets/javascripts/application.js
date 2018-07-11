@@ -37,5 +37,7 @@
 //= require bootstrap-year-calendar
 //= require calendar_year_view
 
+//= require common_chart_options
 //= require dashboard
+//= require simulator
 
