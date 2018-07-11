@@ -20,7 +20,7 @@ class ActivityTypesController < ApplicationController
   def new
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @activity_type = ActivityType.new
-    @activity_type.activity_type_suggestions.build
+    add_activity_type_suggestions
   end
 
   # GET /activity_types/1/edit
@@ -32,7 +32,7 @@ class ActivityTypesController < ApplicationController
       @activity_type.activity_type_suggestions.build
     else
       # Top up to 8
-      (0..(7 - number_of_suggestions_so_far)).each { @activity_type.activity_type_suggestions.build }
+      add_activity_type_suggestions(number_of_suggestions_so_far)
     end
   end
 
@@ -48,6 +48,7 @@ class ActivityTypesController < ApplicationController
       else
         format.html do
           @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+          add_activity_type_suggestions
           render :new
         end
         format.json { render json: @activity_type.errors, status: :unprocessable_entity }
@@ -82,6 +83,10 @@ class ActivityTypesController < ApplicationController
   end
 
 private
+
+  def add_activity_type_suggestions(number_of_suggestions_so_far = 0)
+    (0..(7 - number_of_suggestions_so_far)).each { @activity_type.activity_type_suggestions.build }
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_activity_type

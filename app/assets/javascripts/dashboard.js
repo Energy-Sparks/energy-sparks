@@ -71,32 +71,114 @@ var commonOptions = {
   }
 }
 
-function updateData(c, d, chartDiv, index) {
+function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
+  var subChartType = d.chart1_subtype;
+  console.log('bar or column or line ' + subChartType);
 
-  var titleH3 = $('div#chart_wrapper_' + index + ' h3');
+  var xAxisCategories = d.x_axis_categories;
+  var y2AxisLabel = d.y2_axis_label;
 
-  if (index == 0) {
-    titleH3.text(d.title);
-  } else {
+  c.xAxis[0].setCategories(xAxisCategories);
+
+  // BAR Charts
+  if (chartType == 'bar') {
+    console.log('bar');
+    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+  }
+
+  // LINE charts
+  if (chartType == 'line') {
+    if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
+      console.log('Yaxis - Temperature');
+      c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    }
+  }
+
+  // Column charts
+  if (chartType == 'column') {
+    console.log('column: ' + subChartType);
+
+    if (subChartType == 'stacked') {
+      c.update({ plotOptions: { column: { stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+    }
+
+    if (y2AxisLabel !== undefined && (y2AxisLabel == 'Degree Days' || y2AxisLabel == 'Temperature')) {
+      console.log('Yaxis - Degree days');
+      c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    }
+  }
+
+  Object.keys(seriesData).forEach(function (key) {
+    console.log('Series data name: ' + seriesData[key].name);
+
+    if (seriesData[key].name == 'CUSUM') {
+      c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
+    }
+    c.addSeries(seriesData[key]);
+  });
+
+  if (yAxisLabel.length) {
+    console.log('we have a yAxisLabel ' + yAxisLabel);
+    c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
+  }
+}
+
+function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
+  console.log('scatter');
+  c.update({chart: { type: 'scatter' }});
+
+  if (yAxisLabel.length) {
+    console.log('we have a yAxisLabel ' + yAxisLabel);
+    c.update({ xAxis: [{ title: { text: 'Degree Days' }}], yAxis: [{ title: { text: yAxisLabel }}]});
+  }
+
+  Object.keys(seriesData).forEach(function (key) {
+    console.log(seriesData[key].name);
+    c.addSeries(seriesData[key]);
+  });
+}
+
+function pie(d, c, chartIndex, seriesData, $chartDiv) {
+  $chartDiv.addClass('pie-chart');
+
+  c.addSeries(seriesData);
+  c.update({chart: {
+    height: 450,
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  }});
+}
+
+function chartSuccess(d, c, chartIndex) {
+
+  var chartDiv = c.renderTo;
+  var $chartDiv = $(chartDiv);
+  var titleH3 = $chartDiv.prev('h3');
+
+   if (chartIndex == 0) {
+     titleH3.text(d.title);
+   } else {
     titleH3.before('<hr class="analysis"/>');
     titleH3.text(d.title);
   }
 
   var chartType = d.chart1_type;
-  var subChartType = d.chart1_subtype;
   var seriesData = d.series_data;
   var yAxisLabel = d.y_axis_label;
-  var y2AxisLabel = d.y2_axis_label;
-  var xAxisCategories = d.x_axis_categories;
+
   var adviceHeader = d.advice_header;
   var adviceFooter = d.advice_footer;
 
   if (adviceHeader !== undefined) {
-    chartDiv.before('<div>' + adviceHeader + '</div>');
+    $chartDiv.before('<div>' + adviceHeader + '</div>');
   }
 
   if (adviceFooter !== undefined) {
-    chartDiv.after('<div>' + adviceFooter + '</div>');
+    $chartDiv.after('<div>' + adviceFooter + '</div>');
   }
 
   console.log("################################");
@@ -104,115 +186,48 @@ function updateData(c, d, chartDiv, index) {
   console.log("################################");
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-
-    console.log('bar or column or line ' + subChartType);
-    c.xAxis[0].setCategories(xAxisCategories);
-
-    // BAR Charts
-    if (chartType == 'bar') {
-      console.log('bar');
-      c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
-    }
-
-    // Column charts
-    if (chartType == 'column') {
-      console.log('column: ' + subChartType);
-
-      if (subChartType == 'stacked') {
-        c.update({ plotOptions: { column: { stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
-      }
-
-      if (y2AxisLabel !== undefined && y2AxisLabel == 'Degree Days') {
-        console.log('Yaxis - Degree days');
-        c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
-        c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
-      }
-    }
-
-    Object.keys(seriesData).forEach(function (key) {
-      console.log('Series data name: ' + seriesData[key].name);
-
-      if (seriesData[key].name == 'CUSUM') {
-        c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
-      }
-      c.addSeries(seriesData[key]);
-    });
-
-    if (yAxisLabel.length) {
-      console.log('we have a yAxisLabel ' + yAxisLabel);
-      c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
-    }
+    barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType);
 
   // Scatter
   } else if (chartType == 'scatter') {
-    console.log('scatter');
-    c.update({chart: { type: 'scatter' }});
-
-    if (yAxisLabel.length) {
-      console.log('we have a yAxisLabel ' + yAxisLabel);
-      c.update({ xAxis: [{ title: { text: 'Degree Days' }}], yAxis: [{ title: { text: yAxisLabel }}]});
-    }
-
-    Object.keys(seriesData).forEach(function (key) {
-      console.log(seriesData[key].name);
-      c.addSeries(seriesData[key]);
-    });
+    scatter(d, c, chartIndex, seriesData, yAxisLabel);
 
   // Pie
   } else if (chartType == 'pie') {
-    chartDiv.addClass('pie-chart');
-
-    c.addSeries(seriesData);
-    c.update({chart: {
-      height: 450,
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: false,
-      type: 'pie'
-    }});
+    pie(d, c, chartIndex, seriesData, $chartDiv);
   }
+  c.hideLoading();
 }
 
 $(document).ready(function() {
-
   if ($("div.analysis-chart").length ) {
-
     $("div.analysis-chart").each(function(){
-      var this_id = this.id;
-      var this_chart = Highcharts.chart(this_id, commonOptions );
-      this_chart.showLoading();
-    });
+      var thisId = this.id;
+      var thisChart = Highcharts.chart(thisId, commonOptions );
+      var chartType = $(this).data('chart-type');
+      var chartIndex = $(this).data('chart-index');
+      console.log(chartType);
+      var currentPath = window.location.href
+      var dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
+      console.log(dataPath);
+      thisChart.showLoading();
 
-    $.ajax({
-      type: 'GET',
-      async: true,
-      dataType: "json",
-      success: function (returnedData) {
-        var numberOfCharts = returnedData.charts.length;
-        for (var index = 0; index < numberOfCharts; index++) {
-
-          var chartData = returnedData.charts[index];
-
-          var this_chart = $("div.analysis-chart")[chartData.chart_index];
-          var chartDiv = $('div#' + this_chart.id);
-          var chart = chartDiv.highcharts();
-          chart.hideLoading();
-
-          if (chartData !== undefined) { updateData(chart, chartData, chartDiv, chartData.chart_index); }
+      $.ajax({
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        url: dataPath,
+        success: function (returnedData) {
+          chartSuccess(returnedData.charts[0], thisChart, chartIndex);
+        },
+        error: function(broken) {
+          console.log("broken");
+          var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
+          titleH3.text('There was a problem ' + currentText);
+          $('div#chart_' + chartIndex).remove();
         }
-
-        // Check all have loaded
-        var numberOfChartsOnPage = $('div.analysis-chart').length;
-        for (var index = 0; index < numberOfChartsOnPage; index++) {
-          if ($('div#chart_' + index + ' div.highcharts-container div.highcharts-loading-hidden').length == 0) {
-            var titleH3 = $('div#chart_wrapper_' + index + ' h3');
-            var currentText = titleH3.text();
-            if (index !== 0) { titleH3.before('<hr class="analysis"/>'); }
-            titleH3.text('There was a problem ' + currentText);
-            $('div#chart_' + index).remove();
-          }
-        }
-      }
+      });
     });
   }
 });
+

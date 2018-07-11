@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_12_152954) do
+ActiveRecord::Schema.define(version: 2018_07_04_102432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.boolean "custom", default: false
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
+  end
+
+  create_table "aggregated_meter_readings", force: :cascade do |t|
+    t.bigint "meter_id"
+    t.decimal "readings", array: true
+    t.date "when", null: false
+    t.text "unit"
+    t.decimal "total", default: "0.0"
+    t.boolean "verified", default: false
+    t.boolean "substitute", default: false
+    t.index ["meter_id"], name: "index_aggregated_meter_readings_on_meter_id"
   end
 
   create_table "alert_types", force: :cascade do |t|
@@ -171,6 +182,7 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "date_trunc('day'::text, at)", name: "data_feed_readings_at_index"
     t.index ["at"], name: "index_data_feed_readings_on_at"
     t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
     t.index ["feed_type"], name: "index_data_feed_readings_on_feed_type"
@@ -206,8 +218,8 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
@@ -225,7 +237,6 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
@@ -253,14 +264,20 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
     t.string "name"
+    t.bigint "mpan_mprn"
+    t.text "meter_serial_number"
+    t.boolean "solar_pv", default: false
+    t.boolean "storage_heaters", default: false
+    t.integer "number_of_pupils"
+    t.decimal "floor_area"
     t.index ["meter_no"], name: "index_meters_on_meter_no"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["school_id"], name: "index_meters_on_school_id"
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -279,10 +296,10 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -291,7 +308,6 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
     t.integer "calendar_area_id"
     t.integer "temperature_area_id"
     t.integer "solar_irradiance_area_id"
-    t.integer "solar_pv_area_id"
     t.integer "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"
@@ -365,6 +381,7 @@ ActiveRecord::Schema.define(version: 2018_06_12_152954) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "aggregated_meter_readings", "meters"
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
   add_foreign_key "calendar_events", "academic_years"

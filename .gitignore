@@ -31,9 +31,12 @@ profiles
 .env
 *.txt
 *.sql
+*.yml
+!.overcommit.yml
 *.DS_Store
 *csv
 !etc/**/*csv
+etc/bulk_import/*csv
 
 # Don't commit assets!
 public/assets

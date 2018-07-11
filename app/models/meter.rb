@@ -2,14 +2,20 @@
 #
 # Table name: meters
 #
-#  active     :boolean          default(TRUE)
-#  created_at :datetime         not null
-#  id         :integer          not null, primary key
-#  meter_no   :bigint(8)
-#  meter_type :integer
-#  name       :string
-#  school_id  :integer
-#  updated_at :datetime         not null
+#  active              :boolean          default(TRUE)
+#  created_at          :datetime         not null
+#  floor_area          :decimal(, )
+#  id                  :integer          not null, primary key
+#  meter_no            :bigint(8)
+#  meter_serial_number :text
+#  meter_type          :integer
+#  mpan_mprn           :bigint(8)
+#  name                :string
+#  number_of_pupils    :integer
+#  school_id           :integer
+#  solar_pv            :boolean          default(FALSE)
+#  storage_heaters     :boolean          default(FALSE)
+#  updated_at          :datetime         not null
 #
 # Indexes
 #
@@ -25,6 +31,7 @@
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   has_many :meter_readings, inverse_of: :meter, dependent: :destroy
+  has_many :aggregated_meter_readings, inverse_of: :meter, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
@@ -32,7 +39,7 @@ class Meter < ApplicationRecord
 
   # TODO integrate this analytics
   attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
-  attr_writer :sub_meters
+  attr_writer :sub_meters, :meter_correction_rules
 
   def sub_meters
     @sub_meters ||= []
@@ -40,6 +47,10 @@ class Meter < ApplicationRecord
 
   def fuel_type
     meter_type.to_sym
+  end
+
+  def any_aggregated?
+    aggregated_meter_readings.any?
   end
 
   def first_reading
@@ -66,5 +77,10 @@ class Meter < ApplicationRecord
 
   def display_meter_number
     meter_no.present? ? meter_no : meter_type.to_s
+  end
+
+  # TODO Temp from load from amr code
+  def meter_correction_rules
+    { auto_insert_missing_readings: :weekends } if meter_type == 'gas'
   end
 end

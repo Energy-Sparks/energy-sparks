@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 ruby '2.5.1'
 
-
-gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
-
 # Rails/Core
 gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
@@ -14,6 +11,9 @@ gem 'bootsnap'
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
+
+# Dashboard analytics
+gem 'energy-sparks_analytics', '~> 0.7.8', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -26,7 +26,7 @@ gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
-gem "highcharts-rails"
+# Highcharts now included directly
 
 # Spreadsheet export
 gem 'rubyzip', '>= 1.2.1'
@@ -52,7 +52,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
-gem 'merit', '3.0.0' # Reputation/achievements/rankings
+gem 'merit', git: 'https://github.com/jamesjefferies/merit.git', branch: 'rails-5.2-tweaks-specify-base-controller' # Reputation/achievements/rankings
 
 # Exception handling
 gem 'rollbar'
@@ -96,6 +96,9 @@ group :development do
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+  gem 'overcommit'
+  gem 'fasterer'
+  gem 'bundler-audit'
 end
 
 group :test do
@@ -115,4 +118,3 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
 end
-

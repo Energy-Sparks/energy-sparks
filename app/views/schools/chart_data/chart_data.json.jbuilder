@@ -1,25 +1,36 @@
+# $yellow: #ffee8f;       /* yellow rgb(255,238,143) */
+# $light-orange: #ffac21; /* orange  rgb(255,172,33) */
+# $dark-orange: #ff4500;  /* almost red; rgb(255,69,0) */
+
+# $light-blue: #3bc0f0;   /* cyanish rgb(59,192,240) */
+# $dark-blue: #232b49;    /* very dark blue rgb(35,43,73) */
+
+# $green: #5cb85c;        /* nice green rgb(92,184,92) */
 
 # Hacky
 chart_index = -1
 
 json.charts @output.each do |chart|
-
   chart_index = chart_index + 1
   chart_data = chart[:data]
   next if chart_data.nil?
 
   colour_hash = {
-    'Degree Days' => '#232b49',
-    'School Day Closed' => '#3bc0f0',
-    'School Day Open' => '#5cb85c',
-    'Holiday' => '#ff4500',
-    'Weekend' => '#ffac21',
+    SeriesNames::DEGREEDAYS => '#232b49',
+    SeriesNames::TEMPERATURE => '#232b49',
+    SeriesNames::SCHOOLDAYCLOSED => '#3bc0f0',
+    SeriesNames::SCHOOLDAYOPEN => '#5cb85c',
+    SeriesNames::HOLIDAY => '#ff4500',
+    SeriesNames::WEEKEND => '#ffac21',
     'electricity' => '#ff4500',
+    '' => '#ff4500',
     'gas' => '#3bc0f0',
-    'Heating Day' => '#3bc0f0',
-    'Non Heating Day' => '#5cb85c',
-    'Heating Day Model' => '#ff4500',
-    'Non Heating Day Model' => '#ffac21'
+    SeriesNames::HEATINGDAY => '#3bc0f0',
+    SeriesNames::NONHEATINGDAY => '#5cb85c',
+    SeriesNames::HEATINGDAYMODEL => '#ff4500',
+    SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
+    SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
+    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
   }
 
   json.chart_index        chart_index
@@ -39,7 +50,7 @@ json.charts @output.each do |chart|
   if chart_data[:chart1_type] == :column || chart_data[:chart1_type] == :bar
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
-      data_type = tidy_energy_label(data_type)
+      data_type = tidy_label(data_type)
       { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], data: data, index: index }
     end
 
@@ -65,9 +76,32 @@ json.charts @output.each do |chart|
     colour_options = ['#5cb85c', '#ffac21']
 
     series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
-      data_type = tidy_energy_label(data_type)
+      data_type = tidy_label(data_type)
       { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
     end
+
+    if chart_data[:y2_data] != nil && chart_data[:y2_chart_type] == :line
+      series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
+        data_type = tidy_and_keep_label(data_type)
+        { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
+      end
+
+      y2_axis_label = chart_data[:y2_data].keys[0]
+      y2_axis_label = 'Temperature' if y2_axis_label.start_with?('Temp')
+      json.y2_axis_label y2_axis_label
+      y_data_hash = chart[:data][:y2_data]
+      y_data_hash.each do |data_type, data|
+        data_type = tidy_and_keep_label(data_type)
+        series_array << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
+      end
+    else
+      series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
+        data_type = tidy_label(data_type)
+        { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
+      end
+
+    end
+
 
   elsif chart_data[:chart1_type] == :pie
 
