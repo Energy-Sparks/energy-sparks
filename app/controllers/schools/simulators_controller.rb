@@ -54,7 +54,8 @@ class Schools::SimulatorsController < ApplicationController
 
         simulator.simulate(simulator_configuration)
         chart_manager = ChartManager.new(local_school)
-        @output = [{ chart_type: :intraday_line_school_days_6months, data: chart_manager.run_chart(CHART_CONFIG_FOR_SIMULATOR, :intraday_line_school_days_6months, true) }]
+
+        @output = [{ chart_type: :intraday_line_school_days_6months, data: chart_manager.run_chart(chart_config_for_simulator, :intraday_line_school_days_6months, true) }]
         render 'schools/chart_data/chart_data'
       end
     end
@@ -104,22 +105,32 @@ class Schools::SimulatorsController < ApplicationController
       format.html
       format.json do
         chart_manager = ChartManager.new(local_school)
+        winter_config_for_school = chart_config_for_school.deep_dup
+        winter_config_for_school[:timescale] = [{ schoolweek: -20 }]
+        winter_config_for_simulator = chart_config_for_simulator.deep_dup
+        winter_config_for_simulator[:timescale] = [{ schoolweek: -20 }]
 
-        @school_chart_info = chart_manager.run_chart(chart_config_for_school, chart_type, true)
-        @simulator_chart_info = chart_manager.run_chart(chart_config_for_simulator, chart_type, true)
-
-        @school_data = @school_chart_info[:x_data]
-        @simulator_data = @simulator_chart_info[:x_data]
-
-        @school_values = @school_chart_info[:x_data][@school_chart_info[:x_data].keys.first]
-        @simulator_values = @simulator_chart_info[:x_data][@simulator_chart_info[:x_data].keys.first]
-
-        @school_chart_info[:x_data] = { 'School Energy' => @school_values, 'Simulator Energy' => @simulator_values }
-
-        @output = [{ chart_type: chart_type, data: @school_chart_info }]
+        @output = [
+          { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator) },
+          { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) },
+        ]
         render 'schools/chart_data/chart_data'
       end
     end
+  end
+
+  def sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator)
+    school_chart_info = chart_manager.run_chart(chart_config_for_school, chart_type, true)
+    simulator_chart_info = chart_manager.run_chart(chart_config_for_simulator, chart_type, true)
+
+    school_data = school_chart_info[:x_data]
+    simulator_data = simulator_chart_info[:x_data]
+
+    school_values = school_chart_info[:x_data][school_chart_info[:x_data].keys.first]
+    simulator_values = simulator_chart_info[:x_data][simulator_chart_info[:x_data].keys.first]
+
+    school_chart_info[:x_data] = { 'School Energy' => school_values, 'Simulator Energy' => simulator_values }
+    school_chart_info
   end
 
   def edit
