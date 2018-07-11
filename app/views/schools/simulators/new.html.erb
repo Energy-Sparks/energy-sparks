@@ -24,11 +24,11 @@
   <div class="row">
     <div class="col-md-8 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Chart</span>
+        <span class="text-muted">Charts</span>
       </h4>
       <% @number_of_charts.times do |number| %>
         <div id="chart_wrapper_<%= number %>">
-          <div id="chart_<%= number %>" class="simulator-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json?which=<%= number %>" data-no-advice></div>
+          <div id="chart_<%= number %>" class="analysis-chart simulator-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
         </div>
       <% end %>
     </div>

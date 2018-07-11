@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 function chartSuccess(d, c, chartIndex, noAdvice) {
 
@@ -11,7 +11,7 @@ function chartSuccess(d, c, chartIndex, noAdvice) {
   if (! noAdvice) {
     var titleH3 = $chartDiv.prev('h3');
 
-    if (chartIndex == 0) {
+    if (chartIndex === 0) {
       titleH3.text(d.title);
     } else {
       titleH3.before('<hr class="analysis"/>');
@@ -58,13 +58,22 @@ $(document).ready(function() {
       var dataPath = $(this).data('chart-json');
       var noAdvice = $(this).is("[data-no-advice]");
 
-      if (dataPath == undefined) {
-        var currentPath = window.location.href
+      // Each chart handles it's own data, except for the simulator
+      var processChartIndex = 0;
+
+      if (dataPath === undefined) {
+        var currentPath = window.location.href;
         dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
       }
+      console.log(chartIndex);
       console.log(chartType);
       console.log(dataPath);
       thisChart.showLoading();
+
+      if ($(this).hasClass('simulator-chart')) {
+        // the simulator uses the chart index
+        processChartIndex = chartIndex;
+      }
 
       $.ajax({
         type: 'GET',
@@ -72,12 +81,12 @@ $(document).ready(function() {
         dataType: "json",
         url: dataPath,
         success: function (returnedData) {
-          chartSuccess(returnedData.charts[0], thisChart, chartIndex, noAdvice);
+          chartSuccess(returnedData.charts[processChartIndex], thisChart, chartIndex, noAdvice);
         },
         error: function(broken) {
           console.log("broken");
           var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
-          titleH3.text('There was a problem ' + currentText);
+          titleH3.text('There was a problem loading this chart');
           $('div#chart_' + chartIndex).remove();
         }
       });

@@ -46,6 +46,10 @@ class Schools::SimulatorsController < ApplicationController
       end
     end
 
+    chart_type = :intraday_line_school_days_6months
+    winter_config_for_simulator = chart_config_for_simulator.deep_dup
+    winter_config_for_simulator[:timescale] = [{ schoolweek: -20 }]
+
     respond_to do |format|
       format.json do
         local_school = aggregate_school
@@ -55,7 +59,10 @@ class Schools::SimulatorsController < ApplicationController
         simulator.simulate(simulator_configuration)
         chart_manager = ChartManager.new(local_school)
 
-        @output = [{ chart_type: :intraday_line_school_days_6months, data: chart_manager.run_chart(chart_config_for_simulator, :intraday_line_school_days_6months, true) }]
+        @output = [
+          { chart_type: chart_type, data: chart_manager.run_chart(chart_config_for_simulator, chart_type, true) },
+          { chart_type: chart_type, data: chart_manager.run_chart(winter_config_for_simulator, chart_type, true) },
+        ]
         render 'schools/chart_data/chart_data'
       end
     end
