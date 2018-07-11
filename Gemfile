@@ -95,6 +95,8 @@ group :development do
   gem 'pry'
   gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
   gem 'overcommit'
+  gem 'fasterer'
+  gem 'bundler-audit'
 end
 
 group :test do
@@ -114,4 +116,3 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
 end
-
