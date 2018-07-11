@@ -94,6 +94,7 @@ group :development do
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+  gem 'overcommit'
 end
 
 group :test do
