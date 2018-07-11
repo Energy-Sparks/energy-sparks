@@ -38,4 +38,5 @@
 //= require calendar_year_view
 
 //= require dashboard
+//= require simulator
 

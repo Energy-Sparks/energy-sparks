@@ -19,7 +19,8 @@
 </div>
 <!-- active for active, disabled for disabled -->
 <!-- aria-selected="true" -->
-<%= form_for school_simulators_path(@school) do |f| %>
+
+<%= form_for [@school, @simulator], method: :post, format: :json do |f| %>
   <div class="row">
     <div class="col-md-8 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -33,46 +34,37 @@
     </div>
     <div class="col-md-4 order-md-1">
       <h4 class="mb-3">Edit these values</h4>
-        <% @simulator_configuration.each_with_index do |(key, value), index| %>
-          <% if value[:title] == 'ICT' %>
-          <% else %>
-            <% if value[:editable] %>
-              <div class="tab-pane  collapse <%= index == 0 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
-                <% value[:editable].each do |key| %>
-                  <% if value[key].instance_of? Array %>
-                    <div class="d-block my-3">
-                    <% value[key].each do |thing| %>
-                      <div class="custom-control custom-radio">
-                        <%= radio_button_tag key, thing.downcase.parameterize, {}, class: "custom-control-input" %>
-                        <label class="custom-control-label" for='<%= "#{key}_#{thing.downcase.parameterize}" %>'><%= thing.humanize %></label>
-                      </div>
-                    <% end %>
-                    </div>
-                  <% else %>
-                    <div class="mb-3">
-                      <%= f.label key %>
-                      <%= f.text_field key, class: 'form-control', value: value[key] %>
-                      <div class="invalid-feedback">
-                            Please enter a valid email address for shipping updates.
-                      </div>
+      <% @simulator_configuration.each_with_index do |(key, value), index| %>
+        <% if value[:title] == 'ICT' %>
+        <% else %>
+          <% if value[:editable] %>
+            <div class="tab-pane  collapse <%= index == 0 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
+              <% value[:editable].each do |key| %>
+                <% if value[key].instance_of? Array %>
+                  <div class="d-block my-3">
+                  <% value[key].each do |thing| %>
+                    <div class="custom-control custom-radio">
+                      <%= radio_button_tag key, thing.downcase.parameterize, {}, class: "custom-control-input" %>
+                      <label class="custom-control-label" for='<%= "#{key}_#{thing.downcase.parameterize}" %>'><%= thing.humanize %></label>
                     </div>
                   <% end %>
+                  </div>
+                <% else %>
+                  <div class="mb-3">
+                    <%= f.label key %>
+                    <%= f.text_field key, class: 'form-control', value: value[key] %>
+                    <div class="invalid-feedback">
+                          Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
                 <% end %>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Update simulator</button>
-        <button class="btn btn-success btn-lg btn-block" type="submit">See results</button>
-      </div>
-
-
-
-
-      <p>
-        <%#= pp @simulator_configuration %>
-      </p>
-
-
+      <% end %>
+      <button class="btn btn-primary btn-lg btn-block" type="submit" id="update-simulator">Update simulator</button>
+      <button class="btn btn-success btn-lg btn-block" type="submit" id="submit-simulator">See results</button>
+    </div>
   </div>
-   <% end %>
+<% end %>

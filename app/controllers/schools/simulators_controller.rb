@@ -9,7 +9,66 @@ class Schools::SimulatorsController < ApplicationController
   def show
   end
 
+  def create
+    existing =  ElectricitySimulatorConfiguration.new
+    updates = simulator_params.to_h.symbolize_keys
+
+    updates.each do |key, value|
+
+      existing.each do |k,v|
+        if v.key?(key)
+          pp "found it! #{value} "
+          v[key] = convert_to_correct_format(value)
+          pp "found it! #{v[key]} "
+          break
+        end
+      end
+    end
+    respond_to do |format|
+      format.json do
+        local_school = aggregate_school
+
+        simulator = ElectricitySimulator.new(local_school)
+        chart_config_two = {
+          name:             'Intraday (Comparison 6 months apart)',
+          chart1_type:      :line,
+          series_breakdown: :none,
+          timescale:        [{ schoolweek: 0 }],
+          x_axis:           :intraday,
+          meter_definition: :electricity_simulator,
+          filter:            { daytype: :occupied },
+          yaxis_units:      :kw,
+          yaxis_scaling:    :none
+        }
+
+        simulator.simulate(existing)
+        chart_manager = ChartManager.new(local_school)
+        @output = [{ chart_type: :intraday_line_school_days_6months, data: chart_manager.run_chart(chart_config_two, :intraday_line_school_days_6months, true) }]
+        render 'schools/chart_data/chart_data'
+      end
+    end
+  end
+
+  def is_float?(string)
+    true if Float(string) rescue false
+  end
+
+  def is_integer?(string)
+    true if Integer(string) rescue false
+  end
+
+  def convert_to_correct_format(value)
+    value = is_float?(value) ? value.to_f : value
+    is_integer?(value) ? value.to_i : value
+  end
+
+  def simulator_params
+    editable = ElectricitySimulatorConfiguration.new.map { |key, value|  value[:editable] }.compact.flatten
+    params.require(:simulator).permit(editable)
+  end
+
   def new
+    @simulator = Simulator.new
     @simulator_configuration = ElectricitySimulatorConfiguration.new
     @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
 
@@ -47,8 +106,6 @@ class Schools::SimulatorsController < ApplicationController
         local_school = aggregate_school
 
         simulator = ElectricitySimulator.new(local_school)
-        pp simulator.default_simulator_parameters
-
         simulator.simulate(simulator.default_simulator_parameters)
 
         chart_manager = ChartManager.new(local_school)
