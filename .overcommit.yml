@@ -618,6 +618,8 @@ PreCommit:
     command: ['bundle','exec', 'govuk-lint-ruby']
     include:
       - '**/*.rb'
+    exclude:
+      - 'spec'
 
   RubyLint:
     enabled: false
