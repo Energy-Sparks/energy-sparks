@@ -78,6 +78,14 @@ class Schools::SimulatorsController < ApplicationController
     params.require(:simulator).permit(editable)
   end
 
+  def chart_config_for_school
+    CHART_CONFIG_FOR_SCHOOL.deep_dup
+  end
+
+  def chart_config_for_simulator
+    CHART_CONFIG_FOR_SIMULATOR.deep_dup
+  end
+
   def new
     @simulator = Simulator.new
 
@@ -96,12 +104,19 @@ class Schools::SimulatorsController < ApplicationController
       format.html
       format.json do
         chart_manager = ChartManager.new(local_school)
-        @output = if params[:which] == '0'
-                    [{ chart_type: chart_type, data: chart_manager.run_chart(CHART_CONFIG_FOR_SCHOOL, chart_type, true) }]
-                  else
-                    [{ chart_type: chart_type, data: chart_manager.run_chart(CHART_CONFIG_FOR_SIMULATOR, chart_type, true) }]
-                  end
 
+        @school_chart_info = chart_manager.run_chart(chart_config_for_school, chart_type, true)
+        @simulator_chart_info = chart_manager.run_chart(chart_config_for_simulator, chart_type, true)
+
+        @school_data = @school_chart_info[:x_data]
+        @simulator_data = @simulator_chart_info[:x_data]
+
+        @school_values = @school_chart_info[:x_data][@school_chart_info[:x_data].keys.first]
+        @simulator_values = @simulator_chart_info[:x_data][@simulator_chart_info[:x_data].keys.first]
+
+        @school_chart_info[:x_data] = { 'School Energy' => @school_values, 'Simulator Energy' => @simulator_values }
+
+        @output = [{ chart_type: chart_type, data: @school_chart_info }]
         render 'schools/chart_data/chart_data'
       end
     end
