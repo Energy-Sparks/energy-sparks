@@ -126,8 +126,8 @@ class Schools::SimulatorsController < ApplicationController
     school_data = school_chart_info[:x_data]
     simulator_data = simulator_chart_info[:x_data]
 
-    school_values = school_chart_info[:x_data][school_chart_info[:x_data].keys.first]
-    simulator_values = simulator_chart_info[:x_data][simulator_chart_info[:x_data].keys.first]
+    school_values = school_data[school_data.keys.first]
+    simulator_values = simulator_data[simulator_data.keys.first]
 
     school_chart_info[:x_data] = { 'School Energy' => school_values, 'Simulator Energy' => simulator_values }
     school_chart_info
