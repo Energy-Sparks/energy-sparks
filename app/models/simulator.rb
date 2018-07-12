@@ -22,6 +22,7 @@ class Simulator < ApplicationRecord
   belongs_to :school
   belongs_to :user
 
+
   def get_config_as_nested_hash
     hash_config = configuration.deep_symbolize_keys
     hash_config.each do |key, _value|
@@ -30,8 +31,8 @@ class Simulator < ApplicationRecord
       nested[:editable] = nested[:editable].map(&:to_sym) if nested.key?(:editable)
       nested[:heating_season_start_dates] = nested[:heating_season_start_dates].map { |entry| Date.parse(entry) } if nested.key?(:heating_season_start_dates)
       nested[:heating_season_end_dates] = nested[:heating_season_end_dates].map { |entry| Date.parse(entry) } if nested.key?(:heating_season_end_dates)
-      nested[:start_time] = Time.parse(nested[:start_time]) if nested.key?(:start_time)
-      nested[:end_time] = Time.parse(nested[:end_time]) if nested.key?(:end_time)
+      nested[:start_time] = Time.parse.utc(nested[:start_time]) if nested.key?(:start_time)
+      nested[:end_time] = Time.parse.utc(nested[:end_time]) if nested.key?(:end_time)
     end
     hash_config
   end
