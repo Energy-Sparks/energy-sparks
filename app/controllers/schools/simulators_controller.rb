@@ -136,7 +136,7 @@ class Schools::SimulatorsController < ApplicationController
     school_values = school_data[school_data.keys.first]
     simulator_values = simulator_data[simulator_data.keys.first]
 
-    school_chart_info[:x_data] = { 'School Energy' => school_values, 'Simulator Energy' => simulator_values }
+    school_chart_info[:x_data] = { 'Actual school energy usage' => school_values, 'Simulated energy usage' => simulator_values }
     school_chart_info
   end
 

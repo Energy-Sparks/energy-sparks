@@ -1,3 +1,5 @@
+<% content_for :page_title do %>Energy Dashboard for <%= @school.name %><% end %>
+
 <h1>Energy Dashboard for <%= @school.name %></h1>
  <p><%= @school.name %> is a <%= @school.school_type %> school near <%= @school.postcode %>
  <% if @school.number_of_pupils && @school.floor_area %>

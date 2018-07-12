@@ -1,7 +1,33 @@
-<h1>Welcome to the <%= @school.name %> Electricity Simulator</h1>
-<p>Simulate changes to your school by altering these figures to see what effect it would have on your energy usage</p>
-<div class="row">
-  <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+<% content_for :page_title do %>Electricity Simulator for <%= @school.name %><% end %>
+
+<h1>The <%= @school.name %> Electricity Simulator</h1>
+<p>Use the simulator tool to predict likely changes to your electricity consumption if you make changes to the electrical appliances or lights at your school. In this first step, set up the simulator to match your schools energy usage by adjusting the appliance values to get the charts to show the same energy usage pattern.</p>
+<div class="alert alert-primary" role="alert">
+  More content will be required here to explain how this works...
+</div>
+
+<!-- active for active, disabled for disabled -->
+<!-- aria-selected="true" -->
+
+<%= form_for [@school, @simulator], method: :post, format: :json do |f| %>
+  <div class="row">
+    <div class="col-md-5 order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Charts</span>
+      </h4>
+      <p>This chart shows actual and simulated energy usage over a recent school day.</p>
+      <div id="chart_wrapper_0">
+        <div id="chart_0" class="analysis-chart simulator-chart" data-chart-index="0" data-chart-type="<%= @charts[0].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+      </div>
+      <hr/>
+      <p>This chart shows actual and simulated energy usage over a school day six months ago.</p>
+      <div id="chart_wrapper_1">
+        <div id="chart_1" class="analysis-chart simulator-chart" data-chart-index="1" data-chart-type="<%= @charts[1].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+      </div>
+    </div>
+    <div class="col-md-7 order-md-1">
+      <h4 class="mb-3">Edit these values</h4>
+      <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
     <% @simulator_configuration.each_with_index do |(key, value), index| %>
       <% if value[:editable] %>
         <li class="nav-item">
@@ -12,28 +38,6 @@
       <% end %>
     <% end %>
   </ul>
-</div>
-<!-- HACK -->
-<div class="row">
-  <p></p>
-</div>
-<!-- active for active, disabled for disabled -->
-<!-- aria-selected="true" -->
-
-<%= form_for [@school, @simulator], method: :post, format: :json do |f| %>
-  <div class="row">
-    <div class="col-md-8 order-md-2 mb-4">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Charts</span>
-      </h4>
-      <% @number_of_charts.times do |number| %>
-        <div id="chart_wrapper_<%= number %>">
-          <div id="chart_<%= number %>" class="analysis-chart simulator-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
-        </div>
-      <% end %>
-    </div>
-    <div class="col-md-4 order-md-1">
-      <h4 class="mb-3">Edit these values</h4>
       <% @simulator_configuration.each_with_index do |(key, value), index| %>
         <% if value[:title] == 'ICT' %>
         <% else %>
