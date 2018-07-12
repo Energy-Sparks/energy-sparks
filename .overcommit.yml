@@ -611,10 +611,10 @@ PreCommit:
 
   RuboCop:
     enabled: true
-    description: 'Analyze with RuboCop'
+    description: 'Analyze with GovLinter'
     required_executable: 'govuk-lint-ruby'
-    flags: ['--format=emacs', '--force-exclusion', '--display-cop-names']
-    install_command: 'gem install rubocop'
+    flags: ['-R app lib']
+    install_command: 'gem install govuk_lint'
     command: ['bundle','exec', 'govuk-lint-ruby']
     include:
       - '**/*.rb'
