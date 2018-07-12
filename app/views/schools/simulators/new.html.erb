@@ -26,18 +26,20 @@
       </div>
     </div>
     <div class="col-md-7 order-md-1">
-      <h4 class="mb-3">Edit these values</h4>
+      <h4 class="mb-3">Appliance configuration</h4>
+      <p>If you know the correct configuration for the various appliances in your school, then enter them here. Click on 'Update simulator' to see if the charts show the simulated energy usage being close to the actual energy usage.</p>
+      <p>Once it is showing a similar shape of energy usage, click on 'See results' to see the results of the Expert analysis.</p>
       <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
-    <% @simulator_configuration.each_with_index do |(key, value), index| %>
-      <% if value[:editable] %>
-        <li class="nav-item">
-          <a class="nav-link <%= 'active' if index == 0 %>" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
-            <%= @simulator_configuration[key][:title] %>
-          </a>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
+        <% @simulator_configuration.each_with_index do |(key, value), index| %>
+          <% if value[:editable] %>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if index == 0 %>" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
+                <%= @simulator_configuration[key][:title] %>
+              </a>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
       <% @simulator_configuration.each_with_index do |(key, value), index| %>
         <% if value[:title] == 'ICT' %>
         <% else %>
