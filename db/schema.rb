@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_04_102432) do
+ActiveRecord::Schema.define(version: 2018_07_12_120248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -318,6 +318,14 @@ ActiveRecord::Schema.define(version: 2018_07_04_102432) do
     t.index ["urn"], name: "index_schools_on_urn", unique: true
   end
 
+  create_table "simulators", force: :cascade do |t|
+    t.bigint "school_id"
+    t.bigint "user_id"
+    t.json "configuration"
+    t.index ["school_id"], name: "index_simulators_on_school_id"
+    t.index ["user_id"], name: "index_simulators_on_user_id"
+  end
+
   create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
@@ -393,6 +401,8 @@ ActiveRecord::Schema.define(version: 2018_07_04_102432) do
   add_foreign_key "meters", "schools"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
+  add_foreign_key "simulators", "schools"
+  add_foreign_key "simulators", "users"
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end

@@ -9,7 +9,7 @@
 <!-- active for active, disabled for disabled -->
 <!-- aria-selected="true" -->
 
-<%= form_for [@school, @simulator], method: :post, format: :json do |f| %>
+<%= form_for [@school, @simulator], method: :post do |f| %>
   <div class="row">
     <div class="col-md-5 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -70,7 +70,7 @@
           <% end %>
         <% end %>
       <% end %>
-      <button class="btn btn-primary btn-lg btn-block" type="submit" id="update-simulator">Update simulator</button>
+      <button class="btn btn-primary btn-lg btn-block" type="button" id="update-simulator">Update simulator</button>
       <button class="btn btn-success btn-lg btn-block" type="submit" id="submit-simulator">See results</button>
     </div>
   </div>

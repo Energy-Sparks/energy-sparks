@@ -31,6 +31,34 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def show
+    @simulator_configuration = Simulator.find(params[:id]).get_config_as_nested_hash
+    local_school = aggregate_school
+
+    simulator = ElectricitySimulator.new(local_school)
+
+    simulator.simulate(@simulator_configuration)
+    chart_manager = ChartManager.new(local_school)
+
+    @charts = [:electricity_simulator_pie, :intraday_line_school_days_6months_simulator_submeters, :group_by_week_electricity_simulator_appliance]
+    @number_of_charts = @charts.size
+
+    respond_to do |format|
+      format.html do
+        render :show
+      end
+      format.json do
+        if params[:chart_type]
+          chart_type = params[:chart_type]
+          chart_type = chart_type.to_sym if chart_type.instance_of? String
+          @charts = [chart_type]
+        end
+
+        @output = @charts.map do |this_chart_type|
+          { chart_type: this_chart_type, data: chart_manager.run_standard_chart(this_chart_type) }
+        end
+        render 'schools/chart_data/chart_data'
+      end
+    end
   end
 
   def create
@@ -46,26 +74,8 @@ class Schools::SimulatorsController < ApplicationController
       end
     end
 
-    chart_type = :intraday_line_school_days_6months
-    winter_config_for_simulator = chart_config_for_simulator.deep_dup
-    winter_config_for_simulator[:timescale] = [{ schoolweek: -20 }]
-
-    respond_to do |format|
-      format.json do
-        local_school = aggregate_school
-
-        simulator = ElectricitySimulator.new(local_school)
-
-        simulator.simulate(simulator_configuration)
-        chart_manager = ChartManager.new(local_school)
-
-        @output = [
-          { chart_type: chart_type, data: chart_manager.run_chart(chart_config_for_simulator, chart_type, true) },
-          { chart_type: chart_type, data: chart_manager.run_chart(winter_config_for_simulator, chart_type, true) },
-        ]
-        render 'schools/chart_data/chart_data'
-      end
-    end
+    @simulator = Simulator.create(user: current_user, school: @school, configuration: simulator_configuration)
+    redirect_to school_simulator_path(@school, @simulator)
   end
 
   def is_float?(string)
@@ -100,10 +110,22 @@ class Schools::SimulatorsController < ApplicationController
     local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(local_school)
     @simulator_configuration = @actual_simulator.default_simulator_parameters
+
+    if params.key?(:simulator)
+      updated_simulator_configuration = simulator_params.to_h.symbolize_keys
+
+      updated_simulator_configuration.each do |key, value|
+        @simulator_configuration.each do |_k, v|
+          if v.key?(key)
+            v[key] = convert_to_correct_format(value)
+            break
+          end
+        end
+      end
+    end
+
     @actual_simulator.simulate(@simulator_configuration)
-
     @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
-
     chart_type = :intraday_line_school_days_6months
 
     @number_of_charts = @charts.size
