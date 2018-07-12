@@ -48,6 +48,7 @@
               <% value[:editable].each do |key| %>
                 <% if value[key].instance_of? Array %>
                   <div class="d-block my-3">
+                    <label>Light operating times</label>
                   <% value[key].each do |thing| %>
                     <div class="custom-control custom-radio">
                       <%= radio_button_tag key, thing.downcase.parameterize, {}, class: "custom-control-input" %>
