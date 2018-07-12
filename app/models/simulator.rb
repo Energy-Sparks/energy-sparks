@@ -24,7 +24,7 @@ class Simulator < ApplicationRecord
 
   def get_config_as_nested_hash
     hash_config = configuration.deep_symbolize_keys
-    hash_config.each do |key, value|
+    hash_config.each do |key, _value|
       nested = hash_config[key]
 
       nested[:editable] = nested[:editable].map(&:to_sym) if nested.key?(:editable)
