@@ -36,6 +36,13 @@ var commonChartOptions = {
       tooltip: {
         headerFormat: '<b>{point.key}</b><br>',
         pointFormat: '{point.y:.2f} kWh'
+      },
+      point: {
+        events: {
+          legendItemClick: function () {
+            return false;
+          }
+        }
       }
     },
     line: {
