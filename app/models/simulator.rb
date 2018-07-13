@@ -22,7 +22,7 @@ class Simulator < ApplicationRecord
   belongs_to :school
   belongs_to :user
 
-
+  # TODO this is just horrible having to do all this...
   def get_config_as_nested_hash
     hash_config = configuration.deep_symbolize_keys
     hash_config.each do |key, _value|
@@ -34,6 +34,25 @@ class Simulator < ApplicationRecord
       nested[:start_time] = Time.zone.parse(nested[:start_time]) if nested.key?(:start_time)
       nested[:end_time] = Time.zone.parse(nested[:end_time]) if nested.key?(:end_time)
     end
-    hash_config
+
+    symbolize_recursive(hash_config)
+  end
+
+private
+
+  def symbolize_recursive(hash)
+    {}.tap do |h|
+      hash.each { |key, value| h[key.to_sym] = transform(value) }
+    end
+  end
+
+  def transform(thing)
+    case thing
+    when Integer; thing.to_f
+    when Hash; symbolize_recursive(thing)
+    when Array; thing.map { |v| transform(v) }
+    when String; thing.to_sym
+    else; thing
+    end
   end
 end
