@@ -2,9 +2,11 @@
 #
 # Table name: simulators
 #
-#  configuration :json
+#  configuration :text
 #  id            :bigint(8)        not null, primary key
+#  notes         :text
 #  school_id     :bigint(8)
+#  title         :text
 #  user_id       :bigint(8)
 #
 # Indexes
@@ -21,19 +23,5 @@
 class Simulator < ApplicationRecord
   belongs_to :school
   belongs_to :user
-
-
-  def get_config_as_nested_hash
-    hash_config = configuration.deep_symbolize_keys
-    hash_config.each do |key, _value|
-      nested = hash_config[key]
-
-      nested[:editable] = nested[:editable].map(&:to_sym) if nested.key?(:editable)
-      nested[:heating_season_start_dates] = nested[:heating_season_start_dates].map { |entry| Date.parse(entry) } if nested.key?(:heating_season_start_dates)
-      nested[:heating_season_end_dates] = nested[:heating_season_end_dates].map { |entry| Date.parse(entry) } if nested.key?(:heating_season_end_dates)
-      nested[:start_time] = Time.parse.utc(nested[:start_time]) if nested.key?(:start_time)
-      nested[:end_time] = Time.parse.utc(nested[:end_time]) if nested.key?(:end_time)
-    end
-    hash_config
-  end
+  serialize :configuration
 end

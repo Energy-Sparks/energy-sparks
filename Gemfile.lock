@@ -1,11 +1,12 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: b1729875091b1457868ac276d4ea2d44240110dd
+  revision: 8df0b21781eb910f36292559caa5d35b72c3bed5
   branch: integration
   specs:
-    energy-sparks_analytics (0.7.10)
+    energy-sparks_analytics (0.7.11)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
+      hash_diff (~> 1.0.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       mechanize (~> 2.7.6)
@@ -220,6 +221,7 @@ GEM
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
+    hash_diff (1.0.0)
     hashdiff (0.3.7)
     hashie (3.5.7)
     html-table (1.5.1)
@@ -555,7 +557,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.7.10)!
+  energy-sparks_analytics (~> 0.7.11)!
   factory_bot_rails
   fakefs
   fasterer

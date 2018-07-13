@@ -51,8 +51,8 @@
                     <label>Light operating times</label>
                   <% value[key].each do |thing| %>
                     <div class="custom-control custom-radio">
-                      <%= radio_button_tag key, thing.downcase.parameterize, {}, class: "custom-control-input" %>
-                      <label class="custom-control-label" for='<%= "#{key}_#{thing.downcase.parameterize}" %>'><%= thing.humanize %></label>
+                      <%= radio_button_tag key, thing, {}, class: "custom-control-input" %>
+                      <label class="custom-control-label" for='<%= "#{key}_#{thing}" %>'><%= thing.to_s.humanize %></label>
                     </div>
                   <% end %>
                   </div>

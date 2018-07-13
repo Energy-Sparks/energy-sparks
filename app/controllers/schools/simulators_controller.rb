@@ -31,7 +31,7 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def show
-    @simulator_configuration = Simulator.find(params[:id]).get_config_as_nested_hash
+    @simulator_configuration = Simulator.find(params[:id]).configuration
     local_school = aggregate_school
 
     simulator = ElectricitySimulator.new(local_school)

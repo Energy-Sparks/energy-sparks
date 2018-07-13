@@ -319,9 +319,11 @@ ActiveRecord::Schema.define(version: 2018_07_12_120248) do
   end
 
   create_table "simulators", force: :cascade do |t|
+    t.text "title"
+    t.text "notes"
     t.bigint "school_id"
     t.bigint "user_id"
-    t.json "configuration"
+    t.text "configuration"
     t.index ["school_id"], name: "index_simulators_on_school_id"
     t.index ["user_id"], name: "index_simulators_on_user_id"
   end
