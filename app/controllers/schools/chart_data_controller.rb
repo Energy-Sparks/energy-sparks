@@ -69,7 +69,7 @@ private
   end
 
   def sort_these_charts(array_of_chart_types_as_symbols)
-    chart_manager = ChartManager.new(aggregate_school)
+    chart_manager = ChartManager.new(aggregate_school, current_user.try(:admin?))
 
     array_of_chart_types_as_symbols.map do |chart_type|
       { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
