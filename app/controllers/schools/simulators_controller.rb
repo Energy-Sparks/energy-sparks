@@ -149,8 +149,8 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator)
-    school_chart_info = chart_manager.run_chart(chart_config_for_school, chart_type, true)
-    simulator_chart_info = chart_manager.run_chart(chart_config_for_simulator, chart_type, true)
+    school_chart_info = chart_manager.run_chart(chart_config_for_school, chart_type)
+    simulator_chart_info = chart_manager.run_chart(chart_config_for_simulator, chart_type)
 
     school_data = school_chart_info[:x_data]
     simulator_data = simulator_chart_info[:x_data]
