@@ -35,5 +35,9 @@
           very cold weather some heating may be necessary overnight to prevent the school pipes from freezing.</li>
       </ul>
     </div>
+
+    <% if user_signed_in? %>
+      <p>You can find out more by looking at more advanced energy usage analytics on the <%= link_to 'Dashboard', school_dashboard_path(@school) %></p>
+    <% end %>
   </div>
 </div>
