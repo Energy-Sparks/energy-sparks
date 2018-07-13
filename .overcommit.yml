@@ -307,7 +307,7 @@ PreCommit:
     enabled: true
     description: 'Analyze with GovLinter'
     required_executable: 'govuk-lint-ruby'
-    flags: ['app','lib', '-R', '--diff']
+    flags: ['app','lib', '-R']
     install_command: 'gem install govuk_lint'
     command: ['govuk-lint-ruby']
 
