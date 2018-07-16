@@ -1,0 +1,22 @@
+<% content_for :page_title do %>Electricity Simulators for <%= @school.name %><% end %>
+
+<h1><%= @school.name %> Electricity Simulators</h1>
+<p>These simulators have been saved for this school.</p>
+<p><%= link_to 'Create new simulation', new_school_simulator_path(@school), class: 'btn btn-success' %></p>
+
+ <table class="table">
+  <thead>
+    <tr>
+      <th>Creation date</th>
+      <th>Results</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @simulators.each do |simulator| %>
+      <tr>
+        <td><%= nice_dates(simulator.created_at) %></td>
+        <td><%= link_to 'Results', school_simulator_path(@school, simulator.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

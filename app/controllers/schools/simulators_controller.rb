@@ -28,6 +28,8 @@ class Schools::SimulatorsController < ApplicationController
   }.freeze
 
   def index
+    @simulators = Simulator.where(school: @school)
+    redirect_to new_school_simulator_path(@school) if @simulators.empty?
   end
 
   def show

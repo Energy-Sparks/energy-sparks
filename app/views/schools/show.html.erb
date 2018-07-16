@@ -20,8 +20,8 @@
 
       <p class="float-right">
         <% if user_signed_in? %>
-          <%= link_to 'Dashboard', school_dashboard_path(@school), class: 'btn btn-success btn-sm' %>
-        	<%= link_to 'Simulator', new_school_simulator_path(@school), class: 'btn btn-success btn-sm' %>
+          <%= link_to 'Analysis', school_dashboard_path(@school), class: 'btn btn-success btn-sm' %>
+        	<%= link_to 'Simulators', school_simulators_path(@school), class: 'btn btn-success btn-sm' %>
         <% end %>
 
         <%- if can? :manage, @school -%>

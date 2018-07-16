@@ -324,6 +324,8 @@ ActiveRecord::Schema.define(version: 2018_07_12_120248) do
     t.bigint "school_id"
     t.bigint "user_id"
     t.text "configuration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_simulators_on_school_id"
     t.index ["user_id"], name: "index_simulators_on_user_id"
   end
