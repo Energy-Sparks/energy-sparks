@@ -1,0 +1,98 @@
+<% content_for :page_title do %>Electricity Simulator for <%= @school.name %><% end %>
+
+<h1>The <%= @school.name %> Electricity Simulator</h1>
+<p>Use the simulator tool to predict likely changes to your electricity consumption, if you make changes to the electrical appliances or lights at your school. In this first step, set up the simulator to match your school's energy usage by adjusting the appliance values and clicking 'Update simulator'. Try and get the simulated energy usage in the charts to match the actual usage.</p>
+
+<p><%= link_to 'Saved simulations', school_simulators_path(@school), class: 'btn btn-primary' if @school.simulators.any? %></p>
+
+<div class="alert alert-primary" role="alert">
+  More content will be required here to explain how this works...
+</div>
+
+<!-- active for active, disabled for disabled -->
+<!-- aria-selected="true" -->
+
+<%= form_for [@school, @simulator], method: :patch do |f| %>
+  <div class="row">
+      <h4 class="">Appliance configuration</h4>
+      <p>If you know the correct configuration for the various appliances in your school, then enter them here. Click on 'Update simulator' to see if the charts show the simulated energy usage being close to the actual energy usage.</p>
+      <p>Once it is showing a similar shape of energy usage, click on 'See results' to see the results of the Expert analysis.</p>
+      <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+        <% @simulator_configuration.each_with_index do |(key, value), index| %>
+          <%# if value[:editable] %>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if index == 0 %>" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
+                <%= @simulator_configuration[key][:title] %>
+              </a>
+            </li>
+          <%# end %>
+        <% end %>
+      </ul>
+  </div>
+  <div class="row"><hr/></div>
+  <div class="row">
+
+      <% @simulator_configuration.each_with_index do |(key, value), index| %>
+
+        <% if value[:title] == 'ICT' %>
+        <% else %>
+          <% if value[:editable] %>
+            <div class="tab-pane collapse <%= index == 0 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
+              <% value[:editable].each do |key| %>
+                <% if value[key].instance_of? Array %>
+                  <div class="d-block my-3">
+                    <label>Light operating times</label>
+                  <% value[key].each do |thing| %>
+                    <div class="custom-control custom-radio">
+                      <%= radio_button_tag key, thing, {}, class: "custom-control-input" %>
+                      <label class="custom-control-label" for='<%= "#{key}_#{thing}" %>'><%= thing.to_s.humanize %></label>
+                    </div>
+                  <% end %>
+                  </div>
+                <% else %>
+                  <div class="mb-3">
+                    <%= f.label key %>
+                    <%= f.text_field key, class: 'form-control', value: value[key] %>
+                    <div class="invalid-feedback">
+                          Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+
+  </div>
+
+    <div class="d-flex align-items-end flex-column">
+      <div class="btn-group btn-group-lg ">
+      <button class="btn btn-primary at-the-bottom" type="button" id="update-simulator">Update simulator</button>
+      <button class="btn btn-success at-the-bottom" type="submit" id="submit-simulator">See results</button>
+      </div>
+    </div>
+
+
+<% end %>
+
+<div class="row">
+
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Charts</span>
+      </h4>
+    </div>
+    <div class="row">
+      <div class="col">
+      <p>This chart shows actual and simulated energy usage over a recent school day.</p>
+      <div id="chart_wrapper_0">
+        <div id="chart_0" class="analysis-chart simulator-chart" data-chart-index="0" data-chart-type="<%= @charts[0].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+      </div>
+    </div>
+      <div class="col">
+      <p>This chart shows actual and simulated energy usage over a school day six months ago.</p>
+      <div id="chart_wrapper_1">
+        <div id="chart_1" class="analysis-chart simulator-chart" data-chart-index="1" data-chart-type="<%= @charts[1].to_s %>" data-chart-json="<%= request.path %>.json" data-no-advice></div>
+      </div>
+    </div>
+</div>

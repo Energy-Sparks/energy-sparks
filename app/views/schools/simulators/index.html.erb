@@ -9,13 +9,16 @@
     <tr>
       <th>Creation date</th>
       <th>Results</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <% @simulators.each do |simulator| %>
       <tr>
-        <td><%= nice_dates(simulator.created_at) %></td>
-        <td><%= link_to 'Results', school_simulator_path(@school, simulator.id) %></td>
+        <td><%= nice_date_times(simulator.created_at) %></td>
+        <td><%= link_to 'Results', school_simulator_path(@school, simulator), class: 'btn btn-info' %></td>
+        <td><%= link_to 'Edit', edit_school_simulator_path(@school, simulator) %></td>
+        <td><%= link_to 'Delete', school_simulator_path(@school, simulator), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
       </tr>
     <% end %>
   </tbody>
