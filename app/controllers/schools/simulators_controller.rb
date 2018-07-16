@@ -28,6 +28,8 @@ class Schools::SimulatorsController < ApplicationController
   }.freeze
 
   def index
+    @simulators = Simulator.where(school: @school)
+    redirect_to new_school_simulator_path(@school) if @simulators.empty?
   end
 
   def show
@@ -78,6 +80,37 @@ class Schools::SimulatorsController < ApplicationController
     redirect_to school_simulator_path(@school, @simulator)
   end
 
+  def destroy
+    @simulator = Simulator.find(params[:id])
+    @simulator.delete
+    respond_to do |format|
+      format.html { redirect_to school_simulators_path(@school), notice: 'Simulator was deleted.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def update
+    @simulator = Simulator.find(params[:id])
+    simulator_configuration = @simulator.configuration
+
+    updated_simulator_configuration = simulator_params.to_h.symbolize_keys
+
+    updated_simulator_configuration.each do |key, value|
+      simulator_configuration.each do |_k, v|
+        if v.key?(key)
+          v[key] = convert_to_correct_format(value)
+          break
+        end
+      end
+    end
+
+    if @simulator.update(configuration: simulator_configuration)
+      redirect_to school_simulator_path(@school, @simulator)
+    else
+      render :edit
+    end
+  end
+
   def is_float?(string)
     true if Float(string) rescue false
   end
@@ -106,11 +139,13 @@ class Schools::SimulatorsController < ApplicationController
 
   def new
     @simulator = Simulator.new
-
-    local_school = aggregate_school
-    @actual_simulator = ElectricitySimulator.new(local_school)
+    @local_school = aggregate_school
+    @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulator_configuration = @actual_simulator.default_simulator_parameters
+    sort_out_simulator_stuff
+  end
 
+  def sort_out_simulator_stuff
     if params.key?(:simulator)
       updated_simulator_configuration = simulator_params.to_h.symbolize_keys
 
@@ -133,7 +168,7 @@ class Schools::SimulatorsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        chart_manager = ChartManager.new(local_school)
+        chart_manager = ChartManager.new(@local_school)
         winter_config_for_school = chart_config_for_school.deep_dup
         winter_config_for_school[:timescale] = [{ schoolweek: -20 }]
         winter_config_for_simulator = chart_config_for_simulator.deep_dup
@@ -163,6 +198,11 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def edit
+    @simulator = Simulator.find(params[:id])
+    @local_school = aggregate_school
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    @simulator_configuration = @simulator.configuration
+    sort_out_simulator_stuff
   end
 
   def authorise_school
