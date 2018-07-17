@@ -14,23 +14,23 @@ describe School do
     expect(subject.slug).to eq(subject.name.parameterize)
   end
 
-  pending 'knows whether the school is open or not' do
+  describe 'knows whether the school is open or not' do
     context 'when open close times are defined' do
       SchoolTime.days.each do |day, _value|
         # default values
-        school.school_times.create(day: day)
+        subject.school_times.create(day: day)
       end
-      school.school_times.tuesday.update_attributes(opening_time: 1100, closing_time: 1500)
+      subject.school_times.tuesday.update_attributes(opening_time: 1100, closing_time: 1500)
 
       monday_open = DateTime.parse("2018-07-16T11:00:00")
       monday_closed = DateTime.parse("2018-07-16T07:00:00")
       tuesday_open = DateTime.parse("2018-07-17T13:00:00")
       tuesday_closed = DateTime.parse("2018-07-17T18:00:00")
 
-      expect(school.is_open?(monday_open)).to be true
-      expect(school.is_open?(monday_closed)).to be true
-      expect(school.is_open?(tuesday_open)).to be true
-      expect(school.is_open?(tuesday_closed)).to be true
+      expect(subject.is_open?(monday_open)).to be true
+      expect(subject.is_open?(monday_closed)).to be true
+      expect(subject.is_open?(tuesday_open)).to be true
+      expect(subject.is_open?(tuesday_closed)).to be true
     end
   end
 
