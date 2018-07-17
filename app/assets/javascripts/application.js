@@ -39,3 +39,5 @@
 
 //= require dashboard
 
+//= require moment
+//= require tempusdominus-bootstrap-4.js

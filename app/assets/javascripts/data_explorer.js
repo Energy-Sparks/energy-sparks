@@ -75,7 +75,7 @@ $(document).ready(function() {
     }
 
     var currentSource = chart.getDataSource();
-    var newSource = currentSource.split("?")[0] + "?" + $(el.form).serialize();
+    var newSource = currentSource.split("?")[0] + "?" + $('form#chart-filter').serialize();
 
     chart.updateData(newSource, options);
     if (chart.getChartObject()) {
@@ -134,19 +134,20 @@ $(document).ready(function() {
       max: max.formatDate('DD, d MM yyyy')
     }));
 
-    $(".date-picker").each(function() {
-      var selected_date = $(this).calendarsPicker("getDate");
-      if (selected_date.length > 0 && selected_date > max) {
-        $(this).calendarsPicker("setDate", max);
-      }
-      if (selected_date.length > 0 && selected_date < min) {
-        $(this).calendarsPicker("setDate", min);
-      }
-      $(this).calendarsPicker("option", {
-        minDate: min,
-        maxDate: max
-      });
-    });
+    // $(".date-picker").each(function() {
+    //   var selected_date = $(this).calendarsPicker("getDate");
+    //   if (selected_date.length > 0 && selected_date > max) {
+    //     $(this).calendarsPicker("setDate", max);
+    //   }
+    //   if (selected_date.length > 0 && selected_date < min) {
+    //     $(this).calendarsPicker("setDate", min);
+    //   }
+    //   $(this).calendarsPicker("option", {
+    //     minDate: min,
+    //     maxDate: max
+    //   });
+    // });
+    return { min: new Date(min), max: new Date(max) }
   }
 
   /**
@@ -204,38 +205,64 @@ $(document).ready(function() {
     });
   }
 
-  function datePickerConfig(selector) {
-    var defaultDate = datetoCdate( $(selector).val() );
-    var config = {
-      dateFormat: 'DD, d MM yyyy',
-      selectDefaultDate: true,
-      onSelect: function(dates) {
-        $(selector).val(dates);
-        if (initialised) updateChart(this);
-      }
-    };
-    if (defaultDate !== undefined && defaultDate.length) {
-      config.defaultDate = defaultDate;
-    }
+  // function datePickerConfig(selector) {
+  //   var defaultDate = datetoCdate( $(selector).val() );
+  //   var config = {
+  //     dateFormat: 'DD, d MM yyyy',
+  //     selectDefaultDate: true,
+  //     onSelect: function(dates) {
+  //       $(selector).val(dates);
+  //       if (initialised) updateChart(this);
+  //     }
+  //   };
+  //   if (defaultDate !== undefined && defaultDate.length) {
+  //     config.defaultDate = defaultDate;
+  //   }
 
-    if ($("#daily-usage").length > 0) {
-      config.onShow = selectWeek;
-    }
-    return config;
-  }
+  //   if ($("#daily-usage").length > 0) {
+  //     config.onShow = selectWeek;
+  //   }
+  //   return config;
+  // }
 
   //Initialise this page
   if ($(".charts").length > 0) {
     var supply = $("input[name=supplyType]:checked").val();
+    var maxMin = setMinMaxDates(supply);
 
-    $(".first-date-picker").each( function() {
-      $(this).calendarsPicker(datePickerConfig("#first-date"));
+    $('#datetimepicker1').datetimepicker({
+        format: 'dddd, Do MMMM YYYY',
+        minDate: maxMin.min,
+        maxDate: maxMin.max,
+        allowInputToggle: true,
     });
 
-    $(".to-date-picker").each( function() {
-      $(this).calendarsPicker(datePickerConfig("#to-date"));
+    $('#datetimepicker1').on('change.datetimepicker', function() {
+      $("#first-date").val($('input#first-date-picker').val());
+      updateChart(this);
+     });
+
+    $('#datetimepicker2').datetimepicker({
+      format: 'dddd, Do MMMM YYYY',
+      minDate: maxMin.min,
+      maxDate: maxMin.max,
+      allowInputToggle: true,
     });
-    setMinMaxDates(supply);
+
+
+    $('#datetimepicker2').on('change.datetimepicker', function() {
+      $("#to-date").val($('input#to-date-picker').val());
+      updateChart(this);
+    });
+
+    // $(".first-date-picker").each( function() {
+    //   $(this).calendarsPicker(datePickerConfig("#first-date"));
+    // });
+
+    // $(".to-date-picker").each( function() {
+    //   $(this).calendarsPicker(datePickerConfig("#to-date"));
+    // });
+    // setMinMaxDates(supply);
     enableMeters(supply, false);
     explain();
     initialised = true;

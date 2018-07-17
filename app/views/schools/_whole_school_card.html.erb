@@ -10,26 +10,34 @@
     </p>
     <div class="form-group">
       <div class="indicator-light <%= supply %>-light">
-        <div class="input-group">
-          <%= text_field_tag("first-date-picker",
-                             first_date.strftime('%A, %e %B %Y'),
-                             class: 'form-control date-picker first-date-picker'
+           <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+              <%= text_field_tag("first-date-picker",
+                                  first_date.strftime('%A, %e %B %Y'),
+                                  class: 'form-control datetimepicker-input', data: { target: "#datetimepicker1" }
               ) %>
-          <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-        </div>
+              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
       </div>
     </div>
+
     <p class="card-text">
       <%= second_option %>
     </p>
     <div class="form-group">
       <div class="indicator-dark <%= supply %>-dark">
         <div class="input-group">
-          <%= text_field_tag("to-date-picker",
-                             to_date.present? ? to_date.strftime('%A, %e %B %Y') : nil,
-                             class: 'form-control date-picker to-date-picker'
+           <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                 <%= text_field_tag("to-date-picker",
+                   first_date.strftime('%A, %e %B %Y'),
+                   class: 'form-control datetimepicker-input', data: { target: "#datetimepicker2" }
               ) %>
-          <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+
+              <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
         </div>
       </div>
     </div>
@@ -39,9 +47,8 @@
     <div class="form-group">
       <%= select_tag :meter,
                      content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(school.active_meters,
-                                                                                                                  :meter_no, :display_name, meter, { "supply-type" => :meter_type }), class: "form-control custom-select meter-filter" %>
+                     :meter_no, :display_name, meter, { "supply-type" => :meter_type }), class: "form-control custom-select meter-filter" %>
     </div>
-
   </div>
   <div class="card-footer">
     <span id="data-availability"></span>
