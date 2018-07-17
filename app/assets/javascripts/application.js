@@ -17,11 +17,6 @@
 
 //= require trix
 
-//= require jquery.calendars.min.js
-//= require jquery.calendars.plus.min.js
-//= require jquery.plugin.min.js
-//= require jquery.calendars.picker.min.js
-
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
 

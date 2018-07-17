@@ -35,18 +35,6 @@ $(document).ready(function() {
     } else {
       $("#graph-explainer").html( explainHourlyTemplate(data) );
     }
-
-  }
-
-  //create a Cdate object used by the calendar picker
-  //have to use these objects when setting min/max dates when using a custom data format
-  function datetoCdate(date) {
-    if (date.length) {
-      var parts = date.split("-");
-      if (parts.length > 2) {
-        return $.calendars.newDate(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
-      }
-    }
   }
 
   //called by event handlers that need to update the graph
@@ -120,8 +108,8 @@ $(document).ready(function() {
   //if the currently selected date is greater (or lower) than the new min/max
   //then the dates are updated. otherwise the control sets an empty value
   function setMinMaxDates(supply) {
-    var min = datetoCdate( $("#" + supply + "-start").attr("data-date") );
-    var max = datetoCdate( $("#" + supply + "-end").attr("data-date") );
+    var min = moment( $("#" + supply + "-start").attr("data-date") );
+    var max = moment( $("#" + supply + "-end").attr("data-date") );
 
     //just in case date isn't valid
     if (min == null || max == null) {
@@ -130,11 +118,11 @@ $(document).ready(function() {
 
     $("#data-availability").html( dataRangesTemplate({
       supply: $("input[type=radio][name=supplyType]:checked").parent("label").text(),
-      min: min.formatDate('DD, d MM yyyy'),
-      max: max.formatDate('DD, d MM yyyy')
+      min: min.format('dddd, Do MMMM YYYY'),
+      max: max.format('dddd, Do MMMM YYYY')
     }));
 
-    return { min: new Date(min), max: new Date(max) }
+    return { min: min, max: max };
   }
 
   function setUpDatePicker(divId, inputId, hiddenInputId, maxMin) {
