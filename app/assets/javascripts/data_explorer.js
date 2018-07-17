@@ -134,135 +134,38 @@ $(document).ready(function() {
       max: max.formatDate('DD, d MM yyyy')
     }));
 
-    // $(".date-picker").each(function() {
-    //   var selected_date = $(this).calendarsPicker("getDate");
-    //   if (selected_date.length > 0 && selected_date > max) {
-    //     $(this).calendarsPicker("setDate", max);
-    //   }
-    //   if (selected_date.length > 0 && selected_date < min) {
-    //     $(this).calendarsPicker("setDate", min);
-    //   }
-    //   $(this).calendarsPicker("option", {
-    //     minDate: min,
-    //     maxDate: max
-    //   });
-    // });
     return { min: new Date(min), max: new Date(max) }
   }
 
-  /**
-   * Highlight entire week when selecting a date
-   * Select the first day of the week
-   * Display a status bar to explain picking operation
-   * Adapted from: http://keith-wood.name/datepick.HTML#extend
-   *
-   @param {jQuery} picker The completed datepicker division.
-   @param {BaseCalendar} calendar The calendar implementation.
-   @param {object} inst The current instance settings.
-   */
-  function selectWeek(picker, calendar, inst) {
-    //HIGHLIGHT WEEK
-    var renderer = inst.options.renderer;
-    picker.find(renderer.daySelector + ' a, ' + renderer.daySelector + ' span').hover(function () {
-        $(this).parents('tr').find(renderer.daySelector + ' *').addClass(renderer.highlightedClass);
-      },
-      function () {
-        $(this).parents('tr').find(renderer.daySelector + ' *').removeClass(renderer.highlightedClass);
-      });
-
-    //SHOW A STATUS MESSAGE
-    var isTR = (inst.options.renderer.selectedClass === 'ui-state-active');
-    //for dates that can't be selected
-    var defaultStatus = "No data for this week";
-    var status = $('<div class="' + (!isTR ? 'calendars-status' :
-        'ui-datepicker-status ui-widget-header ui-helper-clearfix ui-corner-all') + '">' +
-      defaultStatus + '</div>').insertAfter(picker.find('.calendars-month-row:last,.ui-datepicker-row-break:last'));
-    picker.find('*[title]').each(function () {
-      //if the day has a title its selectable
-      if ($(this).attr('title')) {
-        var title = "Select this week";
-      }
-      $(this).removeAttr('title').hover(
-        function () {
-          status.text(title || defaultStatus);
-        },
-        function () {
-          status.text(defaultStatus);
-        });
+  function setUpDatePicker(divId, inputId, hiddenInputId, maxMin) {
+    $(divId).datetimepicker({
+        format: 'dddd, Do MMMM YYYY',
+        minDate: maxMin.min,
+        maxDate: maxMin.max,
+        allowInputToggle: true,
+        debug: true
     });
 
-    //SELECT START OF WEEK
-    //There's an issue where if user selects very first week of the data
-    var target = $(this);
-    picker.find('td a').each(function () {
-      $(this).click(function () {
-        var selected_date = target.calendarsPicker('retrieveDate', this);
-        var start_of_week = selected_date.add(0 - selected_date.dayOfWeek(), "d");
-        var dates = [start_of_week];
-        target.calendarsPicker('setDate', dates).calendarsPicker('hide');
-        target.blur();
-      }).replaceAll(this);
+    $(divId).on('change.datetimepicker', function() {
+      var datePickerValue = $(inputId).val();
+      if ($("#daily-usage").length > 0) {
+        datePickerValue = moment(datePickerValue, 'dddd, Do MMMM YYYY').startOf('week').format('dddd, Do MMMM YYYY');
+        $(inputId).val(datePickerValue);
+      }
+      $(hiddenInputId).val(datePickerValue);
+      // $('div#datetimepicker1.input-group.date table.table.table-sm tbody tr > td.active').parent().children('td').addClass('active');
+      updateChart(this);
     });
   }
-
-  // function datePickerConfig(selector) {
-  //   var defaultDate = datetoCdate( $(selector).val() );
-  //   var config = {
-  //     dateFormat: 'DD, d MM yyyy',
-  //     selectDefaultDate: true,
-  //     onSelect: function(dates) {
-  //       $(selector).val(dates);
-  //       if (initialised) updateChart(this);
-  //     }
-  //   };
-  //   if (defaultDate !== undefined && defaultDate.length) {
-  //     config.defaultDate = defaultDate;
-  //   }
-
-  //   if ($("#daily-usage").length > 0) {
-  //     config.onShow = selectWeek;
-  //   }
-  //   return config;
-  // }
 
   //Initialise this page
   if ($(".charts").length > 0) {
     var supply = $("input[name=supplyType]:checked").val();
     var maxMin = setMinMaxDates(supply);
 
-    $('#datetimepicker1').datetimepicker({
-        format: 'dddd, Do MMMM YYYY',
-        minDate: maxMin.min,
-        maxDate: maxMin.max,
-        allowInputToggle: true,
-    });
+    setUpDatePicker('#datetimepicker1', 'input#first-date-picker', '#first-date', maxMin);
+    setUpDatePicker('#datetimepicker2', 'input#to-date-picker', '#to-date', maxMin);
 
-    $('#datetimepicker1').on('change.datetimepicker', function() {
-      $("#first-date").val($('input#first-date-picker').val());
-      updateChart(this);
-     });
-
-    $('#datetimepicker2').datetimepicker({
-      format: 'dddd, Do MMMM YYYY',
-      minDate: maxMin.min,
-      maxDate: maxMin.max,
-      allowInputToggle: true,
-    });
-
-
-    $('#datetimepicker2').on('change.datetimepicker', function() {
-      $("#to-date").val($('input#to-date-picker').val());
-      updateChart(this);
-    });
-
-    // $(".first-date-picker").each( function() {
-    //   $(this).calendarsPicker(datePickerConfig("#first-date"));
-    // });
-
-    // $(".to-date-picker").each( function() {
-    //   $(this).calendarsPicker(datePickerConfig("#to-date"));
-    // });
-    // setMinMaxDates(supply);
     enableMeters(supply, false);
     explain();
     initialised = true;
