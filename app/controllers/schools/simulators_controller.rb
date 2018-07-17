@@ -2,6 +2,8 @@ require 'dashboard'
 
 class Schools::SimulatorsController < ApplicationController
   before_action :authorise_school
+  before_action :set_simulator, only: [:show, :edit, :destroy, :update]
+
 
   CHART_CONFIG_FOR_SCHOOL = {
     name:             'Intraday (Comparison 6 months apart)',
@@ -33,7 +35,7 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def show
-    @simulator_configuration = Simulator.find(params[:id]).configuration
+    @simulator_configuration = @simulator.configuration
     local_school = aggregate_school
 
     simulator = ElectricitySimulator.new(local_school)
@@ -81,7 +83,6 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def destroy
-    @simulator = Simulator.find(params[:id])
     @simulator.delete
     respond_to do |format|
       format.html { redirect_to school_simulators_path(@school), notice: 'Simulator was deleted.' }
@@ -90,7 +91,6 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def update
-    @simulator = Simulator.find(params[:id])
     simulator_configuration = @simulator.configuration
 
     updated_simulator_configuration = simulator_params.to_h.symbolize_keys
@@ -111,38 +111,38 @@ class Schools::SimulatorsController < ApplicationController
     end
   end
 
-  def is_float?(string)
-    true if Float(string) rescue false
-  end
-
-  def is_integer?(string)
-    true if Integer(string) rescue false
-  end
-
-  def convert_to_correct_format(value)
-    value = is_float?(value) ? value.to_f : value
-    is_integer?(value) ? value.to_i : value
-  end
-
-  def simulator_params
-    editable = ElectricitySimulatorConfiguration.new.map { |_key, value| value[:editable] }.compact.flatten
-    params.require(:simulator).permit(editable)
-  end
-
-  def chart_config_for_school
-    CHART_CONFIG_FOR_SCHOOL.deep_dup
-  end
-
-  def chart_config_for_simulator
-    CHART_CONFIG_FOR_SIMULATOR.deep_dup
-  end
-
   def new
     @simulator = Simulator.new
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulator_configuration = @actual_simulator.default_simulator_parameters
     sort_out_simulator_stuff
+  end
+
+  def edit
+    @local_school = aggregate_school
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    @simulator_configuration = @simulator.configuration
+    sort_out_simulator_stuff
+  end
+
+private
+
+  def set_simulator
+    @simulator = Simulator.find(params[:id])
+  end
+
+  def authorise_school
+    @school = School.find_by_slug(params[:school_id])
+    authorize! :show, @school
+  end
+
+  def aggregate_school
+    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
+    Rails.cache.fetch(cache_key, expires_in: 1.day) do
+      meter_collection = MeterCollection.new(@school)
+      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+    end
   end
 
   def sort_out_simulator_stuff
@@ -197,24 +197,29 @@ class Schools::SimulatorsController < ApplicationController
     school_chart_info
   end
 
-  def edit
-    @simulator = Simulator.find(params[:id])
-    @local_school = aggregate_school
-    @actual_simulator = ElectricitySimulator.new(@local_school)
-    @simulator_configuration = @simulator.configuration
-    sort_out_simulator_stuff
+  def is_float?(string)
+    true if Float(string) rescue false
   end
 
-  def authorise_school
-    @school = School.find_by_slug(params[:school_id])
-    authorize! :show, @school
+  def is_integer?(string)
+    true if Integer(string) rescue false
   end
 
-  def aggregate_school
-    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
-    Rails.cache.fetch(cache_key, expires_in: 1.day) do
-      meter_collection = MeterCollection.new(@school)
-      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-    end
+  def convert_to_correct_format(value)
+    value = is_float?(value) ? value.to_f : value
+    is_integer?(value) ? value.to_i : value
+  end
+
+  def simulator_params
+    editable = ElectricitySimulatorConfiguration.new.map { |_key, value| value[:editable] }.compact.flatten
+    params.require(:simulator).permit(editable)
+  end
+
+  def chart_config_for_school
+    CHART_CONFIG_FOR_SCHOOL.deep_dup
+  end
+
+  def chart_config_for_simulator
+    CHART_CONFIG_FOR_SIMULATOR.deep_dup
   end
 end
