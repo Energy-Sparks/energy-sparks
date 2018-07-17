@@ -303,6 +303,14 @@ PreCommit:
     install_command: 'go get github.com/golang/lint/golint'
     include: '**/*.go'
 
+  GovUkLint:
+    enabled: true
+    description: 'Analyze with GovLinter'
+    required_executable: 'govuk-lint-ruby'
+    flags: ['app','lib', '-R']
+    install_command: 'gem install govuk_lint'
+    command: ['govuk-lint-ruby']
+
   GoVet:
     enabled: false
     description: 'Analyze with go vet'
@@ -610,16 +618,18 @@ PreCommit:
     include: '**/*.rst'
 
   RuboCop:
-    enabled: true
+    enabled: false
     description: 'Analyze with RuboCop'
-    required_executable: 'govuk-lint-ruby'
+    required_executable: 'rubocop'
     flags: ['--format=emacs', '--force-exclusion', '--display-cop-names']
     install_command: 'gem install rubocop'
-    command: ['bundle','exec', 'govuk-lint-ruby']
     include:
+      - '**/*.gemspec'
+      - '**/*.rake'
       - '**/*.rb'
-    exclude:
-      - 'spec/**/*.rb'
+      - '**/*.ru'
+      - '**/Gemfile'
+      - '**/Rakefile'
 
   RubyLint:
     enabled: false
