@@ -5,7 +5,7 @@
 <div class="alert alert-primary" role="alert">
   More content will be required here to explain how this works...
 </div>
-<p><%= link_to 'Create new simulation', new_school_simulator_path(@school), class: 'btn btn-success' %> <%= link_to 'Saved simulations', school_simulators_path(@school), class: 'btn btn-primary' if @school.simulators.any? %></p>
+<p><%= link_to 'Create new simulation', new_school_simulator_path(@school), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulator_path(@school, @simulator), class: 'btn btn-warning' %> <%= link_to 'Saved simulations', school_simulators_path(@school), class: 'btn btn-primary' if @school.simulators.any? %></p>
 
 
 <% @number_of_charts.times do |number| %>

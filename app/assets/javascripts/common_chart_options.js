@@ -122,13 +122,15 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     if (seriesData[key].name == 'CUSUM') {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
     }
-    c.addSeries(seriesData[key]);
+    // The false parameter stops it being redrawed after every addition of series data
+    c.addSeries(seriesData[key], false);
   });
 
   if (yAxisLabel.length) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
     c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
+  c.redraw();
 }
 
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
@@ -142,14 +144,15 @@ function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
 
   Object.keys(seriesData).forEach(function (key) {
     console.log(seriesData[key].name);
-    c.addSeries(seriesData[key]);
+    c.addSeries(seriesData[key], false);
   });
+  c.redraw();
 }
 
 function pie(d, c, chartIndex, seriesData, $chartDiv) {
   $chartDiv.addClass('pie-chart');
 
-  c.addSeries(seriesData);
+  c.addSeries(seriesData, false);
   c.update({chart: {
     height: 450,
     plotBackgroundColor: null,
@@ -157,4 +160,5 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
     plotShadow: false,
     type: 'pie'
   }});
+  c.redraw();
 }
