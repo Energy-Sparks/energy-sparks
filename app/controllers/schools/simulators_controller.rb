@@ -178,7 +178,7 @@ private
           { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator) },
           { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) },
         ]
-        render 'schools/chart_data/chart_data'
+        render 'schools/analysis/chart_data'
       end
     end
   end
