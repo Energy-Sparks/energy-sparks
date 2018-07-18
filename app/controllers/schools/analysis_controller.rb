@@ -1,7 +1,8 @@
 require 'dashboard'
 
-class Schools::ChartDataController < ApplicationController
-  before_action :authorise_school
+class Schools::AnalysisController < ApplicationController
+  skip_before_action :authenticate_user!
+  before_action :set_school
   before_action :set_nav
 
   def set_nav
@@ -12,9 +13,9 @@ class Schools::ChartDataController < ApplicationController
     end
   end
 
-  def dashboard
-    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
+  def analysis
     # Redirect to correct dashboard
+    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
   end
 
   def main_dashboard_electric
@@ -76,9 +77,8 @@ private
     end
   end
 
-  def authorise_school
+  def set_school
     @school = School.find_by_slug(params[:school_id])
-    authorize! :show, @school
   end
 
   def aggregate_school
