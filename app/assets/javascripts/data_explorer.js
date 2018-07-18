@@ -141,8 +141,15 @@ $(document).ready(function() {
         $(inputId).val(datePickerValue);
       }
       $(hiddenInputId).val(datePickerValue);
-      // $('div#datetimepicker1.input-group.date table.table.table-sm tbody tr > td.active').parent().children('td').addClass('active');
+
       updateChart(this);
+    });
+
+    // Close date picker on click outside
+    $(document).click(function(e) {
+      if (!$(e.target).parents(divId).length) {
+        $(divId).datetimepicker('hide');
+      }
     });
   }
 
@@ -151,9 +158,15 @@ $(document).ready(function() {
     var supply = $("input[name=supplyType]:checked").val();
     var maxMin = setMinMaxDates(supply);
 
-    setUpDatePicker('#datetimepicker1', 'input#first-date-picker', '#first-date', maxMin);
-    setUpDatePicker('#datetimepicker2', 'input#to-date-picker', '#to-date', maxMin);
-
+    if ($('#datetimepicker1').length) {
+      setUpDatePicker('#datetimepicker1', 'input#first-date-picker', '#first-date', maxMin);
+    }
+    if ($('#datetimepicker2').length) {
+      setUpDatePicker('#datetimepicker2', 'input#to-date-picker', '#to-date', maxMin);
+    }
+    if ($('#datetimepicker3').length) {
+      setUpDatePicker('#datetimepicker3', 'input#week-picker', '#first-date', maxMin);
+    }
     enableMeters(supply, false);
     explain();
     initialised = true;
@@ -205,8 +218,7 @@ $(document).ready(function() {
       $("#whole-school").hide();
       $("#within-school").show();
       $("#first-meter").val($("#within-school #meter").val());
-      $("#first-date").val($("#within-school #first-date-picker").val());
-
+      $("#first-date").val($("#within-school #week-picker").val());
     } else {
       $("#comparison").val("whole-school");
       $("#within-school").hide();

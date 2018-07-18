@@ -10,15 +10,15 @@
     </p>
     <div class="form-group">
       <div class="indicator-light <%= supply %>-light">
-           <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-              <%= text_field_tag("first-date-picker",
-                                  first_date.strftime('%A, %e %B %Y'),
-                                  class: 'form-control datetimepicker-input', data: { target: "#datetimepicker1" }
-              ) %>
-              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-              </div>
-          </div>
+         <div class="input-group date <%= 'week-view' if week_picker %>" id="datetimepicker1" data-target-input="nearest">
+            <%= text_field_tag("first-date-picker",
+                                first_date.strftime('%A, %e %B %Y'),
+                                class: 'form-control datetimepicker-input', data: { target: "#datetimepicker1" }
+            ) %>
+            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+        </div>
       </div>
     </div>
 
@@ -28,7 +28,7 @@
     <div class="form-group">
       <div class="indicator-dark <%= supply %>-dark">
         <div class="input-group">
-           <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+           <div class="input-group date <%= 'week-view' if week_picker %>" id="datetimepicker2" data-target-input="nearest">
                  <%= text_field_tag("to-date-picker",
                    first_date.strftime('%A, %e %B %Y'),
                    class: 'form-control datetimepicker-input', data: { target: "#datetimepicker2" }

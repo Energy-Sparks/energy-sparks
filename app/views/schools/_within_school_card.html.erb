@@ -29,13 +29,13 @@
     </div>
     <p class="card-text"><%= date_option %></p>
     <div class="form-group">
-      <div class="indicator-light <%= supply %>-light">
-        <div class="input-group">
-          <%= text_field_tag("first-date-picker",
-                             first_date.strftime('%A, %e %B %Y'),
-                             class: 'form-control date-picker first-date-picker'
-              ) %>
-          <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+      <div class="input-group date <%= 'week-view' if week_picker %>" id="datetimepicker3" data-target-input="nearest">
+        <%= text_field_tag("week-picker",
+                            first_date.strftime('%A, %e %B %Y'),
+                            class: 'form-control datetimepicker-input', data: { target: "#datetimepicker3" }
+        ) %>
+        <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
         </div>
       </div>
     </div>
