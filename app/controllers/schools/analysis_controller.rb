@@ -1,7 +1,8 @@
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
-  before_action :authorise_school
+  skip_before_action :authenticate_user!
+  before_action :set_school
   before_action :set_nav
 
   def set_nav
@@ -76,9 +77,8 @@ private
     end
   end
 
-  def authorise_school
+  def set_school
     @school = School.find_by_slug(params[:school_id])
-    authorize! :show, @school
   end
 
   def aggregate_school
