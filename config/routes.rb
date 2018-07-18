@@ -28,16 +28,15 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
-
-      get :chart, to: 'chart_data#chart'
-      get :dashboard, to: 'chart_data#dashboard'
-      get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
-      get :electricity_detail, to: 'chart_data#electricity_detail'
-      get :gas_detail, to: 'chart_data#gas_detail'
-      get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
-      get :boiler_control, to: 'chart_data#boiler_control'
-
       resources :simulators
+      get :chart, to: 'analysis#chart'
+      get :analysis, to: 'analysis#analysis'
+      get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
+      get :electricity_detail, to: 'analysis#electricity_detail'
+      get :gas_detail, to: 'analysis#gas_detail'
+      get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
+      get :boiler_control, to: 'analysis#boiler_control'
+      get :simulator, to: 'analysis#simulator'
     end
 
     get :scoreboard, on: :collection
@@ -54,7 +53,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, controllers: {sessions: "sessions"}
+  devise_for :users, controllers: { sessions: "sessions" }
 
   devise_for :users, skip: :sessions
   scope :admin do

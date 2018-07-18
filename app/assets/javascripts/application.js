@@ -38,6 +38,5 @@
 //= require calendar_year_view
 
 //= require common_chart_options
-//= require dashboard
+//= require analysis
 //= require simulator
-
