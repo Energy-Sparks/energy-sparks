@@ -60,7 +60,7 @@ class Schools::SimulatorsController < ApplicationController
         @output = @charts.map do |this_chart_type|
           { chart_type: this_chart_type, data: chart_manager.run_standard_chart(this_chart_type) }
         end
-        render 'schools/chart_data/chart_data'
+        render 'schools/analysis/chart_data'
       end
     end
   end
