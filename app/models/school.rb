@@ -95,30 +95,12 @@ class School < ApplicationRecord
   end
 
   def is_open?(datetime)
-    time = datetime.to_time
+    time = datetime.to_time.utc
     return false if time.saturday? || time.sunday?
     day_of_week = time.strftime("%A").downcase
     school_time = school_times.find_by(day: day_of_week)
-    between(school_time, time)
-  end
-
-  def between?(school_time, time)
-    start_time = convert_to_actual_time(school_time.opening_time, time)
-    end_time = convert_to_actual_time(school_time.closing_time, time)
-    time.between?(start_time, end_time)
-  end
-
-  def convert_to_actual_time(time_from_school_time, time)
-    digits = time_from_school_time.digits.reverse
-    if digits.length == 3
-      hours = digits[0]
-      minutes = digits[1] * 10 + digits[2]
-    else
-      hours = digits[0] * 10 + digits[1]
-      minutes = digits[2] * 10 + digits[3]
-    end
-    new_time = time.clone
-    new_time.change(hour: hours, min: minutes)
+    time_as_number = datetime.hour * 100 + datetime.min
+    school_time.opening_time < time_as_number && school_time.closing_time > time_as_number
   end
 
   # TODO integrate this analytics
