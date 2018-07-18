@@ -1,6 +1,6 @@
 require 'dashboard'
 
-class Schools::ChartDataController < ApplicationController
+class Schools::AnalysisController < ApplicationController
   before_action :authorise_school
   before_action :set_nav
 
@@ -12,9 +12,9 @@ class Schools::ChartDataController < ApplicationController
     end
   end
 
-  def dashboard
-    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
+  def analysis
     # Redirect to correct dashboard
+    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
   end
 
   def main_dashboard_electric
