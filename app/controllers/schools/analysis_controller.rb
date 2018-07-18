@@ -1,6 +1,6 @@
 require 'dashboard'
 
-class Schools::ChartDataController < ApplicationController
+class Schools::AnalysisController < ApplicationController
   before_action :authorise_school
   before_action :set_nav
 
@@ -12,9 +12,9 @@ class Schools::ChartDataController < ApplicationController
     end
   end
 
-  def dashboard
-    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
+  def analysis
     # Redirect to correct dashboard
+    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
   end
 
   def main_dashboard_electric
@@ -69,7 +69,7 @@ private
   end
 
   def sort_these_charts(array_of_chart_types_as_symbols)
-    chart_manager = ChartManager.new(aggregate_school)
+    chart_manager = ChartManager.new(aggregate_school, current_user.try(:admin?))
 
     array_of_chart_types_as_symbols.map do |chart_type|
       { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }

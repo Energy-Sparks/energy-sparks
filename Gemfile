@@ -13,13 +13,15 @@ gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.7.8', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+gem 'energy-sparks_analytics', '~> 0.7.15', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'jquery-ui-rails' # Use jquery UI for datepickers
 gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+gem 'bootstrap4-datetime-picker-rails'
+gem 'momentjs-rails'
 
 # Frontend
 gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
@@ -92,6 +94,9 @@ group :development do
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+  gem 'overcommit'
+  gem 'fasterer'
+  gem 'bundler-audit'
 end
 
 group :test do
