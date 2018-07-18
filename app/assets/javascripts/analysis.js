@@ -30,10 +30,6 @@ function chartSuccess(d, c, chartIndex, noAdvice) {
     }
   }
 
-  console.log("################################");
-  console.log(d.title);
-  console.log("################################");
-
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
     barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType);
 
@@ -84,7 +80,6 @@ $(document).ready(function() {
           chartSuccess(returnedData.charts[processChartIndex], thisChart, chartIndex, noAdvice);
         },
         error: function(broken) {
-          console.log("broken");
           var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
           titleH3.text('There was a problem loading this chart');
           $('div#chart_' + chartIndex).remove();
