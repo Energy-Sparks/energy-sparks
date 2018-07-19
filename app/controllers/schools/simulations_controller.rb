@@ -106,7 +106,7 @@ class Schools::SimulationsController < ApplicationController
 
     updated_simulation_configuration.each do |key, value|
       simulation_configuration.each do |_k, v|
-        if v.key?(key)
+        if v.key?(key) && key != :title
           v[key] = convert_to_correct_format(key, value)
           break
         end
