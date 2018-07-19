@@ -31,10 +31,12 @@ class Schools::SimulatorsController < ApplicationController
 
   def index
     @simulators = Simulator.where(school: @school)
-    redirect_to new_school_simulator_path(@school) if @simulators.empty?
+    create if @simulators.empty?
   end
 
   def show
+ #   redirect_to create if @simulator.nil?
+
     @simulator_configuration = @simulator.configuration
     local_school = aggregate_school
 
@@ -67,13 +69,16 @@ class Schools::SimulatorsController < ApplicationController
 
   def create
     simulator_configuration = ElectricitySimulatorConfiguration.new
-    updated_simulator_configuration = simulator_params.to_h.symbolize_keys
 
-    updated_simulator_configuration.each do |key, value|
-      simulator_configuration.each do |_k, v|
-        if v.key?(key)
-          v[key] = convert_to_correct_format(value)
-          break
+    # If we have parameters, use them, else create using the defaults
+    if params[:simulator]
+      updated_simulator_configuration = simulator_params.to_h.symbolize_keys
+      updated_simulator_configuration.each do |key, value|
+        simulator_configuration.each do |_k, v|
+          if v.key?(key)
+            v[key] = convert_to_correct_format(value)
+            break
+          end
         end
       end
     end
