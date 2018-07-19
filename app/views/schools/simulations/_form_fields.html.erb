@@ -112,6 +112,78 @@
   <%= render 'form_buttons' %>
 </div>
 
+<!--     security_lighting: {
+      title: 'Security lighting',
+      editable:                     [:power, :control_type],
+      control_type:       [:sunrise_sunset, :ambient, :fixed_times],  # Choose one of these with radio button
+      sunrise_times:      ['08:05', '07:19', '06:19', '06:10', '05:14', '04:50', '05:09', '05:54', '06:43', '07:00', '07:26', '08:06'], # by month - in string format as more compact than new Time - which it needs converting to
+      sunset_times:       ['16:33', '17:27', '18:16', '20:08', '20:56', '21:30', '21:21', '20:32', '19:24', '18:17', '16:21', '16:03'], # ideally front end calculates based on GEO location
+      fixed_start_time:   '19:15',
+      fixed_end_time:     '07:20',
+      ambient_threshold:  50.0,
+      power:              3.0
+    },
+ -->
+
+
+<div class="tab-pane collapse fade" id="security_lighting" role="tabpanel" aria-labelledby="security_lighting-tab">
+  <div class="form-row">
+    <div class="col-auto">
+      <label>Light operating times</label>
+      <div class="input-group">
+          <% @simulation_configuration[:security_lighting][:control_type].each do |thing| %>
+            <div class="custom-control custom-radio">
+              <%= radio_button_tag 'control_type', thing, {}, class: "custom-control-input" %>
+              <label class="custom-control-label" for='<%= "control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
+            </div>
+          <% end %>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :ambient_threshold %>
+      <div class="input-group">
+        <%= f.text_field :ambient_threshold, class: 'form-control', value: @simulation_configuration[:security_lighting][:ambient_threshold] %>
+        <div class="input-group-append">
+          <span class="input-group-text">?</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :power %>
+      <div class="input-group">
+        <%= f.text_field :power, class: 'form-control', value: @simulation_configuration[:security_lighting][:power] %>
+        <div class="input-group-append">
+          <span class="input-group-text">?</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :fixed_start_time %>
+      <div class="form-group">
+        <div class="input-group date timepicker" id="security_lighting_fixed_start_time" data-target-input="nearest">
+           <%= f.text_field :fixed_start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:security_lighting][:fixed_start_time].strftime('%I:%M %p'), data: { target: "#security_lighting_start_time" } %>
+          <div class="input-group-append" data-target="#security_lighting_fixed_start_time" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :end_time %>
+      <div class="form-group">
+        <div class="input-group date timepicker" id="security_lighting_fixed_end_time" data-target-input="nearest">
+          <%= f.text_field :fixed_end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:security_lighting][:fixed_end_time].strftime('%I:%M %p'), data: { target: "#security_lighting_fixed_end_time" } %>
+          <div class="input-group-append" data-target="#security_lighting_fixed_end_time" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <%= render 'form_buttons' %>
+</div>
+
 <!-- class ElectricitySimulatorConfiguration
 
 
@@ -238,31 +310,18 @@ lighting:
 
 
       <% @simulation_configuration.each_with_index do |(key, value), index| %>
-
-        <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler pumps' %>
+        <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler pumps'  || value[:title] == 'Security Lighting' %>
         <% else %>
           <% if value[:editable] %>
             <div class="tab-pane collapse <%= index == 1 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
               <% value[:editable].each do |key| %>
-                <% if value[key].instance_of? Array %>
-                  <div class="d-block my-3">
-                    <label>Light operating times</label>
-                  <% value[key].each do |thing| %>
-                    <div class="custom-control custom-radio">
-                      <%= radio_button_tag key, thing, {}, class: "custom-control-input" %>
-                      <label class="custom-control-label" for='<%= "#{key}_#{thing}" %>'><%= thing.to_s.humanize %></label>
-                    </div>
-                  <% end %>
+                <div class="mb-3">
+                  <%= f.label key %>
+                  <%= f.text_field key, class: 'form-control', value: value[key] %>
+                  <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
                   </div>
-                <% else %>
-                  <div class="mb-3">
-                    <%= f.label key %>
-                    <%= f.text_field key, class: 'form-control', value: value[key] %>
-                    <div class="invalid-feedback">
-                          Please enter a valid email address for shipping updates.
-                    </div>
-                  </div>
-                <% end %>
+                </div>
               <% end %>
             </div>
           <% end %>
