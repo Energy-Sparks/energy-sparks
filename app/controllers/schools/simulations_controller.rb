@@ -94,7 +94,7 @@ class Schools::SimulationsController < ApplicationController
   def destroy
     @simulation.delete
     respond_to do |format|
-      format.html { redirect_to school_simulation_path(@school), notice: 'Simulation was deleted.' }
+      format.html { redirect_to school_simulations_path(@school), notice: 'Simulation was deleted.' }
       format.json { head :no_content }
     end
   end
