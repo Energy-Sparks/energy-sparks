@@ -94,7 +94,7 @@ class Schools::SimulationsController < ApplicationController
   def destroy
     @simulation.delete
     respond_to do |format|
-      format.html { redirect_to school_simulation_path(@school), notice: 'Simulation was deleted.' }
+      format.html { redirect_to school_simulations_path(@school), notice: 'Simulation was deleted.' }
       format.json { head :no_content }
     end
   end
@@ -106,7 +106,7 @@ class Schools::SimulationsController < ApplicationController
 
     updated_simulation_configuration.each do |key, value|
       simulation_configuration.each do |_k, v|
-        if v.key?(key)
+        if v.key?(key) && key != :title
           v[key] = convert_to_correct_format(key, value)
           break
         end

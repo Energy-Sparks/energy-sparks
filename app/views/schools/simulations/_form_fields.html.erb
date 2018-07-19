@@ -97,10 +97,15 @@
 
     </div>
     <div class="col-auto">
-      <div class="form-check">
-          <%#= render 'shared/custom_checkbox', f: f, field_name: :weekends %>
-
-        <%#= f.check_box :weekends, class: 'form-check-input', value: @simulator_configuration[:boiler_pumps][:weekends] %>
+      <div class="custom-control custom-checkbox custom-control-inline">
+        <%= hidden_field_tag 'simulation[weekends]', '' %>
+        <%= check_box_tag 'simulation[weekends]', 'true', @simulation_configuration[:boiler_pumps][:weekends] , { class: 'custom-control-input', id: 'simulation_weekends_actual' } %>
+        <label for="simulation_weekends_actual" class="custom-control-label">On at weekends?</label>
+      </div>
+      <div class="custom-control custom-checkbox custom-control-inline">
+        <%= hidden_field_tag 'simulation[holidays]', '' %>
+        <%= check_box_tag 'simulation[holidays]', 'true', @simulation_configuration[:boiler_pumps][:holidays] , { class: 'custom-control-input', id: 'simulation_holidays_actual' } %>
+        <label for="simulation_holidays_actual" class="custom-control-label">On in holidays?</label>
       </div>
     </div>
   </div>
