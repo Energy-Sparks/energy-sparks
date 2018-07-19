@@ -69,15 +69,18 @@ class Schools::SimulationsController < ApplicationController
 
     # If we have parameters, use them, else create using the defaults
     if params[:simulation]
-      updated_simulation_configuration = simulation_params.to_h.symbolize_keys
-      updated_simulation_configuration.each do |key, value|
-        simulation_configuration.each do |_k, v|
-          if v.key?(key)
-            v[key] = convert_to_correct_format(key, value)
-            break
+      updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
+
+      updated_simulation_configuration.each do |appliance, configuration_hash|
+        break unless configuration_hash.is_a? Hash
+        current_applicance = simulation_configuration[appliance]
+        configuration_hash.each do |config, value|
+          if current_applicance.key?(config) && config != :title
+            current_applicance[config] = convert_to_correct_format(config, value)
           end
         end
       end
+
       default = false
       title = simulation_params[:title]
       notes = simulation_params[:notes]
@@ -102,13 +105,14 @@ class Schools::SimulationsController < ApplicationController
   def update
     simulation_configuration = @simulation.configuration
 
-    updated_simulation_configuration = simulation_params.to_h.symbolize_keys
+    updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
 
-    updated_simulation_configuration.each do |key, value|
-      simulation_configuration.each do |_k, v|
-        if v.key?(key) && key != :title
-          v[key] = convert_to_correct_format(key, value)
-          break
+    updated_simulation_configuration.each do |appliance, configuration_hash|
+      break unless configuration_hash.is_a? Hash
+      current_applicance = simulation_configuration[appliance]
+      configuration_hash.each do |config, value|
+        if current_applicance.key?(config) && config != :title
+          current_applicance[config] = convert_to_correct_format(config, value)
         end
       end
     end
@@ -156,13 +160,14 @@ private
 
   def sort_out_simulation_stuff
     if params.key?(:simulation)
-      updated_simulation_configuration = simulation_params.to_h.symbolize_keys
+      updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
 
-      updated_simulation_configuration.each do |key, value|
-        @simulation_configuration.each do |_k, v|
-          if v.key?(key)
-            v[key] = convert_to_correct_format(key, value)
-            break
+      updated_simulation_configuration.each do |appliance, configuration_hash|
+        break unless configuration_hash.is_a? Hash
+        current_applicance = @simulation_configuration[appliance]
+        configuration_hash.each do |config, value|
+          if current_applicance.key?(config) && config != :title
+            current_applicance[config] = convert_to_correct_format(config, value)
           end
         end
       end
@@ -222,9 +227,12 @@ private
   end
 
   def simulation_params
-    editable = ElectricitySimulatorConfiguration.new.map { |_key, value| value[:editable] }.compact.flatten
+    config = ElectricitySimulatorConfiguration.new
+    editable = config.keys.map { |key| { key => config.dig(key, :editable) }}
+
     editable.push(:title)
     editable.push(:notes)
+
     params.require(:simulation).permit(editable)
   end
 
