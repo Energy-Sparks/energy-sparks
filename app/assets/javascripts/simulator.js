@@ -17,7 +17,7 @@ $(document).ready(function() {
     });
 
     function updateSimulatorCharts() {
-      var data = $("#new_simulator :input").serializeArray();
+      var data = $("form.simulation :input").serializeArray();
       var dataPath = window.location.href + '.json';
       $.get(dataPath, data).done(function(data) {
         $.each(data.charts, function( index, value ) {

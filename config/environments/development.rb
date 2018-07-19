@@ -57,6 +57,8 @@ Rails.application.configure do
   config.lograge.enabled = true
   config.active_record.logger = nil
 
+  config.log_level = :info
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

@@ -28,10 +28,10 @@
         <%= f.text_field :title, class: 'form-control', value: @simulation.title %>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col">
       <%= f.label :notes %>
       <div class="input-group">
-        <%= f.text_field :notes, class: 'form-control', value: @simulation.notes %>
+        <%= f.text_area :notes, class: 'form-control', value: @simulation.notes %>
       </div>
     </div>
   </div>
