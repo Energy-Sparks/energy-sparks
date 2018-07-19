@@ -338,7 +338,6 @@
   <%= render 'form_buttons' %>
 </div>
 
-
 <!-- class ElectricitySimulatorConfiguration
     ict: {
       title: 'ICT',
@@ -377,26 +376,6 @@
     electrical_heating: {
       title: 'Electrical heating',
     },
-
-    summer_air_conn: { # 1 set power to zero for no aie conn
-      title: 'Summer air conditioning',
-      start_time:               Time.new(2010,  1,  1,  5, 30, 0), # Ruby doesn't have a time class, just DateTime, so the 2010/1/1 should be ignored
-      end_time:                 Time.new(2010,  1,  1,  17, 0, 0), # ditto
-      weekends:                 true,
-      holidays:                 false,
-      balancepoint_temperature: 19, # centigrade
-      power_per_degreeday:      0.5 # colling degree days > balancePointTemperature
-    },
-    electric_hot_water: {
-      title: 'Electric hot water',
-      start_time:               Time.new(2010, 1, 1, 9, 0, 0), # Ruby doesn't have a time class, just DateTime, so the 2010/1/1 should be ignored
-      end_time:                 Time.new(2010, 1, 1, 16, 30, 0), # ditto
-      weekends:                 true,
-      holidays:                 false,
-      percent_of_pupils:        0.5, # often a its only a proportion of the pupils at a school has electric hot water, the rest are provided by ga
-      litres_per_day_per_pupil: 5.0, # assumes at 38C versus ambient of 15C, to give a deltaT of 23C
-      standby_power:            0.1 # outside start and end times, but dependent on whether switched off during weekends and holidays, see other parameters
-    },
     flood_lighting:  {
       title: 'Flood lighting',
     },
@@ -409,37 +388,4 @@
       title: 'Solar PV'
     }
   }
-
 -->
-
-
-
-
-
-      <% @simulation_configuration.each_with_index do |(key, value), index| %>
-        <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler  pumps'  || value[:title] == 'Security Lighting' || value[:title] == 'Kitchen' || value[:title] == 'Electric hot water' %>
-        <% else %>
-          <% if value[:editable] %>
-            <div class="tab-pane collapse <%= index == 1 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
-              <% value[:editable].each do |key| %>
-                <div class="mb-3">
-                  <%= f.label key %>
-                  <%= f.text_field key, class: 'form-control', value: value[key] %>
-                  <div class="invalid-feedback">
-                        Please enter a valid email address for shipping updates.
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
-
-
-<!--     <div class="d-flex align-items-end flex-column">
-      <div class="btn-group btn-group-lg ">
-      <button class="btn btn-primary at-the-bottom update-simulator" type="button">Update simulator</button>
-      <button class="btn btn-success at-the-bottom submit-simulator" type="submit">See results</button>
-      </div>
-    </div> -->
-
