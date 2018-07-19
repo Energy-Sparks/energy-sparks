@@ -16,6 +16,10 @@ $(document).ready(function() {
       }
     });
 
+    $('div.timepicker').datetimepicker({
+      format: 'LT'
+    });
+
     function updateSimulatorCharts() {
       var data = $("form.simulation :input").serializeArray();
       var dataPath = window.location.href + '.json';

@@ -45,7 +45,7 @@
       <div class="input-group">
         <%= f.text_field :lumens_per_watt, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_watt] %>
         <div class="input-group-append">
-          <span class="input-group-text" id="inputGroupPrepend3">per Watt</span>
+          <span class="input-group-text">per Watt</span>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       <div class="input-group">
         <%= f.text_field :lumens_per_m2, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_m2] %>
         <div class="input-group-append">
-          <span class="input-group-text" id="inputGroupPrepend3">per m<sup>2</sup></span>
+          <span class="input-group-text">per m<sup>2</sup></span>
         </div>
       </div>
     </div>
@@ -75,10 +75,9 @@
     </div>
     <div class="col-auto">
       <%= f.label :start_time %>
-
       <div class="form-group">
-        <div class="input-group date" id="boiler_pump_start_time" data-target-input="nearest">
-           <%= f.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:start_time], data: { target: "#boiler_pump_start_time" } %>
+        <div class="input-group date timepicker" id="boiler_pump_start_time" data-target-input="nearest">
+           <%= f.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:start_time].strftime('%I:%M %p'), data: { target: "#boiler_pump_start_time" } %>
           <div class="input-group-append" data-target="#boiler_pump_start_time" data-toggle="datetimepicker">
             <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
           </div>
@@ -87,10 +86,9 @@
     </div>
     <div class="col-auto">
       <%= f.label :end_time %>
-
       <div class="form-group">
-        <div class="input-group date" id="boiler_pump_end_time" data-target-input="nearest">
-          <%= f.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:end_time], data: { target: "#boiler_pump_end_time" } %>
+        <div class="input-group date timepicker" id="boiler_pump_end_time" data-target-input="nearest">
+          <%= f.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:end_time].strftime('%I:%M %p'), data: { target: "#boiler_pump_end_time" } %>
           <div class="input-group-append" data-target="#boiler_pump_end_time" data-toggle="datetimepicker">
             <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
           </div>
@@ -105,16 +103,6 @@
         <%#= f.check_box :weekends, class: 'form-check-input', value: @simulator_configuration[:boiler_pumps][:weekends] %>
       </div>
     </div>
-    <script type="text/javascript">
-      $(function () {
-          $('#boiler_pump_start_time').datetimepicker({
-              format: 'LT'
-          });
-          $('#boiler_pump_end_time').datetimepicker({
-              format: 'LT'
-          });
-      });
-    </script>
   </div>
   <%= render 'form_buttons' %>
 </div>
