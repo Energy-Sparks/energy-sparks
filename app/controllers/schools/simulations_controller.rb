@@ -73,7 +73,7 @@ class Schools::SimulationsController < ApplicationController
       updated_simulation_configuration.each do |key, value|
         simulation_configuration.each do |_k, v|
           if v.key?(key)
-            v[key] = convert_to_correct_format(value) unless key == :title
+            v[key] = convert_to_correct_format(key, value)
             break
           end
         end
@@ -107,7 +107,7 @@ class Schools::SimulationsController < ApplicationController
     updated_simulation_configuration.each do |key, value|
       simulation_configuration.each do |_k, v|
         if v.key?(key)
-          v[key] = convert_to_correct_format(value) unless key == :title
+          v[key] = convert_to_correct_format(key, value)
           break
         end
       end
@@ -161,7 +161,7 @@ private
       updated_simulation_configuration.each do |key, value|
         @simulation_configuration.each do |_k, v|
           if v.key?(key)
-            v[key] = convert_to_correct_format(value)
+            v[key] = convert_to_correct_format(key, value)
             break
           end
         end
@@ -214,8 +214,10 @@ private
     true if Integer(string) rescue false
   end
 
-  def convert_to_correct_format(value)
-    value = is_float?(value) ? value.to_f : value
+  def convert_to_correct_format(key, value)
+    return value if key == :title
+    return value.to_time.utc if key.to_s.include?('time')
+    return value.to_f if is_float?(value)
     is_integer?(value) ? value.to_i : value
   end
 
