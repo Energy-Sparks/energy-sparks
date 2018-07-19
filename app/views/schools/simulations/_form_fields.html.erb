@@ -1,0 +1,286 @@
+<div class="row">
+  <h4 class="">Appliance configuration</h4>
+  <p>If you know the correct configuration for the various appliances in your school, then enter them here. Click on 'Update simulator' to see if the charts show the simulated energy usage being close to the actual energy usage.</p>
+  <p>Once it is showing a similar shape of energy usage, click on 'See results' to see the results of the Expert analysis.</p>
+  <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
+    </li>
+    <% @simulation_configuration.each do |key, value| %>
+      <%# if value[:editable] %>
+        <li class="nav-item">
+          <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
+            <%= @simulation_configuration[key][:title] %>
+          </a>
+        </li>
+      <%# end %>
+    <% end %>
+  </ul>
+</div>
+<!-- hacky -->
+<div class="row"><hr/></div>
+
+<div class="tab-pane collapse active show" id="introduction" role="tabpanel" aria-labelledby="introdution-tab">
+  <div class="form-row">
+    <div class="col-md-4">
+      <%= f.label :title %>
+      <div class="input-group">
+        <%= f.text_field :title, class: 'form-control', value: @simulation.title %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :notes %>
+      <div class="input-group">
+        <%= f.text_field :notes, class: 'form-control', value: @simulation.notes %>
+      </div>
+    </div>
+  </div>
+  <%= render 'form_buttons' %>
+</div>
+
+<div class="tab-pane collapse fade" id="lighting" role="tabpanel" aria-labelledby="lighting-tab">
+  <div class="form-row">
+    <div class="col-md-4">
+      <%= f.label :lumens_per_watt %>
+      <div class="input-group">
+        <%= f.text_field :lumens_per_watt, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_watt] %>
+        <div class="input-group-append">
+          <span class="input-group-text" id="inputGroupPrepend3">per Watt</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :lumens_per_m2 %>
+      <div class="input-group">
+        <%= f.text_field :lumens_per_m2, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_m2] %>
+        <div class="input-group-append">
+          <span class="input-group-text" id="inputGroupPrepend3">per m<sup>2</sup></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render 'form_buttons' %>
+</div>
+
+<div class="tab-pane collapse fade" id="boiler_pumps" role="tabpanel" aria-labelledby="boiler_pumps-tab">
+  <div class="form-row">
+    <div class="col-auto">
+      <%= f.label :pump_power %>
+      <div class="input-group">
+        <%= f.text_field :pump_power, class: 'form-control', value: @simulation_configuration[:boiler_pumps][:pump_power] %>
+        <div class="input-group-append">
+          <span class="input-group-text">kW</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :start_time %>
+
+      <div class="form-group">
+        <div class="input-group date" id="boiler_pump_start_time" data-target-input="nearest">
+           <%= f.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:start_time], data: { target: "#boiler_pump_start_time" } %>
+          <div class="input-group-append" data-target="#boiler_pump_start_time" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :end_time %>
+
+      <div class="form-group">
+        <div class="input-group date" id="boiler_pump_end_time" data-target-input="nearest">
+          <%= f.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:end_time], data: { target: "#boiler_pump_end_time" } %>
+          <div class="input-group-append" data-target="#boiler_pump_end_time" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-auto">
+      <div class="form-check">
+          <%#= render 'shared/custom_checkbox', f: f, field_name: :weekends %>
+
+        <%#= f.check_box :weekends, class: 'form-check-input', value: @simulator_configuration[:boiler_pumps][:weekends] %>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(function () {
+          $('#boiler_pump_start_time').datetimepicker({
+              format: 'LT'
+          });
+          $('#boiler_pump_end_time').datetimepicker({
+              format: 'LT'
+          });
+      });
+    </script>
+  </div>
+  <%= render 'form_buttons' %>
+</div>
+
+<!-- class ElectricitySimulatorConfiguration
+
+
+    ict: {
+      title: 'ICT',
+      servers1: {
+        editable:                 [:number, :power_watts_each],
+        type:                     :server,
+        number:                   2.0,
+        power_watts_each:         300.0,
+        air_con_overhead_pecent:  0.2
+      },
+      servers2: { #### Example use only, not required immediately
+        editable:                 [:number, :power_watts_each],
+        type:                     :server,
+        number:                   1.0,
+        power_watts_each:         500.0,
+        air_con_overhead_pecent:  0.3
+      },
+       desktops: {
+        editable:                     [:number, :power_watts_each, :standby_watts_each],
+        type:                         :desktop,
+        number:                       20,
+        power_watts_each:             100,
+        standby_watts_each:           10,
+        usage_percent_by_time_of_day: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.05, 0.1, 0.3, 0.5, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 0.6, 0.4, 0.2, 0.15, 0.15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        weekends:                     true, # left on standy at weekends
+        holidays:                     false # left on standby during holidays
+      },
+      laptops: {
+        editable:                     [:number, :power_watts_each, :standby_watts_each],
+        type:                         :laptop,
+        number:                       20,
+        power_watts_each:             30,
+        standby_watts_each:           2
+      }
+    },
+
+    security_lighting: {
+      title: 'Security lighting',
+      editable:                     [:power, :control_type],
+      control_type:       [:sunrise_sunset, :ambient, :fixed_times],  # Choose one of these with radio button
+      sunrise_times:      ['08:05', '07:19', '06:19', '06:10', '05:14', '04:50', '05:09', '05:54', '06:43', '07:00', '07:26', '08:06'], # by month - in string format as more compact than new Time - which it needs converting to
+      sunset_times:       ['16:33', '17:27', '18:16', '20:08', '20:56', '21:30', '21:21', '20:32', '19:24', '18:17', '16:21', '16:03'], # ideally front end calculates based on GEO location
+      fixed_start_time:   '19:15',
+      fixed_end_time:     '07:20',
+      ambient_threshold:  50.0,
+      power:              3.0
+    },
+    electrical_heating: {
+      title: 'Electrical heating',
+    },
+    kitchen: {  # 1 all three of these - time of day rathern than 2010
+      title: 'Kitchen',
+      editable:                     [:power],
+      start_time:  Time.new(2010,  1,  1,  5, 30, 0), # Ruby doesn't have a time class, just DateTime, so the 2010/1/1 should be ignored
+      end_time:    Time.new(2010,  1,  1,  17, 0, 0), # ditto
+      power:       4.0 #
+    },
+    summer_air_conn: { # 1 set power to zero for no aie conn
+      title: 'Summer air conditioning',
+      start_time:               Time.new(2010,  1,  1,  5, 30, 0), # Ruby doesn't have a time class, just DateTime, so the 2010/1/1 should be ignored
+      end_time:                 Time.new(2010,  1,  1,  17, 0, 0), # ditto
+      weekends:                 true,
+      holidays:                 false,
+      balancepoint_temperature: 19, # centigrade
+      power_per_degreeday:      0.5 # colling degree days > balancePointTemperature
+    },
+    electric_hot_water: {
+      title: 'Electric hot water',
+      start_time:               Time.new(2010, 1, 1, 9, 0, 0), # Ruby doesn't have a time class, just DateTime, so the 2010/1/1 should be ignored
+      end_time:                 Time.new(2010, 1, 1, 16, 30, 0), # ditto
+      weekends:                 true,
+      holidays:                 false,
+      percent_of_pupils:        0.5, # often a its only a proportion of the pupils at a school has electric hot water, the rest are provided by ga
+      litres_per_day_per_pupil: 5.0, # assumes at 38C versus ambient of 15C, to give a deltaT of 23C
+      standby_power:            0.1 # outside start and end times, but dependent on whether switched off during weekends and holidays, see other parameters
+    },
+    flood_lighting:  {
+      title: 'Flood lighting',
+    },
+    unaccounted_for_baseload: {
+      title: 'Unaccounted for baseload',
+      editable: [:baseload],
+      baseload: 1 # 1 single number - useful
+    },
+    solar_pv: {
+      title: 'Solar PV'
+    }
+  }
+
+lighting:
+    {
+      title: 'Internal Lighting',
+      editable: [:lumens_per_watt, :lumens_per_m2],
+      lumens_per_watt: 50.0,
+      lumens_per_m2: 450.0,
+      percent_on_as_function_of_solar_irradiance: {
+        solar_irradiance: [0, 100, 200, 300, 400, 500, 600,  700, 800, 900, 1000, 1100, 1200],
+        percent_of_peak: [0.9, 0.8, 0.7, 0.6, 0.5, 0.2, 0.2, 0.15, 0.1, 0.1,  0.1,  0.1,  0.1],
+      },
+      occupancy_by_half_hour:
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.05, 0.1, 0.3, 0.5, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 0.6, 0.4, 0.2, 0.15, 0.15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+ -->
+
+
+
+
+
+<!--   boiler_pumps: {
+      title: 'Boiler pumps',
+      editable:                     [:pump_power],
+      heating_season_start_dates:   [Date.new(2016, 10, 1),  Date.new(2017, 11, 5)],
+      heating_season_end_dates:     [Date.new(2017,  5, 14),  Date.new(2018, 5, 1)],
+      start_time:                   Time.new(2010,  1,  1,  5, 30, 0),    # Ruby doesn't have a time class, just DateTime, so the 2010/1/1 should be ignored
+      end_time:                     Time.new(2010,  1,  1,  17, 0, 0),    # ditto
+      pump_power:                   0.5, # 1 kw
+      weekends:                     false,
+      holidays:                     true,
+      frost_protection_temp:        4
+    },
+ -->
+
+
+      <% @simulation_configuration.each_with_index do |(key, value), index| %>
+
+        <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler pumps' %>
+        <% else %>
+          <% if value[:editable] %>
+            <div class="tab-pane collapse <%= index == 1 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
+              <% value[:editable].each do |key| %>
+                <% if value[key].instance_of? Array %>
+                  <div class="d-block my-3">
+                    <label>Light operating times</label>
+                  <% value[key].each do |thing| %>
+                    <div class="custom-control custom-radio">
+                      <%= radio_button_tag key, thing, {}, class: "custom-control-input" %>
+                      <label class="custom-control-label" for='<%= "#{key}_#{thing}" %>'><%= thing.to_s.humanize %></label>
+                    </div>
+                  <% end %>
+                  </div>
+                <% else %>
+                  <div class="mb-3">
+                    <%= f.label key %>
+                    <%= f.text_field key, class: 'form-control', value: value[key] %>
+                    <div class="invalid-feedback">
+                          Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+
+
+<!--     <div class="d-flex align-items-end flex-column">
+      <div class="btn-group btn-group-lg ">
+      <button class="btn btn-primary at-the-bottom update-simulator" type="button">Update simulator</button>
+      <button class="btn btn-success at-the-bottom submit-simulator" type="submit">See results</button>
+      </div>
+    </div> -->
+

@@ -28,8 +28,7 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
-      resources :simulators
-
+      resources :simulations
       get :chart, to: 'analysis#chart'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
@@ -37,7 +36,6 @@ Rails.application.routes.draw do
       get :gas_detail, to: 'analysis#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
       get :boiler_control, to: 'analysis#boiler_control'
-      get :simulator, to: 'analysis#simulator'
     end
 
     get :scoreboard, on: :collection
