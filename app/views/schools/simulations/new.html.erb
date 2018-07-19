@@ -12,7 +12,7 @@
 <!-- active for active, disabled for disabled -->
 <!-- aria-selected="true" -->
 
-<%= form_for [@school, @simulation], method: :post, html: { class: 'simulator' } do |f| %>
+<%= form_for [@school, @simulation], method: :post, html: { class: 'simulation' } do |f| %>
   <%= render 'form_fields', f: f, simulator_configuration: @simulation_configuration %>
 <% end %>
 
