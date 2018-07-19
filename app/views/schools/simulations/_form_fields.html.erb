@@ -184,6 +184,44 @@
   <%= render 'form_buttons' %>
 </div>
 
+<div class="tab-pane collapse fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
+  <div class="form-row">
+    <div class="col-auto">
+      <%= f.label :power %>
+      <div class="input-group">
+        <%= f.text_field :power, class: 'form-control', value: @simulation_configuration[:kitchen][:power] %>
+        <div class="input-group-append">
+          <span class="input-group-text">kW</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :start_time %>
+      <div class="form-group">
+        <div class="input-group date timepicker" id="kitchen_start_time" data-target-input="nearest">
+           <%= f.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:kitchen][:start_time].strftime('%I:%M %p'), data: { target: "#kitchen_start_time" } %>
+          <div class="input-group-append" data-target="#kitchen_start_time" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= f.label :end_time %>
+      <div class="form-group">
+        <div class="input-group date timepicker" id="kitchen_end_time" data-target-input="nearest">
+          <%= f.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:kitchen][:end_time].strftime('%I:%M %p'), data: { target: "#kitchen_end_time" } %>
+          <div class="input-group-append" data-target="#kitchen_end_time" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render 'form_buttons' %>
+</div>
+
+
 <!-- class ElectricitySimulatorConfiguration
 
 
@@ -310,7 +348,7 @@ lighting:
 
 
       <% @simulation_configuration.each_with_index do |(key, value), index| %>
-        <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler pumps'  || value[:title] == 'Security Lighting' %>
+        <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler  pumps'  || value[:title] == 'Security Lighting' || value[:title] == 'Kitchen' %>
         <% else %>
           <% if value[:editable] %>
             <div class="tab-pane collapse <%= index == 1 ? 'active show' : 'fade' %>" id="<%= key.to_s %>" role="tabpanel" aria-labelledby="<%= key.to_s %>-tab">
