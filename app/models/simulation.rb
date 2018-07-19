@@ -1,9 +1,10 @@
 # == Schema Information
 #
-# Table name: simulators
+# Table name: simulations
 #
 #  configuration :text
 #  created_at    :datetime         not null
+#  default       :boolean
 #  id            :bigint(8)        not null, primary key
 #  notes         :text
 #  school_id     :bigint(8)
@@ -13,8 +14,8 @@
 #
 # Indexes
 #
-#  index_simulators_on_school_id  (school_id)
-#  index_simulators_on_user_id    (user_id)
+#  index_simulations_on_school_id  (school_id)
+#  index_simulations_on_user_id    (user_id)
 #
 # Foreign Keys
 #
@@ -22,7 +23,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 
-class Simulator < ApplicationRecord
+class Simulation < ApplicationRecord
   belongs_to :school
   belongs_to :user
   serialize :configuration

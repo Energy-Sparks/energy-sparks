@@ -1,9 +1,8 @@
 require 'dashboard'
 
-class Schools::SimulatorsController < ApplicationController
+class Schools::SimulationsController < ApplicationController
   before_action :authorise_school
-  before_action :set_simulator, only: [:show, :edit, :destroy, :update]
-
+  before_action :set_simulation, only: [:show, :edit, :destroy, :update]
 
   CHART_CONFIG_FOR_SCHOOL = {
     name:             'Intraday (Comparison 6 months apart)',
@@ -30,19 +29,17 @@ class Schools::SimulatorsController < ApplicationController
   }.freeze
 
   def index
-    @simulators = Simulator.where(school: @school)
-    create if @simulators.empty?
+    @simulations = Simulation.where(school: @school)
+    create if @simulations.empty?
   end
 
   def show
- #   redirect_to create if @simulator.nil?
-
-    @simulator_configuration = @simulator.configuration
+    @simulation_configuration = @simulation.configuration
     local_school = aggregate_school
 
     simulator = ElectricitySimulator.new(local_school)
 
-    simulator.simulate(@simulator_configuration)
+    simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school)
 
     @charts = [:electricity_simulator_pie, :intraday_line_school_days_6months_simulator_submeters, :group_by_week_electricity_simulator_appliance]
@@ -68,73 +65,80 @@ class Schools::SimulatorsController < ApplicationController
   end
 
   def create
-    simulator_configuration = ElectricitySimulatorConfiguration.new
+    simulation_configuration = ElectricitySimulatorConfiguration.new
 
     # If we have parameters, use them, else create using the defaults
-    if params[:simulator]
-      updated_simulator_configuration = simulator_params.to_h.symbolize_keys
-      updated_simulator_configuration.each do |key, value|
-        simulator_configuration.each do |_k, v|
+    if params[:simulation]
+      updated_simulation_configuration = simulation_params.to_h.symbolize_keys
+      updated_simulation_configuration.each do |key, value|
+        simulation_configuration.each do |_k, v|
           if v.key?(key)
-            v[key] = convert_to_correct_format(value)
+            v[key] = convert_to_correct_format(value) unless key == :title
             break
           end
         end
       end
+      default = false
+      title = simulation_params[:title]
+      notes = simulation_params[:notes]
+    else
+      default = true
+      title = "Default appliance configuration"
+      notes = "This simulation has been run with the default appliance configurations, you can create a new simulation with your own configurations."
     end
+    @simulation = Simulation.create(user: current_user, school: @school, configuration: simulation_configuration, default: default, title: title, notes: notes)
 
-    @simulator = Simulator.create(user: current_user, school: @school, configuration: simulator_configuration)
-    redirect_to school_simulator_path(@school, @simulator)
+    redirect_to school_simulation_path(@school, @simulation)
   end
 
   def destroy
-    @simulator.delete
+    @simulation.delete
     respond_to do |format|
-      format.html { redirect_to school_simulators_path(@school), notice: 'Simulator was deleted.' }
+      format.html { redirect_to school_simulation_path(@school), notice: 'Simulation was deleted.' }
       format.json { head :no_content }
     end
   end
 
   def update
-    simulator_configuration = @simulator.configuration
+    simulation_configuration = @simulation.configuration
 
-    updated_simulator_configuration = simulator_params.to_h.symbolize_keys
+    updated_simulation_configuration = simulation_params.to_h.symbolize_keys
 
-    updated_simulator_configuration.each do |key, value|
-      simulator_configuration.each do |_k, v|
+    updated_simulation_configuration.each do |key, value|
+      simulation_configuration.each do |_k, v|
         if v.key?(key)
-          v[key] = convert_to_correct_format(value)
+          v[key] = convert_to_correct_format(value) unless key == :title
           break
         end
       end
     end
 
-    if @simulator.update(configuration: simulator_configuration)
-      redirect_to school_simulator_path(@school, @simulator)
+    if @simulation.update(configuration: simulation_configuration, title: simulation_params[:title], notes: simulation_params[:notes])
+      redirect_to school_simulation_path(@school, @simulation)
     else
       render :edit
     end
   end
 
   def new
-    @simulator = Simulator.new
+    @simulation = Simulation.new
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
-    @simulator_configuration = @actual_simulator.default_simulator_parameters
-    sort_out_simulator_stuff
+    @simulation_configuration = @actual_simulator.default_simulator_parameters
+    sort_out_simulation_stuff
   end
 
   def edit
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
-    @simulator_configuration = @simulator.configuration
-    sort_out_simulator_stuff
+    @simulation_configuration = @simulation.configuration
+    sort_out_simulation_stuff
   end
 
 private
 
-  def set_simulator
-    @simulator = Simulator.find(params[:id])
+  def set_simulation
+    @simulation = Simulation.find(params[:id])
   end
 
   def authorise_school
@@ -150,12 +154,12 @@ private
     end
   end
 
-  def sort_out_simulator_stuff
-    if params.key?(:simulator)
-      updated_simulator_configuration = simulator_params.to_h.symbolize_keys
+  def sort_out_simulation_stuff
+    if params.key?(:simulation)
+      updated_simulation_configuration = simulation_params.to_h.symbolize_keys
 
-      updated_simulator_configuration.each do |key, value|
-        @simulator_configuration.each do |_k, v|
+      updated_simulation_configuration.each do |key, value|
+        @simulation_configuration.each do |_k, v|
           if v.key?(key)
             v[key] = convert_to_correct_format(value)
             break
@@ -164,7 +168,7 @@ private
       end
     end
 
-    @actual_simulator.simulate(@simulator_configuration)
+    @actual_simulator.simulate(@simulation_configuration)
     @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
     chart_type = :intraday_line_school_days_6months
 
@@ -215,9 +219,11 @@ private
     is_integer?(value) ? value.to_i : value
   end
 
-  def simulator_params
+  def simulation_params
     editable = ElectricitySimulatorConfiguration.new.map { |_key, value| value[:editable] }.compact.flatten
-    params.require(:simulator).permit(editable)
+    editable.push(:title)
+    editable.push(:notes)
+    params.require(:simulation).permit(editable)
   end
 
   def chart_config_for_school

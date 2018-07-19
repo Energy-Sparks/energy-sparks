@@ -21,7 +21,7 @@
       <p class="float-right">
         <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
         <% if user_signed_in? %>
-        	<%= link_to 'Simulators', school_simulators_path(@school), class: 'btn btn-success btn-sm' %>
+        	<%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
         <% end %>
 
         <%- if can? :manage, @school -%>

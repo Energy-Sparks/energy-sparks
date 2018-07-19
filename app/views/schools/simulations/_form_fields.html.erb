@@ -6,11 +6,11 @@
     <li class="nav-item">
       <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
     </li>
-    <% @simulator_configuration.each do |key, value| %>
+    <% @simulation_configuration.each do |key, value| %>
       <%# if value[:editable] %>
         <li class="nav-item">
           <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
-            <%= @simulator_configuration[key][:title] %>
+            <%= @simulation_configuration[key][:title] %>
           </a>
         </li>
       <%# end %>
@@ -25,13 +25,13 @@
     <div class="col-md-4">
       <%= f.label :title %>
       <div class="input-group">
-        <%= f.text_field :title, class: 'form-control', value: @simulator.title %>
+        <%= f.text_field :title, class: 'form-control', value: @simulation.title %>
       </div>
     </div>
     <div class="col-md-4">
       <%= f.label :notes %>
       <div class="input-group">
-        <%= f.text_field :notes, class: 'form-control', value: @simulator.notes %>
+        <%= f.text_field :notes, class: 'form-control', value: @simulation.notes %>
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
     <div class="col-md-4">
       <%= f.label :lumens_per_watt %>
       <div class="input-group">
-        <%= f.text_field :lumens_per_watt, class: 'form-control', value: @simulator_configuration[:lighting][:lumens_per_watt] %>
+        <%= f.text_field :lumens_per_watt, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_watt] %>
         <div class="input-group-append">
           <span class="input-group-text" id="inputGroupPrepend3">per Watt</span>
         </div>
@@ -52,7 +52,7 @@
     <div class="col-md-4">
       <%= f.label :lumens_per_m2 %>
       <div class="input-group">
-        <%= f.text_field :lumens_per_m2, class: 'form-control', value: @simulator_configuration[:lighting][:lumens_per_m2] %>
+        <%= f.text_field :lumens_per_m2, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_m2] %>
         <div class="input-group-append">
           <span class="input-group-text" id="inputGroupPrepend3">per m<sup>2</sup></span>
         </div>
@@ -67,7 +67,7 @@
     <div class="col-auto">
       <%= f.label :pump_power %>
       <div class="input-group">
-        <%= f.text_field :pump_power, class: 'form-control', value: @simulator_configuration[:boiler_pumps][:pump_power] %>
+        <%= f.text_field :pump_power, class: 'form-control', value: @simulation_configuration[:boiler_pumps][:pump_power] %>
         <div class="input-group-append">
           <span class="input-group-text">kW</span>
         </div>
@@ -78,7 +78,7 @@
 
       <div class="form-group">
         <div class="input-group date" id="boiler_pump_start_time" data-target-input="nearest">
-           <%= f.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulator_configuration[:boiler_pumps][:start_time], data: { target: "#boiler_pump_start_time" } %>
+           <%= f.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:start_time], data: { target: "#boiler_pump_start_time" } %>
           <div class="input-group-append" data-target="#boiler_pump_start_time" data-toggle="datetimepicker">
             <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
           </div>
@@ -90,7 +90,7 @@
 
       <div class="form-group">
         <div class="input-group date" id="boiler_pump_end_time" data-target-input="nearest">
-          <%= f.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulator_configuration[:boiler_pumps][:end_time], data: { target: "#boiler_pump_end_time" } %>
+          <%= f.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:end_time], data: { target: "#boiler_pump_end_time" } %>
           <div class="input-group-append" data-target="#boiler_pump_end_time" data-toggle="datetimepicker">
             <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
           </div>
@@ -244,7 +244,7 @@ lighting:
  -->
 
 
-      <% @simulator_configuration.each_with_index do |(key, value), index| %>
+      <% @simulation_configuration.each_with_index do |(key, value), index| %>
 
         <% if value[:title] == 'ICT' || value[:title] == 'Internal Lighting'  || value[:title] == 'Boiler pumps' %>
         <% else %>

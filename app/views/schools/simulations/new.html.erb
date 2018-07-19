@@ -3,7 +3,7 @@
 <h1>The <%= @school.name %> Electricity Simulator</h1>
 <p>Use the simulator tool to predict likely changes to your electricity consumption, if you make changes to the electrical appliances or lights at your school. In this first step, set up the simulator to match your school's energy usage by adjusting the appliance values and clicking 'Update simulator'. Try and get the simulated energy usage in the charts to match the actual usage.</p>
 
-<p><%= link_to 'Saved simulations', school_simulators_path(@school), class: 'btn btn-primary' if @school.simulators.any? %></p>
+<p><%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' if @school.simulations.any? %></p>
 
 <div class="alert alert-primary" role="alert">
   More content will be required here to explain how this works...
@@ -12,11 +12,10 @@
 <!-- active for active, disabled for disabled -->
 <!-- aria-selected="true" -->
 
-<%= form_for [@school, @simulator], method: :patch, html: { class: 'simulator' } do |f| %>
-  <%= render 'form_fields', f: f, simulator_configuration: @simulator_configuration %>
+<%= form_for [@school, @simulation], method: :post, html: { class: 'simulator' } do |f| %>
+  <%= render 'form_fields', f: f, simulator_configuration: @simulation_configuration %>
 <% end %>
 
 <div class="row"><hr/></div>
-
 
 <%= render 'charts', chart_data: @charts %>

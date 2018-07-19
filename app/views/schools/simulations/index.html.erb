@@ -1,0 +1,29 @@
+<% content_for :page_title do %>Electricity Simulations for <%= @school.name %><% end %>
+
+<h1><%= @school.name %> Electricity Simulations</h1>
+<p>These simulations have been saved for this school.</p>
+<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %></p>
+
+ <table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Notes</th>
+      <th>Creation date</th>
+      <th>Results</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @simulations.each do |simulation| %>
+      <tr>
+        <td><%= simulation.title %></td>
+        <td><%= simulation.notes %></td>
+        <td><%= nice_date_times(simulation.created_at) %></td>
+        <td><%= link_to 'Results', school_simulation_path(@school, simulation), class: 'btn btn-info' %></td>
+        <td><%= link_to 'Edit', edit_school_simulation_path(@school, simulation), class: 'btn btn-warning' %></td>
+        <td><%= link_to 'Delete', school_simulation_path(@school, simulation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
