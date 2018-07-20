@@ -308,6 +308,8 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="form-row">
       <div class="col-auto">
         <%= ff.label :start_time %>
         <div class="form-group">
@@ -331,13 +333,13 @@
         </div>
 
       </div>
-      <div class="col-auto">
-        <div class="custom-control custom-checkbox custom-control-inline">
+      <div class="col-md-3">
+        <div class="custom-control custom-checkbox">
           <%= hidden_field_tag 'simulation[electric_hot_water][weekends]', '' %>
           <%= check_box_tag 'simulation[electric_hot_water][weekends]', 'true', @simulation_configuration[:electric_hot_water][:weekends] , { class: 'custom-control-input', id: 'simulation_electirc_hot_water_weekends_actual' } %>
           <label for="simulation_electirc_hot_water_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
-        <div class="custom-control custom-checkbox custom-control-inline">
+        <div class="custom-control custom-checkbox">
           <%= hidden_field_tag 'simulation[electric_hot_water][holidays]', '' %>
           <%= check_box_tag 'simulation[electric_hot_water][holidays]', 'true', @simulation_configuration[:electric_hot_water][:holidays] , { class: 'custom-control-input', id: 'simulation_electric_hot_water_holidays_actual' } %>
           <label for="simulation_electric_hot_water_holidays_actual" class="custom-control-label">On in holidays?</label>
