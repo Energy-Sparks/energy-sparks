@@ -107,12 +107,19 @@ class Schools::SimulationsController < ApplicationController
 
     updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
 
+    # TODO this is a bit messy, but deep merge doesn't quite work.
     updated_simulation_configuration.each do |appliance, configuration_hash|
       break unless configuration_hash.is_a? Hash
       current_applicance = simulation_configuration[appliance]
       configuration_hash.each do |config, value|
         if current_applicance.key?(config) && config != :title
-          current_applicance[config] = convert_to_correct_format(config, value)
+          if value.is_a? Hash
+            value.each do |more_config, more_value|
+              current_applicance[config][more_config] = convert_to_correct_format(more_config, more_value)
+            end
+          else
+            current_applicance[config] = convert_to_correct_format(config, value)
+          end
         end
       end
     end

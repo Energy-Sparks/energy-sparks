@@ -1,26 +1,24 @@
 <div class="row">
   <h4 class="">Appliance configuration</h4>
   <p>If you know the correct configuration for the various appliances in your school, then enter them here. Click on 'Update simulator' to see if the charts show the simulated energy usage being close to the actual energy usage.</p>
-  <p>Once it is showing a similar shape of energy usage, click on 'See results' to see the breakdown of electricity consumption per appliance type at your school.</p>
+  <p>Once it is showing a similar shape of energy usage, click on 'Save and see results' to see the breakdown of electricity consumption per appliance type at your school.</p>
+</div>
+<div class="row">
   <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
     </li>
     <% @simulation_configuration.each do |key, value| %>
-      <%# if value[:editable] %>
-      <% unless [:ict, :electrical_heating, :flood_lighting, :solar_pv].include?(key) %>
+      <% unless [:electrical_heating, :flood_lighting, :solar_pv].include?(key) %>
         <li class="nav-item">
           <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
             <%= @simulation_configuration[key][:title] %>
           </a>
         </li>
       <% end %>
-      <%# end %>
     <% end %>
   </ul>
 </div>
-<!-- hacky -->
-<div class="row"><hr/></div>
 
 <div class="tab-pane collapse active show" id="introduction" role="tabpanel" aria-labelledby="introdution-tab">
   <div class="form-row">
@@ -39,6 +37,58 @@
   </div>
   <%= render 'form_buttons' %>
 </div>
+
+<%= f.fields_for :ict do |ff| %>
+  <div class="tab-pane collapse fade" id="ict" role="tabpanel" aria-labelledby="ict-tab">
+    <div class="form-row">
+      <table class="table table-sm">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Number</th>
+            <th scope="col">Power (Watts) of each</th>
+            <th scope="col">Standby (Watts) of each</th>
+            <th scope="col">Air-Con overhead (percent)</th>
+            <th scope="col">On at weekends?</th>
+            <th scope="col">On at holidays?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @simulation_configuration[:ict].keys.reject! {|x| x == :title || x == :servers2 || x == :editable }.each do |k| %>
+            <%= ff.fields_for k do |fff| %>
+              <tr>
+                <th scope="row"><%= k.to_s.humanize %></th>
+                <td><%= fff.text_field :number, class: 'form-control', value: @simulation_configuration[:ict][k][:number] %></td>
+                <td><%= fff.text_field :power_watts_each, class: 'form-control', value: @simulation_configuration[:ict][k][:power_watts_each] %></td>
+                <td><%= fff.text_field :standby_watts_each, class: 'form-control', value: @simulation_configuration[:ict][k][:standby_watts_each] unless @simulation_configuration[:ict][k][:standby_watts_each].nil? %></td>
+                <td><%= fff.text_field :air_con_overhead_pecent, class: 'form-control', value: @simulation_configuration[:ict][k][:air_con_overhead_pecent] unless @simulation_configuration[:ict][k][:air_con_overhead_pecent].nil? %></td>
+                <td>
+                  <% unless @simulation_configuration[:ict][k][:weekends].nil? %>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <%= hidden_field_tag "simulation[ict][#{k.to_s}][weekends]", '' %>
+                      <%= check_box_tag "simulation[ict][#{k.to_s}][weekends]", 'true', @simulation_configuration[:ict][k][:weekends] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_weekends_actual" } %>
+                      <label for='simulation_ict_<%= k.to_s %>_weekends_actual' class="custom-control-label"></label>
+                    </div>
+                  <% end %>
+                </td>
+                <td>
+                  <% unless @simulation_configuration[:ict][k][:holidays].nil? %>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <%= hidden_field_tag "simulation[ict][#{k.to_s}][holidays]", '' %>
+                      <%= check_box_tag "simulation[ict][#{k.to_s}][holidays]", 'true', @simulation_configuration[:ict][k][:holidays] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_holidays_actual" } %>
+                       <label for='simulation_ict_<%= k.to_s %>_holidays_actual' class="custom-control-label"></label>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= render 'form_buttons' %>
+  </div>
+<% end %>
 
 <%= f.fields_for :lighting do |ff| %>
   <div class="tab-pane collapse fade" id="lighting" role="tabpanel" aria-labelledby="lighting-tab">
@@ -367,50 +417,3 @@
     <%= render 'form_buttons' %>
   </div>
 <% end %>
-
-<!-- class ElectricitySimulatorConfiguration
-    ict: {
-      title: 'ICT',
-      servers1: {
-        editable:                 [:number, :power_watts_each],
-        type:                     :server,
-        number:                   2.0,
-        power_watts_each:         300.0,
-        air_con_overhead_pecent:  0.2
-      },
-      servers2: { #### Example use only, not required immediately
-        editable:                 [:number, :power_watts_each],
-        type:                     :server,
-        number:                   1.0,
-        power_watts_each:         500.0,
-        air_con_overhead_pecent:  0.3
-      },
-       desktops: {
-        editable:                     [:number, :power_watts_each, :standby_watts_each],
-        type:                         :desktop,
-        number:                       20,
-        power_watts_each:             100,
-        standby_watts_each:           10,
-        usage_percent_by_time_of_day: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.05, 0.1, 0.3, 0.5, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 0.6, 0.4, 0.2, 0.15, 0.15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        weekends:                     true, # left on standy at weekends
-        holidays:                     false # left on standby during holidays
-      },
-      laptops: {
-        editable:                     [:number, :power_watts_each, :standby_watts_each],
-        type:                         :laptop,
-        number:                       20,
-        power_watts_each:             30,
-        standby_watts_each:           2
-      }
-    },
-    electrical_heating: {
-      title: 'Electrical heating',
-    },
-    flood_lighting:  {
-      title: 'Flood lighting',
-    },
-    solar_pv: {
-      title: 'Solar PV'
-    }
-  }
--->
