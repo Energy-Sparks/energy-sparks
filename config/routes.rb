@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
-
+      get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'analysis#chart'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'

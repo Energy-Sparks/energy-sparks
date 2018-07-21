@@ -36,3 +36,5 @@
 //= require analysis
 //= require moment
 //= require tempusdominus-bootstrap-4.js
+
+//= require alert_reports
