@@ -219,8 +219,8 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
+    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
@@ -277,8 +278,8 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -297,10 +298,10 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enrolled", default: false
-    t.integer "urn", null: false
     t.integer "sash_id"
     t.integer "level", default: 0
+    t.boolean "enrolled", default: false
+    t.integer "urn", null: false
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -317,19 +318,6 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
-  end
-
-  create_table "simulations", force: :cascade do |t|
-    t.text "title"
-    t.text "notes"
-    t.bigint "school_id"
-    t.bigint "user_id"
-    t.text "configuration"
-    t.boolean "default"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_simulations_on_school_id"
-    t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
   create_table "taggings", id: :serial, force: :cascade do |t|
@@ -407,8 +395,6 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
   add_foreign_key "meters", "schools"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
-  add_foreign_key "simulations", "schools"
-  add_foreign_key "simulations", "users"
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end
