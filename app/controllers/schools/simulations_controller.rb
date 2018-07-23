@@ -42,7 +42,7 @@ class Schools::SimulationsController < ApplicationController
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school)
 
-    @charts = [:electricity_simulator_pie, :intraday_line_school_days_6months_simulator_submeters, :group_by_week_electricity_simulator_appliance]
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
     @number_of_charts = @charts.size
 
     respond_to do |format|
@@ -228,7 +228,7 @@ private
 
   def convert_to_correct_format(key, value)
     return value if key == :title
-    return value.to_time.utc if key.to_s.include?('time')
+    return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
     return value.to_f if is_float?(value)
     is_integer?(value) ? value.to_i : value
   end
