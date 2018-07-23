@@ -42,26 +42,58 @@ class Schools::SimulationsController < ApplicationController
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school)
 
-    @charts = [:electricity_simulator_pie, :intraday_line_school_days_6months_simulator_submeters, :group_by_week_electricity_simulator_appliance]
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
     @number_of_charts = @charts.size
 
     respond_to do |format|
       format.html do
+        @charts_for_page = sort_out_charts_for_page(@charts)
         render :show
       end
       format.json do
+        # Load specific chart type, else default above
         if params[:chart_type]
           chart_type = params[:chart_type]
           chart_type = chart_type.to_sym if chart_type.instance_of? String
           @charts = [chart_type]
         end
-
         @output = @charts.map do |this_chart_type|
-          { chart_type: this_chart_type, data: chart_manager.run_standard_chart(this_chart_type) }
+          { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
         end
+
+        @output = sort_out_group_charts(@output)
+        @number_of_charts = @output.size
         render 'schools/analysis/chart_data'
       end
     end
+  end
+
+  def sort_out_charts_for_page(charts_config)
+    charts_for_page = []
+    charts_config.each do |chart|
+      if chart.is_a?(Hash) && chart.key?(:chart_group)
+        chart[:chart_group][:charts].each_with_index do |c, index|
+          charts_for_page << { type: c, layout: :side_by_side, index: index }
+        end
+      else
+        charts_for_page << { type: chart, layout: :normal }
+      end
+    end
+    charts_for_page
+  end
+
+  def sort_out_group_charts(output)
+    results = []
+    output.each do |chart|
+      if chart[:data].key?(:charts)
+        chart[:data][:charts].each do |c|
+          results << c
+        end
+      else
+        results << chart
+      end
+    end
+    results
   end
 
   def create
@@ -228,7 +260,7 @@ private
 
   def convert_to_correct_format(key, value)
     return value if key == :title
-    return value.to_time.utc if key.to_s.include?('time')
+    return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
     return value.to_f if is_float?(value)
     is_integer?(value) ? value.to_i : value
   end
