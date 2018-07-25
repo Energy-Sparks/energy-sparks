@@ -101,17 +101,7 @@ class Schools::SimulationsController < ApplicationController
 
     # If we have parameters, use them, else create using the defaults
     if params[:simulation]
-      updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
-
-      updated_simulation_configuration.each do |appliance, configuration_hash|
-        break unless configuration_hash.is_a? Hash
-        current_applicance = simulation_configuration[appliance]
-        configuration_hash.each do |config, value|
-          if current_applicance.key?(config) && config != :title
-            current_applicance[config] = convert_to_correct_format(config, value)
-          end
-        end
-      end
+      simulation_configuration = merge_into_existing_configuration(simulation_params, simulation_configuration)
 
       default = false
       title = simulation_params[:title]
@@ -136,25 +126,7 @@ class Schools::SimulationsController < ApplicationController
 
   def update
     simulation_configuration = @simulation.configuration
-
-    updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
-
-    # TODO this is a bit messy, but deep merge doesn't quite work.
-    updated_simulation_configuration.each do |appliance, configuration_hash|
-      break unless configuration_hash.is_a? Hash
-      current_applicance = simulation_configuration[appliance]
-      configuration_hash.each do |config, value|
-        if current_applicance.key?(config) && config != :title
-          if value.is_a? Hash
-            value.each do |more_config, more_value|
-              current_applicance[config][more_config] = convert_to_correct_format(more_config, more_value)
-            end
-          else
-            current_applicance[config] = convert_to_correct_format(config, value)
-          end
-        end
-      end
-    end
+    simulation_configuration = merge_into_existing_configuration(simulation_params, simulation_configuration)
 
     if @simulation.update(configuration: simulation_configuration, title: simulation_params[:title], notes: simulation_params[:notes])
       redirect_to school_simulation_path(@school, @simulation)
@@ -197,19 +169,31 @@ private
     end
   end
 
-  def sort_out_simulation_stuff
-    if params.key?(:simulation)
-      updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
+  # TODO works but is messy
+  def merge_into_existing_configuration(simulation_params, simulation_configuration)
+    updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
 
-      updated_simulation_configuration.each do |appliance, configuration_hash|
-        break unless configuration_hash.is_a? Hash
-        current_applicance = @simulation_configuration[appliance]
-        configuration_hash.each do |config, value|
-          if current_applicance.key?(config) && config != :title
+    updated_simulation_configuration.each do |appliance, configuration_hash|
+      break unless configuration_hash.is_a? Hash
+      current_applicance = simulation_configuration[appliance]
+      configuration_hash.each do |config, value|
+        if current_applicance.key?(config) && config != :title
+          if value.is_a? Hash
+            value.each do |more_config, more_value|
+              current_applicance[config][more_config] = convert_to_correct_format(more_config, more_value)
+            end
+          else
             current_applicance[config] = convert_to_correct_format(config, value)
           end
         end
       end
+    end
+    simulation_configuration
+  end
+
+  def sort_out_simulation_stuff
+    if params.key?(:simulation)
+      @simulation_configuration = merge_into_existing_configuration(simulation_params, @simulation_configuration)
     end
 
     @actual_simulator.simulate(@simulation_configuration)

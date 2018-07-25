@@ -55,6 +55,7 @@
           <% @simulation_configuration[:ict].keys.reject! {|x| x == :title || x == :servers2 || x == :editable }.each do |k| %>
             <%= ff.fields_for k do |fff| %>
               <tr>
+                <%= hidden_field_tag "simulation[ict][#{k.to_s}][type]", simulation_configuration[:ict][k][:type] %>
                 <th scope="row"><%= k.to_s.humanize %></th>
                 <td><%= fff.text_field :number, class: 'form-control', value: @simulation_configuration[:ict][k][:number] %></td>
                 <td><%= fff.text_field :power_watts_each, class: 'form-control', value: @simulation_configuration[:ict][k][:power_watts_each] %></td>
@@ -186,7 +187,7 @@
         <%= ff.label :fixed_start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="security_lighting_fixed_start_time" data-target-input="nearest">
-             <%= ff.text_field :fixed_start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:security_lighting][:fixed_start_time].strftime('%I:%M %p'), data: { target: "#security_lighting_start_time" } %>
+             <%= ff.text_field :fixed_start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:security_lighting][:fixed_start_time].strftime('%I:%M %p'), data: { target: "#security_lighting_fixed_start_time" } %>
             <div class="input-group-append" data-target="#security_lighting_fixed_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
