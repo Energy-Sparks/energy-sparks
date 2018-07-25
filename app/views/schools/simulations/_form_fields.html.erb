@@ -9,13 +9,11 @@
       <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
     </li>
     <% @simulation_configuration.each do |key, value| %>
-      <% unless [:electrical_heating, :flood_lighting, :solar_pv].include?(key) %>
-        <li class="nav-item">
-          <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
-            <%= @simulation_configuration[key][:title] %>
-          </a>
-        </li>
-      <% end %>
+      <li class="nav-item">
+        <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
+          <%= @simulation_configuration[key][:title] %>
+        </a>
+      </li>
     <% end %>
   </ul>
 </div>
@@ -116,6 +114,31 @@
   </div>
 <% end %>
 
+<%= f.fields_for :flood_lighting do |ff| %>
+  <div class="tab-pane collapse fade" id="flood_lighting" role="tabpanel" aria-labelledby="flood_lighting-tab">
+    <div class="form-row">
+      <div class="col-md-4">
+        <%= ff.label :power %>
+        <div class="input-group">
+          <%= ff.text_field :power, class: 'form-control', value: @simulation_configuration[:flood_lighting][:power] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <%= ff.label :ambient_light_threshold %>
+        <div class="input-group">
+          <%= ff.text_field :ambient_light_threshold, class: 'form-control', value: @simulation_configuration[:flood_lighting][:ambient_light_threshold] %>
+          <div class="input-group-append">
+            <span class="input-group-text">lumens per m<sup>2</sup> (lux)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render 'form_buttons' %>
+  </div>
+<% end %>
 
 <%= f.fields_for :security_lighting do |ff| %>
   <div class="tab-pane collapse fade" id="security_lighting" role="tabpanel" aria-labelledby="security_lighting-tab">
@@ -360,6 +383,79 @@
   </div>
 <% end %>
 
+<%= f.fields_for :electrical_heating do |ff| %>
+  <div class="tab-pane collapse fade" id="electrical_heating" role="tabpanel" aria-labelledby="electrical_heating-tab">
+    <div class="form-row">
+      <div class="col-auto">
+        <%= ff.label :start_time %>
+        <div class="form-group">
+          <div class="input-group date timepicker" id="electrical_heating_start_time" data-target-input="nearest">
+             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:electrical_heating][:start_time].strftime('%I:%M %p'), data: { target: "#electrical_heating_start_time" } %>
+            <div class="input-group-append" data-target="#electrical_heating_start_time" data-toggle="datetimepicker">
+              <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <%= ff.label :end_time %>
+        <div class="form-group">
+          <div class="input-group date timepicker" id="electrical_heating_end_time" data-target-input="nearest">
+            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:electrical_heating][:end_time].strftime('%I:%M %p'), data: { target: "#electrical_heating_end_time" } %>
+            <div class="input-group-append" data-target="#electrical_heating_end_time" data-toggle="datetimepicker">
+              <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-auto">
+        <%= ff.label :fixed_power %>
+        <div class="input-group">
+          <%= ff.text_field :fixed_power, class: 'form-control', value: @simulation_configuration[:electrical_heating][:fixed_power] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-auto">
+        <%= ff.label 'Balance point temperature' %>
+        <div class="input-group">
+          <%= ff.text_field :balancepoint_temperature, class: 'form-control', value: @simulation_configuration[:electrical_heating][:balancepoint_temperature] %>
+          <div class="input-group-append">
+            <span class="input-group-text">&deg; C</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <%= ff.label :power_per_degreeday %>
+        <div class="input-group">
+          <%= ff.text_field :power_per_degreeday, class: 'form-control', value: @simulation_configuration[:electrical_heating][:power_per_degreeday] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW/&deg; C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <%= hidden_field_tag 'simulation[electrical_heating][weekends]', '' %>
+          <%= check_box_tag 'simulation[electrical_heating][weekends]', 'true', @simulation_configuration[:electrical_heating][:weekends] , { class: 'custom-control-input', id: 'simulation_electrical_heating_weekends_actual' } %>
+          <label for="simulation_electrical_heating_weekends_actual" class="custom-control-label">On at weekends?</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <%= hidden_field_tag 'simulation[electrical_heating][holidays]', '' %>
+          <%= check_box_tag 'simulation[electrical_heating][holidays]', 'true', @simulation_configuration[:electrical_heating][:holidays] , { class: 'custom-control-input', id: 'simulation_electrical_heating_holidays_actual' } %>
+          <label for="simulation_electrical_heating_holidays_actual" class="custom-control-label">On in holidays?</label>
+        </div>
+      </div>
+
+    </div>
+    <%= render 'form_buttons' %>
+  </div>
+<% end %>
 
 <%= f.fields_for :boiler_pumps do |ff| %>
   <div class="tab-pane collapse fade" id="boiler_pumps" role="tabpanel" aria-labelledby="boiler_pumps-tab">
@@ -422,6 +518,23 @@
           <%= ff.text_field :baseload, class: 'form-control', value: @simulation_configuration[:unaccounted_for_baseload][:baseload] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render 'form_buttons' %>
+  </div>
+<% end %>
+
+<%= f.fields_for :solar_pv do |ff| %>
+  <div class="tab-pane collapse fade" id="solar_pv" role="tabpanel" aria-labelledby="solar_pv-tab">
+    <div class="form-row">
+      <div class="col-auto">
+        <%= ff.label 'Capacity of solar panels' %>
+        <div class="input-group">
+          <%= ff.text_field :kwp, class: 'form-control', value: @simulation_configuration[:solar_pv][:kwp] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kWp (kilowatt peak)</span>
           </div>
         </div>
       </div>
