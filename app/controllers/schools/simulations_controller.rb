@@ -42,7 +42,7 @@ class Schools::SimulationsController < ApplicationController
     simulator = ElectricitySimulator.new(local_school)
 
     simulator.simulate(@simulation_configuration)
-    chart_manager = ChartManager.new(local_school)
+    chart_manager = ChartManager.new(local_school, false)
 
     @charts = chart_definitions
     @number_of_charts = @charts.size
@@ -203,7 +203,7 @@ private
     respond_to do |format|
       format.html
       format.json do
-        chart_manager = ChartManager.new(@local_school)
+        chart_manager = ChartManager.new(@local_school, false)
         winter_config_for_school = chart_config_for_school.deep_dup
         winter_config_for_school[:timescale] = [{ schoolweek: -20 }]
         winter_config_for_simulator = chart_config_for_simulator.deep_dup
