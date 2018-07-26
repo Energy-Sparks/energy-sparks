@@ -10,7 +10,7 @@
 </div>
 
 <%= form_for [@school, @simulation], method: :post, html: { class: 'simulation' } do |f| %>
-  <%= render 'form_fields', f: f, simulator_configuration: @simulation_configuration %>
+  <%= render 'form_fields', f: f, simulator_configuration: @simulation_configuration, simulation: @simulation %>
 <% end %>
 
 <div class="row"><hr/></div>

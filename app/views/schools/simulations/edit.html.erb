@@ -6,7 +6,7 @@
 <p><%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' if @school.simulations.any? %></p>
 
 <%= form_for [@school, @simulation], method: :patch, html: { class: 'simulation' } do |f| %>
-  <%= render 'form_fields', f: f, simulation_configuration: @simulation_configuration %>
+  <%= render 'form_fields', f: f, simulation_configuration: @simulation_configuration, simulation: @simulation %>
 <% end %>
 
 <div class="row"><hr/></div>
