@@ -1,6 +1,8 @@
 require 'dashboard'
 
 class Schools::SimulationsController < ApplicationController
+  include SchoolAggregation
+
   before_action :authorise_school
   before_action :set_simulation, only: [:show, :edit, :destroy, :update]
 
@@ -35,14 +37,14 @@ class Schools::SimulationsController < ApplicationController
 
   def show
     @simulation_configuration = @simulation.configuration
-    local_school = aggregate_school
+    local_school = aggregate_school(@school)
 
     simulator = ElectricitySimulator.new(local_school)
 
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school)
 
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
+    @charts = chart_definitions
     @number_of_charts = @charts.size
 
     respond_to do |format|
@@ -137,14 +139,14 @@ class Schools::SimulationsController < ApplicationController
 
   def new
     @simulation = Simulation.new
-    @local_school = aggregate_school
+    @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @actual_simulator.default_simulator_parameters
     sort_out_simulation_stuff
   end
 
   def edit
-    @local_school = aggregate_school
+    @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @simulation.configuration
     sort_out_simulation_stuff
@@ -161,12 +163,8 @@ private
     authorize! :show, @school
   end
 
-  def aggregate_school
-    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
-    Rails.cache.fetch(cache_key, expires_in: 1.day) do
-      meter_collection = MeterCollection.new(@school)
-      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-    end
+  def chart_definitions
+    DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
   end
 
   # TODO works but is messy

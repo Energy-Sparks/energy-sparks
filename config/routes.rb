@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alerts
       resources :simulations
+      get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'analysis#chart'
       get :analysis, to: 'analysis#analysis'
