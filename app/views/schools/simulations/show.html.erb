@@ -2,9 +2,7 @@
 
 <h1>The <%= @school.name %> Electricity Simulator</h1>
 
-<% if @simulation.default %>
-  <p>This chart shows an estimation of how your electricity energy usage might be broken up in to it's component parts. It simulates your school's energy usage based on a number of different factors, lighting, boiler controls, ICT equipment for example. You can edit this configuration to provide a more accurate simulation of your energy usage by clicking on the 'Edit' button.</p>
-<% else %>
+<% unless @simulation.default %>
   <h2><%= @simulation.title %></h2>
   <p><%= @simulation.notes %></p>
 <% end %>
