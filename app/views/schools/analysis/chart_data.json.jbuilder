@@ -12,6 +12,9 @@ chart_index = -1
 
 json.charts @output.each do |chart|
   chart_index = chart_index + 1
+
+  # This is to handle the side by side charts which behave slightly
+  # differently - needs sorting at some point
   chart_data = chart[:data].nil? ? chart : chart[:data]
 
   next if chart_data.nil?
@@ -44,7 +47,11 @@ json.charts @output.each do |chart|
   json.advice_header      chart_data[:advice_header] unless chart_data[:advice_header].nil?
   json.advice_footer      chart_data[:advice_footer] unless chart_data[:advice_footer].nil?
 
-  x_data_hash = chart_data[:x_data]
+  x_data_hash = if chart.dig(:data, :configuration, :series_name_order) == :reverse
+                  chart_data[:x_data].reverse_each.to_h
+                else
+                  chart_data[:x_data]
+                end
 
   series_array = []
 
