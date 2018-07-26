@@ -23,24 +23,32 @@
 
 <p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
 
+<% first_of_pair = true %>
 <% @charts_for_page.each_with_index do |chart, index| %>
+
   <% if chart[:layout] == :side_by_side %>
-    <% if chart[:index] == 0 %>
+
+    <!-- always for first of pair -->
+    <% if first_of_pair %>
       <div class="row">
-        <div id="advice-header-0" class="col-md-6 advice-header">
+        <div id="advice-header-<%= index %>-0" class="col-md-6 advice-header">
         </div>
-        <div id="advice-header-1" class="col-md-6 advice-header">
+        <div id="advice-header-<%= index %>-1" class="col-md-6 advice-header">
         </div>
       </div>
       <div class="row">
     <% end %>
 
-    <div id="chart_wrapper_<%= index %>" class="col-md-6">
+    <div id="chart_wrapper_<%= index %>" class="col-md-6" data-first-of-pair=<%= first_of_pair%>>
       <h3 class="analysis">Loading: <%= chart[:type].to_s.humanize %></h3>
-      <div id="chart_<%= index %>" class="analysis-chart" data-chart-index="<%= index %>" data-chart-type="<%= chart[:type].to_s %>" data-chart-json="<%= request.path %>.json?chart_type=<%= chart[:type].to_s %>"></div>
+      <div id="chart_<%= index %>" class="analysis-chart" data-chart-index="<%= index %>" data-chart-type="<%= chart[:type].to_s %>" data-chart-json="<%= request.path %>.json?chart_type=<%= chart[:type].to_s %>" data-pair="<%= first_of_pair ? index : index - 1 %>"></div>
     </div>
-    <% if chart[:index] != 0 %>
+
+    <% if ! first_of_pair %>
+      <% first_of_pair = true %>
       </div>
+    <% else %>
+      <% first_of_pair = false %>
     <% end %>
 
   <% else %>

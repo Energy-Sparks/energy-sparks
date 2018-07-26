@@ -46,4 +46,34 @@ $(document).ready(function() {
       });
     }
   }
+
+  if ($("div.analysis-chart").length ) {
+   function alignYAxes() {
+
+        $('[data-pair]').each(function() {
+
+          var thisPair = $(this).data('pair');
+          var pairOfDivs = $('[data-pair=' + thisPair + ']');
+          if (pairOfDivs.length) {
+
+            var maxY = 0;
+            $('[data-pair=' + thisPair  +']').each(function() {
+
+              var thisChart = $(this).highcharts();
+              console.log(thisChart);
+              console.log(thisChart.yAxis[0].max);
+            });
+          //  Sort them out
+
+          }
+
+        });
+
+    }
+    console.log('HELLLLOOOOO');
+    alignYAxes();
+  };
+
 });
+
+
