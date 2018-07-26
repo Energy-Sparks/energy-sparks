@@ -8,10 +8,10 @@
     <li class="nav-item">
       <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
     </li>
-    <% @simulation_configuration.each do |key, value| %>
+    <% appliance_config.each do |key, value| %>
       <li class="nav-item">
         <a class="nav-link" id="<%= key.to_s %>-tab" data-toggle="tab" href="#<%= key.to_s %>" role="tab" aria-controls="<%= key.to_s %>">
-          <%= @simulation_configuration[key][:title] %>
+          <%= appliance_config[key][:title] %>
         </a>
       </li>
     <% end %>
@@ -23,13 +23,13 @@
     <div class="col-md-4">
       <%= f.label :title %>
       <div class="input-group">
-        <%= f.text_field :title, class: 'form-control', value: @simulation.title %>
+        <%= f.text_field :title, class: 'form-control', value: simulation.title %>
       </div>
     </div>
     <div class="col">
       <%= f.label :notes %>
       <div class="input-group">
-        <%= f.text_area :notes, class: 'form-control', value: @simulation.notes %>
+        <%= f.text_area :notes, class: 'form-control', value: simulation.notes %>
       </div>
     </div>
   </div>
@@ -52,29 +52,29 @@
           </tr>
         </thead>
         <tbody>
-          <% @simulation_configuration[:ict].keys.reject! {|x| x == :title || x == :servers2 || x == :editable }.each do |k| %>
+          <% appliance_config[:ict].keys.reject! {|x| x == :title || x == :servers2 || x == :editable }.each do |k| %>
             <%= ff.fields_for k do |fff| %>
               <tr>
-                <%= hidden_field_tag "simulation[ict][#{k.to_s}][type]", simulation_configuration[:ict][k][:type] %>
+                <%= hidden_field_tag "simulation[ict][#{k.to_s}][type]", appliance_config[:ict][k][:type] %>
                 <th scope="row"><%= k.to_s.humanize %></th>
-                <td><%= fff.text_field :number, class: 'form-control', value: @simulation_configuration[:ict][k][:number] %></td>
-                <td><%= fff.text_field :power_watts_each, class: 'form-control', value: @simulation_configuration[:ict][k][:power_watts_each] %></td>
-                <td><%= fff.text_field :standby_watts_each, class: 'form-control', value: @simulation_configuration[:ict][k][:standby_watts_each] unless @simulation_configuration[:ict][k][:standby_watts_each].nil? %></td>
-                <td><%= fff.text_field :air_con_overhead_pecent, class: 'form-control', value: @simulation_configuration[:ict][k][:air_con_overhead_pecent] unless @simulation_configuration[:ict][k][:air_con_overhead_pecent].nil? %></td>
+                <td><%= fff.text_field :number, class: 'form-control', value: appliance_config[:ict][k][:number] %></td>
+                <td><%= fff.text_field :power_watts_each, class: 'form-control', value: appliance_config[:ict][k][:power_watts_each] %></td>
+                <td><%= fff.text_field :standby_watts_each, class: 'form-control', value: appliance_config[:ict][k][:standby_watts_each] unless appliance_config[:ict][k][:standby_watts_each].nil? %></td>
+                <td><%= fff.text_field :air_con_overhead_pecent, class: 'form-control', value: appliance_config[:ict][k][:air_con_overhead_pecent] unless appliance_config[:ict][k][:air_con_overhead_pecent].nil? %></td>
                 <td>
-                  <% unless @simulation_configuration[:ict][k][:weekends].nil? %>
+                  <% unless appliance_config[:ict][k][:weekends].nil? %>
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <%= hidden_field_tag "simulation[ict][#{k.to_s}][weekends]", '' %>
-                      <%= check_box_tag "simulation[ict][#{k.to_s}][weekends]", 'true', @simulation_configuration[:ict][k][:weekends] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_weekends_actual" } %>
+                      <%= check_box_tag "simulation[ict][#{k.to_s}][weekends]", 'true', appliance_config[:ict][k][:weekends] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_weekends_actual" } %>
                       <label for='simulation_ict_<%= k.to_s %>_weekends_actual' class="custom-control-label"></label>
                     </div>
                   <% end %>
                 </td>
                 <td>
-                  <% unless @simulation_configuration[:ict][k][:holidays].nil? %>
+                  <% unless appliance_config[:ict][k][:holidays].nil? %>
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <%= hidden_field_tag "simulation[ict][#{k.to_s}][holidays]", '' %>
-                      <%= check_box_tag "simulation[ict][#{k.to_s}][holidays]", 'true', @simulation_configuration[:ict][k][:holidays] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_holidays_actual" } %>
+                      <%= check_box_tag "simulation[ict][#{k.to_s}][holidays]", 'true', appliance_config[:ict][k][:holidays] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_holidays_actual" } %>
                        <label for='simulation_ict_<%= k.to_s %>_holidays_actual' class="custom-control-label"></label>
                     </div>
                   <% end %>
@@ -95,7 +95,7 @@
       <div class="col-md-4">
         <%= ff.label :lumens_per_watt %>
         <div class="input-group">
-          <%= ff.text_field :lumens_per_watt, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_watt] %>
+          <%= ff.text_field :lumens_per_watt, class: 'form-control', value: appliance_config[:lighting][:lumens_per_watt] %>
           <div class="input-group-append">
             <span class="input-group-text">per Watt</span>
           </div>
@@ -104,7 +104,7 @@
       <div class="col-md-4">
         <%= ff.label :lumens_per_m2 %>
         <div class="input-group">
-          <%= ff.text_field :lumens_per_m2, class: 'form-control', value: @simulation_configuration[:lighting][:lumens_per_m2] %>
+          <%= ff.text_field :lumens_per_m2, class: 'form-control', value: appliance_config[:lighting][:lumens_per_m2] %>
           <div class="input-group-append">
             <span class="input-group-text">lumens per m<sup>2</sup> (lux)</span>
           </div>
@@ -121,7 +121,7 @@
       <div class="col-md-4">
         <%= ff.label :power %>
         <div class="input-group">
-          <%= ff.text_field :power, class: 'form-control', value: @simulation_configuration[:flood_lighting][:power] %>
+          <%= ff.text_field :power, class: 'form-control', value: appliance_config[:flood_lighting][:power] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -130,7 +130,7 @@
       <div class="col-md-4">
         <%= ff.label :ambient_light_threshold %>
         <div class="input-group">
-          <%= ff.text_field :ambient_light_threshold, class: 'form-control', value: @simulation_configuration[:flood_lighting][:ambient_light_threshold] %>
+          <%= ff.text_field :ambient_light_threshold, class: 'form-control', value: appliance_config[:flood_lighting][:ambient_light_threshold] %>
           <div class="input-group-append">
             <span class="input-group-text">lumens per m<sup>2</sup> (lux)</span>
           </div>
@@ -146,7 +146,7 @@
     <div class="form-row">
       <div class="col-md-6 keep">
         <p>Light operating times</p>
-        <% @simulation_configuration[:security_lighting][:control_type].each do |thing| %>
+        <% appliance_config[:security_lighting][:control_type].each do |thing| %>
           <div class="custom-control custom-radio custom-control-inline">
             <%= radio_button_tag 'simulator[security_lighting][control_type]', thing, {}, class: "custom-control-input" %>
             <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
@@ -168,7 +168,7 @@
       <div class="col-auto ambient hidden">
         <%= ff.label :ambient_threshold %>
         <div class="input-group">
-          <%= ff.text_field :ambient_threshold, class: 'form-control', value: @simulation_configuration[:security_lighting][:ambient_threshold] %>
+          <%= ff.text_field :ambient_threshold, class: 'form-control', value: appliance_config[:security_lighting][:ambient_threshold] %>
           <div class="input-group-append">
             <span class="input-group-text">lumens per m<sup>2</sup> (lux)</span>
           </div>
@@ -177,7 +177,7 @@
       <div class="col-auto ambient sunrise_sunset fixed_times hidden">
         <%= ff.label :power %>
         <div class="input-group">
-          <%= ff.text_field :power, class: 'form-control', value: @simulation_configuration[:security_lighting][:power] %>
+          <%= ff.text_field :power, class: 'form-control', value: appliance_config[:security_lighting][:power] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -187,7 +187,7 @@
         <%= ff.label :fixed_start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="security_lighting_fixed_start_time" data-target-input="nearest">
-             <%= ff.text_field :fixed_start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:security_lighting][:fixed_start_time].strftime('%I:%M %p'), data: { target: "#security_lighting_fixed_start_time" } %>
+             <%= ff.text_field :fixed_start_time, class: 'form-control datetimepicker-input', value: appliance_config[:security_lighting][:fixed_start_time].strftime('%I:%M %p'), data: { target: "#security_lighting_fixed_start_time" } %>
             <div class="input-group-append" data-target="#security_lighting_fixed_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -198,7 +198,7 @@
         <%= ff.label :fixed_end_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="security_lighting_fixed_end_time" data-target-input="nearest">
-            <%= ff.text_field :fixed_end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:security_lighting][:fixed_end_time].strftime('%I:%M %p'), data: { target: "#security_lighting_fixed_end_time" } %>
+            <%= ff.text_field :fixed_end_time, class: 'form-control datetimepicker-input', value: appliance_config[:security_lighting][:fixed_end_time].strftime('%I:%M %p'), data: { target: "#security_lighting_fixed_end_time" } %>
             <div class="input-group-append" data-target="#security_lighting_fixed_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -217,7 +217,7 @@
       <div class="col-auto">
         <%= ff.label :power %>
         <div class="input-group">
-          <%= ff.text_field :power, class: 'form-control', value: @simulation_configuration[:kitchen][:power] %>
+          <%= ff.text_field :power, class: 'form-control', value: appliance_config[:kitchen][:power] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -227,7 +227,7 @@
         <%= ff.label :start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="kitchen_start_time" data-target-input="nearest">
-             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:kitchen][:start_time].strftime('%I:%M %p'), data: { target: "#kitchen_start_time" } %>
+             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: appliance_config[:kitchen][:start_time].strftime('%I:%M %p'), data: { target: "#kitchen_start_time" } %>
             <div class="input-group-append" data-target="#kitchen_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -238,7 +238,7 @@
         <%= ff.label :end_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="kitchen_end_time" data-target-input="nearest">
-            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:kitchen][:end_time].strftime('%I:%M %p'), data: { target: "#kitchen_end_time" } %>
+            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: appliance_config[:kitchen][:end_time].strftime('%I:%M %p'), data: { target: "#kitchen_end_time" } %>
             <div class="input-group-append" data-target="#kitchen_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -256,7 +256,7 @@
       <div class="col-auto">
         <%= ff.label 'Balance point temperature' %>
         <div class="input-group">
-          <%= ff.text_field :balancepoint_temperature, class: 'form-control', value: @simulation_configuration[:summer_air_conn][:balancepoint_temperature] %>
+          <%= ff.text_field :balancepoint_temperature, class: 'form-control', value: appliance_config[:summer_air_conn][:balancepoint_temperature] %>
           <div class="input-group-append">
             <span class="input-group-text">&deg; C</span>
           </div>
@@ -265,7 +265,7 @@
       <div class="col-auto">
         <%= ff.label 'Power per Degree Day' %>
         <div class="input-group">
-          <%= ff.text_field :power_per_degreeday, class: 'form-control', value: @simulation_configuration[:summer_air_conn][:power_per_degreeday] %>
+          <%= ff.text_field :power_per_degreeday, class: 'form-control', value: appliance_config[:summer_air_conn][:power_per_degreeday] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -276,7 +276,7 @@
         <%= ff.label :start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="summer_air_conn_start_time" data-target-input="nearest">
-             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:summer_air_conn][:start_time].strftime('%I:%M %p'), data: { target: "#summer_air_conn_start_time" } %>
+             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: appliance_config[:summer_air_conn][:start_time].strftime('%I:%M %p'), data: { target: "#summer_air_conn_start_time" } %>
             <div class="input-group-append" data-target="#summer_air_conn_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -287,7 +287,7 @@
         <%= ff.label :end_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="summer_air_conn_end_time" data-target-input="nearest">
-            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:summer_air_conn][:end_time].strftime('%I:%M %p'), data: { target: "#summer_air_conn_end_time" } %>
+            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: appliance_config[:summer_air_conn][:end_time].strftime('%I:%M %p'), data: { target: "#summer_air_conn_end_time" } %>
             <div class="input-group-append" data-target="#summer_air_conn_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -298,12 +298,12 @@
       <div class="col-auto">
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= hidden_field_tag 'simulation[summer_air_conn][weekends]', '' %>
-          <%= check_box_tag 'simulation[summer_air_conn][weekends]', 'true', @simulation_configuration[:summer_air_conn][:weekends] , { class: 'custom-control-input', id: 'simulation_summer_air_conn_weekends_actual' } %>
+          <%= check_box_tag 'simulation[summer_air_conn][weekends]', 'true', appliance_config[:summer_air_conn][:weekends] , { class: 'custom-control-input', id: 'simulation_summer_air_conn_weekends_actual' } %>
           <label for="simulation_summer_air_conn_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= hidden_field_tag 'simulation[summer_air_conn][holidays]', '' %>
-          <%= check_box_tag 'simulation[summer_air_conn][holidays]', 'true', @simulation_configuration[:summer_air_conn][:holidays] , { class: 'custom-control-input', id: 'simulation_summer_air_conn_holidays_actual' } %>
+          <%= check_box_tag 'simulation[summer_air_conn][holidays]', 'true', appliance_config[:summer_air_conn][:holidays] , { class: 'custom-control-input', id: 'simulation_summer_air_conn_holidays_actual' } %>
           <label for="simulation_summer_air_conn_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
       </div>
@@ -318,7 +318,7 @@
       <div class="col-auto">
         <%= ff.label :percent_of_pupils %>
         <div class="input-group">
-          <%= ff.text_field :percent_of_pupils, class: 'form-control', value: @simulation_configuration[:electric_hot_water][:percent_of_pupils] %>
+          <%= ff.text_field :percent_of_pupils, class: 'form-control', value: appliance_config[:electric_hot_water][:percent_of_pupils] %>
           <div class="input-group-append">
             <span class="input-group-text">%</span>
           </div>
@@ -327,7 +327,7 @@
       <div class="col-auto">
         <%= ff.label :litres_per_day_per_pupil %>
         <div class="input-group">
-          <%= ff.text_field :litres_per_day_per_pupil, class: 'form-control', value: @simulation_configuration[:electric_hot_water][:litres_per_day_per_pupil] %>
+          <%= ff.text_field :litres_per_day_per_pupil, class: 'form-control', value: appliance_config[:electric_hot_water][:litres_per_day_per_pupil] %>
           <div class="input-group-append">
             <span class="input-group-text">l per day</span>
           </div>
@@ -336,7 +336,7 @@
       <div class="col-auto">
         <%= ff.label :standby_power %>
         <div class="input-group">
-          <%= ff.text_field :standby_power, class: 'form-control', value: @simulation_configuration[:electric_hot_water][:standby_power] %>
+          <%= ff.text_field :standby_power, class: 'form-control', value: appliance_config[:electric_hot_water][:standby_power] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -348,7 +348,7 @@
         <%= ff.label :start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="electric_hot_water_start_time" data-target-input="nearest">
-             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:electric_hot_water][:start_time].strftime('%I:%M %p'), data: { target: "#electric_hot_water_start_time" } %>
+             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: appliance_config[:electric_hot_water][:start_time].strftime('%I:%M %p'), data: { target: "#electric_hot_water_start_time" } %>
             <div class="input-group-append" data-target="#electric_hot_water_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -359,7 +359,7 @@
         <%= ff.label :end_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="electric_hot_water_end_time" data-target-input="nearest">
-            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:electric_hot_water][:end_time].strftime('%I:%M %p'), data: { target: "#electric_hot_water_end_time" } %>
+            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: appliance_config[:electric_hot_water][:end_time].strftime('%I:%M %p'), data: { target: "#electric_hot_water_end_time" } %>
             <div class="input-group-append" data-target="#electric_hot_water_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -370,12 +370,12 @@
       <div class="col-md-3">
         <div class="custom-control custom-checkbox">
           <%= hidden_field_tag 'simulation[electric_hot_water][weekends]', '' %>
-          <%= check_box_tag 'simulation[electric_hot_water][weekends]', 'true', @simulation_configuration[:electric_hot_water][:weekends] , { class: 'custom-control-input', id: 'simulation_electirc_hot_water_weekends_actual' } %>
+          <%= check_box_tag 'simulation[electric_hot_water][weekends]', 'true', appliance_config[:electric_hot_water][:weekends] , { class: 'custom-control-input', id: 'simulation_electirc_hot_water_weekends_actual' } %>
           <label for="simulation_electirc_hot_water_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox">
           <%= hidden_field_tag 'simulation[electric_hot_water][holidays]', '' %>
-          <%= check_box_tag 'simulation[electric_hot_water][holidays]', 'true', @simulation_configuration[:electric_hot_water][:holidays] , { class: 'custom-control-input', id: 'simulation_electric_hot_water_holidays_actual' } %>
+          <%= check_box_tag 'simulation[electric_hot_water][holidays]', 'true', appliance_config[:electric_hot_water][:holidays] , { class: 'custom-control-input', id: 'simulation_electric_hot_water_holidays_actual' } %>
           <label for="simulation_electric_hot_water_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
       </div>
@@ -391,7 +391,7 @@
         <%= ff.label :start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="electrical_heating_start_time" data-target-input="nearest">
-             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:electrical_heating][:start_time].strftime('%I:%M %p'), data: { target: "#electrical_heating_start_time" } %>
+             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: appliance_config[:electrical_heating][:start_time].strftime('%I:%M %p'), data: { target: "#electrical_heating_start_time" } %>
             <div class="input-group-append" data-target="#electrical_heating_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -402,7 +402,7 @@
         <%= ff.label :end_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="electrical_heating_end_time" data-target-input="nearest">
-            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:electrical_heating][:end_time].strftime('%I:%M %p'), data: { target: "#electrical_heating_end_time" } %>
+            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: appliance_config[:electrical_heating][:end_time].strftime('%I:%M %p'), data: { target: "#electrical_heating_end_time" } %>
             <div class="input-group-append" data-target="#electrical_heating_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -413,7 +413,7 @@
       <div class="col-auto">
         <%= ff.label :fixed_power %>
         <div class="input-group">
-          <%= ff.text_field :fixed_power, class: 'form-control', value: @simulation_configuration[:electrical_heating][:fixed_power] %>
+          <%= ff.text_field :fixed_power, class: 'form-control', value: appliance_config[:electrical_heating][:fixed_power] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -424,7 +424,7 @@
       <div class="col-auto">
         <%= ff.label 'Balance point temperature' %>
         <div class="input-group">
-          <%= ff.text_field :balancepoint_temperature, class: 'form-control', value: @simulation_configuration[:electrical_heating][:balancepoint_temperature] %>
+          <%= ff.text_field :balancepoint_temperature, class: 'form-control', value: appliance_config[:electrical_heating][:balancepoint_temperature] %>
           <div class="input-group-append">
             <span class="input-group-text">&deg; C</span>
           </div>
@@ -433,7 +433,7 @@
       <div class="col-auto">
         <%= ff.label :power_per_degreeday %>
         <div class="input-group">
-          <%= ff.text_field :power_per_degreeday, class: 'form-control', value: @simulation_configuration[:electrical_heating][:power_per_degreeday] %>
+          <%= ff.text_field :power_per_degreeday, class: 'form-control', value: appliance_config[:electrical_heating][:power_per_degreeday] %>
           <div class="input-group-append">
             <span class="input-group-text">kW/&deg; C</span>
           </div>
@@ -443,12 +443,12 @@
       <div class="col-md-3">
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= hidden_field_tag 'simulation[electrical_heating][weekends]', '' %>
-          <%= check_box_tag 'simulation[electrical_heating][weekends]', 'true', @simulation_configuration[:electrical_heating][:weekends] , { class: 'custom-control-input', id: 'simulation_electrical_heating_weekends_actual' } %>
+          <%= check_box_tag 'simulation[electrical_heating][weekends]', 'true', appliance_config[:electrical_heating][:weekends] , { class: 'custom-control-input', id: 'simulation_electrical_heating_weekends_actual' } %>
           <label for="simulation_electrical_heating_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= hidden_field_tag 'simulation[electrical_heating][holidays]', '' %>
-          <%= check_box_tag 'simulation[electrical_heating][holidays]', 'true', @simulation_configuration[:electrical_heating][:holidays] , { class: 'custom-control-input', id: 'simulation_electrical_heating_holidays_actual' } %>
+          <%= check_box_tag 'simulation[electrical_heating][holidays]', 'true', appliance_config[:electrical_heating][:holidays] , { class: 'custom-control-input', id: 'simulation_electrical_heating_holidays_actual' } %>
           <label for="simulation_electrical_heating_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
       </div>
@@ -464,7 +464,7 @@
       <div class="col-auto">
         <%= ff.label :pump_power %>
         <div class="input-group">
-          <%= ff.text_field :pump_power, class: 'form-control', value: @simulation_configuration[:boiler_pumps][:pump_power] %>
+          <%= ff.text_field :pump_power, class: 'form-control', value: appliance_config[:boiler_pumps][:pump_power] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -474,7 +474,7 @@
         <%= ff.label :start_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="boiler_pump_start_time" data-target-input="nearest">
-             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:start_time].strftime('%I:%M %p'), data: { target: "#boiler_pump_start_time" } %>
+             <%= ff.text_field :start_time, class: 'form-control datetimepicker-input', value: appliance_config[:boiler_pumps][:start_time].strftime('%I:%M %p'), data: { target: "#boiler_pump_start_time" } %>
             <div class="input-group-append" data-target="#boiler_pump_start_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -485,7 +485,7 @@
         <%= ff.label :end_time %>
         <div class="form-group">
           <div class="input-group date timepicker" id="boiler_pump_end_time" data-target-input="nearest">
-            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: @simulation_configuration[:boiler_pumps][:end_time].strftime('%I:%M %p'), data: { target: "#boiler_pump_end_time" } %>
+            <%= ff.text_field :end_time, class: 'form-control datetimepicker-input', value: appliance_config[:boiler_pumps][:end_time].strftime('%I:%M %p'), data: { target: "#boiler_pump_end_time" } %>
             <div class="input-group-append" data-target="#boiler_pump_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
@@ -496,12 +496,12 @@
       <div class="col-auto">
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= hidden_field_tag 'simulation[boiler_pumps][weekends]', '' %>
-          <%= check_box_tag 'simulation[boiler_pumps][weekends]', 'true', @simulation_configuration[:boiler_pumps][:weekends] , { class: 'custom-control-input', id: 'simulation_boiler_pumps_weekends_actual' } %>
+          <%= check_box_tag 'simulation[boiler_pumps][weekends]', 'true', appliance_config[:boiler_pumps][:weekends] , { class: 'custom-control-input', id: 'simulation_boiler_pumps_weekends_actual' } %>
           <label for="simulation_boiler_pumps_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= hidden_field_tag 'simulation[boiler_pumps][holidays]', '' %>
-          <%= check_box_tag 'simulation[boiler_pumps][holidays]', 'true', @simulation_configuration[:boiler_pumps][:holidays] , { class: 'custom-control-input', id: 'simulation_boiler_pumps_holidays_actual' } %>
+          <%= check_box_tag 'simulation[boiler_pumps][holidays]', 'true', appliance_config[:boiler_pumps][:holidays] , { class: 'custom-control-input', id: 'simulation_boiler_pumps_holidays_actual' } %>
           <label for="simulation_boiler_pumps_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
       </div>
@@ -516,7 +516,7 @@
       <div class="col-auto">
         <%= ff.label :baseload %>
         <div class="input-group">
-          <%= ff.text_field :baseload, class: 'form-control', value: @simulation_configuration[:unaccounted_for_baseload][:baseload] %>
+          <%= ff.text_field :baseload, class: 'form-control', value: appliance_config[:unaccounted_for_baseload][:baseload] %>
           <div class="input-group-append">
             <span class="input-group-text">kW</span>
           </div>
@@ -533,7 +533,7 @@
       <div class="col-auto">
         <%= ff.label 'Capacity of solar panels' %>
         <div class="input-group">
-          <%= ff.text_field :kwp, class: 'form-control', value: @simulation_configuration[:solar_pv][:kwp] %>
+          <%= ff.text_field :kwp, class: 'form-control', value: appliance_config[:solar_pv][:kwp] %>
           <div class="input-group-append">
             <span class="input-group-text">kWp (kilowatt peak)</span>
           </div>

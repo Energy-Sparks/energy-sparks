@@ -5,12 +5,8 @@
 
 <p><%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' if @school.simulations.any? %></p>
 
-<div class="alert alert-primary" role="alert">
-  More content will be required here to explain how this works...
-</div>
-
 <%= form_for [@school, @simulation], method: :post, html: { class: 'simulation' } do |f| %>
-  <%= render 'form_fields', f: f, simulator_configuration: @simulation_configuration %>
+  <%= render 'form_fields', f: f, appliance_config: @simulation_configuration, simulation: @simulation %>
 <% end %>
 
 <div class="row"><hr/></div>
