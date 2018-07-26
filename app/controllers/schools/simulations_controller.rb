@@ -243,9 +243,10 @@ private
   def convert_to_correct_format(key, value)
     return value if key == :title
     return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
+    return value.to_sym if key == :type
     return true if value == 'true'
-    return value.to_f if is_float?(value)
-    is_integer?(value) ? value.to_i : value
+    return value.to_i if is_integer?(value)
+    is_float?(value) ? value.to_f : value
   end
 
   def simulation_params
