@@ -9,7 +9,21 @@
   <p><%= @simulation.notes %></p>
 <% end %>
 
-<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Advanced simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
+<!-- <div class="row">
+  <div class="col-auto">
+    <%#= debug @simulation.configuration[:ict] %>
+  </div>
+    <div class="col-auto">
+      <%#= debug @simulation_configuration[:ict] %>
+  </div>
+    <div class="col-auto">
+      <%#= debug ElectricitySimulatorConfiguration.new[:ict] %>
+  </div>
+</div> -->
+
+<p></p>
+
+<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
 
 <% @charts_for_page.each_with_index do |chart, index| %>
   <% if chart[:layout] == :side_by_side %>
