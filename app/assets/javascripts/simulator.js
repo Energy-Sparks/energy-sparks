@@ -58,10 +58,10 @@ $(document).ready(function() {
 
             var maxY = 0;
             $('[data-pair=' + thisPair  +']').each(function() {
-
+ //chart.yAxis[0].max;
               var thisChart = $(this).highcharts();
               console.log(thisChart);
-              console.log(thisChart.yAxis[0].max);
+              console.log(thisChart.yAxis[0]);
             });
           //  Sort them out
 
