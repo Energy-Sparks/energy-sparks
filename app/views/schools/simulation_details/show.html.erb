@@ -1,6 +1,6 @@
-<% content_for :page_title do %>Electricity Simulator for <%= @school.name %><% end %>
+<% content_for :page_title do %>Electricity Simulator Details for <%= @school.name %><% end %>
 
-<h1>The <%= @school.name %> Electricity Simulator</h1>
+<h1>The Electricity Simulator Details for <%= @school.name %> <%= @simulation.title %></h1>
 
 <% if @simulation.default %>
   <p>This chart shows an estimation of how your electricity energy usage might be broken up in to it's component parts. It simulates your school's energy usage based on a number of different factors, lighting, boiler controls, ICT equipment for example. You can edit this configuration to provide a more accurate simulation of your energy usage by clicking on the 'Edit' button.</p>
@@ -12,7 +12,7 @@
 <div class="alert alert-primary" role="alert">
   More content will be required here to explain how this works...
 </div>
-<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Advanced simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' if @school.simulations.any? %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' if @school.simulations.any? %></p>
+<p><%= link_to 'Back to simulation results', school_simulation_path(@school, @simulation), class: 'btn btn-primary' if @school.simulations.any? %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' if @school.simulations.any? %></p>
 
 <% @charts_for_page.each_with_index do |chart, index| %>
   <% if chart[:layout] == :side_by_side %>
