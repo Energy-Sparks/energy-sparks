@@ -48,7 +48,7 @@ module DataFeeds
       rawstationdata = {}
 
       area[:weather_stations_for_temperature].each do |station_name, _weight|
-        rawdata = get_raw_temperature_and_solar_data(station_name, @start_date - 1, @end_date + 1)
+        rawdata = get_raw_temperature_and_solar_data(station_name, @start_date, @end_date)
         if !rawdata.empty?
           rawstationdata[station_name] = rawdata
         else
@@ -69,7 +69,7 @@ module DataFeeds
         mins30step = (1.to_f / 48)
 
         loop_count = 0
-        @start_date.to_datetime.step(@end_date.to_datetime, mins30step).each do |datetime|
+        @start_date.to_datetime.step(@end_date.end_of_day.to_datetime, mins30step).each do |datetime|
           avg_sum_temp = 0.0
           sample_weight_temp = 0.0
 
