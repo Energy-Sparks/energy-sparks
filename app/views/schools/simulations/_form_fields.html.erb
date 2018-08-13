@@ -2,7 +2,7 @@
   <h4 class="">Appliance configuration</h4>
 </div>
 <div class="row">
-  <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+  <ul class="nav nav-pills" id="simulator-nav" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
     </li>
@@ -91,7 +91,7 @@
   <div class="tab-pane collapse fade" id="lighting" role="tabpanel" aria-labelledby="lighting-tab">
     <div class="form-row">
       <div class="col-md-4">
-        <%= ff.label :lumens_per_watt %>
+        <%= ff.label 'Efficiency: Lumens per watt' %>
         <div class="input-group">
           <%= ff.text_field :lumens_per_watt, class: 'form-control', value: appliance_config[:lighting][:lumens_per_watt] %>
           <div class="input-group-append">
@@ -100,7 +100,7 @@
         </div>
       </div>
       <div class="col-md-4">
-        <%= ff.label :lumens_per_m2 %>
+        <%= ff.label 'Brightness: Lumens per m2' %>
         <div class="input-group">
           <%= ff.text_field :lumens_per_m2, class: 'form-control', value: appliance_config[:lighting][:lumens_per_m2] %>
           <div class="input-group-append">
@@ -144,7 +144,7 @@
     <div class="form-row">
       <div class="col-md-6 keep">
         <p>Light operating times</p>
-        <% appliance_config[:security_lighting][:control_type].each do |thing| %>
+        <% appliance_config[:security_lighting][:control_type_choices].each do |thing| %>
           <div class="custom-control custom-radio custom-control-inline">
             <%= radio_button_tag 'simulator[security_lighting][control_type]', thing, {}, class: "custom-control-input" %>
             <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
@@ -152,7 +152,7 @@
         <% end %>
         <div class="custom-control custom-radio custom-control-inline">
           <%= radio_button_tag 'simulator[security_lighting][control_type]', 'sensor', {}, class: "custom-control-input" %>
-          <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_sensor" %>'>Sensor</label>
+          <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_sensor" %>'>Movement Sensor</label>
         </div>
       </div>
       <div class="col-md-6 alert alert-primary">
