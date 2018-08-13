@@ -27,7 +27,7 @@
               <%= link_to(meter.display_name, reports_amr_data_show_path(meter)) %>
             </td>
             <td>
-              <%= link_to(meter.display_name, reports_aggregated_amr_data_show_path(meter)) %>
+              <%= link_to(meter.display_name, reports_aggregated_amr_data_show_path(meter)) if AggregatedMeterReading.where(meter_id: meter.id).any? %>
             </td>
             <td>
               <%= meter.meter_type.capitalize %>
