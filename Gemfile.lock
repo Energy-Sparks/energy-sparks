@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 710e960c482e9ca6af09b9a35f5b6c70f85957b2
+  revision: 9fd5317a08737b004022aa1038f9a675c1470019
   branch: integration
   specs:
-    energy-sparks_analytics (0.7.14)
+    energy-sparks_analytics (0.7.15)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -121,6 +121,9 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap4-datetime-picker-rails (0.1.7)
+      jquery-rails (~> 4.2, >= 4.2.0)
+      momentjs-rails (~> 2.10, >= 2.10.5)
     builder (3.2.3)
     bullet (5.7.5)
       activesupport (>= 3.0.0)
@@ -283,6 +286,8 @@ GEM
     minimization (0.2.3)
       text-table (~> 1.2)
     minitest (5.11.3)
+    momentjs-rails (2.20.1)
+      railties (>= 3.1)
     msgpack (1.2.4)
     multi_json (1.13.1)
     multipart-post (2.0.0)
@@ -541,6 +546,7 @@ DEPENDENCIES
   binding_of_caller
   bootsnap
   bootstrap (~> 4.1.0)
+  bootstrap4-datetime-picker-rails
   bullet
   bundler-audit
   byebug
@@ -557,7 +563,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.7.14)!
+  energy-sparks_analytics (~> 0.7.15)!
   factory_bot_rails
   fakefs
   fasterer
@@ -573,6 +579,7 @@ DEPENDENCIES
   lograge
   mailgun_rails
   merit!
+  momentjs-rails
   oj
   overcommit
   pg

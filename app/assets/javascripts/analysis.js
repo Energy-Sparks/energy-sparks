@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 var commonOptions = {
   title: { text: null },
@@ -69,12 +69,10 @@ var commonOptions = {
       }
     }
   }
-}
+};
 
 function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   var subChartType = d.chart1_subtype;
-  console.log('bar or column or line ' + subChartType);
-
   var xAxisCategories = d.x_axis_categories;
   var y2AxisLabel = d.y2_axis_label;
 
@@ -82,14 +80,12 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
 
   // BAR Charts
   if (chartType == 'bar') {
-    console.log('bar');
     c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
   }
 
   // LINE charts
   if (chartType == 'line') {
     if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
-      console.log('Yaxis - Temperature');
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
     }
@@ -97,22 +93,17 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
 
   // Column charts
   if (chartType == 'column') {
-    console.log('column: ' + subChartType);
-
     if (subChartType == 'stacked') {
       c.update({ plotOptions: { column: { stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     }
 
     if (y2AxisLabel !== undefined && (y2AxisLabel == 'Degree Days' || y2AxisLabel == 'Temperature')) {
-      console.log('Yaxis - Degree days');
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
     }
   }
 
   Object.keys(seriesData).forEach(function (key) {
-    console.log('Series data name: ' + seriesData[key].name);
-
     if (seriesData[key].name == 'CUSUM') {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
     }
@@ -120,22 +111,18 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   });
 
   if (yAxisLabel.length) {
-    console.log('we have a yAxisLabel ' + yAxisLabel);
     c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
 }
 
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
-  console.log('scatter');
   c.update({chart: { type: 'scatter' }});
 
   if (yAxisLabel.length) {
-    console.log('we have a yAxisLabel ' + yAxisLabel);
     c.update({ xAxis: [{ title: { text: 'Degree Days' }}], yAxis: [{ title: { text: yAxisLabel }}]});
   }
 
   Object.keys(seriesData).forEach(function (key) {
-    console.log(seriesData[key].name);
     c.addSeries(seriesData[key]);
   });
 }
@@ -159,7 +146,7 @@ function chartSuccess(d, c, chartIndex) {
   var $chartDiv = $(chartDiv);
   var titleH3 = $chartDiv.prev('h3');
 
-   if (chartIndex == 0) {
+   if (chartIndex === 0) {
      titleH3.text(d.title);
    } else {
     titleH3.before('<hr class="analysis"/>');
@@ -180,10 +167,6 @@ function chartSuccess(d, c, chartIndex) {
   if (adviceFooter !== undefined) {
     $chartDiv.after('<div>' + adviceFooter + '</div>');
   }
-
-  console.log("################################");
-  console.log(d.title);
-  console.log("################################");
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
     barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType);
@@ -206,10 +189,8 @@ $(document).ready(function() {
       var thisChart = Highcharts.chart(thisId, commonOptions );
       var chartType = $(this).data('chart-type');
       var chartIndex = $(this).data('chart-index');
-      console.log(chartType);
-      var currentPath = window.location.href
+      var currentPath = window.location.href;
       var dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
-      console.log(dataPath);
       thisChart.showLoading();
 
       $.ajax({
@@ -221,9 +202,8 @@ $(document).ready(function() {
           chartSuccess(returnedData.charts[0], thisChart, chartIndex);
         },
         error: function(broken) {
-          console.log("broken");
           var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
-          titleH3.text('There was a problem ' + currentText);
+          titleH3.text('There was a problem with this chart');
           $('div#chart_' + chartIndex).remove();
         }
       });

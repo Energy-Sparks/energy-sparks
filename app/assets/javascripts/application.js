@@ -17,11 +17,6 @@
 
 //= require trix
 
-//= require jquery.calendars.min.js
-//= require jquery.calendars.plus.min.js
-//= require jquery.plugin.min.js
-//= require jquery.calendars.picker.min.js
-
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
 
@@ -37,5 +32,7 @@
 //= require bootstrap-year-calendar
 //= require calendar_year_view
 
-//= require dashboard
 
+//= require analysis
+//= require moment
+//= require tempusdominus-bootstrap-4.js

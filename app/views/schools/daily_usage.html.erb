@@ -1,14 +1,10 @@
-<% content_for :page_title do %>
-    Explore usage data for <%= @school.name %>
-<% end %>
-<div class="application container charts" id="daily-usage">
+<% content_for :page_title do %>Explore usage data for <%= @school.name %><% end %>
 
+<div class="application container charts" id="daily-usage">
   <div class="row padded-row">
     <div class="col-md-12">
       <h1>Daily usage for <%= @school.name %></h1>
-      <p>
-        Explore daily power usage for <%= link_to @school.name, school_path(@school), id: "school" %>
-      </p>
+      <p>Explore daily power usage for <%= link_to @school.name, school_path(@school), id: "school" %></p>
     </div>
   </div>
 
@@ -27,34 +23,30 @@
 
   <div class="row">
     <div class="col-md-12">
-      <p class="text-center" id="graph-explainer">
-      </p>
+      <p class="text-center" id="graph-explainer"></p>
     </div>
   </div>
 
   <%= form_tag "", method: :get, id: "chart-filter" do %>
-      <%= hidden_field_tag :comparison, "whole-school" %>
-      <%= hidden_field_tag :period, "daily" %>
-      <%= hidden_field_tag :supply, @supply %>
+    <%= hidden_field_tag :comparison, "whole-school" %>
+    <%= hidden_field_tag :period, "daily" %>
+    <%= hidden_field_tag :supply, @supply %>
 
-      <%= hidden_field_tag :first_date, @first_date, id: "first-date" %>
-      <%= hidden_field_tag :to_date, @to_date, id: "to-date" %>
+    <%= hidden_field_tag :first_date, @first_date, id: "first-date" %>
+    <%= hidden_field_tag :to_date, @to_date, id: "to-date" %>
 
-      <%= hidden_field_tag :first_meter, "all", id: "first-meter" %>
-      <%= hidden_field_tag :second_meter, "", id: "second-meter" %>
+    <%= hidden_field_tag :first_meter, "all", id: "first-meter" %>
+    <%= hidden_field_tag :second_meter, "", id: "second-meter" %>
 
-      <div class="card-deck">
-        <%= render partial: 'schools/supply_type_card', locals: {supply: @supply, school: @school} %>
-        <%= render partial: 'schools/comparison_type_card', locals: {supply: @supply, school: @school} %>
-        <%= render partial: 'schools/whole_school_card',
-                   locals: {supply: @supply, school: @school, first_date: @first_date, to_date: @to_date, meter: params[:meter], first_option: "First week", second_option: "Second Week"} %>
-        <%= render partial: 'schools/within_school_card',
-                   locals: {supply: @supply, school: @school, first_date: @first_date, meter: params[:meter], second_meter: params[:second_meter], date_option: "Which week shall we show?"} %>
-      </div>
-
+    <div class="card-deck">
+      <%= render partial: 'schools/supply_type_card', locals: {supply: @supply, school: @school} %>
+      <%= render partial: 'schools/comparison_type_card', locals: {supply: @supply, school: @school} %>
+      <%= render partial: 'schools/whole_school_card',
+                 locals: { supply: @supply, school: @school, first_date: @first_date, to_date: @to_date, meter: params[:meter], first_option: "First week (starts Sunday)", second_option: "Second week (starts Sunday)", week_picker: true } %>
+      <%= render partial: 'schools/within_school_card',
+                 locals: { supply: @supply, school: @school, first_date: @first_date, meter: params[:meter], second_meter: params[:second_meter], date_option: "Which week shall we show?", week_picker: true } %>
+    </div>
   <% end %>
 
-  <%= render partial: 'schools/interpretation', locals: {supply: @supply} %>
-
-
+  <%= render partial: 'schools/interpretation', locals: { supply: @supply } %>
 </div>
