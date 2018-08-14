@@ -1,8 +1,8 @@
 <div class="row">
-  <h4 class="">Appliance configuration</h4>
+  <h4>Appliance configuration <%= "(using existing electricity usage data)" if params.key?(:fitted_configuration) %></h4>
 </div>
 <div class="row">
-  <ul class="nav nav-tabs" id="simulator-nav" role="tablist">
+  <ul class="nav nav-pills" id="simulator-nav" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="introduction-tab" data-toggle="tab" href="#introduction" role="tab" aria-controls="introduction">Introduction</a>
     </li>
@@ -62,7 +62,7 @@
                 <td>
                   <% unless appliance_config[:ict][k][:weekends].nil? %>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <%= hidden_field_tag "simulation[ict][#{k.to_s}][weekends]", '' %>
+                      <%= hidden_field_tag "simulation[ict][#{k.to_s}][weekends]", false %>
                       <%= check_box_tag "simulation[ict][#{k.to_s}][weekends]", 'true', appliance_config[:ict][k][:weekends] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_weekends_actual" } %>
                       <label for='simulation_ict_<%= k.to_s %>_weekends_actual' class="custom-control-label"></label>
                     </div>
@@ -71,7 +71,7 @@
                 <td>
                   <% unless appliance_config[:ict][k][:holidays].nil? %>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <%= hidden_field_tag "simulation[ict][#{k.to_s}][holidays]", '' %>
+                      <%= hidden_field_tag "simulation[ict][#{k.to_s}][holidays]", false %>
                       <%= check_box_tag "simulation[ict][#{k.to_s}][holidays]", 'true', appliance_config[:ict][k][:holidays] , { class: 'custom-control-input', id: "simulation_ict_#{k.to_s}_holidays_actual" } %>
                        <label for='simulation_ict_<%= k.to_s %>_holidays_actual' class="custom-control-label"></label>
                     </div>
@@ -91,7 +91,7 @@
   <div class="tab-pane collapse fade" id="lighting" role="tabpanel" aria-labelledby="lighting-tab">
     <div class="form-row">
       <div class="col-md-4">
-        <%= ff.label :lumens_per_watt %>
+        <%= ff.label 'Efficiency: Lumens per watt' %>
         <div class="input-group">
           <%= ff.text_field :lumens_per_watt, class: 'form-control', value: appliance_config[:lighting][:lumens_per_watt] %>
           <div class="input-group-append">
@@ -100,13 +100,17 @@
         </div>
       </div>
       <div class="col-md-4">
-        <%= ff.label :lumens_per_m2 %>
+        <%= ff.label 'Brightness: Lumens per m2' %>
         <div class="input-group">
           <%= ff.text_field :lumens_per_m2, class: 'form-control', value: appliance_config[:lighting][:lumens_per_m2] %>
           <div class="input-group-append">
             <span class="input-group-text">lumens per m<sup>2</sup> (lux)</span>
           </div>
         </div>
+      </div>
+      <div class="col-md-1"></div>
+       <div class="col-md-3 alert alert-primary">
+        <p>Find out more about lighting works in the simulator <a href="//blog.energysparks.uk/electricity-simulator/#lighting" target="_blank">here</a></p>
       </div>
     </div>
     <%= render 'form_buttons' %>
@@ -143,8 +147,8 @@
   <div class="tab-pane collapse fade" id="security_lighting" role="tabpanel" aria-labelledby="security_lighting-tab">
     <div class="form-row">
       <div class="col-md-6 keep">
-        <p>Light operating times</p>
-        <% appliance_config[:security_lighting][:control_type].each do |thing| %>
+        <p><b>Light operating times</b></p>
+        <% appliance_config[:security_lighting][:control_type_choices].each do |thing| %>
           <div class="custom-control custom-radio custom-control-inline">
             <%= radio_button_tag 'simulator[security_lighting][control_type]', thing, {}, class: "custom-control-input" %>
             <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
@@ -152,7 +156,7 @@
         <% end %>
         <div class="custom-control custom-radio custom-control-inline">
           <%= radio_button_tag 'simulator[security_lighting][control_type]', 'sensor', {}, class: "custom-control-input" %>
-          <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_sensor" %>'>Sensor</label>
+          <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_sensor" %>'>Movement Sensor</label>
         </div>
       </div>
       <div class="col-md-6 alert alert-primary">
@@ -244,6 +248,26 @@
         </div>
       </div>
     </div>
+    <div class="form-row">
+      <div class="col-auto">
+        <%= ff.label :average_refridgeration_power %>
+        <div class="input-group">
+          <%= ff.text_field :average_refridgeration_power, class: 'form-control', value: appliance_config[:kitchen][:average_refridgeration_power] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <%= ff.label :warmer_oven_power %>
+        <div class="input-group">
+          <%= ff.text_field :warmer_oven_power, class: 'form-control', value: appliance_config[:kitchen][:warmer_oven_power] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <%= render 'form_buttons' %>
   </div>
 <% end %>
@@ -295,12 +319,12 @@
       </div>
       <div class="col-auto">
         <div class="custom-control custom-checkbox custom-control-inline">
-          <%= hidden_field_tag 'simulation[summer_air_conn][weekends]', '' %>
+          <%= hidden_field_tag 'simulation[summer_air_conn][weekends]', false %>
           <%= check_box_tag 'simulation[summer_air_conn][weekends]', 'true', appliance_config[:summer_air_conn][:weekends] , { class: 'custom-control-input', id: 'simulation_summer_air_conn_weekends_actual' } %>
           <label for="simulation_summer_air_conn_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox custom-control-inline">
-          <%= hidden_field_tag 'simulation[summer_air_conn][holidays]', '' %>
+          <%= hidden_field_tag 'simulation[summer_air_conn][holidays]', false %>
           <%= check_box_tag 'simulation[summer_air_conn][holidays]', 'true', appliance_config[:summer_air_conn][:holidays] , { class: 'custom-control-input', id: 'simulation_summer_air_conn_holidays_actual' } %>
           <label for="simulation_summer_air_conn_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
@@ -367,12 +391,12 @@
       </div>
       <div class="col-md-3">
         <div class="custom-control custom-checkbox">
-          <%= hidden_field_tag 'simulation[electric_hot_water][weekends]', '' %>
+          <%= hidden_field_tag 'simulation[electric_hot_water][weekends]', false %>
           <%= check_box_tag 'simulation[electric_hot_water][weekends]', 'true', appliance_config[:electric_hot_water][:weekends] , { class: 'custom-control-input', id: 'simulation_electirc_hot_water_weekends_actual' } %>
           <label for="simulation_electirc_hot_water_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox">
-          <%= hidden_field_tag 'simulation[electric_hot_water][holidays]', '' %>
+          <%= hidden_field_tag 'simulation[electric_hot_water][holidays]', false %>
           <%= check_box_tag 'simulation[electric_hot_water][holidays]', 'true', appliance_config[:electric_hot_water][:holidays] , { class: 'custom-control-input', id: 'simulation_electric_hot_water_holidays_actual' } %>
           <label for="simulation_electric_hot_water_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
@@ -440,12 +464,12 @@
 
       <div class="col-md-3">
         <div class="custom-control custom-checkbox custom-control-inline">
-          <%= hidden_field_tag 'simulation[electrical_heating][weekends]', '' %>
+          <%= hidden_field_tag 'simulation[electrical_heating][weekends]', false %>
           <%= check_box_tag 'simulation[electrical_heating][weekends]', 'true', appliance_config[:electrical_heating][:weekends] , { class: 'custom-control-input', id: 'simulation_electrical_heating_weekends_actual' } %>
           <label for="simulation_electrical_heating_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox custom-control-inline">
-          <%= hidden_field_tag 'simulation[electrical_heating][holidays]', '' %>
+          <%= hidden_field_tag 'simulation[electrical_heating][holidays]', false %>
           <%= check_box_tag 'simulation[electrical_heating][holidays]', 'true', appliance_config[:electrical_heating][:holidays] , { class: 'custom-control-input', id: 'simulation_electrical_heating_holidays_actual' } %>
           <label for="simulation_electrical_heating_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>
@@ -493,12 +517,12 @@
       </div>
       <div class="col-auto">
         <div class="custom-control custom-checkbox custom-control-inline">
-          <%= hidden_field_tag 'simulation[boiler_pumps][weekends]', '' %>
+          <%= hidden_field_tag 'simulation[boiler_pumps][weekends]', false %>
           <%= check_box_tag 'simulation[boiler_pumps][weekends]', 'true', appliance_config[:boiler_pumps][:weekends] , { class: 'custom-control-input', id: 'simulation_boiler_pumps_weekends_actual' } %>
           <label for="simulation_boiler_pumps_weekends_actual" class="custom-control-label">On at weekends?</label>
         </div>
         <div class="custom-control custom-checkbox custom-control-inline">
-          <%= hidden_field_tag 'simulation[boiler_pumps][holidays]', '' %>
+          <%= hidden_field_tag 'simulation[boiler_pumps][holidays]', false %>
           <%= check_box_tag 'simulation[boiler_pumps][holidays]', 'true', appliance_config[:boiler_pumps][:holidays] , { class: 'custom-control-input', id: 'simulation_boiler_pumps_holidays_actual' } %>
           <label for="simulation_boiler_pumps_holidays_actual" class="custom-control-label">On in holidays?</label>
         </div>

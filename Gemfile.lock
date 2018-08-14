@@ -12,10 +12,10 @@ GIT
 PATH
   remote: ../energy-sparks_analytics
   specs:
-    energy-sparks_analytics (0.8.10)
+    energy-sparks_analytics (0.9.5)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
-      hash_diff (~> 1.0.0)
+      hashdiff (~> 0.3.7)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       mechanize (~> 2.7.6)
@@ -214,7 +214,6 @@ GEM
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
-    hash_diff (1.0.0)
     hashdiff (0.3.7)
     hashie (3.5.7)
     html-table (1.5.1)
@@ -374,7 +373,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rollbar (2.16.3)
+    rollbar (2.16.4)
       multi_json
     roo (2.7.1)
       nokogiri (~> 1)

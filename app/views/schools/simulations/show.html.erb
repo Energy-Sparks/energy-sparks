@@ -21,7 +21,7 @@
 
 <p></p>
 
-<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
+<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to "Create new simulation with 'fitted' configuration", new_school_simulation_path(@school, fitted_configuration: true), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
 
 <% first_of_pair = true %>
 <% @charts_for_page.each_with_index do |chart, index| %>
