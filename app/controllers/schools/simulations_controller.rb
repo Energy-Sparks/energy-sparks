@@ -69,34 +69,6 @@ class Schools::SimulationsController < ApplicationController
     end
   end
 
-  def sort_out_charts_for_page(charts_config)
-    charts_for_page = []
-    charts_config.each do |chart|
-      if chart.is_a?(Hash) && chart.key?(:chart_group)
-        chart[:chart_group][:charts].each_with_index do |c, index|
-          charts_for_page << { type: c, layout: :side_by_side, index: index }
-        end
-      else
-        charts_for_page << { type: chart, layout: :normal }
-      end
-    end
-    charts_for_page
-  end
-
-  def sort_out_group_charts(output)
-    results = []
-    output.each do |chart|
-      if chart[:data].key?(:charts)
-        chart[:data][:charts].each do |c|
-          results << c
-        end
-      else
-        results << chart
-      end
-    end
-    results
-  end
-
   def create
     simulation_configuration = ElectricitySimulatorConfiguration.new
 
@@ -143,8 +115,10 @@ class Schools::SimulationsController < ApplicationController
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
 
     @simulation_configuration = if params.key?(:fitted_configuration)
+                                  puts 'we have fitted config key'
                                   @actual_simulator.fit(default_appliance_configuration)
                                 else
+                                  puts params
                                   default_appliance_configuration
                                 end
     sort_out_simulation_stuff
@@ -170,6 +144,34 @@ private
 
   def chart_definitions
     DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
+  end
+
+  def sort_out_charts_for_page(charts_config)
+    charts_for_page = []
+    charts_config.each do |chart|
+      if chart.is_a?(Hash) && chart.key?(:chart_group)
+        chart[:chart_group][:charts].each_with_index do |c, index|
+          charts_for_page << { type: c, layout: :side_by_side, index: index }
+        end
+      else
+        charts_for_page << { type: chart, layout: :normal }
+      end
+    end
+    charts_for_page
+  end
+
+  def sort_out_group_charts(output)
+    results = []
+    output.each do |chart|
+      if chart[:data].key?(:charts)
+        chart[:data][:charts].each do |c|
+          results << c
+        end
+      else
+        results << chart
+      end
+    end
+    results
   end
 
   # TODO works but is messy
