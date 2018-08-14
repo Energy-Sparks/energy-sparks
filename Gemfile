@@ -13,13 +13,15 @@ gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.7.8', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'jquery-ui-rails' # Use jquery UI for datepickers
 gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+gem 'bootstrap4-datetime-picker-rails'
+gem 'momentjs-rails'
 
 # Frontend
 gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
@@ -52,7 +54,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
-gem 'merit', git: 'https://github.com/jamesjefferies/merit.git', branch: 'rails-5.2-tweaks-specify-base-controller' # Reputation/achievements/rankings
+gem 'merit', '~> 3.0.2'
 
 # Exception handling
 gem 'rollbar'

@@ -1,0 +1,53 @@
+<% content_for :page_title do %>Electricity Simulator for <%= @school.name %><% end %>
+
+<h1>The <%= @school.name %> Electricity Simulator</h1>
+
+<% unless @simulation.default %>
+  <h2><%= @simulation.title %></h2>
+  <p><%= @simulation.notes %></p>
+<% end %>
+
+<!-- <div class="row">
+  <div class="col-auto">
+    <%#= debug @simulation.configuration[:ict] %>
+  </div>
+    <div class="col-auto">
+      <%#= debug @simulation_configuration[:ict] %>
+  </div>
+    <div class="col-auto">
+      <%#= debug ElectricitySimulatorConfiguration.new[:ict] %>
+  </div>
+</div> -->
+
+<p></p>
+
+<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %> <%= link_to "Create new simulation with 'fitted' configuration", new_school_simulation_path(@school, fitted_configuration: true), class: 'btn btn-success' %> <%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
+
+<% @charts_for_page.each_with_index do |chart, index| %>
+  <% if chart[:layout] == :side_by_side %>
+    <% if chart[:index] == 0 %>
+      <div class="row">
+        <div id="advice-header-0" class="col-md-6 advice-header">
+        </div>
+        <div id="advice-header-1" class="col-md-6 advice-header">
+        </div>
+      </div>
+      <div class="row">
+    <% end %>
+
+    <div id="chart_wrapper_<%= index %>" class="col-md-6">
+      <h3 class="analysis">Loading: <%= chart[:type].to_s.humanize %></h3>
+      <div id="chart_<%= index %>" class="analysis-chart" data-chart-index="<%= index %>" data-chart-type="<%= chart[:type].to_s %>" data-chart-json="<%= request.path %>.json?chart_type=<%= chart[:type].to_s %>"></div>
+    </div>
+    <% if chart[:index] != 0 %>
+      </div>
+    <% end %>
+
+  <% else %>
+    <div id="chart_wrapper_<%= index %>">
+      <h3 class="analysis">Loading: <%= chart[:type].to_s.humanize %></h3>
+      <div id="chart_<%= index %>" class="analysis-chart" data-chart-index="<%= index %>" data-chart-type="<%= chart[:type].to_s %>" data-chart-json="<%= request.path %>.json?chart_type=<%= chart[:type].to_s %>"></div>
+    </div>
+  <% end %>
+
+<% end %>

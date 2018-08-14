@@ -1,6 +1,4 @@
-"use strict"
-
-var commonOptions = {
+var commonChartOptions = {
   title: { text: null },
   xAxis: { showEmpty: false },
   yAxis: { showEmpty: false },
@@ -38,6 +36,13 @@ var commonOptions = {
       tooltip: {
         headerFormat: '<b>{point.key}</b><br>',
         pointFormat: '{point.y:.2f} kWh'
+      },
+      point: {
+        events: {
+          legendItemClick: function () {
+            return false;
+          }
+        }
       }
     },
     line: {
@@ -70,6 +75,7 @@ var commonOptions = {
     }
   }
 }
+
 
 function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   var subChartType = d.chart1_subtype;
@@ -116,13 +122,15 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     if (seriesData[key].name == 'CUSUM') {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
     }
-    c.addSeries(seriesData[key]);
+    // The false parameter stops it being redrawed after every addition of series data
+    c.addSeries(seriesData[key], false);
   });
 
   if (yAxisLabel.length) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
     c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
+  c.redraw();
 }
 
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
@@ -136,14 +144,15 @@ function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
 
   Object.keys(seriesData).forEach(function (key) {
     console.log(seriesData[key].name);
-    c.addSeries(seriesData[key]);
+    c.addSeries(seriesData[key], false);
   });
+  c.redraw();
 }
 
 function pie(d, c, chartIndex, seriesData, $chartDiv) {
   $chartDiv.addClass('pie-chart');
 
-  c.addSeries(seriesData);
+  c.addSeries(seriesData, false);
   c.update({chart: {
     height: 450,
     plotBackgroundColor: null,
@@ -151,83 +160,5 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
     plotShadow: false,
     type: 'pie'
   }});
+  c.redraw();
 }
-
-function chartSuccess(d, c, chartIndex) {
-
-  var chartDiv = c.renderTo;
-  var $chartDiv = $(chartDiv);
-  var titleH3 = $chartDiv.prev('h3');
-
-   if (chartIndex == 0) {
-     titleH3.text(d.title);
-   } else {
-    titleH3.before('<hr class="analysis"/>');
-    titleH3.text(d.title);
-  }
-
-  var chartType = d.chart1_type;
-  var seriesData = d.series_data;
-  var yAxisLabel = d.y_axis_label;
-
-  var adviceHeader = d.advice_header;
-  var adviceFooter = d.advice_footer;
-
-  if (adviceHeader !== undefined) {
-    $chartDiv.before('<div>' + adviceHeader + '</div>');
-  }
-
-  if (adviceFooter !== undefined) {
-    $chartDiv.after('<div>' + adviceFooter + '</div>');
-  }
-
-  console.log("################################");
-  console.log(d.title);
-  console.log("################################");
-
-  if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType);
-
-  // Scatter
-  } else if (chartType == 'scatter') {
-    scatter(d, c, chartIndex, seriesData, yAxisLabel);
-
-  // Pie
-  } else if (chartType == 'pie') {
-    pie(d, c, chartIndex, seriesData, $chartDiv);
-  }
-  c.hideLoading();
-}
-
-$(document).ready(function() {
-  if ($("div.analysis-chart").length ) {
-    $("div.analysis-chart").each(function(){
-      var thisId = this.id;
-      var thisChart = Highcharts.chart(thisId, commonOptions );
-      var chartType = $(this).data('chart-type');
-      var chartIndex = $(this).data('chart-index');
-      console.log(chartType);
-      var currentPath = window.location.href
-      var dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
-      console.log(dataPath);
-      thisChart.showLoading();
-
-      $.ajax({
-        type: 'GET',
-        async: true,
-        dataType: "json",
-        url: dataPath,
-        success: function (returnedData) {
-          chartSuccess(returnedData.charts[0], thisChart, chartIndex);
-        },
-        error: function(broken) {
-          console.log("broken");
-          var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
-          titleH3.text('There was a problem ' + currentText);
-          $('div#chart_' + chartIndex).remove();
-        }
-      });
-    });
-  }
-});
-

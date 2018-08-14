@@ -1,0 +1,34 @@
+<% content_for :page_title do %>Alert reports for <%= @school.name %><% end %>
+
+<div typeof="School">
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1 property="name"><%= @school.name %> Alerts</h1>
+      <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
+      <%= link_to 'Alerts for this school', school_alerts_path(@school), class: 'btn btn-secondary' %></p>
+
+      <% @results.each do |alert_type| %>
+        <h2><%= alert_type[:title] %></h2>
+        <p><%= alert_type[:description] %></p>
+        <p>Current status: <%= alert_type[:report].status.capitalize %> - <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %>
+
+        <% alert_type[:report].detail.each do |detail| %>
+          <% if detail.type == :chart %>
+            <div id="alert-chart-data-<%= alert_type[:report].type %>" data-chart-title='<%= detail.content[:title] %>' data-chart-type='<%= alert_type[:report].type %>' class="hide">
+              <%= sort_out_data_for_alerts_chart(detail.content).html_safe %>
+            </div>
+
+            <div id="alert-chart-wrapper-<%= alert_type[:report].type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert_type[:report].type %>'></div>
+          <% elsif detail.type == :html %>
+            <%= detail.content.html_safe %>
+          <% else %>
+            <p><%= detail.content %></p>
+          <% end %>
+        <% end %>
+        <p><%= alert_type[:report].summary %></p>
+        <p>Find out more information: <%= link_to alert_type[:title], alert_type[:report].help_url %></p>
+        <hr/>
+      <% end %>
+    </div>
+  </div>
+</div>

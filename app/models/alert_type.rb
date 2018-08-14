@@ -4,6 +4,7 @@
 #
 #  analysis     :text
 #  category     :integer
+#  class_name   :text
 #  description  :text
 #  frequency    :integer
 #  id           :bigint(8)        not null, primary key

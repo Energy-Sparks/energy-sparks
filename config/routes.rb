@@ -28,15 +28,16 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
-
-      get :chart, to: 'chart_data#chart'
-      get :dashboard, to: 'chart_data#dashboard'
-      get :main_dashboard_electric, to: 'chart_data#main_dashboard_electric'
-      get :electricity_detail, to: 'chart_data#electricity_detail'
-      get :gas_detail, to: 'chart_data#gas_detail'
-      get :main_dashboard_electric_and_gas, to: 'chart_data#main_dashboard_electric_and_gas'
-      get :boiler_control, to: 'chart_data#boiler_control'
-      get :simulator, to: 'chart_data#simulator'
+      resources :simulations
+      get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
+      get :alert_reports, to: 'alert_reports#index', as: :alert_reports
+      get :chart, to: 'analysis#chart'
+      get :analysis, to: 'analysis#analysis'
+      get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
+      get :electricity_detail, to: 'analysis#electricity_detail'
+      get :gas_detail, to: 'analysis#gas_detail'
+      get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
+      get :boiler_control, to: 'analysis#boiler_control'
     end
 
     get :scoreboard, on: :collection
@@ -53,7 +54,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, controllers: {sessions: "sessions"}
+  devise_for :users, controllers: { sessions: "sessions" }
 
   devise_for :users, skip: :sessions
   scope :admin do
@@ -61,6 +62,7 @@ Rails.application.routes.draw do
     get 'reports', to: 'reports#index'
     get 'reports/loading', to: 'reports#loading'
     get 'reports/amr_data_index', to: 'reports#amr_data_index'
+    get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
  #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show

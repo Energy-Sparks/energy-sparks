@@ -56,6 +56,7 @@ class School < ApplicationRecord
   has_many :school_times, inverse_of: :school, dependent: :destroy
   has_many :contacts,     inverse_of: :school, dependent: :destroy
   has_many :alerts,       inverse_of: :school, dependent: :destroy
+  has_many :simulations, inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
   belongs_to :calendar_area
@@ -96,11 +97,11 @@ class School < ApplicationRecord
 
   # TODO integrate this analytics
   def heat_meters
-    meters.where(meter_type: :gas)
+    active_meters.where(meter_type: :gas)
   end
 
   def electricity_meters
-    meters.where(meter_type: :electricity)
+    active_meters.where(meter_type: :electricity)
   end
 
   def active_meters
