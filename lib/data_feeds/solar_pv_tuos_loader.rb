@@ -68,7 +68,7 @@ module DataFeeds
           _id, datetimestr, generation, capacity, _stations = components
           unless generation.nil?
             time = Time.zone.parse(datetimestr).to_datetime
-            halfhour_yield = generation / capacity
+            halfhour_yield = generation / capacity / 2.0
             total_yield += halfhour_yield
             solar_pv_yield[time] = halfhour_yield
             # puts "Download: #{time} #{halfhour_yield}"
