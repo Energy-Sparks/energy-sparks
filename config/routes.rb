@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     get 'reports', to: 'reports#index'
     get 'reports/loading', to: 'reports#loading'
     get 'reports/amr_data_index', to: 'reports#amr_data_index'
+    get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
  #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show
