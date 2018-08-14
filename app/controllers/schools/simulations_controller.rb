@@ -40,7 +40,6 @@ class Schools::SimulationsController < ApplicationController
     local_school = aggregate_school(@school)
 
     simulator = ElectricitySimulator.new(local_school)
-
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school, false)
 
@@ -141,7 +140,13 @@ class Schools::SimulationsController < ApplicationController
     @simulation = Simulation.new
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
-    @simulation_configuration = @actual_simulator.default_simulator_parameters
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
+
+    @simulation_configuration = if params.key?(:fitted_configuration)
+                                  @actual_simulator.fit(default_appliance_configuration)
+                                else
+                                  default_appliance_configuration
+                                end
     sort_out_simulation_stuff
   end
 
@@ -194,6 +199,7 @@ private
     end
 
     @actual_simulator.simulate(@simulation_configuration)
+
     @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
     chart_type = :intraday_line_school_days_6months
 
