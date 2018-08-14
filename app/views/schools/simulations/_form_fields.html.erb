@@ -1,5 +1,5 @@
 <div class="row">
-  <h4 class="">Appliance configuration</h4>
+  <h4>Appliance configuration <%= "(using existing electricity usage data)" if params.key?(:fitted_configuration) %></h4>
 </div>
 <div class="row">
   <ul class="nav nav-pills" id="simulator-nav" role="tablist">
@@ -244,6 +244,26 @@
             <div class="input-group-append" data-target="#kitchen_end_time" data-toggle="datetimepicker">
               <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-auto">
+        <%= ff.label :average_refridgeration_power %>
+        <div class="input-group">
+          <%= ff.text_field :average_refridgeration_power, class: 'form-control', value: appliance_config[:kitchen][:average_refridgeration_power] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <%= ff.label :warmer_oven_power %>
+        <div class="input-group">
+          <%= ff.text_field :warmer_oven_power, class: 'form-control', value: appliance_config[:kitchen][:warmer_oven_power] %>
+          <div class="input-group-append">
+            <span class="input-group-text">kW</span>
           </div>
         </div>
       </div>
