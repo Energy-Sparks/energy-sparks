@@ -170,7 +170,6 @@ private
   # TODO works but is messy
   def merge_into_existing_configuration(simulation_params, simulation_configuration)
     updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
-
     updated_simulation_configuration.each do |appliance, configuration_hash|
       break unless configuration_hash.is_a? Hash
       current_applicance = simulation_configuration[appliance]
@@ -245,6 +244,7 @@ private
     return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
     return value.to_sym if key == :type
     return true if value == 'true'
+    return false if value == 'false'
     return value.to_i if is_integer?(value)
     is_float?(value) ? value.to_f : value
   end
