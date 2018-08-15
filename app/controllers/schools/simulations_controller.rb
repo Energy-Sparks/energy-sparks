@@ -6,6 +6,7 @@ class Schools::SimulationsController < ApplicationController
 
   before_action :authorise_school
   before_action :set_simulation, only: [:show, :edit, :destroy, :update]
+  before_action :set_show_charts, only: :show
 
   def index
     @simulations = Simulation.where(school: @school)
@@ -21,19 +22,11 @@ class Schools::SimulationsController < ApplicationController
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school, false)
 
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
     @number_of_charts = @charts.size
 
     respond_to do |format|
       format.html { render :show }
       format.json do
-        # Load specific chart type, else default above
-        if params[:chart_type]
-          chart_type = params[:chart_type]
-          chart_type = chart_type.to_sym if chart_type.instance_of? String
-          @charts = [chart_type]
-        end
-
         # Allows for single run with all charts, or parallel
         @output = @charts.map do |this_chart_type|
           { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
@@ -119,6 +112,10 @@ private
   def authorise_school
     @school = School.find_by_slug(params[:school_id])
     authorize! :show, @school
+  end
+
+  def set_show_charts
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
   end
 
   def sort_out_group_charts(output)
