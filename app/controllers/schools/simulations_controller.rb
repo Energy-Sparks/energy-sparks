@@ -25,10 +25,7 @@ class Schools::SimulationsController < ApplicationController
     @number_of_charts = @charts.size
 
     respond_to do |format|
-      format.html do
-        @charts_for_page = sort_out_charts_for_page(@charts)
-        render :show
-      end
+      format.html { render :show }
       format.json do
         # Load specific chart type, else default above
         if params[:chart_type]
