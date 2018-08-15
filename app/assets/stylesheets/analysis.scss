@@ -1,4 +1,4 @@
-div.analysis-chart {
+div.analysis-chart, div.simulator-chart {
   height: 700px;
   width: 100%;
   text-align: center;
@@ -9,11 +9,11 @@ div.analysis-chart {
   margin: 0 auto;
   padding-bottom: 50px;
   padding-top: 50px;
-}
 
-div.analysis-chart.pie-chart {
-  height: 550px;
-  line-height: 550px;
+  .pie-chart {
+    height: 550px;
+    line-height: 550px;
+  }
 }
 
 .table-success, .table-success > th, .table-success > td {

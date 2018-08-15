@@ -1,6 +1,65 @@
 "use strict";
 
 $(document).ready(function() {
+
+  function alignYAxes() {
+    $('div.synchronise-y-axis').each(function() {
+
+      var maxY = 0;
+
+      $(this).find('div.simulator-chart').each(function() {
+        console.log('got this one: ' + $(this));
+        var thisChart = $(this).highcharts();
+        var thisChartYAxisMax = thisChart.yAxis[0].dataMax;
+        if (thisChartYAxisMax > maxY) {
+          maxY = thisChartYAxisMax;
+        }
+      });
+
+      $(this).find('div.simulator-chart').each(function() {
+        var thisChart = $(this).highcharts();
+        thisChart.update({ yAxis: { max: maxY }});
+      });
+    });
+  }
+
+  if ($("div.simulator-chart").length ) {
+    var dataPath = window.location.href + '.json';
+
+    $("div.simulator-chart").each(function(){
+      var thisId = this.id;
+      var thisChart = Highcharts.chart(thisId, commonChartOptions);
+      thisChart.showLoading();
+    });
+
+    function successfulData(returnedData) {
+      $("div.simulator-chart").each(function(){
+        var thisId = this.id;
+        var thisChart = Highcharts.chart(thisId, commonChartOptions);
+        var chartType = $(this).data('chart-type');
+        var chartIndex = $(this).data('chart-index');
+        var noAdvice = $(this).is("[data-no-advice]");
+
+        chartSuccess(returnedData.charts[chartIndex], thisChart, chartIndex, noAdvice);
+      });
+      alignYAxes();
+    }
+
+    $.ajax({
+      type: 'GET',
+      async: true,
+      dataType: "json",
+      url: dataPath,
+      success: successfulData,
+      error: function(broken) {
+        console.log('snap');
+        var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
+        titleH3.text('There was a problem loading this chart');
+        $('div#chart_' + chartIndex).remove();
+      }
+    });
+  }
+
   if ($("div.simulator-chart").length ) {
     $('button.update-simulator').on('click', function(event) {
       event.preventDefault();
@@ -9,7 +68,6 @@ $(document).ready(function() {
 
     $('form').bind('keypress', function(event) {
       if ( event.keyCode == 13 ) {
-        console.log('here');
         event.preventDefault();
         updateSimulatorCharts();
       }
@@ -50,7 +108,10 @@ $(document).ready(function() {
           chart.series[0].setData(value.series_data[0].data);
           chart.series[1].setData(value.series_data[1].data);
         });
+        alignYAxes();
       });
     }
   }
 });
+
+

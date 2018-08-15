@@ -41,6 +41,9 @@ function chartSuccess(d, c, chartIndex, noAdvice) {
   } else if (chartType == 'pie') {
     pie(d, c, chartIndex, seriesData, $chartDiv);
   }
+
+  $chartDiv.attr( "maxYvalue", c.yAxis[0].max );
+
   c.hideLoading();
 }
 
