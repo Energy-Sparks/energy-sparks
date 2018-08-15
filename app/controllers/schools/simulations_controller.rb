@@ -2,33 +2,10 @@ require 'dashboard'
 
 class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
+  include NewSimulatorChartConfig
 
   before_action :authorise_school
   before_action :set_simulation, only: [:show, :edit, :destroy, :update]
-
-  CHART_CONFIG_FOR_SCHOOL = {
-    name:             'Intraday (Comparison 6 months apart)',
-    chart1_type:      :line,
-    series_breakdown: :none,
-    timescale:        [{ schoolweek: 0 }],
-    x_axis:           :intraday,
-    meter_definition: :allelectricity,
-    filter:            { daytype: :occupied },
-    yaxis_units:      :kw,
-    yaxis_scaling:    :none
-  }.freeze
-
-  CHART_CONFIG_FOR_SIMULATOR = {
-    name:             'Intraday (Comparison 6 months apart)',
-    chart1_type:      :line,
-    series_breakdown: :none,
-    timescale:        [{ schoolweek: 0 }],
-    x_axis:           :intraday,
-    meter_definition: :electricity_simulator,
-    filter:            { daytype: :occupied },
-    yaxis_units:      :kw,
-    yaxis_scaling:    :none
-  }.freeze
 
   def index
     @simulations = Simulation.where(school: @school)
@@ -43,7 +20,7 @@ class Schools::SimulationsController < ApplicationController
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school, false)
 
-    @charts = chart_definitions
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
     @number_of_charts = @charts.size
 
     respond_to do |format|
@@ -58,6 +35,8 @@ class Schools::SimulationsController < ApplicationController
           chart_type = chart_type.to_sym if chart_type.instance_of? String
           @charts = [chart_type]
         end
+
+        # Allows for single run with all charts, or parallel
         @output = @charts.map do |this_chart_type|
           { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
         end
@@ -140,10 +119,6 @@ private
   def authorise_school
     @school = School.find_by_slug(params[:school_id])
     authorize! :show, @school
-  end
-
-  def chart_definitions
-    DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
   end
 
   def sort_out_charts_for_page(charts_config)
@@ -265,13 +240,5 @@ private
     editable.push(:notes)
 
     params.require(:simulation).permit(editable)
-  end
-
-  def chart_config_for_school
-    CHART_CONFIG_FOR_SCHOOL.deep_dup
-  end
-
-  def chart_config_for_simulator
-    CHART_CONFIG_FOR_SIMULATOR.deep_dup
   end
 end

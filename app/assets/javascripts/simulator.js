@@ -1,6 +1,68 @@
 "use strict";
 
 $(document).ready(function() {
+
+  if ($("div.simulator-chart").length ) {
+    var dataPath = window.location.href + '.json';
+
+    $("div.simulator-chart").each(function(){
+      var thisId = this.id;
+      var thisChart = Highcharts.chart(thisId, commonChartOptions);
+      thisChart.showLoading();
+    });
+
+    function alignYAxes() {
+      $('div.synchronise-y-axis').each(function() {
+
+        var maxY = 0;
+
+        $(this).find('div.simulator-chart').each(function() {
+          console.log('got this one: ' + $(this));
+          var thisChart = $(this).highcharts();
+          console.log(thisChart);
+          var thisChartYAxis = thisChart.yAxis[0].max;
+          console.log(thisChart.yAxis[0].max);
+          if (thisChartYAxis > maxY) {
+            maxY = thisChartYAxis;
+          }
+          console.log(maxY);
+        });
+
+        $(this).find('div.simulator-chart').each(function() {
+          var thisChart = $(this).highcharts();
+          thisChart.update({ yAxis: { max: maxY }});
+        });
+      });
+    }
+
+    function successfulData(returnedData) {
+      $("div.simulator-chart").each(function(){
+        var thisId = this.id;
+        var thisChart = Highcharts.chart(thisId, commonChartOptions);
+        var chartType = $(this).data('chart-type');
+        var chartIndex = $(this).data('chart-index');
+        var noAdvice = $(this).is("[data-no-advice]");
+
+        chartSuccess(returnedData.charts[chartIndex], thisChart, chartIndex, noAdvice);
+      });
+      alignYAxes();
+    }
+
+    $.ajax({
+      type: 'GET',
+      async: true,
+      dataType: "json",
+      url: dataPath,
+      success: successfulData,
+      error: function(broken) {
+        console.log('snap');
+        var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
+        titleH3.text('There was a problem loading this chart');
+        $('div#chart_' + chartIndex).remove();
+      }
+    });
+  }
+
   if ($("div.simulator-chart").length ) {
     $('button.update-simulator').on('click', function(event) {
       event.preventDefault();
@@ -9,7 +71,6 @@ $(document).ready(function() {
 
     $('form').bind('keypress', function(event) {
       if ( event.keyCode == 13 ) {
-        console.log('here');
         event.preventDefault();
         updateSimulatorCharts();
       }
@@ -53,34 +114,6 @@ $(document).ready(function() {
       });
     }
   }
-
-  if ($("div.analysis-chart").length ) {
-   function alignYAxes() {
-
-        $('[data-pair]').each(function() {
-
-          var thisPair = $(this).data('pair');
-          var pairOfDivs = $('[data-pair=' + thisPair + ']');
-          if (pairOfDivs.length) {
-
-            var maxY = 0;
-            $('[data-pair=' + thisPair  +']').each(function() {
- //chart.yAxis[0].max;
-              var thisChart = $(this).highcharts();
-              console.log(thisChart);
-              console.log(thisChart.yAxis[0]);
-            });
-          //  Sort them out
-
-          }
-
-        });
-
-    }
-    console.log('HELLLLOOOOO');
-    alignYAxes();
-  };
-
 });
 
 
