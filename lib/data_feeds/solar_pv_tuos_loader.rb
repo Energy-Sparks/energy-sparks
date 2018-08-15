@@ -159,7 +159,7 @@ module DataFeeds
 
       WeatherUndergroundCsvWriter.new(filename, pv_data, @csv_format).write_csv
       pv_data.each do |datetime, value|
-        DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv)
+        DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv) unless value.nan?
       end
 
       pv_readings = data_feed.readings(:solar_pv, @start_date, @end_date)
