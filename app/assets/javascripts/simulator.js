@@ -36,7 +36,14 @@ $(document).ready(function() {
 
     function updateSimulatorCharts() {
       var data = $("form.simulation :input").serializeArray();
-      var dataPath = window.location.href + '.json';
+
+      var dataPath = location.protocol + "//" + location.host + location.pathname + '.json'
+
+      // TODO there are neater ways to do this!
+      if (location.search == '?fitted_configuration=true') {
+        data[data.length] = { name: "fitted_configuration", value: "true" };
+      }
+
       $.get(dataPath, data).done(function(data) {
         $.each(data.charts, function( index, value ) {
           var chart = $('div#chart_' + index).highcharts();
