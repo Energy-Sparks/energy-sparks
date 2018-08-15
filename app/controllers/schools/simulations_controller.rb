@@ -12,6 +12,7 @@ class Schools::SimulationsController < ApplicationController
     create if @simulations.empty?
   end
 
+  # ALSO used by simulation detail controller
   def show
     @simulation_configuration = @simulation.configuration
     local_school = aggregate_school(@school)
@@ -88,6 +89,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new
+    #TODO sort this out including method renames ;)
     @simulation = Simulation.new
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
@@ -104,6 +106,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def edit
+    #TODO sort this out including method renames ;)
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @simulation.configuration
@@ -119,20 +122,6 @@ private
   def authorise_school
     @school = School.find_by_slug(params[:school_id])
     authorize! :show, @school
-  end
-
-  def sort_out_charts_for_page(charts_config)
-    charts_for_page = []
-    charts_config.each do |chart|
-      if chart.is_a?(Hash) && chart.key?(:chart_group)
-        chart[:chart_group][:charts].each_with_index do |c, index|
-          charts_for_page << { type: c, layout: :side_by_side, index: index }
-        end
-      else
-        charts_for_page << { type: chart, layout: :normal }
-      end
-    end
-    charts_for_page
   end
 
   def sort_out_group_charts(output)
