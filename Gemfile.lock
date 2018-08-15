@@ -584,6 +584,7 @@ DEPENDENCIES
   redcarpet
   rollbar
   rspec-rails (~> 3.5)
+  ruby-sun-times
   rubyzip (>= 1.2.1)
   sass-rails
   selenium-webdriver
