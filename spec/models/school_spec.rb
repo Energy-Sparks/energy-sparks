@@ -15,7 +15,7 @@ describe School do
   end
 
   describe 'knows whether the school is open or not' do
-    it 'when open close times are defined' do
+    pending 'when open close times are defined' do
       SchoolTime.days.each do |day, _value|
         # default values
         subject.school_times.create(day: day)

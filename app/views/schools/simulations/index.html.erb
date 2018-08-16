@@ -2,8 +2,6 @@
 
 <h1><%= @school.name %> Electricity Simulations</h1>
 <p>These simulations have been saved for this school.</p>
-<p><%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %></p>
-<p><%= link_to "Create new simulation with 'fitted' configuration", new_school_simulation_path(@school, fitted_configuration: true), class: 'btn btn-success' %></p>
 
  <table class="table">
   <thead>
@@ -28,3 +26,15 @@
     <% end %>
   </tbody>
 </table>
+
+<hr/>
+<h2>New simulations</h2>
+<p>You can create a new simulation using three initial appliance configurations</p>
+<ul>
+<li>Using the default configuration </li>
+<li>a configuration based on your school's historical energy usage</li>
+<li>a configuration for an 'exemplar' school </li>
+</ul>
+
+<%= link_to 'Default configuration', new_school_simulation_path(@school), class: 'btn btn-success btn-sm' %>  <%= link_to 'Fitted configuration', school_new_fitted_simulation_path(@school), class: 'btn btn-success btn-sm' %>
+<%= link_to 'Exemplar configuration', school_new_exemplar_simulation_path(@school), class: 'btn btn-success btn-sm' %>
