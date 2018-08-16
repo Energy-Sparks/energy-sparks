@@ -12,7 +12,7 @@ GIT
 PATH
   remote: ../energy-sparks_analytics
   specs:
-    energy-sparks_analytics (0.9.9)
+    energy-sparks_analytics (0.9.11)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hashdiff (~> 0.3.7)
