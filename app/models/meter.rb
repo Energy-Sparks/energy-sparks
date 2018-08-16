@@ -81,6 +81,6 @@ class Meter < ApplicationRecord
 
   # TODO Temp from load from amr code
   def meter_correction_rules
-    { auto_insert_missing_readings: :weekends } if meter_type == 'gas'
+    [{ auto_insert_missing_readings: { type: :weekends } }] if meter_type == 'gas'
   end
 end
