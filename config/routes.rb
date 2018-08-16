@@ -28,10 +28,11 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
-      resources :simulations
       get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
-      get 'simulations/new_fitted', to: 'simulation#new_fitted', as: :new_fitted_simulation
-      get 'simulations/new_exemplar', to: 'simulation#new_exemplar', as: :new_exemplar_simulation
+      get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
+      get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
+      resources :simulations
+
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'analysis#chart'

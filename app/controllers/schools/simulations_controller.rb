@@ -57,16 +57,20 @@ class Schools::SimulationsController < ApplicationController
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
     @simulation_configuration = @actual_simulator.fit(default_appliance_configuration)
+    sort_out_simulation_stuff
   end
 
-  # def new_exemplar
-  #   #TODO sort this out including method renames ;)
-  #   @simulation = Simulation.new
-  #   @local_school = aggregate_school(@school)
-  #   @actual_simulator = ElectricitySimulator.new(@local_school)
-  #   default_appliance_configuration = @actual_simulator.default_simulator_parameters
+  def new_exemplar
+    #TODO sort this out including method renames ;)
+    @simulation = Simulation.new
+    @local_school = aggregate_school(@school)
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
+    fitted_parameters = @actual_simulator.fit(default_appliance_configuration)
 
-  # end
+    @simulation_configuration = @actual_simulator.exemplar(fitted_parameters)
+    sort_out_simulation_stuff
+  end
 
   def create
     simulation_configuration = ElectricitySimulatorConfiguration.new
