@@ -39,6 +39,35 @@ class Schools::SimulationsController < ApplicationController
     end
   end
 
+  def new
+    #TODO sort this out including method renames ;)
+    @simulation = Simulation.new
+    @local_school = aggregate_school(@school)
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
+
+    @simulation_configuration = default_appliance_configuration
+    sort_out_simulation_stuff
+  end
+
+  def new_fitted
+    #TODO sort this out including method renames ;)
+    @simulation = Simulation.new
+    @local_school = aggregate_school(@school)
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
+    @simulation_configuration = @actual_simulator.fit(default_appliance_configuration)
+  end
+
+  # def new_exemplar
+  #   #TODO sort this out including method renames ;)
+  #   @simulation = Simulation.new
+  #   @local_school = aggregate_school(@school)
+  #   @actual_simulator = ElectricitySimulator.new(@local_school)
+  #   default_appliance_configuration = @actual_simulator.default_simulator_parameters
+
+  # end
+
   def create
     simulation_configuration = ElectricitySimulatorConfiguration.new
 
@@ -76,23 +105,6 @@ class Schools::SimulationsController < ApplicationController
     else
       render :edit
     end
-  end
-
-  def new
-    #TODO sort this out including method renames ;)
-    @simulation = Simulation.new
-    @local_school = aggregate_school(@school)
-    @actual_simulator = ElectricitySimulator.new(@local_school)
-    default_appliance_configuration = @actual_simulator.default_simulator_parameters
-
-    @simulation_configuration = if params.key?(:fitted_configuration)
-                                  puts 'we have fitted config key'
-                                  @actual_simulator.fit(default_appliance_configuration)
-                                else
-                                  puts params
-                                  default_appliance_configuration
-                                end
-    sort_out_simulation_stuff
   end
 
   def edit
