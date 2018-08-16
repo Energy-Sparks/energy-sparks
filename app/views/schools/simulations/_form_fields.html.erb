@@ -156,17 +156,13 @@
         <p><b>Light operating times</b></p>
         <% appliance_config[:security_lighting][:control_type_choices].each do |thing| %>
           <div class="custom-control custom-radio custom-control-inline">
-            <%= radio_button_tag 'simulation[security_lighting][control_type]', thing, {}, class: "custom-control-input" %>
+            <%= radio_button_tag 'simulation[security_lighting][control_type]', thing, thing == appliance_config[:security_lighting][:control_type], class: "custom-control-input" %>
             <label class="custom-control-label" for='<%= "simulation_security_lighting_control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
           </div>
         <% end %>
-        <div class="custom-control custom-radio custom-control-inline">
-          <%= radio_button_tag 'simulation[security_lighting][control_type]', 'sensor', {}, class: "custom-control-input" %>
-          <label class="custom-control-label" for='<%= "simulation_security_lighting_control_type_sensor" %>'>Movement Sensor</label>
-        </div>
       </div>
       <div class="col-md-6 alert alert-primary">
-        <p id="sensor" class="control-type-description">The security lights have a movement sensor. The electricity used by these lights is very small, so negligible.</p>
+        <p id="movement_sensor" class="control-type-description">The security lights have a movement sensor. The electricity used by these lights is very small, so negligible.</p>
         <p id="ambient" class="control-type-description">The security lights sense the ambient light to work out when to switch on.</p>
         <p id="sunrise_sunset" class="control-type-description">The security lights know automatically when sunrise and sunset is.</p>
         <p id="fixed_times" class="control-type-description">The security lights switch on and off with a timer, please set the correct times.</p>

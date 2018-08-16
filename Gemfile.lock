@@ -3,7 +3,7 @@ GIT
   revision: 651c7e00000d26647ea6976c935ec6038f6aa843
   branch: integration
   specs:
-    energy-sparks_analytics (0.9.9)
+    energy-sparks_analytics (0.9.11)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hashdiff (~> 0.3.7)
