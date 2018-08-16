@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.5.1'
 
 # Rails/Core
-gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
@@ -55,6 +55,7 @@ gem 'whenever', :require => false # Provides a syntax for writing and deploying 
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '~> 3.0.2'
+gem 'ruby-sun-times'
 
 # Exception handling
 gem 'rollbar'

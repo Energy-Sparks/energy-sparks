@@ -2,39 +2,18 @@ require 'dashboard'
 
 class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
+  include NewSimulatorChartConfig
 
   before_action :authorise_school
   before_action :set_simulation, only: [:show, :edit, :destroy, :update]
-
-  CHART_CONFIG_FOR_SCHOOL = {
-    name:             'Intraday (Comparison 6 months apart)',
-    chart1_type:      :line,
-    series_breakdown: :none,
-    timescale:        [{ schoolweek: 0 }],
-    x_axis:           :intraday,
-    meter_definition: :allelectricity,
-    filter:            { daytype: :occupied },
-    yaxis_units:      :kw,
-    yaxis_scaling:    :none
-  }.freeze
-
-  CHART_CONFIG_FOR_SIMULATOR = {
-    name:             'Intraday (Comparison 6 months apart)',
-    chart1_type:      :line,
-    series_breakdown: :none,
-    timescale:        [{ schoolweek: 0 }],
-    x_axis:           :intraday,
-    meter_definition: :electricity_simulator,
-    filter:            { daytype: :occupied },
-    yaxis_units:      :kw,
-    yaxis_scaling:    :none
-  }.freeze
+  before_action :set_show_charts, only: :show
 
   def index
     @simulations = Simulation.where(school: @school)
     create if @simulations.empty?
   end
 
+  # ALSO used by simulation detail controller
   def show
     @simulation_configuration = @simulation.configuration
     local_school = aggregate_school(@school)
@@ -43,21 +22,12 @@ class Schools::SimulationsController < ApplicationController
     simulator.simulate(@simulation_configuration)
     chart_manager = ChartManager.new(local_school, false)
 
-    @charts = chart_definitions
     @number_of_charts = @charts.size
 
     respond_to do |format|
-      format.html do
-        @charts_for_page = sort_out_charts_for_page(@charts)
-        render :show
-      end
+      format.html { render :show }
       format.json do
-        # Load specific chart type, else default above
-        if params[:chart_type]
-          chart_type = params[:chart_type]
-          chart_type = chart_type.to_sym if chart_type.instance_of? String
-          @charts = [chart_type]
-        end
+        # Allows for single run with all charts, or parallel
         @output = @charts.map do |this_chart_type|
           { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
         end
@@ -67,34 +37,6 @@ class Schools::SimulationsController < ApplicationController
         render 'schools/analysis/chart_data'
       end
     end
-  end
-
-  def sort_out_charts_for_page(charts_config)
-    charts_for_page = []
-    charts_config.each do |chart|
-      if chart.is_a?(Hash) && chart.key?(:chart_group)
-        chart[:chart_group][:charts].each_with_index do |c, index|
-          charts_for_page << { type: c, layout: :side_by_side, index: index }
-        end
-      else
-        charts_for_page << { type: chart, layout: :normal }
-      end
-    end
-    charts_for_page
-  end
-
-  def sort_out_group_charts(output)
-    results = []
-    output.each do |chart|
-      if chart[:data].key?(:charts)
-        chart[:data][:charts].each do |c|
-          results << c
-        end
-      else
-        results << chart
-      end
-    end
-    results
   end
 
   def create
@@ -137,20 +79,24 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new
+    #TODO sort this out including method renames ;)
     @simulation = Simulation.new
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
 
     @simulation_configuration = if params.key?(:fitted_configuration)
+                                  puts 'we have fitted config key'
                                   @actual_simulator.fit(default_appliance_configuration)
                                 else
+                                  puts params
                                   default_appliance_configuration
                                 end
     sort_out_simulation_stuff
   end
 
   def edit
+    #TODO sort this out including method renames ;)
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @simulation.configuration
@@ -168,8 +114,22 @@ private
     authorize! :show, @school
   end
 
-  def chart_definitions
-    DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
+  def set_show_charts
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
+  end
+
+  def sort_out_group_charts(output)
+    results = []
+    output.each do |chart|
+      if chart[:data].key?(:charts)
+        chart[:data][:charts].each do |c|
+          results << c
+        end
+      else
+        results << chart
+      end
+    end
+    results
   end
 
   # TODO works but is messy
@@ -248,7 +208,7 @@ private
   def convert_to_correct_format(key, value)
     return value if key == :title
     return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
-    return value.to_sym if key == :type
+    return value.to_sym if [:type, :control_type].include? key
     return true if value == 'true'
     return false if value == 'false'
     return value.to_i if is_integer?(value)
@@ -263,13 +223,5 @@ private
     editable.push(:notes)
 
     params.require(:simulation).permit(editable)
-  end
-
-  def chart_config_for_school
-    CHART_CONFIG_FOR_SCHOOL.deep_dup
-  end
-
-  def chart_config_for_simulator
-    CHART_CONFIG_FOR_SIMULATOR.deep_dup
   end
 end
