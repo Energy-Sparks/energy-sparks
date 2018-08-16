@@ -156,13 +156,13 @@
         <p><b>Light operating times</b></p>
         <% appliance_config[:security_lighting][:control_type_choices].each do |thing| %>
           <div class="custom-control custom-radio custom-control-inline">
-            <%= radio_button_tag 'simulator[security_lighting][control_type]', thing, {}, class: "custom-control-input" %>
-            <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
+            <%= radio_button_tag 'simulation[security_lighting][control_type]', thing, {}, class: "custom-control-input" %>
+            <label class="custom-control-label" for='<%= "simulation_security_lighting_control_type_#{thing}" %>'><%= thing.to_s.humanize %></label>
           </div>
         <% end %>
         <div class="custom-control custom-radio custom-control-inline">
-          <%= radio_button_tag 'simulator[security_lighting][control_type]', 'sensor', {}, class: "custom-control-input" %>
-          <label class="custom-control-label" for='<%= "simulator_security_lighting_control_type_sensor" %>'>Movement Sensor</label>
+          <%= radio_button_tag 'simulation[security_lighting][control_type]', 'sensor', {}, class: "custom-control-input" %>
+          <label class="custom-control-label" for='<%= "simulation_security_lighting_control_type_sensor" %>'>Movement Sensor</label>
         </div>
       </div>
       <div class="col-md-6 alert alert-primary">

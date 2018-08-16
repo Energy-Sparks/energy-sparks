@@ -208,7 +208,7 @@ private
   def convert_to_correct_format(key, value)
     return value if key == :title
     return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
-    return value.to_sym if key == :type
+    return value.to_sym if [:type, :control_type].include? key
     return true if value == 'true'
     return false if value == 'false'
     return value.to_i if is_integer?(value)
