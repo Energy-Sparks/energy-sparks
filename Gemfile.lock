@@ -554,7 +554,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics!
+  energy-sparks_analytics (~> 0.9.9)!
   factory_bot_rails
   fakefs
   fasterer
