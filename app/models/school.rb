@@ -95,6 +95,15 @@ class School < ApplicationRecord
     ]
   end
 
+  def is_open?(datetime)
+    time = datetime.to_time.utc
+    return false if time.saturday? || time.sunday?
+    day_of_week = time.strftime("%A").downcase
+    school_time = school_times.find_by(day: day_of_week)
+    time_as_number = datetime.hour * 100 + datetime.min
+    school_time.opening_time < time_as_number && school_time.closing_time > time_as_number
+  end
+
   # TODO integrate this analytics
   def heat_meters
     active_meters.where(meter_type: :gas)
