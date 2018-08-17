@@ -1,33 +1,31 @@
 <% content_for :page_title do %>Electricity Simulations for <%= @school.name %><% end %>
 
-<h1><%= @school.name %> Electricity Simulations</h1>
+<h1>Electricity Simulations</h1>
+<h2><%= link_to @school.name, @school %></h2>
+
 <p>These simulations have been saved for this school.</p>
 
- <table class="table">
+ <table class="table table-sm">
   <thead>
-    <tr>
-      <th>Title</th>
-      <th>Notes</th>
-      <th>Creation date</th>
-      <th>Results</th>
-      <th></th>
+    <tr class="d-flex">
+      <th class="col-3">Title</th>
+      <th class="col-5">Notes</th>
+      <th class="col-2">Creation date</th>
+      <th class="col-2">Results</th>
     </tr>
   </thead>
   <tbody>
     <% @simulations.each do |simulation| %>
-      <tr>
-        <td><%= simulation.title %></td>
-        <td><%= simulation.notes %></td>
-        <td><%= nice_date_times(simulation.created_at) %></td>
-        <td><%= link_to 'Results', school_simulation_path(@school, simulation), class: 'btn btn-info' %></td>
-        <td><%= link_to 'Edit', edit_school_simulation_path(@school, simulation), class: 'btn btn-warning' %></td>
-        <td><%= link_to 'Delete', school_simulation_path(@school, simulation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      <tr class="d-flex">
+        <td class="col-3"><%= simulation.title %></td>
+        <td class="col-5"><%= simulation.notes %></td>
+        <td class="col-2"><%= nice_date_times(simulation.created_at) %></td>
+        <td class="col-2 "><%= link_to 'Results', school_simulation_path(@school, simulation), class: 'btn btn-sm btn-info' %> <%= link_to 'Edit', edit_school_simulation_path(@school, simulation), class: 'btn btn-sm btn-warning' %> <%= link_to 'Delete', school_simulation_path(@school, simulation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<hr/>
 <h2>New simulations</h2>
 <p>You can create a new simulation using three initial appliance configurations</p>
 <ul>

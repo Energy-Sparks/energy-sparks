@@ -1,13 +1,12 @@
 <% content_for :page_title do %>Electricity Simulator for <%= @school.name %><% end %>
 
-<h1>The <%= @school.name %> Electricity Simulator</h1>
+<h1>Electricity Simulator</h1>
+<h2><%= link_to @school.name, @school %><%= " - #{@simulation.title}" if @simulation.title.present? %></h2>
 
 <% unless @simulation.default %>
   <h2><%= @simulation.title %></h2>
   <p><%= @simulation.notes %></p>
 <% end %>
-
-<p></p>
 
 <p><%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
 
