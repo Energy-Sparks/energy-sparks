@@ -10,7 +10,7 @@ div.analysis-chart, div.simulator-chart {
   padding-bottom: 50px;
   padding-top: 50px;
 
-  .pie-chart {
+  &.pie-chart {
     height: 550px;
     line-height: 550px;
   }

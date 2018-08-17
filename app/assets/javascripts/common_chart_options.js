@@ -14,29 +14,17 @@ var commonChartOptions = {
   plotOptions: {
     bar: {
       stacking: 'normal',
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '£ {point.y:.2f}'
-      }
     },
     column: {
       dataLabels: {
         color: '#232b49'
       },
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.y:.2f} kWh'
-      }
     },
     pie: {
       allowPointSelect: true,
       cursor: 'pointer',
       dataLabels: { enabled: false },
       showInLegend: true,
-      tooltip: {
-        headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: '{point.y:.2f} kWh'
-      },
       point: {
         events: {
           legendItemClick: function () {
@@ -89,7 +77,7 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   // BAR Charts
   if (chartType == 'bar') {
     console.log('bar');
-    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: yAxisLabel + '{point.y:.2f}' }}}});
   }
 
   // LINE charts
@@ -98,6 +86,8 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
       console.log('Yaxis - Temperature');
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    } else {
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
   }
 
@@ -106,7 +96,9 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     console.log('column: ' + subChartType);
 
     if (subChartType == 'stacked') {
-      c.update({ plotOptions: { column: { stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+    } else {
+      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
 
     if (y2AxisLabel !== undefined && (y2AxisLabel == 'Degree Days' || y2AxisLabel == 'Temperature')) {
@@ -120,7 +112,11 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     console.log('Series data name: ' + seriesData[key].name);
 
     if (seriesData[key].name == 'CUSUM') {
-      c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
+      c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
+    }
+
+    if (seriesData[key].name.startsWith('Energy')) {
+      seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
     }
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);
@@ -149,7 +145,7 @@ function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
   c.redraw();
 }
 
-function pie(d, c, chartIndex, seriesData, $chartDiv) {
+function pie(d, c, chartIndex, seriesData, $chartDiv, yAxisLabel) {
   $chartDiv.addClass('pie-chart');
 
   c.addSeries(seriesData, false);
@@ -159,6 +155,15 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
     plotBorderWidth: null,
     plotShadow: false,
     type: 'pie'
-  }});
+  },
+  plotOptions: {
+   pie: {
+    tooltip: {
+        headerFormat: '<b>{point.key}</b><br>',
+        pointFormat: '{point.y:.2f} ' + yAxisLabel
+      }
+    }
+  }
+  });
   c.redraw();
 }
