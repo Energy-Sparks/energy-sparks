@@ -9,7 +9,7 @@ class Schools::SimulationsController < ApplicationController
   before_action :set_show_charts, only: :show
 
   def index
-    @simulations = Simulation.where(school: @school)
+    @simulations = Simulation.where(school: @school).order(:created_at)
     create if @simulations.empty?
   end
 
