@@ -53,8 +53,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
-  # Turn down logging renders https://github.com/roidrage/lograge
-  config.lograge.enabled = true
+
   config.active_record.logger = nil
 
   config.log_level = :info
