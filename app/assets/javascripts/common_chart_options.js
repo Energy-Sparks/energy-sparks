@@ -116,8 +116,10 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
 
-    if (seriesData[key].name.startsWith('Energy')) {
+    if (seriesData[key].name.startsWith('Energy') && seriesData[key].type == 'line') {
+      console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
+      seriesData[key].dashStyle =  'Dash';
     }
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);
