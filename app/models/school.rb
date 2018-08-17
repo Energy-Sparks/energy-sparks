@@ -140,6 +140,10 @@ class School < ApplicationRecord
     sash.badge_ids.include?(id)
   end
 
+  def alerts?
+    alerts.any?
+  end
+
   def current_term
     calendar.terms.find_by('NOW()::DATE BETWEEN start_date AND end_date')
   end
