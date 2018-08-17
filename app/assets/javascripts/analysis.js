@@ -39,7 +39,7 @@ function chartSuccess(d, c, chartIndex, noAdvice) {
 
   // Pie
   } else if (chartType == 'pie') {
-    pie(d, c, chartIndex, seriesData, $chartDiv);
+    pie(d, c, chartIndex, seriesData, $chartDiv, yAxisLabel);
   }
 
   $chartDiv.attr( "maxYvalue", c.yAxis[0].max );
