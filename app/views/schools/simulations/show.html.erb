@@ -4,7 +4,6 @@
 <h2><%= link_to @school.name, @school %><%= " - #{@simulation.title}" if @simulation.title.present? %></h2>
 
 <% unless @simulation.default %>
-  <h2><%= @simulation.title %></h2>
   <p><%= @simulation.notes %></p>
 <% end %>
 
