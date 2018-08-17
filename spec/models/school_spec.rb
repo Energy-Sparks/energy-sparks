@@ -67,6 +67,34 @@ describe School do
     end
   end
 
+  describe '#alerts?' do
+    context 'when any alerts are set up for the school' do
+      it 'returns true' do
+        alert_type = create :alert_type
+        contact = create :contact, :with_email_address, school_id: subject.id
+        alert = Alert.create(alert_type: alert_type, school: subject, contacts: [contact])
+        expect(subject.contacts.count).to be 1
+        expect(subject.alerts.count).to be 1
+        expect(subject.contacts.first.alerts.first).to eq alert
+        expect(subject.alerts?).to be true
+      end
+    end
+    context 'when no alerts are set up for the school' do
+      it 'returns false' do
+        expect(subject.alerts?).to be false
+      end
+    end
+  end
+
+  # describe '#contacts_and_alerts' do
+  #   context 'with contacts and alerts for school' do
+  #     it
+
+
+  #   end
+
+  # end
+
   describe '#current_term' do
 
     it 'returns the current term' do
