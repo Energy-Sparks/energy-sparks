@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.5.1'
 
 # Rails/Core
-gem 'rails', '~> 5.2.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'puma' # Use Puma as the app server
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
@@ -13,8 +13,7 @@ gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 
 # Dashboard analytics
-#gem 'energy-sparks_analytics', '~> 0.8.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
-gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', '~> 0.9.9', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -55,7 +54,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
-gem 'merit', git: 'https://github.com/jamesjefferies/merit.git', branch: 'rails-5.2-tweaks-specify-base-controller' # Reputation/achievements/rankings
+gem 'merit', '~> 3.0.2'
+gem 'ruby-sun-times'
 
 # Exception handling
 gem 'rollbar'
