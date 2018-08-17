@@ -15,5 +15,6 @@
 FactoryBot.define do
   factory :alert do
     alert_type
+    class_name { 'AlertChangeInElectricityBaseloadShortTerm' }
   end
 end
