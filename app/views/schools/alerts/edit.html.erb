@@ -1,3 +1,5 @@
+<% content_for :page_title do %>Edit alert <%= @alert.alert_type.title %><% end %>
+
 <h1>Editing School Alert</h1>
 <h2><%= @alert.alert_type.title %></h2>
 <% if @school.contacts.empty? %>

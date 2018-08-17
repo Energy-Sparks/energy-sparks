@@ -13,7 +13,7 @@ gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.9.9', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+gem 'energy-sparks_analytics', '~> 0.9.15', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -56,6 +56,8 @@ gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in de
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '~> 3.0.2'
 gem 'ruby-sun-times'
+# Reduce log noise in dev and test
+gem 'lograge'
 
 # Exception handling
 gem 'rollbar'
@@ -77,9 +79,6 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'
-
-  # Reduce log noise in dev and test
-  gem 'lograge'
 end
 
 group :development do

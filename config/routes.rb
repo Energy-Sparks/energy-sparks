@@ -28,7 +28,13 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
+      get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
+      get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
+      get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
+      resources :simulations
 
+
+      get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'analysis#chart'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
@@ -36,7 +42,6 @@ Rails.application.routes.draw do
       get :gas_detail, to: 'analysis#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
       get :boiler_control, to: 'analysis#boiler_control'
-      get :simulator, to: 'analysis#simulator'
     end
 
     get :scoreboard, on: :collection
@@ -61,6 +66,7 @@ Rails.application.routes.draw do
     get 'reports', to: 'reports#index'
     get 'reports/loading', to: 'reports#loading'
     get 'reports/amr_data_index', to: 'reports#amr_data_index'
+    get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
  #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show

@@ -18,5 +18,6 @@ FactoryBot.define do
     category { AlertType.categories.keys.sample }
     sub_category { AlertType.sub_categories.keys.sample }
     frequency { AlertType.frequencies.keys.sample }
+    class_name { 'AlertChangeInElectricityBaseloadShortTerm' }
   end
 end

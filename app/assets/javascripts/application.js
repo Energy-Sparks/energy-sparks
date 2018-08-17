@@ -32,7 +32,11 @@
 //= require bootstrap-year-calendar
 //= require calendar_year_view
 
-
+//= require common_chart_options
 //= require analysis
+//= require simulator
+
 //= require moment
 //= require tempusdominus-bootstrap-4.js
+
+//= require alert_reports

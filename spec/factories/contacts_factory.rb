@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :contact do
     description "Here is a contact"
+    school
 
     trait :with_name do
       name "Eleanor Rigby"

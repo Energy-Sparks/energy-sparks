@@ -25,12 +25,19 @@ class Alert < ApplicationRecord
 
   accepts_nested_attributes_for :contacts, reject_if: :reject_contacts
 
+  delegate :title, to: :alert_type
+  delegate :description, to: :alert_type
+
   def display_category
     alert_type.category.humanize if alert_type.category?
   end
 
   def display_sub_category
     alert_type.sub_category.humanize if alert_type.sub_category?
+  end
+
+  def alert_type_class
+    alert_type.class_name.constantize
   end
 
 private
