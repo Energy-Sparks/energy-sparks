@@ -1,6 +1,8 @@
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
+  include SchoolAggregation
+
   skip_before_action :authenticate_user!
   before_action :set_school
   before_action :set_nav
@@ -38,10 +40,6 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
-  def simulator
-    render_generic_chart_template
-  end
-
   def chart
     chart_type = params[:chart_type]
     chart_type = chart_type.to_sym if chart_type.instance_of? String
@@ -61,7 +59,6 @@ private
   def actual_chart_render(charts)
     @number_of_charts = charts.size
     @output = sort_these_charts(charts)
-    aggregate_school
 
     respond_to do |format|
       format.html { render :generic_chart_template }
@@ -70,7 +67,13 @@ private
   end
 
   def sort_these_charts(array_of_chart_types_as_symbols)
-    chart_manager = ChartManager.new(aggregate_school, current_user.try(:admin?))
+    this_aggregate_school = aggregate_school(@school)
+
+    @cache_debug_info = this_aggregate_school.electricity_meters.map do |meter|
+      "Mpan: #{meter.mpan_mprn} Last Reading from : #{meter.last_read}\n"
+    end
+
+    chart_manager = ChartManager.new(this_aggregate_school, current_user.try(:admin?))
 
     array_of_chart_types_as_symbols.map do |chart_type|
       { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
@@ -79,13 +82,5 @@ private
 
   def set_school
     @school = School.find_by_slug(params[:school_id])
-  end
-
-  def aggregate_school
-    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
-    Rails.cache.fetch(cache_key, expires_in: 1.day) do
-      meter_collection = MeterCollection.new(@school)
-      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-    end
   end
 end

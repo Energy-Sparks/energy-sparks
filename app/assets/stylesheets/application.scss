@@ -4,6 +4,7 @@
  *= require trix
  */
 @import "bootstrap";
+@import "bootstrap-xl";
 @import "font-awesome";
 
 @import "colours";
@@ -19,6 +20,8 @@
 @import "test_warning";
 @import "calendars";
 @import "analysis";
+@import "simulator";
+@import "alert_reports";
 
 @import "bootstrap-year-calendar";
 @import "tempusdominus-bootstrap-4";

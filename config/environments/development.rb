@@ -17,7 +17,7 @@ Rails.application.configure do
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
-    config.cache_store = :memory_store
+    config.cache_store = :memory_store, { size: 256.megabytes }
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
@@ -53,8 +53,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
-  # Turn down logging renders https://github.com/roidrage/lograge
-  config.lograge.enabled = true
+
   config.active_record.logger = nil
 
   config.log_level = :info
