@@ -42,6 +42,8 @@ class Ability
       can :scoreboard, School
       can :show, School
       can :usage, School
+      can :index, Simulation
+      can :show, Simulation
     end
     #
     # The first argument to `can` is the action you are giving the user
