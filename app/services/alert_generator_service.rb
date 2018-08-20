@@ -17,19 +17,32 @@ class AlertGeneratorService
 
   def generate_for_contacts
     return if @school.contacts.empty?
-    @school.contacts.map do |contact|
-      get_alerts(contact)
+
+    @school.contacts.each do |contact|
+      alerts_for_contact = get_alerts(contact)
+      process_alerts_for_contact(contact, alerts_for_contact)
     end
   end
 
 private
 
+  def process_alerts_for_contact(contact, alerts)
+    if contact.email_address?
+      AlertMailer.with(email_address: contact.email_address, alerts: alerts, school: @school).alert_email.deliver_now
+    end
+
+    if contact.mobile_phone_number?
+      logger.info "Send SMS message"
+    end
+  end
+
+  # Get array of alerts for this contact
   def get_alerts(contact)
     contact.alerts.map do |alert|
       alert_type_class = alert.alert_type_class
       alert_object = alert_type_class.new(aggregate_school)
       alert_object.analyse(@analysis_date)
-      { report: alert_object.analysis_report, title: alert.title, description: alert.description }
+      { analysis_report: alert_object.analysis_report, title: alert.title, description: alert.description }
     end
   end
 

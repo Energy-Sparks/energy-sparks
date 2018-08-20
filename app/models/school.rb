@@ -162,6 +162,10 @@ class School < ApplicationRecord
     self.score_points.where("created_at > '#{since}'").sum(:num_points)
   end
 
+  def school_admin
+    users.where(role: :school_admin)
+  end
+
   # def suggest_activities
   #   @activity_categories = ActivityCategory.all.order(:name).to_a
   # end
