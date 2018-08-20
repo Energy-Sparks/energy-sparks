@@ -111,7 +111,7 @@ describe School do
       expect(subject.has_last_full_week_of_readings?).to be false
     end
 
-    pending 'all readings' do
+    it 'all readings' do
       meter_one = create(:meter, school: subject)
       meter_two = create(:meter, school: subject, meter_type: :electricity)
 
@@ -129,7 +129,7 @@ describe School do
       expect(subject.has_last_full_week_of_readings?).to be true
     end
 
-    pending 'ignore inactive meters' do
+    it 'ignore inactive meters' do
       meter_one = create(:meter, school: subject)
       meter_two = create(:meter, school: subject, meter_type: :electricity)
       meter_three = create(:meter, school: subject, meter_type: :electricity, active: false)

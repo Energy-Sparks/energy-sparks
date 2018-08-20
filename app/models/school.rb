@@ -158,9 +158,9 @@ class School < ApplicationRecord
     previous_friday = Time.zone.today.prev_occurring(:friday)
     number_of_active_meters = meters.where(active: true).count
     expected_readings = 7 * 48 * number_of_active_meters
-    pp expected_readings
-    actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', previous_friday.beginning_of_day - 1.week, previous_friday.end_of_day).count
-    pp actual_readings
+    start_of_window = previous_friday.end_of_day - 1.week
+    end_of_window = previous_friday.end_of_day
+    actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
     actual_readings == expected_readings
   end
 
