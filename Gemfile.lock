@@ -113,6 +113,11 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap-email (0.2.3)
+      actionmailer (>= 3, < 6)
+      nokogiri (~> 1.6)
+      premailer-rails (~> 1.9)
+      rails (>= 3, < 6)
     bootstrap4-datetime-picker-rails (0.1.7)
       jquery-rails (~> 4.2, >= 4.2.0)
       momentjs-rails (~> 2.10, >= 2.10.5)
@@ -167,6 +172,8 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
+    css_parser (1.6.0)
+      addressable
     daru (0.1.6)
       backports
     database_cleaner (1.7.0)
@@ -315,6 +322,13 @@ GEM
     prawn-security (0.8.4)
     prawn-svg (0.9.1.11)
       prawn (>= 0.8.4)
+    premailer (1.11.1)
+      addressable
+      css_parser (>= 1.6.0)
+      htmlentities (>= 4.0.0)
+    premailer-rails (1.10.2)
+      actionmailer (>= 3, < 6)
+      premailer (~> 1.7, >= 1.7.9)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -539,6 +553,7 @@ DEPENDENCIES
   binding_of_caller
   bootsnap
   bootstrap (~> 4.1.0)
+  bootstrap-email
   bootstrap4-datetime-picker-rails
   bullet
   bundler-audit

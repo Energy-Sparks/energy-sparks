@@ -23,6 +23,9 @@ gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails'
 gem 'momentjs-rails'
 
+# Assets for Emails
+gem 'bootstrap-email'
+
 # Frontend
 gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
