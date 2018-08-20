@@ -39,11 +39,24 @@ private
   # Get array of alerts for this contact
   def get_alerts(contact)
     contact.alerts.map do |alert|
+      next unless run_this_alert?(alert)
       alert_type_class = alert.alert_type_class
       alert_object = alert_type_class.new(aggregate_school)
       alert_object.analyse(@analysis_date)
       { analysis_report: alert_object.analysis_report, title: alert.title, description: alert.description }
     end
+  end
+
+  def run_this_alert?(alert)
+    alert_type = alert.alert_type
+    if alert_type.before_each_holiday? && @school.holiday_approaching?
+      return true
+    elsif alert_type.termly? && @school.holiday_approaching?
+      return true
+    # elsif alert_type.weekly? && @school.complete_previous_week_of_readings? && Date.today.wednesday?
+    #   return true
+    end
+    false
   end
 
   def aggregate_school

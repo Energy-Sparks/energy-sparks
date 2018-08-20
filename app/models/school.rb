@@ -44,6 +44,8 @@ class School < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
+  delegate :holiday_approaching?, to: :calendar
+
   include Merit::UsageCalculations
   has_merit
 
@@ -150,6 +152,16 @@ class School < ApplicationRecord
 
   def last_term
     calendar.terms.find_by('end_date <= ?', current_term.start_date)
+  end
+
+  def has_last_full_week_of_readings?
+    previous_friday = Time.zone.today.prev_occurring(:friday)
+    number_of_active_meters = meters.where(active: true).count
+    expected_readings = 7 * 48 * number_of_active_meters
+    pp expected_readings
+    actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', previous_friday.beginning_of_day - 1.week, previous_friday.end_of_day).count
+    pp actual_readings
+    actual_readings == expected_readings
   end
 
   def badges_by_date(order: :desc, limit: nil)

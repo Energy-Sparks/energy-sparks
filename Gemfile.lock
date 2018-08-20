@@ -503,6 +503,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
+    timecop (0.8.0)
     trix (0.10.1)
       rails
     tzinfo (1.2.5)
@@ -608,6 +609,7 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   test-prof
+  timecop
   trix
   tzinfo-data
   uglifier

@@ -82,6 +82,7 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'
+  gem 'timecop'
 end
 
 group :development do
@@ -96,7 +97,7 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'annotate'
   gem 'pry'
-  gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+  gem 'govuk-lint'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
