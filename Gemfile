@@ -59,6 +59,10 @@ gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in de
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '~> 3.0.2'
 gem 'ruby-sun-times'
+
+# For SMS notifications
+gem 'twilio-ruby'
+
 # Reduce log noise in dev and test
 gem 'lograge'
 
