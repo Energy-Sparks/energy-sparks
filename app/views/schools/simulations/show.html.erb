@@ -7,7 +7,7 @@
   <p><%= @simulation.notes %></p>
 <% end %>
 
-<p><%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
+<p><%= link_to 'Edit this simulation', edit_school_simulation_path(@school, @simulation), class: 'btn btn-warning' if can? :manage, @school %> <%= link_to 'Simulation details', school_simulation_detail_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
 
 <% chart_index = 0 %>
 <% @charts.each do |chart| %>
