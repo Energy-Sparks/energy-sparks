@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 70fc930149c9a94147302ab1e3ff716edc863642
+  revision: a03fad8c80d058ae3a013c669381b1c2ca849c40
   branch: integration
   specs:
-    energy-sparks_analytics (0.9.16)
+    energy-sparks_analytics (0.9.17)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hashdiff (~> 0.3.7)
@@ -464,7 +464,7 @@ GEM
       hashie (~> 3.5)
       multipart-post (~> 2.0.0)
       sys-uname (~> 1.0.2)
-    spreadsheet (1.1.7)
+    spreadsheet (1.1.8)
       ruby-ole (>= 1.0)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -503,6 +503,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
+    timecop (0.8.0)
     trix (0.10.1)
       rails
     tzinfo (1.2.5)
@@ -571,7 +572,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.9.16)!
+  energy-sparks_analytics (~> 0.9.17)!
   factory_bot_rails
   fakefs
   fasterer
@@ -608,6 +609,7 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   test-prof
+  timecop
   trix
   tzinfo-data
   uglifier

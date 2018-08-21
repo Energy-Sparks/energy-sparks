@@ -68,6 +68,14 @@ class Calendar < ApplicationRecord
   def last_event_date
     calendar_events.last.end_date
   end
+
+  def next_holiday
+    holidays.where('start_date > ?', Time.zone.today).order(start_date: :asc).first
+  end
+
+  def holiday_approaching?
+    next_holiday.start_date == Time.zone.today + 3.days
+  end
 end
 
 # As a reminder!

@@ -9,7 +9,7 @@
     <h1>Energy Sparks alerts for <%= link_to @school.name, school_url(@school) %></h1>
     <p>You have been assigned as a contact for the following alerts from Energy Sparks.</p>
     <% if @school.school_admin.any? %>
-      <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= User.where(school: @school, role: :school_admin) %></p>
+      <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= User.where(school: @school, role: :school_admin).pluck(:email).join(', ') %></p>
     <% end %>
 
     <% @alerts.each do |alert| %>
