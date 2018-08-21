@@ -1,9 +1,16 @@
 require 'dashboard'
+require 'twilio-ruby'
 
 class AlertGeneratorService
   def initialize(school, analysis_date = Date.new(2018, 2, 2))
     @school = school
     @analysis_date = analysis_date
+
+    account_sid = ENV['TWILIO_ACCOUNT_SID']
+    auth_token = ENV['TWILIO_AUTH_TOKEN']
+    @from_phone_number = ENV['TWILIO_PHONE_NUMBER']
+
+    @twilio_client = Twilio::REST::Client.new(account_sid, auth_token)
   end
 
   def perform
@@ -32,7 +39,13 @@ private
     end
 
     if contact.mobile_phone_number?
-      Rails.logger.info "Send SMS message"
+      alerts.each do |alert|
+        # Temporary hard coding of messages
+        if alert[:title] == 'Turn heating on/off' || alert[:title] == 'Holiday coming up'
+          Rails.logger.info "Send SMS message"
+          @twilio_client.messages.create(body: "EnergySparks alert: " + alert[:analysis_report].summary, to: contact.mobile_phone_number, from: @from_phone_number)
+        end
+      end
     end
   end
 
