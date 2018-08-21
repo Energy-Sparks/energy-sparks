@@ -15,12 +15,12 @@ class AlertGeneratorService
     end
   end
 
-  def generate_for_contacts
+  def generate_for_contacts(run_all = false)
     return if @school.contacts.empty?
 
     @school.contacts.each do |contact|
-      alerts_for_contact = get_alerts(contact)
-      process_alerts_for_contact(contact, alerts_for_contact)
+      alerts_for_contact = get_alerts(contact, run_all).compact!
+      process_alerts_for_contact(contact, alerts_for_contact) if alerts_for_contact.present?
     end
   end
 
@@ -32,18 +32,26 @@ private
     end
 
     if contact.mobile_phone_number?
-      logger.info "Send SMS message"
+      Rails.logger.info "Send SMS message"
     end
   end
 
   # Get array of alerts for this contact
-  def get_alerts(contact)
+  def get_alerts(contact, run_all = false)
     contact.alerts.map do |alert|
-      next unless run_this_alert?(alert)
+      next unless run_all || run_this_alert?(alert)
+
       alert_type_class = alert.alert_type_class
       alert_object = alert_type_class.new(aggregate_school)
-      alert_object.analyse(@analysis_date)
-      { analysis_report: alert_object.analysis_report, title: alert.title, description: alert.description }
+
+      begin
+        alert_object.analyse(@analysis_date)
+        Rails.logger.info "Alert generated for #{@school.name} on #{@analysis_date} : #{alert.title}"
+        { analysis_report: alert_object.analysis_report, title: alert.title, description: alert.description }
+      rescue
+        Rails.logger.warn "Alert generation failed for #{@school.name} on #{@analysis_date} : #{alert_type_class}"
+        nil
+      end
     end
   end
 
@@ -53,8 +61,12 @@ private
       return true
     elsif alert_type.termly? && @school.holiday_approaching?
       return true
-    # elsif alert_type.weekly? && @school.complete_previous_week_of_readings? && Date.today.wednesday?
-    #   return true
+    elsif alert_type.weekly? && Time.zone.today.wednesday?
+      if @school.complete_previous_week_of_readings?
+        return true
+      else
+        log.warning "#{@school} does not have a complete previous week of readings for #{Time.zone.today}"
+      end
     end
     false
   end

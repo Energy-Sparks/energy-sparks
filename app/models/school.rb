@@ -154,14 +154,21 @@ class School < ApplicationRecord
     calendar.terms.find_by('end_date <= ?', current_term.start_date)
   end
 
+  def number_of_active_meters
+    meters.where(active: true).count
+  end
+
+  def expected_readings_for_a_week
+    7 * 48 * number_of_active_meters
+  end
+
   def has_last_full_week_of_readings?
     previous_friday = Time.zone.today.prev_occurring(:friday)
-    number_of_active_meters = meters.where(active: true).count
-    expected_readings = 7 * 48 * number_of_active_meters
+
     start_of_window = previous_friday.end_of_day - 1.week
     end_of_window = previous_friday.end_of_day
     actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
-    actual_readings == expected_readings
+    actual_readings == expected_readings_for_a_week
   end
 
   def badges_by_date(order: :desc, limit: nil)
