@@ -79,8 +79,19 @@ class Meter < ApplicationRecord
     meter_no.present? ? meter_no : meter_type.to_s
   end
 
-  # TODO Temp from load from amr code
+  def add_correction_rule(rule)
+    throw EnergySparksUnexpectedStateException.new('Unexpected nil correction') if rule.nil?
+    meter_correction_rules.push(rule)
+  end
+
+  #TODO Temp from load from amr code
   def meter_correction_rules
-    [{ auto_insert_missing_readings: { type: :weekends } }] if meter_type == 'gas'
+    if meter_type == 'gas' && @meter_correction_rules.nil?
+      @meter_correction_rules = [{ auto_insert_missing_readings: { type: :weekends } }]
+    elsif @meter_correction_rules.nil?
+      []
+    else
+      @meter_correction_rules
+    end
   end
 end
