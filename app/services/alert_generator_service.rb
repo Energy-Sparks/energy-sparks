@@ -40,13 +40,26 @@ private
 
     if contact.mobile_phone_number?
       alerts.each do |alert|
-        # Temporary hard coding of messages
-        if alert[:title] == 'Turn heating on/off' || alert[:title] == 'Holiday coming up'
-          Rails.logger.info "Send SMS message"
+        if should_send_sms?(alert[:analysis_report])
+          Rails.logger.info "Send SMS message to #{contact.name} #{contact.mobile_phone_number} of #{alert[:analysis_report].summary}"
           @twilio_client.messages.create(body: "EnergySparks alert: " + alert[:analysis_report].summary, to: contact.mobile_phone_number, from: @from_phone_number)
         end
       end
     end
+  end
+
+  def should_send_sms?(analysis_report)
+    is_it_turn_heating_on_and_off?(analysis_report) || is_holiday_coming_up_and_message_to_be_sent?(analysis_report)
+  end
+
+  def is_it_turn_heating_on_and_off?(analysis_report)
+    # Temporary hard coding of messages
+    analysis_report.type == :turnheatingonoff
+  end
+
+  def is_holiday_coming_up_and_message_to_be_sent?(analysis_report)
+    # Temporary hard coding of messages
+    analysis_report.type == :upcomingholiday && analysis_report.summary != AlertImpendingHoliday::NO_ACTION_REQUIRED_SUMMARY
   end
 
   # Get array of alerts for this contact
@@ -70,7 +83,8 @@ private
 
   def run_this_alert?(alert)
     alert_type = alert.alert_type
-    if alert_type.before_each_holiday? && @school.holiday_approaching?
+    if alert_type.before_each_holiday?
+      # Run regardless and catch in is_holiday_coming_up_and_message_to_be_sent?(alert)
       return true
     elsif alert_type.termly? && @school.holiday_approaching?
       return true
@@ -78,7 +92,7 @@ private
       if @school.has_last_full_week_of_readings?
         return true
       else
-        Rails.logger.warn "#{@school} does not have a complete previous week of readings for #{Time.zone.today}"
+        Rails.logger.warn "#{@school.name} does not have a complete previous week of readings for #{Time.zone.today}"
       end
     end
     false
