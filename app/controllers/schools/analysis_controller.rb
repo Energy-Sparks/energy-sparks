@@ -40,6 +40,10 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def test
+    render_generic_chart_template
+  end
+
   def chart
     chart_type = params[:chart_type]
     chart_type = chart_type.to_sym if chart_type.instance_of? String

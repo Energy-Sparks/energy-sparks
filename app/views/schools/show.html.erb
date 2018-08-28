@@ -17,7 +17,14 @@
                     property: "url") unless @school.website.blank? %>
 
       </h6>
-
+      <p>
+        <%- if can? :manage, @school -%>
+          Record your energy saving activities, check your scores and latest awards, and explore your energy usage data.
+        <% else %>
+          This school is using <%= t('application') %> to become more energy efficient. Explore their energy saving activities,
+          see their scores and awards, and explore their energy usage data.
+        <%- end -%>
+      </p>
       <p class="float-right">
         <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
         <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
@@ -30,24 +37,19 @@
 
         <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm') if can? :manage, @school.calendar %>
       </p>
-
-      <p>
-        <%- if can? :manage, @school -%>
-          Record your energy saving activities, check your scores and latest awards, and explore your energy usage data.
-        <% else %>
-          This school is using <%= t('application') %> to become more energy efficient. Explore their energy saving activities,
-          see their scores and awards, and explore their energy usage data.
-        <%- end -%>
-      </p>
      </div>
   </div>
   <div class="row">
 
     <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
-
       <%= render 'schools/meter_cards', meter_type: :electricity, school: @school if @school.meters?(:electricity) %>
-
-      <%= render 'schools/meter_cards', meter_type: :gas, school: @school if @school.meters?(:gas) %>
+      <% if @school.meters?(:gas) %>
+        <%= render 'schools/meter_cards', meter_type: :gas, school: @school %>
+      <% else %>
+        <section id="gas-cards">
+          <h4>This school has no gas meters configured in Energy Sparks</h4>
+        </section>
+      <% end %>
   </div>
 </div>
