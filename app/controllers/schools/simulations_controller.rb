@@ -4,13 +4,16 @@ class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
   include NewSimulatorChartConfig
 
-  before_action :authorise_school
+  skip_before_action :authenticate_user!, only: [:index, :show]
+
+  before_action :set_school
+  before_action :authorise_school, except: [:index, :show]
   before_action :set_simulation, only: [:show, :edit, :destroy, :update]
   before_action :set_show_charts, only: :show
 
   def index
     @simulations = Simulation.where(school: @school).order(:created_at)
-    create if @simulations.empty?
+    create if @simulations.empty? && can?(:manage, @school)
   end
 
   # ALSO used by simulation detail controller
@@ -125,8 +128,11 @@ private
     @simulation = Simulation.find(params[:id])
   end
 
-  def authorise_school
+  def set_school
     @school = School.find_by_slug(params[:school_id])
+  end
+
+  def authorise_school
     authorize! :show, @school
   end
 
