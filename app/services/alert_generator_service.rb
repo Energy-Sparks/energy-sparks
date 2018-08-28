@@ -75,10 +75,10 @@ private
     elsif alert_type.termly? && @school.holiday_approaching?
       return true
     elsif alert_type.weekly? && Time.zone.today.wednesday?
-      if @school.complete_previous_week_of_readings?
+      if @school.has_last_full_week_of_readings?
         return true
       else
-        log.warning "#{@school} does not have a complete previous week of readings for #{Time.zone.today}"
+        Rails.logger.warn "#{@school} does not have a complete previous week of readings for #{Time.zone.today}"
       end
     end
     false
