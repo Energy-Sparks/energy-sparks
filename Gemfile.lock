@@ -1,9 +1,18 @@
 GIT
-  remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 45e464c1e656a103e6e012eeab5d6feb0cc0f790
-  branch: integration
+  remote: https://github.com/randym/axlsx.git
+  revision: c8ac844572b25fda358cc01d2104720c4c42f450
+  ref: c8ac844
   specs:
-    energy-sparks_analytics (0.9.19)
+    axlsx (2.1.0.pre)
+      htmlentities (~> 4.3.4)
+      mimemagic (~> 0.3)
+      nokogiri (>= 1.6.6)
+      rubyzip (>= 1.2.1)
+
+PATH
+  remote: ../energy-sparks_analytics
+  specs:
+    energy-sparks_analytics (0.10.0)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hashdiff (~> 0.3.7)
@@ -20,17 +29,6 @@ GIT
       statsample (~> 2.1.0)
       structured_warnings (~> 0.3.0)
       write_xlsx (~> 0.85.5)
-
-GIT
-  remote: https://github.com/randym/axlsx.git
-  revision: c8ac844572b25fda358cc01d2104720c4c42f450
-  ref: c8ac844
-  specs:
-    axlsx (2.1.0.pre)
-      htmlentities (~> 4.3.4)
-      mimemagic (~> 0.3)
-      nokogiri (>= 1.6.6)
-      rubyzip (>= 1.2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -556,7 +554,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.9.19)!
+  energy-sparks_analytics!
   factory_bot_rails
   fakefs
   fasterer
