@@ -69,7 +69,7 @@ module ApplicationHelper
   end
 
   def label_is_energy_plus?(label)
-    label.start_with?('Energy') && label.length > 6
+    label.is_a?(String) && label.start_with?('Energy') && label.length > 6
   end
 
   def label_is_temperature_plus?(label)

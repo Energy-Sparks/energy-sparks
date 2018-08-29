@@ -102,10 +102,15 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
 
-    if (y2AxisLabel !== undefined && (y2AxisLabel == 'Degree Days' || y2AxisLabel == 'Temperature')) {
-      console.log('Yaxis - Degree days');
+    if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
+      console.log('Yaxis - Temperature days');
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    }
+    if (y2AxisLabel !== undefined && y2AxisLabel == 'Degree Days') {
+      console.log('Yaxis - Degree days');
+      c.addAxis({ title: { text: 'Degree days' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} Degree days' }}}});
     }
   }
 
@@ -116,7 +121,7 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
 
-    if (seriesData[key].name.startsWith('Energy') && seriesData[key].type == 'line') {
+    if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
       console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
       seriesData[key].dashStyle =  'Dash';
@@ -130,6 +135,10 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
   c.redraw();
+}
+
+function isAStringAndStartsWith(thing, startingWith) {
+  (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
 }
 
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
@@ -150,10 +159,11 @@ function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
 
 function pie(d, c, chartIndex, seriesData, $chartDiv, yAxisLabel) {
   $chartDiv.addClass('pie-chart');
+  var chartHeight = $chartDiv.height();
 
   c.addSeries(seriesData, false);
   c.update({chart: {
-    height: 450,
+    height: chartHeight,
     plotBackgroundColor: null,
     plotBorderWidth: null,
     plotShadow: false,
