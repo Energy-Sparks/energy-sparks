@@ -86,14 +86,68 @@ describe School do
     end
   end
 
-  # describe '#contacts_and_alerts' do
-  #   context 'with contacts and alerts for school' do
-  #     it
+  describe "knows whether the previous week has a full amount of readings" do
+    pending "further work"
+    it 'no readings' do
+      meter_one = create(:meter, school: subject)
+      meter_two = create(:meter, school: subject, meter_type: :electricity)
 
+      expect(subject.has_last_full_week_of_readings?).to be false
+    end
 
-  #   end
+    it 'some readings' do
+      meter_one = create(:meter, school: subject)
+      meter_two = create(:meter, school: subject, meter_type: :electricity)
 
-  # end
+      days_of_readings = 20
+
+      start_date = Date.today - (days_of_readings - 1).days
+      (start_date..Date.today).each do |date|
+        (0..47).each do |index|
+          create(:meter_reading, meter: meter_one, read_at: date.beginning_of_day + index * 30.minutes)
+        end
+      end
+      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
+      expect(subject.has_last_full_week_of_readings?).to be false
+    end
+
+    it 'all readings' do
+      meter_one = create(:meter, school: subject)
+      meter_two = create(:meter, school: subject, meter_type: :electricity)
+
+      days_of_readings = 20
+
+      start_date = Date.today - (days_of_readings - 1).days
+      (start_date..Date.today).each do |date|
+        (0..47).each do |index|
+          create(:meter_reading, meter: meter_one, read_at: date.beginning_of_day + index * 30.minutes)
+          create(:meter_reading, meter: meter_two, read_at: date.beginning_of_day + index * 30.minutes)
+        end
+      end
+      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
+      expect(subject.meters.second.meter_readings.size).to be days_of_readings * 48
+      expect(subject.has_last_full_week_of_readings?).to be true
+    end
+
+    it 'ignore inactive meters' do
+      meter_one = create(:meter, school: subject)
+      meter_two = create(:meter, school: subject, meter_type: :electricity)
+      meter_three = create(:meter, school: subject, meter_type: :electricity, active: false)
+
+      days_of_readings = 20
+
+      start_date = Date.today - (days_of_readings - 1).days
+      (start_date..Date.today).each do |date|
+        (0..47).each do |index|
+          create(:meter_reading, meter: meter_one, read_at: date.beginning_of_day + index * 30.minutes)
+          create(:meter_reading, meter: meter_two, read_at: date.beginning_of_day + index * 30.minutes)
+        end
+      end
+      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
+      expect(subject.meters.second.meter_readings.size).to be days_of_readings * 48
+      expect(subject.has_last_full_week_of_readings?).to be true
+    end
+  end
 
   describe '#current_term' do
 

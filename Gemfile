@@ -24,6 +24,9 @@ gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails'
 gem 'momentjs-rails'
 
+# Assets for Emails
+gem 'bootstrap-email'
+
 # Frontend
 gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
@@ -57,6 +60,10 @@ gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in de
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '~> 3.0.2'
 gem 'ruby-sun-times'
+
+# For SMS notifications
+gem 'twilio-ruby'
+
 # Reduce log noise in dev and test
 gem 'lograge'
 
@@ -80,6 +87,7 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'vcr'
+  gem 'timecop'
 end
 
 group :development do
@@ -94,7 +102,7 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'annotate'
   gem 'pry'
-  gem 'govuk-lint'#, '1.2.1' # Use govuk-lint to install Rubocop and Cops that correspond to the GDS Styleguide https://github.com/alphagov/govuk-lint
+  gem 'govuk-lint'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
