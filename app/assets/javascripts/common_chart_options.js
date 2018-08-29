@@ -121,7 +121,7 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
 
-    if (seriesData[key].name.startsWith('Energy') && seriesData[key].type == 'line') {
+    if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
       console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
       seriesData[key].dashStyle =  'Dash';
@@ -135,6 +135,10 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
   c.redraw();
+}
+
+function isAStringAndStartsWith(thing, startingWith) {
+  (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
 }
 
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
