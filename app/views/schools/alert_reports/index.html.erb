@@ -7,27 +7,30 @@
       <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
       <%= link_to 'Alerts for this school', school_alerts_path(@school), class: 'btn btn-secondary' %></p>
 
-      <% @results.each do |alert_type| %>
-        <h2><%= alert_type[:title] %></h2>
-        <p><%= alert_type[:description] %></p>
-        <p>Current status: <%= alert_type[:report].status.capitalize %> - <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %>
+      <% @results.group_by { |a| a[:frequency] }.each do |frequency, alert_types| %>
+        <h2><%= frequency.humanize %> frequency</h2>
+        <% alert_types.each do |alert_type| %>
+          <h3><%= alert_type[:title] %></h3>
+          <p><%= alert_type[:description] %></p>
+          <p>Current status: <%= alert_type[:report].status.capitalize %> - <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %>
 
-        <% alert_type[:report].detail.each do |detail| %>
-          <% if detail.type == :chart %>
-            <div id="alert-chart-data-<%= alert_type[:report].type %>" data-chart-title='<%= detail.content[:title] %>' data-chart-type='<%= alert_type[:report].type %>' class="hide">
-              <%= sort_out_data_for_alerts_chart(detail.content).html_safe %>
-            </div>
+          <% alert_type[:report].detail.each do |detail| %>
+            <% if detail.type == :chart %>
+              <div id="alert-chart-data-<%= alert_type[:report].type %>" data-chart-title='<%= detail.content[:title] %>' data-chart-type='<%= alert_type[:report].type %>' class="hide">
+                <%= sort_out_data_for_alerts_chart(detail.content).html_safe %>
+              </div>
 
-            <div id="alert-chart-wrapper-<%= alert_type[:report].type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert_type[:report].type %>'></div>
-          <% elsif detail.type == :html %>
-            <%= detail.content.html_safe %>
-          <% else %>
-            <p><%= detail.content %></p>
+              <div id="alert-chart-wrapper-<%= alert_type[:report].type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert_type[:report].type %>'></div>
+            <% elsif detail.type == :html %>
+              <%= detail.content.html_safe %>
+            <% else %>
+              <p><%= detail.content %></p>
+            <% end %>
           <% end %>
+          <p><%= alert_type[:report].summary %></p>
+          <p>Find out more information: <%= link_to alert_type[:title], alert_type[:report].help_url %></p>
+          <hr/>
         <% end %>
-        <p><%= alert_type[:report].summary %></p>
-        <p>Find out more information: <%= link_to alert_type[:title], alert_type[:report].help_url %></p>
-        <hr/>
       <% end %>
     </div>
   </div>
