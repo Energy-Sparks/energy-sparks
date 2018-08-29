@@ -51,10 +51,11 @@
         <% end %>
       </p>
       <p>By default the activities are appropriate for the Key Stages set for your school.</p>
+      <p>The figure in the green square is the number of points each activity is worth, 10 points for example: <span class="badge badge-success">10</span>
     </div>
   </div>
 
-  <div class="row padded-row">
+  <div class="row">
     <div class="col-md-12">
       <%= form_tag suggest_activity_school_path, method: :get do %>
         <%= collection_check_boxes :key_stage_tag, :key_stage_names, @key_stage_tags, :name, :name, { multiple: true } do |b| %>
@@ -70,6 +71,7 @@
     </div>
   </div>
 
+  <div class="row padded-row">
   <% @suggestions.in_groups_of(3, nil) do |group| %>
       <div class="card-deck <%= group.include?(nil) ? 'padded-row' : ''%>">
         <% group.each do |activity_type| %>
@@ -110,6 +112,6 @@
         <% end %>
       </div>
   <% end %>
-
+  </div>
   <p></p>
 </div>
