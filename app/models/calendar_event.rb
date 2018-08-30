@@ -37,7 +37,19 @@ class CalendarEvent < ApplicationRecord
   after_update :update_neighbour_start, if: :saved_change_to_end_date?
   after_update :update_neighbour_end,   if: :saved_change_to_start_date?
 
+  after_create :check_whether_child_needs_creating
+
 private
+
+  def check_whether_child_needs_creating
+    if calendar.calendars.any?
+      calendar.calendars.each do |child_calendar|
+        duplicate = self.dup
+        duplicate.calendar = child_calendar
+        duplicate.save!
+      end
+    end
+  end
 
   def update_neighbour_start
     if calendar_event_type.term_time
