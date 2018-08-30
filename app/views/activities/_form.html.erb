@@ -40,7 +40,7 @@
 
   <div class="form-group">
     <%= f.label :title %>
-    <p class="small">This is how your activity will appear in your activity list, so choose a clear title</p>
+    <p class="small">This is how your activity will appear in your activity list, so choose a clear title which will make others want to read about your activity.</p>
     <%= f.text_field :title, class: 'form-control'  %>
   </div>
 
@@ -49,6 +49,7 @@
     <%= f.hidden_field :description %>
     <p class="small">Please tell us a bit more about your activity. Insert a link to your school website if you’ve published information, photos or videos about your activity online.</p>
     <p class="small">You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.</p>
+    <p class="small">Please try to make your activity description as interesting as possible, so other schools are encouraged to try out your activity in their own school.</p>
     <trix-editor input="activity_description"></trix-editor>
   </div>
 
