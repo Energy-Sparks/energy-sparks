@@ -9,5 +9,10 @@ FactoryBot.define do
       description { 'this is a new term' }
       association :calendar_event_type, term_time: true
     end
+    factory :holiday do
+      title       { 'new holiday' }
+      description { 'this is a new holiday' }
+      association :calendar_event_type, term_time: false
+    end
   end
 end

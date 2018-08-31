@@ -3,8 +3,8 @@ require 'rails_helper'
 describe 'ParentCalendarChange' do
   include_context 'calendar data'
 
+  let(:parent_calendar) { calendar }
   describe 'a parent calendar with a child' do
-    let(:parent_calendar) { calendar }
     let(:child_calendar)  { CalendarFactory.new(calendar, 'New calendar').create }
 
     it 'has a relationship' do
@@ -35,51 +35,127 @@ describe 'ParentCalendarChange' do
       end
     end
   end
+
+  describe 'a parent calendar with children' do
+    let(:child_name_1)      { 'New child calendar 1' }
+    let(:child_name_2)      { 'New child calendar 2' }
+    let(:child_calendar_1)  { CalendarFactory.new(calendar, child_name_1).create }
+    let(:child_calendar_2)  { CalendarFactory.new(calendar, child_name_2).create }
+
+    it 'has a relationship' do
+      expect(child_calendar_1.based_on).to eq parent_calendar
+      expect(child_calendar_2.based_on).to eq parent_calendar
+
+      expect(parent_calendar.calendars.count).to eq 2
+      expect(parent_calendar.calendars.first).to eq child_calendar_1
+      expect(parent_calendar.calendars.second).to eq child_calendar_2
+    end
+
+    it 'if a child has a new term, the parent is not updated' do
+      expect(child_calendar_1.terms.count).to be 2
+      expect(child_calendar_2.terms.count).to be 2
+      expect(parent_calendar.terms.count).to be 2
+      calendar_event = create(:term, calendar: child_calendar_2)
+      expect(child_calendar_1.terms.count).to be 2
+      expect(child_calendar_2.terms.count).to be 3
+      expect(parent_calendar.terms.count).to be 2
+    end
+
+    it 'if a parent has a new term, the children are updated' do
+      create_calendar_event_type = :term
+      initial_amount = 2
+      calendar_event_type = CalendarEventType.term.first
+      expect(parent_calendar.terms.count).to be initial_amount
+      expect(child_calendar_1.terms.count).to be initial_amount
+      check_and_create_calendar_event_type_for_parent(calendar_event_type, create_calendar_event_type, initial_amount)
+    end
+
+    it 'if a parent has a new holiday, the children are updated' do
+      create_calendar_event_type = :holiday
+      initial_amount = 3
+      calendar_event_type = CalendarEventType.holiday.first
+      expect(parent_calendar.holidays.count).to be initial_amount
+      expect(child_calendar_1.holidays.count).to be initial_amount
+      check_and_create_calendar_event_type_for_parent(calendar_event_type, create_calendar_event_type, initial_amount, 4, 4)
+    end
+
+    def check_and_create_calendar_event_type_for_parent(calendar_event_type, create_calendar_event_type = :term, initial_amount = 2, child_calendar_1_expected_after = initial_amount + 1, child_calendar_2_expected_after = initial_amount + 1)
+      calendar_event_types = create_calendar_event_type.to_s.pluralize.to_sym
+
+      expect(child_calendar_2.send(calendar_event_types).count).to be initial_amount
+
+      calendar_event = create(create_calendar_event_type, calendar: parent_calendar, calendar_event_type: calendar_event_type)
+      expect(parent_calendar.send(calendar_event_types).count).to be initial_amount + 1
+      expect(child_calendar_1.send(calendar_event_types).count).to be child_calendar_1_expected_after
+      expect(child_calendar_2.send(calendar_event_types).count).to be child_calendar_2_expected_after
+
+      child_calendar_1.send(calendar_event_types).each do |term|
+        expect(term.calendar).to eq child_calendar_1
+      end
+      child_calendar_2.send(calendar_event_types).each do |term|
+        expect(term.calendar).to eq child_calendar_2
+      end
+    end
+
+    it 'if a parent has a new term, but the child has a conflicting one for the same dates, then that child is skipped' do
+      new_term_start_date = 1.year.from_now
+      new_term_end_date = new_term_start_date + 8.weeks
+
+      new_child_term_start_date = new_term_start_date
+      new_child_term_end_date = new_term_end_date
+
+      run_and_check_with_term_dates_for_parent_and_child(new_term_start_date, new_term_end_date, new_child_term_start_date, new_child_term_end_date)
+    end
+
+    it 'if a parent has a new term, but the child has a conflicting one with an earlier start, then that child is skipped' do
+      new_term_start_date = 1.year.from_now
+      new_term_end_date = new_term_start_date + 8.weeks
+
+      new_child_term_start_date = new_term_start_date - 4.days
+      new_child_term_end_date = new_term_end_date - 4.days
+
+      run_and_check_with_term_dates_for_parent_and_child(new_term_start_date, new_term_end_date, new_child_term_start_date, new_child_term_end_date)
+    end
+
+    it 'if a parent has a new term, but the child has a conflicting one with a later start, then that child is skipped' do
+      new_term_start_date = 1.year.from_now
+      new_term_end_date = new_term_start_date + 8.weeks
+
+      new_child_term_start_date = new_term_start_date + 4.days
+      new_child_term_end_date = new_term_end_date + 4.days
+
+      run_and_check_with_term_dates_for_parent_and_child(new_term_start_date, new_term_end_date, new_child_term_start_date, new_child_term_end_date)
+    end
+
+    it 'if a parent has a new term, but the child has a conflicting one with which overlaps at both ends, then that child is skipped' do
+      new_term_start_date = 1.year.from_now
+      new_term_end_date = new_term_start_date + 8.weeks
+
+      new_child_term_start_date = new_term_start_date - 4.days
+      new_child_term_end_date = new_term_end_date + 4.days
+
+      run_and_check_with_term_dates_for_parent_and_child(new_term_start_date, new_term_end_date, new_child_term_start_date, new_child_term_end_date)
+    end
+
+    def run_and_check_with_term_dates_for_parent_and_child(new_term_start_date, new_term_end_date, new_child_term_start_date, new_child_term_end_date)
+      create_calendar_event_type = :term
+      calendar_event_types = create_calendar_event_type.to_s.pluralize.to_sym
+      initial_amount = 2
+      calendar_event_type = CalendarEventType.term.first
+
+      expect(parent_calendar.send(calendar_event_types).count).to be initial_amount
+      expect(child_calendar_1.send(calendar_event_types).count).to be initial_amount
+
+      calendar_event = create(create_calendar_event_type, calendar: child_calendar_1, calendar_event_type: calendar_event_type, start_date: new_child_term_start_date, end_date: new_child_term_end_date)
+
+      expect(child_calendar_1.send(calendar_event_types).count).to be initial_amount + 1
+      expect(child_calendar_2.send(calendar_event_types).count).to be initial_amount
+
+      calendar_event = create(create_calendar_event_type, calendar: parent_calendar, calendar_event_type: calendar_event_type, start_date: new_term_start_date, end_date: new_term_end_date)
+
+      expect(parent_calendar.send(calendar_event_types).count).to be initial_amount + 1
+      expect(child_calendar_1.send(calendar_event_types).count).to be initial_amount + 1
+      expect(child_calendar_2.send(calendar_event_types).count).to be initial_amount + 1
+    end
+  end
 end
-
-
-# end
-
-# RSpec.shared_context "calendar data", shared_context: :metadata do
-
-#   EXAMPLE_CALENDAR_HASH = [{:term=>"2015-16 Term 1", :start_date=>"2015-09-02", :end_date=>"2015-10-21"}, {:term=>"2015-16 Term 2", :start_date=>"2015-11-02", :end_date=>"2015-12-18"}, {:term=>"2015-16 Term 3", :start_date=>"2016-01-04", :end_date=>"2016-02-12"}, {:term=>"2015-16 Term 4", :start_date=>"2016-02-22", :end_date=>"2016-04-01"}, {:term=>"2015-16 Term 5", :start_date=>"2016-04-18", :end_date=>"2016-05-27"}, {:term=>"2015-16 Term 6", :start_date=>"2016-06-06", :end_date=>"2016-07-19"}, {:term=>"2016-17 Term 1", :start_date=>"2016-09-01", :end_date=>"2016-10-21"}, {:term=>"2016-17 Term 2", :start_date=>"2016-10-31", :end_date=>"2016-12-16"}, {:term=>"2016-17 Term 3", :start_date=>"2017-01-03", :end_date=>"2017-02-10"}, {:term=>"2016-17 Term 4", :start_date=>"2017-02-20", :end_date=>"2017-04-07"}, {:term=>"2016-17 Term 5", :start_date=>"2017-04-24", :end_date=>"2017-05-26"}, {:term=>"2016-17 Term 6", :start_date=>"2017-06-05", :end_date=>"2017-07-21"}, {:term=>"2017-18 Term 1", :start_date=>"2017-09-04", :end_date=>"2017-10-20"}, {:term=>"2017-18 Term 2", :start_date=>"2017-10-30", :end_date=>"2017-12-15"}, {:term=>"2017-18 Term 3", :start_date=>"2018-01-02", :end_date=>"2018-02-09"}, {:term=>"2017-18 Term 4", :start_date=>"2018-02-19", :end_date=>"2018-03-23"}, {:term=>"2017-18 Term 5", :start_date=>"2018-04-09", :end_date=>"2018-05-25"}, {:term=>"2017-18 Term 6", :start_date=>"2018-06-04", :end_date=>"2018-07-24"}, {:term=>"2018-19 Term 1", :start_date=>"2018-09-03", :end_date=>"2018-10-26"}, {:term=>"2018-19 Term 2", :start_date=>"2018-11-05", :end_date=>"2018-12-21"}, {:term=>"2018-19 Term 3", :start_date=>"2019-01-07", :end_date=>"2019-02-15"}, {:term=>"2018-19 Term 4", :start_date=>"2019-02-25", :end_date=>"2019-04-05"}, {:term=>"2018-19 Term 5", :start_date=>"2019-04-23", :end_date=>"2019-05-24"}, {:term=>"2018-19 Term 6", :start_date=>"2019-06-03", :end_date=>"2019-07-23"}].freeze
-
-
-#   let(:area_and_calendar_title) { 'Area and Calendar title'}
-#   let!(:area) { create(:calendar_area, title: area_and_calendar_title) }
-#   let!(:academic_years) { AcademicYearFactory.new(2017, 1019).create }
-#   let!(:bank_holiday) { create :bank_holiday, title: 'Good Friday', holiday_date: "2012-04-06" }
-
-#   let!(:calendar_events) { CalendarEventTypeFactory.create }
-
-#   let(:autumn_term_half_term_holiday_start) { "2017-10-21" }
-#   let(:autumn_term_half_term_end)           { "2017-10-20" }
-
-#   let(:autumn_terms) {
-#     [{ term: "2017-18 Term 1", start_date: "2017-09-04", end_date: autumn_term_half_term_end },
-#      { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
-#   }
-#   let!(:calendar) { CalendarFactoryFromEventHash.new(autumn_terms, area).create }
-
-#   let(:random_before_holiday_start_date) { '01/01/2017' }
-#   let(:random_after_holiday_start_date)  { '16/12/2017' }
-
-#   let!(:random_before_holiday) {
-#     CalendarEvent.create(
-#       title: 'random holiday',
-#       calendar: calendar,
-#       calendar_event_type: CalendarEventType.holiday.first,
-#       start_date: random_before_holiday_start_date,
-#       end_date: '01/02/2017')}
-#   let!(:random_after_holiday) {
-#     CalendarEvent.create(
-#       title: 'random holiday 2',
-#       calendar: calendar,
-#       calendar_event_type: CalendarEventType.holiday.first,
-#       start_date: '16/12/2017',
-#       end_date: '20/12/2017')}
-# end
-
-# RSpec.configure do |rspec|
-#   rspec.include_context "calendar data", include_shared: true
-# end
