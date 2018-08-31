@@ -24,8 +24,7 @@
 
           <td><%#= link_to 'Download last month as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, start_date: Date.today - 1.month, end_date: Date.today, format: :csv) %></td>
           <td><%= link_to 'Download last month as XLSX from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], start_date: Date.today - 1.month, end_date: Date.today, format: :xlsx) %></td>
-
-          <td><%= link_to 'Download last produced CSV from rake', "/public/downloads/bath#{feed_type[0]}data.csv" %></td>
+          <td><%= link_to 'Download last produced CSV from rake', "/public/downloads/bath#{feed_type[0] == 'solar_irradiation' ? 'solar_insolence' : feed_type[0]}data.csv" %></td>
           <td><%= nice_dates last_reading.at %></td>
         </tr>
 
