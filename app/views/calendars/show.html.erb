@@ -14,7 +14,11 @@
   </ul>
 <% end %>
 <% unless @calendar.based_on.nil? %>
-  <p>And is based on: <%= link_to "#{@calendar.based_on.title} calendar", calendar_path(@calendar.based_on) %></p>
+  <% if user_signed_in? && current_user.admin? %>
+    <p>And is based on: <%= link_to "#{@calendar.based_on.title} calendar", calendar_path(@calendar.based_on) %></p>
+  <% else %>
+    <p>And is based on: <%= @calendar.based_on.title %>, which the Energy Sparks administrator can edit.</p>
+  <% end %>
 <% end %>
 
 <h3>This calendar is editable</h3>

@@ -18,6 +18,14 @@ module DataFeeds
       end
     end
 
+    def csv_as_array
+      if @orientation == :landscape
+        format_landscape_data(@data)
+      else
+        format_portrait_data(@data)
+      end
+    end
+
   private
 
     def unique_list_of_dates_from_datetimes(datetimes)
@@ -29,30 +37,39 @@ module DataFeeds
     end
 
     def write_landscape(file)
-      dates = unique_list_of_dates_from_datetimes(@data.keys)
-      dates.each do |date|
-        line = date.strftime('%Y-%m-%d') << ','
-        (0..47).each do |half_hour_index|
-          datetime = Time.zone.local(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0).to_datetime
-
-          if data.key?(datetime)
-            if data[datetime].nil?
-              line << ','
-            else
-              line << data[datetime].to_s << ','
-            end
-          end
-        end
-        file.puts(line)
-      end
+      lines = format_landscape_data(@data)
+      file.puts(lines)
     end
 
     def write_portrait(file)
-      line = []
-      @data.each do |datetime, value|
-        line << datetime.strftime('%Y-%m-%d %H:%M:%S') << ',' << value.to_s << '\n'
-        file.puts(line)
+      lines = format_portrait_data(@data)
+      file.puts(lines)
+    end
+
+    def format_landscape_data(hash_of_readings_and_values)
+      dates = unique_list_of_dates_from_datetimes(hash_of_readings_and_values.keys)
+      lines = dates.map do |date|
+        line = date.strftime('%Y-%m-%d') << ','
+        (0..47).each do |half_hour_index|
+          datetime = Time.zone.local(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0).to_datetime.utc
+          if hash_of_readings_and_values.key?(datetime)
+            if hash_of_readings_and_values[datetime].nil?
+              line << ','
+            else
+              line << hash_of_readings_and_values[datetime].to_s << ','
+            end
+          end
+        end
+        line
       end
+      lines.join("\n")
+    end
+
+    def format_portrait_data(hash_of_readings_and_values)
+      output = hash_of_readings_and_values.map do |datetime, value|
+        "#{datetime.strftime('%Y-%m-%d %H:%M:%S')}, #{value}"
+      end
+      output.join("\n")
     end
   end
 end

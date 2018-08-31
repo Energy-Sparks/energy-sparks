@@ -4,31 +4,39 @@
     <tr>
       <th>Data Feed</th>
       <th>Type</th>
-      <th><!-- Download from DB CSV --></th>
+      <th>Last update</th>
+      <th>Download from DB CSV</th>
       <th>Download from DB XLS</th>
-      <th><!-- Download from DB (month) CSV --></th>
+      <th>Download from DB (month) CSV</th>
       <th>Download from DB (month) XLS</th>
       <th>Download from Rake job</th>
-      <th>Last update</th>
     </tr>
   </thead>
   <tbody>
-
     <% DataFeedReading.feed_types.each do |feed_type| %>
-        <% last_reading = DataFeedReading.where(feed_type: feed_type).order(at: :desc).limit(1).first %>
-        <tr class=<%= class_for_last_date(last_reading.at) %>>
-          <td><%= last_reading.data_feed.title %></td>
-          <td><%= feed_type[0].humanize %></td>
-          <td><%#= link_to 'Download last day as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, format: :csv) %></td>
-          <td><%= link_to 'Download last day as XLSX from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], format: :xlsx) %></td>
-
-          <td><%#= link_to 'Download last month as CSV from DB', data_feed_path(data_feed, feed_type: feed_type, start_date: Date.today - 1.month, end_date: Date.today, format: :csv) %></td>
-          <td><%= link_to 'Download last month as XLSX from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], start_date: Date.today - 1.month, end_date: Date.today, format: :xlsx) %></td>
-
-          <td><%= link_to 'Download last produced CSV from rake', "/public/downloads/bath#{feed_type[0]}data.csv" %></td>
-          <td><%= nice_dates last_reading.at %></td>
-        </tr>
-
+      <% last_reading = DataFeedReading.where(feed_type: feed_type).order(at: :desc).limit(1).first %>
+      <tr>
+        <td class=<%= class_for_last_date(last_reading.at) %>><%= last_reading.data_feed.title %></td>
+        <td class=<%= class_for_last_date(last_reading.at) %>><%= feed_type[0].humanize %></td>
+        <td class=<%= class_for_last_date(last_reading.at) %>><%= nice_dates last_reading.at %></td>
+        <td><%= link_to 'Download last day as CSV from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], format: :csv) %></td>
+        <td><%= link_to 'Download last day as XLSX from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], format: :xlsx) %></td>
+        <td><%= link_to 'Download last month as CSV from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], start_date: Date.today - 1.month, end_date: Date.today, format: :csv) %></td>
+        <td><%= link_to 'Download last month as XLSX from DB', data_feed_path(last_reading.data_feed, feed_type: feed_type[0], start_date: Date.today - 1.month, end_date: Date.today, format: :xlsx) %></td>
+        <td><%= link_to 'Download last produced CSV from rake', "/public/downloads/bath#{feed_type[0] == 'solar_irradiation' ? 'solar_insolence' : feed_type[0]}data.csv" %></td>
+      </tr>
     <% end %>
   </tbody>
 </table>
+
+<h3>Legend</h3>
+<div class='calendar-legend'>
+  <div class='legend-scale'>
+    <ul class='legend-labels'>
+      <li><span style='background:#f8f9fa;'></span>No data</li>
+      <li><span style='background:#dc3545;'></span>Nothing in 30 days</li>
+      <li><span style='background:#ffc107;'></span>Nothing in 5 days</li>
+      <li><span style='background:#5cb85c;'></span>All fine</li>
+    </ul>
+  </div>
+</div>
