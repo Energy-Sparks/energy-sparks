@@ -1,6 +1,4 @@
-<% content_for :page_title do %>
-    Admin Reports
-<% end %>
+<% content_for :page_title do %>Admin Reports<% end %>
 <div class="application container">
   <div class="row padded-row">
     <div class="col-md-9">
@@ -14,7 +12,7 @@
       <ul class='legend-labels'>
         <li><span style='background:rgb(244,183,191);'></span>No reading for 30 days</li>
         <li><span style='background:rgb(255,237,169);'></span>No reading for 5 days</li>
-        <li><span style='background:rgb(181,227,191);'></span>Recent reading</li>
+        <li><span style='background:#5cb85c;'></span>Recent reading</li>
       </ul>
     </div>
   </div>
@@ -29,22 +27,12 @@
       <tbody>
         <% @schools.each do |school| %>
           <% school.meters.each do |meter| %>
-            <tr class=<%= class_for_last_date(meter.last_read) %>>
-              <td>
-                <%= link_to(school.name, school_path(school)) %>
-              </td>
-              <td>
-                <%= meter.display_name %>
-              </td>
-              <td>
-                <%= meter.meter_type.capitalize %>
-              </td>
-              <td>
-                <%= nice_date_times(meter.first_read) %>
-              </td>
-              <td>
-                <%= nice_date_times(meter.last_read) %>
-              </td>
+            <tr>
+              <td><%= link_to(school.name, school_path(school)) %></td>
+              <td><%= meter.display_name %></td>
+              <td><%= meter.meter_type.capitalize %></td>
+              <td class=<%= class_for_last_date(meter.last_read) %>><%= nice_date_times(meter.first_read) %></td>
+              <td class=<%= class_for_last_date(meter.last_read) %>><%= nice_date_times(meter.last_read) %></td>
             </tr>
           <% end %>
         <% end %>
