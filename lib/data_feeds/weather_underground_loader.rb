@@ -10,7 +10,7 @@ module DataFeeds
       @min_temperature = -15.0
       @max_minutes_between_samples = 120
       @max_solar_irradiation = 2000.0
-      @csv_format = :portrait
+      @csv_format = :landscape
     end
 
     def import
@@ -31,10 +31,10 @@ module DataFeeds
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation)
           end
 
-          temperature_readings = data_feed.readings(:temperature, @start_date, @end_date)
-          File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(temperature_readings)) }
-          solar_irradiation_readings = data_feed.readings(:solar_irradiation, @start_date, @end_date)
-          File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_irradiation_readings)) }
+          # temperature_readings = data_feed.readings(:temperature, @start_date, @end_date)
+          # File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(temperature_readings)) }
+          # solar_irradiation_readings = data_feed.readings(:solar_irradiation, @start_date, @end_date)
+          # File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_irradiation_readings)) }
         end
       end
     end
