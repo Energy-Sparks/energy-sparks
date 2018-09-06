@@ -119,11 +119,21 @@ module DataFeeds
             if line_num == 1
               header = line_components
             elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
-              temperature_index = header.index('TemperatureC')
               solar_index = header.index('SolarRadiationWatts/m^2')
               datetime = Time.zone.parse(line_components[0]).to_datetime
 
+              temperature_index_f = header.index('TemperatureF')
+              temperature_index_c = header.index('TemperatureC')
+
+              temperature_index = temperature_index_f || temperature_index_c
+
               temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
+
+              if temperature_index_c.nil?
+                # Convert to F
+                temperature = (temperature - 32) / 1.8
+              end
+
               solar_string = solar_index.nil? ? nil : line_components[solar_index]
               solar_value = solar_string.nil? ? nil : solar_string.to_f
               solar_value = if solar_value.nil?
