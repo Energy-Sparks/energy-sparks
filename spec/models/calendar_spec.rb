@@ -80,7 +80,6 @@ describe Calendar do
   end
 
   describe 'it knows when alert triggers are coming up' do
-
     it 'knows when the next holiday is' do
       Timecop.freeze(Date.parse(autumn_term_half_term_holiday_start) - 1.week) do
         expect(calendar.next_holiday.start_date.to_s(:db)).to eq autumn_term_half_term_holiday_start
@@ -110,48 +109,5 @@ describe Calendar do
         expect(calendar.holiday_approaching?).to be false
       end
     end
-
-
-#   let(:autumn_term_half_term_holiday_start) { "2017-10-21" }
-#   let(:autumn_term_half_term_end)           { "2017-10-20" }
-
-#   let(:autumn_terms) {
-#     [{ term: "2017-18 Term 1", start_date: "2017-09-04", end_date: autumn_term_half_term_end },
-#      { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
-#   }
-#   let!(:calendar) { CalendarFactoryFromEventHash.new(autumn_terms, area).create }
-
-#   let(:random_before_holiday_start_date) { '01/01/2017' }
-#   let(:random_after_holiday_start_date)  { '16/12/2017' }
-
-#   let!(:random_before_holiday) {
-#     CalendarEvent.create(
-#       title: 'random holiday',
-#       calendar: calendar,
-#       calendar_event_type: CalendarEventType.holiday.first,
-#       start_date: random_before_holiday_start_date,
-#       end_date: '01/02/2017')}
-#   let!(:random_after_holiday) {
-#     CalendarEvent.create(
-#       title: 'random holiday 2',
-#       calendar: calendar,
-#       calendar_event_type: CalendarEventType.holiday.first,
-#       start_date: '16/12/2017',
-#       end_date: '20/12/2017')}
-# end
-
-
-
-
-
-
-
-
-
-  # let(:autumn_terms) {
-  #   [{ term: "2017-18 Term 1", start_date: "2017-09-04", end_date: "2017-10-20" },
-  #    { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
-  # }
-
   end
 end

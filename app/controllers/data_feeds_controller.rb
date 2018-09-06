@@ -9,14 +9,27 @@ class DataFeedsController < ApplicationController
   def show
     feed_id     = params[:id]
     feed_type   = params[:feed_type]
-    start_date  = params[:start_date] || Date.yesterday - 1
-    end_date    = params[:end_date] || Date.yesterday
+    start_date = if params[:start_date]
+                   Date.parse(params[:start_date])
+                 else
+                   Date.yesterday - 1
+                 end
+
+    end_date = if params[:end_date]
+                 Date.parse(params[:end_date])
+               else
+                 Date.yesterday
+               end
 
     feed = DataFeed.find(feed_id)
     @readings = feed.readings(feed_type, start_date, end_date)
-    data = feed.to_csv(@readings)
+
     respond_to do |format|
-      format.csv { send_data data, filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv" }
+      format.csv do
+        data_hash = @readings.pluck(:at, :value).to_h
+        data = DataFeeds::WeatherUndergroundCsvWriter.new(nil, data_hash, :landscape).csv_as_array
+        send_data data, filename: "data-feed-#{feed_type}-#{start_date}-#{end_date}.csv"
+      end
       format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=data-feed-#{feed_type}-#{start_date}-#{end_date}.xlsx" }
     end
   end

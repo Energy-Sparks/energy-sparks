@@ -37,7 +37,32 @@ class CalendarEvent < ApplicationRecord
   after_update :update_neighbour_start, if: :saved_change_to_end_date?
   after_update :update_neighbour_end,   if: :saved_change_to_start_date?
 
+  after_create :check_whether_child_needs_creating
+
 private
+
+  def check_whether_child_needs_creating
+    if calendar.calendars.any?
+      calendar.calendars.each do |child_calendar|
+        next if there_is_an_overlapping_child_event?(self, child_calendar)
+        duplicate = self.dup
+        duplicate.calendar = child_calendar
+        duplicate.save!
+      end
+    end
+  end
+
+  def there_is_an_overlapping_child_event?(calendar_event, child_calendar)
+    new_start_date = calendar_event.start_date
+    new_end_date = calendar_event.end_date
+    any_overlapping_before = any_overlapping_here?(calendar_event, child_calendar, new_start_date)
+    any_overlapping_after = any_overlapping_here?(calendar_event, child_calendar, new_end_date)
+    any_overlapping_before || any_overlapping_after
+  end
+
+  def any_overlapping_here?(calendar_event, child_calendar, date_to_check)
+    child_calendar.calendar_events.where(calendar_event_type: calendar_event.calendar_event_type).where('start_date <= ? and end_date >= ?', date_to_check, date_to_check).any?
+  end
 
   def update_neighbour_start
     if calendar_event_type.term_time
