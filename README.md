@@ -33,3 +33,11 @@ Read the CONTRIBUTING.md guidelines for how to get started.
 
 Development mode uses mail catcher for sending mails - you need to install the [mailcatcher gem](https://github.com/sj26/mailcatcher) for this to work correctly.
 
+## Setting up a new test environment
+
+1) Set up appropriate database in RDS - make sure the password doesn't have any (or too many) special characters, best to keep to digits and letters if possible!
+2) Use pg_dump to get dump of current production database
+3) Use psql to get data into new database
+4) Clone production environment
+5) Update environment variables to point at new database, plus the various other test things like rollbar
+6) add the EC2 security group for the new machine to the RDS security section
