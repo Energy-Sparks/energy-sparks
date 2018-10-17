@@ -41,6 +41,16 @@ class Meter < ApplicationRecord
   attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
   attr_writer :sub_meters, :meter_correction_rules
 
+  def to_s
+    "#{mpan_mprn} : #{meter_type} x #{@amr_data.nil? ? '0' : amr_data.length}"
+  end
+
+  # There is some ambiguity in the analysis code between what is a collection of meters
+  # and what is a school or building
+  def meter_collection
+    school
+  end
+
   def sub_meters
     @sub_meters ||= []
   end
@@ -82,6 +92,10 @@ class Meter < ApplicationRecord
   def add_correction_rule(rule)
     throw EnergySparksUnexpectedStateException.new('Unexpected nil correction') if rule.nil?
     meter_correction_rules.push(rule)
+  end
+
+  def insert_correction_rules_first(rules)
+    meter_correction_rules.concat(rules)
   end
 
   #TODO Temp from load from amr code

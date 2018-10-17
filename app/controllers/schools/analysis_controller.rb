@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class Schools::AnalysisController < ApplicationController
   include SchoolAggregation
 

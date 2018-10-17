@@ -1,4 +1,3 @@
-require 'dashboard'
 require 'twilio-ruby'
 
 class AlertGeneratorService

@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class Schools::SimulationDetailsController < Schools::SimulationsController
 private
 

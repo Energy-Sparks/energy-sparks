@@ -1,7 +1,8 @@
 require_relative 'boot'
 
-require "rails"
-require "rails/all"
+require 'rails'
+require 'rails/all'
+require 'dashboard'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

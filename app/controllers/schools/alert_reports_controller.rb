@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class Schools::AlertReportsController < ApplicationController
   load_and_authorize_resource :school, find_by: :slug
   skip_before_action :authenticate_user!

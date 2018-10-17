@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
   include NewSimulatorChartConfig
