@@ -21,7 +21,9 @@ class ApplicationController < ActionController::Base
 private
 
   def set_ga_code
+    # rubocop:disable Naming/MemoizedInstanceVariableName
     @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']
+    # rubocop:enable  Naming/MemoizedInstanceVariableName
   end
 
   def current_school

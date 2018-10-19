@@ -112,7 +112,8 @@ module DataFeeds
         url = generate_single_day_station_history_url(station_name, date)
         puts "HTTP request for                     #{url}"
         header = []
-        open(url) do |f|
+        uri = URI.parse(url) #=> #<URI::HTTP>
+        uri.open do |f|
           line_num = 0
           f.each_line do |line|
             line_components = line.split(',')
@@ -162,10 +163,12 @@ module DataFeeds
         date.day)
     end
 
+    # rubocop:disable Naming/UncommunicativeMethodParamName
     def simple_interpolate(val1, val0, t1, t0, tx)
       t_prop = (tx - t0) / (t1 - t0)
       val0 + (val1 - val0) * t_prop
     end
+    # rubocop:enable Naming/UncommunicativeMethodParamName
 
     def interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata)
       puts "station_name = #{station_name}"
