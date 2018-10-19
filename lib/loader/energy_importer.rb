@@ -64,7 +64,9 @@ module Loader
         key = n == 0 ? "_24_00" : read_at.strftime("_%H_%M")
         value = reading[key]
         r = MeterReading.find_or_create_by!(meter: meter, read_at: read_at)
+        # rubocop:disable Rails/ActiveRecordAliases
         r.update_attributes!(value: value, unit: "kWh")
+        # rubocop:enable  Rails/ActiveRecordAliases
       end
     end
 

@@ -1,6 +1,6 @@
 wb = xlsx_package.workbook
 
-date_style = wb.styles.add_style(:format_code => 'yyyy-mm-dd hh:mm:ss')
+date_style = wb.styles.add_style(format_code: 'yyyy-mm-dd hh:mm:ss')
 
 wb.add_worksheet(name: "Data Feeds") do |sheet|
   # this is the head row of your spreadsheet
@@ -11,5 +11,4 @@ wb.add_worksheet(name: "Data Feeds") do |sheet|
     sheet.add_row [reading.at, reading.value]
   end
   sheet.cols[0].each { |c| c.style = date_style }
-
 end
