@@ -87,31 +87,31 @@ module Merit
         category_check.call(activity.school, "investigator", 5)
       end
 
-      #12 Learner	Record 5 different types of activity in the "Learning" category
+      #12 Learner  Record 5 different types of activity in the "Learning" category
       grant_on ['activities#create', 'activities#update'],
                badge: 'learner', to: :school, temporary: true do |activity|
         category_check.call(activity.school, "learner", 5)
       end
 
-      #13 Communicator	Record 5 different types of activity in the "Spreading the message" category
+      #13 Communicator  Record 5 different types of activity in the "Spreading the message" category
       grant_on ['activities#create', 'activities#update'],
                badge: 'communicator', to: :school, temporary: true do |activity|
         category_check.call(activity.school, "communicator", 5)
       end
 
-      #14 Energy Saver	Record 5 different types of activity in the "Taking action around the school" category
+      #14 Energy Saver  Record 5 different types of activity in the "Taking action around the school" category
       grant_on ['activities#create', 'activities#update'],
                badge: 'energy-saver', to: :school, temporary: true do |activity|
         category_check.call(activity.school, "energy-saver", 5)
       end
 
-      #15 Teamwork	Record 5 different types of activity in the "Whole-school activities" category
+      #15 Teamwork  Record 5 different types of activity in the "Whole-school activities" category
       grant_on ['activities#create', 'activities#update'],
                badge: 'teamwork', to: :school, temporary: true do |activity|
         category_check.call(activity.school, "teamwork", 5)
       end
 
-      #16 Explorer	Record one activity in each category
+      #16 Explorer  Record one activity in each category
       grant_on ['activities#create', 'activities#update'], badge: 'explorer', to: :school, temporary: true do |activity|
         counts = activity.school.activities.group(:activity_category_id).count
         counts.keys.length == ActivityCategory.count
@@ -122,22 +122,22 @@ module Merit
         counts.keys.length >= count
       }
 
-      #17 Autumn Term	At least 8 activities in different weeks
+      #17 Autumn Term  At least 8 activities in different weeks
       grant_on ['activities#create', 'activities#update'], badge: 'autumn-term', to: :school, temporary: true do |activity|
         period_check.call(activity.school, Date.parse("#{Time.zone.today.year}-09-01"), Date.parse("#{Time.zone.today.year}-12-31"), 8)
       end
 
-      #18 Spring Term	At least one activity per week
+      #18 Spring Term  At least one activity per week
       grant_on ['activities#create', 'activities#update'], badge: 'spring-term', to: :school, temporary: true do |activity|
         period_check.call(activity.school, Date.parse("#{Time.zone.today.year}-01-01"), Date.parse("#{Time.zone.today.year}-03-31"), 8)
       end
 
-      #19 Summer Term	At least one activity per week
+      #19 Summer Term  At least one activity per week
       grant_on ['activities#create', 'activities#update'], badge: 'summer-term', to: :school, temporary: true do |activity|
         period_check.call(activity.school, Date.parse("#{Time.zone.today.year}-04-01"), Date.parse("#{Time.zone.today.year}-07-01"), 8)
       end
 
-      #20 Graduate	Get all term badges
+      #20 Graduate  Get all term badges
       grant_on ['activities#create', 'activities#update'], badge: 'graduate', to: :school, temporary: true do |activity|
         activity.school.badges.include?(Merit::Badge.find(17)) && activity.school.badges.include?(Merit::Badge.find(18)) && activity.school.badges.include?(Merit::Badge.find(19))
       end

@@ -100,7 +100,9 @@ module Usage
   def day_most_usage(supply)
     usage = daily_usage(supply: supply, dates: last_n_days_with_readings(supply))
     return nil unless usage
+    # rubocop:disable Performance/UnneededSort
     usage.sort { |a, b| a[1] <=> b[1] }.last
+    # rubocop:enable  Performance/UnneededSort
   end
 
   # return date range for week in which this date falls
