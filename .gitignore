@@ -48,3 +48,7 @@ public/assets
 
 # RubyMine
 .idea
+
+# Keep bucket, but ignore everything in it
+amr_files_bucket/*
+!amr_files_bucket/.keep

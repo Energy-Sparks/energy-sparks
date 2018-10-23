@@ -31,7 +31,7 @@ class AmrDataFeedConfig < ApplicationRecord
       self.create(
         area_id: 2,
         description: 'Banes',
-        bucket: 'bucket',
+        bucket: 'amr_files_bucket',
         archive_bucket: 'archive',
         access_type: 'SFTP',
         date_format: "%b %e %Y %I:%M%p",
