@@ -23,7 +23,7 @@ class CsvImporter
   end
 
   def parse
-    pp "Loading: #{@config.bucket}/#{@file_reference}"
+    p "Loading: #{@config.bucket}/#{@file_reference}"
     Upsert.batch(AmrDataFeedReading.connection, AmrDataFeedReading.table_name) do |upsert|
       begin
         CSV.foreach("#{@config.bucket}/#{@file_reference}", col_sep: @col_sep, row_sep: :auto, headers: true) do |row|
