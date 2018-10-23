@@ -26,6 +26,9 @@ gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails'
 gem 'momentjs-rails'
 
+# AWS
+gem 'aws-sdk-s3'
+
 # Assets for Emails
 gem 'bootstrap-email'
 
