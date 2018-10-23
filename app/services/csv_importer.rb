@@ -20,6 +20,7 @@ class CsvImporter
     @col_sep = ','
     @inserted_record_count = 0
     @existing_records = AmrDataFeedReading.count
+    @meter_id_hash = Meter.all.map { |m| [m.meter_no.to_s, m.id]}.to_h
   end
 
   def parse
@@ -51,8 +52,12 @@ private
     mpan_mprn = row[@map_of_fields_to_indexes[:mpan_mprn_index]]
     reading_date = row[@map_of_fields_to_indexes[:reading_date_index]]
 
+
+    meter_id = @meter_id_hash[mpan_mprn]
+
     upsert.row({ mpan_mprn: mpan_mprn, reading_date: reading_date },
         amr_data_feed_config_id: @config.id,
+        meter_id: meter_id,
         mpan_mprn: mpan_mprn,
         reading_date: reading_date,
         postcode: row[@map_of_fields_to_indexes[:postcode_index]],
