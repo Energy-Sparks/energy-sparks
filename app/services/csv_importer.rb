@@ -4,6 +4,7 @@ require 'upsert/connection/postgresql'
 require 'upsert/connection/PG_Connection'
 require 'upsert/merge_function/PG_Connection'
 require 'upsert/column_definition/postgresql'
+require 'csv'
 
 # https://github.com/seamusabshere/upsert ?
 # https://github.com/michaelnera/active_record_importer
