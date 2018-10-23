@@ -139,12 +139,12 @@ ActiveRecord::Schema.define(version: 2018_10_23_154710) do
     t.integer "meter_id"
     t.bigint "mpan_mprn", null: false
     t.date "reading_date", null: false
-    t.decimal "readings", null: false, array: true
+    t.float "readings", null: false, array: true
     t.text "postcode"
     t.text "school"
     t.text "description"
     t.text "units"
-    t.decimal "total"
+    t.float "total"
     t.text "meter_serial_number"
     t.text "provider_record_id"
     t.text "type"
@@ -155,8 +155,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_154710) do
 
   create_table "amr_readings", force: :cascade do |t|
     t.bigint "meter_id", null: false
-    t.decimal "kwh_data_x48", null: false, array: true
-    t.decimal "one_day_kwh"
+    t.float "kwh_data_x48", null: false, array: true
+    t.float "one_day_kwh"
     t.date "date", null: false
     t.text "type", null: false
     t.date "substitute_date"

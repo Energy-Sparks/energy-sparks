@@ -5,12 +5,12 @@ class CreateAmrDataFeedReadings < ActiveRecord::Migration[5.2]
       t.integer     :meter_id
       t.bigint      :mpan_mprn,     null: false
       t.date        :reading_date,  null: false
-      t.decimal     :readings,      null: false, array: true
+      t.float       :readings,      null: false, array: true
       t.text        :postcode
       t.text        :school
       t.text        :description
       t.text        :units
-      t.decimal     :total
+      t.float       :total
       t.text        :meter_serial_number
       t.text        :provider_record_id
       t.text        :type

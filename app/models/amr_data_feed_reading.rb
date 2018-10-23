@@ -12,9 +12,9 @@
 #  postcode                :text
 #  provider_record_id      :text
 #  reading_date            :date             not null
-#  readings                :decimal(, )      not null, is an Array
+#  readings                :float            not null, is an Array
 #  school                  :text
-#  total                   :decimal(, )
+#  total                   :float
 #  type                    :text
 #  units                   :text
 #  updated_at              :datetime         not null

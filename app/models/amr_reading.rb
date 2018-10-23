@@ -4,9 +4,9 @@
 #
 #  date            :date             not null
 #  id              :bigint(8)        not null, primary key
-#  kwh_data_x48    :decimal(, )      not null, is an Array
+#  kwh_data_x48    :float            not null, is an Array
 #  meter_id        :bigint(8)        not null
-#  one_day_kwh     :decimal(, )
+#  one_day_kwh     :float
 #  substitute_date :date
 #  type            :text             not null
 #  upload_datetime :datetime
