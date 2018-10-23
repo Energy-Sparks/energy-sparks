@@ -35,17 +35,17 @@ class AmrReading < ApplicationRecord
 
   self.inheritance_column = 'WOOF' # don't use type!
 
-  def initialize(meter_id, date, type, substitute_date, upload_datetime, kwh_data_x48)
-    check_type(type)
-    @meter_id = meter_id.to_s
-    @date = date
-    @upload_datetime = upload_datetime
-    @type = type
-    @substitute_date = substitute_date
-    @kwh_data_x48 = kwh_data_x48
-    throw EnergySparksBadAMRDataTypeException.new('Error: expecting all 48 half hour kWh values to be float or integer') if validate_data != 48
-    @one_day_kwh = kwh_data_x48.inject(:+)
-  end
+  # def initialize(meter_id, date, type, substitute_date, upload_datetime, kwh_data_x48)
+  #   check_type(type)
+  #   @meter_id = meter_id.to_s
+  #   @date = date
+  #   @upload_datetime = upload_datetime
+  #   @type = type
+  #   @substitute_date = substitute_date
+  #   @kwh_data_x48 = kwh_data_x48
+  #   throw EnergySparksBadAMRDataTypeException.new('Error: expecting all 48 half hour kWh values to be float or integer') if validate_data != 48
+  #   @one_day_kwh = kwh_data_x48.inject(:+)
+  # end
 
   def kwh_halfhour(half_hour_index)
     @kwh_data_x48[half_hour_index]
