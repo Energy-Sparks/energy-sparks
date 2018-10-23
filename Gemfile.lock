@@ -32,6 +32,13 @@ GIT
       nokogiri (>= 1.6.6)
       rubyzip (>= 1.2.1)
 
+GIT
+  remote: https://github.com/seamusabshere/upsert.git
+  revision: e754c58e02aef6933b27002d9028ff2aa2f28904
+  branch: master
+  specs:
+    upsert (2.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -471,13 +478,6 @@ GEM
       sys-uname (~> 1.0.2)
     spreadsheet (1.1.8)
       ruby-ole (>= 1.0)
-    spring (2.0.2)
-      activesupport (>= 4.2)
-    spring-commands-rspec (1.0.4)
-      spring (>= 0.9.1)
-    spring-watcher-listen (2.0.1)
-      listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -615,15 +615,13 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   soda-ruby
-  spring
-  spring-commands-rspec
-  spring-watcher-listen (~> 2.0.0)
   test-prof
   timecop
   trix
   twilio-ruby
   tzinfo-data
   uglifier
+  upsert!
   vcr
   web-console
   webmock

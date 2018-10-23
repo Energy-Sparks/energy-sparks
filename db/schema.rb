@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_21_093652) do
+ActiveRecord::Schema.define(version: 2018_10_19_130732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -101,6 +101,56 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.bigint "alert_id"
     t.index ["alert_id"], name: "index_alerts_contacts_on_alert_id"
     t.index ["contact_id"], name: "index_alerts_contacts_on_contact_id"
+  end
+
+  create_table "amr_data_feed_configs", force: :cascade do |t|
+    t.integer "area_id"
+    t.text "description", null: false
+    t.text "bucket", null: false
+    t.text "archive_bucket", null: false
+    t.text "access_type", null: false
+    t.text "date_format", null: false
+    t.text "mpan_mprn_field", null: false
+    t.text "reading_date_field", null: false
+    t.text "reading_fields", null: false, array: true
+    t.text "msn_field"
+    t.text "provider_id_field"
+    t.text "total_field"
+    t.text "meter_description_field"
+    t.text "postcode_field"
+    t.text "units_field"
+    t.text "headers_example"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "amr_data_feed_import_logs", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id"
+    t.text "file_name"
+    t.datetime "import_time"
+    t.integer "records_imported"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
+  end
+
+  create_table "amr_data_feed_readings", force: :cascade do |t|
+    t.integer "amr_data_feed_config_id", null: false
+    t.integer "meter_id"
+    t.bigint "mpan_mprn", null: false
+    t.date "reading_date", null: false
+    t.decimal "readings", null: false, array: true
+    t.text "postcode"
+    t.text "school"
+    t.text "description"
+    t.text "units"
+    t.decimal "total"
+    t.text "meter_serial_number"
+    t.text "provider_record_id"
+    t.text "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
   end
 
   create_table "areas", force: :cascade do |t|
@@ -399,6 +449,7 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
   add_foreign_key "aggregated_meter_readings", "meters"
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
+  add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", name: "amr_data_feed_readings_config_id_fk"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"

@@ -12,6 +12,7 @@ gem 'rack', '~> 2.0.5'
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
+gem 'upsert', git: 'https://github.com/seamusabshere/upsert.git', branch: 'master' #
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', '~> 0.20.1', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
@@ -98,9 +99,9 @@ group :development do
   gem 'better_errors'
   gem "binding_of_caller"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'spring-commands-rspec'
+  # gem 'spring'
+  # gem 'spring-watcher-listen', '~> 2.0.0'
+  # gem 'spring-commands-rspec'
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'
