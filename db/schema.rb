@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_130732) do
+ActiveRecord::Schema.define(version: 2018_10_23_154710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -153,6 +153,17 @@ ActiveRecord::Schema.define(version: 2018_10_19_130732) do
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
   end
 
+  create_table "amr_readings", force: :cascade do |t|
+    t.bigint "meter_id", null: false
+    t.decimal "kwh_data_x48", null: false, array: true
+    t.decimal "one_day_kwh"
+    t.date "date", null: false
+    t.text "type", null: false
+    t.date "substitute_date"
+    t.datetime "upload_datetime"
+    t.index ["meter_id"], name: "index_amr_readings_on_meter_id"
+  end
+
   create_table "areas", force: :cascade do |t|
     t.text "type", null: false
     t.text "title"
@@ -269,8 +280,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_130732) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
@@ -288,7 +299,6 @@ ActiveRecord::Schema.define(version: 2018_10_19_130732) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
@@ -328,8 +338,8 @@ ActiveRecord::Schema.define(version: 2018_10_19_130732) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -348,10 +358,10 @@ ActiveRecord::Schema.define(version: 2018_10_19_130732) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -450,6 +460,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_130732) do
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", name: "amr_data_feed_readings_config_id_fk"
+  add_foreign_key "amr_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
