@@ -47,6 +47,34 @@ class AmrReading < ApplicationRecord
   #   @one_day_kwh = kwh_data_x48.inject(:+)
   # end
 
+  def self.create_from_one_day_reading(one_day_reading)
+ #   pp "Looking for meter id: #{one_day_reading.meter_id}"
+ #   meter_id = Meter.find_by(meter_no: one_day_reading.meter_id)
+
+    meter_id = if one_day_reading.type != 'ORIG'
+                 Meter.find_by(meter_no: one_day_reading.meter_id).id
+               else
+                 one_day_reading.meter_id
+               end
+
+    if meter_id.present?
+      create(
+        meter_id: meter_id,
+        date: one_day_reading.date,
+        kwh_data_x48: one_day_reading.kwh_data_x48,
+        one_day_kwh: one_day_reading.one_day_kwh,
+        substitute_date: one_day_reading.substitute_date,
+        status: one_day_reading.type,
+        upload_datetime: one_day_reading.upload_datetime
+      )
+    else
+      pp "Can't insert, no meter_id #{one_day_reading}"
+    end
+  rescue ActiveRecord::InvalidForeignKey
+    pp "Can't insert, missing meter for #{one_day_reading.meter_id}"
+    pp one_day_reading
+  end
+
   def kwh_halfhour(half_hour_index)
     @kwh_data_x48[half_hour_index]
   end
