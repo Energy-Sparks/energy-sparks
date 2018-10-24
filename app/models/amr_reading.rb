@@ -31,9 +31,9 @@
 # i.e. the flattened database representation is made hierarchical for that day for performance reasons
 class AmrReading < ApplicationRecord
   include Comparable
-  include Logging
 
   self.inheritance_column = 'WOOF' # don't use type!
+  belongs_to :meter, inverse_of: :amr_readings
 
   # def initialize(meter_id, date, type, substitute_date, upload_datetime, kwh_data_x48)
   #   check_type(type)
