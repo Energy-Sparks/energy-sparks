@@ -7,13 +7,14 @@
 #  kwh_data_x48    :float            not null, is an Array
 #  meter_id        :bigint(8)        not null
 #  one_day_kwh     :float
+#  status          :text             not null
 #  substitute_date :date
-#  type            :text             not null
 #  upload_datetime :datetime
 #
 # Indexes
 #
 #  index_amr_readings_on_meter_id  (meter_id)
+#  unique_amr_meter_readings       (meter_id,one_day_kwh,status,date) UNIQUE
 #
 # Foreign Keys
 #
@@ -29,6 +30,14 @@
 # so the primary database key is meter_id, date, type => datax48
 # internally in OneDayAMRReading the working data is held in :data_x48, plus the shadow data
 # i.e. the flattened database representation is made hierarchical for that day for performance reasons
+
+require 'upsert'
+require 'upsert/active_record_upsert'
+require 'upsert/connection/postgresql'
+require 'upsert/connection/PG_Connection'
+require 'upsert/merge_function/PG_Connection'
+require 'upsert/column_definition/postgresql'
+
 class AmrReading < ApplicationRecord
   include Comparable
 
@@ -67,6 +76,35 @@ class AmrReading < ApplicationRecord
         status: one_day_reading.type,
         upload_datetime: one_day_reading.upload_datetime
       )
+    else
+      pp "Can't insert, no meter_id #{one_day_reading}"
+    end
+  rescue ActiveRecord::InvalidForeignKey
+    pp "Can't insert, missing meter for #{one_day_reading.meter_id}"
+    pp one_day_reading
+  end
+
+  def self.upsert_from_one_day_reading(upsert, one_day_reading)
+ #   pp "Looking for meter id: #{one_day_reading.meter_id}"
+ #   meter_id = Meter.find_by(meter_no: one_day_reading.meter_id)
+
+    meter_id = if one_day_reading.type != 'ORIG'
+                 Meter.find_by(meter_no: one_day_reading.meter_id).id
+               else
+                 one_day_reading.meter_id
+               end
+
+    if meter_id.present?
+      upsert.row({ meter_id: meter_id, date: one_day_reading.date, status: one_day_reading.type, one_day_kwh: one_day_reading.one_day_kwh },
+        meter_id: meter_id,
+        date: one_day_reading.date,
+        kwh_data_x48: one_day_reading.kwh_data_x48,
+        one_day_kwh: one_day_reading.one_day_kwh,
+        substitute_date: one_day_reading.substitute_date,
+        status: one_day_reading.type,
+        upload_datetime: one_day_reading.upload_datetime
+    )
+
     else
       pp "Can't insert, no meter_id #{one_day_reading}"
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_23_154710) do
+ActiveRecord::Schema.define(version: 2018_10_24_151621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 2018_10_23_154710) do
     t.text "status", null: false
     t.date "substitute_date"
     t.datetime "upload_datetime"
+    t.index ["meter_id", "one_day_kwh", "status", "date"], name: "unique_amr_meter_readings", unique: true
     t.index ["meter_id"], name: "index_amr_readings_on_meter_id"
   end
 
