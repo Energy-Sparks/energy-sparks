@@ -15,8 +15,8 @@ gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 gem 'upsert', git: 'https://github.com/seamusabshere/upsert.git', branch: 'master' #
 
 # Dashboard analytics
-#gem 'energy-sparks_analytics', '~> 0.20.1', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
-gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
+gem 'energy-sparks_analytics', '~> 0.20.1', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+#gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
