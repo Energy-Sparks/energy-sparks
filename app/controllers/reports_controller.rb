@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class ReportsController < AdminController
   def index
   end
@@ -27,8 +29,16 @@ class ReportsController < AdminController
 
     @meter = Meter.includes(:amr_readings).find(params[:meter_id])
     @first_reading = @meter.first_reading
-    @reading_summary = @meter.amr_readings.order(:date).pluck(:date, :status).map {|day| { day[0] => day[1] }}
-    @reading_summary = @reading_summary.inject(:merge!)
+    respond_to do |format|
+      format.json do
+        @reading_summary = @meter.amr_readings.order(:date).pluck(:date, :status).map {|day| { day[0] => day[1] }}
+        @reading_summary = @reading_summary.inject(:merge!)
+      end
+      format.html
+    end
+
+
+
     # @reading_summary = @reading_summary.inject(:merge!)
     # @missing_array = get_missing_array(@first_reading, @reading_summary)
   end
