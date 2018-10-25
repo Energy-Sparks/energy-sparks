@@ -1,7 +1,7 @@
 class CreateAmrDataFeedConfigTable < ActiveRecord::Migration[5.2]
   def change
     create_table :amr_data_feed_configs do |t|
-      t.integer :area_id
+      t.references :area
       t.text    :description,         null: false
       t.text    :bucket,              null: false
       t.text    :archive_bucket,      null: false
@@ -19,8 +19,5 @@ class CreateAmrDataFeedConfigTable < ActiveRecord::Migration[5.2]
       t.text    :headers_example
       t.timestamps
     end
-
-    #add_foreign_key :amr_data_feed_configs, :areas, name: "amr_data_feed_configs_areas_id_fk" if table_exists?(:areas)
-
   end
 end

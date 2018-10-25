@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
-    t.integer "area_id"
+    t.bigint "area_id"
     t.text "description", null: false
     t.text "bucket", null: false
     t.text "archive_bucket", null: false
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.text "headers_example"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -135,28 +136,30 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
   end
 
   create_table "amr_data_feed_readings", force: :cascade do |t|
-    t.integer "amr_data_feed_config_id", null: false
-    t.integer "meter_id"
+    t.bigint "amr_data_feed_config_id"
+    t.bigint "meter_id"
     t.bigint "mpan_mprn", null: false
     t.date "reading_date", null: false
-    t.float "readings", null: false, array: true
+    t.decimal "readings", precision: 11, scale: 5, null: false, array: true
+    t.decimal "total", precision: 11, scale: 5
     t.text "postcode"
     t.text "school"
     t.text "description"
     t.text "units"
-    t.float "total"
     t.text "meter_serial_number"
     t.text "provider_record_id"
     t.text "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
+    t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
   end
 
   create_table "amr_readings", force: :cascade do |t|
     t.bigint "meter_id", null: false
-    t.float "kwh_data_x48", null: false, array: true
-    t.float "one_day_kwh"
+    t.decimal "kwh_data_x48", precision: 11, scale: 5, null: false, array: true
+    t.decimal "one_day_kwh", precision: 11, scale: 5, null: false
     t.date "date", null: false
     t.text "status", null: false
     t.date "substitute_date"
@@ -281,8 +284,8 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
@@ -300,7 +303,6 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
@@ -340,8 +342,8 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -360,10 +362,10 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -461,7 +463,6 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
   add_foreign_key "aggregated_meter_readings", "meters"
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
-  add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", name: "amr_data_feed_readings_config_id_fk"
   add_foreign_key "amr_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"

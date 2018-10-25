@@ -4,9 +4,9 @@
 #
 #  date            :date             not null
 #  id              :bigint(8)        not null, primary key
-#  kwh_data_x48    :float            not null, is an Array
+#  kwh_data_x48    :decimal(11, 5)   not null, is an Array
 #  meter_id        :bigint(8)        not null
-#  one_day_kwh     :float
+#  one_day_kwh     :decimal(11, 5)   not null
 #  status          :text             not null
 #  substitute_date :date
 #  upload_datetime :datetime
@@ -42,7 +42,8 @@ class AmrReading < ApplicationRecord
   include Comparable
 
   self.inheritance_column = 'WOOF' # don't use type!
-  belongs_to :meter, inverse_of: :amr_readings
+  belongs_to :meter, inverse_of: :amr_readings, optional: true
+
 
   # def initialize(meter_id, date, type, substitute_date, upload_datetime, kwh_data_x48)
   #   check_type(type)
@@ -89,6 +90,7 @@ class AmrReading < ApplicationRecord
  #   meter_id = Meter.find_by(meter_no: one_day_reading.meter_id)
 
     meter_id = if one_day_reading.type != 'ORIG'
+                 pp one_day_reading
                  Meter.find_by(meter_no: one_day_reading.meter_id).id
                else
                  one_day_reading.meter_id

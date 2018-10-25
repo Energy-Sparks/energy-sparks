@@ -56,7 +56,7 @@ class AmrMeterCollection
 
     # First run through
     AmrDataFeedReading.where(meter_id: meter.id).order(reading_date: :asc).each do |reading|
-      amr_data.add(reading.reading_date, OneDayAMRReading.new(meter.id, reading.reading_date, 'ORIG', nil, reading.created_at, reading.readings))
+      amr_data.add(reading.reading_date, OneDayAMRReading.new(meter.id, reading.reading_date, 'ORIG', nil, reading.created_at, reading.readings.map(&:to_f)))
    #  amr_data.add(reading.reading_date, AmrReading.new(meter_id: meter.id, date: reading.reading_date, type: 'ORIG', kwh_data_x48: reading.readings, upload_datetime: reading.created_at))
     end
 
