@@ -36,7 +36,6 @@ class AmrDataValidatorAndAggregatorService
     @meter_collection.electricity_meters.each do |meter|
       Upsert.batch(AmrReading.connection, AmrReading.table_name) do |upsert|
         p meter.to_s
-        p meter.id
         amr_data = meter.amr_data
         amr_data.values.each do |one_day_read|
           AmrReading.upsert_from_one_day_reading(upsert, one_day_read)
