@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
-    t.integer "area_id"
+    t.bigint "area_id"
     t.text "description", null: false
     t.text "bucket", null: false
     t.text "archive_bucket", null: false
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.text "headers_example"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -281,8 +282,8 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.integer "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
@@ -300,7 +301,6 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
   create_table "merit_scores", id: :serial, force: :cascade do |t|
@@ -340,8 +340,8 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
   end
 
   create_table "sashes", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -360,10 +360,10 @@ ActiveRecord::Schema.define(version: 2018_10_24_151621) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"

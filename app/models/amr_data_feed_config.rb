@@ -2,25 +2,29 @@
 #
 # Table name: amr_data_feed_configs
 #
-#  id                      :bigint(8)        not null, primary key
-#  area_id                 :integer
-#  description             :text             not null
-#  bucket                  :text             not null
-#  archive_bucket          :text             not null
 #  access_type             :text             not null
+#  archive_bucket          :text             not null
+#  area_id                 :bigint(8)
+#  bucket                  :text             not null
+#  created_at              :datetime         not null
 #  date_format             :text             not null
+#  description             :text             not null
+#  headers_example         :text
+#  id                      :bigint(8)        not null, primary key
+#  meter_description_field :text
 #  mpan_mprn_field         :text             not null
+#  msn_field               :text
+#  postcode_field          :text
+#  provider_id_field       :text
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
-#  msn_field               :text
-#  provider_id_field       :text
 #  total_field             :text
-#  meter_description_field :text
-#  postcode_field          :text
 #  units_field             :text
-#  headers_example         :text
-#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#
+# Indexes
+#
+#  index_amr_data_feed_configs_on_area_id  (area_id)
 #
 
 class AmrDataFeedConfig < ApplicationRecord
