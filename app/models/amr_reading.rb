@@ -90,7 +90,6 @@ class AmrReading < ApplicationRecord
  #   meter_id = Meter.find_by(meter_no: one_day_reading.meter_id)
 
     meter_id = if one_day_reading.type != 'ORIG'
-                 pp one_day_reading
                  Meter.find_by(meter_no: one_day_reading.meter_id).id
                else
                  one_day_reading.meter_id
