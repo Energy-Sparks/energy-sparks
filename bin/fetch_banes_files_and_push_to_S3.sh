@@ -8,6 +8,7 @@ echo "connecting to: $BANES_SFTP_SERVER as $BANES_SFTP_USER"
 # Get and then delete files
 lftp sftp://$BANES_SFTP_USER:$BANES_SFTP_PASSWORD@$BANES_SFTP_SERVER:22 <<EOF
 set xfer:log 1
+set xfer:clobber true
 set xfer:log-file ../log/lftp.log
 get 30days.zip
 get 30days.csv
