@@ -12,6 +12,7 @@ module Usage
         .group_by_day(:read_at, range: datetime_range, format: date_format)
         .sum(:value)
         .to_a
+    #self.amr_readings.where(date: datetime_range).map { |r| [ r.date, r.kwh_data_x48.sum] }
   end
 
   def hourly_usage_for_date(supply: nil, date: nil, meter: nil, scale: :kwh)
@@ -33,6 +34,7 @@ module Usage
   # hourly_usage: get average reading at the same time
   # across all meters for a given supply for a range of dates
   def hourly_usage(supply: nil, dates: nil, meter: nil)
+    #minutes = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
     return nil unless dates
     datetime_range = (dates.first.beginning_of_day..dates.last.end_of_day)
     self.meter_readings
@@ -46,6 +48,7 @@ module Usage
         )
         .average(:value)
         .to_a
+   #     @school.amr_readings.where(date: Date.today - 1.month).first.kwh_data_x48.each_with_index.map { |a, index| [minutes[index], a] }
   end
 
   # Get date of the last reading up to the given date
@@ -60,6 +63,7 @@ module Usage
         .first
         .try(:[], 'read_at')
         .try(:to_date)
+    # self.amr_readings.where('date <= ?', Date.current).maximum(:date)
   end
 
   def earliest_reading_date(supply)
@@ -70,6 +74,7 @@ module Usage
         .first
         .try(:[], 'read_at')
         .try(:to_date)
+    # irb(main):024:0> @school.amr_readings.where('date <= ?', Date.current).minimum(:date)
   end
 
   def last_n_days_with_readings(supply, window = 7, to_date = Date.current)
@@ -87,6 +92,7 @@ module Usage
         .first
         .try(:[], 'read_at')
         .try(:to_date)
+    #@school.amr_readings.where("extract(dow from date) = ?", 5).maximum(:date)
   end
 
   # return the date range of the last full week with readings

@@ -23,20 +23,20 @@ namespace :amr_sheffield do
     puts DateTime.now.utc
   end
 
-  def get_file_from_s3(file_name, file_name_and_path)
-    puts "No file, so let's download from S3 #{file_name}"
-    region = 'eu-west-2'
-    bucket = ENV['AWS_S3_AMR_DATA_FEEDS_BUCKET']
-    key = "sheffield/#{file_name}"
-    s3 = Aws::S3::Client.new(region: region)
-    s3.get_object(bucket: bucket, key: key, response_target: file_name_and_path)
-    puts "Downloaded"
-  end
+  # def get_file_from_s3(file_name, file_name_and_path)
+  #   puts "No file, so let's download from S3 #{file_name}"
+  #   region = 'eu-west-2'
+  #   bucket = ENV['AWS_S3_AMR_DATA_FEEDS_BUCKET']
+  #   key = "sheffield/#{file_name}"
+  #   s3 = Aws::S3::Client.new(region: region)
+  #   s3.get_object(bucket: bucket, key: key, response_target: file_name_and_path)
+  #   puts "Downloaded"
+  # end
 
-  def we_have_a_file_so_import(config, file_name)
-    importer = CsvImporter.new(config, file_name)
-    importer.parse
+  # def we_have_a_file_so_import(config, file_name)
+  #   importer = CsvImporter.new(config, file_name)
+  #   importer.parse
 
-    puts "imported"
-  end
+  #   puts "imported"
+  # end
 end
