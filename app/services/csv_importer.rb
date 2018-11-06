@@ -42,7 +42,7 @@ class CsvImporter
 private
 
   def invalid_row?(row)
-    row.empty? || row[@map_of_fields_to_indexes[:mpan_mprn_index]].blank?
+    row.empty? || row[@map_of_fields_to_indexes[:mpan_mprn_index]].blank? || row[@range_of_readings].compact.nil?
   end
 
   def create_record(upsert, row)
@@ -50,8 +50,7 @@ private
     readings = row[@range_of_readings]
 
     mpan_mprn = row[@map_of_fields_to_indexes[:mpan_mprn_index]]
-    reading_date = row[@map_of_fields_to_indexes[:reading_date_index]]
-
+    reading_date = Date.parse row[@map_of_fields_to_indexes[:reading_date_index]]
 
     meter_id = @meter_id_hash[mpan_mprn]
 
