@@ -26,6 +26,8 @@ before_script:
   - sleep 3
   - "gem install bundler"
   - "bundle exec govuk-lint-ruby -R app lib"
+  - "bundle exec bundle-audit update"
+  - "bundle exec bundle-audit check"
   - "psql -c 'create database energy_sparks_test;' -U postgres"
   - "cp config/database.yml.travis config/database.yml"
   - "bundle exec rake db:migrate"
