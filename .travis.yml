@@ -39,9 +39,6 @@ after_success:
 
 deploy:
   provider: elasticbeanstalk
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: $AWS_ENCRYPTED_SECRET
   region: eu-west-2
   app: energy-sparks
   bucket_name: $AWS_EB_BUCKET_NAME
