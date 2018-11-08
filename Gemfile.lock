@@ -603,7 +603,7 @@ DEPENDENCIES
   pg
   pry
   puma
-  rack (~> 2.0.5)
+  rack (~> 2.0.6)
   rails (~> 5.2.1)
   rails-controller-testing
   redcarpet
