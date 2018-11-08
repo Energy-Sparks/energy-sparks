@@ -30,10 +30,9 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-  - bundle exec bundle-audit update
 script:
   - bundle exec govuk-lint-ruby -R app lib
-  - bundle exec bundle-audit check
+  - bundle exec bundle-audit check --update
   - bundle exec rspec
 after_success:
   - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
