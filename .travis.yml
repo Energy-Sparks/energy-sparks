@@ -24,7 +24,6 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3
-  - "gem install bundler"
   - "psql -c 'create database energy_sparks_test;' -U postgres"
   - "cp config/database.yml.travis config/database.yml"
   - "bundle exec rake db:migrate"
