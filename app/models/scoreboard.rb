@@ -11,6 +11,10 @@
 #
 
 class Scoreboard < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :name, use: [:finders, :slugged, :history]
+
   has_many :school_groups
   has_many :schools, through: :school_groups
 

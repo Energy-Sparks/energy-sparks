@@ -11,6 +11,7 @@ class Ability
       can :manage, Contact
       can :manage, Calendar
       can :manage, CalendarEvent
+      can :manage, Scoreboard
       can :manage, School
       can :manage, User
       can :manage, DataFeed
@@ -23,6 +24,7 @@ class Ability
       can :show, School
       can :read, ActivityCategory
       can :show, ActivityType
+      can :show, Scoreboard
     elsif user.school_user?
       can :manage, Activity, school_id: user.school_id
       can :index, School
@@ -33,6 +35,7 @@ class Ability
       can :suggest_activity, School
       can :read, ActivityCategory
       can :show, ActivityType
+      can :show, Scoreboard
     elsif user.guest?
       can :show, Activity
       can :read, ActivityCategory
@@ -44,6 +47,7 @@ class Ability
       can :usage, School
       can :index, Simulation
       can :show, Simulation
+      can :show, Scoreboard
     end
     #
     # The first argument to `can` is the action you are giving the user

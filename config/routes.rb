@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
   end
+  resources :scoreboards
 
   resources :schools do
     resources :activities

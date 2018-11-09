@@ -25,6 +25,7 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  belongs_to :scoreboard
 
   validates :name, presence: true
 end
