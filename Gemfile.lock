@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 4331ecd930c907223b910d5e94c82cf24bddb672
-  branch: integration
+  revision: a259c9c0980d8dea39d22bfb4c8f7837065898cf
+  tag: 0.11.0
   specs:
-    energy-sparks_analytics (0.20.1)
+    energy-sparks_analytics (0.11.0)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hashdiff (~> 0.3.7)
@@ -14,7 +14,7 @@ GIT
       require_all (~> 2.0.0)
       roo (~> 2.7.1)
       roo-xls (~> 1.2.0)
-      rspec (>= 3.7.0)
+      rspec (~> 3.7.0)
       ruby-sun-times (~> 0.1.5)
       soda-ruby (~> 0.2.25)
       statsample (~> 2.1.0)
@@ -426,27 +426,27 @@ GEM
       roo (>= 2.0.0, < 3)
       spreadsheet (> 0.9.0)
     rserve-client (0.3.5)
-    rspec (3.8.0)
-      rspec-core (~> 3.8.0)
-      rspec-expectations (~> 3.8.0)
-      rspec-mocks (~> 3.8.0)
-    rspec-core (3.8.0)
-      rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.2)
+    rspec (3.7.0)
+      rspec-core (~> 3.7.0)
+      rspec-expectations (~> 3.7.0)
+      rspec-mocks (~> 3.7.0)
+    rspec-core (3.7.1)
+      rspec-support (~> 3.7.0)
+    rspec-expectations (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.8.0)
-    rspec-mocks (3.8.0)
+      rspec-support (~> 3.7.0)
+    rspec-mocks (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.8.0)
-    rspec-rails (3.8.1)
+      rspec-support (~> 3.7.0)
+    rspec-rails (3.7.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec-core (~> 3.8.0)
-      rspec-expectations (~> 3.8.0)
-      rspec-mocks (~> 3.8.0)
-      rspec-support (~> 3.8.0)
-    rspec-support (3.8.0)
+      rspec-core (~> 3.7.0)
+      rspec-expectations (~> 3.7.0)
+      rspec-mocks (~> 3.7.0)
+      rspec-support (~> 3.7.0)
+    rspec-support (3.7.1)
     rubocop (0.59.2)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -598,7 +598,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  energy-sparks_analytics (~> 0.20.1)!
+  energy-sparks_analytics (~> 0.11.0)!
   factory_bot_rails
   fakefs
   fasterer
@@ -625,7 +625,7 @@ DEPENDENCIES
   rails-controller-testing
   redcarpet
   rollbar
-  rspec-rails (~> 3.8)
+  rspec-rails (= 3.7.0)
   ruby-sun-times
   rubyzip (= 1.2.2)
   sass-rails

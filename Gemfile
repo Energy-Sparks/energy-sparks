@@ -15,7 +15,7 @@ gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 gem 'upsert', git: 'https://github.com/seamusabshere/upsert.git', branch: 'master' #
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.20.1', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+gem 'energy-sparks_analytics', '~> 0.11.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.11.0'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets
@@ -85,7 +85,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet" # use bullet to optimise queries
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails', '3.7.0'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'
