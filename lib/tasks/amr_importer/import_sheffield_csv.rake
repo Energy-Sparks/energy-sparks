@@ -4,7 +4,7 @@ namespace :amr_sheffield do
     puts "Make sure Sheffield set up"
     puts DateTime.now.utc
     # Set this up, just in case it isn't already
-    sheffield_config = AmrDataFeedConfig.set_up_sheffield
+    sheffield_config = AmrDataFeedConfig.where(description: 'Sheffield')
 
     readings_date = DateTime.parse(args[:readings_date]).utc.strftime('%Y%m%d') || DateTime.yesterday.strftime('%d-%m-%Y')
     file_name = "4003063_9232_Export_#{readings_date}.csv"

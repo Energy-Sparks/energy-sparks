@@ -4,7 +4,7 @@ namespace :amr_importer do
     puts "Make sure Banes set up"
     puts DateTime.now.utc
     # Set this up, just in case it isn't already
-    banes_config = AmrDataFeedConfig.set_up_banes
+    banes_config = AmrDataFeedConfig.where(description: 'Banes')
 
     readings_date = args[:readings_date] || DateTime.yesterday.strftime('%d-%m-%Y')
     file_name = "30days-#{readings_date}.csv"
