@@ -11,6 +11,7 @@ class CreateAmrDataFeedConfigTable < ActiveRecord::Migration[5.2]
       t.text    :mpan_mprn_field,       null: false
       t.text    :reading_date_field,    null: false
       t.text    :reading_fields,        null: false, array: true
+      t.text    :column_separator,      null: false, default: ','
       t.text    :msn_field
       t.text    :provider_id_field
       t.text    :total_field

@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
     t.text "mpan_mprn_field", null: false
     t.text "reading_date_field", null: false
     t.text "reading_fields", null: false, array: true
+    t.text "column_separator", default: ",", null: false
     t.text "msn_field"
     t.text "provider_id_field"
     t.text "total_field"
@@ -124,6 +125,36 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
+  end
+
+  create_table "amr_data_feed_import_logs", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id"
+    t.text "file_name"
+    t.datetime "import_time"
+    t.integer "records_imported"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
+  end
+
+  create_table "amr_data_feed_readings", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id"
+    t.bigint "meter_id"
+    t.text "mpan_mprn", null: false
+    t.text "reading_date", null: false
+    t.text "readings", null: false, array: true
+    t.text "total"
+    t.text "postcode"
+    t.text "school"
+    t.text "description"
+    t.text "units"
+    t.text "meter_serial_number"
+    t.text "provider_record_id"
+    t.text "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
+    t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
   end
 
   create_table "areas", force: :cascade do |t|
