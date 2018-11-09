@@ -32,7 +32,6 @@ class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   has_many :meter_readings,             inverse_of: :meter, dependent: :destroy
   has_many :aggregated_meter_readings,  inverse_of: :meter, dependent: :destroy
-  has_many :amr_readings,               inverse_of: :meter, dependent: :destroy
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
 
   enum meter_type: [:electricity, :gas]
