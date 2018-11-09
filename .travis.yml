@@ -42,7 +42,7 @@ deploy:
   region: eu-west-2
   app: energy-sparks
   bucket_name: $AWS_EB_BUCKET_NAME
-  bucket_path: energy-sparks/
+  bucket_path: energy-sparks
   env: test
   on:
     repo: BathHacked/energy-sparks
