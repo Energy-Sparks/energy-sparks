@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_21_093652) do
+ActiveRecord::Schema.define(version: 2018_11_09_131337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -282,6 +282,15 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "school_groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.bigint "scoreboard_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
+  end
+
   create_table "school_times", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "opening_time", default: 850
@@ -298,10 +307,10 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
@@ -315,9 +324,18 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.decimal "floor_area"
     t.integer "weather_underground_area_id"
     t.integer "solar_pv_tuos_area_id"
+    t.bigint "school_group_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
+    t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
+  end
+
+  create_table "scoreboards", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "simulations", force: :cascade do |t|
@@ -406,8 +424,10 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
+  add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "terms", "calendars"
