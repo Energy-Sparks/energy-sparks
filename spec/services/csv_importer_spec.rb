@@ -4,11 +4,31 @@ require 'fakefs/spec_helpers'
 describe CsvImporter do
   include FakeFS::SpecHelpers
 
-  let!(:config) { AmrDataFeedConfig.set_up_banes }
   let(:file_name) { 'example.csv' }
+  let!(:config) {
+    AmrDataFeedConfig.create(
+      area_id: 2,
+      description: 'Banes',
+      s3_folder: 'banes',
+      s3_archive_folder: 'archive-banes',
+      local_bucket_path: 'amr_files_bucket',
+      access_type: 'SFTP',
+      date_format: "%b %e %Y %I:%M%p",
+      mpan_mprn_field: 'M1_Code1',
+      reading_date_field: 'Date',
+      reading_fields: "[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00]".split(','),
+      msn_field: 'M1_Code2',
+      provider_id_field: 'ID',
+      total_field: 'Total Units',
+      meter_description_field: 'Location',
+      postcode_field: 'PostCode',
+      units_field: 'Units',
+      headers_example: "ID,Date,Location,Type,PostCode,Units,Total Units,[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00],M1_Code1,M1_Code2"
+    )
+  }
 
   before(:each) do
-    Dir.mkdir config.bucket
+    Dir.mkdir config.local_bucket_path
   end
 
   def example_csv
@@ -50,7 +70,7 @@ describe CsvImporter do
     record_count = write_file_and_parse(csv)
     expect(AmrDataFeedReading.count).to be 1
     expect(record_count).to be 1
-    expect(AmrDataFeedReading.first.readings.first).to eq 0.165.to_d
+    expect(AmrDataFeedReading.first.readings.first).to eq "0.165"
     expect(AmrDataFeedImportLog.count).to be 1
     log = AmrDataFeedImportLog.first
     expect(log.file_name).to eq file_name
@@ -59,7 +79,7 @@ describe CsvImporter do
   end
 
   def write_file_and_parse(csv)
-    file = File.write("#{config.bucket}/#{file_name}", csv)
+    file = File.write("#{config.local_bucket_path}/#{file_name}", csv)
 
     importer = CsvImporter.new(config, file_name)
     importer.parse
