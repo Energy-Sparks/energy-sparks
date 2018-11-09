@@ -7,6 +7,7 @@
 #  id            :bigint(8)        not null, primary key
 #  name          :string           not null
 #  scoreboard_id :bigint(8)
+#  slug          :string           not null
 #  updated_at    :datetime         not null
 #
 # Indexes
@@ -19,6 +20,10 @@
 #
 
 class SchoolGroup < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :name, use: [:finders, :slugged, :history]
+
   has_many :schools
 
   validates :name, presence: true

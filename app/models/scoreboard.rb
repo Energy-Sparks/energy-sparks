@@ -2,11 +2,12 @@
 #
 # Table name: scoreboards
 #
-#  created_at :datetime         not null
-#  id         :bigint(8)        not null, primary key
-#  name       :string           not null
-#  slug       :string           not null
-#  updated_at :datetime         not null
+#  created_at  :datetime         not null
+#  description :string
+#  id          :bigint(8)        not null, primary key
+#  name        :string           not null
+#  slug        :string           not null
+#  updated_at  :datetime         not null
 #
 
 class Scoreboard < ApplicationRecord

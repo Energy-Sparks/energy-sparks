@@ -122,6 +122,7 @@ private
       :postcode,
       :website,
       :enrolled,
+      :school_group_id,
       :calendar_area_id,
       :weather_underground_area_id,
       :solar_pv_tuos_area_id,

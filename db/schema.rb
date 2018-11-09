@@ -285,6 +285,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
   create_table "school_groups", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
+    t.string "slug", null: false
     t.bigint "scoreboard_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -333,6 +334,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
 
   create_table "scoreboards", force: :cascade do |t|
     t.string "name", null: false
+    t.string "description"
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

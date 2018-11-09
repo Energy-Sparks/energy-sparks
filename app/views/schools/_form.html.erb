@@ -53,6 +53,13 @@
     </div>
   </div>
 
+  <h2>Groups</h2>
+  <p>TODO</p>
+  <div class="form-group">
+    <%= f.label :school_group_id, 'Group' %>
+    <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (@school.school_group_id)), {include_blank: true}, { class: 'form-control' }%>
+  </div>
+
   <h2>Calendar and Data Feed configuration</h2>
   <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
   <div class="form-group">
