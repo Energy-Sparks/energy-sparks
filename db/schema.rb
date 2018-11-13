@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_21_093652) do
+ActiveRecord::Schema.define(version: 2018_11_09_131337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -298,10 +298,10 @@ ActiveRecord::Schema.define(version: 2018_07_21_093652) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sash_id"
-    t.integer "level", default: 0
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
+    t.integer "sash_id"
+    t.integer "level", default: 0
     t.integer "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
