@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
     t.text "postcode_field"
     t.text "units_field"
     t.text "headers_example"
+    t.boolean "expect_headers", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
   create_table "amr_data_feed_readings", force: :cascade do |t|
     t.bigint "amr_data_feed_config_id"
     t.bigint "meter_id"
+    t.bigint "amr_data_feed_import_log_id"
     t.text "mpan_mprn", null: false
     t.text "reading_date", null: false
     t.text "readings", null: false, array: true
@@ -154,7 +156,9 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
+    t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
+    t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
   end
 
   create_table "areas", force: :cascade do |t|

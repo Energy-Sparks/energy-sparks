@@ -16,4 +16,5 @@
 #
 
 class AmrDataFeedImportLog < ApplicationRecord
+  has_many :amr_data_feed_readings
 end

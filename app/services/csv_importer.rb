@@ -14,7 +14,6 @@ class CsvImporter
     @config = config
     @map_of_fields_to_indexes = @config.map_of_fields_to_indexes
     @range_of_readings = @config.range_of_readings
-    @col_sep = ','
     @inserted_record_count = 0
     @existing_records = AmrDataFeedReading.count
     @meter_id_hash = Meter.all.map { |m| [m.meter_no.to_s, m.id]}.to_h
@@ -22,17 +21,19 @@ class CsvImporter
 
   def parse
     Rails.logger.info "Loading: #{@config.local_bucket_path}/#{@file_name}"
+    amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
+
     Upsert.batch(AmrDataFeedReading.connection, AmrDataFeedReading.table_name) do |upsert|
       begin
-        CSV.foreach("#{@config.local_bucket_path}/#{@file_name}", col_sep: @col_sep, row_sep: :auto, headers: true) do |row|
-          create_record(upsert, row)
+        CSV.foreach("#{@config.local_bucket_path}/#{@file_name}", col_sep: @config.column_separator, row_sep: :auto, headers: @config.expect_headers) do |row|
+          create_record(upsert, row, amr_data_feed_import_log.id)
         end
       rescue CSV::MalformedCSVError
         Rails.logger.error "Malformed CSV"
       end
     end
     @inserted_record_count = AmrDataFeedReading.count - @existing_records
-    AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc, records_imported: @inserted_record_count)
+    amr_data_feed_import_log.update(records_imported: @inserted_record_count)
     @inserted_record_count
   end
 
@@ -42,7 +43,7 @@ private
     row.empty? || row[@map_of_fields_to_indexes[:mpan_mprn_index]].blank? || row[@range_of_readings].compact.nil?
   end
 
-  def create_record(upsert, row)
+  def create_record(upsert, row, amr_data_feed_import_log_id)
     return if invalid_row?(row)
     readings = row[@range_of_readings]
 
@@ -51,7 +52,10 @@ private
 
     meter_id = @meter_id_hash[mpan_mprn]
 
-    upsert.row({ mpan_mprn: mpan_mprn, reading_date: reading_date_string },
+    # This determines which row to select, values get updated for this particular row
+    unique_record_selector = { mpan_mprn: mpan_mprn, reading_date: reading_date_string }
+
+    upsert.row(unique_record_selector,
       amr_data_feed_config_id: @config.id,
       meter_id: meter_id,
       mpan_mprn: mpan_mprn,
@@ -62,6 +66,7 @@ private
       meter_serial_number: row[@map_of_fields_to_indexes[:meter_serial_number_index]],
       provider_record_id: row[@map_of_fields_to_indexes[:provider_record_id_index]],
       readings: readings,
+      amr_data_feed_import_log_id: amr_data_feed_import_log_id,
       created_at: DateTime.now.utc,
       updated_at: DateTime.now.utc
     )
