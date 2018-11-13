@@ -32,13 +32,6 @@ GIT
       nokogiri (>= 1.6.6)
       rubyzip (>= 1.2.1)
 
-GIT
-  remote: https://github.com/seamusabshere/upsert.git
-  revision: e754c58e02aef6933b27002d9028ff2aa2f28904
-  branch: master
-  specs:
-    upsert (2.2.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -547,6 +540,7 @@ GEM
     unf_ext (0.0.7.5)
     unicode-display_width (1.4.0)
     uniform_notifier (1.11.0)
+    upsert (2.2.1)
     vcr (4.0.0)
     warden (1.2.7)
       rack (>= 1.0)
@@ -648,7 +642,7 @@ DEPENDENCIES
   twilio-ruby
   tzinfo-data
   uglifier
-  upsert!
+  upsert (~> 2.2.1)
   vcr
   web-console
   webmock

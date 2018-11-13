@@ -12,7 +12,7 @@ gem 'rack', '~> 2.0.6'
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
-gem 'upsert', git: 'https://github.com/seamusabshere/upsert.git', branch: 'master' #
+gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', '~> 0.11.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.11.0'
