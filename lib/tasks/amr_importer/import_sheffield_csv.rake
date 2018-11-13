@@ -7,8 +7,8 @@ namespace :amr_sheffield do
     config = AmrDataFeedConfig.find_by(description: 'Sheffield')
     FileUtils.mkdir_p config.local_bucket_path
 
-    readings_date = args[:readings_date] ? DateTime.parse(args[:readings_date]).utc.strftime('%Y%m%d') : DateTime.yesterday.strftime('%d-%m-%Y')
-
+    readings_date = args[:readings_date] ? DateTime.parse(args[:readings_date]).utc : DateTime.yesterday
+    readings_date = readings_date.strftime('%d-%m-%Y')
     # 4003063_9232_Export_20181104_120347_747
     file_name = "4003063_9232_Export_#{readings_date}.csv"
 

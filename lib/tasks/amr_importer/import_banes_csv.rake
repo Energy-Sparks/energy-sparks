@@ -1,7 +1,8 @@
 namespace :amr_banes do
   desc "Import data from csv"
   task :import_csv, [:readings_date] => :environment do |_t, args|
-    readings_date = args[:readings_date] ? DateTime.parse(args[:readings_date]).utc.strftime('%Y%m%d') : DateTime.yesterday.strftime('%d-%m-%Y')
+    readings_date = args[:readings_date] ? DateTime.parse(args[:readings_date]).utc : DateTime.yesterday
+    readings_date = readings_date.strftime('%d-%m-%Y')
 
     puts "Import BANES AMR for #{readings_date}"
     puts DateTime.now.utc
