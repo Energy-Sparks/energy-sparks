@@ -13,7 +13,6 @@ class CsvImporter
     @file_name = file_name
     @config = config
     @map_of_fields_to_indexes = @config.map_of_fields_to_indexes
-    @range_of_readings = @config.range_of_readings
     @inserted_record_count = 0
     @existing_records = AmrDataFeedReading.count
     @meter_id_hash = Meter.all.map { |m| [m.meter_no.to_s, m.id]}.to_h
@@ -25,7 +24,7 @@ class CsvImporter
 
     Upsert.batch(AmrDataFeedReading.connection, AmrDataFeedReading.table_name) do |upsert|
       begin
-        CSV.foreach("#{@config.local_bucket_path}/#{@file_name}", col_sep: @config.column_separator, row_sep: :auto, headers: @config.expect_headers) do |row|
+        CSV.foreach("#{@config.local_bucket_path}/#{@file_name}", col_sep: @config.column_separator, row_sep: :auto, headers: @config.expect_header) do |row|
           create_record(upsert, row, amr_data_feed_import_log.id)
         end
       rescue CSV::MalformedCSVError
@@ -40,12 +39,12 @@ class CsvImporter
 private
 
   def invalid_row?(row)
-    row.empty? || row[@map_of_fields_to_indexes[:mpan_mprn_index]].blank? || row[@range_of_readings].compact.nil?
+    row.empty? || row[@map_of_fields_to_indexes[:mpan_mprn_index]].blank? || readings_as_array(row).compact.nil?
   end
 
   def create_record(upsert, row, amr_data_feed_import_log_id)
     return if invalid_row?(row)
-    readings = row[@range_of_readings]
+    readings = readings_as_array(row)
 
     mpan_mprn = row[@map_of_fields_to_indexes[:mpan_mprn_index]]
     reading_date_string = row[@map_of_fields_to_indexes[:reading_date_index]]
@@ -70,5 +69,9 @@ private
       created_at: DateTime.now.utc,
       updated_at: DateTime.now.utc
     )
+  end
+
+  def readings_as_array(row)
+    @config.array_of_reading_indexes.map { |reading_index| row[reading_index] }
   end
 end

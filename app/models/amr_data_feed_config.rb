@@ -8,8 +8,8 @@
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  description             :text             not null
-#  expect_headers          :boolean          default(TRUE), not null
-#  headers_example         :text
+#  expect_header           :boolean          default(TRUE), not null
+#  header_example          :text
 #  id                      :bigint(8)        not null, primary key
 #  local_bucket_path       :text             not null
 #  meter_description_field :text
@@ -32,7 +32,7 @@
 
 class AmrDataFeedConfig < ApplicationRecord
   def map_of_fields_to_indexes(header = nil)
-    this_header = header || headers_example
+    this_header = header || header_example
     header_array = this_header.split(',')
     {
       mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
@@ -46,12 +46,9 @@ class AmrDataFeedConfig < ApplicationRecord
     }
   end
 
-  def range_of_readings(header = nil)
-    this_header = header || headers_example
+  def array_of_reading_indexes(header = nil)
+    this_header = header || header_example
     header_array = this_header.split(',')
-    first_reading = header_array.find_index(reading_fields.first)
-    last_reading = header_array.find_index(reading_fields.last)
-
-    (first_reading..last_reading)
+    reading_fields.map { |reading_header| header_array.find_index(reading_header) }
   end
 end
