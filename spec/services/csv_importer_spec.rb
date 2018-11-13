@@ -7,7 +7,7 @@ describe CsvImporter do
 
   let(:file_name) { 'example.csv' }
   let!(:config) {
-    AmrDataFeedConfig.create(
+    AmrDataFeedConfig.new(
       area_id: 2,
       description: 'Banes',
       s3_folder: 'banes',
@@ -128,8 +128,7 @@ describe CsvImporter do
   end
 
   it 'should handle no header if config set' do
-    AmrDataFeedConfig.first.update!(expect_header: false)
-    config = AmrDataFeedConfig.first
+    config.expect_header = false
     write_file_and_expect_readings(example_banes_no_header, config)
   end
 
