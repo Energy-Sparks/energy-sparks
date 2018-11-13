@@ -15,7 +15,7 @@ gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.11.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.11.0'
+gem 'energy-sparks_analytics', '~> 0.21.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.21.0'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets
