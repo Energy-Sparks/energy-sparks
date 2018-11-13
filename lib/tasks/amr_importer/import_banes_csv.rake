@@ -7,6 +7,7 @@ namespace :amr_banes do
     puts DateTime.now.utc
 
     config = AmrDataFeedConfig.find_by(description: 'Banes')
+    FileUtils.mkdir_p config.local_bucket_path
     file_name = "30days-#{readings_date}.csv"
 
     Amr::Importer.new(readings_date, config, file_name).import

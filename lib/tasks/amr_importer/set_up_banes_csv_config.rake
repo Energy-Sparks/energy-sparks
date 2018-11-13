@@ -1,6 +1,6 @@
-namespace :csv_config do
+namespace :amr_banes do
   desc "Import data from csv"
-  task set_up_banes: [:environment] do
+  task create_config: [:environment] do
     puts "Make sure Banes csv config is set up"
     puts DateTime.now.utc
 
@@ -9,7 +9,7 @@ namespace :csv_config do
       description: 'Banes',
       s3_folder: 'banes',
       s3_archive_folder: 'archive-banes',
-      local_bucket_path: 'amr_files_bucket/banes',
+      local_bucket_path: 'tmp/amr_files_bucket/banes',
       access_type: 'SFTP',
       date_format: "%b %e %Y %I:%M%p",
       mpan_mprn_field: 'M1_Code1',

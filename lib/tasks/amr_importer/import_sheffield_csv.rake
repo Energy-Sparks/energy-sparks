@@ -5,6 +5,7 @@ namespace :amr_sheffield do
     puts DateTime.now.utc
 
     config = AmrDataFeedConfig.find_by(description: 'Sheffield')
+    FileUtils.mkdir_p config.local_bucket_path
 
     readings_date = args[:readings_date] ? DateTime.parse(args[:readings_date]).utc.strftime('%Y%m%d') : DateTime.yesterday.strftime('%d-%m-%Y')
 

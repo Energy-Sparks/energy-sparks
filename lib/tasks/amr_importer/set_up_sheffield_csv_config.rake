@@ -1,6 +1,6 @@
-namespace :csv_config do
+namespace :amr_sheffield do
   desc "Import data from csv"
-  task set_up_sheffield: [:environment] do
+  task create_config: [:environment] do
     puts "Make sure Sheffield csv config is set up"
     puts DateTime.now.utc
 
@@ -9,7 +9,7 @@ namespace :csv_config do
       description: 'Sheffield',
       s3_folder: 'sheffield',
       s3_archive_folder: 'archive-sheffield',
-      local_bucket_path: 'amr_files_bucket/banes',
+      local_bucket_path: 'tmp/amr_files_bucket/banes',
       access_type: 'Email',
       date_format: "%d/%m/%Y",
       mpan_mprn_field: 'MPAN',
