@@ -38,12 +38,10 @@ class ScoreboardsController < ApplicationController
 
   # DELETE /scoreboards/1
   def destroy
-    if @scoreboard.school_groups.any?
-      redirect_to scoreboards_url, alert: 'Scoreboard still has associated school groups'
-    else
-      @scoreboard.destroy
-      redirect_to scoreboards_url, notice: 'Scoreboard deleted'
-    end
+    @scoreboard.safe_destroy
+    redirect_to scoreboards_url, notice: 'Scoreboard deleted'
+  rescue EnergySparks::SafeDestroyError => error
+    redirect_to scoreboards_url, alert: "Delete failed: #{error.message}"
   end
 
 private

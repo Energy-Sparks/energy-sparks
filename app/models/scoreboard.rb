@@ -19,4 +19,9 @@ class Scoreboard < ApplicationRecord
   has_many :schools, through: :school_groups
 
   validates :name, presence: true
+
+  def safe_destroy
+    raise EnergySparks::SafeDestroyError, 'Scoreboard has associated groups' if school_groups.any?
+    destroy
+  end
 end

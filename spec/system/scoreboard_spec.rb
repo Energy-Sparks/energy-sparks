@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'scoreboards', type: :system do
+RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
   let!(:admin) { create(:user, role: 'admin')}
 
@@ -33,16 +33,9 @@ RSpec.describe 'scoreboards', type: :system do
       expect(scoreboard.name).to eq('BANES Only')
     end
 
-    it 'can delete a scoreboard when it is not assigned to a group' do
+    it 'can delete a scoreboard' do
       scoreboard = create(:scoreboard, name: 'BANES and Frome')
-      group = create(:school_group, scoreboard: scoreboard)
       visit scoreboards_path
-      expect {
-        click_on 'Delete'
-      }.to_not change{Scoreboard.count}
-      expect(page).to have_content("Scoreboard still has associated school")
-
-      group.update!(scoreboard: nil)
 
       expect {
         click_on 'Delete'
