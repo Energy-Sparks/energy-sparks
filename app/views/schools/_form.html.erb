@@ -54,6 +54,7 @@
   </div>
 
   <h2>Groups</h2>
+  <p>Groups are used to collect associated schools together, usually by area. Groups can be ranked against each other on a Scoreboard.</p>
   <div class="form-group">
     <%= f.label :school_group_id, 'Group' %>
     <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (@school.school_group_id)), {include_blank: true}, { class: 'form-control' }%>
