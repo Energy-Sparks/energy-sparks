@@ -25,7 +25,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/awards
   def awards
-    @all_badges = Merit::Badge.all.to_a.sort { |a, b| a <=> b }
+    @all_badges = Merit::Badge.all.to_a.sort
     @badges = @school.badges_by_date(order: :asc)
   end
 
