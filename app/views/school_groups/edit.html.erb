@@ -15,7 +15,7 @@
     <% if @schools.any? %>
       <ol>
         <% @schools.each do |school| %>
-          <li><%= link_to school.name, edit_school_path(school) %></li>
+          <li><%= link_to school.name, school_path(school) %></li>
         <% end %>
       </ol>
     <% else %>
