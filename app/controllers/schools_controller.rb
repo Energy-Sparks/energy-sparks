@@ -9,7 +9,7 @@ class SchoolsController < ApplicationController
   # GET /schools
   # GET /schools.json
   def index
-    @scoreboards = Scoreboard.order(:name)
+    @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
     @ungrouped_enrolled_schools = School.enrolled.without_group.order(:name)
     @schools_not_enrolled = School.not_enrolled.order(:name)
   end
