@@ -41,7 +41,7 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with both meters' do
-      let!(:gasjmeter)  { create(:meter, school: school, meter_type: :gas )}
+      let!(:gas_meter)  { create(:meter, school: school, meter_type: :gas )}
       let!(:electricity_meter)  { create(:meter, school: school, meter_type: :electricity )}
       it 'shows me a school page with both meters' do
         click_on(school_name)
