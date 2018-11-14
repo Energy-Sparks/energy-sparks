@@ -30,7 +30,7 @@ RSpec.describe ScoreboardsController, type: :controller do
           expect(school.badges.first.name).to eql("player")
         end
 
-        it 'does not award a badge if viewing the scoreboard for a different schoold' do
+        it 'does not award a badge if viewing the scoreboard for a different school' do
           other_scoreboard = create(:scoreboard)
           get :show, params: {id: other_scoreboard.to_param}
           school.reload
