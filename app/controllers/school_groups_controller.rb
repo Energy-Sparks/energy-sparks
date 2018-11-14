@@ -14,6 +14,7 @@ class SchoolGroupsController < ApplicationController
 
   # GET /school_groups/1/edit
   def edit
+    @schools = @school_group.schools.order(:name)
   end
 
   # POST /school_groups

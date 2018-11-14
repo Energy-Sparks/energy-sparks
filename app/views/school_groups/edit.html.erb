@@ -1,7 +1,25 @@
 <h1>Edit School group</h1>
 
-<%= render 'form', school_group: @school_group %>
+<div class="row">
+  <div class="col-sm-8">
+    <%= render 'form', school_group: @school_group %>
 
-<div class="other-actions">
-  <%= link_to 'Back', school_groups_path, class: 'btn btn-secondary' %>
+    <div class="other-actions">
+      <%= link_to 'Back', school_groups_path, class: 'btn btn-secondary' %>
+    </div>
+
+  </div>
+
+  <div class="col-sm-4">
+    <h2>Schools in this group</h2>
+    <% if @schools.any? %>
+      <ol>
+        <% @schools.each do |school| %>
+          <li><%= link_to school.name, edit_school_path(school) %></li>
+        <% end %>
+      </ol>
+    <% else %>
+      <p>No schools are assigned to this group</p>
+    <% end %>
+  </div>
 </div>

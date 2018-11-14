@@ -20,6 +20,7 @@ class ScoreboardsController < ApplicationController
 
   # GET /scoreboards/1/edit
   def edit
+    @school_groups = @scoreboard.school_groups.order(:name)
   end
 
   # POST /scoreboards
