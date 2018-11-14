@@ -73,6 +73,8 @@ class School < ApplicationRecord
   enum competition_role: [:not_competing, :competitor, :winner]
 
   scope :enrolled, -> { where(enrolled: true) }
+  scope :not_enrolled, -> { where(enrolled: false) }
+  scope :without_group, -> { where(school_group_id: nil) }
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
@@ -189,17 +191,8 @@ class School < ApplicationRecord
     users.where(role: :school_admin)
   end
 
-  # def suggest_activities
-  #   @activity_categories = ActivityCategory.all.order(:name).to_a
-  # end
-
-  def self.scoreboard
-    School.select('schools.*, SUM(num_points) AS sum_points')
-        .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
-        .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
-        .where("schools.enrolled = true")
-        .order('sum_points DESC NULLS LAST')
-        .group('schools.id, merit_scores.sash_id')
+  def scoreboard
+    school_group.scoreboard if school_group
   end
 
   def self.top_scored(dates: nil, limit: nil)

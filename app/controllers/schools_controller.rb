@@ -2,15 +2,16 @@ class SchoolsController < ApplicationController
   include KeyStageFilterable
 
   load_and_authorize_resource find_by: :slug
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
   before_action :set_key_stage_tags, only: [:new, :edit]
 
   # GET /schools
   # GET /schools.json
   def index
-    @schools_enrolled = School.where(enrolled: true).order(:name)
-    @schools_not_enrolled = School.where(enrolled: false).order(:name)
+    @scoreboards = Scoreboard.order(:name)
+    @ungrouped_enrolled_schools = School.enrolled.without_group.order(:name)
+    @schools_not_enrolled = School.not_enrolled.order(:name)
   end
 
   # GET /schools/1
@@ -33,15 +34,6 @@ class SchoolsController < ApplicationController
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
     @first = @school.activities.empty?
     @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filter_names).suggest
-  end
-
-  # GET /schools/scoreboard
-  def scoreboard
-    #Added so merit can access the current user. Seems to require a variable with same name
-    #as controller
-    @school = current_user
-
-    @schools = School.scoreboard
   end
 
   # GET /schools/new

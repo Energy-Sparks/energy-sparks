@@ -24,4 +24,16 @@ class Scoreboard < ApplicationRecord
     raise EnergySparks::SafeDestroyError, 'Scoreboard has associated groups' if school_groups.any?
     destroy
   end
+
+  def should_generate_new_friendly_id?
+    name_changed? || super
+  end
+
+  def scored_schools
+    schools.enrolled.select('schools.*, SUM(num_points) AS sum_points')
+        .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
+        .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
+        .order('sum_points DESC NULLS LAST')
+        .group('schools.id, merit_scores.sash_id')
+  end
 end

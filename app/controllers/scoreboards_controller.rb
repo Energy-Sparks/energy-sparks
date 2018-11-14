@@ -2,10 +2,15 @@ class ScoreboardsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show]
   before_action :set_scoreboard, only: [:show, :edit, :update, :destroy]
+  before_action :award_player_badge, only: [:show]
 
   # GET /scoreboards
   def index
     @scoreboards = Scoreboard.order(:name)
+  end
+
+  def show
+    @schools = @scoreboard.scored_schools
   end
 
   # GET /scoreboards/new
@@ -52,5 +57,15 @@ private
 
   def scoreboard_params
     params.require(:scoreboard).permit(:name, :description)
+  end
+
+  def award_player_badge
+    if current_user && current_user.enrolled_school_admin?
+      school = current_user.school
+      if @scoreboard.schools.include?(school) && school.points >= 10
+        badge = Merit::Badge.find_by_name_and_level('player', nil)
+        school.add_badge(badge.id)
+      end
+    end
   end
 end

@@ -33,4 +33,8 @@ class SchoolGroup < ApplicationRecord
     raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
     destroy
   end
+
+  def should_generate_new_friendly_id?
+    name_changed? || super
+  end
 end

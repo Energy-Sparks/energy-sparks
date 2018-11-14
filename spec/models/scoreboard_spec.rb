@@ -22,7 +22,15 @@ describe Scoreboard, :scoreboards, type: :model do
         subject.safe_destroy
       }.to change{Scoreboard.count}.from(1).to(0)
     end
+  end
 
+  describe '#scored_schools' do
+    it 'returns schools in points order' do
+      group = create(:school_group, scoreboard: subject)
+      schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, school_group: group}
+
+      expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
+    end
   end
 
 end
