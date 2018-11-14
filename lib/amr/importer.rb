@@ -1,36 +1,42 @@
 module Amr
   class Importer
-    def initialize(readings_date, config, file_name)
-      @file_name_and_path = "#{config.local_bucket_path}/#{file_name}"
-      @file_name = file_name
+    AWS_REGION = 'eu-west-2'.freeze
+
+    def initialize(config)
       @config = config
-      @readings_date = readings_date
+      @bucket = ENV['AWS_S3_AMR_DATA_FEEDS_BUCKET']
+      @s3_client = Aws::S3::Client.new(region: AWS_REGION)
     end
 
-    def import
-      get_file_from_s3
-      if Pathname.new(@file_name_and_path).exist?
-        we_have_a_file_so_import
-      else
-        puts "Missing file, not local or in S3 #{file}"
+    def import_all
+      Rails.logger.info "Download all from S3 key pattern: #{@config.s3_folder}"
+      get_array_of_files_in_bucket_with_prefix.each do |key|
+        get_file_from_s3(key)
+        import_file(key)
       end
+      Rails.logger.info "Downloaded all"
     end
 
-    def get_file_from_s3
-      puts "Download from S3 #{@file_name}"
-      region = 'eu-west-2'
-      bucket = ENV['AWS_S3_AMR_DATA_FEEDS_BUCKET']
-      key = "#{@config.s3_folder}/#{@file_name}"
-      s3 = Aws::S3::Client.new(region: region)
-      puts key
-      s3.get_object(bucket: bucket, key: key, response_target: @file_name_and_path)
-      puts "Downloaded"
+  private
+
+    def get_file_from_s3(file_name)
+      key = "#{@config.s3_folder}/#{file_name}"
+      file_name_and_path = "#{@config.local_bucket_path}/#{file_name}"
+      Rails.logger.info "Downloading from S3 key: #{key}"
+      @s3_client.get_object(bucket: @bucket, key: key, response_target: file_name_and_path)
+      Rails.logger.info "Downloaded  from S3 key: #{key}"
     end
 
-    def we_have_a_file_so_import
-      importer = CsvImporter.new(@config, @file_name)
+    def get_array_of_files_in_bucket_with_prefix
+      contents = @s3_client.list_objects(bucket: @bucket, prefix: @config.s3_folder).contents
+      # Folders come back with size 0 and we don't need those
+      contents.select { |record| !record.empty? }.map { |record| File.basename(record.key) }
+    end
+
+    def import_file(file_name)
+      importer = CsvImporter.new(@config, file_name)
       importer.parse
-      puts "Imported"
+      Rails.logger.info "Imported #{file_name}"
     end
   end
 end
