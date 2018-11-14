@@ -30,7 +30,7 @@ module Amr
     def get_array_of_files_in_bucket_with_prefix
       contents = @s3_client.list_objects(bucket: @bucket, prefix: @config.s3_folder).contents
       # Folders come back with size 0 and we don't need those
-      contents.select { |record| !record.empty? }.map { |record| File.basename(record.key) }
+      contents.select { |record| !record.size.zero? }.map { |record| File.basename(record.key) }
     end
 
     def import_file(file_name)
