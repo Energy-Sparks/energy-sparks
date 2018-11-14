@@ -28,4 +28,9 @@ class SchoolGroup < ApplicationRecord
   belongs_to :scoreboard
 
   validates :name, presence: true
+
+  def safe_destroy
+    raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
+    destroy
+  end
 end

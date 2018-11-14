@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-
 RSpec.describe 'scoreboards', type: :system do
 
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin) { create(:user, role: 'admin')}
 
   describe 'when logged in' do
     before(:each) do

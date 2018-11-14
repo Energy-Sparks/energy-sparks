@@ -13,6 +13,7 @@ class Ability
       can :manage, CalendarEvent
       can :manage, Scoreboard
       can :manage, School
+      can :manage, SchoolGroup
       can :manage, User
       can :manage, DataFeed
     elsif user.school_admin?

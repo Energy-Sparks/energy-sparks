@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     end
   end
   resources :scoreboards
+  resources :school_groups
 
   resources :schools do
     resources :activities
