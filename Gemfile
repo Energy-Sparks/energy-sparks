@@ -4,10 +4,12 @@ ruby '2.5.1'
 
 # Rails/Core
 gem 'rails', '~> 5.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'puma' # Use Puma as the app server
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
-gem 'rack', '~> 2.0.6'
+
+# Freeze until ElasticBeanstalk rebuild
+gem 'puma', '3.12.0' # Use Puma as the app server
+gem 'rack', '2.0.6'
 
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
