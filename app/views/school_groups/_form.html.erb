@@ -1,16 +1,6 @@
 <%= form_for(school_group) do |f| %>
 
-  <% if school_group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(school_group.errors.count, "error") %> prohibited this school_group from being saved:</h2>
-
-      <ul>
-      <% school_group.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/errors', subject: school_group, subject_name: 'school group' %>
 
   <div class="form-group">
     <%= f.label :name %>

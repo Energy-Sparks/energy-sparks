@@ -1,15 +1,6 @@
 <%= form_for(scoreboard) do |f| %>
-  <% if scoreboard.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(scoreboard.errors.count, "error") %> prohibited this scoreboard from being saved:</h2>
 
-      <ul>
-      <% scoreboard.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/errors', subject: scoreboard, subject_name: 'scoreboard' %>
 
   <div class="form-group">
     <%= f.label :name %>

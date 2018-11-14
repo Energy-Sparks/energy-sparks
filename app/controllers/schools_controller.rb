@@ -4,7 +4,7 @@ class SchoolsController < ApplicationController
   load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
-  before_action :set_key_stage_tags, only: [:new, :edit]
+  before_action :set_key_stage_tags, only: [:new, :create, :edit, :update]
 
   # GET /schools
   # GET /schools.json
