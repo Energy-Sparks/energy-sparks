@@ -23,6 +23,9 @@
           </li>
         <% end %>
 
+        <% if current_user && current_user.enrolled_school_admin? && current_user.school.scoreboard %>
+          <li><%= link_to "Scoreboard", scoreboard_path(current_user.school.scoreboard), class: 'nav-link' %></li>
+        <% end %>
         <li class="nav-item">
           <%= link_to "Schools", schools_path, class: 'nav-link' %>
         </li>
