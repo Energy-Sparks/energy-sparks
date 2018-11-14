@@ -12,10 +12,11 @@ gem 'rack', '~> 2.0.6'
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
+gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.11.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', '~> 0.21.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.21.0'
+#gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -24,6 +25,9 @@ gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails'
 gem 'momentjs-rails'
+
+# AWS
+gem 'aws-sdk-s3'
 
 # Assets for Emails
 gem 'bootstrap-email'
@@ -81,7 +85,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet" # use bullet to optimise queries
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails', '3.7.2'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'
