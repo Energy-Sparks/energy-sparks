@@ -113,4 +113,9 @@ class Meter < ApplicationRecord
       @meter_correction_rules
     end
   end
+
+  def safe_destroy
+    raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if meter_readings.any? || amr_data_feed_readings.any?
+    destroy
+  end
 end
