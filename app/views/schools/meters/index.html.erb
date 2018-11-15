@@ -1,0 +1,75 @@
+<h1>Manage meters: <%= @school.name %></h1>
+
+<h2>Active meters</h2>
+<% if @active_meters.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Meter Point Number</th>
+        <th>Meter Name</th>
+        <th>Meter Type</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @active_meters.each do |meter| %>
+        <tr scope="row">
+          <td><%= meter.meter_no %></td>
+          <td><%= meter.name %></td>
+          <td><%= meter.meter_type.humanize %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-warning' %>
+              <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No active meters</p>
+<% end %>
+
+<h2>New meter</h2>
+
+<%= form_for [@school, @new_meter] do |form| %>
+  <%= render 'shared/errors', subject: @new_meter, subject_name: 'meter' %>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <%= form.label :meter_no, 'Meter Point Number' %>
+    </div>
+    <div class="col-md-5 mb-3">
+      <%= form.label :name, 'Meter Name' %>
+    </div>
+    <div class="col-md-2 mb-3">
+      <%= form.label :meter_type, 'Meter Type' %>
+    </div>
+    <div class="col-md-1 mb-3">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <%= form.number_field :meter_no, class: 'form-control' %>
+    </div>
+    <div class="col-md-5 mb-3">
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+    <div class="col-md-2 mb-3">
+      <% Meter.meter_types.keys.each do |meter_type| %>
+        <div class="form-check form-check-inline">
+          <%= form.radio_button :meter_type, meter_type, class: "form-check-input" %>
+          <%= form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-2 mb-3">
+      <%= form.submit class: 'btn btn-primary'%>
+    </div>
+  </div>
+<% end %>
+
+<% if @inactive_meters.any? %>
+  <h2>Inactive meters</h2>
+<% end %>
