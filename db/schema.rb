@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_131337) do
+ActiveRecord::Schema.define(version: 2018_11_14_135310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -122,7 +122,6 @@ ActiveRecord::Schema.define(version: 2018_11_09_131337) do
     t.text "postcode_field"
     t.text "units_field"
     t.text "header_example"
-    t.boolean "expect_header", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"

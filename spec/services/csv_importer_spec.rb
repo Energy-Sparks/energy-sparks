@@ -128,7 +128,6 @@ describe CsvImporter do
   end
 
   it 'should handle no header if config set' do
-    config.expect_header = false
     write_file_and_expect_readings(example_banes_no_header, config)
   end
 
