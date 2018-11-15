@@ -17,11 +17,24 @@ module Schools
       end
     end
 
+    def edit
+      @meter = @school.meters.find(params[:id])
+    end
+
+    def update
+      @meter = @school.meters.find(params[:id])
+      if @meter.update(meter_params)
+        redirect_to school_meters_path(@school), notice: 'Meter updated'
+      else
+        render :edit
+      end
+    end
+
   private
 
     def load_meters
-      @active_meters = @school.meters.active
-      @inactive_meters = @school.meters.inactive
+      @active_meters = @school.meters.active.order(:meter_no)
+      @inactive_meters = @school.meters.inactive.order(:meter_no)
     end
 
     def set_school

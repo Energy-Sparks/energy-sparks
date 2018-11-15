@@ -11,10 +11,11 @@ RSpec.describe "meter management", :meters, type: :system do
     visit root_path
     click_on('Schools')
     click_on('Oldfield Park Infants')
-    click_on('Manage meters')
   end
 
   it 'allows adding of meters from the management page with validation' do
+
+    click_on('Manage meters')
 
     click_on 'Create Meter'
     expect(page).to have_content("Meter type can't be blank")
@@ -31,9 +32,19 @@ RSpec.describe "meter management", :meters, type: :system do
 
   context 'when the school has a meter' do
 
-    it 'allows editing'
-    it 'allows deletion of meters'
+    let!(:gas_meter) { create :meter, name: 'Gas meter', school: school }
+
+    it 'allows editing' do
+      click_on('Manage meters')
+      click_on 'Edit'
+      fill_in 'Name', with: 'Natural Gas Meter'
+      click_on 'Update Meter'
+      gas_meter.reload
+      expect(gas_meter.name).to eq('Natural Gas Meter')
+    end
+
     it 'allows deactivation and reactivation of a meter'
+    it 'allows deletion of inactive meters'
 
   end
 
