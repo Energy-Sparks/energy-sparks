@@ -103,6 +103,64 @@ ActiveRecord::Schema.define(version: 2018_11_15_092303) do
     t.index ["contact_id"], name: "index_alerts_contacts_on_contact_id"
   end
 
+  create_table "amr_data_feed_configs", force: :cascade do |t|
+    t.bigint "area_id"
+    t.text "description", null: false
+    t.text "s3_folder", null: false
+    t.text "s3_archive_folder", null: false
+    t.text "local_bucket_path", null: false
+    t.text "access_type", null: false
+    t.text "date_format", null: false
+    t.text "mpan_mprn_field", null: false
+    t.text "reading_date_field", null: false
+    t.text "reading_fields", null: false, array: true
+    t.text "column_separator", default: ",", null: false
+    t.text "msn_field"
+    t.text "provider_id_field"
+    t.text "total_field"
+    t.text "meter_description_field"
+    t.text "postcode_field"
+    t.text "units_field"
+    t.text "header_example"
+    t.boolean "expect_header", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
+  end
+
+  create_table "amr_data_feed_import_logs", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id"
+    t.text "file_name"
+    t.datetime "import_time"
+    t.integer "records_imported"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
+  end
+
+  create_table "amr_data_feed_readings", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id"
+    t.bigint "meter_id"
+    t.bigint "amr_data_feed_import_log_id"
+    t.text "mpan_mprn", null: false
+    t.text "reading_date", null: false
+    t.text "readings", null: false, array: true
+    t.text "total"
+    t.text "postcode"
+    t.text "school"
+    t.text "description"
+    t.text "units"
+    t.text "meter_serial_number"
+    t.text "provider_record_id"
+    t.text "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
+    t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
+    t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
+    t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
+  end
+
   create_table "areas", force: :cascade do |t|
     t.text "type", null: false
     t.text "title"

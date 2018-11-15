@@ -1,3 +1,5 @@
+# Warning - this pulls in statsample which seems to do something
+# to array#sum - https://github.com/clbustos/statsample/issues/45
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController

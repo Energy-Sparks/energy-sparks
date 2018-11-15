@@ -103,6 +103,11 @@ class School < ApplicationRecord
     ]
   end
 
+  # TODO: Remove hard coding once areas arrives
+  def area_name
+    'Bath'
+  end
+
   # TODO: This is not performant and requires some rework or re-architecturing
   # Analytics code will use it's own version in the meantime
 
