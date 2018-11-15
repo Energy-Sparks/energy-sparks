@@ -37,7 +37,7 @@
 
         <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm') if can? :manage, @school.calendar %>
       </p>
-     </div>
+    </div>
   </div>
   <div class="row">
 
@@ -51,5 +51,6 @@
           <h4>This school has no gas meters configured in Energy Sparks</h4>
         </section>
       <% end %>
+    </div>
   </div>
 </div>

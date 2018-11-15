@@ -138,6 +138,13 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
 }
 
 function isAStringAndStartsWith(thing, startingWith) {
+  // IE Polyfill for startsWith
+  if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(search, pos) {
+      return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
+    };
+  }
+
   (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
 }
 
