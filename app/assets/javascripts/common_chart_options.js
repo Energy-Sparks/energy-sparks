@@ -66,9 +66,6 @@ var commonChartOptions = {
 }
 
 
-
-
-
 function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   var subChartType = d.chart1_subtype;
   console.log('bar or column or line ' + subChartType);
