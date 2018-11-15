@@ -31,15 +31,23 @@ module Schools
     end
 
     def deactivate
-      @meter = @school.meters.find(params[:id])
-      @meter.update!(active: false)
+      meter = @school.meters.active.find(params[:id])
+      meter.update!(active: false)
       redirect_to school_meters_path(@school), notice: 'Meter deactivated'
     end
 
     def activate
-      @meter = @school.meters.find(params[:id])
-      @meter.update!(active: true)
+      meter = @school.meters.inactive.find(params[:id])
+      meter.update!(active: true)
       redirect_to school_meters_path(@school), notice: 'Meter deactivated'
+    end
+
+    def destroy
+      meter = @school.meters.inactive.find(params[:id])
+      meter.safe_destroy
+      redirect_to school_meters_path(@school)
+    rescue EnergySparks::SafeDestroyError => e
+      redirect_to school_meters_path(@school), alert: "Delete failed: #{e.message}"
     end
 
   private

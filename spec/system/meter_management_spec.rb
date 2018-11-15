@@ -56,8 +56,12 @@ RSpec.describe "meter management", :meters, type: :system do
 
     end
 
-    it 'allows deletion of inactive meters'
+    it 'allows deletion of inactive meters' do
+      click_on('Manage meters')
+      click_on 'Deactivate'
+      click_on 'Delete'
+      expect(school.meters.count).to eq(0)
+    end
 
   end
-
 end
