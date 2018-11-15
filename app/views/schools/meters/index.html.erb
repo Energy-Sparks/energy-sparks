@@ -1,17 +1,21 @@
 <h1>Manage meters: <%= @school.name %></h1>
 
-<h2>Active meters</h2>
-<% if @active_meters.any? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Meter Point Number</th>
-        <th>Meter Name</th>
-        <th>Meter Type</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Meter Point Number</th>
+      <th>Meter Name</th>
+      <th>Meter Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th colspan="4"><h4>Active meters</h4></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @active_meters.any? %>
       <% @active_meters.each do |meter| %>
         <tr scope="row">
           <td><%= meter.meter_no %></td>
@@ -20,21 +24,41 @@
           <td>
             <div class="btn-group">
               <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-warning' %>
+              <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-secondary' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="4">No active meters</td>
+      </tr>
+    <% end %>
+  </tbody>
+  <% if @inactive_meters.any? %>
+    <thead>
+      <tr>
+        <th colspan="4"><h4>Inactive meters</h4></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @inactive_meters.each do |meter| %>
+        <tr scope="row">
+          <td><%= meter.meter_no %></td>
+          <td><%= meter.name %></td>
+          <td><%= meter.meter_type.humanize %></td>
+          <td>
+            <div class="btn-group">
               <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <%= link_to 'Activate', activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-success' %>
             </div>
           </td>
         </tr>
       <% end %>
     </tbody>
-  </table>
-<% else %>
-  <p>No active meters</p>
-<% end %>
+  <% end %>
+</table>
 
 <h2>New meter</h2>
 
 <%= render 'form', school: @school, meter: @new_meter %>
-
-<% if @inactive_meters.any? %>
-  <h2>Inactive meters</h2>
-<% end %>

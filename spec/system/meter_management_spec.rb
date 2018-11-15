@@ -43,7 +43,19 @@ RSpec.describe "meter management", :meters, type: :system do
       expect(gas_meter.name).to eq('Natural Gas Meter')
     end
 
-    it 'allows deactivation and reactivation of a meter'
+    it 'allows deactivation and reactivation of a meter' do
+      click_on('Manage meters')
+      click_on 'Deactivate'
+
+      gas_meter.reload
+      expect(gas_meter.active).to eq(false)
+
+      click_on 'Activate'
+      gas_meter.reload
+      expect(gas_meter.active).to eq(true)
+
+    end
+
     it 'allows deletion of inactive meters'
 
   end

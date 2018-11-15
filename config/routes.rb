@@ -29,7 +29,12 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alerts
 
-      resources :meters
+      resources :meters do
+        member do
+          put :activate
+          put :deactivate
+        end
+      end
 
       get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation

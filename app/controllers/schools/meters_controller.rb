@@ -30,6 +30,18 @@ module Schools
       end
     end
 
+    def deactivate
+      @meter = @school.meters.find(params[:id])
+      @meter.update!(active: false)
+      redirect_to school_meters_path(@school), notice: 'Meter deactivated'
+    end
+
+    def activate
+      @meter = @school.meters.find(params[:id])
+      @meter.update!(active: true)
+      redirect_to school_meters_path(@school), notice: 'Meter deactivated'
+    end
+
   private
 
     def load_meters
