@@ -122,7 +122,6 @@ ActiveRecord::Schema.define(version: 2018_11_15_092303) do
     t.text "postcode_field"
     t.text "units_field"
     t.text "header_example"
-    t.boolean "expect_header", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
