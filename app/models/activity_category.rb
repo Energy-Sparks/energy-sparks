@@ -5,7 +5,7 @@
 #  badge_name  :string
 #  created_at  :datetime         not null
 #  description :string
-#  id          :integer          not null, primary key
+#  id          :bigint(8)        not null, primary key
 #  name        :string
 #  updated_at  :datetime         not null
 #
