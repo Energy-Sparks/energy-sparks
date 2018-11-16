@@ -18,8 +18,8 @@ gem 'after_party' # load data after deploy
 gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.21.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.21.0'
-#gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
+#gem 'energy-sparks_analytics', '~> 0.22.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.22.0'
+gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
