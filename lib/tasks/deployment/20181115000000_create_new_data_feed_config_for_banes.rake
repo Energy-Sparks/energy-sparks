@@ -1,11 +1,9 @@
-namespace :data_feeds do
-  desc 'Set up data feeds'
-  task setup: [:environment] do
-    # WeatherUndergroundArea.delete_all
-    # SolarPvTuosArea.delete_all
-    # DataFeeds::WeatherUnderground.delete_all
-    # DataFeeds::SolarPvTuosArea.delete_all
+namespace :after_party do
+  desc 'Deployment task: create_new_data_feed_config_for_banes'
+  task create_new_data_feed_config_for_banes: :environment do
+    puts "Running deploy task 'create_new_data_feed_config_for_banes'"
 
+    # Put your task implementation HERE.
     wua = WeatherUndergroundArea.where(title: 'Bath').first_or_create
     pva = SolarPvTuosArea.where(title: 'Bath').first_or_create
 
@@ -19,7 +17,7 @@ namespace :data_feeds do
           'ISOMERSE15'  => 0.5,
           'IBRISTOL11'  => 0.2,
           'ISOUTHGL2'   => 0.1,
-          'IENGLAND120' => 0.1,
+      #   'IENGLAND120' => 0.1,
           'IBATH9'      => 0.1,
           'IBASTWER2'   => 0.1,
           'ISWAINSW2'   => 0.1,
@@ -50,5 +48,8 @@ namespace :data_feeds do
 
     pv = DataFeeds::SolarPvTuos.where(title: 'Solar PV Tuos Bath', area: pva).first_or_create
     pv.update(configuration: bath_pv_config)
+    # Update task as completed.  If you remove the line below, the task will
+    # run with every deploy (or every time you call after_party:run).
+    AfterParty::TaskRecord.create version: '20181115000000'
   end
 end

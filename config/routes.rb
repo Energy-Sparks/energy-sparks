@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
   end
+  resources :scoreboards
+  resources :school_groups
 
   resources :schools do
     resources :activities
@@ -53,7 +55,9 @@ Rails.application.routes.draw do
       get :test, to: 'analysis#test'
     end
 
-    get :scoreboard, on: :collection
+    # Maintain old scoreboard URL
+    get '/scoreboard', to: redirect('/schools')
+
     member do
       get 'awards'
       get 'suggest_activity'

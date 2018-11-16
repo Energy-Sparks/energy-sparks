@@ -4,7 +4,7 @@
 #
 #  description    :text
 #  id             :bigint(8)        not null, primary key
-#  parent_area_id :integer
+#  parent_area_id :bigint(8)
 #  title          :text
 #  type           :text             not null
 #

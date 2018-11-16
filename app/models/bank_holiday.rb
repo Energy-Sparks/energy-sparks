@@ -2,7 +2,7 @@
 #
 # Table name: bank_holidays
 #
-#  calendar_area_id :integer
+#  calendar_area_id :bigint(8)
 #  holiday_date     :date
 #  id               :bigint(8)        not null, primary key
 #  notes            :text

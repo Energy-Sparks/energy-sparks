@@ -1,16 +1,5 @@
 <%= form_for(activity_category) do |f| %>
-    <% if activity_category.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(activity_category.errors.count, "error") %> prohibited this activity_category from being
-            saved:</h2>
-
-          <ul>
-            <% activity_category.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
+  <%= render 'shared/errors', subject: activity_category, subject_name: 'activity category' %>
 
     <div class="form-group">
       <%= f.label :name %>

@@ -1,16 +1,7 @@
 <div class="row col-md-12">
   <%= form_for([@school, @contact]) do |f| %>
-    <% if @contact.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
 
-        <ul>
-        <% @contact.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+  <%= render 'shared/errors', subject: @contact, subject_name: 'contact' %>
 
     <p>Please enter either a name, e.g. Joe Bloggs or a description, e.g. Caretaker</p>
 

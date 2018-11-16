@@ -1,15 +1,6 @@
 <%= form_for([@school, activity], html: {class: "activity-form"}) do |f| %>
-  <% if activity.errors.any? %>
-    <div id="error_explanation">
-      <h2>I'm afraid we couldn't save your activity</h2>
-      <p>Please correct the following <%= pluralize(activity.errors.count, "error") %></p>
-      <ul>
-      <% activity.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+
+  <%= render 'shared/errors', subject: activity, subject_name: 'activity' %>
 
   <div class="form-group">
     <%= f.label :happened_on, "When did you do the activity?" %>
