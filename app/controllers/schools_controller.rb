@@ -52,6 +52,7 @@ class SchoolsController < ApplicationController
 
     respond_to do |format|
       if @school.save
+        SchoolCreator.new(@school).process_new_school!
         format.html { redirect_to @school, notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
