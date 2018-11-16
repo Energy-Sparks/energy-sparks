@@ -139,47 +139,6 @@
     </div>
   <% end %>
 
-  <h2>New Meters</h2>
-  <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)</p>
-  <div class="row">
-    <div class="col-md-3 mb-3">
-      <label for="firstName">Meter Point Number</label>
-    </div>
-    <div class="col-md-5 mb-3">
-      <label for="firstName">Meter Name</label>
-    </div>
-    <div class="col-md-2 mb-3">
-      <label for="firstName">Meter Type</label>
-    </div>
-    <div class="col-md-1 mb-3">
-      <label for="lastName">Active?</label>
-    </div>
-  </div>
-  <%= f.fields_for :meters do |meter_form| %>
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <%= meter_form.number_field :meter_no, class: 'form-control' %>
-      </div>
-      <div class="col-md-5 mb-3">
-        <%= meter_form.text_field :name, class: 'form-control' %>
-      </div>
-      <div class="col-md-2 mb-3">
-        <% Meter.meter_types.keys.each do |meter_type| %>
-          <div class="form-check form-check-inline">
-            <%= meter_form.radio_button :meter_type, meter_type, class: "form-check-input" %>
-            <%= meter_form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
-          </div>
-        <% end %>
-
-      </div>
-      <div class="col-md-1 mb-3">
-        <div class="form-check">
-          <%= meter_form.check_box :active, class: 'form-check-input' %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>
   </div>
