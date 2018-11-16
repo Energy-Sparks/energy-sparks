@@ -3,30 +3,30 @@
 # Table name: schools
 #
 #  address                     :text
-#  calendar_area_id            :integer
-#  calendar_id                 :integer
+#  calendar_area_id            :bigint(8)
+#  calendar_id                 :bigint(8)
 #  competition_role            :integer
 #  created_at                  :datetime         not null
 #  electricity_dataset         :string
 #  enrolled                    :boolean          default(FALSE)
 #  floor_area                  :decimal(, )
 #  gas_dataset                 :string
-#  id                          :integer          not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  level                       :integer          default(0)
-#  met_office_area_id          :integer
+#  met_office_area_id          :bigint(8)
 #  name                        :string
 #  number_of_pupils            :integer
 #  postcode                    :string
-#  sash_id                     :integer
+#  sash_id                     :bigint(8)
 #  school_group_id             :bigint(8)
 #  school_type                 :integer
 #  slug                        :string
-#  solar_irradiance_area_id    :integer
-#  solar_pv_tuos_area_id       :integer
-#  temperature_area_id         :integer
+#  solar_irradiance_area_id    :bigint(8)
+#  solar_pv_tuos_area_id       :bigint(8)
+#  temperature_area_id         :bigint(8)
 #  updated_at                  :datetime         not null
 #  urn                         :integer          not null
-#  weather_underground_area_id :integer
+#  weather_underground_area_id :bigint(8)
 #  website                     :string
 #
 # Indexes

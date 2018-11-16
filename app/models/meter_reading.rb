@@ -3,8 +3,8 @@
 # Table name: meter_readings
 #
 #  created_at :datetime         not null
-#  id         :integer          not null, primary key
-#  meter_id   :integer
+#  id         :bigint(8)        not null, primary key
+#  meter_id   :bigint(8)
 #  read_at    :datetime
 #  unit       :string
 #  updated_at :datetime         not null
