@@ -34,6 +34,9 @@ class Meter < ApplicationRecord
   has_many :aggregated_meter_readings,  inverse_of: :meter, dependent: :destroy
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
 
+  scope :active,   -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
   validates_uniqueness_of :meter_no
@@ -109,5 +112,10 @@ class Meter < ApplicationRecord
     else
       @meter_correction_rules
     end
+  end
+
+  def safe_destroy
+    raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if meter_readings.any? || amr_data_feed_readings.any?
+    destroy
   end
 end

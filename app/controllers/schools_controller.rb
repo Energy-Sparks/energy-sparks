@@ -39,12 +39,10 @@ class SchoolsController < ApplicationController
   # GET /schools/new
   def new
     @school = School.new
-    @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
-    @school.meters.build
   end
 
   # POST /schools
@@ -125,7 +123,6 @@ private
       :number_of_pupils,
       :floor_area,
       key_stage_ids: [],
-      meters_attributes: meter_params,
       school_times_attributes: school_time_params
     )
   end

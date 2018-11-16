@@ -280,33 +280,6 @@ RSpec.describe SchoolsController, type: :controller do
 
       end
 
-      context "adds a meter" do
-        let(:new_attributes) {
-          {
-            meters_attributes:
-              [{ meter_no: 1234, meter_type: 'gas', name: 'gas name' }]
-          }
-        }
-
-        it "adds a school meter to the requested school" do
-          school = create :school
-          expect(school.meters).to be_empty
-          put :update, params: {id: school.to_param, school: new_attributes}
-          school.reload
-          expect(school.meters.first.meter_no).to eq 1234
-        end
-
-        it "does not let you add the same meter number twice" do
-          meter  = create(:meter, meter_no: 1234)
-          school = create(:school, meters: [meter])
-          expect(school.meters.count).to be 1
-          put :update, params: {id: school.to_param, school: new_attributes}
-          school.reload
-          expect(school.meters.count).to be 1
-        end
-
-      end
-
       context "with invalid params" do
         it "assigns the school as @school" do
           school = FactoryBot.create :school

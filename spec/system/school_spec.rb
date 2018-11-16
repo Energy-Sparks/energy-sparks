@@ -55,7 +55,7 @@ RSpec.describe "school", type: :system do
 
       it 'I can set up a school for KS1' do
         click_on(school_name)
-        click_on('Edit')
+        click_on('Edit school')
         expect(school.key_stage_list).to_not include('KS1')
         expect(school.key_stage_list).to_not include('KS2')
         expect(school.key_stage_list).to_not include('KS3')

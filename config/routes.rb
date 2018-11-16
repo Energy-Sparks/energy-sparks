@@ -30,6 +30,14 @@ Rails.application.routes.draw do
     scope module: :schools do
       resources :contacts
       resources :alerts
+
+      resources :meters do
+        member do
+          put :activate
+          put :deactivate
+        end
+      end
+
       get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
