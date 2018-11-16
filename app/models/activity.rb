@@ -2,13 +2,13 @@
 #
 # Table name: activities
 #
-#  activity_category_id :integer
-#  activity_type_id     :integer
+#  activity_category_id :bigint(8)
+#  activity_type_id     :bigint(8)
 #  created_at           :datetime         not null
 #  description          :text
 #  happened_on          :date
-#  id                   :integer          not null, primary key
-#  school_id            :integer
+#  id                   :bigint(8)        not null, primary key
+#  school_id            :bigint(8)
 #  title                :string
 #  updated_at           :datetime         not null
 #

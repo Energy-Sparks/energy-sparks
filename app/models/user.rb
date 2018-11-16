@@ -8,7 +8,7 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  failed_attempts        :integer          default(0), not null
-#  id                     :integer          not null, primary key
+#  id                     :bigint(8)        not null, primary key
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
 #  locked_at              :datetime
@@ -16,7 +16,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  role                   :integer          default("guest"), not null
-#  school_id              :integer
+#  school_id              :bigint(8)
 #  sign_in_count          :integer          default(0), not null
 #  updated_at             :datetime         not null
 #

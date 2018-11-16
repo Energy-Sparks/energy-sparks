@@ -5,14 +5,14 @@
 #  active              :boolean          default(TRUE)
 #  created_at          :datetime         not null
 #  floor_area          :decimal(, )
-#  id                  :integer          not null, primary key
+#  id                  :bigint(8)        not null, primary key
 #  meter_no            :bigint(8)
 #  meter_serial_number :text
 #  meter_type          :integer
 #  mpan_mprn           :bigint(8)
 #  name                :string
 #  number_of_pupils    :integer
-#  school_id           :integer
+#  school_id           :bigint(8)
 #  solar_pv            :boolean          default(FALSE)
 #  storage_heaters     :boolean          default(FALSE)
 #  updated_at          :datetime         not null
