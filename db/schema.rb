@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_16_094610) do
+ActiveRecord::Schema.define(version: 2018_11_16_134007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -346,6 +346,12 @@ ActiveRecord::Schema.define(version: 2018_11_16_094610) do
     t.bigint "scoreboard_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "default_calendar_area_id"
+    t.bigint "default_solar_pv_tuos_area_id"
+    t.bigint "default_weather_underground_area_id"
+    t.index ["default_calendar_area_id"], name: "index_school_groups_on_default_calendar_area_id"
+    t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
+    t.index ["default_weather_underground_area_id"], name: "index_school_groups_on_default_weather_underground_area_id"
     t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
   end
 
@@ -487,6 +493,9 @@ ActiveRecord::Schema.define(version: 2018_11_16_094610) do
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
+  add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
+  add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
