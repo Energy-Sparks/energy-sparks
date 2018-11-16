@@ -4,7 +4,7 @@ namespace :after_party do
     puts "Running deploy task 'add_default_school_groups_and_scoreboards'"
 
     ActiveRecord::Base.transaction do
-      banes_frome_scoreboard = Scoreboard.find_or_create_by(name: 'BANES and Frome')
+      banes_frome_scoreboard = Scoreboard.find_or_create_by(name: 'Bath & North East Somerset and Frome')
       sheffield_scoreboard   = Scoreboard.find_or_create_by(name: 'Sheffield')
 
       banes_school_group     = SchoolGroup.find_or_create_by(name: 'Bath & North East Somerset', scoreboard: banes_frome_scoreboard)
