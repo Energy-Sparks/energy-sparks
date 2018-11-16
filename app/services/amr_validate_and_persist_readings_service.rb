@@ -1,4 +1,4 @@
-class AmrValidateAndPersistService
+class AmrValidateAndPersistReadingsService
   def initialize(school)
     @school = school
     @meter_collection = AmrMeterCollection.new(@school)
@@ -10,23 +10,11 @@ class AmrValidateAndPersistService
 
     pp "ELECTRICITY METERS"
     @meter_collection.electricity_meters.each do |meter|
-      Upsert.batch(AmrReading.connection, AmrReading.table_name) do |upsert|
-        p meter.to_s
-        amr_data = meter.amr_data
-        amr_data.values.each do |one_day_read|
-          upsert_from_one_day_reading(upsert, one_day_read)
-        end
-      end
+      process_meter(meter)
     end
     pp "HEAT METERS"
     @meter_collection.heat_meters.each do |meter|
-      Upsert.batch(AmrReading.connection, AmrReading.table_name) do |upsert|
-        p meter.to_s
-        amr_data = meter.amr_data
-        amr_data.values.each do |one_day_read|
-          upsert_from_one_day_reading(upsert, one_day_read)
-        end
-      end
+      process_meter(meter)
     end
 
     p "Report for #{@school.name}"
@@ -34,6 +22,18 @@ class AmrValidateAndPersistService
   end
 
 private
+
+  def process_meter(meter)
+    return if AmrDataFeedReading.where(meter_id: meter.id).empty?
+    Upsert.batch(AmrValidatedReading.connection, AmrValidatedReading.table_name) do |upsert|
+      p "HELLO"
+      p meter.to_s
+      amr_data = meter.amr_data
+      amr_data.values.each do |one_day_read|
+        upsert_from_one_day_reading(upsert, one_day_read)
+      end
+    end
+  end
 
   def upsert_from_one_day_reading(upsert, one_day_reading)
     # If it's a substitute value, then it isn't going to know it's meter id - meter_id will

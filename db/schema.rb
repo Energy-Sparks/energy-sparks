@@ -160,6 +160,18 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
   end
 
+  create_table "amr_validated_readings", force: :cascade do |t|
+    t.bigint "meter_id", null: false
+    t.decimal "kwh_data_x48", null: false, array: true
+    t.decimal "one_day_kwh", null: false
+    t.date "reading_date", null: false
+    t.text "status", null: false
+    t.date "substitute_date"
+    t.datetime "upload_datetime"
+    t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
+    t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
+  end
+
   create_table "areas", force: :cascade do |t|
     t.text "type", null: false
     t.text "title"
@@ -456,6 +468,7 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
   add_foreign_key "aggregated_meter_readings", "meters"
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
+  add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
