@@ -31,25 +31,31 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with gas meter' do
-      let!(:meter)  { create(:meter, school: school, meter_type: :gas )}
+      let!(:gas_meter)  { create(:meter, school: school, meter_type: :gas )}
 
       it 'shows me a school page' do
         click_on(school_name)
         expect(page.has_content? "Gas").to be true
         expect(page.has_content? "Electricity").to be false
       end
+    end
 
+    describe 'school with both meters' do
+      let!(:gas_meter)  { create(:meter, school: school, meter_type: :gas )}
+      let!(:electricity_meter)  { create(:meter, school: school, meter_type: :electricity )}
       it 'shows me a school page with both meters' do
-        create(:meter, school: school, meter_type: :electricity)
         click_on(school_name)
         expect(page.has_content? school_name).to be true
         expect(page.has_content? "Gas").to be true
         expect(page.has_content? "Electricity").to be true
       end
+    end
+
+    describe 'school management' do
 
       it 'I can set up a school for KS1' do
         click_on(school_name)
-        click_on('Edit school')
+        click_on('Edit')
         expect(school.key_stage_list).to_not include('KS1')
         expect(school.key_stage_list).to_not include('KS2')
         expect(school.key_stage_list).to_not include('KS3')
@@ -77,10 +83,16 @@ RSpec.describe "school", type: :system do
         expect(school.key_stage_list).to include('KS2')
         expect(school.key_stage_list).to_not include('KS3')
       end
+
+      it 'allows me to set a school group for the school' do
+        group = create(:school_group, name: 'BANES')
+        click_on(school_name)
+        click_on('Edit')
+        select 'BANES', from: 'Group'
+        click_on 'Update School'
+        school.reload
+        expect(school.school_group).to eq(group)
+      end
     end
   end
 end
-
-        # fill_in(id: :school_meters_attributes_0_meter_no, with: 12345)
-        # fill_in(id: :school_meters_attributes_0_name).with('Test meter')
-        # select('Electricity', from: 'Type')
