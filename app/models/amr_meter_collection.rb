@@ -7,7 +7,7 @@ class AmrMeterCollection < MeterCollection
 
     # First run through
     AmrDataFeedReading.where(meter_id: meter.id).order(reading_date: :asc).each do |reading|
-      amr_data.add(DateTime.parse(reading.reading_date).utc, OneDayAMRReading.new(meter.id, DateTime.parse(reading.reading_date).utc, 'ORIG', nil, reading.created_at, reading.readings.map(&:to_f)))
+      amr_data.add(Date.parse(reading.reading_date), OneDayAMRReading.new(meter.id, Date.parse(reading.reading_date), 'ORIG', nil, reading.created_at, reading.readings.map(&:to_f)))
     end
 
     throw ArgumentException if school.meters.empty?
