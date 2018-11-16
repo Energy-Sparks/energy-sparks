@@ -18,6 +18,7 @@
 #  number_of_pupils            :integer
 #  postcode                    :string
 #  sash_id                     :integer
+#  school_group_id             :bigint(8)
 #  school_type                 :integer
 #  slug                        :string
 #  solar_irradiance_area_id    :integer
@@ -30,13 +31,15 @@
 #
 # Indexes
 #
-#  index_schools_on_calendar_id  (calendar_id)
-#  index_schools_on_sash_id      (sash_id)
-#  index_schools_on_urn          (urn) UNIQUE
+#  index_schools_on_calendar_id      (calendar_id)
+#  index_schools_on_sash_id          (sash_id)
+#  index_schools_on_school_group_id  (school_group_id)
+#  index_schools_on_urn              (urn) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id)
+#  fk_rails_...  (school_group_id => school_groups.id)
 #
 
 class School < ApplicationRecord
@@ -64,11 +67,14 @@ class School < ApplicationRecord
   belongs_to :calendar_area
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
+  belongs_to :school_group
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
   enum competition_role: [:not_competing, :competitor, :winner]
 
   scope :enrolled, -> { where(enrolled: true) }
+  scope :not_enrolled, -> { where(enrolled: false) }
+  scope :without_group, -> { where(school_group_id: nil) }
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
@@ -189,17 +195,8 @@ class School < ApplicationRecord
     users.where(role: :school_admin)
   end
 
-  # def suggest_activities
-  #   @activity_categories = ActivityCategory.all.order(:name).to_a
-  # end
-
-  def self.scoreboard
-    School.select('schools.*, SUM(num_points) AS sum_points')
-        .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
-        .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
-        .where("schools.enrolled = true")
-        .order('sum_points DESC NULLS LAST')
-        .group('schools.id, merit_scores.sash_id')
+  def scoreboard
+    school_group.scoreboard if school_group
   end
 
   def self.top_scored(dates: nil, limit: nil)

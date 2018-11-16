@@ -25,7 +25,9 @@
               </p>
             </div>
             <div class="card-footer text-right">
-              <%= link_to 'View scoreboard', scoreboard_schools_path, class: 'btn btn-primary'  %>
+              <% if @school.scoreboard %>
+                <%= link_to 'View scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-primary'  %>
+              <% end %>
               <%= link_to awards_school_path, class: 'btn btn-primary' do %>
                   View awards <span class="badge badge-success"><%= @badges.count %></span>
               <% end %>
@@ -90,7 +92,9 @@
               <% end %>
             </div>
             <div class="card-footer text-right">
-              <%= link_to 'View scoreboard', scoreboard_schools_path, class: 'btn btn-primary'  %>
+              <% if @school.scoreboard %>
+                <%= link_to 'View scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-primary'  %>
+              <% end %>
               <%= link_to awards_school_path, class: 'btn btn-primary' do %>
                   View awards <span class="badge badge-success"><%= @badges.count %></span>
               <% end %>

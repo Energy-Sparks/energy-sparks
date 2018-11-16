@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_14_135310) do
+ActiveRecord::Schema.define(version: 2018_11_15_092303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -339,6 +339,16 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "school_groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.string "slug", null: false
+    t.bigint "scoreboard_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
+  end
+
   create_table "school_times", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "opening_time", default: 850
@@ -372,9 +382,19 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.decimal "floor_area"
     t.integer "weather_underground_area_id"
     t.integer "solar_pv_tuos_area_id"
+    t.bigint "school_group_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
+    t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
+  end
+
+  create_table "scoreboards", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "simulations", force: :cascade do |t|
@@ -413,6 +433,10 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "task_records", id: false, force: :cascade do |t|
+    t.string "version", null: false
   end
 
   create_table "terms", id: :serial, force: :cascade do |t|
@@ -463,8 +487,10 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
+  add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "terms", "calendars"

@@ -1,0 +1,23 @@
+<%= form_for(school_group) do |f| %>
+
+  <%= render 'shared/errors', subject: school_group, subject_name: 'school group' %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :scoreboard_id, 'Scoreboard' %>
+    <%= f.select :scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_group.scoreboard_id)), {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>
