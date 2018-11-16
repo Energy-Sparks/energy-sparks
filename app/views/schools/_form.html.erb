@@ -1,15 +1,6 @@
 <%= form_for(school) do |f| %>
-  <% if school.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(school.errors.count, "error") %> prohibited this school from being saved:</h2>
 
-      <ul>
-      <% school.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/errors', subject: school, subject_name: 'school' %>
 
   <div class="form-group">
     <%= f.label :name %>
@@ -51,6 +42,13 @@
       <%= f.label :floor_area, 'Floor area in square metres' %>
       <%= f.number_field :floor_area, class: 'form-control' %>
     </div>
+  </div>
+
+  <h2>Scoreboard Groups</h2>
+  <p>Scoreboard Groups are used to collect associated schools together, usually by area. Schools within a Group are ranked against each other on a Scoreboard.</p>
+  <div class="form-group">
+    <%= f.label :school_group_id, 'Group' %>
+    <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (@school.school_group_id)), {include_blank: true}, { class: 'form-control' }%>
   </div>
 
   <h2>Calendar and Data Feed configuration</h2>
@@ -135,47 +133,6 @@
       </div>
       <div class="col-md-3 mb-3">
         <%= ff.number_field :closing_time, value: ('%04d' % ff.object.closing_time) %>
-      </div>
-    </div>
-  <% end %>
-
-  <h2>New Meters</h2>
-  <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)</p>
-  <div class="row">
-    <div class="col-md-3 mb-3">
-      <label for="firstName">Meter Point Number</label>
-    </div>
-    <div class="col-md-5 mb-3">
-      <label for="firstName">Meter Name</label>
-    </div>
-    <div class="col-md-2 mb-3">
-      <label for="firstName">Meter Type</label>
-    </div>
-    <div class="col-md-1 mb-3">
-      <label for="lastName">Active?</label>
-    </div>
-  </div>
-  <%= f.fields_for :meters do |meter_form| %>
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <%= meter_form.number_field :meter_no, class: 'form-control' %>
-      </div>
-      <div class="col-md-5 mb-3">
-        <%= meter_form.text_field :name, class: 'form-control' %>
-      </div>
-      <div class="col-md-2 mb-3">
-        <% Meter.meter_types.keys.each do |meter_type| %>
-          <div class="form-check form-check-inline">
-            <%= meter_form.radio_button :meter_type, meter_type, class: "form-check-input" %>
-            <%= meter_form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
-          </div>
-        <% end %>
-
-      </div>
-      <div class="col-md-1 mb-3">
-        <div class="form-check">
-          <%= meter_form.check_box :active, class: 'form-check-input' %>
-        </div>
       </div>
     </div>
   <% end %>

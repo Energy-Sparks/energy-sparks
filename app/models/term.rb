@@ -3,10 +3,10 @@
 # Table name: terms
 #
 #  academic_year :string
-#  calendar_id   :integer
+#  calendar_id   :bigint(8)
 #  created_at    :datetime         not null
 #  end_date      :date             not null
-#  id            :integer          not null, primary key
+#  id            :bigint(8)        not null, primary key
 #  name          :string           not null
 #  start_date    :date             not null
 #  updated_at    :datetime         not null

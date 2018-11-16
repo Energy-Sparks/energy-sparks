@@ -8,20 +8,20 @@
 
    <table class="table table-sm">
     <thead>
-      <tr class="d-flex">
-        <th class="col-3">Title</th>
-        <th class="col-5">Notes</th>
-        <th class="col-2">Creation date</th>
-        <th class="col-2">Results</th>
+      <tr>
+        <th>Title</th>
+        <th>Notes</th>
+        <th>Creation date</th>
+        <th class="actions">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @simulations.each do |simulation| %>
-        <tr class="d-flex">
-          <td class="col-3"><%= simulation.title %></td>
-          <td class="col-5"><%= simulation.notes %></td>
-          <td class="col-2"><%= nice_date_times(simulation.created_at) %></td>
-          <td class="col-2 ">
+        <tr>
+          <td><%= simulation.title %></td>
+          <td><%= simulation.notes %></td>
+          <td><%= nice_date_times(simulation.created_at) %></td>
+          <td>
             <%= link_to 'Results', school_simulation_path(@school, simulation), class: 'btn btn-sm btn-info' %>
             <%- if can? :manage, @school -%>
               <%= link_to 'Edit', edit_school_simulation_path(@school, simulation), class: 'btn btn-sm btn-warning' %>

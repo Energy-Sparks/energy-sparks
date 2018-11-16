@@ -29,9 +29,7 @@ module Merit
       end
 
       #2 Score some points and then view the score board
-      grant_on ['schools#scoreboard'], badge: 'player', model_name: 'User', to: :school do |user|
-        user.present? && user.enrolled_school_admin? && user.school.points >= 10
-      end
+      # manually added in app/controllers/scoreboards_controller.rb
 
       #3 Data scientist
       #Award this if the school has creates an activity with data-scientist badge_name

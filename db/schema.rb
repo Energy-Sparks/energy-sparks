@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_14_135310) do
+ActiveRecord::Schema.define(version: 2018_11_16_094610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -21,21 +21,21 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.date "end_date"
   end
 
-  create_table "activities", id: :serial, force: :cascade do |t|
-    t.integer "school_id"
-    t.integer "activity_type_id"
+  create_table "activities", force: :cascade do |t|
+    t.bigint "school_id"
+    t.bigint "activity_type_id"
     t.string "title"
     t.text "description"
     t.date "happened_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "activity_category_id"
+    t.bigint "activity_category_id"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
   end
 
-  create_table "activity_categories", id: :serial, force: :cascade do |t|
+  create_table "activity_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -43,22 +43,22 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.string "badge_name"
   end
 
-  create_table "activity_type_suggestions", id: :serial, force: :cascade do |t|
-    t.integer "activity_type_id"
-    t.integer "suggested_type_id"
+  create_table "activity_type_suggestions", force: :cascade do |t|
+    t.bigint "activity_type_id"
+    t.bigint "suggested_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["activity_type_id"], name: "index_activity_type_suggestions_on_activity_type_id"
     t.index ["suggested_type_id"], name: "index_activity_type_suggestions_on_suggested_type_id"
   end
 
-  create_table "activity_types", id: :serial, force: :cascade do |t|
+  create_table "activity_types", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "activity_category_id"
+    t.bigint "activity_category_id"
     t.integer "score"
     t.string "badge_name"
     t.boolean "repeatable", default: true
@@ -176,13 +176,13 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.text "type", null: false
     t.text "title"
     t.text "description"
-    t.integer "parent_area_id"
+    t.bigint "parent_area_id"
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
-  create_table "badges_sashes", id: :serial, force: :cascade do |t|
-    t.integer "badge_id"
-    t.integer "sash_id"
+  create_table "badges_sashes", force: :cascade do |t|
+    t.bigint "badge_id"
+    t.bigint "sash_id"
     t.boolean "notified_user", default: false
     t.datetime "created_at"
     t.index ["badge_id", "sash_id"], name: "index_badges_sashes_on_badge_id_and_sash_id"
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
   end
 
   create_table "bank_holidays", force: :cascade do |t|
-    t.integer "calendar_area_id"
+    t.bigint "calendar_area_id"
     t.date "holiday_date"
     t.text "title"
     t.text "notes"
@@ -223,14 +223,14 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
   end
 
-  create_table "calendars", id: :serial, force: :cascade do |t|
+  create_table "calendars", force: :cascade do |t|
     t.string "title", null: false
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "default"
-    t.integer "based_on_id"
-    t.integer "calendar_area_id"
+    t.bigint "based_on_id"
+    t.bigint "calendar_area_id"
     t.boolean "template", default: false
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end
@@ -260,16 +260,16 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
 
   create_table "data_feeds", force: :cascade do |t|
     t.text "type", null: false
-    t.integer "area_id"
+    t.bigint "area_id"
     t.text "title"
     t.text "description"
     t.json "configuration", default: {}, null: false
     t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
-  create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
+  create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
-    t.integer "sluggable_id", null: false
+    t.bigint "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
     t.datetime "created_at"
@@ -279,13 +279,13 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "merit_actions", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "merit_actions", force: :cascade do |t|
+    t.bigint "user_id"
     t.string "action_method"
     t.integer "action_value"
     t.boolean "had_errors", default: false
     t.string "target_model"
-    t.integer "target_id"
+    t.bigint "target_id"
     t.text "target_data"
     t.boolean "processed", default: false
     t.datetime "created_at", null: false
@@ -293,31 +293,31 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["user_id"], name: "index_merit_actions_on_user_id"
   end
 
-  create_table "merit_activity_logs", id: :serial, force: :cascade do |t|
-    t.integer "action_id"
+  create_table "merit_activity_logs", force: :cascade do |t|
+    t.bigint "action_id"
     t.string "related_change_type"
-    t.integer "related_change_id"
+    t.bigint "related_change_id"
     t.string "description"
     t.datetime "created_at"
     t.index ["related_change_id", "related_change_type"], name: "merit_activity_logs_for_related_changes"
   end
 
-  create_table "merit_score_points", id: :serial, force: :cascade do |t|
-    t.integer "score_id"
+  create_table "merit_score_points", force: :cascade do |t|
+    t.bigint "score_id"
     t.integer "num_points", default: 0
     t.string "log"
     t.datetime "created_at"
     t.index ["score_id"], name: "index_merit_score_points_on_score_id"
   end
 
-  create_table "merit_scores", id: :serial, force: :cascade do |t|
-    t.integer "sash_id"
+  create_table "merit_scores", force: :cascade do |t|
+    t.bigint "sash_id"
     t.string "category", default: "default"
     t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
   end
 
-  create_table "meter_readings", id: :serial, force: :cascade do |t|
-    t.integer "meter_id"
+  create_table "meter_readings", force: :cascade do |t|
+    t.bigint "meter_id"
     t.datetime "read_at"
     t.decimal "value"
     t.string "unit"
@@ -327,8 +327,8 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["read_at"], name: "index_meter_readings_on_read_at"
   end
 
-  create_table "meters", id: :serial, force: :cascade do |t|
-    t.integer "school_id"
+  create_table "meters", force: :cascade do |t|
+    t.bigint "school_id"
     t.integer "meter_type"
     t.bigint "meter_no"
     t.datetime "created_at", null: false
@@ -346,9 +346,19 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["school_id"], name: "index_meters_on_school_id"
   end
 
-  create_table "sashes", id: :serial, force: :cascade do |t|
+  create_table "sashes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "school_groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.string "slug", null: false
+    t.bigint "scoreboard_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -359,7 +369,7 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["school_id"], name: "index_school_times_on_school_id"
   end
 
-  create_table "schools", id: :serial, force: :cascade do |t|
+  create_table "schools", force: :cascade do |t|
     t.string "name"
     t.integer "school_type"
     t.text "address"
@@ -369,24 +379,34 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.datetime "updated_at", null: false
     t.boolean "enrolled", default: false
     t.integer "urn", null: false
-    t.integer "sash_id"
+    t.bigint "sash_id"
     t.integer "level", default: 0
-    t.integer "calendar_id"
+    t.bigint "calendar_id"
     t.string "slug"
     t.string "gas_dataset"
     t.string "electricity_dataset"
     t.integer "competition_role"
-    t.integer "calendar_area_id"
-    t.integer "temperature_area_id"
-    t.integer "solar_irradiance_area_id"
-    t.integer "met_office_area_id"
+    t.bigint "calendar_area_id"
+    t.bigint "temperature_area_id"
+    t.bigint "solar_irradiance_area_id"
+    t.bigint "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"
-    t.integer "weather_underground_area_id"
-    t.integer "solar_pv_tuos_area_id"
+    t.bigint "weather_underground_area_id"
+    t.bigint "solar_pv_tuos_area_id"
+    t.bigint "school_group_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
+    t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
+  end
+
+  create_table "scoreboards", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "simulations", force: :cascade do |t|
@@ -402,12 +422,12 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
-  create_table "taggings", id: :serial, force: :cascade do |t|
-    t.integer "tag_id"
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "tag_id"
     t.string "taggable_type"
-    t.integer "taggable_id"
+    t.bigint "taggable_id"
     t.string "tagger_type"
-    t.integer "tagger_id"
+    t.bigint "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at"
     t.index ["context"], name: "index_taggings_on_context"
@@ -421,14 +441,18 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :serial, force: :cascade do |t|
+  create_table "tags", force: :cascade do |t|
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "terms", id: :serial, force: :cascade do |t|
-    t.integer "calendar_id"
+  create_table "task_records", id: false, force: :cascade do |t|
+    t.string "version", null: false
+  end
+
+  create_table "terms", force: :cascade do |t|
+    t.bigint "calendar_id"
     t.string "academic_year"
     t.string "name", null: false
     t.date "start_date", null: false
@@ -438,8 +462,8 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
     t.index ["calendar_id"], name: "index_terms_on_calendar_id"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
-    t.integer "school_id"
+  create_table "users", force: :cascade do |t|
+    t.bigint "school_id"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.integer "role", default: 0, null: false
@@ -476,8 +500,10 @@ ActiveRecord::Schema.define(version: 2018_11_14_135310) do
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
+  add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "terms", "calendars"

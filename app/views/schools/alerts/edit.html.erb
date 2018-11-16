@@ -11,16 +11,7 @@
 <% else %>
 
   <%= form_for([@school, @alert]) do |f| %>
-    <% if @alert.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
-        <ul>
-          <% @alert.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render 'shared/errors', subject: @alert, subject_name: 'alert' %>
 
     <p>Energy Sparks will send a message to each of these contacts when the alert is triggered. You can add more contacts using the Add new contact button.</p>
     <%= f.collection_check_boxes(:contact_ids, @school.contacts, :id, :display_name) do |b| %>
