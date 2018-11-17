@@ -34,15 +34,19 @@ module Amr
       end
     end
 
-    def upsert_from_one_day_reading(upsert, one_day_reading)
+    def get_meter_id(one_day_reading)
       # If it's a substitute value, then it isn't going to know it's meter id - meter_id will
       # be set by the analytics code as the meter_no, i.e. MPAN/MPRN
       # TODO meter_id needs refactoring in back end analytics code
-      meter_id = if one_day_reading.type != 'ORIG'
-                   Meter.find_by(meter_no: one_day_reading.meter_id).id
-                 else
-                   one_day_reading.meter_id
-                 end
+      if one_day_reading.type != 'ORIG'
+        Meter.find_by(meter_no: one_day_reading.meter_id).id
+      else
+        one_day_reading.meter_id
+      end
+    end
+
+    def upsert_from_one_day_reading(upsert, one_day_reading)
+      meter_id = get_meter_id(one_day_reading)
 
       if meter_id.present?
         upsert.row({ meter_id: meter_id, reading_date: one_day_reading.date },
