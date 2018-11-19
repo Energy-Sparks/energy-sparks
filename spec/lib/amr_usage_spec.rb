@@ -180,13 +180,13 @@ describe 'AmrUsage' do
   describe ".this_week" do
     context 'no date is provided' do
       it "defaults to the current date" do
-        expect(Usage.this_week.to_a).to include Date.current
+        expect(AmrUsage.this_week.to_a).to include Date.current
       end
       it "starts on a Saturday" do
-        expect(Usage.this_week.first.saturday?).to be_truthy
+        expect(AmrUsage.this_week.first.saturday?).to be_truthy
       end
       it "ends on a Friday" do
-        expect(Usage.this_week.last.friday?).to be_truthy
+        expect(AmrUsage.this_week.last.friday?).to be_truthy
       end
     end
   end
