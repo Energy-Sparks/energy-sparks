@@ -1,0 +1,23 @@
+<h1>Edit Scoreboard</h1>
+
+<div class="row">
+  <div class="col-sm-8">
+    <%= render 'form', scoreboard: @scoreboard %>
+
+      <div class="other-actions">
+        <%= link_to 'Back', scoreboards_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <h2>Groups in this scoreboard</h2>
+    <% if @school_groups.any? %>
+      <ol>
+        <% @school_groups.each do |group| %>
+          <li><%= link_to group.name, edit_school_group_path(group) %></li>
+        <% end %>
+      </ol>
+    <% else %>
+      <p>No school groups are assigned to this scoreboard</p>
+    <% end %>
+  </div>
+</div>

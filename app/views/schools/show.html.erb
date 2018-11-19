@@ -30,14 +30,15 @@
         <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
 
         <%- if can? :manage, @school -%>
-          <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
+          <%= link_to 'Edit school', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
+          <%= link_to 'Manage meters', school_meters_path(@school), class: 'btn btn-primary btn-sm' %>
           <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
           <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'btn btn-primary btn-sm'%>
         <%- end -%>
 
         <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm') if can? :manage, @school.calendar %>
       </p>
-     </div>
+    </div>
   </div>
   <div class="row">
 
@@ -51,5 +52,6 @@
           <h4>This school has no gas meters configured in Energy Sparks</h4>
         </section>
       <% end %>
+    </div>
   </div>
 </div>

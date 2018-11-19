@@ -4,18 +4,21 @@ ruby '2.5.1'
 
 # Rails/Core
 gem 'rails', '~> 5.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'puma' # Use Puma as the app server
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
-gem 'rack', '~> 2.0.5'
+
+# Freeze until ElasticBeanstalk rebuild
+gem 'puma', '3.12.0' # Use Puma as the app server
+gem 'rack', '2.0.6'
 
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
-gem 'upsert', git: 'https://github.com/seamusabshere/upsert.git', branch: 'master' #
+gem 'after_party' # load data after deploy
+gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.20.1', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration'
+gem 'energy-sparks_analytics', '~> 0.21.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.21.0'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets
@@ -85,7 +88,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet" # use bullet to optimise queries
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails', '3.7.2'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'
@@ -102,9 +105,9 @@ group :development do
   gem 'better_errors'
   gem "binding_of_caller"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  # gem 'spring'
-  # gem 'spring-watcher-listen', '~> 2.0.0'
-  # gem 'spring-commands-rspec'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-commands-rspec'
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'

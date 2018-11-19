@@ -24,7 +24,6 @@
 //= require activity_types
 //= require calendars
 //= require data_explorer
-//= require open_tab
 //= require schools
 //= require users
 

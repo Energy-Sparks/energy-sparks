@@ -12,38 +12,6 @@ RSpec.describe SchoolsController, type: :controller do
     {name: nil}
   }
 
-  describe 'GET #scoreboard' do
-    it 'assigns schools as @schools in points order' do
-      schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
-
-      get :scoreboard
-      expect(School.scoreboard.map(&:id)).to eq(schools.map(&:id))
-    end
-
-    context "as a school administrator" do
-      let(:school) {
-        school = FactoryBot.create :school, enrolled: true
-      }
-
-      before(:each) do
-        sign_in_user(:school_user, school.id)
-      end
-
-      it 'doesnt award a badge if school has zero points' do
-        get :scoreboard
-        expect(school.badges.length).to eql(0)
-      end
-      it 'grants the a badge if school has 10 points' do
-        school.add_points(20)
-        get :scoreboard
-        school.reload
-        expect(school.badges.length).to eql(1)
-        expect(school.badges.first.name).to eql("player")
-      end
-    end
-
-  end
-
   describe 'GET #suggest_activity' do
     let(:school) { FactoryBot.create :school }
 
@@ -101,10 +69,10 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe "GET #index" do
-    it "assigns schools that are enrolled as @schools_enrolled" do
+    it "assigns schools that are enrolled but not grouped as @ungrouped_enrolled_schools" do
       school = FactoryBot.create :school, enrolled: true
       get :index, params: {}
-      expect(assigns(:schools_enrolled)).to eq([school])
+      expect(assigns(:ungrouped_enrolled_schools)).to eq([school])
     end
     it "assigns schools that haven't enrolled as @schools_not_enrolled" do
       school = FactoryBot.create :school, enrolled: false
@@ -308,33 +276,6 @@ RSpec.describe SchoolsController, type: :controller do
           put :update, params: {id: school.to_param, school: {competition_role: "winner"}}
           school.reload
           expect(school.badges[0].name).to eql("winner")
-        end
-
-      end
-
-      context "adds a meter" do
-        let(:new_attributes) {
-          {
-            meters_attributes:
-              [{ meter_no: 1234, meter_type: 'gas', name: 'gas name' }]
-          }
-        }
-
-        it "adds a school meter to the requested school" do
-          school = create :school
-          expect(school.meters).to be_empty
-          put :update, params: {id: school.to_param, school: new_attributes}
-          school.reload
-          expect(school.meters.first.meter_no).to eq 1234
-        end
-
-        it "does not let you add the same meter number twice" do
-          meter  = create(:meter, meter_no: 1234)
-          school = create(:school, meters: [meter])
-          expect(school.meters.count).to be 1
-          put :update, params: {id: school.to_param, school: new_attributes}
-          school.reload
-          expect(school.meters.count).to be 1
         end
 
       end

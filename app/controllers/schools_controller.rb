@@ -2,15 +2,16 @@ class SchoolsController < ApplicationController
   include KeyStageFilterable
 
   load_and_authorize_resource find_by: :slug
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
   before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
-  before_action :set_key_stage_tags, only: [:new, :edit]
+  before_action :set_key_stage_tags, only: [:new, :create, :edit, :update]
 
   # GET /schools
   # GET /schools.json
   def index
-    @schools_enrolled = School.where(enrolled: true).order(:name)
-    @schools_not_enrolled = School.where(enrolled: false).order(:name)
+    @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
+    @ungrouped_enrolled_schools = School.enrolled.without_group.order(:name)
+    @schools_not_enrolled = School.not_enrolled.order(:name)
   end
 
   # GET /schools/1
@@ -24,7 +25,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/awards
   def awards
-    @all_badges = Merit::Badge.all.to_a.sort { |a, b| a <=> b }
+    @all_badges = Merit::Badge.all.to_a.sort
     @badges = @school.badges_by_date(order: :asc)
   end
 
@@ -35,24 +36,13 @@ class SchoolsController < ApplicationController
     @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filter_names).suggest
   end
 
-  # GET /schools/scoreboard
-  def scoreboard
-    #Added so merit can access the current user. Seems to require a variable with same name
-    #as controller
-    @school = current_user
-
-    @schools = School.scoreboard
-  end
-
   # GET /schools/new
   def new
     @school = School.new
-    @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
-    @school.meters.build
   end
 
   # POST /schools
@@ -122,6 +112,7 @@ private
       :postcode,
       :website,
       :enrolled,
+      :school_group_id,
       :calendar_area_id,
       :weather_underground_area_id,
       :solar_pv_tuos_area_id,
@@ -132,7 +123,6 @@ private
       :number_of_pupils,
       :floor_area,
       key_stage_ids: [],
-      meters_attributes: meter_params,
       school_times_attributes: school_time_params
     )
   end

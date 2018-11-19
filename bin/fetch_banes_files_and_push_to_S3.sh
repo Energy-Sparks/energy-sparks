@@ -1,9 +1,15 @@
 #!/bin/bash
 echo `date -u` "Getting any files"
 
-cd amr_files_bucket
+cd tmp
 
-echo "connecting to: $BANES_SFTP_SERVER as $BANES_SFTP_USER"
+if [ ! -d banes_data_feed_files ]; then
+  mkdir -p banes_data_feed_files;
+fi
+
+cd banes_data_feed_files
+
+echo "connecting to: $BANES_SFTP_SERVER as $BANES_SFTP_USER from `pwd`"
 
 # Get and then delete files
 lftp sftp://$BANES_SFTP_USER:$BANES_SFTP_PASSWORD@$BANES_SFTP_SERVER:22 <<EOF
@@ -34,6 +40,9 @@ then
 
   mv 30days.csv $filename
   aws s3 cp $filename s3://$AWS_S3_AMR_DATA_FEEDS_BUCKET/banes/
+
+  rm $filename
+  rm 30days.zip
 else
   echo `date -u` "No files"
 fi

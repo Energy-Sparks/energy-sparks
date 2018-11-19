@@ -5,14 +5,14 @@
 #  active              :boolean          default(TRUE)
 #  created_at          :datetime         not null
 #  floor_area          :decimal(, )
-#  id                  :integer          not null, primary key
+#  id                  :bigint(8)        not null, primary key
 #  meter_no            :bigint(8)
 #  meter_serial_number :text
 #  meter_type          :integer
 #  mpan_mprn           :bigint(8)
 #  name                :string
 #  number_of_pupils    :integer
-#  school_id           :integer
+#  school_id           :bigint(8)
 #  solar_pv            :boolean          default(FALSE)
 #  storage_heaters     :boolean          default(FALSE)
 #  updated_at          :datetime         not null
@@ -32,8 +32,10 @@ class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   has_many :meter_readings,             inverse_of: :meter, dependent: :destroy
   has_many :aggregated_meter_readings,  inverse_of: :meter, dependent: :destroy
-  has_many :amr_readings,               inverse_of: :meter, dependent: :destroy
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
+
+  scope :active,   -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
 
   enum meter_type: [:electricity, :gas]
   validates_presence_of :school, :meter_no, :meter_type
@@ -49,6 +51,7 @@ class Meter < ApplicationRecord
 
   # There is some ambiguity in the analysis code between what is a collection of meters
   # and what is a school or building
+  # TODO fix
   def meter_collection
     school
   end
@@ -109,5 +112,10 @@ class Meter < ApplicationRecord
     else
       @meter_correction_rules
     end
+  end
+
+  def safe_destroy
+    raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if meter_readings.any? || amr_data_feed_readings.any?
+    destroy
   end
 end

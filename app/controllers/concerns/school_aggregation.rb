@@ -7,8 +7,7 @@ private
     cache_key = "#{school.name.parameterize}-aggregated_meter_collection"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       meter_collection = MeterCollection.new(school)
-      AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
-      meter_collection
+      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
     end
   end
 end
