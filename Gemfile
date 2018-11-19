@@ -18,8 +18,12 @@ gem 'after_party' # load data after deploy
 gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.22.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.22.0'
+gem 'energy-sparks_analytics', '~> 0.23.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.23.0-statsample-update'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
+
+# Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
+# Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
+gem 'statsample', git: 'https://github.com/SciRuby/statsample', branch: 'master'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
