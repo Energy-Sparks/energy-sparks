@@ -10,9 +10,10 @@ module Amr
 
     def import_all
       Rails.logger.info "Download all from S3 key pattern: #{@config.s3_folder}"
-      get_array_of_files_in_bucket_with_prefix.each do |key|
-        get_file_from_s3(key)
-        import_file(key)
+      get_array_of_files_in_bucket_with_prefix.each do |file_name|
+        get_file_from_s3(file_name)
+        import_file(file_name)
+        archive_file(file_name)
       end
       Rails.logger.info "Downloaded all"
     end
@@ -37,6 +38,16 @@ module Amr
       importer = CsvImporter.new(@config, file_name)
       importer.parse
       Rails.logger.info "Imported #{file_name}"
+    end
+
+    def archive_file(file_name)
+      key = "#{@config.s3_folder}/#{file_name}"
+      archived_key = "#{@config.s3_archive_folder}/#{file_name}"
+      pp "Archiving #{key} to #{archived_key}"
+      @s3_client.copy_object(bucket: @bucket, copy_source: "#{@bucket}/#{key}", key: archived_key)
+
+      @s3_client.delete_objects(bucket: @bucket, delete: { objects: [{ key: key }] })
+      Rails.logger.info "Archived #{key} to #{archived_key}"
     end
   end
 end
