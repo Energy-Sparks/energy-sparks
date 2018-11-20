@@ -72,7 +72,7 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area
   belongs_to :school_group
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior]
+  enum school_type: [:primary, :secondary, :special, :infant, :junior, :first, :middle]
   enum competition_role: [:not_competing, :competitor, :winner]
 
   scope :enrolled, -> { where(enrolled: true) }
