@@ -28,9 +28,23 @@ describe CsvImporter do
     )
   }
 
-  before(:each) do
-    FileUtils.mkdir_p config.local_bucket_path
-  end
+  let!(:frome_config) {
+    AmrDataFeedConfig.new(
+      area_id: 3,
+      description: 'Frome',
+      s3_folder: 'frome',
+      s3_archive_folder: 'archive-frome',
+      local_bucket_path: 'tmp/amr_files_bucket/frome',
+      access_type: 'Email',
+      date_format: "%d/%m/%y",
+      mpan_mprn_field: 'Site Id',
+      msn_field: 'Meter Number',
+      reading_date_field: 'Reading Date',
+      reading_fields:  '00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30'.split(','),
+      header_example: "Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30",
+    )
+  }
+
 
   def example_csv
     <<~HEREDOC
@@ -84,11 +98,25 @@ describe CsvImporter do
     HEREDOC
   end
 
-  def write_file_and_expect_readings(csv, config)
+  def example_frome
+    <<~HEREDOC
+    Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
+    10545307,K0229111D6,12/11/18,9.9,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
+    HEREDOC
+  end
+
+  def example_frome_historic
+    <<~HEREDOC
+    Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
+    10545307,K0229111D6,12/11/2018,11.11,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
+    HEREDOC
+  end
+
+  def write_file_and_expect_readings(csv, config, first_reading = "0.165")
     record_count = write_file_and_parse(csv, config)
     expect(AmrDataFeedReading.count).to be 1
     expect(record_count).to be 1
-    expect(AmrDataFeedReading.first.readings.first).to eq "0.165"
+    expect(AmrDataFeedReading.first.readings.first).to eq first_reading
     expect(AmrDataFeedImportLog.count).to be 1
     log = AmrDataFeedImportLog.first
     expect(log.file_name).to eq file_name
@@ -96,10 +124,10 @@ describe CsvImporter do
     expect(log.records_imported).to be 1
   end
 
-  def write_file_and_expect_updated_readings(csv, config)
+  def write_file_and_expect_updated_readings(csv, config, updated_reading = "0.166")
     write_file_and_parse(csv, config)
     expect(AmrDataFeedReading.count).to be 1
-    expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
+    expect(AmrDataFeedReading.first.readings.first).to eq updated_reading
     expect(AmrDataFeedImportLog.count).to be 2
     log = AmrDataFeedImportLog.first
     expect(log.file_name).to eq file_name
@@ -115,35 +143,56 @@ describe CsvImporter do
     importer.inserted_record_count
   end
 
-  it 'should parse a simple file' do
-    write_file_and_expect_readings(example_csv, config)
+  context 'frome' do
+    before(:each) do
+      FileUtils.mkdir_p frome_config.local_bucket_path
+    end
+
+    it 'should parse a simple file' do
+      write_file_and_expect_readings(example_frome, frome_config, "9.9")
+    end
+
+    it 'should parse a simple historic file' do
+      write_file_and_expect_readings(example_frome_historic, frome_config, "11.11")
+    end
   end
 
-  it 'should handle banes format' do
-    write_file_and_expect_readings(example_banes_csv, config)
-  end
+  context 'banes' do
+    before(:each) do
+      FileUtils.mkdir_p config.local_bucket_path
+    end
 
-  it 'should handle duplicate records cleanly' do
-    write_file_and_expect_readings(example_banes_csv_duplicates, config)
-  end
+    it 'should parse a simple file' do
+      write_file_and_expect_readings(example_csv, config)
+    end
 
-  it 'should handle no header if config set' do
-    write_file_and_expect_readings(example_banes_no_header, config)
-  end
+    it 'should handle banes format' do
+      write_file_and_expect_readings(example_banes_csv, config)
+    end
 
-  it 'should handle graceful failure' do
-    record_count = write_file_and_parse(example_duff_csv, config)
-    expect(AmrDataFeedReading.count).to be 1
-    expect(record_count).to be 1
-    log = AmrDataFeedImportLog.first
-    expect(log.file_name).to eq file_name
-    expect(log.amr_data_feed_config_id).to be config.id
-    expect(log.records_imported).to be 1
-  end
+    it 'should handle duplicate records cleanly' do
+      write_file_and_expect_readings(example_banes_csv_duplicates, config)
+    end
 
-  it 'should upsert if appropriate' do
-    write_file_and_expect_readings(example_banes_csv, config)
-    write_file_and_expect_updated_readings(example_upsert_file_2, config)
-    expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
+    it 'should handle no header if config set' do
+      write_file_and_expect_readings(example_banes_no_header, config)
+    end
+
+    it 'should handle graceful failure' do
+      record_count = write_file_and_parse(example_duff_csv, config)
+      expect(AmrDataFeedReading.count).to be 1
+      expect(record_count).to be 1
+      log = AmrDataFeedImportLog.first
+      expect(log.file_name).to eq file_name
+      expect(log.amr_data_feed_config_id).to be config.id
+      expect(log.records_imported).to be 1
+    end
+
+    it 'should upsert if appropriate' do
+      write_file_and_expect_readings(example_banes_csv, config)
+      write_file_and_expect_updated_readings(example_upsert_file_2, config)
+      expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
+    end
+
   end
 end
