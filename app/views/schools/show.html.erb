@@ -24,12 +24,14 @@
         <%- end -%>
       </p>
       <p class="float-right">
-        <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
-        <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
+        <%- if @school.active_meters.any? -%>
+          <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
+          <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
+        <%- end -%>
 
         <%- if can? :manage, @school -%>
-          <%= link_to 'Edit school', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Manage meters', school_meters_path(@school), class: 'btn btn-primary btn-sm' %>
+          <%= link_to 'Edit school', edit_school_path(@school), class: 'btn btn-warning btn-sm' %>
+          <%= link_to 'Manage meters', school_meters_path(@school), class: 'btn btn-warning btn-sm' %>
           <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
           <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'btn btn-primary btn-sm'%>
         <%- end -%>
@@ -58,4 +60,16 @@
       <% end %>
     </div>
   </div>
+  <% if user_signed_in? && current_user.admin? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Meter reports</h4>
+        <p>
+          <% @school.meters.each do |meter| %>
+            <%= link_to(meter.display_name, amr_readings_show_path(meter), class: 'btn btn-warning btn-sm') if AmrValidatedReading.where(meter_id: meter.id).any? %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  <% end %>
 </div>
