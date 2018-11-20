@@ -1,6 +1,4 @@
-<% content_for :page_title do %>
-    <%= @school.name %>
-<% end %>
+<% content_for :page_title do %><%= @school.name %><% end %>
 
 <div typeof="School">
   <div class="row padded-row">
@@ -41,10 +39,16 @@
     </div>
   </div>
   <div class="row">
-
     <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
-      <%= render 'schools/meter_cards', meter_type: :electricity, school: @school if @school.meters?(:electricity) %>
+      <% if @school.meters?(:electricity) %>
+        <%= render 'schools/meter_cards', meter_type: :electricity, school: @school %>
+      <% else %>
+        <section id="electricity-cards">
+          <h4>This school has no electricity meters configured in Energy Sparks</h4>
+        </section>
+      <% end %>
+
       <% if @school.meters?(:gas) %>
         <%= render 'schools/meter_cards', meter_type: :gas, school: @school %>
       <% else %>
