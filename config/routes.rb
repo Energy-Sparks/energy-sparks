@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       get :chart, to: 'analysis#chart'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
+      get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
       get :electricity_detail, to: 'analysis#electricity_detail'
       get :gas_detail, to: 'analysis#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'

@@ -222,4 +222,22 @@ describe School do
       end
     end
   end
+
+  describe '#fuel_types' do
+    it 'identifies dual fuel if it has both meters' do
+      gas_meter = create(:meter, school: subject)
+      electricity_meter = create(:meter, school: subject, meter_type: :electricity)
+      expect(subject.fuel_types).to eq :electric_and_gas
+    end
+
+    it 'identifies electricity if it has electricity only' do
+      electricity_meter = create(:meter, school: subject, meter_type: :electricity)
+      expect(subject.fuel_types).to eq :electric_only
+    end
+
+    it 'identifies gas if it has gas only' do
+      electricity_meter = create(:meter, school: subject)
+      expect(subject.fuel_types).to eq :gas_only
+    end
+  end
 end

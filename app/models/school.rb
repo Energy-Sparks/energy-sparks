@@ -149,7 +149,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types
-    both_supplies? ? :electric_and_gas : :electric_only
+    if both_supplies?
+      :electric_and_gas
+    elsif meters?(:electricity)
+      :electric_only
+    elsif meters?(:gas)
+      :gas_only
+    else
+      :none
+    end
   end
 
   def has_badge?(id)
