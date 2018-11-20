@@ -58,6 +58,7 @@ class School < ApplicationRecord
   has_many :meters, inverse_of: :school, dependent: :destroy
 
   has_many :meter_readings,         through: :meters
+  has_many :amr_data_feed_readings, through: :meters
   has_many :amr_validated_readings, through: :meters
 
   has_many :activities, inverse_of: :school, dependent: :destroy
@@ -180,7 +181,7 @@ class School < ApplicationRecord
 
     start_of_window = previous_friday.end_of_day - 1.week
     end_of_window = previous_friday.end_of_day
-    actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
+    actual_readings = amr_data_feed_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
     actual_readings == expected_readings_for_a_week
   end
 

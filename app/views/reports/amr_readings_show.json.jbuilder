@@ -1,7 +1,7 @@
 # rubocop:disable Lint/ParenthesesAsGroupedExpression
 require 'dashboard'
 
-json.calendar_events (@first_reading.read_at.to_date..Time.zone.today).each do |the_date|
+json.calendar_events (Date.parse(@first_reading)..Time.zone.today).each do |the_date|
   json.startDate  the_date
   json.endDate    the_date
   if @reading_summary.key?(the_date)
