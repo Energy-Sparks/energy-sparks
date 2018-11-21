@@ -221,10 +221,6 @@ RSpec.describe SchoolsController, type: :controller do
           expect(assigns(:school).calendar).not_to be_nil
         end
 
-        it "redirects to the created school" do
-          post :create, params: {school: valid_attributes}
-          expect(response).to redirect_to(School.last)
-        end
       end
 
       context "with invalid params" do
