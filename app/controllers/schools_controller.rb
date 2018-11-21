@@ -132,10 +132,6 @@ private
     [:id, :day, :opening_time, :closing_time]
   end
 
-  def meter_params
-    [:id, :meter_no, :meter_type, :active, :name]
-  end
-
   def set_supply
     @supply = params[:supply].present? ? params[:supply] : "electricity"
   end

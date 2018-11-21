@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "meter management", :meters, type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school) { create(:school, name: school_name)}
+  let!(:school) { create_enrolled_school(name: school_name)}
   let!(:admin)  { create(:user, role: 'admin')}
 
   before(:each) do

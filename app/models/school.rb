@@ -79,7 +79,9 @@ class School < ApplicationRecord
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
 
-  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes[:opening_time].blank? }
+  validates_associated :school_times, on: :school_time_update
+
+  accepts_nested_attributes_for :school_times
 
   after_create :create_sash_relation
   after_create :create_calendar
