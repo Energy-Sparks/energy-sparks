@@ -5,6 +5,13 @@ class SchoolCreator
 
   def process_new_school!
     add_school_times
+    add_all_alert_types
+  end
+
+  def add_all_alert_types
+    AlertType.all.each do |alert_type|
+      @school.alerts.create(alert_type: alert_type) unless @school.alerts.where(alert_type: alert_type).exists?
+    end
   end
 
   def add_school_times
