@@ -204,8 +204,6 @@ RSpec.describe SchoolsController, type: :controller do
     describe "POST #create" do
       context "with valid params" do
 
-        let!(:calendar) { create :calendar, template: true }
-
         it "creates a new School" do
           expect {
             post :create, params: {school: valid_attributes}
@@ -216,11 +214,6 @@ RSpec.describe SchoolsController, type: :controller do
           expect(assigns(:school)).to be_a(School)
           expect(assigns(:school)).to be_persisted
         end
-        it "creates a calendar for the new School" do
-          post :create, params: {school: valid_attributes}
-          expect(assigns(:school).calendar).not_to be_nil
-        end
-
       end
 
       context "with invalid params" do
