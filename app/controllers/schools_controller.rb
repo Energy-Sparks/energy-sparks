@@ -123,13 +123,8 @@ private
       :competition_role,
       :number_of_pupils,
       :floor_area,
-      key_stage_ids: [],
-      school_times_attributes: school_time_params
+      key_stage_ids: []
     )
-  end
-
-  def school_time_params
-    [:id, :day, :opening_time, :closing_time]
   end
 
   def set_supply

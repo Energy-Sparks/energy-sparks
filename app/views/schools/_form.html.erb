@@ -107,36 +107,6 @@
 
   <%= render 'shared/custom_checkbox', f: f, field_name: :enrolled %>
 
-  <h2>School Times</h2>
-  <p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format without a separating colon.</p>
-  <div class="row">
-    <div class="col-md-3 mb-3">
-      <label for="firstName">Day</label>
-    </div>
-    <div class="col-md-3 mb-3">
-      <label for="lastName">Opening Time</label>
-    </div>
-    <div class="col-md-3 mb-3">
-      <label for="lastName">Closing Time</label>
-    </div>
-  </div>
-  <%= f.fields_for :school_times, f.object.school_times.order(:day) do |ff| %>
-    <%= ff.hidden_field :id, value: ff.object.id %>
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <%= ff.hidden_field :day, value: ff.object.day %>
-        <%= ff.object.day.capitalize %>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <%= ff.number_field :opening_time, value: ('%04d' % ff.object.opening_time) %>
-      </div>
-      <div class="col-md-3 mb-3">
-        <%= ff.number_field :closing_time, value: ('%04d' % ff.object.closing_time) %>
-      </div>
-    </div>
-  <% end %>
-
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>
   </div>
