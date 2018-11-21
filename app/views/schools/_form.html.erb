@@ -60,15 +60,6 @@
     <%= f.text_field :website, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :competition_role %>
-    <%= f.select :competition_role,
-                 School.competition_roles.keys.map { |role| [role.titleize, role] },
-                 {},
-                 {class: 'form-control'}
-    %>
-  </div>
-
   <%= render 'shared/custom_checkbox', f: f, field_name: :enrolled %>
 
   <div class="actions">
