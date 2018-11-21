@@ -114,8 +114,6 @@ private
       :website,
       :enrolled,
       :urn,
-      :gas_dataset,
-      :electricity_dataset,
       :competition_role,
       :number_of_pupils,
       :floor_area,
