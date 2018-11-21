@@ -20,7 +20,7 @@ class SchoolCreator
     end
   end
 
-  def process_configuration!
+  def process_new_configuration!
     generate_calendar
   end
 

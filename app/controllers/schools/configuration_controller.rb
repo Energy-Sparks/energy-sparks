@@ -12,7 +12,16 @@ module Schools
 
     def create
       @school.update!(school_params)
+      SchoolCreator.new(@school).process_new_configuration!
       redirect_to school_meters_path(@school)
+    end
+
+    def edit
+    end
+
+    def update
+      @school.update!(school_params)
+      redirect_to school_path(@school)
     end
 
   private

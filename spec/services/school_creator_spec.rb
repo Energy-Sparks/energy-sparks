@@ -39,14 +39,14 @@ describe SchoolCreator, :schools, type: :service do
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service = SchoolCreator.new(school)
-      service.process_configuration!
+      service.process_new_configuration!
       expect(school.calendar.based_on).to eq(calendar)
     end
 
     it 'leaves the calendar empty if there is no templaate for the area' do
       school.update(calendar_area: create(:calendar_area))
       service = SchoolCreator.new(school)
-      service.process_configuration!
+      service.process_new_configuration!
       expect(school.calendar).to be_nil
     end
   end
