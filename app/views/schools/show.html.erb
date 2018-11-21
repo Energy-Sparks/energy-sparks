@@ -5,6 +5,24 @@
 <div typeof="School">
   <div class="row padded-row">
     <div class="col-md-12">
+      <%- if can? :manage, @school -%>
+        <div class="float-right">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="manage-school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Manage school
+            </button>
+            <div class="dropdown-menu" aria-labelledby="manage-school">
+              <%= link_to 'Edit school details', edit_school_path(@school), class: 'dropdown-item' %>
+              <%= link_to 'Energy configuration', edit_school_configuration_path(@school), class: 'dropdown-item'%>
+              <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item'%>
+              <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' %>
+              <%= link_to 'Manage alerts', school_alerts_path(@school), class: 'dropdown-item'%>
+              <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item'%>
+            </div>
+          </div>
+        </div>
+      <%- end -%>
+
       <h1 property="name"><%= @school.name %></h1>
       <h6 class="large">
         <address property="address" typeof="PostalAddress">
@@ -28,17 +46,8 @@
       <p class="float-right">
         <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
         <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
-
-        <%- if can? :manage, @school -%>
-          <%= link_to 'Edit school', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Manage meters', school_meters_path(@school), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Manage alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
-          <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'btn btn-primary btn-sm'%>
-          <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'btn btn-primary btn-sm'%>
-        <%- end -%>
-
         <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm') if can? :manage, @school.calendar %>
-      </p>
+        <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'btn btn-primary btn-sm'%>
     </div>
   </div>
   <div class="row">

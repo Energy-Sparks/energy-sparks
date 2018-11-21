@@ -38,6 +38,8 @@ Rails.application.routes.draw do
         end
       end
 
+      resource :configuration, controller: :configuration
+      resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
 
       get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail

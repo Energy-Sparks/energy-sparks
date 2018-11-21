@@ -53,7 +53,7 @@ class SchoolsController < ApplicationController
     respond_to do |format|
       if @school.save
         SchoolCreator.new(@school).process_new_school!
-        format.html { redirect_to @school, notice: 'School was successfully created.' }
+        format.html { redirect_to new_school_school_group_path(@school), notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -113,10 +113,6 @@ private
       :postcode,
       :website,
       :enrolled,
-      :school_group_id,
-      :calendar_area_id,
-      :weather_underground_area_id,
-      :solar_pv_tuos_area_id,
       :urn,
       :gas_dataset,
       :electricity_dataset,

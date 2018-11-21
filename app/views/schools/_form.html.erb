@@ -44,32 +44,6 @@
     </div>
   </div>
 
-  <h2>Scoreboard Groups</h2>
-  <p>Scoreboard Groups are used to collect associated schools together, usually by area. Schools within a Group are ranked against each other on a Scoreboard.</p>
-  <div class="form-group">
-    <%= f.label :school_group_id, 'Group' %>
-    <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (@school.school_group_id)), {include_blank: true}, { class: 'form-control' }%>
-  </div>
-
-  <h2>Calendar and Data Feed configuration</h2>
-  <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
-  <div class="form-group">
-    <%= f.label :calendar_area_id, 'Calendar Area' %>
-    <%= f.select :calendar_area_id, options_from_collection_for_select(CalendarArea.all, 'id', 'title', (@school.calendar_area.id if @school.calendar_area)),{}, { class: 'form-control' }%>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= f.label :weather_underground_area_id, 'Weather Underground Data Feed Area' %>
-      <%= f.select :weather_underground_area_id, options_from_collection_for_select(WeatherUndergroundArea.all, 'id', 'title', (@school.weather_underground_area.id if @school.weather_underground_area)),{}, { class: 'form-control' }%>
-    </div>
-
-    <div class="form-group col-md-6">
-      <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
-      <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all, 'id', 'title', (@school.solar_pv_tuos_area.id if @school.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
-    </div>
-  </div>
-
   <h2>Address</h2>
   <div class="form-group">
     <%= f.label :address %>
@@ -108,6 +82,6 @@
   <%= render 'shared/custom_checkbox', f: f, field_name: :enrolled %>
 
   <div class="actions">
-    <%= f.submit class: 'btn btn-primary' %>
+    <%= f.submit submit_text, class: 'btn btn-primary' %>
   </div>
 <% end %>
