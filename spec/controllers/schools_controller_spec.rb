@@ -261,19 +261,6 @@ RSpec.describe SchoolsController, type: :controller do
           expect(response).to redirect_to(school)
         end
 
-        it "awards competitor badge" do
-          school = FactoryBot.create :school
-          put :update, params: {id: school.to_param, school: {competition_role: "competitor"}}
-          school.reload
-          expect(school.badges[0].name).to eql("competitor")
-        end
-        it "awards winner badge" do
-          school = FactoryBot.create :school
-          put :update, params: {id: school.to_param, school: {competition_role: "winner"}}
-          school.reload
-          expect(school.badges[0].name).to eql("winner")
-        end
-
       end
 
       context "with invalid params" do
