@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.1'
+ruby '2.5.3'
 
 # Rails/Core
 gem 'rails', '~> 5.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -18,7 +18,7 @@ gem 'after_party' # load data after deploy
 gem 'upsert', '~> 2.2.1'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', '~> 0.21.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.21.0'
+gem 'energy-sparks_analytics', '~> 0.22.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.22.0'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Assets

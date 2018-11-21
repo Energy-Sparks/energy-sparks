@@ -8,6 +8,7 @@ private
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       meter_collection = MeterCollection.new(school)
       AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+      meter_collection
     end
   end
 end
