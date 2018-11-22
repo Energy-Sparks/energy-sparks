@@ -48,6 +48,7 @@ class School < ApplicationRecord
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
   delegate :holiday_approaching?, to: :calendar
+  delegate :area_name,            to: :school_group
 
   include Merit::UsageCalculations
   has_merit
@@ -104,11 +105,6 @@ class School < ApplicationRecord
       [:postcode, :name],
       [:urn, :name]
     ]
-  end
-
-  # TODO: Remove hard coding once areas arrives
-  def area_name
-    'Bath'
   end
 
   # TODO: This is not performant and requires some rework or re-architecturing
