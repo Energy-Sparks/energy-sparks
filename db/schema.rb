@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_16_094610) do
+ActiveRecord::Schema.define(version: 2018_11_22_160153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -337,10 +337,6 @@ ActiveRecord::Schema.define(version: 2018_11_16_094610) do
     t.string "name"
     t.bigint "mpan_mprn"
     t.text "meter_serial_number"
-    t.boolean "solar_pv", default: false
-    t.boolean "storage_heaters", default: false
-    t.integer "number_of_pupils"
-    t.decimal "floor_area"
     t.index ["meter_no"], name: "index_meters_on_meter_no"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["school_id"], name: "index_meters_on_school_id"
