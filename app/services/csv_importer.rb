@@ -17,27 +17,45 @@ class CsvImporter
     @existing_records = AmrDataFeedReading.count
     @meter_id_hash = Meter.all.map { |m| [m.meter_no.to_s, m.id]}.to_h
     @header_first_thing = @config.header_example.split(',').first
+    @index_of_midnight_for_off_by_one = @config.header_example.split(',').find_index(@config.reading_fields.first)
   end
 
   def parse
-    Rails.logger.info "Loading: #{@config.local_bucket_path}/#{@file_name}"
-    amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
-
-    Upsert.batch(AmrDataFeedReading.connection, AmrDataFeedReading.table_name) do |upsert|
-      begin
-        CSV.foreach("#{@config.local_bucket_path}/#{@file_name}", col_sep: @config.column_separator, row_sep: :auto).with_index do |row, row_number|
-          create_record(upsert, row, amr_data_feed_import_log.id, row_number)
-        end
-      rescue CSV::MalformedCSVError
-        Rails.logger.error "Malformed CSV"
-      end
-    end
-    @inserted_record_count = AmrDataFeedReading.count - @existing_records
-    amr_data_feed_import_log.update(records_imported: @inserted_record_count)
+    array_of_rows = CSV.read("#{@config.local_bucket_path}/#{@file_name}", col_sep: @config.column_separator, row_sep: :auto)
+    array_of_rows = sort_out_off_by_one_array(array_of_rows) if @config.handle_off_by_one
+    parse_array(array_of_rows)
     @inserted_record_count
   end
 
 private
+
+  def parse_array(array)
+    Rails.logger.info "Loading: #{@config.local_bucket_path}/#{@file_name}"
+    amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
+    Upsert.batch(AmrDataFeedReading.connection, AmrDataFeedReading.table_name) do |upsert|
+      array.each_with_index do |row, row_number|
+        create_record(upsert, row, amr_data_feed_import_log.id, row_number)
+      end
+    end
+    @inserted_record_count = AmrDataFeedReading.count - @existing_records
+    amr_data_feed_import_log.update(records_imported: @inserted_record_count)
+    Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count}"
+    @inserted_record_count
+  end
+
+  def sort_out_off_by_one_array(array_of_rows)
+    array_of_rows.each_cons(2) do |row, next_row|
+      # row has 48 readings, but first is from the day before
+      # remove that one
+      row.slice!(@index_of_midnight_for_off_by_one)
+      # Add that first one from the next day to the end of todays
+      row << next_row[@index_of_midnight_for_off_by_one]
+    end
+
+    array_of_rows.last.slice!(@index_of_midnight_for_off_by_one)
+    array_of_rows.last << "0.0"
+    array_of_rows
+  end
 
   def row_is_header?(row, row_number)
     row_number == 0 && row[0] == @header_first_thing
