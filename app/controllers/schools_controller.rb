@@ -112,7 +112,6 @@ private
       :address,
       :postcode,
       :website,
-      :active,
       :urn,
       :number_of_pupils,
       :floor_area,
