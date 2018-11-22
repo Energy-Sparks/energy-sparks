@@ -48,7 +48,6 @@ class School < ApplicationRecord
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
   delegate :holiday_approaching?, to: :calendar
-  delegate :area_name,            to: :school_group
 
   include Merit::UsageCalculations
   has_merit
@@ -105,6 +104,10 @@ class School < ApplicationRecord
       [:postcode, :name],
       [:urn, :name]
     ]
+  end
+
+  def area_name
+    school_group.name
   end
 
   # TODO: This is not performant and requires some rework or re-architecturing
