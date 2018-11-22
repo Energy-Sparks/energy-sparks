@@ -2,12 +2,12 @@
 #
 # Table name: schools
 #
+#  active                      :boolean          default(FALSE)
 #  address                     :text
 #  calendar_area_id            :bigint(8)
 #  calendar_id                 :bigint(8)
 #  created_at                  :datetime         not null
 #  electricity_dataset         :string
-#  enrolled                    :boolean          default(FALSE)
 #  floor_area                  :decimal(, )
 #  gas_dataset                 :string
 #  id                          :bigint(8)        not null, primary key
@@ -70,8 +70,8 @@ class School < ApplicationRecord
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior]
 
-  scope :enrolled, -> { where(enrolled: true) }
-  scope :not_enrolled, -> { where(enrolled: false) }
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
   validates_presence_of :urn, :name

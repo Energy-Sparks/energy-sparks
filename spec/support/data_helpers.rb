@@ -1,5 +1,5 @@
 module EnergySparksDataHelpers
-  def create_enrolled_school(*args)
+  def create_active_school(*args)
     create(:school, *args).tap do |school|
       SchoolCreator.new(school).process_new_school!
     end

@@ -43,7 +43,7 @@ namespace :loader do
     banes_calendar = Calendar.find_by!(template: true, calendar_area: banes)
 
     puts "Create calendars for enrolled schools"
-    School.enrolled.each do |school|
+    School.all.each do |school|
       calendar = CalendarFactory.new(banes_calendar, school.name).create
       school.update(calendar: calendar)
     end

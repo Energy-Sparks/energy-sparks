@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'managing school times' do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school) { create_enrolled_school(name: school_name)}
+  let!(:school) { create_active_school(name: school_name)}
   let!(:admin)  { create(:user, role: 'admin')}
 
   before(:each) do

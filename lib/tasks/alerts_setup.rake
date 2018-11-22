@@ -7,7 +7,7 @@ namespace :alerts do
     data_hash = CSV.foreach('etc/alerts.csv', headers: true, header_converters: :symbol).select { |row| !row.empty? }.map(&:to_h)
     AlertTypeFactory.new(data_hash).create
 
-    School.enrolled.each do |school|
+    School.all.each do |school|
       SchoolCreator.new(school).add_all_alert_types
     end
     # puts data_hash.class

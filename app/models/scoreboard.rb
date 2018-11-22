@@ -30,7 +30,7 @@ class Scoreboard < ApplicationRecord
   end
 
   def scored_schools
-    schools.enrolled.select('schools.*, SUM(num_points) AS sum_points')
+    schools.active.select('schools.*, SUM(num_points) AS sum_points')
         .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
         .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
         .order('sum_points DESC NULLS LAST')

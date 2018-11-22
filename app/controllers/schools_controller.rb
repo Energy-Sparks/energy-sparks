@@ -10,14 +10,14 @@ class SchoolsController < ApplicationController
   # GET /schools.json
   def index
     @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
-    @ungrouped_enrolled_schools = School.enrolled.without_group.order(:name)
-    @schools_not_enrolled = School.not_enrolled.order(:name)
+    @ungrouped_active_schools = School.active.without_group.order(:name)
+    @schools_not_active = School.inactive.order(:name)
   end
 
   # GET /schools/1
   # GET /schools/1.json
   def show
-    redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
+    redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order("happened_on DESC")
     @meters = @school.meters.order(:meter_no)
     @badges = @school.badges_by_date(limit: 6)
@@ -112,7 +112,7 @@ private
       :address,
       :postcode,
       :website,
-      :enrolled,
+      :active,
       :urn,
       :number_of_pupils,
       :floor_area,

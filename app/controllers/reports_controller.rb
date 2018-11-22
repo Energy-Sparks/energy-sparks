@@ -50,7 +50,7 @@ class ReportsController < AdminController
   end
 
   def loading
-    @schools = School.enrolled.order(:name)
+    @schools = School.active.order(:name)
   end
 
   def cache_report
