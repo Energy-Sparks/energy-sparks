@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:urn)
     name 'test school'
     school_type :primary
-    enrolled true
+    active true
     postcode 'ab1 2cd'
     gas_dataset 'gas-data'
     electricity_dataset 'electricity-data'

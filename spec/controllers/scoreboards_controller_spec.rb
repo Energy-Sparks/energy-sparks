@@ -7,7 +7,7 @@ RSpec.describe ScoreboardsController, type: :controller do
   describe 'GET #show' do
     context "as a school administrator" do
       let(:group){ create(:school_group, scoreboard: scoreboard) }
-      let(:school) { create :school, enrolled: true, school_group: group }
+      let(:school) { create :school, active: true, school_group: group }
 
       before(:each) do
         sign_in_user(:school_user, school.id)

@@ -1,0 +1,49 @@
+<%= form_for(@school, url: school_times_path(@school)) do |f| %>
+  <h2>School Times: <%= @school.name %></h2>
+  <p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format without a separating colon.</p>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <label for="firstName">Day</label>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="lastName">Opening Time</label>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="lastName">Closing Time</label>
+    </div>
+  </div>
+  <%= f.fields_for :school_times, f.object.school_times.sort_by(&:day) do |ff| %>
+    <%= ff.hidden_field :id, value: ff.object.id %>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <%= ff.hidden_field :day, value: ff.object.day %>
+        <%= ff.object.day.capitalize %>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <%= ff.number_field :opening_time, value: ('%04d' % (ff.object.opening_time || 0)), id: "#{ff.object.day}-opening_time" %>
+        <% if ff.object.errors.has_key?(:opening_time) %>
+          <div class="alert alert-danger mt-2">
+            <%= ff.object.errors.full_messages_for(:opening_time).join(', ') %>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-3 mb-3">
+        <%= ff.number_field :closing_time, value: ('%04d' % (ff.object.closing_time || 0)), id: "#{ff.object.day}-closing_time" %>
+        <% if ff.object.errors.has_key?(:closing_time) %>
+          <div class="alert alert-danger mt-2">
+            <%= ff.object.errors.full_messages_for(:closing_time).join(', ') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit 'Update school times', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<div class="other-actions">
+  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+</div>

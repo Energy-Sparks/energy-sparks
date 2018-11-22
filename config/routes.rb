@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   resources :schools do
     resources :activities
     scope module: :schools do
+      resource :activation, only: [:create], controller: :activation
+      resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
       resources :alerts
 
@@ -37,6 +39,10 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
+
+      resource :configuration, controller: :configuration
+      resource :school_group, controller: :school_group
+      resource :times, only: [:edit, :update]
 
       get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation

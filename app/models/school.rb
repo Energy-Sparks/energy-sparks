@@ -2,13 +2,12 @@
 #
 # Table name: schools
 #
+#  active                      :boolean          default(FALSE)
 #  address                     :text
 #  calendar_area_id            :bigint(8)
 #  calendar_id                 :bigint(8)
-#  competition_role            :integer
 #  created_at                  :datetime         not null
 #  electricity_dataset         :string
-#  enrolled                    :boolean          default(FALSE)
 #  floor_area                  :decimal(, )
 #  gas_dataset                 :string
 #  id                          :bigint(8)        not null, primary key
@@ -74,19 +73,19 @@ class School < ApplicationRecord
   belongs_to :school_group
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
-  enum competition_role: [:not_competing, :competitor, :winner]
 
-  scope :enrolled, -> { where(enrolled: true) }
-  scope :not_enrolled, -> { where(enrolled: false) }
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
 
-  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes[:opening_time].blank? }
+  validates_associated :school_times, on: :school_time_update
+
+  accepts_nested_attributes_for :school_times
 
   after_create :create_sash_relation
-  after_create :create_calendar
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
@@ -231,13 +230,6 @@ class School < ApplicationRecord
   end
 
 private
-
-  def create_calendar
-    calendar = Calendar.find_by(template: true)
-    self.update_attribute(:calendar_id, calendar.id) if calendar
-    # calendar = Calendar.create_calendar_from_default("#{name} Calendar")
-    # self.update_attribute(:calendar_id, calendar.id)
-  end
 
   # Create Merit::Sash relation
   # Having the sash relation makes life easier elsewhere

@@ -26,7 +26,7 @@ RSpec.describe SchoolsController, type: :controller do
       let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
       let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
       let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
-      let!(:school) { create :school, enrolled: true, key_stages: [ks1_tag, ks3_tag] }
+      let!(:school) { create :school, active: true, key_stages: [ks1_tag, ks3_tag] }
 
       let(:activity_category) { create :activity_category }
       let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1_tag, ks2_tag]) }
@@ -69,15 +69,15 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe "GET #index" do
-    it "assigns schools that are enrolled but not grouped as @ungrouped_enrolled_schools" do
-      school = FactoryBot.create :school, enrolled: true
+    it "assigns schools that are active but not grouped as @ungrouped_active_schools" do
+      school = FactoryBot.create :school, active: true
       get :index, params: {}
-      expect(assigns(:ungrouped_enrolled_schools)).to eq([school])
+      expect(assigns(:ungrouped_active_schools)).to eq([school])
     end
-    it "assigns schools that haven't enrolled as @schools_not_enrolled" do
-      school = FactoryBot.create :school, enrolled: false
+    it "assigns inactive schools as @schools_not_active" do
+      school = FactoryBot.create :school, active: false
       get :index, params: {}
-      expect(assigns(:schools_not_enrolled)).to eq([school])
+      expect(assigns(:schools_not_active)).to eq([school])
     end
   end
 
@@ -86,15 +86,15 @@ RSpec.describe SchoolsController, type: :controller do
       before(:each) do
         sign_in_user(:guest)
       end
-      context "when the school is not enrolled" do
-        it "redirects to the enrol page" do
+      context "when the school is not active" do
+        it "redirects to the unauthorised page" do
           sign_in_user(:guest)
-          school = FactoryBot.create :school, enrolled: false
+          school = FactoryBot.create :school, active: false
           get :show, params: {id: school.to_param}
-          expect(response).to redirect_to(enrol_path)
+          expect(response).to redirect_to(root_path)
         end
       end
-      context "the school is enrolled" do
+      context "the school is active" do
         it "assigns the requested school as @school" do
           school = FactoryBot.create :school
           get :show, params: {id: school.to_param}
@@ -204,8 +204,6 @@ RSpec.describe SchoolsController, type: :controller do
     describe "POST #create" do
       context "with valid params" do
 
-        let!(:calendar) { create :calendar, template: true }
-
         it "creates a new School" do
           expect {
             post :create, params: {school: valid_attributes}
@@ -215,15 +213,6 @@ RSpec.describe SchoolsController, type: :controller do
           post :create, params: {school: valid_attributes}
           expect(assigns(:school)).to be_a(School)
           expect(assigns(:school)).to be_persisted
-        end
-        it "creates a calendar for the new School" do
-          post :create, params: {school: valid_attributes}
-          expect(assigns(:school).calendar).not_to be_nil
-        end
-
-        it "redirects to the created school" do
-          post :create, params: {school: valid_attributes}
-          expect(response).to redirect_to(School.last)
         end
       end
 
@@ -263,19 +252,6 @@ RSpec.describe SchoolsController, type: :controller do
           school = FactoryBot.create :school
           put :update, params: {id: school.to_param, school: valid_attributes}
           expect(response).to redirect_to(school)
-        end
-
-        it "awards competitor badge" do
-          school = FactoryBot.create :school
-          put :update, params: {id: school.to_param, school: {competition_role: "competitor"}}
-          school.reload
-          expect(school.badges[0].name).to eql("competitor")
-        end
-        it "awards winner badge" do
-          school = FactoryBot.create :school
-          put :update, params: {id: school.to_param, school: {competition_role: "winner"}}
-          school.reload
-          expect(school.badges[0].name).to eql("winner")
         end
 
       end

@@ -4,12 +4,13 @@ namespace :amr_importer do
     puts DateTime.now.utc
     total_amr_readings_before = AmrValidatedReading.count
     puts "Total AMR Readings before: #{total_amr_readings_before}"
+
     if args[:school_id].present?
       school = School.find(args[:school_id])
       puts "Validate and persist for #{school.name} only"
       Amr::ValidateAndPersistReadingsService.new(school).perform
     else
-      School.enrolled.each do |each_school|
+      School.all.each do |each_school|
         puts "Validate and persist for #{each_school.name}"
         Amr::ValidateAndPersistReadingsService.new(each_school).perform
       end

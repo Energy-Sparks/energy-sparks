@@ -10,14 +10,14 @@ class SchoolsController < ApplicationController
   # GET /schools.json
   def index
     @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
-    @ungrouped_enrolled_schools = School.enrolled.without_group.order(:name)
-    @schools_not_enrolled = School.not_enrolled.order(:name)
+    @ungrouped_active_schools = School.active.without_group.order(:name)
+    @schools_not_active = School.inactive.order(:name)
   end
 
   # GET /schools/1
   # GET /schools/1.json
   def show
-    redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
+    redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order("happened_on DESC")
     @meters = @school.meters.order(:meter_no)
     @badges = @school.badges_by_date(limit: 6)
@@ -52,7 +52,8 @@ class SchoolsController < ApplicationController
 
     respond_to do |format|
       if @school.save
-        format.html { redirect_to @school, notice: 'School was successfully created.' }
+        SchoolCreator.new(@school).process_new_school!
+        format.html { redirect_to new_school_school_group_path(@school), notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -111,28 +112,11 @@ private
       :address,
       :postcode,
       :website,
-      :enrolled,
-      :school_group_id,
-      :calendar_area_id,
-      :weather_underground_area_id,
-      :solar_pv_tuos_area_id,
       :urn,
-      :gas_dataset,
-      :electricity_dataset,
-      :competition_role,
       :number_of_pupils,
       :floor_area,
-      key_stage_ids: [],
-      school_times_attributes: school_time_params
+      key_stage_ids: []
     )
-  end
-
-  def school_time_params
-    [:id, :day, :opening_time, :closing_time]
-  end
-
-  def meter_params
-    [:id, :meter_no, :meter_type, :active, :name]
   end
 
   def set_supply

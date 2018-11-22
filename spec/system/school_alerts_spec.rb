@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "school alerts", type: :system do
 
-  let(:alerts_button) { 'Alerts' }
+  let(:alerts_button) { 'Manage alerts' }
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:school)     { create(:school, name: school_name)}
   let!(:admin)      { create(:user, role: 'admin')}
