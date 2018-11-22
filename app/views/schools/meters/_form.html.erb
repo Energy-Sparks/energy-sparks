@@ -1,37 +1,31 @@
 <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)</p>
 <%= form_for [school, meter] do |form| %>
   <%= render 'shared/errors', subject: meter, subject_name: 'meter' %>
-  <div class="row">
-    <div class="col-md-3 mb-3">
-      <%= form.label :meter_no, 'Meter Point Number' %>
-    </div>
-    <div class="col-md-5 mb-3">
-      <%= form.label :name, 'Meter Name' %>
-    </div>
-    <div class="col-md-2 mb-3">
-      <%= form.label :meter_type, 'Meter Type' %>
-    </div>
-    <div class="col-md-1 mb-3">
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3 mb-3">
-      <%= form.number_field :meter_no, class: 'form-control' %>
-    </div>
-    <div class="col-md-5 mb-3">
-      <%= form.text_field :name, class: 'form-control' %>
-    </div>
-    <div class="col-md-2 mb-3">
-      <% Meter.meter_types.keys.each do |meter_type| %>
-        <div class="form-check form-check-inline">
-          <%= form.radio_button :meter_type, meter_type, class: "form-check-input" %>
-          <%= form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
-        </div>
-      <% end %>
-    </div>
 
-    <div class="col-md-2 mb-3">
-      <%= form.submit class: 'btn btn-primary'%>
-    </div>
+  <div class="form-group">
+    <%= form.label :meter_no, 'Meter Point Number' %>
+    <%= form.number_field :meter_no, class: 'form-control' %>
   </div>
+  <div class="form-group">
+    <%= form.label :name, 'Meter Name' %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :meter_serial_number, 'Serial number' %>
+    <%= form.text_field :meter_serial_number, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :meter_type, 'Meter Type' %>
+    <% Meter.meter_types.keys.each do |meter_type| %>
+      <div class="form-check">
+        <%= form.radio_button :meter_type, meter_type, class: "form-check-input" %>
+        <%= form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary'%>
+  </div>
+
 <% end %>

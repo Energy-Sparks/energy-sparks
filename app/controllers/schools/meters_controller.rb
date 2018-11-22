@@ -63,7 +63,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:meter_no, :meter_type, :name)
+      params.require(:meter).permit(:meter_no, :meter_type, :name, :meter_serial_number)
     end
   end
 end
