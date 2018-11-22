@@ -9,6 +9,7 @@ RSpec.describe "school creation", :schools, type: :system do
   let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
 
   let!(:calendar_area){ create(:calendar_area, title: 'BANES calendar') }
+  let!(:calendar){ create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
   let!(:solar_pv_area){ create(:solar_pv_tuos_area, title: 'BANES solar') }
   let!(:weather_underground_area){ create(:weather_underground_area, title: 'BANES weather') }
   let!(:school_group) do
