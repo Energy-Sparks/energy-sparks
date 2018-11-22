@@ -48,9 +48,7 @@ class SchoolsController < ApplicationController
   # POST /schools
   # POST /schools.json
   def create
-    @school = School.new(
-      school_params.merge(competition_role: :not_competing)
-    )
+    @school = School.new(school_params)
 
     respond_to do |format|
       if @school.save
