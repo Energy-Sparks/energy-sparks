@@ -28,9 +28,40 @@ describe CsvImporter do
     )
   }
 
-  before(:each) do
-    FileUtils.mkdir_p config.local_bucket_path
-  end
+  let!(:frome_config) {
+    AmrDataFeedConfig.new(
+      area_id: 3,
+      description: 'Frome',
+      s3_folder: 'frome',
+      s3_archive_folder: 'archive-frome',
+      local_bucket_path: 'tmp/amr_files_bucket/frome',
+      access_type: 'Email',
+      date_format: "%d/%m/%y",
+      mpan_mprn_field: 'Site Id',
+      msn_field: 'Meter Number',
+      reading_date_field: 'Reading Date',
+      reading_fields:  '00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30'.split(','),
+      header_example: "Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30",
+    )
+  }
+
+  let!(:historical_frome_config) {
+    AmrDataFeedConfig.new(
+      area_id: 4,
+      description: 'Frome Historical',
+      s3_folder: 'frome-historical',
+      s3_archive_folder: 'archive-frome-historical',
+      local_bucket_path: 'tmp/amr_files_bucket/frome-historical',
+      access_type: 'Email',
+      date_format: "%d/%m/%Y",
+      mpan_mprn_field: 'Site Id',
+      msn_field: 'Meter Number',
+      reading_date_field: 'Reading Date',
+      handle_off_by_one: true,
+      reading_fields:  '00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30'.split(','),
+      header_example: "Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30",
+    )
+  }
 
   def example_csv
     <<~HEREDOC
@@ -84,22 +115,65 @@ describe CsvImporter do
     HEREDOC
   end
 
-  def write_file_and_expect_readings(csv, config)
+  def example_frome
+    <<~HEREDOC
+    Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
+    10545307,K0229111D6,12/11/18,9.9,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
+    HEREDOC
+  end
+
+  def example_frome_historic
+    <<~HEREDOC
+    Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
+    10545307,K0229111D6,12/11/2018,11.11,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
+    HEREDOC
+  end
+
+  def example_frome_historic_shift_one
+    <<~HEREDOC
+    Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
+    2000025766288,209458264,25/06/2015,1.8,1.7,1.6,1.5,1.6,1.5,1.5,1.8,1.5,1.6,1.2,1.4,1.7,2.9,3.5,4.9,6.7,6.7,7.4,7.6,6.9,7.1,8.7,9.0,8.2,7.3,6.9,7.2,8.0,8.0,5.1,4.5,4.0,3.3,2.9,2.2,1.6,1.4,1.5,1.6,1.4,1.5,1.6,1.6,1.6,1.6,1.5,1.6
+    2000025766288,209458264,26/06/2015,1.7,1.6,1.5,1.5,1.6,1.5,1.9,1.5,1.6,1.5,1.4,1.3,1.4,1.8,2.0,3.0,3.5,2.6,2.6,2.9,3.0,3.3,3.8,3.7,4.3,3.5,3.3,3.7,3.9,4.0,4.3,1.4,1.5,1.6,1.6,1.3,1.3,1.2,1.2,1.2,1.2,1.4,1.5,1.4,1.4,1.8,1.4,1.4
+    2000025766288,209458264,27/06/2015,1.5,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+    2000025766288,209458264,28/06/2015,0.0,1.4,1.5,1.8,1.3,1.5,1.5,1.5,1.5,1.4,1.2,1.1,1.4,1.2,1.2,1.3,1.5,1.2,1.3,1.6,1.9,1.8,1.6,1.8,1.8,1.7,1.8,1.4,1.3,1.3,1.5,1.1,1.2,1.3,1.4,1.3,1.2,1.3,1.2,1.2,1.3,1.7,1.3,1.4,1.7,1.5,1.4,1.5
+    2000025766288,209458264,29/06/2015,1.4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+    2000025766288,209458264,30/06/2015,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+    2000025766288,209458264,01/07/2015,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+    2000025766288,209458264,02/07/2015,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+    2000025766288,209458264,03/07/2015,0.0,1.6,2.0,1.5,1.8,1.5,1.6,1.6,1.5,1.6,1.4,1.3,1.6,2.2,3.1,4.5,5.5,7.4,7.1,8.4,6.8,7.9,9.0,9.5,9.9,7.6,7.1,7.3,6.7,6.4,4.4,4.5,3.9,3.3,2.9,2.0,1.6,1.3,1.4,1.5,1.8,1.4,1.6,1.7,1.6,1.6,1.6,1.6
+    HEREDOC
+  end
+
+  def example_frome_historic_shift_one_expected_output
+    {
+      "01/07/2015" => [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+      "03/07/2015" => [1.6,2.0,1.5,1.8,1.5,1.6,1.6,1.5,1.6,1.4,1.3,1.6,2.2,3.1,4.5,5.5,7.4,7.1,8.4,6.8,7.9,9.0,9.5,9.9,7.6,7.1,7.3,6.7,6.4,4.4,4.5,3.9,3.3,2.9,2.0,1.6,1.3,1.4,1.5,1.8,1.4,1.6,1.7,1.6,1.6,1.6,1.6,0.0],
+      "02/07/2015" => [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+      "25/06/2015" => [1.7,1.6,1.5,1.6,1.5,1.5,1.8,1.5,1.6,1.2,1.4,1.7,2.9,3.5,4.9,6.7,6.7,7.4,7.6,6.9,7.1,8.7,9.0,8.2,7.3,6.9,7.2,8.0,8.0,5.1,4.5,4.0,3.3,2.9,2.2,1.6,1.4,1.5,1.6,1.4,1.5,1.6,1.6,1.6,1.6,1.5,1.6,1.7],
+      "26/06/2015" => [1.6,1.5,1.5,1.6,1.5,1.9,1.5,1.6,1.5,1.4,1.3,1.4,1.8,2.0,3.0,3.5,2.6,2.6,2.9,3.0,3.3,3.8,3.7,4.3,3.5,3.3,3.7,3.9,4.0,4.3,1.4,1.5,1.6,1.6,1.3,1.3,1.2,1.2,1.2,1.2,1.4,1.5,1.4,1.4,1.8,1.4,1.4,1.5],
+      "27/06/2015" => [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+      "28/06/2015" => [1.4,1.5,1.8,1.3,1.5,1.5,1.5,1.5,1.4,1.2,1.1,1.4,1.2,1.2,1.3,1.5,1.2,1.3,1.6,1.9,1.8,1.6,1.8,1.8,1.7,1.8,1.4,1.3,1.3,1.5,1.1,1.2,1.3,1.4,1.3,1.2,1.3,1.2,1.2,1.3,1.7,1.3,1.4,1.7,1.5,1.4,1.5,1.4],
+      "29/06/2015" => [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+      "30/06/2015" => [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+    }.map { |k,v| [k, v.map(&:to_s)] }.to_h
+  end
+
+  def write_file_and_expect_readings(csv, config, first_reading = "0.165", reading_count = 1)
     record_count = write_file_and_parse(csv, config)
-    expect(AmrDataFeedReading.count).to be 1
-    expect(record_count).to be 1
-    expect(AmrDataFeedReading.first.readings.first).to eq "0.165"
+    expect(AmrDataFeedReading.count).to be reading_count
+    expect(record_count).to be reading_count
+    expect(AmrDataFeedReading.first.readings.first).to eq first_reading
     expect(AmrDataFeedImportLog.count).to be 1
     log = AmrDataFeedImportLog.first
     expect(log.file_name).to eq file_name
     expect(log.amr_data_feed_config_id).to be config.id
-    expect(log.records_imported).to be 1
+    expect(log.records_imported).to be reading_count
   end
 
-  def write_file_and_expect_updated_readings(csv, config)
+  def write_file_and_expect_updated_readings(csv, config, updated_reading = "0.166")
     write_file_and_parse(csv, config)
     expect(AmrDataFeedReading.count).to be 1
-    expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
+    expect(AmrDataFeedReading.first.readings.first).to eq updated_reading
     expect(AmrDataFeedImportLog.count).to be 2
     log = AmrDataFeedImportLog.first
     expect(log.file_name).to eq file_name
@@ -115,35 +189,67 @@ describe CsvImporter do
     importer.inserted_record_count
   end
 
-  it 'should parse a simple file' do
-    write_file_and_expect_readings(example_csv, config)
+  context 'historical frome' do
+    before(:each) do
+      FileUtils.mkdir_p historical_frome_config.local_bucket_path
+    end
+
+    it 'should handle off by one readings' do
+      file = File.write("#{historical_frome_config.local_bucket_path}/#{file_name}", example_frome_historic_shift_one)
+      write_file_and_expect_readings(example_frome_historic_shift_one, historical_frome_config, "1.7", 9)
+
+      results = AmrDataFeedReading.order(:reading_date).all.pluck(:reading_date, :readings).to_h
+      expect(results).to eq example_frome_historic_shift_one_expected_output
+    end
   end
 
-  it 'should handle banes format' do
-    write_file_and_expect_readings(example_banes_csv, config)
+  context 'frome' do
+    before(:each) do
+      FileUtils.mkdir_p frome_config.local_bucket_path
+    end
+
+    it 'should parse a simple file' do
+      write_file_and_expect_readings(example_frome, frome_config, "9.9")
+    end
+
+    it 'should parse a simple historic file' do
+      write_file_and_expect_readings(example_frome_historic, frome_config, "11.11")
+    end
   end
 
-  it 'should handle duplicate records cleanly' do
-    write_file_and_expect_readings(example_banes_csv_duplicates, config)
-  end
+  context 'banes' do
+    before(:each) do
+      FileUtils.mkdir_p config.local_bucket_path
+    end
 
-  it 'should handle no header if config set' do
-    write_file_and_expect_readings(example_banes_no_header, config)
-  end
+    it 'should parse a simple file' do
+      write_file_and_expect_readings(example_csv, config)
+    end
 
-  it 'should handle graceful failure' do
-    record_count = write_file_and_parse(example_duff_csv, config)
-    expect(AmrDataFeedReading.count).to be 1
-    expect(record_count).to be 1
-    log = AmrDataFeedImportLog.first
-    expect(log.file_name).to eq file_name
-    expect(log.amr_data_feed_config_id).to be config.id
-    expect(log.records_imported).to be 1
-  end
+    it 'should handle banes format' do
+      write_file_and_expect_readings(example_banes_csv, config)
+    end
 
-  it 'should upsert if appropriate' do
-    write_file_and_expect_readings(example_banes_csv, config)
-    write_file_and_expect_updated_readings(example_upsert_file_2, config)
-    expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
+    it 'should handle duplicate records cleanly' do
+      write_file_and_expect_readings(example_banes_csv_duplicates, config)
+    end
+
+    it 'should handle no header if config set' do
+      write_file_and_expect_readings(example_banes_no_header, config)
+    end
+
+    it 'should handle graceful failure' do
+      expect { write_file_and_parse(example_duff_csv, config) }.to raise_error(CSV::MalformedCSVError)
+
+      expect(AmrDataFeedReading.count).to be 0
+      expect(AmrDataFeedImportLog.count).to be 0
+    end
+
+    it 'should upsert if appropriate' do
+      write_file_and_expect_readings(example_banes_csv, config)
+      write_file_and_expect_updated_readings(example_upsert_file_2, config)
+      expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
+    end
+
   end
 end

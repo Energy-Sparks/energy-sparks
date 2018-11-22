@@ -1,22 +1,29 @@
 require 'rails_helper'
 
 describe 'MeritUsageCalculations' do
-  let(:today) { Time.zone.today.beginning_of_day }
+  let(:today) { Date.today }
   let(:calendar) { create :calendar_with_terms, template: true }
   subject { create :school, calendar: calendar }
   let(:gas_meter) { create :meter, school_id: subject.id }
 
+  def generate_single_reading(single_reading)
+    readings = Array.new(48, 0.0)
+    readings[0] = single_reading
+    readings
+  end
+
   describe '#weekly_energy_reduction?' do
     context 'when the schools energy usage has decreased week on week' do
       it 'returns true' do
-        22.times { |n| create :meter_reading, meter_id: gas_meter.id, read_at: today.days_ago(n), value: n }
-
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: today - 2.weeks, kwh_data_x48: generate_single_reading(3.0), one_day_kwh: 3.0
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: today - 1.week, kwh_data_x48: generate_single_reading(2.0), one_day_kwh: 2.0
         expect(subject.weekly_energy_reduction?(today: today)).to be(true)
       end
     end
     context 'when the schools energy usage has increased week on week' do
       it 'returns false' do
-        20.times { |n| create :meter_reading, meter_id: gas_meter.id, read_at: today.days_ago(n), value: 25 - n }
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: today - 2.weeks, kwh_data_x48: generate_single_reading(2.0), one_day_kwh: 2.0
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: today - 1.week, kwh_data_x48: generate_single_reading(3.0), one_day_kwh: 3.0
 
         expect(subject.weekly_energy_reduction?(today: today)).to be(false)
       end
@@ -27,8 +34,8 @@ describe 'MeritUsageCalculations' do
     context "when the school's gas usage has decreased by ~0.2" do
       it 'returns roughly 0.2' do
         current_term = create :term, calendar_id: subject.calendar_id, start_date: today.weeks_ago(5), end_date: today
-        create :meter_reading, meter_id: gas_meter.id, read_at: current_term.start_date.beginning_of_week(:saturday).midday, value: 12.5
-        create :meter_reading, meter_id: gas_meter.id, read_at: today.last_week(:friday).midday, value: 10
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: current_term.start_date.beginning_of_week(:saturday), kwh_data_x48: generate_single_reading(12.5), one_day_kwh: 12.5
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date:today.last_week(:friday), kwh_data_x48: generate_single_reading(10.0), one_day_kwh: 10.0
 
         expect(subject.gas_reduction).to be_within(0.1).of(0.2)
       end
@@ -36,8 +43,8 @@ describe 'MeritUsageCalculations' do
     context "when the school's gas usage has not decreased by ~0.2" do
       it 'returns roughly 0.2' do
         current_term = create :term, calendar_id: subject.calendar_id, start_date: today.weeks_ago(5), end_date: today
-        create :meter_reading, meter_id: gas_meter.id, read_at: current_term.start_date.beginning_of_week(:saturday).midday, value: 11
-        create :meter_reading, meter_id: gas_meter.id, read_at: today.last_week(:friday).midday, value: 10
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: current_term.start_date.beginning_of_week(:saturday).midday, kwh_data_x48: generate_single_reading(11), one_day_kwh: 11
+        create :amr_validated_reading, meter_id: gas_meter.id, reading_date: today.last_week(:friday).midday, kwh_data_x48: generate_single_reading(10), one_day_kwh: 10
 
         expect(subject.gas_reduction).not_to be_within(0.1).of(0.2)
       end
@@ -50,8 +57,8 @@ describe 'MeritUsageCalculations' do
         current_term = create :term, calendar_id: subject.calendar_id, start_date: today.weeks_ago(5), end_date: today
 
         electricity_meter = create :meter, school_id: subject.id, meter_type: :electricity
-        create :meter_reading, meter_id: electricity_meter.id, read_at: current_term.start_date.beginning_of_week(:saturday).midday, value: 12.5
-        create :meter_reading, meter_id: electricity_meter.id, read_at: today.last_week(:friday).midday, value: 10
+        create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: current_term.start_date.beginning_of_week(:saturday).midday, kwh_data_x48: generate_single_reading(12.5), one_day_kwh: 12.5
+        create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: today.last_week(:friday).midday, kwh_data_x48: generate_single_reading(10), one_day_kwh: 10
 
         expect(subject.electricity_reduction).to be_within(0.1).of(0.2)
       end
@@ -61,8 +68,8 @@ describe 'MeritUsageCalculations' do
         current_term = create :term, calendar_id: subject.calendar_id, start_date: today.weeks_ago(5), end_date: today
 
         electricity_meter = create :meter, school_id: subject.id, meter_type: :electricity
-        create :meter_reading, meter_id: electricity_meter.id, read_at: current_term.start_date.beginning_of_week(:saturday).midday, value: 11
-        create :meter_reading, meter_id: electricity_meter.id, read_at: today.last_week(:friday).midday, value: 10
+        create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: current_term.start_date.beginning_of_week(:saturday).midday, kwh_data_x48: generate_single_reading(11), one_day_kwh: 11
+        create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: today.last_week(:friday).midday, kwh_data_x48: generate_single_reading(10), one_day_kwh: 10
 
         expect(subject.electricity_reduction).not_to be_within(0.1).of(0.2)
       end
