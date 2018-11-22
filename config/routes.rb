@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   resources :schools do
     resources :activities
     scope module: :schools do
+      resource :activation, only: [:create], controller: :activation
+      resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
       resources :alerts
 

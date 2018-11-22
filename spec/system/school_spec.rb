@@ -93,6 +93,16 @@ RSpec.describe "school", type: :system do
         school.reload
         expect(school.school_group).to eq(group)
       end
+
+      it 'allows activation and deactivation' do
+        click_on(school_name)
+        click_on('Deactivate school')
+        school.reload
+        expect(school).to_not be_active
+        click_on('Activate school')
+        school.reload
+        expect(school).to be_active
+      end
     end
   end
 end

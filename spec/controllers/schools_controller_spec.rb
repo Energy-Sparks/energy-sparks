@@ -87,11 +87,11 @@ RSpec.describe SchoolsController, type: :controller do
         sign_in_user(:guest)
       end
       context "when the school is not active" do
-        it "redirects to the enrol page" do
+        it "redirects to the unauthorised page" do
           sign_in_user(:guest)
           school = FactoryBot.create :school, active: false
           get :show, params: {id: school.to_param}
-          expect(response).to redirect_to(enrol_path)
+          expect(response).to redirect_to(root_path)
         end
       end
       context "the school is active" do

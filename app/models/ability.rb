@@ -20,7 +20,10 @@ class Ability
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
-      can [:read, :update, :manage_school_times], School, id: user.school_id
+      can [:update, :manage_school_times, :suggest_activity], School, id: user.school_id
+      can [:read, :usage, :awards], School do |school|
+        school.active? || user.school_id == school.id
+      end
       can :manage, Alert, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
       can :manage, Meter, school_id: user.school_id
@@ -28,27 +31,25 @@ class Ability
       can :show, ActivityType
       can :show, Scoreboard
     elsif user.school_user?
-      can :manage, Activity, school_id: user.school_id
+      can :manage, Activity, school: { id: user.school_id, active: true }
       can :index, School
-      can :show, School
-      can :usage, School
-      can :awards, School
-      can :scoreboard, School
-      can :suggest_activity, School
+      can :show, School, active: true
+      can :usage, School, active: true
+      can :awards, School, active: true
+      can :suggest_activity, School, active: true, id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
       can :show, Scoreboard
     elsif user.guest?
-      can :show, Activity
+      can :show, Activity, school: { active: true }
       can :read, ActivityCategory
       can :show, ActivityType
       can :index, School
-      can :awards, School
-      can :scoreboard, School
-      can :show, School
-      can :usage, School
-      can :index, Simulation
-      can :show, Simulation
+      can :awards, School, active: true
+      can :show, School, active: true
+      can :usage, School, active: true
+      can :index, Simulation, school: { active: true }
+      can :show, Simulation, school: { active: true }
       can :show, Scoreboard
     end
     #

@@ -23,8 +23,8 @@ describe User do
         it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }
       end
 
-      %i[index show usage awards scoreboard suggest_activity].each do |action|
-        it{ is_expected.to be_able_to(action, School.new) }
+      %i[index show usage awards suggest_activity].each do |action|
+        it{ is_expected.to be_able_to(action, school) }
       end
 
       it { is_expected.to be_able_to(:manage, Activity.new(school: school)) }
@@ -34,14 +34,15 @@ describe User do
     end
 
     context "when is a guest" do
+      let(:school) { create(:school) }
       let(:user) { create(:user, role: :guest) }
 
-      %i[index show usage awards scoreboard].each do |action|
-        it { is_expected.to be_able_to(action, School.new) }
+      %i[index show usage awards].each do |action|
+        it { is_expected.to be_able_to(action, school) }
       end
 
-      it { is_expected.not_to be_able_to(:suggest_activity, School.new) }
-      it { is_expected.to be_able_to(:show, Activity.new) }
+      it { is_expected.not_to be_able_to(:suggest_activity, school) }
+      it { is_expected.to be_able_to(:show, school) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
       it { is_expected.to be_able_to(:show, ActivityType.new) }
 
