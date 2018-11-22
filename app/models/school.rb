@@ -43,11 +43,12 @@
 #
 
 class School < ApplicationRecord
-  include Usage
+  include AmrUsage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
   delegate :holiday_approaching?, to: :calendar
+  delegate :area_name,            to: :school_group
 
   include Merit::UsageCalculations
   has_merit
@@ -56,8 +57,12 @@ class School < ApplicationRecord
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
+
+  has_many :meter_readings,         through: :meters
+  has_many :amr_data_feed_readings, through: :meters
+  has_many :amr_validated_readings, through: :meters
+
   has_many :activities, inverse_of: :school, dependent: :destroy
-  has_many :meter_readings, through: :meters
   has_many :school_times, inverse_of: :school, dependent: :destroy
   has_many :contacts,     inverse_of: :school, dependent: :destroy
   has_many :alerts,       inverse_of: :school, dependent: :destroy
@@ -69,7 +74,7 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area
   belongs_to :school_group
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior]
+  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
   enum competition_role: [:not_competing, :competitor, :winner]
 
   scope :enrolled, -> { where(enrolled: true) }
@@ -100,11 +105,6 @@ class School < ApplicationRecord
       [:postcode, :name],
       [:urn, :name]
     ]
-  end
-
-  # TODO: Remove hard coding once areas arrives
-  def area_name
-    'Bath'
   end
 
   # TODO: This is not performant and requires some rework or re-architecturing
@@ -145,7 +145,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types
-    both_supplies? ? :electric_and_gas : :electric_only
+    if both_supplies?
+      :electric_and_gas
+    elsif meters?(:electricity)
+      :electric_only
+    elsif meters?(:gas)
+      :gas_only
+    else
+      :none
+    end
   end
 
   def has_badge?(id)
@@ -177,7 +185,7 @@ class School < ApplicationRecord
 
     start_of_window = previous_friday.end_of_day - 1.week
     end_of_window = previous_friday.end_of_day
-    actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
+    actual_readings = amr_data_feed_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
     actual_readings == expected_readings_for_a_week
   end
 

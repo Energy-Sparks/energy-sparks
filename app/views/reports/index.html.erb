@@ -8,8 +8,7 @@
 
   <div class="row">
     <ul>
-      <li><%= link_to "AMR Report, drill down per meter", reports_amr_data_index_path %></li>
-      <li><%= link_to "AMR original loading report summary (slow)", reports_loading_path %></li>
+      <li><%= link_to "AMR Report", reports_amr_data_index_path %></li>
       <li><%= link_to "Data Feeds summary", data_feeds_path %></li>
       <li><%= link_to "Weather Data Feed Report (calendar)", reports_data_feed_show_path(DataFeeds::WeatherUnderground.first, :temperature) %></li>
       <li><%= link_to "Solar Irradiation Data Feed Report (calendar)", reports_data_feed_show_path(DataFeeds::WeatherUnderground.first, :solar_irradiation) %></li>
