@@ -16,13 +16,14 @@ class Ability
       can :manage, SchoolGroup
       can :manage, User
       can :manage, DataFeed
+      can :manage, Meter
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
-      can :manage, School, id: user.school_id
+      can [:read, :update, :manage_school_times], School, id: user.school_id
       can :manage, Alert, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
-      can :show, School
+      can :manage, Meter, school_id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
       can :show, Scoreboard

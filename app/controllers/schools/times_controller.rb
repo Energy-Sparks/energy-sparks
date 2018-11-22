@@ -18,7 +18,7 @@ module Schools
 
     def set_school
       @school = School.friendly.find(params[:school_id])
-      authorize! :manage, @school
+      authorize! :manage_school_times, @school
     end
 
     def school_params
