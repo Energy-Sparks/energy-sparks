@@ -105,4 +105,12 @@ class Meter < ApplicationRecord
     raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if amr_data_feed_readings.any?
     destroy
   end
+
+  def correct_mpan_check_digit?
+    return true if gas?
+    mpan = mpan_mprn.to_s
+    primes = [3, 5, 7, 13, 17, 19, 23, 29, 31, 37, 41, 43]
+    expected_check = (0..11).inject(0) { |sum, n| sum + (mpan[n, 1].to_i * primes[n]) } % 11 % 10
+    expected_check.to_s == mpan.last
+  end
 end

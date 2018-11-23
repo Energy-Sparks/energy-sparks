@@ -45,6 +45,24 @@ describe 'Meter', :meters do
       end
     end
   end
+
+  describe 'correct_mpan_check_digit?' do
+    it 'returns true if the check digit matches' do
+      meter = Meter.new(meter_type: :electricity, mpan_mprn: 2040015001169)
+      expect(meter.correct_mpan_check_digit?).to eq(true)
+    end
+
+    it 'returns false if the check digit does not match' do
+      meter = Meter.new(meter_type: :electricity, mpan_mprn: 2040015001165)
+      expect(meter.correct_mpan_check_digit?).to eq(false)
+    end
+
+    it 'returns false if the mpan is short' do
+      meter = Meter.new(meter_type: :electricity, mpan_mprn: 2040015165)
+      expect(meter.correct_mpan_check_digit?).to eq(false)
+    end
+  end
+
   describe '#last_reading' do
     it "should find latest reading" do
       reading = create(:amr_data_feed_reading)
