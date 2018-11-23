@@ -41,14 +41,6 @@ etc/bulk_import/*csv
 # Don't commit assets!
 public/assets
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-
 # RubyMine
 .idea
 
-# Keep bucket, but ignore everything in it
-amr_files_bucket/*
-!amr_files_bucket/.keep
