@@ -1,7 +1,7 @@
 # From analytics code - tweaked
 require 'dashboard'
 
-class AmrValidatedMeterCollection < MeterCollection
+class AmrValidatedMeterCollection < AmrMeterCollection
   def add_amr_data(meter)
     amr_data = AMRData.new(meter.meter_type)
 
