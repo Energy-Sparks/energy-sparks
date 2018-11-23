@@ -71,10 +71,10 @@ class Meter < ApplicationRecord
   end
 
   def display_name
-    name.present? ? "#{mpan_mprn} (#{name})" : display_meter_number
+    name.present? ? "#{mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end
 
-  def display_meter_number
+  def display_meter_mpan_mprn
     mpan_mprn.present? ? mpan_mprn : meter_type.to_s
   end
 
