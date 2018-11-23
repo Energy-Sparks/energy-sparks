@@ -56,7 +56,7 @@ describe School do
   describe '#meters?' do
     context 'when the school has meters of type :gas' do
       it 'returns true' do
-        create :meter, school_id: subject.id
+        create :gas_meter, school_id: subject.id
         expect(subject.meters?(:gas)).to be(true)
       end
     end
@@ -90,8 +90,8 @@ describe School do
 
     it 'no readings' do
       pending "further work on deprecating meter readings"
-      meter_one = create(:meter, school: subject)
-      meter_two = create(:meter, school: subject, meter_type: :electricity)
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject)
 
       expect(subject.has_last_full_week_of_readings?).to be false
     end
@@ -99,8 +99,8 @@ describe School do
     it 'some readings' do
       pending "further work on deprecating meter readings"
 
-      meter_one = create(:meter, school: subject)
-      meter_two = create(:meter, school: subject, meter_type: :electricity)
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject, meter_type: :electricity)
 
       days_of_readings = 20
 
@@ -117,8 +117,8 @@ describe School do
     it 'all readings' do
       pending "further work on deprecating meter readings"
 
-      meter_one = create(:meter, school: subject)
-      meter_two = create(:meter, school: subject, meter_type: :electricity)
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject)
 
       days_of_readings = 20
 
@@ -138,9 +138,9 @@ describe School do
 
       pending "further work on deprecating meter readings"
 
-      meter_one = create(:meter, school: subject)
-      meter_two = create(:meter, school: subject, meter_type: :electricity)
-      meter_three = create(:meter, school: subject, meter_type: :electricity, active: false)
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject)
+      meter_three = create(:electricity_meter, school: subject, active: false)
 
       days_of_readings = 20
 
@@ -225,18 +225,18 @@ describe School do
 
   describe '#fuel_types' do
     it 'identifies dual fuel if it has both meters' do
-      gas_meter = create(:meter, school: subject)
-      electricity_meter = create(:meter, school: subject, meter_type: :electricity)
+      gas_meter = create(:gas_meter, school: subject)
+      electricity_meter = create(:electricity_meter, school: subject)
       expect(subject.fuel_types).to eq :electric_and_gas
     end
 
     it 'identifies electricity if it has electricity only' do
-      electricity_meter = create(:meter, school: subject, meter_type: :electricity)
+      electricity_meter = create(:electricity_meter, school: subject)
       expect(subject.fuel_types).to eq :electric_only
     end
 
     it 'identifies gas if it has gas only' do
-      electricity_meter = create(:meter, school: subject)
+      electricity_meter = create(:gas_meter, school: subject)
       expect(subject.fuel_types).to eq :gas_only
     end
   end

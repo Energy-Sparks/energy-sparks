@@ -4,10 +4,10 @@ require 'amr_usage.rb'
 describe 'AmrUsage' do
 
   let!(:school) { FactoryBot.create :school }
-  let!(:supply) { :electricity }
-  let!(:electricity_meter_1) { FactoryBot.create :meter, school_id: school.id, meter_type: supply }
-  let!(:electricity_meter_2) { FactoryBot.create :meter, school_id: school.id, meter_type: supply }
-  let!(:gas_meter_1) { FactoryBot.create :meter, school_id: school.id, meter_type: :gas }
+  let(:supply){ :electricity }
+  let!(:electricity_meter_1) { FactoryBot.create :electricity_meter, school_id: school.id }
+  let!(:electricity_meter_2) { FactoryBot.create :electricity_meter, school_id: school.id }
+  let!(:gas_meter_1) { FactoryBot.create :gas_meter, school_id: school.id }
   let!(:last_week) { Date.today - 7.days..Date.today - 1.days }
   let!(:week_before) { Date.today - 14.days..Date.today - 8.days }
   before(:each) do

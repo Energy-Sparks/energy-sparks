@@ -6,7 +6,7 @@ describe 'Meter', :meters do
     describe 'mpan_mprn' do
       context 'with an electricity meter' do
 
-        let(:attributes) {attributes_for(:meter).merge(meter_type: :electricity)}
+        let(:attributes) {attributes_for(:electricity_meter)}
 
         it 'is valid with a 13 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1098598765437))
@@ -28,7 +28,7 @@ describe 'Meter', :meters do
       end
 
       context 'with a gas meter' do
-        let(:attributes) {attributes_for(:meter).merge(meter_type: :gas)}
+        let(:attributes) {attributes_for(:gas_meter)}
 
         it 'is valid with a 10 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 1098598765))
@@ -89,7 +89,7 @@ describe 'Meter', :meters do
   describe '#safe_destroy' do
 
     it 'does not let you delete if there is an assoicated meter reading' do
-      meter = create(:meter)
+      meter = create(:electricity_meter)
       create(:amr_data_feed_reading, meter: meter)
 
       expect{
@@ -98,7 +98,7 @@ describe 'Meter', :meters do
     end
 
     it 'does not let you delete if there is an assoicated AMR meter reading' do
-      meter = create(:meter)
+      meter = create(:electricity_meter)
       # TODO: find a better way of generating this record?
       meter.amr_data_feed_readings.create!(
         mpan_mprn: meter.mpan_mprn,
@@ -112,7 +112,7 @@ describe 'Meter', :meters do
     end
 
     it 'lets you delete if there are no meter readings' do
-      meter = create(:meter)
+      meter = create(:electricity_meter)
 
       expect{
         meter.safe_destroy

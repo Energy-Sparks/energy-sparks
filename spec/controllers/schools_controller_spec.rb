@@ -102,7 +102,7 @@ RSpec.describe SchoolsController, type: :controller do
         end
         it "assigns the school's meters as @meters" do
           school = FactoryBot.create :school
-          meter = FactoryBot.create :meter, school_id: school.id
+          meter = FactoryBot.create :gas_meter, school_id: school.id
           get :show, params: {id: school.to_param}
           expect(assigns(:meters)).to include(meter)
         end

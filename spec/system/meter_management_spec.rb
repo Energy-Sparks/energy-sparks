@@ -32,7 +32,7 @@ RSpec.describe "meter management", :meters, type: :system do
 
   context 'when the school has a meter' do
 
-    let!(:gas_meter) { create :meter, name: 'Gas meter', school: school }
+    let!(:gas_meter) { create :gas_meter, name: 'Gas meter', school: school }
 
     it 'allows editing' do
       click_on('Manage meters')
