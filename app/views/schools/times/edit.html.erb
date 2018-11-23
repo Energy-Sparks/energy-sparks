@@ -12,7 +12,7 @@
       <label for="lastName">Closing Time</label>
     </div>
   </div>
-  <%= f.fields_for :school_times, f.object.school_times.sort_by(&:day) do |ff| %>
+  <%= f.fields_for :school_times, f.object.school_times.sort_by{|time| SchoolTime.days[time.day]} do |ff| %>
     <%= ff.hidden_field :id, value: ff.object.id %>
     <div class="row">
       <div class="col-md-3 mb-3">
