@@ -11,6 +11,7 @@ module Schools
       @new_meter = @school.meters.new(meter_params)
       authorize! :create, @new_meter
       if @new_meter.save
+        MeterManagement.new(@new_meter).process_creation!
         redirect_to school_meters_path(@school)
       else
         load_meters
@@ -27,6 +28,9 @@ module Schools
       @meter = @school.meters.find(params[:id])
       authorize! :update, @meter
       if @meter.update(meter_params)
+        if @meter.mpan_mprn_previously_changed?
+          MeterManagement.new(@meter).process_mpan_mpnr_change!
+        end
         redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
         render :edit

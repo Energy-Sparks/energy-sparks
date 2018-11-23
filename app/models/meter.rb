@@ -29,7 +29,7 @@ class Meter < ApplicationRecord
   has_many :meter_readings,             inverse_of: :meter, dependent: :destroy
   has_many :aggregated_meter_readings,  inverse_of: :meter, dependent: :destroy
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
+  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
   scope :active,   -> { where(active: true) }

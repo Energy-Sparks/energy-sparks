@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_23_115254) do
+ActiveRecord::Schema.define(version: 2018_11_23_153443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 2018_11_23_115254) do
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
+    t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
   end
 
   create_table "amr_validated_readings", force: :cascade do |t|
