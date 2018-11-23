@@ -10,14 +10,14 @@ class SchoolsController < ApplicationController
   # GET /schools.json
   def index
     @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
-    @ungrouped_enrolled_schools = School.enrolled.without_group.order(:name)
-    @schools_not_enrolled = School.not_enrolled.order(:name)
+    @ungrouped_active_schools = School.active.without_group.order(:name)
+    @schools_not_active = School.inactive.order(:name)
   end
 
   # GET /schools/1
   # GET /schools/1.json
   def show
-    redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
+    redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order("happened_on DESC")
     @meters = @school.meters.order(:meter_no)
     @badges = @school.badges_by_date(limit: 6)
@@ -52,7 +52,8 @@ class SchoolsController < ApplicationController
 
     respond_to do |format|
       if @school.save
-        format.html { redirect_to @school, notice: 'School was successfully created.' }
+        SchoolCreator.new(@school).process_new_school!
+        format.html { redirect_to new_school_school_group_path(@school), notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -111,28 +112,11 @@ private
       :address,
       :postcode,
       :website,
-      :enrolled,
-      :school_group_id,
-      :calendar_area_id,
-      :weather_underground_area_id,
-      :solar_pv_tuos_area_id,
       :urn,
-      :gas_dataset,
-      :electricity_dataset,
-      :competition_role,
       :number_of_pupils,
       :floor_area,
-      key_stage_ids: [],
-      school_times_attributes: school_time_params
+      key_stage_ids: []
     )
-  end
-
-  def school_time_params
-    [:id, :day, :opening_time, :closing_time]
-  end
-
-  def meter_params
-    [:id, :meter_no, :meter_type, :active, :name]
   end
 
   def set_supply
@@ -148,13 +132,13 @@ private
       begin
         @first_date = Date.parse params[:first_date]
       rescue
-        @first_date = get_last_reading_date_with_readings #@school.last_reading_date(@supply)
+        @first_date = @school.last_reading_date(@supply)
       end
     else
       begin
         @first_date = Date.parse params[:first_date]
       rescue
-        @first_date = get_last_reading_date_with_readings #@school.last_reading_date(@supply)
+        @first_date = @school.last_reading_date(@supply)
       end
       #ensure we're looking at beginning of the week
       @first_date = @first_date.beginning_of_week(:sunday) if @first_date.present?
@@ -178,19 +162,5 @@ private
       #ensure we're looking at beginning of the week
       @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
     end
-  end
-
-  # TODO this is all to do with the half hour thing
-  def get_last_reading_date_with_readings
-    first_go = @school.last_reading_date(@supply)
-    if first_go && @school.meter_readings.where(read_at: first_go.all_day).where(conditional_supply(@supply)).count < 48
-      @school.last_reading_date(@supply, first_go - 1.day)
-    else
-      first_go
-    end
-  end
-
-  def conditional_supply(supply)
-    { meters: { meter_type: Meter.meter_types[supply] } } if supply
   end
 end

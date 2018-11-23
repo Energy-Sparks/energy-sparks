@@ -1,10 +1,46 @@
-<% content_for :page_title do %>
-    <%= @school.name %>
+<% content_for :page_title do %><%= @school.name %><% end %>
+
+<% if @school.active? %>
+  <% if can? :deactivate, @school %>
+    <div class="alert alert-warning">
+      <%= @school.name %> is currently <strong>ACTIVE</strong>.
+      <% if can? :deactivate, @school %>
+        <%= link_to "Deactivate school", school_deactivation_path(@school), method: :post, class: 'btn btn-danger ml-3' %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="alert alert-warning">
+    <%= @school.name %> is currently <strong>INACTIVE</strong> and won't be accessible to non-admin users.
+    <% if can? :activate, @school %>
+      <%= link_to "Activate school", school_activation_path(@school), method: :post, class: 'btn btn-success ml-3' %>
+    <% end %>
+  </div>
 <% end %>
 
 <div typeof="School">
   <div class="row padded-row">
     <div class="col-md-12">
+      <%- if can? :update, @school -%>
+        <div class="float-right">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="manage-school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Manage school
+            </button>
+            <div class="dropdown-menu" aria-labelledby="manage-school">
+              <%= link_to 'Edit school details', edit_school_path(@school), class: 'dropdown-item' %>
+              <%= link_to 'Data feed configuration', edit_school_configuration_path(@school), class: 'dropdown-item' if can? :configure, @school %>
+              <%= link_to 'Manage alerts', school_alerts_path(@school), class: 'dropdown-item' if can? :manage, Alert %>
+              <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
+              <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' if can? :manage, Meter %>
+              <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item' if can? :manage_school_times, @school%>
+              <%= link_to('Calendar', calendar_path(@school.calendar), class: 'dropdown-item') if can? :manage, @school.calendar %>
+              <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item'%>
+            </div>
+          </div>
+        </div>
+      <%- end -%>
+
       <h1 property="name"><%= @school.name %></h1>
       <h6 class="large">
         <address property="address" typeof="PostalAddress">
@@ -27,24 +63,20 @@
       </p>
       <p class="float-right">
         <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
-        <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
-
-        <%- if can? :manage, @school -%>
-          <%= link_to 'Edit school', edit_school_path(@school), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Manage meters', school_meters_path(@school), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary btn-sm'%>
-          <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'btn btn-primary btn-sm'%>
-        <%- end -%>
-
-        <%= link_to('Calendar', calendar_path(@school.calendar), class: 'btn btn-primary btn-sm') if can? :manage, @school.calendar %>
-      </p>
+        <%#= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
     </div>
   </div>
   <div class="row">
-
     <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
-      <%= render 'schools/meter_cards', meter_type: :electricity, school: @school if @school.meters?(:electricity) %>
+      <% if @school.meters?(:electricity) %>
+        <%= render 'schools/meter_cards', meter_type: :electricity, school: @school %>
+      <% else %>
+        <section id="electricity-cards">
+          <h4>This school has no electricity meters configured in Energy Sparks</h4>
+        </section>
+      <% end %>
+
       <% if @school.meters?(:gas) %>
         <%= render 'schools/meter_cards', meter_type: :gas, school: @school %>
       <% else %>
@@ -54,4 +86,16 @@
       <% end %>
     </div>
   </div>
+  <% if user_signed_in? && current_user.admin? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Meter reports</h4>
+        <p>
+          <% @school.meters.each do |meter| %>
+            <%= link_to(meter.display_name, amr_readings_show_path(meter), class: 'btn btn-warning btn-sm') if AmrValidatedReading.where(meter_id: meter.id).any? %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  <% end %>
 </div>

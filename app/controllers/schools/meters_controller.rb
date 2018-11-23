@@ -9,6 +9,7 @@ module Schools
 
     def create
       @new_meter = @school.meters.new(meter_params)
+      authorize! :create, @new_meter
       if @new_meter.save
         redirect_to school_meters_path(@school)
       else
@@ -19,10 +20,12 @@ module Schools
 
     def edit
       @meter = @school.meters.find(params[:id])
+      authorize! :update, @meter
     end
 
     def update
       @meter = @school.meters.find(params[:id])
+      authorize! :update, @meter
       if @meter.update(meter_params)
         redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
@@ -32,18 +35,21 @@ module Schools
 
     def deactivate
       meter = @school.meters.active.find(params[:id])
+      authorize! :update, meter
       meter.update!(active: false)
       redirect_to school_meters_path(@school), notice: 'Meter deactivated'
     end
 
     def activate
       meter = @school.meters.inactive.find(params[:id])
+      authorize! :update, meter
       meter.update!(active: true)
       redirect_to school_meters_path(@school), notice: 'Meter deactivated'
     end
 
     def destroy
       meter = @school.meters.inactive.find(params[:id])
+      authorize! :destroy, meter
       meter.safe_destroy
       redirect_to school_meters_path(@school)
     rescue EnergySparks::SafeDestroyError => e
@@ -59,7 +65,7 @@ module Schools
 
     def set_school
       @school = School.friendly.find(params[:school_id])
-      authorize! :manage, @school
+      authorize! :manage, Meter
     end
 
     def meter_params

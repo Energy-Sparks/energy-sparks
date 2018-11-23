@@ -31,16 +31,6 @@ describe 'Loader::Schools' do
       expect(school.postcode).to eq "BA1 6NY"
       expect(school.website).to eq "http://www.stsaviours-infants.org/website"
     end
-    it 'creates a new calendar' do
-      pending "No longer creates calendar - can be removed"
-      expect {
-        Loader::Schools.load!(sample_file)
-      }.to change(Calendar, :count).by(2)
-    end
-    it 'associates the calendar with the school' do
-      Loader::Schools.load!(sample_file)
-      expect(School.last.calendar_id).to eq Calendar.last.id
-    end
   end
   context 'URN already exists in schools table' do
     it 'does not add a new school record' do

@@ -3,24 +3,24 @@ require 'rails_helper'
 describe 'Meter', :meters do
   describe '#last_reading' do
     it "should find latest reading" do
-      reading = create(:meter_reading)
+      reading = create(:amr_data_feed_reading)
       meter = reading.meter
 
-      expect(meter.latest_reading).to eql(reading)
+      expect(meter.last_read).to eql(reading.reading_date)
 
-      today = create(:meter_reading, meter: meter, read_at: Date.today)
-      create(:meter_reading, meter: meter, read_at: Date.today - 2.days)
+      today = create(:amr_data_feed_reading, meter: meter, reading_date: Date.today)
+      create(:amr_data_feed_reading, meter: meter, reading_date: Date.today - 2.days)
 
-      expect(meter.latest_reading).to eql(today)
+      expect(meter.last_read).to eql(today.reading_date)
     end
   end
 
   describe '#last_read' do
     it "should find last imported" do
-      reading = create(:meter_reading)
+      reading = create(:amr_data_feed_reading)
       meter = reading.meter
 
-      expect(meter.last_read).to eql(reading.read_at)
+      expect(meter.last_read).to eql(reading.reading_date)
     end
   end
 
@@ -28,7 +28,7 @@ describe 'Meter', :meters do
 
     it 'does not let you delete if there is an assoicated meter reading' do
       meter = create(:meter)
-      create(:meter_reading, meter: meter)
+      create(:amr_data_feed_reading, meter: meter)
 
       expect{
         meter.safe_destroy

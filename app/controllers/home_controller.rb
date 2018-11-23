@@ -4,8 +4,7 @@ class HomeController < ApplicationController
   before_action :redirect_if_logged_in
 
   def index
-    @schools_enrolled = School.where(enrolled: true).count
-    @schools_eligible = School.count
+    @active_schools = School.active.count
   end
 
   def for_teachers

@@ -2,13 +2,12 @@
 #
 # Table name: schools
 #
+#  active                      :boolean          default(FALSE)
 #  address                     :text
 #  calendar_area_id            :bigint(8)
 #  calendar_id                 :bigint(8)
-#  competition_role            :integer
 #  created_at                  :datetime         not null
 #  electricity_dataset         :string
-#  enrolled                    :boolean          default(FALSE)
 #  floor_area                  :decimal(, )
 #  gas_dataset                 :string
 #  id                          :bigint(8)        not null, primary key
@@ -43,7 +42,7 @@
 #
 
 class School < ApplicationRecord
-  include Usage
+  include AmrUsage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
@@ -56,8 +55,12 @@ class School < ApplicationRecord
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
+
+  has_many :meter_readings,         through: :meters
+  has_many :amr_data_feed_readings, through: :meters
+  has_many :amr_validated_readings, through: :meters
+
   has_many :activities, inverse_of: :school, dependent: :destroy
-  has_many :meter_readings, through: :meters
   has_many :school_times, inverse_of: :school, dependent: :destroy
   has_many :contacts,     inverse_of: :school, dependent: :destroy
   has_many :alerts,       inverse_of: :school, dependent: :destroy
@@ -69,20 +72,20 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area
   belongs_to :school_group
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior]
-  enum competition_role: [:not_competing, :competitor, :winner]
+  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
-  scope :enrolled, -> { where(enrolled: true) }
-  scope :not_enrolled, -> { where(enrolled: false) }
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
 
-  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes[:opening_time].blank? }
+  validates_associated :school_times, on: :school_time_update
+
+  accepts_nested_attributes_for :school_times
 
   after_create :create_sash_relation
-  after_create :create_calendar
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
@@ -102,9 +105,8 @@ class School < ApplicationRecord
     ]
   end
 
-  # TODO: Remove hard coding once areas arrives
   def area_name
-    'Bath'
+    school_group.name
   end
 
   # TODO: This is not performant and requires some rework or re-architecturing
@@ -145,7 +147,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types
-    both_supplies? ? :electric_and_gas : :electric_only
+    if both_supplies?
+      :electric_and_gas
+    elsif meters?(:electricity)
+      :electric_only
+    elsif meters?(:gas)
+      :gas_only
+    else
+      :none
+    end
   end
 
   def has_badge?(id)
@@ -177,7 +187,7 @@ class School < ApplicationRecord
 
     start_of_window = previous_friday.end_of_day - 1.week
     end_of_window = previous_friday.end_of_day
-    actual_readings = meter_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
+    actual_readings = amr_data_feed_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
     actual_readings == expected_readings_for_a_week
   end
 
@@ -220,13 +230,6 @@ class School < ApplicationRecord
   end
 
 private
-
-  def create_calendar
-    calendar = Calendar.find_by(template: true)
-    self.update_attribute(:calendar_id, calendar.id) if calendar
-    # calendar = Calendar.create_calendar_from_default("#{name} Calendar")
-    # self.update_attribute(:calendar_id, calendar.id)
-  end
 
   # Create Merit::Sash relation
   # Having the sash relation makes life easier elsewhere

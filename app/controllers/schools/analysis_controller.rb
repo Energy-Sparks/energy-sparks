@@ -26,6 +26,10 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def main_dashboard_gas
+    render_generic_chart_template
+  end
+
   def electricity_detail
     render_generic_chart_template
   end

@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 2018_11_22_160153) do
     t.text "header_example"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "handle_off_by_one", default: false
     t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
   end
 
@@ -354,6 +355,12 @@ ActiveRecord::Schema.define(version: 2018_11_22_160153) do
     t.bigint "scoreboard_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "default_calendar_area_id"
+    t.bigint "default_solar_pv_tuos_area_id"
+    t.bigint "default_weather_underground_area_id"
+    t.index ["default_calendar_area_id"], name: "index_school_groups_on_default_calendar_area_id"
+    t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
+    t.index ["default_weather_underground_area_id"], name: "index_school_groups_on_default_weather_underground_area_id"
     t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
   end
 
@@ -373,7 +380,7 @@ ActiveRecord::Schema.define(version: 2018_11_22_160153) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enrolled", default: false
+    t.boolean "active", default: false
     t.integer "urn", null: false
     t.bigint "sash_id"
     t.integer "level", default: 0
@@ -381,7 +388,6 @@ ActiveRecord::Schema.define(version: 2018_11_22_160153) do
     t.string "slug"
     t.string "gas_dataset"
     t.string "electricity_dataset"
-    t.integer "competition_role"
     t.bigint "calendar_area_id"
     t.bigint "temperature_area_id"
     t.bigint "solar_irradiance_area_id"
@@ -496,6 +502,9 @@ ActiveRecord::Schema.define(version: 2018_11_22_160153) do
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
+  add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
+  add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
+  add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"

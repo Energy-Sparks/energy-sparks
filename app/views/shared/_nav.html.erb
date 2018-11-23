@@ -8,7 +8,7 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="nav navbar-nav">
-        <% if current_user && current_user.enrolled_school_admin? %>
+        <% if current_user && current_user.active_school_admin? %>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My school</a>
             <div class="dropdown-menu" aria-labelledby="my_school">
@@ -23,7 +23,7 @@
           </li>
         <% end %>
 
-        <% if current_user && current_user.enrolled_school_admin? && current_user.school.scoreboard %>
+        <% if current_user && current_user.active_school_admin? && current_user.school.scoreboard %>
           <li><%= link_to "Scoreboard", scoreboard_path(current_user.school.scoreboard), class: 'nav-link' %></li>
         <% end %>
         <li class="nav-item">
@@ -52,6 +52,7 @@
                 <%= link_to "Activity Categories", activity_categories_path, class: 'dropdown-item' %>
                 <%= link_to "Activity Types", activity_types_path, class: 'dropdown-item' %>
                 <%= link_to "Calendars", calendars_path, class: 'dropdown-item' %>
+                <%= link_to "New School", new_school_path, class: 'dropdown-item' %>
                 <%= link_to "School Groups", school_groups_path, class: 'dropdown-item' %>
                 <%= link_to "Scoreboards", scoreboards_path, class: 'dropdown-item' %>
                 <%= link_to "Users", users_path, class: 'dropdown-item' %>

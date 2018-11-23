@@ -26,8 +26,10 @@
 
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
+
   has_many :meter_readings,             inverse_of: :meter, dependent: :destroy
   has_many :aggregated_meter_readings,  inverse_of: :meter, dependent: :destroy
+
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
@@ -61,26 +63,12 @@ class Meter < ApplicationRecord
     meter_type.to_sym
   end
 
-  def any_aggregated?
-    aggregated_meter_readings.any?
-  end
-
-  def first_reading
-    meter_readings.order('read_at ASC').limit(1).first
-  end
-
   def first_read
-    reading = first_reading
-    reading.present? ? reading.read_at : nil
-  end
-
-  def latest_reading
-    meter_readings.order('read_at DESC').limit(1).first
+    amr_data_feed_readings.minimum(:reading_date)
   end
 
   def last_read
-    reading = latest_reading
-    reading.present? ? reading.read_at : nil
+    amr_data_feed_readings.maximum(:reading_date)
   end
 
   def display_name
@@ -112,7 +100,7 @@ class Meter < ApplicationRecord
   end
 
   def safe_destroy
-    raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if meter_readings.any? || amr_data_feed_readings.any?
+    raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if amr_data_feed_readings.any?
     destroy
   end
 end

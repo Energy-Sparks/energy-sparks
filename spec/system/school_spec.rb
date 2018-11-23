@@ -87,11 +87,21 @@ RSpec.describe "school", type: :system do
       it 'allows me to set a school group for the school' do
         group = create(:school_group, name: 'BANES')
         click_on(school_name)
-        click_on('Edit')
+        click_on('Manage groups')
         select 'BANES', from: 'Group'
-        click_on 'Update School'
+        click_on 'Update groups'
         school.reload
         expect(school.school_group).to eq(group)
+      end
+
+      it 'allows activation and deactivation' do
+        click_on(school_name)
+        click_on('Deactivate school')
+        school.reload
+        expect(school).to_not be_active
+        click_on('Activate school')
+        school.reload
+        expect(school).to be_active
       end
     end
   end

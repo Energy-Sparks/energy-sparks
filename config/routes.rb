@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   resources :schools do
     resources :activities
     scope module: :schools do
+      resource :activation, only: [:create], controller: :activation
+      resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
       resources :alerts
 
@@ -37,6 +39,10 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
+
+      resource :configuration, controller: :configuration
+      resource :school_group, controller: :school_group
+      resource :times, only: [:edit, :update]
 
       get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
@@ -48,6 +54,7 @@ Rails.application.routes.draw do
       get :chart, to: 'analysis#chart'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
+      get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
       get :electricity_detail, to: 'analysis#electricity_detail'
       get :gas_detail, to: 'analysis#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
@@ -82,9 +89,7 @@ Rails.application.routes.draw do
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
  #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
-    get 'reports/:meter_id/show', to: 'reports#amr_data_show', as: :reports_amr_data_show
-    get 'reports/:meter_id/show_aggregated', to: 'reports#aggregated_amr_data_show', as: :reports_aggregated_amr_data_show
-    get 'reports/:meter_id/show_amr_readings', to: 'reports#amr_readings_show', as: :amr_readings_show
+    get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
   end
 
   match '*unmatched', to: 'application#route_not_found', via: :all

@@ -13,7 +13,7 @@ namespace :alerts do
   def do_the_job(run_all = false)
     puts Time.zone.now
 
-    schools = School.enrolled
+    schools = School.active
     schools.each do |school|
       puts "Running alerts for #{school.name}"
       AlertGeneratorService.new(school, Time.zone.today - 3.days).generate_for_contacts(run_all)

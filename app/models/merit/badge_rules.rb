@@ -25,7 +25,7 @@ module Merit
     def initialize
       #1 Enrol and then sign in for the first time
       grant_on 'sessions#create', badge: 'welcome', model_name: 'User', to: :school do |user|
-        user.present? && user.enrolled_school_admin? && user.sign_in_count > 0
+        user.present? && user.active_school_admin? && user.sign_in_count > 0
       end
 
       #2 Score some points and then view the score board
@@ -39,15 +39,10 @@ module Merit
       end
 
       #4 Competitor
-      competitor_check = lambda { |school, role| school.competition_role == role }
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'competitor', temporary: true do |school|
-        competitor_check.call(school, "competitor")
-      end
+      # No longer used
 
       #5 Winner
-      grant_on ['schools#create', 'schools#update'], to: :itself, badge: 'winner', temporary: true do |school|
-        competitor_check.call(school, "winner")
-      end
+      # No longer used
 
       #6 Beginner
       grant_on 'activities#create', badge: 'beginner', to: :school, temporary: true do |activity|

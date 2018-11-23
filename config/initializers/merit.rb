@@ -51,24 +51,6 @@ end
         }
     },
     {
-        id: 4,
-        name: 'competitor',
-        description: 'Take part in an Energy Sparks competition',
-        custom_fields: {
-            image: 'badges/04-Competitor.png',
-            title: 'Competitor'
-        }
-    },
-    {
-        id: 5,
-        name: 'winner',
-        description: 'Win an Energy Sparks competition',
-        custom_fields: {
-            image: 'badges/05-Winner.png',
-            title: 'Winner!'
-        }
-    },
-    {
         id: 6,
         name: 'beginner',
         description: 'Record your first activity',

@@ -61,7 +61,7 @@ private
   end
 
   def award_player_badge
-    if current_user && current_user.enrolled_school_admin?
+    if current_user && current_user.active_school_admin?
       school = current_user.school
       if @scoreboard.schools.include?(school) && school.points >= 10
         badge = Merit::Badge.find_by_name_and_level('player', nil)

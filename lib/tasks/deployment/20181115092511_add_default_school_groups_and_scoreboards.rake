@@ -12,7 +12,7 @@ namespace :after_party do
       SchoolGroup.find_or_create_by(name: 'Frome', scoreboard: banes_frome_scoreboard)
       SchoolGroup.find_or_create_by(name: 'Sheffield', scoreboard: sheffield_scoreboard)
 
-      School.enrolled.where(school_group_id: nil).update_all(school_group_id: banes_school_group.id)
+      School.active.where(school_group_id: nil).update_all(school_group_id: banes_school_group.id)
 
       AfterParty::TaskRecord.create version: '20181115092511'
     end
