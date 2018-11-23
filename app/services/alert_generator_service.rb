@@ -16,6 +16,7 @@ class AlertGeneratorService
   def perform
     return [] unless @school.alerts?
     @results = AlertType.all.map do |alert_type|
+      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
       alert = alert_type.class_name.constantize.new(aggregate_school)
       alert.analyse(@analysis_date)
       { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency }
@@ -79,6 +80,7 @@ private
       next unless run_all || run_this_alert?(alert)
 
       alert_type_class = alert.alert_type_class
+      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
       alert_object = alert_type_class.new(aggregate_school)
 
       begin
@@ -110,14 +112,5 @@ private
       end
     end
     false
-  end
-
-  def aggregate_school(school)
-    cache_key = "#{school.name.parameterize}-aggregated_meter_collection"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      meter_collection = AmrValidatedMeterCollection.new(school)
-      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-      meter_collection
-    end
   end
 end
