@@ -3,8 +3,8 @@
   <%= render 'shared/errors', subject: meter, subject_name: 'meter' %>
 
   <div class="form-group">
-    <%= form.label :meter_no, 'Meter Point Number' %>
-    <%= form.number_field :meter_no, class: 'form-control' %>
+    <%= form.label :mpan_mprn, 'Meter Point Number' %>
+    <%= form.number_field :mpan_mprn, class: 'form-control' %>
   </div>
   <div class="form-group">
     <%= form.label :name, 'Meter Name' %>
@@ -23,7 +23,6 @@
       </div>
     <% end %>
   </div>
-
   <div class="actions">
     <%= form.submit class: 'btn btn-primary'%>
   </div>

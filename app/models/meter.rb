@@ -5,7 +5,6 @@
 #  active              :boolean          default(TRUE)
 #  created_at          :datetime         not null
 #  id                  :bigint(8)        not null, primary key
-#  meter_no            :bigint(8)
 #  meter_serial_number :text
 #  meter_type          :integer
 #  mpan_mprn           :bigint(8)
@@ -15,8 +14,8 @@
 #
 # Indexes
 #
-#  index_meters_on_meter_no    (meter_no)
 #  index_meters_on_meter_type  (meter_type)
+#  index_meters_on_mpan_mprn   (mpan_mprn) UNIQUE
 #  index_meters_on_school_id   (school_id)
 #
 # Foreign Keys
@@ -37,8 +36,8 @@ class Meter < ApplicationRecord
   scope :inactive, -> { where(active: false) }
 
   enum meter_type: [:electricity, :gas]
-  validates_presence_of :school, :meter_no, :meter_type
-  validates_uniqueness_of :meter_no
+  validates_presence_of :school, :mpan_mprn, :meter_type
+  validates_uniqueness_of :mpan_mprn
 
   # TODO integrate this analytics
   attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
@@ -72,11 +71,11 @@ class Meter < ApplicationRecord
   end
 
   def display_name
-    name.present? ? "#{meter_no} (#{name})" : display_meter_number
+    name.present? ? "#{mpan_mprn} (#{name})" : display_meter_number
   end
 
   def display_meter_number
-    meter_no.present? ? meter_no : meter_type.to_s
+    mpan_mprn.present? ? mpan_mprn : meter_type.to_s
   end
 
   def add_correction_rule(rule)

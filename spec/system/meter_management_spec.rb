@@ -26,7 +26,7 @@ RSpec.describe "meter management", :meters, type: :system do
     click_on 'Create Meter'
 
     expect(school.meters.count).to eq(1)
-    expect(school.meters.first.meter_no).to eq(123543)
+    expect(school.meters.first.mpan_mprn).to eq(123543)
 
   end
 

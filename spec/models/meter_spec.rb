@@ -39,7 +39,7 @@ describe 'Meter', :meters do
       meter = create(:meter)
       # TODO: find a better way of generating this record?
       meter.amr_data_feed_readings.create!(
-        mpan_mprn: meter.meter_no,
+        mpan_mprn: meter.mpan_mprn,
         reading_date: Date.today,
         readings: ["1.0"] * 48
       )

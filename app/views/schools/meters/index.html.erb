@@ -18,7 +18,7 @@
     <% if @active_meters.any? %>
       <% @active_meters.each do |meter| %>
         <tr scope="row">
-          <td><%= meter.meter_no %></td>
+          <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
           <td><%= meter.meter_type.humanize %></td>
           <td>
@@ -44,7 +44,7 @@
     <tbody>
       <% @inactive_meters.each do |meter| %>
         <tr scope="row">
-          <td><%= meter.meter_no %></td>
+          <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
           <td><%= meter.meter_type.humanize %></td>
           <td>

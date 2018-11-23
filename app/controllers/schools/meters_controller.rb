@@ -59,8 +59,8 @@ module Schools
   private
 
     def load_meters
-      @active_meters = @school.meters.active.order(:meter_no)
-      @inactive_meters = @school.meters.inactive.order(:meter_no)
+      @active_meters = @school.meters.active.order(:mpan_mprn)
+      @inactive_meters = @school.meters.inactive.order(:mpan_mprn)
     end
 
     def set_school
@@ -69,7 +69,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:meter_no, :meter_type, :name, :meter_serial_number)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)
     end
   end
 end
