@@ -21,25 +21,6 @@
 <div typeof="School">
   <div class="row padded-row">
     <div class="col-md-12">
-      <%- if can? :update, @school -%>
-        <div class="float-right">
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="manage-school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Manage school
-            </button>
-            <div class="dropdown-menu" aria-labelledby="manage-school">
-              <%= link_to 'Edit school details', edit_school_path(@school), class: 'dropdown-item' %>
-              <%= link_to 'Data feed configuration', edit_school_configuration_path(@school), class: 'dropdown-item' if can? :configure, @school %>
-              <%= link_to 'Manage alerts', school_alerts_path(@school), class: 'dropdown-item' if can? :manage, Alert %>
-              <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
-              <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' if can? :manage, Meter %>
-              <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item' if can? :manage_school_times, @school%>
-              <%= link_to('Calendar', calendar_path(@school.calendar), class: 'dropdown-item') if can? :manage, @school.calendar %>
-              <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item'%>
-            </div>
-          </div>
-        </div>
-      <%- end -%>
 
       <h1 property="name"><%= @school.name %></h1>
       <h6 class="large">
@@ -61,9 +42,26 @@
           see their scores and awards, and explore their energy usage data.
         <%- end -%>
       </p>
-      <p class="float-right">
-        <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' %>
+      <div class="float-right mb-3">
+        <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success' %>
         <%#= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
+        <%- if can? :update, @school -%>
+          <div class="dropdown float-right ml-1">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="manage-school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Manage school
+            </button>
+            <div class="dropdown-menu" aria-labelledby="manage-school">
+              <%= link_to 'Edit school details', edit_school_path(@school), class: 'dropdown-item' %>
+              <%= link_to 'Calendar', calendar_path(@school.calendar), class: 'dropdown-item' if can? :manage, @school.calendar %>
+              <%= link_to 'Data feed configuration', edit_school_configuration_path(@school), class: 'dropdown-item' if can? :configure, @school %>
+              <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
+              <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' if can? :manage, Meter %>
+              <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item' if can? :manage_school_times, @school%>
+              <%= link_to 'Manage alerts', school_alerts_path(@school), class: 'dropdown-item' if can? :manage, Alert %>
+              <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item'%>
+            </div>
+          </div>
+      <%- end -%>
     </div>
   </div>
   <div class="row">
