@@ -39,6 +39,9 @@ class Meter < ApplicationRecord
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
 
+  validates_format_of :mpan_mprn, with: /\A[1-3]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
+
   # TODO integrate this analytics
   attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
   attr_writer :sub_meters, :meter_correction_rules

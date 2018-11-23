@@ -1,6 +1,50 @@
 require 'rails_helper'
 
 describe 'Meter', :meters do
+
+  describe 'valid?' do
+    describe 'mpan_mprn' do
+      context 'with an electricity meter' do
+
+        let(:attributes) {attributes_for(:meter).merge(meter_type: :electricity)}
+
+        it 'is valid with a 13 digit number' do
+          meter = Meter.new(attributes.merge(mpan_mprn: 1098598765437))
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to be_empty
+        end
+
+        it 'is invalid with a number less than 13 digits' do
+          meter = Meter.new(attributes.merge(mpan_mprn: 123))
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to_not be_empty
+        end
+
+        it 'validates the distributor id' do
+          meter = Meter.new(attributes.merge(mpan_mprn: 9998598765437))
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to_not be_empty
+        end
+      end
+
+      context 'with a gas meter' do
+        let(:attributes) {attributes_for(:meter).merge(meter_type: :gas)}
+
+        it 'is valid with a 10 digit number' do
+          meter = Meter.new(attributes.merge(mpan_mprn: 1098598765))
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to be_empty
+        end
+
+        it 'is invalid with a number longer than 10 digits' do
+          meter = Meter.new(attributes.merge(mpan_mprn: 8758348459567832))
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to_not be_empty
+        end
+
+      end
+    end
+  end
   describe '#last_reading' do
     it "should find latest reading" do
       reading = create(:amr_data_feed_reading)
