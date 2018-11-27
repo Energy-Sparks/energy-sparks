@@ -1,6 +1,6 @@
 namespace :amr_importer do
   desc "Validate readings"
-  task :validate_readings_by_school_id, [:school_id] => :environment do |_t, args|
+  task :validate_amr_readings_by_school_id, [:school_id] => :environment do |_t, args|
     puts DateTime.now.utc
     total_amr_readings_before = AmrValidatedReading.count
     puts "Total AMR Readings before: #{total_amr_readings_before}"
