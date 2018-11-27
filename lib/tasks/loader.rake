@@ -21,9 +21,9 @@ namespace :loader do
   end
 
   desc 'Import data for a single meter'
-  task :import_meter, [:meter_no, :date] => [:environment] do |_t, args|
+  task :import_meter, [:mpan_mprn, :date] => [:environment] do |_t, args|
     since_date = Date.parse(args[:date])
-    meter = Meter.find_by_meter_no(args[:meter_no])
+    meter = Meter.find_by_mpan_mprn(args[:mpan_mprn])
     importer = Loader::EnergyImporter.new
     importer.import_new_meter(meter, since_date)
   end

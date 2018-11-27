@@ -39,12 +39,12 @@ namespace :socrata do
         # Summarise previous meter
         meter_summary << "#{current_meter_number}: good: #{meter_good} bad: #{meter_discrepancy}"
 
-        meter = Meter.find_by(meter_no: mpan_mprn)
+        meter = Meter.find_by(mpan_mprn: mpan_mprn)
 
         if meter.nil?
           pp "Skip this, not a school meter #{row[:location]} #{mpan_mprn}"
         else
-          pp "new meter meter_id: #{meter.meter_no} from #{row[:location]} "
+          pp "new meter meter_id: #{meter.mpan_mprn} from #{row[:location]} "
           meter.update(meter_serial_number: row[:msid], mpan_mprn: row[meter_id_type]) if meter.meter_serial_number.nil?
         end
 
@@ -53,7 +53,7 @@ namespace :socrata do
         meter_discrepancy = 0
       end
 
-      if meter.present? #&& meter.meter_no = 13678903 && (date < Date.parse('5/4/2018') && date > Date.parse('1/4/2018'))
+      if meter.present? #&& meter.mpan_mprn = 13678903 && (date < Date.parse('5/4/2018') && date > Date.parse('1/4/2018'))
         total = row[5].to_f.round(1)
         calculated_total = (6..(48 + 5)).sum do |n|
           row[n].to_f
@@ -81,7 +81,7 @@ namespace :socrata do
 
             meter_discrepancy = meter_discrepancy + 1
           elsif current_total != calculated_total
-            pp "Discrepancy: #{meter.meter_no} #{date} Total in db: #{current_total} calculated_total: #{calculated_total}"
+            pp "Discrepancy: #{meter.mpan_mprn} #{date} Total in db: #{current_total} calculated_total: #{calculated_total}"
             meter_discrepancy = meter_discrepancy + 1
           else
             meter_good = meter_good + 1

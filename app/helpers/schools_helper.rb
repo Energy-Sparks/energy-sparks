@@ -72,9 +72,9 @@ module SchoolsHelper
     supply == "electricity" ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
   end
 
-  def meter_display_name(meter_no)
-    return meter_no if meter_no == "all"
-    meter = Meter.find_by_meter_no(meter_no)
+  def meter_display_name(mpan_mprn)
+    return mpan_mprn if mpan_mprn == "all"
+    meter = Meter.find_by_mpan_mprn(mpan_mprn)
     meter.present? ? meter.display_name : meter
   end
 

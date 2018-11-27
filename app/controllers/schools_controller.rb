@@ -19,7 +19,7 @@ class SchoolsController < ApplicationController
   def show
     redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order("happened_on DESC")
-    @meters = @school.meters.order(:meter_no)
+    @meters = @school.meters.order(:mpan_mprn)
     @badges = @school.badges_by_date(limit: 6)
   end
 

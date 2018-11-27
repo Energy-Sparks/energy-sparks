@@ -11,7 +11,7 @@ module Loader
         school = School.find_or_create_by!(urn: row['urn'], name: "School #{row['school']}", school_type: :primary)
         meter_type = row['type'] == 'electric' ? :electricity : :gas
 
-        meter = school.meters.find_or_create_by!(meter_type: meter_type, meter_no: generate_meter_number(meter_type))
+        meter = school.meters.find_or_create_by!(meter_type: meter_type, mpan_mprn: generate_meter_number(meter_type))
 
         date = row['date']
         readings = row[5..-1]

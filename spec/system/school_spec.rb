@@ -31,7 +31,7 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with gas meter' do
-      let!(:gas_meter)  { create(:meter, school: school, meter_type: :gas )}
+      let!(:gas_meter)  { create(:gas_meter, school: school)}
 
       it 'shows me a school page' do
         click_on(school_name)
@@ -41,8 +41,8 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with both meters' do
-      let!(:gas_meter)  { create(:meter, school: school, meter_type: :gas )}
-      let!(:electricity_meter)  { create(:meter, school: school, meter_type: :electricity )}
+      let!(:gas_meter)  { create(:gas_meter, school: school)}
+      let!(:electricity_meter)  { create(:electricity_meter, school: school)}
       it 'shows me a school page with both meters' do
         click_on(school_name)
         expect(page.has_content? school_name).to be true

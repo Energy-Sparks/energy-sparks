@@ -15,7 +15,7 @@ class CsvImporter
     @map_of_fields_to_indexes = @config.map_of_fields_to_indexes
     @inserted_record_count = 0
     @existing_records = AmrDataFeedReading.count
-    @meter_id_hash = Meter.all.map { |m| [m.meter_no.to_s, m.id]}.to_h
+    @meter_id_hash = Meter.all.map { |m| [m.mpan_mprn.to_s, m.id]}.to_h
     @header_first_thing = @config.header_example.split(',').first
     @index_of_midnight_for_off_by_one = @config.header_example.split(',').find_index(@config.reading_fields.first)
   end

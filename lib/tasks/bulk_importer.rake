@@ -12,9 +12,9 @@ namespace :socrata do
 
   def delete_and_insert(school)
     School.find(school.id).meters.each do |meter|
-      pp "Running #{meter.meter_no}"
+      pp "Running #{meter.mpan_mprn}"
       delete_current_meter_readings(meter.id)
-      pp "Inserting #{meter.meter_no}"
+      pp "Inserting #{meter.mpan_mprn}"
       insert_meter_readings(meter)
     end
   end

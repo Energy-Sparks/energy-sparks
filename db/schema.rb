@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_22_120306) do
+ActiveRecord::Schema.define(version: 2018_11_23_153443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 2018_11_22_120306) do
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
+    t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
   end
 
   create_table "amr_validated_readings", force: :cascade do |t|
@@ -331,19 +332,14 @@ ActiveRecord::Schema.define(version: 2018_11_22_120306) do
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "meter_type"
-    t.bigint "meter_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
     t.string "name"
     t.bigint "mpan_mprn"
     t.text "meter_serial_number"
-    t.boolean "solar_pv", default: false
-    t.boolean "storage_heaters", default: false
-    t.integer "number_of_pupils"
-    t.decimal "floor_area"
-    t.index ["meter_no"], name: "index_meters_on_meter_no"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
+    t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
   end
 
