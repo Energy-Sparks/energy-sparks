@@ -80,6 +80,28 @@ class AmrMeterCollection < MeterCollection
     amr_data
   end
 
+  # This isn't implemented yet properly, see school
+  # TODO - should be @school.is_open?(time)
+  def is_open?(time)
+    school_day_in_hours(time)
+  end
+
+  def add_heat_meter(meter)
+    # Set this to be a symbol for the analytics code
+    meter.meter_type = meter.meter_type.to_sym
+
+    @heat_meters.push(meter)
+    @meter_identifier_lookup[meter.id] = meter
+  end
+
+  def add_electricity_meter(meter)
+    # Set this to be a symbol for the analytics code
+    meter.meter_type = meter.meter_type.to_sym
+
+    @electricity_meters.push(meter)
+    @meter_identifier_lookup[meter.id] = meter
+  end
+
   def date_from_string_using_date_format(reading, hash_of_date_formats)
     date_format = hash_of_date_formats[reading.amr_data_feed_config_id]
     Date.strptime(reading.reading_date, date_format)
