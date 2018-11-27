@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :school do
     sequence(:urn)
-    name 'test school'
+    sequence(:name) { |n| "test school #{n}" }
     school_type :primary
     active true
     postcode 'ab1 2cd'
