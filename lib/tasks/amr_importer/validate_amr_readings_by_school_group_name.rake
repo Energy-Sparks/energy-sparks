@@ -13,7 +13,7 @@ namespace :amr_importer do
 
     School.where(school_group: school_group).each do |each_school|
       puts "Validate and persist for #{each_school.name}"
-      Amr::ValidateAndPersistReadingsService.new(each_school).perform if each_school.meters?
+      Amr::ValidateAndPersistReadingsService.new(each_school).perform if each_school.meters.any?
     end
 
     total_amr_readings_after = AmrValidatedReading.count
