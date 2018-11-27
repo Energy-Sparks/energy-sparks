@@ -1,13 +1,17 @@
 FactoryBot.define do
   factory :school do
     sequence(:urn)
-    sequence(:name) { |n| "test school #{n}" }
+    sequence(:name) { |n| "test #{n} school" }
     school_type :primary
     active true
     postcode 'ab1 2cd'
     gas_dataset 'gas-data'
     electricity_dataset 'electricity-data'
     sash
+
+    factory :school_with_same_name do
+      name { "test school"}
+    end
 
     trait :with_badges do
       transient do
