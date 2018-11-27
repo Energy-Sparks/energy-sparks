@@ -135,11 +135,11 @@ class School < ApplicationRecord
   end
 
   def meters_for_supply(supply)
-    self.meters.where(meter_type: supply)
+    meters.active.where(meter_type: supply)
   end
 
   def meters?(supply = nil)
-    self.meters.where(meter_type: supply).any?
+    meters.active.where(meter_type: supply).any?
   end
 
   def both_supplies?
