@@ -61,7 +61,7 @@ RSpec.describe "activity type", type: :system do
 
       expect(page.has_content?('Badddddger'))
       expect(page.has_content?("Score can't be blank"))
-     
+
       expect(page.has_content?("Activity type was successfully created.")).to_not be true
       expect(ActivityType.count).to be 0
     end
