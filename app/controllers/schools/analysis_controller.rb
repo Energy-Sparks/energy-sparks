@@ -51,8 +51,8 @@ class Schools::AnalysisController < ApplicationController
   end
 
   def chart
-    chart_type = params[:chart_type]
-    chart_type = chart_type.to_sym if chart_type.instance_of? String
+    chart_type = params[:chart_type].to_sym
+
     @charts = [chart_type]
     @title = chart_type.to_s.humanize
     actual_chart_render(@charts)
@@ -68,11 +68,13 @@ private
 
   def actual_chart_render(charts)
     @number_of_charts = charts.size
-    @output = sort_these_charts(charts)
 
     respond_to do |format|
       format.html { render :generic_chart_template }
-      format.json { render :chart_data }
+      format.json do
+        @output = sort_these_charts(charts)
+        render :chart_data
+      end
     end
   end
 
