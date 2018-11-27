@@ -249,7 +249,7 @@ RSpec.describe SchoolsController, type: :controller do
         end
 
         it "redirects to the school" do
-          school = FactoryBot.create :school
+          school = create(:school_with_same_name)
           put :update, params: {id: school.to_param, school: valid_attributes}
           expect(response).to redirect_to(school)
         end

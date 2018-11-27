@@ -41,13 +41,13 @@ describe School do
   describe 'FriendlyID#slug_candidates' do
     context 'when two schools have the same name' do
       it 'builds a different slug using :postcode and :name' do
-        school = (create_list :school, 2).last
+        school = (create_list :school_with_same_name, 2).last
         expect(school.slug).to eq([school.postcode, school.name].join('-').parameterize)
       end
     end
     context 'when three schools have the same name and postcode' do
       it 'builds a different slug using :urn and :name' do
-        school = (create_list :school, 3).last
+        school = (create_list :school_with_same_name, 3).last
         expect(school.slug).to eq([school.urn, school.name].join('-').parameterize)
       end
     end

@@ -20,6 +20,8 @@ class Ability
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
+      can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
+
       can [:update, :manage_school_times, :suggest_activity], School, id: user.school_id
       can [:read, :usage, :awards], School do |school|
         school.active? || user.school_id == school.id
