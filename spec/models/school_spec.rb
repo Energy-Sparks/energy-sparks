@@ -110,7 +110,7 @@ describe School do
           create(:amr_data_feed_reading, meter: meter_one, reading_date: date.beginning_of_day + index * 30.minutes )
         end
       end
-      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
+      expect(subject.meters.first.amr_data_feed_readings.size).to be days_of_readings
       expect(subject.has_last_full_week_of_readings?).to be false
     end
 
@@ -224,20 +224,32 @@ describe School do
   end
 
   describe '#fuel_types' do
-    it 'identifies dual fuel if it has both meters' do
-      gas_meter = create(:gas_meter, school: subject)
+    it 'identifies dual fuel if it has both active meters' do
+      gas_meter = create(:gas_meter, school: subject, active: true)
       electricity_meter = create(:electricity_meter, school: subject)
       expect(subject.fuel_types).to eq :electric_and_gas
     end
 
-    it 'identifies electricity if it has electricity only' do
-      electricity_meter = create(:electricity_meter, school: subject)
+    it 'identifies electricity if it has active electricity only' do
+      electricity_meter = create(:electricity_meter, school: subject, active: true)
       expect(subject.fuel_types).to eq :electric_only
     end
 
-    it 'identifies gas if it has gas only' do
-      electricity_meter = create(:gas_meter, school: subject)
+    it 'identifies gas if it has active gas only' do
+      gas_meter = create(:gas_meter, school: subject, active: true)
       expect(subject.fuel_types).to eq :gas_only
+    end
+
+    it 'identifies gas if it has active gas only with inactive electricity' do
+      electricity_meter = create(:electricity_meter, school: subject, active: false)
+      gas_meter = create(:gas_meter, school: subject, active: true)
+      expect(subject.fuel_types).to eq :gas_only
+    end
+
+    it 'identifies electricity if it has active electricity only with inactive gas' do
+      electricity_meter = create(:electricity_meter, school: subject, active: true)
+      gas_meter = create(:gas_meter, school: subject, active: false)
+      expect(subject.fuel_types).to eq :electric_only
     end
   end
 end
