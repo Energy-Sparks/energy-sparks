@@ -16,6 +16,7 @@ gem 'pg' # Use postgresql as the database for Active Record
 gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 gem 'after_party' # load data after deploy
 gem 'upsert', '~> 2.2.1'
+gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', '~> 0.24.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.24.0'
