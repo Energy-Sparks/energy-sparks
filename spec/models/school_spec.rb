@@ -99,13 +99,13 @@ describe School do
       meter_one = create(:gas_meter, school: subject)
       meter_two = create(:electricity_meter, school: subject)
 
-      days_of_readings = 3
+      start_date = Date.parse('15/11/2018')
+      end_date = start_date + 1.days
 
-      start_date = Date.today - (days_of_readings - 1).days
-      (start_date..Date.today).each do |date|
+      (start_date..end_date).each do |date|
         create(:amr_data_feed_reading, meter: meter_one, reading_date: date)
       end
-      expect(subject.meters.first.amr_data_feed_readings.size).to be days_of_readings
+      expect(subject.meters.first.amr_data_feed_readings.size).to be 2
       expect(subject.has_last_full_week_of_readings?).to be false
     end
 
@@ -113,32 +113,29 @@ describe School do
       meter_one = create(:gas_meter, school: subject)
       meter_two = create(:electricity_meter, school: subject)
 
-      days_of_readings = 20
+      start_date = Date.parse('15/11/2018')
+      end_date = start_date + 8.days
 
-      start_date = Date.today - (days_of_readings - 1).days
-      (start_date..Date.today).each do |date|
+      (start_date..end_date).each do |date|
         create(:amr_data_feed_reading, meter: meter_one, reading_date: date)
         create(:amr_data_feed_reading, meter: meter_two, reading_date: date)
       end
-      expect(subject.meters.first.amr_data_feed_readings.size).to be days_of_readings
-      expect(subject.meters.second.amr_data_feed_readings.size).to be days_of_readings
+      expect(subject.meters.first.amr_data_feed_readings.size).to be 9
+      expect(subject.meters.second.amr_data_feed_readings.size).to be 9
       expect(subject.has_last_full_week_of_readings?).to be true
     end
 
     it 'ignore inactive meters' do
       meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject)
-      meter_three = create(:electricity_meter, school: subject, active: false)
+      meter_two = create(:electricity_meter, school: subject, active: false)
 
-      days_of_readings = 20
+      start_date = Date.parse('15/11/2018')
+      end_date = start_date + 8.days
 
-      start_date = Date.today - (days_of_readings - 1).days
-      (start_date..Date.today).each do |date|
+      (start_date..end_date).each do |date|
         create(:amr_data_feed_reading, meter: meter_one, reading_date: date)
-        create(:amr_data_feed_reading, meter: meter_two, reading_date: date)
       end
-      expect(subject.meters.first.amr_data_feed_readings.size).to be days_of_readings
-      expect(subject.meters.second.amr_data_feed_readings.size).to be days_of_readings
+      expect(subject.meters.first.amr_data_feed_readings.size).to be 9
       expect(subject.has_last_full_week_of_readings?).to be true
     end
   end
