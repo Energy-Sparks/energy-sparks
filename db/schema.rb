@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_23_153443) do
+ActiveRecord::Schema.define(version: 2018_11_28_095621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -66,17 +66,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_153443) do
     t.boolean "custom", default: false
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
-  end
-
-  create_table "aggregated_meter_readings", force: :cascade do |t|
-    t.bigint "meter_id"
-    t.decimal "readings", array: true
-    t.date "when", null: false
-    t.text "unit"
-    t.decimal "total", default: "0.0"
-    t.boolean "verified", default: false
-    t.boolean "substitute", default: false
-    t.index ["meter_id"], name: "index_aggregated_meter_readings_on_meter_id"
   end
 
   create_table "alert_types", force: :cascade do |t|
@@ -318,17 +307,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_153443) do
     t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
   end
 
-  create_table "meter_readings", force: :cascade do |t|
-    t.bigint "meter_id"
-    t.datetime "read_at"
-    t.decimal "value"
-    t.string "unit"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["meter_id"], name: "index_meter_readings_on_meter_id"
-    t.index ["read_at"], name: "index_meter_readings_on_read_at"
-  end
-
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "meter_type"
@@ -386,8 +364,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_153443) do
     t.integer "level", default: 0
     t.bigint "calendar_id"
     t.string "slug"
-    t.string "gas_dataset"
-    t.string "electricity_dataset"
     t.bigint "calendar_area_id"
     t.bigint "temperature_area_id"
     t.bigint "solar_irradiance_area_id"
@@ -491,7 +467,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_153443) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "aggregated_meter_readings", "meters"
   add_foreign_key "alerts", "alert_types"
   add_foreign_key "alerts", "schools"
   add_foreign_key "amr_validated_readings", "meters"
@@ -500,7 +475,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_153443) do
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "contacts", "schools"
   add_foreign_key "data_feed_readings", "data_feeds"
-  add_foreign_key "meter_readings", "meters"
   add_foreign_key "meters", "schools"
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
