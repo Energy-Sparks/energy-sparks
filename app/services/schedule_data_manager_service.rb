@@ -35,32 +35,30 @@ class ScheduleDataManagerService
     result.each do |row|
       output_data.add(Date.parse(row["day"]), row["values"].delete('{}').split(',').map(&:to_f))
     end
+    output_data
   end
 
   def temperatures
     cache_key = "#{@temperature_area_id}-temperatures"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      temp_data = Temperatures.new('temperatures')
-      process_feed_data(temp_data, "DataFeeds::WeatherUnderground", @temperature_area_id, :temperature)
-      temp_data
+      data = Temperatures.new('temperatures')
+      process_feed_data(data, "DataFeeds::WeatherUnderground", @temperature_area_id, :temperature)
     end
   end
 
   def solar_irradiation
     cache_key = "#{@solar_irradiance_area_id}-solar-irradiation"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      solar_data = SolarIrradiance.new('solar irradiance')
-      process_feed_data(solar_data, "DataFeeds::WeatherUnderground", @solar_irradiance_area_id, :solar_irradiation)
-      solar_data
+      data = SolarIrradiance.new('solar irradiance')
+      process_feed_data(data, "DataFeeds::WeatherUnderground", @solar_irradiance_area_id, :solar_irradiation)
     end
   end
 
   def solar_pv
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-tuos"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      solar_pv_data = SolarPV.new('solar pv')
-      process_feed_data(solar_pv_data, "DataFeeds::SolarPvTuos", @solar_pv_tuos_area_id, :solar_pv)
-      solar_pv_data
+      data = SolarPV.new('solar pv')
+      process_feed_data(data, "DataFeeds::SolarPvTuos", @solar_pv_tuos_area_id, :solar_pv)
     end
   end
 end
