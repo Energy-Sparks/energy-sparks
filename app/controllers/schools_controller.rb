@@ -124,7 +124,7 @@ private
   end
 
   def period
-    params[:period]
+    params.fetch(:period) { 'hourly' }
   end
 
   def set_first_date
