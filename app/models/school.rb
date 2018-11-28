@@ -56,7 +56,6 @@ class School < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
 
-  has_many :meter_readings,         through: :meters
   has_many :amr_data_feed_readings, through: :meters
   has_many :amr_validated_readings, through: :meters
 

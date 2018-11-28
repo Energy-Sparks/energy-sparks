@@ -95,66 +95,6 @@ describe School do
 
       expect(subject.has_last_full_week_of_readings?).to be false
     end
-
-    it 'some readings' do
-      pending "further work on deprecating meter readings"
-
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject, meter_type: :electricity)
-
-      days_of_readings = 20
-
-      start_date = Date.today - (days_of_readings - 1).days
-      (start_date..Date.today).each do |date|
-        (0..47).each do |index|
-          create(:amr_data_feed_reading, meter: meter_one, reading_date: date.beginning_of_day + index * 30.minutes )
-        end
-      end
-      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
-      expect(subject.has_last_full_week_of_readings?).to be false
-    end
-
-    it 'all readings' do
-      pending "further work on deprecating meter readings"
-
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject)
-
-      days_of_readings = 20
-
-      start_date = Date.today - (days_of_readings - 1).days
-      (start_date..Date.today).each do |date|
-        (0..47).each do |index|
-          create(:meter_reading, meter: meter_one, read_at: date.beginning_of_day + index * 30.minutes)
-          create(:meter_reading, meter: meter_two, read_at: date.beginning_of_day + index * 30.minutes)
-        end
-      end
-      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
-      expect(subject.meters.second.meter_readings.size).to be days_of_readings * 48
-      expect(subject.has_last_full_week_of_readings?).to be true
-    end
-
-    it 'ignore inactive meters' do
-
-      pending "further work on deprecating meter readings"
-
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject)
-      meter_three = create(:electricity_meter, school: subject, active: false)
-
-      days_of_readings = 20
-
-      start_date = Date.today - (days_of_readings - 1).days
-      (start_date..Date.today).each do |date|
-        (0..47).each do |index|
-          create(:meter_reading, meter: meter_one, read_at: date.beginning_of_day + index * 30.minutes)
-          create(:meter_reading, meter: meter_two, read_at: date.beginning_of_day + index * 30.minutes)
-        end
-      end
-      expect(subject.meters.first.meter_readings.size).to be days_of_readings * 48
-      expect(subject.meters.second.meter_readings.size).to be days_of_readings * 48
-      expect(subject.has_last_full_week_of_readings?).to be true
-    end
   end
 
   describe '#current_term' do
