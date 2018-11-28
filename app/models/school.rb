@@ -131,7 +131,7 @@ class School < ApplicationRecord
     meters.where(active: true)
   end
 
-  def meters_for_supply(supply = nil)
+  def meters_for_supply(supply)
     meters.where(meter_type: supply)
   end
 
