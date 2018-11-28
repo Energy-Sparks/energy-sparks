@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class ScheduleDataManagerService
   def initialize(school)
     @calendar_id = school.calendar_id
