@@ -8,7 +8,6 @@ namespace :after_party do
         puts "Removing: #{school.name}"
         school.slugs.destroy_all
         school.school_times.destroy_all
-        school.meter_readings.destroy_all
         school.destroy
       end
     end

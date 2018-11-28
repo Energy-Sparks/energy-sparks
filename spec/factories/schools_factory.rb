@@ -5,8 +5,6 @@ FactoryBot.define do
     school_type :primary
     active true
     postcode 'ab1 2cd'
-    gas_dataset 'gas-data'
-    electricity_dataset 'electricity-data'
     sash
 
     factory :school_with_same_name do
