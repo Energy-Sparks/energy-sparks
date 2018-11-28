@@ -7,9 +7,7 @@
 #  calendar_area_id            :bigint(8)
 #  calendar_id                 :bigint(8)
 #  created_at                  :datetime         not null
-#  electricity_dataset         :string
 #  floor_area                  :decimal(, )
-#  gas_dataset                 :string
 #  id                          :bigint(8)        not null, primary key
 #  level                       :integer          default(0)
 #  met_office_area_id          :bigint(8)
