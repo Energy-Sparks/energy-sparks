@@ -195,7 +195,6 @@ GEM
     chromedriver-helper (1.2.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
-    chronic (0.10.2)
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
     coderay (1.1.2)
@@ -564,8 +563,6 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
-    whenever (0.10.0)
-      chronic (>= 0.6.3)
     write_xlsx (0.85.5)
       rubyzip (>= 1.0.0)
       zip-zip
@@ -655,7 +652,6 @@ DEPENDENCIES
   vcr
   web-console
   webmock
-  whenever
 
 RUBY VERSION
    ruby 2.5.3p105

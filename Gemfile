@@ -67,7 +67,6 @@ gem 'cancancan' # Use cancancan for authorization
 # Utils
 gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'whenever', :require => false # Provides a syntax for writing and deploying cron jobs
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id' # Pretties up URLs
 gem 'merit', '~> 3.0.2'
