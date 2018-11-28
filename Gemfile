@@ -13,7 +13,6 @@ gem 'rack', '2.0.6'
 
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
-gem 'soda-ruby', :require => 'soda' # For the Socrata Open Data API
 gem 'after_party' # load data after deploy
 gem 'upsert', '~> 2.2.1'
 

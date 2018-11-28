@@ -637,7 +637,6 @@ DEPENDENCIES
   sass-rails
   selenium-webdriver
   simplecov
-  soda-ruby
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
