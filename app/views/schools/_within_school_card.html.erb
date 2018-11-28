@@ -12,7 +12,7 @@
         <%= select_tag :meter,
                        content_tag(:option, 'All Meters', :value => "all")+
                            options_from_collection_for_select_with_data(school.active_meters,
-                                                                        :meter_no, :display_name, meter, {"supply-type" => :meter_type}),
+                                                                        :mpan_mprn, :display_name, meter, {"supply-type" => :meter_type}),
                        class: "form-control custom-select meter-filter" %></div>
     </div>
 
@@ -24,7 +24,7 @@
         <%= select_tag :second_meter,
                        content_tag(:option, 'None', :value => "")+
                            options_from_collection_for_select_with_data(school.active_meters,
-                                                                        :meter_no, :display_name, second_meter, {"supply-type" => :meter_type}),
+                                                                        :mpan_mprn, :display_name, second_meter, {"supply-type" => :meter_type}),
                        class: "form-control custom-select second-meter-filter" %></div>
     </div>
     <p class="card-text"><%= date_option %></p>

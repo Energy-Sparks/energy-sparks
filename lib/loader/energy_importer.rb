@@ -33,7 +33,7 @@ module Loader
     def find_readings(school, type, since_date = nil)
       meters(school, type).each do |meter|
         sdate = since_date.present? ? since_date : meter.last_read
-        puts "Reading meter #{meter.meter_no} for data since #{sdate}"
+        puts "Reading meter #{meter.mpan_mprn} for data since #{sdate}"
         dataset = dataset(school, type)
         query = query(meter, type, sdate)
         client.get(dataset, query).each do |result|
@@ -44,7 +44,7 @@ module Loader
 
     def find_readings_for_meter(meter, since_date = nil)
       sdate = since_date.present? ? since_date : meter.last_read
-      puts "Reading meter #{meter.meter_no} for data since #{sdate}"
+      puts "Reading meter #{meter.mpan_mprn} for data since #{sdate}"
       dataset = dataset(meter.school, meter.meter_type)
       query = query(meter, meter.meter_type, sdate)
       client.get(dataset, query).each do |result|
@@ -54,7 +54,7 @@ module Loader
 
     def import_reading(meter, type, reading)
       column = meter_number_column(type)
-      raise "unexpected meter number" unless meter.meter_no == reading[column].to_i
+      raise "unexpected meter number" unless meter.mpan_mprn == reading[column].to_i
       date = DateTime.parse(reading.date).utc
 
       48.times.each do |n|
@@ -91,7 +91,7 @@ module Loader
 
     def query(meter, type, since_date = nil)
       column = meter_number_column(type)
-      where = '(' + "#{column}='#{meter.meter_no}'" + ')'
+      where = '(' + "#{column}='#{meter.mpan_mprn}'" + ')'
       # where << " AND date >='#{since_date.strftime("%Y-%m-%dT%H:%M:%S")}+00:00'" if since_date
       where << " AND date >='#{since_date.iso8601}'" if since_date
       {

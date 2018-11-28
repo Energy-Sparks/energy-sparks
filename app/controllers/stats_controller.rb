@@ -3,7 +3,7 @@ class StatsController < ApplicationController
   include SchoolsHelper
   skip_before_action :authenticate_user!
 
-  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:meter_no
+  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:mpan_mprn
   def compare_daily_usage
     from = first_date
     data = []
@@ -39,7 +39,7 @@ class StatsController < ApplicationController
   end
 
   #compare hourly usage across two dates
-  # GET /schools/:id/compare_hourly_usage?comparison=type&supply=:supply&meter=:meter_no&first_date=:first_date&to_date=:second_date&second_meter=meter_no
+  # GET /schools/:id/compare_hourly_usage?comparison=type&supply=:supply&meter=:mpan_mprn&first_date=:first_date&to_date=:second_date&second_meter=mpan_mprn
   def compare_hourly_usage
     from = first_date
     data = []

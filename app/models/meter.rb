@@ -4,23 +4,18 @@
 #
 #  active              :boolean          default(TRUE)
 #  created_at          :datetime         not null
-#  floor_area          :decimal(, )
 #  id                  :bigint(8)        not null, primary key
-#  meter_no            :bigint(8)
 #  meter_serial_number :text
 #  meter_type          :integer
 #  mpan_mprn           :bigint(8)
 #  name                :string
-#  number_of_pupils    :integer
 #  school_id           :bigint(8)
-#  solar_pv            :boolean          default(FALSE)
-#  storage_heaters     :boolean          default(FALSE)
 #  updated_at          :datetime         not null
 #
 # Indexes
 #
-#  index_meters_on_meter_no    (meter_no)
 #  index_meters_on_meter_type  (meter_type)
+#  index_meters_on_mpan_mprn   (mpan_mprn) UNIQUE
 #  index_meters_on_school_id   (school_id)
 #
 # Foreign Keys
@@ -34,15 +29,18 @@ class Meter < ApplicationRecord
   has_many :meter_readings,             inverse_of: :meter, dependent: :destroy
   has_many :aggregated_meter_readings,  inverse_of: :meter, dependent: :destroy
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
+  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 
   enum meter_type: [:electricity, :gas]
-  validates_presence_of :school, :meter_no, :meter_type
-  validates_uniqueness_of :meter_no
+  validates_presence_of :school, :mpan_mprn, :meter_type
+  validates_uniqueness_of :mpan_mprn
+
+  validates_format_of :mpan_mprn, with: /\A[1-3]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
   # TODO integrate this analytics
   attr_accessor :amr_data, :floor_area, :number_of_pupils, :storage_heater_config, :solar_pv_installation
@@ -76,11 +74,11 @@ class Meter < ApplicationRecord
   end
 
   def display_name
-    name.present? ? "#{meter_no} (#{name})" : display_meter_number
+    name.present? ? "#{mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end
 
-  def display_meter_number
-    meter_no.present? ? meter_no : meter_type.to_s
+  def display_meter_mpan_mprn
+    mpan_mprn.present? ? mpan_mprn : meter_type.to_s
   end
 
   def add_correction_rule(rule)
@@ -106,5 +104,13 @@ class Meter < ApplicationRecord
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if amr_data_feed_readings.any?
     destroy
+  end
+
+  def correct_mpan_check_digit?
+    return true if gas?
+    mpan = mpan_mprn.to_s
+    primes = [3, 5, 7, 13, 17, 19, 23, 29, 31, 37, 41, 43]
+    expected_check = (0..11).inject(0) { |sum, n| sum + (mpan[n, 1].to_i * primes[n]) } % 11 % 10
+    expected_check.to_s == mpan.last
   end
 end

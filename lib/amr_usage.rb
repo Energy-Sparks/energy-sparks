@@ -96,6 +96,6 @@ private
   end
 
   def conditional_meter(meter)
-    { meters: { meter_no: meter } } if meter.present? && meter != "all"
+    { meters: { mpan_mprn: meter } } if meter.present? && meter != "all"
   end
 end

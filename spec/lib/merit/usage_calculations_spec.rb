@@ -4,7 +4,7 @@ describe 'MeritUsageCalculations' do
   let(:today) { Date.today }
   let(:calendar) { create :calendar_with_terms, template: true }
   subject { create :school, calendar: calendar }
-  let(:gas_meter) { create :meter, school_id: subject.id }
+  let(:gas_meter) { create :gas_meter, school_id: subject.id }
 
   def generate_single_reading(single_reading)
     readings = Array.new(48, 0.0)
@@ -56,7 +56,7 @@ describe 'MeritUsageCalculations' do
       it 'returns roughly 0.2' do
         current_term = create :term, calendar_id: subject.calendar_id, start_date: today.weeks_ago(5), end_date: today
 
-        electricity_meter = create :meter, school_id: subject.id, meter_type: :electricity
+        electricity_meter = create :electricity_meter, school_id: subject.id
         create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: current_term.start_date.beginning_of_week(:saturday).midday, kwh_data_x48: generate_single_reading(12.5), one_day_kwh: 12.5
         create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: today.last_week(:friday).midday, kwh_data_x48: generate_single_reading(10), one_day_kwh: 10
 
@@ -67,7 +67,7 @@ describe 'MeritUsageCalculations' do
       it 'returns roughly 0.2' do
         current_term = create :term, calendar_id: subject.calendar_id, start_date: today.weeks_ago(5), end_date: today
 
-        electricity_meter = create :meter, school_id: subject.id, meter_type: :electricity
+        electricity_meter = create :electricity_meter, school_id: subject.id
         create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: current_term.start_date.beginning_of_week(:saturday).midday, kwh_data_x48: generate_single_reading(11), one_day_kwh: 11
         create :amr_validated_reading, meter_id: electricity_meter.id, reading_date: today.last_week(:friday).midday, kwh_data_x48: generate_single_reading(10), one_day_kwh: 10
 

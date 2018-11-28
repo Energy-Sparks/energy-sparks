@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :meter_reading do
-    meter
+    association :meter, factory: :gas_meter
     read_at Date.yesterday
     value { rand }
     unit "kWh"

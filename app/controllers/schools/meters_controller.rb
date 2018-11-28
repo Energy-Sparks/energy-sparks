@@ -11,6 +11,7 @@ module Schools
       @new_meter = @school.meters.new(meter_params)
       authorize! :create, @new_meter
       if @new_meter.save
+        MeterManagement.new(@new_meter).process_creation!
         redirect_to school_meters_path(@school)
       else
         load_meters
@@ -27,6 +28,9 @@ module Schools
       @meter = @school.meters.find(params[:id])
       authorize! :update, @meter
       if @meter.update(meter_params)
+        if @meter.mpan_mprn_previously_changed?
+          MeterManagement.new(@meter).process_mpan_mpnr_change!
+        end
         redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
         render :edit
@@ -59,8 +63,9 @@ module Schools
   private
 
     def load_meters
-      @active_meters = @school.meters.active.order(:meter_no)
-      @inactive_meters = @school.meters.inactive.order(:meter_no)
+      @active_meters = @school.meters.active.order(:mpan_mprn)
+      @inactive_meters = @school.meters.inactive.order(:mpan_mprn)
+      @invalid_mpan = @active_meters.select(&:electricity?).reject(&:correct_mpan_check_digit?)
     end
 
     def set_school
@@ -69,7 +74,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:meter_no, :meter_type, :name)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)
     end
   end
 end

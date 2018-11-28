@@ -1,5 +1,11 @@
 <h1>Manage meters: <%= @school.name %></h1>
 
+<% unless @invalid_mpan.empty? %>
+  <div class="alert alert-warning">
+    There are electricity meters with MPANs that don't appear to have the correct check digit.
+  </div>
+<% end %>
+
 <table class="table table-sm">
   <thead>
     <tr>
@@ -17,8 +23,8 @@
   <tbody>
     <% if @active_meters.any? %>
       <% @active_meters.each do |meter| %>
-        <tr scope="row">
-          <td><%= meter.meter_no %></td>
+        <tr scope="row" class="<%='table-warning' if @invalid_mpan.include?(meter) %>">
+          <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
           <td><%= meter.meter_type.humanize %></td>
           <td>
@@ -44,7 +50,7 @@
     <tbody>
       <% @inactive_meters.each do |meter| %>
         <tr scope="row">
-          <td><%= meter.meter_no %></td>
+          <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
           <td><%= meter.meter_type.humanize %></td>
           <td>
@@ -69,4 +75,3 @@
 <div class="other-actions">
   <%= link_to 'School home', school_path(@school), class: 'btn btn-secondary' %>
 </div>
-
