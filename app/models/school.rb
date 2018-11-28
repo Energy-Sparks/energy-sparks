@@ -134,24 +134,28 @@ class School < ApplicationRecord
     meters.where(active: true)
   end
 
-  def meters_for_supply(supply)
-    meters.active.where(meter_type: supply)
+  def meters_for_supply(supply = nil)
+    meters.where(meter_type: supply)
   end
 
   def meters?(supply = nil)
-    meters.active.where(meter_type: supply).any?
+    meters_for_supply(supply).any?
+  end
+
+  def meters_with_readings(supply = nil)
+    meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
   end
 
   def both_supplies?
-    meters?(:electricity) && meters?(:gas)
+    meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
   end
 
   def fuel_types
     if both_supplies?
       :electric_and_gas
-    elsif meters?(:electricity)
+    elsif meters_with_readings(:electricity).any?
       :electric_only
-    elsif meters?(:gas)
+    elsif meters_with_readings(:gas).any?
       :gas_only
     else
       :none
