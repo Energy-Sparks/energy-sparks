@@ -68,7 +68,10 @@ private
     @number_of_charts = charts.size
 
     respond_to do |format|
-      format.html { render :generic_chart_template }
+      format.html do
+        aggregate_school(@school)
+        render :generic_chart_template
+      end
       format.json do
         @output = sort_these_charts(charts)
         render :chart_data
