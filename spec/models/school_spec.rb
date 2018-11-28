@@ -97,7 +97,7 @@ describe School do
 
     it 'some readings' do
       meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject, meter_type: :electricity)
+      meter_two = create(:electricity_meter, school: subject)
 
       days_of_readings = 3
 
