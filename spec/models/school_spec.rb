@@ -246,8 +246,22 @@ describe School do
       expect(subject.fuel_types).to eq :gas_only
     end
 
-    it 'identifies electricity if it has active electricity only with inactive gas' do
+    it 'identifies gas if it has gas only with readings and one without and no readings for electricity' do
+      electricity_meter = create(:electricity_meter, school: subject)
+      gas_meter = create(:gas_meter_with_reading, school: subject)
+      gas_meter_no_readings = create(:gas_meter, school: subject)
+      expect(subject.fuel_types).to eq :gas_only
+    end
+
+    it 'identifies electricity if it has an electricity with readings and with no readings for gas' do
       electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      gas_meter = create(:gas_meter, school: subject)
+      expect(subject.fuel_types).to eq :electric_only
+    end
+
+    it 'identifies electricity if it has an electricity with readings and one without and with no readings for gas' do
+      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      electricity_meter_no_readings = create(:electricity_meter, school: subject)
       gas_meter = create(:gas_meter, school: subject)
       expect(subject.fuel_types).to eq :electric_only
     end
