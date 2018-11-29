@@ -89,11 +89,54 @@ describe School do
   describe "knows whether the previous week has a full amount of readings" do
 
     it 'no readings' do
-      pending "further work on deprecating meter readings"
       meter_one = create(:gas_meter, school: subject)
       meter_two = create(:electricity_meter, school: subject)
 
       expect(subject.has_last_full_week_of_readings?).to be false
+    end
+
+    it 'some readings' do
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject)
+
+      start_date = Date.parse('15/11/2018')
+      end_date = start_date + 1.days
+
+      (start_date..end_date).each do |date|
+        create(:amr_data_feed_reading, meter: meter_one, reading_date: date)
+      end
+      expect(subject.meters.first.amr_data_feed_readings.size).to be 2
+      expect(subject.has_last_full_week_of_readings?).to be false
+    end
+
+    it 'all readings' do
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject)
+
+      start_date = Date.parse('15/11/2018')
+      end_date = start_date + 8.days
+
+      (start_date..end_date).each do |date|
+        create(:amr_data_feed_reading, meter: meter_one, reading_date: date)
+        create(:amr_data_feed_reading, meter: meter_two, reading_date: date)
+      end
+      expect(subject.meters.first.amr_data_feed_readings.size).to be 9
+      expect(subject.meters.second.amr_data_feed_readings.size).to be 9
+      expect(subject.has_last_full_week_of_readings?).to be true
+    end
+
+    it 'ignore inactive meters' do
+      meter_one = create(:gas_meter, school: subject)
+      meter_two = create(:electricity_meter, school: subject, active: false)
+
+      start_date = Date.parse('15/11/2018')
+      end_date = start_date + 8.days
+
+      (start_date..end_date).each do |date|
+        create(:amr_data_feed_reading, meter: meter_one, reading_date: date)
+      end
+      expect(subject.meters.first.amr_data_feed_readings.size).to be 9
+      expect(subject.has_last_full_week_of_readings?).to be true
     end
   end
 
