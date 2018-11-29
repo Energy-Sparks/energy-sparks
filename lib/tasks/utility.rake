@@ -1,0 +1,8 @@
+namespace :utility do
+  desc 'Stop raises error if automated emails are not turned on'
+  task :check_automated_emails_on do
+    top_level_tasks = Rake.application.top_level_tasks
+    remaining_tasks = top_level_tasks.slice(top_level_tasks.index("utility:check_automated_emails_on") + 1..-1)
+    abort("Aborting tasks #{remaining_tasks}: SEND_AUTOMATED_EMAILS is not set") unless ENV['SEND_AUTOMATED_EMAILS']
+  end
+end
