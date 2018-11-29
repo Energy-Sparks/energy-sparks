@@ -141,13 +141,8 @@ class School < ApplicationRecord
     meters_for_supply(supply).any?
   end
 
-  def meters_with_readings(supply = nil)
-    all_meters_with_readings = meters.includes(:amr_data_feed_readings).where.not(amr_data_feed_readings: { meter_id: nil })
-    if supply
-      all_meters_with_readings.where(meter_type: supply)
-    else
-      all_meters_with_readings
-    end
+  def meters_with_readings(supply = Meter.meter_types.keys)
+    meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
   end
 
   def both_supplies?
