@@ -84,6 +84,8 @@ class School < ApplicationRecord
 
   after_create :create_sash_relation
 
+  auto_strip_attributes :name, :website, :postcode, squish: true
+
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
   end
@@ -180,7 +182,7 @@ class School < ApplicationRecord
   end
 
   def expected_readings_for_a_week
-    7 * 48 * number_of_active_meters
+    7 * number_of_active_meters
   end
 
   def has_last_full_week_of_readings?
@@ -188,7 +190,7 @@ class School < ApplicationRecord
 
     start_of_window = previous_friday.end_of_day - 1.week
     end_of_window = previous_friday.end_of_day
-    actual_readings = amr_data_feed_readings.where('read_at >= ? and read_at <= ?', start_of_window, end_of_window).count
+    actual_readings = amr_data_feed_readings.where('reading_date >= ? and reading_date <= ?', start_of_window, end_of_window).count
     actual_readings == expected_readings_for_a_week
   end
 

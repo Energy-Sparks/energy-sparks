@@ -110,6 +110,8 @@ GEM
       io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
+    auto_strip_attributes (2.5.0)
+      activerecord (>= 4.0)
     autoprefixer-rails (9.1.4)
       execjs
     awesome_print (1.8.0)
@@ -579,6 +581,7 @@ DEPENDENCIES
   acts-as-taggable-on
   after_party
   annotate
+  auto_strip_attributes (~> 2.5)
   aws-sdk-s3
   axlsx!
   axlsx_rails

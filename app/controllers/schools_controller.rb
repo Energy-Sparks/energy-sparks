@@ -89,9 +89,13 @@ class SchoolsController < ApplicationController
   # GET /schools/:id/usage
   def usage
     set_supply
-    set_first_date
-    set_to_date
-    render "#{period}_usage"
+    if @supply
+      set_first_date
+      set_to_date
+      render "#{period}_usage"
+    else
+      redirect_to school_path(@school), notice: 'No suitable supply could be found'
+    end
   end
 
 private
@@ -120,11 +124,18 @@ private
   end
 
   def set_supply
-    @supply = params[:supply].present? ? params[:supply] : "electricity"
+    @supply = params[:supply].present? ? params[:supply] : supply_from_school
+  end
+
+  def supply_from_school
+    case @school.fuel_types
+    when :electric_and_gas, :electric_only then 'electricity'
+    when :gas_only then 'gas'
+    end
   end
 
   def period
-    params[:period]
+    params[:period].present? ? params[:period] : "hourly"
   end
 
   def set_first_date
