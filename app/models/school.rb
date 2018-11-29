@@ -84,6 +84,8 @@ class School < ApplicationRecord
 
   after_create :create_sash_relation
 
+  auto_strip_attributes :name, :website, :postcode, squish: true
+
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
   end

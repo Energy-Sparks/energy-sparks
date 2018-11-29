@@ -15,6 +15,7 @@ gem 'rack', '2.0.6'
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'after_party' # load data after deploy
 gem 'upsert', '~> 2.2.1'
+gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', '~> 0.24.0', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', branch: 'integration-version-0.24.0'
