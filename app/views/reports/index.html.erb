@@ -5,18 +5,21 @@
       <h1>Admin Reports</h1>
     </div>
   </div>
-
-  <div class="row">
-    <ul>
-      <li><%= link_to "AMR Report", reports_amr_data_index_path %></li>
-      <li><%= link_to "Data Feeds summary", data_feeds_path %></li>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Report</th><th>Latest reading date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><%= link_to "AMR Report", reports_amr_data_index_path %></td><td></td></tr>
       <% DataFeeds::WeatherUnderground.all.each do |data_feed| %>
-        <li><%= link_to "#{data_feed.title} - temperature", reports_data_feed_show_path(data_feed, :temperature) %></li>
-        <li><%= link_to "#{data_feed.title} - solar irradiation", reports_data_feed_show_path(data_feed, :solar_irradiation) %></li>
+         <tr><td><%= link_to "#{data_feed.title} - temperature", reports_data_feed_show_path(data_feed, :temperature) %></td><td><%= nice_date_times data_feed.last_reading_time %></td></tr>
+         <tr><td><%= link_to "#{data_feed.title} - solar irradiation", reports_data_feed_show_path(data_feed, :solar_irradiation) %></td><td><%= nice_date_times data_feed.last_reading_time %></td></tr>
       <% end %>
       <% DataFeeds::SolarPvTuos.all.each do |data_feed| %>
-        <li><%= link_to  data_feed.title, reports_data_feed_show_path(data_feed, :solar_pv) %></li>
+         <tr><td><%= link_to  "#{data_feed.title}", reports_data_feed_show_path(data_feed, :solar_pv) %></td><td><%= nice_date_times data_feed.last_reading_time %></td></tr>
       <% end %>
-    </ul>
-  </div>
+    </tbody>
+  </table>
 </div>
