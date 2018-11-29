@@ -14,7 +14,7 @@ describe ImportNotifier do
 
     email = ActionMailer::Base.deliveries.last
 
-    expect(email.subject).to eq('[energy-sparks] Energy Sparks import: 2 imports processed')
+    expect(email.subject).to include('Energy Sparks import: 2 imports processed')
     expect(email.html_part.body.to_s).to include('Sheffield: imported 200 new readings')
     expect(email.html_part.body.to_s).to include('Bath: imported 1 new reading')
   end
@@ -26,19 +26,19 @@ describe ImportNotifier do
     ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
 
     email = ActionMailer::Base.deliveries.last
-    expect(email.subject).to eq('[energy-sparks] Energy Sparks import: 1 import processed')
+    expect(email.subject).to include('Energy Sparks import: 1 import processed')
     expect(email.html_part.body.to_s).to_not include('Bath')
   end
 
   it 'handles no logs' do
     ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
     email = ActionMailer::Base.deliveries.last
-    expect(email.subject).to eq('[energy-sparks] Energy Sparks import: 0 imports processed')
+    expect(email.subject).to include('Energy Sparks import: 0 imports processed')
   end
 
   it 'can override the emails subject' do
     ImportNotifier.new(description: 'early morning import').notify(from: 2.days.ago, to: Time.now)
     email = ActionMailer::Base.deliveries.last
-    expect(email.subject).to eq('[energy-sparks] Energy Sparks early morning import: 0 imports processed')
+    expect(email.subject).to include('Energy Sparks early morning import: 0 imports processed')
   end
 end
