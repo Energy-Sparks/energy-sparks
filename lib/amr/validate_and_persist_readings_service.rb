@@ -6,7 +6,8 @@ module Amr
     end
 
     def perform
-      p "Report for #{@school.name} #{@school.id}"
+      return unless @school.meters_with_readings.any?
+      p "Validate and persist readings for #{@school.name} #{@school.id}"
       AggregateDataService.new(@meter_collection).validate_meter_data
 
       pp "ELECTRICITY METERS"
