@@ -10,13 +10,21 @@ module Amr
       p "Validate and persist readings for #{@school.name} #{@school.id}"
       AggregateDataService.new(@meter_collection).validate_meter_data
 
-      pp "ELECTRICITY METERS"
-      @meter_collection.electricity_meters.each do |meter|
-        process_meter(meter)
+      electricity_meters = @school.meters_with_readings(:electricity)
+      gas_meters = @school.meters_with_readings(:gas)
+
+      if electricity_meters.any?
+        pp "School has: #{electricity_meters.count} electricity meters"
+        @meter_collection.electricity_meters.each do |meter|
+          process_meter(meter)
+        end
       end
-      pp "HEAT METERS"
-      @meter_collection.heat_meters.each do |meter|
-        process_meter(meter)
+
+      if gas_meters.any?
+        pp "School has: #{gas_meters.count} gas meters"
+        @meter_collection.heat_meters.each do |meter|
+          process_meter(meter)
+        end
       end
 
       p "Report for #{@school.name}"
@@ -27,6 +35,7 @@ module Amr
 
     def process_meter(meter)
       return if AmrDataFeedReading.where(meter_id: meter.id).empty?
+      p "Processing: #{meter}"
       Upsert.batch(AmrValidatedReading.connection, AmrValidatedReading.table_name) do |upsert|
         amr_data = meter.amr_data
         amr_data.values.each do |one_day_read|
