@@ -82,10 +82,6 @@ private
   def sort_these_charts(array_of_chart_types_as_symbols)
     this_aggregate_school = aggregate_school(@school)
 
-    @cache_debug_info = this_aggregate_school.electricity_meters.map do |meter|
-      "Mpan: #{meter.mpan_mprn} Last Reading from : #{meter.last_read}\n"
-    end
-
     chart_manager = ChartManager.new(this_aggregate_school, current_user.try(:admin?))
 
     array_of_chart_types_as_symbols.map do |chart_type|
