@@ -21,6 +21,8 @@ class SchoolsController < ApplicationController
     @activities = @school.activities.order("happened_on DESC")
     @meters = @school.meters.order(:mpan_mprn)
     @badges = @school.badges_by_date(limit: 6)
+    @electricity_card = MeterCard.create(school: @school, supply: :electricity)
+    @gas_card = MeterCard.create(school: @school, supply: :gas)
   end
 
   # GET /schools/:id/awards

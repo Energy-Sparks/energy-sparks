@@ -70,8 +70,8 @@ module AmrUsage
 
   # return day of the week with the most usage
   # for the last seven days of readings
-  def day_most_usage(supply)
-    usage = daily_usage(supply: supply, dates: last_n_days_with_readings(supply))
+  def day_most_usage(supply, window = 7)
+    usage = daily_usage(supply: supply, dates: last_n_days_with_readings(supply, window))
     return nil unless usage
 
     # rubocop:disable Performance/UnneededSort

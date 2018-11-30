@@ -69,7 +69,7 @@
     <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
       <% if @school.meters?(:electricity) %>
-        <%= render 'schools/meter_cards', meter_type: :electricity, school: @school %>
+        <%= render 'schools/meter_cards', card: @electricity_card, school: @school %>
       <% else %>
         <section id="electricity-cards">
           <h4>This school has no electricity meters configured in Energy Sparks</h4>
@@ -77,7 +77,7 @@
       <% end %>
 
       <% if @school.meters?(:gas) %>
-        <%= render 'schools/meter_cards', meter_type: :gas, school: @school %>
+        <%= render 'schools/meter_cards', card: @gas_card, school: @school %>
       <% else %>
         <section id="gas-cards">
           <h4>This school has no gas meters configured in Energy Sparks</h4>

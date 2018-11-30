@@ -1,8 +1,4 @@
 module SchoolsHelper
-  def meter_and_data?(school, meter_type)
-    school.meters?(meter_type) && school.last_reading_date(meter_type).present?
-  end
-
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
     measurement, ytitle = sort_out_y_title_and_measurement(measurement)
 
@@ -100,26 +96,9 @@ module SchoolsHelper
     ).map(&precision)
   end
 
-  # get n days average daily usage
-  def average_usage(supply, window = 7)
-    last_n_days = @school.last_n_days_with_readings(supply, window)
-    return nil unless last_n_days
-    # return the latest date and average usage
-    # average = daily usage figures, summed, divided by window
-    [last_n_days.last, @school.daily_usage(supply: supply, dates: last_n_days)
-                                 .inject(0) { |a, e| a + e[1] } / window
-    ]
-  end
-
   def last_full_week(supply)
     last_full_week = @school.last_full_week(supply)
     last_full_week.present? ? last_full_week : nil
-  end
-
-  # get day last week with most usage
-  def day_most_usage(supply)
-    day = @school.day_most_usage(supply)
-    day.nil? ? '?' : "#{day[0].strftime('%A')} #{day[0].day.ordinalize} #{day[0].strftime('%B')} "
   end
 
   module BenchmarkMetrics
