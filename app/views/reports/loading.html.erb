@@ -31,8 +31,8 @@
               <td><%= link_to(school.name, school_path(school)) %></td>
               <td><%= meter.display_name %></td>
               <td><%= meter.meter_type.capitalize %></td>
-              <td class=<%= class_for_last_date(meter.last_read) %>><%= nice_date_times(meter.first_read) %></td>
-              <td class=<%= class_for_last_date(meter.last_read) %>><%= nice_date_times(meter.last_read) %></td>
+              <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_date_times(meter.first_validated_reading) %></td>
+              <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_date_times(meter.last_validated_reading) %></td>
             </tr>
           <% end %>
         <% end %>

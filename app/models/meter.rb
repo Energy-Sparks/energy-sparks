@@ -62,12 +62,12 @@ class Meter < ApplicationRecord
     meter_type.to_sym
   end
 
-  def first_read
-    amr_data_feed_readings.minimum(:reading_date)
+  def first_validated_reading
+    amr_validated_readings.minimum(:reading_date)
   end
 
-  def last_read
-    amr_data_feed_readings.maximum(:reading_date)
+  def last_validated_reading
+    amr_validated_readings.maximum(:reading_date)
   end
 
   def display_name

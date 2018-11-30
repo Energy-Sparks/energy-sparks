@@ -13,7 +13,7 @@ class ReportsController < AdminController
   def amr_readings_show
     @colour_hash = COLOUR_ARRAY.each_with_index.map { |colour, index| [OneDayAMRReading::AMR_TYPES.keys[index], colour] }.to_h
     @meter = Meter.includes(:amr_validated_readings).find(params[:meter_id])
-    @first_reading = @meter.first_read
+    @first_reading = @meter.first_validated_reading
     respond_to do |format|
       format.json do
         @reading_summary = @meter.amr_validated_readings.order(:reading_date).pluck(:reading_date, :status).map {|day| { day[0] => day[1] }}
