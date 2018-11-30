@@ -8,10 +8,11 @@ FactoryBot.define do
     factory :gas_meter_with_reading do
       transient do
         reading_count 1
+        config { create(:amr_data_feed_config) }
       end
 
       after(:create) do |meter, evaluator|
-        create_list(:amr_data_feed_reading, evaluator.reading_count, meter: meter)
+        create_list(:amr_data_feed_reading, evaluator.reading_count, meter: meter, amr_data_feed_config: evaluator.config)
       end
     end
   end
@@ -25,10 +26,11 @@ FactoryBot.define do
     factory :electricity_meter_with_reading do
       transient do
         reading_count 1
+        config { create(:amr_data_feed_config) }
       end
 
       after(:create) do |meter, evaluator|
-        create_list(:amr_data_feed_reading, evaluator.reading_count, meter: meter)
+        create_list(:amr_data_feed_reading, evaluator.reading_count, meter: meter, amr_data_feed_config: evaluator.config)
       end
     end
   end

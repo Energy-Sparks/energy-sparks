@@ -39,6 +39,7 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
+      resource :meter_readings_validation, only: [:create]
 
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group

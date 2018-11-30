@@ -32,4 +32,5 @@
 class AmrDataFeedReading < ApplicationRecord
   belongs_to :meter, optional: true
   belongs_to :amr_data_feed_import_log
+  belongs_to :amr_data_feed_config
 end
