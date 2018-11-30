@@ -43,7 +43,7 @@ describe MeterCard do
     meter = create :gas_meter_with_validated_reading, school: school
     meter.amr_validated_readings.first.update(one_day_kwh: BigDecimal.new('NaN'))
     meter_card = MeterCard.create(school: school, supply: :gas, window: 7)
-    expect(meter_card).to_not eq(19)
+    expect(meter_card).to_not have_values
   end
 
 end
