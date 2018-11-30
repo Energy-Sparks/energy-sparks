@@ -1,5 +1,3 @@
-# Warning - this pulls in statsample which seems to do something
-# to array#sum - https://github.com/clbustos/statsample/issues/45
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
@@ -51,8 +49,8 @@ class Schools::AnalysisController < ApplicationController
   end
 
   def chart
-    chart_type = params[:chart_type]
-    chart_type = chart_type.to_sym if chart_type.instance_of? String
+    chart_type = params[:chart_type].to_sym
+
     @charts = [chart_type]
     @title = chart_type.to_s.humanize
     actual_chart_render(@charts)
@@ -68,20 +66,21 @@ private
 
   def actual_chart_render(charts)
     @number_of_charts = charts.size
-    @output = sort_these_charts(charts)
 
     respond_to do |format|
-      format.html { render :generic_chart_template }
-      format.json { render :chart_data }
+      format.html do
+        aggregate_school(@school)
+        render :generic_chart_template
+      end
+      format.json do
+        @output = sort_these_charts(charts)
+        render :chart_data
+      end
     end
   end
 
   def sort_these_charts(array_of_chart_types_as_symbols)
     this_aggregate_school = aggregate_school(@school)
-
-    @cache_debug_info = this_aggregate_school.electricity_meters.map do |meter|
-      "Mpan: #{meter.mpan_mprn} Last Reading from : #{meter.last_read}\n"
-    end
 
     chart_manager = ChartManager.new(this_aggregate_school, current_user.try(:admin?))
 
