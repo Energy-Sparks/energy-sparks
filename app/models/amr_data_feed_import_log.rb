@@ -17,4 +17,5 @@
 
 class AmrDataFeedImportLog < ApplicationRecord
   has_many :amr_data_feed_readings
+  belongs_to :amr_data_feed_config
 end

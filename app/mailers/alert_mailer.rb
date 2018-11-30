@@ -1,6 +1,4 @@
 class AlertMailer < ApplicationMailer
-  default from: 'hello@energysparks.uk'
-
   def alert_email
     @email_address = params[:email_address]
     @alerts = params[:alerts]
