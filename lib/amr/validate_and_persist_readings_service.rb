@@ -15,15 +15,15 @@ module Amr
 
       if electricity_meters.any?
         pp "School has: #{electricity_meters.count} electricity meters"
-        @meter_collection.electricity_meters.each do |meter|
-          process_meter(meter)
+        @meter_collection.electricity_meters.each do |dashboard_meter|
+          process_meter(dashboard_meter)
         end
       end
 
       if gas_meters.any?
         pp "School has: #{gas_meters.count} gas meters"
-        @meter_collection.heat_meters.each do |meter|
-          process_meter(meter)
+        @meter_collection.heat_meters.each do |dashboard_meter|
+          process_meter(dashboard_meter)
         end
       end
 
@@ -33,13 +33,13 @@ module Amr
 
   private
 
-    def process_meter(meter)
-      return if AmrDataFeedReading.where(meter_id: meter.id).empty?
-      p "Processing: #{meter}"
+    def process_meter(dashboard_meter)
+      return if AmrDataFeedReading.where(meter_id: dashboard_meter.external_meter_id).empty?
+      p "Processing: #{dashboard_meter} with mpan_mprn: #{dashboard_meter.mpan_mprn} id: #{dashboard_meter.external_meter_id}"
       Upsert.batch(AmrValidatedReading.connection, AmrValidatedReading.table_name) do |upsert|
-        amr_data = meter.amr_data
+        amr_data = dashboard_meter.amr_data
         amr_data.values.each do |one_day_read|
-          upsert_from_one_day_reading(meter.id, upsert, one_day_read)
+          upsert_from_one_day_reading(dashboard_meter.external_meter_id, upsert, one_day_read)
         end
       end
     end
