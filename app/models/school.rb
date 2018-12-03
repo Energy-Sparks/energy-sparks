@@ -188,9 +188,10 @@ class School < ApplicationRecord
   def has_last_full_week_of_readings?
     previous_friday = Time.zone.today.prev_occurring(:friday)
 
-    start_of_window = previous_friday.end_of_day - 1.week
-    end_of_window = previous_friday.end_of_day
-    actual_readings = amr_data_feed_readings.where('reading_date >= ? and reading_date <= ?', start_of_window, end_of_window).count
+    start_of_window = previous_friday - 1.week
+    end_of_window = previous_friday
+    actual_readings = amr_validated_readings.where('reading_date > ? and reading_date <= ?', start_of_window, end_of_window).count
+
     actual_readings == expected_readings_for_a_week
   end
 
