@@ -1,7 +1,9 @@
 module EnergySparksDataHelpers
   def create_active_school(*args)
     create(:school, *args).tap do |school|
-      SchoolCreator.new(school).process_new_school!
+      school_creator = SchoolCreator.new(school)
+      school_creator.process_new_school!
+      school_creator.process_new_configuration!
     end
   end
 end

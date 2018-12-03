@@ -10,7 +10,7 @@
   <div class='legend-scale amr-readings'>
     <ul class='legend-labels'>
       <% @colour_hash.each do |type, colour| %>
-        <li><span style='background:<%= colour %>;'></span><%= "#{OneDayAMRReading::AMR_TYPES[type][:name]} (#{type})" %></li>
+        <li><span style='background:<%= colour %>;'></span><%= "#{@amr_types[type][:name]} (#{type})" %></li>
       <% end %>
     </ul>
   </div>
