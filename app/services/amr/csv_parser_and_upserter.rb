@@ -1,5 +1,5 @@
 module Amr
-  class CsvImporterAndParser
+  class CsvParserAndUpserter
     attr_reader :inserted_record_count
 
     def initialize(config_to_parse_file, file_name_to_import)

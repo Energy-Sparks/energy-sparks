@@ -12,7 +12,6 @@ module Amr
       array_of_rows = sort_out_off_by_one_array(array_of_rows) if @config.handle_off_by_one
       array_of_rows.delete_at(0) if drop_header?(array_of_rows)
       array_of_rows.delete_if { |row| invalid_row?(row) }
-      array_of_rows
     end
 
   private
@@ -40,7 +39,7 @@ module Amr
     end
 
     def invalid_row?(row)
-      row.empty? || row[@config.mpan_mprn_index].blank? || @config.readings_as_array(row).compact.empty?
+      row.empty? || row[@config.mpan_mprn_index].blank?
     end
   end
 end

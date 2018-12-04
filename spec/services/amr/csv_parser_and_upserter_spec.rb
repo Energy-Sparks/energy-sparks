@@ -3,8 +3,7 @@ require 'fileutils'
 require 'fakefs/spec_helpers'
 
 module Amr
-
-  describe CsvImporterAndParser do
+  describe CsvParserAndUpserter do
     include FakeFS::SpecHelpers
 
     let(:file_name) { 'example.csv' }
@@ -167,7 +166,6 @@ module Amr
       <<~HEREDOC
         siteRef,MPAN,ConsumptionDate,kWh_1,kWh_2,kWh_3,kWh_4,kWh_5,kWh_6,kWh_7,kWh_8,kWh_9,kWh_10,kWh_11,kWh_12,kWh_13,kWh_14,kWh_15,kWh_16,kWh_17,kWh_18,kWh_19,kWh_20,kWh_21,kWh_22,kWh_23,kWh_24,kWh_25,kWh_26,kWh_27,kWh_28,kWh_29,kWh_30,kWh_31,kWh_32,kWh_33,kWh_34,kWh_35,kWh_36,kWh_37,kWh_38,kWh_39,kWh_40,kWh_41,kWh_42,kWh_43,kWh_44,kWh_45,kWh_46,kWh_47,kWh_48,kVArh_1,kVArh_2,kVArh_3,kVArh_4,kVArh_5,kVArh_6,kVArh_7,kVArh_8,kVArh_9,kVArh_10,kVArh_11,kVArh_12,kVArh_13,kVArh_14,kVArh_15,kVArh_16,kVArh_17,kVArh_18,kVArh_19,kVArh_20,kVArh_21,kVArh_22,kVArh_23,kVArh_24,kVArh_25,kVArh_26,kVArh_27,kVArh_28,kVArh_29,kVArh_30,kVArh_31,kVArh_32,kVArh_33,kVArh_34,kVArh_35,kVArh_36,kVArh_37,kVArh_38,kVArh_39,kVArh_40,kVArh_41,kVArh_42,kVArh_43,kVArh_44,kVArh_45,kVArh_46,kVArh_47,kVArh_48
         HIGH STORRS ROAD,2331031705716,01/10/2015,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-        HIGH STORRS ROAD,2331031705716,02/10/2015,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
       HEREDOC
     end
 
@@ -211,7 +209,7 @@ module Amr
     def write_file_and_parse(csv, config)
       file = File.write("#{config.local_bucket_path}/#{file_name}", csv)
 
-      importer = CsvImporterAndParser.new(config, file_name)
+      importer = CsvParserAndUpserter.new(config, file_name)
       importer.perform
       importer.inserted_record_count
     end
@@ -222,7 +220,8 @@ module Amr
       end
 
       it 'should not create records for empty rows (comma, comma)' do
-        expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 0
+        expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 1
+        expect(AmrDataFeedReading.first.readings).to eq Array.new(48, "")
       end
     end
 
