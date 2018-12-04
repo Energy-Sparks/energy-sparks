@@ -55,4 +55,12 @@ class AmrDataFeedConfig < ApplicationRecord
   def header_first_thing
     header_example.split(',').first
   end
+
+  def readings_as_array(amr_data_feed_row)
+    array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+  end
+
+  def mpan_mprn_index
+    map_of_fields_to_indexes[:mpan_mprn_index]
+  end
 end

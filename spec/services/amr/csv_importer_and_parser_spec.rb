@@ -212,7 +212,7 @@ module Amr
       file = File.write("#{config.local_bucket_path}/#{file_name}", csv)
 
       importer = CsvImporterAndParser.new(config, file_name)
-      importer.parse
+      importer.perform
       importer.inserted_record_count
     end
 

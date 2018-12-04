@@ -6,7 +6,7 @@ require 'upsert/merge_function/PG_Connection'
 require 'upsert/column_definition/postgresql'
 
 module Amr
-  class CsvImporter
+  class CsvUpserter
     attr_reader :inserted_record_count
 
     def initialize(config, array_of_rows, amr_data_feed_import_log_id)
@@ -19,37 +19,22 @@ module Amr
     end
 
     def perform
-      @inserted_record_count = parse_array(@array_of_rows)
+      @inserted_record_count = upsert_records(@array_of_rows)
     end
 
   private
 
-    def parse_array(array)
+    def upsert_records(array)
       Upsert.batch(AmrDataFeedReading.connection, AmrDataFeedReading.table_name) do |upsert|
-        array.each_with_index do |row, row_number|
-          create_record(upsert, row, row_number)
-        end
+        array.each { |row| upsert_record(upsert, row) }
       end
       AmrDataFeedReading.count - @existing_records
     end
 
-    def row_is_header?(row, row_number)
-      row_number == 0 && row[0] == @config.header_first_thing
-    end
-
-    def invalid_row?(row, mpan_mprn_index)
-      row.empty? || row[mpan_mprn_index].blank? || readings_as_array(row).compact.empty?
-    end
-
-    def create_record(upsert, row, row_number)
-      mpan_mprn_index = @map_of_fields_to_indexes[:mpan_mprn_index]
-      return if row_is_header?(row, row_number)
-      return if invalid_row?(row, mpan_mprn_index)
-
-      readings = readings_as_array(row)
-
-      mpan_mprn = row[mpan_mprn_index]
-      reading_date_string = row[@map_of_fields_to_indexes[:reading_date_index]]
+    def upsert_record(upsert, row)
+      readings =  @config.readings_as_array(row)
+      mpan_mprn = row[@config.mpan_mprn_index]
+      reading_date_string = fetch_from_row(:reading_date_index, row)
 
       meter_id = @meter_id_hash[mpan_mprn]
 
@@ -76,10 +61,6 @@ module Amr
     def fetch_from_row(index_symbol, row)
       return if @map_of_fields_to_indexes[index_symbol].nil?
       row[@map_of_fields_to_indexes[index_symbol]]
-    end
-
-    def readings_as_array(row)
-      @config.array_of_reading_indexes.map { |reading_index| row[reading_index] }
     end
   end
 end

@@ -36,7 +36,7 @@ module Amr
 
     def import_file(file_name)
       importer = CsvImporterAndParser.new(@config, file_name)
-      importer.parse
+      importer.perform
       Rails.logger.info "Imported #{file_name}"
     end
 
