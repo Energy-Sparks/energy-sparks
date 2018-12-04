@@ -61,17 +61,18 @@ private
     row_number == 0 && row[0] == @header_first_thing
   end
 
-  def invalid_row?(row)
-    row.empty? || row[@map_of_fields_to_indexes[:mpan_mprn_index]].blank? || readings_as_array(row).compact.nil?
+  def invalid_row?(row, mpan_mprn_index)
+    row.empty? || row[mpan_mprn_index].blank? || readings_as_array(row).compact.empty?
   end
 
   def create_record(upsert, row, amr_data_feed_import_log_id, row_number)
+    mpan_mprn_index = @map_of_fields_to_indexes[:mpan_mprn_index]
     return if row_is_header?(row, row_number)
-    return if invalid_row?(row)
+    return if invalid_row?(row, mpan_mprn_index)
 
     readings = readings_as_array(row)
 
-    mpan_mprn = row[@map_of_fields_to_indexes[:mpan_mprn_index]]
+    mpan_mprn = row[mpan_mprn_index]
     reading_date_string = row[@map_of_fields_to_indexes[:reading_date_index]]
 
     meter_id = @meter_id_hash[mpan_mprn]
