@@ -51,4 +51,8 @@ class AmrDataFeedConfig < ApplicationRecord
     header_array = this_header.split(',')
     reading_fields.map { |reading_header| header_array.find_index(reading_header) }
   end
+
+  def header_first_thing
+    header_example.split(',').first
+  end
 end
