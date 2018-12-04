@@ -1,34 +1,30 @@
 module Amr
-  class ValidateAndPersistReadingsService
-    def initialize(school)
+  class UpsertValidatedReadings
+    def initialize(school, validated_meter_collection)
       @school = school
-      @meter_collection = AmrMeterCollection.new(@school)
+      @validated_meter_collection = validated_meter_collection
     end
 
     def perform
-      return unless @school.meters_with_readings.any?
-      p "Validate and persist readings for #{@school.name} #{@school.id}"
-      AggregateDataService.new(@meter_collection).validate_meter_data
-
       electricity_meters = @school.meters_with_readings(:electricity)
       gas_meters = @school.meters_with_readings(:gas)
 
       if electricity_meters.any?
         pp "School has: #{electricity_meters.count} electricity meters"
-        @meter_collection.electricity_meters.each do |dashboard_meter|
+        @validated_meter_collection.electricity_meters.each do |dashboard_meter|
           process_meter(dashboard_meter)
         end
       end
 
       if gas_meters.any?
         pp "School has: #{gas_meters.count} gas meters"
-        @meter_collection.heat_meters.each do |dashboard_meter|
+        @validated_meter_collection.heat_meters.each do |dashboard_meter|
           process_meter(dashboard_meter)
         end
       end
 
       p "Report for #{@school.name}"
-      @meter_collection
+      @validated_meter_collection
     end
 
   private
