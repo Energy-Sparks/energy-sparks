@@ -1,5 +1,7 @@
 module Amr
   class UpsertValidatedReadingsForAMeter
+    NAN_READINGS = Array.new(48, Float::NAN).freeze
+
     def initialize(dashboard_meter)
       @dashboard_meter = dashboard_meter
     end
@@ -17,6 +19,7 @@ module Amr
   private
 
     def upsert_from_one_day_reading(meter_id, upsert, one_day_reading)
+      return if is_nan?(one_day_reading)
       upsert.row({ meter_id: meter_id, reading_date: one_day_reading.date },
         meter_id: meter_id,
         reading_date: one_day_reading.date,
@@ -26,6 +29,10 @@ module Amr
         status: one_day_reading.type,
         upload_datetime: one_day_reading.upload_datetime
       )
+    end
+
+    def is_nan?(one_day_reading)
+      one_day_reading.one_day_kwh == Float::NAN || one_day_reading.kwh_data_x48 == NAN_READINGS
     end
   end
 end
