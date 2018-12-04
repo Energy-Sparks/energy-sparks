@@ -32,21 +32,6 @@ describe Amr::UpsertValidatedReadingsForAMeter do
       expect(AmrValidatedReading.count).to be number_of_readings
       expect(AmrValidatedReading.find_by(reading_date: latest_reading.reading_date).one_day_kwh.to_f).to eq new_total
     end
-
-    it 'does not insert duff data' do
-      latest_reading = AmrValidatedReading.order(reading_date: :desc).first
-
-      new_amr_data = build(:dashboard_one_day_amr_reading, dashboard_meter: gas_dashboard_meter, date: latest_reading.reading_date)
-      new_total = new_amr_data.one_day_kwh
-
-      expect(new_total).to_not eq previous_total
-      gas_dashboard_meter.amr_data[latest_reading.reading_date] = new_amr_data
-
-      Amr::UpsertValidatedReadingsForAMeter.new(gas_dashboard_meter).perform
-
-      expect(AmrValidatedReading.count).to be number_of_readings
-      expect(AmrValidatedReading.find_by(reading_date: latest_reading.reading_date).one_day_kwh.to_f).to eq new_total
-    end
   end
 
   describe 'with a duff set of readings' do
