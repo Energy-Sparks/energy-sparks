@@ -5,7 +5,7 @@ module Amr
     end
 
     def perform
-      p "Processing: #{@dashboard_meter} with mpan_mprn: #{@dashboard_meter.mpan_mprn} id: #{@dashboard_meter.external_meter_id}"
+      Rails.logger.info "Processing: #{@dashboard_meter} with mpan_mprn: #{@dashboard_meter.mpan_mprn} id: #{@dashboard_meter.external_meter_id}"
       Upsert.batch(AmrValidatedReading.connection, AmrValidatedReading.table_name) do |upsert|
         amr_data = @dashboard_meter.amr_data
         amr_data.values.each do |one_day_read|
