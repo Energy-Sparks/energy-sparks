@@ -1,30 +1,29 @@
 module Amr
   class UpsertValidatedReadings
-    def initialize(school, validated_meter_collection)
-      @school = school
+    def initialize(validated_meter_collection)
       @validated_meter_collection = validated_meter_collection
     end
 
     def perform
-      electricity_meters = @school.meters_with_readings(:electricity)
-      gas_meters = @school.meters_with_readings(:gas)
+      electricity_meters = @validated_meter_collection.electricity_meters
+      gas_meters = @validated_meter_collection.heat_meters
 
-      if electricity_meters.any?
-        pp "School has: #{electricity_meters.count} electricity meters"
-        @validated_meter_collection.electricity_meters.each do |dashboard_meter|
-          UpsertValidatedReadingsForAMeter.new(dashboard_meter).perform
-        end
-      end
+      pp "Processing: #{electricity_meters.size} electricity meters"
+      process_dashboard_meters(electricity_meters)
+      pp "Processing: #{gas_meters.size} gas meters"
+      process_dashboard_meters(gas_meters)
 
-      if gas_meters.any?
-        pp "School has: #{gas_meters.count} gas meters"
-        @validated_meter_collection.heat_meters.each do |dashboard_meter|
-          UpsertValidatedReadingsForAMeter.new(dashboard_meter).perform
-        end
-      end
-
-      p "Report for #{@school.name}"
       @validated_meter_collection
+    end
+
+  private
+
+    def process_dashboard_meters(dashboard_meters)
+      return if dashboard_meters.empty?
+      dashboard_meters.each do |dashboard_meter|
+        next if AmrDataFeedReading.where(meter_id: dashboard_meter.external_meter_id).empty?
+        UpsertValidatedReadingsForAMeter.new(dashboard_meter).perform
+      end
     end
   end
 end

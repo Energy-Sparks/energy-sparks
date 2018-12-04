@@ -5,7 +5,6 @@ module Amr
     end
 
     def perform
-      return if AmrDataFeedReading.where(meter_id: @dashboard_meter.external_meter_id).empty?
       p "Processing: #{@dashboard_meter} with mpan_mprn: #{@dashboard_meter.mpan_mprn} id: #{@dashboard_meter.external_meter_id}"
       Upsert.batch(AmrValidatedReading.connection, AmrValidatedReading.table_name) do |upsert|
         amr_data = @dashboard_meter.amr_data
