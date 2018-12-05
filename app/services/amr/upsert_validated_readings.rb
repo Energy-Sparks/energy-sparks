@@ -9,9 +9,9 @@ module Amr
       gas_meters = @validated_meter_collection.heat_meters
 
       pp "Processing: #{electricity_meters.size} electricity meters"
-      process_dashboard_meters(electricity_meters)
+      @validated_meter_collection.electricity_meters = process_dashboard_meters(electricity_meters)
       pp "Processing: #{gas_meters.size} gas meters"
-      process_dashboard_meters(gas_meters)
+      @validated_meter_collection.heat_meters = process_dashboard_meters(gas_meters)
       @validated_meter_collection
     end
 
