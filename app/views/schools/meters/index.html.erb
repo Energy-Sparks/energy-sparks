@@ -21,12 +21,14 @@
       <th>Meter Type</th>
       <th>Imported Readings</th>
       <th>Validated readings</th>
+      <th>First validated reading</th>
+      <th>Latest validated reading</th>
       <th>Actions</th>
     </tr>
   </thead>
   <thead>
     <tr>
-      <th colspan="4">Active meters</th>
+      <th colspan="7">Active meters</th>
     </tr>
   </thead>
   <tbody>
@@ -38,6 +40,8 @@
           <td><%= meter.meter_type.humanize %></td>
           <td><%= meter.amr_data_feed_readings.count %></td>
           <td><%= meter.amr_validated_readings.count %></td>
+          <td><%= meter.first_validated_reading %></td>
+          <td><%= meter.last_validated_reading %></td>
           <td>
             <div class="btn-group">
               <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm btn-warning' %>
@@ -51,14 +55,14 @@
       <% end %>
     <% else %>
       <tr>
-        <td colspan="4">No active meters</td>
+        <td colspan="7">No active meters</td>
       </tr>
     <% end %>
   </tbody>
   <% if @inactive_meters.any? %>
     <thead>
       <tr>
-        <th colspan="4">Inactive meters</th>
+        <th colspan="7">Inactive meters</th>
       </tr>
     </thead>
     <tbody>
@@ -69,6 +73,8 @@
           <td><%= meter.meter_type.humanize %></td>
           <td><%= meter.amr_data_feed_readings.count %></td>
           <td><%= meter.amr_validated_readings.count %></td>
+          <td><%= meter.first_validated_reading %></td>
+          <td><%= meter.last_validated_reading %></td>
           <td>
             <div class="btn-group">
               <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
