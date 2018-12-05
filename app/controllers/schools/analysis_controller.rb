@@ -64,7 +64,7 @@ private
       @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
       render_chart_template_or_data(@charts)
     else
-      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings" unless @school.has_enough_readings_for_any_meters?
+      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
     end
   end
 
