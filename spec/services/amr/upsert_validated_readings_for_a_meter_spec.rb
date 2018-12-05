@@ -32,16 +32,6 @@ describe Amr::UpsertValidatedReadingsForAMeter do
       expect(AmrValidatedReading.count).to be number_of_readings
       expect(AmrValidatedReading.find_by(reading_date: latest_reading.reading_date).one_day_kwh.to_f).to eq new_total
     end
-
-    it 'removes data when appropriate' do
-      expect(AmrValidatedReading.count).to be number_of_readings
-      last_reading_date = gas_dashboard_meter.amr_data.keys.last
-      gas_dashboard_meter.amr_data.delete(last_reading_date)
-
-      upsert_gas_service.perform
-
-      expect(AmrValidatedReading.count).to be number_of_readings - 1
-    end
   end
 
   describe 'with a duff set of readings' do
@@ -60,7 +50,3 @@ describe Amr::UpsertValidatedReadingsForAMeter do
     end
   end
 end
-
-
-
-

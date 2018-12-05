@@ -12,7 +12,6 @@ module Amr
       process_dashboard_meters(electricity_meters)
       pp "Processing: #{gas_meters.size} gas meters"
       process_dashboard_meters(gas_meters)
-
       @validated_meter_collection
     end
 
@@ -20,9 +19,10 @@ module Amr
 
     def process_dashboard_meters(dashboard_meters)
       return if dashboard_meters.empty?
-      dashboard_meters.each do |dashboard_meter|
+      dashboard_meters.map do |dashboard_meter|
         next if AmrDataFeedReading.where(meter_id: dashboard_meter.external_meter_id).empty?
-        UpsertValidatedReadingsForAMeter.new(dashboard_meter).perform
+        upserted_dashboard_meter = UpsertValidatedReadingsForAMeter.new(dashboard_meter).perform
+        CheckingValidatedReadingsForAMeter.new(upserted_dashboard_meter).perform
       end
     end
   end
