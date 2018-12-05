@@ -32,7 +32,7 @@ module Amr
     end
 
     def upsert_record(upsert, row)
-      readings =  @config.readings_as_array(row)
+      readings =  readings_as_array(row)
       mpan_mprn = row[@config.mpan_mprn_index]
       reading_date_string = fetch_from_row(:reading_date_index, row)
 
@@ -61,6 +61,10 @@ module Amr
     def fetch_from_row(index_symbol, row)
       return if @map_of_fields_to_indexes[index_symbol].nil?
       row[@map_of_fields_to_indexes[index_symbol]]
+    end
+
+    def readings_as_array(amr_data_feed_row)
+      @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
     end
   end
 end
