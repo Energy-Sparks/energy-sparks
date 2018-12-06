@@ -73,9 +73,6 @@ Rails.application.routes.draw do
       get 'usage'
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
-
-#     get 'daily_usage', to: 'stats#daily_usage'
-#     get 'hourly_usage', to: 'stats#hourly_usage'
     end
   end
 
@@ -88,7 +85,6 @@ Rails.application.routes.draw do
     get 'reports/loading', to: 'reports#loading'
     get 'reports/amr_data_index', to: 'reports#amr_data_index'
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
- #   get 'reports/data_feed_index', to: 'reports#data_feed_index'
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
   end

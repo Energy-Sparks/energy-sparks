@@ -5,5 +5,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', '<%= analytics_code %>');
+  gtag('config', '<%= analytics_code %>', {
+    'custom_map': {'dimension1': 'user_role', 'dimension2': 'user_school'}
+  });
+  <% if current_user %>
+    gtag('event', 'role_dimension', {'user_role': '<%= current_user.role %>'});
+    <% if current_user.school %>
+      gtag('event', 'school_dimension', {'user_school': '<%= current_user.school.name %>'});
+    <% end %>
+  <% end %>
 </script>

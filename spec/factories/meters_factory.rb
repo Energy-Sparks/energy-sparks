@@ -44,7 +44,7 @@ FactoryBot.define do
       end
     end
 
-    factory :electricity__meter_with_validated_reading do
+    factory :electricity_meter_with_validated_reading do
       transient do
         reading_count 1
       end
