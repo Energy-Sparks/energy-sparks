@@ -145,8 +145,17 @@ class School < ApplicationRecord
     meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
   end
 
+  def meters_with_validated_readings(supply = Meter.meter_types.keys)
+    meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
+  end
+
   def both_supplies?
     meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
+  end
+
+  def has_enough_readings_for_any_meters?(threshold = 366)
+    return false if meters_with_validated_readings.empty?
+    amr_validated_readings.group(:meter).count.max.last > threshold
   end
 
   def fuel_types

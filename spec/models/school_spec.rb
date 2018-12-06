@@ -269,4 +269,48 @@ describe School do
       expect(subject.meters_with_readings.first).to eq electricity_meter
     end
   end
+
+  describe '#meters_with_validated_readings' do
+    it 'works if explicitly giving a supply type of electricity' do
+      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      expect(subject.meters_with_validated_readings(:electricity).first).to eq electricity_meter
+      expect(subject.meters_with_validated_readings(:gas)).to be_empty
+    end
+
+    it 'works if explicitly giving a supply type of gas' do
+      gas_meter = create(:gas_meter_with_validated_reading, school: subject)
+      expect(subject.meters_with_validated_readings(:gas).first).to eq gas_meter
+      expect(subject.meters_with_validated_readings(:electricity)).to be_empty
+    end
+
+    it 'works without a supply type for a gas meter' do
+      gas_meter = create(:gas_meter_with_validated_reading, school: subject)
+      expect(subject.meters_with_validated_readings.first).to eq gas_meter
+    end
+
+    it 'works without a supply type for an electricity' do
+      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      expect(subject.meters_with_validated_readings.first).to eq electricity_meter
+    end
+  end
+
+  describe '#has_enough_readings_for_any_meters?' do
+    it 'does' do
+      meter = create(:electricity_meter_with_validated_reading, reading_count: 3)
+      expect(meter.school.has_enough_readings_for_any_meters?(2)).to be true
+    end
+
+    it 'does not' do
+      meter = create(:electricity_meter_with_validated_reading, reading_count: 1)
+      expect(meter.school.has_enough_readings_for_any_meters?(2)).to be false
+    end
+
+    it 'does not with no readings' do
+      meter = create(:electricity_meter)
+      expect(meter.school.has_enough_readings_for_any_meters?(1)).to be false
+    end
+  end
+
+
+
 end
