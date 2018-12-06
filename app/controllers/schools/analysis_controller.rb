@@ -8,7 +8,7 @@ class Schools::AnalysisController < ApplicationController
   before_action :set_nav
 
   def set_nav
-    @dashboard_set = @school.fuel_types
+    @dashboard_set = @school.fuel_types_for_analysis
     pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
     @nav_array = pages.map do |page|
       { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
@@ -59,12 +59,12 @@ class Schools::AnalysisController < ApplicationController
 private
 
   def render_generic_chart_template
-    if @school.has_enough_readings_for_any_meters?
+    if @school.fuel_types_for_analysis == :none
+      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
+    else
       @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
       @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
       render_chart_template_or_data(@charts)
-    else
-      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
     end
   end
 
