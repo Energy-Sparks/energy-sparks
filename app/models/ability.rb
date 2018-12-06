@@ -3,22 +3,9 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    alias_action :create, :read, :update, :destroy, to: :crud
+    alias_action :index, :create, :read, :update, :destroy, to: :crud
     if user.admin?
-      can :manage, Activity
-      can :manage, ActivityType
-      can :manage, ActivityCategory
-      can :manage, Alert
-      can :manage, Contact
-      can :manage, Calendar
-      can :manage, CalendarEvent
-      can :manage, Scoreboard
-      can :manage, School
-      can :manage, SchoolGroup
-      can :manage, User
-      can :manage, DataFeed
-      can :manage, Meter
-      can :manage, Simulation
+      can :manage, :all
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
