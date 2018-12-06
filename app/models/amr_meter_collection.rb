@@ -83,14 +83,18 @@ private
 
     hash_of_date_formats = AmrDataFeedConfig.pluck(:id, :date_format).to_h
 
-    # First run through
     AmrDataFeedReading.where(meter_id: active_record_meter.id).order(reading_date: :asc).each do |reading|
+      next if reading_invalid?(reading)
       reading_date = date_from_string_using_date_format(reading, hash_of_date_formats)
       amr_data.add(reading_date, OneDayAMRReading.new(active_record_meter.id, reading_date, 'ORIG', nil, reading.created_at, reading.readings.map(&:to_f)))
     end
 
     dashboard_meter.amr_data = amr_data
     dashboard_meter
+  end
+
+  def reading_invalid?(reading)
+    reading.readings.all?(&:blank?)
   end
 
   def set_up_meters(active_record_school)
