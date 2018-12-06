@@ -1,25 +1,17 @@
 class Schools::ContactsController < ApplicationController
-  load_and_authorize_resource :contact
-  load_and_authorize_resource :school, find_by: :slug
-
-  skip_before_action :authenticate_user!
-  before_action :set_school
-  before_action set_contact: [:edit, :update]
+  load_and_authorize_resource :school
+  load_and_authorize_resource :contact, through: :school
 
   def index
-    @contacts = Contact.where(school: @school)
   end
 
   def new
-    @contact = Contact.new
   end
 
   def edit
   end
 
   def create
-    @contact = Contact.new(contact_params)
-    @contact.school = @school
     if @contact.save
       redirect_to school_contacts_path(@school), notice: "#{@contact.display_name} was successfully created."
     else
@@ -42,15 +34,6 @@ class Schools::ContactsController < ApplicationController
   end
 
 private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_school
-    @school = School.find(params[:school_id])
-  end
-
-  def set_contact
-    @contact = Contact.find(params[:id])
-  end
 
   def contact_params
     params.require(:contact).permit(

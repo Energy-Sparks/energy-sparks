@@ -1,12 +1,11 @@
 class ScoreboardsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :set_scoreboard, only: [:show, :edit, :update, :destroy]
   before_action :award_player_badge, only: [:show]
 
   # GET /scoreboards
   def index
-    @scoreboards = Scoreboard.order(:name)
+    @scoreboards = @scoreboards.order(:name)
   end
 
   def show
@@ -15,7 +14,6 @@ class ScoreboardsController < ApplicationController
 
   # GET /scoreboards/new
   def new
-    @scoreboard = Scoreboard.new
   end
 
   # GET /scoreboards/1/edit
@@ -25,7 +23,6 @@ class ScoreboardsController < ApplicationController
 
   # POST /scoreboards
   def create
-    @scoreboard = Scoreboard.new(scoreboard_params)
     if @scoreboard.save
       redirect_to scoreboards_path, notice: 'Scoreboard was successfully created.'
     else
@@ -51,10 +48,6 @@ class ScoreboardsController < ApplicationController
   end
 
 private
-
-  def set_scoreboard
-    @scoreboard = Scoreboard.friendly.find(params[:id])
-  end
 
   def scoreboard_params
     params.require(:scoreboard).permit(:name, :description)

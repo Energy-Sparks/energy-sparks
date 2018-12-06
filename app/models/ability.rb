@@ -3,6 +3,7 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
+    alias_action :create, :read, :update, :destroy, to: :crud
     if user.admin?
       can :manage, Activity
       can :manage, ActivityType
@@ -17,6 +18,7 @@ class Ability
       can :manage, User
       can :manage, DataFeed
       can :manage, Meter
+      can :manage, Simulation
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :manage, Calendar, id: user.school.try(:calendar_id)
@@ -28,7 +30,9 @@ class Ability
       end
       can :manage, Alert, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
-      can :manage, Meter, school_id: user.school_id
+      can :crud, Meter, school_id: user.school_id
+      can :activate, Meter, active: false, school_id: user.school_id
+      can :deactivate, Meter, active: true, school_id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
       can :show, Scoreboard
@@ -43,15 +47,13 @@ class Ability
       can :show, ActivityType
       can :show, Scoreboard
     elsif user.guest?
-      can :show, Activity, school: { active: true }
+      can :read, Activity, school: { active: true }
       can :read, ActivityCategory
       can :show, ActivityType
       can :index, School
       can :awards, School, active: true
       can :show, School, active: true
       can :usage, School, active: true
-      can :index, Simulation, school: { active: true }
-      can :show, Simulation, school: { active: true }
       can :show, Scoreboard
     end
     #
