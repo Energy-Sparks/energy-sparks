@@ -64,4 +64,4 @@
     </div>
   </div>
 </footer>
-<%= render 'shared/google_analytics', analytics_code: @analytics_code if Rails.env.production? %>
+<%= render 'shared/google_analytics', analytics_code: @analytics_code if Rails.env.production? && !@analytics_code.blank? %>
