@@ -45,7 +45,7 @@
           <td>
             <div class="btn-group">
               <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm btn-warning' %>
-              <% if current_user.admin? && meter.amr_validated_readings.any? %>
+              <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
                 <%= link_to 'Report', amr_readings_show_path(meter), class: 'btn btn-info btn-sm' %>
               <% end %>
               <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm btn-secondary' %>
@@ -78,7 +78,7 @@
           <td>
             <div class="btn-group">
               <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
-              <% if current_user.admin? && meter.amr_validated_readings.any? %>
+              <% if can?(:report_on, meter)  && meter.amr_validated_readings.any? %>
                 <%= link_to 'Report', amr_readings_show_path(meter), class: 'btn btn-info btn-sm' %>
               <% end %>
               <%= link_to 'Activate', activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm btn-success' %>

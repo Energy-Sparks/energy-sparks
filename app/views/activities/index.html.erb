@@ -40,14 +40,12 @@
     <% end %>
   <hr>
 
-  <% if current_user && current_user.manages_school?(@school.id) %>
-      <%= link_to 'Choose Next Activity', suggest_activity_school_path(@school), class: 'btn btn-success' %>
-      <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
-  <% end %>
+  <%= link_to 'Choose Next Activity', suggest_activity_school_path(@school), class: 'btn btn-success' if can? :suggest_activity, @school %>
+  <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
 
-    <% if !user_signed_in?  %>
-        <p><%= link_to "Sign in", new_user_session_path%> to record a new energy saving activity that has taken place in your school
-    <% end %>
+  <% if !user_signed_in?  %>
+      <p><%= link_to "Sign in", new_user_session_path%> to record a new energy saving activity that has taken place in your school
+  <% end %>
 
   </div>
 </div>

@@ -3,12 +3,12 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    alias_action :index, :create, :read, :update, :destroy, to: :crud
+    alias_action :create, :read, :update, :destroy, to: :crud
     if user.admin?
       can :manage, :all
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
-      can :manage, Calendar, id: user.school.try(:calendar_id)
+      can :crud, Calendar, id: user.school.try(:calendar_id)
       can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
 
       can [:update, :manage_school_times, :suggest_activity], School, id: user.school_id
@@ -17,7 +17,7 @@ class Ability
       end
       can :manage, Alert, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
-      can :crud, Meter, school_id: user.school_id
+      can [:index, :crud], Meter, school_id: user.school_id
       can :activate, Meter, active: false, school_id: user.school_id
       can :deactivate, Meter, active: true, school_id: user.school_id
       can :read, ActivityCategory
