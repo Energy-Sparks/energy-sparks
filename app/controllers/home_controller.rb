@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
-  before_action :redirect_if_logged_in
+  before_action :redirect_if_logged_in, only: :index
 
   def index
     @active_schools = School.active.count
