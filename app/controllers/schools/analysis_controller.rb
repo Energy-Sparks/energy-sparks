@@ -8,7 +8,7 @@ class Schools::AnalysisController < ApplicationController
   before_action :set_nav
 
   def set_nav
-    @dashboard_set = @school.fuel_types
+    @dashboard_set = @school.fuel_types_for_analysis
     pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
     @nav_array = pages.map do |page|
       { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
@@ -53,18 +53,22 @@ class Schools::AnalysisController < ApplicationController
 
     @charts = [chart_type]
     @title = chart_type.to_s.humanize
-    actual_chart_render(@charts)
+    render_chart_template_or_data(@charts)
   end
 
 private
 
   def render_generic_chart_template
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-    actual_chart_render(@charts)
+    if @school.fuel_types_for_analysis == :none
+      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
+    else
+      @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
+      @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
+      render_chart_template_or_data(@charts)
+    end
   end
 
-  def actual_chart_render(charts)
+  def render_chart_template_or_data(charts)
     @number_of_charts = charts.size
 
     respond_to do |format|
@@ -73,13 +77,13 @@ private
         render :generic_chart_template
       end
       format.json do
-        @output = sort_these_charts(charts)
+        @output = process_charts(charts)
         render :chart_data
       end
     end
   end
 
-  def sort_these_charts(array_of_chart_types_as_symbols)
+  def process_charts(array_of_chart_types_as_symbols)
     this_aggregate_school = aggregate_school(@school)
 
     chart_manager = ChartManager.new(this_aggregate_school, current_user.try(:admin?))

@@ -79,7 +79,7 @@ describe 'Meter', :meters do
 
   describe '#first_validated_reading' do
     it "should find first reading" do
-      reading = create(:amr_validated_reading)
+      reading = create(:amr_validated_reading, reading_date: Date.yesterday)
       meter = reading.meter
 
       expect(meter.first_validated_reading).to eql(reading.reading_date)

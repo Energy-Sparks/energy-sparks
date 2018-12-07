@@ -145,8 +145,20 @@ class School < ApplicationRecord
     meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
   end
 
+  def meters_with_validated_readings(supply = Meter.meter_types.keys)
+    meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
+  end
+
+  def meters_with_enough_validated_readings_for_analysis(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    meters.where(meter_type: supply).joins(:amr_validated_readings).group('amr_validated_readings.meter_id, meters.id').having('count(amr_validated_readings.meter_id) > ?', threshold)
+  end
+
   def both_supplies?
     meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
+  end
+
+  def has_enough_readings_for_meter_types?(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
   end
 
   def fuel_types
@@ -155,6 +167,18 @@ class School < ApplicationRecord
     elsif meters_with_readings(:electricity).any?
       :electric_only
     elsif meters_with_readings(:gas).any?
+      :gas_only
+    else
+      :none
+    end
+  end
+
+  def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    if has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
+      :electric_and_gas
+    elsif has_enough_readings_for_meter_types?(:electricity, threshold)
+      :electric_only
+    elsif has_enough_readings_for_meter_types?(:gas, threshold)
       :gas_only
     else
       :none

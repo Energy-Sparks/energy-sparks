@@ -3,6 +3,7 @@ require 'rails_helper'
 describe MeterCard do
 
   let(:school){ create(:school) }
+  let(:reading_date){ Date.yesterday}
 
   it 'has no readings or values if the school has no readings' do
     meter_card = MeterCard.create(school: school, supply: :gas)
@@ -16,19 +17,22 @@ describe MeterCard do
   end
 
   it 'populates the last reading date' do
-    meter = create :gas_meter_with_validated_reading, school: school
+    meter = create :gas_meter, school: school
+    create :amr_validated_reading, reading_date: reading_date, meter: meter
     meter_card = MeterCard.create(school: school, supply: :gas)
-    expect(meter_card.values.latest_reading_date).to eq(Date.yesterday)
+    expect(meter_card.values.latest_reading_date).to eq(reading_date)
   end
 
   it 'calulates the first window day from the latest_reading_date' do
-    meter = create :gas_meter_with_validated_reading, school: school
+    meter = create :gas_meter, school: school
+    create :amr_validated_reading, reading_date: reading_date, meter: meter
     meter_card = MeterCard.create(school: school, supply: :gas, window: 7)
     expect(meter_card.values.window_first_date).to eq(8.days.ago.to_date)
   end
 
   it 'populates the most usage date' do
-    meter = create :gas_meter_with_validated_reading, school: school
+    meter = create :gas_meter, school: school
+    create :amr_validated_reading, reading_date: reading_date, meter: meter
     meter_card = MeterCard.create(school: school, supply: :gas, window: 7)
     expect(meter_card.values.most_usage).to eq(1.day.ago.to_date)
   end
