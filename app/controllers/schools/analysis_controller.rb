@@ -6,6 +6,19 @@ class Schools::AnalysisController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :set_school
   before_action :set_nav
+  before_action :set_y_axis_options
+
+  Y_AXIS_UNIT_OPTIONS = {
+    pounds: 'energy cost in pounds',
+    kwh: 'energy used in kilowatt-hours',
+    co2: 'carbon dioxide produced generating the energy used',
+    library_books: 'number of library books you could buy with energy cost'
+  }.freeze
+
+  def set_y_axis_options
+    @y_axis_options = Y_AXIS_UNIT_OPTIONS
+    @default_y_axis_option = :kwh
+  end
 
   def set_nav
     @dashboard_set = @school.fuel_types_for_analysis
@@ -51,6 +64,12 @@ class Schools::AnalysisController < ApplicationController
 private
 
   def render_generic_chart_template
+    @y_axis_units = if params[:y_axis_unit] && Y_AXIS_UNIT_OPTIONS.key?(params[:y_axis_unit].to_sym)
+                      params[:y_axis_unit].to_sym
+                    else
+                      @default_y_axis_option
+                    end
+
     if @school.fuel_types_for_analysis == :none
       redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
     else

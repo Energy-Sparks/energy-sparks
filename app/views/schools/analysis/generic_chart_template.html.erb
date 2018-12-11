@@ -1,18 +1,36 @@
 <% content_for :page_title do %>Energy Analysis for <%= @school.name %><% end %>
 
 <h1>Energy Analysis for <%= @school.name %></h1>
- <p><%= link_to @school.name, school_path(@school) %> is a <%= @school.school_type %> school near <%= @school.postcode %>
- <% if @school.number_of_pupils && @school.floor_area %>
-  with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floor_area %>m<sup>2</sup>.
- <% else %>
-  . Please <%= link_to 'edit the school details', edit_school_path(@school) %> and add the number of pupils and the school floor area in m<sup>2</sup> for more accurate analysis.
- <% end %>
+<p><%= link_to @school.name, school_path(@school) %> is a <%= @school.school_type %> school near <%= @school.postcode %>
+<% if @school.number_of_pupils && @school.floor_area %>
+with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floor_area %>m<sup>2</sup>.
+<% else %>
+. Please <%= link_to 'edit the school details', edit_school_path(@school) %> and add the number of pupils and the school floor area in m<sup>2</sup> for more accurate analysis.
+<% end %>
+</p>
+
+<div class="card border-dark mb-3">
+  <div class="card-header">Y axis unit selector</div>
+  <div class="card-body text-dark">
+    <%= form_with(url: request.fullpath, method: :get) do |f| %>
+      <div class="form-group">
+        <% @y_axis_options.each do |key, description| %>
+          <div class="form-check">
+            <%= radio_button_tag :y_axis_unit, key, key == @y_axis_units, class: "form-check-input" %>
+            <%= label_tag "y_axis_unit_#{key}".to_sym, description.capitalize, value: key, class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+      <%= submit_tag %>
+    <% end %>
+  </div>
+</div>
 
 <%= render 'nav' %>
 
 <% @number_of_charts.times do |number| %>
   <div id="chart_wrapper_<%= number %>">
     <h3 class="analysis">Loading: <%= @charts[number].to_s.humanize %></h3>
-    <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>"></div>
+    <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-y-axis-units="<%= @y_axis_units %>"></div>
   </div>
 <% end %>
