@@ -48,14 +48,6 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
-  def chart
-    chart_type = params[:chart_type].to_sym
-
-    @charts = [chart_type]
-    @title = chart_type.to_s.humanize
-    render_chart_template_or_data(@charts)
-  end
-
 private
 
   def render_generic_chart_template
@@ -64,32 +56,12 @@ private
     else
       @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
       @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-      render_chart_template_or_data(@charts)
-    end
-  end
 
-  def render_chart_template_or_data(charts)
-    @number_of_charts = charts.size
+      @number_of_charts = @charts.size
 
-    respond_to do |format|
-      format.html do
-        aggregate_school(@school)
-        render :generic_chart_template
-      end
-      format.json do
-        @output = process_charts(charts)
-        render :chart_data
-      end
-    end
-  end
-
-  def process_charts(array_of_chart_types_as_symbols)
-    this_aggregate_school = aggregate_school(@school)
-
-    chart_manager = ChartManager.new(this_aggregate_school, current_user.try(:admin?))
-
-    array_of_chart_types_as_symbols.map do |chart_type|
-      { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
+      # Get this loaded and warm the cache before starting the chart rendering
+      aggregate_school(@school)
+      render :generic_chart_template
     end
   end
 
