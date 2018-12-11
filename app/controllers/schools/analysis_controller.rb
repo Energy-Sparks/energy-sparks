@@ -11,7 +11,7 @@ class Schools::AnalysisController < ApplicationController
   Y_AXIS_UNIT_OPTIONS = {
     pounds: 'energy cost in pounds',
     kwh: 'energy used in kilowatt-hours',
-    co2: 'carbon dioxide produced generating the energy used',
+    co2: 'carbon dioxide in kilograms produced generating the energy used',
     library_books: 'number of library books you could buy with energy cost'
   }.freeze
 
