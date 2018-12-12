@@ -10,7 +10,7 @@ class ChartData
     chart_manager = ChartManager.new(@aggregated_school, @show_benchmark_figures)
     chart_config = customised_chart_config(chart_manager)
 
-    [{ chart_type: @chart_type, data: chart_manager.run_chart(chart_config, @chart_type) }]
+    [chart_manager.run_chart(chart_config, @chart_type)]
   end
 
 private

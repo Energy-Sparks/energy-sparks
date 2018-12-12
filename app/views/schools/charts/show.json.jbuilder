@@ -9,14 +9,9 @@
 
 # Hacky
 # JJ December - you can say that again, who wrote this nonsense!
-chart_index = -1
 
 json.charts @output.each do |chart|
-  chart_index = chart_index + 1
-
-  # This is to handle the side by side charts which behave slightly
-  # differently - needs sorting at some point
-  chart_data = chart[:data].nil? ? chart : chart[:data]
+  chart_data = chart
 
   next if chart_data.nil?
 
@@ -38,8 +33,7 @@ json.charts @output.each do |chart|
     SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
   }
 
-  json.chart_index        chart_index
-  json.anaylsis_type      chart[:chart_type]
+  json.chart_index        1
   json.title              chart_data[:title]
   json.chart1_type        chart_data[:chart1_type]
   json.chart1_subtype     chart_data[:chart1_subtype]
