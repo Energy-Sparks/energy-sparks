@@ -64,11 +64,7 @@ class Schools::AnalysisController < ApplicationController
 private
 
   def render_generic_chart_template
-    @y_axis_units = if params[:y_axis_unit] && Y_AXIS_UNIT_OPTIONS.key?(params[:y_axis_unit].to_sym)
-                      params[:y_axis_unit].to_sym
-                    else
-                      @default_y_axis_option
-                    end
+    @y_axis_units = check_for_y_axis_param_or_cookie
 
     if @school.fuel_types_for_analysis == :none
       redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
@@ -81,6 +77,25 @@ private
       # Get this loaded and warm the cache before starting the chart rendering
       aggregate_school(@school)
       render :generic_chart_template
+    end
+  end
+
+  def check_for_y_axis_param_or_cookie
+    if params[:measurement] && Y_AXIS_UNIT_OPTIONS.key?(params[:measurement].to_sym)
+      # Set cookie
+
+      cookies[:energy_sparks_measurement] = params[:measurement]
+      params[:measurement].to_sym
+    else
+      default_y_axis_option_or_cookie
+    end
+  end
+
+  def default_y_axis_option_or_cookie
+    if cookies[:energy_sparks_measurement]
+      cookies[:energy_sparks_measurement].to_sym
+    else
+      @default_y_axis_option
     end
   end
 
