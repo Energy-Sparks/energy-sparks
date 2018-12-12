@@ -6,15 +6,13 @@ class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
   include NewSimulatorChartConfig
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  load_and_authorize_resource :school
+  load_and_authorize_resource through: :school, except: [:new_exemplar, :new_fitted]
 
-  before_action :set_school
-  before_action :authorise_school, except: [:index, :show]
-  before_action :set_simulation, only: [:show, :edit, :destroy, :update]
   before_action :set_show_charts, only: :show
 
   def index
-    @simulations = Simulation.where(school: @school).order(:created_at)
+    @simulations = @simulations.order(:created_at)
     create if @simulations.empty? && can?(:manage, @school)
   end
 
@@ -46,7 +44,6 @@ class Schools::SimulationsController < ApplicationController
 
   def new
     #TODO sort this out including method renames ;)
-    @simulation = Simulation.new
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
@@ -57,7 +54,8 @@ class Schools::SimulationsController < ApplicationController
 
   def new_fitted
     #TODO sort this out including method renames ;)
-    @simulation = Simulation.new
+    @simulation = @school.simulations.new
+    authorize! :create, @simulation
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
@@ -67,7 +65,8 @@ class Schools::SimulationsController < ApplicationController
 
   def new_exemplar
     #TODO sort this out including method renames ;)
-    @simulation = Simulation.new
+    @simulation = @school.simulations.new
+    authorize! :create, @simulation
     @local_school = aggregate_school(@school)
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
@@ -98,7 +97,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def destroy
-    @simulation.delete
+    @simulation.destroy
     respond_to do |format|
       format.html { redirect_to school_simulations_path(@school), notice: 'Simulation was deleted.' }
       format.json { head :no_content }
@@ -125,18 +124,6 @@ class Schools::SimulationsController < ApplicationController
   end
 
 private
-
-  def set_simulation
-    @simulation = Simulation.find(params[:id])
-  end
-
-  def set_school
-    @school = School.find_by_slug(params[:school_id])
-  end
-
-  def authorise_school
-    authorize! :show, @school
-  end
 
   def set_show_charts
     @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]

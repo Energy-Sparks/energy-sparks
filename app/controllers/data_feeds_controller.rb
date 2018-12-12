@@ -1,9 +1,7 @@
 class DataFeedsController < ApplicationController
   load_and_authorize_resource
-  skip_before_action :authenticate_user!
 
   def index
-    @data_feeds = DataFeed.all
   end
 
   def show
@@ -35,8 +33,7 @@ class DataFeedsController < ApplicationController
   end
 
   def destroy
-    @data_feed = DataFeed.find(params[:id])
-    @data_feed.delete
+    @data_feed.destroy
     respond_to do |format|
       format.html { redirect_to data_feeds_path, notice: 'Data feed was deleted.' }
       format.json { head :no_content }

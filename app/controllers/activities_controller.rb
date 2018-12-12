@@ -1,12 +1,13 @@
 class ActivitiesController < ApplicationController
+  load_resource :school
+  load_and_authorize_resource through: :school
+
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_activity, only: [:show, :edit, :update, :destroy]
 
   # GET /activities
   # GET /activities.json
   def index
-    set_school
-    @activities = @school.activities.order(happened_on: :desc)
+    @activities = @activities.order(happened_on: :desc)
   end
 
   # GET /activities/1
@@ -16,8 +17,6 @@ class ActivitiesController < ApplicationController
 
   # GET /activities/new
   def new
-    set_school
-    @activity = @school.activities.new
     if params[:activity_type_id].present?
       activity_type = ActivityType.find(params[:activity_type_id])
       if activity_type.present?
@@ -25,24 +24,18 @@ class ActivitiesController < ApplicationController
         @activity.activity_category = activity_type.activity_category
       end
     end
-    authorize! :new, @activity
   end
 
   # GET /activities/1/edit
   def edit
-    authorize! :edit, @activity
   end
 
   # POST /activities
   # POST /activities.json
   def create
-    set_school
-    @activity = @school.activities.new(activity_params)
-
     if @activity.activity_type
       @activity.activity_category_id = @activity.activity_type.activity_category_id
     end
-    authorize! :create, @activity
     respond_to do |format|
       if @activity.save
         format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully created.' }
@@ -57,7 +50,6 @@ class ActivitiesController < ApplicationController
   # PATCH/PUT /activities/1
   # PATCH/PUT /activities/1.json
   def update
-    authorize! :update, @activity
     respond_to do |format|
       if @activity.update(activity_params)
         format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully updated.' }
@@ -72,7 +64,6 @@ class ActivitiesController < ApplicationController
   # DELETE /activities/1
   # DELETE /activities/1.json
   def destroy
-    authorize! :destroy, @activity
     @activity.destroy
     respond_to do |format|
       format.html { redirect_to school_activities_path(@school), notice: 'Activity was successfully destroyed.' }
@@ -81,16 +72,6 @@ class ActivitiesController < ApplicationController
   end
 
 private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_activity
-    set_school
-    @activity = @school.activities.find(params[:id])
-  end
-
-  def set_school
-    @school = School.find(params[:school_id])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_params
