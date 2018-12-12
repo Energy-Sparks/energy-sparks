@@ -1,9 +1,12 @@
 module SchoolsHelper
+  include Measurements
+
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
-    measurement, ytitle = sort_out_y_title_and_measurement(measurement)
+    @measurement = measurement_unit(measurement)
+    ytitle = sort_out_y_title(@measurement)
 
     column_chart(
-      compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
+      compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: @measurement),
       id: "chart",
       xtitle: 'Day of the week',
       ytitle: ytitle,
@@ -18,22 +21,18 @@ module SchoolsHelper
     )
   end
 
-  def sort_out_y_title_and_measurement(measurement)
+  def sort_out_y_title(measurement)
     case measurement
-    when 'kwh'
-      ytitle = 'Energy (kWh)'
-    when 'pounds'
-      ytitle = 'Cost (£)'
-      measurement = '£'
-    when '£'
+    when 'library_books'
+      ytitle = 'Library books'
+    when 'pounds', 'gb_pounds', '£'
       ytitle = 'Cost (£)'
     when 'co2'
       ytitle = 'Carbon Dioxide emissions (kg)'
     else
-      measurement = 'kwh'
-      ytitle = 'Energy (kWh)'
+      ytitle = 'Energy (kilowatt-hours)'
     end
-    [measurement, ytitle]
+    ytitle
   end
 
   def compare_hourly_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kW')
@@ -142,7 +141,7 @@ module SchoolsHelper
       scale_to_kw
     when :co2 # https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2018
       scale_to_co2(fuel_type)
-    when :£
+    when :£, :gb_pounds
       scale_to_pound(fuel_type)
     when :library_books
       scale_unit_from_kwh(:£, fuel_type) / 5.0 # £5 per library book

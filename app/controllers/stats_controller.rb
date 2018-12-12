@@ -1,13 +1,16 @@
 class StatsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   include SchoolsHelper
+  include Measurements
+
   skip_before_action :authenticate_user!
 
-  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:mpan_mprn
+  # GET /schools/:id/daily_usage?supply=:supply&to_date=:to_date&meter=:mpan_mprn&measurement=:measurement
   def compare_daily_usage
     from = first_date
     data = []
-    measurement = params[:measurement]
+
+    measurement = measurement_unit(params[:measurement])
 
     if comparison == "whole-school"
       first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter, measurement)
@@ -34,7 +37,6 @@ class StatsController < ApplicationController
         data << { name: "Meter Number #{meter_display_name(second_meter)}", color: colours_for_supply(supply)[1], data: second_series }
       end
     end
-
     render json: data
   end
 

@@ -1,5 +1,6 @@
 class SchoolsController < ApplicationController
   include KeyStageFilterable
+  include Measurements
 
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
@@ -86,6 +87,9 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/usage
   def usage
+    set_measurement_options
+    @measurement = measurement_unit(params[:measurement])
+
     set_supply
     if @supply
       set_first_date
