@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   resources :scoreboards
   resources :school_groups
 
+  resources :onboarding, only: [:show]
+
   resources :schools do
     resources :activities
     scope module: :schools do
@@ -87,6 +89,13 @@ Rails.application.routes.draw do
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
+  end
+
+  namespace :admin do
+    resources :school_onboardings, only: [:new, :create, :index] do
+      resource :configuration, only: [:edit, :update], controller: 'school_onboardings/configuration'
+      resource :email, only: [:new, :create], controller: 'school_onboardings/email'
+    end
   end
 
   match '*unmatched', to: 'application#route_not_found', via: :all

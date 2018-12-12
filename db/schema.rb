@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_095621) do
+ActiveRecord::Schema.define(version: 2018_12_12_110943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "academic_years", force: :cascade do |t|
@@ -342,6 +343,35 @@ ActiveRecord::Schema.define(version: 2018_11_28_095621) do
     t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
   end
 
+  create_table "school_onboarding_events", force: :cascade do |t|
+    t.bigint "school_onboarding_id", null: false
+    t.integer "event", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_onboarding_id"], name: "index_school_onboarding_events_on_school_onboarding_id"
+  end
+
+  create_table "school_onboardings", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.string "school_name", null: false
+    t.string "contact_email", null: false
+    t.text "notes"
+    t.bigint "school_id"
+    t.bigint "created_user_id"
+    t.bigint "school_group_id"
+    t.bigint "weather_underground_area_id"
+    t.bigint "solar_pv_tuos_area_id"
+    t.bigint "calendar_area_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calendar_area_id"], name: "index_school_onboardings_on_calendar_area_id"
+    t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
+    t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
+    t.index ["school_id"], name: "index_school_onboardings_on_school_id"
+    t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
+    t.index ["weather_underground_area_id"], name: "index_school_onboardings_on_weather_underground_area_id"
+  end
+
   create_table "school_times", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "opening_time", default: 850
@@ -480,6 +510,13 @@ ActiveRecord::Schema.define(version: 2018_11_28_095621) do
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "scoreboards"
+  add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
+  add_foreign_key "school_onboardings", "areas", column: "calendar_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
+  add_foreign_key "school_onboardings", "schools", on_delete: :cascade
+  add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
