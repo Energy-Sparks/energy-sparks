@@ -12,11 +12,11 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <div class="card border-dark mb-3">
   <div class="card-header d-flex justify-content-between">
     <div>
-      <p>Charts are currently using <b><%= @y_axis_options[@y_axis_units] %></b> for the Y-axis</p>
+      <p>You can choose what the energy usage is measured in for some of the charts.</p><p>Currently your measurements are in <b><%= @y_axis_options[@y_axis_units] %></b></p>
     </div>
     <div>
       <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right" href="#y-axis-selection-form" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
-        <button class="btn btn-warning">Change units</button>
+        <button class="btn btn-warning">Change energy usage units</button>
       </a>
     </div>
   </div>

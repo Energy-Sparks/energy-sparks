@@ -9,7 +9,7 @@ class Schools::AnalysisController < ApplicationController
   before_action :set_y_axis_options
 
   Y_AXIS_UNIT_OPTIONS = {
-    pounds: 'energy cost in pounds',
+    gb_pounds: 'energy cost in pounds',
     kwh: 'energy used in kilowatt-hours',
     co2: 'carbon dioxide in kilograms produced generating the energy used',
     library_books: 'number of library books you could buy with energy cost'

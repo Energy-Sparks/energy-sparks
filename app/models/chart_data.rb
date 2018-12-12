@@ -19,7 +19,7 @@ private
     chart_config = chart_manager.resolve_chart_inheritance(ChartManager::STANDARD_CHART_CONFIGURATION[@chart_type])
     if chart_config.key?(:yaxis_units) && chart_config[:yaxis_units] == :kwh
       chart_config[:yaxis_units] = @y_axis_units
-      chart_config[:yaxis_units] = :£ if @y_axis_units == :pounds
+      chart_config[:yaxis_units] = :£ if @y_axis_units == :gb_pounds
     end
     chart_config
   end
