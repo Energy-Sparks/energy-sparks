@@ -1,17 +1,13 @@
 class Schools::AlertsController < ApplicationController
-  load_and_authorize_resource :alert
-  load_and_authorize_resource :school, find_by: :slug
+  load_and_authorize_resource :school
+  load_and_authorize_resource through: :school
 
-  skip_before_action :authenticate_user!
-  before_action :set_school
-  before_action set_alert: [:edit, :update]
 
   def index
-    @alerts = @school.alerts.eager_load(:alert_type).order('alert_types.category')
+    @alerts = @alerts.eager_load(:alert_type).order('alert_types.category')
   end
 
   def edit
-    @alert = Alert.find(params[:id])
   end
 
   def update
@@ -23,14 +19,6 @@ class Schools::AlertsController < ApplicationController
   end
 
 private
-
-  def set_alert
-    @alert = Alert.find(params[:id])
-  end
-
-  def set_school
-    @school = School.find(params[:school_id])
-  end
 
   def alert_params
     params.require(:alert).permit(contact_ids: [])

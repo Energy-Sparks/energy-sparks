@@ -56,7 +56,7 @@ module Merit
 
       #8 Reporter. 20 Activities
       grant_on 'activities#create', badge: 'reporter-20', temporary: true, to: :school do |activity|
-        activity.school.activities.count >= 10
+        activity.school.activities.count >= 20
       end
 
       #9 Reporter. 50 Activities

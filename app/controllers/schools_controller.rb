@@ -1,9 +1,8 @@
 class SchoolsController < ApplicationController
   include KeyStageFilterable
 
-  load_and_authorize_resource find_by: :slug
+  load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
-  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
   before_action :set_key_stage_tags, only: [:new, :create, :edit, :update]
 
   # GET /schools
@@ -40,7 +39,6 @@ class SchoolsController < ApplicationController
 
   # GET /schools/new
   def new
-    @school = School.new
   end
 
   # GET /schools/1/edit
@@ -50,8 +48,6 @@ class SchoolsController < ApplicationController
   # POST /schools
   # POST /schools.json
   def create
-    @school = School.new(school_params)
-
     respond_to do |format|
       if @school.save
         SchoolCreator.new(@school).process_new_school!
@@ -104,11 +100,6 @@ private
 
   def set_key_stage_tags
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_school
-    @school = School.find(params[:id])
   end
 
   def school_params
