@@ -95,7 +95,8 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   // Column charts
   if (chartType == 'column') {
     console.log('column: ' + subChartType);
-    c.update({ chart: { zoomType: 'x'}});
+    c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+
 
     if (subChartType == 'stacked') {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
@@ -151,7 +152,7 @@ function isAStringAndStartsWith(thing, startingWith) {
 
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
   console.log('scatter');
-  c.update({chart: { type: 'scatter', zoomType: 'xy' }});
+  c.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
   if (yAxisLabel.length) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
