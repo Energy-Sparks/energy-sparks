@@ -352,7 +352,7 @@ ActiveRecord::Schema.define(version: 2018_12_12_110943) do
   end
 
   create_table "school_onboardings", force: :cascade do |t|
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.string "uuid", null: false
     t.string "school_name", null: false
     t.string "contact_email", null: false
     t.text "notes"
@@ -369,6 +369,7 @@ ActiveRecord::Schema.define(version: 2018_12_12_110943) do
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
     t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
+    t.index ["uuid"], name: "index_school_onboardings_on_uuid", unique: true
     t.index ["weather_underground_area_id"], name: "index_school_onboardings_on_weather_underground_area_id"
   end
 

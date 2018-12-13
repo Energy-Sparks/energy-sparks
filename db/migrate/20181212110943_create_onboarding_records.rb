@@ -1,9 +1,8 @@
 class CreateOnboardingRecords < ActiveRecord::Migration[5.2]
   def change
-    enable_extension "pgcrypto" unless extension_enabled?("pgcrypto")
 
     create_table :school_onboardings do |t|
-      t.uuid :uuid, null: false, default: 'gen_random_uuid()'
+      t.string :uuid, null: false, index: {unique: true}
       t.string :school_name, null: false
       t.string :contact_email, null: false
       t.text :notes

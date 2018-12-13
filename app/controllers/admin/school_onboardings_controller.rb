@@ -1,3 +1,4 @@
+require 'securerandom'
 module Admin
   class SchoolOnboardingsController < AdminController
     load_and_authorize_resource
@@ -10,6 +11,7 @@ module Admin
     end
 
     def create
+      @school_onboarding.uuid = SecureRandom.uuid
       if @school_onboarding.save
         redirect_to edit_admin_school_onboarding_configuration_path(@school_onboarding)
       else
