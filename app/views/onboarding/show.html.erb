@@ -1,0 +1,33 @@
+<h1>Welcome to Energy Sparks</h1>
+
+<p>Thank you for enrolling <%= @school_onboarding.school_name %> onto Energy Sparks (www.energysparks.uk). We are excited to be introducing Energy Sparks to your area, and look forward to working with your school to save energy.</p>
+
+<p>Before we can activate your school we need to:</p>
+
+<ol>
+  <li>Get your permission to publish your school's energy data</li>
+  <li>Set up your Energy Sparks school administrator account</li>
+  <li>Gather some more information about your school</li>
+  <li>Set up access for other users in your school</li>
+  <li>METERS?</li>
+</ol>
+
+<p>To complete this process you will need:</p>
+
+<ol>
+  <li>Your school's URN, pupil numbers and floor area in sqm</li>
+  <li>The email address of any users you wish to add</li>
+  <li>METERS?</li>
+</ol>
+
+
+<p>There will be the opportunity to add the following details to better tailor Energy Sparks to your school, but they are not required to set up your school and can be updated once your school is active:</p>
+
+<ul>
+  <li>Your school's opening times</li>
+  <li>Your school's inset days and other calendar events</li>
+</ul>
+
+<p>Once you've completed this process we will review your school and activate</p>
+
+<%= link_to 'Next', onboarding_consent_path(@school_onboarding.uuid), class: 'btn btn-primary' %>

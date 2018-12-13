@@ -2,6 +2,39 @@ require 'rails_helper'
 
 describe SchoolCreator, :schools, type: :service do
 
+  describe '#onboard_school!' do
+    let(:school){ create :school}
+    let(:onboarding_user){ create :user, role: 'school_onboarding'}
+    let(:school_onboarding){ create :school_onboarding, created_user: onboarding_user}
+
+    it 'converts the onboarding user to a school admin' do
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      onboarding_user.reload
+      expect(onboarding_user.role).to eq('school_admin')
+    end
+    it 'assigns the school to the onboarding user' do
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      onboarding_user.reload
+      expect(onboarding_user.school).to eq(school)
+    end
+    it 'assigns the school to the onboarding' do
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      school_onboarding.reload
+      expect(school_onboarding.school).to eq(school)
+    end
+    it 'creates onboarding events' do
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      expect(school_onboarding).to have_event(:school_details_updated)
+      expect(school_onboarding).to have_event(:school_admin_created)
+      expect(school_onboarding).to have_event(:default_school_times_added)
+      expect(school_onboarding).to have_event(:default_alerts_assigned)
+    end
+  end
+
   describe '#process_new_school!' do
     let(:school){ create :school }
     let!(:alert_type){ create :alert_type }

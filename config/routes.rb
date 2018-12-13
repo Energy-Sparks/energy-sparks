@@ -25,7 +25,12 @@ Rails.application.routes.draw do
   resources :scoreboards
   resources :school_groups
 
-  resources :onboarding, only: [:show]
+  resources :onboarding, only: [:show] do
+    resource :consent, only: [:show, :create], controller: 'onboarding/consent'
+    resource :account, only: [:new, :create], controller: 'onboarding/account'
+    resource :school_details, only: [:new, :create], controller: 'onboarding/school_details'
+    resource :completion, only: [:new, :create, :show], controller: 'onboarding/completion'
+  end
 
   resources :schools do
     resources :activities

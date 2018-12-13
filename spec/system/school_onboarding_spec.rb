@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe "school onboarding", :schools, type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:admin)  { create(:user, role: 'admin')}
 
   let!(:calendar_area){ create(:calendar_area, title: 'BANES calendar') }
   let!(:calendar){ create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
@@ -22,6 +21,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   context 'as an admin' do
 
+    let!(:admin)  { create(:user, role: 'admin')}
+
     before(:each) do
       sign_in(admin)
       visit root_path
@@ -33,8 +34,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
       end
       click_on 'Onboard New School'
 
-      fill_in 'School name', with: "St Mary's School"
-      fill_in 'Contact email', with: 'stmarys@test.com'
+      fill_in 'School name', with: school_name
+      fill_in 'Contact email', with: 'oldfield@test.com'
 
       select 'BANES', from: 'Group'
       click_on 'Next'
@@ -45,8 +46,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       click_on 'Next'
 
-      expect(page).to have_content("St Mary's School")
-      expect(page).to have_content("stmarys@test.com")
+      expect(page).to have_content(school_name)
+      expect(page).to have_content("oldfield@test.com")
 
       click_on "Send onboarding email"
 
@@ -55,9 +56,75 @@ RSpec.describe "school onboarding", :schools, type: :system do
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding.uuid))
+    end
+  end
 
+  context 'as school user signing up' do
+
+    let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
+    let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
+
+    let!(:onboarding) do
+      create(
+        :school_onboarding, :with_events,
+        event_names: [:email_sent],
+        school_name: school_name,
+        school_group: school_group,
+        calendar_area: calendar_area,
+        weather_underground_area: weather_underground_area,
+        solar_pv_tuos_area: solar_pv_area
+      )
     end
 
+    before(:each) do
+      visit onboarding_path(onboarding.uuid)
+    end
+
+    it 'walks the user through the steps required' do
+      expect(page).to have_content('Welcome to Energy Sparks')
+      click_on 'Next'
+
+      click_on 'I give permission'
+
+      onboarding.reload
+      expect(onboarding).to have_event('permission_given')
+
+      expect(page).to have_field('Email', with: onboarding.contact_email)
+      fill_in 'Your name', with: 'A Teacher'
+      fill_in 'Password', with: 'testtest1'
+      click_on 'Create my account'
+
+      onboarding.reload
+      expect(onboarding.created_user.name).to eq('A Teacher')
+      expect(onboarding.created_user.role).to eq('school_onboarding')
+
+      fill_in 'Unique Reference Number', with: '4444244'
+      fill_in 'Number of pupils', with: 300
+      fill_in 'Floor area in square metres', with: 400
+      fill_in 'Address', with: '1 Station Road'
+      fill_in 'Postcode', with: 'A1 2BC'
+
+      choose 'Primary'
+      check 'KS1'
+
+      click_on 'Update school details'
+
+      onboarding.reload
+      school = onboarding.school
+      expect(school.urn).to eq(4444244)
+      expect(school.key_stage_list).to eq(['KS1'])
+      expect(school.school_group).to eq(school_group)
+      expect(school.calendar_area).to eq(calendar_area)
+      expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
+      expect(school.weather_underground_area).to eq(weather_underground_area)
+
+      # TODO: show details/edit?
+
+      click_on "I've finished"
+      expect(onboarding).to have_event(:onboarding_complete)
+
+      expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
+    end
   end
 end
 

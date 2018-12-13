@@ -20,5 +20,15 @@
 class SchoolOnboardingEvent < ApplicationRecord
   belongs_to :school_onboarding
 
-  enum event: { email_sent: 0 }
+  enum event: {
+    email_sent: 0,
+    permission_given: 10,
+    onboarding_user_created: 20,
+    school_admin_created: 30,
+    default_school_times_added: 40,
+    default_alerts_assigned: 50,
+    school_calendar_created: 60,
+    school_details_updated: 70,
+    onboarding_complete: 80
+  }
 end

@@ -12,6 +12,7 @@
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
 #  locked_at              :datetime
+#  name                   :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -34,11 +35,13 @@
 class User < ApplicationRecord
   belongs_to :school
 
+  has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
-  enum role: [:guest, :school_user, :admin, :school_admin]
+  enum role: [:guest, :school_user, :admin, :school_admin, :school_onboarding]
 
   def manages_school?(sid = nil)
     admin? || (sid && school_admin_or_user? && school_id == sid)
