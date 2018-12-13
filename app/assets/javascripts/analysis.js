@@ -53,16 +53,18 @@ $(document).ready(function() {
       var thisId = this.id;
       var thisChart = Highcharts.chart(thisId, commonChartOptions);
       var chartType = $(this).data('chart-type');
+      var yAxisUnits = $(this).data('chart-y-axis-units');
       var chartIndex = $(this).data('chart-index');
       var dataPath = $(this).data('chart-json');
       var noAdvice = $(this).is("[data-no-advice]");
+
 
       // Each chart handles it's own data, except for the simulator
       var processChartIndex = 0;
 
       if (dataPath === undefined) {
         var currentPath = window.location.href;
-        dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType;
+        dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType + '&chart_y_axis_units=' + yAxisUnits;
       }
       console.log(chartIndex);
       console.log(chartType);
