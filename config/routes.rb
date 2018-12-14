@@ -45,7 +45,7 @@ Rails.application.routes.draw do
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
 
-      get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
+      get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations

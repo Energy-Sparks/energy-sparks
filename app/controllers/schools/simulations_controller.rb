@@ -7,39 +7,19 @@ class Schools::SimulationsController < ApplicationController
   include NewSimulatorChartConfig
 
   load_and_authorize_resource :school
-  load_and_authorize_resource through: :school, except: [:new_exemplar, :new_fitted]
-
-  before_action :set_show_charts, only: :show
+  load_and_authorize_resource :simulation, through: :school, except: [:new_exemplar, :new_fitted]
 
   def index
     @simulations = @simulations.order(:created_at)
     create if @simulations.empty? && can?(:manage, @school)
   end
 
-  # ALSO used by simulation detail controller
   def show
-    @simulation_configuration = @simulation.configuration
-    local_school = aggregate_school(@school)
+    common_show(:simulator)
+  end
 
-    simulator = ElectricitySimulator.new(local_school)
-    simulator.simulate(@simulation_configuration)
-    chart_manager = ChartManager.new(local_school, false)
-
-    @number_of_charts = @charts.size
-
-    respond_to do |format|
-      format.html { render :show }
-      format.json do
-        # Allows for single run with all charts, or parallel
-        @output = @charts.map do |this_chart_type|
-          { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
-        end
-
-        @output = sort_out_group_charts(@output)
-        @number_of_charts = @output.size
-        render 'schools/simulations/chart_data'
-      end
-    end
+  def show_detailed
+    common_show(:simulator_detail)
   end
 
   def new
@@ -125,8 +105,30 @@ class Schools::SimulationsController < ApplicationController
 
 private
 
-  def set_show_charts
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
+  def common_show(charts_group)
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[charts_group][:charts]
+    @simulation_configuration = @simulation.configuration
+    local_school = aggregate_school(@school)
+
+    simulator = ElectricitySimulator.new(local_school)
+    simulator.simulate(@simulation_configuration)
+    chart_manager = ChartManager.new(local_school, false)
+
+    @number_of_charts = @charts.size
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json do
+        # Allows for single run with all charts, or parallel
+        @output = @charts.map do |this_chart_type|
+          { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
+        end
+
+        @output = sort_out_group_charts(@output)
+        @number_of_charts = @output.size
+        render 'schools/simulations/chart_data'
+      end
+    end
   end
 
   def sort_out_group_charts(output)
