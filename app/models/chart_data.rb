@@ -10,11 +10,14 @@ class ChartData
     chart_manager = ChartManager.new(@aggregated_school, @show_benchmark_figures)
     chart_config = customised_chart_config(chart_manager)
 
-    [chart_manager.run_chart(chart_config, @chart_type)]
+    values = ChartDataValues.new(chart_manager.run_chart(chart_config, @chart_type)).process
+
+    [values]
   end
 
 private
 
+  # JJ This should be handled in the analytics code
   def customised_chart_config(chart_manager)
     chart_config = chart_manager.resolve_chart_inheritance(ChartManager::STANDARD_CHART_CONFIGURATION[@chart_type])
     if chart_config.key?(:yaxis_units) && chart_config[:yaxis_units] == :kwh
