@@ -4,7 +4,7 @@ function chartFailure(title, chartIndex) {
   var $divWrapper = $('div#chart_wrapper_' + chartIndex);
   var $titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
 
-  $titleH3.text(title);
+  $titleH3.text(title + ' chart');
   $divWrapper.addClass('alert alert-warning');
   $('div#chart_' + chartIndex).remove();
 
