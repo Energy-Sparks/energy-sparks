@@ -8,7 +8,7 @@ function chartFailure(title, chartIndex) {
   $divWrapper.addClass('alert alert-warning');
   $('div#chart_' + chartIndex).remove();
 
-  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ': <a href="#chart_wrapper_' + chartIndex + '" class="alert-link">here</a></div>');
+  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#chart_wrapper_' + chartIndex + '" class="alert-link">chart</a></div>');
 }
 
 function chartSuccess(chart_data, chart, chartIndex, noAdvice) {

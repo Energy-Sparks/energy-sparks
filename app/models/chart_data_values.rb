@@ -37,7 +37,7 @@ class ChartDataValues
       @y2_chart_type      = chart[:y2_chart_type]
       @y2_axis_label = '' # Set later
     else
-      @title = "There was a problem with generating the data for #{chart_type}"
+      @title = "There was a problem with generating the data for the #{chart_type}"
     end
   end
 
