@@ -1,7 +1,7 @@
 module Onboarding
   class SchoolDetailsController < BaseController
     before_action :set_key_stage_tags
-    before_action only: [:new, :create]do
+    before_action only: [:new, :create] do
       redirect_if_event(:school_details_created, new_onboarding_completion_path(@school_onboarding.uuid))
     end
 
