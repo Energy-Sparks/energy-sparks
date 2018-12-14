@@ -28,7 +28,7 @@ class SchoolOnboardingEvent < ApplicationRecord
     default_school_times_added: 40,
     default_alerts_assigned: 50,
     school_calendar_created: 60,
-    school_details_updated: 70,
+    school_details_created: 70,
     onboarding_complete: 80
   }
 end

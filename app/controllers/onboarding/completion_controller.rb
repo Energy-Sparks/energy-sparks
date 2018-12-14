@@ -1,5 +1,7 @@
 module Onboarding
   class CompletionController < BaseController
+    skip_before_action :check_complete
+
     def new
       @school = @school_onboarding.school
       @meters = @school.meters

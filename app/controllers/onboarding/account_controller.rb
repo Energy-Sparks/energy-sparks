@@ -1,6 +1,9 @@
 module Onboarding
   class AccountController < BaseController
     skip_before_action :authenticate_user!
+    before_action do
+      redirect_if_event(:onboarding_user_created, new_onboarding_school_details_path(@school_onboarding.uuid))
+    end
 
     def new
       @user = User.new(email: @school_onboarding.contact_email)

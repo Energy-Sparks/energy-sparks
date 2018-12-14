@@ -20,7 +20,7 @@ class SchoolCreator
         end
         process_new_configuration!
         record_event(onboarding, :school_calendar_created) if @school.calendar
-        record_event(onboarding, :school_details_updated) do
+        record_event(onboarding, :school_details_created) do
           onboarding.update!(school: @school)
         end
       end
