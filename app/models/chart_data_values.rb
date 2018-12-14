@@ -19,25 +19,30 @@ class ChartDataValues
     SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
   }.freeze
 
-  def initialize(chart)
-    @chart              = chart
-    @title              = chart[:title]
-    @x_axis_categories  = chart[:x_axis]
-    @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
-    @chart1_type        = chart[:chart1_type]
-    @chart1_subtype     = chart[:chart1_subtype]
-    @y_axis_label       = chart[:y_axis_label]
-    @x_axis_categories  = chart[:x_axis]
-    @configuration      = chart[:configuration]
-    @advice_header      = chart[:advice_header]
-    @advice_footer      = chart[:advice_footer]
-    @x_data             = chart[:x_data]
-    @y2_data            = chart[:y2_data]
-    @y2_chart_type      = chart[:y2_chart_type]
-    @y2_axis_label = '' # Set later
+  def initialize(chart, chart_type)
+    if chart
+      @chart              = chart
+      @title              = chart[:title]
+      @x_axis_categories  = chart[:x_axis]
+      @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
+      @chart1_type        = chart[:chart1_type]
+      @chart1_subtype     = chart[:chart1_subtype]
+      @y_axis_label       = chart[:y_axis_label]
+      @x_axis_categories  = chart[:x_axis]
+      @configuration      = chart[:configuration]
+      @advice_header      = chart[:advice_header]
+      @advice_footer      = chart[:advice_footer]
+      @x_data             = chart[:x_data]
+      @y2_data            = chart[:y2_data]
+      @y2_chart_type      = chart[:y2_chart_type]
+      @y2_axis_label = '' # Set later
+    else
+      @title = "There was a problem with generating the data for the #{chart_type}"
+    end
   end
 
   def process
+    return self if @chart.nil?
     @x_data_hash = reverse_x_data_if_required
 
     @series_data = []
