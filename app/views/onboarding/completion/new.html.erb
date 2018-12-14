@@ -1,5 +1,26 @@
 <h1>You're almost there!</h1>
 
-<p>If you're ready to blah blah blah then:</p>
+<h2>What you've given us so far:</h2>
+
+<p>[Details from process]</p>
+
+<h2>Other things you might want to look at:</h2>
+<p>
+  It's not necessary for you to fill in the following sections to complete the sign-up process,
+  but the more information you provide the quicker your school can start using Energy Sparks
+  and our our energy calculations will be more accurate.
+<p>
+
+<h3>Meters: <%=@school.meters.count%></h3>
+
+<% if @school.meters.empty? %>
+  <p>If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details form your Local Authority.</p>
+<% else %>
+  <p>[List meters]</p>
+<% end %>
+<%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
+
+
+<p>[If you're ready to finish:]</p>
 
 <%= button_to "I've finished!", onboarding_completion_path(@school_onboarding.uuid), method: :post, class: 'btn btn-primary' %>

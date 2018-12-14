@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resource :account, only: [:new, :create], controller: 'onboarding/account'
     resource :school_details, only: [:new, :create], controller: 'onboarding/school_details'
     resource :completion, only: [:new, :create, :show], controller: 'onboarding/completion'
+    resources :meters, only: [:new, :create], controller: 'onboarding/meters'
   end
 
   resources :schools do

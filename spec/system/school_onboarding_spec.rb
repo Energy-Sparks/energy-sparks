@@ -113,6 +113,48 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
     end
+
+    it 'lets the user edit inset days, meters and opening times but does not require them' do
+      create :calendar_event_type, title: 'Teacher training', inset_day: true
+      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
+      user = create(:user, role: 'school_onboarding')
+      onboarding.update!(created_user: user)
+      school = build(:school)
+      SchoolCreator.new(school).onboard_school!(onboarding)
+
+      sign_in(user)
+
+      visit new_onboarding_completion_path(onboarding.uuid)
+
+      # Meters
+      expect(page).to have_content('Meters: 0')
+      click_on 'Add a meter'
+      fill_in 'Meter Point Number', with: '123543'
+      fill_in 'Meter Name', with: 'Gas'
+      choose 'Gas'
+      click_on 'Create Meter'
+      expect(page).to have_content('Meters: 1')
+
+      pending
+
+      # Opening times
+      expect(page).to have_content('Monday: 8:50 - 15:20')
+      click_on 'Set school times'
+      fill_in 'monday-opening_time', with: '900'
+      click_on 'Update school times'
+      expect(page).to have_content('Monday: 9:00 - 15:20')
+
+      # Inset days
+      expect(page).to have_content('Inset days: 0')
+      click_on 'Add inset day'
+      fill_in 'Title', with: 'Teacher training'
+      select 'Teacher training', from: 'Type'
+      fill_in 'Date', with: '7/1/2019'
+      click_on 'Add inset day'
+
+      # Other users
+    end
+
   end
 end
 
