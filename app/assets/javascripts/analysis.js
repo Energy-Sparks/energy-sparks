@@ -1,50 +1,61 @@
 "use strict";
 
-function chartSuccess(d, c, chartIndex, noAdvice) {
+function chartFailure(title, chartIndex) {
+  var $divWrapper = $('div#chart_wrapper_' + chartIndex);
+  var $titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
 
-  var chartDiv = c.renderTo;
+  $titleH3.text(title);
+  $divWrapper.addClass('alert alert-warning');
+  $('div#chart_' + chartIndex).remove();
+
+  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ': <a href="#chart_wrapper_' + chartIndex + '" class="alert-link">here</a></div>');
+}
+
+function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
+
+  var chartDiv = chart.renderTo;
   var $chartDiv = $(chartDiv);
-  var chartType = d.chart1_type;
-  var seriesData = d.series_data;
-  var yAxisLabel = d.y_axis_label;
+  var chartType = chart_data.chart1_type;
+  var seriesData = chart_data.series_data;
+  var yAxisLabel = chart_data.y_axis_label;
 
   if (! noAdvice) {
     var titleH3 = $chartDiv.prev('h3');
 
     if (chartIndex === 0) {
-      titleH3.text(d.title);
+      titleH3.text(chart_data.title);
     } else {
       titleH3.before('<hr class="analysis"/>');
-      titleH3.text(d.title);
+      titleH3.text(chart_data.title);
     }
 
-    var adviceHeader = d.advice_header;
-    var adviceFooter = d.advice_footer;
+    var adviceHeader = chart_data.advice_header;
+    var adviceFooter = chart_data.advice_footer;
 
-    if (adviceHeader !== undefined) {
+    if (adviceHeader) {
       $chartDiv.before('<div>' + adviceHeader + '</div>');
     }
 
-    if (adviceFooter !== undefined) {
+    if (adviceFooter) {
       $chartDiv.after('<div>' + adviceFooter + '</div>');
     }
   }
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType);
+    barColumnLine(chart_data, chart, chartIndex, seriesData, yAxisLabel, chartType);
 
   // Scatter
   } else if (chartType == 'scatter') {
-    scatter(d, c, chartIndex, seriesData, yAxisLabel);
+    scatter(chart_data, chart, chartIndex, seriesData, yAxisLabel);
 
   // Pie
   } else if (chartType == 'pie') {
-    pie(d, c, chartIndex, seriesData, $chartDiv, yAxisLabel);
+    pie(chart_data, chart, chartIndex, seriesData, $chartDiv, yAxisLabel);
   }
 
-  $chartDiv.attr( "maxYvalue", c.yAxis[0].max );
+  $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
 
-  c.hideLoading();
+  chart.hideLoading();
 }
 
 $(document).ready(function() {
@@ -82,7 +93,12 @@ $(document).ready(function() {
         dataType: "json",
         url: dataPath,
         success: function (returnedData) {
-          chartSuccess(returnedData.charts[processChartIndex], thisChart, chartIndex, noAdvice);
+          var this_chart_data = returnedData.charts[processChartIndex];
+          if (this_chart_data.series_data == null) {
+            chartFailure(this_chart_data.title, chartIndex);
+          } else {
+            chartSuccess(this_chart_data, thisChart, chartIndex, noAdvice);
+          }
         },
         error: function(broken) {
           var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
