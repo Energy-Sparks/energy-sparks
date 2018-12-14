@@ -142,15 +142,15 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Update school times'
       expect(page).to have_content('Monday 09:00 - 15:20')
 
-      pending
-
       # Inset days
       expect(page).to have_content('Inset days: 0')
-      click_on 'Add inset day'
-      fill_in 'Title', with: 'Teacher training'
+      click_on 'Add an inset day'
+      fill_in 'Description', with: 'Teacher training'
       select 'Teacher training', from: 'Type'
-      fill_in 'Date', with: '7/1/2019'
+      # Grr, actual input hidden for JS datepicker
+      first('#calendar_event_start_date', visible: false).set('2019-01-09')
       click_on 'Add inset day'
+      expect(page).to have_content('Inset days: 1')
 
       # Other users
     end

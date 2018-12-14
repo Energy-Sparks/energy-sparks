@@ -37,6 +37,24 @@
 
 <%= link_to 'Set school times', edit_onboarding_school_times_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
 
+<% if @inset_days %>
+  <h3>Inset days: <%= @inset_days.count %></h3>
+  <p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p>
+  <p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p>
+  <table>
+    <tbody>
+      <% @inset_days.each do |inset_day| %>
+        <tr>
+          <td><%= inset_day.start_date %></td>
+          <td><%= inset_day.title %></td>
+          <td><%= inset_day.calendar_event_type.title %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
+<% end %>
+
 
 <p>[If you're ready to finish:]</p>
 

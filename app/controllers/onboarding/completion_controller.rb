@@ -5,6 +5,9 @@ module Onboarding
       @school = @school_onboarding.school
       @meters = @school.meters
       @school_times = @school.school_times.sort_by {|time| SchoolTime.days[time.day]}
+      if @school.calendar
+        @inset_days = @school.calendar.calendar_events.inset_days.order(:start_date, :end_date)
+      end
     end
 
     def create

@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resource :completion,     only: [:new, :create, :show], controller: 'completion'
       resources :meters,        only: [:new, :create]
       resource :school_times,   only: [:edit, :update]
+      resources :inset_days,    only: [:new, :create]
     end
   end
 
