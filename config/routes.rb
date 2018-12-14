@@ -26,11 +26,14 @@ Rails.application.routes.draw do
   resources :school_groups
 
   resources :onboarding, only: [:show] do
-    resource :consent, only: [:show, :create], controller: 'onboarding/consent'
-    resource :account, only: [:new, :create], controller: 'onboarding/account'
-    resource :school_details, only: [:new, :create], controller: 'onboarding/school_details'
-    resource :completion, only: [:new, :create, :show], controller: 'onboarding/completion'
-    resources :meters, only: [:new, :create], controller: 'onboarding/meters'
+    scope module: :onboarding do
+      resource :consent,        only: [:show, :create], controller: 'consent'
+      resource :account,        only: [:new, :create], controller: 'account'
+      resource :school_details, only: [:new, :create]
+      resource :completion,     only: [:new, :create, :show], controller: 'completion'
+      resources :meters,        only: [:new, :create]
+      resource :school_times,   only: [:edit, :update]
+    end
   end
 
   resources :schools do

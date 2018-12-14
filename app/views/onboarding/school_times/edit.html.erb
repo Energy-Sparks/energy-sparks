@@ -1,5 +1,4 @@
-<%= form_for(@school, url: school_times_path(@school)) do |f| %>
-  <h2>School Times: <%= @school.name %></h2>
+<%= form_for(@school, url: onboarding_school_times_path(@school_onboarding.uuid)) do |f| %>
   <%= render 'schools/times/form', f: f %>
 <% end %>
 

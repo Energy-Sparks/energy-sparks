@@ -20,6 +20,23 @@
 <% end %>
 <%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
 
+<h3>School opening times</h3>
+<p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
+<table>
+  <tbody>
+    <% @school_times.each do |school_time| %>
+      <tr>
+        <td><%= school_time.day.humanize %></td>
+        <td><%= format_school_time(school_time.opening_time) %></td>
+        <td>-</td>
+        <td><%= format_school_time(school_time.closing_time) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Set school times', edit_onboarding_school_times_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
+
 
 <p>[If you're ready to finish:]</p>
 

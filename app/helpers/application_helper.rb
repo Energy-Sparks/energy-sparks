@@ -108,4 +108,8 @@ module ApplicationHelper
 
     '{ "name": "' + content[:title] + '", "colorByPoint": "true", "data": [' + data_string + '] }'
   end
+
+  def format_school_time(school_time)
+    sprintf('%04d', school_time).insert(2, ':')
+  end
 end
