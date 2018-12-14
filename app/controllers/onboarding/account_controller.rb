@@ -1,14 +1,12 @@
 module Onboarding
-  class AccountController < ApplicationController
+  class AccountController < BaseController
     skip_before_action :authenticate_user!
 
     def new
-      @school_onboarding = SchoolOnboarding.find_by_uuid!(params[:onboarding_id])
       @user = User.new(email: @school_onboarding.contact_email)
     end
 
     def create
-      @school_onboarding = SchoolOnboarding.find_by_uuid!(params[:onboarding_id])
       @user = User.new(
         user_params.merge(role: 'school_onboarding')
       )

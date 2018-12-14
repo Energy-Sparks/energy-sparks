@@ -1,13 +1,11 @@
 module Onboarding
-  class InsetDaysController < ApplicationController
+  class InsetDaysController < BaseController
     def new
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @calendar_event = @school_onboarding.school.calendar.calendar_events.new
       @calendar_event_types = CalendarEventType.inset_day
     end
 
     def create
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @calendar_event_types = CalendarEventType.inset_day
 
       @calendar_event = @school_onboarding.school.calendar.calendar_events.new(calendar_event_params)

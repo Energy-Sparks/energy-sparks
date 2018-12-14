@@ -1,12 +1,10 @@
 module Onboarding
-  class MetersController < ApplicationController
+  class MetersController < BaseController
     def new
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @meter = @school_onboarding.school.meters.new
     end
 
     def create
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @meter = @school_onboarding.school.meters.new(meter_params)
       if @meter.save
         MeterManagement.new(@meter).process_creation!

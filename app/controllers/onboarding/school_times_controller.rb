@@ -1,12 +1,10 @@
 module Onboarding
-  class SchoolTimesController < ApplicationController
+  class SchoolTimesController < BaseController
     def edit
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @school = @school_onboarding.school
     end
 
     def update
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @school = @school_onboarding.school
       @school.attributes = school_params
       if @school.save(context: :school_times_update)

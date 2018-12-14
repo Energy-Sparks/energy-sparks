@@ -1,5 +1,5 @@
 module Onboarding
-  class ConsentController < ApplicationController
+  class ConsentController < BaseController
     skip_before_action :authenticate_user!
 
     def show

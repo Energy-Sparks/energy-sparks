@@ -1,16 +1,14 @@
 module Onboarding
-  class SchoolDetailsController < ApplicationController
+  class SchoolDetailsController < BaseController
     before_action :set_key_stage_tags
 
     def new
-      @school_onboarding = current_user.school_onboardings.find_by_uuid(params[:onboarding_id])
       @school = School.new(
         name: @school_onboarding.school_name
       )
     end
 
     def create
-      @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
       @school = School.new(school_params)
       SchoolCreator.new(@school).onboard_school!(@school_onboarding)
       if @school.persisted?
