@@ -11,16 +11,9 @@ module Onboarding
 
     def create
       @school_onboarding = current_user.school_onboardings.find_by_uuid!(params[:onboarding_id])
-      @school = School.new(
-        school_params.merge(
-          school_group: @school_onboarding.school_group,
-          calendar_area: @school_onboarding.calendar_area,
-          solar_pv_tuos_area: @school_onboarding.solar_pv_tuos_area,
-          weather_underground_area: @school_onboarding.weather_underground_area
-        )
-      )
-      if @school.save
-        SchoolCreator.new(@school).onboard_school!(@school_onboarding)
+      @school = School.new(school_params)
+      SchoolCreator.new(@school).onboard_school!(@school_onboarding)
+      if @school.persisted?
         redirect_to new_onboarding_completion_path(@school_onboarding.uuid)
       else
         render :new

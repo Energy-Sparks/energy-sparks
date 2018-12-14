@@ -4,19 +4,28 @@ class SchoolCreator
   end
 
   def onboard_school!(onboarding)
-    @school.transaction do
-      record_event(onboarding, :school_admin_created) do
-        onboarding.created_user.update!(school: @school, role: :school_admin)
-      end
-      record_events(onboarding, :default_school_times_added, :default_alerts_assigned) do
-        process_new_school!
-      end
-      process_new_configuration!
-      record_event(onboarding, :school_calendar_created) if @school.calendar
-      record_event(onboarding, :school_details_updated) do
-        onboarding.update!(school: @school)
+    if @school.valid?
+      @school.update!(
+        school_group: onboarding.school_group,
+        calendar_area: onboarding.calendar_area,
+        solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
+        weather_underground_area: onboarding.weather_underground_area
+      )
+      @school.transaction do
+        record_event(onboarding, :school_admin_created) do
+          onboarding.created_user.update!(school: @school, role: :school_admin)
+        end
+        record_events(onboarding, :default_school_times_added, :default_alerts_assigned) do
+          process_new_school!
+        end
+        process_new_configuration!
+        record_event(onboarding, :school_calendar_created) if @school.calendar
+        record_event(onboarding, :school_details_updated) do
+          onboarding.update!(school: @school)
+        end
       end
     end
+    @school
   end
 
   def process_new_school!

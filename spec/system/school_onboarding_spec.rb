@@ -4,10 +4,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
 
-  let!(:calendar_area){ create(:calendar_area, title: 'BANES calendar') }
+  let(:calendar_area){ create(:calendar_area, title: 'BANES calendar') }
   let!(:calendar){ create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
-  let!(:solar_pv_area){ create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let!(:weather_underground_area){ create(:weather_underground_area, title: 'BANES weather') }
+  let(:solar_pv_area){ create(:solar_pv_tuos_area, title: 'BANES solar') }
+  let(:weather_underground_area){ create(:weather_underground_area, title: 'BANES weather') }
   let!(:school_group) do
     create(
       :school_group,
@@ -69,10 +69,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
         :school_onboarding, :with_events,
         event_names: [:email_sent],
         school_name: school_name,
-        school_group: school_group,
-        calendar_area: calendar_area,
-        weather_underground_area: weather_underground_area,
-        solar_pv_tuos_area: solar_pv_area
+        calendar_area: calendar_area
       )
     end
 
@@ -108,15 +105,6 @@ RSpec.describe "school onboarding", :schools, type: :system do
       check 'KS1'
 
       click_on 'Update school details'
-
-      onboarding.reload
-      school = onboarding.school
-      expect(school.urn).to eq(4444244)
-      expect(school.key_stage_list).to eq(['KS1'])
-      expect(school.school_group).to eq(school_group)
-      expect(school.calendar_area).to eq(calendar_area)
-      expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
-      expect(school.weather_underground_area).to eq(weather_underground_area)
 
       # TODO: show details/edit?
 
