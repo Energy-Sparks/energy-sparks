@@ -71,7 +71,7 @@ private
       { name: data_type, color: colour_hash[data_type], type: @chart1_type, data: data, index: index }
     end
 
-    if @y2_data != nil && @y2_data == :line
+    if @y2_data != nil && @y2_chart_type == :line
       @y2_axis_label = @y2_data.keys[0]
       @y2_data.each do |data_type, data|
         @series_data << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
