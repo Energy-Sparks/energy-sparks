@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_13_134248) do
+ActiveRecord::Schema.define(version: 2018_12_17_145048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -204,12 +204,12 @@ ActiveRecord::Schema.define(version: 2018_12_13_134248) do
 
   create_table "calendar_events", force: :cascade do |t|
     t.bigint "academic_year_id"
-    t.bigint "calendar_id"
+    t.bigint "calendar_id", null: false
     t.bigint "calendar_event_type_id"
     t.text "title"
     t.text "description"
-    t.date "start_date"
-    t.date "end_date"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"

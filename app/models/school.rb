@@ -77,7 +77,7 @@ class School < ApplicationRecord
 
   validates_presence_of :urn, :name
   validates_uniqueness_of :urn
-  validates :floor_area, :number_of_pupils, numericality: { greater_than: 0, allow_nil: true }
+  validates :floor_area, :number_of_pupils, numericality: { greater_than: 0, allow_blank: true }
 
   validates_associated :school_times, on: :school_time_update
 
