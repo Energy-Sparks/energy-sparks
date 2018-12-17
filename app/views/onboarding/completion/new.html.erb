@@ -9,25 +9,25 @@
         <h4>Your school details</h4>
       </div>
       <div class="card-body">
-        <dl class="row">
-          <dt class="col-sm-2">Name:</dt>
-          <dd class="col-sm-10"><%=@school.name%></dd>
-          <dt class="col-sm-2">URN:</dt>
-          <dd class="col-sm-10"><%=@school.urn%></dd>
-          <dt class="col-sm-2">School type:</dt>
-          <dd class="col-sm-10"><%=@school.school_type.try(:humanize) %></dd>
-          <dt class="col-sm-2">Key stages:</dt>
-          <dd class="col-sm-10"><%=@school.key_stages.map(&:name).to_sentence %></dd>
-          <dt class="col-sm-2">Number of pupils:</dt>
-          <dd class="col-sm-10"><%=@school.number_of_pupils %></dd>
-          <dt class="col-sm-2">Floor area:</dt>
-          <dd class="col-sm-10"><%=@school.floor_area %></dd>
-          <dt class="col-sm-2">Address:</dt>
-          <dd class="col-sm-10"><%=@school.address %></dd>
-          <dt class="col-sm-2">Postcode:</dt>
-          <dd class="col-sm-10"><%=@school.postcode %></dd>
-          <dt class="col-sm-2">Website:</dt>
-          <dd class="col-sm-10"><%=@school.website %></dd>
+        <dl>
+          <dt>Name:</dt>
+          <dd><%=@school.name%></dd>
+          <dt>URN:</dt>
+          <dd><%=@school.urn%></dd>
+          <dt>School type:</dt>
+          <dd><%=@school.school_type.try(:humanize) %></dd>
+          <dt>Key stages:</dt>
+          <dd><%=@school.key_stages.map(&:name).to_sentence %></dd>
+          <dt>Number of pupils:</dt>
+          <dd><%=@school.number_of_pupils %></dd>
+          <dt>Floor area:</dt>
+          <dd><%=@school.floor_area %></dd>
+          <dt>Address:</dt>
+          <dd><%=@school.address %></dd>
+          <dt>Postcode:</dt>
+          <dd><%=@school.postcode %></dd>
+          <dt>Website:</dt>
+          <dd><%=@school.website %></dd>
         </dl>
       </div>
     </div>
@@ -37,13 +37,13 @@
         <h4>Your account</h4>
       </div>
       <div class="card-body">
-        <dl class="row">
-          <dt class="col-sm-2">Name:</dt>
-          <dd class="col-sm-10"><%=current_user.name%></dd>
-          <dt class="col-sm-2">Email:</dt>
-          <dd class="col-sm-10"><%=current_user.email%></dd>
-          <dt class="col-sm-2">Password:</dt>
-          <dd class="col-sm-10">***********</dd>
+        <dl>
+          <dt>Name:</dt>
+          <dd><%=current_user.name%></dd>
+          <dt>Email:</dt>
+          <dd><%=current_user.email%></dd>
+          <dt>Password:</dt>
+          <dd>***********</dd>
         </dl>
       </div>
     </div>
