@@ -2,7 +2,7 @@ module Onboarding
   class SchoolDetailsController < BaseController
     before_action :set_key_stage_tags
     before_action only: [:new, :create] do
-      redirect_if_event(:school_details_created, new_onboarding_completion_path(@school_onboarding.uuid))
+      redirect_if_event(:school_details_created, new_onboarding_completion_path(@school_onboarding))
     end
 
     def new
@@ -15,7 +15,7 @@ module Onboarding
       @school = School.new(school_params)
       SchoolCreator.new(@school).onboard_school!(@school_onboarding)
       if @school.persisted?
-        redirect_to new_onboarding_completion_path(@school_onboarding.uuid)
+        redirect_to new_onboarding_completion_path(@school_onboarding)
       else
         render :new
       end

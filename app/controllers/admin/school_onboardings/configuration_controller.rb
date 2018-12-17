@@ -1,7 +1,7 @@
 module Admin
   module SchoolOnboardings
     class ConfigurationController < AdminController
-      load_and_authorize_resource :school_onboarding
+      load_and_authorize_resource :school_onboarding, find_by: :uuid
 
       def edit
         if @school_onboarding.school_group

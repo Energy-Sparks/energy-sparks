@@ -14,7 +14,7 @@ module Onboarding
         @calendar_event.academic_year = AcademicYear.for_date(@calendar_event.start_date)
       end
       if @calendar_event.save
-        redirect_to new_onboarding_completion_path(@school_onboarding.uuid)
+        redirect_to new_onboarding_completion_path(@school_onboarding)
       else
         render :new
       end

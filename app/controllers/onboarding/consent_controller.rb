@@ -9,7 +9,7 @@ module Onboarding
     def create
       school_onboarding = SchoolOnboarding.find_by_uuid!(params[:onboarding_id])
       school_onboarding.events.create!(event: :permission_given)
-      redirect_to new_onboarding_account_path(school_onboarding.uuid)
+      redirect_to new_onboarding_account_path(school_onboarding)
     end
   end
 end

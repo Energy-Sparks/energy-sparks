@@ -51,4 +51,8 @@ class SchoolOnboarding < ApplicationRecord
   def has_event?(event_name)
     events.where(event: event_name).any?
   end
+
+  def to_param
+    uuid
+  end
 end

@@ -1,5 +1,5 @@
 <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)</p>
-<%= form_for @meter, url: onboarding_meters_path(@school_onboarding.uuid) do |form| %>
+<%= form_for @meter, url: onboarding_meters_path(@school_onboarding) do |form| %>
   <%= render 'shared/errors', subject: @meter, subject_name: 'meter' %>
 
   <div class="form-group">

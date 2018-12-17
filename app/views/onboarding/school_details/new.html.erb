@@ -1,6 +1,6 @@
 <h1>Your school details</h1>
 
-<%= form_for(@school, url: onboarding_school_details_path(@school_onboarding.uuid)) do |f| %>
+<%= form_for(@school, url: onboarding_school_details_path(@school_onboarding)) do |f| %>
 
   <%= render 'shared/errors', subject: @school, subject_name: 'school' %>
 

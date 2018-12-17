@@ -8,7 +8,7 @@ module Onboarding
       @school = @school_onboarding.school
       @school.attributes = school_params
       if @school.save(context: :school_times_update)
-        redirect_to new_onboarding_completion_path(@school_onboarding.uuid)
+        redirect_to new_onboarding_completion_path(@school_onboarding)
       else
         render :edit
       end

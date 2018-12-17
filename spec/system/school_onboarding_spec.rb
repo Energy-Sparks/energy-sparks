@@ -55,7 +55,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')
-      expect(email.html_part.body.to_s).to include(onboarding_path(onboarding.uuid))
+      expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
   end
 
@@ -74,7 +74,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     end
 
     before(:each) do
-      visit onboarding_path(onboarding.uuid)
+      visit onboarding_path(onboarding)
     end
 
     it 'walks the user through the steps required' do
@@ -124,7 +124,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       sign_in(user)
 
-      visit new_onboarding_completion_path(onboarding.uuid)
+      visit new_onboarding_completion_path(onboarding)
 
       # Meters
       expect(page).to have_content('Meters: 0')

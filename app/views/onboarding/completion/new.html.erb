@@ -18,7 +18,7 @@
 <% else %>
   <p>[List meters]</p>
 <% end %>
-<%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
+<%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
 
 <h3>School opening times</h3>
 <p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
@@ -35,7 +35,7 @@
   </tbody>
 </table>
 
-<%= link_to 'Set school times', edit_onboarding_school_times_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
+<%= link_to 'Set school times', edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
 
 <% if @inset_days %>
   <h3>Inset days: <%= @inset_days.count %></h3>
@@ -52,10 +52,10 @@
       <% end %>
     </tbody>
   </table>
-  <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding.uuid), class: 'btn btn-primary' %>
+  <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
 <% end %>
 
 
 <p>[If you're ready to finish:]</p>
 
-<%= button_to "I've finished!", onboarding_completion_path(@school_onboarding.uuid), method: :post, class: 'btn btn-primary' %>
+<%= button_to "I've finished!", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary' %>

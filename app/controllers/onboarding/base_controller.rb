@@ -22,7 +22,7 @@ module Onboarding
     end
 
     def check_complete
-      redirect_if_event(:onboarding_complete, onboarding_completion_path(@school_onboarding.uuid))
+      redirect_if_event(:onboarding_complete, onboarding_completion_path(@school_onboarding))
     end
   end
 end

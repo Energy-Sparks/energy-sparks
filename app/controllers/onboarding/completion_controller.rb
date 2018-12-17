@@ -13,7 +13,7 @@ module Onboarding
 
     def create
       @school_onboarding.events.create(event: :onboarding_complete)
-      redirect_to onboarding_completion_path(@school_onboarding.uuid)
+      redirect_to onboarding_completion_path(@school_onboarding)
     end
 
     def show
