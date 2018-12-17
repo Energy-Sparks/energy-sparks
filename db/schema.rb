@@ -358,6 +358,7 @@ ActiveRecord::Schema.define(version: 2018_12_13_134248) do
     t.text "notes"
     t.bigint "school_id"
     t.bigint "created_user_id"
+    t.bigint "created_by_id"
     t.bigint "school_group_id"
     t.bigint "weather_underground_area_id"
     t.bigint "solar_pv_tuos_area_id"
@@ -365,6 +366,7 @@ ActiveRecord::Schema.define(version: 2018_12_13_134248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["calendar_area_id"], name: "index_school_onboardings_on_calendar_area_id"
+    t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
@@ -518,6 +520,7 @@ ActiveRecord::Schema.define(version: 2018_12_13_134248) do
   add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
+  add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"

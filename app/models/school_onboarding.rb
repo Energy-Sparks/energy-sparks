@@ -5,6 +5,7 @@
 #  calendar_area_id            :bigint(8)
 #  contact_email               :string           not null
 #  created_at                  :datetime         not null
+#  created_by_id               :bigint(8)
 #  created_user_id             :bigint(8)
 #  id                          :bigint(8)        not null, primary key
 #  notes                       :text
@@ -19,6 +20,7 @@
 # Indexes
 #
 #  index_school_onboardings_on_calendar_area_id             (calendar_area_id)
+#  index_school_onboardings_on_created_by_id                (created_by_id)
 #  index_school_onboardings_on_created_user_id              (created_user_id)
 #  index_school_onboardings_on_school_group_id              (school_group_id)
 #  index_school_onboardings_on_school_id                    (school_id)
@@ -29,6 +31,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_area_id => areas.id) ON DELETE => restrict
+#  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
@@ -45,6 +48,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
   belongs_to :created_user, class_name: 'User'
+  belongs_to :created_by, class_name: 'User'
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
 

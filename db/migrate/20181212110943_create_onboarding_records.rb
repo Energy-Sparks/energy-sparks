@@ -8,6 +8,7 @@ class CreateOnboardingRecords < ActiveRecord::Migration[5.2]
       t.text :notes
       t.references :school,                   foreign_key: {on_delete: :cascade}
       t.references :created_user,             foreign_key: {on_delete: :nullify, to_table: :users}
+      t.references :created_by,               foreign_key: {on_delete: :nullify, to_table: :users}
       t.references :school_group,             foreign_key: {on_delete: :restrict}
       t.references :weather_underground_area, foreign_key: {on_delete: :restrict, to_table: :areas}
       t.references :solar_pv_tuos_area,       foreign_key: {on_delete: :restrict, to_table: :areas}
