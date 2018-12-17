@@ -1,6 +1,6 @@
 module Onboarding
   class CompletionController < BaseController
-    skip_before_action :check_complete
+    skip_before_action :check_complete, only: :show
 
     def new
       @school = @school_onboarding.school
