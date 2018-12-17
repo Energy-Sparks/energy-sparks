@@ -24,15 +24,17 @@
 
       <h1 property="name"><%= @school.name %></h1>
       <h6 class="large">
-        <address property="address" typeof="PostalAddress">
-          <span property="streetAddress"><%= @school.address %></span>, <span property="postalCode"><%= @school.postcode %></span>
-        </address>
-        |
-        <%= link_to('Visit school website',
-                    @school.website,
-                    target: :new,
-                    property: "url") unless @school.website.blank? %>
-
+        <% unless @school.address.blank? %>
+          <address property="address" typeof="PostalAddress">
+            <span property="streetAddress"><%= @school.address %></span><%=',' unless @school.postcode.blank?%>
+            <% unless @school.postcode.blank? %>
+              <span property="postalCode"><%= @school.postcode %></span>
+            <% end %>
+          </address>
+        <% end %>
+        <%- unless @school.website.blank? %>
+          | <%= link_to('Visit school website', @school.website, target: :new, property: "url") %>
+        <% end %>
       </h6>
       <p>
         <%- if can? :manage, @school -%>
