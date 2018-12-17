@@ -18,10 +18,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
     )
   end
 
+  let(:admin) { create(:user, role: 'admin')}
 
   context 'as an admin' do
 
-    let!(:admin)  { create(:user, role: 'admin')}
 
     before(:each) do
       sign_in(admin)
@@ -69,7 +69,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
         :school_onboarding, :with_events,
         event_names: [:email_sent],
         school_name: school_name,
-        calendar_area: calendar_area
+        calendar_area: calendar_area,
+        created_by: admin
       )
     end
 
@@ -112,6 +113,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(onboarding).to have_event(:onboarding_complete)
 
       expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
+
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
+      expect(email.to).to include(admin.email)
     end
 
     it 'lets the user edit inset days, meters and opening times but does not require them' do

@@ -13,6 +13,7 @@ module Onboarding
 
     def create
       @school_onboarding.events.create(event: :onboarding_complete)
+      OnboardingMailer.with(school_onboarding: @school_onboarding).completion_email.deliver_now
       redirect_to onboarding_completion_path(@school_onboarding)
     end
 
