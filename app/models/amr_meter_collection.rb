@@ -8,10 +8,8 @@ class AmrMeterCollection < MeterCollection
     set_up_meters(active_record_school)
 
     # From Dashboard meter collection
-    # rubocop:disable Rails/TimeZone
-    @cached_open_time = DateTime.new(0, 1, 1, 7, 0, 0) # for speed
-    @cached_close_time = DateTime.new(0, 1, 1, 16, 30, 0) # for speed
-    # rubocop:enable Rails/TimeZone
+    @cached_open_time = TimeOfDay.new(7, 0) # for speed
+    @cached_close_time = TimeOfDay.new(16, 30) # for speed
 
     @schedule_data_manager_service = ScheduleDataManagerService.new(active_record_school)
 
