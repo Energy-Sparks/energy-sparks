@@ -101,9 +101,7 @@ $(document).ready(function() {
           }
         },
         error: function(broken) {
-          var titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
-          titleH3.text('There was a problem loading this chart');
-          $('div#chart_' + chartIndex).remove();
+          chartFailure("We do not have enough data at the moment to display this ", chartIndex);
         }
       });
     });
