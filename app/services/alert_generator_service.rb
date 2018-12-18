@@ -15,12 +15,27 @@ class AlertGeneratorService
 
   def perform
     return [] unless @school.alerts?
-    @results = AlertType.all.map do |alert_type|
+    @results = alert_types_for_school.map do |alert_type|
       aggregate_school = AggregateSchoolService.new(@school).aggregate_school
       alert = alert_type.class_name.constantize.new(aggregate_school)
       alert.analyse(@analysis_date)
       { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency, fuel_type: alert_type.fuel_type }
     end
+  end
+
+private
+
+  def alert_types_for_school
+    alert_types = AlertType.where(fuel_type: nil).to_a
+
+    if @school.meters_with_readings(:electricity).any?
+      alert_types << AlertType.where(fuel_type: :electricity).to_a
+    end
+
+    if @school.meters_with_readings(:gas).any?
+      alert_types << AlertType.where(fuel_type: :gas).to_a
+    end
+    alert_types.flatten
   end
 
   def generate_for_contacts(run_all = false)
@@ -31,8 +46,6 @@ class AlertGeneratorService
       process_alerts_for_contact(contact, alerts_for_contact)
     end
   end
-
-private
 
   def process_alerts_for_contact(contact, alerts)
     return if alerts.nil? || alerts.empty?
