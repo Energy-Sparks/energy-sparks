@@ -19,7 +19,7 @@ class AlertGeneratorService
       aggregate_school = AggregateSchoolService.new(@school).aggregate_school
       alert = alert_type.class_name.constantize.new(aggregate_school)
       alert.analyse(@analysis_date)
-      { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency }
+      { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency, fuel_type: alert_type.fuel_type }
     end
   end
 
