@@ -2,9 +2,8 @@ class Schools::AlertsController < ApplicationController
   load_and_authorize_resource :school
   load_and_authorize_resource through: :school
 
-
   def index
-    @alerts = @alerts.eager_load(:alert_type).order('alert_types.category')
+    @alerts = @alerts.eager_load(:alert_type).order('alert_types.fuel_type')
   end
 
   def edit
