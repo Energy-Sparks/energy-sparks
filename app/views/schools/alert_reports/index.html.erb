@@ -53,7 +53,7 @@
 <% @results.group_by { |b| b[:fuel_type]}.each do |fuel_type, alert_types| %>
   <div class="row padded-row">
     <div class="col-md-12">
-      <h3><%= fuel_type.nil? ? 'No fuel type' : "#{fuel_type.capitalize} for #{nice_dates @alert_fuel_dates[fuel_type]}" %></h3>
+      <h3><%= fuel_type.nil? ? 'No fuel type: for today' : "#{fuel_type.capitalize}: for #{nice_dates @alert_fuel_dates[fuel_type]}" %></h3>
       <% alert_types.each do |alert_type| %>
         <h4><%= alert_type[:title] %> - <%= alert_type[:frequency] %></h4>
         <p><%= alert_type[:description] %></p>
