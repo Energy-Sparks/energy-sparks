@@ -47,7 +47,6 @@ $(document).ready(function() {
     function setUpDatePicker(supply_type) {
       var $datePickerDiv = $('div#' + supply_type + '_date_picker');
       if ($datePickerDiv.length) {
-        $datePickerDiv.datetimepicker('destroy');
 
         var earliestReadingDate = new Date($datePickerDiv.data('earliest-reading-date'));
         var latestReadingDate = new Date($datePickerDiv.data('latest-reading-date'));
@@ -55,16 +54,12 @@ $(document).ready(function() {
 
         $datePickerDiv.datetimepicker({
           format: 'DD/MM/YYYY',
-          defaultDate: defaultDate,
-          // setting max min date resets the default date for some reason - possibly date formats?
-          // minDate: earliestReadingDate,
-          // maxDate: latestReadingDate,
+          date: defaultDate,
+          minDate: earliestReadingDate,
+          maxDate: latestReadingDate,
           allowInputToggle: true,
           debug: true
         });
-        // $datePickerDiv.on("change.datetimepicker", function(e) {
-        //   console.log(e);
-        // });
       }
     }
 

@@ -32,7 +32,7 @@
                      data-latest-reading-date="<%= @latest_electricity_reading %>" data-earliest-reading-date="<%= @earliest_electricity_reading %>" data-default-date="<%= @electricity_alerts_date %>">
                   <%= text_field_tag("electricity_date_picker",
                         @electricity_alerts_date.strftime("%d/%m/%Y"),
-                        class: 'form-control datetimepicker-input', data: { target: "#electricity_date_picker" }) %>
+                        class: 'form-control', data: { target: "#electricity_date_picker" }) %>
                   <div class="input-group-append" data-target="#electricity_date_picker" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                   </div>
