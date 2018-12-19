@@ -6,7 +6,7 @@
 
       <%= f.input :title, label: 'Description', as: :string %>
 
-      <%= f.input :calendar_event_type_id, collection: @calendar_event_types, label_method: :display_title, label: 'Event type', include_blank: false %>
+      <%= f.input :calendar_event_type_id, collection: @calendar_event_types, label_method: :display_title, label: 'Type', include_blank: false %>
 
       <div class="form-group">
         <%= f.label :start_date, 'Date' %>

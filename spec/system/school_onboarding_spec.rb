@@ -101,6 +101,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Floor area in square metres', with: 400
       fill_in 'Address', with: '1 Station Road'
       fill_in 'Postcode', with: 'A1 2BC'
+      fill_in 'Website', with: 'http://oldfield.sch.uk'
 
       choose 'Primary'
       check 'KS1'
