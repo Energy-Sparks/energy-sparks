@@ -43,6 +43,8 @@ class User < ApplicationRecord
 
   enum role: [:guest, :school_user, :admin, :school_admin, :school_onboarding]
 
+  validates :email, presence: true
+
   def manages_school?(sid = nil)
     admin? || (sid && school_admin_or_user? && school_id == sid)
   end
