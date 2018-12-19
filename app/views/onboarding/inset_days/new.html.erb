@@ -10,13 +10,12 @@
 
       <div class="form-group">
         <%= f.label :start_date, 'Date' %>
-        <%= text_field_tag("start_date_picker_#{f.index}",
-                  f.object.start_date.try(:strftime, "%d/%m/%Y"),
-                  placeholder: 'select date',
-                  class: 'form-control term_datepicker',
-                  data: { altfield: "#calendar_event_start_date" }
-                ) %>
-        <%= f.hidden_field :start_date %>
+        <div class="input-group date" id="calendar_event_holder" data-target-input="nearest">
+          <%= f.text_field :start_date, class: 'form-control datetimepicker-input', data: {target: '#calendar_event_holder'} %>
+          <div class="input-group-append" data-target="#calendar_event_holder" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+          </div>
+        </div>
       </div>
 
       <%= f.button :submit, 'Add inset day' %>

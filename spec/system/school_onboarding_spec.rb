@@ -154,7 +154,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Description', with: 'Teacher training'
       select 'Teacher training', from: 'Type'
       # Grr, actual input hidden for JS datepicker
-      first('#calendar_event_start_date', visible: false).set('2019-01-09')
+      fill_in 'Date', with: '2019-01-09'
       click_on 'Add inset day'
       expect(page).to have_content('Inset days: 1')
 
