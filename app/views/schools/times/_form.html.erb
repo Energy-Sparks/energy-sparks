@@ -1,4 +1,4 @@
-<p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format without a separating colon.</p>
+<p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format.</p>
 <div class="row">
   <div class="col-md-3 mb-3">
     <label for="firstName">Day</label>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-md-3 mb-3">
-      <%= ff.number_field :opening_time, value: ('%04d' % (ff.object.opening_time || 0)), id: "#{ff.object.day}-opening_time" %>
+      <%= ff.text_field :opening_time, value: format_school_time(ff.object.opening_time), id: "#{ff.object.day}-opening_time" %>
       <% if ff.object.errors.has_key?(:opening_time) %>
         <div class="alert alert-danger mt-2">
           <%= ff.object.errors.full_messages_for(:opening_time).join(', ') %>
@@ -27,7 +27,7 @@
       <% end %>
     </div>
     <div class="col-md-3 mb-3">
-      <%= ff.number_field :closing_time, value: ('%04d' % (ff.object.closing_time || 0)), id: "#{ff.object.day}-closing_time" %>
+      <%= ff.text_field :closing_time, value: format_school_time(ff.object.closing_time || 0), id: "#{ff.object.day}-closing_time" %>
       <% if ff.object.errors.has_key?(:closing_time) %>
         <div class="alert alert-danger mt-2">
           <%= ff.object.errors.full_messages_for(:closing_time).join(', ') %>

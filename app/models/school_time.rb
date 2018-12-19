@@ -29,4 +29,14 @@ class SchoolTime < ApplicationRecord
     greater_than_or_equal_to: 0,
     message: 'must be between 0000 and 2359'
   }
+
+  def opening_time=(time)
+    time = time.delete(':') if time.respond_to?(:delete)
+    super(time)
+  end
+
+  def closing_time=(time)
+    time = time.delete(':') if time.respond_to?(:delete)
+    super(time)
+  end
 end

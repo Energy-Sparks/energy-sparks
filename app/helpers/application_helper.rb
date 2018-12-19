@@ -110,6 +110,7 @@ module ApplicationHelper
   end
 
   def format_school_time(school_time)
+    return school_time if school_time.blank?
     sprintf('%04d', school_time).insert(2, ':')
   end
 end
