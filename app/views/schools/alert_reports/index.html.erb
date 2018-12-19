@@ -10,35 +10,40 @@
         <p class="card-text">Most alerts can only run when Energy Sparks has up to date meter readings for the school:</p>
         <%- if can? :manage, Alert -%>
           <p>These default to the latest reading dates, but you can also choose your own</p>
+
           <%= form_tag '', method: :get, id: :analysis_date_chooser do |f| %>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label>Gas</label>
-                <div class="input-group date" id="gas_date_picker" data-target-input="nearest"
-                     data-latest-reading-date="<%= @latest_gas_reading.strftime("%Y-%m-%d") %>" data-earliest-reading-date="<%= @earliest_gas_reading.strftime("%Y-%m-%d") %>" data-default-date="<%= @gas_alerts_date %>">
-                  <%= text_field_tag("gas_date_picker",
-                        @gas_alerts_date.strftime("%d/%m/%Y"),
-                        class: 'form-control', data: { target: "#gas_date_picker" }) %>
-                  <div class="input-group-append" data-target="#gas_date_picker" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            <% if @latest_gas_reading %>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Gas</label>
+                  <div class="input-group date" id="gas_date_picker" data-target-input="nearest"
+                       data-latest-reading-date="<%= @latest_gas_reading.strftime("%Y-%m-%d") %>" data-earliest-reading-date="<%= @earliest_gas_reading.strftime("%Y-%m-%d") %>" data-default-date="<%= @gas_alerts_date %>">
+                    <%= text_field_tag("gas_date_picker",
+                          @gas_alerts_date.strftime("%d/%m/%Y"),
+                          class: 'form-control', data: { target: "#gas_date_picker" }) %>
+                    <div class="input-group-append" data-target="#gas_date_picker" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label>Electricity</label>
-                <div class="input-group date" id="electricity_date_picker" data-target-input="nearest"
-                     data-latest-reading-date="<%= @latest_electricity_reading %>" data-earliest-reading-date="<%= @earliest_electricity_reading %>" data-default-date="<%= @electricity_alerts_date %>">
-                  <%= text_field_tag("electricity_date_picker",
-                        @electricity_alerts_date.strftime("%d/%m/%Y"),
-                        class: 'form-control', data: { target: "#electricity_date_picker" }) %>
-                  <div class="input-group-append" data-target="#electricity_date_picker" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            <% end %>
+            <% if @latest_electricity_reading %>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Electricity</label>
+                  <div class="input-group date" id="electricity_date_picker" data-target-input="nearest"
+                       data-latest-reading-date="<%= @latest_electricity_reading %>" data-earliest-reading-date="<%= @earliest_electricity_reading %>" data-default-date="<%= @electricity_alerts_date %>">
+                    <%= text_field_tag("electricity_date_picker",
+                          @electricity_alerts_date.strftime("%d/%m/%Y"),
+                          class: 'form-control', data: { target: "#electricity_date_picker" }) %>
+                    <div class="input-group-append" data-target="#electricity_date_picker" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            <% end %>
             <%= submit_tag 'Refresh', class: 'btn btn-primary' %>
           <% end %>
         <%- else -%>
