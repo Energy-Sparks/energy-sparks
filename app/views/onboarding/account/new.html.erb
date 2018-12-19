@@ -5,28 +5,11 @@
     <p><%= @school_onboarding.school_name %> will have an administrator login to manage your school on Energy Sparks.</p>
     <p>Enter the Name, email and password you want to use for this account below:</p>
 
-    <%= form_for(@user, url: onboarding_account_path(@school_onboarding)) do |f| %>
-
-      <%= render 'shared/errors', subject: @user, subject_name: 'account' %>
-
-      <div class="form-group">
-        <%= f.label :name, 'Your name'%>
-        <%= f.text_field :name, class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.text_field :email, class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, class: 'form-control' %>
-      </div>
-
-      <div class="actions">
-        <%= f.submit 'Create my account', class: 'btn btn-primary' %>
-      </div>
+    <%= simple_form_for(@user, url: onboarding_account_path(@school_onboarding)) do |f| %>
+      <%= f.input :name, label: 'Your name'%>
+      <%= f.input :email %>
+      <%= f.input :password, required: true %>
+      <%= f.button :submit, 'Create my account' %>
     <% end %>
   </div>
 </div>
