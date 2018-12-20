@@ -28,8 +28,8 @@ class Alert < ApplicationRecord
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
 
-  def display_category
-    alert_type.category.humanize if alert_type.category?
+  def display_fuel_type
+    alert_type.display_fuel_type
   end
 
   def display_sub_category

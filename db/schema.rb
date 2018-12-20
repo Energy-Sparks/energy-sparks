@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_095621) do
+ActiveRecord::Schema.define(version: 2018_12_18_110856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2018_11_28_095621) do
   end
 
   create_table "alert_types", force: :cascade do |t|
-    t.integer "category"
+    t.integer "fuel_type"
     t.integer "sub_category"
     t.integer "frequency"
     t.text "title"

@@ -42,5 +42,28 @@ $(document).ready(function() {
       renderChart(chartType);
     });
   }
-});
 
+  if ($("form#analysis_date_chooser").length) {
+    function setUpDatePicker(supply_type) {
+      var $datePickerDiv = $('div#' + supply_type + '_date_picker');
+      if ($datePickerDiv.length) {
+
+        var earliestReadingDate = new Date($datePickerDiv.data('earliest-reading-date'));
+        var latestReadingDate = new Date($datePickerDiv.data('latest-reading-date'));
+        var defaultDate = $datePickerDiv.data('default-date');
+
+        $datePickerDiv.datetimepicker({
+          format: 'DD/MM/YYYY',
+          date: defaultDate,
+          minDate: earliestReadingDate,
+          maxDate: latestReadingDate,
+          allowInputToggle: true,
+          debug: true
+        });
+      }
+    }
+
+    setUpDatePicker('gas');
+    setUpDatePicker('electricity');
+  }
+});
