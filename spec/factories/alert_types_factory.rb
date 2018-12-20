@@ -3,7 +3,7 @@
 # Table name: alert_types
 #
 #  analysis_description :text
-#  category             :integer
+#  fuel_type            :integer
 #  daily_frequency      :integer
 #  id                   :bigint(8)        not null, primary key
 #  long_term            :boolean
@@ -15,7 +15,7 @@
 FactoryBot.define do
   factory :alert_type do
     sequence(:title) {|n| "Alert Type #{n}"}
-    category { AlertType.categories.keys.sample }
+    fuel_type { AlertType.fuel_types.keys.sample }
     sub_category { AlertType.sub_categories.keys.sample }
     frequency { AlertType.frequencies.keys.sample }
     class_name { 'AlertChangeInElectricityBaseloadShortTerm' }

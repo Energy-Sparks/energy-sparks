@@ -1,26 +1,27 @@
 require 'dashboard'
-require 'twilio-ruby'
 
 class AlertGeneratorService
-  def initialize(school, analysis_date = Date.new(2018, 2, 2))
+  def initialize(school, aggregate_school, gas_analysis_date, electricity_analysis_date, send_sms_service = SendSms)
     @school = school
-    @analysis_date = analysis_date
-
-    account_sid = ENV['TWILIO_ACCOUNT_SID']
-    auth_token = ENV['TWILIO_AUTH_TOKEN']
-    @from_phone_number = ENV['TWILIO_PHONE_NUMBER']
-
-    @twilio_client = Twilio::REST::Client.new(account_sid, auth_token)
+    @gas_analysis_date = gas_analysis_date
+    @electricity_analysis_date = electricity_analysis_date
+    @send_sms_service = send_sms_service
+    @aggregate_school = aggregate_school
   end
 
   def perform
     return [] unless @school.alerts?
-    @results = AlertType.all.map do |alert_type|
-      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
-      alert = alert_type.class_name.constantize.new(aggregate_school)
-      alert.analyse(@analysis_date)
-      { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency }
+    @results = []
+
+    @results << run_alerts(AlertType.no_fuel)
+
+    if @school.meters_with_readings(:electricity).any?
+      @results << run_alerts(AlertType.electricity, @electricity_analysis_date)
     end
+    if @school.meters_with_readings(:gas).any?
+      @results << run_alerts(AlertType.gas, @gas_analysis_date)
+    end
+    @results.flatten
   end
 
   def generate_for_contacts(run_all = false)
@@ -34,6 +35,27 @@ class AlertGeneratorService
 
 private
 
+  def run_alerts(alert_types, analysis_date = Time.zone.today)
+    alert_types.map do |alert_type|
+      alert = alert_type.class_name.constantize.new(@aggregate_school)
+      alert.analyse(analysis_date)
+      { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency, fuel_type: alert_type.fuel_type }
+    end
+  end
+
+  def alert_types_for_school
+    alert_types = AlertType.no_fuel_type
+
+    if @school.meters_with_readings(:electricity).any?
+      alert_types << AlertType.where(fuel_type: :electricity).to_a
+    end
+
+    if @school.meters_with_readings(:gas).any?
+      alert_types << AlertType.where(fuel_type: :gas).to_a
+    end
+    alert_types.flatten
+  end
+
   def process_alerts_for_contact(contact, alerts)
     return if alerts.nil? || alerts.empty?
 
@@ -45,7 +67,7 @@ private
       alerts.each do |alert|
         if should_send_heating_holiday_message?(alert[:analysis_report])
           Rails.logger.info "Send SMS message to #{contact.name} #{contact.mobile_phone_number} of #{alert[:analysis_report].summary}"
-          @twilio_client.messages.create(body: "EnergySparks alert: " + alert[:analysis_report].summary, to: contact.mobile_phone_number, from: @from_phone_number)
+          @send_sms_service.new("EnergySparks alert: " + alert[:analysis_report].summary, contact.mobile_phone_number).send
         else
           Rails.logger.debug "Do not send SMS message to #{contact.name} #{contact.mobile_phone_number} of #{alert[:analysis_report].summary} #{alert[:analysis_report].type}"
         end
@@ -80,8 +102,7 @@ private
       next unless run_all || run_this_alert?(alert)
 
       alert_type_class = alert.alert_type_class
-      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
-      alert_object = alert_type_class.new(aggregate_school)
+      alert_object = alert_type_class.new(@aggregate_school)
 
       begin
         alert_object.analyse(@analysis_date)

@@ -20,7 +20,7 @@ RSpec.describe "school alerts", type: :system do
 
       let!(:alert) { create(:alert, school: school) }
       it 'shows me a page with all possible alerts' do
-        expect(alert.alert_type.category).to be_in AlertType.categories.keys
+        expect(alert.alert_type.fuel_type).to be_in AlertType.fuel_types.keys
         expect(alert.alert_type.sub_category).to be_in AlertType.sub_categories.keys
         expect(alert.school).to eq school
         click_on(school_name)

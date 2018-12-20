@@ -16,7 +16,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Category</th>
+          <th>Fuel Type</th>
           <th>Title</th>
           <th>Description</th>
           <th>Frequency</th>
@@ -27,7 +27,7 @@
       <tbody>
         <% @alerts.each do |alert| %>
           <tr scope="row">
-            <td><%= alert.display_category %></td>
+            <td><%= alert.display_fuel_type %></td>
             <td><%= alert.alert_type.title %></td>
             <td><%= alert.alert_type.description %></td>
             <td><%= alert.alert_type.frequency.humanize %></td>
