@@ -89,7 +89,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       expect(page).to have_field('Email', with: onboarding.contact_email)
       fill_in 'Your name', with: 'A Teacher'
-      fill_in 'Password', with: 'testtest1'
+      fill_in 'Password', with: 'testtest1', match: :prefer_exact
+      fill_in 'Password confirmation', with: 'testtest1'
       click_on 'Create my account'
 
       onboarding.reload
