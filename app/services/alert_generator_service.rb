@@ -10,7 +10,7 @@ class AlertGeneratorService
   end
 
   def perform
-    return [] unless @school.alerts?
+    return [] unless @school.alert_subscriptions?
     @results = []
 
     @results << run_alerts(AlertType.no_fuel)
@@ -98,7 +98,7 @@ private
 
   # Get array of alerts for this contact
   def get_alerts(contact, run_all = false)
-    contact.alerts.map do |alert|
+    contact.alert_subscriptions.map do |alert|
       next unless run_all || run_this_alert?(alert)
 
       alert_type_class = alert.alert_type_class

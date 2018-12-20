@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_18_110856) do
+ActiveRecord::Schema.define(version: 2018_12_20_113753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -68,6 +68,20 @@ ActiveRecord::Schema.define(version: 2018_12_18_110856) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
+  create_table "alert_subscriptions", force: :cascade do |t|
+    t.bigint "alert_type_id"
+    t.bigint "school_id"
+    t.index ["alert_type_id"], name: "index_alert_subscriptions_on_alert_type_id"
+    t.index ["school_id"], name: "index_alert_subscriptions_on_school_id"
+  end
+
+  create_table "alert_subscriptions_contacts", id: false, force: :cascade do |t|
+    t.bigint "contact_id"
+    t.bigint "alert_subscription_id"
+    t.index ["alert_subscription_id"], name: "index_alert_subscriptions_contacts_on_alert_subscription_id"
+    t.index ["contact_id"], name: "index_alert_subscriptions_contacts_on_contact_id"
+  end
+
   create_table "alert_types", force: :cascade do |t|
     t.integer "fuel_type"
     t.integer "sub_category"
@@ -76,20 +90,6 @@ ActiveRecord::Schema.define(version: 2018_12_18_110856) do
     t.text "description"
     t.text "analysis"
     t.text "class_name"
-  end
-
-  create_table "alerts", force: :cascade do |t|
-    t.bigint "alert_type_id"
-    t.bigint "school_id"
-    t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
-    t.index ["school_id"], name: "index_alerts_on_school_id"
-  end
-
-  create_table "alerts_contacts", id: false, force: :cascade do |t|
-    t.bigint "contact_id"
-    t.bigint "alert_id"
-    t.index ["alert_id"], name: "index_alerts_contacts_on_alert_id"
-    t.index ["contact_id"], name: "index_alerts_contacts_on_contact_id"
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
@@ -467,8 +467,8 @@ ActiveRecord::Schema.define(version: 2018_12_18_110856) do
   add_foreign_key "activities", "schools"
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "alerts", "alert_types"
-  add_foreign_key "alerts", "schools"
+  add_foreign_key "alert_subscriptions", "alert_types"
+  add_foreign_key "alert_subscriptions", "schools"
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"

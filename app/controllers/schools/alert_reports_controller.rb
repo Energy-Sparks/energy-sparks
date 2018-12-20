@@ -4,7 +4,7 @@ class Schools::AlertReportsController < ApplicationController
   load_and_authorize_resource :school
 
   def index
-    authorize! :manage, Alert, school_id: @school.id
+    authorize! :manage, AlertSubscription, school_id: @school.id
 
     set_up_reading_dates
     @results = AlertGeneratorService.new(@school, aggregate_school(@school), @gas_alerts_date, @electricity_alerts_date).perform

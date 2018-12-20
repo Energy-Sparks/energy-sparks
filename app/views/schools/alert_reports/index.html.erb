@@ -3,12 +3,12 @@
   <div class="col-md-12">
     <h1 property="name"><%= @school.name %> Alerts</h1>
     <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
-    <%= link_to 'Alerts for this school', school_alerts_path(@school), class: 'btn btn-secondary' %></p>
+    <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Latest meter readings</h5>
         <p class="card-text">Most alerts can only run when Energy Sparks has up to date meter readings for the school:</p>
-        <%- if can? :manage, Alert -%>
+        <%- if can? :manage, AlertSubscription -%>
           <p>These default to the latest reading dates, but you can also choose your own</p>
 
           <%= form_tag '', method: :get, id: :analysis_date_chooser do |f| %>
