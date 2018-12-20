@@ -18,8 +18,8 @@
 #
 
 class AlertSubscription < ApplicationRecord
-  belongs_to :school,     inverse_of: :alerts
-  belongs_to :alert_type, inverse_of: :alerts
+  belongs_to :school,     inverse_of: :alert_subscriptions
+  belongs_to :alert_type, inverse_of: :alert_subscriptions
 
   has_and_belongs_to_many :contacts
 
