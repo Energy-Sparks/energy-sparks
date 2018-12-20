@@ -1,13 +1,12 @@
 require 'dashboard'
 
 class AlertGeneratorService
-  def initialize(school, gas_analysis_date, electricity_analysis_date, send_sms_service = SendSms)
+  def initialize(school, aggregate_school, gas_analysis_date, electricity_analysis_date, send_sms_service = SendSms)
     @school = school
     @gas_analysis_date = gas_analysis_date
     @electricity_analysis_date = electricity_analysis_date
     @send_sms_service = send_sms_service
-
-    @aggregate_school = AggregateSchoolService.new(@school).aggregate_school
+    @aggregate_school = aggregate_school
   end
 
   def perform

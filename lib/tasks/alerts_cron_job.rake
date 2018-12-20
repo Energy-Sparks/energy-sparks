@@ -15,7 +15,8 @@ namespace :alerts do
     schools.each do |school|
       puts "Running alerts for #{school.name}"
       run_for = Time.zone.today - 3.days
-      AlertGeneratorService.new(school, run_for, run_for).generate_for_contacts(run_all)
+      aggregate_school = AggregateSchoolService.new(school).aggregate_school
+      AlertGeneratorService.new(school, aggregate_school, run_for, run_for).generate_for_contacts(run_all)
     end
     puts Time.zone.now
   end

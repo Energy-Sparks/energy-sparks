@@ -1,11 +1,13 @@
 class Schools::AlertReportsController < ApplicationController
+  include SchoolAggregation
+
   load_and_authorize_resource :school
 
   def index
     authorize! :manage, Alert, school_id: @school.id
 
     set_up_reading_dates
-    @results = AlertGeneratorService.new(@school, @gas_alerts_date, @electricity_alerts_date).perform
+    @results = AlertGeneratorService.new(@school, aggregate_school(@school), @gas_alerts_date, @electricity_alerts_date).perform
     @alert_fuel_dates = { 'gas' => @gas_alerts_date, 'electricity' => @electricity_alerts_date }
   end
 
