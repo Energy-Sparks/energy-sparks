@@ -4,11 +4,11 @@
 #
 #  academic_year_id       :bigint(8)
 #  calendar_event_type_id :bigint(8)
-#  calendar_id            :bigint(8)
+#  calendar_id            :bigint(8)        not null
 #  description            :text
-#  end_date               :date
+#  end_date               :date             not null
 #  id                     :bigint(8)        not null, primary key
-#  start_date             :date
+#  start_date             :date             not null
 #  title                  :text
 #
 # Indexes
