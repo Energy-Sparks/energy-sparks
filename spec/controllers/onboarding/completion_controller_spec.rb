@@ -27,7 +27,7 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
 
   describe '#new' do
 
-    it 'redirects to the show' do
+    it 'renders the new template' do
       get :new, params: {onboarding_id: onboarding.to_param}
       expect(response).to render_template("new")
     end
@@ -36,9 +36,9 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
       let!(:onboarding) do
         create(:school_onboarding, :with_events, event_names: [:onboarding_complete], created_user: user)
       end
-      it 'redirects to the show' do
+      it 'redirects to the show action' do
         get :new, params: {onboarding_id: onboarding.to_param}
-        expect(response).to redirect_to(onboarding_completion_path(onboarding.to_param))
+        expect(response).to redirect_to(onboarding_completion_path(onboarding))
       end
     end
   end
