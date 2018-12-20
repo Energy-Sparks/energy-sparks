@@ -2,12 +2,12 @@ branch-defaults:
   aws-eb-master:
     environment: prod
   aws-eb-test:
-    environment: new-test
+    environment: test-2-8-7
     group_suffix: null
 global:
   application_name: energy-sparks
   branch: null
-  default_ec2_keyname: ProductionMicro
+  default_ec2_keyname: EnergySparksTestEC2
   default_platform: Ruby 2.5 (Puma)
   default_region: eu-west-2
   include_git_submodules: true
