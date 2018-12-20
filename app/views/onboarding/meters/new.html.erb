@@ -10,6 +10,7 @@
       <%= form.input :name, label: 'Meter Name' %>
       <%= form.input :meter_serial_number, labeL: 'Serial number', as: :string %>
       <%= form.button :submit %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding), class: 'btn' %>
     <% end %>
   </div>
 </div>

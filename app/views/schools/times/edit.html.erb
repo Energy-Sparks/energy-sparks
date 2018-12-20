@@ -1,6 +1,9 @@
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
   <h2>School Times: <%= @school.name %></h2>
   <%= render 'schools/times/form', f: f %>
+  <div class="actions">
+    <%= f.submit 'Update school times', class: 'btn btn-primary' %>
+  </div>
 <% end %>
 
 <div class="other-actions">

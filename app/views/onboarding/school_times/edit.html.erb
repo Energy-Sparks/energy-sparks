@@ -2,10 +2,8 @@
   <div class="col col-md-10 col-lg-8">
     <%= form_for(@school, url: onboarding_school_times_path(@school_onboarding)) do |f| %>
       <%= render 'schools/times/form', f: f %>
+      <%= f.submit 'Update school times', class: 'btn' %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding), class: 'btn' %>
     <% end %>
-
-    <div class="other-actions">
-      <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
-    </div>
   </div>
 </div>
