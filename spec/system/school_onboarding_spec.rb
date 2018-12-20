@@ -57,6 +57,18 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(email.subject).to include('Set up your school on Energy Sparks')
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
+
+    it 'sends reminder emails when requested' do
+      onboarding = create :school_onboarding
+      within '.navbar' do
+        click_on 'School Onboarding'
+      end
+      click_on 'Send reminder'
+
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
+      expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
+    end
   end
 
   context 'as school user signing up' do

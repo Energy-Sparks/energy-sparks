@@ -103,8 +103,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :school_onboardings, only: [:new, :create, :index] do
-      resource :configuration, only: [:edit, :update], controller: 'school_onboardings/configuration'
-      resource :email, only: [:new, :create], controller: 'school_onboardings/email'
+      scope module: :school_onboardings do
+        resource :configuration, only: [:edit, :update], controller: 'configuration'
+        resource :email, only: [:new, :create], controller: 'email'
+        resource :reminder, only: [:create], controller: 'reminder'
+      end
     end
   end
 

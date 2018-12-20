@@ -8,7 +8,8 @@
       <th>School name</th>
       <th>Contact email</th>
       <th>Last activity</th>
-      <th>Last event</th>
+      <th>last event</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +19,11 @@
         <td><%= onboarding.contact_email %></td>
         <td><%= onboarding.events.maximum(:created_at) %></td>
         <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)) %></td>
+        <td>
+          <% unless onboarding.has_event?(:onboarding_complete) %>
+            <%= button_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

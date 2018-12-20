@@ -10,4 +10,9 @@ class OnboardingMailer < ApplicationMailer
       mail(to: @school_onboarding.created_by.email, subject: "#{@school_onboarding.school_name} has completed the onboarding process")
     end
   end
+
+  def reminder_email
+    @school_onboarding = params[:school_onboarding]
+    mail(to: @school_onboarding.contact_email, subject: "Don't forget to set up your school on Energy Sparks")
+  end
 end
