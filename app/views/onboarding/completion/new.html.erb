@@ -63,7 +63,24 @@
         <% if @school.meters.empty? %>
           <p>If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details form your Local Authority.</p>
         <% else %>
-          <p>[List meters]</p>
+          <table class="table mb-3">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>MPAN/MPRN</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <% @school.meters.each do |meter|%>
+              <tr>
+                <td><%= meter.meter_type.humanize %></td>
+                <td><%= meter.mpan_mprn %></td>
+                <td><%= meter.name %></td>
+              </tr>
+            <% end %>
+            <tbody>
+            </tbody>
+          </table>
         <% end %>
         <%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
       </div>
@@ -75,14 +92,20 @@
       </div>
       <div class="card-body">
         <p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
-        <table class="mb-3">
+        <table class="table mb-3">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Opening times</th>
+            </tr>
+          </thead>
           <tbody>
             <% @school_times.each do |school_time| %>
               <tr>
                 <td><%= school_time.day.humanize %></td>
-                <td><%= format_school_time(school_time.opening_time) %></td>
-                <td>-</td>
-                <td><%= format_school_time(school_time.closing_time) %></td>
+                <td>
+                  <%= format_school_time(school_time.opening_time) %> - <%= format_school_time(school_time.closing_time) %>
+                </td>
               </tr>
             <% end %>
           </tbody>
@@ -100,13 +123,20 @@
         <div class="card-body">
           <p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p>
           <p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p>
-          <table class="mb-3">
+          <table class="table mb-3">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
             <tbody>
               <% @inset_days.each do |inset_day| %>
                 <tr>
                   <td><%= inset_day.start_date %></td>
-                  <td><%= inset_day.title %></td>
                   <td><%= inset_day.calendar_event_type.title %></td>
+                  <td><%= inset_day.title %></td>
                 </tr>
               <% end %>
             </tbody>
