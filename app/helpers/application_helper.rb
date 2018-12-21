@@ -60,11 +60,11 @@ module ApplicationHelper
 
   def class_for_alert_rating(rating)
     if rating > 8
-      'alert-success'
+      'bg-success'
     elsif rating > 4
-      'alert-warning'
+      'bg-warning'
     else
-      'alert-danger'
+      'bg-danger'
     end
   end
 
