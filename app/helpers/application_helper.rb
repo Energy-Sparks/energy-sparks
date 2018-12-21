@@ -59,9 +59,9 @@ module ApplicationHelper
   end
 
   def class_for_alert_rating(rating)
-    if rating > 8
+    if rating > 9
       'bg-success'
-    elsif rating > 4
+    elsif rating > 6
       'bg-warning'
     else
       'bg-danger'

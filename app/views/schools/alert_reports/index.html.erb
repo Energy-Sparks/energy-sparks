@@ -92,14 +92,16 @@
                 <% elsif detail.type == :html %>
                   <%= detail.content.html_safe %>
                 <% else %>
-                  <p><%= detail.content %></p>
+                  <p><%= detail.content.html_safe %></p>
                 <% end %>
               <% end %>
             </div>
             <div class="card-footer text-muted">
                 <p class="card-text">Find out more: <%= link_to alert_type[:title], alert_type[:report].help_url %></p>
-                <p class="card-text"><b>Current rating</b>: <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %> <b>Status</b>: <%= alert_type[:report].status.capitalize %></p>
-                 <p class="card-text"><b>frequency</b>: <%= alert_type[:frequency].humanize %></p>
+                <% unless fuel_type.nil? || alert_type[:title] == 'Turn heating on/off' %>
+                  <p class="card-text"><b>Current rating</b>: <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %>
+                <% end %>
+                <p class="card-text"><b>Frequency</b>: <%= alert_type[:frequency].humanize %></p>
             </div>
           </div>
         </div>
