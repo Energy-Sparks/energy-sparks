@@ -57,11 +57,11 @@ class School < ApplicationRecord
   has_many :amr_data_feed_readings, through: :meters
   has_many :amr_validated_readings, through: :meters
 
-  has_many :activities, inverse_of: :school, dependent: :destroy
-  has_many :school_times, inverse_of: :school, dependent: :destroy
-  has_many :contacts,     inverse_of: :school, dependent: :destroy
-  has_many :alerts,       inverse_of: :school, dependent: :destroy
-  has_many :simulations, inverse_of: :school, dependent: :destroy
+  has_many :activities,           inverse_of: :school, dependent: :destroy
+  has_many :school_times,         inverse_of: :school, dependent: :destroy
+  has_many :contacts,             inverse_of: :school, dependent: :destroy
+  has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
+  has_many :simulations,          inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
   belongs_to :calendar_area
@@ -189,8 +189,8 @@ class School < ApplicationRecord
     sash.badge_ids.include?(id)
   end
 
-  def alerts?
-    alerts.any?
+  def alert_subscriptions?
+    alert_subscriptions.any?
   end
 
   def current_term
