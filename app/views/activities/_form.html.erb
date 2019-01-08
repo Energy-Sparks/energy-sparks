@@ -36,9 +36,9 @@
     %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :title %>
-    <p class="small">This is how your activity will appear in your activity list, so choose a clear title which will make others want to read about your activity.</p>
+  <div class="form-group" id="title-field">
+    <%= f.label 'Custom title' %>
+    <p class="small">This is a custom title as this activity does not fit one of the standard activities, choose a clear title which will make others want to read about your activity.</p>
     <%= f.text_field :title, class: 'form-control'  %>
   </div>
 
