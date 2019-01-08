@@ -21,7 +21,6 @@
 //= require handlebars
 
 //= require activities
-//= require activity_types
 //= require calendars
 //= require data_explorer
 //= require schools
