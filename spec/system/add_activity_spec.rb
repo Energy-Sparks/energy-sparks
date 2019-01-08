@@ -25,7 +25,6 @@ describe 'adding a new activity' do
     editor.click.set(activity_description)
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully created.')).to be true
-    expect(page.has_content?('The title')).to be true
     expect(page.has_content?(activity_description)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
 
