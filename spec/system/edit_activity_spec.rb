@@ -6,10 +6,14 @@ describe 'editing an activity' do
   let(:activity_type_name) { 'Exciting activity' }
   let(:activity_description) { 'What we did' }
   let(:new_activity_description) { 'What we did - or did we?' }
+  let(:custom_title) { 'Custom title' }
   let!(:school) { create_active_school(name: school_name)}
   let!(:admin)  { create(:user, role: 'school_user', school: school)}
   let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
   let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
+
+  let(:other_activity_type_name) { 'Exciting activity (please specify)' }
+  let!(:other_activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
 
   before(:each) do
     sign_in(admin)
@@ -19,10 +23,9 @@ describe 'editing an activity' do
     click_on('Edit')
   end
 
-  it 'allows an activity to be created', js: true do
+  it 'allows an activity to be updated', js: true do
     expect(page.has_content?('Update your activity'))
 
-    fill_in :activity_title, with: 'The title'
     editor = find('trix-editor')
     editor.click.set(new_activity_description)
     fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
@@ -30,6 +33,17 @@ describe 'editing an activity' do
     expect(page.has_content?('Activity was successfully updated.')).to be true
     expect(page.has_content?(new_activity_description)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
+  end
+
+  it 'allows an activity to be updated with custom title', js: true do
+    expect(page.has_content?('Update your activity'))
+    select(other_activity_type_name, from: 'Activity type')
+    fill_in :activity_title, with: custom_title
+
+    click_on 'Save activity'
+    expect(page.has_content?('Activity was successfully updated.')).to be true
+    expect(page.has_content?(other_activity_type_name)).to be false
+    expect(page.has_content?(custom_title)).to be true
   end
 
   it 'defaults activity date to correct date' do
