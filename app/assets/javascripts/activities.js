@@ -1,17 +1,14 @@
 "use strict"
 
 $(document).ready(function() {
-  $("#activity_date_picker").datepicker({
-    dateFormat: 'dd/mm/yy',
-    altFormat: 'yy-mm-dd',
-    altField: "#activity_happened_on",
-    maxDate: 0,
-    orientation: 'bottom'
-  });
-  // clear altfield if picker field is cleared
-  $("#activity_date_picker").change(function() {
-    if (!$(this).val()) {
-      $("#activity_happened_on").val("");
+ if ($("form.activity-form").length) {
+    var $datePickerDiv = $('div#activity_date_picker_field');
+    if ($datePickerDiv.length) {
+      $datePickerDiv.datetimepicker({
+        format: 'DD/MM/YYYY',
+        allowInputToggle: true,
+        debug: true
+      });
     }
-  });
+  }
 });
