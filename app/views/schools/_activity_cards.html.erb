@@ -114,7 +114,7 @@
               <ul class="list-unstyled">
                 <% @activities[0..2].each do |activity| %>
                     <li>
-                      <%= link_to activity.title, school_activity_path(@school, activity) %>
+                      <%= link_to activity.activity_type.name, school_activity_path(@school, activity) %>
                     </li>
                 <% end %>
               </ul>
