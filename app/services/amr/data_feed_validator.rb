@@ -33,7 +33,7 @@ module Amr
     end
 
     def drop_header?(array_of_rows)
-      array_of_rows[0][0] == @config.header_first_thing
+      array_of_rows[0][0].tr('"', '') == @config.header_first_thing.tr('"', '')
     end
 
     def invalid_row?(row)
