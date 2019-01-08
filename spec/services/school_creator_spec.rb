@@ -13,20 +13,20 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.school_times.map(&:day)).to match_array(%w{monday tuesday wednesday thursday friday})
     end
 
-    it 'adds alerts to the school' do
+    it 'adds alert_subscriptions to the school' do
       service = SchoolCreator.new(school)
       expect{
         service.process_new_school!
-      }.to change{school.alerts.count}.from(0).to(1)
-      expect(school.alerts.first.alert_type).to eq(alert_type)
+      }.to change{school.alert_subscriptions.count}.from(0).to(1)
+      expect(school.alert_subscriptions.first.alert_type).to eq(alert_type)
     end
 
-    it 'only adds alerts once' do
+    it 'only adds alert subscriptions once' do
       service = SchoolCreator.new(school)
       service.process_new_school! # first call
       expect{
         service.process_new_school!
-      }.to not_change{school.alerts.count}
+      }.to not_change{school.alert_subscriptions.count}
     end
 
   end
