@@ -4,7 +4,9 @@ FactoryBot.define do
     sequence(:name) { |n| "test #{n} school" }
     school_type :primary
     active true
+    address { '1 Station Road' }
     postcode 'ab1 2cd'
+    website { "http://#{name.camelize}.test" }
     sash
 
     factory :school_with_same_name do

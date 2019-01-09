@@ -1,0 +1,154 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>You're almost there!</h1>
+
+    <p>You've completed all the required sections.</p>
+
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Your school details</h4>
+      </div>
+      <div class="card-body">
+        <dl>
+          <dt>Name:</dt>
+          <dd><%=@school.name%></dd>
+          <dt>URN:</dt>
+          <dd><%=@school.urn%></dd>
+          <dt>School type:</dt>
+          <dd><%=@school.school_type.try(:humanize) %></dd>
+          <dt>Key stages:</dt>
+          <dd><%=@school.key_stages.map(&:name).to_sentence %></dd>
+          <dt>Number of pupils:</dt>
+          <dd><%=@school.number_of_pupils %></dd>
+          <dt>Floor area:</dt>
+          <dd><%=@school.floor_area %></dd>
+          <dt>Address:</dt>
+          <dd><%=@school.address %></dd>
+          <dt>Postcode:</dt>
+          <dd><%=@school.postcode %></dd>
+          <dt>Website:</dt>
+          <dd><%=@school.website %></dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Your account</h4>
+      </div>
+      <div class="card-body">
+        <dl>
+          <dt>Name:</dt>
+          <dd><%=current_user.name%></dd>
+          <dt>Email:</dt>
+          <dd><%=current_user.email%></dd>
+          <dt>Password:</dt>
+          <dd>***********</dd>
+        </dl>
+      </div>
+    </div>
+
+    <h2>Other things you might want to look at:</h2>
+    <p>
+    It's not necessary for you to fill in the following sections to complete the sign-up process,
+    but the more information you provide the quicker your school can start using Energy Sparks
+    and our our energy calculations will be more accurate.
+    <p>
+
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Meters: <%=@school.meters.count%></h4>
+      </div>
+      <div class="card-body">
+        <% if @school.meters.empty? %>
+          <p>If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details form your Local Authority.</p>
+        <% else %>
+          <table class="table mb-3">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>MPAN/MPRN</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <% @school.meters.each do |meter|%>
+              <tr>
+                <td><%= meter.meter_type.humanize %></td>
+                <td><%= meter.mpan_mprn %></td>
+                <td><%= meter.name %></td>
+              </tr>
+            <% end %>
+            <tbody>
+            </tbody>
+          </table>
+        <% end %>
+        <%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>School opening times</h4>
+      </div>
+      <div class="card-body">
+        <p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
+        <table class="table mb-3">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Opening times</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @school_times.each do |school_time| %>
+              <tr>
+                <td><%= school_time.day.humanize %></td>
+                <td>
+                  <%= format_school_time(school_time.opening_time) %> - <%= format_school_time(school_time.closing_time) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= link_to 'Set school times', edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
+      </div>
+    </div>
+
+    <% if @inset_days %>
+      <div class="card mb-3">
+        <div class="card-header">
+          <h4>Inset days: <%= @inset_days.count %></h4>
+        </div>
+        <div class="card-body">
+          <p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p>
+          <p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p>
+          <table class="table mb-3">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @inset_days.each do |inset_day| %>
+                <tr>
+                  <td><%= inset_day.start_date %></td>
+                  <td><%= inset_day.calendar_event_type.title %></td>
+                  <td><%= inset_day.title %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+
+
+    <p>If you're ready to finish....</p>
+
+    <%= button_to "I've finished!", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
+  </div>
+</div>

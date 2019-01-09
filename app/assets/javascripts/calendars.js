@@ -11,4 +11,9 @@ $(document).ready(function() {
     const altfield = $(this).data("altfield");
     $(this).datepicker("option", "altField", altfield);
   });
+
+  $('#calendar_event_holder').datetimepicker({
+    format: 'DD/MM/YYYY',
+    allowInputToggle: true
+  });
 });
