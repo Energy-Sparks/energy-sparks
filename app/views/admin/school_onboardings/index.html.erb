@@ -17,8 +17,8 @@
       <tr>
         <td><%= onboarding.school_name %></td>
         <td><%= onboarding.contact_email %></td>
-        <td><%= onboarding.events.maximum(:created_at) %></td>
-        <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)) %></td>
+        <td><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
+        <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
         <td>
           <% unless onboarding.has_event?(:onboarding_complete) %>
             <%= button_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm' %>
