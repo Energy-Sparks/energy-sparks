@@ -534,8 +534,8 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.8)
     timecop (0.8.0)
-    trix (0.10.1)
-      rails
+    trix-rails (2.0.0)
+      rails (> 4.1, < 6.0)
     twilio-ruby (5.12.2)
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
@@ -646,7 +646,7 @@ DEPENDENCIES
   statsample!
   test-prof
   timecop
-  trix
+  trix-rails
   twilio-ruby
   tzinfo-data
   uglifier
