@@ -29,3 +29,14 @@ trix-toolbar .button_groups {
     display: none;
   }
 }
+
+.activity-form trix-toolbar {
+  .trix-button--icon {
+    width: 3.6em;
+    height: 2.6em;
+  }
+
+  .trix-button {
+    background: white;
+  }
+}
