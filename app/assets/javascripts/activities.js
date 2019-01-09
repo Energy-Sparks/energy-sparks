@@ -29,5 +29,7 @@ $(document).ready(function() {
       var selectedName = $(this).find('option:selected').text();
       showHideTitle(selectedName);
     });
+
+    $('#activity_activity_type_id').select2({theme: 'bootstrap'});
   }
 });
