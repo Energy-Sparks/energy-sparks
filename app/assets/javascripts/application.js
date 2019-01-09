@@ -38,4 +38,4 @@
 //= require tempusdominus-bootstrap-4.js
 
 //= require alert_reports
-//= require select2/select2.min
+
