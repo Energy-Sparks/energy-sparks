@@ -13,6 +13,7 @@
 
 trix-editor {
   min-height: 320px !important;
+  background: white;
 }
 
 trix-toolbar .button_groups {
@@ -34,6 +35,14 @@ trix-toolbar .button_groups {
   .trix-button--icon {
     width: 3.6em;
     height: 2.6em;
+  }
+
+  button.trix-button--icon-quote {
+    display: none;
+  }
+
+  button.trix-button--icon-code {
+    display: none;
   }
 
   .trix-button {
