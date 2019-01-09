@@ -15,7 +15,7 @@ class Ability
       can [:read, :usage, :awards], School do |school|
         school.active? || user.school_id == school.id
       end
-      can :manage, Alert, school_id: user.school_id
+      can :manage, AlertSubscription, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
       can [:index, :crud], Meter, school_id: user.school_id
       can :activate, Meter, active: false, school_id: user.school_id

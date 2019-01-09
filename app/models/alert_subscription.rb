@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: alerts
+# Table name: alert_subscriptions
 #
 #  alert_type_id :bigint(8)
 #  id            :bigint(8)        not null, primary key
@@ -8,8 +8,8 @@
 #
 # Indexes
 #
-#  index_alerts_on_alert_type_id  (alert_type_id)
-#  index_alerts_on_school_id      (school_id)
+#  index_alert_subscriptions_on_alert_type_id  (alert_type_id)
+#  index_alert_subscriptions_on_school_id      (school_id)
 #
 # Foreign Keys
 #
@@ -17,9 +17,9 @@
 #  fk_rails_...  (school_id => schools.id)
 #
 
-class Alert < ApplicationRecord
-  belongs_to :school,     inverse_of: :alerts
-  belongs_to :alert_type, inverse_of: :alerts
+class AlertSubscription < ApplicationRecord
+  belongs_to :school,     inverse_of: :alert_subscriptions
+  belongs_to :alert_type, inverse_of: :alert_subscriptions
 
   has_and_belongs_to_many :contacts
 
@@ -28,8 +28,8 @@ class Alert < ApplicationRecord
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
 
-  def display_category
-    alert_type.category.humanize if alert_type.category?
+  def display_fuel_type
+    alert_type.display_fuel_type
   end
 
   def display_sub_category

@@ -38,7 +38,6 @@ json.charts @output.each do |chart|
   }
 
   json.chart_index        chart_index
-  json.anaylsis_type      chart[:chart_type]
   json.title              chart_data[:title]
   json.chart1_type        chart_data[:chart1_type]
   json.chart1_subtype     chart_data[:chart1_subtype]

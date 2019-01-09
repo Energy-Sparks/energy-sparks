@@ -1,5 +1,3 @@
-require 'csv'
-
 namespace :alerts do
   desc 'Run alerts job'
   task cron_job: [:environment] do
@@ -16,7 +14,9 @@ namespace :alerts do
     schools = School.active
     schools.each do |school|
       puts "Running alerts for #{school.name}"
-      AlertGeneratorService.new(school, Time.zone.today - 3.days).generate_for_contacts(run_all)
+      run_for = Time.zone.today - 3.days
+      aggregate_school = AggregateSchoolService.new(school).aggregate_school
+      AlertGeneratorService.new(school, aggregate_school, run_for, run_for).generate_for_contacts(run_all)
     end
     puts Time.zone.now
   end

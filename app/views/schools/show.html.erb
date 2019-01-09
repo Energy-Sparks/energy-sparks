@@ -46,7 +46,7 @@
       </p>
       <div class="float-right mb-3">
         <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success' %>
-        <%#= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success btn-sm' %>
+        <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success' if can? :manage, Simulation %>
         <%- if can? :update, @school -%>
           <div class="dropdown float-right ml-1">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="manage-school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -59,7 +59,7 @@
               <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
               <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' if can? :index, Meter %>
               <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item' if can? :manage_school_times, @school%>
-              <%= link_to 'Manage alerts', school_alerts_path(@school), class: 'dropdown-item' if can? :manage, Alert %>
+              <%= link_to 'Manage alert subscriptions', school_alert_subscriptions_path(@school), class: 'dropdown-item' if can? :manage, AlertSubscription %>
               <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item'%>
             </div>
           </div>

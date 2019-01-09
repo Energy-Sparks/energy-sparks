@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
-      resources :alerts
+      resources :alert_subscriptions
 
       resources :meters do
         member do
@@ -57,14 +57,14 @@ Rails.application.routes.draw do
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
 
-      get 'simulations/:id/simulation_detail', to: 'simulation_details#show', as: :simulation_detail
+      get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations
 
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
-      get :chart, to: 'analysis#chart'
+      get :chart, to: 'charts#show', defaults: { format: :json }
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
       get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'

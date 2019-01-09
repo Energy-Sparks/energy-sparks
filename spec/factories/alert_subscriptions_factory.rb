@@ -13,7 +13,7 @@
 #  title                :text
 #
 FactoryBot.define do
-  factory :alert do
+  factory :alert_subscription do
     alert_type
   end
 end

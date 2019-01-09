@@ -35,7 +35,7 @@ class SchoolCreator
 
   def add_all_alert_types
     AlertType.all.each do |alert_type|
-      @school.alerts.create(alert_type: alert_type) unless @school.alerts.where(alert_type: alert_type).exists?
+      @school.alert_subscriptions.create(alert_type: alert_type) unless @school.alert_subscriptions.where(alert_type: alert_type).exists?
     end
   end
 
