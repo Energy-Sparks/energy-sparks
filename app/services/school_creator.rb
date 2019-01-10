@@ -35,7 +35,7 @@ class SchoolCreator
 
   def activate_school!
     @school.update!(active: true)
-    if @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
+    if should_send_activation_email?
       OnboardingMailer.with(school_onboarding: @school.school_onboarding).activation_email.deliver_now
       record_event(@school.school_onboarding, :activation_email_sent)
     end
@@ -58,6 +58,10 @@ class SchoolCreator
   end
 
 private
+
+  def should_send_activation_email?
+    @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
+  end
 
   def generate_calendar
     if (area = @school.calendar_area)
