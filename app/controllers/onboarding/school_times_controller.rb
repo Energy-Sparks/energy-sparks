@@ -8,7 +8,7 @@ module Onboarding
       @school = @school_onboarding.school
       @school.attributes = school_params
       if @school.save(context: :school_times_update)
-        redirect_to new_onboarding_completion_path(@school_onboarding)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'opening-times')
       else
         render :edit
       end

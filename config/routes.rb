@@ -28,12 +28,12 @@ Rails.application.routes.draw do
   resources :onboarding, only: [:show] do
     scope module: :onboarding do
       resource :consent,        only: [:show, :create], controller: 'consent'
-      resource :account,        only: [:new, :create], controller: 'account'
-      resource :school_details, only: [:new, :create]
+      resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
+      resource :school_details, only: [:new, :create, :edit, :update]
       resource :completion,     only: [:new, :create, :show], controller: 'completion'
-      resources :meters,        only: [:new, :create]
+      resources :meters,        only: [:new, :create, :edit, :update]
       resource :school_times,   only: [:edit, :update]
-      resources :inset_days,    only: [:new, :create]
+      resources :inset_days,    only: [:new, :create, :edit, :update, :destroy]
     end
   end
 

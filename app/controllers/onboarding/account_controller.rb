@@ -1,7 +1,7 @@
 module Onboarding
   class AccountController < BaseController
-    skip_before_action :authenticate_user!
-    before_action do
+    skip_before_action :authenticate_user!, only: [:new, :create]
+    before_action only: [:new, :create] do
       redirect_if_event(:onboarding_user_created, new_onboarding_school_details_path(@school_onboarding))
     end
 
@@ -20,6 +20,19 @@ module Onboarding
         redirect_to new_onboarding_school_details_path(@school_onboarding)
       else
         render :new
+      end
+    end
+
+    def edit
+    end
+
+    def update
+      if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?})
+        @school_onboarding.events.create!(event: :onboarding_user_updated)
+        bypass_sign_in(current_user)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'your-account')
+      else
+        render :edit
       end
     end
 

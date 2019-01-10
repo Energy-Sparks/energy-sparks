@@ -58,6 +58,16 @@ module ApplicationHelper
     end
   end
 
+  def class_for_alert_rating(rating)
+    if rating > 9
+      'bg-success'
+    elsif rating > 6
+      'bg-warning'
+    else
+      'bg-danger'
+    end
+  end
+
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)

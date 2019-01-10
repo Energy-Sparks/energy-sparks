@@ -24,12 +24,15 @@ class SchoolOnboardingEvent < ApplicationRecord
     email_sent: 0,
     permission_given: 10,
     onboarding_user_created: 20,
+    onboarding_user_updated: 21,
     school_admin_created: 30,
     default_school_times_added: 40,
     default_alerts_assigned: 50,
     school_calendar_created: 60,
     school_details_created: 70,
+    school_details_updated: 71,
     onboarding_complete: 80,
-    reminder_sent: 90
+    reminder_sent: 90,
+    activation_email_sent: 100
   }
 end

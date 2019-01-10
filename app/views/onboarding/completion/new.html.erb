@@ -4,7 +4,7 @@
 
     <p>You've completed all the required sections.</p>
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="school-details">
       <div class="card-header">
         <h4>Your school details</h4>
       </div>
@@ -29,10 +29,11 @@
           <dt>Website:</dt>
           <dd><%=@school.website %></dd>
         </dl>
+        <%= link_to 'Edit school details', edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
       </div>
     </div>
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="your-account">
       <div class="card-header">
         <h4>Your account</h4>
       </div>
@@ -45,6 +46,7 @@
           <dt>Password:</dt>
           <dd>***********</dd>
         </dl>
+        <%= link_to 'Edit your account', edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
       </div>
     </div>
 
@@ -55,7 +57,7 @@
     and our our energy calculations will be more accurate.
     <p>
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="meters">
       <div class="card-header">
         <h4>Meters: <%=@school.meters.count%></h4>
       </div>
@@ -69,6 +71,7 @@
                 <th>Type</th>
                 <th>MPAN/MPRN</th>
                 <th>Name</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <% @school.meters.each do |meter|%>
@@ -76,6 +79,9 @@
                 <td><%= meter.meter_type.humanize %></td>
                 <td><%= meter.mpan_mprn %></td>
                 <td><%= meter.name %></td>
+                <td>
+                  <%= link_to 'Edit', edit_onboarding_meter_path(@school_onboarding, meter), class: 'btn btn-sm btn-warning' %>
+                </td>
               </tr>
             <% end %>
             <tbody>
@@ -86,7 +92,7 @@
       </div>
     </div>
 
-    <div class="card mb-3">
+    <div class="card mb-3" id="opening-times">
       <div class="card-header">
         <h4>School opening times</h4>
       </div>
@@ -116,7 +122,7 @@
     </div>
 
     <% if @inset_days %>
-      <div class="card mb-3">
+      <div class="card mb-3" id="inset-days">
         <div class="card-header">
           <h4>Inset days: <%= @inset_days.count %></h4>
         </div>
@@ -129,6 +135,7 @@
                 <th>Date</th>
                 <th>Type</th>
                 <th>Description</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -137,6 +144,12 @@
                   <td><%= inset_day.start_date %></td>
                   <td><%= inset_day.calendar_event_type.title %></td>
                   <td><%= inset_day.title %></td>
+                  <td>
+                    <div class="btn-group">
+                      <%= link_to 'Edit', edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>
+                      <%= link_to 'Delete', onboarding_inset_day_path(@school_onboarding, inset_day), method: :delete, class: 'btn btn-sm btn-danger' %>
+                    </div>
+                  </td>
                 </tr>
               <% end %>
             </tbody>

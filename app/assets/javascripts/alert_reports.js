@@ -57,8 +57,7 @@ $(document).ready(function() {
           date: defaultDate,
           minDate: earliestReadingDate,
           maxDate: latestReadingDate,
-          allowInputToggle: true,
-          debug: true
+          allowInputToggle: true
         });
       }
     }

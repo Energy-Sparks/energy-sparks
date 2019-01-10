@@ -3,6 +3,7 @@
     <h1>Your school details</h1>
     <%= simple_form_for(@school, url: onboarding_school_details_path(@school_onboarding)) do |f| %>
       <%= render 'form', school: @school, school_onboarding: @school_onboarding, key_stage_tags: @key_stage_tags %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'school-details'), class: 'btn' %>
     <% end %>
   </div>
 </div>
