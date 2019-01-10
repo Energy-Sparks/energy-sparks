@@ -32,7 +32,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       within '.navbar' do
         click_on 'Automatic School Setup'
       end
-      click_on 'New Automated School Setup'
+      click_on 'New Automatic School Setup'
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
