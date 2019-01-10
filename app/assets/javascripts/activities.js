@@ -3,13 +3,13 @@
 $(document).ready(function() {
   if ($("form.activity-form").length) {
     var $datePickerDiv = $('div#activity_date_picker_field');
-    var defaultDate = moment($datePickerDiv.data('default-date'), 'DD/MM/YYYY')
+    var dateValue = moment($('#activity_happened_on').val(), 'DD/MM/YYYY');
 
     if ($datePickerDiv.length) {
       $datePickerDiv.datetimepicker({
         format: 'DD/MM/YYYY',
         allowInputToggle: true,
-        date: defaultDate
+        date: dateValue
       });
     }
 
