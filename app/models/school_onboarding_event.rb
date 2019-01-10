@@ -30,6 +30,7 @@ class SchoolOnboardingEvent < ApplicationRecord
     school_calendar_created: 60,
     school_details_created: 70,
     onboarding_complete: 80,
-    reminder_sent: 90
+    reminder_sent: 90,
+    activation_email_sent: 100
   }
 end
