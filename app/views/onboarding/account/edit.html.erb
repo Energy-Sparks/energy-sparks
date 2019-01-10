@@ -11,6 +11,7 @@
       <%= f.input :password %>
       <%= f.input :password_confirmation %>
       <%= f.button :submit, 'Update my account' %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'your-account'), class: 'btn' %>
     <% end %>
   </div>
 </div>

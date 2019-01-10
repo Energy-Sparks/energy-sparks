@@ -30,7 +30,7 @@ module Onboarding
       if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?})
         @school_onboarding.events.create!(event: :onboarding_user_updated)
         bypass_sign_in(current_user)
-        redirect_to new_onboarding_completion_path(@school_onboarding)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'your-account')
       else
         render :edit
       end

@@ -14,6 +14,22 @@ module Onboarding
       end
     end
 
+    def edit
+      @meter = @school_onboarding.school.meters.find(params[:id])
+    end
+
+    def update
+      @meter = @school_onboarding.school.meters.find(params[:id])
+      if @meter.update(meter_params)
+        if @meter.mpan_mprn_previously_changed?
+          MeterManagement.new(@meter).process_mpan_mpnr_change!
+        end
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'meters')
+      else
+        render :edit
+      end
+    end
+
   private
 
     def meter_params
