@@ -19,14 +19,11 @@ describe 'adding a new activity' do
     click_on('Record your activity')
   end
 
-  it 'allows an activity to be created without title', js: true do
+  it 'allows an activity to be created without title' do
+    expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
     select(activity_type_name, from: 'Activity type')
-
-    editor = find('trix-editor')
-    editor.click.set(activity_description)
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully created.')).to be true
-    expect(page.has_content?(activity_description)).to be true
     expect(page.has_content?(activity_type_name)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
   end
@@ -42,9 +39,5 @@ describe 'adding a new activity' do
     expect(page.has_content?(other_activity_type_name)).to be false
     expect(page.has_content?(custom_title)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
-  end
-
-  it 'defaults activity date to current date' do
-    expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
   end
 end

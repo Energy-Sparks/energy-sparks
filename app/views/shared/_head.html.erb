@@ -5,10 +5,9 @@
 
 <title>
   <% if content_for?(:page_title) %>
-      <%= content_for(:page_title) %> | <%= t('application') %>
-  <% else %>
-      <%= t('application') %>
+    <%= content_for(:page_title) %> |
   <% end  %>
+  <%= t('application') %>
 </title>
 
 <%= csrf_meta_tags %>
@@ -22,7 +21,6 @@
 
 <%= stylesheet_link_tag    'application', media: 'all' %>
 
-<%= javascript_include_tag "https://www.google.com/jsapi" %>
 <%= javascript_include_tag 'application' %>
 <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js" %>
 

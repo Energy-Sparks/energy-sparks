@@ -1,4 +1,4 @@
-<% content_for :page_title do %><%= @school.name %> Activity<% end %>
+<% content_for :page_title, "#{@school.name} Activity" %>
 
 <div class="row padded-row">
   <div class="col-md-12">
@@ -12,19 +12,21 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12 activity">
-    <h3>What you did</h3>
-    <%= raw @activity.description %>
+<% if @activity.description.present? %>
+  <div class="row">
+    <div class="col-md-12 activity">
+      <h3>What you did</h3>
+      <%= sanitize @activity.description %>
+    </div>
   </div>
-</div>
+  <hr>
+<% end %>
 
 <% if @activity.activity_type.description.present? %>
-  <hr>
   <div class="row">
     <div class="col-md-12 activity_type">
       <h3>Activity description</h3>
-      <%= raw @activity.activity_type.description %>
+      <%= sanitize @activity.activity_type.description %>
     </div>
   </div>
 <% end %>

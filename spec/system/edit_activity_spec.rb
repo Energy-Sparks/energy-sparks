@@ -23,15 +23,13 @@ describe 'editing an activity' do
     click_on('Edit')
   end
 
-  it 'allows an activity to be updated', js: true do
+  it 'allows an activity to be updated' do
     expect(page.has_content?('Update your activity'))
+    expect(find_field(:activity_happened_on).value).to eq Date.yesterday.strftime("%d/%m/%Y")
 
-    editor = find('trix-editor')
-    editor.click.set(new_activity_description)
     fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully updated.')).to be true
-    expect(page.has_content?(new_activity_description)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
   end
 
@@ -39,19 +37,13 @@ describe 'editing an activity' do
     expect(page.has_content?('Update your activity'))
     select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
+    editor = find('trix-editor')
+    editor.click.set(new_activity_description)
 
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully updated.')).to be true
+    expect(page.has_content?(new_activity_description)).to be true
     expect(page.has_content?(other_activity_type_name)).to be false
     expect(page.has_content?(custom_title)).to be true
   end
-
-  it 'defaults activity date to correct date' do
-    expect(find_field(:activity_happened_on).value).to eq Date.yesterday.strftime("%d/%m/%Y")
-  end
-
-  it 'has an activity type to select' do
-    expect(page.has_content?(activity_type_name))
-  end
-
 end
