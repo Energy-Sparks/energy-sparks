@@ -10,3 +10,10 @@ div.alert-reports-chart {
   padding-bottom: 50px;
   padding-top: 50px;
 }
+
+[data-toggle="collapse"].collapsed .if-not-collapsed {
+  display: none;
+}
+[data-toggle="collapse"]:not(.collapsed) .if-collapsed {
+  display: none;
+}
