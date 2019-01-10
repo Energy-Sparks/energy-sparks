@@ -69,6 +69,8 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area
   belongs_to :school_group
 
+  has_one :school_onboarding
+
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
   scope :active, -> { where(active: true) }
