@@ -59,7 +59,7 @@ gem 'activerecord-import'
 gem 'handlebars_assets'
 
 # User input
-gem 'trix' # Use Trix editor for activity descriptions
+gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
