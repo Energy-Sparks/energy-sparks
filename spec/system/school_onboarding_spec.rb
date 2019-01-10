@@ -121,8 +121,6 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       click_on 'Update school details'
 
-      # TODO: show details/edit?
-
       click_on "I've finished"
       expect(onboarding).to have_event(:onboarding_complete)
 
@@ -142,7 +140,6 @@ RSpec.describe "school onboarding", :schools, type: :system do
       SchoolCreator.new(school).onboard_school!(onboarding)
 
       sign_in(user)
-
       visit new_onboarding_completion_path(onboarding)
 
       # Meters
