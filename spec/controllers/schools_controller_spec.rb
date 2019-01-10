@@ -5,7 +5,7 @@ RSpec.describe SchoolsController, type: :controller do
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {urn: 12345, name: 'test school'}
+    attributes_for(:school)
   }
 
   let(:invalid_attributes) {
@@ -291,6 +291,7 @@ RSpec.describe SchoolsController, type: :controller do
         it "redirects to the school" do
           school = create(:school_with_same_name)
           put :update, params: {id: school.to_param, school: valid_attributes}
+          school.reload
           expect(response).to redirect_to(school)
         end
 

@@ -1,34 +1,44 @@
-<% content_for :page_title do %>
-    <%= @school.name %> Activity
-<% end %>
+<% content_for :page_title, "#{@school.name} Activity" %>
 
 <div class="row padded-row">
   <div class="col-md-12">
-    <h1><%= @activity.title %></h1>
+    <h1><%= @activity.display_name %></h1>
     <p class="text-muted">
       <span><%= link_to @school.name, school_path(@school) %>, <%= @activity.happened_on.strftime("%A, %d %B %Y") %></span><br>
-      <span><%= link_to @activity.activity_type.name, activity_type_path(@activity.activity_type) %></span><br>
       <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= @activity.activity_type.score %></span>
       <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Category of activity"><%= @activity.activity_type.activity_category.name %></span>
+      <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= @activity.activity_type.key_stage_list %></span>
     </p>
- </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12 activity">
-      <%= raw @activity.description %>
   </div>
 </div>
 
+<% if @activity.description.present? %>
+  <div class="row">
+    <div class="col-md-12 activity">
+      <h3>What you did</h3>
+      <%= sanitize @activity.description %>
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<% if @activity.activity_type.description.present? %>
+  <div class="row">
+    <div class="col-md-12 activity_type">
+      <h3>Activity description</h3>
+      <%= sanitize @activity.activity_type.description %>
+    </div>
+  </div>
+<% end %>
 
 <div class="row">
   <div class="col-md-12 activity">
     <hr>
     <%= link_to 'All activities', school_activities_path(@school), class: 'btn btn-success' %>
     <% if can? :manage, @activity %>
-        <%= link_to 'Home', school_path(@school), class: 'btn btn-primary' %>
-        <%= link_to 'Edit', edit_school_activity_path(@school, @activity), class: 'btn btn-primary' %>
-        <%= link_to 'Delete', school_activity_path(@school, @activity), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+      <%= link_to 'Home', school_path(@school), class: 'btn btn-primary' %>
+      <%= link_to 'Edit', edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %>
+      <%= link_to 'Delete', school_activity_path(@school, @activity), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
     <% end %>
   </div>
 </div>

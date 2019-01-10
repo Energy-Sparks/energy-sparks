@@ -1,0 +1,24 @@
+<h1>Configuration: <%= @school_onboarding.school_name %> </h1>
+
+<%= form_for(@school_onboarding, url: admin_school_onboarding_configuration_path) do |f| %>
+  <h2>Calendar and Data Feed configuration</h2>
+  <div class="form-group">
+    <%= f.label :calendar_area_id, 'Calendar Area' %>
+    <%= f.select :calendar_area_id, options_from_collection_for_select(CalendarArea.with_template.order(:title), 'id', 'title', (@school_onboarding.calendar_area.id if @school_onboarding.calendar_area)),{},{class: 'form-control'}%>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :weather_underground_area_id, 'Weather Underground Data Feed Area' %>
+      <%= f.select :weather_underground_area_id, options_from_collection_for_select(WeatherUndergroundArea.all, 'id', 'title', (@school_onboarding.weather_underground_area.id if @school_onboarding.weather_underground_area)),{}, { class: 'form-control' }%>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
+      <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all, 'id', 'title', (@school_onboarding.solar_pv_tuos_area.id if @school_onboarding.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit 'Next', class: 'btn btn-primary' %>
+  </div>
+<% end %>

@@ -44,6 +44,7 @@ gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
+gem 'simple_form'
 # Highcharts now included directly
 
 # Spreadsheet export
@@ -58,7 +59,7 @@ gem 'activerecord-import'
 gem 'handlebars_assets'
 
 # User input
-gem 'trix' # Use Trix editor for activity descriptions
+gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication

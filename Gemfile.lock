@@ -496,6 +496,9 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
     sexp_processor (4.11.0)
+    simple_form (4.1.0)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -534,8 +537,8 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.8)
     timecop (0.8.0)
-    trix (0.10.1)
-      rails
+    trix-rails (2.0.0)
+      rails (> 4.1, < 6.0)
     twilio-ruby (5.12.2)
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
@@ -639,6 +642,7 @@ DEPENDENCIES
   rubyzip (= 1.2.2)
   sass-rails
   selenium-webdriver
+  simple_form
   simplecov
   spring
   spring-commands-rspec
@@ -646,7 +650,7 @@ DEPENDENCIES
   statsample!
   test-prof
   timecop
-  trix
+  trix-rails
   twilio-ruby
   tzinfo-data
   uglifier
