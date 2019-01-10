@@ -13,6 +13,7 @@
 
 trix-editor {
   min-height: 320px !important;
+  background: white;
 }
 
 trix-toolbar .button_groups {
@@ -28,4 +29,28 @@ trix-toolbar .button_groups {
   button.decrease {
     display: none;
   }
+}
+
+.activity-form trix-toolbar {
+  .trix-button--icon {
+    width: 3.6em;
+    height: 2.6em;
+  }
+
+  button.trix-button--icon-quote {
+    display: none;
+  }
+
+  button.trix-button--icon-code {
+    display: none;
+  }
+
+  .trix-button {
+    background: white;
+  }
+}
+
+.select2-container--bootstrap .select2-results__group {
+  color: #212529;
+  font-size: 24px;
 }

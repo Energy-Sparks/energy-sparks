@@ -5,16 +5,23 @@
   <div class="form-group">
     <%= f.label :happened_on, "When did you do the activity?" %>
     <p class="small"> You can record a recent activity or even record older activities to build up a record of all of the energy saving activities you've carried out as a school.</p>
-    <%= text_field_tag(:activity_date_picker,
-      @activity.happened_on.try(:strftime, "%d/%m/%Y"),
-      placeholder: 'select date',
-      class: 'form-control'
-    ) %>
-    <%= f.hidden_field :happened_on %>
+    <div class="input-group">
+      <div class="input-group date" id="activity_date_picker_field" data-target-input="nearest" data-default-date="<%= activity.happened_on.strftime("%d/%m/%Y")%>">
+       <%= f.text_field(:happened_on,
+          { class: 'form-control datetimepicker-input',
+            data: { target: "#activity_date_picker_field" },
+            value: activity.happened_on.strftime("%d/%m/%Y")
+          }
+        ) %>
+        <div class="input-group-append" data-target="#activity_date_picker_field" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
-    <%= f.label :activity_type %>
+    <%= f.label :activity_type_id %>
     <p class="small">Specify the Energy Sparks activity type to earn the correct number of points for your efforts</p>
     <%= f.grouped_collection_select(
       :activity_type_id,
@@ -29,19 +36,20 @@
     %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :title %>
-    <p class="small">This is how your activity will appear in your activity list, so choose a clear title which will make others want to read about your activity.</p>
+  <div class="form-group" id="title-field">
+    <%= f.label 'Custom title' %>
+    <p class="small">This is a custom title as this activity does not fit one of the standard activities, choose a clear title which will make others want to read about your activity.</p>
     <%= f.text_field :title, class: 'form-control'  %>
   </div>
 
   <div class="form-group">
+
     <%= f.label :description, "Tell us more about what you did" %>
-    <%= f.hidden_field :description %>
     <p class="small">Please tell us a bit more about your activity. Insert a link to your school website if you’ve published information, photos or videos about your activity online.</p>
     <p class="small">You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.</p>
     <p class="small">Please try to make your activity description as interesting as possible, so other schools are encouraged to try out your activity in their own school.</p>
-    <trix-editor input="activity_description"></trix-editor>
+
+    <%= f.trix_editor :description, required: true, autofocus: true %>
   </div>
 
   <div class="actions">

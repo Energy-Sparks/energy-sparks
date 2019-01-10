@@ -4,11 +4,11 @@
 #
 #  academic_year_id       :bigint(8)
 #  calendar_event_type_id :bigint(8)
-#  calendar_id            :bigint(8)
+#  calendar_id            :bigint(8)        not null
 #  description            :text
-#  end_date               :date
+#  end_date               :date             not null
 #  id                     :bigint(8)        not null, primary key
-#  start_date             :date
+#  start_date             :date             not null
 #  title                  :text
 #
 # Indexes
@@ -38,6 +38,8 @@ class CalendarEvent < ApplicationRecord
   after_update :update_neighbour_end,   if: :saved_change_to_start_date?
 
   after_create :check_whether_child_needs_creating
+
+  validates :calendar, :start_date, :end_date, presence: true
 
 private
 
