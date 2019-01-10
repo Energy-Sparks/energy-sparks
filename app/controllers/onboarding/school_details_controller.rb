@@ -21,6 +21,20 @@ module Onboarding
       end
     end
 
+    def edit
+      @school = @school_onboarding.school
+    end
+
+    def update
+      @school = @school_onboarding.school
+      if @school.update(school_params)
+        @school_onboarding.events.create!(event: :school_details_updated)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'school-details')
+      else
+        render :edit
+      end
+    end
+
   private
 
     def set_key_stage_tags

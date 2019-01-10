@@ -12,8 +12,10 @@ $(document).ready(function() {
     $(this).datepicker("option", "altField", altfield);
   });
 
+  var calendar_event_date_value = $('#calendar_event_holder .datetimepicker-input').val();
   $('#calendar_event_holder').datetimepicker({
     format: 'DD/MM/YYYY',
-    allowInputToggle: true
+    allowInputToggle: true,
+    date: moment(calendar_event_date_value)
   });
 });
