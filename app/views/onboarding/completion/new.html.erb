@@ -29,6 +29,7 @@
           <dt>Website:</dt>
           <dd><%=@school.website %></dd>
         </dl>
+        <%= link_to 'Edit school details', edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
       </div>
     </div>
 
@@ -45,6 +46,7 @@
           <dt>Password:</dt>
           <dd>***********</dd>
         </dl>
+        <%= link_to 'Edit your account', edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
       </div>
     </div>
 

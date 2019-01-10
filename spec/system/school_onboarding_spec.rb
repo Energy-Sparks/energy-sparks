@@ -170,8 +170,31 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Date', with: '2019-01-09'
       click_on 'Add inset day'
       expect(page).to have_content('Inset days: 1')
+    end
 
-      # Other users
+    it 'lets the user edit their details and the school details' do
+      user = create(:user, role: 'school_onboarding')
+      onboarding.update!(created_user: user)
+      school = build(:school)
+      SchoolCreator.new(school).onboard_school!(onboarding)
+
+      sign_in(user)
+
+      visit new_onboarding_completion_path(onboarding)
+
+      click_on 'Edit your account'
+
+      fill_in 'Your name', with: 'Better name'
+      click_on 'Update my account'
+      user.reload
+      expect(user.name).to eq('Better name')
+
+      click_on 'Edit school details'
+      fill_in 'Name', with: 'Correct school'
+      click_on 'Update school details'
+      school.reload
+      expect(school.name).to eq('Correct school')
+
     end
 
   end
