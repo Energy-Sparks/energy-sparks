@@ -3,14 +3,13 @@ class ActivityCategoriesController < ApplicationController
 
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index]
-  before_action :set_activity_category, only: [:show, :edit, :update, :destroy]
 
   # GET /activity_categories
   # GET /activity_categories.json
   def index
     @key_stage_filter_names = work_out_which_filters_to_set
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
-    @activity_categories = ActivityCategory.all.order(:name)
+    @activity_categories = @activity_categories.order(:name)
   end
 
   # GET /activity_categories/1
@@ -20,7 +19,6 @@ class ActivityCategoriesController < ApplicationController
 
   # GET /activity_categories/new
   def new
-    @activity_category = ActivityCategory.new
   end
 
   # GET /activity_categories/1/edit
@@ -30,8 +28,6 @@ class ActivityCategoriesController < ApplicationController
   # POST /activity_categories
   # POST /activity_categories.json
   def create
-    @activity_category = ActivityCategory.new(activity_category_params)
-
     respond_to do |format|
       if @activity_category.save
         format.html { redirect_to @activity_category, notice: 'Activity category was successfully created.' }
@@ -70,11 +66,6 @@ class ActivityCategoriesController < ApplicationController
   end
 
 private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_activity_category
-    @activity_category = ActivityCategory.find(params[:id])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_category_params

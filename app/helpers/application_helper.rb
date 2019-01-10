@@ -58,6 +58,16 @@ module ApplicationHelper
     end
   end
 
+  def class_for_alert_rating(rating)
+    if rating > 9
+      'bg-success'
+    elsif rating > 6
+      'bg-warning'
+    else
+      'bg-danger'
+    end
+  end
+
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)
@@ -69,7 +79,7 @@ module ApplicationHelper
   end
 
   def label_is_energy_plus?(label)
-    label.start_with?('Energy') && label.length > 6
+    label.is_a?(String) && label.start_with?('Energy') && label.length > 6
   end
 
   def label_is_temperature_plus?(label)
@@ -107,5 +117,10 @@ module ApplicationHelper
     end
 
     '{ "name": "' + content[:title] + '", "colorByPoint": "true", "data": [' + data_string + '] }'
+  end
+
+  def format_school_time(school_time)
+    return school_time if school_time.blank?
+    sprintf('%04d', school_time).insert(2, ':')
   end
 end

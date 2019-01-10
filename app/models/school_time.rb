@@ -21,4 +21,22 @@ class SchoolTime < ApplicationRecord
   belongs_to :school
 
   enum day: [:monday, :tuesday, :wednesday, :thursday, :friday]
+
+  validates :opening_time, :closing_time, presence: true
+  validates :opening_time, :closing_time, numericality: {
+    only_integer: true, allow_nil: true,
+    less_than_or_equal_to: 2359,
+    greater_than_or_equal_to: 0,
+    message: 'must be between 0000 and 2359'
+  }
+
+  def opening_time=(time)
+    time = time.delete(':') if time.respond_to?(:delete)
+    super(time)
+  end
+
+  def closing_time=(time)
+    time = time.delete(':') if time.respond_to?(:delete)
+    super(time)
+  end
 end

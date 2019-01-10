@@ -1,12 +1,11 @@
 class ActivityTypesController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :set_activity_type, only: [:show, :edit, :update, :destroy]
 
   # GET /activity_types
   # GET /activity_types.json
   def index
-    @activity_types = ActivityType.all.includes(:activity_category).order("activity_categories.name", :name)
+    @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
   end
 
   # GET /activity_types/1
@@ -19,7 +18,6 @@ class ActivityTypesController < ApplicationController
   # GET /activity_types/new
   def new
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
-    @activity_type = ActivityType.new
     add_activity_type_suggestions
   end
 
@@ -39,8 +37,6 @@ class ActivityTypesController < ApplicationController
   # POST /activity_types
   # POST /activity_types.json
   def create
-    @activity_type = ActivityType.new(activity_type_params)
-
     respond_to do |format|
       if @activity_type.save
         format.html { redirect_to @activity_type, notice: 'Activity type was successfully created.' }
@@ -86,11 +82,6 @@ private
 
   def add_activity_type_suggestions(number_of_suggestions_so_far = 0)
     (0..(7 - number_of_suggestions_so_far)).each { @activity_type.activity_type_suggestions.build }
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_activity_type
-    @activity_type = ActivityType.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

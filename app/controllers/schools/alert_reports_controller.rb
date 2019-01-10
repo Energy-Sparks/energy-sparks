@@ -1,32 +1,34 @@
-require 'dashboard'
-
 class Schools::AlertReportsController < ApplicationController
-  load_and_authorize_resource :school, find_by: :slug
-  skip_before_action :authenticate_user!
-  before_action :set_school
+  include SchoolAggregation
+
+  load_and_authorize_resource :school
 
   def index
-    @results = []
+    authorize! :manage, AlertSubscription, school_id: @school.id
 
-    analysis_asof_date = Date.new(2018, 2, 2)
-    AlertType.all.each do |alert_type|
-      alert = alert_type.class_name.constantize.new(aggregate_school)
-      alert.analyse(analysis_asof_date)
-      @results << { report: alert.analysis_report, title: alert_type.title, description: alert_type.description }
-    end
+    set_up_reading_dates
+    @results = AlertGeneratorService.new(@school, aggregate_school(@school), @gas_alerts_date, @electricity_alerts_date).perform
+    @alert_fuel_dates = { 'gas' => @gas_alerts_date, 'electricity' => @electricity_alerts_date }
   end
 
 private
 
-  def set_school
-    @school = School.find(params[:school_id])
-  end
-
-  def aggregate_school
-    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
-    Rails.cache.fetch(cache_key, expires_in: 1.day) do
-      meter_collection = MeterCollection.new(@school)
-      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+  def set_up_reading_dates
+    if params[:gas_date_picker]
+      @gas_date = Date.parse(params[:gas_date_picker])
     end
+
+    if params[:electricity_date_picker]
+      @electricity_date = Date.parse(params[:electricity_date_picker])
+    end
+
+    @earliest_gas_reading = @school.earliest_reading_date(:gas)
+    @latest_gas_reading = @school.last_reading_date(:gas)
+
+    @latest_electricity_reading = @school.last_reading_date(:electricity)
+    @earliest_electricity_reading = @school.earliest_reading_date(:electricity)
+
+    @gas_alerts_date = @gas_date || @latest_gas_reading
+    @electricity_alerts_date = @electricity_date || @latest_electricity_reading
   end
 end

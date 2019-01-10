@@ -2,12 +2,12 @@
 #
 # Table name: calendars
 #
-#  based_on_id      :integer
-#  calendar_area_id :integer
+#  based_on_id      :bigint(8)
+#  calendar_area_id :bigint(8)
 #  created_at       :datetime         not null
 #  default          :boolean
 #  deleted          :boolean          default(FALSE)
-#  id               :integer          not null, primary key
+#  id               :bigint(8)        not null, primary key
 #  template         :boolean          default(FALSE)
 #  title            :string           not null
 #  updated_at       :datetime         not null
@@ -67,6 +67,14 @@ class Calendar < ApplicationRecord
 
   def last_event_date
     calendar_events.last.end_date
+  end
+
+  def next_holiday
+    holidays.where('start_date > ?', Time.zone.today).order(start_date: :asc).first
+  end
+
+  def holiday_approaching?
+    next_holiday.start_date == Time.zone.today + 3.days
   end
 end
 

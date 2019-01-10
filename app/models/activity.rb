@@ -2,13 +2,13 @@
 #
 # Table name: activities
 #
-#  activity_category_id :integer
-#  activity_type_id     :integer
+#  activity_category_id :bigint(8)
+#  activity_type_id     :bigint(8)
 #  created_at           :datetime         not null
 #  description          :text
 #  happened_on          :date
-#  id                   :integer          not null, primary key
-#  school_id            :integer
+#  id                   :bigint(8)        not null, primary key
+#  school_id            :bigint(8)
 #  title                :string
 #  updated_at           :datetime         not null
 #
@@ -29,7 +29,7 @@ class Activity < ApplicationRecord
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type
   belongs_to :activity_category
-  validates_presence_of :school_id, :activity_type_id, :activity_category_id, :title, :happened_on
+  validates_presence_of :school_id, :activity_type_id, :activity_category_id, :happened_on
 
   def display_name
     activity_type.custom ? title : activity_type.name

@@ -1,42 +1,59 @@
+# Warning - this pulls in statsample which seems to do something
+# to array#sum - https://github.com/clbustos/statsample/issues/45
 require 'dashboard'
 
 class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
   include NewSimulatorChartConfig
 
-  before_action :authorise_school
-  before_action :set_simulation, only: [:show, :edit, :destroy, :update]
-  before_action :set_show_charts, only: :show
+  load_and_authorize_resource :school
+  load_and_authorize_resource :simulation, through: :school, except: [:new_exemplar, :new_fitted]
 
   def index
-    @simulations = Simulation.where(school: @school)
-    create if @simulations.empty?
+    @simulations = @simulations.order(:created_at)
+    create if @simulations.empty? && can?(:manage, @school)
   end
 
-  # ALSO used by simulation detail controller
   def show
-    @simulation_configuration = @simulation.configuration
-    local_school = aggregate_school(@school)
+    common_show(:simulator)
+  end
 
-    simulator = ElectricitySimulator.new(local_school)
-    simulator.simulate(@simulation_configuration)
-    chart_manager = ChartManager.new(local_school, false)
+  def show_detailed
+    common_show(:simulator_detail)
+  end
 
-    @number_of_charts = @charts.size
+  def new
+    #TODO sort this out including method renames ;)
+    @local_school = aggregate_school(@school)
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
 
-    respond_to do |format|
-      format.html { render :show }
-      format.json do
-        # Allows for single run with all charts, or parallel
-        @output = @charts.map do |this_chart_type|
-          { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
-        end
+    @simulation_configuration = default_appliance_configuration
+    sort_out_simulation_stuff
+  end
 
-        @output = sort_out_group_charts(@output)
-        @number_of_charts = @output.size
-        render 'schools/analysis/chart_data'
-      end
-    end
+  def new_fitted
+    #TODO sort this out including method renames ;)
+    @simulation = @school.simulations.new
+    authorize! :create, @simulation
+    @local_school = aggregate_school(@school)
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
+    @simulation_configuration = @actual_simulator.fit(default_appliance_configuration)
+    sort_out_simulation_stuff
+  end
+
+  def new_exemplar
+    #TODO sort this out including method renames ;)
+    @simulation = @school.simulations.new
+    authorize! :create, @simulation
+    @local_school = aggregate_school(@school)
+    @actual_simulator = ElectricitySimulator.new(@local_school)
+    default_appliance_configuration = @actual_simulator.default_simulator_parameters
+    fitted_parameters = @actual_simulator.fit(default_appliance_configuration)
+
+    @simulation_configuration = @actual_simulator.exemplar(fitted_parameters)
+    sort_out_simulation_stuff
   end
 
   def create
@@ -60,7 +77,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def destroy
-    @simulation.delete
+    @simulation.destroy
     respond_to do |format|
       format.html { redirect_to school_simulations_path(@school), notice: 'Simulation was deleted.' }
       format.json { head :no_content }
@@ -78,23 +95,6 @@ class Schools::SimulationsController < ApplicationController
     end
   end
 
-  def new
-    #TODO sort this out including method renames ;)
-    @simulation = Simulation.new
-    @local_school = aggregate_school(@school)
-    @actual_simulator = ElectricitySimulator.new(@local_school)
-    default_appliance_configuration = @actual_simulator.default_simulator_parameters
-
-    @simulation_configuration = if params.key?(:fitted_configuration)
-                                  puts 'we have fitted config key'
-                                  @actual_simulator.fit(default_appliance_configuration)
-                                else
-                                  puts params
-                                  default_appliance_configuration
-                                end
-    sort_out_simulation_stuff
-  end
-
   def edit
     #TODO sort this out including method renames ;)
     @local_school = aggregate_school(@school)
@@ -105,17 +105,30 @@ class Schools::SimulationsController < ApplicationController
 
 private
 
-  def set_simulation
-    @simulation = Simulation.find(params[:id])
-  end
+  def common_show(charts_group)
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[charts_group][:charts]
+    @simulation_configuration = @simulation.configuration
+    local_school = aggregate_school(@school)
 
-  def authorise_school
-    @school = School.find_by_slug(params[:school_id])
-    authorize! :show, @school
-  end
+    simulator = ElectricitySimulator.new(local_school)
+    simulator.simulate(@simulation_configuration)
+    chart_manager = ChartManager.new(local_school, false)
 
-  def set_show_charts
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:simulator][:charts]
+    @number_of_charts = @charts.size
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json do
+        # Allows for single run with all charts, or parallel
+        @output = @charts.map do |this_chart_type|
+          { chart_type: this_chart_type, data: chart_manager.run_chart_group(this_chart_type) }
+        end
+
+        @output = sort_out_group_charts(@output)
+        @number_of_charts = @output.size
+        render 'schools/simulations/chart_data'
+      end
+    end
   end
 
   def sort_out_group_charts(output)
@@ -178,7 +191,7 @@ private
           { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator) },
           { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) },
         ]
-        render 'schools/analysis/chart_data'
+        render 'schools/simulations/chart_data'
       end
     end
   end

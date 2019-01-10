@@ -21,10 +21,8 @@
 //= require handlebars
 
 //= require activities
-//= require activity_types
 //= require calendars
 //= require data_explorer
-//= require open_tab
 //= require schools
 //= require users
 
@@ -40,3 +38,4 @@
 //= require tempusdominus-bootstrap-4.js
 
 //= require alert_reports
+

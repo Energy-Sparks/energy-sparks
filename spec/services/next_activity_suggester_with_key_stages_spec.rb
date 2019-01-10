@@ -5,7 +5,7 @@ describe NextActivitySuggesterWithKeyStages do
   let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
   let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
   let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
-  let!(:school) { create :school, enrolled: true, key_stages: [ks1_tag, ks3_tag] }
+  let!(:school) { create :school, active: true, key_stages: [ks1_tag, ks3_tag] }
 
   context "with no activity types set for the school nor any initial suggestions rely on top up" do
     let!(:activity_types_for_ks1_ks2) { create_list(:activity_type, 3, key_stages: [ks1_tag, ks2_tag])}

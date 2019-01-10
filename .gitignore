@@ -41,10 +41,6 @@ etc/bulk_import/*csv
 # Don't commit assets!
 public/assets
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-
 # RubyMine
 .idea
+

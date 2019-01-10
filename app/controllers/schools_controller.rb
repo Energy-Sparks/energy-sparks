@@ -1,30 +1,33 @@
 class SchoolsController < ApplicationController
   include KeyStageFilterable
+  include Measurements
 
-  load_and_authorize_resource find_by: :slug
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards, :scoreboard]
-  before_action :set_school, only: [:show, :edit, :update, :destroy, :usage, :awards, :suggest_activity, :data_explorer]
-  before_action :set_key_stage_tags, only: [:new, :edit]
+  load_and_authorize_resource
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
+  before_action :set_key_stage_tags, only: [:new, :create, :edit, :update]
 
   # GET /schools
   # GET /schools.json
   def index
-    @schools_enrolled = School.where(enrolled: true).order(:name)
-    @schools_not_enrolled = School.where(enrolled: false).order(:name)
+    @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
+    @ungrouped_active_schools = School.active.without_group.order(:name)
+    @schools_not_active = School.inactive.order(:name)
   end
 
   # GET /schools/1
   # GET /schools/1.json
   def show
-    redirect_to enrol_path unless @school.enrolled? || (current_user && current_user.manages_school?(@school.id))
+    redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
     @activities = @school.activities.order("happened_on DESC")
-    @meters = @school.meters.order(:meter_no)
+    @meters = @school.meters.order(:mpan_mprn)
     @badges = @school.badges_by_date(limit: 6)
+    @electricity_card = MeterCard.create(school: @school, supply: :electricity)
+    @gas_card = MeterCard.create(school: @school, supply: :gas)
   end
 
   # GET /schools/:id/awards
   def awards
-    @all_badges = Merit::Badge.all.to_a.sort { |a, b| a <=> b }
+    @all_badges = Merit::Badge.all.to_a.sort
     @badges = @school.badges_by_date(order: :asc)
   end
 
@@ -35,34 +38,21 @@ class SchoolsController < ApplicationController
     @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filter_names).suggest
   end
 
-  # GET /schools/scoreboard
-  def scoreboard
-    #Added so merit can access the current user. Seems to require a variable with same name
-    #as controller
-    @school = current_user
-
-    @schools = School.scoreboard
-  end
-
   # GET /schools/new
   def new
-    @school = School.new
-    @school.meters.build
   end
 
   # GET /schools/1/edit
   def edit
-    @school.meters.build
   end
 
   # POST /schools
   # POST /schools.json
   def create
-    @school = School.new(school_params)
-
     respond_to do |format|
       if @school.save
-        format.html { redirect_to @school, notice: 'School was successfully created.' }
+        SchoolCreator.new(@school).process_new_school!
+        format.html { redirect_to new_school_school_group_path(@school), notice: 'School was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -97,21 +87,23 @@ class SchoolsController < ApplicationController
 
   # GET /schools/:id/usage
   def usage
+    set_measurement_options
+    @measurement = measurement_unit(params[:measurement])
+
     set_supply
-    set_first_date
-    set_to_date
-    render "#{period}_usage"
+    if @supply
+      set_first_date
+      set_to_date
+      render "#{period}_usage"
+    else
+      redirect_to school_path(@school), notice: 'No suitable supply could be found'
+    end
   end
 
 private
 
   def set_key_stage_tags
     @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_school
-    @school = School.find(params[:id])
   end
 
   def school_params
@@ -121,36 +113,26 @@ private
       :address,
       :postcode,
       :website,
-      :enrolled,
-      :calendar_area_id,
-      :weather_underground_area_id,
-      :solar_pv_tuos_area_id,
       :urn,
-      :gas_dataset,
-      :electricity_dataset,
-      :competition_role,
       :number_of_pupils,
       :floor_area,
-      key_stage_ids: [],
-      meters_attributes: meter_params,
-      school_times_attributes: school_time_params
+      key_stage_ids: []
     )
   end
 
-  def school_time_params
-    [:id, :day, :opening_time, :closing_time]
-  end
-
-  def meter_params
-    [:id, :meter_no, :meter_type, :active, :name]
-  end
-
   def set_supply
-    @supply = params[:supply].present? ? params[:supply] : "electricity"
+    @supply = params[:supply].present? ? params[:supply] : supply_from_school
+  end
+
+  def supply_from_school
+    case @school.fuel_types
+    when :electric_and_gas, :electric_only then 'electricity'
+    when :gas_only then 'gas'
+    end
   end
 
   def period
-    params[:period]
+    params[:period].present? ? params[:period] : "hourly"
   end
 
   def set_first_date
@@ -158,13 +140,13 @@ private
       begin
         @first_date = Date.parse params[:first_date]
       rescue
-        @first_date = get_last_reading_date_with_readings #@school.last_reading_date(@supply)
+        @first_date = @school.last_reading_date(@supply)
       end
     else
       begin
         @first_date = Date.parse params[:first_date]
       rescue
-        @first_date = get_last_reading_date_with_readings #@school.last_reading_date(@supply)
+        @first_date = @school.last_reading_date(@supply)
       end
       #ensure we're looking at beginning of the week
       @first_date = @first_date.beginning_of_week(:sunday) if @first_date.present?
@@ -188,19 +170,5 @@ private
       #ensure we're looking at beginning of the week
       @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
     end
-  end
-
-  # TODO this is all to do with the half hour thing
-  def get_last_reading_date_with_readings
-    first_go = @school.last_reading_date(@supply)
-    if first_go && @school.meter_readings.where(read_at: first_go.all_day).where(conditional_supply(@supply)).count < 48
-      @school.last_reading_date(@supply, first_go - 1.day)
-    else
-      first_go
-    end
-  end
-
-  def conditional_supply(supply)
-    { meters: { meter_type: Meter.meter_types[supply] } } if supply
   end
 end

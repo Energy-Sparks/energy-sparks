@@ -1,10 +1,10 @@
 <% content_for :page_title do %>Electricity Simulator Details for <%= @school.name %><% end %>
 
 <h1>Electricity Simulator Results Detailed Breakdown</h1>
-<h2><%= @school.name %> - <%= @simulation.title %></h2>
+<h2><%= link_to @school.name, @school %><%= " - #{@simulation.title}" if @simulation.title.present? %></h2>
 
 <p><%= @simulation.notes %></p>
-<p><%= link_to 'Back to simulation results', school_simulation_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %> <%= link_to 'Create new simulation', new_school_simulation_path(@school), class: 'btn btn-success' %></p>
+<p><%= link_to 'Back to simulation results', school_simulation_path(@school, @simulation), class: 'btn btn-primary' %> <%= link_to 'Saved simulations', school_simulations_path(@school), class: 'btn btn-primary' %></p>
 
 <% chart_index = 0 %>
 <% @charts.each do |chart| %>

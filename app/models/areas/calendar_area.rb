@@ -19,4 +19,6 @@ class CalendarArea < Area
   has_many    :bank_holidays
   belongs_to  :parent_calendar_area, class_name: 'CalendarArea'
   has_many    :child_calendar_areas, class_name: 'CalendarArea', foreign_key: :parent_area_id
+
+  scope :with_template, -> { includes(:calendars).where(calendars: { template: true })}
 end

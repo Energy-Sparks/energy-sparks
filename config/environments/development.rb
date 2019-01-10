@@ -53,8 +53,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
-  # Turn down logging renders https://github.com/roidrage/lograge
-  config.lograge.enabled = true
+
   config.active_record.logger = nil
 
   config.log_level = :info
@@ -66,9 +65,9 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.action_mailer.delivery_method = :mailgun
-  config.action_mailer.mailgun_settings = {
-      api_key: ENV['MG_API_KEY'],
-      domain: ENV['MG_DOMAIN']
-  }
+  # Use mailcatcher locally - https://github.com/sj26/mailcatcher
+  # NOTE not using default port!
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => '127.0.0.1', :port => 1025 }
+  config.action_mailer.raise_delivery_errors = false
 end

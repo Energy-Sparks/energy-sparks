@@ -1,36 +1,18 @@
-<% content_for :page_title do %>
-Enrol
-<% end %>
+<% content_for :page_title do %>Enrol<% end %>
+
 <div class="application container">
 
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1 id="how">How do I enroll my school?</h1>
+      <h1 id="how">How do I enrol my school?</h1>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-3 callout-text">
-      <p>
-        <strong>The service is currently open to some schools in Bath & North East Somerset</strong>
-      </p>
-    </div>
-    <div class="col-md-8">
-      <p>
-        Currently <%= t('application') %> is open to schools in Bath & North East Somerset who are part of the council
-        energy purchase scheme. As the council already holds your energy usage data this makes it easier for the
-        data to be made available to <%= t('application') %>.
-      </p>
-     <p>
-        If your school is <%= link_to "listed as eligible", schools_path(anchor: "eligible") %> then you can
-      currently enroll to use the service.
-      </p>
-      <p>
-        If your school is not yet listed then <%= link_to "contact us", contact_path %> to express your interest.
-      </p>
-      <p>We aim to make the service available to a wider selection of schools in future. Knowing that you're interested
-        will help us prioritise our work.
-      </p>
+    <div class="col-md-12">
+      <p>The service is currently open to schools in Bath & North East Somerset, Somerset and Sheffield Councils who are part of the council energy purchase scheme in each area. As the council already holds your energy usage data this makes it easier for the data to be made available to Energy Sparks.</p>
+      <p>We aim to make the service available to a wider selection of schools in future.</p>
+      <p>If you would like us to offer Energy Sparks to your school, Local Authority or Multi-Academy Trust then <a href="mailto:hello@energysparks.uk">contact us</a> to express your interest. Knowing that you're interested will help us prioritise our work.</p>
     </div>
   </div>
 
@@ -41,33 +23,20 @@ Enrol
   </div>
 
   <div class="row">
-    <div class="col-md-3 callout-text">
-      <p>
-        <strong>We do all the setup work on your behalf</strong>
-      </p>
-      <p>
-        <strong>We need permission from the school for the energy usage data
-          to be published</strong>
-      </p>
-    </div>
-    <div class="col-md-8">
-      <p>
-        The process is very straight-forward. The main thing we need from your school is permission to publish your
-        energy usage data as <%= link_to "open data", for_teachers_path(anchor: "open data") %>. We've included an email
-        template below.
-      </p>
+    <div class="col-md-12">
+      <p>We do all the setup work on your behalf.</p>
+      <p>We need permission from the school for the energy usage data to be published.</p>
+      <p>The process is very straight-forward. The main thing we need from your school is permission to publish your energy usage data as <%= link_to "open data", for_teachers_path(anchor: "open data") %>. We've included an email template below.</p>
 
-      <p>
-        The setup process involves the following steps:
-      </p>
+      <p>The setup process involves the following steps:</p>
+
       <ol>
-        <li>The head teacher or other school contact must send an email to <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> to as to be enrolled and
-          to give permission for the energy usage data to be published. See the <a href="#permission">suggested template</a> below</li>
-        <li>We will work with the council to publish your data. This may take a few weeks to action</li>
-        <li>We will setup an account for you on <%= t('application') %>.</li>
-        <li>Once your data is available you'll be able to see how the data looks in the service before you profile
-        is made public. This gives us an opportunity to test everything is working</li>
-        <li>Your profile is made public and you can begin using the service</li>
+        <li>The head teacher or school business manager must send an email to <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> to be enrolled and
+          to give permission for the energy usage data to be published. See the <a href="#permission">suggested template</a> below.</li>
+        <li>We will work with the council to publish your data to Energy Sparks. This may take one to two weeks to action.</li>
+        <li>We will setup an account for you on Energy Sparks.</li>
+        <li>Your profile is made public and you can begin using the service.</li>
+        <li>We will remind you annually that your data is being published to Energy Sparks, and remind you how to withdraw consent for your data to be published if you wish.</li>
       </ol>
 
     </div>
@@ -80,31 +49,17 @@ Enrol
   </div>
 
   <div class="row">
-    <div class="col-md-3 callout-text">
-      <p>
-        <strong>A suggested email template</strong>
-      </p>
-    </div>
-    <div class="col-md-8">
-      <p>
-        <strong>To</strong>: <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>
-      </p>
-      <p>
-        <strong>Subject</strong>: Enrolling in <%= t('application') %>
-      </p>
+    <div class="col-md-12">
+      <p>A suggested email template:</p>
+      <p><strong>To</strong>: <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></p>
+      <p><strong>Subject</strong>: Enrolling in <%= t('application') %></p>
       <p><strong>Body:</strong></p>
-      <p>
-        I would like to enrol [SCHOOL NAME] in the <%= t('application') %> service to allow the school to better monitor our energy usage.
-      </p>
-      <p>
-        I understand that in order for this to happen, our energy usage data will need to be published under an open licence to the Bath: Hacked data store. This includes both ongoing and historical data.
-      </p>
-      <p>
-        I understand that publishing the data under an open licence will allow it to be accessed, used and shared by anyone, including the <%= t('application') %> team.
-      </p>
-      <p>
-        I would like to give permission to the council to begin publishing our energy usage data at the earliest opportunity.
-      </p>
+
+      <p>I would like to enrol [SCHOOL NAME] in the Energy Sparks service to allow the school to better monitor our energy usage.</p>
+      <p>I understand that in order for this to happen, our energy usage data will need to be published under an open licence to Energy Sparks. This includes both ongoing and historical data.</p>
+      <p>I understand that publishing the data under an open licence will allow it to be accessed, used and shared by anyone, including the Energy Sparks team.</p>
+      <p>I would like to give permission to the council to begin publishing our energy usage data at the earliest opportunity.</p>
+      <p>I understand that our school has the right to withdraw consent to our data being published to Energy Sparks at anytime. I can withdraw consent by emailing hello@energysparks.uk. We will then remove your ongoing and historical data from the  Energy Sparks site.</p>
     </div>
   </div>
 </div>

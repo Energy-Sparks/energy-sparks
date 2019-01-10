@@ -5,8 +5,8 @@
 <div typeof="School">
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1 property="name"><%= @school.name %> Contacts</h1>
-      <p><%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary' %> <%= link_to 'New Contact', new_school_contact_path(@school), class: 'btn btn-secondary' %></p>
+      <h1 property="name"><%= link_to @school.name, @school %> Contacts</h1>
+      <p><%= link_to 'Alert subscriptions', school_alert_subscriptions_path(@school), class: 'btn btn-primary' %> <%= link_to 'New Contact', new_school_contact_path(@school), class: 'btn btn-secondary' %></p>
     </div>
   </div>
 </div>

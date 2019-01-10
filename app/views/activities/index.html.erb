@@ -1,6 +1,4 @@
-<% content_for :page_title do %>
-    <%= @school.name %> All Activities
-<% end %>
+<% content_for :page_title, "#{@school.name} All Activities" %>
 
 <div class="row padded-row">
   <div class="col-md-12">
@@ -10,44 +8,49 @@
 
 <div class="row">
   <div class="col-md-12 activity">
-    <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.
-    </p>
-    <% @activities.each do |activity| %>
-        <div class="row activity-overview">
-          <div class="col-md-3">
+    <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.</p>
+    <table class="table activities">
+      <thead>
+        <tr>
+          <th>Activity title</th>
+          <th>Type</th>
+          <th>Completed on</th>
+          <% if can? :manage, @activity %>
+            <th>Actions</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @activities.any? %>
+          <% @activities.each do |activity| %>
+            <tr scope="row">
+              <td><%= link_to activity.display_name, school_activity_path(@school, activity) %></td>
+              <td><span class="badge badge-secondary"><%= activity.activity_category.name %></span></td>
+              <td><%= activity.happened_on.strftime("%A, %d %B %Y") %></td>
+              <% if can? :manage, @activity %>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-warning' %>
+                    <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+                  </div>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8">No activities completed</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-            <p>
-              <span class="text-muted small"><%= activity.happened_on.strftime("%A, %d %B %Y") %></span>
-              <br>
-              <span class="small badge badge-secondary">
-                <%= activity.activity_category.name %>
-              </span>
+  <%= link_to 'Choose Next Activity', suggest_activity_school_path(@school), class: 'btn btn-success' if can? :suggest_activity, @school %>
+  <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
 
-            </p>
-          </div>
-          <div class="col-md-9">
-            <div class="row">
-              <%= link_to activity.display_name, school_activity_path(@school, activity) %>
-            </div>
-
-            <div class="row">
-              <span class="text-muted small">
-                <%= activity.title %>
-              </span>
-            </div>
-          </div>
-        </div>
-    <% end %>
-  <hr>
-
-  <% if current_user && current_user.manages_school?(@school.id) %>
-      <%= link_to 'Choose Next Activity', suggest_activity_school_path(@school), class: 'btn btn-success' %>
-      <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
+  <% if !user_signed_in?  %>
+    <p><%= link_to "Sign in", new_user_session_path%> to record a new energy saving activity that has taken place in your school
   <% end %>
-
-    <% if !user_signed_in?  %>
-        <p><%= link_to "Sign in", new_user_session_path%> to record a new energy saving activity that has taken place in your school
-    <% end %>
 
   </div>
 </div>

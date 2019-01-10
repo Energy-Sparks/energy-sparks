@@ -14,29 +14,18 @@ var commonChartOptions = {
   plotOptions: {
     bar: {
       stacking: 'normal',
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '£ {point.y:.2f}'
-      }
     },
     column: {
       dataLabels: {
         color: '#232b49'
       },
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.y:.2f} kWh'
-      }
     },
     pie: {
       allowPointSelect: true,
+      colors: ["#9c3367", "#67347f", "#501e74", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
       cursor: 'pointer',
       dataLabels: { enabled: false },
       showInLegend: true,
-      tooltip: {
-        headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: '{point.y:.2f} kWh'
-      },
       point: {
         events: {
           legendItemClick: function () {
@@ -89,7 +78,7 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   // BAR Charts
   if (chartType == 'bar') {
     console.log('bar');
-    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: yAxisLabel + '{point.y:.2f}' }}}});
   }
 
   // LINE charts
@@ -98,21 +87,32 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
       console.log('Yaxis - Temperature');
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    } else {
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
   }
 
   // Column charts
   if (chartType == 'column') {
     console.log('column: ' + subChartType);
+    c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+
 
     if (subChartType == 'stacked') {
-      c.update({ plotOptions: { column: { stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+    } else {
+      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
 
-    if (y2AxisLabel !== undefined && (y2AxisLabel == 'Degree Days' || y2AxisLabel == 'Temperature')) {
-      console.log('Yaxis - Degree days');
+    if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
+      console.log('Yaxis - Temperature days');
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    }
+    if (y2AxisLabel !== undefined && y2AxisLabel == 'Degree Days') {
+      console.log('Yaxis - Degree days');
+      c.addAxis({ title: { text: 'Degree days' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} Degree days' }}}});
     }
   }
 
@@ -120,7 +120,13 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     console.log('Series data name: ' + seriesData[key].name);
 
     if (seriesData[key].name == 'CUSUM') {
-      c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f} kWh' }}}});
+      c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
+    }
+
+    if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
+      console.log(seriesData[key]);
+      seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
+      seriesData[key].dashStyle =  'Dash';
     }
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);
@@ -133,9 +139,20 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
   c.redraw();
 }
 
+function isAStringAndStartsWith(thing, startingWith) {
+  // IE Polyfill for startsWith
+  if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(search, pos) {
+      return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
+    };
+  }
+
+  (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
+}
+
 function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
   console.log('scatter');
-  c.update({chart: { type: 'scatter' }});
+  c.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
   if (yAxisLabel.length) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
@@ -149,16 +166,26 @@ function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
   c.redraw();
 }
 
-function pie(d, c, chartIndex, seriesData, $chartDiv) {
+function pie(d, c, chartIndex, seriesData, $chartDiv, yAxisLabel) {
   $chartDiv.addClass('pie-chart');
+  var chartHeight = $chartDiv.height();
 
   c.addSeries(seriesData, false);
   c.update({chart: {
-    height: 450,
+    height: chartHeight,
     plotBackgroundColor: null,
     plotBorderWidth: null,
     plotShadow: false,
     type: 'pie'
-  }});
+  },
+  plotOptions: {
+   pie: {
+    tooltip: {
+        headerFormat: '<b>{point.key}</b><br>',
+        pointFormat: '{point.y:.2f} ' + yAxisLabel
+      }
+    }
+  }
+  });
   c.redraw();
 }

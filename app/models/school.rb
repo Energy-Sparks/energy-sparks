@@ -2,47 +2,49 @@
 #
 # Table name: schools
 #
+#  active                      :boolean          default(FALSE)
 #  address                     :text
-#  calendar_area_id            :integer
-#  calendar_id                 :integer
-#  competition_role            :integer
+#  calendar_area_id            :bigint(8)
+#  calendar_id                 :bigint(8)
 #  created_at                  :datetime         not null
-#  electricity_dataset         :string
-#  enrolled                    :boolean          default(FALSE)
 #  floor_area                  :decimal(, )
-#  gas_dataset                 :string
-#  id                          :integer          not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  level                       :integer          default(0)
-#  met_office_area_id          :integer
+#  met_office_area_id          :bigint(8)
 #  name                        :string
 #  number_of_pupils            :integer
 #  postcode                    :string
-#  sash_id                     :integer
+#  sash_id                     :bigint(8)
+#  school_group_id             :bigint(8)
 #  school_type                 :integer
 #  slug                        :string
-#  solar_irradiance_area_id    :integer
-#  solar_pv_tuos_area_id       :integer
-#  temperature_area_id         :integer
+#  solar_irradiance_area_id    :bigint(8)
+#  solar_pv_tuos_area_id       :bigint(8)
+#  temperature_area_id         :bigint(8)
 #  updated_at                  :datetime         not null
 #  urn                         :integer          not null
-#  weather_underground_area_id :integer
+#  weather_underground_area_id :bigint(8)
 #  website                     :string
 #
 # Indexes
 #
-#  index_schools_on_calendar_id  (calendar_id)
-#  index_schools_on_sash_id      (sash_id)
-#  index_schools_on_urn          (urn) UNIQUE
+#  index_schools_on_calendar_id      (calendar_id)
+#  index_schools_on_sash_id          (sash_id)
+#  index_schools_on_school_group_id  (school_group_id)
+#  index_schools_on_urn              (urn) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id)
+#  fk_rails_...  (school_group_id => school_groups.id)
 #
 
 class School < ApplicationRecord
-  include Usage
+  include AmrUsage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
+
+  delegate :holiday_approaching?, to: :calendar
 
   include Merit::UsageCalculations
   has_merit
@@ -51,31 +53,41 @@ class School < ApplicationRecord
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
-  has_many :activities, inverse_of: :school, dependent: :destroy
-  has_many :meter_readings, through: :meters
-  has_many :school_times, inverse_of: :school, dependent: :destroy
-  has_many :contacts,     inverse_of: :school, dependent: :destroy
-  has_many :alerts,       inverse_of: :school, dependent: :destroy
-  has_many :simulations, inverse_of: :school, dependent: :destroy
+
+  has_many :amr_data_feed_readings, through: :meters
+  has_many :amr_validated_readings, through: :meters
+
+  has_many :activities,           inverse_of: :school, dependent: :destroy
+  has_many :school_times,         inverse_of: :school, dependent: :destroy
+  has_many :contacts,             inverse_of: :school, dependent: :destroy
+  has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
+  has_many :simulations,          inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
   belongs_to :calendar_area
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
+  belongs_to :school_group
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior]
-  enum competition_role: [:not_competing, :competitor, :winner]
+  has_one :school_onboarding
 
-  scope :enrolled, -> { where(enrolled: true) }
+  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
-  validates_presence_of :urn, :name
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+  scope :without_group, -> { where(school_group_id: nil) }
+
+  validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn
+  validates :floor_area, :number_of_pupils, numericality: { greater_than: 0, allow_blank: true }
 
-  accepts_nested_attributes_for :meters,        reject_if: proc { |attributes| attributes[:meter_no].blank? }
-  accepts_nested_attributes_for :school_times,  reject_if: proc { |attributes| attributes[:opening_time].blank? }
+  validates_associated :school_times, on: :school_time_update
+
+  accepts_nested_attributes_for :school_times
 
   after_create :create_sash_relation
-  after_create :create_calendar
+
+  auto_strip_attributes :name, :website, :postcode, squish: true
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
@@ -95,14 +107,21 @@ class School < ApplicationRecord
     ]
   end
 
-  def is_open?(datetime)
-    time = datetime.to_time.utc
-    return false if time.saturday? || time.sunday?
-    day_of_week = time.strftime("%A").downcase
-    school_time = school_times.find_by(day: day_of_week)
-    time_as_number = datetime.hour * 100 + datetime.min
-    school_time.opening_time < time_as_number && school_time.closing_time > time_as_number
+  def area_name
+    school_group.name
   end
+
+  # TODO: This is not performant and requires some rework or re-architecturing
+  # Analytics code will use it's own version in the meantime
+
+  # def is_open?(datetime)
+  #   time = datetime.to_time.utc
+  #   return false if time.saturday? || time.sunday?
+  #   day_of_week = time.strftime("%A").downcase
+  #   school_time = school_times.find_by(day: day_of_week)
+  #   time_as_number = datetime.hour * 100 + datetime.min
+  #   school_time.opening_time < time_as_number && school_time.closing_time > time_as_number
+  # end
 
   # TODO integrate this analytics
   def heat_meters
@@ -118,23 +137,63 @@ class School < ApplicationRecord
   end
 
   def meters_for_supply(supply)
-    self.meters.where(meter_type: supply)
+    meters.where(meter_type: supply)
   end
 
   def meters?(supply = nil)
-    self.meters.where(meter_type: supply).any?
+    meters_for_supply(supply).any?
+  end
+
+  def meters_with_readings(supply = Meter.meter_types.keys)
+    meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
+  end
+
+  def meters_with_validated_readings(supply = Meter.meter_types.keys)
+    meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
+  end
+
+  def meters_with_enough_validated_readings_for_analysis(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    meters.where(meter_type: supply).joins(:amr_validated_readings).group('amr_validated_readings.meter_id, meters.id').having('count(amr_validated_readings.meter_id) > ?', threshold)
   end
 
   def both_supplies?
-    meters?(:electricity) && meters?(:gas)
+    meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
+  end
+
+  def has_enough_readings_for_meter_types?(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
   end
 
   def fuel_types
-    both_supplies? ? :electric_and_gas : :electric_only
+    if both_supplies?
+      :electric_and_gas
+    elsif meters_with_readings(:electricity).any?
+      :electric_only
+    elsif meters_with_readings(:gas).any?
+      :gas_only
+    else
+      :none
+    end
+  end
+
+  def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    if has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
+      :electric_and_gas
+    elsif has_enough_readings_for_meter_types?(:electricity, threshold)
+      :electric_only
+    elsif has_enough_readings_for_meter_types?(:gas, threshold)
+      :gas_only
+    else
+      :none
+    end
   end
 
   def has_badge?(id)
     sash.badge_ids.include?(id)
+  end
+
+  def alert_subscriptions?
+    alert_subscriptions.any?
   end
 
   def current_term
@@ -143,6 +202,24 @@ class School < ApplicationRecord
 
   def last_term
     calendar.terms.find_by('end_date <= ?', current_term.start_date)
+  end
+
+  def number_of_active_meters
+    meters.where(active: true).count
+  end
+
+  def expected_readings_for_a_week
+    7 * number_of_active_meters
+  end
+
+  def has_last_full_week_of_readings?
+    previous_friday = Time.zone.today.prev_occurring(:friday)
+
+    start_of_window = previous_friday - 1.week
+    end_of_window = previous_friday
+    actual_readings = amr_validated_readings.where('reading_date > ? and reading_date <= ?', start_of_window, end_of_window).count
+
+    actual_readings == expected_readings_for_a_week
   end
 
   def badges_by_date(order: :desc, limit: nil)
@@ -155,17 +232,12 @@ class School < ApplicationRecord
     self.score_points.where("created_at > '#{since}'").sum(:num_points)
   end
 
-  # def suggest_activities
-  #   @activity_categories = ActivityCategory.all.order(:name).to_a
-  # end
+  def school_admin
+    users.where(role: :school_admin)
+  end
 
-  def self.scoreboard
-    School.select('schools.*, SUM(num_points) AS sum_points')
-        .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
-        .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
-        .where("schools.enrolled = true")
-        .order('sum_points DESC NULLS LAST')
-        .group('schools.id, merit_scores.sash_id')
+  def scoreboard
+    school_group.scoreboard if school_group
   end
 
   def self.top_scored(dates: nil, limit: nil)
@@ -189,13 +261,6 @@ class School < ApplicationRecord
   end
 
 private
-
-  def create_calendar
-    calendar = Calendar.find_by(template: true)
-    self.update_attribute(:calendar_id, calendar.id) if calendar
-    # calendar = Calendar.create_calendar_from_default("#{name} Calendar")
-    # self.update_attribute(:calendar_id, calendar.id)
-  end
 
   # Create Merit::Sash relation
   # Having the sash relation makes life easier elsewhere

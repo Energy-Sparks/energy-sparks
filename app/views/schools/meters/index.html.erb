@@ -1,0 +1,102 @@
+<h1>Manage meters: <%= @school.name %></h1>
+
+<% unless @invalid_mpan.empty? %>
+  <div class="alert alert-warning">
+    There are electricity meters with MPANs that don't appear to have the correct check digit.
+  </div>
+<% end %>
+
+<% if can?(:validate_meters, @school) && @school.meters_with_readings.any? %>
+  <div class="alert alert-secondary">
+    <%= link_to 'Validate meter readings', school_meter_readings_validation_path(@school), method: :post, class: 'btn btn-warning mr-3' %>
+    This may take some time!
+  </div>
+<% end %>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Meter Point Number</th>
+      <th>Meter Description</th>
+      <th>Meter Type</th>
+      <th>Imported Readings</th>
+      <th>Validated readings</th>
+      <th>First validated reading</th>
+      <th>Latest validated reading</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th colspan="8">Active meters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @active_meters.any? %>
+      <% @active_meters.each do |meter| %>
+        <tr scope="row" class="<%='table-warning' if @invalid_mpan.include?(meter) %>">
+          <td><%= meter.mpan_mprn %></td>
+          <td><%= meter.name %></td>
+          <td><%= meter.meter_type.humanize %></td>
+          <td><%= meter.amr_data_feed_readings.count %></td>
+          <td><%= meter.amr_validated_readings.count %></td>
+          <td><%= meter.first_validated_reading %></td>
+          <td><%= meter.last_validated_reading %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm btn-warning' %>
+              <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
+                <%= link_to 'Report', amr_readings_show_path(meter), class: 'btn btn-info btn-sm' %>
+              <% end %>
+              <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="8">No active meters</td>
+      </tr>
+    <% end %>
+  </tbody>
+  <% if @inactive_meters.any? %>
+    <thead>
+      <tr>
+        <th colspan="8">Inactive meters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @inactive_meters.each do |meter| %>
+        <tr scope="row">
+          <td><%= meter.mpan_mprn %></td>
+          <td><%= meter.name %></td>
+          <td><%= meter.meter_type.humanize %></td>
+          <td><%= meter.amr_data_feed_readings.count %></td>
+          <td><%= meter.amr_validated_readings.count %></td>
+          <td><%= meter.first_validated_reading %></td>
+          <td><%= meter.last_validated_reading %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+              <% if can?(:report_on, meter)  && meter.amr_validated_readings.any? %>
+                <%= link_to 'Report', amr_readings_show_path(meter), class: 'btn btn-info btn-sm' %>
+              <% end %>
+              <%= link_to 'Activate', activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm btn-success' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% end %>
+</table>
+
+<div class="card bg-light mb-3">
+  <div class="card-header"><h4>New meter</h4></div>
+  <div class="card-body">
+    <%= render 'form', school: @school, meter: @meter %>
+  </div>
+</div>
+
+<div class="other-actions">
+  <%= link_to 'School home', school_path(@school), class: 'btn btn-secondary' %>
+</div>

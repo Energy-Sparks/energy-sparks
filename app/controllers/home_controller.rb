@@ -1,10 +1,10 @@
 class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
+  before_action :redirect_if_logged_in, only: :index
 
   def index
-    @schools_enrolled = School.where(enrolled: true).count
-    @schools_eligible = School.count
+    @active_schools = School.active.count
   end
 
   def for_teachers
@@ -28,5 +28,19 @@ class HomeController < ApplicationController
   def help
     # assign page, remove any non-alphanumeric characters, allow underscores
     @help_page = params[:help_page].tr('^A-Za-z0-9_', '') if params[:help_page]
+  end
+
+private
+
+  def redirect_if_logged_in
+    if user_signed_in?
+      if current_user.school
+        redirect_to school_path(current_user.school)
+      elsif current_user.school_onboarding?
+        redirect_to onboarding_path(current_user.school_onboardings.last)
+      else
+        redirect_to schools_path
+      end
+    end
   end
 end

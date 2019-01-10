@@ -9,7 +9,9 @@ module Loader
         category = ActivityCategory.find_or_create_by!(name: row['Activity Category'])
         at = ActivityType.find_by(name: row['Activity Type'], activity_category: category)
         if at.present?
+          # rubocop:disable Rails/ActiveRecordAliases
           at.update_attributes!(score: row['Score'])
+          # rubocop:enable  Rails/ActiveRecordAliases
         else
           ActivityType.create!(name: row['Activity Type'], activity_category: category, score: row['Score'])
         end

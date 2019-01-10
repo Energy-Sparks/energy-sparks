@@ -1,0 +1,48 @@
+<% content_for :page_title do %>
+    Scoreboard
+<% end %>
+<div class="application container">
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1>Scoreboard: <%= @scoreboard.name %></h1>
+      <p>See how well each of our <%= @scoreboard.name%> Energy Sparks schools are recording their energy saving activities! Scoreboard points are earned from recording activities investigating energy use, learning about energy and taking energy saving action around their school.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <table id='scoreboard' class='table'>
+      <thead>
+      <tr>
+        <th><h4>Position</h4></th>
+        <th><h4>School</h4></th>
+        <th><h4>Score</h4></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @schools.each_with_index do |school, i| %>
+          <tr>
+            <td scope="row">
+              <h2><span class="badge badge-primary"><%= i+1 %></span></h2>
+            </td>
+
+            <td><h2>
+              <%= link_to school.name, school_path(school) %></h2></td>
+
+            <td>
+              <h2>
+              <span class="badge badge-success"><%= school.sum_points %></span>
+              &nbsp;
+              <% if school.points_since > 0 %>
+                  <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+              <% end %>
+              </h2>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

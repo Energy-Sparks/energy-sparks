@@ -160,6 +160,7 @@ PreCommit:
     enabled: true
     description: 'Check for vulnerable versions of gems'
     required_executable: 'bundle-audit'
+    flags: ['--update']
     install_command: 'gem install bundler-audit'
 
   BundleCheck:

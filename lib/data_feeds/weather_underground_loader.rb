@@ -10,7 +10,7 @@ module DataFeeds
       @min_temperature = -15.0
       @max_minutes_between_samples = 120
       @max_solar_irradiation = 2000.0
-      @csv_format = :portrait
+      @csv_format = :landscape
     end
 
     def import
@@ -31,10 +31,10 @@ module DataFeeds
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation)
           end
 
-          temperature_readings = data_feed.readings(:temperature, @start_date, @end_date)
-          File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(temperature_readings)) }
-          solar_irradiation_readings = data_feed.readings(:solar_irradiation, @start_date, @end_date)
-          File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_irradiation_readings)) }
+          # temperature_readings = data_feed.readings(:temperature, @start_date, @end_date)
+          # File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(temperature_readings)) }
+          # solar_irradiation_readings = data_feed.readings(:solar_irradiation, @start_date, @end_date)
+          # File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_irradiation_readings)) }
         end
       end
     end
@@ -112,18 +112,29 @@ module DataFeeds
         url = generate_single_day_station_history_url(station_name, date)
         puts "HTTP request for                     #{url}"
         header = []
-        open(url) do |f|
+        uri = URI.parse(url) #=> #<URI::HTTP>
+        uri.open do |f|
           line_num = 0
           f.each_line do |line|
             line_components = line.split(',')
             if line_num == 1
               header = line_components
             elsif line_components.length > 2 # ideally I should use an encoding which ignores the <br> line ending coming in as a single line
-              temperature_index = header.index('TemperatureC')
               solar_index = header.index('SolarRadiationWatts/m^2')
               datetime = Time.zone.parse(line_components[0]).to_datetime
 
+              temperature_index_f = header.index('TemperatureF')
+              temperature_index_c = header.index('TemperatureC')
+
+              temperature_index = temperature_index_f || temperature_index_c
+
               temperature = !line_components[temperature_index].nil? ? line_components[temperature_index].to_f : nil
+
+              if temperature_index_c.nil?
+                # Convert to F
+                temperature = (temperature - 32) / 1.8
+              end
+
               solar_string = solar_index.nil? ? nil : line_components[solar_index]
               solar_value = solar_string.nil? ? nil : solar_string.to_f
               solar_value = if solar_value.nil?
@@ -152,10 +163,12 @@ module DataFeeds
         date.day)
     end
 
+    # rubocop:disable Naming/UncommunicativeMethodParamName
     def simple_interpolate(val1, val0, t1, t0, tx)
       t_prop = (tx - t0) / (t1 - t0)
       val0 + (val1 - val0) * t_prop
     end
+    # rubocop:enable Naming/UncommunicativeMethodParamName
 
     def interpolate_rawdata_onto_30minute_boundaries(station_name, rawdata)
       puts "station_name = #{station_name}"

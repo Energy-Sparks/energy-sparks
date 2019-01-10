@@ -5,44 +5,12 @@ RSpec.describe SchoolsController, type: :controller do
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {urn: 12345, name: 'test school'}
+    attributes_for(:school)
   }
 
   let(:invalid_attributes) {
     {name: nil}
   }
-
-  describe 'GET #scoreboard' do
-    it 'assigns schools as @schools in points order' do
-      schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
-
-      get :scoreboard
-      expect(School.scoreboard.map(&:id)).to eq(schools.map(&:id))
-    end
-
-    context "as a school administrator" do
-      let(:school) {
-        school = FactoryBot.create :school, enrolled: true
-      }
-
-      before(:each) do
-        sign_in_user(:school_user, school.id)
-      end
-
-      it 'doesnt award a badge if school has zero points' do
-        get :scoreboard
-        expect(school.badges.length).to eql(0)
-      end
-      it 'grants the a badge if school has 10 points' do
-        school.add_points(20)
-        get :scoreboard
-        school.reload
-        expect(school.badges.length).to eql(1)
-        expect(school.badges.first.name).to eql("player")
-      end
-    end
-
-  end
 
   describe 'GET #suggest_activity' do
     let(:school) { FactoryBot.create :school }
@@ -58,7 +26,7 @@ RSpec.describe SchoolsController, type: :controller do
       let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
       let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
       let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
-      let!(:school) { create :school, enrolled: true, key_stages: [ks1_tag, ks3_tag] }
+      let!(:school) { create :school, active: true, key_stages: [ks1_tag, ks3_tag] }
 
       let(:activity_category) { create :activity_category }
       let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1_tag, ks2_tag]) }
@@ -101,15 +69,15 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe "GET #index" do
-    it "assigns schools that are enrolled as @schools_enrolled" do
-      school = FactoryBot.create :school, enrolled: true
+    it "assigns schools that are active but not grouped as @ungrouped_active_schools" do
+      school = FactoryBot.create :school, active: true
       get :index, params: {}
-      expect(assigns(:schools_enrolled)).to eq([school])
+      expect(assigns(:ungrouped_active_schools)).to eq([school])
     end
-    it "assigns schools that haven't enrolled as @schools_not_enrolled" do
-      school = FactoryBot.create :school, enrolled: false
+    it "assigns inactive schools as @schools_not_active" do
+      school = FactoryBot.create :school, active: false
       get :index, params: {}
-      expect(assigns(:schools_not_enrolled)).to eq([school])
+      expect(assigns(:schools_not_active)).to eq([school])
     end
   end
 
@@ -118,15 +86,15 @@ RSpec.describe SchoolsController, type: :controller do
       before(:each) do
         sign_in_user(:guest)
       end
-      context "when the school is not enrolled" do
-        it "redirects to the enrol page" do
+      context "when the school is not active" do
+        it "redirects to the unauthorised page" do
           sign_in_user(:guest)
-          school = FactoryBot.create :school, enrolled: false
+          school = FactoryBot.create :school, active: false
           get :show, params: {id: school.to_param}
-          expect(response).to redirect_to(enrol_path)
+          expect(response).to redirect_to(root_path)
         end
       end
-      context "the school is enrolled" do
+      context "the school is active" do
         it "assigns the requested school as @school" do
           school = FactoryBot.create :school
           get :show, params: {id: school.to_param}
@@ -134,7 +102,7 @@ RSpec.describe SchoolsController, type: :controller do
         end
         it "assigns the school's meters as @meters" do
           school = FactoryBot.create :school
-          meter = FactoryBot.create :meter, school_id: school.id
+          meter = FactoryBot.create :gas_meter, school_id: school.id
           get :show, params: {id: school.to_param}
           expect(assigns(:meters)).to include(meter)
         end
@@ -186,30 +154,70 @@ RSpec.describe SchoolsController, type: :controller do
   describe "GET #usage" do
     let!(:school) { FactoryBot.create :school }
     let(:period) { :daily }
+    let(:supply) { :electricity }
     it "assigns the requested school as @school" do
-      get :usage, params: {id: school.to_param, period: period}
+      get :usage, params: {id: school.to_param, period: period, supply: supply}
       expect(assigns(:school)).to eq(school)
     end
     context "to_date is specified" do
       let(:to_date) { Date.current - 1.days }
       it "assigns to_date to @to_date" do
-        get :usage, params: {id: school.to_param, period: period, to_date: to_date}
+        get :usage, params: {id: school.to_param, period: period, to_date: to_date, supply: supply}
         expect(assigns(:to_date)).to eq to_date.beginning_of_week(:sunday)
       end
     end
     context "period is 'daily'" do
       let(:period) { :daily }
       it "renders the daily_usage template" do
-        get :usage, params: {id: school.to_param, period: period}
+        get :usage, params: {id: school.to_param, period: period, supply: supply}
         expect(response).to render_template('daily_usage')
       end
     end
     context "period is 'hourly'" do
       let(:period) { :hourly }
       it "renders the hourly_usage template" do
-        get :usage, params: {id: school.to_param, period: period}
+        get :usage, params: {id: school.to_param, period: period, supply: supply}
         expect(response).to render_template('hourly_usage')
       end
+    end
+    context "period is not specified" do
+      let(:period) { nil }
+      it "renders the hourly_usage template" do
+        get :usage, params: {id: school.to_param, period: period, supply: supply}
+        expect(response).to render_template('hourly_usage')
+      end
+    end
+
+    context 'when supply is not provided' do
+      context 'where the school has no meters with readings' do
+        it 'redirects to the school page' do
+          get :usage, params: {id: school.to_param}
+          expect(response).to redirect_to(school_path(school.to_param))
+        end
+      end
+      context 'where the school only has an electricity meter with readings' do
+        it 'sets the supply to electricity' do
+          create(:electricity_meter_with_reading, school: school)
+          get :usage, params: {id: school.to_param}
+          expect(assigns(:supply)).to eq('electricity')
+        end
+      end
+      context 'where the school only has a gas meter with readings' do
+        it 'sets the supply to gas' do
+          create(:gas_meter_with_reading, school: school)
+          get :usage, params: {id: school.to_param}
+          expect(assigns(:supply)).to eq('gas')
+        end
+      end
+      context 'where the school has both' do
+        it 'sets the supply to electricity' do
+          create(:electricity_meter_with_reading, school: school)
+          create(:gas_meter_with_reading, school: school)
+          get :usage, params: {id: school.to_param}
+          expect(assigns(:supply)).to eq('electricity')
+        end
+      end
+
     end
   end
 
@@ -236,8 +244,6 @@ RSpec.describe SchoolsController, type: :controller do
     describe "POST #create" do
       context "with valid params" do
 
-        let!(:calendar) { create :calendar, template: true }
-
         it "creates a new School" do
           expect {
             post :create, params: {school: valid_attributes}
@@ -247,15 +253,6 @@ RSpec.describe SchoolsController, type: :controller do
           post :create, params: {school: valid_attributes}
           expect(assigns(:school)).to be_a(School)
           expect(assigns(:school)).to be_persisted
-        end
-        it "creates a calendar for the new School" do
-          post :create, params: {school: valid_attributes}
-          expect(assigns(:school).calendar).not_to be_nil
-        end
-
-        it "redirects to the created school" do
-          post :create, params: {school: valid_attributes}
-          expect(response).to redirect_to(School.last)
         end
       end
 
@@ -292,49 +289,10 @@ RSpec.describe SchoolsController, type: :controller do
         end
 
         it "redirects to the school" do
-          school = FactoryBot.create :school
+          school = create(:school_with_same_name)
           put :update, params: {id: school.to_param, school: valid_attributes}
+          school.reload
           expect(response).to redirect_to(school)
-        end
-
-        it "awards competitor badge" do
-          school = FactoryBot.create :school
-          put :update, params: {id: school.to_param, school: {competition_role: "competitor"}}
-          school.reload
-          expect(school.badges[0].name).to eql("competitor")
-        end
-        it "awards winner badge" do
-          school = FactoryBot.create :school
-          put :update, params: {id: school.to_param, school: {competition_role: "winner"}}
-          school.reload
-          expect(school.badges[0].name).to eql("winner")
-        end
-
-      end
-
-      context "adds a meter" do
-        let(:new_attributes) {
-          {
-            meters_attributes:
-              [{ meter_no: 1234, meter_type: 'gas', name: 'gas name' }]
-          }
-        }
-
-        it "adds a school meter to the requested school" do
-          school = create :school
-          expect(school.meters).to be_empty
-          put :update, params: {id: school.to_param, school: new_attributes}
-          school.reload
-          expect(school.meters.first.meter_no).to eq 1234
-        end
-
-        it "does not let you add the same meter number twice" do
-          meter  = create(:meter, meter_no: 1234)
-          school = create(:school, meters: [meter])
-          expect(school.meters.count).to be 1
-          put :update, params: {id: school.to_param, school: new_attributes}
-          school.reload
-          expect(school.meters.count).to be 1
         end
 
       end

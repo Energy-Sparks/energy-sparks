@@ -1,0 +1,8 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>Your school details</h1>
+    <%= simple_form_for(@school, url: onboarding_school_details_path(@school_onboarding)) do |f| %>
+      <%= render 'form', school: @school, school_onboarding: @school_onboarding, key_stage_tags: @key_stage_tags %>
+    <% end %>
+  </div>
+</div>

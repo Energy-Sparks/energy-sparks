@@ -18,7 +18,7 @@
 #  fk_rails_...  (school_id => schools.id)
 #
 class Contact < ApplicationRecord
-  has_and_belongs_to_many :alerts
+  has_and_belongs_to_many :alert_subscriptions
   belongs_to :school, inverse_of: :contacts
 
   validates :mobile_phone_number, presence: true, unless: ->(contact) { contact.email_address.present? }

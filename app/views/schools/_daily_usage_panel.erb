@@ -11,7 +11,7 @@
           <%= hidden_field_tag :period, "hourly" %>
           <%= hidden_field_tag :to_date, @to_date %>
           <%= hidden_field_tag :supply, supply %>
-          <%= select_tag :meter, content_tag(:option,'All Meters',:value=>"")+options_from_collection_for_select(@school.meters_for_supply(supply), :meter_no, :display_name, selected: params[:meter]), class: "meter-filter" %>
+          <%= select_tag :meter, content_tag(:option,'All Meters',:value=>"")+options_from_collection_for_select(@school.meters_for_supply(supply), :mpan_mprn, :display_name, selected: params[:meter]), class: "meter-filter" %>
       <% end %>
       </div>
     </div>

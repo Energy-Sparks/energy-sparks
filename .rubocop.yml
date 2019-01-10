@@ -22,8 +22,6 @@ Lint/BooleanSymbol:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
-Performance/HashEachMethods:
-  Enabled: false
 Rails/OutputSafety:
   Enabled: false
 Style/DateTime:
@@ -46,5 +44,5 @@ Performance/CompareWithBlock:
   Enabled: false
 Rails/FilePath:
   Enabled: false
-
-
+EmptyLineAfterGuardClause:
+  Enabled: false

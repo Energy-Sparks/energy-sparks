@@ -1,13 +1,12 @@
 module SchoolsHelper
-  def meter_and_data?(school, meter_type)
-    school.meters?(meter_type) && school.last_reading_date(meter_type).present?
-  end
+  include Measurements
 
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
-    measurement, ytitle = sort_out_y_title_and_measurement(measurement)
+    @measurement = measurement_unit(measurement)
+    ytitle = sort_out_y_title(@measurement)
 
     column_chart(
-      compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
+      compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: @measurement),
       id: "chart",
       xtitle: 'Day of the week',
       ytitle: ytitle,
@@ -22,22 +21,18 @@ module SchoolsHelper
     )
   end
 
-  def sort_out_y_title_and_measurement(measurement)
+  def sort_out_y_title(measurement)
     case measurement
-    when 'kwh'
-      ytitle = 'Energy (kWh)'
-    when 'pounds'
-      ytitle = 'Cost (£)'
-      measurement = '£'
-    when '£'
+    when 'library_books'
+      ytitle = 'Library books'
+    when 'pounds', 'gb_pounds', '£'
       ytitle = 'Cost (£)'
     when 'co2'
       ytitle = 'Carbon Dioxide emissions (kg)'
     else
-      measurement = 'kwh'
-      ytitle = 'Energy (kWh)'
+      ytitle = 'Energy (kilowatt-hours)'
     end
-    [measurement, ytitle]
+    ytitle
   end
 
   def compare_hourly_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kW')
@@ -72,9 +67,9 @@ module SchoolsHelper
     supply == "electricity" ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
   end
 
-  def meter_display_name(meter_no)
-    return meter_no if meter_no == "all"
-    meter = Meter.find_by_meter_no(meter_no)
+  def meter_display_name(mpan_mprn)
+    return mpan_mprn if mpan_mprn == "all"
+    meter = Meter.find_by_mpan_mprn(mpan_mprn)
     meter.present? ? meter.display_name : meter
   end
 
@@ -100,26 +95,9 @@ module SchoolsHelper
     ).map(&precision)
   end
 
-  # get n days average daily usage
-  def average_usage(supply, window = 7)
-    last_n_days = @school.last_n_days_with_readings(supply, window)
-    return nil unless last_n_days
-    # return the latest date and average usage
-    # average = daily usage figures, summed, divided by window
-    [last_n_days.last, @school.daily_usage(supply: supply, dates: last_n_days)
-                                 .inject(0) { |a, e| a + e[1] } / window
-    ]
-  end
-
   def last_full_week(supply)
     last_full_week = @school.last_full_week(supply)
     last_full_week.present? ? last_full_week : nil
-  end
-
-  # get day last week with most usage
-  def day_most_usage(supply)
-    day = @school.day_most_usage(supply)
-    day.nil? ? '?' : "#{day[0].strftime('%A')} #{day[0].day.ordinalize} #{day[0].strftime('%B')} "
   end
 
   module BenchmarkMetrics
@@ -163,7 +141,7 @@ module SchoolsHelper
       scale_to_kw
     when :co2 # https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2018
       scale_to_co2(fuel_type)
-    when :£
+    when :£, :gb_pounds
       scale_to_pound(fuel_type)
     when :library_books
       scale_unit_from_kwh(:£, fuel_type) / 5.0 # £5 per library book

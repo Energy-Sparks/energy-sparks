@@ -1,13 +1,13 @@
-<div class="row">
-<ul class="nav nav-tabs">
-  <% @nav_array.each do |nav| %>
-  <li>
-    <%= nav_link(nav[:name], send("school_#{nav[:path]}")) %>
-  </li>
-  <% end %>
-</ul>
-
-</div>
-<div class="row">
-  <p><%#= link_to 'Excel download', school_excel_path,  class: "btn btn-warning" %></p>
+<div class="row" id="nav-row">
+  <ul class="nav nav-tabs">
+    <% @nav_array.each do |nav| %>
+    <li>
+      <%= nav_link(nav[:name], send("school_#{nav[:path]}")) %>
+    </li>
+    <% end %>
+    <% if current_user && current_user.admin? %>
+      <!-- used for debug purposes -->
+      <li><%= nav_link('Test', send("school_test_path")) %></li>
+    <% end %>
+  </ul>
 </div>

@@ -2,18 +2,12 @@ require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
   include SchoolAggregation
+  include Measurements
 
   skip_before_action :authenticate_user!
   before_action :set_school
   before_action :set_nav
-
-  def set_nav
-    @dashboard_set = @school.fuel_types
-    pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
-    @nav_array = pages.map do |page|
-      { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
-    end
-  end
+  before_action :set_measurement_options
 
   def analysis
     # Redirect to correct dashboard
@@ -21,6 +15,10 @@ class Schools::AnalysisController < ApplicationController
   end
 
   def main_dashboard_electric
+    render_generic_chart_template
+  end
+
+  def main_dashboard_gas
     render_generic_chart_template
   end
 
@@ -40,43 +38,39 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
-  def chart
-    chart_type = params[:chart_type]
-    chart_type = chart_type.to_sym if chart_type.instance_of? String
-    @charts = [chart_type]
-    @title = chart_type.to_s.humanize
-    actual_chart_render(@charts)
+  def test
+    render_generic_chart_template
   end
 
 private
 
+  def set_measurement_options
+    @measurement_options = MEASUREMENT_OPTIONS
+    @default_measurement = :kwh
+  end
+
+  def set_nav
+    @dashboard_set = @school.fuel_types_for_analysis
+    pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
+    @nav_array = pages.map do |page|
+      { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
+    end
+  end
+
   def render_generic_chart_template
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-    actual_chart_render(@charts)
-  end
+    @measurement = measurement_unit(params[:measurement])
 
-  def actual_chart_render(charts)
-    @number_of_charts = charts.size
-    @output = sort_these_charts(charts)
+    if @school.fuel_types_for_analysis == :none
+      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
+    else
+      @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
+      @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
 
-    respond_to do |format|
-      format.html { render :generic_chart_template }
-      format.json { render :chart_data }
-    end
-  end
+      @number_of_charts = @charts.size
 
-  def sort_these_charts(array_of_chart_types_as_symbols)
-    this_aggregate_school = aggregate_school(@school)
-
-    @cache_debug_info = this_aggregate_school.electricity_meters.map do |meter|
-      "Mpan: #{meter.mpan_mprn} Last Reading from : #{meter.last_read}\n"
-    end
-
-    chart_manager = ChartManager.new(this_aggregate_school, current_user.try(:admin?))
-
-    array_of_chart_types_as_symbols.map do |chart_type|
-      { chart_type: chart_type, data: chart_manager.run_standard_chart(chart_type) }
+      # Get this loaded and warm the cache before starting the chart rendering
+      aggregate_school(@school)
+      render :generic_chart_template
     end
   end
 

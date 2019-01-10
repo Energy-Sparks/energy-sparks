@@ -25,8 +25,7 @@ Home
     </div>
     <div class="row">
       <div class="col-lg-12 text-center">
-        <h3><%= link_to pluralize(@schools_enrolled, "school"), schools_path %> currently enrolled</h3>
-        <p><%= t('application') %> is freely available for all schools in Bath & North East Somerset.</p>
+        <h3><%= link_to pluralize(@active_schools, "school"), schools_path %> currently enrolled</h3>
         <p>Find out more about <%= link_to "how to enrol", enrol_path %></p>
       </div>
     </div>
@@ -48,17 +47,18 @@ Home
           <%= t('application') %> helps make school energy usage data more accessible for everyone.
         <p>
         <p>
-          See your gas and electricity usage using simple easy to read charts, share them with parents and children, and work towards
-          achieving Eco-School status
+          Empower your pupils, school staff and parents to take action to make your school more energy efficient.
+        </p>
+        <p>
+          See school specific analysis which presents both short and long-term energy saving opportunities.
         </p>
       </div>
       <div class="col-lg-4">
         <p>
-          <%= t('application') %> has been developed by the local community to support our schools
+          Discover energy related activities for primary and secondary pupils with supporting online resources that guide pupils through an energy saving programme.
         </p>
         <p>
-          <%= link_to "Contact us", contact_path %> to learn how you can get involved and help support your local school or
-          contribute towards developing the application.
+          <%= link_to "Contact us", contact_path %> to learn how you can get involved.
         </p>
       </div>
     </div>
@@ -77,11 +77,10 @@ Home
     <div class="row">
       <div class="col-lg-12 text-center">
         <p>
-          The application has been developed through a <%= link_to "partnership", team_path(anchor: "partners") %> between Bath: Hacked, Transition Bath and Resource Futures.
+          Energy Sparks was developed through a partnership between Bath: Hacked, and Transition Bath. Significant ongoing funding is being provided by the Department of Business, Energy and Industrial Strategy. We are currently working with partners at Bath and North East Somerset Council, Somerset Council and Sheffield City Council.
         </p>
         <p>
-          <%= t('application') %> is sponsored by the Open Data Institute, Bath & North East Somerset Council, Bath & West Community Energy and
-          the Naturesave Trust
+          Additional sponsorship has been provided by the Open Data Institute,  Bath & West Community Energy, the Naturesave Trust and the OVO Foundation.
         <p>
       </div>
     </div>
