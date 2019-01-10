@@ -27,7 +27,7 @@ For now you may wish to read the evolving documentation in [the project wiki](ht
 
 # For Developers
 
-The application is a Rails 5.2, Ruby 2.5.1 project.
+The application is a Rails 5.2, Ruby 2.5.3 project.
 
 Read the CONTRIBUTING.md guidelines for how to get started.
 
@@ -35,11 +35,64 @@ Read the CONTRIBUTING.md guidelines for how to get started.
 
 Development mode uses mail catcher for sending mails - you need to install the [mailcatcher gem](https://github.com/sj26/mailcatcher) for this to work correctly.
 
-## Setting up a new test environment
+## Refreshing test db
+
+1) Get DB dump from production
+2) Search and replace the production user with the test user in the sql file
+3) On test, drop all tables, schema
+4) Run psql against test database and import database
+
+```
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+You may also need to restore the default grants.
+
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+```
+
+## More notes on environment creation
+
+* Create web version
+* In More options
+capacity:
+
+environment: Load balanced (1 - 1)
+ add classic load balance
+
+Load Balancer:
+
+Classic load balancer
+
+Instances:
+
+Set instances to t2.small
+
+Security:
+
+Add previously created key in security
+IAM DevOps
+
+Software:
+
+Add environment properties
+
+* For existing database:
+
+Get the RDS launch wizard group and add access INBOUND for the AWSEBSecurityGroup created by EB for the new instance
+
+Deploy latest code
+Check SSH works
+Set up DNS in Route 53
+Set up cert and get it to create DNS record
+Wait for it to be validated, then add to load balancer
+
+(Add 443 listener)
+
+* For new database:
 
 1) Set up appropriate database in RDS - make sure the password doesn't have any (or too many) special characters, best to keep to digits and letters if possible!
 2) Use pg_dump to get dump of current production database
 3) Use psql to get data into new database
-4) Clone production environment
-5) Update environment variables to point at new database, plus the various other test things like rollbar
-6) add the EC2 security group for the new machine to the RDS security section
+
