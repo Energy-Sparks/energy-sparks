@@ -2,7 +2,7 @@
   <div class="col col-md-10 col-lg-8">
     <h1>Welcome to Energy Sparks</h1>
 
-    <p>Thank you for enrolling <%= @school_onboarding.school_name %> onto Energy Sparks (www.energysparks.uk). We are excited to be introducing Energy Sparks to your area, and look forward to working with your school to save energy.</p>
+    <p>Thank you for enrolling <%= @school_onboarding.school_name %> onto Energy Sparks (www.energysparks.uk). We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.</p>
 
     <h5>Before we can activate your school we need to:</h5>
 
@@ -10,19 +10,18 @@
       <li>Get your permission to publish your school's energy data</li>
       <li>Set up your Energy Sparks school administrator account</li>
       <li>Gather some more information about your school</li>
-      <li>Set up access for other users in your school</li>
       <li>Add you meter details</li>
     </ol>
 
-    <p>Don't worry if you don't have your meter information to hand, we can get it from your Local Authority.</p>
+    <p>Don't worry if you don't have your meter information to hand, we may be able to get it from your Local Authority or MAT.</p>
 
-    <h5>To complete this process you will need:</h5>
+    <h5>To complete this process you will need your school's:</h5>
 
     <ol>
-      <li>Your school's URN, pupil numbers and floor area in sqm</li>
-      <li>The email address of any users you wish to add</li>
+      <li>URN (You can look up your school's URN on the <%= link_to 'https://get-information-schools.service.gov.uk/', 'ttps://get-information-schools.service.gov.uk/' %> website)</li>
+      <li>Pupil numbers</li>
+      <li>Floor area in square metres</li>
     </ol>
-
 
     <p>There will be the opportunity to add the following details to better tailor Energy Sparks to your school, but they are not required to set up your school and can be updated once your school is active:</p>
 
@@ -31,7 +30,7 @@
       <li>Your school's inset days</li>
     </ul>
 
-    <p>Once you've completed this process we will review your school and activate</p>
+    <p>Once you've completed this process we will review your school and activate your account on Energy Spark.s</p>
 
     <%= link_to 'Next', onboarding_consent_path(@school_onboarding), class: 'btn btn-primary' %>
   </div>
