@@ -56,3 +56,7 @@
   <%= render partial: 'schools/interpretation', locals: {supply: @supply} %>
 
 </div>
+
+<% content_for :chartkick_js do %>
+  <%= yield :charts_js %>
+<% end %>
