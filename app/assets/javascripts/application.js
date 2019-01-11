@@ -3,7 +3,6 @@
 
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/widgets/datepicker
 
 // Popper is a requirement for bootstrap and is included either in the bootstrap gem
 // or as a dependency
