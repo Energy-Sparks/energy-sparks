@@ -10,7 +10,6 @@
       <%= yield %>
     </div>
     <%= render 'shared/footer' %>
-    <%= yield :charts_js %>
+    <%= content_for(:chartkick_js) %><!-- only used on usage pages, so only loaded on those pages -->
   </body>
-
 </html>

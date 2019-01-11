@@ -4,7 +4,7 @@
 
     <%= simple_form_for(school, url: onboarding_school_details_path(school_onboarding)) do |f| %>
 
-      <%= f.input :name %>
+      <%= f.input :name, label: 'School name'%>
       <%= f.input :urn, label: 'Unique Reference Number (URN)' %>
 
       <h2>School Type</h2>
@@ -30,7 +30,7 @@
 
       <div class="form-row">
         <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
-        <%= f.input :floor_area, label: 'Floor area in square metres', wrapper_html: {class: 'col-md-6'}%>
+        <%= f.input :floor_area, label: 'Floor area in square metres', hint: "If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT", wrapper_html: {class: 'col-md-6'}%>
       </div>
 
       <h2>Address</h2>

@@ -186,7 +186,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(user.name).to eq('Better name')
 
       click_on 'Edit school details'
-      fill_in 'Name', with: 'Correct school'
+      fill_in 'School name', with: 'Correct school'
       click_on 'Update school details'
       school.reload
       expect(school.name).to eq('Correct school')
