@@ -2,6 +2,8 @@ class ActivityTypesController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show]
 
+  before_action :load_filters, only: [:new, :edit, :create, :update]
+
   # GET /activity_types
   # GET /activity_types.json
   def index
@@ -17,14 +19,11 @@ class ActivityTypesController < ApplicationController
 
   # GET /activity_types/new
   def new
-    @key_stages = KeyStage.order(:name)
     add_activity_type_suggestions
   end
 
   # GET /activity_types/1/edit
   def edit
-    @key_stages = KeyStage.order(:name)
-
     number_of_suggestions_so_far = @activity_type.activity_type_suggestions.count
     if number_of_suggestions_so_far > 8
       @activity_type.activity_type_suggestions.build
@@ -43,7 +42,6 @@ class ActivityTypesController < ApplicationController
         format.json { render :show, status: :created, location: @activity_type }
       else
         format.html do
-          @key_stages = KeyStage.order(:name)
           add_activity_type_suggestions
           render :new
         end
@@ -95,10 +93,22 @@ private
         :repeatable,
         :data_driven,
         key_stage_ids: [],
+        impact_ids: [],
+        subject_ids: [],
+        topic_ids: [],
+        timing_ids: [],
         activity_type_suggestions_attributes: suggestions_params)
   end
 
   def suggestions_params
     [:id, :suggested_type_id, :_destroy]
+  end
+
+  def load_filters
+    @key_stages = KeyStage.order(:name)
+    @subjects = Subject.order(:name)
+    @topics = Topic.order(:name)
+    @impacts = Impact.order(:name)
+    @timings = ActivityTiming.order(:position)
   end
 end
