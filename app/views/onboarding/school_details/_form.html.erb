@@ -4,7 +4,7 @@
 
     <%= simple_form_for(school, url: onboarding_school_details_path(school_onboarding)) do |f| %>
 
-      <%= f.input :name %>
+      <%= f.input :name, label: 'School name'%>
       <%= f.input :urn, label: 'Unique Reference Number (URN)' %>
 
       <h2>School Type</h2>
