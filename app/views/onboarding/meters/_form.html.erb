@@ -1,13 +1,13 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
     <h1>New meter</h1>
-    <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)</p>
+    <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters). You can find this information on your school's electricity or gas bill, or in the online account for your energy supply.</p>
     <%= simple_form_for meter, url: url do |form| %>
 
       <%= form.input :meter_type, as: :radio_buttons, collection: Meter.meter_types.keys, label_method: :humanize %>
 
       <%= form.input :mpan_mprn, label: 'Meter Point Number' %>
-      <%= form.input :name, label: 'Meter Name' %>
+      <%= form.input :name, label: 'Meter Name', hint: 'You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.' %>
       <%= form.input :meter_serial_number, labeL: 'Serial number', as: :string %>
       <%= form.button :submit %>
       <%= link_to 'Back', new_onboarding_completion_path(school_onboarding, anchor: 'meters'), class: 'btn' %>
