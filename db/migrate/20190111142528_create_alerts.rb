@@ -7,7 +7,7 @@ class CreateAlerts < ActiveRecord::Migration[5.2]
       t.text        :status
       t.text        :summary
       t.json        :data
-      t.boolean     :acknowledged
+      t.boolean     :acknowledged, default: false
     end
   end
 end
