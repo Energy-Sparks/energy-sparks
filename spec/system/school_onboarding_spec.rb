@@ -30,9 +30,9 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'records basic details and sends an email to the school' do
       within '.navbar' do
-        click_on 'School Onboarding'
+        click_on 'Automatic School Setup'
       end
-      click_on 'Onboard New School'
+      click_on 'New Automatic School Setup'
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
@@ -49,7 +49,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_content(school_name)
       expect(page).to have_content("oldfield@test.com")
 
-      click_on "Send onboarding email"
+      click_on "Send setup email"
 
       onboarding = SchoolOnboarding.first
 
@@ -61,7 +61,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     it 'sends reminder emails when requested' do
       onboarding = create :school_onboarding
       within '.navbar' do
-        click_on 'School Onboarding'
+        click_on 'Automatic School Setup'
       end
       click_on 'Send reminder'
 
