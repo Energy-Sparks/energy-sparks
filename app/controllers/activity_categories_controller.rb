@@ -7,7 +7,7 @@ class ActivityCategoriesController < ApplicationController
   # GET /activity_categories
   # GET /activity_categories.json
   def index
-    @key_stage_filters = work_out_which_filters_to_set
+    @key_stage_filters = selected_key_stage_filters
     @key_stages = KeyStage.order(:name)
     @activity_categories = @activity_categories.order(:name)
   end

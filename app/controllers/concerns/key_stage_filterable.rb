@@ -7,18 +7,18 @@ private
     params.permit(key_stage: { key_stage_ids: [] })
   end
 
-  def work_out_which_filters_to_set
+  def selected_key_stage_filters
     key_stage = key_stage_filter_params[:key_stage]
 
     if key_stage.nil?
-      default_filters
+      default_key_stage_filters
     else
       filters = key_stage[:key_stage_ids]
       KeyStage.where(id: filters)
     end
   end
 
-  def default_filters
+  def default_key_stage_filters
     if @school
       @school.key_stages
     elsif current_user.nil? || current_user.school.nil?
