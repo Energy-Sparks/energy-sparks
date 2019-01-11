@@ -7,8 +7,8 @@ class ActivityCategoriesController < ApplicationController
   # GET /activity_categories
   # GET /activity_categories.json
   def index
-    @key_stage_filter_names = work_out_which_filters_to_set
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+    @key_stage_filters = work_out_which_filters_to_set
+    @key_stages = KeyStage.order(:name)
     @activity_categories = @activity_categories.order(:name)
   end
 

@@ -18,7 +18,7 @@
       </div>
 
       <p>Please select which Key Stages this school teaches.</p>
-      <%= f.collection_check_boxes(:key_stage_ids, key_stage_tags, :id, :name) do |b| %>
+      <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
         <div class="custom-control custom-checkbox custom-control-inline">
           <%= b.check_box(class: "custom-control-input") %>
           <%= b.label(class: "custom-control-label") do %>

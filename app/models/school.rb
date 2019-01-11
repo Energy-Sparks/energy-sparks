@@ -49,7 +49,7 @@ class School < ApplicationRecord
   include Merit::UsageCalculations
   has_merit
 
-  acts_as_taggable_on :key_stages
+  has_and_belongs_to_many :key_stages, join_table: :school_key_stages
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
