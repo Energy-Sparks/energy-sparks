@@ -3,14 +3,6 @@
 $(document).ready(function() {
   if ($("#calendar").length) {
 
-    function setUpDatePickers(input_field_name) {
-      $('#event-modal input[name="' + input_field_name + '"]').datepicker({
-        dateFormat: 'dd/mm/yy',
-        altFormat: 'yy-mm-dd',
-        orientation: 'bottom'
-      });
-    }
-
     function editEvent(event) {
 
       var startDate = null;

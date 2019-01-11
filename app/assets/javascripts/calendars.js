@@ -9,8 +9,8 @@ $(document).ready(function() {
       if ($datePickerDiv.length) {
         var calendar_event_date_value = $('input#calendar_event_' + date_type + '_date').val();
         var defaultDate = $datePickerDiv.data('default-date');
-        var momentDate = moment(calendar_event_date_value);
-        console.log(momentDate);
+        var momentDate = moment(calendar_event_date_value, 'DD/MM/YYYY');
+
         $datePickerDiv.datetimepicker({
           format: 'DD/MM/YYYY',
           date: momentDate,
@@ -21,12 +21,13 @@ $(document).ready(function() {
 
     setUpDatePicker('start');
     setUpDatePicker('end');
-  }
 
-  var calendar_event_date_value = $('#calendar_event_holder .datetimepicker-input').val();
-  $('#calendar_event_holder').datetimepicker({
-    format: 'DD/MM/YYYY',
-    allowInputToggle: true,
-    date: moment(calendar_event_date_value)
-  });
+    var calendar_event_date_value = $('#calendar_event_holder .datetimepicker-input').val();
+
+    $('#calendar_event_holder').datetimepicker({
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true,
+      date: moment(calendar_event_date_value, 'DD/MM/YYYY')
+    });
+  }
 });
