@@ -1,11 +1,11 @@
 class NextActivitySuggesterWithKeyStages
   NUMBER_OF_SUGGESTIONS = 5
 
-  def initialize(school, key_stages_as_array_of_names = school.key_stage_list)
+  def initialize(school, key_stages = school.key_stages)
     @school = school
     @suggestions = []
     @first_activity = @school.activities.empty?
-    @key_stages = key_stages_as_array_of_names
+    @key_stages = key_stages
   end
 
   def suggest
@@ -41,7 +41,7 @@ private
   end
 
   def top_up_if_not_enough_suggestions
-    more = ActivityType.random_suggestions.tagged_with(@key_stages, any: :true).sample(NUMBER_OF_SUGGESTIONS - @suggestions.length)
+    more = ActivityType.random_suggestions.includes(:key_stages).where(key_stages: { id: @key_stages }).sample(NUMBER_OF_SUGGESTIONS - @suggestions.length)
     @suggestions += more
   end
 
@@ -50,6 +50,6 @@ private
   end
 
   def this_suggested_list_is_appropriate_to_key_stages?(suggested_type)
-    (suggested_type.key_stage_list & @key_stages).any?
+    (suggested_type.key_stages & @key_stages).any?
   end
 end

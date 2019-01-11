@@ -83,8 +83,6 @@ gem 'lograge'
 gem 'rollbar'
 gem 'oj'
 
-gem 'acts-as-taggable-on'
-
 # Email service
 gem 'mailgun_rails'
 

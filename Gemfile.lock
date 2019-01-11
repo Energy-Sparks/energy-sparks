@@ -95,8 +95,6 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    acts-as-taggable-on (6.0.0)
-      activerecord (~> 5.0)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     after_party (1.10.0)
@@ -581,7 +579,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-import
-  acts-as-taggable-on
   after_party
   annotate
   auto_strip_attributes (~> 2.5)

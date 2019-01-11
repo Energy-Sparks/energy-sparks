@@ -73,8 +73,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   context 'as school user signing up' do
 
-    let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
-    let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
+    let!(:ks1) { KeyStage.create(name: 'KS1') }
 
     let!(:onboarding) do
       create(
