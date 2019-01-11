@@ -32,9 +32,7 @@ $(document).ready(function() {
       }
       $('#event-modal input[name="event-index"]').val(event ? event.id : '');
       $('#event-modal input[name="calendar_event[start_date]"]').val(startDate ? startDate.toLocaleDateString("en-GB") : '');
-      setUpDatePickers("calendar_event[start_date]");
       $('#event-modal input[name="calendar_event[end_date]"]').val(endDate ? endDate.toLocaleDateString("en-GB") : '');
-      setUpDatePickers("calendar_event[end_date]");
 
       $('#event-modal').modal();
     }
