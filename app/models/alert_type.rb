@@ -13,7 +13,8 @@
 #
 
 class AlertType < ApplicationRecord
-  has_many :alert_subscriptions, dependent: :destroy
+  has_many :alert_subscriptions,  dependent: :destroy
+  has_many :alerts,               dependent: :destroy
 
   enum fuel_type: [:electricity, :gas]
   enum sub_category: [:hot_water, :heating, :baseload]

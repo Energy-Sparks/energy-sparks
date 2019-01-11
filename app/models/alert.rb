@@ -20,10 +20,4 @@
 class Alert < ApplicationRecord
   belongs_to :school,     inverse_of: :alerts
   belongs_to :alert_type, inverse_of: :alerts
-
-  store :data, coder: JSON
-
-  def example_hash
-    { woof: 'meow', agrgh: 'crash' }
-  end
 end
