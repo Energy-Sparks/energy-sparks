@@ -29,7 +29,7 @@ RSpec.describe "school creation", :schools, type: :system do
 
   it 'splits the journey up in to basic details and configuration' do
     within '.navbar' do
-      click_on 'New School'
+      click_on 'Manual School Setup'
     end
 
     fill_in 'Name', with: "St Mary's School"
