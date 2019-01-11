@@ -17,13 +17,13 @@ class ActivityTypesController < ApplicationController
 
   # GET /activity_types/new
   def new
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+    @key_stages = KeyStage.order(:name)
     add_activity_type_suggestions
   end
 
   # GET /activity_types/1/edit
   def edit
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+    @key_stages = KeyStage.order(:name)
 
     number_of_suggestions_so_far = @activity_type.activity_type_suggestions.count
     if number_of_suggestions_so_far > 8
@@ -43,7 +43,7 @@ class ActivityTypesController < ApplicationController
         format.json { render :show, status: :created, location: @activity_type }
       else
         format.html do
-          @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+          @key_stages = KeyStage.order(:name)
           add_activity_type_suggestions
           render :new
         end

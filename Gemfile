@@ -27,7 +27,6 @@ gem 'statsample', git: 'https://github.com/SciRuby/statsample', branch: 'master'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'jquery-ui-rails' # Use jquery UI for datepickers
 gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
@@ -82,8 +81,6 @@ gem 'lograge'
 # Exception handling
 gem 'rollbar'
 gem 'oj'
-
-gem 'acts-as-taggable-on'
 
 # Email service
 gem 'mailgun_rails'

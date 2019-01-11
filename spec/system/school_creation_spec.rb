@@ -5,8 +5,7 @@ RSpec.describe "school creation", :schools, type: :system do
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:admin)  { create(:user, role: 'admin')}
 
-  let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
-  let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
+  let!(:ks1) { KeyStage.create(name: 'KS1') }
 
   let!(:calendar_area){ create(:calendar_area, title: 'BANES calendar') }
   let!(:calendar){ create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
@@ -29,7 +28,7 @@ RSpec.describe "school creation", :schools, type: :system do
 
   it 'splits the journey up in to basic details and configuration' do
     within '.navbar' do
-      click_on 'New School'
+      click_on 'Manual School Setup'
     end
 
     fill_in 'Name', with: "St Mary's School"
@@ -57,7 +56,7 @@ RSpec.describe "school creation", :schools, type: :system do
     expect(page).to have_content("Manage meters: St Mary's School")
 
     school = School.where(urn: '4444244').first
-    expect(school.key_stage_list).to eq(['KS1'])
+    expect(school.key_stages).to match_array([ks1])
     expect(school.school_group).to eq(school_group)
     expect(school.calendar_area).to eq(calendar_area)
     expect(school.solar_pv_tuos_area).to eq(solar_pv_area)

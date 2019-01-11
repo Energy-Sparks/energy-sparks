@@ -1,4 +1,4 @@
-<h1>Onboarding: <%= @school_onboarding.school_name %></h1>
+<h1>Automatic school setup: <%= @school_onboarding.school_name %></h1>
 
 <dl>
   <dt>School name:</dt>
@@ -8,5 +8,5 @@
 </dl>
 
 
-<%= button_to 'Send onboarding email', admin_school_onboarding_email_path(@school_onboarding), method: :post, class: 'btn btn-success'%>
+<%= button_to 'Send setup email', admin_school_onboarding_email_path(@school_onboarding), method: :post, class: 'btn btn-success'%>
 
