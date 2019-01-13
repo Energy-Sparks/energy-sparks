@@ -15,10 +15,10 @@ class AlertGeneratorService
 
     @results << run_alerts(AlertType.no_fuel)
 
-    if @school.meters_with_readings(:electricity).any?
+    if @school.meters_with_enough_validated_readings_for_analysis(:electricity).any?
       @results << run_alerts(AlertType.electricity, @electricity_analysis_date)
     end
-    if @school.meters_with_readings(:gas).any?
+    if @school.meters_with_enough_validated_readings_for_analysis(:gas).any?
       @results << run_alerts(AlertType.gas, @gas_analysis_date)
     end
     @results.flatten
@@ -46,11 +46,11 @@ private
   def alert_types_for_school
     alert_types = AlertType.no_fuel_type
 
-    if @school.meters_with_readings(:electricity).any?
+    if @school.meters_with_enough_validated_readings_for_analysis(:electricity).any?
       alert_types << AlertType.where(fuel_type: :electricity).to_a
     end
 
-    if @school.meters_with_readings(:gas).any?
+    if @school.meters_with_enough_validated_readings_for_analysis(:gas).any?
       alert_types << AlertType.where(fuel_type: :gas).to_a
     end
     alert_types.flatten
