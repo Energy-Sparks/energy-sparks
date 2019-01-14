@@ -96,7 +96,7 @@ private
         impact_ids: [],
         subject_ids: [],
         topic_ids: [],
-        timing_ids: [],
+        activity_timing_ids: [],
         activity_type_suggestions_attributes: suggestions_params)
   end
 
@@ -109,6 +109,6 @@ private
     @subjects = Subject.order(:name)
     @topics = Topic.order(:name)
     @impacts = Impact.order(:name)
-    @timings = ActivityTiming.order(:position)
+    @activity_timings = ActivityTiming.order(:position)
   end
 end

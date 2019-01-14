@@ -49,7 +49,7 @@ RSpec.describe "activity type", type: :system do
 
       expect(activity_type.key_stages).to match_array([ks1])
       expect(activity_type.subjects).to   match_array([science])
-      expect(activity_type.timings).to    match_array([half_hour])
+      expect(activity_type.activity_timings).to    match_array([half_hour])
       expect(activity_type.topics).to     match_array([energy])
       expect(activity_type.impacts).to    match_array([reducing_electricity])
 
