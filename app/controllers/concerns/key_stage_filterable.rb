@@ -8,10 +8,10 @@ private
       key_stage: { key_stage_ids: [] },
       subject: { subject_ids: [] },
       topic: { topic_ids: [] },
-      timing: { timing_ids: [] },
+      activity_timing: { activity_timing_ids: [] },
       impact: { impact_ids: [] }
     )
-    HashWithIndifferentAccess[permitted.values.inject(&:update).to_h.map {|key, values| [key, values.reject(&:blank?)]}]
+    HashWithIndifferentAccess[permitted.to_h.values.inject(&:update).to_h.map {|key, values| [key, values.reject(&:blank?)]}]
   end
 
   def activity_type_filter
