@@ -17,14 +17,17 @@
     </div>
   </div>
 
-  <%= form_tag activity_categories_path, method: :get do %>
-    <%= render 'activity_types/filters', filter: @filter %>
-    <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
-  <% end %>
 
   <div class="row padded-row">
     <div class="col-md-3">
-      <div class="nav flex-column nav-pills card-header-pills" id="v-pills-tab" role="tablist">
+      <%= form_tag activity_categories_path, method: :get do %>
+        <h3>Filters</h3>
+        <%= render 'activity_types/filters', filter: @filter %>
+        <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
+      <% end %>
+    </div>
+    <div class="col-md-9">
+      <div class="nav flex-column nav-pills card-header-pills mb-5" id="v-pills-tab" role="tablist">
         <% @activity_categories.each_with_index do |activity_category, idx| %>
           <a class="border nav-link <%= idx == 0 ? 'active' : '' %>"
              id="v-pills-cat<%= activity_category.id %>-tab"
@@ -35,8 +38,6 @@
              aria-expanded="<%= idx == 0 ? 'true' : 'false' %>"><p><%= activity_category.name %></p></a>
         <% end %>
       </div>
-    </div>
-    <div class="col-md-9">
       <div class="tab-content" id="v-pills-tabContent">
         <% @activity_categories.each_with_index do |activity_category, idx| %>
           <div class="tab-pane fade show <%= idx == 0 ? 'active' : '' %>" id="v-pills-cat<%= activity_category.id %>" role="tabpanel" aria-labelledby="v-pills-cat<%= activity_category.id %>-tab">
