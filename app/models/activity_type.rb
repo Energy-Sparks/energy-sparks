@@ -11,6 +11,7 @@
 #  description          :text
 #  id                   :bigint(8)        not null, primary key
 #  name                 :string
+#  other                :boolean          default(FALSE)
 #  repeatable           :boolean          default(TRUE)
 #  score                :integer
 #  updated_at           :datetime         not null
@@ -40,6 +41,7 @@ class ActivityType < ApplicationRecord
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
   scope :random_suggestions, -> { active.repeatable }
+  scope :other_last, -> { order(:other) }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true

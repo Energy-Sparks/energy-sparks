@@ -18,14 +18,7 @@
   </div>
 
   <%= form_tag activity_categories_path, method: :get do %>
-    <%= collection_check_boxes :key_stage, :key_stage_ids, @key_stages, :id, :name, { multiple: true } do |b| %>
-      <div class="custom-control custom-checkbox custom-control-inline">
-        <%= b.check_box( checked: (@key_stage_filters.include?(b.object)), class: "custom-control-input") %>
-        <%= b.label(class: "custom-control-label") do %>
-          <%= b.object.name %>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render 'filter', name: :key_stage, filters: @key_stages, selected_filters: @key_stage_filters, title: 'Key Stages'%>
     <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
   <% end %>
 

@@ -17,21 +17,10 @@ class ActivityCategory < ApplicationRecord
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
 
   def sorted_activity_types(by: :name)
-    types = activity_types.where(active: true).order(by).to_a
-    sort_types(types)
+    activity_types.where(active: true).other_last.order(by)
   end
 
   def sorted_activity_types_with_key_stages(by: :name, array_of_key_stages: [])
-    types = activity_types.where(active: true).includes(:key_stages).where(key_stages: { id: array_of_key_stages }).order(by).to_a
-    sort_types(types)
-  end
-
-private
-
-  # Other should always be last
-  def sort_types(types)
-    other = types.index { |x| x.name.casecmp("other") == 0 }
-    types.insert(-1, types.delete_at(other)) if other.present?
-    types
+    activity_types.where(active: true).includes(:key_stages).where(key_stages: { id: array_of_key_stages }).other_last.order(by)
   end
 end

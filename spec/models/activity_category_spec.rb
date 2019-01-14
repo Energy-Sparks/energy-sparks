@@ -13,7 +13,7 @@ describe 'ActivityCategory' do
 
     expect( subject.sorted_activity_types.length ).to eql(1)
 
-    subject.activity_types << FactoryBot.create(:activity_type, name: "other")
+    subject.activity_types << FactoryBot.create(:activity_type, name: "other", other: true)
     subject.activity_types << FactoryBot.create(:activity_type, name: "Z")
 
     expect( subject.sorted_activity_types.length ).to eql(3)
@@ -36,7 +36,7 @@ describe 'ActivityCategory' do
       expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks2, ks3]).length).to eql(0)
       expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1, ks2, ks3]).length).to eql(1)
 
-      subject.activity_types << FactoryBot.create(:activity_type, name: "other", key_stages: [ks1])
+      subject.activity_types << FactoryBot.create(:activity_type, name: "other", key_stages: [ks1], other: true)
       subject.activity_types << FactoryBot.create(:activity_type, name: "Z", key_stages: [ks3])
 
       expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1]).length ).to eql(2)
