@@ -57,14 +57,7 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_tag suggest_activity_school_path, method: :get do %>
-      <%= collection_check_boxes :key_stage, :key_stage_ids, @key_stages, :id, :name, { multiple: true } do |b| %>
-        <div class="custom-control custom-checkbox custom-control-inline">
-          <%= b.check_box( checked: (@key_stage_filters.include?(b.object)), class: "custom-control-input") %>
-          <%= b.label(class: "custom-control-label") do %>
-            <%= b.object.name %>
-          <% end %>
-        </div>
-      <% end %>
+      <%= render 'activity_types/filters', filter: @filter %>
       <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
     <% end %>
   </div>

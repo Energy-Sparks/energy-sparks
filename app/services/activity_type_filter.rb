@@ -2,7 +2,7 @@ class ActivityTypeFilter
   def initialize(query, school: nil)
     @query = query
     @school = school
-    @scope = ActivityType.includes(:key_stages, :subjects, :topics, :activity_timings, :impacts, :activity_category)
+    @scope = ActivityType.active.includes(:key_stages, :subjects, :topics, :activity_timings, :impacts, :activity_category)
   end
 
   def activity_types

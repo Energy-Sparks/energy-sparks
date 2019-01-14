@@ -32,10 +32,9 @@ class SchoolsController < ApplicationController
   end
 
   def suggest_activity
-    @key_stage_filters = selected_key_stage_filters
-    @key_stages = KeyStage.order(:name)
+    @filter = activity_type_filter
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filters).suggest
+    @suggestions = NextActivitySuggesterWithFilter.new(@school, @filter).suggest
   end
 
   # GET /schools/new
