@@ -5,10 +5,8 @@ class ActivityCategoriesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
 
   # GET /activity_categories
-  # GET /activity_categories.json
   def index
     @filter = activity_type_filter
-    @key_stages = KeyStage.order(:name)
     @activity_categories = @activity_categories.order(:name)
   end
 
