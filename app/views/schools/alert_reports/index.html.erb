@@ -69,12 +69,14 @@
         <div class="card mb-3">
           <div class="card-header text-white <%= class_for_alert_rating(alert_type[:report].rating) %>">
             <h4><%= alert_type[:report].summary %>
-            <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert_type[:title].parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
-              <button class="btn btn-sm">
-              <span class="if-collapsed">More details</span>
-              <span class="if-not-collapsed">Less details</span>
-              </button>
-            </a>
+            <% if alert_type[:report].rating > 0 %>
+              <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert_type[:title].parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
+                <button class="btn btn-sm">
+                <span class="if-collapsed">More details</span>
+                <span class="if-not-collapsed">Less details</span>
+                </button>
+              </a>
+            <% end %>
             </h4>
           </div>
 
