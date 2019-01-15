@@ -22,13 +22,16 @@ private
       @electricity_date = Date.parse(params[:electricity_date_picker])
     end
 
-    @earliest_gas_reading = @school.earliest_reading_date(:gas)
-    @latest_gas_reading = @school.last_common_reading_date_for_active_meters_of_supply(:gas)
+    if @school.meters?(:gas)
+      @earliest_gas_reading = @school.earliest_reading_date(:gas)
+      @latest_gas_reading = @school.last_common_reading_date_for_active_meters_of_supply(:gas)
+      @gas_alerts_date = @gas_date || @latest_gas_reading
+    end
 
-    @latest_electricity_reading = @school.last_common_reading_date_for_active_meters_of_supply(:electricity)
-    @earliest_electricity_reading = @school.earliest_reading_date(:electricity)
-
-    @gas_alerts_date = @gas_date || @latest_gas_reading
-    @electricity_alerts_date = @electricity_date || @latest_electricity_reading
+    if @school.meters?(:electricity)
+      @latest_electricity_reading = @school.last_common_reading_date_for_active_meters_of_supply(:electricity)
+      @earliest_electricity_reading = @school.earliest_reading_date(:electricity)
+      @electricity_alerts_date = @electricity_date || @latest_electricity_reading
+    end
   end
 end
