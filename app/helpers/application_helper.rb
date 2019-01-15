@@ -63,8 +63,10 @@ module ApplicationHelper
       'bg-success'
     elsif rating > 6
       'bg-warning'
-    else
+    elsif rating > 0
       'bg-danger'
+    else
+      'bg-secondary'
     end
   end
 

@@ -37,10 +37,23 @@ private
 
   def run_alerts(alert_types, analysis_date = Time.zone.today)
     alert_types.map do |alert_type|
-      alert = alert_type.class_name.constantize.new(@aggregate_school)
-      alert.analyse(analysis_date)
-      { report: alert.analysis_report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency, fuel_type: alert_type.fuel_type }
+      run_alert(alert_type, analysis_date)
     end
+  end
+
+  def run_alert(alert_type, analysis_date)
+    alert = alert_type.class_name.constantize.new(@aggregate_school)
+    begin
+      alert.analyse(analysis_date)
+      report = alert.analysis_report
+      # Data problems usually throw this: undefined method `kwh_data_x48' for nil:NilClass
+    rescue NoMethodError
+      report = AlertReport.new(alert_type)
+      report.summary = "There was a problem running this alert: #{alert_type.title}."
+      report.rating = 0.0
+      Rails.logger.error("There was a problem running #{alert_type.title} for #{analysis_date} and #{@school.name}")
+    end
+    { report: report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency, fuel_type: alert_type.fuel_type }
   end
 
   def alert_types_for_school
