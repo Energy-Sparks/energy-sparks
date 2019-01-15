@@ -164,6 +164,14 @@ class School < ApplicationRecord
     meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
   end
 
+  def last_common_reading_date_for_active_meters_of_supply(supply)
+    array_of_meter_reading_dates = active_meters.where(meter_type: supply).map do |m|
+      m.amr_validated_readings.pluck(:reading_date)
+    end
+    # Intersect using & the arrays and get the max
+    array_of_meter_reading_dates.inject(:&).max
+  end
+
   def fuel_types
     if both_supplies?
       :electric_and_gas

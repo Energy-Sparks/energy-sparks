@@ -23,9 +23,9 @@ private
     end
 
     @earliest_gas_reading = @school.earliest_reading_date(:gas)
-    @latest_gas_reading = @school.last_reading_date(:gas)
+    @latest_gas_reading = @school.last_common_reading_date_for_active_meters_of_supply(:gas)
 
-    @latest_electricity_reading = @school.last_reading_date(:electricity)
+    @latest_electricity_reading = @school.last_common_reading_date_for_active_meters_of_supply(:electricity)
     @earliest_electricity_reading = @school.earliest_reading_date(:electricity)
 
     @gas_alerts_date = @gas_date || @latest_gas_reading
