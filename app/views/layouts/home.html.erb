@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= render 'shared/head' %>
+  </head>
+  <body>
+    <%= render 'shared/nav' %>
+    <%= render 'shared/alerts' %>
+    <!-- don't render application container as you do for the other pages -->
+    <%= yield %>
+    <%= render 'shared/footer' %>
+  </body>
+</html>
