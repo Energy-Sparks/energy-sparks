@@ -1,5 +1,5 @@
 class SchoolsController < ApplicationController
-  include KeyStageFilterable
+  include ActivityTypeFilterable
   include Measurements
 
   load_and_authorize_resource

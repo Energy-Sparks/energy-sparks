@@ -1,5 +1,5 @@
 class ActivityCategoriesController < ApplicationController
-  include KeyStageFilterable
+  include ActivityTypeFilterable
 
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index]
