@@ -75,28 +75,6 @@ RSpec.describe ActivityTypeFilter, type: :service do
     end
   end
 
-  describe '#selected_key_stages' do
-
-    let(:school){ create(:school, key_stages: [ks1]) }
-
-    context 'when no parameters are passed in' do
-      it 'uses the school key stages when a school is set' do
-        service = ActivityTypeFilter.new({}, school: school)
-        expect(service.selected_key_stages).to match_array([ks1])
-      end
-      it 'uses none when no school is set' do
-        service = ActivityTypeFilter.new({}, school: nil)
-        expect(service.selected_key_stages).to match_array([])
-      end
-    end
-    context 'when parameters are passed in' do
-      it 'loads the key stages from the ids' do
-        service = ActivityTypeFilter.new({key_stage_ids: [ks2.id]}, school: school)
-        expect(service.selected_key_stages).to match_array([ks2])
-      end
-    end
-  end
-
   describe '#selected_subjects' do
     context 'when no parameters are passed in' do
       it 'uses none' do
