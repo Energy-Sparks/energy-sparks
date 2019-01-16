@@ -27,7 +27,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science],
       activity_timings: [half_hour],
       impacts: [reducing_gas],
-      other: true
+      custom: true
     )
   end
   let!(:activity_type_2) do
@@ -164,7 +164,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
       it { is_expected.to match_array([]) }
     end
 
-    context 'when nothing is selected, ordering the other activity type last' do
+    context 'when nothing is selected, ordering the custom activity type last' do
       let(:query){{}}
       it { is_expected.to eq([activity_type_2, activity_type_3, activity_type_1]) }
     end

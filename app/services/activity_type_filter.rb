@@ -4,7 +4,7 @@ class ActivityTypeFilter
   def initialize(query, school: nil)
     @query = query
     @school = school
-    @scope = ActivityType.active.left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id').other_last
+    @scope = ActivityType.active.left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id').custom_last
   end
 
   def activity_types
