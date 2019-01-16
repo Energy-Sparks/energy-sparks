@@ -137,7 +137,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
   describe 'activity_types' do
 
-    subject { ActivityTypeFilter.new(query).activity_types.to_a }
+    subject { ActivityTypeFilter.new(query).activity_types.order(:name).to_a }
 
     context 'when a key stage is selected' do
       let(:query){ {key_stage_ids: ks2.id}}
