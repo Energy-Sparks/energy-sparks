@@ -47,19 +47,19 @@
   <%= render 'shared/custom_checkbox', f: f, field_name: :custom, label_text: "Custom ('Other')" %>
 
   <h2>Key Stages</h2>
-  <%= render 'filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
+  <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
 
   <h2>Impacts</h2>
-  <%= render 'filter_checkboxes', field: :impact_ids, collection: @impacts, form: f %>
+  <%= render 'crud_filter_checkboxes', field: :impact_ids, collection: @impacts, form: f %>
 
   <h2>Subjects</h2>
-  <%= render 'filter_checkboxes', field: :subject_ids, collection: @subjects, form: f %>
+  <%= render 'crud_filter_checkboxes', field: :subject_ids, collection: @subjects, form: f %>
 
   <h2>Topics</h2>
-  <%= render 'filter_checkboxes', field: :topic_ids, collection: @topics, form: f %>
+  <%= render 'crud_filter_checkboxes', field: :topic_ids, collection: @topics, form: f %>
 
   <h2>Timings</h2>
-  <%= render 'filter_checkboxes', field: :activity_timing_ids, collection: @activity_timings, form: f %>
+  <%= render 'crud_filter_checkboxes', field: :activity_timing_ids, collection: @activity_timings, form: f %>
 
   <h2>Suggested Next Activities</h2>
 
