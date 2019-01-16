@@ -26,7 +26,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       key_stages: [ks1, ks2],
       subjects: [science],
       activity_timings: [half_hour],
-      impacts: [reducing_gas]
+      impacts: [reducing_gas],
+      other: true
     )
   end
   let!(:activity_type_2) do
@@ -158,7 +159,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
   describe 'activity_types' do
 
-    subject { ActivityTypeFilter.new(query).activity_types }
+    subject { ActivityTypeFilter.new(query).activity_types.to_a }
 
     context 'when a key stage is selected' do
       let(:query){ {key_stage_ids: ks2.id}}
@@ -185,9 +186,9 @@ RSpec.describe ActivityTypeFilter, type: :service do
       it { is_expected.to match_array([]) }
     end
 
-    context 'when nothing is selected' do
+    context 'when nothing is selected, ordering the other activity type last' do
       let(:query){{}}
-      it { is_expected.to match_array([activity_type_1, activity_type_2, activity_type_3]) }
+      it { is_expected.to eq([activity_type_2, activity_type_3, activity_type_1]) }
     end
 
   end

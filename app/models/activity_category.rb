@@ -15,12 +15,4 @@ class ActivityCategory < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
-
-  def sorted_activity_types(by: :name)
-    activity_types.where(active: true).other_last.order(by)
-  end
-
-  def sorted_activity_types_with_key_stages(by: :name, array_of_key_stages: [])
-    activity_types.where(active: true).includes(:key_stages).where(key_stages: { id: array_of_key_stages }).other_last.order(by)
-  end
 end

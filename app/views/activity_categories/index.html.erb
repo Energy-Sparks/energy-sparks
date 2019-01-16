@@ -45,7 +45,7 @@
               <p><%= activity_category.description %></p>
             <% end %>
             <% if @filter.for_category(activity_category).any? %>
-              <% @filter.for_category(activity_category).other_last.order(:score).each do |activity_type| %>
+              <% @filter.for_category(activity_category).order(:score).each do |activity_type| %>
                 <p>
                   <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %></span>
                   <%= link_to "#{activity_type.name} (#{activity_type.key_stage_list})", activity_type_path(activity_type) %>
