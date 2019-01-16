@@ -8,6 +8,26 @@ module Schools
       @meter = @school.meters.new
     end
 
+    def show
+      @meter = Meter.find(params[:id])
+      @amr_validated_meter_readings = @meter.amr_validated_readings.order(:reading_date).to_a
+      respond_to do |format|
+        format.html
+        format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=meter-amr-readings-#{@meter.mpan_mprn}.xlsx" }
+        format.csv { send_data amr_validated_meter_readings_to_csv }
+      end
+    end
+
+    def amr_validated_meter_readings_to_csv
+      CSV.generate({}) do |csv|
+        csv << %w(ReadingDate OneDayKWHTotal SubstitutionDate Status)
+        @amr_validated_meter_readings.each do |reading|
+          row = [reading.reading_date, reading.one_day_kwh, reading.status, reading.substitute_date, *reading.kwh_data_x48]
+          csv << row
+        end
+      end
+    end
+
     def create
       if @meter.save
         MeterManagement.new(@meter).process_creation!
