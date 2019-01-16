@@ -1,12 +1,14 @@
 class ActivityTypeFilter
+  FILTERS = [:key_stages, :subjects, :topics, :activity_timings, :impacts].freeze
+
   def initialize(query, school: nil)
     @query = query
     @school = school
-    @scope = ActivityType.active.includes(:key_stages, :subjects, :topics, :activity_timings, :impacts, :activity_category)
+    @scope = ActivityType.active.left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id')
   end
 
   def activity_types
-    [:key_stages, :subjects, :topics, :activity_timings, :impacts].inject(@scope) do |results, filter|
+    FILTERS.inject(@scope) do |results, filter|
       selected = send(:"selected_#{filter}")
       selected.any? ? results.where(filter => { id: selected }) : results
     end
