@@ -50,7 +50,7 @@ private
     rescue NoMethodError
       report = AlertReport.new(alert_type)
       report.summary = "There was a problem running this alert: #{alert_type.title}."
-      report.rating = 0.0
+      report.rating = nil
       Rails.logger.error("There was a problem running #{alert_type.title} for #{analysis_date} and #{@school.name}")
     end
     { report: report, title: alert_type.title, description: alert_type.description, frequency: alert_type.frequency, fuel_type: alert_type.fuel_type }
