@@ -1,7 +1,11 @@
 module Schools
   class MetersController < ApplicationController
+    include ActionController::Live
+
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
+
+    CSV_HEADER = "Reading Date,One Day Total kWh,Status,SubstituteDate, 00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,24:00".freeze
 
     def index
       load_meters
@@ -12,8 +16,7 @@ module Schools
       @meter = Meter.find(params[:id])
       @amr_validated_meter_readings = @meter.amr_validated_readings.order(:reading_date).to_a
       respond_to do |format|
-        format.xls { send_data amr_validated_meter_readings_to_xls, filename: "meter-amr-readings-#{@meter.mpan_mprn}.xls" }
-        format.csv { send_data amr_validated_meter_readings_to_csv, filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
+        format.csv { amr_validated_meter_readings_to_csv }
       end
     end
 
@@ -60,24 +63,37 @@ module Schools
 
   private
 
-    def amr_validated_meter_readings_to_xls
-      book = Spreadsheet::Workbook.new
-      sheet = book.create_worksheet
-      sheet.insert_row(0, %w(ReadingDate OneDayKWHTotal Status SubstitutionDate))
-      @amr_validated_meter_readings.each_with_index do |reading, index|
-        sheet.insert_row(index + 1, [reading.reading_date, reading.one_day_kwh, reading.status, reading.substitute_date, *reading.kwh_data_x48])
+    def amr_validated_meter_readings_to_csv
+      query = <<~QUERY
+        SELECT reading_date, one_day_kwh, status, substitute_date, array_to_string(kwh_data_x48, ',', '*')
+        FROM amr_validated_readings
+        WHERE meter_id = #{@meter.id}
+        ORDER BY reading_date ASC
+      QUERY
+
+      stream_file("meter-amr-readings-#{@meter.mpan_mprn}", "csv") do |stream|
+        stream.write CSV_HEADER
+        stream_query_rows(query) do |row_from_db|
+          # Unaggregated array of readings comes out as a quoted string, to get each column, get rid of quotes
+          stream.write row_from_db.tr('"', '')
+        end
       end
-      file_contents = StringIO.new
-      book.write file_contents
-      file_contents.string.force_encoding('binary')
     end
 
-    def amr_validated_meter_readings_to_csv
-      CSV.generate({}) do |csv|
-        csv << %w(ReadingDate OneDayKWHTotal SubstitutionDate Status)
-        @amr_validated_meter_readings.each do |reading|
-          row = [reading.reading_date, reading.one_day_kwh, reading.status, reading.substitute_date, *reading.kwh_data_x48]
-          csv << row
+    def stream_file(filename, extension)
+      response.headers["Content-Type"] = "application/octet-stream"
+      response.headers["Content-Disposition"] = "attachment; filename=#{filename}.#{extension}"
+
+      yield response.stream
+    ensure
+      response.stream.close
+    end
+
+    def stream_query_rows(sql_query, options = "WITH CSV")
+      conn = ActiveRecord::Base.connection.raw_connection
+      conn.copy_data "COPY (#{sql_query}) TO STDOUT #{options};" do
+        while (row = conn.get_copy_data)
+          yield row
         end
       end
     end
