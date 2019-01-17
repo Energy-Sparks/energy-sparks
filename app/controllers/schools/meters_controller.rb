@@ -65,7 +65,7 @@ module Schools
 
     def amr_validated_meter_readings_to_csv
       query = <<~QUERY
-        SELECT reading_date, one_day_kwh, status, substitute_date, array_to_string(kwh_data_x48, ',', '*')
+        SELECT reading_date, one_day_kwh, status, substitute_date, kwh_data_x48
         FROM amr_validated_readings
         WHERE meter_id = #{@meter.id}
         ORDER BY reading_date ASC
@@ -75,7 +75,7 @@ module Schools
         stream.write CSV_HEADER
         stream_query_rows(query) do |row_from_db|
           # Unaggregated array of readings comes out as a quoted string, to get each column, get rid of quotes
-          stream.write row_from_db.tr('"', '')
+          stream.write row_from_db.tr('{', '').tr('}', '').tr('"', '')
         end
       end
     end
