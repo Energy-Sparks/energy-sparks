@@ -41,6 +41,8 @@ class CalendarEvent < ApplicationRecord
 
   validates :calendar, :start_date, :end_date, presence: true
 
+  validate :start_date_end_date_order, :no_overlaps
+
 private
 
   def check_whether_child_needs_creating
@@ -83,6 +85,21 @@ private
     elsif calendar_event_type.holiday
       previous_term = calendar.terms.find_by(end_date: start_date_before_last_save - 1.day)
       previous_term.update(end_date: start_date - 1.day) if previous_term.present?
+    end
+  end
+
+  def start_date_end_date_order
+    if (start_date && end_date) && (end_date < start_date)
+      errors.add(:end_date, 'must be on or after the start date')
+    end
+  end
+
+  def no_overlaps
+    if (start_date && end_date && calendar_event_type) && (calendar_event_type.term_time || calendar_event_type.holiday)
+      holiday_or_term_events = calendar.calendar_events.joins(:calendar_event_type).where(calendar_event_types: { id: (CalendarEventType.holiday + CalendarEventType.term) })
+      if holiday_or_term_events.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
+        errors.add(:base, 'overlaps another event')
+      end
     end
   end
 end
