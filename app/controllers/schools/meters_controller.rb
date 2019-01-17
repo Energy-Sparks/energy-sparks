@@ -83,6 +83,9 @@ module Schools
     def stream_file(filename, extension)
       response.headers["Content-Type"] = "application/octet-stream"
       response.headers["Content-Disposition"] = "attachment; filename=#{filename}.#{extension}"
+      # Is this required for overriding buffering and switching off for streaming?
+      # https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_buffering
+      response.headers["X-Accel-Buffering"] = "off"
 
       yield response.stream
     ensure
