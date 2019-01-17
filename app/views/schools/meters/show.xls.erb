@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Reading Date</Data></Cell>
+        <Cell><Data ss:Type="String">One Day kWh total</Data></Cell>
+        <Cell><Data ss:Type="String">Substitution date</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+      </Row>
+    <% @amr_validated_meter_readings.each do |day_record| %>
+      <Row>
+        <Cell><Data ss:Type="Date"><%= day_record.reading_date %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= day_record.one_day_kwh %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= day_record.status %></Data></Cell>
+        <Cell><Data ss:Type="Date"><%= day_record.substitute_date %></Data></Cell>
+        <% day_record.kwh_data_x48.each do |reading| %>
+           <Cell><Data ss:Type="Number"><%= reading %></Data></Cell>
+        <% end %>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
