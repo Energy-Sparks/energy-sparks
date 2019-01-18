@@ -70,13 +70,14 @@ module Schools
 
       conn = ActiveRecord::Base.connection.raw_connection
 
-      CSV.generate({}) do |csv|
-        csv << CSV_HEADER.split(',')
+      StringIO.open do |s|
+        s.puts CSV_HEADER
         conn.copy_data "COPY (#{sql_query}) TO STDOUT WITH CSV;" do
           while (row = conn.get_copy_data)
-            csv << row.tr('"', '').tr('{', '').tr('}', '').chomp.split(',')
+            s.puts row.tr('"', '').tr('{', '').tr('}', '').chomp.to_s
           end
         end
+        s.string
       end
     end
 
