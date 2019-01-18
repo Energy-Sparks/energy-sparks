@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   resources :scoreboards
   resources :school_groups
 
-  resources :onboarding, only: [:show] do
+  resources :onboarding, path: 'school_setup', only: [:show] do
     scope module: :onboarding do
       resource :consent,        only: [:show, :create], controller: 'consent'
       resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
@@ -102,7 +102,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :school_onboardings, only: [:new, :create, :index] do
+    resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
         resource :email, only: [:new, :create], controller: 'email'

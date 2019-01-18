@@ -30,9 +30,9 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'records basic details and sends an email to the school' do
       within '.navbar' do
-        click_on 'School Onboarding'
+        click_on 'Automatic School Setup'
       end
-      click_on 'Onboard New School'
+      click_on 'New Automatic School Setup'
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
@@ -49,7 +49,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_content(school_name)
       expect(page).to have_content("oldfield@test.com")
 
-      click_on "Send onboarding email"
+      click_on "Send setup email"
 
       onboarding = SchoolOnboarding.first
 
@@ -61,7 +61,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     it 'sends reminder emails when requested' do
       onboarding = create :school_onboarding
       within '.navbar' do
-        click_on 'School Onboarding'
+        click_on 'Automatic School Setup'
       end
       click_on 'Send reminder'
 
@@ -73,8 +73,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   context 'as school user signing up' do
 
-    let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
-    let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
+    let!(:ks1) { KeyStage.create(name: 'KS1') }
 
     let!(:onboarding) do
       create(
@@ -187,7 +186,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(user.name).to eq('Better name')
 
       click_on 'Edit school details'
-      fill_in 'Name', with: 'Correct school'
+      fill_in 'School name', with: 'Correct school'
       click_on 'Update school details'
       school.reload
       expect(school.name).to eq('Correct school')

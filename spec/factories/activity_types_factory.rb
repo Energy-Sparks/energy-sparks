@@ -16,7 +16,7 @@ FactoryBot.define do
     trait :with_further_suggestions do
       transient do
         number_of_suggestions 1
-        key_stages { [ActsAsTaggableOn::Tag.where(name: 'KS1').first_or_create] }
+        key_stages { [KeyStage.where(name: 'KS1').first_or_create] }
       end
 
       after(:create) do |original_activity_type, evaluator|

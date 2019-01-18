@@ -3,19 +3,19 @@ require 'rails_helper'
 RSpec.describe "activity type", type: :system do
   let!(:admin)  { create(:user, role: 'admin')}
 
-  let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
-  let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
-  let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
+  let!(:ks1) { KeyStage.create(name: 'KS1') }
+  let!(:ks2) { KeyStage.create(name: 'KS2') }
+  let!(:ks3) { KeyStage.create(name: 'KS3') }
 
-  let!(:unlikely_school) { create(:school, key_stages: [ks1_tag, ks3_tag])}
+  let!(:unlikely_school) { create(:school, key_stages: [ks1, ks3])}
   let!(:unlikely_school_user) { create(:user, school: unlikely_school)}
 
   let!(:activity_category_1) { create(:activity_category, name: 'cat1')}
-  let!(:activity_type_1) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks1_tag, ks2_tag])}
-  let!(:activity_type_3) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3_tag])}
+  let!(:activity_type_1) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks1, ks2])}
+  let!(:activity_type_3) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
 
   let!(:activity_category_2) { create(:activity_category, name: 'cat2')}
-  let!(:activity_type_2) { create(:activity_type, activity_category: activity_category_2, key_stages: [ks3_tag])}
+  let!(:activity_type_2) { create(:activity_type, activity_category: activity_category_2, key_stages: [ks3])}
 
 
   describe 'filters are set depending on user and if logged in or not' do
