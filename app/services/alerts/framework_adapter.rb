@@ -10,7 +10,14 @@ module Alerts
     end
 
     def analyse
-      analysis_report = alert_instance.new(@aggregate_school).analyse(@analysis_date)
+      begin
+        analysis_report = alert_instance.new(@aggregate_school).analyse(@analysis_date)
+      rescue NoMethodError
+        analysis_report = AlertReport.new(@alert_type)
+        analysis_report.summary = "There was a problem running this alert: #{@alert_type.title}."
+        analysis_report.rating = nil
+        Rails.logger.error("There was a problem running #{@alert_type.title} for #{@analysis_date} and #{@school.name}")
+      end
       convert_to_alert(analysis_report)
     end
 
@@ -36,6 +43,8 @@ module Alerts
         help_url: analysis_report.help_url,
         detail: analysis_report.detail,
         rating: analysis_report.rating,
+        type: analysis_report.type,
+        term: analysis_report.term
       }
     end
   end

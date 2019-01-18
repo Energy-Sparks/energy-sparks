@@ -60,57 +60,55 @@
   </div>
 </div>
 
-<% if @alerts.empty? %>
-  <h2>We have no alert data for this school</h2>
-<% else %>
-  <% @alerts.group_by { |alert| alert.alert_type.fuel_type }.each do |fuel_type, alerts| %>
-    <div class="row padded-row">
-      <div class="col-md-12">
-        <h3><%= fuel_type.nil? ? 'Holiday alerts: for today' : "#{fuel_type.capitalize}: for #{nice_dates @alert_fuel_dates[fuel_type]}" %></h3>
-        <% alerts.sort_by { |alert| alert.rating.nil? ? 99 : alert.rating }.each do |alert| %>
-          <div class="card mb-3">
-            <div class="card-header text-white <%= class_for_alert_rating(alert.rating) %>">
-              <h4><%= alert.summary %>
-              <% unless alert.rating.nil? %>
-                <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert.title.parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
-                  <button class="btn btn-sm">
-                  <span class="if-collapsed">More details</span>
-                  <span class="if-not-collapsed">Less details</span>
-                  </button>
-                </a>
-              <% end %>
-              </h4>
-            </div>
+<% @results.group_by { |b| b[:fuel_type]}.each do |fuel_type, alert_types| %>
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h3><%= fuel_type.nil? ? 'Holiday alerts: for today' : "#{fuel_type.capitalize}: for #{nice_dates @alert_fuel_dates[fuel_type]}" %></h3>
+      <% alert_types.sort_by { |alert_type| alert_type[:report].rating.nil? ? 99 : alert_type[:report].rating }.each do |alert_type| %>
+        <div class="card mb-3">
+          <div class="card-header text-white <%= class_for_alert_rating(alert_type[:report].rating) %>">
+            <h4><%= alert_type[:report].summary %>
+            <% unless alert_type[:report].rating.nil? %>
+              <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert_type[:title].parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
+                <button class="btn btn-sm">
+                <span class="if-collapsed">More details</span>
+                <span class="if-not-collapsed">Less details</span>
+                </button>
+              </a>
+            <% end %>
+            </h4>
+          </div>
 
-            <div class='collapse' id="<%= alert.title.parameterize %>">
-              <div class="card-body">
-                <h5><%= alert.title %></h5>
-                <p class="card-text">This alert <%= alert.description.downcase %></p>
-                <% alert.detail.each do |detail| %>
-                  <% if detail['type'].to_sym == :chart %>
-                    <div id="alert-chart-data-<%= alert.type %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.type %>' class="hide">
-                    <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
-                    </div>
+          <div class='collapse' id="<%= alert_type[:title].parameterize %>">
+            <div class="card-body">
+              <h5><%= alert_type[:title] %></h5>
+              <p class="card-text">This alert <%= alert_type[:description].downcase %></p>
+              <% alert_type[:report].detail.each do |detail| %>
+                <%= alert_type %>
+                <%= detail %>
+                <% if detail.type == :chart %>
+                  <div id="alert-chart-data-<%= alert_type[:report].type %>" data-chart-title='<%= detail.content[:title] %>' data-chart-type='<%= alert_type[:report].type %>' class="hide">
+                    <%= sort_out_data_for_alerts_chart(detail.content).html_safe %>
+                  </div>
 
-                    <div id="alert-chart-wrapper-<%= alert.type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.type %>'></div>
-                  <% elsif detail['type'].to_sym == :html %>
-                    <%= detail['content'].html_safe %>
-                  <% else %>
-                    <p><%= detail['content'].html_safe %></p>
-                  <% end %>
+                  <div id="alert-chart-wrapper-<%= alert_type[:report].type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert_type[:report].type %>'></div>
+                <% elsif detail.type == :html %>
+                  <%= detail.content.html_safe %>
+                <% else %>
+                  <p><%= detail.content.html_safe %></p>
                 <% end %>
-              </div>
-              <div class="card-footer text-muted">
-                  <p class="card-text">Find out more: <%= link_to alert.title, alert.help_url %></p>
-                  <% unless fuel_type.nil? || alert.title == 'Turn heating on/off' %>
-                    <p class="card-text"><b>Current rating</b>: <%= alert.rating.nil? ? 'Unrated' : "#{alert.rating.round(0)}/10" %>
-                  <% end %>
-                  <p class="card-text"><b>Frequency</b>: <%#= alert_type[:frequency].humanize %></p>
-              </div>
+              <% end %>
+            </div>
+            <div class="card-footer text-muted">
+                <p class="card-text">Find out more: <%= link_to alert_type[:title], alert_type[:report].help_url %></p>
+                <% unless fuel_type.nil? || alert_type[:title] == 'Turn heating on/off' %>
+                  <p class="card-text"><b>Current rating</b>: <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %>
+                <% end %>
+                <p class="card-text"><b>Frequency</b>: <%= alert_type[:frequency].humanize %></p>
             </div>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 <% end %>

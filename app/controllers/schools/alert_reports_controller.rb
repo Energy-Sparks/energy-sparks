@@ -5,6 +5,16 @@ class Schools::AlertReportsController < ApplicationController
 
   def index
     authorize! :read, AlertType
+    @alerts = @school.alerts
+
+    set_up_gas_reading_dates if @school.meters?(:gas)
+    set_up_electricity_reading_dates if @school.meters?(:electricity)
+
+    @alert_fuel_dates = { 'gas' => @gas_alerts_date, 'electricity' => @electricity_alerts_date }
+  end
+
+  def old_index
+    authorize! :read, AlertType
 
     set_up_gas_reading_dates if @school.meters?(:gas)
     set_up_electricity_reading_dates if @school.meters?(:electricity)

@@ -24,5 +24,28 @@ class Alert < ApplicationRecord
   belongs_to :school,     inverse_of: :alerts
   belongs_to :alert_type, inverse_of: :alerts
 
+  delegate :title, to: :alert_type
+  delegate :description, to: :alert_type
+
   enum status: [:good, :poor, :not_enough_data, :error]
+
+  def rating
+    data['rating']
+  end
+
+  def detail
+    data['detail']
+  end
+
+  def help_url
+    data['help_url']
+  end
+
+  def type
+    data['type']
+  end
+
+  def term
+    data['term']
+  end
 end
