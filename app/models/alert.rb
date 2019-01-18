@@ -23,4 +23,6 @@
 class Alert < ApplicationRecord
   belongs_to :school,     inverse_of: :alerts
   belongs_to :alert_type, inverse_of: :alerts
+
+  enum status: [:good, :poor, :not_enough_data, :error]
 end
