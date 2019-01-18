@@ -638,7 +638,6 @@ DEPENDENCIES
   selenium-webdriver
   simple_form
   simplecov
-  spreadsheet
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
