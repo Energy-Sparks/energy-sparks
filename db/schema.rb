@@ -43,11 +43,32 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.string "badge_name"
   end
 
+  create_table "activity_timings", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "activity_type_impacts", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "impact_id", null: false
+    t.index ["activity_type_id"], name: "index_activity_type_impacts_on_activity_type_id"
+    t.index ["impact_id"], name: "index_activity_type_impacts_on_impact_id"
+  end
+
   create_table "activity_type_key_stages", id: false, force: :cascade do |t|
     t.bigint "activity_type_id", null: false
     t.bigint "key_stage_id", null: false
     t.index ["activity_type_id"], name: "index_activity_type_key_stages_on_activity_type_id"
     t.index ["key_stage_id"], name: "index_activity_type_key_stages_on_key_stage_id"
+  end
+
+  create_table "activity_type_subjects", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "subject_id", null: false
+    t.index ["activity_type_id"], name: "index_activity_type_subjects_on_activity_type_id"
+    t.index ["subject_id"], name: "index_activity_type_subjects_on_subject_id"
   end
 
   create_table "activity_type_suggestions", force: :cascade do |t|
@@ -57,6 +78,20 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.datetime "updated_at", null: false
     t.index ["activity_type_id"], name: "index_activity_type_suggestions_on_activity_type_id"
     t.index ["suggested_type_id"], name: "index_activity_type_suggestions_on_suggested_type_id"
+  end
+
+  create_table "activity_type_timings", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "activity_timing_id", null: false
+    t.index ["activity_timing_id"], name: "index_activity_type_timings_on_activity_timing_id"
+    t.index ["activity_type_id"], name: "index_activity_type_timings_on_activity_type_id"
+  end
+
+  create_table "activity_type_topics", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "topic_id", null: false
+    t.index ["activity_type_id"], name: "index_activity_type_topics_on_activity_type_id"
+    t.index ["topic_id"], name: "index_activity_type_topics_on_topic_id"
   end
 
   create_table "activity_types", force: :cascade do |t|
@@ -292,6 +327,12 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "impacts", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "key_stages", force: :cascade do |t|
     t.string "name"
     t.index ["name"], name: "index_key_stages_on_name", unique: true
@@ -466,6 +507,12 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
+  create_table "subjects", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
   end
@@ -479,6 +526,12 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["calendar_id"], name: "index_terms_on_calendar_id"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -507,9 +560,17 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
   add_foreign_key "activities", "schools"
+  add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
+  add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_key_stages", "key_stages", on_delete: :restrict
+  add_foreign_key "activity_type_subjects", "activity_types", on_delete: :cascade
+  add_foreign_key "activity_type_subjects", "subjects", on_delete: :restrict
   add_foreign_key "activity_type_suggestions", "activity_types"
+  add_foreign_key "activity_type_timings", "activity_timings", on_delete: :restrict
+  add_foreign_key "activity_type_timings", "activity_types", on_delete: :cascade
+  add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
+  add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
   add_foreign_key "alert_subscriptions", "alert_types"
   add_foreign_key "alert_subscriptions", "schools"
