@@ -24,11 +24,8 @@ class HolidayFactory
   end
 
   def with_neighbour_updates(calendar_event, attributes)
-    calendar_event.transaction do
-      pre_save = []
-      post_save = []
+    managing_state(calendar_event) do |pre_save, post_save|
       calendar_event.attributes = attributes
-
       if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
         if calendar_event.start_date_changed?
           update_previous_events(calendar_event, pre_save, post_save)
@@ -37,14 +34,7 @@ class HolidayFactory
           update_following_events(calendar_event, pre_save, post_save)
         end
       end
-
-      pre_save.map(&:call)
-      calendar_event.save!
-      post_save.map(&:call)
-      true
     end
-  rescue ActiveRecord::RecordInvalid
-    return false
   end
 
 private
@@ -81,5 +71,23 @@ private
 
   def destroy_neighbour(event)
     lambda { event.destroy }
+  end
+
+  def process_changes(calendar_event, pre_save, post_save)
+    pre_save.map(&:call)
+    calendar_event.save!
+    post_save.map(&:call)
+    true
+  end
+
+  def managing_state(calendar_event)
+    calendar_event.transaction do
+      pre_save = []
+      post_save = []
+      yield pre_save, post_save
+      process_changes(calendar_event, pre_save, post_save)
+    end
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 end
