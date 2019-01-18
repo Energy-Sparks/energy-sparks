@@ -10,9 +10,7 @@ module Schools
 
     def show
       @meter = Meter.find(params[:id])
-      @amr_validated_meter_readings = @meter.amr_validated_readings.order(:reading_date).to_a
       respond_to do |format|
-        format.xls { send_data amr_validated_meter_readings_to_xls, filename: "meter-amr-readings-#{@meter.mpan_mprn}.xls" }
         format.csv { send_data amr_validated_meter_readings_to_csv, filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
       end
     end
@@ -60,24 +58,22 @@ module Schools
 
   private
 
-    def amr_validated_meter_readings_to_xls
-      book = Spreadsheet::Workbook.new
-      sheet = book.create_worksheet
-      sheet.insert_row(0, %w(ReadingDate OneDayKWHTotal Status SubstitutionDate))
-      @amr_validated_meter_readings.each_with_index do |reading, index|
-        sheet.insert_row(index + 1, [reading.reading_date, reading.one_day_kwh, reading.status, reading.substitute_date, *reading.kwh_data_x48])
-      end
-      file_contents = StringIO.new
-      book.write file_contents
-      file_contents.string.force_encoding('binary')
-    end
-
     def amr_validated_meter_readings_to_csv
+      sql_query = <<~QUERY
+        SELECT reading_date, one_day_kwh, status, substitute_date, kwh_data_x48
+        FROM amr_validated_readings
+        WHERE meter_id = #{@meter.id}
+        ORDER BY reading_date ASC
+      QUERY
+
+      conn = ActiveRecord::Base.connection.raw_connection
+
       CSV.generate({}) do |csv|
-        csv << %w(ReadingDate OneDayKWHTotal SubstitutionDate Status)
-        @amr_validated_meter_readings.each do |reading|
-          row = [reading.reading_date, reading.one_day_kwh, reading.status, reading.substitute_date, *reading.kwh_data_x48]
-          csv << row
+        csv << %w(ReadingDate OneDayKWHTotal Status SubstitutionDate)
+        conn.copy_data "COPY (#{sql_query}) TO STDOUT WITH CSV;" do
+          while (row = conn.get_copy_data)
+            csv << row.tr('"', '').tr('{', '').tr('}', '').chomp.split(',')
+          end
         end
       end
     end
