@@ -55,9 +55,9 @@ private
       callback = calendar_event.start_date > calendar_event.start_date_was ? post_save : pre_save
       new_event_end = calendar_event.start_date - 1.day
       callback << if new_event_end < previous_event.start_date
-                    lambda { previous_event.destroy }
+                    destroy_neighbour(previous_event)
                   else
-                    lambda { previous_event.update!(end_date: calendar_event.start_date - 1.day) }
+                    move_neighbour(previous_event, :end_date, new_event_end)
                   end
     end
   end
@@ -68,10 +68,18 @@ private
       callback = calendar_event.end_date > calendar_event.end_date_was ? pre_save : post_save
       new_event_start = calendar_event.end_date + 1.day
       callback << if new_event_start > following_event.end_date
-                    lambda { following_event.destroy }
+                    destroy_neighbour(following_event)
                   else
-                    lambda { following_event.update!(start_date: calendar_event.end_date + 1.day) }
+                    move_neighbour(following_event, :start_date, new_event_start)
                   end
     end
+  end
+
+  def move_neighbour(event, field, new_date)
+    lambda { event.update!(field => new_date) }
+  end
+
+  def destroy_neighbour(event)
+    lambda { event.destroy }
   end
 end
