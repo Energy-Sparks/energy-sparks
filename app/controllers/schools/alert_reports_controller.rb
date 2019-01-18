@@ -9,7 +9,7 @@ class Schools::AlertReportsController < ApplicationController
     set_up_gas_reading_dates if @school.meters?(:gas)
     set_up_electricity_reading_dates if @school.meters?(:electricity)
 
-    @results = AlertGeneratorService.new(@school, aggregate_school(@school), @gas_alerts_date, @electricity_alerts_date).perform
+    @results = Alerts::GeneratorService.new(@school, aggregate_school(@school), @gas_alerts_date, @electricity_alerts_date).perform
     @alert_fuel_dates = { 'gas' => @gas_alerts_date, 'electricity' => @electricity_alerts_date }
   end
 
