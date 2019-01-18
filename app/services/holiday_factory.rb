@@ -31,28 +31,10 @@ class HolidayFactory
 
       if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
         if calendar_event.start_date_changed?
-          previous_event = @calendar.terms_and_holidays.find_by(end_date: calendar_event.start_date_was - 1.day)
-          if previous_event
-            callback = calendar_event.start_date > calendar_event.start_date_was ? post_save : pre_save
-            new_event_end = calendar_event.start_date - 1.day
-            callback << if new_event_end < previous_event.start_date
-                          lambda { previous_event.destroy }
-                        else
-                          lambda { previous_event.update!(end_date: calendar_event.start_date - 1.day) }
-                        end
-          end
+          update_previous_events(calendar_event, pre_save, post_save)
         end
         if calendar_event.end_date_changed?
-          following_event = @calendar.terms_and_holidays.find_by(start_date: calendar_event.end_date_was + 1.day)
-          if following_event
-            callback = calendar_event.end_date > calendar_event.end_date_was ? pre_save : post_save
-            new_event_start = calendar_event.end_date + 1.day
-            callback << if new_event_start > following_event.end_date
-                          lambda { following_event.destroy }
-                        else
-                          lambda { following_event.update!(start_date: calendar_event.end_date + 1.day) }
-                        end
-          end
+          update_following_events(calendar_event, pre_save, post_save)
         end
       end
 
@@ -63,5 +45,33 @@ class HolidayFactory
     end
   rescue ActiveRecord::RecordInvalid
     return false
+  end
+
+private
+
+  def update_previous_events(calendar_event, pre_save, post_save)
+    previous_event = @calendar.terms_and_holidays.find_by(end_date: calendar_event.start_date_was - 1.day)
+    if previous_event
+      callback = calendar_event.start_date > calendar_event.start_date_was ? post_save : pre_save
+      new_event_end = calendar_event.start_date - 1.day
+      callback << if new_event_end < previous_event.start_date
+                    lambda { previous_event.destroy }
+                  else
+                    lambda { previous_event.update!(end_date: calendar_event.start_date - 1.day) }
+                  end
+    end
+  end
+
+  def update_following_events(calendar_event, pre_save, post_save)
+    following_event = @calendar.terms_and_holidays.find_by(start_date: calendar_event.end_date_was + 1.day)
+    if following_event
+      callback = calendar_event.end_date > calendar_event.end_date_was ? pre_save : post_save
+      new_event_start = calendar_event.end_date + 1.day
+      callback << if new_event_start > following_event.end_date
+                    lambda { following_event.destroy }
+                  else
+                    lambda { following_event.update!(start_date: calendar_event.end_date + 1.day) }
+                  end
+    end
   end
 end
