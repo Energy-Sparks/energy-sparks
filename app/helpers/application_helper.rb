@@ -59,14 +59,13 @@ module ApplicationHelper
   end
 
   def class_for_alert_rating(rating)
+    return 'bg-secondary' if rating.nil?
     if rating > 9
       'bg-success'
     elsif rating > 6
       'bg-warning'
-    elsif rating > 0
-      'bg-danger'
     else
-      'bg-secondary'
+      'bg-danger'
     end
   end
 

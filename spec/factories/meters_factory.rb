@@ -53,6 +53,19 @@ FactoryBot.define do
         create_list(:amr_validated_reading, evaluator.reading_count, meter: meter)
       end
     end
+
+    factory :electricity_meter_with_validated_reading_dates do
+      transient do
+        start_date { Date.yesterday }
+        end_date   { Date.today }
+      end
+
+      after(:create) do |meter, evaluator|
+        (evaluator.start_date..evaluator.end_date).each do |this_date|
+          create(:amr_validated_reading, meter: meter, reading_date: this_date)
+        end
+      end
+    end
   end
 end
 
