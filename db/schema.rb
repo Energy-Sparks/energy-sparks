@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_20_113753) do
+ActiveRecord::Schema.define(version: 2019_01_10_172829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -41,6 +41,13 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.string "badge_name"
+  end
+
+  create_table "activity_type_key_stages", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "key_stage_id", null: false
+    t.index ["activity_type_id"], name: "index_activity_type_key_stages_on_activity_type_id"
+    t.index ["key_stage_id"], name: "index_activity_type_key_stages_on_key_stage_id"
   end
 
   create_table "activity_type_suggestions", force: :cascade do |t|
@@ -203,12 +210,12 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
 
   create_table "calendar_events", force: :cascade do |t|
     t.bigint "academic_year_id"
-    t.bigint "calendar_id"
+    t.bigint "calendar_id", null: false
     t.bigint "calendar_event_type_id"
     t.text "title"
     t.text "description"
-    t.date "start_date"
-    t.date "end_date"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
@@ -268,6 +275,11 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "key_stages", force: :cascade do |t|
+    t.string "name"
+    t.index ["name"], name: "index_key_stages_on_name", unique: true
   end
 
   create_table "merit_actions", force: :cascade do |t|
@@ -342,6 +354,45 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
     t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
   end
 
+  create_table "school_key_stages", id: false, force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "key_stage_id", null: false
+    t.index ["key_stage_id"], name: "index_school_key_stages_on_key_stage_id"
+    t.index ["school_id"], name: "index_school_key_stages_on_school_id"
+  end
+
+  create_table "school_onboarding_events", force: :cascade do |t|
+    t.bigint "school_onboarding_id", null: false
+    t.integer "event", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_onboarding_id"], name: "index_school_onboarding_events_on_school_onboarding_id"
+  end
+
+  create_table "school_onboardings", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.string "school_name", null: false
+    t.string "contact_email", null: false
+    t.text "notes"
+    t.bigint "school_id"
+    t.bigint "created_user_id"
+    t.bigint "created_by_id"
+    t.bigint "school_group_id"
+    t.bigint "weather_underground_area_id"
+    t.bigint "solar_pv_tuos_area_id"
+    t.bigint "calendar_area_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calendar_area_id"], name: "index_school_onboardings_on_calendar_area_id"
+    t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
+    t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
+    t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
+    t.index ["school_id"], name: "index_school_onboardings_on_school_id"
+    t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
+    t.index ["uuid"], name: "index_school_onboardings_on_uuid", unique: true
+    t.index ["weather_underground_area_id"], name: "index_school_onboardings_on_weather_underground_area_id"
+  end
+
   create_table "school_times", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "opening_time", default: 850
@@ -400,31 +451,6 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
-  create_table "taggings", force: :cascade do |t|
-    t.bigint "tag_id"
-    t.string "taggable_type"
-    t.bigint "taggable_id"
-    t.string "tagger_type"
-    t.bigint "tagger_id"
-    t.string "context", limit: 128
-    t.datetime "created_at"
-    t.index ["context"], name: "index_taggings_on_context"
-    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
-    t.index ["tag_id"], name: "index_taggings_on_tag_id"
-    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
-    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
-    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
-    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
-    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
-    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
-    t.integer "taggings_count", default: 0
-    t.index ["name"], name: "index_tags_on_name", unique: true
-  end
-
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
   end
@@ -457,6 +483,7 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
@@ -465,6 +492,8 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
   add_foreign_key "activities", "schools"
+  add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
+  add_foreign_key "activity_type_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "activity_type_suggestions", "activity_types"
   add_foreign_key "activity_types", "activity_categories"
   add_foreign_key "alert_subscriptions", "alert_types"
@@ -480,6 +509,16 @@ ActiveRecord::Schema.define(version: 2018_12_20_113753) do
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "scoreboards"
+  add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
+  add_foreign_key "school_key_stages", "schools", on_delete: :cascade
+  add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
+  add_foreign_key "school_onboardings", "areas", column: "calendar_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
+  add_foreign_key "school_onboardings", "schools", on_delete: :cascade
+  add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
   add_foreign_key "school_times", "schools"
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"

@@ -84,6 +84,7 @@ private
     AmrDataFeedReading.where(meter_id: active_record_meter.id).order(reading_date: :asc).each do |reading|
       next if reading_invalid?(reading)
       reading_date = date_from_string_using_date_format(reading, hash_of_date_formats)
+      next if reading_date.nil?
       amr_data.add(reading_date, OneDayAMRReading.new(active_record_meter.id, reading_date, 'ORIG', nil, reading.created_at, reading.readings.map(&:to_f)))
     end
 
@@ -109,6 +110,10 @@ private
 
   def date_from_string_using_date_format(reading, hash_of_date_formats)
     date_format = hash_of_date_formats[reading.amr_data_feed_config_id]
-    Date.strptime(reading.reading_date, date_format)
+    begin
+      Date.strptime(reading.reading_date, date_format)
+    rescue ArgumentError
+      nil
+    end
   end
 end

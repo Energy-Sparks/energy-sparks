@@ -49,7 +49,7 @@ class School < ApplicationRecord
   include Merit::UsageCalculations
   has_merit
 
-  acts_as_taggable_on :key_stages
+  has_and_belongs_to_many :key_stages, join_table: :school_key_stages
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
@@ -69,14 +69,17 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area
   belongs_to :school_group
 
+  has_one :school_onboarding
+
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
-  validates_presence_of :urn, :name
+  validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn
+  validates :floor_area, :number_of_pupils, numericality: { greater_than: 0, allow_blank: true }
 
   validates_associated :school_times, on: :school_time_update
 
@@ -159,6 +162,14 @@ class School < ApplicationRecord
 
   def has_enough_readings_for_meter_types?(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
     meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
+  end
+
+  def last_common_reading_date_for_active_meters_of_supply(supply)
+    array_of_array_of_meter_reading_dates = active_meters.where(meter_type: supply).map do |m|
+      m.amr_validated_readings.pluck(:reading_date)
+    end
+    # Intersect using & the arrays and get the max
+    array_of_array_of_meter_reading_dates.inject(:&).max
   end
 
   def fuel_types

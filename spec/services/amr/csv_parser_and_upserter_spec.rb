@@ -70,7 +70,7 @@ module Amr
         description: 'Sheffield',
         s3_folder: 'sheffield',
         s3_archive_folder: 'archive-sheffield',
-        local_bucket_path: 'tmp/amr_files_bucket/banes',
+        local_bucket_path: 'tmp/amr_files_bucket/sheffield',
         access_type: 'Email',
         date_format: "%d/%m/%Y",
         mpan_mprn_field: 'MPAN',
@@ -79,6 +79,22 @@ module Amr
         meter_description_field: 'siteRef',
         header_example: "siteRef,MPAN,ConsumptionDate,kWh_1,kWh_2,kWh_3,kWh_4,kWh_5,kWh_6,kWh_7,kWh_8,kWh_9,kWh_10,kWh_11,kWh_12,kWh_13,kWh_14,kWh_15,kWh_16,kWh_17,kWh_18,kWh_19,kWh_20,kWh_21,kWh_22,kWh_23,kWh_24,kWh_25,kWh_26,kWh_27,kWh_28,kWh_29,kWh_30,kWh_31,kWh_32,kWh_33,kWh_34,kWh_35,kWh_36,kWh_37,kWh_38,kWh_39,kWh_40,kWh_41,kWh_42,kWh_43,kWh_44,kWh_45,kWh_46,kWh_47,kWh_48,kVArh_1,kVArh_2,kVArh_3,kVArh_4,kVArh_5,kVArh_6,kVArh_7,kVArh_8,kVArh_9,kVArh_10,kVArh_11,kVArh_12,kVArh_13,kVArh_14,kVArh_15,kVArh_16,kVArh_17,kVArh_18,kVArh_19,kVArh_20,kVArh_21,kVArh_22,kVArh_23,kVArh_24,kVArh_25,kVArh_26,kVArh_27,kVArh_28,kVArh_29,kVArh_30,kVArh_31,kVArh_32,kVArh_33,kVArh_34,kVArh_35,kVArh_36,kVArh_37,kVArh_38,kVArh_39,kVArh_40,kVArh_41,kVArh_42,kVArh_43,kVArh_44,kVArh_45,kVArh_46,kVArh_47,kVArh_48"
       )
+    }
+
+    let!(:sheffield_gas_config) {
+        AmrDataFeedConfig.new(
+        area_id: 3,
+        description: 'Sheffield Gas',
+        s3_folder: 'sheffield-gas',
+        s3_archive_folder: 'archive-sheffield-gas',
+        local_bucket_path: 'tmp/amr_files_bucket/sheffield-gas',
+        access_type: 'Email',
+        date_format: "%d/%m/%Y",
+        mpan_mprn_field: '"MPR"',
+        reading_date_field: '"Date"',
+        reading_fields: '"hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"'.split(','),
+        header_example: '"MPR","Date","hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"'
+        )
     }
 
     def example_csv
@@ -144,6 +160,14 @@ module Amr
       <<~HEREDOC
       Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
       10545307,K0229111D6,12/11/2018,11.11,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
+      HEREDOC
+    end
+
+    def example_sheffield_gas
+      <<~HEREDOC
+      "MPR","Date","hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"
+      "6326701","12/09/2017",0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,5.653,16.959,5.653,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000
+      "6326701","13/09/2017",0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,27.134,4.522,5.653,113.059,124.864,78.743,73.119,69.744,57.370,30.372,19.123,21.373,19.123,10.124,6.749,11.249,11.249,6.749,6.749,11.249,5.625,7.874,0.000,5.625,5.625,4.500,1.125,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000
       HEREDOC
     end
 
@@ -225,6 +249,16 @@ module Amr
       end
     end
 
+    context 'sheffield gas' do
+      before(:each) do
+        FileUtils.mkdir_p sheffield_gas_config.local_bucket_path
+      end
+
+      it 'should create rows for Sheffield gas' do
+        expect(write_file_and_parse(example_sheffield_gas, sheffield_gas_config)).to eq 2
+      end
+    end
+
     context 'historical frome' do
       before(:each) do
         FileUtils.mkdir_p historical_frome_config.local_bucket_path
@@ -287,7 +321,6 @@ module Amr
         write_file_and_expect_updated_readings(example_upsert_file_2, config)
         expect(AmrDataFeedReading.first.readings.first).to eq "0.166"
       end
-
     end
   end
 end

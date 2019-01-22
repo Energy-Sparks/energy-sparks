@@ -5,7 +5,7 @@ RSpec.describe SchoolsController, type: :controller do
   # School. As you add validations to School, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {urn: 12345, name: 'test school'}
+    attributes_for(:school)
   }
 
   let(:invalid_attributes) {
@@ -23,13 +23,13 @@ RSpec.describe SchoolsController, type: :controller do
     end
     context "as an authorised school administrator" do
 
-      let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
-      let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
-      let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
-      let!(:school) { create :school, active: true, key_stages: [ks1_tag, ks3_tag] }
+      let!(:ks1) { KeyStage.create(name: 'KS1') }
+      let!(:ks2) { KeyStage.create(name: 'KS2') }
+      let!(:ks3) { KeyStage.create(name: 'KS3') }
+      let!(:school) { create :school, active: true, key_stages: [ks1, ks3] }
 
       let(:activity_category) { create :activity_category }
-      let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1_tag, ks2_tag]) }
+      let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1, ks2]) }
 
       before(:each) { sign_in_user(:school_user, school.id) }
 
@@ -49,7 +49,7 @@ RSpec.describe SchoolsController, type: :controller do
       end
 
       context "with initial suggestions" do
-        let!(:activity_types_with_suggestions) { create_list(:activity_type, 5, :as_initial_suggestions, key_stages: [ks1_tag, ks2_tag])}
+        let!(:activity_types_with_suggestions) { create_list(:activity_type, 5, :as_initial_suggestions, key_stages: [ks1, ks2])}
         it "suggests the first five initial suggestions" do
           get :suggest_activity, params: { id: school.to_param }
           expect(assigns(:suggestions)).to match_array(activity_types_with_suggestions)
@@ -291,6 +291,7 @@ RSpec.describe SchoolsController, type: :controller do
         it "redirects to the school" do
           school = create(:school_with_same_name)
           put :update, params: {id: school.to_param, school: valid_attributes}
+          school.reload
           expect(response).to redirect_to(school)
         end
 

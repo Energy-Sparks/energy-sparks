@@ -25,6 +25,18 @@ Rails.application.routes.draw do
   resources :scoreboards
   resources :school_groups
 
+  resources :onboarding, path: 'school_setup', only: [:show] do
+    scope module: :onboarding do
+      resource :consent,        only: [:show, :create], controller: 'consent'
+      resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
+      resource :school_details, only: [:new, :create, :edit, :update]
+      resource :completion,     only: [:new, :create, :show], controller: 'completion'
+      resources :meters,        only: [:new, :create, :edit, :update]
+      resource :school_times,   only: [:edit, :update]
+      resources :inset_days,    only: [:new, :create, :edit, :update, :destroy]
+    end
+  end
+
   resources :schools do
     resources :activities
     scope module: :schools do
@@ -87,6 +99,16 @@ Rails.application.routes.draw do
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
     get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
+  end
+
+  namespace :admin do
+    resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
+      scope module: :school_onboardings do
+        resource :configuration, only: [:edit, :update], controller: 'configuration'
+        resource :email, only: [:new, :create], controller: 'email'
+        resource :reminder, only: [:create], controller: 'reminder'
+      end
+    end
   end
 
   match '*unmatched', to: 'application#route_not_found', via: :all

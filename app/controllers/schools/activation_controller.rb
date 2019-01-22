@@ -3,7 +3,7 @@ module Schools
     def create
       school = School.friendly.find(params[:school_id])
       authorize! :activate, school
-      school.update!(active: true)
+      SchoolCreator.new(school).activate_school!
       redirect_back fallback_location: school_path(school)
     end
   end

@@ -6,6 +6,7 @@
   <body>
     <%= render 'shared/nav' %>
     <%= render 'shared/alerts' %>
+    <!-- don't render application container as you do for the other pages -->
     <%= yield %>
     <%= render 'shared/footer' %>
   </body>

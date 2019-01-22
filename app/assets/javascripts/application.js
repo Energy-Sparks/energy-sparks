@@ -3,7 +3,6 @@
 
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/widgets/datepicker
 
 // Popper is a requirement for bootstrap and is included either in the bootstrap gem
 // or as a dependency
@@ -21,7 +20,6 @@
 //= require handlebars
 
 //= require activities
-//= require activity_types
 //= require calendars
 //= require data_explorer
 //= require schools
@@ -39,3 +37,4 @@
 //= require tempusdominus-bootstrap-4.js
 
 //= require alert_reports
+

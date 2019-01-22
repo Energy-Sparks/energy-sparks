@@ -18,7 +18,7 @@ gem 'upsert', '~> 2.2.1'
 gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.31.11'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.31.15'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -27,7 +27,6 @@ gem 'statsample', git: 'https://github.com/SciRuby/statsample', branch: 'master'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'jquery-ui-rails' # Use jquery UI for datepickers
 gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
@@ -44,6 +43,7 @@ gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
+gem 'simple_form'
 # Highcharts now included directly
 
 # Spreadsheet export
@@ -58,7 +58,7 @@ gem 'activerecord-import'
 gem 'handlebars_assets'
 
 # User input
-gem 'trix' # Use Trix editor for activity descriptions
+gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
@@ -81,8 +81,6 @@ gem 'lograge'
 # Exception handling
 gem 'rollbar'
 gem 'oj'
-
-gem 'acts-as-taggable-on'
 
 # Email service
 gem 'mailgun_rails'
