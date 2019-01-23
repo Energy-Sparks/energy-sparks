@@ -34,8 +34,11 @@ RSpec.describe "meter management", :meters, type: :system do
 
     let!(:gas_meter) { create :gas_meter, name: 'Gas meter', school: school }
 
+    before(:each) {
+      click_on 'Manage meters'
+    }
+
     it 'allows editing' do
-      click_on('Manage meters')
       click_on 'Edit'
       fill_in 'Name', with: 'Natural Gas Meter'
       click_on 'Update Meter'
@@ -44,7 +47,6 @@ RSpec.describe "meter management", :meters, type: :system do
     end
 
     it 'allows deactivation and reactivation of a meter' do
-      click_on('Manage meters')
       click_on 'Deactivate'
 
       gas_meter.reload
@@ -53,15 +55,40 @@ RSpec.describe "meter management", :meters, type: :system do
       click_on 'Activate'
       gas_meter.reload
       expect(gas_meter.active).to eq(true)
-
     end
 
     it 'allows deletion of inactive meters' do
-      click_on('Manage meters')
       click_on 'Deactivate'
       click_on 'Delete'
       expect(school.meters.count).to eq(0)
     end
 
+    it 'does not show the CSV download button if no readings' do
+      expect(gas_meter.amr_validated_readings.empty?).to be true
+      expect(page).to_not have_content('CSV')
+    end
+  end
+
+  context 'when a meter has readings, they can be downloaded' do
+    let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
+
+    it 'shows the download CSV button' do
+      click_on 'Manage meters'
+      click_on 'CSV'
+      # Make sure the page is a CSV
+      header = page.response_headers['Content-Disposition']
+      expect(header).to match /^attachment/
+      expect(header).to match /filename="meter-amr-readings-#{meter.mpan_mprn}.csv"$/
+
+      # Then check the content
+      meter.amr_validated_readings.each do |record|
+        expect(page.source).to have_content Schools::MetersController::CSV_HEADER
+        expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
+      end
+    end
+
+    def amr_validated_reading_to_s(amr)
+      "#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
+    end
   end
 end
