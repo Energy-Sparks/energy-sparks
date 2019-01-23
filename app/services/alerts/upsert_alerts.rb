@@ -17,8 +17,9 @@ module Alerts
 
     def upsert_alert(alert)
       # to_json is required because upsert supports Hstore but not JSON
+      # Alert status to integer as Upsert doesn't seem to handle enums properly
       Alert.upsert({ school_id: alert.school_id, alert_type_id: alert.alert_type_id, run_on: alert.run_on },
-        status: alert.status,
+        status: alert.status.to_i,
         summary: alert.summary,
         data: alert.data.to_json,
         updated_at: @update_create_time,

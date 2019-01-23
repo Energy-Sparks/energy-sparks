@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.bigint "school_id"
     t.bigint "alert_type_id"
     t.date "run_on"
-    t.text "status"
+    t.integer "status"
     t.text "summary"
     t.json "data", default: {}
     t.boolean "acknowledged", default: false

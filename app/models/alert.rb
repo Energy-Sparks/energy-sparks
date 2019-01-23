@@ -9,7 +9,7 @@
 #  id            :bigint(8)        not null, primary key
 #  run_on        :date
 #  school_id     :bigint(8)
-#  status        :text
+#  status        :integer
 #  summary       :text
 #  updated_at    :datetime         not null
 #
