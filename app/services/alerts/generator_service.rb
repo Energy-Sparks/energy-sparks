@@ -112,10 +112,10 @@ module Alerts
 
     # Get array of alerts for this contact
     def get_alerts(contact, run_all = false)
-      contact.alert_subscriptions.map do |alert|
-        next unless run_all || run_this_alert?(alert)
+      contact.alert_subscriptions.map do |alert_subscription|
+        next unless run_all || run_this_alert?(alert_subscription)
 
-        alert_type_class = alert.alert_type_class
+        alert_type_class = alert_subscription.alert_type_class
         alert_object = alert_type_class.new(@aggregate_school)
 
         begin
@@ -124,7 +124,7 @@ module Alerts
           next if is_holiday_coming_up_and_message_not_to_be_sent?(analysis_report)
 
           Rails.logger.info "Alert generated for #{@school.name} on #{@analysis_date} : #{alert.title}"
-          { analysis_report: analysis_report, title: alert.title, description: alert.description }
+          { analysis_report: analysis_report, title: alert_subscription.title, description: alert_subscription.description }
         rescue
           Rails.logger.warn "Alert generation failed for #{@school.name} on #{@analysis_date} : #{alert_type_class}"
           nil
