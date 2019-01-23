@@ -164,11 +164,12 @@ RSpec.describe ActivityTypeFilter, type: :service do
       it { is_expected.to match_array([]) }
     end
 
-    context 'when nothing is selected, ordering the custom activity type last' do
+    context 'when nothing is selected' do
       let(:query){{}}
-      it { is_expected.to eq([activity_type_2, activity_type_3, activity_type_1]) }
+
+      it 'should have custom activity type last' do
+        expect(subject.last).to eq activity_type_1
+      end
     end
-
   end
-
 end
