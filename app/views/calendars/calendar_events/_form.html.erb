@@ -1,4 +1,5 @@
 <%= form_for([calendar, calendar_event], html: { class: 'calendar_event_form'}) do |f| %>
+  <%= render 'shared/errors', subject: calendar_event, subject_name: 'event' %>
   <div class="form-group">
     <%= f.label :title %>
     <%= f.text_field :title, class: 'form-control' %>

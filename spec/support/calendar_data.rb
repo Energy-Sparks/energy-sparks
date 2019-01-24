@@ -30,14 +30,14 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
   let(:random_after_holiday_start_date)  { '16/12/2017' }
 
   let!(:random_before_holiday) {
-    CalendarEvent.create(
+    CalendarEvent.create!(
       title: 'random holiday',
       calendar: calendar,
       calendar_event_type: CalendarEventType.holiday.first,
       start_date: random_before_holiday_start_date,
       end_date: '01/02/2017')}
   let!(:random_after_holiday) {
-    CalendarEvent.create(
+    CalendarEvent.create!(
       title: 'random holiday 2',
       calendar: calendar,
       calendar_event_type: CalendarEventType.holiday.first,

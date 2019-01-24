@@ -57,6 +57,10 @@ class Calendar < ApplicationRecord
     calendar_events.inset_days
   end
 
+  def terms_and_holidays
+    calendar_events.joins(:calendar_event_type).where('calendar_event_types.holiday IS TRUE OR calendar_event_types.term_time IS TRUE')
+  end
+
   def self.default_calendar
     Calendar.find_by(default: true)
   end

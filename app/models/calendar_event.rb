@@ -34,12 +34,11 @@ class CalendarEvent < ApplicationRecord
   scope :holidays,      -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
   scope :bank_holidays, -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
 
-  after_update :update_neighbour_start, if: :saved_change_to_end_date?
-  after_update :update_neighbour_end,   if: :saved_change_to_start_date?
-
   after_create :check_whether_child_needs_creating
 
   validates :calendar, :start_date, :end_date, presence: true
+
+  validate :start_date_end_date_order, :no_overlaps
 
 private
 
@@ -66,23 +65,18 @@ private
     child_calendar.calendar_events.where(calendar_event_type: calendar_event.calendar_event_type).where('start_date <= ? and end_date >= ?', date_to_check, date_to_check).any?
   end
 
-  def update_neighbour_start
-    if calendar_event_type.term_time
-      following_holiday = calendar.holidays.find_by(start_date: end_date_before_last_save + 1.day)
-      following_holiday.update(start_date: end_date + 1.day) if following_holiday.present?
-    elsif calendar_event_type.holiday
-      following_term = calendar.terms.find_by(start_date: end_date_before_last_save + 1.day)
-      following_term.update(start_date: end_date + 1.day) if following_term.present?
+  def start_date_end_date_order
+    if (start_date && end_date) && (end_date < start_date)
+      errors.add(:end_date, 'must be on or after the start date')
     end
   end
 
-  def update_neighbour_end
-    if calendar_event_type.term_time
-      previous_holiday = calendar.holidays.find_by(end_date: start_date_before_last_save - 1.day)
-      previous_holiday.update(end_date: start_date - 1.day) if previous_holiday.present?
-    elsif calendar_event_type.holiday
-      previous_term = calendar.terms.find_by(end_date: start_date_before_last_save - 1.day)
-      previous_term.update(end_date: start_date - 1.day) if previous_term.present?
+  def no_overlaps
+    if (start_date && end_date && calendar_event_type) && (calendar_event_type.term_time || calendar_event_type.holiday)
+      holiday_or_term_events = calendar.calendar_events.joins(:calendar_event_type).where(calendar_event_types: { id: (CalendarEventType.holiday + CalendarEventType.term) })
+      if holiday_or_term_events.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
+        errors.add(:base, 'overlaps another event')
+      end
     end
   end
 end

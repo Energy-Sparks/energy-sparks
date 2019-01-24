@@ -21,7 +21,7 @@ describe CalendarFactoryFromEventHash do
       expect(calendar.terms.count).to be 5
 
       # 1 Bank Holiday, 5 terms and 4 holidays
-      expect(calendar.holidays.count).to be (calendar.terms.count - 1)
+      expect(calendar.holidays.count).to be (4)
       expect(calendar.inset_days.count).to be 0
       expect(calendar.calendar_events.count).to be 10
     end
