@@ -32,12 +32,12 @@ class Calendars::CalendarEventsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @calendar_event.update(calendar_event_params)
+      if HolidayFactory.new(@calendar).with_neighbour_updates(@calendar_event, calendar_event_params)
         format.html { redirect_to calendar_path(@calendar), notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :created, location: @calendar }
+        format.json { render :show, status: :updated, location: @calendar_event }
       else
-        format.html { render :new }
-        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+        format.html { render :edit }
+        format.json { render json: @calendar_event.errors, status: :unprocessable_entity }
       end
     end
   end
