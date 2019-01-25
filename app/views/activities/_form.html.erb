@@ -26,7 +26,7 @@
     <%= f.select(
         :activity_type_id,
         grouped_options_for_select(
-          ActivityCategory.all.order(:name).map{|category| [category.name, category.activity_types.custom_last.order(:name).map{|type| [type.name, type.id, {data: {custom: type.custom}}]}]},
+          ActivityCategory.listed_with_activity_types.map{|category, types| [category.name, types.map{|type| [type.name, type.id, {data: {custom: type.custom}}]}]},
           f.object.activity_type_id
         ),
         {include_blank: true, prompt: 'Please select'},

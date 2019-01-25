@@ -21,11 +21,13 @@ $(document).ready(function() {
       }
     }
 
-    $(document).on('change', '#activity_activity_type_id', function() {
-      var customState = $('#activity_activity_type_id').find('option:selected').data('custom');
+    var activityTypeCustomCheck = function(activityType){
+      var customState = $(activityType.target).find('option:selected').data('custom');
       showHideTitle(customState);
-    });
-    $('#activity_activity_type_id').trigger('change');
+    }
+
+    $(document).on('change', '#activity_activity_type_id', activityTypeCustomCheck);
+    activityTypeCustomCheck({target: '#activity_activity_type_id'});
 
     $('#activity_activity_type_id').select2({theme: 'bootstrap'});
   }
