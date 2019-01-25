@@ -15,4 +15,8 @@ class ActivityCategory < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
+
+  def self.listed_with_activity_types
+    all.order(:name).map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
+  end
 end
