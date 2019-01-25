@@ -16,7 +16,6 @@
 #
 #  index_alerts_on_alert_type_id  (alert_type_id)
 #  index_alerts_on_school_id      (school_id)
-#  unique_alerts                  (school_id,alert_type_id,run_on) UNIQUE
 #
 
 class Alert < ApplicationRecord
