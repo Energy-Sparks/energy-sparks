@@ -1,0 +1,8 @@
+<%= form.collection_check_boxes(field, collection, :id, :name) do |b| %>
+  <div class="custom-control custom-checkbox custom-control-inline">
+    <%= b.check_box(class: "custom-control-input") %>
+    <%= b.label(class: "custom-control-label") do %>
+      <%= b.object.name %>
+    <% end %>
+  </div>
+<% end %>

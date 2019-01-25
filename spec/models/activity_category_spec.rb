@@ -1,50 +1,23 @@
 require 'rails_helper'
 
-describe 'ActivityCategory' do
+describe ActivityCategory do
+  describe '#listed_with_activity_types' do
+    let(:activity_category_1){ create(:activity_category, name: 'Learning') }
+    let(:activity_category_2){ create(:activity_category, name: 'Environment') }
 
-  subject { create :activity_category }
+    let!(:activity_type_1){ create(:activity_type, name: 'Other', activity_category: activity_category_1, custom: true) }
+    let!(:activity_type_2){ create(:activity_type, name: 'Check Temperatures', activity_category: activity_category_1, custom: false) }
 
-  it 'is valid with valid attributes' do
-    expect(subject).to be_valid
-  end
+    let!(:activity_type_3){ create(:activity_type, name: 'Zoo visit', activity_category: activity_category_2) }
+    let!(:activity_type_4){ create(:activity_type, name: 'Alphabet analysis', activity_category: activity_category_2) }
 
-  it 'should sort its types correctly' do
-    subject.activity_types << FactoryBot.create(:activity_type, name: "A")
-
-    expect( subject.sorted_activity_types.length ).to eql(1)
-
-    subject.activity_types << FactoryBot.create(:activity_type, name: "other")
-    subject.activity_types << FactoryBot.create(:activity_type, name: "Z")
-
-    expect( subject.sorted_activity_types.length ).to eql(3)
-    expect( subject.sorted_activity_types.last.name ).to eql("other")
-
-  end
-
-  context 'with key stages' do
-
-    let!(:ks1) { KeyStage.create(name: 'KS1') }
-    let!(:ks2) { KeyStage.create(name: 'KS2') }
-    let!(:ks3) { KeyStage.create(name: 'KS3') }
-
-    it 'should sort its types correctly' do
-      subject.activity_types << FactoryBot.create(:activity_type, name: "A", key_stages: [ks1])
-
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1]).length).to eql(1)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks2]).length).to eql(0)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks3]).length).to eql(0)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks2, ks3]).length).to eql(0)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1, ks2, ks3]).length).to eql(1)
-
-      subject.activity_types << FactoryBot.create(:activity_type, name: "other", key_stages: [ks1])
-      subject.activity_types << FactoryBot.create(:activity_type, name: "Z", key_stages: [ks3])
-
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1]).length ).to eql(2)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1]).last.name ).to eql("other")
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks2]).length).to eql(0)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks3]).length).to eql(1)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks2, ks3]).length).to eql(1)
-      expect( subject.sorted_activity_types_with_key_stages(array_of_key_stages: [ks1, ks2, ks3]).length).to eql(3)
+    it 'orders the categories by name and orders the types custom-last by name' do
+      expect(ActivityCategory.listed_with_activity_types).to eq(
+        [
+          [activity_category_2, [activity_type_4, activity_type_3]],
+          [activity_category_1, [activity_type_2, activity_type_1]]
+        ]
+      )
     end
   end
 end
