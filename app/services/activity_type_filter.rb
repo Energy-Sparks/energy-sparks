@@ -37,7 +37,12 @@ class ActivityTypeFilter
   end
 
   def selected_activity_timings
-    load_selected(ActivityTiming, :activity_timing_ids)
+    if @query[:activity_timing_ids].blank?
+      ActivityTiming.none
+    else
+      checked = ActivityTiming.where(id: @query[:activity_timing_ids])
+      (checked + checked.select(&:include_lower).map {|timing| ActivityTiming.where('position < ?', timing.position)}.flatten).uniq
+    end
   end
 
   def selected_impacts
