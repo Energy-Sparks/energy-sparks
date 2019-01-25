@@ -23,6 +23,20 @@ RSpec.describe "alert reports", type: :system do
       expect(Alert.first.title).to eq gas_fuel_alert_type.title
       expect(page.has_content?(alert_summary)).to be true
     end
+
+    pending 'should show only the latest report' do
+      poor_alert_summary = 'POOR'
+      good_alert_summary = 'GOOD'
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :poor, data: { detail: [], rating: 2.0}, summary: poor_alert_summary)
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: good_alert_summary)
+      sign_in(admin)
+      visit root_path
+      click_on(school.name)
+      click_on("Alert reports")
+
+      expect(page.has_content?(poor_alert_summary)).to_not be true
+      expect(page.has_content?(good_alert_summary)).to be true
+    end
   end
 
   context 'with no generated reports' do

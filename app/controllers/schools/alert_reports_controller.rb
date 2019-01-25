@@ -6,6 +6,7 @@ class Schools::AlertReportsController < ApplicationController
   def index
     authorize! :read, AlertType
     @alerts = @school.alerts
+   # @alerts = @school.alerts.includes(:alert_type).order(:run_on).select('alert_type_id, run_on, alert_types.fuel_type').group('run_on, alert_type_id, alert_types.fuel_type')
 
     set_up_gas_reading_dates if @school.meters?(:gas)
     set_up_electricity_reading_dates if @school.meters?(:electricity)
