@@ -106,7 +106,6 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.integer "status"
     t.text "summary"
     t.json "data", default: {}
-    t.boolean "acknowledged", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"

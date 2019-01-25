@@ -2,7 +2,6 @@
 #
 # Table name: alerts
 #
-#  acknowledged  :boolean          default(FALSE)
 #  alert_type_id :bigint(8)
 #  created_at    :datetime         not null
 #  data          :json
