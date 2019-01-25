@@ -13,22 +13,19 @@ $(document).ready(function() {
       });
     }
 
-    function showHideTitle(selectedName) {
-      var expr = /please specify/;
-      if (selectedName.match(expr)) {
+    function showHideTitle(customState) {
+      if (customState) {
         $('div#title-field').show();
       } else {
         $('div#title-field').hide();
       }
     }
 
-    var currentSelectedName = $('#activity_activity_type_id').find('option:selected').text();
-    showHideTitle(currentSelectedName);
-
     $(document).on('change', '#activity_activity_type_id', function() {
-      var selectedName = $(this).find('option:selected').text();
-      showHideTitle(selectedName);
+      var customState = $('#activity_activity_type_id').find('option:selected').data('custom');
+      showHideTitle(customState);
     });
+    $('#activity_activity_type_id').trigger('change');
 
     $('#activity_activity_type_id').select2({theme: 'bootstrap'});
   }
