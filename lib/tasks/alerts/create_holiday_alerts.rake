@@ -8,7 +8,7 @@ namespace :alerts do
 
       # Decide when to run this for each school
       # Half termly
-      Alerts::BuildAndUpsert.new(school).generate_before_holiday_alerts
+      Alerts::GenerateAndSaveAlerts.new(school).gbefore_holiday_alerts
     end
     puts Time.zone.now
   end

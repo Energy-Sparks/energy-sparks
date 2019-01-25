@@ -18,7 +18,7 @@ module Alerts
         analysis_report.rating = nil
         Rails.logger.error("There was a problem running #{@alert_type.title} for #{@analysis_date} and #{@school.name}")
       end
-      convert_to_alert(analysis_report)
+      build_alert(analysis_report)
     end
 
   private
@@ -27,7 +27,7 @@ module Alerts
       @alert_type.class_name.constantize
     end
 
-    def convert_to_alert(analysis_report)
+    def build_alert(analysis_report)
       Alert.new(
         school_id: @school.id,
         alert_type_id: @alert_type.id,
