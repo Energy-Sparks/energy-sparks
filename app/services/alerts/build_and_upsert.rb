@@ -10,8 +10,24 @@ module Alerts
       @electricity_analysis_date = electricity_analysis_date
     end
 
-    def perform
-      alerts = BuildAlerts.new(@school, @gas_analysis_date, @electricity_analysis_date).perform
+    # def perform
+    #   generate_weekly_alerts
+    #   generate_termly_alerts
+    #   generate_before_holiday_alerts
+    # end
+
+    def generate_weekly_alerts
+      alerts = BuildAlerts.new(@school, @gas_analysis_date, @electricity_analysis_date, AlertType.weekly).perform
+      UpsertAlerts.new(alerts).perform
+    end
+
+    def generate_termly_alerts
+      alerts = BuildAlerts.new(@school, @gas_analysis_date, @electricity_analysis_date, AlertType.termly).perform
+      UpsertAlerts.new(alerts).perform
+    end
+
+    def generate_before_holiday_alerts
+      alerts = BuildAlerts.new(@school, @gas_analysis_date, @electricity_analysis_date, AlertType.before_each_holiday).perform
       UpsertAlerts.new(alerts).perform
     end
   end
