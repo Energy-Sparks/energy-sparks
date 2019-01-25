@@ -18,53 +18,7 @@ RSpec.describe "activity type", type: :system do
   let!(:activity_type_2) { create(:activity_type, activity_category: activity_category_2, key_stages: [ks3])}
 
 
-  describe 'filters are set depending on user and if logged in or not' do
-    before(:each) do
-      visit activity_categories_path
-    end
-
-    it 'defaults to all if not signed in' do
-      visit activity_categories_path
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_checked_field('KS2')
-      expect(page).to have_checked_field('KS3') # or have_unchecked_field
-      uncheck('KS2')
-      uncheck('KS3')
-      click_on('Filter Activity Types')
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_unchecked_field('KS2')
-      expect(page).to have_unchecked_field('KS3')
-    end
-
-    it 'defaults to all if signed in as a non-school user' do
-      sign_in(admin)
-      visit activity_categories_path
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_checked_field('KS2')
-      expect(page).to have_checked_field('KS3') # or have_unchecked_field
-      uncheck('KS2')
-      uncheck('KS3')
-      click_on('Filter Activity Types')
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_unchecked_field('KS2')
-      expect(page).to have_unchecked_field('KS3')
-    end
-
-    it 'defaults to all if signed in as a non-school user' do
-      sign_in(unlikely_school_user)
-      visit activity_categories_path
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_unchecked_field('KS2')
-      expect(page).to have_checked_field('KS3') # or have_unchecked_field
-      uncheck('KS3')
-      click_on('Filter Activity Types')
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_unchecked_field('KS2')
-      expect(page).to have_unchecked_field('KS3')
-    end
-  end
-
-  describe 'activities can be filtered by tag' do
+  describe 'activities can be filtered' do
     before(:each) do
       visit activity_categories_path
     end
@@ -83,15 +37,14 @@ RSpec.describe "activity type", type: :system do
     end
 
     it 'shows cat 2 activity types if selected' do
-      expect(page).to have_checked_field('KS1')
-      expect(page).to have_checked_field('KS2')
-      expect(page).to have_checked_field('KS3') # or have_unchecked_field
-      uncheck('KS2')
-      uncheck('KS3')
+      expect(page).to have_unchecked_field('KS1')
+      expect(page).to have_unchecked_field('KS2')
+      expect(page).to have_unchecked_field('KS3') # or have_unchecked_field
+      check('KS1')
       click_on('Filter Activity Types')
       expect(page).to have_checked_field('KS1')
       expect(page).to have_unchecked_field('KS2')
-      expect(page).to have_unchecked_field('KS3') #
+      expect(page).to have_unchecked_field('KS3') # or have_unchecked_field
 
       expect(page.has_content?(activity_type_1.name)).to be true
       expect(page.has_content?(activity_type_3.name)).to_not be true
