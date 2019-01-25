@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Alerts::BuildAlerts do
 
-  let(:no_fuel_alert_type) { create(:alert_type, fuel_type: nil) }
-  let(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas) }
-  let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity) }
+  let!(:no_fuel_alert_type) { create(:alert_type, fuel_type: nil, frequency: :weekly) }
+  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
+  let!(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :weekly) }
   let(:school) { create(:school) }
   let(:gas_date) { Date.parse('2019-01-01') }
   let(:electricity_date) { Date.parse('2019-02-01') }
@@ -18,7 +18,7 @@ describe Alerts::BuildAlerts do
       no_fuel_output = ['No fuel run']
       expect(alert_framework_adapter).to receive(:new).with(no_fuel_alert_type, school, Time.zone.today).and_return(alert_framework_adapter_instance)
       expect(alert_framework_adapter_instance).to receive(:analyse).and_return(no_fuel_output)
-      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, alert_framework_adapter).perform
+      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, AlertType.weekly, alert_framework_adapter).perform
       expect(output).to eq no_fuel_output
     end
   end
@@ -33,7 +33,7 @@ describe Alerts::BuildAlerts do
       expect(alert_framework_adapter_instance).to receive(:analyse).and_return(no_fuel_output)
       expect(alert_framework_adapter_instance_gas).to receive(:analyse).and_return(gas_fuel_output)
 
-      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, alert_framework_adapter).perform
+      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, AlertType.weekly, alert_framework_adapter).perform
       expect(output).to eq [no_fuel_output, gas_fuel_output].flatten
     end
   end
@@ -48,7 +48,7 @@ describe Alerts::BuildAlerts do
       expect(alert_framework_adapter_instance).to receive(:analyse).and_return(no_fuel_output)
       expect(alert_framework_adapter_instance_electricity).to receive(:analyse).and_return(electricity_fuel_output)
 
-      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, alert_framework_adapter).perform
+      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, AlertType.weekly, alert_framework_adapter).perform
       expect(output).to eq [no_fuel_output, electricity_fuel_output].flatten
     end
   end
@@ -69,7 +69,7 @@ describe Alerts::BuildAlerts do
       expect(alert_framework_adapter_instance_electricity).to receive(:analyse).and_return(electricity_fuel_output)
       expect(alert_framework_adapter_instance_gas).to receive(:analyse).and_return(gas_fuel_output)
 
-      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, alert_framework_adapter).perform
+      output = Alerts::BuildAlerts.new(school, gas_date, electricity_date, AlertType.weekly, alert_framework_adapter).perform
       expect(output).to eq [no_fuel_output, electricity_fuel_output, gas_fuel_output].flatten
     end
   end
