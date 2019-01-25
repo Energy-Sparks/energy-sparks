@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_11_164111) do
+ActiveRecord::Schema.define(version: 2019_01_11_153734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -144,7 +144,6 @@ ActiveRecord::Schema.define(version: 2019_01_11_164111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
-    t.index ["school_id", "alert_type_id", "run_on"], name: "unique_alerts", unique: true
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
