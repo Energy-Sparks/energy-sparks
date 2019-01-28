@@ -3,7 +3,7 @@ cache: bundler
 env:
   - DB_PASSWORD=
 global:
-  - CC_TEST_REPORTER_ID=9e5ddf85dfd80e337b5535c19cd1667d70ab875d9d7b7d5e4551e9f39c4e9ecd
+  - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd
 services:
   - postgresql
 dist: xenial
@@ -30,4 +30,4 @@ script:
   - bundle exec bundle-audit check --update
   - bundle exec rspec
 after_success:
-  - CC_TEST_REPORTER_ID=9e5ddf85dfd80e337b5535c19cd1667d70ab875d9d7b7d5e4551e9f39c4e9ecd ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
