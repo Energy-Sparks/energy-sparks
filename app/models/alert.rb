@@ -53,10 +53,6 @@ class Alert < ApplicationRecord
     alert_type.show_ratings
   end
 
-  def alert_type_parameterized
-    alert_type.title.parameterize
-  end
-
   def rating
     data['rating'].nil? ? 'Unrated' : "#{data['rating'].round(0)}/10"
   end

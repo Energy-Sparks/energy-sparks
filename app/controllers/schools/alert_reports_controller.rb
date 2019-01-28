@@ -18,7 +18,7 @@ class Schools::AlertReportsController < ApplicationController
 private
 
   def latest_alerts_for(alerts, date)
-    alerts.where(run_on: date).order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map { |b| b.first }
+    alerts.where(run_on: date).order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map(&:first)
   end
 
   def set_up_gas_reading_dates

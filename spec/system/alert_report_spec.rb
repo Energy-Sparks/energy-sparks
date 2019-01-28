@@ -40,7 +40,7 @@ RSpec.describe "alert reports", type: :system do
   end
 
   context 'with no generated reports' do
-    it 'should show reports', js: true do
+    it 'should show reports' do
       sign_in(admin)
       visit root_path
       click_on(school.name)

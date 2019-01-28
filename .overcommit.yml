@@ -310,7 +310,7 @@ PreCommit:
     required_executable: 'govuk-lint-ruby'
     flags: ['app','lib', '-R']
     install_command: 'gem install govuk_lint'
-    command: ['govuk-lint-ruby']
+    command: ['bundle','exec','govuk-lint-ruby']
 
   GoVet:
     enabled: false
