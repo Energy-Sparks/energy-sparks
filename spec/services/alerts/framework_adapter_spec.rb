@@ -36,7 +36,7 @@ describe Alerts::FrameworkAdapter do
   let(:bad_alert) do
     Alert.new(
       run_on: gas_date,
-      summary: "There was a problem running this alert: #{gas_fuel_alert_type.title}.",
+      summary: "There was a problem running the #{gas_fuel_alert_type.title} alert. This is likely due to missing data.",
       alert_type: gas_fuel_alert_type,
       data: { help_url: nil, detail: [], rating: nil }
     )
