@@ -43,11 +43,11 @@ class Alert < ApplicationRecord
     data['help_url']
   end
 
-  def type
+  def chart_type
     data['type']
   end
 
-  def term
+  def frequency
     data['term']
   end
 end
