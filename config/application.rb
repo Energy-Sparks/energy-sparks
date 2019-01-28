@@ -24,5 +24,7 @@ module EnergySparks
     # optional - note it can be only :utc or :local (default is :utc)
     # HAS to be UTC for group by date to work
     config.active_record.default_timezone = :utc
+
+    config.middleware.use Rack::Attack
   end
 end
