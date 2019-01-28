@@ -31,10 +31,6 @@ class Alert < ApplicationRecord
 
   enum status: [:good, :poor, :not_enough_data, :error]
 
-  def rating
-    data['rating']
-  end
-
   def detail
     data['detail']
   end
@@ -49,5 +45,13 @@ class Alert < ApplicationRecord
 
   def frequency
     data['frequency']
+  end
+
+  def show_ratings?
+    alert_type.show_ratings
+  end
+
+  def rating
+    data['rating'].nil? ? 'Unrated' : "#{data['rating'].round(0)}/10"
   end
 end

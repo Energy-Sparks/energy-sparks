@@ -18,9 +18,9 @@
   </div>
   <div class="card-footer text-muted">
     <p class="card-text">Find out more: <%= link_to alert.title, alert.help_url %></p>
-    <% unless fuel_type.nil? || alert.title == 'Turn heating on/off' %>
-      <p class="card-text"><b>Current rating</b>: <%= alert.rating.nil? ? 'Unrated' : "#{alert.rating.round(0)}/10" %>
+    <% if alert.show_ratings? %>
+      <p class="card-text"><b>Current rating</b>: <%= alert.rating %>
     <% end %>
-    <p class="card-text"><b>Frequency</b>: <%#= alert_type[:frequency].humanize %></p>
+    <p class="card-text"><b>Frequency</b>: <%= alert.frequency.humanize %></p>
   </div>
 </div>

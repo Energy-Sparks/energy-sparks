@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_25_164854) do
+ActiveRecord::Schema.define(version: 2019_01_28_144948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_164854) do
     t.text "description"
     t.text "analysis"
     t.text "class_name"
+    t.boolean "show_ratings", default: true
   end
 
   create_table "alerts", force: :cascade do |t|

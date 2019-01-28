@@ -8,6 +8,7 @@
 #  frequency    :integer
 #  fuel_type    :integer
 #  id           :bigint(8)        not null, primary key
+#  show_ratings :boolean          default(TRUE)
 #  sub_category :integer
 #  title        :text
 #
