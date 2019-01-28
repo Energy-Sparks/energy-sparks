@@ -60,57 +60,14 @@
   </div>
 </div>
 
-<% if @alerts.empty? %>
-  <h2>We have no alert data for this school</h2>
+<% if @electricity_alerts.empty? %>
+  <h3>We have no electricity alert data for this school on: <%= nice_dates @alert_fuel_dates[:electricity] %></h3>
 <% else %>
-  <% @alerts.group_by { |alert| alert.alert_type.fuel_type }.each do |fuel_type, alerts| %>
-    <div class="row padded-row">
-      <div class="col-md-12">
-        <h3><%= fuel_type.nil? ? 'Holiday alerts: for today' : "#{fuel_type.capitalize}: for #{nice_dates @alert_fuel_dates[fuel_type]}" %></h3>
-        <% alerts.sort_by { |alert| alert.rating.nil? ? 99 : alert.rating }.each do |alert| %>
-          <div class="card mb-3">
-            <div class="card-header text-white <%= class_for_alert_rating(alert.rating) %>">
-              <h4><%= alert.summary %>
-              <% unless alert.rating.nil? %>
-                <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert.title.parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
-                  <button class="btn btn-sm">
-                  <span class="if-collapsed">More details</span>
-                  <span class="if-not-collapsed">Less details</span>
-                  </button>
-                </a>
-              <% end %>
-              </h4>
-            </div>
+  <%= render 'alerts', alerts: @electricity_alerts, fuel_type: :electricity %>
+<% end %>
 
-            <div class='collapse' id="<%= alert.title.parameterize %>">
-              <div class="card-body">
-                <h5><%= alert.title %></h5>
-                <p class="card-text">This alert <%= alert.description.downcase %></p>
-                <% alert.detail.each do |detail| %>
-                  <% if detail['type'].to_sym == :chart %>
-                    <div id="alert-chart-data-<%= alert.type %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.type %>' class="hide">
-                    <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
-                    </div>
-
-                    <div id="alert-chart-wrapper-<%= alert.type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.type %>'></div>
-                  <% elsif detail['type'].to_sym == :html %>
-                    <%= detail['content'].html_safe %>
-                  <% else %>
-                    <p><%= detail['content'].html_safe %></p>
-                  <% end %>
-                <% end %>
-              </div>
-              <div class="card-footer text-muted">
-                  <p class="card-text">Find out more: <%= link_to alert.title, alert.help_url %></p>
-                  <% unless fuel_type.nil? || alert.title == 'Turn heating on/off' %>
-                    <p class="card-text"><b>Current rating</b>: <%= alert.rating.nil? ? 'Unrated' : "#{alert.rating.round(0)}/10" %>
-                  <% end %>
-                  <p class="card-text"><b>Frequency</b>: <%#= alert_type[:frequency].humanize %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
+<% if @gas_alerts.empty? %>
+  <h3>We have no gas alert data for this school on: <%= nice_dates @alert_fuel_dates[:gas] %></h3>
+<% else %>
+  <%= render 'alerts', alerts: @gas_alerts, fuel_type: :gas %>
 <% end %>

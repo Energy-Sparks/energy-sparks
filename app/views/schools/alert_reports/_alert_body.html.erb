@@ -1,0 +1,26 @@
+<div class='collapse' id="<%= alert.title.parameterize %>">
+  <div class="card-body">
+    <h5><%= alert.title %></h5>
+    <p class="card-text">This alert <%= alert.description.downcase %></p>
+    <% alert.detail.each do |detail| %>
+      <% if detail['type'].to_sym == :chart %>
+        <div id="alert-chart-data-<%= alert.type %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.type %>' class="hide">
+        <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
+        </div>
+
+        <div id="alert-chart-wrapper-<%= alert.type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.type %>'></div>
+      <% elsif detail['type'].to_sym == :html %>
+        <%= detail['content'].html_safe %>
+      <% else %>
+        <p><%= detail['content'].html_safe %></p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="card-footer text-muted">
+      <p class="card-text">Find out more: <%= link_to alert.title, alert.help_url %></p>
+      <% unless fuel_type.nil? || alert.title == 'Turn heating on/off' %>
+        <p class="card-text"><b>Current rating</b>: <%= alert.rating.nil? ? 'Unrated' : "#{alert.rating.round(0)}/10" %>
+      <% end %>
+      <p class="card-text"><b>Frequency</b>: <%#= alert_type[:frequency].humanize %></p>
+  </div>
+</div>

@@ -25,6 +25,10 @@ class Alert < ApplicationRecord
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
 
+  scope :electricity, -> { joins(:alert_type).merge(AlertType.electricity) }
+  scope :gas,         -> { joins(:alert_type).merge(AlertType.gas) }
+  scope :no_fuel,     -> { joins(:alert_type).merge(AlertType.no_fuel) }
+
   enum status: [:good, :poor, :not_enough_data, :error]
 
   def rating

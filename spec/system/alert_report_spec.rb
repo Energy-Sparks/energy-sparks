@@ -27,8 +27,8 @@ RSpec.describe "alert reports", type: :system do
     it 'should show only the latest report' do
       poor_alert_summary = 'POOR'
       good_alert_summary = 'GOOD'
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :poor, data: { detail: [], rating: 2.0}, summary: poor_alert_summary, created_at: DateTime.parse('2019-01-01'))
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: good_alert_summary, created_at: DateTime.parse('2019-01-02'))
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :poor, data: { detail: [], rating: 2.0}, summary: poor_alert_summary, created_at: DateTime.parse('2019-01-02'))
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: good_alert_summary, created_at: DateTime.parse('2019-01-02') + 10.minutes)
       sign_in(admin)
       visit root_path
       click_on(school.name)

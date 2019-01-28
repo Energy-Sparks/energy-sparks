@@ -5,16 +5,21 @@ class Schools::AlertReportsController < ApplicationController
 
   def index
     authorize! :read, AlertType
-    @alerts = @school.alerts.order(created_at: :desc).group_by { |a| [a.alert_type_id] }.values.map { |b| b.first }
-   # @alerts = @school.alerts.includes(:alert_type).order(:run_on).select('alert_type_id, run_on, alert_types.fuel_type').group('run_on, alert_type_id, alert_types.fuel_type')
 
     set_up_gas_reading_dates if @school.meters?(:gas)
     set_up_electricity_reading_dates if @school.meters?(:electricity)
 
-    @alert_fuel_dates = { 'gas' => @gas_alerts_date, 'electricity' => @electricity_alerts_date }
+    @electricity_alerts = latest_alerts_for(@school.alerts.electricity, @electricity_alerts_date)
+    @gas_alerts = latest_alerts_for(@school.alerts.gas, @gas_alerts_date)
+
+    @alert_fuel_dates = { gas: @gas_alerts_date, electricity: @electricity_alerts_date }
   end
 
 private
+
+  def latest_alerts_for(alerts, date)
+    alerts.where(run_on: date).order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map { |b| b.first }
+  end
 
   def set_up_gas_reading_dates
     if params[:gas_date_picker]
