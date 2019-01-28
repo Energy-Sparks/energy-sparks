@@ -8,8 +8,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
   let!(:science){ Subject.create(name: 'Science') }
   let!(:maths){ Subject.create(name: 'Maths') }
 
-  let!(:half_hour){ ActivityTiming.create(name: '30 mins') }
-  let!(:hour){ ActivityTiming.create(name: 'Hour') }
+  let!(:half_hour){ ActivityTiming.create(name: '30 mins', position: 0) }
+  let!(:hour){ ActivityTiming.create(name: 'Hour', position: 1, include_lower: true) }
 
   let!(:reducing_gas){ Impact.create(name: 'Reducing gas') }
   let!(:reducing_electricity){ Impact.create(name: 'Reducing electricity') }
@@ -106,16 +106,22 @@ RSpec.describe ActivityTypeFilter, type: :service do
   end
 
   describe '#selected_activity_timings' do
+
     context 'when no parameters are passed in' do
       it 'uses none' do
         service = ActivityTypeFilter.new({})
         expect(service.selected_topics).to match_array([])
       end
     end
+
     context 'when parameters are passed in' do
       it 'loads the timings from the ids' do
+        service = ActivityTypeFilter.new({activity_timing_ids: [half_hour.id]})
+        expect(service.selected_activity_timings).to match_array([half_hour])
+      end
+      it 'includes lower timings when selected' do
         service = ActivityTypeFilter.new({activity_timing_ids: [hour.id]})
-        expect(service.selected_activity_timings).to match_array([hour])
+        expect(service.selected_activity_timings).to match_array([half_hour, hour])
       end
     end
   end
@@ -155,8 +161,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
     end
 
     context 'when a timing is selected' do
-      let(:query){ {activity_timing_ids: hour.id}}
-      it { is_expected.to match_array([activity_type_2]) }
+      let(:query){ {activity_timing_ids: half_hour.id}}
+      it { is_expected.to match_array([activity_type_1, activity_type_3]) }
     end
 
     context 'when an impact is selected' do
