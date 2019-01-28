@@ -29,22 +29,22 @@ module Alerts
 
     def build_alert(analysis_report)
       Alert.new(
-        school_id: @school.id,
-        alert_type_id: @alert_type.id,
-        run_on: @analysis_date,
-        status: analysis_report.status,
-        summary: analysis_report.summary,
-        data: data_hash(analysis_report),
+        school_id:      @school.id,
+        alert_type_id:  @alert_type.id,
+        run_on:         @analysis_date,
+        status:         analysis_report.status,
+        summary:        analysis_report.summary,
+        data:           data_hash(analysis_report),
       )
     end
 
     def data_hash(analysis_report)
       {
-        help_url: analysis_report.help_url,
-        detail: analysis_report.detail,
-        rating: analysis_report.rating,
-        type: analysis_report.type,
-        term: analysis_report.term
+        help_url:   analysis_report.help_url,
+        detail:     analysis_report.detail,
+        rating:     analysis_report.rating,
+        chart_type: analysis_report.type,
+        frequency:  analysis_report.term
       }
     end
   end

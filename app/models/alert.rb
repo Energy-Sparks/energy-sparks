@@ -44,10 +44,10 @@ class Alert < ApplicationRecord
   end
 
   def chart_type
-    data['type']
+    data['chart_type']
   end
 
   def frequency
-    data['term']
+    data['frequency']
   end
 end
