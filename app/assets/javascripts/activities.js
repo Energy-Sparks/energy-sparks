@@ -13,22 +13,21 @@ $(document).ready(function() {
       });
     }
 
-    function showHideTitle(selectedName) {
-      var expr = /please specify/;
-      if (selectedName.match(expr)) {
+    function showHideTitle(customState) {
+      if (customState) {
         $('div#title-field').show();
       } else {
         $('div#title-field').hide();
       }
     }
 
-    var currentSelectedName = $('#activity_activity_type_id').find('option:selected').text();
-    showHideTitle(currentSelectedName);
+    var activityTypeCustomCheck = function(activityType){
+      var customState = $(activityType.target).find('option:selected').data('custom');
+      showHideTitle(customState);
+    }
 
-    $(document).on('change', '#activity_activity_type_id', function() {
-      var selectedName = $(this).find('option:selected').text();
-      showHideTitle(selectedName);
-    });
+    $(document).on('change', '#activity_activity_type_id', activityTypeCustomCheck);
+    activityTypeCustomCheck({target: '#activity_activity_type_id'});
 
     $('#activity_activity_type_id').select2({theme: 'bootstrap'});
   }

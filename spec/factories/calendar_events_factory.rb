@@ -7,12 +7,12 @@ FactoryBot.define do
     factory :term do
       title       { 'new term' }
       description { 'this is a new term' }
-      association :calendar_event_type, term_time: true
+      association :calendar_event_type, term_time: true, holiday: false
     end
     factory :holiday do
       title       { 'new holiday' }
       description { 'this is a new holiday' }
-      association :calendar_event_type, term_time: false
+      association :calendar_event_type, term_time: false, holiday: true
     end
   end
 end

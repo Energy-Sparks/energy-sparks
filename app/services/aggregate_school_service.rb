@@ -6,7 +6,6 @@ class AggregateSchoolService
   end
 
   def aggregate_school
-    cache_key = "#{@school.name.parameterize}-aggregated_meter_collection"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       meter_collection = AmrValidatedMeterCollection.new(@school)
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters_including_storage_and_solar_pv
@@ -17,5 +16,15 @@ class AggregateSchoolService
       meter_collection.solar_pv
       meter_collection
     end
+  end
+
+  def invalidate_cache
+    Rails.cache.delete(cache_key)
+  end
+
+private
+
+  def cache_key
+    "#{@school.id}-#{@school.name.parameterize}-aggregated_meter_collection"
   end
 end

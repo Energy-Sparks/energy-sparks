@@ -1,5 +1,5 @@
 class SchoolsController < ApplicationController
-  include KeyStageFilterable
+  include ActivityTypeFilterable
   include Measurements
 
   load_and_authorize_resource
@@ -32,10 +32,9 @@ class SchoolsController < ApplicationController
   end
 
   def suggest_activity
-    @key_stage_filters = work_out_which_filters_to_set
-    @key_stages = KeyStage.order(:name)
+    @filter = activity_type_filter
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filters).suggest
+    @suggestions = NextActivitySuggesterWithFilter.new(@school, @filter).suggest
   end
 
   # GET /schools/new
@@ -66,6 +65,7 @@ class SchoolsController < ApplicationController
   def update
     respond_to do |format|
       if @school.update(school_params)
+        AggregateSchoolService.new(@school).invalidate_cache
         format.html { redirect_to @school, notice: 'School was successfully updated.' }
         format.json { render :show, status: :ok, location: @school }
       else
