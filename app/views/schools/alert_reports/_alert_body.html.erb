@@ -4,11 +4,11 @@
     <p class="card-text">This alert <%= alert.description.downcase %></p>
     <% alert.detail.each do |detail| %>
       <% if detail['type'].to_sym == :chart %>
-        <div id="alert-chart-data-<%= alert.chart_type %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.chart_type %>' class="hide">
+        <div id="alert-chart-data-<%= alert.alert_type_parameterized %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.alert_type_parameterized %>' class="hide">
         <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
         </div>
 
-        <div id="alert-chart-wrapper-<%= alert.chart_type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.chart_type %>'></div>
+        <div id="alert-chart-wrapper-<%= alert.alert_type_parameterized %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.alert_type_parameterized %>'></div>
       <% elsif detail['type'].to_sym == :html %>
         <%= detail['content'].html_safe %>
       <% else %>

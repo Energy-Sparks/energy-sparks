@@ -40,12 +40,13 @@ RSpec.describe "alert reports", type: :system do
   end
 
   context 'with no generated reports' do
-    it 'should show reports' do
+    it 'should show reports', js: true do
       sign_in(admin)
       visit root_path
       click_on(school.name)
       click_on("Alert reports")
-      expect(page.has_content?("We have no alert data for this school")).to be true
+      expect(page.has_content?("We have no electricity alert data for this school")).to be true
+      expect(page.has_content?("We have no gas alert data for this school")).to be true
     end
   end
 end

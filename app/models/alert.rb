@@ -31,6 +31,8 @@ class Alert < ApplicationRecord
 
   enum status: [:good, :poor, :not_enough_data, :error]
 
+  # Data hash may end up being attributes of alert
+  # Also uses string keys as serialised as JSON in DB
   def detail
     data['detail']
   end
@@ -39,16 +41,20 @@ class Alert < ApplicationRecord
     data['help_url']
   end
 
-  def chart_type
-    data['chart_type']
+  def alert_framework_type
+    data['alert_framework_type']
   end
 
   def frequency
-    data['frequency']
+    alert_type.frequency
   end
 
   def show_ratings?
     alert_type.show_ratings
+  end
+
+  def alert_type_parameterized
+    alert_type.title.parameterize
   end
 
   def rating

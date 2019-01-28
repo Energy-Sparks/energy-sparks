@@ -29,7 +29,7 @@ describe Alerts::FrameworkAdapter do
       run_on: gas_date,
       summary: Alerts::DummyAlertClass.good_alert_report.summary,
       alert_type: gas_fuel_alert_type,
-      data: { help_url: nil, detail: [], rating: 10.0, type: gas_fuel_alert_type.attributes, term: nil }
+      data: { help_url: nil, detail: [], rating: 10.0 }
     )
   end
 
@@ -38,7 +38,7 @@ describe Alerts::FrameworkAdapter do
       run_on: gas_date,
       summary: "There was a problem running this alert: #{gas_fuel_alert_type.title}.",
       alert_type: gas_fuel_alert_type,
-      data: { help_url: nil, detail: [], rating: nil, type: gas_fuel_alert_type.attributes, term: nil }
+      data: { help_url: nil, detail: [], rating: nil }
     )
   end
 
