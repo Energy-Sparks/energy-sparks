@@ -4,8 +4,8 @@ class Schools::AlertsController < ApplicationController
   def index
     authorize! :read, AlertType
 
-    @electricity_alerts = latest_alerts_for(@school.alerts.electricity)
-    @gas_alerts = latest_alerts_for(@school.alerts.gas)
+    @termly_alerts = latest_alerts_for(@school.alerts.termly)
+    @weekly_alerts = latest_alerts_for(@school.alerts.weekly)
   end
 
 private

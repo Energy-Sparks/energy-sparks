@@ -2,14 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "alert reports", type: :system do
   let!(:admin)  { create(:user, role: 'admin')}
-  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas) }
+  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly) }
   let!(:school) { create(:school) }
   let(:gas_date) { Date.parse('2019-01-01') }
   let!(:gas_meter) { create(:gas_meter_with_validated_reading_dates, school: school, start_date:gas_date - 1.day, end_date: gas_date) }
-
-#  let(:electricity_date) { Date.parse('2019-02-01') }
-#  let!(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity) }
-#  let!(:no_fuel_alert_type) { create(:alert_type, fuel_type: nil) }
 
   context 'with generated reports' do
     it 'should show reports' do
@@ -45,8 +41,8 @@ RSpec.describe "alert reports", type: :system do
       visit root_path
       click_on(school.name)
       click_on("Alerts")
-      expect(page.has_content?("We have no electricity alert data for this school")).to be true
-      expect(page.has_content?("We have no gas alert data for this school")).to be true
+      expect(page.has_content?("We have no termly alert data for this school")).to be true
+      expect(page.has_content?("We have no weekly alert data for this school")).to be true
     end
   end
 end

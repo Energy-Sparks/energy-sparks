@@ -28,6 +28,8 @@ class Alert < ApplicationRecord
   scope :electricity, -> { joins(:alert_type).merge(AlertType.electricity) }
   scope :gas,         -> { joins(:alert_type).merge(AlertType.gas) }
   scope :no_fuel,     -> { joins(:alert_type).merge(AlertType.no_fuel) }
+  scope :termly,      -> { joins(:alert_type).merge(AlertType.termly) }
+  scope :weekly,      -> { joins(:alert_type).merge(AlertType.weekly) }
 
   enum status: [:good, :poor, :not_enough_data, :error]
 

@@ -25,6 +25,7 @@ class AlertType < ApplicationRecord
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
+
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?
     fuel_type.humanize
