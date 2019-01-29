@@ -4,8 +4,8 @@
       <% alerts.sort_by { |alert| alert.rating.nil? ? 99 : alert.rating }.each do |alert| %>
 
         <div class="card mb-3">
-          <%= render 'alert_header', alert: alert %>
-          <%= render 'alert_body', alert: alert, fuel_type: fuel_type %>
+          <%= render 'schools/alerts/alert_header', alert: alert %>
+          <%= render 'schools/alerts/alert_body', alert: alert, fuel_type: fuel_type %>
         </div>
       <% end %>
     </div>

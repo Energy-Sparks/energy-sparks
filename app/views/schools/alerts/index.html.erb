@@ -1,0 +1,23 @@
+<% content_for :page_title do %>Alert reports for <%= @school.name %><% end %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1 property="name"><%= link_to @school.name, @school %></h1>
+    <h2>Latest alerts</h2>
+    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
+    <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
+  </div>
+</div>
+
+<% if @electricity_alerts.empty? %>
+  <h3>We have no electricity alert data for this school</h3>
+<% else %>
+  <h3>Electricity Alerts</h3>
+  <%= render 'alerts', alerts: @electricity_alerts, fuel_type: :electricity %>
+<% end %>
+
+<% if @gas_alerts.empty? %>
+  <h3>We have no gas alert data for this school</h3>
+<% else %>
+  <h3>Gas Alerts</h3>
+  <%= render 'alerts', alerts: @gas_alerts, fuel_type: :gas %>
+<% end %>

@@ -18,7 +18,7 @@ RSpec.describe "alert reports", type: :system do
       sign_in(admin)
       visit root_path
       click_on(school.name)
-      click_on("Alert reports")
+      click_on("Alerts")
 
       expect(Alert.first.title).to eq gas_fuel_alert_type.title
       expect(page.has_content?(alert_summary)).to be true
@@ -32,7 +32,7 @@ RSpec.describe "alert reports", type: :system do
       sign_in(admin)
       visit root_path
       click_on(school.name)
-      click_on("Alert reports")
+      click_on("Alerts")
 
       expect(page.has_content?(good_alert_summary)).to be true
       expect(page.has_content?(poor_alert_summary)).to_not be true
@@ -44,7 +44,7 @@ RSpec.describe "alert reports", type: :system do
       sign_in(admin)
       visit root_path
       click_on(school.name)
-      click_on("Alert reports")
+      click_on("Alerts")
       expect(page.has_content?("We have no electricity alert data for this school")).to be true
       expect(page.has_content?("We have no gas alert data for this school")).to be true
     end
