@@ -1,5 +1,6 @@
 <div class="card-header text-white <%= class_for_alert_rating(alert.data['rating']) %>">
-  <h4><%= alert.summary %>
+
+  <h4><%= fa_icon alert_icon(alert) %> <%= alert.summary %>
   <% unless alert.rating.nil? %>
     <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert.title.parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
       <button class="btn btn-sm">

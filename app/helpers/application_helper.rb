@@ -69,6 +69,17 @@ module ApplicationHelper
     end
   end
 
+  def alert_icon(alert)
+    case alert.alert_type.fuel_type
+    when :electricity, 'electricity'
+      'bolt'
+    when :gas, 'gas'
+      'fire'
+    else
+      'calendar-check-o'
+    end
+  end
+
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)
