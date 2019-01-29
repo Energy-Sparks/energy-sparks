@@ -17,7 +17,7 @@ class AmrMeterCollection < MeterCollection
     holidays
     temperatures
 
-    @opening_times_hash = set_up_opening_time_hash(active_record_school).to_h
+    @opening_times_hash = set_up_opening_time_array(active_record_school).to_h
 
     pp "Running in Rails environment version: #{Dashboard::VERSION}"
   end
