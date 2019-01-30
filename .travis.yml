@@ -1,9 +1,5 @@
 language: ruby
 cache: bundler
-env:
-  - DB_PASSWORD=
-global:
-  - CC_TEST_REPORTER_ID=9e5ddf85dfd80e337b5535c19cd1667d70ab875d9d7b7d5e4551e9f39c4e9ecd
 services:
   - postgresql
 dist: xenial
@@ -30,4 +26,4 @@ script:
   - bundle exec bundle-audit check --update
   - bundle exec rspec
 after_success:
-  - CC_TEST_REPORTER_ID=9e5ddf85dfd80e337b5535c19cd1667d70ab875d9d7b7d5e4551e9f39c4e9ecd ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
