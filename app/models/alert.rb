@@ -24,12 +24,14 @@ class Alert < ApplicationRecord
 
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
+  delegate :display_fuel_type, to: :alert_type
 
-  scope :electricity, -> { joins(:alert_type).merge(AlertType.electricity) }
-  scope :gas,         -> { joins(:alert_type).merge(AlertType.gas) }
-  scope :no_fuel,     -> { joins(:alert_type).merge(AlertType.no_fuel) }
-  scope :termly,      -> { joins(:alert_type).merge(AlertType.termly) }
-  scope :weekly,      -> { joins(:alert_type).merge(AlertType.weekly) }
+  scope :electricity,         -> { joins(:alert_type).merge(AlertType.electricity) }
+  scope :gas,                 -> { joins(:alert_type).merge(AlertType.gas) }
+  scope :no_fuel,             -> { joins(:alert_type).merge(AlertType.no_fuel) }
+  scope :termly,              -> { joins(:alert_type).merge(AlertType.termly) }
+  scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
+  scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
 
   enum status: [:good, :poor, :not_enough_data, :error]
 

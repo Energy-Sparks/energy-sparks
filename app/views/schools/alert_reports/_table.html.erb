@@ -12,8 +12,8 @@
   <tbody>
     <% alerts.sort_by { |a| [a.alert_type, a.run_on] }.reverse.each do |alert| %>
       <tr scope="row">
-        <td><%= fa_icon alert_icon(alert) %> <%= alert.alert_type.fuel_type.humanize %></td>
-        <td><%= link_to alert.title, school_alerts_path(school, alert) %></td>
+        <td><%= fa_icon alert_icon(alert) %> <%= alert.display_fuel_type %></td>
+        <td><%= link_to alert.title, school_alert_path(school, alert) %></td>
         <td class="text-white <%= class_for_alert_rating(alert.data['rating']) %>"><%= alert.status %></td>
         <td class="text-white <%= class_for_alert_rating(alert.data['rating']) %>"><%= alert.rating %></td>
         <td><%= nice_dates alert.run_on %></td>

@@ -8,6 +8,13 @@
   </div>
 </div>
 
+<% if @holiday_alerts.empty? %>
+  <h3>We have no before holiday alert data for this school</h3>
+<% else %>
+  <h3>Before holiday Alerts</h3>
+  <%= render 'alerts', alerts: @holiday_alerts %>
+<% end %>
+
 <% if @termly_alerts.empty? %>
   <h3>We have no termly alert data for this school</h3>
 <% else %>

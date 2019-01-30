@@ -1,7 +1,10 @@
-<div class="card mb-3">
-  <div class="card-header text-white <%= class_for_alert_rating(alert.data['rating']) %>">
-    <h4><%= fa_icon alert_icon(alert) %> <%= alert.summary %>
-      <%= link_to 'Find out more', school_alert_path(school, alert.id), class: 'btn btn-secondary text-right pull-right', role: 'button' %>
-    </h4>
+<div class="alert text-white <%= class_for_alert_rating(alert.data['rating']) %>" role="alert">
+  <div class="row justify-content-between">
+    <div class="col-11">
+      <h4><%= fa_icon alert_icon(alert) %> <%= alert.summary %></h4>
+    </div>
+    <div class="col-1">
+      <%= link_to 'Find out more', school_alert_path(school, alert.id), class: 'btn btn-light btn-sm text-right pull-right', role: 'button' %>
+    </div>
   </div>
 </div>

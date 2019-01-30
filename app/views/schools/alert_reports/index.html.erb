@@ -7,6 +7,13 @@
     </div>
 </div>
 
+<% if @holiday_alerts.any? %>
+  <h2>Holiday Alerts</h2>
+  <%= render 'table', alerts: @holiday_alerts, school: @school %>
+<% else %>
+  <p>No before holiday alerts</p>
+<% end %>
+
 <% if @weekly_alerts.any? %>
   <h2>Weekly Alerts</h2>
   <%= render 'table', alerts: @weekly_alerts, school: @school %>

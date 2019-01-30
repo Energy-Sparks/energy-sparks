@@ -6,5 +6,6 @@ class Schools::AlertReportsController < ApplicationController
 
     @termly_alerts = @school.alerts.termly.order(created_at: :desc)
     @weekly_alerts = @school.alerts.weekly.order(created_at: :desc)
+    @holiday_alerts = @school.alerts.before_each_holiday.order(created_at: :desc)
   end
 end

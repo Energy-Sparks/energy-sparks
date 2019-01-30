@@ -6,6 +6,7 @@ class Schools::AlertsController < ApplicationController
 
     @termly_alerts = @school.alerts.termly.latest
     @weekly_alerts = @school.alerts.weekly.latest
+    @holiday_alerts = @school.alerts.before_each_holiday.latest
   end
 
   def show

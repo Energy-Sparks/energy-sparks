@@ -5,10 +5,11 @@ namespace :alerts do
     schools = School.active
     schools.each do |school|
       puts "Running alerts for #{school.name}"
-
       # Decide when to run this for each school
-      # Half termly
-      Alerts::GenerateAndSaveAlerts.new(school).before_holiday_alerts
+      if school.holiday_approaching?
+        # Half termly
+        Alerts::GenerateAndSaveAlerts.new(school).before_holiday_alerts
+      end
     end
     puts Time.zone.now
   end
