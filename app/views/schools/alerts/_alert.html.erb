@@ -1,0 +1,9 @@
+<div class="card mb-3">
+  <div class="card-header text-white <%= class_for_alert_rating(alert.data['rating']) %>">
+    <h4><%= fa_icon alert_icon(alert) %> <%= alert.summary %>
+      <%= link_to school_alert_path(school, alert.id), class: 'btn btn-default btn-xs text-right pull-right' do %>
+        <button class="btn btn-sm">Find out more</button>
+      <% end %>
+    </h4>
+  </div>
+</div>

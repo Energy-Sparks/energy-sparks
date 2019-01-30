@@ -33,6 +33,8 @@ class Alert < ApplicationRecord
 
   enum status: [:good, :poor, :not_enough_data, :error]
 
+  scope :latest, -> { order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map(&:first) }
+
   # Data hash may end up being attributes of alert
   # Also uses string keys as serialised as JSON in DB
   def detail

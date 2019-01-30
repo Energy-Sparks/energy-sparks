@@ -23,6 +23,7 @@ class SchoolsController < ApplicationController
     @badges = @school.badges_by_date(limit: 6)
     @electricity_card = MeterCard.create(school: @school, supply: :electricity)
     @gas_card = MeterCard.create(school: @school, supply: :gas)
+    @latest_alerts_sample = @school.alerts.latest.sample
   end
 
   # GET /schools/:id/awards
