@@ -19,7 +19,7 @@ gem 'upsert', '~> 2.2.1'
 gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: 'rails6-beta-1-b'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: 'rails6-beta-1-d'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -89,8 +89,8 @@ gem 'mailgun_rails'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem "bullet" # use bullet to optimise queries
-  gem 'rspec-rails', '3.7.2'
+  #gem "bullet", require: false # use bullet to optimise queries
+  gem 'rspec-rails', '3.8.2'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'
