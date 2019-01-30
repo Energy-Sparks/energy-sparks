@@ -294,24 +294,6 @@ describe School do
     end
   end
 
-  describe '#last_reading_date_for_active_meters_of_this_supply_type' do
-
-    it 'returns the last common date for 1 electricity meters' do
-      common_date = Date.today - 3.days
-      m1 = create(:electricity_meter_with_validated_reading_dates, start_date: common_date - 1.days, end_date: common_date, school: subject)
-      expect(subject.last_common_reading_date_for_active_meters_of_supply(:electricity)).to eq common_date
-    end
-
-    it 'returns the last common date for 3 electricity meters' do
-      common_date = Date.today - 3.days
-      m1 = create(:electricity_meter_with_validated_reading_dates, start_date: common_date - 1.days, end_date: common_date + 1.day, school: subject)
-      m2 = create(:electricity_meter_with_validated_reading_dates, start_date: common_date, end_date: common_date + 2.day, school: subject)
-      m3 = create(:electricity_meter_with_validated_reading_dates, start_date: common_date - 3.days, end_date: common_date, school: subject)
-
-      expect(subject.last_common_reading_date_for_active_meters_of_supply(:electricity)).to eq common_date
-    end
-  end
-
   describe '#has_enough_readings_for_meter_types?' do
     it 'does for electricity' do
       meter = create(:electricity_meter_with_validated_reading, reading_count: 3)
