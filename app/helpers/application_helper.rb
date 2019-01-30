@@ -70,13 +70,15 @@ module ApplicationHelper
   end
 
   def alert_icon(alert)
-    case alert.alert_type.fuel_type
+    fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
+  end
+
+  def fuel_type_icon(fuel_type)
+    case fuel_type
     when :electricity, 'electricity'
       'bolt'
     when :gas, 'gas'
       'fire'
-    else
-      'calendar-check-o'
     end
   end
 
