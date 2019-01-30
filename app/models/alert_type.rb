@@ -4,7 +4,7 @@
 #
 #  analysis     :text
 #  class_name   :text
-#  description  :text
+#  description  :text             not null
 #  frequency    :integer
 #  fuel_type    :integer
 #  id           :bigint(8)        not null, primary key
@@ -25,6 +25,7 @@ class AlertType < ApplicationRecord
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
+  validates_presence_of :description
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?
