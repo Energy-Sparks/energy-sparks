@@ -65,13 +65,13 @@ describe 'Meter', :meters do
 
   describe '#last_validated_reading' do
     it "should find latest reading" do
-      reading = create(:amr_validated_reading)
+      reading = create(:amr_validated_reading, reading_date: Date.parse('2018-12-01'))
       meter = reading.meter
 
       expect(meter.last_validated_reading).to eql(reading.reading_date)
 
-      today = create(:amr_validated_reading, meter: meter, reading_date: Date.today)
-      create(:amr_validated_reading, meter: meter, reading_date: Date.today - 2.days)
+      today = create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-03'))
+      create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-02'))
 
       expect(meter.last_validated_reading).to eql(today.reading_date)
     end
@@ -79,13 +79,13 @@ describe 'Meter', :meters do
 
   describe '#first_validated_reading' do
     it "should find first reading" do
-      reading = create(:amr_validated_reading, reading_date: Date.yesterday)
+      reading = create(:amr_validated_reading, reading_date: Date.parse('2018-12-02'))
       meter = reading.meter
 
       expect(meter.first_validated_reading).to eql(reading.reading_date)
 
-      today = create(:amr_validated_reading, meter: meter, reading_date: Date.today)
-      old_one = create(:amr_validated_reading, meter: meter, reading_date: Date.today - 2.days)
+      today = create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-03'))
+      old_one = create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-01'))
 
       expect(meter.first_validated_reading).to eql(old_one.reading_date)
     end
