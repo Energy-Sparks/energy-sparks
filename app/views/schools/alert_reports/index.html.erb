@@ -4,70 +4,57 @@
     <h1 property="name"><%= link_to @school.name, @school %> Alert notifications</h1>
     <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
     <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
-    <div class="card">
-      <div class="card-body">
-        <%- if can? :manage, AlertSubscription -%>
-          <h5 class="card-title">Alert date picker</h5>
-          <%= form_tag '', method: :get, id: :analysis_date_chooser do |f| %>
-            <p>These dates are your latest reading dates, but you can also choose your own<%= submit_tag 'Refresh alert reports', class: 'btn btn-warning pull-right' %></p>
-            <div class="row">
-              <% if @latest_gas_reading %>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label>Gas</label>
-                    <div class="input-group date" id="gas_date_picker" data-target-input="nearest"
-                         data-latest-reading-date="<%= @latest_gas_reading.strftime("%Y-%m-%d") %>" data-earliest-reading-date="<%= @earliest_gas_reading.strftime("%Y-%m-%d") %>" data-default-date="<%= @gas_alerts_date %>">
-                      <%= text_field_tag("gas_date_picker",
-                            @gas_alerts_date.strftime("%d/%m/%Y"),
-                            class: 'form-control', data: { target: "#gas_date_picker" }) %>
-                      <div class="input-group-append" data-target="#gas_date_picker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-              <% if @latest_electricity_reading %>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label>Electricity</label>
-                    <div class="input-group date" id="electricity_date_picker" data-target-input="nearest"
-                         data-latest-reading-date="<%= @latest_electricity_reading %>" data-earliest-reading-date="<%= @earliest_electricity_reading %>" data-default-date="<%= @electricity_alerts_date %>">
-                      <%= text_field_tag("electricity_date_picker",
-                            @electricity_alerts_date.strftime("%d/%m/%Y"),
-                            class: 'form-control', data: { target: "#electricity_date_picker" }) %>
-                      <div class="input-group-append" data-target="#electricity_date_picker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        <%- else -%>
-          <h5 class="card-title">Latest reading dates</h5>
-          <p class="card-text">Most alerts can only run when Energy Sparks has up to date meter readings for the school, here are your latest reading dates:</p>
-          <% if @latest_gas_reading %>
-            <p>Gas: <%= nice_dates @latest_gas_reading %></p>
-          <% end %>
-          <% if @latest_electricity_reading %>
-            <p>Electricity: <%= nice_dates @latest_electricity_reading %></p>
-          <% end %>
-        <%- end -%>
-      </div>
     </div>
-  </div>
 </div>
 
-<% if @electricity_alerts.empty? %>
-  <h3>We have no electricity alert data for this school on: <%= nice_dates @alert_fuel_dates[:electricity] %></h3>
-<% else %>
-  <%= render 'alerts', alerts: @electricity_alerts, fuel_type: :electricity %>
-<% end %>
-
-<% if @gas_alerts.empty? %>
-  <h3>We have no gas alert data for this school on: <%= nice_dates @alert_fuel_dates[:gas] %></h3>
-<% else %>
-  <%= render 'alerts', alerts: @gas_alerts, fuel_type: :gas %>
-<% end %>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Fuel Type</th>
+      <th>Alert Type</th>
+      <th>Status</th>
+      <th>Rating</th>
+      <th>Run On</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th colspan="6">Termly alerts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @termly_alerts.any? %>
+      <% @termly_alerts.each do |alert| %>
+        <tr scope="row">
+          <td><%= fa_icon alert_icon(alert) %> <%= alert.alert_type.fuel_type.humanize %></td>
+          <td><%= alert.title %></td>
+          <td class="text-white <%= class_for_alert_rating(alert.data['rating']) %>"><%= alert.status %></td>
+          <td><%= alert.rating %></td>
+          <td><%= nice_dates alert.run_on %></td>
+          <td><%= nice_date_times alert.created_at %></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="8">No termly alerts </td>
+      </tr>
+    <% end %>
+    <% if @weekly_alerts.any? %>
+      <% @weekly_alerts.each do |alert| %>
+        <tr scope="row">
+          <td><%= fa_icon alert_icon(alert) %> <%= alert.alert_type.fuel_type.humanize %></td>
+          <td><%= alert.title %></td>
+          <td class="text-white <%= class_for_alert_rating(alert.data['rating']) %>"><%= alert.status %></td>
+          <td><%= alert.rating %></td>
+          <td><%= nice_dates alert.run_on %></td>
+          <td><%= nice_date_times alert.created_at %></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="8">No weekly alerts </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
