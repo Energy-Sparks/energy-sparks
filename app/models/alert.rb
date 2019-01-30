@@ -45,10 +45,6 @@ class Alert < ApplicationRecord
     data['help_url']
   end
 
-  def alert_framework_type
-    data['alert_framework_type']
-  end
-
   def frequency
     alert_type.frequency
   end
