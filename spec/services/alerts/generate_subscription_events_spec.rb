@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe Alerts::GenerateSubscriptionEvents do
 
-  let(:service)             { Alerts::GenerateSubscriptionEvents.new }
+  let(:school)  { create(:school) }
+  let(:service) { Alerts::GenerateSubscriptionEvents.new(school) }
 
   context 'no alerts' do
     it 'does nothing, no events created' do
@@ -13,18 +14,17 @@ describe Alerts::GenerateSubscriptionEvents do
 
   context 'alerts, but no subscriptions' do
     it 'does nothing, no events created' do
-      create(:alert)
+      create(:alert, school: school)
       service.perform
       expect(AlertSubscriptionEvent.count).to be 0
     end
   end
 
   context 'alerts and subscriptions' do
+    let(:alert)               { create(:alert, school: school) }
+    let(:alert_subscription)  { create(:alert_subscription_with_contacts, alert_type: alert.alert_type, school: school) }
 
-    let(:alert)               { create(:alert) }
-    let(:alert_subscription)  { create(:alert_subscription_with_contacts, alert_type: alert.alert_type) }
-
-    pending 'creates events' do
+    it 'creates events' do
       expect { service.perform }.to change { AlertSubscriptionEvent.count }.by(1)
     end
 
@@ -34,5 +34,4 @@ describe Alerts::GenerateSubscriptionEvents do
       expect(AlertSubscriptionEvent.count).to be 1
     end
   end
-
 end
