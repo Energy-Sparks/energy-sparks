@@ -1,17 +1,16 @@
 <% content_for :page_title do %>Alert subscription events for <%= @school.name %><% end %>
 
-<div typeof="School">
-  <div class="row padded-row">
-    <div class="col-md-12">
-      <h1>Alert Subscription Events</h1>
-      <h2><%= link_to @school.name, @school %><h2>
-      <p>These are all the actions taken by Energy Sparks for your alert subscriptions</p>
-      <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
-    </div>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1>Alert Subscription Events</h1>
+    <h2><%= link_to @school.name, @school %><h2>
+    <p>These are all the actions taken by Energy Sparks for your alert subscriptions</p>
+    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
   </div>
 </div>
 
 <div class="row">
+  <% if @alert_subscription_events.any? %>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -38,4 +37,7 @@
       </tbody>
     </table>
   </div>
+  <% else %>
+    <p>There are no alert subscription events</p>
+  <% end %>
 </div>
