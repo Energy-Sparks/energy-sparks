@@ -1,10 +1,13 @@
 module Alerts
   class GenerateEmailNotifications
     def perform
-      AlertSubscriptionEvent.where(status: :pending, communication_type: :email).each do |event|
-        AlertMailer.with(email_address: event.contact.email_address, alerts: [event.alert], school: event.alert_subscription.school).alert_email.deliver_now
-        event.update(status: :sent)
-        # event
+      Contact.all.each do |contact|
+        events = contact.alert_subscription_events.where(status: :pending, communication_type: :email)
+        if events.any?
+          alerts = events.map(&:alert)
+          AlertMailer.with(email_address: contact.email_address, alerts: alerts, school: contact.school).alert_email.deliver_now
+          events.update_all(status: :sent)
+        end
       end
     end
   end
