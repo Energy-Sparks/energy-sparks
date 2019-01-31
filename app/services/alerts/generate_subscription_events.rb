@@ -6,34 +6,32 @@ module Alerts
 
     def perform
       @school.alerts.latest.each do |alert|
-        subscriptions = @school.alert_subscriptions.where(alert_type: alert.alert_type)
-        if subscriptions.any?
-          subscriptions.each do |subscription|
-            subscription.contacts.each do |contact|
-              AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription).first_or_create
-            end
-          end
+        process_alert(alert)
+      end
+    end
+
+  private
+
+    def process_alert(alert)
+      if any_subscriptions?(@school, alert.alert_type)
+        process_subscriptions(alert)
+      end
+    end
+
+    def process_subscriptions(alert)
+      subscriptions(@school, alert.alert_type).each do |subscription|
+        subscription.contacts.each do |contact|
+          AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription).first_or_create!
         end
       end
     end
+
+    def any_subscriptions?(school, alert_type)
+      subscriptions(school, alert_type).any?
+    end
+
+    def subscriptions(school, alert_type)
+      school.alert_subscriptions.where(alert_type: alert_type)
+    end
   end
 end
-
-
-#  alert_type_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
-#  school_id     :bigint(8)
-
-
-
-#
-#  alert_id              :bigint(8)
-#  alert_subscription_id :bigint(8)
-#  contact_id            :bigint(8)
-#  created_at            :datetime         not null
-#  id                    :bigint(8)        not null, primary key
-#  message               :text
-#  status                :integer          default("pending"), not null
-#  updated_at            :datetime         not null
-#
-# Indexes
