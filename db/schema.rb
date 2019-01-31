@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(version: 2019_01_31_105553) do
     t.bigint "alert_id"
     t.bigint "contact_id"
     t.integer "status", default: 0, null: false
+    t.integer "communication_type", default: 0, null: false
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -4,6 +4,7 @@
 #
 #  alert_id              :bigint(8)
 #  alert_subscription_id :bigint(8)
+#  communciation_type    :integer          default(0), not null
 #  contact_id            :bigint(8)
 #  created_at            :datetime         not null
 #  id                    :bigint(8)        not null, primary key
@@ -30,4 +31,5 @@ class AlertSubscriptionEvent < ApplicationRecord
   belongs_to :alert,              inverse_of: :alert_subscription_events
 
   enum status: [:pending, :sent]
+  enum communication_type: [:email, :sms]
 end
