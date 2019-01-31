@@ -1,0 +1,41 @@
+<% content_for :page_title do %>Alert subscription events for <%= @school.name %><% end %>
+
+<div typeof="School">
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1>Alert Subscription Events</h1>
+      <h2><%= link_to @school.name, @school %><h2>
+      <p>These are all the actions taken by Energy Sparks for your alert subscriptions</p>
+      <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Contact</th>
+          <th>Alert Type</th>
+          <th>Created At</th>
+          <th>Status</th>
+          <th>Updated At</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @alert_subscription_events.each do |alert_subscription_event| %>
+          <tr scope="row">
+            <td><%= alert_subscription_event.contact.name %></td>
+            <td><%= alert_subscription_event.alert.title %></td>
+            <td><%= nice_date_times alert_subscription_event.created_at %></td>
+            <td><%= alert_subscription_event.status %></td>
+            <td><%= nice_date_times alert_subscription_event.updated_at %></td>
+            <td><%= alert_subscription_event.message %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
