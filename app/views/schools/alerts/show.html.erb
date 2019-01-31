@@ -30,7 +30,7 @@
         <% end %>
       </div>
       <div class="card-footer text-muted">
-        <p class="card-text">Find out more: <%= link_to @alert.title, @alert.help_url %></p>
+        <p class="card-text">Find out more: <%= link_to @alert.title, @alert.help_url, target: "_blank" %></p>
         <% if @alert.show_ratings? %>
           <p class="card-text"><b>Current rating</b>: <%= @alert.rating %>
         <% end %>
