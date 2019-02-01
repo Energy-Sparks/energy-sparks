@@ -1,5 +1,5 @@
 class Schools::AlertSubscriptionsController < ApplicationController
-  load_and_authorize_resource :school
+  load_and_authorize_resource :school, find_by: :slug
   load_and_authorize_resource through: :school
 
   def index

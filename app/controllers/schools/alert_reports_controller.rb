@@ -1,7 +1,7 @@
 class Schools::AlertReportsController < ApplicationController
   include SchoolAggregation
 
-  load_and_authorize_resource :school
+  load_and_authorize_resource :school, find_by: :slug
 
   def index
     authorize! :read, AlertType

@@ -1,5 +1,5 @@
 class SchoolGroupsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource find_by: :slug
 
   # GET /school_groups
   def index

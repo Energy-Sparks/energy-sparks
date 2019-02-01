@@ -1,5 +1,5 @@
 class Schools::ContactsController < ApplicationController
-  load_and_authorize_resource :school
+  load_and_authorize_resource :school, find_by: :slug
   load_and_authorize_resource :contact, through: :school
 
   def index

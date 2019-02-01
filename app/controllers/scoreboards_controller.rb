@@ -1,5 +1,5 @@
 class ScoreboardsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource find_by: :slug
   skip_before_action :authenticate_user!, only: [:show]
   before_action :award_player_badge, only: [:show]
 
