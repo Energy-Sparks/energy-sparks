@@ -11,7 +11,8 @@ module Alerts
 
     def analyse
       begin
-        analysis_report = alert_instance.new(@aggregate_school).analyse(@analysis_date)
+        analysis_class = alert_instance.new(@aggregate_school)
+        analysis_report = analysis_class.analyse(@analysis_date).analysis_report
       rescue NoMethodError
         analysis_report = AlertReport.new(@alert_type)
         analysis_report.summary = "There was a problem running the #{@alert_type.title} alert. This is likely due to missing data."
