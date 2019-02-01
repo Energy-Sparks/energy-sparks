@@ -13,6 +13,18 @@ FactoryBot.define do
       name { "test school"}
     end
 
+    trait :with_school_group do
+      after(:create) do |school, evaluator|
+        school.update(school_group: create(:school_group))
+      end
+    end
+
+    trait :with_calendar do
+      after(:create) do |school, evaluator|
+        school.update(calendar: create(:calendar))
+      end
+    end
+
     trait :with_badges do
       transient do
         badges_sashes 1
