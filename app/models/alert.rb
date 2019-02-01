@@ -33,7 +33,7 @@ class Alert < ApplicationRecord
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
 
-  enum status: [:good, :poor, :not_enough_data, :error]
+  enum status: [:good, :poor, :not_enough_data, :failed]
 
   scope :latest, -> { order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map(&:first) }
 

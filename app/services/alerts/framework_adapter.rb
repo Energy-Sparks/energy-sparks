@@ -10,15 +10,11 @@ module Alerts
     end
 
     def analyse
-      begin
-        analysis_class = alert_instance.new(@aggregate_school)
-        analysis_report = analysis_class.analyse(@analysis_date).analysis_report
-      rescue NoMethodError
-        analysis_report = AlertReport.new(@alert_type)
-        analysis_report.summary = "There was a problem running the #{@alert_type.title} alert. This is likely due to missing data."
-        analysis_report.rating = nil
-        Rails.logger.error("There was a problem running #{@alert_type.title} for #{@analysis_date} and #{@school.name}")
-      end
+      analysis_obj = alert_instance.new(@aggregate_school)
+      analysis_obj.analyse(@analysis_date)
+
+      analysis_report = analysis_obj.analysis_report
+      analysis_report.summary = "There was a problem running the #{@alert_type.title} alert. This is likely due to missing data." if analysis_report.summary.nil?
       build_alert(analysis_report)
     end
 
