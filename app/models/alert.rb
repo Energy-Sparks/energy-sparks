@@ -32,6 +32,7 @@ class Alert < ApplicationRecord
   scope :termly,              -> { joins(:alert_type).merge(AlertType.termly) }
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
+  scope :usable,              -> { where(status: [:good, :poor])}
 
   enum status: [:good, :poor, :not_enough_data, :failed]
 

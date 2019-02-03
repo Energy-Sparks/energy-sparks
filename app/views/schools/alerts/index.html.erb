@@ -8,23 +8,23 @@
   </div>
 </div>
 
-<% if @holiday_alerts.empty? %>
-  <h3>We have no before holiday alert data for this school</h3>
+<% if @weekly_alerts.empty? %>
+  <h3>We have no weekly alerts for this school</h3>
 <% else %>
-  <h3>Before holiday Alerts</h3>
-  <%= render 'alerts', alerts: @holiday_alerts %>
+  <h3>Weekly Alerts</h3>
+  <%= render 'alerts', alerts: @weekly_alerts %>
 <% end %>
 
 <% if @termly_alerts.empty? %>
-  <h3>We have no termly alert data for this school</h3>
+  <h3>We have no termly alerts for this school</h3>
 <% else %>
   <h3>Termly Alerts</h3>
   <%= render 'alerts', alerts: @termly_alerts %>
 <% end %>
 
-<% if @weekly_alerts.empty? %>
-  <h3>We have no weekly alert data for this school</h3>
+<% if @holiday_alerts.empty? %>
+  <h3>We have no holiday alerts for this school</h3>
 <% else %>
-  <h3>Weekly Alerts</h3>
-  <%= render 'alerts', alerts: @weekly_alerts %>
+  <h3>Before holiday Alerts</h3>
+  <%= render 'alerts', alerts: @holiday_alerts %>
 <% end %>
