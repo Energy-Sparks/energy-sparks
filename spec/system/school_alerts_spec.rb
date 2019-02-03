@@ -53,8 +53,8 @@ RSpec.describe "school alerts", type: :system do
       sign_in(user)
       visit root_path
       click_on("Alerts")
-      expect(page.has_content?("We have no termly alert data for this school")).to be true
-      expect(page.has_content?("We have no weekly alert data for this school")).to be true
+      expect(page.has_content?("We have no termly alerts for this school")).to be true
+      expect(page.has_content?("We have no weekly alerts for this school")).to be true
     end
   end
 end
