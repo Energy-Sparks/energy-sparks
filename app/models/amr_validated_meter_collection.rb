@@ -31,9 +31,9 @@ class AmrValidatedMeterCollection < AmrMeterCollection
   def analysis_date(fuel_type)
     fuel_type = fuel_type.to_sym
     if fuel_type == :gas
-      heat_meters.first.amr_data.keys.last
+      aggregated_heat_meters.amr_data.keys.last
     elsif fuel_type == :electricity
-      electricity_meters.first.amr_data.keys.last
+      aggregated_electricity_meters.amr_data.keys.last
     else
       Time.zone.today
     end
