@@ -2,11 +2,11 @@ require 'dashboard'
 
 module Alerts
   class FrameworkAdapter
-    def initialize(alert_type, school, analysis_date, aggregate_school = AggregateSchoolService.new(school).aggregate_school)
+    def initialize(alert_type, school, analysis_date = nil, aggregate_school = AggregateSchoolService.new(school).aggregate_school)
       @alert_type = alert_type
       @school = school
       @aggregate_school = aggregate_school
-      @analysis_date = analysis_date
+      @analysis_date = analysis_date || calculate_analysis_date
     end
 
     def analyse
@@ -19,6 +19,10 @@ module Alerts
     end
 
   private
+
+    def calculate_analysis_date
+      @aggregate_school.analysis_date(@alert_type.fuel_type)
+    end
 
     def alert_instance
       @alert_type.class_name.constantize

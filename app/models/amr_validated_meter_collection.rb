@@ -27,4 +27,15 @@ class AmrValidatedMeterCollection < AmrMeterCollection
       add_amr_data(dashboard_meter, active_record_meter)
     end
   end
+
+  def analysis_date(fuel_type)
+    fuel_type = fuel_type.to_sym
+    if fuel_type == :gas
+      heat_meters.first.amr_data.keys.last
+    elsif fuel_type == :electricity
+      electricity_meters.first.amr_data.keys.last
+    else
+      Time.zone.today
+    end
+  end
 end
