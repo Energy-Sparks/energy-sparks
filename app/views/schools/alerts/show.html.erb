@@ -2,11 +2,11 @@
 <div class="row padded-row">
   <div class="col-md-12">
     <h1 property="name"><%= link_to @school.name, @school %></h1>
-    <p><%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-primary' %>
+    <p>
+      <%= link_to 'Latest Alerts', school_alerts_path(@school), class: 'btn btn-primary' %>
+      <%= link_to 'School page', school_path(@school), class: 'btn btn-primary' %>
+    </p>
   </div>
-</div>
-
-<div class="row padded-row">
   <div class="col-md-12">
     <div class="card mb-3">
       <div class="card-header text-white <%= class_for_alert_rating(@alert.data['rating']) %>">
@@ -31,9 +31,6 @@
       </div>
       <div class="card-footer text-muted">
         <p class="card-text">Find out more: <%= link_to @alert.title, @alert.help_url, target: "_blank" %></p>
-        <% if @alert.show_ratings? %>
-          <p class="card-text"><b>Current rating</b>: <%= @alert.rating %>
-        <% end %>
         <p class="card-text"><b>Frequency</b>: <%= @alert.frequency.humanize %></p>
         <p class="card-text"><b>Run on date</b>: <%= nice_dates @alert.run_on %></p>
       </div>

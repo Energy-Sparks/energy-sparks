@@ -17,7 +17,18 @@ class AmrMeterCollection < MeterCollection
     holidays
     temperatures
 
+    @opening_times_hash = set_up_opening_time_array(active_record_school).to_h
+
     pp "Running in Rails environment version: #{Dashboard::VERSION}"
+  end
+
+  def is_school_usually_open?(date, time_of_day)
+    day_of_week_string = date.strftime("%A").downcase
+    return false unless @opening_times_hash.key?(day_of_week_string)
+    opening_time_of_day = @opening_times_hash[day_of_week_string][:opening_time]
+    closing_time_of_day = @opening_times_hash[day_of_week_string][:closing_time]
+
+    time_of_day >= opening_time_of_day && time_of_day < closing_time_of_day
   end
 
   def holidays
@@ -36,13 +47,28 @@ class AmrMeterCollection < MeterCollection
     @schedule_data_manager_service.solar_pv
   end
 
-  # This isn't implemented yet properly, see school
-  # TODO - should be @school.is_open?(time)
   def is_open?(time)
+    ActiveSupport::Deprecation.warn('is_open? is deprecated, please replace with is_school_usually_open?(date, time_of_day)')
     school_day_in_hours(time)
   end
 
 private
+
+  def set_up_opening_time_array(active_record_school)
+    opening_times_array = active_record_school.school_times.pluck(:day, :opening_time, :closing_time)
+    opening_times_array.map do |opening_time|
+      [opening_time[0], {
+        opening_time: convert_to_time_of_day(opening_time[1]),
+        closing_time: convert_to_time_of_day(opening_time[2])
+      }]
+    end
+  end
+
+  def convert_to_time_of_day(hours_minutes_as_integer)
+    minutes = hours_minutes_as_integer % 100
+    hours = hours_minutes_as_integer.div 100
+    TimeOfDay.new(hours, minutes)
+  end
 
   def set_up_meter_collection_attributes(active_record_school)
     @name = active_record_school.name
