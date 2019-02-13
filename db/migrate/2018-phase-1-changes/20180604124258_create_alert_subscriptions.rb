@@ -1,4 +1,4 @@
-class CreateAlerts < ActiveRecord::Migration[5.2]
+class CreateAlertSubscriptions < ActiveRecord::Migration[5.2]
   def change
     create_table :alerts do |t|
       t.references  :alert_type, foreign_key: true

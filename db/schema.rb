@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_25_164854) do
+ActiveRecord::Schema.define(version: 2019_01_30_151253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -130,9 +130,23 @@ ActiveRecord::Schema.define(version: 2019_01_25_164854) do
     t.integer "sub_category"
     t.integer "frequency"
     t.text "title"
-    t.text "description"
+    t.text "description", null: false
     t.text "analysis"
     t.text "class_name"
+    t.boolean "show_ratings", default: true
+  end
+
+  create_table "alerts", force: :cascade do |t|
+    t.bigint "school_id"
+    t.bigint "alert_type_id"
+    t.date "run_on"
+    t.integer "status"
+    t.text "summary"
+    t.json "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
+    t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|

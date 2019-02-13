@@ -4,109 +4,26 @@
     <h1 property="name"><%= link_to @school.name, @school %> Alert notifications</h1>
     <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
     <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
-    <div class="card">
-      <div class="card-body">
-        <%- if can? :manage, AlertSubscription -%>
-          <h5 class="card-title">Alert date picker</h5>
-          <%= form_tag '', method: :get, id: :analysis_date_chooser do |f| %>
-            <p>These dates are your latest reading dates, but you can also choose your own<%= submit_tag 'Refresh alert reports', class: 'btn btn-warning pull-right' %></p>
-            <div class="row">
-              <% if @latest_gas_reading %>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label>Gas</label>
-                    <div class="input-group date" id="gas_date_picker" data-target-input="nearest"
-                         data-latest-reading-date="<%= @latest_gas_reading.strftime("%Y-%m-%d") %>" data-earliest-reading-date="<%= @earliest_gas_reading.strftime("%Y-%m-%d") %>" data-default-date="<%= @gas_alerts_date %>">
-                      <%= text_field_tag("gas_date_picker",
-                            @gas_alerts_date.strftime("%d/%m/%Y"),
-                            class: 'form-control', data: { target: "#gas_date_picker" }) %>
-                      <div class="input-group-append" data-target="#gas_date_picker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-              <% if @latest_electricity_reading %>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label>Electricity</label>
-                    <div class="input-group date" id="electricity_date_picker" data-target-input="nearest"
-                         data-latest-reading-date="<%= @latest_electricity_reading %>" data-earliest-reading-date="<%= @earliest_electricity_reading %>" data-default-date="<%= @electricity_alerts_date %>">
-                      <%= text_field_tag("electricity_date_picker",
-                            @electricity_alerts_date.strftime("%d/%m/%Y"),
-                            class: 'form-control', data: { target: "#electricity_date_picker" }) %>
-                      <div class="input-group-append" data-target="#electricity_date_picker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        <%- else -%>
-          <h5 class="card-title">Latest reading dates</h5>
-          <p class="card-text">Most alerts can only run when Energy Sparks has up to date meter readings for the school, here are your latest reading dates:</p>
-          <% if @latest_gas_reading %>
-            <p>Gas: <%= nice_dates @latest_gas_reading %></p>
-          <% end %>
-          <% if @latest_electricity_reading %>
-            <p>Electricity: <%= nice_dates @latest_electricity_reading %></p>
-          <% end %>
-        <%- end -%>
-      </div>
     </div>
-  </div>
 </div>
 
-<% @results.group_by { |b| b[:fuel_type]}.each do |fuel_type, alert_types| %>
-  <div class="row padded-row">
-    <div class="col-md-12">
-      <h3><%= fuel_type.nil? ? 'Holiday alerts: for today' : "#{fuel_type.capitalize}: for #{nice_dates @alert_fuel_dates[fuel_type]}" %></h3>
-      <% alert_types.sort_by { |alert_type| alert_type[:report].rating.nil? ? 99 : alert_type[:report].rating }.each do |alert_type| %>
-        <div class="card mb-3">
-          <div class="card-header text-white <%= class_for_alert_rating(alert_type[:report].rating) %>">
-            <h4><%= alert_type[:report].summary %>
-            <% unless alert_type[:report].rating.nil? %>
-              <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right pull-right" href="#<%= alert_type[:title].parameterize %>" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
-                <button class="btn btn-sm">
-                <span class="if-collapsed">More details</span>
-                <span class="if-not-collapsed">Less details</span>
-                </button>
-              </a>
-            <% end %>
-            </h4>
-          </div>
+<% if @holiday_alerts.any? %>
+  <h2>Holiday Alerts</h2>
+  <%= render 'table', alerts: @holiday_alerts, school: @school %>
+<% else %>
+  <p>No before holiday alerts</p>
+<% end %>
 
-          <div class='collapse' id="<%= alert_type[:title].parameterize %>">
-            <div class="card-body">
-              <h5><%= alert_type[:title] %></h5>
-              <p class="card-text">This alert <%= alert_type[:description].downcase %></p>
-              <% alert_type[:report].detail.each do |detail| %>
-                <% if detail.type == :chart %>
-                  <div id="alert-chart-data-<%= alert_type[:report].type %>" data-chart-title='<%= detail.content[:title] %>' data-chart-type='<%= alert_type[:report].type %>' class="hide">
-                    <%= sort_out_data_for_alerts_chart(detail.content).html_safe %>
-                  </div>
+<% if @weekly_alerts.any? %>
+  <h2>Weekly Alerts</h2>
+  <%= render 'table', alerts: @weekly_alerts, school: @school %>
+<% else %>
+  <p>No weekly alerts</p>
+<% end %>
 
-                  <div id="alert-chart-wrapper-<%= alert_type[:report].type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert_type[:report].type %>'></div>
-                <% elsif detail.type == :html %>
-                  <%= detail.content.html_safe %>
-                <% else %>
-                  <p><%= detail.content.html_safe %></p>
-                <% end %>
-              <% end %>
-            </div>
-            <div class="card-footer text-muted">
-                <p class="card-text">Find out more: <%= link_to alert_type[:title], alert_type[:report].help_url %></p>
-                <% unless fuel_type.nil? || alert_type[:title] == 'Turn heating on/off' %>
-                  <p class="card-text"><b>Current rating</b>: <%= alert_type[:report].rating.nil? ? 'Unrated' : "#{alert_type[:report].rating.round(0)}/10" %>
-                <% end %>
-                <p class="card-text"><b>Frequency</b>: <%= alert_type[:frequency].humanize %></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
+<% if @termly_alerts.any? %>
+  <h2>Termly Alerts</h2>
+  <%= render 'table', alerts: @termly_alerts, school: @school %>
+<% else %>
+  <p>No termly alerts</p>
 <% end %>
