@@ -21,13 +21,18 @@ module Alerts
     def process_subscriptions(alert)
       subscriptions(@school, alert.alert_type).each do |subscription|
         subscription.contacts.each do |contact|
-          if contact.email_address?
-            AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'email').first_or_create!
-          end
-          if contact.mobile_phone_number?
-            AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'sms').first_or_create!
-          end
+          first_or_create_alert_subscription_event(alert, contact, subscription)
         end
+      end
+    end
+
+    def first_or_create_alert_subscription_event(alert, contact, subscription)
+      if contact.email_address?
+        AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'email').first_or_create!
+      end
+
+      if contact.mobile_phone_number?
+        AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'sms').first_or_create!
       end
     end
 
