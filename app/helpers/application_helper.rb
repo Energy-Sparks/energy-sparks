@@ -69,6 +69,19 @@ module ApplicationHelper
     end
   end
 
+  def alert_icon(alert)
+    fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
+  end
+
+  def fuel_type_icon(fuel_type)
+    case fuel_type
+    when :electricity, 'electricity'
+      'bolt'
+    when :gas, 'gas'
+      'fire'
+    end
+  end
+
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)
@@ -112,6 +125,7 @@ module ApplicationHelper
   # TODO sort this out, hacky yuck
   def sort_out_data_for_alerts_chart(content)
     data_string = ''
+    content = HashWithIndifferentAccess.new(content)
     content[:x_data].map.each_with_index do |(k, v), index|
       data_string = data_string + ',' unless index == 0
       data_string = data_string + '{ "name": "' +  k + '", "y": ' + v[0].to_s + ' } '

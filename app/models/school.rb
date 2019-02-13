@@ -60,7 +60,10 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :school_times,         inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
+
   has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
+  has_many :alerts,               inverse_of: :school, dependent: :destroy
+
   has_many :simulations,          inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
@@ -141,14 +144,6 @@ class School < ApplicationRecord
 
   def has_enough_readings_for_meter_types?(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
     meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
-  end
-
-  def last_common_reading_date_for_active_meters_of_supply(supply)
-    array_of_array_of_meter_reading_dates = active_meters.where(meter_type: supply).map do |m|
-      m.amr_validated_readings.pluck(:reading_date)
-    end
-    # Intersect using & the arrays and get the max
-    array_of_array_of_meter_reading_dates.inject(:&).max
   end
 
   def fuel_types
