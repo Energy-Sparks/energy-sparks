@@ -70,11 +70,6 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
       <%= render partial: 'schools/activity_cards' %>
       <% if @school.meters?(:electricity) %>
         <%= render 'schools/meter_cards', card: @electricity_card, school: @school %>
