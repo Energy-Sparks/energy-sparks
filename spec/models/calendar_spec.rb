@@ -40,8 +40,12 @@ describe Calendar do
     it 'knows there is a holiday approaching' do
       holiday_start_date = Date.parse(autumn_terms[0][:end_date]) + 1.day
 
-      Timecop.freeze(holiday_start_date - 1.week) do
+      Timecop.freeze(holiday_start_date - 2.weeks) do
         expect(calendar.holiday_approaching?).to be false
+      end
+
+      Timecop.freeze(holiday_start_date - 1.week) do
+        expect(calendar.holiday_approaching?).to be true
       end
 
       Timecop.freeze(holiday_start_date - 3.days) do
@@ -49,7 +53,7 @@ describe Calendar do
       end
 
       Timecop.freeze(holiday_start_date - 2.days) do
-        expect(calendar.holiday_approaching?).to be false
+        expect(calendar.holiday_approaching?).to be true
       end
     end
   end

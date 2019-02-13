@@ -1,56 +1,60 @@
 require 'rails_helper'
 
 RSpec.describe "school alerts", type: :system do
+  let!(:school) { create(:school) }
+  let!(:user)  { create(:user, school: school, role: :school_user)}
+  let(:description) { 'all about this alert type' }
+  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, description: description) }
+  let(:gas_date) { Date.parse('2019-01-01') }
 
-  let(:alerts_button) { 'Manage alert subscriptions' }
-  let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school)     { create(:school, name: school_name)}
-  let!(:admin)      { create(:user, role: 'admin')}
+  before(:each) do
+    sign_in(user)
+    visit root_path
+  end
 
-  describe 'when logged in' do
-    before(:each) do
-      sign_in(admin)
+  context 'with generated alert' do
+    it 'should show alert' do
+      alert_summary = 'Summary of the alert'
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, summary: alert_summary)
+      click_on("Alerts")
+
+      expect(Alert.first.title).to eq gas_fuel_alert_type.title
+      expect(page.has_content?(alert_summary)).to be true
+    end
+
+    it 'should show only the latest alert' do
+      poor_alert_summary = 'POOR'
+      good_alert_summary = 'GOOD'
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :poor, summary: poor_alert_summary, created_at: DateTime.parse('2019-01-02'))
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, summary: good_alert_summary, created_at: DateTime.parse('2019-01-02') + 10.minutes)
+
+      click_on("Alerts")
+
+      expect(page.has_content?(good_alert_summary)).to be true
+      expect(page.has_content?(poor_alert_summary)).to_not be true
+    end
+
+    it 'can show a single alert' do
+      alert_summary = 'Summary of the alert'
+      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
+
+      click_on("Alerts")
+      expect(page.has_content?(description)).to_not be true
+
+      click_on("Find out more")
+
+      expect(page.has_content?(description)).to be true
+      expect(page.has_content?(alert_summary)).to be true
+    end
+  end
+
+  context 'with no generated reports' do
+    it 'should show reports' do
+      sign_in(user)
       visit root_path
-      expect(page).to have_content  'Sign Out'
-      click_on('Schools')
-      expect(page).to have_content  "Participating Schools"
-    end
-
-    describe 'shows alerts' do
-
-      let!(:alert_subscription) { create(:alert_subscription, school: school) }
-      it 'shows me a page with all possible alerts' do
-        expect(alert_subscription.alert_type.fuel_type).to be_in AlertType.fuel_types.keys
-        expect(alert_subscription.alert_type.sub_category).to be_in AlertType.sub_categories.keys
-        expect(alert_subscription.school).to eq school
-        click_on(school_name)
-        expect(page).to have_content alerts_button
-        click_on alerts_button
-        expect(page).to have_content alert_subscription.alert_type.title
-        expect(page).to have_content 'No one allocated'
-      end
-
-      it 'shows me a page with an allocated contact' do
-        contact = create(:contact_with_name_email)
-        alert_subscription.contacts << contact
-        click_on(school_name)
-        expect(page).to have_content alerts_button
-        click_on alerts_button
-        expect(page).to have_content alert_subscription.alert_type.title
-        expect(page).to have_content contact.name
-      end
-    end
-
-    describe 'existing contacts' do
-      let!(:contact) { create(:contact_with_name_email, school: school) }
-      let!(:alert_subscription) { create(:alert_subscription, school: school, contacts: [contact]) }
-
-      it 'shows me the contacts on the page' do
-        click_on(school_name)
-        expect(page).to have_content alerts_button
-        click_on alerts_button
-        expect(page).to have_content contact.name
-      end
+      click_on("Alerts")
+      expect(page.has_content?("We have no termly alerts for this school")).to be true
+      expect(page.has_content?("We have no weekly alerts for this school")).to be true
     end
   end
 end
