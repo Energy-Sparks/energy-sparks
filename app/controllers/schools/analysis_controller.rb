@@ -44,11 +44,6 @@ class Schools::AnalysisController < ApplicationController
 
 private
 
-  def set_measurement_options
-    @measurement_options = MEASUREMENT_OPTIONS
-    @default_measurement = :kwh
-  end
-
   def set_nav
     @dashboard_set = @school.fuel_types_for_analysis
     pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
