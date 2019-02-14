@@ -38,17 +38,6 @@ GIT
       rubyvis (~> 0.6.1)
       spreadsheet (~> 1.1)
 
-GIT
-  remote: https://github.com/randym/axlsx.git
-  revision: c8ac844572b25fda358cc01d2104720c4c42f450
-  ref: c8ac844
-  specs:
-    axlsx (2.1.0.pre)
-      htmlentities (~> 4.3.4)
-      mimemagic (~> 0.3)
-      nokogiri (>= 1.6.6)
-      rubyzip (>= 1.2.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -128,9 +117,6 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
-    axlsx_rails (0.5.2)
-      actionpack (>= 3.1)
-      axlsx (>= 2.0.1)
     backports (3.11.4)
     bcrypt (3.1.12)
     better_errors (2.4.0)
@@ -583,8 +569,6 @@ DEPENDENCIES
   annotate
   auto_strip_attributes (~> 2.5)
   aws-sdk-s3
-  axlsx!
-  axlsx_rails
   better_errors
   binding_of_caller
   bootsnap
@@ -636,7 +620,6 @@ DEPENDENCIES
   rollbar
   rspec-rails (= 3.7.2)
   ruby-sun-times
-  rubyzip (= 1.2.2)
   sass-rails
   selenium-webdriver
   simple_form

@@ -25,16 +25,6 @@ class ReportsController < AdminController
     end
   end
 
-  def data_feed_show
-    feed_id = params[:id]
-    @feed_type = params[:feed_type].to_sym
-
-    @data_feed = DataFeed.find(feed_id)
-    @first_read = @data_feed.first_reading(@feed_type)
-    @reading_summary = get_data_feed_readings(@data_feed, @feed_type)
-    @missing_array = get_missing_array(@first_read, @reading_summary)
-  end
-
   def loading
     @schools = School.active.order(:name)
   end
@@ -48,22 +38,5 @@ class ReportsController < AdminController
       minutes_left = ((Time.at(expiry_time).utc - Time.now.utc) / 1.minute).round
       { key: key, created_at: Time.at(created_at).utc, expiry_time: Time.at(expiry_time).utc, minutes_left: minutes_left }
     end
-  end
-
-  def get_data_feed_readings(data_feed, feed_type)
-    data_feed.data_feed_readings.where(feed_type: feed_type).order(Arel.sql('at::date')).group('at::date').count
-  end
-
-  def get_missing_array(first_reading, reading_summary)
-    missing_array = (first_reading.at.to_date..Time.zone.today).collect do |day|
-      if ! reading_summary.key?(day)
-        [day, 'No readings']
-      elsif reading_summary.key?(day) && reading_summary[day] < 48
-        [day, 'Partial readings']
-      elsif reading_summary.key?(day) && reading_summary[day] > 48
-        [day, 'Too many readings!']
-      end
-    end
-    missing_array.reject!(&:blank?)
   end
 end
