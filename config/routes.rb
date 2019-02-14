@@ -66,7 +66,7 @@ Rails.application.routes.draw do
       resources :alerts#, only: [:show, :index]
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
-      get :chart, to: 'charts#show', defaults: { format: :json }
+      get :chart, to: 'charts#show'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
       get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
