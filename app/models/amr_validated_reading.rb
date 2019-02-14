@@ -23,4 +23,13 @@
 
 class AmrValidatedReading < ApplicationRecord
   belongs_to :meter, inverse_of: :amr_validated_readings
+
+  def self.download_query(meter_id)
+    <<~QUERY
+      SELECT reading_date, one_day_kwh, status, substitute_date, kwh_data_x48
+      FROM amr_validated_readings
+      WHERE meter_id = #{meter_id}
+      ORDER BY reading_date ASC
+    QUERY
+  end
 end
