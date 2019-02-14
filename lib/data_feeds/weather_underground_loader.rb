@@ -20,9 +20,6 @@ module DataFeeds
           pp "Running for #{area[:name]}"
           temperatures, solar_irradiation = process_area(area)
 
-          WeatherUndergroundCsvWriter.new(area[:temperature_csv_file_name], temperatures, @csv_format).write_csv
-          WeatherUndergroundCsvWriter.new(area[:solar_csv_file_name], solar_irradiation, @csv_format).write_csv
-
           temperatures.each do |datetime, value|
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature)
           end
@@ -30,11 +27,6 @@ module DataFeeds
           solar_irradiation.each do |datetime, value|
             DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation)
           end
-
-          # temperature_readings = data_feed.readings(:temperature, @start_date, @end_date)
-          # File.open("from-db-#{area[:temperature_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(temperature_readings)) }
-          # solar_irradiation_readings = data_feed.readings(:solar_irradiation, @start_date, @end_date)
-          # File.open("from-db-#{area[:solar_csv_file_name]}", 'w') { |file| file.write(data_feed.to_csv(solar_irradiation_readings)) }
         end
       end
     end
