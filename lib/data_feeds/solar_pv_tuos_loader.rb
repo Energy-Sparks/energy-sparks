@@ -240,43 +240,6 @@ module DataFeeds
       averaged_pv_yields # {datetime} = yield
     end
 
-    # USED BY OLD WRITE CSV
-    # def unique_list_of_dates_from_datetimes(datetimes)
-    #   dates = {}
-    #   datetimes.each do |datetime|
-    #     dates[datetime.to_date] = true
-    #   end
-    #   dates.keys
-    # end
-
-    # def write_csv(file, filename, data, orientation)
-    #   # implemented using file operations as roo & write_xlsx don't seem to support writing csv and spreadsheet/csv have BOM issues on Ruby 2.5
-    #   puts "Writing csv file #{filename}: #{data.length} items in format #{orientation}"
-    #   if orientation == :landscape
-    #     dates = unique_list_of_dates_from_datetimes(data.keys)
-    #     dates.each do |date|
-    #       line = date.strftime('%Y-%m-%d') << ','
-    #       (0..47).each do |half_hour_index|
-    #         datetime = DateTime.new(date.year, date.month, date.day, (half_hour_index / 2).to_i, half_hour_index.even? ? 0 : 30, 0)
-    #         if  data.key?(datetime)
-    #           if data[datetime].nil?
-    #             line << ','
-    #           else
-    #             line << data[datetime].to_s << ','
-    #           end
-    #         end
-    #       end
-    #       file.puts(line)
-    #     end
-    #   else
-    #     # this bit is untested, so probably needs some work! PH 12 May 2018
-    #     data.each do |datetime, value|
-    #       line << datetime.strftime('%Y-%m-%d %H:%M:%S') << ',' << value.to_s << '\n'
-    #       file.puts(line)
-    #     end
-    #   end
-    # end
-
     def split_time_period_into_chunks
       chunk = 20 # days
       dates = []
@@ -298,7 +261,6 @@ module DataFeeds
       regional_data = download_data_for_area(latitude, longitude, start_date, end_date, config_data[:proxies])
       pv_data = process_regional_data(regional_data, start_date, end_date, latitude, longitude)
 
-      WeatherUndergroundCsvWriter.new(filename, pv_data, @csv_format).write_csv
       pv_data.each do |datetime, value|
         DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv) unless datetime.future?
       end
@@ -306,46 +268,5 @@ module DataFeeds
       pv_readings = data_feed.readings(:solar_pv, @start_date, @end_date)
       File.open("from-db-#{filename}", 'w') {|file| file.write(data_feed.to_csv(pv_readings))}
     end
-
-    # def process_30_minute_steps(averaged_pv_yields, distances, dt_30mins, regional_data)
-    #   pv_values_for_30mins = []
-    #   names = regional_data.keys
-
-    #   # get data for a given 30 minute period for all 'regions'
-    #   regional_data.values.each do |region_data|
-    #     # puts "Looking for data for #{dt_30mins}"
-    #     get_pv_values_for_30_mins(dt_30mins, pv_values_for_30mins, region_data)
-    #   end
-
-    #   # processing this data, try to discard data, then return a weighted average
-    #   median_pv = median(pv_values_for_30mins) # use median as best value for checking bad data against
-    #   yield_diff_criteria = 0.2
-
-    #   loop_count = 0
-    #   pv_yield_sum = 0.0
-    #   distance_sum = 0.0
-    #   pv_values_for_30mins.each do |pv_yield|
-    #     if pv_yield.nil?
-    #       puts "Warning no PV yield data for #{dt_30mins}"
-    #       loop_count += 1
-    #       next
-    #     end
-    #     if pv_yield > median_pv + yield_diff_criteria || pv_yield < median_pv - yield_diff_criteria
-    #       puts "Rejecting sample for #{names[loop_count]} on #{dt_30mins} value #{pv_yield}"
-    #     else
-    #       pv_yield_sum += pv_yield * distances[loop_count]
-    #       distance_sum += distances[loop_count]
-    #     end
-    #     loop_count += 1
-    #   end
-    #   weighted_pv_yield = pv_yield_sum / distance_sum
-    #   averaged_pv_yields[dt_30mins] = weighted_pv_yield
-    # end
-
-    # def get_pv_values_for_30_mins(dt_30mins, pv_values_for_30mins, region_data)
-    #   pv_data = region_data[:data]
-    #   pv_yield = pv_data[dt_30mins]
-    #   pv_values_for_30mins.push(pv_yield)
-    # end
   end
 end

@@ -27,4 +27,14 @@ class DataFeedReading < ApplicationRecord
   belongs_to :data_feed
 
   enum feed_type: [:solar_irradiation, :temperature, :solar_pv]
+
+  def self.download_query(data_feed_id, feed_type)
+    <<~QUERY
+      SELECT date_trunc('day', at)::timestamp::date AS day, array_agg(value ORDER BY at ASC) AS values
+      FROM data_feed_Readings
+      WHERE data_feed_id = #{data_feed_id}
+      AND feed_type = #{feed_types[feed_type]}
+      GROUP BY date_trunc('day', at)::timestamp::date
+    QUERY
+  end
 end
