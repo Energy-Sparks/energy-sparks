@@ -21,22 +21,22 @@
       </tr>
       <% DataFeeds::WeatherUnderground.all.each do |data_feed| %>
         <tr>
-          <td><%= link_to "#{data_feed.title} - temperature", reports_data_feed_show_path(data_feed, :temperature) %></td>
+          <td><%= link_to "#{data_feed.title} - temperature", data_feed_path(data_feed, :temperature) %></td>
           <td><%= nice_date_times data_feed.last_reading_time %></td>
-          <td><%= link_to "CSV", reports_data_feed_show_path(data_feed, :temperature, format: "csv") %></td>
+          <td><%= link_to "CSV", data_feed_path(data_feed, :temperature, format: "csv") %></td>
 
         </tr>
         <tr>
-          <td><%= link_to "#{data_feed.title} - solar irradiation", reports_data_feed_show_path(data_feed, :solar_irradiation) %></td>
+          <td><%= link_to "#{data_feed.title} - solar irradiation", data_feed_path(data_feed, :solar_irradiation) %></td>
           <td><%= nice_date_times data_feed.last_reading_time %></td>
-          <td><%= link_to "CSV", reports_data_feed_show_path(data_feed, :solar_irradiation, format: "csv") %></td>
+          <td><%= link_to "CSV", data_feed_path(data_feed, :solar_irradiation, format: "csv") %></td>
         </tr>
       <% end %>
       <% DataFeeds::SolarPvTuos.all.each do |data_feed| %>
         <tr>
-          <td><%= link_to  "#{data_feed.title}", reports_data_feed_show_path(data_feed, :solar_pv) %></td>
+          <td><%= link_to  "#{data_feed.title}", data_feed_path(data_feed, :solar_pv) %></td>
           <td><%= nice_date_times data_feed.last_reading_time %></td>
-          <td><%= link_to "CSV", reports_data_feed_show_path(data_feed, :solar_pv, format: "csv") %></td>
+          <td><%= link_to "CSV", data_feed_path(data_feed, :solar_pv, format: "csv") %></td>
         </tr>
       <% end %>
     </tbody>

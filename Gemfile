@@ -47,11 +47,6 @@ gem "font-awesome-rails" # Fonts
 gem 'simple_form'
 # Highcharts now included directly
 
-# Spreadsheet export
-gem 'rubyzip', '1.2.2'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
-gem 'axlsx_rails'
-
 # For bulk record import in CSV etc
 gem 'activerecord-import'
 

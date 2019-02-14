@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
 
-  resources :data_feeds
+  get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 
@@ -98,7 +98,6 @@ Rails.application.routes.draw do
     get 'reports/loading', to: 'reports#loading'
     get 'reports/amr_data_index', to: 'reports#amr_data_index'
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-    get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
     get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
   end
 
