@@ -1,5 +1,7 @@
 module Schools
   class MetersController < ApplicationController
+    include CsvDownloader
+
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
@@ -13,7 +15,7 @@ module Schools
     def show
       @meter = Meter.find(params[:id])
       respond_to do |format|
-        format.csv { send_data amr_validated_meter_readings_to_csv, filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
+        format.csv { send_data readings_to_csv(AmrValidatedReading.download_query(@meter.id), CSV_HEADER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
       end
     end
 
@@ -59,27 +61,6 @@ module Schools
     end
 
   private
-
-    def amr_validated_meter_readings_to_csv
-      sql_query = <<~QUERY
-        SELECT reading_date, one_day_kwh, status, substitute_date, kwh_data_x48
-        FROM amr_validated_readings
-        WHERE meter_id = #{@meter.id}
-        ORDER BY reading_date ASC
-      QUERY
-
-      conn = ActiveRecord::Base.connection.raw_connection
-
-      StringIO.open do |s|
-        s.puts CSV_HEADER
-        conn.copy_data "COPY (#{sql_query}) TO STDOUT WITH CSV;" do
-          while (row = conn.get_copy_data)
-            s.puts row.tr('"', '').tr('{', '').tr('}', '').chomp.to_s
-          end
-        end
-        s.string
-      end
-    end
 
     def load_meters
       @meters ||= @school.meters
