@@ -77,6 +77,7 @@
           <td><%= meter.amr_validated_readings.count %></td>
           <td><%= meter.first_validated_reading %></td>
           <td><%= meter.last_validated_reading %></td>
+          <td><%= link_to "CSV", school_meter_path(@school, meter, format: "csv") if meter.amr_validated_readings.any? %></td>
           <td>
             <div class="btn-group">
               <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
