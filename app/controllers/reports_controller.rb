@@ -6,25 +6,6 @@ class ReportsController < AdminController
   def index
   end
 
-  def amr_data_index
-    @meters = Meter.where(active: true).includes(:school).order('schools.name')
-  end
-
-  def amr_readings_show
-    @amr_types = OneDayAMRReading::AMR_TYPES
-    @colour_hash = COLOUR_ARRAY.each_with_index.map { |colour, index| [@amr_types.keys[index], colour] }.to_h
-    @meter = Meter.includes(:amr_validated_readings).find(params[:meter_id])
-
-    @first_validated_reading_date = @meter.first_validated_reading
-    respond_to do |format|
-      format.json do
-        @reading_summary = @meter.amr_validated_readings.order(:reading_date).pluck(:reading_date, :status).map {|day| { day[0] => day[1] }}
-        @reading_summary = @reading_summary.inject(:merge!)
-      end
-      format.html
-    end
-  end
-
   def loading
     @schools = School.active.order(:name)
   end

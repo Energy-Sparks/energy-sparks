@@ -20,7 +20,7 @@ module Schools
     def show
       @meter = Meter.find(params[:id])
       respond_to do |format|
-        format.csv { send_data readings_to_csv(AmrValidatedReading.download_query(@meter.id), SINGLE_METER_CSV_HEADER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
+        format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter.id), SINGLE_METER_CSV_HEADER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
       end
     end
 
