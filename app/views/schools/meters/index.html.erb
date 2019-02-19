@@ -102,4 +102,5 @@
 
 <div class="other-actions">
   <%= link_to 'School home', school_path(@school), class: 'btn btn-secondary' %>
+  <%= link_to 'Download AMR data for all meters', school_meters_path(@school, format: :csv), class: 'btn btn-secondary' %>
 </div>
