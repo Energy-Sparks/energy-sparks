@@ -95,10 +95,7 @@ Rails.application.routes.draw do
   scope :admin do
     resources :users
     get 'reports', to: 'reports#index'
-    get 'reports/loading', to: 'reports#loading'
-
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-    get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
   end
 
   namespace :reports do
