@@ -1,4 +1,12 @@
 GIT
+  remote: git@github.com:jamesjefferies/friendly_id.git
+  revision: a56eaf2fbb74f9c69c2b065e5367019bb0c94a6c
+  branch: support-for-active-record-6
+  specs:
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
+
+GIT
   remote: https://github.com/CanCanCommunity/cancancan.git
   revision: d70a34c0412b08b139cf351c721c0e1b6f30ff78
   branch: feature/3.0.0
@@ -243,8 +251,6 @@ GEM
     ffi (1.10.0)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
-    friendly_id (5.2.5)
-      activerecord (>= 4.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     govuk-lint (3.10.0)
@@ -609,7 +615,7 @@ DEPENDENCIES
   fakefs
   fasterer
   font-awesome-rails
-  friendly_id
+  friendly_id!
   govuk-lint
   groupdate (= 4.0.1)
   handlebars_assets
