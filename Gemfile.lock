@@ -1,12 +1,4 @@
 GIT
-  remote: git@github.com:jamesjefferies/friendly_id.git
-  revision: a56eaf2fbb74f9c69c2b065e5367019bb0c94a6c
-  branch: support-for-active-record-6
-  specs:
-    friendly_id (5.2.5)
-      activerecord (>= 4.0.0)
-
-GIT
   remote: https://github.com/CanCanCommunity/cancancan.git
   revision: d70a34c0412b08b139cf351c721c0e1b6f30ff78
   branch: feature/3.0.0
@@ -51,6 +43,14 @@ GIT
       rserve-client (~> 0.3)
       rubyvis (~> 0.6.1)
       spreadsheet (~> 1.1)
+
+GIT
+  remote: https://github.com/jamesjefferies/friendly_id.git
+  revision: a56eaf2fbb74f9c69c2b065e5367019bb0c94a6c
+  branch: support-for-active-record-6
+  specs:
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
 
 GEM
   remote: https://rubygems.org/
