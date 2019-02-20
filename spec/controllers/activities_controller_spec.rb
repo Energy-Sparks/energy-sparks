@@ -58,7 +58,7 @@ RSpec.describe ActivitiesController, type: :controller do
       end
     end
 
-    pending "redirects when not authorised" do
+    it "redirects when not authorised" do
       get :new, params: { school_id: school.id }
       expect(response).to have_http_status(:redirect  )
     end
