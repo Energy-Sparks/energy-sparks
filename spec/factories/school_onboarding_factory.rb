@@ -1,13 +1,13 @@
 require 'securerandom'
 FactoryBot.define do
   factory :school_onboarding do
-    uuid { SecureRandom.uuid }
-    sequence(:school_name) { |n| "New School #{n}" }
-    sequence(:contact_email) { |n| "new_school_#{n}@test.com" }
+    uuid                      { SecureRandom.uuid }
+    sequence(:school_name)    { |n| "New School #{n}" }
+    sequence(:contact_email)  { |n| "new_school_#{n}@test.com" }
 
     trait :with_events do
       transient do
-        event_names []
+        event_names { [] }
       end
 
       after(:build) do |onboarding, evaluator|
