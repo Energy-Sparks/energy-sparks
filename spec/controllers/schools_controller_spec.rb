@@ -16,7 +16,7 @@ RSpec.describe SchoolsController, type: :controller do
     let(:school) { FactoryBot.create :school }
 
     context "as a guest user" do
-      pending "is not authorised" do
+      it "is not authorised" do
         get :suggest_activity, params: { id: school.to_param }
         expect(response).to have_http_status(:redirect  )
       end

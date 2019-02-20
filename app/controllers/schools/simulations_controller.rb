@@ -6,7 +6,7 @@ class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
   include NewSimulatorChartConfig
 
-  load_and_authorize_resource :school, find_by: :slug
+  load_and_authorize_resource :school
   load_and_authorize_resource :simulation, through: :school, except: [:new_exemplar, :new_fitted]
 
   def index

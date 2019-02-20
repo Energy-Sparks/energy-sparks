@@ -2,7 +2,7 @@ class SchoolsController < ApplicationController
   include ActivityTypeFilterable
   include Measurements
 
-  load_and_authorize_resource find_by: :slug
+  load_and_authorize_resource
   # load_resource find_by: :slug # will use find_by_permalink!(params[:id])
   # authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]

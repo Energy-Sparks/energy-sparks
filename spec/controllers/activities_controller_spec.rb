@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ActivitiesController, type: :controller, pending: "These tests use the AR id for school, app uses slug" do
+RSpec.describe ActivitiesController, type: :controller do
   let(:school) { create :school }
   let(:different_school) { create :school }
   let!(:activity_category) { create :activity_category }
