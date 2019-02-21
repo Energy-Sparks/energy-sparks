@@ -54,7 +54,7 @@ functions:
     events:
       - s3: ${self:provider.environment.PROCESS_BUCKET}
   uncompress:
-    handler: handler.hello
+    handler: handlers/uncompress_file.DataPipeline::Handlers::UncompressFile.process
     events:
       - s3: ${self:provider.environment.COMPRESSED_BUCKET}
 
