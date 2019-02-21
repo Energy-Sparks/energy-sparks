@@ -2,10 +2,10 @@ FactoryBot.define do
   factory :activity_type do
     activity_category
     sequence(:name) {|n| "test activity_type name #{n}"}
-    score 25
-    active true
-    repeatable true
-    description 'test_activity_type description'
+    score           { 25 }
+    active          { true }
+    repeatable      { true }
+    description     { 'test_activity_type description' }
 
     trait :as_initial_suggestions do
       after(:create) do |activity_type, evaluator|
@@ -15,8 +15,8 @@ FactoryBot.define do
 
     trait :with_further_suggestions do
       transient do
-        number_of_suggestions 1
-        key_stages { [KeyStage.where(name: 'KS1').first_or_create] }
+        number_of_suggestions { 1 }
+        key_stages            { [KeyStage.where(name: 'KS1').first_or_create] }
       end
 
       after(:create) do |original_activity_type, evaluator|

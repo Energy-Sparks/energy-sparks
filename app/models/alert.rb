@@ -38,7 +38,9 @@ class Alert < ApplicationRecord
 
   enum status: [:good, :poor, :not_enough_data, :failed]
 
-  scope :latest, -> { order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map(&:first) }
+  def self.latest
+    select('DISTINCT ON ("alert_type_id") alerts.*').order('alert_type_id', created_at: :desc)
+  end
 
   # Data hash may end up being attributes of alert
   # Also uses string keys as serialised as JSON in DB
