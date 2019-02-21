@@ -3,9 +3,8 @@ FactoryBot.define do
     school
     activity_type
     activity_category
-    title 'test activity title'
-    description 'test activity description'
-    happened_on { Date.today - 1.days }
-
+    title             { 'test activity title' }
+    description       { 'test activity description' }
+    happened_on       { Date.today - 1.days }
   end
 end
