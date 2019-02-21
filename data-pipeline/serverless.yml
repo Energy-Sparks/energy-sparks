@@ -60,7 +60,7 @@ provider:
 
 functions:
   unpack-attachments:
-    handler: handler.hello
+    handler: handlers/unpack_attachments.DataPipeline::Handlers::UnpackAttachments.process
     events:
       - s3: ${self:provider.environment.INBOX_BUCKET}
   process-attachment:
