@@ -7,9 +7,10 @@ custom:
   currentStage: ${opt:stage, 'development'}
   buckets:
     inbox_bucket: data-pipeline-inbox-${self:custom.currentStage}
-    attachment_bucket: data-pipeline-attachments-${self:custom.currentStage}
+    process_bucket: data-pipeline-process-${self:custom.currentStage}
     compressed_bucket: data-pipeline-uncompressed-${self:custom.currentStage}
     amr_data_bucket: data-pipeline-amr-data-${self:custom.currentStage}
+    unprocessable_bucket: data-pipeline-unprocessable-${self:custom.currentStage}
 
 
 provider:
@@ -20,9 +21,10 @@ provider:
   stage: ${opt:stage, 'development'}
   environment:
     INBOX_BUCKET: ${self:custom.buckets.inbox_bucket}
-    ATTACHMENT_BUCKET: ${self:custom.buckets.attachment_bucket}
+    PROCESS_BUCKET: ${self:custom.buckets.process_bucket}
     COMPRESSED_BUCKET: ${self:custom.buckets.compressed_bucket}
     AMR_DATA_BUCKET: ${self:custom.buckets.amr_data_bucket}
+    UNPROCESSABLE_BUCKET: ${self:custom.buckets.unprocessable_bucket}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -30,9 +32,10 @@ provider:
       Resource:
         - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
         - "arn:aws:s3:::${self:custom.buckets.inbox_bucket}/*"
-        - "arn:aws:s3:::${self:custom.buckets.attachment_bucket}/*"
+        - "arn:aws:s3:::${self:custom.buckets.process_bucket}/*"
         - "arn:aws:s3:::${self:custom.buckets.compressed_bucket}/*"
         - "arn:aws:s3:::${self:custom.buckets.amr_data_bucket}/*"
+        - "arn:aws:s3:::${self:custom.buckets.unprocessable_bucket}/*"
 
 package:
   exclude:
@@ -46,10 +49,10 @@ functions:
     handler: handlers/unpack_attachments.DataPipeline::Handlers::UnpackAttachments.process
     events:
       - s3: ${self:provider.environment.INBOX_BUCKET}
-  process-attachment:
-    handler: handler.hello
+  process-file:
+    handler: handlers/process_file.DataPipeline::Handlers::ProccessFile.process
     events:
-      - s3: ${self:provider.environment.ATTACHMENT_BUCKET}
+      - s3: ${self:provider.environment.PROCESS_BUCKET}
   uncompress:
     handler: handler.hello
     events:
@@ -61,3 +64,7 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.AMR_DATA_BUCKET}
+    S3BucketUnprocessable:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.UNPROCESSABLEBUCKET}

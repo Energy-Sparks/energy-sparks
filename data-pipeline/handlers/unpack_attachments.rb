@@ -26,7 +26,7 @@ module DataPipeline
 
         responses = email.attachments.map do |attachment|
           @client.put_object(
-            bucket: @environment['ATTACHMENT_BUCKET'],
+            bucket: @environment['PROCESS_BUCKET'],
             key: "#{prefix}/#{attachment.filename}",
             content_type: attachment.mime_type,
             body: attachment.decoded
