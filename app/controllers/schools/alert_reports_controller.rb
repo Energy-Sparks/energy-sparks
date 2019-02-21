@@ -1,6 +1,4 @@
 class Schools::AlertReportsController < ApplicationController
-  include SchoolAggregation
-
   load_and_authorize_resource :school
 
   def index
