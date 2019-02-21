@@ -37,8 +37,7 @@ class Alert < ApplicationRecord
   enum status: [:good, :poor, :not_enough_data, :failed]
 
   def self.latest
-    a = Alert.arel_table
-    find_by_sql(a.project(a[Arel.star]).distinct_on(a[:alert_type_id]).order(a[:alert_type_id], 'created_at desc'))
+    select('DISTINCT ON ("alert_type_id") alerts.*').order('alert_type_id', created_at: :desc)
   end
 
   # Data hash may end up being attributes of alert
