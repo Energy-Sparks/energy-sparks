@@ -4,19 +4,19 @@ FactoryBot.define do
   factory :dashboard_gas_meter, class: 'Dashboard::Meter' do
     transient do
       school
-      sequence(:mpan_mprn) { |n| n }
-      sequence(:name) { |n| "meter-#{n}" }
-      meter_type :gas
-      active { true }
+      sequence(:mpan_mprn)  { |n| n }
+      sequence(:name)       { |n| "meter-#{n}" }
+      meter_type            { :gas }
+      active                { true }
     end
 
     initialize_with { Dashboard::Meter.new(school, nil, meter_type, mpan_mprn, name) }
 
     factory :dashboard_gas_meter_with_validated_reading do
       transient do
-        reading_count 1
-        start_reading_date { Date.today - reading_count.days }
-        config { create(:amr_data_feed_config) }
+        reading_count       { 1 }
+        start_reading_date  { Date.today - reading_count.days }
+        config              { create(:amr_data_feed_config) }
       end
 
       after(:build) do |meter, evaluator|
@@ -29,14 +29,14 @@ FactoryBot.define do
 
     factory :dashboard_electricity_meter, class: 'Dashboard::Meter' do
       transient do
-        meter_type :electricity
+        meter_type { :electricity }
       end
 
       factory :dashboard_electricity_meter_with_validated_reading do
         transient do
-          reading_count 1
-          start_reading_date { Date.today - reading_count.days }
-          config { create(:amr_data_feed_config) }
+          reading_count       { 1 }
+          start_reading_date  { Date.today - reading_count.days }
+          config              { create(:amr_data_feed_config) }
         end
 
         after(:build) do |meter, evaluator|
