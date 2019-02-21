@@ -34,6 +34,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    rubyzip (1.2.2)
 
 PLATFORMS
   ruby
@@ -42,6 +43,7 @@ DEPENDENCIES
   aws-sdk-s3
   mail
   rspec
+  rubyzip
 
 BUNDLED WITH
    1.17.1
