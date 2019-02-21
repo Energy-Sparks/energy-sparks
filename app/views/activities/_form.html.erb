@@ -48,7 +48,7 @@
     <p class="small">You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.</p>
     <p class="small">Please try to make your activity description as interesting as possible, so other schools are encouraged to try out your activity in their own school.</p>
 
-    <%= f.trix_editor :description, required: true, autofocus: true %>
+    <%= f.rich_text_area :description, required: true, autofocus: true %>
   </div>
 
   <div class="actions">
