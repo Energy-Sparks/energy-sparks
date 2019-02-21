@@ -6,7 +6,7 @@ module DataPipeline
     class UncompressFile
 
       def self.process(event:, context:)
-        new(event: event, client: Aws::S3::Client.new, environment: ENV).process_file
+        new(event: event, client: Aws::S3::Client.new, environment: ENV).uncompress_file
       end
 
       def initialize(event:, client:, environment: {})
