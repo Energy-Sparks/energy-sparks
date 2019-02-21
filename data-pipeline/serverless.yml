@@ -48,15 +48,12 @@ provider:
         - "arn:aws:s3:::${self:custom.buckets.compressed_bucket}/*"
         - "arn:aws:s3:::${self:custom.buckets.amr_data_bucket}/*"
 
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.py
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.py
-#    - exclude-me-dir/**
-#
+package:
+  exclude:
+    - .rspec
+    - Gemfile
+    - Gemfile.lock
+    - spec/**
 
 functions:
   unpack-attachments:
