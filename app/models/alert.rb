@@ -36,7 +36,10 @@ class Alert < ApplicationRecord
 
   enum status: [:good, :poor, :not_enough_data, :failed]
 
-  scope :latest, -> { order(created_at: :desc).group_by { |alert| [alert.alert_type_id] }.values.map(&:first) }
+  def self.latest
+    a = Alert.arel_table
+    find_by_sql(a.project(a[Arel.star]).distinct_on(a[:alert_type_id]).order(a[:alert_type_id], 'created_at desc'))
+  end
 
   # Data hash may end up being attributes of alert
   # Also uses string keys as serialised as JSON in DB
