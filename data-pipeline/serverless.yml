@@ -50,7 +50,7 @@ functions:
     events:
       - s3: ${self:provider.environment.INBOX_BUCKET}
   process-file:
-    handler: handlers/process_file.DataPipeline::Handlers::ProccessFile.process
+    handler: handlers/process_file.DataPipeline::Handlers::ProcessFile.process
     events:
       - s3: ${self:provider.environment.PROCESS_BUCKET}
   uncompress:
@@ -67,4 +67,4 @@ resources:
     S3BucketUnprocessable:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.UNPROCESSABLEBUCKET}
+        BucketName: ${self:provider.environment.UNPROCESSABLE_BUCKET}

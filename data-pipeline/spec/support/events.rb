@@ -51,7 +51,19 @@ module DataPipeline
         file_event(filename: 'sheffield-email-no-attachment.txt', bucket: 'email-bucket')
       end
 
-      def self.email_missing_file
+      def self.csv_added
+        file_event(filename: 'sheffield/export.csv', bucket: 'file-bucket')
+      end
+
+      def self.zip_added
+        file_event(filename: 'sheffield/export.zip', bucket: 'file-bucket')
+      end
+
+      def self.image_added
+        file_event(filename: 'sheffield/image.png', bucket: 'file-bucket')
+      end
+
+      def self.missing_file
         file_event(filename: 'missing.txt', bucket: 'email-bucket')
       end
 

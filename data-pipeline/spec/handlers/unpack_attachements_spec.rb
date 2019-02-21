@@ -9,7 +9,7 @@ describe DataPipeline::Handlers::UnpackAttachments do
     let(:sheffield_email) { File.open('spec/support/emails/sheffield_email.txt') }
     let(:sheffield_email_no_attachment) { File.open('spec/support/emails/sheffield_email_no_attachments.txt') }
     let(:client) { Aws::S3::Client.new(stub_responses: true) }
-    let(:environment) { {'ATTACHMENT_BUCKET' => 'test-bucket' } }
+    let(:environment) { {'PROCESS_BUCKET' => 'test-bucket' } }
 
     before do
       client.stub_responses(
@@ -30,7 +30,7 @@ describe DataPipeline::Handlers::UnpackAttachments do
 
       let(:event){ DataPipeline::Support::Events.sheffield_email_added }
 
-      it 'puts the attachment file in the ATTACHMENT_BUCKET from the environment using the prefix the email was sent to' do
+      it 'puts the attachment file in the PROCESS_BUCKET from the environment using the prefix the email was sent to' do
         response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
 
         request = client.api_requests.last
@@ -78,7 +78,7 @@ describe DataPipeline::Handlers::UnpackAttachments do
 
     describe 'when the file cannot be found' do
 
-      let(:event){ DataPipeline::Support::Events.email_missing_file }
+      let(:event){ DataPipeline::Support::Events.missing_file }
 
       it 'returns an error code' do
         response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
