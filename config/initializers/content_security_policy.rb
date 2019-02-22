@@ -23,3 +23,11 @@
 # For further information see the following documentation:
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 # Rails.application.config.content_security_policy_report_only = true
+
+
+# You need to allow webpack-dev-server host as allowed origin for connect-src.
+# This can be done in Rails 5.2+ for development environment in the CSP initializer
+# config/initializers/content_security_policy.rb with a snippet like this:
+Rails.application.config.content_security_policy do |policy|
+  policy.connect_src :self, :https, "http://localhost:3035", "ws://localhost:3035" if Rails.env.development?
+end
