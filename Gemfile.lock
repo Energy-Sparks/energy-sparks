@@ -262,13 +262,10 @@ GEM
     ffi (1.10.0)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
-    globalid (0.4.2)
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
-    friendly_id (5.2.4)
-      activerecord (>= 4.0.0)
-      activesupport (>= 4.2.0)
+    globalid (0.4.2)
     govuk-lint (3.10.0)
       rubocop (~> 0.58)
       rubocop-rspec (~> 1.28)
@@ -290,6 +287,9 @@ GEM
       domain_name (~> 0.5)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
+    image_processing (1.7.1)
+      mini_magick (~> 4.0)
+      ruby-vips (>= 2.0.13, < 3)
     iniparse (1.4.4)
     interpolate (0.3.0)
     io-like (0.3.0)
@@ -337,6 +337,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mimemagic (0.3.3)
+    mini_magick (4.9.2)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minimization (0.2.5)
@@ -494,6 +495,8 @@ GEM
     ruby-ole (1.2.12.1)
     ruby-progressbar (1.10.0)
     ruby-sun-times (0.1.5)
+    ruby-vips (2.0.13)
+      ffi (~> 1.9)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
     rubyvis (0.6.1)
@@ -605,6 +608,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actiontext
   activerecord-import
   after_party
   annotate
@@ -638,10 +642,11 @@ DEPENDENCIES
   fasterer
   font-awesome-rails
   foreman
-  friendly_id
+  friendly_id!
   govuk-lint
   groupdate (= 4.0.1)
   handlebars_assets
+  image_processing (~> 1.2)
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

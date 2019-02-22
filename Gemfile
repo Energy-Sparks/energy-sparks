@@ -7,6 +7,8 @@ gem 'rails', '~> 6.0.0.beta1' # Bundle edge Rails instead: gem 'rails', github: 
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'webpacker', '~> 3.5'
+gem "actiontext", require: "action_text"
+gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.0' # Use Puma as the app server
