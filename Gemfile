@@ -111,6 +111,7 @@ group :development do
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
+  gem 'foreman'
 end
 
 group :test do
