@@ -6,6 +6,7 @@ ruby '2.5.3'
 gem 'rails', '~> 6.0.0.beta1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
+gem 'webpacker', '~> 3.5'
 
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.0' # Use Puma as the app server
@@ -110,6 +111,7 @@ group :development do
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
+  gem 'foreman'
 end
 
 group :test do

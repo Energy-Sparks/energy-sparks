@@ -31,8 +31,6 @@ profiles
 .env
 *.txt
 *.sql
-*.yml
-!.overcommit.yml
 *.DS_Store
 *csv
 !etc/**/*csv
@@ -43,4 +41,19 @@ public/assets
 
 # RubyMine
 .idea
+
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity
+
+
+# YAML stuff
+*.yml
+!.overcommit.yml
+!webpacker.yml
+!secrets.yml
+!storage.yml
+!cable.yml
 
