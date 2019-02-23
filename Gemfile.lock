@@ -46,16 +46,16 @@ GIT
 
 GIT
   remote: https://github.com/jamesjefferies/friendly_id.git
-  revision: a56eaf2fbb74f9c69c2b065e5367019bb0c94a6c
+  revision: cdd5971f91c40e0c05e5afb498d2ec1b452ffb44
   branch: support-for-active-record-6
   specs:
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
 
 GIT
-  remote: https://github.com/jamesjefferies/merit.git
-  revision: 1fdc922b54c26dfe94496d586e699c50e0c1a592
-  branch: replace-update-attributes-with-update
+  remote: https://github.com/merit-gem/merit.git
+  revision: e24acbb25b6f58c6eb0c683548223c7646bd0461
+  branch: master
   specs:
     merit (3.0.2)
       ambry (~> 1.0.0)
