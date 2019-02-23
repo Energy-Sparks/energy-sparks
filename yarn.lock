@@ -14,6 +14,12 @@
   dependencies:
     spark-md5 "^3.0.0"
 
+"@rails/activestorage@^6.0.0-beta1":
+  version "6.0.0-beta1"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-6.0.0-beta1.tgz#7a1fa0fa45d2d027dd55ad6344f8787fabaf4b24"
+  dependencies:
+    spark-md5 "^3.0.0"
+
 "@rails/webpacker@3.5":
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-3.5.5.tgz#8911c66bcefc8bc6b91270e92f0d39e3c2d43116"

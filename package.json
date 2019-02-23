@@ -2,6 +2,7 @@
   "dependencies": {
     "@rails/actiontext": "^6.0.0-beta1",
     "@rails/webpacker": "3.5",
+    "@rails/activestorage": "^6.0.0-beta1",
     "trix": "^1.0.0"
   },
   "devDependencies": {

@@ -608,7 +608,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actiontext
   activerecord-import
   after_party
   annotate
