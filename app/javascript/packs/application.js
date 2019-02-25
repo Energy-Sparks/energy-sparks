@@ -9,5 +9,6 @@
 
 console.log('Hello World from Webpacker')
 
-require("trix")
+// Don't include trix here as rails/actiontext pulls it in too
+// require("trix")
 require("@rails/actiontext")
