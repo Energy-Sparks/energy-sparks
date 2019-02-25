@@ -420,12 +420,6 @@ ActiveRecord::Schema.define(version: 2019_02_23_121138) do
     t.index ["school_id"], name: "index_meters_on_school_id"
   end
 
-  create_table "posts", force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "sashes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
