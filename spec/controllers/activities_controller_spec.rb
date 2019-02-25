@@ -12,6 +12,7 @@ RSpec.describe ActivitiesController, type: :controller do
       activity_type_id: activity_type.id,
       activity_category_id: activity_category.id,
       title: 'test title',
+      content: '<div>Content</div>',
       happened_on: Date.today
     }
   }
@@ -158,7 +159,7 @@ RSpec.describe ActivitiesController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         { title: 'new_title',
-          description: 'new_description',
+          content: 'new_description',
           activity_type_id: activity_type2.id,
           happened_on: Date.today
         }
@@ -169,7 +170,7 @@ RSpec.describe ActivitiesController, type: :controller do
         put :update, params: { school_id: school.id, id: activity.to_param, activity: new_attributes }
         activity.reload
         expect(activity.title).to eq new_attributes[:title]
-        expect(activity.description.body.to_plain_text).to eq new_attributes[:description]
+        expect(activity.content.to_plain_text).to eq new_attributes[:content]
         expect(activity.activity_type_id).to eq new_attributes[:activity_type_id]
         expect(activity.happened_on).to eq new_attributes[:happened_on]
       end
