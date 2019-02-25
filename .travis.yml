@@ -1,5 +1,8 @@
 language: ruby
 cache: bundler
+env:
+  global:
+    - NODE_ENV=test
 services:
   - postgresql
 dist: xenial
@@ -24,6 +27,7 @@ script:
   - bundle exec rails db:create
   - bundle exec govuk-lint-ruby -R app lib
   - bundle exec bundle-audit check --update
+  - bundle exec rails webpacker:compile
   - bundle exec rspec
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
