@@ -46,7 +46,6 @@ public/assets
 /storage/*
 !/storage/.keep
 
-/node_modules
 /yarn-error.log
 
 /public/assets
@@ -56,7 +55,6 @@ public/assets
 /config/master.key
 /public/packs
 /public/packs-test
-/node_modules
 yarn-debug.log*
 .yarn-integrity
 
