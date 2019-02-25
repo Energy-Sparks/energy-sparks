@@ -1,5 +1,9 @@
 language: ruby
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - node_modules
+  yarn: true
 env:
   global:
     - NODE_ENV=test
@@ -27,7 +31,9 @@ script:
   - bundle exec rails db:create
   - bundle exec govuk-lint-ruby -R app lib
   - bundle exec bundle-audit check --update
+  - yarn
   - bundle exec rails webpacker:compile
   - bundle exec rspec
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
