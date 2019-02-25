@@ -35,7 +35,7 @@ gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
 
-# AWS
+
 gem 'aws-sdk-s3'
 
 # Assets for Emails
@@ -94,6 +94,7 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'timecop'
+  gem 'foreman'
 end
 
 group :development do
