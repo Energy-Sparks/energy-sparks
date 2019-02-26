@@ -55,6 +55,9 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
 
   $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
 
+  // Activate any popovers
+  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="tooltip"]').tooltip();
   chart.hideLoading();
 }
 
