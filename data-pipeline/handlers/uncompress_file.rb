@@ -6,19 +6,22 @@ module DataPipeline
     class UncompressFile
 
       def self.process(event:, context:)
-        new(event: event, client: Aws::S3::Client.new, environment: ENV).uncompress_file
+        new(event: event, client: Aws::S3::Client.new, environment: ENV, logger: Logger.new(STDOUT)).uncompress_file
       end
 
-      def initialize(event:, client:, environment: {})
+      def initialize(event:, client:, logger:, environment: {})
         @event = event
         @client = client
         @environment = environment
+        @logger = logger
       end
 
       def uncompress_file
         s3_record = @event['Records'].first['s3']
         file_key = s3_record['object']['key']
         bucket_name = s3_record['bucket']['name']
+
+        @logger.info("Uncompressing: #{file_key} from: #{bucket_name}")
 
         file = @client.get_object(bucket: bucket_name, key: file_key)
         prefix = file_key.split('/').first
@@ -28,6 +31,7 @@ module DataPipeline
           Zip::File.open_buffer(file.body) do |zip_file|
             responses = zip_file.each do |entry|
               content = entry.get_input_stream.read
+              @logger.info("Uncompression successs moving: #{file_key} to: #{@environment['PROCESS_BUCKET']}")
               upload_responses << @client.put_object(
                 bucket: @environment['PROCESS_BUCKET'],
                 key: "#{prefix}/#{entry.name}",
@@ -36,6 +40,7 @@ module DataPipeline
             end
           end
         rescue Zip::Error => e
+          @logger.info("Uncompression failed moving: #{file_key} to: #{@environment['UNPROCESSABLE_BUCKET']}")
           upload_responses << @client.put_object(
             bucket: @environment['UNPROCESSABLE_BUCKET'],
             key: file_key,

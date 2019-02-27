@@ -10,6 +10,7 @@ describe DataPipeline::Handlers::ProcessFile do
     let(:sheffield_zip) { File.open('spec/support/files/sheffield_export.zip') }
     let(:unknown_file) { File.open('spec/support/files/1x1.png') }
 
+    let(:logger){ Logger.new(IO::NULL) }
     let(:client) { Aws::S3::Client.new(stub_responses: true) }
     let(:environment) {
       {
@@ -18,6 +19,8 @@ describe DataPipeline::Handlers::ProcessFile do
         'UNPROCESSABLE_BUCKET' => 'unprocessable-bucket'
       }
     }
+
+    let(:handler){ DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment, logger: logger) }
 
     before do
       client.stub_responses(
@@ -41,7 +44,7 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.csv_added }
 
       it 'puts the attachment file in the AMR_DATA_BUCKET from the environment using the key of the object added' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
 
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
@@ -50,7 +53,7 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -61,7 +64,7 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.zip_added }
 
       it 'puts the attachment file in the COMPRESSED_BUCKET from the environment using the key of the object added' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
 
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
@@ -70,7 +73,7 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -81,7 +84,7 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.image_added }
 
       it 'puts the attachment file in the UNPROCESSABLE_BUCKET from the environment using the key of the object added' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
 
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
@@ -90,7 +93,7 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -101,7 +104,7 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.missing_file }
 
       it 'returns an error code' do
-        response = DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment).process_file
+        response = handler.process_file
         expect(response[:statusCode]).to eq(500)
       end
     end

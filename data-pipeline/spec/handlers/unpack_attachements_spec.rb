@@ -9,8 +9,12 @@ describe DataPipeline::Handlers::UnpackAttachments do
     let(:sheffield_email) { File.open('spec/support/emails/sheffield_email.txt') }
     let(:sheffield_email_fwd) { File.open('spec/support/emails/sheffield-fwd.txt') }
     let(:sheffield_email_no_attachment) { File.open('spec/support/emails/sheffield_email_no_attachments.txt') }
+
+    let(:logger){ Logger.new(IO::NULL) }
     let(:client) { Aws::S3::Client.new(stub_responses: true) }
     let(:environment) { {'PROCESS_BUCKET' => 'test-bucket' } }
+
+    let(:handler){ DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment, logger: logger) }
 
     before do
       client.stub_responses(
@@ -34,7 +38,7 @@ describe DataPipeline::Handlers::UnpackAttachments do
       let(:event){ DataPipeline::Support::Events.sheffield_email_added }
 
       it 'puts the attachment file in the PROCESS_BUCKET from the environment using the prefix the email was sent to' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
 
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
@@ -44,12 +48,12 @@ describe DataPipeline::Handlers::UnpackAttachments do
       end
 
       it 'returns a success code' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
         expect(response[:statusCode]).to eq(200)
       end
 
       it 'returns the code of the files created' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
         body = JSON.parse(response[:body])
         expect(body['responses'].size).to eq(1)
       end
@@ -61,7 +65,7 @@ describe DataPipeline::Handlers::UnpackAttachments do
       let(:event){ DataPipeline::Support::Events.sheffield_email_forwarded }
 
       it 'uses the forwarded to header instead of the to field' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/4003063_9232_Export_20190227_120407_366.zip')
@@ -74,19 +78,19 @@ describe DataPipeline::Handlers::UnpackAttachments do
       let(:event){ DataPipeline::Support::Events.sheffield_email_added_no_attachment }
 
       it 'does not add any files' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
 
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:get_object)
       end
 
       it 'returns a success code' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
         expect(response[:statusCode]).to eq(200)
       end
 
       it 'returns the code of the files created' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
         body = JSON.parse(response[:body])
         expect(body['responses']).to be_empty
       end
@@ -97,7 +101,7 @@ describe DataPipeline::Handlers::UnpackAttachments do
       let(:event){ DataPipeline::Support::Events.missing_file }
 
       it 'returns an error code' do
-        response = DataPipeline::Handlers::UnpackAttachments.new(event: event, client: client, environment: environment).unpack_attachments
+        response = handler.unpack_attachments
         body = JSON.parse(response[:body])
         expect(response[:statusCode]).to eq(500)
       end
