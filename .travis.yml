@@ -25,5 +25,6 @@ script:
   - bundle exec govuk-lint-ruby -R app lib
   - bundle exec bundle-audit check --update
   - bundle exec rspec
+  - script/test-data-pipeline.sh
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
