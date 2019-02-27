@@ -22,7 +22,8 @@ module DataPipeline
 
         email_file = @client.get_object(bucket: bucket_name, key: file_key)
         email = Mail.new(email_file.body.read)
-        prefix = email.to.first.split('@').first
+        sent_to = email.header['X-Forwarded-To'] || email.to.first
+        prefix = sent_to.to_s.split('@').first
 
         responses = email.attachments.map do |attachment|
           @client.put_object(

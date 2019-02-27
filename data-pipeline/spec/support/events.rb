@@ -47,6 +47,10 @@ module DataPipeline
         file_event(filename: 'sheffield-email.txt', bucket: 'email-bucket')
       end
 
+      def self.sheffield_email_forwarded
+        file_event(filename: 'sheffield-fwd.txt', bucket: 'email-bucket')
+      end
+
       def self.sheffield_email_added_no_attachment
         file_event(filename: 'sheffield-email-no-attachment.txt', bucket: 'email-bucket')
       end
