@@ -19,7 +19,7 @@ gem 'upsert', '~> 2.2.1'
 gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.32.3'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.32.6'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -40,7 +40,7 @@ gem 'aws-sdk-s3'
 gem 'bootstrap-email'
 
 # Frontend
-gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts
