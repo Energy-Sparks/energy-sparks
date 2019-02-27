@@ -6,11 +6,11 @@ service: data-pipeline
 custom:
   currentStage: ${opt:stage, 'development'}
   buckets:
-    inbox_bucket: data-pipeline-inbox-${self:custom.currentStage}
-    process_bucket: data-pipeline-process-${self:custom.currentStage}
-    compressed_bucket: data-pipeline-uncompressed-${self:custom.currentStage}
-    amr_data_bucket: data-pipeline-amr-data-${self:custom.currentStage}
-    unprocessable_bucket: data-pipeline-unprocessable-${self:custom.currentStage}
+    inbox_bucket: es-${self:custom.currentStage}-data-pipeline-inbox
+    process_bucket: es-${self:custom.currentStage}-data-pipeline-process
+    compressed_bucket: es-${self:custom.currentStage}-data-pipeline-uncompressed
+    amr_data_bucket: es-${self:custom.currentStage}-data-pipeline-amr-data
+    unprocessable_bucket: es-${self:custom.currentStage}-data-pipeline-unprocessable
 
 
 provider:
@@ -60,6 +60,24 @@ functions:
 
 resources:
   Resources:
+    InboxS3Policy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: ${self:provider.environment.INBOX_BUCKET}
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Sid: "SESInboxWriter"
+              Principal:
+                Service: "ses.amazonaws.com"
+              Condition:
+                StringEquals:
+                  "aws:Referer": {Ref: 'AWS::AccountId'}
+              Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource:
+                - arn:aws:s3:::${self:provider.environment.INBOX_BUCKET}/*
     S3BucketAmrData:
       Type: AWS::S3::Bucket
       Properties:
