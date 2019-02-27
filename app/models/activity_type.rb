@@ -51,6 +51,8 @@ class ActivityType < ApplicationRecord
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
+  has_rich_text :description
+
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
   end

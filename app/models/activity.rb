@@ -31,7 +31,7 @@ class Activity < ApplicationRecord
   belongs_to :activity_category
   validates_presence_of :school_id, :activity_type_id, :activity_category_id, :happened_on
 
-  has_rich_text :content
+  has_rich_text :description
 
   def display_name
     activity_type.custom ? title : activity_type.name
