@@ -4,16 +4,22 @@ require 'mail'
 module DataPipeline
   module Handlers
     class UnpackAttachments
-
       def self.process(event:, context:)
-        new(event: event, client: Aws::S3::Client.new, environment: ENV, logger: Logger.new(STDOUT)).unpack_attachments
+        new(
+          event: event,
+          client: Aws::S3::Client.new,
+          environment: ENV,
+          logger: Logger.new(STDOUT),
+          context: context
+        ).unpack_attachments
       end
 
-      def initialize(event:, client:, logger:, environment: {})
+      def initialize(event:, client:, logger:, environment: {}, context: {})
         @event = event
         @client = client
         @environment = environment
         @logger = logger
+        @context = context
       end
 
       def unpack_attachments
@@ -45,7 +51,6 @@ module DataPipeline
         end
 
         { statusCode: 200, body: JSON.generate(responses: responses) }
-
       rescue => e
         { statusCode: 500, body: JSON.generate(e.message) }
       end

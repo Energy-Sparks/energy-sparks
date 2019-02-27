@@ -4,16 +4,22 @@ require 'zip'
 module DataPipeline
   module Handlers
     class UncompressFile
-
       def self.process(event:, context:)
-        new(event: event, client: Aws::S3::Client.new, environment: ENV, logger: Logger.new(STDOUT)).uncompress_file
+        new(
+          event: event,
+          client: Aws::S3::Client.new,
+          environment: ENV,
+          logger: Logger.new(STDOUT),
+          context: context
+        ).uncompress_file
       end
 
-      def initialize(event:, client:, logger:, environment: {})
+      def initialize(event:, client:, logger:, environment: {}, context: {})
         @event = event
         @client = client
         @environment = environment
         @logger = logger
+        @context = context
       end
 
       def uncompress_file
@@ -29,14 +35,14 @@ module DataPipeline
         upload_responses = []
         begin
           Zip::File.open_buffer(file.body) do |zip_file|
-            responses = zip_file.each do |entry|
+            zip_file.each do |entry|
               content = entry.get_input_stream.read
               @logger.info("Uncompression successs moving: #{file_key} to: #{@environment['PROCESS_BUCKET']}")
               upload_responses << move_to_process_bucket("#{prefix}/#{entry.name}", content)
             end
           end
         rescue Zip::Error => e
-          @logger.info("Uncompression failed moving: #{file_key} to: #{@environment['UNPROCESSABLE_BUCKET']}")
+          @logger.info("Uncompression failed moving: #{file_key} to: #{@environment['UNPROCESSABLE_BUCKET']} error: #{e.message}")
           upload_responses << move_to_unprocessable_bucket(file_key, file)
         end
         { statusCode: 200, body: JSON.generate(responses: upload_responses) }
@@ -62,7 +68,6 @@ module DataPipeline
           content_type: file.content_type
         )
       end
-
     end
   end
 end

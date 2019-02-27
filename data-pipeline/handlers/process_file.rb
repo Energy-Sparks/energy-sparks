@@ -3,16 +3,22 @@ require 'aws-sdk-s3'
 module DataPipeline
   module Handlers
     class ProcessFile
-
       def self.process(event:, context:)
-        new(event: event, client: Aws::S3::Client.new, environment: ENV, logger: Logger.new(STDOUT)).process_file
+        new(
+          event: event,
+          client: Aws::S3::Client.new,
+          environment: ENV,
+          logger: Logger.new(STDOUT),
+          context: context
+        ).process_file
       end
 
-      def initialize(event:, client:, logger:, environment: {})
+      def initialize(event:, client:, logger:, environment: {}, context: {})
         @event = event
         @client = client
         @environment = environment
         @logger = logger
+        @context = context
       end
 
       def process_file
@@ -25,10 +31,10 @@ module DataPipeline
         file = @client.get_object(bucket: bucket_name, key: file_key)
 
         next_bucket = case file_key
-        when /csv\Z/ then @environment['AMR_DATA_BUCKET']
-        when /zip\Z/ then @environment['COMPRESSED_BUCKET']
-        else @environment['UNPROCESSABLE_BUCKET']
-        end
+                      when /csv\Z/ then @environment['AMR_DATA_BUCKET']
+                      when /zip\Z/ then @environment['COMPRESSED_BUCKET']
+                      else @environment['UNPROCESSABLE_BUCKET']
+                      end
 
         response = @client.put_object(
           bucket: next_bucket,
@@ -40,7 +46,6 @@ module DataPipeline
         @logger.info("Moved: #{file_key} to: #{next_bucket}")
 
         { statusCode: 200, body: JSON.generate(response: response) }
-
       rescue => e
         { statusCode: 500, body: JSON.generate(e.message) }
       end
