@@ -8,7 +8,7 @@ class AggregateSchoolService
   def aggregate_school
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       meter_collection = AmrValidatedMeterCollection.new(@school)
-      AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters_including_storage_and_solar_pv
+      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
       # Pre-warm environment caches
       meter_collection.holidays
       meter_collection.temperatures
