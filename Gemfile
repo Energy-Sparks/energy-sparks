@@ -85,7 +85,12 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '3.8.2'
+  gem 'rspec-core', git: 'https://github.com/rspec/rspec-core.git'
+  gem 'rspec-mocks', git: 'https://github.com/rspec/rspec-mocks.git'
+  gem 'rspec-expectations', git: 'https://github.com/rspec/rspec-expectations.git'
+  gem 'rspec-support', git: 'https://github.com/rspec/rspec-support.git'
+
+  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', branch: '4-0-dev'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'
