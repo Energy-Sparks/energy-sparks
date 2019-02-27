@@ -16,6 +16,11 @@ div.analysis-chart, div.simulator-chart {
   }
 }
 
+div.popover {
+  max-width: 750px;
+  z-index: 1000;
+}
+
 .table-success, .table-success > th, .table-success > td {
   background-color: $green !important;
   color: #fff;
