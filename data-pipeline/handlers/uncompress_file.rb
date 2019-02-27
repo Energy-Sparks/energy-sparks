@@ -32,26 +32,37 @@ module DataPipeline
             responses = zip_file.each do |entry|
               content = entry.get_input_stream.read
               @logger.info("Uncompression successs moving: #{file_key} to: #{@environment['PROCESS_BUCKET']}")
-              upload_responses << @client.put_object(
-                bucket: @environment['PROCESS_BUCKET'],
-                key: "#{prefix}/#{entry.name}",
-                body: content
-              )
+              upload_responses << move_to_process_bucket("#{prefix}/#{entry.name}", content)
             end
           end
         rescue Zip::Error => e
           @logger.info("Uncompression failed moving: #{file_key} to: #{@environment['UNPROCESSABLE_BUCKET']}")
-          upload_responses << @client.put_object(
-            bucket: @environment['UNPROCESSABLE_BUCKET'],
-            key: file_key,
-            body: file.body,
-            content_type: file.content_type
-          )
+          upload_responses << move_to_unprocessable_bucket(file_key, file)
         end
         { statusCode: 200, body: JSON.generate(responses: upload_responses) }
       rescue => e
         { statusCode: 500, body: JSON.generate(e.message) }
       end
+
+    private
+
+      def move_to_process_bucket(key, content)
+        @client.put_object(
+          bucket: @environment['PROCESS_BUCKET'],
+          key: key,
+          body: content,
+        )
+      end
+
+      def move_to_unprocessable_bucket(key, file)
+        @client.put_object(
+          bucket: @environment['UNPROCESSABLE_BUCKET'],
+          key: key,
+          body: file.body,
+          content_type: file.content_type
+        )
+      end
+
     end
   end
 end
