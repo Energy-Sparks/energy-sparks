@@ -96,10 +96,12 @@ Rails.application.routes.draw do
   scope :admin do
     resources :users
     get 'reports', to: 'reports#index'
-    get 'reports/loading', to: 'reports#loading'
-    get 'reports/amr_data_index', to: 'reports#amr_data_index'
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-    get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
+  end
+
+  namespace :reports do
+    get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
+    get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
   end
 
   namespace :admin do
