@@ -24,12 +24,23 @@ functions in the `functions:` definitions. S3 buckets that are not
 directly attached to lambda functions are specified in the `resources:`
 section along with an S3 policy that allows SES to add to the `inbox` bucket.
 
+
+The following instructions assume you are working from the
+`data-pipeline` directory.
+
 ### Installation and configuration
 
 Install serverless using homebrew (`brew install serverless`) or using
 [npm](https://serverless.com/framework/docs/getting-started/). The
 serverless AWS credentials should be in a profile called `serverless` in
-your `~/.aws/credentials` file.
+your `~/.aws/credentials` file:
+
+```
+[serverless]
+aws_access_key_id = YOURKEYHERE123
+aws_secret_access_key = YOURSECRETHERE123
+region = eu-west-1
+```
 
 Run `bundle install` to install the required gems.
 
@@ -56,3 +67,9 @@ application to process files from previously unseen prefixes.
 ### Adding a stage
 To start receiving emails to a new stage a new SES rule will have to be
 added to move the email to the `es-STAGE-data-pipeline-inbox` bucket.
+
+
+### Monitoring
+
+Logs and usage stats found via the `Monitoring` tab on the individual
+lambda AWS page.
