@@ -42,7 +42,7 @@ gem 'aws-sdk-s3'
 gem 'bootstrap-email'
 
 # Frontend
-gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
 gem "font-awesome-rails" # Fonts

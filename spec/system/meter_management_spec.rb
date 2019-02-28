@@ -72,7 +72,7 @@ RSpec.describe "meter management", :meters, type: :system do
   context 'when a meter has readings, they can be downloaded' do
     let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
-    it 'shows the download CSV button' do
+    it 'allows a download of CSV for a meter' do
       click_on 'Manage meters'
       click_on 'CSV'
       # Make sure the page is a CSV
@@ -82,9 +82,28 @@ RSpec.describe "meter management", :meters, type: :system do
 
       # Then check the content
       meter.amr_validated_readings.each do |record|
-        expect(page.source).to have_content Schools::MetersController::CSV_HEADER
+        expect(page.source).to have_content Schools::MetersController::SINGLE_METER_CSV_HEADER
         expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
       end
+    end
+
+    it 'allows a download of CSV for the school meter' do
+      click_on 'Manage meters'
+      click_on 'Download AMR data for all meters'
+      # Make sure the page is a CSV
+      header = page.response_headers['Content-Disposition']
+      expect(header).to match /^attachment/
+      expect(header).to match /filename="school-amr-readings-#{school.name.parameterize}.csv"$/
+
+      # Then check the content
+      meter.amr_validated_readings.each do |record|
+        expect(page.source).to have_content Schools::MetersController::SCHOOL_CSV_HEADER
+        expect(page).to have_content amr_validated_reading_for_school_to_s(meter, meter.amr_validated_readings.first)
+      end
+    end
+
+    def amr_validated_reading_for_school_to_s(meter, amr)
+      "#{meter.mpan_mprn},#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
     end
 
     def amr_validated_reading_to_s(amr)
