@@ -8,7 +8,6 @@
 #  created_at           :datetime         not null
 #  custom               :boolean          default(FALSE)
 #  data_driven          :boolean          default(FALSE)
-#  description          :text
 #  id                   :bigint(8)        not null, primary key
 #  name                 :string
 #  repeatable           :boolean          default(TRUE)
@@ -52,6 +51,8 @@ class ActivityType < ApplicationRecord
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
   has_rich_text :description
+
+  self.ignored_columns = %w(deprecated_description)
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
