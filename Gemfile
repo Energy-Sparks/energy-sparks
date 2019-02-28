@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.5.3'
 
 # Rails/Core
-gem 'rails', '~> 6.0.0.beta1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.0.beta2' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'webpacker', '~> 3.5'
@@ -87,7 +87,12 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '3.8.2'
+  gem 'rspec-core', git: 'https://github.com/rspec/rspec-core.git'
+  gem 'rspec-mocks', git: 'https://github.com/rspec/rspec-mocks.git'
+  gem 'rspec-expectations', git: 'https://github.com/rspec/rspec-expectations.git'
+  gem 'rspec-support', git: 'https://github.com/rspec/rspec-support.git'
+
+  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', branch: '4-0-dev'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'
