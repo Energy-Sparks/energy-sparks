@@ -24,12 +24,12 @@
   <div class="row">
     <div class="col-md-12 activity">
       <p>You haven't entered what you did for this activity, please edit the activitiy and tell us what you did.</p>
-      <p><%=  link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
+      <p><%= link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
     </div>
   </div>
 <% end %>
 
-<% if @activity.activity_type.description.present? %>
+<% if @activity.activity_type.description %>
   <div class="row">
     <div class="col-md-12 text-white activity_type">
       <div class="card bg-secondary">
