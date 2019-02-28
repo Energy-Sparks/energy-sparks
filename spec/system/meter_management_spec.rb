@@ -93,7 +93,7 @@ RSpec.describe "meter management", :meters, type: :system do
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
-      expect(header).to match /filename="school-amr-readings-#{school.name.parameterize}.csv"$/
+      expect(header).to match /school-amr-readings-#{school.name.parameterize}.csv$/
 
       # Then check the content
       meter.amr_validated_readings.each do |record|
