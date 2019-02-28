@@ -1,0 +1,88 @@
+# For full config options, check the docs:
+#    docs.serverless.com
+
+service: data-pipeline
+
+custom:
+  currentStage: ${opt:stage, 'development'}
+  buckets:
+    inbox_bucket: es-${self:custom.currentStage}-data-pipeline-inbox
+    process_bucket: es-${self:custom.currentStage}-data-pipeline-process
+    compressed_bucket: es-${self:custom.currentStage}-data-pipeline-uncompressed
+    amr_data_bucket: es-${self:custom.currentStage}-data-pipeline-amr-data
+    unprocessable_bucket: es-${self:custom.currentStage}-data-pipeline-unprocessable
+
+
+provider:
+  name: aws
+  runtime: ruby2.5
+  region: eu-west-1
+  profile: serverless
+  stage: ${opt:stage, 'development'}
+  environment:
+    INBOX_BUCKET: ${self:custom.buckets.inbox_bucket}
+    PROCESS_BUCKET: ${self:custom.buckets.process_bucket}
+    COMPRESSED_BUCKET: ${self:custom.buckets.compressed_bucket}
+    AMR_DATA_BUCKET: ${self:custom.buckets.amr_data_bucket}
+    UNPROCESSABLE_BUCKET: ${self:custom.buckets.unprocessable_bucket}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
+        - "arn:aws:s3:::${self:custom.buckets.inbox_bucket}/*"
+        - "arn:aws:s3:::${self:custom.buckets.process_bucket}/*"
+        - "arn:aws:s3:::${self:custom.buckets.compressed_bucket}/*"
+        - "arn:aws:s3:::${self:custom.buckets.amr_data_bucket}/*"
+        - "arn:aws:s3:::${self:custom.buckets.unprocessable_bucket}/*"
+
+package:
+  exclude:
+    - .rspec
+    - Gemfile
+    - Gemfile.lock
+    - spec/**
+
+functions:
+  unpack-attachments:
+    handler: handlers/unpack_attachments.DataPipeline::Handlers::UnpackAttachments.process
+    events:
+      - s3: ${self:provider.environment.INBOX_BUCKET}
+  process-file:
+    handler: handlers/process_file.DataPipeline::Handlers::ProcessFile.process
+    events:
+      - s3: ${self:provider.environment.PROCESS_BUCKET}
+  uncompress:
+    handler: handlers/uncompress_file.DataPipeline::Handlers::UncompressFile.process
+    events:
+      - s3: ${self:provider.environment.COMPRESSED_BUCKET}
+
+resources:
+  Resources:
+    InboxS3Policy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: ${self:provider.environment.INBOX_BUCKET}
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Sid: "SESInboxWriter"
+              Principal:
+                Service: "ses.amazonaws.com"
+              Condition:
+                StringEquals:
+                  "aws:Referer": {Ref: 'AWS::AccountId'}
+              Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource:
+                - arn:aws:s3:::${self:provider.environment.INBOX_BUCKET}/*
+    S3BucketAmrData:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.AMR_DATA_BUCKET}
+    S3BucketUnprocessable:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.UNPROCESSABLE_BUCKET}
