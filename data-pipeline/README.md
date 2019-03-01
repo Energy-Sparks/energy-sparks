@@ -39,7 +39,7 @@ your `~/.aws/credentials` file:
 [serverless]
 aws_access_key_id = YOURKEYHERE123
 aws_secret_access_key = YOURSECRETHERE123
-region = eu-west-1
+region = eu-west-2
 ```
 
 Run `bundle install` to install the required gems.
