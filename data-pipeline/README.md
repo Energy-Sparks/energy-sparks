@@ -26,7 +26,9 @@ section along with an S3 policy that allows SES to add to the `inbox` bucket.
 
 
 The following instructions assume you are working from the
-`data-pipeline` directory.
+`data-pipeline` directory. Note, the region is set manually in the
+serverless.yml file so deploying to different regions would require a
+change to the configuration.
 
 ### Installation and configuration
 
@@ -39,7 +41,6 @@ your `~/.aws/credentials` file:
 [serverless]
 aws_access_key_id = YOURKEYHERE123
 aws_secret_access_key = YOURSECRETHERE123
-region = eu-west-1
 ```
 
 Run `bundle install` to install the required gems.
