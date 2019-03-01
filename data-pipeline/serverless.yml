@@ -6,17 +6,18 @@ service: data-pipeline
 custom:
   currentStage: ${opt:stage, 'development'}
   buckets:
-    inbox_bucket: es-${self:custom.currentStage}-data-pipeline-inbox
-    process_bucket: es-${self:custom.currentStage}-data-pipeline-process
-    compressed_bucket: es-${self:custom.currentStage}-data-pipeline-uncompressed
-    amr_data_bucket: es-${self:custom.currentStage}-data-pipeline-amr-data
-    unprocessable_bucket: es-${self:custom.currentStage}-data-pipeline-unprocessable
+    inbox_bucket: es-${self:custom.currentStage}-data-inbox
+    process_bucket: es-${self:custom.currentStage}-data-process
+    compressed_bucket: es-${self:custom.currentStage}-data-uncompressed
+    amr_data_bucket: es-${self:custom.currentStage}-data-amr-data
+    unprocessable_bucket: es-${self:custom.currentStage}-data-unprocessable
 
 
 provider:
   name: aws
   runtime: ruby2.5
   profile: serverless
+  region: eu-west-2
   stage: ${opt:stage, 'development'}
   environment:
     INBOX_BUCKET: ${self:custom.buckets.inbox_bucket}
@@ -61,8 +62,10 @@ resources:
   Resources:
     InboxS3Policy:
       Type: AWS::S3::BucketPolicy
+      DependsOn: S3BucketEs${self:custom.currentStage}datainbox
       Properties:
-        Bucket: ${self:provider.environment.INBOX_BUCKET}
+        Bucket:
+          Ref: S3BucketEs${self:custom.currentStage}datainbox
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
