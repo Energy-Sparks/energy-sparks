@@ -41,7 +41,7 @@ RSpec.describe "activity type", type: :system do
       expect(page).to have_unchecked_field('KS2')
       expect(page).to have_unchecked_field('KS3') # or have_unchecked_field
       check('KS1')
-      click_on('Filter Activity Types')
+      click_button('Filter Activity Types', match: :first)
       expect(page).to have_checked_field('KS1')
       expect(page).to have_unchecked_field('KS2')
       expect(page).to have_unchecked_field('KS3') # or have_unchecked_field
