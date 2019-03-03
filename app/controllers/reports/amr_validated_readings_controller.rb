@@ -20,10 +20,20 @@ class Reports::AmrValidatedReadingsController < ApplicationController
     @first_validated_reading_date = @meter.first_validated_reading
     respond_to do |format|
       format.json do
-        @reading_summary = @meter.amr_validated_readings.order(:reading_date).pluck(:reading_date, :status).map {|day| { day[0] => day[1] }}
+        readings = @meter.amr_validated_readings.order(:reading_date)
+        @reading_summary = readings.pluck(:reading_date, :status, :substitute_date).map do |record|
+          { record[0] => summary_hash(record[1], record[2]) }
+        end
         @reading_summary = @reading_summary.inject(:merge!)
       end
       format.html
     end
+  end
+
+  def summary_hash(status, substitute_date)
+    description = "#{status} #{@amr_types[status][:name]}"
+    description = description + " (with #{substitute_date.strftime('%d/%m/%Y')})" if substitute_date
+    colour = @colour_hash[status].to_s
+    { description: description, colour: colour }
   end
 end
