@@ -57,7 +57,8 @@
 <div class="row">
   <div class="col-md-3">
     <%= form_tag suggest_activity_school_path, method: :get do %>
-        <h3>Filters</h3>
+      <h3>Filters</h3>
+      <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
       <%= render 'activity_types/filters', filter: @filter %>
       <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
     <% end %>

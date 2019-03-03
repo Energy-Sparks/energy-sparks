@@ -28,11 +28,12 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - bundle exec rails db:create
-  - bundle exec govuk-lint-ruby -R app lib
+  - bundle exec govuk-lint-ruby -R app lib data-pipeline/handlers
   - bundle exec bundle-audit check --update
   - yarn
   - bundle exec rails webpacker:compile
   - bundle exec rspec
+  - script/test-data-pipeline.sh
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
