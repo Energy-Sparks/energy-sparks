@@ -21,14 +21,17 @@ class Reports::AmrValidatedReadingsController < ApplicationController
     respond_to do |format|
       format.json do
         readings = @meter.amr_validated_readings.order(:reading_date)
-        @reading_summary = readings.pluck(:reading_date, :status, :substitute_date).map do |record|
-          { record[0] => summary_hash(record[1], record[2]) }
+        @reading_summary = readings.pluck(:reading_date, :status, :substitute_date).map do |reading_date, status, substitute_date|
+          { reading_date => summary_hash(status, substitute_date) }
         end
+        # Turn array of hashes in to a proper hash
         @reading_summary = @reading_summary.inject(:merge!)
       end
       format.html
     end
   end
+
+private
 
   def summary_hash(status, substitute_date)
     description = "#{status} #{@amr_types[status][:name]}"
