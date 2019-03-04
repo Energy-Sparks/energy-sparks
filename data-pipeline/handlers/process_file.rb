@@ -23,7 +23,7 @@ module DataPipeline
 
       def process_file
         s3_record = @event['Records'].first['s3']
-        file_key = s3_record['object']['key']
+        file_key = CGI::unescape s3_record['object']['key']
         bucket_name = s3_record['bucket']['name']
 
         @logger.info("Processing key: #{file_key} bucket_name: #{bucket_name}")

@@ -6,11 +6,12 @@ describe DataPipeline::Handlers::ProcessFile do
 
   describe '#process_file' do
 
-    let(:sheffield_csv) { File.open('spec/support/files/sheffield_export.csv') }
-    let(:sheffield_zip) { File.open('spec/support/files/sheffield_export.zip') }
-    let(:unknown_file) { File.open('spec/support/files/1x1.png') }
+    let(:sheffield_csv)     { File.open('spec/support/files/sheffield_export.csv') }
+    let(:sheffield_gas_csv) { File.open('spec/support/files/sheffield_export.csv') }
+    let(:sheffield_zip)     { File.open('spec/support/files/sheffield_export.zip') }
+    let(:unknown_file)      { File.open('spec/support/files/1x1.png') }
 
-    let(:logger){ Logger.new(IO::NULL) }
+    let(:logger) { Logger.new(IO::NULL) }
     let(:client) { Aws::S3::Client.new(stub_responses: true) }
     let(:environment) {
       {
@@ -27,16 +28,37 @@ describe DataPipeline::Handlers::ProcessFile do
         :get_object, ->(context) {
           case context.params[:key]
           when 'sheffield/export.csv'
-            { body: sheffield_csv}
+            { body: sheffield_csv }
           when 'sheffield/export.zip'
-            { body: sheffield_zip}
+            { body: sheffield_zip }
           when 'sheffield/image.png'
-            { body: unknown_file}
+            { body: unknown_file }
+          when  'sheffield-gas/Sheffield City Council - Energy Sparks (Daily Email)20190303.csv'
+            { body: sheffield_gas_csv }
           else
             'NotFound'
           end
         }
       )
+    end
+
+    describe 'when the file is a sheffield gas CSV with spaces in the filename' do
+
+      let(:event){ DataPipeline::Support::Events.csv_sheffield_gas_added }
+
+      it 'puts the attachment file in the AMR_DATA_BUCKET from the environment using the key of the object added' do
+        response = handler.process_file
+
+        request = client.api_requests.last
+        expect(request[:operation_name]).to eq(:put_object)
+        expect(request[:params][:key]).to eq('sheffield-gas/Sheffield City Council - Energy Sparks (Daily Email)20190303.csv')
+        expect(request[:params][:bucket]).to eq('data-bucket')
+      end
+
+      it 'returns a success code' do
+        response = handler.process_file
+        expect(response[:statusCode]).to eq(200)
+      end
     end
 
     describe 'when the file is a CSV' do
