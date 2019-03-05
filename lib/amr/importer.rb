@@ -1,11 +1,9 @@
 module Amr
   class Importer
-    AWS_REGION = 'eu-west-2'.freeze
-
     def initialize(config, bucket = nil, s3_client = nil)
       @config = config
       @bucket = bucket || ENV['AWS_S3_AMR_DATA_FEEDS_BUCKET']
-      @s3_client = s3_client || Aws::S3::Client.new(region: AWS_REGION)
+      @s3_client = s3_client || Aws::S3::Client.new
     end
 
     def import_all
