@@ -11,6 +11,7 @@ gem 'bootsnap'
 gem 'puma', '3.12.0' # Use Puma as the app server
 gem 'rack', '2.0.6'
 gem 'rack-attack'
+gem 'rack-cors', require: 'rack/cors'
 
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
