@@ -26,14 +26,5 @@ module EnergySparks
     config.active_record.default_timezone = :utc
 
     config.middleware.use Rack::Attack
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins [
-          "http://localhost",
-          "https://#{ENV['APPLICATION_HOST']}"
-        ]
-        resource '/assets/*', headers: :any, methods: [:get, :options]
-      end
-    end
   end
 end
