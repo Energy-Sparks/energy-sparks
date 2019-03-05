@@ -114,5 +114,4 @@ Rails.application.routes.draw do
     end
   end
 
-  match '*unmatched', to: 'application#route_not_found', via: :all
 end
