@@ -26,5 +26,9 @@ module EnergySparks
     config.active_record.default_timezone = :utc
 
     config.middleware.use Rack::Attack
+
+    config.assets.header_rules = {
+      :fonts  => {'Access-Control-Allow-Origin' => "https://#{ENV['APPLICATION_HOST']}"}
+    }
   end
 end
