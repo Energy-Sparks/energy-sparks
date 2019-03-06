@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "school alert subscription events", type: :system do
   let!(:school) { create(:school) }
-  let!(:user)   { create(:user, school: school, role: :school_admin) }
+  let!(:user)   { create(:user, role: :admin) }
   let!(:alert)               { create(:alert, school: school) }
   let!(:contact)             { create(:contact_with_name_email, school: school) }
   let!(:alert_subscription)  { create(:alert_subscription, alert_type: alert.alert_type, school: school, contacts: [contact]) }
@@ -14,15 +14,21 @@ RSpec.describe "school alert subscription events", type: :system do
   end
 
   it 'should show a helpful message if no events' do
+    click_on(school.name)
     click_on('Alert subscription events')
     expect(page.has_content?('There are no alert subscription events')).to be true
   end
 
-  it 'should give a message if no alerts' do
+  it 'allows the user to send all pending emails' do
     service.perform
+    click_on(school.name)
     click_on('Alert subscription events')
-    expect(page.has_content?('There are no alert subscription events')).to be false
-    expect(page.has_content?(contact.name)).to be true
-    expect(page.has_content?('pending')).to be true
+    expect(page.has_content?('Pending')).to be true
+    click_on('Send pending emails now')
+
+    email = ActionMailer::Base.deliveries.last
+
+    expect(email.subject).to include('Energy Sparks alerts')
+    expect(email.html_part.body.to_s).to include(alert.title)
   end
 end
