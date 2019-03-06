@@ -28,8 +28,6 @@ module DataPipeline
           upload_responses << move_to_unprocessable_bucket(key, file)
         end
         { statusCode: 200, body: JSON.generate(responses: upload_responses) }
-      rescue => e
-        { statusCode: 500, body: JSON.generate(e.message) }
       end
 
     private

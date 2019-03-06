@@ -28,8 +28,6 @@ module DataPipeline
         @logger.info("Moved: #{key} to: #{next_bucket}")
 
         { statusCode: 200, body: JSON.generate(response: response) }
-      rescue => e
-        { statusCode: 500, body: JSON.generate(e.message) }
       end
     end
   end

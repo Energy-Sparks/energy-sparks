@@ -33,8 +33,6 @@ module DataPipeline
         end
 
         { statusCode: 200, body: JSON.generate(responses: responses) }
-      rescue => e
-        { statusCode: 500, body: JSON.generate(e.message) }
       end
     end
   end

@@ -111,15 +111,6 @@ describe DataPipeline::Handlers::ProcessFile do
 
     end
 
-    describe 'when the file cannot be found' do
-
-      let(:event){ DataPipeline::Support::Events.missing_file }
-
-      it 'returns an error code' do
-        expect(response[:statusCode]).to eq(500)
-      end
-    end
-
   end
 
 end
