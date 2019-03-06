@@ -4,7 +4,7 @@
 #
 #  alert_id              :bigint(8)
 #  alert_subscription_id :bigint(8)
-#  communciation_type    :integer          default(0), not null
+#  communication_type    :integer          default("email"), not null
 #  contact_id            :bigint(8)
 #  created_at            :datetime         not null
 #  id                    :bigint(8)        not null, primary key

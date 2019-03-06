@@ -22,8 +22,6 @@ class Alert < ApplicationRecord
   belongs_to :school,     inverse_of: :alerts
   belongs_to :alert_type, inverse_of: :alerts
 
-  has_many :alert_subscription_events
-
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
   delegate :display_fuel_type, to: :alert_type
