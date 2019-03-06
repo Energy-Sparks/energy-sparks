@@ -46,15 +46,15 @@ package:
 
 functions:
   unpack-attachments:
-    handler: handlers/unpack_attachments.DataPipeline::Handlers::UnpackAttachments.process
+    handler: handler.DataPipeline::Handler.unpack_attachments
     events:
       - s3: ${self:provider.environment.INBOX_BUCKET}
   process-file:
-    handler: handlers/process_file.DataPipeline::Handlers::ProcessFile.process
+    handler: handler.DataPipeline::Handler.process_file
     events:
       - s3: ${self:provider.environment.PROCESS_BUCKET}
   uncompress:
-    handler: handlers/uncompress_file.DataPipeline::Handlers::UncompressFile.process
+    handler: handler.DataPipeline::Handler.uncompress_file
     events:
       - s3: ${self:provider.environment.COMPRESSED_BUCKET}
 
