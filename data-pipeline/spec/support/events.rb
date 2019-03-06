@@ -59,6 +59,10 @@ module DataPipeline
         file_event(filename: 'sheffield/export.csv', bucket: 'file-bucket')
       end
 
+      def self.csv_sheffield_gas_added
+        file_event(filename: 'sheffield-gas/Sheffield+City+Council+-+Energy+Sparks+%28Daily+Email%2920190303.csv', bucket: 'file-bucket')
+      end
+
       def self.zip_added
         file_event(filename: 'sheffield/export.zip', bucket: 'file-bucket')
       end
