@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-require './handlers/process_file'
+require './handler'
 
 describe DataPipeline::Handlers::ProcessFile do
 
-  describe '#process_file' do
+  describe '#process' do
 
     let(:sheffield_csv)     { File.open('spec/support/files/sheffield_export.csv') }
     let(:sheffield_gas_csv) { File.open('spec/support/files/sheffield_export.csv') }
@@ -21,7 +21,8 @@ describe DataPipeline::Handlers::ProcessFile do
       }
     }
 
-    let(:handler){ DataPipeline::Handlers::ProcessFile.new(event: event, client: client, environment: environment, logger: logger) }
+    let(:handler){ DataPipeline::Handlers::ProcessFile }
+    let(:response){ DataPipeline::Handler.run(handler: handler, event: event, client: client, environment: environment, logger: logger) }
 
     before do
       client.stub_responses(
@@ -40,6 +41,7 @@ describe DataPipeline::Handlers::ProcessFile do
           end
         }
       )
+      response
     end
 
     describe 'when the file is a sheffield gas CSV with spaces in the filename' do
@@ -47,8 +49,6 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.csv_sheffield_gas_added }
 
       it 'puts the attachment file in the AMR_DATA_BUCKET from the environment using the key of the object added' do
-        response = handler.process_file
-
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield-gas/Sheffield City Council - Energy Sparks (Daily Email)20190303.csv')
@@ -56,7 +56,6 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
     end
@@ -66,8 +65,6 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.csv_added }
 
       it 'puts the attachment file in the AMR_DATA_BUCKET from the environment using the key of the object added' do
-        response = handler.process_file
-
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/export.csv')
@@ -75,7 +72,6 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -86,8 +82,6 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.zip_added }
 
       it 'puts the attachment file in the COMPRESSED_BUCKET from the environment using the key of the object added' do
-        response = handler.process_file
-
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/export.zip')
@@ -95,7 +89,6 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -106,8 +99,6 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.image_added }
 
       it 'puts the attachment file in the UNPROCESSABLE_BUCKET from the environment using the key of the object added' do
-        response = handler.process_file
-
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/image.png')
@@ -115,7 +106,6 @@ describe DataPipeline::Handlers::ProcessFile do
       end
 
       it 'returns a success code' do
-        response = handler.process_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -126,7 +116,6 @@ describe DataPipeline::Handlers::ProcessFile do
       let(:event){ DataPipeline::Support::Events.missing_file }
 
       it 'returns an error code' do
-        response = handler.process_file
         expect(response[:statusCode]).to eq(500)
       end
     end
