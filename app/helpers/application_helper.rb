@@ -69,6 +69,17 @@ module ApplicationHelper
     end
   end
 
+  def class_for_alert_subscription(status)
+    case status
+    when 'sent'
+      'bg-success'
+    when 'pending'
+      'bg-warning'
+    else
+      'bg-danger'
+    end
+  end
+
   def alert_icon(alert)
     fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
   end
@@ -120,18 +131,6 @@ module ApplicationHelper
       date_to_and_from[1].delete_at(0)
     end
     date_to_and_from.map { |bit| bit.join(' ') }.join(' - ')
-  end
-
-  # TODO sort this out, hacky yuck
-  def sort_out_data_for_alerts_chart(content)
-    data_string = ''
-    content = HashWithIndifferentAccess.new(content)
-    content[:x_data].map.each_with_index do |(k, v), index|
-      data_string = data_string + ',' unless index == 0
-      data_string = data_string + '{ "name": "' +  k + '", "y": ' + v[0].to_s + ' } '
-    end
-
-    '{ "name": "' + content[:title] + '", "colorByPoint": "true", "data": [' + data_string + '] }'
   end
 
   def format_school_time(school_time)

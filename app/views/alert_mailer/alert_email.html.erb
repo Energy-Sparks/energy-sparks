@@ -14,7 +14,7 @@
       <div id="alert-chart-data-<%= alert.id %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.id %>' class="hide">
         <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
       </div>
-      <div id="alert-chart-wrapper-<%= @alert.id %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= @alert.id %>'></div>
+      <div id="alert-chart-wrapper-<%= alert.id %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.id %>'></div>
     <% elsif detail['type'].to_sym == :html %>
       <%= detail['content'].html_safe %>
     <% else %>

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         end
       end
       resource :meter_readings_validation, only: [:create]
+      resource :alert_emails, only: [:create]
 
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group
