@@ -4,7 +4,6 @@ require 'mail'
 module DataPipeline
   module Handlers
     class UnpackAttachments
-
       def initialize(client:, logger:, environment: {})
         @client = client
         @environment = environment

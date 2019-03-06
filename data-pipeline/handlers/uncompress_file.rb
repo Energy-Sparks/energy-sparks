@@ -4,7 +4,6 @@ require 'zip'
 module DataPipeline
   module Handlers
     class UncompressFile
-
       def initialize(client:, logger:, environment: {})
         @client = client
         @environment = environment
@@ -12,7 +11,6 @@ module DataPipeline
       end
 
       def process(key:, bucket:)
-
         file = @client.get_object(bucket: bucket, key: key)
         prefix = key.split('/').first
 

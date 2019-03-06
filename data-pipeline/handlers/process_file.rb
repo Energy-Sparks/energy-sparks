@@ -3,7 +3,6 @@ require 'aws-sdk-s3'
 module DataPipeline
   module Handlers
     class ProcessFile
-
       def initialize(client:, logger:, environment: {})
         @client = client
         @environment = environment
