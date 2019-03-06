@@ -1,4 +1,6 @@
 class AlertMailer < ApplicationMailer
+  add_template_helper(ApplicationHelper)
+
   def alert_email
     @email_address = params[:email_address]
     @alerts = params[:alerts]
