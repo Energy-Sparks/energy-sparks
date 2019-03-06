@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 6408554edef02fa4988358f93412058d901aa98d
-  tag: 0.32.6
+  revision: 1670947d8d0c7b1d404b91759a12cbba9da6d8c4
+  tag: 0.40.0
   specs:
-    energy-sparks_analytics (0.32.6)
+    energy-sparks_analytics (0.40.0)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -15,6 +15,7 @@ GIT
       roo (~> 2.7.1)
       roo-xls (~> 1.2.0)
       rspec (~> 3.7.0)
+      ruby-prof (~> 0.17.0)
       ruby-sun-times (~> 0.1.5)
       soda-ruby (~> 0.2.25)
       statsample (~> 2.1.0)
@@ -455,6 +456,7 @@ GEM
     rubocop-rspec (1.30.0)
       rubocop (>= 0.58.0)
     ruby-ole (1.2.12.1)
+    ruby-prof (0.17.0)
     ruby-progressbar (1.10.0)
     ruby-sun-times (0.1.5)
     ruby_parser (3.11.0)
