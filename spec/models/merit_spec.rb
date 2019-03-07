@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'merit rules' do
+  include_context "merit badges"
 
   let(:school_user){ create(:user, :has_school_assigned)}
   let(:school){ school_user.school }
