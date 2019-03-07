@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-sm bg-secondary navbar-dark ">
+<nav class="navbar navbar-expand-sm bg-secondary navbar-dark sub-navbar">
   <div class="container">
-    <%= link_to @school.name, school_path(@school), class: 'navbar-brand' %>
+    <h1><%= link_to @school.name, school_path(@school) %></h1>
     <% if @school.scoreboard %>
     <h2 class="display-6">
       <span class="badge badge-success align-bottom">

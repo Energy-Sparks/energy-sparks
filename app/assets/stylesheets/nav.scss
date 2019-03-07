@@ -31,6 +31,13 @@
   letter-spacing: 1px;
 }
 
+.sub-navbar a,
+.sub-navbar a:hover,
+.sub-navbar a:focus,
+.sub-navbar a:active {
+    color: white;
+  }
+
 .navbar-custom .navbar-nav li a {
   color: white;
 }
