@@ -113,4 +113,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :teachers do
+    get 'schools/:id', to: 'schools#show', as: :school
+  end
+
+  namespace :pupils do
+    get 'schools/:id', to: 'schools#show', as: :school
+  end
 end
