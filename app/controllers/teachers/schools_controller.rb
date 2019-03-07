@@ -1,11 +1,16 @@
 class Teachers::SchoolsController < SchoolsController
-  # GET /schools/1
+  include ActivityTypeFilterable
+
+  # GET /schools/freshford
   def show
     redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
-    @activities = @school.activities.order("happened_on DESC")
+    @activities_count = @school.activities.count
     @latest_alerts_sample = @school.alerts.usable.latest.sample
 
-    @charts = [:electricity_by_day_of_week, :gas_by_day_of_week]
+    @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
     @number_of_charts = @charts.size
+
+    @first = @school.activities.empty?
+    @suggestions = NextActivitySuggesterWithFilter.new(@school, activity_type_filter).suggest
   end
 end
