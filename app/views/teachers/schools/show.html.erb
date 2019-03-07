@@ -1,11 +1,13 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<div typeof="School">
-  <div class="row padded-row">
-    <div class="col-md-12">
-      <h2>Energy usage</h2>
-      <p>Charts will go here</p>
-    </div>
+<div typeof="School" class="teachers">
+  <div class="row">
+    <% @number_of_charts.times do |number| %>
+      <div id="chart_wrapper_<%= number %>"  class="col-sm">
+        <h3 class="analysis"><%= @charts[number].to_s.humanize %></h3>
+        <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-no-advice="true" data-chart-y-axis-units="kwh" data-chart-json="<%= request.path + '/chart.json?chart_type=' + @charts[number].to_s  + '&chart_y_axis_units=kwh' %>"></div>
+      </div>
+    <% end %>
   </div>
 
   <div class="row padded-row">

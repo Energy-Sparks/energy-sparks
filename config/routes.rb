@@ -114,10 +114,12 @@ Rails.application.routes.draw do
   end
 
   namespace :teachers do
+    get 'schools/:school_id/chart', to: 'charts#show'
     get 'schools/:id', to: 'schools#show', as: :school
   end
 
   namespace :pupils do
+    get 'schools/:school_id/chart', to: 'charts#show'
     get 'schools/:id', to: 'schools#show', as: :school
   end
 end
