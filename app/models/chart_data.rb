@@ -19,7 +19,7 @@ private
 
   # JJ This should be handled in the analytics code
   def customised_chart_config(chart_manager)
-    chart_config = chart_manager.resolve_chart_inheritance(ChartManager::STANDARD_CHART_CONFIGURATION[@chart_type])
+    chart_config = chart_manager.get_chart_config(@chart_type)
     if chart_config.key?(:yaxis_units) && chart_config[:yaxis_units] == :kwh
       chart_config[:yaxis_units] = @y_axis_units
       chart_config[:yaxis_units] = :£ if @y_axis_units == :gb_pounds

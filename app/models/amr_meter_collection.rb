@@ -14,8 +14,8 @@ class AmrMeterCollection < MeterCollection
     @schedule_data_manager_service = ScheduleDataManagerService.new(active_record_school)
 
     # Pre-warm cache
-    holidays
-    temperatures
+    #holidays
+    #temperatures
 
     @opening_times_hash = set_up_opening_time_array(active_record_school).to_h
 
@@ -32,19 +32,19 @@ class AmrMeterCollection < MeterCollection
   end
 
   def holidays
-    @schedule_data_manager_service.holidays
+    @holidays ||= @schedule_data_manager_service.holidays
   end
 
   def temperatures
-    @schedule_data_manager_service.temperatures
+    @temperatures ||= @schedule_data_manager_service.temperatures
   end
 
   def solar_irradiation
-    @schedule_data_manager_service.solar_irradiation
+    @solar_irradiation ||= @schedule_data_manager_service.solar_irradiation
   end
 
   def solar_pv
-    @schedule_data_manager_service.solar_pv
+    @solar_pv ||= @schedule_data_manager_service.solar_pv
   end
 
   def is_open?(time)
@@ -124,12 +124,12 @@ private
 
   def set_up_meters(active_record_school)
     @heat_meters = active_record_school.meters_with_readings(:gas).map do |active_record_meter|
-      dashboard_meter = Dashboard::Meter.new(@school, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
+      dashboard_meter = Dashboard::Meter.new(self, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
       add_amr_data(dashboard_meter, active_record_meter)
     end
 
     @electricity_meters = active_record_school.meters_with_readings(:electricity).map do |active_record_meter|
-      dashboard_meter = Dashboard::Meter.new(@school, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
+      dashboard_meter = Dashboard::Meter.new(self, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
       add_amr_data(dashboard_meter, active_record_meter)
     end
   end
