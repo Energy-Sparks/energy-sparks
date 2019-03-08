@@ -14,7 +14,7 @@
           <% end %>
         </span>
         <% if @school.points.positive? %>
-          <span class="nav-link badge badge-pill badge-primary">Current position <%= @school.scoreboard.position(@school) + 1 %></span>
+          <span class="nav-link badge badge-pill badge-primary">Current position <%= scoreboard_position(@school) %></span>
         <% end %>
       </h3>
     <% end %>
