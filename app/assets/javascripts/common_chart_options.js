@@ -66,12 +66,14 @@ var commonChartOptions = {
 }
 
 
-function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
+function barColumnLine(d, c, chartIndex, seriesData, chartType) {
   var subChartType = d.chart1_subtype;
   console.log('bar or column or line ' + subChartType);
 
   var xAxisCategories = d.x_axis_categories;
+  var yAxisLabel = d.y_axis_label;
   var y2AxisLabel = d.y2_axis_label;
+  var xAxisLabel = d.x_axis_label;
 
   c.xAxis[0].setCategories(xAxisCategories);
 
@@ -132,10 +134,15 @@ function barColumnLine(d, c, chartIndex, seriesData, yAxisLabel, chartType) {
     c.addSeries(seriesData[key], false);
   });
 
-  if (yAxisLabel.length) {
+  if (yAxisLabel) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
     c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
+  if (xAxisLabel) {
+    console.log('we have a xAxisLabel ' + xAxisLabel);
+    c.update({ xAxis: [{ title: { text: xAxisLabel }}]});
+  }
+
   c.redraw();
 }
 
@@ -150,14 +157,24 @@ function isAStringAndStartsWith(thing, startingWith) {
   (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
 }
 
-function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
+function scatter(d, c, chartIndex, seriesData) {
   console.log('scatter');
+
+  var yAxisLabel = d.y_axis_label;
+  var xAxisLabel = d.x_axis_label;
+
   c.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
-  if (yAxisLabel.length) {
+  if (yAxisLabel) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
-    c.update({ xAxis: [{ title: { text: 'Degree Days' }}], yAxis: [{ title: { text: yAxisLabel }}]});
+    c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
   }
+
+  if (xAxisLabel) {
+    console.log('we have a xAxisLabel ' + xAxisLabel);
+    c.update({ xAxis: [{ title: { text: xAxisLabel }}]});
+  }
+
 
   Object.keys(seriesData).forEach(function (key) {
     console.log(seriesData[key].name);
@@ -166,9 +183,10 @@ function scatter(d, c, chartIndex, seriesData, yAxisLabel) {
   c.redraw();
 }
 
-function pie(d, c, chartIndex, seriesData, $chartDiv, yAxisLabel) {
+function pie(d, c, chartIndex, seriesData, $chartDiv) {
   $chartDiv.addClass('pie-chart');
   var chartHeight = $chartDiv.height();
+  var yAxisLabel = d.y_axis_label;
 
   c.addSeries(seriesData, false);
   c.update({chart: {

@@ -17,7 +17,6 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
   var $chartDiv = $(chartDiv);
   var chartType = chart_data.chart1_type;
   var seriesData = chart_data.series_data;
-  var yAxisLabel = chart_data.y_axis_label;
 
   if (! noAdvice) {
     var titleH3 = $chartDiv.prev('h3');
@@ -42,15 +41,15 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
   }
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(chart_data, chart, chartIndex, seriesData, yAxisLabel, chartType);
+    barColumnLine(chart_data, chart, chartIndex, seriesData, chartType);
 
   // Scatter
   } else if (chartType == 'scatter') {
-    scatter(chart_data, chart, chartIndex, seriesData, yAxisLabel);
+    scatter(chart_data, chart, chartIndex, seriesData);
 
   // Pie
   } else if (chartType == 'pie') {
-    pie(chart_data, chart, chartIndex, seriesData, $chartDiv, yAxisLabel);
+    pie(chart_data, chart, chartIndex, seriesData, $chartDiv);
   }
 
   $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
