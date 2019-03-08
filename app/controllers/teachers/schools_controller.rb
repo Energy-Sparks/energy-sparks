@@ -5,7 +5,7 @@ class Teachers::SchoolsController < SchoolsController
     @activities = @school.activities.order("happened_on DESC")
     @latest_alerts_sample = @school.alerts.usable.latest.sample
 
-    @charts = [:electricity_by_day_of_week, :gas_by_day_of_week]
+    @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
     @number_of_charts = @charts.size
   end
 end

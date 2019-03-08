@@ -5,7 +5,7 @@
     <% @number_of_charts.times do |number| %>
       <div id="chart_wrapper_<%= number %>"  class="col-sm">
         <h3 class="analysis"><%= @charts[number].to_s.humanize %></h3>
-        <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-no-advice="true" data-chart-y-axis-units="kwh" data-chart-json="<%= request.path + '/chart.json?chart_type=' + @charts[number].to_s  + '&chart_y_axis_units=kwh' %>"></div>
+        <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-no-advice="true" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=' + @charts[number].to_s  + '&chart_y_axis_units=kwh' %>"></div>
       </div>
     <% end %>
   </div>
