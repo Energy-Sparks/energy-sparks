@@ -11,7 +11,7 @@
   </div>
 
   <div class="row padded-row">
-    <div class="col-md-12">
+    <div class="col-md-12 jumbotron">
       <h2>Things to try</h2>
       <p>Will go here</p>
     </div>
@@ -23,10 +23,55 @@
     </div>
   </div>
 
-  <div class="row padded-row">
+ <div class="row padded-row">
     <div class="col-md-12">
-      <h2>Here is what has been going on</h2>
-      <p>Activity card will go here</p>
+      <% if @first %>
+        <h2>No activities completed, make a start!</h2>
+      <% else %>
+        <h2>You've completed <%= @activities_count %> activities</h2>
+        <h3>Activities to try next</h3>
+        <% @suggestions.in_groups_of(3, nil) do |group| %>
+          <div class="row padded-row">
+            <div class="card-deck">
+              <% group.each do |activity_type| %>
+                <% if activity_type.present? %>
+                  <div class="card activity-card">
+                    <div class="card-header">
+                      <p><span class="badge badge-success"><%= activity_type.score %></span>
+                      <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
+                    </div>
+                    <div class="card-body">
+                      <h4 class="card-title"><%= "#{activity_type.name} (#{activity_type.key_stage_list})" %></h4>
+                      <p class="card-text">
+                      </p>
+                    </div>
+                    <div class="card-footer text-right">
+                      <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
+                    </div>
+                  </div>
+                <% else %>
+                  <div class="card secondary-card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                      <h4 class="card-title">Want some other suggestions?</h4>
+                      <p class="card-text">
+                        You can also design your own activities, you can still score points for these when you
+                        record them using the <%= link_to 'activity form', new_school_activity_path(@school) %>. For more
+                        ideas have a look at our full list of activities.
+                      </p>
+
+                    </div>
+                    <div class="card-footer text-right">
+                      <%= link_to 'View the full list of activities', activity_categories_path, class: 'btn btn-secondary' %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
