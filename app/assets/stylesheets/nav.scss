@@ -31,13 +31,25 @@
   letter-spacing: 1px;
 }
 
-.sub-navbar a,
-.sub-navbar a:hover,
-.sub-navbar a:focus,
-.sub-navbar a:active {
+.sub-navbar h4 a,
+.sub-navbar h4 a:hover,
+.sub-navbar h4 a:focus,
+.sub-navbar h4 a:active {
     color: white;
+    vertical-align: middle;
   }
 
+.sub-navbar li.nav-item a,
+.sub-navbar li.nav-item a:hover,
+.sub-navbar li.nav-item a:focus,
+.sub-navbar li.nav-item a:active {
+    color: black;
+}
+
+.sub-navbar a.btn {
+    margin-right: 2px;
+    margin-left: 2px;
+}
 .navbar-custom .navbar-nav li a {
   color: white;
 }

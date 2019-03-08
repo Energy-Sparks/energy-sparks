@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-sm bg-secondary navbar-dark sub-navbar">
   <div class="container">
-    <h1><%= link_to @school.name, school_path(@school) %></h1>
+    <h4 class="align-middle"><%= link_to @school.name, school_path(@school) %></h4>
     <% if @school.scoreboard %>
-    <h2 class="display-6">
+    <h3 class="display-6">
       <span class="badge badge-success align-bottom">
         <% if @school.points.positive? %>
           <%= @school.points %> points
@@ -16,8 +16,40 @@
       <% if @school.points.positive? %>
         <span class="nav-link badge badge-pill badge-primary">Current position <%= @school.scoreboard.position(@school) + 1 %></span>
       <% end %>
-    </h2>
-    <%= link_to 'View scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning' %>
+    </h3>
+
+        <%- if can? :update, @school -%>
+        <ul class="nav navbar-nav">
+
+
+<li class="nav-item dropdown">
+            <a class="dropdown-toggle btn btn-sm btn-success" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My school</a>
+            <div class="dropdown-menu" aria-labelledby="my_school">
+            <%= link_to 'Analysis', school_analysis_path(@school), class: 'dropdown-item'  %>
+        <%= link_to 'Simulations', school_simulations_path(@school), class: 'dropdown-item'  if can? :manage, Simulation %>
+        <%= link_to 'Alerts', school_alerts_path(@school), class: 'dropdown-item'  if can? :read, AlertType %>
+            </div>
+          </li>
+
+
+          <li class="nav-item dropdown">
+              <a class="dropdown-toggle btn btn-sm btn-warning" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage school</a>
+              <div class="dropdown-menu" aria-labelledby="manage-school">
+                <%= link_to 'Edit school details', edit_school_path(@school), class: 'dropdown-item' %>
+                <%= link_to 'Calendar', calendar_path(@school.calendar), class: 'dropdown-item' if @school.calendar && can?(:show, @school.calendar) %>
+                <%= link_to 'Data feed configuration', edit_school_configuration_path(@school), class: 'dropdown-item' if can? :configure, @school %>
+                <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
+                <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' if can? :index, Meter %>
+                <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item' if can? :manage_school_times, @school%>
+                <%= link_to 'Manage alert subscriptions', school_alert_subscriptions_path(@school), class: 'dropdown-item' if can? :manage, AlertSubscription %>
+                <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item' if can? :manage, AlertSubscription %>
+              </div>
+            </li>
+          <%- end -%>
+        <li>
+    <%= link_to 'View scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' %>
+  </li>
+</ul>
     <% end %>
   </div>
 </nav>
