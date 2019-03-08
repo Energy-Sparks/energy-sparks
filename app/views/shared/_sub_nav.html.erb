@@ -33,7 +33,7 @@
         <li class="nav-item dropdown">
           <a class="dropdown-toggle btn btn-sm btn-warning" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage school</a>
           <div class="dropdown-menu" aria-labelledby="manage-school">
-            <%= link_to 'Edit school details', edit_school_path(@school), class: 'dropdown-item' %>
+            <%= link_to 'Edit school', edit_school_path(@school), class: 'dropdown-item' %>
             <%= link_to 'Calendar', calendar_path(@school.calendar), class: 'dropdown-item' if @school.calendar && can?(:show, @school.calendar) %>
             <%= link_to 'Data feed configuration', edit_school_configuration_path(@school), class: 'dropdown-item' if can? :configure, @school %>
             <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
@@ -49,7 +49,7 @@
         </li>
       <%- end -%>
       <li>
-        <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' %>
+        <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' if @school.scoreboard %>
       </li>
     </ul>
   </div>
