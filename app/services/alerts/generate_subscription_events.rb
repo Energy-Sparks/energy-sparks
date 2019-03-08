@@ -6,17 +6,11 @@ module Alerts
 
     def perform
       @school.alerts.latest.each do |alert|
-        process_alert(alert)
+        process_subscriptions(alert)
       end
     end
 
   private
-
-    def process_alert(alert)
-      if any_subscriptions?(@school, alert.alert_type)
-        process_subscriptions(alert)
-      end
-    end
 
     def process_subscriptions(alert)
       subscriptions(@school, alert.alert_type).each do |subscription|

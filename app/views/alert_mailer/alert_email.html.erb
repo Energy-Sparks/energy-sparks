@@ -1,6 +1,6 @@
 <h1>Energy Sparks alerts for <%= link_to @school.name, school_url(@school) %></h1>
 <p>You have been assigned as a contact for the following alerts from Energy Sparks.</p>
-<% if @school.school_admin.any? %>
+<% if @unsubscribe_emails %>
   <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= @unsubscribe_emails %></p>
 <% end %>
 
