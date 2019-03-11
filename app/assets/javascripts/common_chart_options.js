@@ -73,7 +73,6 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
   var xAxisCategories = d.x_axis_categories;
   var yAxisLabel = d.y_axis_label;
   var y2AxisLabel = d.y2_axis_label;
-  var xAxisLabel = d.x_axis_label;
 
   c.xAxis[0].setCategories(xAxisCategories);
 
@@ -134,16 +133,25 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
     c.addSeries(seriesData[key], false);
   });
 
-  if (yAxisLabel) {
-    console.log('we have a yAxisLabel ' + yAxisLabel);
-    c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
-  }
-  if (xAxisLabel) {
-    console.log('we have a xAxisLabel ' + xAxisLabel);
-    c.update({ xAxis: [{ title: { text: xAxisLabel }}]});
-  }
+  updateChartLabels(d, c);
 
   c.redraw();
+}
+
+function updateChartLabels(data, chart){
+
+  var yAxisLabel = data.y_axis_label;
+  var xAxisLabel = data.x_axis_label;
+
+  if (yAxisLabel) {
+    console.log('we have a yAxisLabel ' + yAxisLabel);
+    chart.update({ yAxis: [{ title: { text: yAxisLabel }}]});
+  }
+
+  if (xAxisLabel) {
+    console.log('we have a xAxisLabel ' + xAxisLabel);
+    chart.update({ xAxis: [{ title: { text: xAxisLabel }}]});
+  }
 }
 
 function isAStringAndStartsWith(thing, startingWith) {
@@ -160,20 +168,9 @@ function isAStringAndStartsWith(thing, startingWith) {
 function scatter(d, c, chartIndex, seriesData) {
   console.log('scatter');
 
-  var yAxisLabel = d.y_axis_label;
-  var xAxisLabel = d.x_axis_label;
 
+  updateChartLabels(d, c);
   c.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
-
-  if (yAxisLabel) {
-    console.log('we have a yAxisLabel ' + yAxisLabel);
-    c.update({ yAxis: [{ title: { text: yAxisLabel }}]});
-  }
-
-  if (xAxisLabel) {
-    console.log('we have a xAxisLabel ' + xAxisLabel);
-    c.update({ xAxis: [{ title: { text: xAxisLabel }}]});
-  }
 
 
   Object.keys(seriesData).forEach(function (key) {
