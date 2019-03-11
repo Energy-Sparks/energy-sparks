@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-require './handlers/uncompress_file'
+require './handler'
 
 describe DataPipeline::Handlers::UncompressFile do
 
-  describe '#process_file' do
+  describe '#process' do
 
     let(:sheffield_csv) { File.open('spec/support/files/sheffield_export.csv') }
     let(:sheffield_zip) { File.open('spec/support/files/sheffield_export.zip') }
@@ -19,7 +19,8 @@ describe DataPipeline::Handlers::UncompressFile do
       }
     }
 
-    let(:handler){ DataPipeline::Handlers::UncompressFile.new(event: event, client: client, environment: environment, logger: logger) }
+    let(:handler){ DataPipeline::Handlers::UncompressFile }
+    let(:response){ DataPipeline::Handler.run(handler: handler, event: event, client: client, environment: environment, logger: logger) }
 
     before do
       client.stub_responses(
@@ -34,6 +35,7 @@ describe DataPipeline::Handlers::UncompressFile do
           end
         }
       )
+      response
     end
 
     describe 'when the file is a zip' do
@@ -41,9 +43,6 @@ describe DataPipeline::Handlers::UncompressFile do
       let(:event){ DataPipeline::Support::Events.zip_added }
 
       it 'puts the unzipped file in the PROCESS_BUCKET from the environment using the key of the object added' do
-
-        response = handler.uncompress_file
-
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/4003063_9232_Export_20181108_120524_290.csv')
@@ -51,7 +50,6 @@ describe DataPipeline::Handlers::UncompressFile do
       end
 
       it 'returns a success code' do
-        response = handler.uncompress_file
         expect(response[:statusCode]).to eq(200)
       end
 
@@ -62,8 +60,6 @@ describe DataPipeline::Handlers::UncompressFile do
       let(:event){ DataPipeline::Support::Events.image_added }
 
       it 'puts the file in the UNPROCESSABLE_BUCKET from the environment using the key of the object added' do
-        response = handler.uncompress_file
-
         request = client.api_requests.last
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/image.png')
@@ -71,20 +67,9 @@ describe DataPipeline::Handlers::UncompressFile do
       end
 
       it 'returns a success code' do
-        response = handler.uncompress_file
         expect(response[:statusCode]).to eq(200)
       end
 
-    end
-
-    describe 'when the file cannot be found' do
-
-      let(:event){ DataPipeline::Support::Events.missing_file }
-
-      it 'returns an error code' do
-        response = handler.uncompress_file
-        expect(response[:statusCode]).to eq(500)
-      end
     end
 
   end
