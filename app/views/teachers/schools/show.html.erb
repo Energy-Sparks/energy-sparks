@@ -1,77 +1,59 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<div typeof="School" class="teachers">
-  <div class="row">
-    <% (0..1).each do |number| %>
-      <div id="chart_wrapper_<%= number %>"  class="col-sm">
-        <h3 class="analysis"><%= @charts[number].to_s.humanize %></h3>
-        <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-no-advice="true" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=' + @charts[number].to_s  + '&chart_y_axis_units=kwh' %>"></div>
-      </div>
+<h2>Energy Usage <%= fa_icon 'chart-pie' %></h2>
+
+<div class="row">
+  <div id="chart_wrapper_0"  class="col-sm">
+    <h3><%= fa_icon fuel_type_icon(:electricity) %> Electricity</h3>
+    <p class="pull-right sm">14 days leading up to <%= nice_dates @school.last_full_week(:electricity).last %></p>
+    <div id="chart_0" class="analysis-chart" data-no-advice="true" data-chart-index="0" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_electricity&chart_y_axis_units=kwh' %>"></div>
+  </div>
+  <div id="chart_wrapper_1"  class="col-sm">
+    <h3><%=  fa_icon fuel_type_icon(:gas) %> Gas</h3>
+    <div id="chart_1" class="analysis-chart" data-no-advice="true" data-chart-index="1" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_gas&chart_y_axis_units=kwh' %>"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 jumbotron">
+    <h2>Things to try</h2>
+    <p>Will go here</p>
+  </div>
+</div>
+
+<button type="button" class="btn btn-default" aria-label="Left Align">
+  <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+</button>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
+  </div>
+</div>
+
+<div class="card">
+  <h3 class="card-header">
+    <%= fa_icon :pencil %>
+    <% if @first %>
+      No activities completed, make a start!
+    <% else %>
+         You've completed <%= @activities_count %> activities
     <% end %>
-  </div>
-
-  <div class="row padded-row">
-    <div class="col-md-12 jumbotron">
-      <h2>Things to try</h2>
-      <p>Will go here</p>
+  </h3>
+  <div class="card-body">
+    <div class="row justify-content-between">
+      <div class="col-10">
+        <h4 class="">Activities to try next:</h4>
+      </div>
+      <div class="col-2">
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-sm btn-secondary pull-right' %>
+      </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
-    </div>
-  </div>
-
- <div class="row padded-row">
-    <div class="col-md-12">
-      <% if @first %>
-        <h2>No activities completed, make a start!</h2>
-      <% else %>
-        <h2>You've completed <%= @activities_count %> activities</h2>
-        <h3>Activities to try next</h3>
-        <% @suggestions.in_groups_of(3, nil) do |group| %>
-          <div class="row padded-row">
-            <div class="card-deck">
-              <% group.each do |activity_type| %>
-                <% if activity_type.present? %>
-                  <div class="card activity-card">
-                    <div class="card-header">
-                      <p><span class="badge badge-success"><%= activity_type.score %></span>
-                      <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
-                    </div>
-                    <div class="card-body">
-                      <h4 class="card-title"><%= "#{activity_type.name} (#{activity_type.key_stage_list})" %></h4>
-                      <p class="card-text">
-                      </p>
-                    </div>
-                    <div class="card-footer text-right">
-                      <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
-                    </div>
-                  </div>
-                <% else %>
-                  <div class="card secondary-card">
-                    <div class="card-header">
-                    </div>
-                    <div class="card-body">
-                      <h4 class="card-title">Want some other suggestions?</h4>
-                      <p class="card-text">
-                        You can also design your own activities, you can still score points for these when you
-                        record them using the <%= link_to 'activity form', new_school_activity_path(@school) %>. For more
-                        ideas have a look at our full list of activities.
-                      </p>
-
-                    </div>
-                    <div class="card-footer text-right">
-                      <%= link_to 'View the full list of activities', activity_categories_path, class: 'btn btn-secondary' %>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
+    <ul class="list-group list-group-flush">
+      <% @suggestions.first(3).each do |activity_type| %>
+        <li class="list-group-item"><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
       <% end %>
-    </div>
+    </ul>
   </div>
 </div>
