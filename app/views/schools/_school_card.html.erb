@@ -2,17 +2,27 @@
   <div class="card-body">
     <% if school.active? %>
       <h3 class="card-title">
-            <%= link_to school_path(school) do %>
-              <%= school.name %>
-            <% end -%>
+        <%= link_to school_path(school) do %>
+          <%= school.name %>
+        <% end -%>
       </h3>
-      <div class="card-text"><%= school.address %> <%= school.postcode %></div>
+      <div class="card-text">
+        <% if user_signed_in? && current_user.admin? %>
+          <% if school.meters_for_supply(:electricity).any? %>
+            <%= fa_icon(fuel_type_icon(:electricity)) %>
+          <% end %>
+          <% if school.meters_for_supply(:gas).any? %>
+            <%= fa_icon(fuel_type_icon(:gas)) %>
+          <% end %>
+        <% end %>
+        <%= school.address %> <%= school.postcode %>
+      </div>
     <% else %>
-        <h6 class="card-title">
-          <%= link_to school_path(school) do %>
-              <%= school.name %>
-          <% end -%>
-        </h6>
+      <h6 class="card-title">
+        <%= link_to school_path(school) do %>
+          <%= school.name %>
+        <% end -%>
+      </h6>
     <% end %>
   </div>
 </div>
