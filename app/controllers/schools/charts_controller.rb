@@ -20,8 +20,11 @@ class Schools::ChartsController < ApplicationController
         aggregate_school(@school)
       end
       format.json do
-        y_axis_units = params[:chart_y_axis_units].to_sym if params[:chart_y_axis_units]
-        @output = ChartData.new(aggregate_school(@school), @chart_type, show_benchmark_figures?, y_axis_units).data
+        chart_config = {
+          mpan_mprn: params[:mpan_mprn],
+          y_axis_units: params.fetch(:chart_y_axis_units, :kwh).to_sym
+        }
+        @output = ChartData.new(aggregate_school(@school), @chart_type, show_benchmark_figures?, chart_config).data
       end
     end
   end

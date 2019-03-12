@@ -73,6 +73,7 @@ Rails.application.routes.draw do
       get :gas_detail, to: 'analysis#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
       get :boiler_control, to: 'analysis#boiler_control'
+      get :heating_model_fitting, to: 'analysis#heating_model_fitting'
       get :test, to: 'analysis#test'
     end
 
