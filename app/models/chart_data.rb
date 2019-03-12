@@ -1,8 +1,8 @@
 class ChartData
-  def initialize(aggregated_school, chart_type, show_benchmark_figures, y_axis_units = :kwh)
+  def initialize(aggregated_school, chart_type, show_benchmark_figures, custom_chart_config)
     @aggregated_school = aggregated_school
     @chart_type = chart_type
-    @y_axis_units = y_axis_units
+    @custom_chart_config = custom_chart_config
     @show_benchmark_figures = show_benchmark_figures
   end
 
@@ -21,8 +21,11 @@ private
   def customised_chart_config(chart_manager)
     chart_config = chart_manager.get_chart_config(@chart_type)
     if chart_config.key?(:yaxis_units) && chart_config[:yaxis_units] == :kwh
-      chart_config[:yaxis_units] = @y_axis_units
-      chart_config[:yaxis_units] = :£ if @y_axis_units == :gb_pounds
+      chart_config[:yaxis_units] = @custom_chart_config[:y_axis_units]
+      chart_config[:yaxis_units] = :£ if @custom_chart_config[:y_axis_units] == :gb_pounds
+    end
+    if @custom_chart_config[:mpan_mprn].present?
+      chart_config[:meter_definition] = @custom_chart_config[:mpan_mprn].to_i
     end
     chart_config
   end
