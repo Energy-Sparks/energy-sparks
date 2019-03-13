@@ -1,0 +1,30 @@
+<% content_for :page_title do %>Alert reports for <%= @school.name %><% end %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1 property="name"><%= link_to @school.name, @school %></h1>
+    <h2>Latest alerts</h2>
+    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
+    <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
+  </div>
+</div>
+
+<% if @weekly_alerts.empty? %>
+  <h3>We have no weekly alerts for this school</h3>
+<% else %>
+  <h3>Weekly Alerts</h3>
+  <%= render 'alerts', alerts: @weekly_alerts %>
+<% end %>
+
+<% if @termly_alerts.empty? %>
+  <h3>We have no termly alerts for this school</h3>
+<% else %>
+  <h3>Termly Alerts</h3>
+  <%= render 'alerts', alerts: @termly_alerts %>
+<% end %>
+
+<% if @holiday_alerts.empty? %>
+  <h3>We have no holiday alerts for this school</h3>
+<% else %>
+  <h3>Before holiday Alerts</h3>
+  <%= render 'alerts', alerts: @holiday_alerts %>
+<% end %>

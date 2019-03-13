@@ -1,0 +1,39 @@
+<% content_for :page_title do %>Alert for <%= @school.name %><% end %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1 property="name"><%= link_to @school.name, @school %></h1>
+    <p>
+      <%= link_to 'Latest Alerts', school_alerts_path(@school), class: 'btn btn-primary' %>
+      <%= link_to 'School page', school_path(@school), class: 'btn btn-primary' %>
+    </p>
+  </div>
+  <div class="col-md-12">
+    <div class="card mb-3">
+      <div class="card-header text-white <%= class_for_alert_rating(@alert.data['rating']) %>">
+        <h4><%= fa_icon(alert_icon(@alert)) %> <%= @alert.summary %></h4>
+      </div>
+      <div class="card-body">
+        <h5><%= @alert.title %></h5>
+        <p class="card-text">This alert <%= @alert.description.downcase %></p>
+        <% @alert.detail.each do |detail| %>
+          <% if detail['type'].to_sym == :chart %>
+            <div id="alert-chart-data-<%= @alert.id %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= @alert.id %>' class="hide">
+            <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
+            </div>
+
+            <div id="alert-chart-wrapper-<%= @alert.id %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= @alert.id %>'></div>
+          <% elsif detail['type'].to_sym == :html %>
+            <%= detail['content'].html_safe %>
+          <% else %>
+            <p><%= detail['content'].html_safe %></p>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="card-footer text-muted">
+        <p class="card-text">Find out more: <%= link_to @alert.title, @alert.help_url, target: "_blank" %></p>
+        <p class="card-text"><b>Frequency</b>: <%= @alert.frequency.humanize %></p>
+        <p class="card-text"><b>Run on date</b>: <%= nice_dates @alert.run_on %></p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -124,10 +124,8 @@ module SchoolsHelper
       '' # specific case where no value specified
     elsif number < 50
       number.round(2).to_s
-    elsif number < 1000
-      number.round(0).to_s
     else
-      number.round(0).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+      number.round(0).to_s
     end
   end
 

@@ -1,6 +1,6 @@
 module Onboarding
   class SchoolDetailsController < BaseController
-    before_action :set_key_stage_tags
+    before_action :set_key_stages
     before_action only: [:new, :create] do
       redirect_if_event(:school_details_created, new_onboarding_completion_path(@school_onboarding))
     end
@@ -15,6 +15,7 @@ module Onboarding
       @school = School.new(school_params)
       SchoolCreator.new(@school).onboard_school!(@school_onboarding)
       if @school.persisted?
+        @school_onboarding.update!(school_name: @school.name)
         redirect_to new_onboarding_completion_path(@school_onboarding)
       else
         render :new
@@ -29,6 +30,7 @@ module Onboarding
       @school = @school_onboarding.school
       if @school.update(school_params)
         @school_onboarding.events.create!(event: :school_details_updated)
+        @school_onboarding.update!(school_name: @school.name)
         redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'school-details')
       else
         render :edit
@@ -37,8 +39,8 @@ module Onboarding
 
   private
 
-    def set_key_stage_tags
-      @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+    def set_key_stages
+      @key_stages = KeyStage.order(:name)
     end
 
     def school_params

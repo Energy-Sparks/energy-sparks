@@ -59,12 +59,30 @@ module ApplicationHelper
   end
 
   def class_for_alert_rating(rating)
+    return 'bg-secondary' if rating.nil?
     if rating > 9
       'bg-success'
     elsif rating > 6
       'bg-warning'
     else
       'bg-danger'
+    end
+  end
+
+  def fa_icon(icon_type)
+    icon('fas', icon_type)
+  end
+
+  def alert_icon(alert)
+    fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
+  end
+
+  def fuel_type_icon(fuel_type)
+    case fuel_type
+    when :electricity, 'electricity'
+      'bolt'
+    when :gas, 'gas'
+      'fire'
     end
   end
 
@@ -111,6 +129,7 @@ module ApplicationHelper
   # TODO sort this out, hacky yuck
   def sort_out_data_for_alerts_chart(content)
     data_string = ''
+    content = HashWithIndifferentAccess.new(content)
     content[:x_data].map.each_with_index do |(k, v), index|
       data_string = data_string + ',' unless index == 0
       data_string = data_string + '{ "name": "' +  k + '", "y": ' + v[0].to_s + ' } '

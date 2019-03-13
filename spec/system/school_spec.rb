@@ -5,12 +5,9 @@ RSpec.describe "school", type: :system do
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:school) { create(:school, name: school_name)}
   let!(:admin)  { create(:user, role: 'admin')}
-  let!(:ks1_tag) { ActsAsTaggableOn::Tag.create(name: 'KS1') }
-  let!(:ks1_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks1_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
-  let!(:ks2_tag) { ActsAsTaggableOn::Tag.create(name: 'KS2') }
-  let!(:ks2_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks2_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
-  let!(:ks3_tag) { ActsAsTaggableOn::Tag.create(name: 'KS3') }
-  let!(:ks3_tagging) { ActsAsTaggableOn::Tagging.create(tag_id: ks3_tag.id, taggable_type: nil, taggable_id: nil, context: 'key_stages') }
+  let!(:ks1) { KeyStage.create(name: 'KS1') }
+  let!(:ks2) { KeyStage.create(name: 'KS2') }
+  let!(:ks3) { KeyStage.create(name: 'KS3') }
 
   it 'shows me a school page' do
     visit root_path
@@ -56,32 +53,32 @@ RSpec.describe "school", type: :system do
       it 'I can set up a school for KS1' do
         click_on(school_name)
         click_on('Edit school')
-        expect(school.key_stage_list).to_not include('KS1')
-        expect(school.key_stage_list).to_not include('KS2')
-        expect(school.key_stage_list).to_not include('KS3')
+        expect(school.key_stages).to_not include(ks1)
+        expect(school.key_stages).to_not include(ks2)
+        expect(school.key_stages).to_not include(ks3)
 
         check('KS1')
         click_on('Update School')
         school.reload
-        expect(school.key_stage_list).to include('KS1')
-        expect(school.key_stage_list).to_not include('KS2')
-        expect(school.key_stage_list).to_not include('KS3')
+        expect(school.key_stages).to include(ks1)
+        expect(school.key_stages).to_not include(ks2)
+        expect(school.key_stages).to_not include(ks3)
       end
 
       it 'I can set up a school for KS1 and KS2' do
         click_on(school_name)
         click_on('Edit')
-        expect(school.key_stage_list).to_not include('KS1')
-        expect(school.key_stage_list).to_not include('KS2')
-        expect(school.key_stage_list).to_not include('KS3')
+        expect(school.key_stages).to_not include(ks1)
+        expect(school.key_stages).to_not include(ks2)
+        expect(school.key_stages).to_not include(ks3)
 
         check('KS1')
         check('KS2')
         click_on('Update School')
         school.reload
-        expect(school.key_stage_list).to include('KS1')
-        expect(school.key_stage_list).to include('KS2')
-        expect(school.key_stage_list).to_not include('KS3')
+        expect(school.key_stages).to include(ks1)
+        expect(school.key_stages).to include(ks2)
+        expect(school.key_stages).to_not include(ks3)
       end
 
       it 'allows me to set a school group for the school' do

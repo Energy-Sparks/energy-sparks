@@ -14,7 +14,6 @@ describe ScheduleDataManagerService do
 
     it 'assigns school date periods for the analytics code' do
       results = ScheduleDataManagerService.new(school).holidays
-
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
       expect(school_date_period.type).to eq :holiday

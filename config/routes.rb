@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
 
-  resources :data_feeds
+  get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   resources :scoreboards
   resources :school_groups
 
-  resources :onboarding, only: [:show] do
+  resources :onboarding, path: 'school_setup', only: [:show] do
     scope module: :onboarding do
       resource :consent,        only: [:show, :create], controller: 'consent'
       resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
@@ -62,9 +62,10 @@ Rails.application.routes.draw do
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations
 
+      resources :alerts#, only: [:show, :index]
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
-      get :chart, to: 'charts#show', defaults: { format: :json }
+      get :chart, to: 'charts#show'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
       get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
@@ -94,15 +95,16 @@ Rails.application.routes.draw do
   scope :admin do
     resources :users
     get 'reports', to: 'reports#index'
-    get 'reports/loading', to: 'reports#loading'
-    get 'reports/amr_data_index', to: 'reports#amr_data_index'
     get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-    get 'reports/data_feeds/:id/show/:feed_type', to: 'reports#data_feed_show', as: :reports_data_feed_show
-    get 'reports/:meter_id/amr_readings_show', to: 'reports#amr_readings_show', as: :amr_readings_show
+  end
+
+  namespace :reports do
+    get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
+    get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
   end
 
   namespace :admin do
-    resources :school_onboardings, only: [:new, :create, :index] do
+    resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
         resource :email, only: [:new, :create], controller: 'email'
@@ -111,5 +113,4 @@ Rails.application.routes.draw do
     end
   end
 
-  match '*unmatched', to: 'application#route_not_found', via: :all
 end

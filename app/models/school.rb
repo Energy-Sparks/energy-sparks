@@ -49,7 +49,7 @@ class School < ApplicationRecord
   include Merit::UsageCalculations
   has_merit
 
-  acts_as_taggable_on :key_stages
+  has_and_belongs_to_many :key_stages, join_table: :school_key_stages
 
   has_many :users, dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
@@ -60,7 +60,10 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :school_times,         inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
+
   has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
+  has_many :alerts,               inverse_of: :school, dependent: :destroy
+
   has_many :simulations,          inverse_of: :school, dependent: :destroy
 
   belongs_to :calendar
@@ -109,27 +112,6 @@ class School < ApplicationRecord
 
   def area_name
     school_group.name
-  end
-
-  # TODO: This is not performant and requires some rework or re-architecturing
-  # Analytics code will use it's own version in the meantime
-
-  # def is_open?(datetime)
-  #   time = datetime.to_time.utc
-  #   return false if time.saturday? || time.sunday?
-  #   day_of_week = time.strftime("%A").downcase
-  #   school_time = school_times.find_by(day: day_of_week)
-  #   time_as_number = datetime.hour * 100 + datetime.min
-  #   school_time.opening_time < time_as_number && school_time.closing_time > time_as_number
-  # end
-
-  # TODO integrate this analytics
-  def heat_meters
-    active_meters.where(meter_type: :gas)
-  end
-
-  def electricity_meters
-    active_meters.where(meter_type: :electricity)
   end
 
   def active_meters

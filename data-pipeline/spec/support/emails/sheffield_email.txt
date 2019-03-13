@@ -1,0 +1,140 @@
+Return-Path: <james@test.com>
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
+ by inbound-smtp.eu-west-1.amazonaws.com with SMTP id m44hbjs21povvriptpjd2j31l5414qfckqmjq0o1
+ for sheffield@datafeeds.energysparks.uk;
+ Thu, 08 Nov 2018 17:11:07 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of test.com designates 209.85.210.65 as permitted sender) client-ip=209.85.210.65; envelope-from=james@test.com; helo=mail-ot1-f65.google.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of test.com designates 209.85.210.65 as permitted sender) client-ip=209.85.210.65; envelope-from=james@test.com; helo=mail-ot1-f65.google.com;
+ dkim=pass header.i=@test.com.20150623.gappssmtp.com;
+ dmarc=none header.from=test.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFHaDdxR1cvSjg2c2dIS3Q4QktTaUJZM3gxV3hlK0pZTGJtZ29idXNoS1hmMHR1cnBmT2dsNVRNQktOalBQSEliaHVnUDlGa253S2J1MkNMaW1mM2pNRy9Yc09SUXpKYUpidVhTOVZYbVNGUDM1NTM3SmtRdWoxR0FybjQ0UHpyMzVTTEt3cFlKeXFJazhlUWY5K1A5ckZ5MUE0SDNTbzZISGRTU1VacWVQeVBCNVJJdnJWaW00MzB1S25kRHV5OVI1YlhFUVZsdlV5dUdJaVUybXRxUDBsbnRBZ3B0WE1LeVpFcDg2S0JEZFFmRHFrM1JZTUFOWFlPRlE4QXBodUtLMUwvNDc4eFhLNUlpRzRKTUh3dFl4SU5qNnN5TDBzNFNLZGNVZDMvMFRIK2c9PQ==
+X-Gm-Message-State: AGRZ1gIMxQ7Lid+Rgh49B1nC22IpXXH52rPeNxe9Y8aKSrzNoVrUb0Av
+	ZRB0Xvhv/t3/j59H7XlcRTeINbaWKrh8IBq9OCO5Q2xj
+X-Google-Smtp-Source: AJdET5eWcDsXj2yQFBnhhebSruQJq8wHCzbtW3P0RekCJsxA9MWxEWCp1jbxYipJoGteUPdW0NUIZmuwxBo+5QOz+v4=
+X-Received: by 2002:a9d:2683:: with SMTP id l3mr3457051otb.346.1541697064980;
+ Thu, 08 Nov 2018 09:11:04 -0800 (PST)
+MIME-Version: 1.0
+References: <Igr-AqnVTzGvwWw-Ub2Dag@ismtpd0001p1lon1.sendgrid.net>
+In-Reply-To: <Igr-AqnVTzGvwWw-Ub2Dag@ismtpd0001p1lon1.sendgrid.net>
+From: James Jefferies <james@test.com>
+Date: Thu, 8 Nov 2018 17:10:52 +0000
+Message-ID: <CAGuzJ04FfuUXe+s11qbsJVYJGeaumias-pBnah9r9RDC2heSzQ@mail.gmail.com>
+Subject: Fwd: Intelligent Analytics: Data export for YPO - SHEFFIELD CITY COUNCIL.
+To: sheffield@datafeeds.energysparks.uk
+Content-Type: multipart/mixed; boundary="000000000000e99dbc057a2a51be"
+
+--000000000000e99dbc057a2a51be
+Content-Type: multipart/alternative; boundary="000000000000e99db7057a2a51bc"
+
+--000000000000e99db7057a2a51bc
+Content-Type: text/plain; charset="UTF-8"
+
+---------- Forwarded message ---------
+From: <iasupport@rwe.com>
+Date: Thu, 8 Nov 2018 at 12:05
+Subject: Intelligent Analytics: Data export for YPO - SHEFFIELD CITY
+COUNCIL.
+To: <data@energysparks.uk>
+
+
+Your export is available at the following location
+
+If you chose to have your export attached then please find attached your
+data download report from npower.
+
+If you have any queries regarding the receipt or content of this report
+please contact our support team who will be happy to help.
+
+
+--000000000000e99db7057a2a51bc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div>HTML email</div>
+
+--000000000000e99db7057a2a51bc--
+--000000000000e99dbc057a2a51be
+Content-Type: application/zip; 
+	name="4003063_9232_Export_20181108_120524_290.zip"
+Content-Disposition: attachment; 
+	filename="4003063_9232_Export_20181108_120524_290.zip"
+Content-Transfer-Encoding: base64
+Content-ID: <166f44e0f1bfe7981a21>
+X-Attachment-Id: 166f44e0f1bfe7981a21
+
+UEsDBBQACAAIAKxgaE0AAAAAAAAAAAAAAAArAAAANDAwMzA2M185MjMyX0V4cG9ydF8yMDE4MTEw
+OF8xMjA1MjRfMjkwLmNzdr2bXW8dtxGG7wv0P+gHuCccfvPSsdVarRwZchIjV4XTuLCR2AoUB4X/
+fYdnRc7Dk3MAy7Wri6PhLneWHy+HMy9nf3vz/tX1q38/ePrs4TcPHt28++33t7++f3Pz7vHL968e
+/Pzi9T9l/+v3v2H/G/e/af+b979l/1v3v217ym3/tqdle1y252VTIJsG2VTIpkM2JbJp8ZsWf9eG
+TYvftPhNi9+0+E2L37T4TYvftIRNS9i0hLuubFrCpiVsWsKmJWxawqYlbFripiVuWuKmJd6NyKYl
+blripiVuWqJq+f7h7X4g9//93f9w9z/e/U93//Pd/3L3fzzfhh43hKFRhkoZOmUolaFVhloZemU2
+bGj2Q7OfbR2a/dDsh2Y/NPuh2Q/Nfmj2Q3MYmsPQHOYwDM1haA5Dcxiaw9AchuYwNMehOQ7NcWiO
+c4SH5jg0x6E5Ds2x/vlP37/85ZdXH86evbz9+ezZ7Zu3L28/nD3/1+sHPlSnfxJ9bPWBy1+JfOWd
+jl/YZe+2P5VDMrk4XC8m+2ByRv065bjzFdfxbMOzpVp9EZPLrF92o2nugcjOzYZK2pX5hJRdZiFO
+vVJ3rs1C2yUWfGtb8YF3u5hnQXYp4U6e2vROnF30ficZ2oashbzLdkcbOrusbUML0k4anommIO5q
+Q6FZt8MuWUFbMJtTdwGjmTCaIZsskG0WIxoS0V9tBvT4YrK19dT1e/59NG7LxK2+OdqbK3qT0ZuA
+1rHHHnUMY1ofdRL053K8jk1Uwjw1vEvnzIZUJ91Wm6KmRBTGYO9h50xBxcrSO1ZNn2lEZ/CoViPu
+uAh4W9u0WpvA1/dEa07ZNVtTmbDLu9ZQzWfciYQq1qHfBXtGmzO7UHZhynknxJ43WYjVeFwm/jNw
+Xk/MaIH+MuvfG7cvbm5+ev/65vbXV2ePbt6+/f3dm/cfjgE4lqLjvhreU0Y1xI+QabRPPYvrNMhe
+IGMYKsxJogmzcVOQiEchVMDHzNFq6Somthd4Z0FmoHm1FvuAl3aTzBaY/ekvdSg0h2ppwSytsE2+
+cH9SzBoExWGpag84cdgBrWfrhC7X/fFnl4lzkDFZnHRBffn/4bcQv8QXu4XhWbBJ3PE6sLng+sQw
+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
+--000000000000e99dbc057a2a51be--

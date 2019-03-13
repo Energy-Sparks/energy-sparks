@@ -10,6 +10,7 @@ gem 'bootsnap'
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.0' # Use Puma as the app server
 gem 'rack', '2.0.6'
+gem 'rack-attack'
 
 # Database/Data
 gem 'pg' # Use postgresql as the database for Active Record
@@ -18,7 +19,7 @@ gem 'upsert', '~> 2.2.1'
 gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.31.15'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.32.6'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -27,7 +28,6 @@ gem 'statsample', git: 'https://github.com/SciRuby/statsample', branch: 'master'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'jquery-ui-rails' # Use jquery UI for datepickers
 gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
@@ -40,17 +40,12 @@ gem 'aws-sdk-s3'
 gem 'bootstrap-email'
 
 # Frontend
-gem 'bootstrap', '~> 4.1.0' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
-gem "font-awesome-rails" # Fonts
+gem 'font-awesome-sass', '~> 5.6.1' # For icons
 gem 'simple_form'
 # Highcharts now included directly
-
-# Spreadsheet export
-gem 'rubyzip', '1.2.2'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
-gem 'axlsx_rails'
 
 # For bulk record import in CSV etc
 gem 'activerecord-import'
@@ -82,8 +77,6 @@ gem 'lograge'
 # Exception handling
 gem 'rollbar'
 gem 'oj'
-
-gem 'acts-as-taggable-on'
 
 # Email service
 gem 'mailgun_rails'

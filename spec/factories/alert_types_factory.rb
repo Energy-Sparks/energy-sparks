@@ -14,10 +14,12 @@
 #
 FactoryBot.define do
   factory :alert_type do
-    sequence(:title) {|n| "Alert Type #{n}"}
-    fuel_type { AlertType.fuel_types.keys.sample }
-    sub_category { AlertType.sub_categories.keys.sample }
-    frequency { AlertType.frequencies.keys.sample }
-    class_name { 'AlertChangeInElectricityBaseloadShortTerm' }
+    sequence(:title)  {|n| "Alert Type #{n}"}
+    fuel_type         { AlertType.fuel_types.keys.sample }
+    sub_category      { AlertType.sub_categories.keys.sample }
+    frequency         { AlertType.frequencies.keys.sample }
+    class_name        { 'AlertChangeInElectricityBaseloadShortTerm' }
+    show_ratings      { true }
+    description       { title }
   end
 end

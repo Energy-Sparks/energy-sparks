@@ -28,7 +28,11 @@
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
 
-  acts_as_taggable_on :key_stages
+  has_and_belongs_to_many :key_stages, join_table: :activity_type_key_stages
+  has_and_belongs_to_many :impacts, join_table: :activity_type_impacts
+  has_and_belongs_to_many :subjects, join_table: :activity_type_subjects
+  has_and_belongs_to_many :topics, join_table: :activity_type_topics
+  has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
 
   where(active: true, custom: false, data_driven: true, repeatable: true)
 
@@ -36,6 +40,7 @@ class ActivityType < ApplicationRecord
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
   scope :random_suggestions, -> { active.repeatable }
+  scope :custom_last, -> { order(:custom) }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates_uniqueness_of :badge_name, allow_blank: true, allow_nil: true
@@ -46,11 +51,11 @@ class ActivityType < ApplicationRecord
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
-  def key_stages
-    key_stage_list.to_a.sort.join(', ')
+  def key_stage_list
+    key_stages.map(&:name).sort.join(', ')
   end
 
   def name_with_key_stages
-    "#{name} (#{key_stages})"
+    "#{name} (#{key_stage_list})"
   end
 end

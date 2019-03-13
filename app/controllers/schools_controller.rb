@@ -1,10 +1,10 @@
 class SchoolsController < ApplicationController
-  include KeyStageFilterable
+  include ActivityTypeFilterable
   include Measurements
 
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
-  before_action :set_key_stage_tags, only: [:new, :create, :edit, :update]
+  before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
   # GET /schools
   # GET /schools.json
@@ -32,10 +32,9 @@ class SchoolsController < ApplicationController
   end
 
   def suggest_activity
-    @key_stage_filter_names = work_out_which_filters_to_set
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+    @filter = activity_type_filter
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggesterWithKeyStages.new(@school, @key_stage_filter_names).suggest
+    @suggestions = NextActivitySuggesterWithFilter.new(@school, @filter).suggest
   end
 
   # GET /schools/new
@@ -66,6 +65,7 @@ class SchoolsController < ApplicationController
   def update
     respond_to do |format|
       if @school.update(school_params)
+        AggregateSchoolService.new(@school).invalidate_cache
         format.html { redirect_to @school, notice: 'School was successfully updated.' }
         format.json { render :show, status: :ok, location: @school }
       else
@@ -102,8 +102,8 @@ class SchoolsController < ApplicationController
 
 private
 
-  def set_key_stage_tags
-    @key_stage_tags = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: { context: 'key_stages' }).order(:name).to_a
+  def set_key_stages
+    @key_stages = KeyStage.order(:name)
   end
 
   def school_params

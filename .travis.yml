@@ -1,9 +1,5 @@
 language: ruby
 cache: bundler
-env:
-  - DB_PASSWORD=
-global:
-  - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd
 services:
   - postgresql
 dist: xenial
@@ -19,15 +15,15 @@ addons:
       - chromium-chromedriver
 sudo: required
 before_script:
-  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
-  - "cp config/database.yml.travis config/database.yml"
+  - cp config/database.yml.travis config/database.yml
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
   - bundle exec rails db:create
-  - bundle exec govuk-lint-ruby -R app lib
+  - bundle exec govuk-lint-ruby -R app lib data-pipeline/handlers
   - bundle exec bundle-audit check --update
+  - script/test-data-pipeline.sh
   - bundle exec rspec
 after_success:
-  - CC_TEST_REPORTER_ID=0bf605f25ef38803065d629e8d909d380a14f36c272e5220f0a4231f384cb7cd ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

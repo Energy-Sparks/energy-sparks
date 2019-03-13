@@ -1,21 +1,33 @@
 "use strict"
 
 $(document).ready(function() {
-  $(".term_datepicker").datepicker({
-    dateFormat: 'dd/mm/yy',
-    altFormat: 'yy-mm-dd',
-    orientation: 'bottom'
-  });
-  // set altField from data attribute
-  $(".term_datepicker").each(function() {
-    const altfield = $(this).data("altfield");
-    $(this).datepicker("option", "altField", altfield);
-  });
+  if ($("form.calendar_event_form").length) {
 
-  var calendar_event_date_value = $('#calendar_event_holder .datetimepicker-input').val();
-  $('#calendar_event_holder').datetimepicker({
-    format: 'DD/MM/YYYY',
-    allowInputToggle: true,
-    date: moment(calendar_event_date_value)
-  });
+    function setUpDatePicker(date_type) {
+      var $datePickerDiv = $('div#' + date_type + '_date_picker_field');
+
+      if ($datePickerDiv.length) {
+        var calendar_event_date_value = $('input#calendar_event_' + date_type + '_date').val();
+        var defaultDate = $datePickerDiv.data('default-date');
+        var momentDate = moment(calendar_event_date_value, 'DD/MM/YYYY');
+
+        $datePickerDiv.datetimepicker({
+          format: 'DD/MM/YYYY',
+          date: momentDate,
+          allowInputToggle: true
+        });
+      }
+    }
+
+    setUpDatePicker('start');
+    setUpDatePicker('end');
+
+    var calendar_event_date_value = $('#calendar_event_holder .datetimepicker-input').val();
+
+    $('#calendar_event_holder').datetimepicker({
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true,
+      date: moment(calendar_event_date_value, 'DD/MM/YYYY')
+    });
+  }
 });
