@@ -15,8 +15,7 @@ addons:
       - chromium-chromedriver
 sudo: required
 before_script:
-  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
-  - "cp config/database.yml.travis config/database.yml"
+  - cp config/database.yml.travis config/database.yml
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
@@ -24,7 +23,7 @@ script:
   - bundle exec rails db:create
   - bundle exec govuk-lint-ruby -R app lib data-pipeline/handlers
   - bundle exec bundle-audit check --update
-  - bundle exec rspec
   - script/test-data-pipeline.sh
+  - bundle exec rspec
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
