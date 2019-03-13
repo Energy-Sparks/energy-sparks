@@ -69,6 +69,10 @@ module ApplicationHelper
     end
   end
 
+  def fa_icon(icon_type)
+    icon('fas', icon_type)
+  end
+
   def alert_icon(alert)
     fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
   end
