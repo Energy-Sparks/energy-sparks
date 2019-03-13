@@ -10,7 +10,7 @@
   <div class="col-md-12">
     <div class="card mb-3">
       <div class="card-header text-white <%= class_for_alert_rating(@alert.data['rating']) %>">
-        <h4><%= fa_icon alert_icon(@alert) %> <%= @alert.summary %></h4>
+        <h4><%= fa_icon(alert_icon(@alert)) %> <%= @alert.summary %></h4>
       </div>
       <div class="card-body">
         <h5><%= @alert.title %></h5>
