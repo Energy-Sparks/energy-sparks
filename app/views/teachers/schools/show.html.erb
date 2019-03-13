@@ -1,12 +1,23 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<h2>Energy Usage <%= fa_icon 'chart-pie' %></h2>
+<div class="row">
+  <div class="col-sm">
+    <h2>Energy Usage </h2>
+  </div>
+  <div class=" align-self-end">
+    <%= link_to school_analysis_path(@school), class: 'btn btn-success' do %>
+      <%= fa_icon 'chart-pie' %> Find out more
+    <% end %>
+  </div>
+</div>
+
+
 
 <div class="row teachers">
   <% if @school.meters_for_supply(:electricity).any? %>
     <div id="chart_wrapper_0"  class="col-sm">
       <h3><%= fa_icon fuel_type_icon(:electricity) %> Electricity</h3>
-      <p class="pull-right small">14 days leading up to <%= nice_dates @school.last_full_week(:electricity).last if @school.last_full_week(:electricity) %></p>
+      <p class="pull-right small ">14 days leading up to <%= nice_dates @school.last_full_week(:electricity).last if @school.last_full_week(:electricity) %></p>
       <div id="chart_0" class="analysis-chart" data-no-advice="true" data-chart-index="0" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_electricity&chart_y_axis_units=kwh' %>"></div>
     </div>
   <% end %>
