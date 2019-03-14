@@ -110,6 +110,7 @@ group :development do
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
+  gem 'memory_profiler'
 end
 
 group :test do
