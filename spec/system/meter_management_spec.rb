@@ -15,7 +15,7 @@ RSpec.describe "meter management", :meters, type: :system do
 
   it 'allows adding of meters from the management page with validation' do
 
-    click_on('Manage meters', match: :first)
+    click_on('Manage meters')
 
     click_on 'Create Meter'
     expect(page).to have_content("Meter type can't be blank")
@@ -35,7 +35,7 @@ RSpec.describe "meter management", :meters, type: :system do
     let!(:gas_meter) { create :gas_meter, name: 'Gas meter', school: school }
 
     before(:each) {
-      click_on 'Manage meters', match: :first
+      click_on 'Manage meters'
     }
 
     it 'allows editing' do
@@ -73,7 +73,7 @@ RSpec.describe "meter management", :meters, type: :system do
     let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
     it 'allows a download of CSV for a meter' do
-      click_on 'Manage meters', match: :first
+      click_on 'Manage meters'
       click_on 'CSV'
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
@@ -88,7 +88,7 @@ RSpec.describe "meter management", :meters, type: :system do
     end
 
     it 'allows a download of CSV for the school meter' do
-      click_on 'Manage meters', match: :first
+      click_on 'Manage meters'
       click_on 'Download AMR data for all meters'
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
