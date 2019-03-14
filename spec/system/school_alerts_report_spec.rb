@@ -15,13 +15,13 @@ RSpec.describe "school alerts", type: :system do
   it 'should show all alerts' do
     alert_poor = Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :poor)
     alert_good = Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good)
-    click_on('Alert reports', match: :first)
+    click_on('Alert reports')
     expect(page.has_content?(alert_poor.status)).to be true
     expect(page.has_content?(alert_good.status)).to be true
   end
 
   it 'should give a message if no alerts' do
-    click_on('Alert reports', match: :first)
+    click_on('Alert reports')
     expect(page.has_content?("No weekly alerts")).to be true
     expect(page.has_content?("No termly alerts")).to be true
   end
