@@ -50,6 +50,14 @@
     margin-right: 2px;
     margin-left: 2px;
 }
+
+.sub-navbar div.container.d-flex {
+  div.bd-highlight.school-name {
+    max-width: 45%;
+  }
+}
+
+
 .navbar-custom .navbar-nav li a {
   color: white;
 }
