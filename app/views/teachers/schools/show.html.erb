@@ -11,8 +11,6 @@
   </div>
 </div>
 
-
-
 <div class="row teachers">
   <% if @school.meters_for_supply(:electricity).any? %>
     <div id="chart_wrapper_0"  class="col-sm">
@@ -37,10 +35,6 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-default" aria-label="Left Align">
-  <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-</button>
-
 <div class="row">
   <div class="col-md-12">
     <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
@@ -48,26 +42,35 @@
 </div>
 
 <div class="card">
-  <h3 class="card-header">
-    <%= fa_icon :pencil %>
-    <% if @first %>
-      No activities completed, make a start!
-    <% else %>
-         You've completed <%= @activities_count %> activities
-    <% end %>
-  </h3>
+  <div class="card-header">
+    <div class="row justify-content-between">
+      <div class="col-10">
+        <h4 class="">
+          <%= fa_icon('pen-square') %>
+          <% if @first %>
+            No activities completed, make a start!
+          <% else %>
+            You've completed <%= @activities_count %> activities
+          <% end %>
+        </h4>
+      </div>
+      <div class="col-2 text-right">
+        <%= link_to 'View activity log', school_activities_path(@school), class: 'btn btn-sm btn-secondary pull-right' %>
+      </div>
+    </div>
+  </div>
   <div class="card-body">
     <div class="row justify-content-between">
       <div class="col-10">
         <h4 class="">Activities to try next:</h4>
       </div>
-      <div class="col-2">
+      <div class="col-2 text-right">
         <%= link_to 'All activities', activity_categories_path, class: 'btn btn-sm btn-secondary pull-right' %>
       </div>
     </div>
     <ul class="list-group list-group-flush">
       <% @suggestions.first(3).each do |activity_type| %>
-        <li class="list-group-item"><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+        <li class="list-group-item"><%= fa_icon('edit') %> <%= link_to activity_type.name, activity_type_path(activity_type) %></li>
       <% end %>
     </ul>
   </div>
