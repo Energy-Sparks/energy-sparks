@@ -24,7 +24,7 @@ RSpec.describe "school alerts subscriptions", type: :system do
         expect(alert_subscription.school).to eq school
         click_on(school_name)
         expect(page).to have_content alerts_button
-        click_on alerts_button, match: :first
+        click_on alerts_button
         expect(page).to have_content alert_subscription.alert_type.title
         expect(page).to have_content 'No one allocated'
       end
@@ -34,7 +34,7 @@ RSpec.describe "school alerts subscriptions", type: :system do
         alert_subscription.contacts << contact
         click_on(school_name)
         expect(page).to have_content alerts_button
-        click_on alerts_button, match: :first
+        click_on alerts_button
         expect(page).to have_content alert_subscription.alert_type.title
         expect(page).to have_content contact.name
       end
@@ -47,7 +47,7 @@ RSpec.describe "school alerts subscriptions", type: :system do
       it 'shows me the contacts on the page' do
         click_on(school_name)
         expect(page).to have_content alerts_button
-        click_on alerts_button, match: :first
+        click_on alerts_button
         expect(page).to have_content contact.name
       end
     end

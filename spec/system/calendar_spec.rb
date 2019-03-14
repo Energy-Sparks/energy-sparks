@@ -31,7 +31,7 @@ RSpec.describe "calendar view", type: :system do
       sign_in(school_admin)
       visit school_path(school)
 
-      click_on('Calendar', match: :first)
+      click_on('Calendar')
       click_on('Add Event to calendar')
       fill_in 'Title', with: 'Calendar event'
       first('input#calendar_event_start_date', visible: false).set('16/08/2018')
