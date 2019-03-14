@@ -52,7 +52,7 @@ RSpec.describe "school", type: :system do
 
       it 'I can set up a school for KS1' do
         click_on(school_name)
-        click_on('Edit school')
+        click_on('Edit school', match: :first)
         expect(school.key_stages).to_not include(ks1)
         expect(school.key_stages).to_not include(ks2)
         expect(school.key_stages).to_not include(ks3)
@@ -67,7 +67,7 @@ RSpec.describe "school", type: :system do
 
       it 'I can set up a school for KS1 and KS2' do
         click_on(school_name)
-        click_on('Edit')
+        click_on('Edit', match: :first)
         expect(school.key_stages).to_not include(ks1)
         expect(school.key_stages).to_not include(ks2)
         expect(school.key_stages).to_not include(ks3)
@@ -84,7 +84,7 @@ RSpec.describe "school", type: :system do
       it 'allows me to set a school group for the school' do
         group = create(:school_group, name: 'BANES')
         click_on(school_name)
-        click_on('Manage groups')
+        click_on('Manage groups', match: :first)
         select 'BANES', from: 'Group'
         click_on 'Update groups'
         school.reload
