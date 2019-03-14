@@ -7,6 +7,6 @@ describe SchoolsHelper do
   let!(:pointy_school)    { create :school, :with_points, score_points: 6, school_group: group }
 
   it "knows it's position in it's scoreboard" do
-    expect(scoreboard_position(pointy_school)).to eq "1 st"
+    expect(scoreboard_position(pointy_school)).to eq "1st"
   end
 end
