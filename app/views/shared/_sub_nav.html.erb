@@ -1,8 +1,9 @@
-<nav class="navbar navbar-expand-sm bg-secondary navbar-dark sub-navbar">
+<!-- the expand-xl sets the breakpoint as to when to collapse the menu -->
+<nav class="navbar navbar-expand-xl bg-secondary navbar-dark sub-navbar">
   <div class="container">
     <h4 class="align-middle"><%= link_to @school.name, school_path(@school) %></h4>
     <% if @school.scoreboard %>
-      <h3 class="display-6">
+      <h3 class="display-6 collapse navbar-collapse">
         <span class="badge badge-success align-bottom">
           <% if @school.points.positive? %>
             <%= @school.points %> points
@@ -14,43 +15,21 @@
           <% end %>
         </span>
         <% if @school.points.positive? %>
-          <span class="nav-link badge badge-pill badge-primary">Current position<%= scoreboard_position(@school) %></span>
+          <span class="nav-link badge badge-pill badge-primary">Current position <%= scoreboard_position(@school) %></span>
         <% end %>
       </h3>
     <% end %>
-
-    <ul class="nav navbar-nav">
-      <%- if can? :update, @school -%>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
+      <ul class="nav navbar-nav">
         <li class="nav-item dropdown">
-          <a class="dropdown-toggle btn btn-sm btn-success" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shortcuts</a>
-          <div class="dropdown-menu" aria-labelledby="my_school">
-            <%= link_to 'Analysis', school_analysis_path(@school), class: 'dropdown-item'  %>
-            <%= link_to 'Simulations', school_simulations_path(@school), class: 'dropdown-item' if can? :manage, Simulation %>
-            <%= link_to 'Alerts', school_alerts_path(@school), class: 'dropdown-item' if can? :read, AlertType %>
-          </div>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="dropdown-toggle btn btn-sm btn-warning" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage school</a>
-          <div class="dropdown-menu" aria-labelledby="manage-school">
-            <%= link_to 'Edit school', edit_school_path(@school), class: 'dropdown-item' %>
-            <%= link_to 'Calendar', calendar_path(@school.calendar), class: 'dropdown-item' if @school.calendar && can?(:show, @school.calendar) %>
-            <%= link_to 'Data feed configuration', edit_school_configuration_path(@school), class: 'dropdown-item' if can? :configure, @school %>
-            <%= link_to 'Manage groups', edit_school_school_group_path(@school), class: 'dropdown-item' if can? :group, @school %>
-            <%= link_to 'Manage meters', school_meters_path(@school), class: 'dropdown-item' if can? :index, Meter %>
-            <%= link_to 'Manage school times', edit_school_times_path(@school), class: 'dropdown-item' if can? :manage_school_times, @school%>
-            <%= link_to 'Manage alert subscriptions', school_alert_subscriptions_path(@school), class: 'dropdown-item' if can? :manage, AlertSubscription %>
-            <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item' if can? :manage, AlertSubscription %>
-          </div>
-        </li>
-      <%- else %>
-        <li>
           <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm'  %>
+          <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-success btn-sm' if can? :read, AlertType %>
+          <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' if @school.scoreboard %>
         </li>
-      <%- end -%>
-      <li>
-        <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' if @school.scoreboard %>
-      </li>
     </ul>
+    </div>
   </div>
 </nav>

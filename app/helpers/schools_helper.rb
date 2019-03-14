@@ -2,7 +2,7 @@ module SchoolsHelper
   include Measurements
 
   def scoreboard_position(school)
-    "#{school.scoreboard_position} #{school.scoreboard_position.ordinal}"
+    "#{school.scoreboard_position}#{school.scoreboard_position.ordinal}"
   end
 
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
