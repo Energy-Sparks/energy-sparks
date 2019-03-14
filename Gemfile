@@ -3,9 +3,10 @@ source 'https://rubygems.org'
 ruby '2.5.3'
 
 # Rails/Core
-gem 'rails', '~> 5.2.2' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.2.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
+gem 'rack-canonical-host' # Redirect www to root
 
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.0' # Use Puma as the app server
