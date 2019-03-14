@@ -362,6 +362,9 @@ GEM
     rack (2.0.6)
     rack-attack (5.4.2)
       rack (>= 1.0, < 3)
+    rack-canonical-host (0.2.3)
+      addressable (> 0, < 3)
+      rack (>= 1.0.0, < 3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.2.1)
@@ -623,6 +626,7 @@ DEPENDENCIES
   puma (= 3.12.0)
   rack (= 2.0.6)
   rack-attack
+  rack-canonical-host
   rails (~> 5.2.2.1)
   rails-controller-testing
   redcarpet
