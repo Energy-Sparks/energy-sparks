@@ -34,6 +34,19 @@ RSpec.describe "school alerts", type: :system do
       expect(page.has_content?(poor_alert_summary)).to_not be true
     end
 
+    describe 'pupil dashboard' do
+      it 'shows alerts' do
+        alert_summary = 'Summary of the alert'
+        Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
+
+        # TODO: navigate properly once links are in
+        visit pupils_school_path(school)
+
+        expect(page).to have_content(alert_summary)
+
+      end
+    end
+
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }

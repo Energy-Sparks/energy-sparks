@@ -1,8 +1,12 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<div typeof="School">
-  <div class="row padded-row">
-    <div class="col-md-12">
-    </div>
+<% unless @latest_alerts_sample.empty? %>
+  <div class="row">
+    <h2 class="mb-3">Things to investigate:</h2>
+    <% @latest_alerts_sample.each do |alert| %>
+      <div class="col-md-12">
+        <%= render 'schools/alerts/alert', alert: alert, school: @school %>
+      </div>
+    <% end %>
   </div>
-</div>
+<% end %>
