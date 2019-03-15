@@ -34,17 +34,31 @@ RSpec.describe "school alerts", type: :system do
       expect(page.has_content?(poor_alert_summary)).to_not be true
     end
 
-    it 'can show a single alert' do
-      alert_summary = 'Summary of the alert'
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
+    describe 'Find Out More' do
 
-      click_on("Alerts")
-      expect(page.has_content?(description)).to_not be true
+      let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
 
-      click_on("Find out more")
+      before do
+        gas_fuel_alert_type.update!(activity_types: [activity_type])
+      end
 
-      expect(page.has_content?(description)).to be true
-      expect(page.has_content?(alert_summary)).to be true
+      it 'can show a single alert with the associated activities' do
+        alert_summary = 'Summary of the alert'
+        Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
+
+        # TODO: navigate properly once links are in
+        visit teachers_school_path(school)
+
+        expect(page).to_not have_content(description)
+
+        within '.alert' do
+          click_on("Find out more")
+        end
+
+        expect(page).to have_content(description)
+        expect(page).to have_content(alert_summary)
+        expect(page).to have_content(activity_type.name)
+      end
     end
   end
 

@@ -27,6 +27,7 @@ class Ability
         onboarding.created_user == user
       end
       can :read, AlertType
+      can :read, Alert
     elsif user.school_user?
       can :manage, Activity, school: { id: user.school_id, active: true }
       can :index, School
@@ -38,6 +39,7 @@ class Ability
       can :show, ActivityType
       can :show, Scoreboard
       can :read, AlertType
+      can :read, Alert
     elsif user.guest?
       can :read, Activity, school: { active: true }
       can :read, ActivityCategory
@@ -48,6 +50,7 @@ class Ability
       can :usage, School, active: true
       can :show, Scoreboard
       can :manage, SchoolOnboarding, created_user_id: nil
+      can :read, Alert
     elsif user.school_onboarding?
       can :manage, SchoolOnboarding do |onboarding|
         onboarding.created_user == user
