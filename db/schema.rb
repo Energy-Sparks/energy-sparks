@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
+  end
 
   create_table "activity_types_alert_types", id: false, force: :cascade do |t|
     t.bigint "activity_type_id", null: false
