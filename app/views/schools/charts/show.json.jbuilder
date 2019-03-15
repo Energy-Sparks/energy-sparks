@@ -4,6 +4,7 @@ json.charts @output.each do |chart_data_values|
   json.chart1_type        chart_data_values.chart1_type
   json.chart1_subtype     chart_data_values.chart1_subtype
   json.y_axis_label       chart_data_values.y_axis_label
+  json.x_axis_label       chart_data_values.x_axis_label
   json.x_axis_categories  chart_data_values.x_axis_categories
   json.advice_header      chart_data_values.advice_header
   json.advice_footer      chart_data_values.advice_footer

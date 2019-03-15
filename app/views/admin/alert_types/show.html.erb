@@ -1,0 +1,21 @@
+<%= render 'nav', alert_type: @alert_type %>
+
+<dl class="row">
+  <dt class="col-md-2">Fuel</dt>
+  <dd class="col-md-10"><%= @alert_type.display_fuel_type %></dd>
+
+  <dt class="col-md-2">Frequency</dt>
+  <dd class="col-md-10"><%= @alert_type.frequency.humanize %></dd>
+
+  <dt class="col-md-2">Show ratings</dt>
+  <dd class="col-md-10"><%= @alert_type.show_ratings %></dd>
+
+  <dt class="col-md-2">Sub category</dt>
+  <dd class="col-md-10"><%= @alert_type.sub_category %></dd>
+
+  <dt class="col-md-2">Description</dt>
+  <dd class="col-md-10"><%= simple_format(@alert_type.description)  %></dd>
+
+  <dt class="col-md-2">Analysis</dt>
+  <dd class="col-md-10"><%= simple_format(@alert_type.analysis)  %></dd>
+</dl>

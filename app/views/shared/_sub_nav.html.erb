@@ -1,0 +1,41 @@
+<!-- the expand-xl sets the breakpoint as to when to collapse the menu -->
+<nav class="navbar navbar-expand-xl bg-secondary navbar-dark sub-navbar">
+  <div class="container d-flex align-items-stretch justify-content-sm-between bd-highlight">
+    <div class="bd-highlight school-name">
+      <h4><%= link_to @school.name, school_path(@school) %></h4>
+    </div>
+    <% if @school.scoreboard %>
+      <div class="bd-highlight">
+        <h3 class="display-6 collapse navbar-collapse">
+          <span class="badge badge-success ">
+            <% if @school.points.positive? %>
+              <%= @school.points %> points
+              <% if @school.points_since > 0 %>
+                <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+              <% end %>
+            <% else %>
+              No points yet
+            <% end %>
+          </span>
+          <% if @school.points.positive? %>
+            <span class="nav-link badge badge-primary">Current position <%= scoreboard_position(@school) %></span>
+          <% end %>
+        </h3>
+      </div>
+    <% end %>
+    <div class="bd-highlight">
+      <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
+        <ul class="nav navbar-nav">
+          <li class="nav-item dropdown">
+            <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm'  %>
+            <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-success btn-sm' if can? :read, AlertType %>
+            <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' if @school.scoreboard %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -5,6 +5,7 @@
   </head>
   <body vocab="http://schema.org/">
     <%= render 'shared/nav' %>
+    <%= render 'shared/sub_nav' if @school && @school.id %>
     <%= render 'shared/alerts' %>
     <div class="application container">
       <%= yield %>
