@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :series_data, :x_axis_ranges
+  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :series_data, :x_axis_ranges
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
@@ -27,6 +27,7 @@ class ChartDataValues
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
+      @x_axis_label       = chart[:x_axis_label]
       @y_axis_label       = chart[:y_axis_label]
       @x_axis_categories  = chart[:x_axis]
       @configuration      = chart[:configuration]

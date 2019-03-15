@@ -18,12 +18,12 @@ class AmrValidatedMeterCollection < AmrMeterCollection
   # Override so we only set up meters with enough data for analytics
   def set_up_meters(active_record_school)
     @heat_meters = active_record_school.meters_with_enough_validated_readings_for_analysis(:gas, NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS).map do |active_record_meter|
-      dashboard_meter = Dashboard::Meter.new(@school, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
+      dashboard_meter = Dashboard::Meter.new(self, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
       add_amr_data(dashboard_meter, active_record_meter)
     end
 
     @electricity_meters = active_record_school.meters_with_enough_validated_readings_for_analysis(:electricity, NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS).map do |active_record_meter|
-      dashboard_meter = Dashboard::Meter.new(@school, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
+      dashboard_meter = Dashboard::Meter.new(self, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
       add_amr_data(dashboard_meter, active_record_meter)
     end
   end
