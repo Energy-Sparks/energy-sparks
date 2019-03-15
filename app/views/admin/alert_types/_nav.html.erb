@@ -1,0 +1,11 @@
+<h1><%= alert_type.title %></h1>
+<div class="row mb-3" id="nav-row">
+  <ul class="nav nav-tabs">
+    <li>
+      <%= nav_link('Overview', admin_alert_type_path(alert_type)) %>
+    </li>
+    <li>
+      <%= nav_link('Associated activity types', admin_alert_type_activity_types_path(alert_type)) %>
+    </li>
+  </ul>
+</div>

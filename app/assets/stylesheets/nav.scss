@@ -31,6 +31,33 @@
   letter-spacing: 1px;
 }
 
+.sub-navbar h4 a,
+.sub-navbar h4 a:hover,
+.sub-navbar h4 a:focus,
+.sub-navbar h4 a:active {
+    color: white;
+    vertical-align: middle;
+  }
+
+.sub-navbar li.nav-item a,
+.sub-navbar li.nav-item a:hover,
+.sub-navbar li.nav-item a:focus,
+.sub-navbar li.nav-item a:active {
+    color: black;
+}
+
+.sub-navbar a.btn {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.sub-navbar div.container.d-flex {
+  div.bd-highlight.school-name {
+    max-width: 45%;
+  }
+}
+
+
 .navbar-custom .navbar-nav li a {
   color: white;
 }

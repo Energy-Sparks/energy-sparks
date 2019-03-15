@@ -19,10 +19,8 @@
 <% end %>
 
 <div typeof="School">
-  <div class="row padded-row">
+  <div class="row">
     <div class="col-md-12">
-
-      <h1 property="name"><%= @school.name %></h1>
       <h6 class="large">
         <% unless @school.address.blank? %>
           <address property="address" typeof="PostalAddress">
@@ -45,9 +43,7 @@
         <%- end -%>
       </p>
       <div class="float-right mb-3">
-        <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success' %>
         <%= link_to 'Simulations', school_simulations_path(@school), class: 'btn btn-success' if can? :manage, Simulation %>
-        <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-success' if can? :read, AlertType %>
         <%- if can? :update, @school -%>
           <div class="dropdown float-right ml-1">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="manage-school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

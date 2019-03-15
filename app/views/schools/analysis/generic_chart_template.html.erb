@@ -1,6 +1,6 @@
 <% content_for :page_title do %>Energy Analysis for <%= @school.name %><% end %>
 
-<h1>Energy Analysis for <%= @school.name %></h1>
+<h1>Energy Analysis</h1>
 <p><%= link_to @school.name, school_path(@school) %> is a <%= @school.school_type %> school near <%= @school.postcode %>
 <% if @school.number_of_pupils && @school.floor_area %>
 with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floor_area %>m<sup>2</sup>.
@@ -42,6 +42,6 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <% @number_of_charts.times do |number| %>
   <div id="chart_wrapper_<%= number %>">
     <h3 class="analysis">Loading: <%= @charts[number].to_s.humanize %></h3>
-    <div id="chart_<%= number %>" class="analysis-chart" data-chart-index="<%= number %>" data-chart-type="<%= @charts[number].to_s %>" data-chart-y-axis-units="<%= @measurement %>"></div>
+    <%= chart_tag(@charts[number].to_s, index: number, chart_config: @chart_config) %>
   </div>
 <% end %>
