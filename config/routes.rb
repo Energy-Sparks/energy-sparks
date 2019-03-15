@@ -105,6 +105,11 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :alert_types, only: [:index, :show] do
+      scope module: :alert_types do
+        resource :activity_types, only: [:show, :update]
+      end
+    end
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
