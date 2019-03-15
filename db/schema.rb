@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_30_151253) do
+ActiveRecord::Schema.define(version: 2019_03_13_114650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -109,6 +109,12 @@ ActiveRecord::Schema.define(version: 2019_01_30_151253) do
     t.boolean "custom", default: false
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
+  end
+
+  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
   end
 
   create_table "alert_subscriptions", force: :cascade do |t|
