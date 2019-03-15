@@ -1,0 +1,26 @@
+.surrounding-schools {
+  .bar{
+    width: 80%;
+    margin: 10px auto;
+
+    &-body{
+      background-color: $yellow;
+      &-0{
+        height: 90px;
+      }
+      &-1{
+        height: 120px;
+      }
+      &-2{
+        height: 150px;
+      }
+    }
+
+    &-current {
+      .bar-body{
+        background-color: $light-orange;
+      }
+    }
+
+  }
+}

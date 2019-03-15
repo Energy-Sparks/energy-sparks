@@ -10,3 +10,35 @@
     <% end %>
   </div>
 <% end %>
+
+
+<div class="row">
+  <div class="col-md-6">
+  </div>
+  <div class="col-md-6 surrounding-schools">
+    <% if @scoreboard %>
+      <h4>Your school is <%= scoreboard_position(@school) %> on the scoreboard.</h4>
+      <div class="row align-items-end">
+        <% @surrounding_schools.reverse.each_with_index do |school, index| %>
+          <div class="col-4 text-center">
+            <h5>
+              <span class="badge mt-3 badge-<%= @school == school ? 'success' : 'secondary' %>">
+                <%= scoreboard_position(school) %>
+              </span>
+            </h5>
+            <div class="bar <%= 'bar-current' if @school == school%>">
+              <div class="bar-arrow"></div>
+              <div class="bar-body bar-body-<%=index%>">
+                <h6>
+                  <span class="badge mt-3">
+                    <%= school.sum_points || 0 %> points
+                  </span>
+                </h6>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
