@@ -1,27 +1,27 @@
 <h1>Energy Sparks alerts for <%= link_to @school.name, school_url(@school) %></h1>
 <p>You have been assigned as a contact for the following alerts from Energy Sparks.</p>
-<% if @school.school_admin.any? %>
-  <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= User.where(school: @school, role: :school_admin).pluck(:email).join(', ') %></p>
+<% if @unsubscribe_emails %>
+  <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= @unsubscribe_emails %></p>
 <% end %>
 
 <% @alerts.each do |alert| %>
-  <h2><%= alert[:title] %></h2>
-  <p><%= alert[:description] %></p>
-  <p>Current status: <%= alert[:analysis_report].status.capitalize %> - <%= alert[:analysis_report].rating.nil? ? 'Unrated' : "#{alert[:analysis_report].rating.round(0)}/10" %></p>
+  <h2><%= alert.title %></h2>
+  <p><%= alert.description %></p>
+  <p>Current status: <%= alert.rating %></p>
 
-  <% alert[:analysis_report].detail.each do |detail| %>
-    <% if detail.type == :chart %>
-      <div id="alert-chart-data-<%= alert[:analysis_report].type %>" data-chart-title='<%= detail.content[:title] %>' data-chart-type='<%= alert[:analysis_report].type %>' class="hide">
-        <%#= sort_out_data_for_alerts_chart(detail.content).html_safe %>
+  <% alert.detail.each do |detail| %>
+    <% if detail['type'].to_sym == :chart %>
+      <div id="alert-chart-data-<%= alert.id %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.id %>' class="hide">
+        <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
       </div>
-      <div id="alert-chart-wrapper-<%= alert[:analysis_report].type %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert[:analysis_report].type %>'></div>
-    <% elsif detail.type == :html %>
-      <%= detail.content.html_safe %>
+      <div id="alert-chart-wrapper-<%= alert.id %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.id %>'></div>
+    <% elsif detail['type'].to_sym == :html %>
+      <%= detail['content'].html_safe %>
     <% else %>
-      <p><%= detail.content %></p>
+      <p><%= detail['content'].html_safe %></p>
     <% end %>
   <% end %>
-  <p><%= alert[:analysis_report].summary %></p>
-  <p>Find out more information: <%= link_to alert[:title], alert[:analysis_report].help_url %></p>
+  <p><%= alert.summary %></p>
+  <p>Find out more: <%= link_to alert.title, alert.help_url, target: "_blank" %></p>
   <hr/>
  <% end %>
