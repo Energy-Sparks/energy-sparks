@@ -119,4 +119,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :teachers do
+    resources :schools, only: :show
+  end
+
+  namespace :pupils do
+    resources :schools, only: :show
+  end
 end

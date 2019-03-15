@@ -69,7 +69,11 @@ private
   def column_or_bar
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
-      { name: data_type, color: colour_hash[data_type], type: @chart1_type, data: data, index: index }
+      colour = colour_hash[data_type]
+      if @chart[:config_name] == :teachers_landing_page_gas
+        colour = index == 0 ? '#ffac21' : '#ff4500'
+      end
+      { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
 
     if @y2_data != nil && @y2_chart_type == :line

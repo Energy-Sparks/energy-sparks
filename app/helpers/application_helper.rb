@@ -82,10 +82,10 @@ module ApplicationHelper
   end
 
   def fuel_type_icon(fuel_type)
-    case fuel_type
-    when :electricity, 'electricity'
+    case fuel_type.to_sym
+    when :electricity
       'bolt'
-    when :gas, 'gas'
+    when :gas
       'fire'
     end
   end
