@@ -73,15 +73,19 @@ module ApplicationHelper
     icon('fas', icon_type)
   end
 
+  def fab_icon(icon_type)
+    icon('fab', icon_type)
+  end
+
   def alert_icon(alert)
     fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
   end
 
   def fuel_type_icon(fuel_type)
-    case fuel_type
-    when :electricity, 'electricity'
+    case fuel_type.to_sym
+    when :electricity
       'bolt'
-    when :gas, 'gas'
+    when :gas
       'fire'
     end
   end
@@ -94,6 +98,23 @@ module ApplicationHelper
         link_to link_text, link_path, class: 'nav-link'
       end
     end
+  end
+
+  def chart_tag(chart_type, index: 1, chart_config: {})
+    html_chart_data = chart_config.inject({}) do |collection, (data_item_key, data_item_value)|
+      collection["chart-#{data_item_key.to_s.parameterize}"] = data_item_value
+      collection
+    end
+    content_tag(
+      :div,
+      '',
+      id: "chart_#{index}",
+      class: 'analysis-chart',
+      data: {
+        "chart-index" => index,
+        "chart-type" => chart_type
+      }.merge(html_chart_data)
+    )
   end
 
   def label_is_energy_plus?(label)

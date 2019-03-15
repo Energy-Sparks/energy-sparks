@@ -222,24 +222,8 @@ class School < ApplicationRecord
     school_group.scoreboard if school_group
   end
 
-  def self.top_scored(dates: nil, limit: nil)
-    if dates.present?
-      start_date = dates.first.beginning_of_day
-      end_date = dates.last.end_of_day
-    else
-      # If no dates are present grab points since the beginning of the academic year
-      september = Time.current.beginning_of_month.change(month: 9)
-      start_date = september.future? ? september.last_year : september
-      end_date = Time.current
-    end
-
-    School.select('schools.*, SUM(num_points) AS sum_points')
-      .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
-      .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
-      .where('merit_score_points.created_at BETWEEN ? AND ?', start_date, end_date)
-      .order('sum_points DESC')
-      .group('schools.id, merit_scores.sash_id')
-      .limit(limit)
+  def scoreboard_position
+    scoreboard.position(self) + 1
   end
 
 private

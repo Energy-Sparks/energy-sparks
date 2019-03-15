@@ -36,4 +36,8 @@ class Scoreboard < ApplicationRecord
         .order('sum_points DESC NULLS LAST')
         .group('schools.id, merit_scores.sash_id')
   end
+
+  def position(school)
+    scored_schools.index(school)
+  end
 end

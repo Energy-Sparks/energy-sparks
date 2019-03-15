@@ -17,7 +17,6 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
   var $chartDiv = $(chartDiv);
   var chartType = chart_data.chart1_type;
   var seriesData = chart_data.series_data;
-  var yAxisLabel = chart_data.y_axis_label;
 
   if (! noAdvice) {
     var titleH3 = $chartDiv.prev('h3');
@@ -42,15 +41,15 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
   }
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(chart_data, chart, chartIndex, seriesData, yAxisLabel, chartType);
+    barColumnLine(chart_data, chart, chartIndex, seriesData, chartType);
 
   // Scatter
   } else if (chartType == 'scatter') {
-    scatter(chart_data, chart, chartIndex, seriesData, yAxisLabel);
+    scatter(chart_data, chart, chartIndex, seriesData);
 
   // Pie
   } else if (chartType == 'pie') {
-    pie(chart_data, chart, chartIndex, seriesData, $chartDiv, yAxisLabel);
+    pie(chart_data, chart, chartIndex, seriesData, $chartDiv);
   }
 
   $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
@@ -68,9 +67,16 @@ $(document).ready(function() {
       var thisChart = Highcharts.chart(thisId, commonChartOptions);
       var chartType = $(this).data('chart-type');
       var yAxisUnits = $(this).data('chart-y-axis-units');
+      var mpanMprn = $(this).data('chart-mpan-mprn');
       var chartIndex = $(this).data('chart-index');
       var dataPath = $(this).data('chart-json');
       var noAdvice = $(this).is("[data-no-advice]");
+
+      var requestData = {
+        chart_type: chartType,
+        chart_y_axis_units: yAxisUnits,
+        mpan_mprn: mpanMprn
+      };
 
 
       // Each chart handles it's own data, except for the simulator
@@ -78,11 +84,13 @@ $(document).ready(function() {
 
       if (dataPath === undefined) {
         var currentPath = window.location.href;
-        dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json?chart_type=' + chartType + '&chart_y_axis_units=' + yAxisUnits;
+        dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
       }
+
       console.log(chartIndex);
       console.log(chartType);
       console.log(dataPath);
+      console.log(requestData);
       thisChart.showLoading();
 
       if ($(this).hasClass('simulator-chart')) {
@@ -95,6 +103,7 @@ $(document).ready(function() {
         async: true,
         dataType: "json",
         url: dataPath,
+        data: requestData,
         success: function (returnedData) {
           var this_chart_data = returnedData.charts[processChartIndex];
           if (this_chart_data.series_data == null) {
