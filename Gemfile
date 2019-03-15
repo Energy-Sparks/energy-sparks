@@ -7,6 +7,8 @@ gem 'rails', '~> 6.0.0.beta3' # Bundle edge Rails instead: gem 'rails', github: 
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
+gem 'webpacker', '~> 3.5'
+gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.0' # Use Puma as the app server
@@ -34,7 +36,7 @@ gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
 
-# AWS
+
 gem 'aws-sdk-s3'
 
 # Assets for Emails
@@ -98,6 +100,7 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'timecop'
+  gem 'foreman'
 end
 
 group :development do
