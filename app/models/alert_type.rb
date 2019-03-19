@@ -14,8 +14,9 @@
 #
 
 class AlertType < ApplicationRecord
-  has_many :alert_subscriptions,  dependent: :destroy
-  has_many :alerts,               dependent: :destroy
+  has_many :alert_subscriptions,        dependent: :destroy
+  has_many :alerts,                     dependent: :destroy
+  has_many :alert_subscription_events,  dependent: :destroy
 
   has_and_belongs_to_many :activity_types
 
