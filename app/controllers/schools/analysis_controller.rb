@@ -6,6 +6,8 @@ class Schools::AnalysisController < ApplicationController
 
   skip_before_action :authenticate_user!
   before_action :set_school
+  before_action :check_fuel_types
+  before_action :build_aggregate_school, except: [:analysis]
   before_action :set_nav
   before_action :set_measurement_options
 
@@ -42,7 +44,23 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def heating_model_fitting
+    render_generic_chart_template(mpan_mprn: params.require(:mpan_mprn))
+  end
+
 private
+
+  def check_fuel_types
+    if @school.fuel_types_for_analysis == :none
+      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
+    end
+  end
+
+  def build_aggregate_school
+    # Get this loaded and warm the cache before starting the chart rendering
+    # and use for heat model fitting tabs
+    @aggregate_school = aggregate_school(@school)
+  end
 
   def set_nav
     @dashboard_set = @school.fuel_types_for_analysis
@@ -52,21 +70,17 @@ private
     end
   end
 
-  def render_generic_chart_template
+  def render_generic_chart_template(extra_chart_config = {})
     @measurement = measurement_unit(params[:measurement])
 
-    if @school.fuel_types_for_analysis == :none
-      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
-    else
-      @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-      @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
+    @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
 
-      @number_of_charts = @charts.size
+    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
+    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
 
-      # Get this loaded and warm the cache before starting the chart rendering
-      aggregate_school(@school)
-      render :generic_chart_template
-    end
+    @number_of_charts = @charts.size
+
+    render :generic_chart_template
   end
 
   def set_school

@@ -1,0 +1,77 @@
+<% content_for :page_title do %><%= @school.name %><% end %>
+
+<div class="row">
+  <div class="col-sm">
+    <h2>Energy Usage </h2>
+  </div>
+  <div class=" align-self-end">
+    <%= link_to school_analysis_path(@school), class: 'btn btn-success' do %>
+      <%= fa_icon 'chart-pie' %> Find out more
+    <% end %>
+  </div>
+</div>
+
+<div class="row teachers">
+  <% if @school.meters_for_supply(:electricity).any? %>
+    <div id="chart_wrapper_0"  class="col-sm">
+      <h3><%= fa_icon fuel_type_icon(:electricity) %> Electricity</h3>
+      <p class="pull-right small ">14 days leading up to <%= nice_dates @school.last_full_week(:electricity).last if @school.last_full_week(:electricity) %></p>
+      <div id="chart_0" class="analysis-chart" data-no-advice="true" data-chart-index="0" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_electricity&chart_y_axis_units=kwh' %>"></div>
+    </div>
+  <% end %>
+  <% if @school.meters_for_supply(:gas).any? %>
+    <div id="chart_wrapper_1"  class="col-sm">
+      <h3><%=  fa_icon fuel_type_icon(:gas) %> Gas</h3>
+      <p class="pull-right small">14 days leading up to <%= nice_dates @school.last_full_week(:gas).last if @school.last_full_week(:gas) %></p>
+      <div id="chart_1" class="analysis-chart" data-no-advice="true" data-chart-index="1" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_gas&chart_y_axis_units=kwh' %>"></div>
+    </div>
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-md-12 jumbotron">
+    <h2>Things to try</h2>
+    <p>Will go here</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="row justify-content-between">
+      <div class="col-10">
+        <h4 class="">
+          <%= fa_icon('pen-square') %>
+          <% if @first %>
+            No activities completed, make a start!
+          <% else %>
+            You've completed <%= @activities_count %> activities
+          <% end %>
+        </h4>
+      </div>
+      <div class="col-2 text-right">
+        <%= link_to 'View activity log', school_activities_path(@school), class: 'btn btn-sm btn-secondary pull-right' %>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row justify-content-between">
+      <div class="col-10">
+        <h4 class="">Activities to try next:</h4>
+      </div>
+      <div class="col-2 text-right">
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-sm btn-secondary pull-right' %>
+      </div>
+    </div>
+    <ul class="list-group list-group-flush">
+      <% @suggestions.first(3).each do |activity_type| %>
+        <li class="list-group-item"><%= fa_icon('edit') %> <%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

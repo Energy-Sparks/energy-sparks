@@ -25,12 +25,18 @@ describe Scoreboard, :scoreboards, type: :model do
   end
 
   describe '#scored_schools' do
-    it 'returns schools in points order' do
-      group = create(:school_group, scoreboard: subject)
-      schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, school_group: group}
 
+    let!(:group)    { create(:school_group, scoreboard: subject) }
+    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, school_group: group }}
+
+    it 'returns schools in points order' do
       expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
     end
-  end
 
+    it 'returns the position of a school' do
+      (0..4).each do |n|
+        expect(subject.position(schools[n])).to eq n
+      end
+    end
+  end
 end

@@ -41,6 +41,7 @@ json.charts @output.each do |chart|
   json.title              chart_data[:title]
   json.chart1_type        chart_data[:chart1_type]
   json.chart1_subtype     chart_data[:chart1_subtype]
+  json.x_axis_label       chart_data[:x_axis_label]
   json.y_axis_label       chart_data[:y_axis_label]
   json.x_axis_categories  chart_data[:x_axis]
   json.advice_header      chart_data[:advice_header] unless chart_data[:advice_header].nil?

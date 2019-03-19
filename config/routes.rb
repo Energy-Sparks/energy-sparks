@@ -43,7 +43,8 @@ Rails.application.routes.draw do
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
-      resources :alert_subscriptions
+      resources :alert_subscriptions, only: [:index, :edit, :update]
+      resources :alert_subscription_events, only: :index
 
       resources :meters do
         member do
@@ -52,6 +53,7 @@ Rails.application.routes.draw do
         end
       end
       resource :meter_readings_validation, only: [:create]
+      resource :alert_emails, only: [:create]
 
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group
@@ -73,6 +75,7 @@ Rails.application.routes.draw do
       get :gas_detail, to: 'analysis#gas_detail'
       get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
       get :boiler_control, to: 'analysis#boiler_control'
+      get :heating_model_fitting, to: 'analysis#heating_model_fitting'
       get :test, to: 'analysis#test'
     end
 
@@ -104,6 +107,11 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :alert_types, only: [:index, :show] do
+      scope module: :alert_types do
+        resource :activity_types, only: [:show, :update]
+      end
+    end
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
@@ -113,4 +121,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :teachers do
+    resources :schools, only: :show
+  end
+
+  namespace :pupils do
+    resources :schools, only: :show
+  end
 end

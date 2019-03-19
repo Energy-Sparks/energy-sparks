@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :series_data, :x_axis_ranges
+  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :series_data, :x_axis_ranges
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
@@ -27,6 +27,7 @@ class ChartDataValues
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
+      @x_axis_label       = chart[:x_axis_label]
       @y_axis_label       = chart[:y_axis_label]
       @x_axis_categories  = chart[:x_axis]
       @configuration      = chart[:configuration]
@@ -68,7 +69,11 @@ private
   def column_or_bar
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
-      { name: data_type, color: colour_hash[data_type], type: @chart1_type, data: data, index: index }
+      colour = colour_hash[data_type]
+      if @chart[:config_name] == :teachers_landing_page_gas
+        colour = index == 0 ? '#ffac21' : '#ff4500'
+      end
+      { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
 
     if @y2_data != nil && @y2_chart_type == :line

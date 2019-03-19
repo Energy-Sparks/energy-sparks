@@ -1,11 +1,9 @@
-<% content_for :page_title do %>
-    Explore usage data for <%= @school.name %>
-<% end %>
-<div class="application container charts" id="hourly-usage">
+<% content_for :page_title, "Explore usage data for #{@school.name}" %>
 
-  <div class="row padded-row">
+<div class="container charts" id="hourly-usage">
+  <div class="row">
     <div class="col-md-12">
-      <h1>Power consumption for <%= @school.name %></h1>
+      <h1>Power consumption</h1>
       <p>
         Explore power consumption for <%= link_to @school.name, school_path(@school), id: "school" %>
       </p>

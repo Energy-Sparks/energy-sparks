@@ -16,6 +16,7 @@ class Ability
         school.active? || user.school_id == school.id
       end
       can :manage, AlertSubscription, school_id: user.school_id
+      can :index, AlertSubscriptionEvent, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
       can [:index, :crud], Meter, school_id: user.school_id
       can :activate, Meter, active: false, school_id: user.school_id
