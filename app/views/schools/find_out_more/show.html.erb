@@ -1,6 +1,6 @@
-<% content_for :page_title do %>Alert for <%= @school.name %><% end %>
+<% content_for :page_title, @content.page_title %>
 
-<h1><%= @alert.summary %></h1>
+<h1><%= @content.page_title %></h1>
 
 <div class="row">
   <% @alert.detail.select{|detail| detail['type'].to_sym == :chart}.each do |detail| %>
@@ -12,8 +12,7 @@
     </div>
   <% end %>
   <div class="col-md-7">
-    <h5><%= @alert.title %></h5>
-    <p class="card-text">This alert <%= @alert.description.downcase %></p>
+    <%= @content.page_content %>
     <% @alert.detail.reject{|detail| detail['type'].to_sym == :chart}.each do |detail| %>
       <% if detail['type'].to_sym == :html %>
         <%= detail['content'].html_safe %>

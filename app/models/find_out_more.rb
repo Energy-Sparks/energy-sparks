@@ -22,4 +22,10 @@
 class FindOutMore < ApplicationRecord
   belongs_to :alert
   belongs_to :content_version, class_name: 'FindOutMoreTypeContentVersion', foreign_key: :find_out_more_type_content_version_id
+
+  def self.latest
+    select('DISTINCT ON (alert_type_id) alerts.alert_type_id AS alert_type_id, find_out_mores.*').
+      joins(:alert).
+      order('alerts.alert_type_id', created_at: :desc)
+  end
 end

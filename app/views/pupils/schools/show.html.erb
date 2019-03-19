@@ -1,11 +1,11 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<% unless @latest_alerts_sample.empty? %>
+<% unless @find_out_more_alerts.empty? %>
   <div class="row">
     <h2 class="mb-3">Things to investigate:</h2>
-    <% @latest_alerts_sample.each do |alert| %>
+    <% @find_out_more_alerts.each do |find_out_more| %>
       <div class="col-md-12">
-        <%= render 'schools/alerts/alert', alert: alert, school: @school %>
+        <%= render 'schools/find_out_more/alert', find_out_more: find_out_more, alert: find_out_more.alert, content: find_out_more.content_version, school: @school %>
       </div>
     <% end %>
   </div>

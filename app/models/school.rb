@@ -59,6 +59,7 @@ class School < ApplicationRecord
 
   has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
   has_many :alerts,               inverse_of: :school, dependent: :destroy
+  has_many :find_out_mores,       through: :alerts
 
   has_many :simulations,          inverse_of: :school, dependent: :destroy
 

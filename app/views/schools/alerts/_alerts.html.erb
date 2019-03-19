@@ -1,7 +1,7 @@
 <div class="row padded-row">
   <div class="col-md-12">
     <% alerts.sort_by { |alert| alert.rating.nil? ? 99 : alert.rating }.each do |alert| %>
-      <%= render 'alert', alert: alert, school: @school %>
+      <%= render 'alert', summary: alert.summary, alert: alert, school: @school %>
     <% end %>
   </div>
 </div>
