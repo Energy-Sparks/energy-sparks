@@ -1,0 +1,22 @@
+<%= render 'admin/alert_types/nav', alert_type: @alert_type %>
+
+<p>Activity types associated with this alert type will appear in the Find Out More functionality.</p>
+
+<%= form_for @alert_type, url: admin_alert_type_activity_types_path(@alert_type), method: :put do |f| %>
+  <%= f.submit 'Update associated activity types', class: 'btn btn-primary mb-3'%>
+  <% @activity_categories_and_types.each do |activity_category, activity_types| %>
+    <h3><%= activity_category.name %></h2>
+    <ul class="list-unstyled">
+
+      <%= f.collection_check_boxes(:activity_type_ids, activity_types, :id, :name) do |b| %>
+        <li>
+          <%= b.label do %>
+            <%= b.check_box  %>
+            <%= b.text  %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= f.submit 'Update associated activity types', class: 'btn btn-primary'%>
+<% end %>

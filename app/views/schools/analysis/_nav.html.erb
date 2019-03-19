@@ -8,6 +8,15 @@
     <% if current_user && current_user.admin? %>
       <!-- used for debug purposes -->
       <li><%= nav_link('Test', send("school_test_path")) %></li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heating Model Fitting</a>
+        <div class="dropdown-menu">
+          <% @aggregate_school.all_heat_meters.each do |heat_meter| %>
+            <%= link_to heat_meter.mpan_mprn, school_heating_model_fitting_path(@school, mpan_mprn: heat_meter.mpan_mprn), class: 'dropdown-item'%>
+          <% end %>
+        </div>
+      </li>
     <% end %>
   </ul>
 </div>

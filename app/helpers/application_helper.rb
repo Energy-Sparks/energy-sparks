@@ -69,6 +69,17 @@ module ApplicationHelper
     end
   end
 
+  def class_for_alert_subscription(status)
+    case status
+    when 'sent'
+      'bg-success'
+    when 'pending'
+      'bg-warning'
+    else
+      'bg-danger'
+    end
+  end
+
   def fa_icon(icon_type)
     icon('fas', icon_type)
   end
@@ -82,10 +93,10 @@ module ApplicationHelper
   end
 
   def fuel_type_icon(fuel_type)
-    case fuel_type
-    when :electricity, 'electricity'
+    case fuel_type.to_sym
+    when :electricity
       'bolt'
-    when :gas, 'gas'
+    when :gas
       'fire'
     end
   end
@@ -98,6 +109,23 @@ module ApplicationHelper
         link_to link_text, link_path, class: 'nav-link'
       end
     end
+  end
+
+  def chart_tag(chart_type, index: 1, chart_config: {})
+    html_chart_data = chart_config.inject({}) do |collection, (data_item_key, data_item_value)|
+      collection["chart-#{data_item_key.to_s.parameterize}"] = data_item_value
+      collection
+    end
+    content_tag(
+      :div,
+      '',
+      id: "chart_#{index}",
+      class: 'analysis-chart',
+      data: {
+        "chart-index" => index,
+        "chart-type" => chart_type
+      }.merge(html_chart_data)
+    )
   end
 
   def label_is_energy_plus?(label)
@@ -128,18 +156,6 @@ module ApplicationHelper
       date_to_and_from[1].delete_at(0)
     end
     date_to_and_from.map { |bit| bit.join(' ') }.join(' - ')
-  end
-
-  # TODO sort this out, hacky yuck
-  def sort_out_data_for_alerts_chart(content)
-    data_string = ''
-    content = HashWithIndifferentAccess.new(content)
-    content[:x_data].map.each_with_index do |(k, v), index|
-      data_string = data_string + ',' unless index == 0
-      data_string = data_string + '{ "name": "' +  k + '", "y": ' + v[0].to_s + ' } '
-    end
-
-    '{ "name": "' + content[:title] + '", "colorByPoint": "true", "data": [' + data_string + '] }'
   end
 
   def format_school_time(school_time)

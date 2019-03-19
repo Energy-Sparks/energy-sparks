@@ -23,6 +23,12 @@
           </li>
         <% end %>
 
+        <% if user_signed_in? && current_user.admin? && @school && @school.id %>
+          <!-- temporary link -->
+          <li class="nav-item"><%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'nav-link' %></li>
+          <li class="nav-item"><%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'nav-link' %></li>
+        <% end %>
+
         <% if current_user && current_user.active_school_admin? && current_user.school.scoreboard %>
           <li><%= link_to "Scoreboard", scoreboard_path(current_user.school.scoreboard), class: 'nav-link' %></li>
         <% end %>
@@ -35,6 +41,7 @@
               <div class="dropdown-menu">
                 <%= link_to "Activity Categories", activity_categories_path, class: 'dropdown-item' %>
                 <%= link_to "Activity Types", activity_types_path, class: 'dropdown-item' %>
+                <%= link_to "Alert Types", admin_alert_types_path, class: 'dropdown-item' %>
                 <%= link_to "Calendars", calendars_path, class: 'dropdown-item' %>
                 <%= link_to "Manual School Setup", new_school_path, class: 'dropdown-item' %>
                 <%= link_to "Automatic School Setup", admin_school_onboardings_path, class: 'dropdown-item' %>
@@ -53,13 +60,14 @@
           <div class="dropdown-menu" aria-labelledby="aboutDropDown">
             <%= link_to "For Teachers", for_teachers_path, class: 'dropdown-item' %>
             <%= link_to "For Pupils", for_pupils_path, class: 'dropdown-item' %>
-
             <%= link_to "Enrol", enrol_path, class: 'dropdown-item' %>
             <%= link_to "Getting Started", getting_started_path, class: 'dropdown-item' %>
             <%= link_to "Scoring", scoring_path, class: 'dropdown-item' %>
             <%= link_to "Activities", activity_categories_path, class: 'dropdown-item' %>
-            <%= link_to "Contact", contact_path, class: 'dropdown-item' %>
           </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Contact", contact_path, class: 'nav-link' %>
         </li>
         <li class="nav-item">
           <% if user_signed_in? %>

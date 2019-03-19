@@ -36,4 +36,25 @@ class Scoreboard < ApplicationRecord
         .order('sum_points DESC NULLS LAST')
         .group('schools.id, merit_scores.sash_id')
   end
+
+  def position(school)
+    scored_schools.index(school)
+  end
+
+  # NOTE: this returns schools [HIGH -> LOW] to
+  # matcth the result of score_schools
+  # even if the UI requires them the other way round
+  def surrounding_schools(school)
+    school_position = position(school)
+    scored = scored_schools.to_a
+    return scored if scored.size < 4
+    starting_position = if school_position == 0
+                          0
+                        elsif school_position == (scored.size - 1)
+                          -3
+                        else
+                          school_position - 1
+                        end
+    scored[starting_position, 3].compact
+  end
 end

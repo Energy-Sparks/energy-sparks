@@ -22,6 +22,7 @@ class AlertSubscription < ApplicationRecord
   belongs_to :alert_type, inverse_of: :alert_subscriptions
 
   has_and_belongs_to_many :contacts
+  has_many :alert_subscription_events
 
   accepts_nested_attributes_for :contacts, reject_if: :reject_contacts
 

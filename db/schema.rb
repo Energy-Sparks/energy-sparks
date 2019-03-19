@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_30_151253) do
+ActiveRecord::Schema.define(version: 2019_03_13_114650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -109,6 +109,26 @@ ActiveRecord::Schema.define(version: 2019_01_30_151253) do
     t.boolean "custom", default: false
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
+  end
+
+  create_table "alert_subscription_events", force: :cascade do |t|
+    t.bigint "alert_subscription_id"
+    t.bigint "alert_id"
+    t.bigint "contact_id"
+    t.integer "status", default: 0, null: false
+    t.integer "communication_type", default: 0, null: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
+    t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
+    t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
+  end
+
+  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
   end
 
   create_table "alert_subscriptions", force: :cascade do |t|
@@ -572,6 +592,9 @@ ActiveRecord::Schema.define(version: 2019_01_30_151253) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "alert_subscription_events", "alert_subscriptions"
+  add_foreign_key "alert_subscription_events", "alerts"
+  add_foreign_key "alert_subscription_events", "contacts"
   add_foreign_key "alert_subscriptions", "alert_types"
   add_foreign_key "alert_subscriptions", "schools"
   add_foreign_key "amr_validated_readings", "meters"

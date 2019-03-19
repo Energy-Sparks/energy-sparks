@@ -1,9 +1,9 @@
 <% content_for :page_title do %>Explore usage data for <%= @school.name %><% end %>
 
-<div class="application container charts" id="daily-usage">
-  <div class="row padded-row">
+<div class="container charts" id="daily-usage">
+  <div class="row">
     <div class="col-md-12">
-      <h1>Daily usage for <%= @school.name %></h1>
+      <h1>Daily usage</h1>
       <p>Explore daily power usage for <%= link_to @school.name, school_path(@school), id: "school" %></p>
     </div>
   </div>

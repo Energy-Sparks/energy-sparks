@@ -1,0 +1,52 @@
+<% content_for :page_title, "Alert subscription events for #{@school.name}" %>
+
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1>Alert Subscription Events</h1>
+    <h2><%= link_to @school.name, @school %><h2>
+    <p>These are all the actions taken by Energy Sparks for your alert subscriptions</p>
+    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
+  </div>
+</div>
+
+<% if can?(:send_alert_emails, @school) && @alert_subscription_events.email.pending.any? %>
+  <div class="alert alert-secondary">
+    <%= link_to 'Send pending emails now', school_alert_emails_path(@school), method: :post, class: 'btn btn-warning mr-3' %>
+    This may take some time!
+  </div>
+<% end %>
+
+<div class="row">
+  <% if @alert_subscription_events.any? %>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Contact</th>
+          <th>Alert Type</th>
+          <th>Created At</th>
+          <th>Status</th>
+          <th>Updated At</th>
+          <th>Message</th>
+          <th>Communication Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @alert_subscription_events.each do |alert_subscription_event| %>
+          <tr scope="row" class="<%=class_for_alert_subscription(alert_subscription_event.status) %>">
+            <td><%= alert_subscription_event.contact.name %></td>
+            <td><%= alert_subscription_event.alert.title %></td>
+            <td><%= nice_date_times alert_subscription_event.created_at %></td>
+            <td><%= alert_subscription_event.status.capitalize %></td>
+            <td><%= nice_date_times alert_subscription_event.updated_at %></td>
+            <td><%= alert_subscription_event.message %></td>
+            <td><%= alert_subscription_event.communication_type.capitalize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <% else %>
+    <p>There are no alert subscription events</p>
+  <% end %>
+</div>

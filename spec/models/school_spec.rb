@@ -143,41 +143,6 @@ describe School do
     end
   end
 
-  describe '.top_scored' do
-    let(:score) { create :score, sash_id: subject.sash_id }
-
-    context 'when no limit is provided' do
-      it 'returns an array of schools ordered by points' do
-        schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
-
-        expect(School.top_scored.map(&:id)).to eq(schools.map(&:id))
-      end
-    end
-    context 'when a limit is provided' do
-      it 'returns an array of schools ordered by points of length no longer than limit' do
-        schools = (1..8).collect { |n| create :school, :with_points, score_points: 8 - n }
-
-        expect(School.top_scored(limit: 5).map(&:id)).to eq(schools[0..4].map(&:id))
-      end
-    end
-    context 'when no date range is provided' do
-      it 'limits points counted to those awarded since the start of the academic year' do
-        schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
-        create :score_point, score_id: score.id, created_at: today.years_ago(2), num_points: 100
-
-        expect(School.top_scored.map(&:id)).to eq(schools.map(&:id))
-      end
-    end
-    context 'when a date range is provided' do
-      it 'limits points counted to those awarded in the date range' do
-        schools = (1..5).collect { |n| create :school, :with_points, score_points: 6 - n }
-        create :score_point, score_id: score.id, created_at: today.years_ago(2), num_points: 100
-
-        expect(School.top_scored(dates: today.months_ago(1)..today.tomorrow).map(&:id)).to eq(schools.map(&:id))
-      end
-    end
-  end
-
   describe '#fuel_types' do
     it 'identifies dual fuel if it has both meters' do
       gas_meter = create(:gas_meter_with_reading, school: subject)
@@ -308,6 +273,16 @@ describe School do
       meter = create(:electricity_meter_with_validated_reading)
       meter = create(:gas_meter_with_validated_reading)
       expect(subject.fuel_types_for_analysis(5)).to be :none
+    end
+  end
+
+  describe '#scoreboard_Position' do
+    let!(:scoreboard)       { create :scoreboard }
+    let!(:group)            { create(:school_group, scoreboard: scoreboard) }
+    let!(:pointy_school)    { create :school, :with_points, score_points: 6, school_group: group }
+
+    it "knows it's position in it's scoreboard" do
+      expect(pointy_school.scoreboard_position).to be 1
     end
   end
 end
