@@ -1,6 +1,6 @@
 <% content_for :page_title do %>Alert for <%= @school.name %><% end %>
 
-<h1><%= fa_icon('question-circle') %> <%= @alert.summary %></h1>
+<h1><%= @alert.summary %></h1>
 
 <div class="row">
   <% @alert.detail.select{|detail| detail['type'].to_sym == :chart}.each do |detail| %>
@@ -23,9 +23,9 @@
     <% end %>
   </div>
   <div class="col-md-5">
-    <% if @alert.alert_type.activity_types.any? %>
+    <% if @activity_types %>
       <h2>Activities which will help</h2>
-      <% @alert.alert_type.activity_types.each do |activity_type| %>
+      <% @activity_types.each do |activity_type| %>
         <%= render 'activity_types/card', activity_type: activity_type %>
       <% end %>
     <% end %>
