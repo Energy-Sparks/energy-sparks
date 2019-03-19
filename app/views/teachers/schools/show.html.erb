@@ -28,18 +28,28 @@
   <% end %>
 </div>
 
-<div class="row">
-  <div class="col-md-12 jumbotron">
-    <h2>Things to try</h2>
-    <p>Will go here</p>
+<% if @latest_alerts_sample %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
-  </div>
-</div>
+  <% unless @latest_alert_activity_types.empty? %>
+    <div class="row">
+      <div class="col-md-12 jumbotron things-to-try">
+        <h2>Things to try</h2>
+        <ul>
+          <% @latest_alert_activity_types.each do |activity_type| %>
+            <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+<% end %>
+
 
 <div class="card">
   <div class="card-header">

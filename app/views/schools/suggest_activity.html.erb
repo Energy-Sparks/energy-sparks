@@ -69,20 +69,7 @@
         <div class="card-deck">
           <% group.each do |activity_type| %>
             <% if activity_type.present? %>
-              <div class="card activity-card">
-                <div class="card-header">
-                  <p><span class="badge badge-success"><%= activity_type.score %></span>
-                  <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
-                </div>
-                <div class="card-body">
-                  <h4 class="card-title"><%= "#{activity_type.name} (#{activity_type.key_stage_list})" %></h4>
-                  <p class="card-text">
-                  </p>
-                </div>
-                <div class="card-footer text-right">
-                  <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
-                </div>
-              </div>
+              <%= render 'activity_types/card', activity_type: activity_type %>
             <% else %>
               <div class="card secondary-card">
                 <div class="card-header">
