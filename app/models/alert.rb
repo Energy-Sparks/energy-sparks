@@ -61,4 +61,8 @@ class Alert < ApplicationRecord
   def rating
     data['rating'].nil? ? 'Unrated' : "#{data['rating'].round(0)}/10"
   end
+
+  def raw_rating
+    data['rating']
+  end
 end
