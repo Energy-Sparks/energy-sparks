@@ -7,8 +7,9 @@ class AmrValidatedMeterCollection < AmrMeterCollection
   def add_amr_data(dashboard_meter, active_record_meter)
     amr_data = AMRData.new(dashboard_meter.meter_type)
 
-    AmrValidatedReading.where(meter_id: active_record_meter.id).order(reading_date: :asc).each do |reading|
-      amr_data.add(reading.reading_date, OneDayAMRReading.new(active_record_meter.id, reading.reading_date, reading.status, reading.substitute_date, reading.upload_datetime, reading.kwh_data_x48.map(&:to_f)))
+    validated_reading_array = AmrValidatedReading.where(meter_id: active_record_meter.id).order(reading_date: :asc).pluck(:reading_date, :status, :substitute_date, :upload_datetime, :kwh_data_x48)
+    validated_reading_array.each do |reading|
+      amr_data.add(reading[0], OneDayAMRReading.new(active_record_meter.id, reading[0], reading[1], reading[2], reading[3], reading[4].map(&:to_f)))
     end
 
     dashboard_meter.amr_data = amr_data
