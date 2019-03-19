@@ -64,6 +64,10 @@ RSpec.describe "school alerts", type: :system do
 
         expect(page).to_not have_content(description)
 
+        within '.things-to-try' do
+          expect(page).to have_content("Turn off the heating")
+        end
+
         within '.alert' do
           click_on("Find out more")
         end
