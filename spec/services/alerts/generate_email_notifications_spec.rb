@@ -8,7 +8,6 @@ describe Alerts::GenerateEmailNotifications do
   let!(:alert_subscription_email_1) { create(:alert_subscription, alert_type: alert_1.alert_type, school: school, contacts: [email_contact]) }
   let!(:alert_subscription_email_2) { create(:alert_subscription, alert_type: alert_2.alert_type, school: school, contacts: [email_contact]) }
 
-
   it 'sends email, only once' do
     alert_subscription_event_1 = AlertSubscriptionEvent.create(alert: alert_1, alert_subscription: alert_subscription_email_1, communication_type: :email, contact: email_contact, status: :pending)
     alert_subscription_event_2 = AlertSubscriptionEvent.create(alert: alert_2, alert_subscription: alert_subscription_email_2, communication_type: :email, contact: email_contact, status: :pending)

@@ -34,7 +34,7 @@
       <tbody>
         <% @alert_subscription_events.each do |alert_subscription_event| %>
           <tr scope="row" class="<%=class_for_alert_subscription(alert_subscription_event.status) %>">
-            <td><%= alert_subscription_event.contact.name %></td>
+            <td><a href="<%= AlertMailerPreview.custom_url(@school.id, alert_subscription_event.contact.email_address, alert_subscription_event.alert.id)%>"><%= alert_subscription_event.contact.name %></a></td>
             <td><%= alert_subscription_event.alert.title %></td>
             <td><%= nice_date_times alert_subscription_event.created_at %></td>
             <td><%= alert_subscription_event.status.capitalize %></td>
