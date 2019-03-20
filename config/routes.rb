@@ -114,6 +114,7 @@ Rails.application.routes.draw do
         resources :find_out_more_types
       end
     end
+    resource :find_out_more_calculation
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'

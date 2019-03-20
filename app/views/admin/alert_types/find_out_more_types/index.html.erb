@@ -1,8 +1,9 @@
 <%= render 'admin/alert_types/nav', alert_type: @alert_type %>
 
-<h1>Alert type management</h1>
+<%= button_to 'Apply Find Out More copy changes', admin_find_out_more_calculation_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %>
 
 <%= link_to 'New Find Out More type', new_admin_alert_type_find_out_more_type_path(@alert_type), class: 'btn btn-primary mb-3' %>
+
 
 <table class="table table-striped">
   <thead>

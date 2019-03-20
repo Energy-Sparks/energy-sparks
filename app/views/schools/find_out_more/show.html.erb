@@ -12,12 +12,12 @@
     </div>
   <% end %>
   <div class="col-md-7">
-    <%= @content.page_content %>
+    <div class="trix-content">
+      <%= sanitize @content.page_content %>
+    </div>
     <% @alert.detail.reject{|detail| detail['type'].to_sym == :chart}.each do |detail| %>
       <% if detail['type'].to_sym == :html %>
         <%= detail['content'].html_safe %>
-      <% else %>
-        <p><%= detail['content'].html_safe %></p>
       <% end %>
     <% end %>
   </div>

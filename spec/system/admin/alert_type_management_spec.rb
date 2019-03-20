@@ -44,10 +44,11 @@ RSpec.describe 'alert type management', type: :system do
     before do
       sign_in(admin)
       visit root_path
+      click_on 'Manage'
       click_on 'Alert Types'
     end
 
-    it 'allows creation and editing  of Find Out More content' do
+    it 'allows creation and editing of Find Out More content', js: true do
 
       click_on 'Your gas usage is too high'
       click_on 'Find Out More types'
@@ -60,7 +61,9 @@ RSpec.describe 'alert type management', type: :system do
 
       fill_in 'Dashboard title', with: 'Your gas usage is too high'
       fill_in 'Page title', with: 'You are using too much gas!'
-      fill_in 'Page content', with: 'You are using too much gas! You need to do something about it.'
+
+      editor = find('trix-editor')
+      editor.click.set('You are using too much gas! You need to do something about it.')
 
       click_on 'Create Find Out More'
 

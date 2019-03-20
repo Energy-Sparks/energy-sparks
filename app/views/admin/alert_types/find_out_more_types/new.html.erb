@@ -1,6 +1,6 @@
 <%= render 'admin/alert_types/nav', alert_type: @alert_type %>
 
-<h1>New Find Out More Type</h1>
+<h2>New Find Out More Type</h2>
 
 <%= simple_form_for @find_out_more_type, url: admin_alert_type_find_out_more_types_path(@alert_type) do |form| %>
   <%= render 'form', form: form, content: @content %>

@@ -643,7 +643,7 @@ ActiveRecord::Schema.define(version: 2019_03_19_140130) do
   add_foreign_key "contacts", "schools"
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "find_out_more_calculations", "schools", on_delete: :cascade
-  add_foreign_key "find_out_more_type_content_versions", "find_out_more_types", on_delete: :restrict
+  add_foreign_key "find_out_more_type_content_versions", "find_out_more_types", on_delete: :cascade
   add_foreign_key "find_out_more_types", "alert_types", on_delete: :restrict
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "find_out_more_calculations", on_delete: :cascade

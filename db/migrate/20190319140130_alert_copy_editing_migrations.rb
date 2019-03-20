@@ -10,7 +10,7 @@ class AlertCopyEditingMigrations < ActiveRecord::Migration[5.2]
     end
 
     create_table :find_out_more_type_content_versions do |t|
-      t.references :find_out_more_type, null: false, foreign_key: {on_delete: :restrict}, index: {name: 'fom_content_v_fom_id'}
+      t.references :find_out_more_type, null: false, foreign_key: {on_delete: :cascade}, index: {name: 'fom_content_v_fom_id'}
       t.string :dashboard_title, null: false
       t.string :page_title, null: false
       t.text :page_content, null: false
