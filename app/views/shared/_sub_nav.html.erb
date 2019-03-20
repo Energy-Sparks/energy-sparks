@@ -5,9 +5,9 @@
       <h4><%= link_to @school.name, school_path(@school) %></h4>
     </div>
     <% if @school.scoreboard %>
-      <div class="">
-          <a class="btn-success btn btn-sm" href="<%= scoreboard_path(@school) %>">
-            <strong>
+      <div class="bd-highlight">
+        <h3 class="display-6">
+          <span class="badge badge-success ">
             <% if @school.points.positive? %>
               <%= @school.points %> points
               <% if @school.points_since > 0 %>
@@ -16,12 +16,12 @@
             <% else %>
               No points yet
             <% end %>
-          </strong>
-          </a>
-          <% if @school.points.positive? %>
-            <a class="btn btn-primary btn-sm" title="Current Position" href="<%= scoreboard_path(@school) %>"><strong><%= scoreboard_position(@school) %></strong></a>
-          <% end %>
+          </span>
 
+          <% if @school.points.positive? %>
+            <span class="nav-link badge badge-primary"><%= scoreboard_position(@school) %></span>
+          <% end %>
+        </h3>
       </div>
     <% end %>
     <div class="bd-highlight">
