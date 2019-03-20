@@ -2,19 +2,8 @@
 
 <h1>New Find Out More Type</h1>
 
-<%= simple_form_for @find_out_more_type, url: admin_alert_type_find_out_more_types_path(@alert_type) do |f| %>
-  <h2>General</h2>
-  <%= f.input :description, hint: 'Only used in the admin interface' %>
-  <%= f.input :rating_from, input_html: {min: 0, max: 10, step: 0.1} %>
-  <%= f.input :rating_to, input_html: {min: 0, max: 10, step: 0.1} %>
-
-  <h2>Content</h2>
-  <%= f.simple_fields_for :content, @content do |content| %>
-    <%= content.input :dashboard_title, hint: 'Shows on pupil and teacher dashboards' %>
-    <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>
-    <%= content.input :page_content, hint: 'Main body copy for Find Out More Page' %>
-  <% end %>
-
-  <%= f.button :submit, 'Create Find Out More type' %>
+<%= simple_form_for @find_out_more_type, url: admin_alert_type_find_out_more_types_path(@alert_type) do |form| %>
+  <%= render 'form', form: form, content: @content %>
+  <%= form.button :submit, 'Create Find Out More type' %>
 <% end %>
 

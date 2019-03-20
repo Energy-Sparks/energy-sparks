@@ -1,0 +1,11 @@
+<h2>General</h2>
+<%= form.input :description, hint: 'Only used in the admin interface' %>
+<%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1} %>
+<%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1} %>
+
+<h2>Content</h2>
+<%= form.simple_fields_for :content, content do |content| %>
+  <%= content.input :dashboard_title, hint: 'Shows on pupil and teacher dashboards' %>
+  <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>
+  <%= content.input :page_content, hint: 'Main body copy for Find Out More Page' %>
+<% end %>

@@ -47,7 +47,7 @@ RSpec.describe 'alert type management', type: :system do
       click_on 'Alert Types'
     end
 
-    it 'allows creation of Find Out More content' do
+    it 'allows creation and editing  of Find Out More content' do
 
       click_on 'Your gas usage is too high'
       click_on 'Find Out More types'
@@ -67,7 +67,18 @@ RSpec.describe 'alert type management', type: :system do
       expect(gas_fuel_alert_type.find_out_more_types.size).to eq(1)
       find_out_more_type = gas_fuel_alert_type.find_out_more_types.first
       expect(find_out_more_type.content_versions.size).to eq(1)
-      expect(find_out_more_type.current_content.page_title).to eq('You are using too much gas!')
+      first_content = find_out_more_type.current_content
+      expect(first_content.page_title).to eq('You are using too much gas!')
+
+      click_on 'Edit'
+
+      fill_in 'Page title', with: 'Stop using so much gas!'
+      click_on 'Update Find Out More type'
+
+      expect(find_out_more_type.content_versions.size).to eq(2)
+      second_content = find_out_more_type.current_content
+      expect(second_content.page_title).to eq('Stop using so much gas!')
+
 
     end
   end

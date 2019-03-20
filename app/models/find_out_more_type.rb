@@ -32,8 +32,9 @@ class FindOutMoreType < ApplicationRecord
     content_versions.latest.first
   end
 
-  def update_with_content!(content)
+  def update_with_content!(attributes, content)
     to_replace = current_content
+    self.attributes = attributes
     if valid? && content.valid?
       transaction do
         save!
