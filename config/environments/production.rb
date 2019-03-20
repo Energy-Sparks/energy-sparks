@@ -80,6 +80,8 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "energy_sparks_#{Rails.env}"
   config.action_mailer.perform_caching = false
+  # Enable mail previews
+  config.action_mailer.show_previews = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
