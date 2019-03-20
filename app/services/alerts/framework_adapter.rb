@@ -15,7 +15,7 @@ module Alerts
 
       analysis_report = analysis_obj.analysis_report
       analysis_report.summary = "There was a problem running the #{@alert_type.title} alert. This is likely due to missing data." if analysis_report.summary.nil?
-      build_alert(analysis_report)
+      build_alert(analysis_obj, analysis_report)
     end
 
   private
@@ -28,22 +28,24 @@ module Alerts
       @alert_type.class_name.constantize
     end
 
-    def build_alert(analysis_report)
+    def build_alert(analysis_obj, analysis_report)
       Alert.new(
         school_id:      @school.id,
         alert_type_id:  @alert_type.id,
         run_on:         @analysis_date,
         status:         analysis_report.status,
         summary:        analysis_report.summary,
-        data:           data_hash(analysis_report),
+        data:           data_hash(analysis_obj, analysis_report),
       )
     end
 
-    def data_hash(analysis_report)
+    def data_hash(analysis_obj, analysis_report)
       {
-        help_url:             analysis_report.help_url,
-        detail:               analysis_report.detail,
-        rating:               analysis_report.rating,
+        help_url:                analysis_report.help_url,
+        detail:                  analysis_report.detail,
+        rating:                  analysis_report.rating,
+        raw_template_variables:  analysis_obj.raw_template_variables,
+        text_template_variables: analysis_obj.text_template_variables
       }
       # analysis_report.type is an enum from the analytics framework, describing an alert type
     end

@@ -16,6 +16,14 @@ class Alerts::DummyAlertClass
     @aggregate_school == nil ? Alerts::DummyAlertClass.bad_alert_report : Alerts::DummyAlertClass.good_alert_report
   end
 
+  def raw_template_variables
+    {raw: 'variables'}
+  end
+
+  def text_template_variables
+    {text: 'variables'}
+  end
+
   def self.good_alert_report
     alert_report = AlertReport.new(AlertType.first)
     alert_report.summary = "This alert has run."
@@ -41,7 +49,11 @@ describe Alerts::FrameworkAdapter do
       run_on: gas_date,
       summary: Alerts::DummyAlertClass.good_alert_report.summary,
       alert_type: gas_fuel_alert_type,
-      data: { help_url: nil, detail: [], rating: 10.0 }
+      data: {
+        help_url: nil, detail: [], rating: 10.0 ,
+        raw_template_variables: {raw: 'variables'},
+        text_template_variables: {text: 'variables'}
+      }
     )
   end
 
@@ -50,7 +62,11 @@ describe Alerts::FrameworkAdapter do
       run_on: gas_date,
       summary: "There was a problem running the #{gas_fuel_alert_type.title} alert. This is likely due to missing data.",
       alert_type: gas_fuel_alert_type,
-      data: { help_url: nil, detail: [], rating: nil }
+      data: {
+        help_url: nil, detail: [], rating: nil,
+        raw_template_variables: {raw: 'variables'},
+        text_template_variables: {text: 'variables'}
+      }
     )
   end
 

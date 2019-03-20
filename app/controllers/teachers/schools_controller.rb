@@ -6,6 +6,10 @@ class Teachers::SchoolsController < SchoolsController
     @activities_count = @school.activities.count
     @find_out_more_alert = @school.latest_find_out_mores.sample
     if @find_out_more_alert
+      @find_out_more_alert_content = TemplateInterpolation.new(@find_out_more_alert.content_version).interpolate(
+        :dashboard_title,
+        with: @find_out_more_alert.alert.text_template_variables
+      )
       @find_out_more_alert_activity_types = @find_out_more_alert.alert.alert_type.activity_types.limit(3)
     end
 

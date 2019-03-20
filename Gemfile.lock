@@ -314,6 +314,7 @@ GEM
     msgpack (1.2.4)
     multi_json (1.13.1)
     multipart-post (2.0.0)
+    mustache (1.1.0)
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
@@ -621,6 +622,7 @@ DEPENDENCIES
   mailgun_rails
   merit (~> 3.0.2)
   momentjs-rails
+  mustache (~> 1.0)
   oj
   overcommit
   pg

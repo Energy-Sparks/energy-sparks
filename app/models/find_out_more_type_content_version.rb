@@ -27,4 +27,8 @@ class FindOutMoreTypeContentVersion < ApplicationRecord
   validates :dashboard_title, :page_title, :page_content, presence: true
 
   scope :latest, -> { where(replaced_by_id: nil) }
+
+  def interpolated(field, variables)
+    TemplateInterpolation.new(send(field)).interpolate(variables)
+  end
 end

@@ -53,6 +53,8 @@ gem 'activerecord-import'
 
 # JS Templating
 gem 'handlebars_assets'
+# Template variables
+gem "mustache", "~> 1.0"
 
 # User input
 gem 'trix-rails', require: 'trix'
