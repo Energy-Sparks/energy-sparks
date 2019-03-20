@@ -355,8 +355,8 @@ ActiveRecord::Schema.define(version: 2019_03_19_140130) do
 
   create_table "find_out_more_types", force: :cascade do |t|
     t.bigint "alert_type_id", null: false
-    t.integer "rating_from", null: false
-    t.integer "rating_to", null: false
+    t.decimal "rating_from", null: false
+    t.decimal "rating_to", null: false
     t.string "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

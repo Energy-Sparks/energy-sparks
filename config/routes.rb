@@ -111,6 +111,7 @@ Rails.application.routes.draw do
     resources :alert_types, only: [:index, :show] do
       scope module: :alert_types do
         resource :activity_types, only: [:show, :update]
+        resources :find_out_more_types
       end
     end
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do

@@ -1,0 +1,28 @@
+<%= render 'admin/alert_types/nav', alert_type: @alert_type %>
+
+<h1>Alert type management</h1>
+
+<%= link_to 'New Find Out More type', new_admin_alert_type_find_out_more_type_path(@alert_type), class: 'btn btn-primary mb-3' %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Rating from</th>
+      <th>Rating to</th>
+      <th>Description</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @find_out_more_types.each do |find_out_more_type| %>
+      <tr>
+        <td><%= find_out_more_type.rating_from %></td>
+        <td><%= find_out_more_type.rating_to %></td>
+        <td><%= find_out_more_type.description %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_alert_type_find_out_more_type_path(@alert_type, find_out_more_type), class: 'btn btn-primary btn-sm'%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

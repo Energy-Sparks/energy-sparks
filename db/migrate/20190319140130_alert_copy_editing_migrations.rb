@@ -3,8 +3,8 @@ class AlertCopyEditingMigrations < ActiveRecord::Migration[5.2]
 
     create_table :find_out_more_types do |t|
       t.references :alert_type, null: false, foreign_key: {on_delete: :restrict}
-      t.integer :rating_from, null: false
-      t.integer :rating_to, null: false
+      t.decimal :rating_from, null: false
+      t.decimal :rating_to, null: false
       t.string :description, null: false
       t.timestamps
     end

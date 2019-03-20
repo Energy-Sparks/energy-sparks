@@ -6,8 +6,8 @@
 #  created_at    :datetime         not null
 #  description   :string           not null
 #  id            :bigint(8)        not null, primary key
-#  rating_from   :integer          not null
-#  rating_to     :integer          not null
+#  rating_from   :decimal(, )      not null
+#  rating_to     :decimal(, )      not null
 #  updated_at    :datetime         not null
 #
 # Indexes
@@ -25,7 +25,24 @@ class FindOutMoreType < ApplicationRecord
 
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
 
+  validates :rating_from, :rating_to, :description, presence: true
+  validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
+
   def current_content
     content_versions.latest.first
+  end
+
+  def update_with_content(content)
+    to_replace = current_content
+    if valid? && content.valid?
+      if save && content.save
+        to_replace.update!(replaced_by: content) if to_replace
+        true
+      else
+        false
+      end
+    else
+      false
+    end
   end
 end
