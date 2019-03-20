@@ -335,6 +335,13 @@ ActiveRecord::Schema.define(version: 2019_03_19_140130) do
     t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
+  create_table "find_out_more_calculations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_find_out_more_calculations_on_school_id"
+  end
+
   create_table "find_out_more_type_content_versions", force: :cascade do |t|
     t.bigint "find_out_more_type_id", null: false
     t.string "dashboard_title", null: false
@@ -359,9 +366,11 @@ ActiveRecord::Schema.define(version: 2019_03_19_140130) do
   create_table "find_out_mores", force: :cascade do |t|
     t.bigint "find_out_more_type_content_version_id", null: false
     t.bigint "alert_id", null: false
+    t.bigint "find_out_more_calculation_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alert_id"], name: "index_find_out_mores_on_alert_id"
+    t.index ["find_out_more_calculation_id"], name: "index_find_out_mores_on_find_out_more_calculation_id"
     t.index ["find_out_more_type_content_version_id"], name: "fom_fom_content_v_id"
   end
 
@@ -633,9 +642,11 @@ ActiveRecord::Schema.define(version: 2019_03_19_140130) do
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "contacts", "schools"
   add_foreign_key "data_feed_readings", "data_feeds"
+  add_foreign_key "find_out_more_calculations", "schools", on_delete: :cascade
   add_foreign_key "find_out_more_type_content_versions", "find_out_more_types", on_delete: :restrict
   add_foreign_key "find_out_more_types", "alert_types", on_delete: :restrict
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
+  add_foreign_key "find_out_mores", "find_out_more_calculations", on_delete: :cascade
   add_foreign_key "find_out_mores", "find_out_more_type_content_versions", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"

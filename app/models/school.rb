@@ -57,9 +57,9 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
 
-  has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
-  has_many :alerts,               inverse_of: :school, dependent: :destroy
-  has_many :find_out_mores,       through: :alerts
+  has_many :alert_subscriptions,        inverse_of: :school, dependent: :destroy
+  has_many :alerts,                     inverse_of: :school, dependent: :destroy
+  has_many :find_out_more_calculations, inverse_of: :school
 
   has_many :simulations,          inverse_of: :school, dependent: :destroy
 
@@ -225,6 +225,15 @@ class School < ApplicationRecord
 
   def scoreboard_position
     scoreboard.position(self) + 1
+  end
+
+  def latest_find_out_mores
+    calculation = find_out_more_calculations.order(created_at: :desc).first
+    if calculation
+      calculation.find_out_mores
+    else
+      FindOutMore.none
+    end
   end
 
 private

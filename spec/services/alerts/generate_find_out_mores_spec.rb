@@ -26,6 +26,15 @@ describe Alerts::GenerateFindOutMores do
     let!(:find_out_more_content_version){ create :find_out_more_type_content_version, find_out_more_type: find_out_more_type }
 
     context 'where the rating matches the range' do
+
+      it 'creates a parent calculation record' do
+        service.perform
+        expect(FindOutMoreCalculation.count).to be 1
+        calculation = FindOutMoreCalculation.first
+        expect(calculation.find_out_mores.size).to eq(1)
+        expect(calculation.school).to eq(school)
+      end
+
       it 'creates a find out more pairing the alert and the content' do
         service.perform
         expect(FindOutMore.count).to be 1

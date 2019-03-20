@@ -49,11 +49,11 @@ RSpec.describe "school alerts", type: :system do
         )
       end
       let(:alert_summary){ 'Summary of the alert' }
+      let!(:alert){ Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 9.0}, summary: alert_summary) }
 
       before do
         gas_fuel_alert_type.update!(activity_types: [activity_type])
-        alert = Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 9.0}, summary: alert_summary)
-        create(:find_out_more, alert: alert, content_version: find_out_more_type_content_version)
+        Alerts::GenerateFindOutMores.new(school).perform
       end
 
       it 'can show a single alert with the associated activities' do

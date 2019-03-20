@@ -18,11 +18,18 @@ class AlertCopyEditingMigrations < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
+    create_table :find_out_more_calculations do |t|
+      t.references :school, null: false, foreign_key: {on_delete: :cascade}
+      t.timestamps
+    end
+
     create_table :find_out_mores do |t|
       t.references :find_out_more_type_content_version, null: false, foreign_key: {on_delete: :cascade}, index: {name: 'fom_fom_content_v_id'}
       t.references :alert, null: false, foreign_key: {on_delete: :cascade}
+      t.references :find_out_more_calculation, null: false, foreign_key: {on_delete: :cascade}
       t.timestamps
     end
+
 
   end
 end
