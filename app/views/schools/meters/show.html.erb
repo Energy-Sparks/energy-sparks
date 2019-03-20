@@ -23,18 +23,20 @@
   <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
 </dl>
 
-<% if @meter_corrections %>
-  <h3>Meter corrections</h3>
-  <%= sanitize ap(@meter_corrections, { index: false } ) %>
-<% end %>
+<div class="meter-attributes">
+  <% if @meter_corrections %>
+    <h3>Meter corrections</h3>
+    <%= sanitize ap(@meter_corrections, { index: false } ) %>
+  <% end %>
 
-<% if @heating_model %>
-  <h3>Heating Model</h3>
-  <%= sanitize ap(@heating_model, { index: false } ) %>
-<% end %>
+  <% if @heating_model %>
+    <h3>Heating Model</h3>
+    <%= sanitize ap(@heating_model, { index: false } ) %>
+  <% end %>
 
-<% if @aggregation %>
-  <h3>Aggregation</h3>
-  <%= sanitize ap(@aggregation, { index: false } ) %>
-<% end %>
+  <% if @aggregation %>
+    <h3>Aggregation</h3>
+    <%= sanitize ap(@aggregation, { index: false } ) %>
+  <% end %>
+</div>
 
