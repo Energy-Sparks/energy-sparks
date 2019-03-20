@@ -32,15 +32,15 @@ class FindOutMoreType < ApplicationRecord
     content_versions.latest.first
   end
 
-  def update_with_content(content)
+  def update_with_content!(content)
     to_replace = current_content
     if valid? && content.valid?
-      if save && content.save
+      transaction do
+        save!
+        content.save!
         to_replace.update!(replaced_by: content) if to_replace
-        true
-      else
-        false
       end
+      true
     else
       false
     end
