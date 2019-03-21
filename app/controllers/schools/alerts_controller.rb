@@ -4,9 +4,8 @@ class Schools::AlertsController < ApplicationController
   def index
     authorize! :read, AlertType
 
-    @termly_alerts = @school.alerts.termly.latest
-    @weekly_alerts = @school.alerts.weekly.latest
-    @holiday_alerts = @school.alerts.before_each_holiday.latest
+    @gas_alerts = @school.alerts.gas.latest.sort_by { |a| a.data['rating'] }
+    @electricity_alerts = @school.alerts.electricity.latest.sort_by { |a| a.data['rating'] }
   end
 
   def show

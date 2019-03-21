@@ -3,7 +3,10 @@ class AlertMailer < ApplicationMailer
 
   def alert_email
     @email_address = params[:email_address]
-    @alerts = Alert.find(params[:alert_ids])
+
+    # Convert "[1,2,3]" to [1,2,3]
+    alert_ids = JSON.parse(params[:alert_ids])
+    @alerts = Alert.find(alert_ids)
     @school = School.find(params[:school_id])
     @unsubscribe_emails = User.where(school: @school, role: :school_admin).pluck(:email).join(', ')
 
