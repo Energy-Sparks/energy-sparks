@@ -9,12 +9,12 @@ class Pupils::SchoolsController < SchoolsController
 
     if @school.meters?(:electricity)
       electricity_card = MeterCard.create(school: @school, supply: :electricity)
-      electricity_message = "Based on our latest data, your school used an average of #{electricity_card.values.average_usage} kWh of electricity per day" if electricity_card.values
+      electricity_message = random_equivalence_text(electricity_card.values.average_usage, :electricity) if electricity_card.values
     end
 
     if @school.meters?(:gas)
       gas_card = MeterCard.create(school: @school, supply: :gas)
-      gas_message = "Based on our latest data, your school used an average of #{gas_card.values.average_usage} kWh of gas per day" if gas_card.values
+      gas_message = random_equivalence_text(gas_card.values.average_usage, :gas) if gas_card.values
     end
 
     @message = if electricity_message && gas_message
@@ -24,5 +24,14 @@ class Pupils::SchoolsController < SchoolsController
                else
                  gas_message
                end
+  end
+
+private
+
+  def random_equivalence_text(kwh, fuel_type)
+    equiv_type, conversion_type = EnergyEquivalences.random_equivalence_type_and_via_type
+    _val, equivalence = EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, conversion_type)
+
+    "Your school uses an average of #{kwh} kWh of #{fuel_type} a day. #{equivalence}"
   end
 end
