@@ -1,6 +1,7 @@
 module Schools
   class MetersController < ApplicationController
     include CsvDownloader
+    include SchoolAggregation
 
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
@@ -20,6 +21,7 @@ module Schools
     def show
       @meter = Meter.find(params[:id])
       respond_to do |format|
+        format.html { set_meter_attributes(@school, @meter) }
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter.id), SINGLE_METER_CSV_HEADER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
       end
     end
@@ -76,6 +78,19 @@ module Schools
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)
+    end
+
+    def set_meter_attributes(school, meter)
+      meter_collection = aggregate_school(school)
+      analytics_meter = if meter.fuel_type == :gas
+                          meter_collection.heat_meters.detect { |m| m.mpan_mprn == meter.mpan_mprn }
+                        elsif meter.fuel_type == :electricity
+                          meter_collection.electricity_meters.detect { |m| m.mpan_mprn == meter.mpan_mprn }
+                        end
+
+      @meter_corrections = MeterAttributes.attributes(analytics_meter, :meter_corrections)
+      @aggregations = MeterAttributes.attributes(analytics_meter, :aggregation)
+      @heating_model = MeterAttributes.attributes(analytics_meter, :heating_model)
     end
   end
 end

@@ -45,6 +45,7 @@
           <td><%= nice_dates meter.last_validated_reading %></td>
           <td><%= link_to "CSV", school_meter_path(@school, meter, format: "csv") if meter.amr_validated_readings.any? %></td>
           <td>
+            <%= link_to 'Meter details', school_meter_path(@school, meter), class: 'btn btn-sm btn-success' %>
             <div class="btn-group">
               <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm btn-warning' %>
               <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>

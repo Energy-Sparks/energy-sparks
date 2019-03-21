@@ -43,7 +43,8 @@ Rails.application.routes.draw do
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
-      resources :alert_subscriptions
+      resources :alert_subscriptions, only: [:index, :edit, :update]
+      resources :alert_subscription_events, only: :index
 
       resources :meters do
         member do
@@ -52,6 +53,7 @@ Rails.application.routes.draw do
         end
       end
       resource :meter_readings_validation, only: [:create]
+      resource :alert_emails, only: [:create]
 
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group
@@ -62,7 +64,9 @@ Rails.application.routes.draw do
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations
 
-      resources :alerts#, only: [:show, :index]
+      resources :alerts, only: [:index, :show] do
+        resource :find_out_more, controller: :find_out_more
+      end
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'charts#show'
