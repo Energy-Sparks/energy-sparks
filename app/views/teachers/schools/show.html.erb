@@ -35,7 +35,7 @@
     <div id="chart_wrapper_1" class="col-sm">
       <div class="row no-gutters">
         <div class="col-md-7">
-          <h3><%= fa_icon fuel_type_icon(:gas) %> Gas</h3>
+          <h3><%= fa_icon fuel_type_icon(:gas) %> Gas <small class="text-muted">(Temperature adjusted)</small></h3>
         </div>
         <div class="col-md-5">
          <%= link_to usage_school_path(@school, period: :daily, supply: :gas), class: 'btn btn-primary', title: "See how the school's energy use varies over a week" do %>
