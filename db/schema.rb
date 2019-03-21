@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_114650) do
+ActiveRecord::Schema.define(version: 2019_03_21_100944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -111,6 +112,12 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
+  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
+  end
+
   create_table "alert_subscription_events", force: :cascade do |t|
     t.bigint "alert_subscription_id"
     t.bigint "alert_id"
@@ -120,15 +127,10 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "message_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
-  end
-
-  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
   end
 
   create_table "alert_subscriptions", force: :cascade do |t|

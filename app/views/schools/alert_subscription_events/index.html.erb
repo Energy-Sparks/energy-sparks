@@ -27,14 +27,20 @@
           <th>Created At</th>
           <th>Status</th>
           <th>Updated At</th>
-          <th>Message</th>
+          <th>Preview</th>
           <th>Communication Type</th>
         </tr>
       </thead>
       <tbody>
         <% @alert_subscription_events.each do |alert_subscription_event| %>
           <tr scope="row" class="<%=class_for_alert_subscription(alert_subscription_event.status) %>">
-            <td><a href="<%= AlertMailerPreview.custom_url(@school.id, alert_subscription_event.contact.email_address, alert_subscription_event.alert.id)%>"><%= alert_subscription_event.contact.name %></a></td>
+            <td>
+              <% if alert_subscription_event.sent? %>
+                <a href="<%= AlertMailerPreview.custom_url(@school.id, alert_subscription_event.contact.email_address, alert_subscription_event.message_id)%>"><%= alert_subscription_event.contact.name %></a>
+              <% else %>
+                <%= alert_subscription_event.contact.name %>
+              <% end %>
+            </td>
             <td><%= alert_subscription_event.alert.title %></td>
             <td><%= nice_date_times alert_subscription_event.created_at %></td>
             <td><%= alert_subscription_event.status.capitalize %></td>
