@@ -1,6 +1,5 @@
-<% content_for :page_title do %>
-Contact us
-<% end %>
+<% content_for :page_title, 'Contact us' %>
+
 <div class="application container">
   <div class="row padded-row">
     <div class="col-md-12">
@@ -8,29 +7,15 @@ Contact us
     </div>
   </div>
 
-
   <div class="row">
     <div class="col-md-3 callout-text">
-      <p>
-        <strong>Questions?</strong></p>
-      <p>
+      <p><strong>Questions?</strong></p><p>
     </div>
 
     <div class="col-md-8">
-      <p>
-        If you have any questions or comments relating to <%= t('application') %> then please email us at
-        <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> and one of the team will get in touch shortly.
-      </p>
-
-      <p>
-        If you find the service useful, have any questions about how to get involved, or any feedback or concerns then
-        please don't hesitate to get in touch. As a volunteer run project so we're keen to receive feedback and help
-        from the local community.
-      </p>
-
-      <p>
-        You can also contact us via social media:
-      </p>
+      <p>If you have any questions or comments relating to Energy Sparks then please email us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> and one of the team will get in touch shortly.</p>
+      <p>You can contact us with questions about your gas and electricity data, ask us for advice to increase the energy savings at your school, ask us for support with running your pupil energy team, or report a problem with the website. You can also provide suggestions for improving Energy Sparks to better meet your needs. If you'd like to see a new feature please let us know.</p>
+      <p>You can also contact us via social media:</p>
 
       <ul>
         <li>You can find us on twitter <a href="https://twitter.com/energy_sparks">@energy_sparks</a></li>
@@ -40,37 +25,23 @@ Contact us
   </div>
   <div class="row">
     <div class="col-md-3 callout-text">
-      <p>
-        <strong>Bug Reporting</strong></p>
-      <p>
+      <p><strong>Problem Reporting</strong></p>
     </div>
     <div class="col-md-8">
-      <p>
-        If you are reporting a bug or problem with the service, please try and include as much detail in your email
-        as possible.
-      </p>
-
-      <p>
-        We also have an <a href="https://github.com/BathHacked/energy-sparks/issues/new">issue tracker</a> for
-        reporting bugs. Feel free to use that or just drop us an email.
-      </p>
+      <p>If you are reporting a problem with the service, please try to include as much detail in your email as possible, including which web browser and operating system you are using, the URL (address) of the page and when you experienced the problem.</p>
     </div>
   </div>
   <div class="row">
     <div class="col-md-3 callout-text">
-      <p>
-        <strong>Further Information</strong></p>
-      <p>
+      <p><strong>Further Information</strong></p>
     </div>
     <div class="col-md-8">
-      <p>
-        In the meantime you can:
+      <p>In the meantime you can:</p>
       <ul>
         <li>Read <%= link_to "about EnergySparks", for_teachers_path %> and the goals of the project</li>
         <li>Learn how to <%= link_to "enrol your school", enrol_path %></li>
         <li>Discover what <%= link_to "open data", datasets_path %> we use in the service</li>
       </ul>
-      </p>
     </div>
   </div>
 </div>

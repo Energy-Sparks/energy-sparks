@@ -34,17 +34,48 @@ RSpec.describe "school alerts", type: :system do
       expect(page.has_content?(poor_alert_summary)).to_not be true
     end
 
-    it 'can show a single alert' do
-      alert_summary = 'Summary of the alert'
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
+    describe 'pupil dashboard' do
+      it 'shows alerts' do
+        alert_summary = 'Summary of the alert'
+        Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
 
-      click_on("Alerts")
-      expect(page.has_content?(description)).to_not be true
+        # TODO: navigate properly once links are in
+        visit pupils_school_path(school)
 
-      click_on("Find out more")
+        expect(page).to have_content(alert_summary)
 
-      expect(page.has_content?(description)).to be true
-      expect(page.has_content?(alert_summary)).to be true
+      end
+    end
+
+    describe 'Find Out More' do
+
+      let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
+
+      before do
+        gas_fuel_alert_type.update!(activity_types: [activity_type])
+      end
+
+      it 'can show a single alert with the associated activities' do
+        alert_summary = 'Summary of the alert'
+        Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
+
+        # TODO: navigate properly once links are in
+        visit teachers_school_path(school)
+
+        expect(page).to_not have_content(description)
+
+        within '.things-to-try' do
+          expect(page).to have_content("Turn off the heating")
+        end
+
+        within '.alert' do
+          click_on("Find out more")
+        end
+
+        expect(page).to have_content(description)
+        expect(page).to have_content(alert_summary)
+        expect(page).to have_content(activity_type.name)
+      end
     end
   end
 

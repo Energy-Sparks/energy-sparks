@@ -36,6 +36,6 @@ private
   end
 
   def set_school
-    @school = School.find_by_slug(params[:school_id])
+    @school = School.friendly.find(params[:school_id])
   end
 end
