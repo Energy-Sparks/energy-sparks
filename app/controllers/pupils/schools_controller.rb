@@ -6,15 +6,20 @@ class Pupils::SchoolsController < SchoolsController
       @surrounding_schools = @scoreboard.surrounding_schools(@school)
     end
     # Temporary until equivalences are set up
-    electricity_card = MeterCard.create(school: @school, supply: :electricity)
-    gas_card = MeterCard.create(school: @school, supply: :gas)
 
-    electricity_message = "Based on our latest data, your school used an average of #{electricity_card.values.average_usage} kWh of electricity per day"
-    gas_message = "Based on our latest data, your school used an average of #{gas_card.values.average_usage} kWh of gas per day"
+    if @school.meters?(:electricity)
+      electricity_card = MeterCard.create(school: @school, supply: :electricity)
+      electricity_message = "Based on our latest data, your school used an average of #{electricity_card.values.average_usage} kWh of electricity per day"
+    end
 
-    @message = if @school.fuel_types == :electric_and_gas
+    if @school.meters?(:gas)
+      gas_card = MeterCard.create(school: @school, supply: :gas)
+      gas_message = "Based on our latest data, your school used an average of #{gas_card.values.average_usage} kWh of gas per day"
+    end
+
+    @message = if electricity_message && gas_message
                  [electricity_message, gas_message].sample
-               elsif @school.fuel_types == :electric_only
+               elsif electricity_message
                  electricity_message
                else
                  gas_message
