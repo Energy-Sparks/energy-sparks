@@ -1,5 +1,27 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
+<div class="row padded-row">
+  <div class="col-md-1">
+    <%= image_tag("lightbulb.png", class: "pupil-dashboard") %>
+  </div>
+  <div class="col-md-11">
+    <div class="row">
+      <hgroup class="speech">
+        <h3><%= @message %></h3>
+      </hgroup>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-3">
+  <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
+    <%= fa_icon 'lightbulb' %> See how your school uses energy&hellip;
+  <% end %>
+  </div>
+</div>
+<hr/>
+
 <% unless @latest_alerts_sample.empty? %>
   <div class="row">
     <h2 class="mb-3">Things to investigate:</h2>
