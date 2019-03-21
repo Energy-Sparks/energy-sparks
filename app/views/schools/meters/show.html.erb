@@ -1,0 +1,42 @@
+<h1>Meter: <%= @meter.mpan_mprn %></h1>
+<h2><%= @meter.name %></h2>
+<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+<p>
+  <%= link_to "Download CSV of Validated Readings", school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
+  <%= link_to 'Edit', edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
+  <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
+    <%= link_to 'Report', reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
+  <% end %>
+  <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+</p>
+
+<dl class="row">
+  <dt class="col-sm-3">Type</dt>
+  <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
+  <dt class="col-sm-3">Serial Number</dt>
+  <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
+  <dt class="col-sm-3">Created</dt>
+  <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
+  <dt class="col-sm-3">Last updated</dt>
+  <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
+  <dt class="col-sm-3">Status</dt>
+  <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
+</dl>
+
+<div class="meter-attributes">
+  <% if @meter_corrections %>
+    <h3>Meter corrections</h3>
+    <%= sanitize ap(@meter_corrections, { index: false } ) %>
+  <% end %>
+
+  <% if @heating_model %>
+    <h3>Heating Model</h3>
+    <%= sanitize ap(@heating_model, { index: false } ) %>
+  <% end %>
+
+  <% if @aggregation %>
+    <h3>Aggregation</h3>
+    <%= sanitize ap(@aggregation, { index: false } ) %>
+  <% end %>
+</div>
+
