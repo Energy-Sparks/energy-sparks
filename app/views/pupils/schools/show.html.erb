@@ -35,8 +35,27 @@
 
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 card-deck">
+    <div class="card">
+      <div class="card-body">
+        <% if @first %>
+          <h4>No activities completed, make a start!</h4>
+        <% else %>
+          <h4>You've completed <%= @activities_count %> activities</h4>
+        <% end %>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Try this one <%= @first ? 'first' : 'next' %>:
+            <p><%= fa_icon('edit') %> <%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
+            <h1 class="badge badge-success"><%= @suggestion.score %> </h1> points
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer text-center">
+        <h4><%= fa_icon('pencil-alt') %> <%= link_to 'All activities', activity_categories_path %></h4>
+      </div>
+    </div>
   </div>
+
   <div class="col-md-6">
     <% if @scoreboard %>
       <div class="card surrounding-schools">

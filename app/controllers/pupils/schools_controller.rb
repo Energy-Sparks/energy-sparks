@@ -1,5 +1,10 @@
 class Pupils::SchoolsController < SchoolsController
   def show
+    @activities_count = @school.activities.count
+    @first = @school.activities.empty?
+    @completed_activity_count = @school.activities.count
+    @suggestion = NextActivitySuggesterWithFilter.new(@school, activity_type_filter).suggest.first
+
     @latest_alerts_sample = @school.alerts.usable.latest.sample(2)
     @scoreboard = @school.scoreboard
     if @scoreboard
