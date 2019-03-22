@@ -6,6 +6,7 @@
       <th>Title</th>
       <th>Fuel</th>
       <th>Frequency</th>
+      <th>Template variables?</th>
       <th></th>
     </tr>
   </thead>
@@ -15,6 +16,13 @@
         <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
         <td><%= alert_type.display_fuel_type %></td>
         <td><%= alert_type.frequency %></td>
+        <td>
+          <% if alert_type.has_variables %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
         <td><%= link_to 'Manage', admin_alert_type_path(alert_type), class: 'btn btn-primary btn-sm'%></td>
       </tr>
     <% end %>

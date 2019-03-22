@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_092841) do
     t.text "analysis"
     t.text "class_name"
     t.boolean "show_ratings", default: true
-    t.boolean "has_variables", default: true
+    t.boolean "has_variables", default: false
   end
 
   create_table "alerts", force: :cascade do |t|
