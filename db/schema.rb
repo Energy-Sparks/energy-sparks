@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_114650) do
+ActiveRecord::Schema.define(version: 2019_03_21_162151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.datetime "upload_datetime"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
+    t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
   end
 
   create_table "areas", force: :cascade do |t|
