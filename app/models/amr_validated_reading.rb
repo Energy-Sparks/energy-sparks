@@ -13,8 +13,9 @@
 #
 # Indexes
 #
-#  index_amr_validated_readings_on_meter_id  (meter_id)
-#  unique_amr_meter_validated_readings       (meter_id,reading_date) UNIQUE
+#  index_amr_validated_readings_on_meter_id      (meter_id)
+#  index_amr_validated_readings_on_reading_date  (reading_date)
+#  unique_amr_meter_validated_readings           (meter_id,reading_date) UNIQUE
 #
 # Foreign Keys
 #
@@ -26,10 +27,11 @@ class AmrValidatedReading < ApplicationRecord
 
   def self.download_all_data
     <<~QUERY
-      SELECT m.mpan_mprn, amr.reading_date, amr.one_day_kwh, amr.status, amr.substitute_date, amr.kwh_data_x48
-      FROM  amr_validated_readings amr, meters m
+      SELECT s.urn, m.mpan_mprn, amr.reading_date, amr.one_day_kwh, amr.status, amr.substitute_date, amr.kwh_data_x48
+      FROM  amr_validated_readings amr, meters m, schools s
       WHERE amr.meter_id = m.id
-      ORDER BY m.mpan_mprn, amr.reading_date ASC
+      AND   m.school_id  = s.id
+      ORDER BY s.id, m.mpan_mprn, amr.reading_date ASC
     QUERY
   end
 
