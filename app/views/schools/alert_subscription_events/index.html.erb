@@ -29,6 +29,7 @@
           <th>Updated At</th>
           <th>Error Message</th>
           <th>Communication Type</th>
+          <th>Email sent on</th>
           <th>Sent message</th>
         </tr>
       </thead>
@@ -42,7 +43,12 @@
             <td><%= nice_date_times alert_subscription_event.updated_at %></td>
             <td><%= alert_subscription_event.message %></td>
             <td><%= alert_subscription_event.communication_type.capitalize %></td>
-            <td><%= link_to 'View', AlertMailerPreview.custom_url(@school.id, alert_subscription_event.contact.email_address, alert_subscription_event.email_id), class: 'btn btn-primary btn-sm' if alert_subscription_event.sent? %></td>
+            <% if alert_subscription_event.sent? %>
+              <td><%= nice_date_times alert_subscription_event.email.sent_at %></td>
+              <td><%= link_to 'View', admin_emails_alert_mailer_path(alert_subscription_event.email), class: 'btn btn-primary btn-sm' %></td>
+            <% else %>
+              <td></td><td></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>

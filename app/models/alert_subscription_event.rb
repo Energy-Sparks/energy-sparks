@@ -10,6 +10,7 @@
 #  email_id              :bigint(8)
 #  id                    :bigint(8)        not null, primary key
 #  message               :text
+#  message_id            :uuid
 #  status                :integer          default("pending"), not null
 #  updated_at            :datetime         not null
 #

@@ -26,9 +26,5 @@ module EnergySparks
     config.active_record.default_timezone = :utc
 
     config.middleware.use Rack::Attack
-
-    # To enable mailer previews
-    config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
-    config.eager_load_paths << Rails.root.join('lib', 'mailer_previews')
   end
 end

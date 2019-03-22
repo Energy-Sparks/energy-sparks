@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_144134) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -127,6 +128,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_144134) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "email_id"
+    t.uuid "message_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
