@@ -22,7 +22,7 @@
           </thead>
           <% variables.each do |key, details| %>
             <tr>
-              <td><strong>{{<%= key %>}}</strong></td>
+              <td>{{<%= key %>}}</td>
               <td><%= details[:description] %></td>
               <td>
                 <% if details[:units].is_a?(Hash) %>

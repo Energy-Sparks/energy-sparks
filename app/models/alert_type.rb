@@ -36,4 +36,11 @@ class AlertType < ApplicationRecord
     return 'No fuel type' if fuel_type.nil?
     fuel_type.humanize
   end
+
+  def cleaned_template_variables
+    # TODO: make the analytics code remove the £ sign
+    class_name.constantize.front_end_template_variables.deep_transform_keys do |key|
+      :"#{key.to_s.gsub('£', 'gbp')}"
+    end
+  end
 end

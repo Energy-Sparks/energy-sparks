@@ -8,8 +8,8 @@ class Alerts::DummyAlertClass
   def analyse(_analysis_date)
   end
 
-  def self.gas_fuel_alert_type
-    AlertType.where(fuel_type: :gas, frequency: :weekly, class_name: 'Alerts::DummyAlertClass', description: 'Woof', title: 'Broken').first_or_create
+  def self.gas_fuel_alert_type(has_variables: true)
+    AlertType.where(fuel_type: :gas, frequency: :weekly, class_name: 'Alerts::DummyAlertClass', description: 'Woof', title: 'Broken', has_variables: has_variables).first_or_create
   end
 
   def analysis_report
@@ -33,14 +33,17 @@ class Alerts::DummyAlertClass
     alert_report = AlertReport.new(AlertType.first)
     alert_report.summary = "This alert has run."
     alert_report.rating = 10.0
+    alert_report.status = :good
     alert_report
   end
 
   def self.bad_alert_report
     alert_report = AlertReport.new(gas_fuel_alert_type)
     alert_report.summary = "There was a problem running the Broken alert. This is likely due to missing data."
+    alert_report.status = :failed
     alert_report
   end
+
 end
 
 describe Alerts::FrameworkAdapter do
@@ -54,6 +57,7 @@ describe Alerts::FrameworkAdapter do
       run_on: gas_date,
       summary: Alerts::DummyAlertClass.good_alert_report.summary,
       alert_type: gas_fuel_alert_type,
+      status: :good,
       data: {
         help_url: nil, detail: [], rating: 10.0 ,
         template_data: {template: 'variables'},
@@ -68,11 +72,12 @@ describe Alerts::FrameworkAdapter do
       run_on: gas_date,
       summary: "There was a problem running the #{gas_fuel_alert_type.title} alert. This is likely due to missing data.",
       alert_type: gas_fuel_alert_type,
+      status: :failed,
       data: {
         help_url: nil, detail: [], rating: nil,
-        template_data: {template: 'variables'},
-        chart_data: {chart: 'variables'},
-        table_data: {table: 'variables'}
+        template_data: {},
+        chart_data: {},
+        table_data: {}
       }
     )
   end
@@ -84,6 +89,27 @@ describe Alerts::FrameworkAdapter do
 
     it 'handles an exception' do
       expect(Alerts::FrameworkAdapter.new(gas_fuel_alert_type, school, gas_date, nil).analyse).to have_attributes bad_alert.attributes
+    end
+
+    context 'where the alert type does not have variables' do
+      let!(:gas_fuel_alert_type) { Alerts::DummyAlertClass.gas_fuel_alert_type(has_variables: false)}
+      let(:good_alert_without_data) do
+        Alert.new(
+          run_on: gas_date,
+          summary: Alerts::DummyAlertClass.good_alert_report.summary,
+          alert_type: gas_fuel_alert_type,
+          status: :good,
+          data: {
+            help_url: nil, detail: [], rating: 10.0 ,
+            template_data: {},
+            chart_data: {},
+            table_data: {}
+          }
+        )
+      end
+      it 'does not try and save the variables' do
+        expect(Alerts::FrameworkAdapter.new(gas_fuel_alert_type, school, gas_date, aggregate_school).analyse).to have_attributes good_alert_without_data.attributes
+      end
     end
   end
 end

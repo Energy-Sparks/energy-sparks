@@ -69,6 +69,16 @@ class Alert < ApplicationRecord
   end
 
   def template_variables
-    data.fetch('template_data', {})
+    data.fetch('template_data', {}).deep_transform_keys do |key|
+      :"#{key.to_s.gsub('£', 'gbp')}"
+    end
+  end
+
+  def charts
+    data.fetch('chart_data', {}).values
+  end
+
+  def tables
+    data.fetch('table_data', {}).values
   end
 end

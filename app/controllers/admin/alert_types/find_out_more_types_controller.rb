@@ -54,7 +54,7 @@ module Admin
       end
 
       def set_template_variables
-        @template_variables = @alert_type.class_name.constantize.front_end_template_variables
+        @template_variables = @alert_type.cleaned_template_variables
       end
     end
   end
