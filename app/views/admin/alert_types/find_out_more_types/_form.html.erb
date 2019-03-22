@@ -4,6 +4,7 @@
 <%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1} %>
 
 <h3>Content</h3>
+<%= render 'admin/alert_types/variables_accordion', template_variables: template_variables %>
 <%= form.simple_fields_for :content, content do |content| %>
   <%= content.input :dashboard_title, hint: 'Shows on pupil and teacher dashboards' %>
   <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>

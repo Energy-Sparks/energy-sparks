@@ -3,6 +3,8 @@ module Admin
     class FindOutMoreTypesController < AdminController
       load_and_authorize_resource :alert_type
 
+      before_action :set_template_variables
+
       def index
         @find_out_more_types = @alert_type.find_out_more_types.order(rating_from: :asc)
       end
@@ -49,6 +51,10 @@ module Admin
         params.require(:find_out_more_type).permit(
           content: [:dashboard_title, :page_title, :page_content]
         )
+      end
+
+      def set_template_variables
+        @template_variables = @alert_type.class_name.constantize.front_end_template_variables
       end
     end
   end
