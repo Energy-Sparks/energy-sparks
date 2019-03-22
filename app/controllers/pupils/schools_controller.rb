@@ -13,13 +13,13 @@ class Pupils::SchoolsController < SchoolsController
     # Temporary until equivalences are set up
 
     if @school.meters?(:electricity)
-      electricity_card = MeterCard.create(school: @school, supply: :electricity)
-      electricity_message = random_equivalence_text(electricity_card.values.average_usage, :electricity) if electricity_card.values
+      average_usage = MeterCard.calulate_average_usage(school: @school, supply: :electricity, window: 7)
+      electricity_message = random_equivalence_text(average_usage, :electricity) if average_usage
     end
 
     if @school.meters?(:gas)
-      gas_card = MeterCard.create(school: @school, supply: :gas)
-      gas_message = random_equivalence_text(gas_card.values.average_usage, :gas) if gas_card.values
+      average_usage = MeterCard.calulate_average_usage(school: @school, supply: :gas, window: 7)
+      gas_message = random_equivalence_text(average_usage, :gas) if average_usage
     end
 
     @message = if electricity_message && gas_message
