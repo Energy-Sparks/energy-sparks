@@ -6,19 +6,22 @@
     </div>
     <% if @school.scoreboard %>
       <div class="bd-highlight">
-        <h3 class="display-6 collapse navbar-collapse">
-          <span class="badge badge-success ">
-            <% if @school.points.positive? %>
-              <%= @school.points %> points
-              <% if @school.points_since > 0 %>
-                <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+        <h3 class="display-6">
+          <%= link_to scoreboard_path(@school.scoreboard) do %>
+            <span class="badge badge-success ">
+              <% if @school.points.positive? %>
+                <%= @school.points %> points
+                <% if @school.points_since > 0 %>
+                  <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+                <% end %>
+              <% else %>
+                No points yet
               <% end %>
-            <% else %>
-              No points yet
+            </span>
+
+            <% if @school.points.positive? %>
+              <span class="nav-link badge badge-primary"><%= scoreboard_position(@school) %></span>
             <% end %>
-          </span>
-          <% if @school.points.positive? %>
-            <span class="nav-link badge badge-primary">Current position <%= scoreboard_position(@school) %></span>
           <% end %>
         </h3>
       </div>
@@ -30,9 +33,9 @@
       <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
         <ul class="nav navbar-nav">
           <li class="nav-item dropdown">
+            <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-success btn-sm' if @school.scoreboard %>
             <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm'  %>
             <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-success btn-sm' if can? :read, AlertType %>
-            <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-warning btn-sm' if @school.scoreboard %>
           </li>
           <%- if can? :update, @school -%>
             <li class="nav-item dropdown">
