@@ -19,6 +19,11 @@
         <td></td>
         <td></td>
       </tr>
+      <tr>
+        <td><%= link_to 'Alert subscribers', admin_reports_alert_subscribers_path %></td>
+        <td></td>
+        <td></td>
+      </tr>
       <% DataFeeds::WeatherUnderground.all.each do |data_feed| %>
         <tr>
           <td><%= link_to "#{data_feed.title} - temperature", data_feed_path(data_feed, :temperature) %></td>
