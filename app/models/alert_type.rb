@@ -2,15 +2,16 @@
 #
 # Table name: alert_types
 #
-#  analysis     :text
-#  class_name   :text
-#  description  :text             not null
-#  frequency    :integer
-#  fuel_type    :integer
-#  id           :bigint(8)        not null, primary key
-#  show_ratings :boolean          default(TRUE)
-#  sub_category :integer
-#  title        :text
+#  analysis      :text
+#  class_name    :text
+#  description   :text             not null
+#  frequency     :integer
+#  fuel_type     :integer
+#  has_variables :boolean          default(TRUE)
+#  id            :bigint(8)        not null, primary key
+#  show_ratings  :boolean          default(TRUE)
+#  sub_category  :integer
+#  title         :text
 #
 
 class AlertType < ApplicationRecord

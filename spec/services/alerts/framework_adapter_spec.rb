@@ -16,13 +16,18 @@ class Alerts::DummyAlertClass
     @aggregate_school == nil ? Alerts::DummyAlertClass.bad_alert_report : Alerts::DummyAlertClass.good_alert_report
   end
 
-  def raw_template_variables
-    {raw: 'variables'}
+  def front_end_template_data
+    {template: 'variables'}
   end
 
-  def text_template_variables
-    {text: 'variables'}
+  def front_end_template_charts
+    {chart: 'variables'}
   end
+
+  def front_end_template_tables
+    {table: 'variables'}
+  end
+
 
   def self.good_alert_report
     alert_report = AlertReport.new(AlertType.first)
@@ -51,8 +56,9 @@ describe Alerts::FrameworkAdapter do
       alert_type: gas_fuel_alert_type,
       data: {
         help_url: nil, detail: [], rating: 10.0 ,
-        raw_template_variables: {raw: 'variables'},
-        text_template_variables: {text: 'variables'}
+        template_data: {template: 'variables'},
+        chart_data: {chart: 'variables'},
+        table_data: {table: 'variables'}
       }
     )
   end
@@ -64,8 +70,9 @@ describe Alerts::FrameworkAdapter do
       alert_type: gas_fuel_alert_type,
       data: {
         help_url: nil, detail: [], rating: nil,
-        raw_template_variables: {raw: 'variables'},
-        text_template_variables: {text: 'variables'}
+        template_data: {template: 'variables'},
+        chart_data: {chart: 'variables'},
+        table_data: {table: 'variables'}
       }
     )
   end

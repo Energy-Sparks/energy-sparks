@@ -68,7 +68,7 @@ class Alert < ApplicationRecord
     data['rating']
   end
 
-  def text_template_variables
-    data.fetch('text_template_variables', {})
+  def template_variables
+    data.fetch('template_data', {})
   end
 end

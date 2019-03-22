@@ -41,11 +41,12 @@ module Alerts
 
     def data_hash(analysis_obj, analysis_report)
       {
-        help_url:                analysis_report.help_url,
-        detail:                  analysis_report.detail,
-        rating:                  analysis_report.rating,
-        raw_template_variables:  analysis_obj.raw_template_variables,
-        text_template_variables: analysis_obj.text_template_variables
+        help_url:      analysis_report.help_url,
+        detail:        analysis_report.detail,
+        rating:        analysis_report.rating,
+        template_data: analysis_obj.front_end_template_data,
+        chart_data:    analysis_obj.front_end_template_charts,
+        table_data:    analysis_obj.front_end_template_tables
       }
       # analysis_report.type is an enum from the analytics framework, describing an alert type
     end
