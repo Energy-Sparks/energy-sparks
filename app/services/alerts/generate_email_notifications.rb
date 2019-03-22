@@ -4,12 +4,13 @@ module Alerts
       Contact.all.each do |contact|
         events = contact.alert_subscription_events.where(status: :pending, communication_type: :email)
         if events.any?
-          message_id = SecureRandom.uuid
+          email = Email.create(contact: contact)
           alerts = events.map(&:alert)
-          alert_ids_as_string_parameter = alerts.pluck(:id).to_s
+          events.update_all(email_id: email.id)
 
-          AlertMailer.with(email_address: contact.email_address, alert_ids: alert_ids_as_string_parameter, school_id: contact.school.id).alert_email.deliver_now
-          events.update_all(status: :sent, message_id: message_id)
+          AlertMailer.with(email_address: contact.email_address, alerts: alerts, school: contact.school).alert_email.deliver_now
+          events.update_all(status: :sent, email_id: email.id)
+          email.update(sent_at: Time.now.utc)
         end
       end
     end

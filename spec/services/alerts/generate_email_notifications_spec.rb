@@ -20,8 +20,9 @@ describe Alerts::GenerateEmailNotifications do
     expect(alert_subscription_event_1.status).to eq 'sent'
     expect(alert_subscription_event_2.status).to eq 'sent'
 
-    expect(alert_subscription_event_1.message_id).to_not be_empty
-    expect(alert_subscription_event_1.message_id).to eq alert_subscription_event_2.message_id
+    expect(alert_subscription_event_1.email_id).to_not be_nil
+    expect(alert_subscription_event_1.email_id).to eq alert_subscription_event_2.email_id
+    expect(Email.find(alert_subscription_event_1.email_id).sent?).to be true
 
     expect(ActionMailer::Base.deliveries.count).to be 1
     email = ActionMailer::Base.deliveries.last
@@ -33,5 +34,6 @@ describe Alerts::GenerateEmailNotifications do
 
     Alerts::GenerateEmailNotifications.new.perform
     expect(ActionMailer::Base.deliveries).to be_empty
+    expect(Email.count).to be 1
   end
 end
