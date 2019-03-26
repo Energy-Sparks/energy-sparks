@@ -51,7 +51,7 @@ class Schools::AnalysisController < ApplicationController
 private
 
   def check_fuel_types
-    if @school.fuel_types_for_analysis == :none
+    if aggregate_school_service(@school).fuel_types_for_analysis == :none
       redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
     end
   end
@@ -63,7 +63,7 @@ private
   end
 
   def set_nav
-    @dashboard_set = @school.fuel_types_for_analysis
+    @dashboard_set = aggregate_school_service(@school).fuel_types_for_analysis
     pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
     @nav_array = pages.map do |page|
       { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }

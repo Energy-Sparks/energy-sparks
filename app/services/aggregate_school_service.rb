@@ -31,6 +31,18 @@ class AggregateSchoolService
     end
   end
 
+  def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    if @school.has_enough_readings_for_meter_types?(:gas, threshold) && @school.has_enough_readings_for_meter_types?(:electricity, threshold)
+      :electric_and_gas
+    elsif @school.has_enough_readings_for_meter_types?(:electricity, threshold)
+      :electric_only
+    elsif @school.has_enough_readings_for_meter_types?(:gas, threshold)
+      :gas_only
+    else
+      :none
+    end
+  end
+
   def solar_pv?(meter)
     solar_pv(meter)
   end

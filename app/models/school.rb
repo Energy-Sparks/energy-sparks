@@ -159,18 +159,6 @@ class School < ApplicationRecord
     end
   end
 
-  def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
-    if has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
-      :electric_and_gas
-    elsif has_enough_readings_for_meter_types?(:electricity, threshold)
-      :electric_only
-    elsif has_enough_readings_for_meter_types?(:gas, threshold)
-      :gas_only
-    else
-      :none
-    end
-  end
-
   def has_badge?(id)
     sash.badge_ids.include?(id)
   end
