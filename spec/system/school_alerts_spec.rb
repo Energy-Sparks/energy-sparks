@@ -50,7 +50,21 @@ RSpec.describe "school alerts", type: :system do
         )
       end
       let(:alert_summary){ 'Summary of the alert' }
-      let!(:alert){ Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 9.0}, summary: alert_summary) }
+      let!(:alert) do
+        Alert.create(
+          alert_type: gas_fuel_alert_type,
+          run_on: gas_date, school: school,
+          status: :good,
+          data: {
+            detail: [],
+            rating: 9.0,
+            table_data: {
+              dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
+            }
+          },
+          summary: alert_summary
+        )
+      end
 
       before do
         gas_fuel_alert_type.update!(activity_types: [activity_type])
@@ -75,6 +89,9 @@ RSpec.describe "school alerts", type: :system do
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content('This is what you need to do')
         expect(page).to have_content(activity_type.name)
+
+        expect(page).to have_selector('table', text: 'Body 1')
+
       end
 
       it 'shows find out more alerts on the pupil dashboard' do
