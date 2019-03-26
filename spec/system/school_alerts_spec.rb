@@ -6,6 +6,7 @@ RSpec.describe "school alerts", type: :system do
   let(:description) { 'all about this alert type' }
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, description: description) }
   let(:gas_date) { Date.parse('2019-01-01') }
+  let!(:gas_meter) { create :gas_meter_with_reading, school_id: school.id }
 
   before(:each) do
     sign_in(user)
@@ -90,8 +91,8 @@ RSpec.describe "school alerts", type: :system do
       sign_in(user)
       visit root_path
       click_on("Alerts")
-      expect(page.has_content?("We have no termly alerts for this school")).to be true
-      expect(page.has_content?("We have no weekly alerts for this school")).to be true
+      expect(page).to have_content("We have no Gas alerts for this school")
+      expect(page).to_not have_content("We have no Electricity alerts for this school")
     end
   end
 end

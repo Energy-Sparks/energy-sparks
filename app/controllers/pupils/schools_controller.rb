@@ -25,12 +25,12 @@ private
   end
 
   def message_for_speech_bubble(school)
-    if school.meters?(:electricity)
+    if school.has_enough_readings_for_meter_types?(:electricity)
       average_usage = MeterCard.calulate_average_usage(school: school, supply: :electricity, window: 7)
       electricity_message = random_equivalence_text(average_usage, :electricity) if average_usage
     end
 
-    if school.meters?(:gas)
+    if school.has_enough_readings_for_meter_types?(:gas)
       average_usage = MeterCard.calulate_average_usage(school: school, supply: :gas, window: 7)
       gas_message = random_equivalence_text(average_usage, :gas) if average_usage
     end

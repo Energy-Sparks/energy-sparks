@@ -30,5 +30,8 @@ RSpec.describe "school alert subscription events", type: :system do
 
     expect(email.subject).to include('Energy Sparks alerts')
     expect(email.html_part.body.to_s).to include(alert.title)
+
+    click_on('View', match: :first)
+    expect(page).to have_content(alert.title)
   end
 end
