@@ -105,19 +105,16 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
 
-    if (y2AxisLabel !== undefined) {
-
+    if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+      console.log('Y2 axis label' + y2AxisLabel);
       colour = '#232b49';
       if (y2AxisLabel == 'Temperature') {
-        console.log('Yaxis - Temperature days');
         axisTitle = '°C';
         pointFormat = '{point.y:.2f} °C';
       } else if (y2AxisLabel == 'Degree Days') {
-        console.log('Yaxis - Degree days');
         axisTitle = 'Degree days';
         pointFormat = '{point.y:.2f} Degree days';
       } else if (y2AxisLabel == 'Solar Irradiance') {
-        console.log('Yaxis - Solar irradiance');
         axisTitle = 'W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
