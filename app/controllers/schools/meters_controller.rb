@@ -81,16 +81,13 @@ module Schools
     end
 
     def set_meter_attributes(school, meter)
-      meter_collection = aggregate_school(school)
-      analytics_meter = if meter.fuel_type == :gas
-                          meter_collection.heat_meters.detect { |m| m.mpan_mprn == meter.mpan_mprn }
-                        elsif meter.fuel_type == :electricity
-                          meter_collection.electricity_meters.detect { |m| m.mpan_mprn == meter.mpan_mprn }
-                        end
+      aggregate_school_service = AggregateSchoolService.new(school)
 
-      @meter_corrections = MeterAttributes.attributes(analytics_meter, :meter_corrections)
-      @aggregations = MeterAttributes.attributes(analytics_meter, :aggregation)
-      @heating_model = MeterAttributes.attributes(analytics_meter, :heating_model)
+      @meter_corrections = aggregate_school_service.meter_corrections(meter)
+      @aggregations = aggregate_school_service.aggregation(meter)
+      @heating_model = aggregate_school_service.heating_model(meter)
+      @solar_pv = aggregate_school_service.solar_pv(meter)
+      @storage_heaters = aggregate_school_service.storage_heaters(meter)
     end
   end
 end
