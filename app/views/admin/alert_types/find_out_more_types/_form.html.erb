@@ -1,7 +1,7 @@
 <h3>General</h3>
 <%= form.input :description, hint: 'Only used in the admin interface' %>
-<%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1} %>
-<%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1} %>
+<%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+<%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
 
 <h3>Content</h3>
 <%= render 'admin/alert_types/variables_accordion', template_variables: template_variables %>
