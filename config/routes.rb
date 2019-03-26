@@ -121,6 +121,9 @@ Rails.application.routes.draw do
         resource :reminder, only: [:create], controller: 'reminder'
       end
     end
+    namespace :reports do
+      resources :alert_subscribers, only: :index
+    end
   end
 
   namespace :teachers do
