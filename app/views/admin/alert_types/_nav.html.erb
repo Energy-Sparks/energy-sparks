@@ -7,5 +7,12 @@
     <li>
       <%= nav_link('Associated activity types', admin_alert_type_activity_types_path(alert_type)) %>
     </li>
+    <li>
+      <% if alert_type.has_variables %>
+        <%= nav_link('Find Out More types', admin_alert_type_find_out_more_types_path(alert_type)) %>
+      <% else %>
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Find Out More types (not available: no template variables)</a>
+      <% end %>
+    </li>
   </ul>
 </div>

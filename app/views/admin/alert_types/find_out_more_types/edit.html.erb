@@ -1,0 +1,9 @@
+<%= render 'admin/alert_types/nav', alert_type: @alert_type %>
+
+<h2>Edit Find Out More Type</h2>
+
+<%= simple_form_for @find_out_more_type, url: admin_alert_type_find_out_more_type_path(@alert_type, @find_out_more_type) do |form| %>
+  <%= render 'form', form: form, content: @content, template_variables: @template_variables %>
+  <%= form.button :submit, 'Update Find Out More type' %>
+<% end %>
+

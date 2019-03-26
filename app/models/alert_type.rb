@@ -2,15 +2,16 @@
 #
 # Table name: alert_types
 #
-#  analysis     :text
-#  class_name   :text
-#  description  :text             not null
-#  frequency    :integer
-#  fuel_type    :integer
-#  id           :bigint(8)        not null, primary key
-#  show_ratings :boolean          default(TRUE)
-#  sub_category :integer
-#  title        :text
+#  analysis      :text
+#  class_name    :text
+#  description   :text             not null
+#  frequency     :integer
+#  fuel_type     :integer
+#  has_variables :boolean          default(FALSE)
+#  id            :bigint(8)        not null, primary key
+#  show_ratings  :boolean          default(TRUE)
+#  sub_category  :integer
+#  title         :text
 #
 
 class AlertType < ApplicationRecord
@@ -19,6 +20,7 @@ class AlertType < ApplicationRecord
   has_many :alert_subscription_events,  dependent: :destroy
 
   has_and_belongs_to_many :activity_types
+  has_many :find_out_more_types
 
   enum fuel_type: [:electricity, :gas]
   enum sub_category: [:hot_water, :heating, :baseload]
@@ -33,5 +35,12 @@ class AlertType < ApplicationRecord
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?
     fuel_type.humanize
+  end
+
+  def cleaned_template_variables
+    # TODO: make the analytics code remove the £ sign
+    class_name.constantize.front_end_template_variables.deep_transform_keys do |key|
+      :"#{key.to_s.gsub('£', 'gbp')}"
+    end
   end
 end
