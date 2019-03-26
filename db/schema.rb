@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_21_162151) do
+ActiveRecord::Schema.define(version: 2019_03_22_144134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -111,6 +112,12 @@ ActiveRecord::Schema.define(version: 2019_03_21_162151) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
+  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
+  end
+
   create_table "alert_subscription_events", force: :cascade do |t|
     t.bigint "alert_subscription_id"
     t.bigint "alert_id"
@@ -120,15 +127,12 @@ ActiveRecord::Schema.define(version: 2019_03_21_162151) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "email_id"
+    t.uuid "message_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
-  end
-
-  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
+    t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
   end
 
   create_table "alert_subscriptions", force: :cascade do |t|
@@ -334,6 +338,14 @@ ActiveRecord::Schema.define(version: 2019_03_21_162151) do
     t.text "description"
     t.json "configuration", default: {}, null: false
     t.index ["area_id"], name: "index_data_feeds_on_area_id"
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_emails_on_contact_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -596,6 +608,7 @@ ActiveRecord::Schema.define(version: 2019_03_21_162151) do
   add_foreign_key "alert_subscription_events", "alert_subscriptions"
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
+  add_foreign_key "alert_subscription_events", "emails"
   add_foreign_key "alert_subscriptions", "alert_types"
   add_foreign_key "alert_subscriptions", "schools"
   add_foreign_key "amr_validated_readings", "meters"
@@ -604,6 +617,7 @@ ActiveRecord::Schema.define(version: 2019_03_21_162151) do
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "contacts", "schools"
   add_foreign_key "data_feed_readings", "data_feeds"
+  add_foreign_key "emails", "contacts", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"

@@ -109,6 +109,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    namespace :emails do
+      resources :alert_mailers, only: :show
+    end
+
     resources :alert_types, only: [:index, :show] do
       scope module: :alert_types do
         resource :activity_types, only: [:show, :update]
