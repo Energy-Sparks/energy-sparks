@@ -162,4 +162,23 @@ module ApplicationHelper
     return school_time if school_time.blank?
     sprintf('%04d', school_time).insert(2, ':')
   end
+
+  def table_headers_from_array(array)
+    header = array[0]
+    header.map do |column|
+      html_class = column == header.first ? '' : 'text-center'
+      [column, html_class]
+    end
+  end
+
+  def table_body_from_array(array)
+    array[1, array.length - 1]
+  end
+
+  def table_row_from_array(row)
+    row.map do |column|
+      html_class = column == row.first ? '' : 'text-right'
+      [column, html_class]
+    end
+  end
 end
