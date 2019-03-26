@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: ed99fa6e095016cd07148a10fa1a09bc8ddeb272
-  branch: fix-int-v-string-meter-ids
+  revision: 686e5b02b9ea6d193c119d518ac49bd8af7a22ed
+  tag: 0.41.1
   specs:
-    energy-sparks_analytics (0.41.0)
+    energy-sparks_analytics (0.41.1)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
