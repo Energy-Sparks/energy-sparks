@@ -109,6 +109,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    namespace :emails do
+      resources :alert_mailers, only: :show
+    end
+
     resources :alert_types, only: [:index, :show] do
       scope module: :alert_types do
         resource :activity_types, only: [:show, :update]
@@ -120,6 +124,9 @@ Rails.application.routes.draw do
         resource :email, only: [:new, :create], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
       end
+    end
+    namespace :reports do
+      resources :alert_subscribers, only: :index
     end
   end
 
