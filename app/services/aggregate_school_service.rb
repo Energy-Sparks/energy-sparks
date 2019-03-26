@@ -31,11 +31,19 @@ class AggregateSchoolService
     end
   end
 
+  def school_has_solar_pv?
+    @school.meters.detect { |meter| solar_pv?(meter) }
+  end
+
+  def school_has_storage_heaters?
+    @school.meters.detect { |meter| storage_heaters?(meter) }
+  end
+
   def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
     if @school.has_enough_readings_for_meter_types?(:gas, threshold) && @school.has_enough_readings_for_meter_types?(:electricity, threshold)
-      :electric_and_gas
+      school_has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
     elsif @school.has_enough_readings_for_meter_types?(:electricity, threshold)
-      :electric_only
+      school_has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
     elsif @school.has_enough_readings_for_meter_types?(:gas, threshold)
       :gas_only
     else
@@ -47,7 +55,7 @@ class AggregateSchoolService
     solar_pv(meter)
   end
 
-  def storage_heater?(meter)
+  def storage_heaters?(meter)
     storage_heaters(meter)
   end
 

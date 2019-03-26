@@ -48,6 +48,14 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template(mpan_mprn: params.require(:mpan_mprn))
   end
 
+  def storage_heaters
+    render_generic_chart_template
+  end
+
+  def solar_pv
+    render_generic_chart_template
+  end
+
 private
 
   def check_fuel_types
@@ -63,11 +71,14 @@ private
   end
 
   def set_nav
-    @dashboard_set = aggregate_school_service(@school).fuel_types_for_analysis
-    pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
     @nav_array = pages.map do |page|
       { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
     end
+  end
+
+  def pages
+    @dashboard_set = aggregate_school_service(@school).fuel_types_for_analysis
+    DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
   end
 
   def render_generic_chart_template(extra_chart_config = {})
