@@ -132,14 +132,12 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
     if (seriesData[key].name == 'CUSUM') {
       c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
-    console.log('here');
+
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
-      console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
       seriesData[key].dashStyle =  'Dash';
     }
-    console.log('there')
-    console.log(seriesData[key]);
+
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);
   });
