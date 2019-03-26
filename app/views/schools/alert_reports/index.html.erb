@@ -10,6 +10,8 @@
 <% if @latest_alerts.any? %>
   <h2>Latest alerts by type</h2>
   <%= render 'table', alerts: @latest_alerts, school: @school %>
+<% else %>
+  <p>No alerts</p>
 <% end %>
 
 <% if @alerts.any? %>
