@@ -7,23 +7,14 @@
     </div>
 </div>
 
-<% if @holiday_alerts.any? %>
-  <h2>Holiday Alerts</h2>
-  <%= render 'table', alerts: @holiday_alerts, school: @school %>
-<% else %>
-  <p>No before holiday alerts</p>
+<% if @latest_alerts.any? %>
+  <h2>Latest alerts by type</h2>
+  <%= render 'table', alerts: @latest_alerts, school: @school %>
 <% end %>
 
-<% if @weekly_alerts.any? %>
-  <h2>Weekly Alerts</h2>
-  <%= render 'table', alerts: @weekly_alerts, school: @school %>
-<% else %>
-  <p>No weekly alerts</p>
+<% if @alerts.any? %>
+  <h2>Historic alerts</h2>
+  <%= render 'table', alerts: @alerts, school: @school %>
 <% end %>
 
-<% if @termly_alerts.any? %>
-  <h2>Termly Alerts</h2>
-  <%= render 'table', alerts: @termly_alerts, school: @school %>
-<% else %>
-  <p>No termly alerts</p>
-<% end %>
+
