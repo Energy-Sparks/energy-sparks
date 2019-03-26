@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_092841) do
+ActiveRecord::Schema.define(version: 2019_03_22_144134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -126,9 +126,11 @@ ActiveRecord::Schema.define(version: 2019_03_22_092841) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "email_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
+    t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
   end
 
   create_table "alert_subscriptions", force: :cascade do |t|
@@ -239,6 +241,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_092841) do
     t.datetime "upload_datetime"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
+    t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -334,6 +337,14 @@ ActiveRecord::Schema.define(version: 2019_03_22_092841) do
     t.text "description"
     t.json "configuration", default: {}, null: false
     t.index ["area_id"], name: "index_data_feeds_on_area_id"
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_emails_on_contact_id"
   end
 
   create_table "find_out_more_calculations", force: :cascade do |t|
@@ -635,6 +646,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_092841) do
   add_foreign_key "alert_subscription_events", "alert_subscriptions"
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
+  add_foreign_key "alert_subscription_events", "emails"
   add_foreign_key "alert_subscriptions", "alert_types"
   add_foreign_key "alert_subscriptions", "schools"
   add_foreign_key "amr_validated_readings", "meters"
@@ -643,6 +655,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_092841) do
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "contacts", "schools"
   add_foreign_key "data_feed_readings", "data_feeds"
+  add_foreign_key "emails", "contacts", on_delete: :cascade
   add_foreign_key "find_out_more_calculations", "schools", on_delete: :cascade
   add_foreign_key "find_out_more_type_content_versions", "find_out_more_types", on_delete: :cascade
   add_foreign_key "find_out_more_types", "alert_types", on_delete: :restrict

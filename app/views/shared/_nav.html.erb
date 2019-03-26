@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-custom sticky-top">
+<nav class="navbar navbar-expand-xl navbar-custom sticky-top">
   <%= render 'shared/test_site_warning' if request.host.include?('test') %>
   <div class="container">
     <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
@@ -60,13 +60,14 @@
           <div class="dropdown-menu" aria-labelledby="aboutDropDown">
             <%= link_to "For Teachers", for_teachers_path, class: 'dropdown-item' %>
             <%= link_to "For Pupils", for_pupils_path, class: 'dropdown-item' %>
-
             <%= link_to "Enrol", enrol_path, class: 'dropdown-item' %>
             <%= link_to "Getting Started", getting_started_path, class: 'dropdown-item' %>
             <%= link_to "Scoring", scoring_path, class: 'dropdown-item' %>
             <%= link_to "Activities", activity_categories_path, class: 'dropdown-item' %>
-            <%= link_to "Contact", contact_path, class: 'dropdown-item' %>
           </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Contact", contact_path, class: 'nav-link' %>
         </li>
         <li class="nav-item">
           <% if user_signed_in? %>
@@ -79,4 +80,3 @@
     </div>
   </div>
 </nav>
-

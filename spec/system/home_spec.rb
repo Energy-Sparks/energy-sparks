@@ -17,8 +17,7 @@ RSpec.describe "home", type: :system do
 
   it 'has a contact page' do
     visit root_path
-    click_on('About')
-    within('.dropdown') do
+    within('.nav') do
       click_on('Contact')
     end
     expect(page.has_content? "Contact us")

@@ -1,5 +1,27 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
+<div class="row padded-row">
+  <div class="col-md-1">
+    <%= image_tag("lightbulb.png", class: "pupil-dashboard") %>
+  </div>
+  <div class="col-md-11">
+    <div class="row">
+      <hgroup class="speech">
+        <h3><%= @message %></h3>
+      </hgroup>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-3">
+  <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
+    <%= fa_icon 'lightbulb' %> See how your school uses energy&hellip;
+  <% end %>
+  </div>
+</div>
+<hr/>
+
 <% unless @find_out_more_alerts.empty? %>
   <div class="row">
     <h2 class="mb-3">Things to investigate:</h2>
@@ -13,8 +35,29 @@
 
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 card-deck">
+    <div class="card">
+      <div class="card-body">
+        <% if @first %>
+          <h4>No activities completed, make a start!</h4>
+        <% else %>
+          <h4>You've completed <%= @activities_count %> activities</h4>
+        <% end %>
+        <% if @suggestion %>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Try this one <%= @first ? 'first' : 'next' %>:
+              <p><%= fa_icon('edit') %> <%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
+              <h1 class="badge badge-success"><%= @suggestion.score %> </h1> points
+            </li>
+          </ul>
+        <% end %>
+      </div>
+      <div class="card-footer text-center">
+        <h4><%= fa_icon('pencil-alt') %> <%= link_to 'All activities', activity_categories_path %></h4>
+      </div>
+    </div>
   </div>
+
   <div class="col-md-6">
     <% if @scoreboard %>
       <div class="card surrounding-schools">
