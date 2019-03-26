@@ -36,14 +36,21 @@ class FindOutMoreType < ApplicationRecord
     to_replace = current_content
     self.attributes = attributes
     if valid? && content.valid?
-      transaction do
-        save!
-        content.save!
-        to_replace.update!(replaced_by: content) if to_replace
-      end
+      save_and_replace(content, to_replace)
       true
     else
       false
+    end
+  end
+
+
+private
+
+  def save_and_replace(content, to_replace)
+    transaction do
+      save!
+      content.save!
+      to_replace.update!(replaced_by: content) if to_replace
     end
   end
 end
