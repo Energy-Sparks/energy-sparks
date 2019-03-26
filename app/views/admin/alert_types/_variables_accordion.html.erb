@@ -1,0 +1,42 @@
+<div class="accordian mb-2 mt-2" id="templateVariablesCard">
+  <div class="card">
+    <div class="card-header" id="templateVariablesHeader">
+      <h2 class="mb-0 pt-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#templateVariables" aria-expanded="true" aria-controls="collapseOne">
+          View template variables
+        </button>
+      </h2>
+    </div>
+    <div id="templateVariables" class="collapse" aria-labelledby="templateVariablesHeader" data-parent="#templateVariablesCard">
+      <table class="table">
+        <% template_variables.each do |heading, variables| %>
+          <thead>
+            <tr>
+              <th colspan="3"><%=heading%></th>
+            </tr>
+            <tr>
+              <th>Variable</th>
+              <th>Description</th>
+              <th>Units</th>
+            </tr>
+          </thead>
+          <% variables.each do |key, details| %>
+            <tr>
+              <td>{{<%= key %>}}</td>
+              <td><%= details[:description] %></td>
+              <td>
+                <% if details[:units].is_a?(Hash) %>
+                  <% details[:units].each do |key, value| %>
+                    <%= key %> (<%= value %>)
+                  <% end %>
+                <% else %>
+                  <%= details[:units] %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

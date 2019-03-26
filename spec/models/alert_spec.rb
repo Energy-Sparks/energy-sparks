@@ -15,7 +15,7 @@ describe 'Alert' do
   end
 
   it 'has a rating of unrated if no rating is et' do
-    no_rating_alert = create(:alert)
+    no_rating_alert = create(:alert, rating: nil)
     expect(no_rating_alert.rating).to eq 'Unrated'
   end
 

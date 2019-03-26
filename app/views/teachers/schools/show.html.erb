@@ -52,19 +52,19 @@
   <% end %>
 </div>
 
-<% if @latest_alerts_sample %>
+<% if @find_out_more_alert %>
   <div class="row">
     <div class="col-md-12">
-      <%= render 'schools/alerts/alert', alert: @latest_alerts_sample, school: @school if @school.alerts.any? %>
+      <%= render 'schools/find_out_more/alert', content: @find_out_more_alert_content, school: @school, find_out_more: @find_out_more_alert %>
     </div>
   </div>
 
-  <% unless @latest_alert_activity_types.empty? %>
+  <% unless @find_out_more_alert_activity_types.empty? %>
     <div class="row">
       <div class="col-md-12 jumbotron things-to-try">
         <h2>Things to try</h2>
         <ul>
-          <% @latest_alert_activity_types.each do |activity_type| %>
+          <% @find_out_more_alert_activity_types.each do |activity_type| %>
             <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
           <% end %>
         </ul>

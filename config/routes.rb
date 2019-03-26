@@ -64,9 +64,8 @@ Rails.application.routes.draw do
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations
 
-      resources :alerts, only: [:index, :show] do
-        resource :find_out_more, controller: :find_out_more
-      end
+      resources :alerts, only: [:index, :show]
+      resources :find_out_more, controller: :find_out_more
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'charts#show'
@@ -116,8 +115,10 @@ Rails.application.routes.draw do
     resources :alert_types, only: [:index, :show] do
       scope module: :alert_types do
         resource :activity_types, only: [:show, :update]
+        resources :find_out_more_types
       end
     end
+    resource :find_out_more_calculation
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'

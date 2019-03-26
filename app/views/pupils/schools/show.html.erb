@@ -22,12 +22,12 @@
 </div>
 <hr/>
 
-<% unless @latest_alerts_sample.empty? %>
+<% unless @find_out_more_alerts.empty? %>
   <div class="row">
     <h2 class="mb-3">Things to investigate:</h2>
-    <% @latest_alerts_sample.each do |alert| %>
+    <% @find_out_more_alerts.each do |content| %>
       <div class="col-md-12">
-        <%= render 'schools/alerts/alert', alert: alert, school: @school %>
+        <%= render 'schools/find_out_more/alert', find_out_more: content.find_out_more,  content: content, school: @school %>
       </div>
     <% end %>
   </div>
