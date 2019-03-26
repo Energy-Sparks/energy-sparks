@@ -58,7 +58,7 @@ private
 
   def ratings_not_out_of_order
     if rating_from.present? && rating_to.present?
-      if rating_to < rating_from
+      if rating_to <= rating_from
         errors.add(:rating_to, 'must be less than rating from')
       end
     end
