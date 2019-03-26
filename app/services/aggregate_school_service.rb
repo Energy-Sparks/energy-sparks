@@ -72,11 +72,11 @@ class AggregateSchoolService
   end
 
   def storage_heaters(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :storage_heaters)
+    MeterAttributes.attributes(analytics_meter(meter), :storage_heaters) if analytics_meter(meter)
   end
 
   def solar_pv(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :solar_pv)
+    MeterAttributes.attributes(analytics_meter(meter), :solar_pv) if analytics_meter(meter)
   end
 
 private
