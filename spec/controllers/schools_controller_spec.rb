@@ -82,63 +82,10 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe "GET #show" do
-    context "as a guest user" do
-      before(:each) do
-        sign_in_user(:guest)
-      end
-      context "when the school is not active" do
-        it "redirects to the unauthorised page" do
-          sign_in_user(:guest)
-          school = FactoryBot.create :school, active: false
-          get :show, params: {id: school.to_param}
-          expect(response).to redirect_to(root_path)
-        end
-      end
-      context "the school is active" do
-        it "assigns the requested school as @school" do
-          school = FactoryBot.create :school
-          get :show, params: {id: school.to_param}
-          expect(assigns(:school)).to eq(school)
-        end
-        it "assigns the school's meters as @meters" do
-          school = FactoryBot.create :school
-          meter = FactoryBot.create :gas_meter, school_id: school.id
-          get :show, params: {id: school.to_param}
-          expect(assigns(:meters)).to include(meter)
-        end
-        it "assigns the latest activities as @activities" do
-          school = FactoryBot.create :school
-          activity = FactoryBot.create :activity, school_id: school.id
-          get :show, params: {id: school.to_param}
-          expect(assigns(:activities)).to include(activity)
-        end
-        it "does not include activities from other schools" do
-          school = FactoryBot.create :school
-          other_school = FactoryBot.create :school
-          FactoryBot.create :activity, school_id: school.id
-          activity_other_school = FactoryBot.create :activity, school_id: other_school.id
-          get :show, params: {id: school.to_param}
-          expect(assigns(:activities)).not_to include activity_other_school
-        end
-        it "assigns the school's awards to @badges" do
-          school = create :school, :with_badges, badges_sashes: 7
-
-          get :show, params: {id: school.to_param}
-          expect(assigns(:badges)).to include(school.badges.first)
-        end
-        it "doesn't include other schools badges" do
-          school_one, school_two = create_pair :school, :with_badges, badges_sashes: 2
-
-          get :show, params: {id: school_one.to_param}
-          expect(assigns(:badges)).not_to include(school_two.badges.first)
-        end
-      end
-    end
-    context "as an admin user" do
-      before(:each) do
-        sign_in_user(:admin)
-      end
-
+    it "redirects to the teacher dashboard" do
+      school = FactoryBot.create :school
+      get :show, params: {id: school.to_param}
+      expect(response).to redirect_to(teachers_school_path(school))
     end
   end
 

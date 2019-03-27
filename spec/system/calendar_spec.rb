@@ -45,8 +45,7 @@ RSpec.describe "calendar view", type: :system do
       sign_in(school_admin)
       visit calendar_path(calendar)
 
-      expect(page.has_content? "You are not authorized")
-      expect(page.current_path).to eq school_path(school)
+      expect(page).to have_content("You are not authorized")
     end
   end
 end
