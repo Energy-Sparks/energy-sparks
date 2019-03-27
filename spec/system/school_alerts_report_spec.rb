@@ -22,7 +22,6 @@ RSpec.describe "school alerts", type: :system do
 
   it 'should give a message if no alerts' do
     click_on('Alert reports')
-    expect(page.has_content?("No weekly alerts")).to be true
-    expect(page.has_content?("No termly alerts")).to be true
+    expect(page.has_content?("No alerts")).to be true
   end
 end
