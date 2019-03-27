@@ -185,6 +185,12 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
   var chartHeight = $chartDiv.height();
   var yAxisLabel = d.y_axis_label;
 
+  if(yAxisLabel == '£'){
+    var pointFormat = yAxisLabel + '{point.y:.2f}';
+  } else {
+    var pointFormat = '{point.y:.2f} ' + yAxisLabel;
+  }
+
   c.addSeries(seriesData, false);
   c.update({chart: {
     height: chartHeight,
@@ -197,7 +203,7 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
    pie: {
     tooltip: {
         headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: '{point.y:.2f} ' + yAxisLabel
+        pointFormat: pointFormat
       }
     }
   }
