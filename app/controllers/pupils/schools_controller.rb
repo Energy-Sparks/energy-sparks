@@ -55,7 +55,7 @@ module Pupils
       equiv_type, conversion_type = EnergyEquivalences.random_equivalence_type_and_via_type
       _val, equivalence = EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, conversion_type)
 
-      "Your school uses an average of #{kwh} kWh of #{fuel_type} a day. #{equivalence}"
+      "Your school uses an average of #{number_with_delimiter(kwh.round)} kWh of #{fuel_type} a day. #{equivalence}"
     end
   end
 end
