@@ -5,9 +5,9 @@ module Pupils
 
     load_and_authorize_resource
     skip_before_action :authenticate_user!
+    before_action :redirect_if_inactive
 
     def show
-      redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
       @find_out_more_alerts = @school.latest_find_out_mores.sample(2).map do |find_out_more|
         TemplateInterpolation.new(find_out_more.content_version, with_objects: { find_out_more: find_out_more }).interpolate(
           :dashboard_title,
@@ -24,6 +24,10 @@ module Pupils
     end
 
   private
+
+    def redirect_if_inactive
+      redirect_to teachers_school_path(@school), notice: 'Pupil dashboard unavailable: School is not active' unless @school.active?
+    end
 
     def activity_setup(school)
       @activities_count = school.activities.count
