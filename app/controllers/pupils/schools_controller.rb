@@ -1,5 +1,6 @@
 module Pupils
   class SchoolsController < ApplicationController
+    include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
 
     load_and_authorize_resource
