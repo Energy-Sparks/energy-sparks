@@ -18,7 +18,7 @@ module Alerts
     def process_find_out_mores(alert, calculation)
       rating = alert.raw_rating
       return if rating.blank?
-      find_out_more_types = FindOutMoreType.for_rating(rating).where(alert_type: alert.alert_type)
+      find_out_more_types = FindOutMoreType.for_rating(rating.to_f.round(1)).where(alert_type: alert.alert_type)
       find_out_more_types.each do |find_out_more_type|
         content = find_out_more_type.current_content
         next if content.nil?
