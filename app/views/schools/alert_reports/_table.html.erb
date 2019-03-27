@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% alerts.sort_by { |a| [a.alert_type, a.run_on] }.reverse.each do |alert| %>
+    <% alerts.each do |alert| %>
       <tr scope="row">
         <td><%= fa_icon(alert_icon(alert)) %> <%= alert.display_fuel_type %></td>
         <td><%= link_to alert.title, school_alert_path(school, alert) %></td>

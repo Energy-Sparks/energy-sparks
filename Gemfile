@@ -20,7 +20,7 @@ gem 'upsert', '~> 2.2.1'
 gem 'auto_strip_attributes', '~> 2.5'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.40.6'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.41.2'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -53,6 +53,8 @@ gem 'activerecord-import'
 
 # JS Templating
 gem 'handlebars_assets'
+# Template variables
+gem "mustache", "~> 1.0"
 
 # User input
 gem 'trix-rails', require: 'trix'

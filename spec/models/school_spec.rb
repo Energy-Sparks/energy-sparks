@@ -276,7 +276,7 @@ describe School do
     end
   end
 
-  describe '#scoreboard_Position' do
+  describe '#scoreboard_position' do
     let!(:scoreboard)       { create :scoreboard }
     let!(:group)            { create(:school_group, scoreboard: scoreboard) }
     let!(:pointy_school)    { create :school, :with_points, score_points: 6, school_group: group }
@@ -284,5 +284,34 @@ describe School do
     it "knows it's position in it's scoreboard" do
       expect(pointy_school.scoreboard_position).to be 1
     end
+  end
+
+  describe '#latest_find_out_mores' do
+    let(:school){ create :school }
+    let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
+    let(:find_out_more_type){ create(:find_out_more_type, alert_type: electricity_fuel_alert_type) }
+
+    let(:content_version_1){ create(:find_out_more_type_content_version, find_out_more_type: find_out_more_type)}
+    let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
+    let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
+    let(:calculation_1){ create(:find_out_more_calculation, school: school, created_at: 1.day.ago)}
+    let(:calculation_2){ create(:find_out_more_calculation, school: school, created_at: Date.today)}
+
+    context 'where there is a calculation' do
+
+      let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_1) }
+      let!(:find_out_more_2){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_2) }
+
+      it 'selects the find out mores from the most recent calculation' do
+        expect(school.latest_find_out_mores).to match_array([find_out_more_2])
+      end
+    end
+
+    context 'where there is no calculation' do
+      it 'returns an empty set' do
+        expect(school.latest_find_out_mores).to be_empty
+      end
+    end
+
   end
 end

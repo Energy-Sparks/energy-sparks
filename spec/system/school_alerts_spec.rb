@@ -35,35 +35,48 @@ RSpec.describe "school alerts", type: :system do
       expect(page.has_content?(poor_alert_summary)).to_not be true
     end
 
-    describe 'pupil dashboard' do
-      it 'shows alerts' do
-        alert_summary = 'Summary of the alert'
-        Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
-
-        # TODO: navigate properly once links are in
-        visit pupils_school_path(school)
-
-        expect(page).to have_content(alert_summary)
-
-      end
-    end
 
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
+      let!(:find_out_more_type){ create(:find_out_more_type, alert_type: gas_fuel_alert_type, rating_from: 0, rating_to: 10)}
+      let!(:find_out_more_type_content_version) do
+        create(
+          :find_out_more_type_content_version,
+          find_out_more_type: find_out_more_type,
+          dashboard_title: 'Your heating is on!',
+          page_title: 'You might want to think about heating',
+          page_content: 'This is what you need to do'
+        )
+      end
+      let(:alert_summary){ 'Summary of the alert' }
+      let!(:alert) do
+        Alert.create(
+          alert_type: gas_fuel_alert_type,
+          run_on: gas_date, school: school,
+          status: :good,
+          data: {
+            detail: [],
+            rating: 9.0,
+            table_data: {
+              dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
+            }
+          },
+          summary: alert_summary
+        )
+      end
 
       before do
         gas_fuel_alert_type.update!(activity_types: [activity_type])
+        Alerts::GenerateFindOutMores.new(school).perform
       end
 
       it 'can show a single alert with the associated activities' do
-        alert_summary = 'Summary of the alert'
-        Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, data: { detail: [], rating: 10.0}, summary: alert_summary)
 
         # TODO: navigate properly once links are in
         visit teachers_school_path(school)
 
-        expect(page).to_not have_content(description)
+        expect(page).to have_content('Your heating is on!')
 
         within '.things-to-try' do
           expect(page).to have_content("Turn off the heating")
@@ -73,9 +86,19 @@ RSpec.describe "school alerts", type: :system do
           click_on("Find out more")
         end
 
-        expect(page).to have_content(description)
-        expect(page).to have_content(alert_summary)
+        expect(page).to have_content('You might want to think about heating')
+        expect(page).to have_content('This is what you need to do')
         expect(page).to have_content(activity_type.name)
+
+        expect(page).to have_selector('table', text: 'Body 1')
+
+      end
+
+      it 'shows find out more alerts on the pupil dashboard' do
+        # TODO: navigate properly once links are in
+        visit pupils_school_path(school)
+
+        expect(page).to have_content('Your heating is on!')
       end
     end
   end
