@@ -1,6 +1,32 @@
 require 'rails_helper'
 
+class DummyMeterAttributes
+
+  ATTRIBUTES = {
+      meter_corrections: [{ readings_start_date: Date.new(2010, 6, 25), }],
+      storage_heaters: [{ start_date: Date.new(2010, 1, 1) }]
+    }
+
+  def self.for(mpan_mprn = nil, area_name = nil, meter_type = nil)
+    ATTRIBUTES
+  end
+end
+
 describe 'Meter', :meters do
+  describe 'meter attributes' do
+    let(:meter) { build(:electricity_meter) }
+
+    it 'can get them all' do
+      meter =  build(:electricity_meter)
+      expect(meter.meter_attributes(DummyMeterAttributes)).to eq DummyMeterAttributes::ATTRIBUTES
+    end
+
+    it 'drops storage heaters if env set' do
+      allow(ENV).to receive(:[]).with("DISABLE_SOLAR_PV_AND_STORAGE_HEATERS").and_return('aye')
+      attributes_without_storage = DummyMeterAttributes::ATTRIBUTES.except(:storage_heaters)
+      expect(meter.meter_attributes(DummyMeterAttributes)).to eq attributes_without_storage
+    end
+  end
 
   describe 'valid?' do
     describe 'mpan_mprn' do
