@@ -159,6 +159,14 @@ class School < ApplicationRecord
     end
   end
 
+  def has_solar_pv?
+    meters.detect(&:solar_pv?)
+  end
+
+  def has_storage_heaters?
+    meters.detect(&:storage_heaters?)
+  end
+
   def has_badge?(id)
     sash.badge_ids.include?(id)
   end

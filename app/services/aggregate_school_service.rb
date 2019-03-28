@@ -22,23 +22,6 @@ class AggregateSchoolService
     Rails.cache.delete(cache_key)
   end
 
-  def analytics_meter(meter)
-    meter_collection = aggregate_school
-    if meter.fuel_type == :gas
-      meter_collection.heat_meters.detect { |m| m.mpan_mprn == meter.mpan_mprn }
-    elsif meter.fuel_type == :electricity
-      meter_collection.electricity_meters.detect { |m| m.mpan_mprn == meter.mpan_mprn }
-    end
-  end
-
-  def school_has_solar_pv?
-    @school.meters.detect { |meter| solar_pv?(meter) }
-  end
-
-  def school_has_storage_heaters?
-    @school.meters.detect { |meter| storage_heaters?(meter) }
-  end
-
   def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
     if is_school_dual_fuel?
       dual_fuel_fuel_type
@@ -56,39 +39,11 @@ class AggregateSchoolService
   end
 
   def dual_fuel_fuel_type
-    school_has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
+    @school.has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
   end
 
   def electricity_fuel_type
-    school_has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
-  end
-
-  def solar_pv?(meter)
-    solar_pv(meter)
-  end
-
-  def storage_heaters?(meter)
-    storage_heaters(meter)
-  end
-
-  def meter_corrections(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :meter_corrections)
-  end
-
-  def aggregation(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :aggregation)
-  end
-
-  def heating_model(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :heating_model)
-  end
-
-  def storage_heaters(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :storage_heaters) if analytics_meter(meter)
-  end
-
-  def solar_pv(meter)
-    MeterAttributes.attributes(analytics_meter(meter), :solar_pv) if analytics_meter(meter)
+    @school.has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
   end
 
 private
