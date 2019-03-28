@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: c9e72c11e043547cefd2a3784cc5cb83144f3295
-  tag: 0.41.2
+  revision: 4a394446bcdf837113e085cbbab693269f0ff4d8
+  tag: 0.41.5
   specs:
-    energy-sparks_analytics (0.41.2)
+    energy-sparks_analytics (0.41.5)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -118,7 +118,7 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
-    backports (3.11.4)
+    backports (3.12.0)
     bcrypt (3.1.12)
     better_errors (2.4.0)
       coderay (>= 1.0.0)
@@ -306,7 +306,7 @@ GEM
     mimemagic (0.3.3)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
-    minimization (0.2.3)
+    minimization (0.2.5)
       text-table (~> 1.2)
     minitest (5.11.3)
     momentjs-rails (2.20.1)
@@ -323,7 +323,7 @@ GEM
     net-ssh (5.0.2)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.10.1)
+    nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     oj (3.6.5)
@@ -353,7 +353,7 @@ GEM
     premailer-rails (1.10.2)
       actionmailer (>= 3, < 6)
       premailer (~> 1.7, >= 1.7.9)
-    pry (0.11.3)
+    pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     pry-byebug (3.6.0)
@@ -459,7 +459,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     rubocop-rspec (1.30.0)
       rubocop (>= 0.58.0)
-    ruby-ole (1.2.12.1)
+    ruby-ole (1.2.12.2)
     ruby-prof (0.17.0)
     ruby-progressbar (1.10.0)
     ruby-sun-times (0.1.5)
@@ -507,7 +507,7 @@ GEM
       hashie (~> 3.5)
       multipart-post (~> 2.0.0)
       sys-uname (~> 1.0.2)
-    spreadsheet (1.1.8)
+    spreadsheet (1.2.3)
       ruby-ole (>= 1.0)
     spring (2.0.2)
       activesupport (>= 4.2)
