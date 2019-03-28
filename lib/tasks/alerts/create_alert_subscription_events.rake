@@ -21,6 +21,10 @@ namespace :alerts do
         school.alerts.termly.latest.each do |alert|
           Alerts::GenerateSubscriptionEvents.new(school, alert).perform
         end
+
+        school.alerts.before_each_holiday.latest.each do |alert|
+          Alerts::GenerateSubscriptionEvents.new(school, alert).perform
+        end
       end
     end
     puts Time.zone.now
