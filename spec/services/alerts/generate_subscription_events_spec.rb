@@ -3,7 +3,8 @@ require 'rails_helper'
 describe Alerts::GenerateSubscriptionEvents do
 
   let(:school)  { create(:school) }
-  let(:service) { Alerts::GenerateSubscriptionEvents.new(school) }
+  let!(:alert)  { create(:alert, school: school) }
+  let(:service) { Alerts::GenerateSubscriptionEvents.new(school, alert) }
 
   context 'no alerts' do
     it 'does nothing, no events created' do
@@ -21,7 +22,6 @@ describe Alerts::GenerateSubscriptionEvents do
   end
 
   context 'alerts and subscriptions' do
-    let!(:alert)                    { create(:alert, school: school) }
     let!(:email_contact)            { create(:contact_with_name_email, school: school) }
     let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
     let!(:sms_and_email_contact)    { create(:contact_with_name_email_phone, school: school) }

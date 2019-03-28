@@ -6,7 +6,7 @@ RSpec.describe "school alert subscription events", type: :system do
   let!(:alert)               { create(:alert, school: school) }
   let!(:contact)             { create(:contact_with_name_email, school: school) }
   let!(:alert_subscription)  { create(:alert_subscription, alert_type: alert.alert_type, school: school, contacts: [contact]) }
-  let(:service) { Alerts::GenerateSubscriptionEvents.new(school) }
+  let(:service) { Alerts::GenerateSubscriptionEvents.new(school, alert) }
 
   before(:each) do
     sign_in(user)
