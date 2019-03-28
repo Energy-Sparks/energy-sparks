@@ -105,15 +105,21 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
     }
 
-    if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
-      console.log('Yaxis - Temperature days');
-      c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
-    }
-    if (y2AxisLabel !== undefined && y2AxisLabel == 'Degree Days') {
-      console.log('Yaxis - Degree days');
-      c.addAxis({ title: { text: 'Degree days' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} Degree days' }}}});
+    if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+      console.log('Y2 axis label' + y2AxisLabel);
+      colour = '#232b49';
+      if (y2AxisLabel == 'Temperature') {
+        axisTitle = '°C';
+        pointFormat = '{point.y:.2f} °C';
+      } else if (y2AxisLabel == 'Degree Days') {
+        axisTitle = 'Degree days';
+        pointFormat = '{point.y:.2f} Degree days';
+      } else if (y2AxisLabel == 'Solar Irradiance') {
+        axisTitle = 'W/m2';
+        pointFormat = '{point.y:.2f} W/m2';
+      }
+      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true });
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     }
   }
 
@@ -125,10 +131,10 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
     }
 
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
-      console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
       seriesData[key].dashStyle =  'Dash';
     }
+
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);
   });
