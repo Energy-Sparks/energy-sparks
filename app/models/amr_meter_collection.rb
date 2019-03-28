@@ -124,12 +124,12 @@ private
 
   def set_up_meters(active_record_school)
     @heat_meters = active_record_school.meters_with_readings(:gas).map do |active_record_meter|
-      create_new_dashboard_meter(active_record_meter)
+      dashboard_meter = create_new_dashboard_meter(active_record_meter)
       add_amr_data(dashboard_meter, active_record_meter)
     end
 
     @electricity_meters = active_record_school.meters_with_readings(:electricity).map do |active_record_meter|
-      create_new_dashboard_meter(active_record_meter)
+      dashboard_meter = create_new_dashboard_meter(active_record_meter)
       add_amr_data(dashboard_meter, active_record_meter)
     end
   end
