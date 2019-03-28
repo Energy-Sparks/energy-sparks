@@ -1,32 +1,27 @@
 module Alerts
   class GenerateSubscriptionEvents
-    def initialize(school)
+    def initialize(school, alert)
       @school = school
+      @alert = alert
     end
 
     def perform
-      @school.alerts.latest.each do |alert|
-        process_subscriptions(alert)
+      subscriptions(@school, @alert.alert_type).each do |subscription|
+        subscription.contacts.each do |contact|
+          first_or_create_alert_subscription_event(contact, subscription)
+        end
       end
     end
 
   private
 
-    def process_subscriptions(alert)
-      subscriptions(@school, alert.alert_type).each do |subscription|
-        subscription.contacts.each do |contact|
-          first_or_create_alert_subscription_event(alert, contact, subscription)
-        end
-      end
-    end
-
-    def first_or_create_alert_subscription_event(alert, contact, subscription)
+    def first_or_create_alert_subscription_event(contact, subscription)
       if contact.email_address?
-        AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'email').first_or_create!
+        AlertSubscriptionEvent.where(contact: contact, alert: @alert, alert_subscription: subscription, communication_type: 'email').first_or_create!
       end
 
       if contact.mobile_phone_number?
-        AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'sms').first_or_create!
+        AlertSubscriptionEvent.where(contact: contact, alert: @alert, alert_subscription: subscription, communication_type: 'sms').first_or_create!
       end
     end
 
