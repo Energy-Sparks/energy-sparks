@@ -63,7 +63,10 @@ class Meter < ApplicationRecord
   end
 
   def meter_attributes(meter_attributes = MeterAttributes)
-    meter_attributes.for(mpan_mprn, area_name, meter_type.to_sym)
+    attributes = meter_attributes.for(mpan_mprn, area_name, meter_type.to_sym)
+    attributes.except!(:solar_pv) if ENV['DISABLE_SOLAR_PV_AND_STORAGE_HEATERS']
+    attributes.except!(:storage_heaters) if ENV['DISABLE_SOLAR_PV_AND_STORAGE_HEATERS']
+    attributes
   end
 
   def attributes(attribute_type)
