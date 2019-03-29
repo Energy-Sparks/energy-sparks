@@ -159,6 +159,30 @@ class School < ApplicationRecord
     end
   end
 
+  def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    if is_school_dual_fuel?(threshold)
+      dual_fuel_fuel_type
+    elsif has_enough_readings_for_meter_types?(:electricity, threshold)
+      electricity_fuel_type
+    elsif has_enough_readings_for_meter_types?(:gas, threshold)
+      :gas_only
+    else
+      :none
+    end
+  end
+
+  def is_school_dual_fuel?(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
+  end
+
+  def dual_fuel_fuel_type
+    has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
+  end
+
+  def electricity_fuel_type
+    has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
+  end
+
   def has_solar_pv?
     meters.detect(&:solar_pv?)
   end

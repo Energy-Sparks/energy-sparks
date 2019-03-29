@@ -4,7 +4,7 @@ describe School do
 
   let(:today) { Time.zone.today }
   let(:calendar) { create :calendar_with_terms, template: true }
-  subject { create :school, calendar: calendar }
+  subject { create :school, :with_school_group, calendar: calendar }
 
   it 'is valid with valid attributes' do
     expect(subject).to be_valid
@@ -249,6 +249,30 @@ describe School do
     it 'does not with no readings for electricity' do
       meter = create(:electricity_meter)
       expect(meter.school.has_enough_readings_for_meter_types?(:electricity, 1)).to be false
+    end
+  end
+
+  describe '#fuel_types_for_analysis?' do
+    it 'gas and electricity' do
+      meter = create(:electricity_meter_with_validated_reading, school: subject, reading_count: 2)
+      meter2 = create(:gas_meter_with_validated_reading, school: subject, reading_count: 2)
+      expect(subject.fuel_types_for_analysis(1)).to be :electric_and_gas
+    end
+
+    it 'electricity' do
+      meter = create(:electricity_meter_with_validated_reading, school: subject, reading_count: 2)
+      expect(subject.fuel_types_for_analysis(1)).to be :electric_only
+    end
+
+    it 'gas' do
+      meter = create(:gas_meter_with_validated_reading, school: subject, reading_count: 2)
+      expect(subject.fuel_types_for_analysis(1)).to be :gas_only
+    end
+
+    it 'neither' do
+      meter = create(:electricity_meter_with_validated_reading)
+      meter = create(:gas_meter_with_validated_reading)
+      expect(subject.fuel_types_for_analysis(5)).to be :none
     end
   end
 
