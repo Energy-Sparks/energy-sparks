@@ -1,12 +1,30 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
+<% if @school.active? %>
+  <% if can? :deactivate, @school %>
+    <div class="alert alert-warning">
+      <%= @school.name %> is currently <strong>ACTIVE</strong>.
+      <% if can? :deactivate, @school %>
+        <%= link_to "Deactivate school", school_deactivation_path(@school), method: :post, class: 'btn btn-danger ml-3' %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="alert alert-warning">
+    <%= @school.name %> is currently <strong>INACTIVE</strong> and won't be accessible to non-admin users.
+    <% if can? :activate, @school %>
+      <%= link_to "Activate school", school_activation_path(@school), method: :post, class: 'btn btn-success ml-3' %>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-sm">
     <h2>Energy Usage </h2>
   </div>
   <div class=" align-self-end">
     <%= link_to school_analysis_path(@school), class: 'btn btn-success' do %>
-      <%= fa_icon 'chart-pie' %> Find out more
+      <%= fa_icon 'chart-pie' %> Learn more about how your school uses energy
     <% end %>
   </div>
 </div>
@@ -95,10 +113,11 @@
   </div>
   <div class="card-body">
     <div class="row justify-content-between">
-      <div class="col-10">
+      <div class="col-9">
         <h4 class="">Activities to try next:</h4>
       </div>
-      <div class="col-2 text-right">
+      <div class="col-3 text-right">
+        <%= link_to 'More suggestions', suggest_activity_school_path(@school), class: 'btn btn-sm btn-primary pull-right' %>
         <%= link_to 'All activities', activity_categories_path, class: 'btn btn-sm btn-secondary pull-right' %>
       </div>
     </div>

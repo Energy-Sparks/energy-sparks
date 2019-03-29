@@ -37,7 +37,7 @@ var commonChartOptions = {
     line: {
       tooltip: {
         headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: '{point.y:.2f} kW'
+        pointFormat: orderedPointFormat('kW')
       }
     },
     scatter: {
@@ -79,7 +79,7 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
   // BAR Charts
   if (chartType == 'bar') {
     console.log('bar');
-    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: yAxisLabel + '{point.y:.2f}' }}}});
+    c.update({ chart: { inverted: true }, yAxis: [{ stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
   }
 
   // LINE charts
@@ -89,7 +89,7 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
       c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
     } else {
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
     }
   }
 
@@ -100,9 +100,9 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
 
 
     if (subChartType == 'stacked') {
-      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     } else {
-      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: '{point.y:.2f}' + yAxisLabel }}}});
+      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
 
     if (y2AxisLabel !== undefined && y2AxisLabel.length) {
@@ -131,7 +131,8 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
     }
 
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
-      seriesData[key].tooltip = { pointFormat: '{point.y:.2f} ' + yAxisLabel  }
+      console.log(seriesData[key]);
+      seriesData[key].tooltip = { pointFormat: orderedPointFormat(yAxisLabel) }
       seriesData[key].dashStyle =  'Dash';
     }
 
@@ -203,10 +204,19 @@ function pie(d, c, chartIndex, seriesData, $chartDiv) {
    pie: {
     tooltip: {
         headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: '{point.y:.2f} ' + yAxisLabel
+        pointFormat: orderedPointFormat(yAxisLabel)
       }
     }
   }
   });
   c.redraw();
+}
+
+function orderedPointFormat(label){
+  var format = '{point.y:.2f}';
+  if(label == '£'){
+    return label + format;
+  } else {
+    return format + ' ' + label;
+  }
 }

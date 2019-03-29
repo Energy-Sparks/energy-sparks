@@ -19,7 +19,7 @@
               <% end %>
             </span>
 
-            <% if @school.points.positive? %>
+            <% if @school.active? && @school.points.positive? %>
               <span class="nav-link badge badge-primary"><%= scoreboard_position(@school) %></span>
             <% end %>
           <% end %>
