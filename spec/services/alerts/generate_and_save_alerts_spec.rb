@@ -14,7 +14,7 @@ describe Alerts::GenerateAndSaveAlerts do
         expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
 
         expect{
-          Alerts::GenerateAndSaveAlerts.new(school, framework_adapter).weekly_alerts
+          Alerts::GenerateAndSaveAlerts.new(school, framework_adapter).perform
         }.to_not raise_error
       end
     end
