@@ -28,6 +28,8 @@ class FindOutMoreType < ApplicationRecord
   validates :rating_from, :rating_to, :description, presence: true
   validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
 
+  validate :ratings_not_out_of_order
+
   def current_content
     content_versions.latest.first
   end
@@ -51,6 +53,14 @@ private
       save!
       content.save!
       to_replace.update!(replaced_by: content) if to_replace
+    end
+  end
+
+  def ratings_not_out_of_order
+    if rating_from.present? && rating_to.present?
+      if rating_to <= rating_from
+        errors.add(:rating_to, 'must be less than rating from')
+      end
     end
   end
 end

@@ -21,8 +21,9 @@ describe Alerts::GenerateFindOutMores do
   end
 
   context 'when there are find out mores that match the alert type' do
-    let!(:alert){ create(:alert, school: school, rating: 5.0 )}
-    let!(:find_out_more_type){ create :find_out_more_type, alert_type: alert.alert_type }
+    let(:rating){ 5.0 }
+    let!(:alert){ create(:alert, school: school, rating: rating)}
+    let!(:find_out_more_type){ create :find_out_more_type, alert_type: alert.alert_type, rating_from: 1, rating_to: 6}
     let!(:find_out_more_content_version){ create :find_out_more_type_content_version, find_out_more_type: find_out_more_type }
 
     context 'where the rating matches the range' do
@@ -52,6 +53,23 @@ describe Alerts::GenerateFindOutMores do
           expect(find_out_more.content_version).to eq(new_content_version)
         end
       end
+
+      context 'where the rating is too precise but rounds down' do
+        let(:rating){ 6.02 }
+        it 'includes the alert' do
+          service.perform
+          expect(FindOutMore.count).to be 1
+        end
+      end
+
+      context 'where the rating is too precise but rounds up' do
+        let(:rating){ 6.09 }
+        it 'does not include the alert' do
+          service.perform
+          expect(FindOutMore.count).to be 0
+        end
+      end
+
     end
 
     context 'where the rating does not match the range' do
