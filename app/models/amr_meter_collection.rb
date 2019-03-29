@@ -124,12 +124,12 @@ private
 
   def set_up_meters(active_record_school)
     @heat_meters = active_record_school.meters_with_readings(:gas).map do |active_record_meter|
-      dashboard_meter = Dashboard::Meter.new(self, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
+      dashboard_meter = create_new_dashboard_meter(active_record_meter)
       add_amr_data(dashboard_meter, active_record_meter)
     end
 
     @electricity_meters = active_record_school.meters_with_readings(:electricity).map do |active_record_meter|
-      dashboard_meter = Dashboard::Meter.new(self, nil, active_record_meter.meter_type.to_sym, active_record_meter.mpan_mprn, active_record_meter.name, nil, nil, nil, nil, active_record_meter.id)
+      dashboard_meter = create_new_dashboard_meter(active_record_meter)
       add_amr_data(dashboard_meter, active_record_meter)
     end
   end
@@ -141,5 +141,17 @@ private
     rescue ArgumentError
       nil
     end
+  end
+
+  def create_new_dashboard_meter(active_record_meter)
+    Dashboard::Meter.new(
+      meter_collection: self,
+      amr_data: nil,
+      type: active_record_meter.meter_type.to_sym,
+      identifier: active_record_meter.mpan_mprn,
+      name: active_record_meter.name,
+      external_meter_id: active_record_meter.id,
+      meter_attributes: active_record_meter.meter_attributes
+    )
   end
 end
