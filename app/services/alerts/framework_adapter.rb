@@ -21,6 +21,7 @@ module Alerts
   private
 
     def calculate_analysis_date
+      return Time.zone.today if @alert_type.fuel_type.nil?
       @aggregate_school.analysis_date(@alert_type.fuel_type)
     end
 

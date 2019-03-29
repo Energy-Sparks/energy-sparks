@@ -6,7 +6,7 @@ class AggregateSchoolService
   end
 
   def aggregate_school
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    Rails.cache.fetch(cache_key, expires_in: 1.day) do
       meter_collection = AmrValidatedMeterCollection.new(@school)
       AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
       # Pre-warm environment caches
