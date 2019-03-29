@@ -1,19 +1,16 @@
 <div class="accordian mb-2 mt-2" id="templateVariablesCard">
-  <div class="card">
-    <div class="card-header" id="templateVariablesHeader">
-      <h2 class="mb-0 pt-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#templateVariables" aria-expanded="true" aria-controls="collapseOne">
-          View template variables
-        </button>
-      </h2>
-    </div>
-    <div id="templateVariables" class="collapse" aria-labelledby="templateVariablesHeader" data-parent="#templateVariablesCard">
-      <table class="table">
-        <% template_variables.each do |heading, variables| %>
+  <% template_variables.each_with_index do |(heading, variables), index| %>
+    <div class="card">
+      <div class="card-header" id="templateVariablesHeader<%=index%>">
+        <h2 class="mb-0 pt-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#templateVariables<%=index%>" aria-expanded="true" aria-controls="collapseOne">
+            <%= heading %> variables
+          </button>
+        </h2>
+      </div>
+      <div id="templateVariables<%=index%>" class="collapse" aria-labelledby="templateVariablesHeader" data-parent="#templateVariablesCard">
+        <table class="table">
           <thead>
-            <tr>
-              <th colspan="3"><%=heading%></th>
-            </tr>
             <tr>
               <th>Variable</th>
               <th>Description</th>
@@ -35,8 +32,8 @@
               </td>
             </tr>
           <% end %>
-        <% end %>
-      </table>
+        </table>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
