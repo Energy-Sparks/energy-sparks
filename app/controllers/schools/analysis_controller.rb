@@ -59,7 +59,7 @@ class Schools::AnalysisController < ApplicationController
 private
 
   def check_fuel_types
-    if aggregate_school_service(@school).fuel_types_for_analysis == :none
+    if @school.fuel_types_for_analysis == :none
       redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
     end
   end
@@ -77,7 +77,7 @@ private
   end
 
   def pages
-    @dashboard_set = aggregate_school_service(@school).fuel_types_for_analysis
+    @dashboard_set = @school.fuel_types_for_analysis
     DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
   end
 
