@@ -59,6 +59,8 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Rating to', with: '10'
       fill_in 'Description', with: 'For schools with bad heating management'
 
+      select 'red', from: 'Colour'
+
       fill_in 'Dashboard title', with: 'Your gas usage is too high'
       fill_in 'Page title', with: 'You are using too much gas!'
 
