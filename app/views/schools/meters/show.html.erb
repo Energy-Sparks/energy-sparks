@@ -38,5 +38,15 @@
     <h3>Aggregation</h3>
     <%= sanitize ap(@aggregation, { index: false } ) %>
   <% end %>
+
+  <% if @solar_pv %>
+    <h3>Solar Pv</h3>
+    <%= sanitize ap(@solar_pv, { index: false } ) %>
+  <% end %>
+
+  <% if @storage_heaters %>
+    <h3>Storage heaters</h3>
+    <%= sanitize ap(@storage_heaters, { index: false } ) %>
+  <% end %>
 </div>
 

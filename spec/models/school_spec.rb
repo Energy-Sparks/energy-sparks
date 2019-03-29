@@ -4,7 +4,7 @@ describe School do
 
   let(:today) { Time.zone.today }
   let(:calendar) { create :calendar_with_terms, template: true }
-  subject { create :school, calendar: calendar }
+  subject { create :school, :with_school_group, calendar: calendar }
 
   it 'is valid with valid attributes' do
     expect(subject).to be_valid

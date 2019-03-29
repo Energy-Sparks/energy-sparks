@@ -33,6 +33,9 @@ class Meter < ApplicationRecord
   scope :inactive, -> { where(active: false) }
 
   enum meter_type: [:electricity, :gas]
+
+  delegate :area_name, to: :school
+
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
 
@@ -57,6 +60,42 @@ class Meter < ApplicationRecord
 
   def display_meter_mpan_mprn
     mpan_mprn.present? ? mpan_mprn : meter_type.to_s
+  end
+
+  def meter_attributes(meter_attributes = MeterAttributes)
+    meter_attributes.for(mpan_mprn, area_name, meter_type.to_sym)
+  end
+
+  def attributes(attribute_type)
+    meter_attributes[attribute_type]
+  end
+
+  def solar_pv?
+    ! solar_pv.nil?
+  end
+
+  def storage_heaters?
+    ! storage_heaters.nil?
+  end
+
+  def meter_corrections
+    attributes(:meter_corrections)
+  end
+
+  def aggregation
+    attributes(:aggregation)
+  end
+
+  def heating_model
+    attributes(:heating_model)
+  end
+
+  def storage_heaters
+    attributes(:storage_heaters)
+  end
+
+  def solar_pv
+    attributes(:solar_pv)
   end
 
   def safe_destroy

@@ -8,6 +8,8 @@ namespace :amr_importer do
     School.all.each do |each_school|
       puts "Validate and persist for #{each_school.name}"
       Amr::ValidateAndPersistReadingsService.new(each_school).perform
+      puts "Clear cache for #{each_school.name}"
+      AggregateSchoolService.new(each_school).invalidate_cache
     end
 
     total_amr_readings_after = AmrValidatedReading.count
