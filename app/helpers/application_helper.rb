@@ -89,7 +89,7 @@ module ApplicationHelper
   end
 
   def alert_icon(alert)
-    fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
+    alert.alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert.alert_type.fuel_type)
   end
 
   def fuel_type_icon(fuel_type)
