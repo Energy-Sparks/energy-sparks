@@ -58,14 +58,24 @@ module ApplicationHelper
     end
   end
 
+  def class_for_alert_colour(colour)
+    return class_for_alert_colour(:unknown) if colour.nil?
+    case colour.to_sym
+    when :red then 'bg-danger'
+    when :yellow then 'bg-warning'
+    when :green then 'bg-success'
+    else 'bg-secondary'
+    end
+  end
+
   def class_for_alert_rating(rating)
-    return 'bg-secondary' if rating.nil?
+    return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
-      'bg-success'
+      class_for_alert_colour(:green)
     elsif rating > 6
-      'bg-warning'
+      class_for_alert_colour(:yellow)
     else
-      'bg-danger'
+      class_for_alert_colour(:red)
     end
   end
 
@@ -89,7 +99,7 @@ module ApplicationHelper
   end
 
   def alert_icon(alert)
-    fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
+    alert.alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert.alert_type.fuel_type)
   end
 
   def fuel_type_icon(fuel_type)

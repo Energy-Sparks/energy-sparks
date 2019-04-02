@@ -363,6 +363,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_160343) do
     t.integer "replaced_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "colour", default: 0, null: false
     t.index ["find_out_more_type_id"], name: "fom_content_v_fom_id"
   end
 

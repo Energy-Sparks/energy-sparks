@@ -184,6 +184,7 @@ GEM
       nokogiri (~> 1.8)
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
+    closed_struct (1.0.0)
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.5)
@@ -603,6 +604,7 @@ DEPENDENCIES
   chartkick
   chromedriver-helper
   climate_control
+  closed_struct
   database_cleaner
   devise
   dotenv-rails
