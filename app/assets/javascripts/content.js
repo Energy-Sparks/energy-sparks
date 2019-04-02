@@ -13,6 +13,8 @@ $(document).ready(function() {
       contentType: false,
       data: form.serialize(),
       error: function(jqXHR, textStatus, errorThrown){
+        pane.find('.loading').hide();
+        pane.find('.content').html('<div class="alert alert-danger">Preview failed</div>');
       },
       success: function(data, textStatus, jqXHR){
         pane.find('.loading').hide();
@@ -20,7 +22,6 @@ $(document).ready(function() {
         processAnalysisCharts();
       }
     });
-    console.log(url);
   });
 
   $('a#preview-tab[data-toggle="tab"]').on('hidden.bs.tab', function (e) {
