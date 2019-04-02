@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_144134) do
+ActiveRecord::Schema.define(version: 2019_03_29_160343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -111,12 +111,6 @@ ActiveRecord::Schema.define(version: 2019_03_22_144134) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
-  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "alert_type_id", null: false
-    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
-  end
-
   create_table "alert_subscription_events", force: :cascade do |t|
     t.bigint "alert_subscription_id"
     t.bigint "alert_id"
@@ -145,6 +139,13 @@ ActiveRecord::Schema.define(version: 2019_03_22_144134) do
     t.bigint "alert_subscription_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscriptions_contacts_on_alert_subscription_id"
     t.index ["contact_id"], name: "index_alert_subscriptions_contacts_on_contact_id"
+  end
+
+  create_table "alert_type_activity_types", force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.integer "position", default: 0, null: false
+    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
   end
 
   create_table "alert_types", force: :cascade do |t|

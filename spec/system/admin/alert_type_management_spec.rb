@@ -19,22 +19,23 @@ RSpec.describe 'alert type management', type: :system do
       click_on 'Alert Types'
     end
 
-    it 'assigns activity types to alerts via a checkbox' do
+    it 'assigns activity types to alerts via a text box position' do
 
       click_on 'Your gas usage is too high'
       click_on 'Associated activity types'
 
-      expect(page).to have_field('Turn off the lights', checked: false)
-      expect(page).to have_field('Turn down the heating', checked: false)
+      expect(page.find_field('Turn off the light').value).to be_blank
+      expect(page.find_field('Turn down the heating').value).to be_blank
 
-      check 'Turn down the heating'
+      fill_in 'Turn down the heating', with: '1'
 
       click_on 'Update associated activity type', match: :first
 
-      expect(page).to have_field('Turn off the lights', checked: false)
-      expect(page).to have_field('Turn down the heating', checked: true)
+      expect(page.find_field('Turn off the light').value).to be_blank
+      expect(page.find_field('Turn down the heating').value).to eq('1')
 
       expect(gas_fuel_alert_type.activity_types).to match_array([activity_type_2])
+      expect(gas_fuel_alert_type.alert_type_activity_types.first.position).to eq(1)
 
     end
   end
