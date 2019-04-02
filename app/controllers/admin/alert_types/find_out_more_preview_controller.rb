@@ -17,7 +17,7 @@ module Admin
 
       def load_find_out_more_requirements
         # TODO: match activity types ordering
-        @activity_types = @alert_type.activity_types.limit(3)
+        @activity_types = @alert_type.ordered_activity_types.limit(3)
         @school = @alert.school
         content_version = FindOutMoreTypeContentVersion.new(content_params.fetch(:content))
         @content = TemplateInterpolation.new(content_version).interpolate(:page_title, :page_content, with: @alert.template_variables)
