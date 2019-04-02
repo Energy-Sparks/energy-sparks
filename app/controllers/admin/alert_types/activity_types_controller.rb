@@ -12,7 +12,7 @@ module Admin
 
       def update
         alert_type = AlertType.find(params[:alert_type_id])
-        position_attributes = params.permit(activity_types: [:position, :activity_type_id]).fetch(:activity_types, {})
+        position_attributes = params.permit(activity_types: [:position, :activity_type_id]).fetch(:activity_types) { {} }
         alert_type.update_activity_type_positions!(position_attributes)
         redirect_to admin_alert_type_activity_types_path(alert_type), notice: 'Activity types updated'
       end
