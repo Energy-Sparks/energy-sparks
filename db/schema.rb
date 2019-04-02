@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_144134) do
+ActiveRecord::Schema.define(version: 2019_03_29_135155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -362,6 +362,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_144134) do
     t.integer "replaced_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "colour", default: 0, null: false
     t.index ["find_out_more_type_id"], name: "fom_content_v_fom_id"
   end
 
