@@ -41,6 +41,10 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'creating find out more copy' do
 
+    let!(:alert) do
+      create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%'}, school: create(:school))
+    end
+
     before do
       sign_in(admin)
       visit root_path
@@ -65,7 +69,13 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Page title', with: 'You are using too much gas!'
 
       editor = find('trix-editor')
-      editor.click.set('You are using too much gas! You need to do something about it.')
+      editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+
+      click_on 'Preview'
+
+      within '#preview .content' do
+        expect(page).to have_content('You are using 10% too much gas!')
+      end
 
       click_on 'Create Find Out More'
 

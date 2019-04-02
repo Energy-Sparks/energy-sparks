@@ -118,6 +118,7 @@ Rails.application.routes.draw do
       scope module: :alert_types do
         resource :activity_types, only: [:show, :update]
         resources :find_out_more_types
+        resource :find_out_more_preview, only: :show, controller: 'find_out_more_preview'
       end
     end
     resource :find_out_more_calculation

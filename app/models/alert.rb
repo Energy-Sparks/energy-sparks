@@ -37,6 +37,8 @@ class Alert < ApplicationRecord
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
   scope :usable,              -> { where(status: [:good, :poor])}
 
+  scope :rating_between, ->(from, to) { where("(data->>'rating')::decimal BETWEEN ? AND ?", from, to) }
+
   enum status: [:good, :poor, :not_enough_data, :failed]
 
   def self.latest
