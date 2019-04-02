@@ -2,21 +2,19 @@
 
 <p>Activity types associated with this alert type will appear in the Find Out More functionality.</p>
 
-<%= form_for @alert_type, url: admin_alert_type_activity_types_path(@alert_type), method: :put do |f| %>
-  <%= f.submit 'Update associated activity types', class: 'btn btn-primary mb-3'%>
+<%= form_tag admin_alert_type_activity_types_path(@alert_type), method: :put do %>
+  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3'%>
   <% @activity_categories_and_types.each do |activity_category, activity_types| %>
     <h3><%= activity_category.name %></h2>
-    <ul class="list-unstyled">
-
-      <%= f.collection_check_boxes(:activity_type_ids, activity_types, :id, :name) do |b| %>
+    <ul class="list-unstyled alert-type-activities">
+      <%- activity_types.each do |activity_type| %>
         <li>
-          <%= b.label do %>
-            <%= b.check_box  %>
-            <%= b.text  %>
-          <% end %>
+          <%= number_field_tag  "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], min: 0, max: 99, step: 1 %>
+          <%= label_tag "activity_types[#{activity_type.id}][position]", activity_type.name %>
+          <%= hidden_field_tag  "activity_types[#{activity_type.id}][activity_type_id]", activity_type.id %>
         </li>
       <% end %>
     </ul>
   <% end %>
-  <%= f.submit 'Update associated activity types', class: 'btn btn-primary'%>
+  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary'%>
 <% end %>

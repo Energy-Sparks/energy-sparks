@@ -26,4 +26,8 @@ class FindOutMore < ApplicationRecord
   belongs_to :calculation, class_name: 'FindOutMoreCalculation', foreign_key: :find_out_more_calculation_id
   belongs_to :alert
   belongs_to :content_version, class_name: 'FindOutMoreTypeContentVersion', foreign_key: :find_out_more_type_content_version_id
+
+  def activity_types
+    alert.alert_type.ordered_activity_types
+  end
 end
