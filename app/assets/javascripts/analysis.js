@@ -59,8 +59,7 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
 
   chart.hideLoading();
 }
-
-$(document).ready(function() {
+function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
       var thisId = this.id;
@@ -118,5 +117,7 @@ $(document).ready(function() {
       });
     });
   }
-});
+}
+
+$(document).ready(processAnalysisCharts);
 
