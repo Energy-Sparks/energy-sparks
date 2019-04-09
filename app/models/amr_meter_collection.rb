@@ -3,6 +3,7 @@ require 'dashboard'
 # Meter collection is in the analytics code
 class AmrMeterCollection < MeterCollection
   # This currently duplicates a lot of stuff in the analytics code initialiser, at some point wants separating out
+  # SOON!
   def initialize(active_record_school)
     set_up_meter_collection_attributes(active_record_school)
     set_up_meters(active_record_school)
@@ -78,6 +79,7 @@ private
     @number_of_pupils = active_record_school.number_of_pupils
     @urn = active_record_school.urn
     @area_name = active_record_school.area_name
+    @default_energy_purchaser = @area_name
     # Stored as big decimal
     @floor_area = active_record_school.floor_area.to_f
 
