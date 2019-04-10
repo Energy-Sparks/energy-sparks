@@ -37,7 +37,7 @@ module Admin
 
       def content_params
         params.require(:find_out_more_type).permit(
-          content: [:dashboard_title, :page_title, :page_content, :colour]
+          content: [:page_title, :page_content, :colour]
         )
       end
     end

@@ -2,15 +2,16 @@
 #
 # Table name: find_out_more_type_content_versions
 #
-#  colour                :integer          default("red"), not null
-#  created_at            :datetime         not null
-#  dashboard_title       :string           not null
-#  find_out_more_type_id :bigint(8)        not null
-#  id                    :bigint(8)        not null, primary key
-#  page_content          :text             not null
-#  page_title            :string           not null
-#  replaced_by_id        :integer
-#  updated_at            :datetime         not null
+#  colour                  :integer          default("red"), not null
+#  created_at              :datetime         not null
+#  find_out_more_type_id   :bigint(8)        not null
+#  id                      :bigint(8)        not null, primary key
+#  page_content            :text             not null
+#  page_title              :string           not null
+#  pupil_dashboard_title   :string           not null
+#  replaced_by_id          :integer
+#  teacher_dashboard_title :string           not null
+#  updated_at              :datetime         not null
 #
 # Indexes
 #
@@ -27,7 +28,7 @@ class FindOutMoreTypeContentVersion < ApplicationRecord
 
   enum colour: [:red, :yellow, :green]
 
-  validates :dashboard_title, :page_title, :page_content, :colour, presence: true
+  validates :teacher_dashboard_title, :pupil_dashboard_title, :page_title, :page_content, :colour, presence: true
 
   scope :latest, -> { where(replaced_by_id: nil) }
 

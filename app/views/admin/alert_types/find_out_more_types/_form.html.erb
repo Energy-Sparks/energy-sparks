@@ -18,7 +18,8 @@
   <div class="tab-content" id="content-preview-panes">
     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
       <%= render 'admin/alert_types/variables_accordion', template_variables: template_variables %>
-      <%= content.input :dashboard_title, hint: 'Shows on pupil and teacher dashboards' %>
+      <%= content.input :teacher_dashboard_title, hint: 'Shows on teacher dashboards' %>
+      <%= content.input :pupil_dashboard_title, hint: 'Shows on pupil dashboards' %>
       <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>
       <%= content.input :page_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
     </div>

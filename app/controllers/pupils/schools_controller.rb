@@ -14,7 +14,7 @@ module Pupils
           with_objects: { find_out_more: find_out_more },
           proxy: [:colour]
         ).interpolate(
-          :dashboard_title,
+          :pupil_dashboard_title,
           with: find_out_more.alert.template_variables
         )
       end

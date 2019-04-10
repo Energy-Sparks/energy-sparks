@@ -66,7 +66,8 @@ RSpec.describe 'alert type management', type: :system do
 
       select 'red', from: 'Colour'
 
-      fill_in 'Dashboard title', with: 'Your gas usage is too high'
+      fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
+      fill_in 'Pupil dashboard title', with: 'You are using too much gas'
       fill_in 'Page title', with: 'You are using too much gas!'
 
       editor = find('trix-editor')

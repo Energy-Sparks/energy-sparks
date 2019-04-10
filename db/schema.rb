@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_29_160343) do
+ActiveRecord::Schema.define(version: 2019_04_10_135855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -357,13 +357,14 @@ ActiveRecord::Schema.define(version: 2019_03_29_160343) do
 
   create_table "find_out_more_type_content_versions", force: :cascade do |t|
     t.bigint "find_out_more_type_id", null: false
-    t.string "dashboard_title", null: false
+    t.string "teacher_dashboard_title", null: false
     t.string "page_title", null: false
     t.text "page_content", null: false
     t.integer "replaced_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "colour", default: 0, null: false
+    t.string "pupil_dashboard_title", null: false
     t.index ["find_out_more_type_id"], name: "fom_content_v_fom_id"
   end
 
