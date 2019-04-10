@@ -42,4 +42,10 @@ describe TemplateInterpolation do
     view_object = TemplateInterpolation.new(instance, with_objects: {alert: instance}).interpolate(:template_1, with: {})
     expect(view_object.alert).to eq(instance)
   end
+
+  it 'sets the object' do
+    instance = object.new
+    view_object = TemplateInterpolation.new(instance, proxy: [:template_2]).interpolate(:template_1, with: {})
+    expect(view_object.template_2).to eq("Your school is {{position}} in the leaderboard")
+  end
 end
