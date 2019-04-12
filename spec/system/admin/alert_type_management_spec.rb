@@ -54,7 +54,6 @@ RSpec.describe 'alert type management', type: :system do
     end
 
     it 'allows creation and editing of alert content', js: true do
-
       click_on 'Your gas usage is too high'
       click_on 'Content management'
 
@@ -70,13 +69,23 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Pupil dashboard title', with: 'You are using too much gas'
       fill_in 'Page title', with: 'You are using too much gas!'
 
-      editor = find('trix-editor')
-      editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+      within '.find_out_more' do
+        editor = find('trix-editor')
+        editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
 
-      click_on 'Preview'
+        click_on 'Preview'
 
-      within '#preview .content' do
-        expect(page).to have_content('You are using 10% too much gas!')
+        within '#preview .content' do
+          expect(page).to have_content('You are using 10% too much gas!')
+        end
+      end
+
+      fill_in 'SMS content', with: 'Your gas usage is too high'
+
+      fill_in 'Email title', with: 'Gas usage'
+      within '.email' do
+        editor = find('trix-editor')
+        editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
       end
 
       click_on 'Create content'
@@ -86,6 +95,7 @@ RSpec.describe 'alert type management', type: :system do
       expect(alert_type_rating.content_versions.size).to eq(1)
       first_content = alert_type_rating.current_content
       expect(first_content.page_title).to eq('You are using too much gas!')
+      expect(first_content.sms_content).to eq('Your gas usage is too high')
 
       click_on 'Edit'
 
@@ -95,8 +105,6 @@ RSpec.describe 'alert type management', type: :system do
       expect(alert_type_rating.content_versions.size).to eq(2)
       second_content = alert_type_rating.current_content
       expect(second_content.page_title).to eq('Stop using so much gas!')
-
-
     end
   end
 

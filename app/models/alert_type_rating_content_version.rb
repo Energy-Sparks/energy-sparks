@@ -5,11 +5,17 @@
 #  alert_type_rating_id    :bigint(8)        not null
 #  colour                  :integer          default("red"), not null
 #  created_at              :datetime         not null
+#  email_active            :boolean          default(FALSE)
+#  email_content           :text
+#  email_title             :string
+#  find_out_more_active    :boolean          default(FALSE)
 #  id                      :bigint(8)        not null, primary key
 #  page_content            :text             not null
 #  page_title              :string           not null
 #  pupil_dashboard_title   :string           not null
 #  replaced_by_id          :integer
+#  sms_active              :boolean          default(FALSE)
+#  sms_content             :string
 #  teacher_dashboard_title :string           not null
 #  updated_at              :datetime         not null
 #

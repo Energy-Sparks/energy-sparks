@@ -49,7 +49,11 @@ module Admin
 
       def content_params
         params.require(:alert_type_rating).permit(
-          content: [:pupil_dashboard_title, :teacher_dashboard_title, :page_title, :page_content, :colour]
+          content: [
+            :colour,
+            :pupil_dashboard_title, :teacher_dashboard_title, :page_title, :page_content,
+            :sms_content, :email_title, :email_content
+          ]
         )
       end
 

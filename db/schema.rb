@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_12_102527) do
+ActiveRecord::Schema.define(version: 2019_04_12_123008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -158,6 +158,12 @@ ActiveRecord::Schema.define(version: 2019_04_12_102527) do
     t.datetime "updated_at", null: false
     t.integer "colour", default: 0, null: false
     t.string "pupil_dashboard_title", null: false
+    t.boolean "sms_active", default: false
+    t.boolean "email_active", default: false
+    t.boolean "find_out_more_active", default: false
+    t.string "sms_content"
+    t.string "email_title"
+    t.text "email_content"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
