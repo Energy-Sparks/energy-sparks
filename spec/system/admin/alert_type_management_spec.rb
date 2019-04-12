@@ -65,11 +65,12 @@ RSpec.describe 'alert type management', type: :system do
 
       select 'red', from: 'Colour'
 
+      check 'Find out more'
       fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
       fill_in 'Pupil dashboard title', with: 'You are using too much gas'
       fill_in 'Page title', with: 'You are using too much gas!'
 
-      within '.find_out_more' do
+      within '.find_out_more_active' do
         editor = find('trix-editor')
         editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
 
@@ -80,10 +81,12 @@ RSpec.describe 'alert type management', type: :system do
         end
       end
 
+      check 'SMS content'
       fill_in 'SMS content', with: 'Your gas usage is too high'
 
+      check 'Email content'
       fill_in 'Email title', with: 'Gas usage'
-      within '.email' do
+      within '.email_active' do
         editor = find('trix-editor')
         editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
       end

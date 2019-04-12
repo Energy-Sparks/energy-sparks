@@ -5,18 +5,15 @@
 #  alert_type_rating_id    :bigint(8)        not null
 #  colour                  :integer          default("red"), not null
 #  created_at              :datetime         not null
-#  email_active            :boolean          default(FALSE)
 #  email_content           :text
 #  email_title             :string
-#  find_out_more_active    :boolean          default(FALSE)
 #  id                      :bigint(8)        not null, primary key
-#  page_content            :text             not null
-#  page_title              :string           not null
-#  pupil_dashboard_title   :string           not null
+#  page_content            :text
+#  page_title              :string
+#  pupil_dashboard_title   :string
 #  replaced_by_id          :integer
-#  sms_active              :boolean          default(FALSE)
 #  sms_content             :string
-#  teacher_dashboard_title :string           not null
+#  teacher_dashboard_title :string
 #  updated_at              :datetime         not null
 #
 # Indexes
@@ -34,7 +31,19 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   enum colour: [:red, :yellow, :green]
 
-  validates :teacher_dashboard_title, :pupil_dashboard_title, :page_title, :page_content, :colour, presence: true
+  validates :colour, presence: true
+  validates :teacher_dashboard_title, :pupil_dashboard_title, :page_title, :page_content,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.find_out_more_active?},
+    on: :create
+  validates :sms_content,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active?},
+    on: :create
+  validates :email_title, :email_content,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active?},
+    on: :create
 
   scope :latest, -> { where(replaced_by_id: nil) }
 
