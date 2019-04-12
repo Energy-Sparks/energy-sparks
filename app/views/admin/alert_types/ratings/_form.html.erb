@@ -4,7 +4,7 @@
 <%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
 
 <%= form.simple_fields_for :content, content do |content| %>
-  <%= content.input :colour, as: :select, collection: FindOutMoreTypeContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards' %>
+  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards' %>
 
   <ul class="nav nav-tabs" id="content-preview" role="tablist">
     <li class="nav-item">

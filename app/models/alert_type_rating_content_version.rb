@@ -1,10 +1,10 @@
 # == Schema Information
 #
-# Table name: find_out_more_type_content_versions
+# Table name: alert_type_rating_content_versions
 #
+#  alert_type_rating_id    :bigint(8)        not null
 #  colour                  :integer          default("red"), not null
 #  created_at              :datetime         not null
-#  find_out_more_type_id   :bigint(8)        not null
 #  id                      :bigint(8)        not null, primary key
 #  page_content            :text             not null
 #  page_title              :string           not null
@@ -15,16 +15,16 @@
 #
 # Indexes
 #
-#  fom_content_v_fom_id  (find_out_more_type_id)
+#  fom_content_v_fom_id  (alert_type_rating_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (find_out_more_type_id => find_out_more_types.id) ON DELETE => cascade
+#  fk_rails_...  (alert_type_rating_id => alert_type_ratings.id) ON DELETE => cascade
 #
 
-class FindOutMoreTypeContentVersion < ApplicationRecord
-  belongs_to :find_out_more_type
-  belongs_to :replaced_by, class_name: 'FindOutMoreTypeContentVersion', foreign_key: :replaced_by_id
+class AlertTypeRatingContentVersion < ApplicationRecord
+  belongs_to :alert_type_rating
+  belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id
 
   enum colour: [:red, :yellow, :green]
 

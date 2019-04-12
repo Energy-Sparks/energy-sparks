@@ -23,8 +23,8 @@ describe Alerts::GenerateFindOutMores do
   context 'when there are find out mores that match the alert type' do
     let(:rating){ 5.0 }
     let!(:alert){ create(:alert, school: school, rating: rating)}
-    let!(:find_out_more_type){ create :find_out_more_type, alert_type: alert.alert_type, rating_from: 1, rating_to: 6}
-    let!(:find_out_more_content_version){ create :find_out_more_type_content_version, find_out_more_type: find_out_more_type }
+    let!(:alert_type_rating){ create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6}
+    let!(:find_out_more_content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
     context 'where the rating matches the range' do
 
@@ -46,7 +46,7 @@ describe Alerts::GenerateFindOutMores do
 
       context 'when there is more than one version of the content' do
         it 'creates a find out more pairing the alert and the content' do
-          new_content_version = create(:find_out_more_type_content_version, find_out_more_type: find_out_more_type)
+          new_content_version = create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)
           find_out_more_content_version.update!(replaced_by: new_content_version)
           service.perform
           find_out_more = FindOutMore.first
@@ -73,7 +73,7 @@ describe Alerts::GenerateFindOutMores do
     end
 
     context 'where the rating does not match the range' do
-      let!(:find_out_more_type){ create :find_out_more_type, alert_type: create(:alert_type), rating_from: 1, rating_to: 4}
+      let!(:alert_type_rating){ create :alert_type_rating, alert_type: create(:alert_type), rating_from: 1, rating_to: 4}
       it 'does nothing' do
         service.perform
         expect(FindOutMore.count).to be 0
@@ -83,7 +83,7 @@ describe Alerts::GenerateFindOutMores do
 
   context 'when there is no content' do
     let!(:alert){ create(:alert, school: school, rating: 5.0 )}
-    let!(:find_out_more_type){ create :find_out_more_type, alert_type: alert.alert_type }
+    let!(:alert_type_rating){ create :alert_type_rating, alert_type: alert.alert_type }
     it 'does nothing' do
       service.perform
       expect(FindOutMore.count).to be 0

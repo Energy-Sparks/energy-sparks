@@ -289,9 +289,9 @@ describe School do
   describe '#latest_find_out_mores' do
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
-    let(:find_out_more_type){ create(:find_out_more_type, alert_type: electricity_fuel_alert_type) }
+    let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
 
-    let(:content_version_1){ create(:find_out_more_type_content_version, find_out_more_type: find_out_more_type)}
+    let(:content_version_1){ create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
     let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:calculation_1){ create(:find_out_more_calculation, school: school, created_at: 1.day.ago)}

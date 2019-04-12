@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: find_out_more_types
+# Table name: alert_type_ratings
 #
 #  alert_type_id :bigint(8)        not null
 #  created_at    :datetime         not null
@@ -12,16 +12,16 @@
 #
 # Indexes
 #
-#  index_find_out_more_types_on_alert_type_id  (alert_type_id)
+#  index_alert_type_ratings_on_alert_type_id  (alert_type_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => restrict
 #
 
-class FindOutMoreType < ApplicationRecord
+class AlertTypeRating < ApplicationRecord
   belongs_to :alert_type
-  has_many :content_versions, class_name: 'FindOutMoreTypeContentVersion'
+  has_many :content_versions, class_name: 'AlertTypeRatingContentVersion'
 
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
 
