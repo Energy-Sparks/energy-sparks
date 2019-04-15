@@ -31,9 +31,9 @@ RSpec.describe "school alert subscription events", type: :system do
     email = ActionMailer::Base.deliveries.last
 
     expect(email.subject).to include('Energy Sparks alerts')
-    expect(email.html_part.body.to_s).to include(alert.title)
+    expect(email.html_part.body.to_s).to include(content_version.email_title)
 
     click_on('View', match: :first)
-    expect(page).to have_content(alert.title)
+    expect(page).to have_content(content_version.email_title)
   end
 end
