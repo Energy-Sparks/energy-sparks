@@ -21,13 +21,11 @@ describe Alerts::GenerateSmsNotifications do
     expect(SendSms).to receive(:new).with("EnergySparks alert: You need to fix something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
     expect(send_sms_service).to receive(:send).ordered
 
-    alert_subscription_event_1 = AlertSubscriptionEvent.create(alert: alert_1, alert_subscription: alert_subscription_sms_1, communication_type: :sms, contact: sms_contact, status: :pending, content_version: content_version_1)
-    alert_subscription_event_2 = AlertSubscriptionEvent.create(alert: alert_2, alert_subscription: alert_subscription_sms_2, communication_type: :sms, contact: sms_contact, status: :pending, content_version: content_version_2)
-
+    Alerts::GenerateSubscriptionEvents.new(school, alert_1).perform
+    Alerts::GenerateSubscriptionEvents.new(school, alert_2).perform
     Alerts::GenerateSmsNotifications.new.perform
 
-    expect(AlertSubscriptionEvent.find(alert_subscription_event_1.id).status).to eq 'sent'
-    expect(AlertSubscriptionEvent.find(alert_subscription_event_2.id).status).to eq 'sent'
+    expect(AlertSubscriptionEvent.all.all?{|event| event.status == 'sent'}).to eq(true)
 
     Alerts::GenerateSmsNotifications.new.perform
   end
