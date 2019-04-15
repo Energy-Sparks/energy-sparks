@@ -41,7 +41,7 @@ describe Alerts::GenerateSubscriptionEvents do
 
         let!(:content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
-        it 'creates events' do
+        it 'creates events and associates the content versions' do
           expect { service.perform }.to change { AlertSubscriptionEvent.count }.by(4)
 
           expect(email_contact.alert_subscription_events.count).to be 1
@@ -82,20 +82,6 @@ describe Alerts::GenerateSubscriptionEvents do
           end
         end
 
-        context 'where the alert does not match the rating' do
-          let(:rating){ 10 }
-          it 'does not create any events' do
-            service.perform
-            expect(AlertSubscriptionEvent.count).to be 0
-          end
-        end
-      end
-
-      context 'with no content' do
-        it 'does not create any events' do
-          service.perform
-          expect(AlertSubscriptionEvent.count).to be 0
-        end
       end
 
     end
