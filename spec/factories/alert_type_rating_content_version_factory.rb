@@ -5,5 +5,8 @@ FactoryBot.define do
     teacher_dashboard_title {'a thing has happened'}
     page_title {'A thing has happened' }
     page_content {'A thing has happened and you should do something about it' }
+    sms_content {'A thing has happened' }
+    email_title {'A thing has happened and you should do something about it' }
+    email_content {'A thing has happened and you should do something about it' }
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_12_135822) do
+ActiveRecord::Schema.define(version: 2019_04_12_155235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -121,8 +121,10 @@ ActiveRecord::Schema.define(version: 2019_04_12_135822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "email_id"
+    t.bigint "alert_type_rating_content_version_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
+    t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
   end
@@ -653,6 +655,7 @@ ActiveRecord::Schema.define(version: 2019_04_12_135822) do
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
   add_foreign_key "alert_subscription_events", "alert_subscriptions"
+  add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
   add_foreign_key "alert_subscription_events", "emails"
