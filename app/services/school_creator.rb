@@ -30,7 +30,6 @@ class SchoolCreator
 
   def process_new_school!
     add_school_times
-    add_all_alert_types
   end
 
   def activate_school!
@@ -38,12 +37,6 @@ class SchoolCreator
     if should_send_activation_email?
       OnboardingMailer.with(school_onboarding: @school.school_onboarding).activation_email.deliver_now
       record_event(@school.school_onboarding, :activation_email_sent)
-    end
-  end
-
-  def add_all_alert_types
-    AlertType.all.each do |alert_type|
-      @school.alert_subscriptions.create(alert_type: alert_type) unless @school.alert_subscriptions.where(alert_type: alert_type).exists?
     end
   end
 

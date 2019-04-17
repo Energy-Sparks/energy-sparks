@@ -3,7 +3,6 @@
 # Table name: alert_subscription_events
 #
 #  alert_id                             :bigint(8)
-#  alert_subscription_id                :bigint(8)
 #  alert_type_rating_content_version_id :bigint(8)
 #  communication_type                   :integer          default("email"), not null
 #  contact_id                           :bigint(8)
@@ -16,16 +15,14 @@
 #
 # Indexes
 #
-#  alert_sub_content_v_id                                    (alert_type_rating_content_version_id)
-#  index_alert_subscription_events_on_alert_id               (alert_id)
-#  index_alert_subscription_events_on_alert_subscription_id  (alert_subscription_id)
-#  index_alert_subscription_events_on_contact_id             (contact_id)
-#  index_alert_subscription_events_on_email_id               (email_id)
+#  alert_sub_content_v_id                         (alert_type_rating_content_version_id)
+#  index_alert_subscription_events_on_alert_id    (alert_id)
+#  index_alert_subscription_events_on_contact_id  (contact_id)
+#  index_alert_subscription_events_on_email_id    (email_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (alert_id => alerts.id)
-#  fk_rails_...  (alert_subscription_id => alert_subscriptions.id)
 #  fk_rails_...  (alert_type_rating_content_version_id => alert_type_rating_content_versions.id) ON DELETE => cascade
 #  fk_rails_...  (contact_id => contacts.id)
 #  fk_rails_...  (email_id => emails.id)

@@ -39,6 +39,11 @@ RSpec.describe "school", type: :system do
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
         expect(page).to have_content contact.name
+
+        click_on('Reports')
+        click_on('Alert subscribers')
+        expect(page).to have_content contact.name
+
       end
     end
   end
