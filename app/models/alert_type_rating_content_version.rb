@@ -42,7 +42,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     on: :create
   validates :email_title, :email_content,
     presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active?},
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active?},
     on: :create
 
   scope :latest, -> { where(replaced_by_id: nil) }
