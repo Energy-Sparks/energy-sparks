@@ -53,12 +53,11 @@ RSpec.describe 'alert type management', type: :system do
       click_on 'Alert Types'
     end
 
-    it 'allows creation and editing of Find Out More content', js: true do
-
+    it 'allows creation and editing of alert content', js: true do
       click_on 'Your gas usage is too high'
-      click_on 'Find Out More types'
+      click_on 'Content management'
 
-      click_on 'New Find Out More type'
+      click_on 'New content'
 
       fill_in 'Rating from', with: '0'
       fill_in 'Rating to', with: '10'
@@ -66,36 +65,49 @@ RSpec.describe 'alert type management', type: :system do
 
       select 'red', from: 'Colour'
 
-      fill_in 'Dashboard title', with: 'Your gas usage is too high'
+      check 'Find out more'
+      fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
+      fill_in 'Pupil dashboard title', with: 'You are using too much gas'
       fill_in 'Page title', with: 'You are using too much gas!'
 
-      editor = find('trix-editor')
-      editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+      within '.find_out_more_active' do
+        editor = find('trix-editor')
+        editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
 
-      click_on 'Preview'
+        click_on 'Preview'
 
-      within '#preview .content' do
-        expect(page).to have_content('You are using 10% too much gas!')
+        within '#preview .content' do
+          expect(page).to have_content('You are using 10% too much gas!')
+        end
       end
 
-      click_on 'Create Find Out More'
+      check 'SMS content'
+      fill_in 'SMS content', with: 'Your gas usage is too high'
 
-      expect(gas_fuel_alert_type.find_out_more_types.size).to eq(1)
-      find_out_more_type = gas_fuel_alert_type.find_out_more_types.first
-      expect(find_out_more_type.content_versions.size).to eq(1)
-      first_content = find_out_more_type.current_content
+      check 'Email content'
+      fill_in 'Email title', with: 'Gas usage'
+      within '.email_active' do
+        editor = find('trix-editor')
+        editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+      end
+
+      click_on 'Create content'
+
+      expect(gas_fuel_alert_type.ratings.size).to eq(1)
+      alert_type_rating = gas_fuel_alert_type.ratings.first
+      expect(alert_type_rating.content_versions.size).to eq(1)
+      first_content = alert_type_rating.current_content
       expect(first_content.page_title).to eq('You are using too much gas!')
+      expect(first_content.sms_content).to eq('Your gas usage is too high')
 
       click_on 'Edit'
 
       fill_in 'Page title', with: 'Stop using so much gas!'
-      click_on 'Update Find Out More type'
+      click_on 'Update content'
 
-      expect(find_out_more_type.content_versions.size).to eq(2)
-      second_content = find_out_more_type.current_content
+      expect(alert_type_rating.content_versions.size).to eq(2)
+      second_content = alert_type_rating.current_content
       expect(second_content.page_title).to eq('Stop using so much gas!')
-
-
     end
   end
 

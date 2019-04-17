@@ -15,7 +15,7 @@ module Teachers
           @find_out_more_alert.content_version,
           proxy: [:colour]
         ).interpolate(
-          :dashboard_title,
+          :teacher_dashboard_title,
           with: @find_out_more_alert.alert.template_variables
         )
         @find_out_more_alert_activity_types = @find_out_more_alert.activity_types.limit(3)
