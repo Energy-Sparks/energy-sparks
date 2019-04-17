@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_12_155235) do
+ActiveRecord::Schema.define(version: 2019_04_17_113406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -112,7 +112,6 @@ ActiveRecord::Schema.define(version: 2019_04_12_155235) do
   end
 
   create_table "alert_subscription_events", force: :cascade do |t|
-    t.bigint "alert_subscription_id"
     t.bigint "alert_id"
     t.bigint "contact_id"
     t.integer "status", default: 0, null: false
@@ -123,24 +122,9 @@ ActiveRecord::Schema.define(version: 2019_04_12_155235) do
     t.bigint "email_id"
     t.bigint "alert_type_rating_content_version_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
-    t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
-  end
-
-  create_table "alert_subscriptions", force: :cascade do |t|
-    t.bigint "alert_type_id"
-    t.bigint "school_id"
-    t.index ["alert_type_id"], name: "index_alert_subscriptions_on_alert_type_id"
-    t.index ["school_id"], name: "index_alert_subscriptions_on_school_id"
-  end
-
-  create_table "alert_subscriptions_contacts", id: false, force: :cascade do |t|
-    t.bigint "contact_id"
-    t.bigint "alert_subscription_id"
-    t.index ["alert_subscription_id"], name: "index_alert_subscriptions_contacts_on_alert_subscription_id"
-    t.index ["contact_id"], name: "index_alert_subscriptions_contacts_on_contact_id"
   end
 
   create_table "alert_type_activity_types", force: :cascade do |t|
@@ -654,13 +638,10 @@ ActiveRecord::Schema.define(version: 2019_04_12_155235) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "alert_subscription_events", "alert_subscriptions"
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
   add_foreign_key "alert_subscription_events", "emails"
-  add_foreign_key "alert_subscriptions", "alert_types"
-  add_foreign_key "alert_subscriptions", "schools"
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"

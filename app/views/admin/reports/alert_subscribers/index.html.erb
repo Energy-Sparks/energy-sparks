@@ -11,7 +11,7 @@
       <th>Group</th>
       <th>Email</th>
       <th>SMS</th>
-      <th>Alert Subscriptions</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -22,7 +22,7 @@
         <td><%= contact.school.area_name %>
         <td><%= contact.email_address %></td>
         <td><%= contact.mobile_phone_number %></td>
-        <td><%= link_to "View (#{contact.alert_subscriptions.count})", school_alert_subscriptions_path(contact.school) , class: 'btn btn-success btn-sm' %></td>
+        <td><%= link_to "Edit", edit_school_contact_path(contact.school, contact) , class: 'btn btn-success btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>

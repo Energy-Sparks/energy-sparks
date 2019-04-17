@@ -43,7 +43,6 @@ Rails.application.routes.draw do
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
-      resources :alert_subscriptions, only: [:index, :edit, :update]
       resources :alert_subscription_events, only: :index
 
       resources :meters do
