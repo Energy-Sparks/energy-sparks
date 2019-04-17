@@ -13,6 +13,28 @@
   </div>
 <% end %>
 
+<% meter_collection = AggregateSchoolService.new(@school).aggregate_school %>
+<hr/>
+<h2>Heat meters</h2>
+<% meter_collection.heat_meters.each do |hm| %>
+  <p><%= hm %></p>
+<% end %>
+<h2>Electricity meters</h2>
+<% meter_collection.electricity_meters.each do |hm| %>
+  <p><%= hm %></p>
+<% end %>
+<h2>Solar PV meter</h2>
+<p><%= meter_collection.solar_pv_meter %></p>
+<p>?<%= meter_collection.solar_pv_meter.inspect %></p>
+
+<h2>Storage meter</h2>
+<p><%= meter_collection.storage_heater_meter %></p>
+<h2>Aggregated meters</h2>
+<p><%= meter_collection.aggregated_heat_meters %></p>
+<p><%= meter_collection.aggregated_electricity_meters %></p>
+
+<!-- ]}, @solar_pv_meter=#<Dashboard::Meter:0x00007fb0827b2b10 ...>>, @meter_type=:solar_pv, @fuel_type=:solar_pv, @id=2200021955152, @mpan_mprn=2200021955152, @name="Electricity consumed from solar PV panels", @floor_area=nil, @number_of_pupils=nil, @solar_pv_installation=#<SolarPVPanels:0x00007fb082410e58 @solar_pv_panel_config=#<SolarPVPanels::SolarPVPanelConfiguration:0x00007fb082410de0 @config_by_date_range={Wed, 01 Jan 2014..Sat, 01 Jan 2050=>{:kwp=>6.0, :orientation=>0, :tilt=>30, :shading=>0, :fit_£_per_kwh=>0.3}}>>, @meter_correction_rules=[], @sub_meters=[], @external_meter_id=nil, @meter_attributes={:solar_pv=>[{:start_date=>Wed, 01 Jan 2014, :kwp=>6.0, :orientation=>0, :tilt=>30, :shading=>0, :fit_£_per_kwh=>0.3}]}, @model_cache=#<AnalyseHeatingAndHotWater::ModelCache:0x00007fb082410958 @meter=#<Dashboard::Meter:0x00007fb0827b2b10 ...>, @processed_model_overrides=false, @models={}>, @solar_pv_setup=#<SolarPVPanels:0x00007fb0824108e0 @solar_pv_panel_config=#<SolarPVPanels::SolarPVPanelConfiguration:0x00007fb0824108b8 @config_by_date_range={Wed, 01 Jan 2014..Sat, 01 Jan 2050=>{:kwp=>6.0, :orientation=>0, :tilt=>30, :shading=>0, :fit_£_per_kwh=>0.3}}>>>
+ -->
 <table class="table table-sm">
   <thead>
     <tr>
