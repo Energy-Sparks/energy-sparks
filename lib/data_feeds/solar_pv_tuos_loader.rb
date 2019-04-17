@@ -24,14 +24,12 @@ module DataFeeds
       SolarPvTuosArea.all.each do |sa|
         sa.data_feeds.each do |data_feed|
           config_data = data_feed.configuration.deep_symbolize_keys
-          area_name = config_data[:name]
 
           latitude = config_data[:latitude]
           longitude = config_data[:longitude]
-          filename = "#{area_name.downcase}solar_pvdata.csv"
 
           @dates.each do |date_range_chunk|
-            process_data_for_each_chunk(config_data, data_feed, date_range_chunk, filename, latitude, longitude)
+            process_data_for_each_chunk(config_data, data_feed, date_range_chunk, latitude, longitude)
           end
         end
       end
@@ -253,7 +251,7 @@ module DataFeeds
 
   private
 
-    def process_data_for_each_chunk(config_data, data_feed, date_range_chunk, filename, latitude, longitude)
+    def process_data_for_each_chunk(config_data, data_feed, date_range_chunk, latitude, longitude)
       start_date, end_date = date_range_chunk
       puts
       puts "========================Processing a chunk of data between #{start_date} #{end_date}=============================="
@@ -264,9 +262,6 @@ module DataFeeds
       pv_data.each do |datetime, value|
         DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_pv) unless datetime.future?
       end
-
-      pv_readings = data_feed.readings(:solar_pv, @start_date, @end_date)
-      File.open("from-db-#{filename}", 'w') {|file| file.write(data_feed.to_csv(pv_readings))}
     end
   end
 end
