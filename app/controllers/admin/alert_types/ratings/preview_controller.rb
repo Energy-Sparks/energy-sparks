@@ -45,6 +45,7 @@ module Admin
         def template_path(key)
           case key
           when 'find_out_more' then 'schools/find_out_more/show'
+          when 'email', 'sms' then key
           else 'no_template'
           end
         end

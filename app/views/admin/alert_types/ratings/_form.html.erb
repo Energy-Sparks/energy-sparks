@@ -14,12 +14,16 @@
   <h3>Content</h3>
 
   <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
-    <%= content.input :sms_content, label: 'SMS content' %>
+    <%= render 'preview_section', scope: 'sms', preview_url: admin_alert_type_rating_preview_path(alert_type, form.object, template: :sms) do %>
+      <%= content.input :sms_content, label: 'SMS content' %>
+    <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :email_active, field_name: 'Email content' do %>
-    <%= content.input :email_title, as: :string %>
-    <%= content.input :email_content, as: :trix_editor %>
+    <%= render 'preview_section', scope: 'email', preview_url: admin_alert_type_rating_preview_path(alert_type, form.object, template: :email) do %>
+      <%= content.input :email_title, as: :string %>
+      <%= content.input :email_content, as: :trix_editor %>
+    <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
