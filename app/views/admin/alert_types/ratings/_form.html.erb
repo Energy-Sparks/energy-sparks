@@ -42,7 +42,7 @@
         <%= content.input :page_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
       </div>
 
-      <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab" data-content-url="<%= admin_alert_type_find_out_more_preview_path %>">
+      <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab" data-content-url="<%= admin_alert_type_rating_preview_path(alert_type, form.object, template: :find_out_more) %>">
         <div class="loading">
           <h3 class="mb-3 mt-3"><%= fa_icon('spinner') %> Loading...</h3>
         </div>

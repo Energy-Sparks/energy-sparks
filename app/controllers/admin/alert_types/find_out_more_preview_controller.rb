@@ -20,7 +20,7 @@ module Admin
         @activity_types = @alert_type.ordered_activity_types.limit(3)
         @school = @alert.school
         content_version = AlertTypeRatingContentVersion.new(content_params.fetch(:content))
-        @content = TemplateInterpolation.new(content_version).interpolate(:page_title, :page_content, with: @alert.template_variables)
+        @content = TemplateInterpolation.new(content_version).interpolate(*AlertTypeRatingContentVersion.template_fields, with: @alert.template_variables)
         @charts = @alert.charts
         @tables = @alert.tables
       end
@@ -37,7 +37,7 @@ module Admin
 
       def content_params
         params.require(:alert_type_rating).permit(
-          content: [:page_title, :page_content, :colour]
+          content: AlertTypeRatingContentVersion.template_fields
         )
       end
     end
