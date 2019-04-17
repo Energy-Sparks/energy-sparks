@@ -1,7 +1,7 @@
 namespace :data_feeds do
   desc 'Set up data feeds'
   task :weather_underground_loader, [:start_date, :end_date] => :environment do |_t, args|
-    start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 1
+    start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 3
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday
 
     old_readings = DataFeedReading.where(feed_type: [:solar_irradiation, :temperature]).where('at > ? and at <= ?', start_date.beginning_of_day, end_date.end_of_day)
