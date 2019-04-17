@@ -9,8 +9,12 @@ module Pupils
 
     def show
       @find_out_more_alerts = @school.latest_find_out_mores.sample(2).map do |find_out_more|
-        TemplateInterpolation.new(find_out_more.content_version, with_objects: { find_out_more: find_out_more }).interpolate(
-          :dashboard_title,
+        TemplateInterpolation.new(
+          find_out_more.content_version,
+          with_objects: { find_out_more: find_out_more },
+          proxy: [:colour]
+        ).interpolate(
+          :pupil_dashboard_title,
           with: find_out_more.alert.template_variables
         )
       end

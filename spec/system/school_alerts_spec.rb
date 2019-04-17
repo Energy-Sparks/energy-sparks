@@ -39,12 +39,13 @@ RSpec.describe "school alerts", type: :system do
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
-      let!(:find_out_more_type){ create(:find_out_more_type, alert_type: gas_fuel_alert_type, rating_from: 0, rating_to: 10)}
-      let!(:find_out_more_type_content_version) do
+      let!(:alert_type_rating){ create(:alert_type_rating, alert_type: gas_fuel_alert_type, rating_from: 0, rating_to: 10, find_out_more_active: true)}
+      let!(:alert_type_rating_content_version) do
         create(
-          :find_out_more_type_content_version,
-          find_out_more_type: find_out_more_type,
-          dashboard_title: 'Your heating is on!',
+          :alert_type_rating_content_version,
+          alert_type_rating: alert_type_rating,
+          teacher_dashboard_title: 'Your heating is on!',
+          pupil_dashboard_title: 'It is too warm',
           page_title: 'You might want to think about heating',
           page_content: 'This is what you need to do'
         )
@@ -98,7 +99,7 @@ RSpec.describe "school alerts", type: :system do
         # TODO: navigate properly once links are in
         visit pupils_school_path(school)
 
-        expect(page).to have_content('Your heating is on!')
+        expect(page).to have_content('It is too warm')
       end
     end
   end

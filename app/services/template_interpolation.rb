@@ -1,18 +1,23 @@
 require 'mustache'
-require 'ostruct'
+require 'closed_struct'
 
 class TemplateInterpolation
-  def initialize(object, with_objects: {})
+  def initialize(object, with_objects: {}, proxy: [])
     @object = object
     @with_objects = with_objects
+    @proxy = proxy
   end
 
   def interpolate(*fields, with: {})
-    templated = fields.inject(@with_objects) do |collection, field|
+    pre_defined = @proxy.inject(@with_objects) do |collection, field|
+      collection[field] = @object.send(field)
+      collection
+    end
+    templated = fields.inject(pre_defined) do |collection, field|
       collection[field] = process(@object.send(field), with)
       collection
     end
-    OpenStruct.new(templated)
+    ClosedStruct.new(templated)
   end
 
 private

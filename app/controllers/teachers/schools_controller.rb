@@ -11,11 +11,14 @@ module Teachers
       @activities_count = @school.activities.count
       @find_out_more_alert = @school.latest_find_out_mores.sample
       if @find_out_more_alert
-        @find_out_more_alert_content = TemplateInterpolation.new(@find_out_more_alert.content_version).interpolate(
-          :dashboard_title,
+        @find_out_more_alert_content = TemplateInterpolation.new(
+          @find_out_more_alert.content_version,
+          proxy: [:colour]
+        ).interpolate(
+          :teacher_dashboard_title,
           with: @find_out_more_alert.alert.template_variables
         )
-        @find_out_more_alert_activity_types = @find_out_more_alert.alert.alert_type.activity_types.limit(3)
+        @find_out_more_alert_activity_types = @find_out_more_alert.activity_types.limit(3)
       end
 
       @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
