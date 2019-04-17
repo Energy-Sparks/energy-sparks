@@ -21,10 +21,10 @@
         <td><%= rating.rating_from %></td>
         <td><%= rating.rating_to %></td>
         <td><%= rating.description %></td>
-        <td class="lead">
-          <span class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms') %></span>
-          <span class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope') %></span>
-          <span class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search') %></span>
+        <td>
+          <span class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span>
+          <span class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
+          <span class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span>
         </td>
         <td>
           <%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn btn-primary btn-sm'%>
