@@ -148,7 +148,7 @@ module DataFeeds
 
     def generate_single_day_station_history_url(station_name, date)
       sprintf(
-        "http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
+        "https://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
         station_name,
         date.year,
         date.month,
