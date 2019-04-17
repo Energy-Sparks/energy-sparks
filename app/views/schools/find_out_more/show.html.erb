@@ -3,10 +3,10 @@
 <h1><%= @content.page_title %></h1>
 
 <% if @tables.empty? %>
- <%= render 'charts', school: @school, charts: @charts %>
+ <%= render 'schools/find_out_more/charts', school: @school, charts: @charts %>
 <% else %>
   <div class="row justify-content-xl-center align-items-center">
-    <%= render 'charts', school: @school, charts: @charts %>
+    <%= render 'schools/find_out_more/charts', school: @school, charts: @charts %>
     <div class="col-md-auto">
       <% @tables.each do |table| %>
         <table class="table table-striped">
