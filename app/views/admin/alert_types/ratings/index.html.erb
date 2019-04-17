@@ -21,7 +21,7 @@
         <td><%= rating.rating_from %></td>
         <td><%= rating.rating_to %></td>
         <td><%= rating.description %></td>
-        <td>
+        <td class="lead">
           <span class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms') %></span>
           <span class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope') %></span>
           <span class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search') %></span>
