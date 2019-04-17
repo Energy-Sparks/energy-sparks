@@ -21,11 +21,11 @@ module DataFeeds
           temperatures, solar_irradiation = process_area(area)
 
           temperatures.each do |datetime, value|
-            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature)
+            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature) unless value.nil?
           end
 
           solar_irradiation.each do |datetime, value|
-            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation)
+            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation) unless value.nil?
           end
         end
       end
