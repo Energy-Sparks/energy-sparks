@@ -156,9 +156,11 @@ module DataFeeds
     end
 
     # rubocop:disable Naming/UncommunicativeMethodParamName
-    def simple_interpolate(val1, val0, t1, t0, tx)
+    def simple_interpolate(val1, val0, t1, t0, tx, debug = false)
       t_prop = (tx - t0) / (t1 - t0)
-      val0 + (val1 - val0) * t_prop
+      res = val0 + (val1 - val0) * t_prop
+      puts "Interpolate: T1 #{val1} T0 #{val0} dt1 #{t1} dt0 #{t0} at dt #{tx}" if debug
+      res
     end
     # rubocop:enable Naming/UncommunicativeMethodParamName
 
@@ -169,29 +171,38 @@ module DataFeeds
       solar_insolance = []
 
       start_time = @start_date.to_datetime
-      end_time = @end_date.to_datetime
+      end_time = @end_date.to_datetime.beginning_of_day + 1.day
 
       date_times = rawdata.keys
       mins30step = (1.to_f / 48)
 
       start_time.step(end_time, mins30step).each do |datetime|
-        closest = date_times.bsearch { |x| x >= datetime }
-        index = date_times.index(closest)
-
-        if !index.nil?
+        begin
+          if date_times.last < datetime
+            puts "Problem shortage of data for this weather station, terminating interpolation early at #{datetime}"
+            return [temperatures, solar_insolance]
+          end
+          index = date_times.bsearch_index {|x, _| x >= datetime } # closest
 
           time_before = date_times[index - 1]
           time_after = date_times[index]
+
           minutes_between_samples = (time_after - time_before) * 24 * 60
 
-          if minutes_between_samples <= @max_minutes_between_samples
+          if minutes_between_samples <= @max_minutes_between_samples && datetime > date_times.first
             # process temperatures
 
             temp_before = rawdata[date_times[index - 1]][0]
             temp_after = rawdata[date_times[index]][0]
-            temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime).round(2)
+            debug = !@debug_start_date.nil? && datetime >= @debug_start_date && datetime <= @debug_end_date
+
+            temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime, debug).round(2)
             temperatures.push(temp_val)
 
+            if debug
+              puts "Interpolation for #{station_name} #{datetime} T = #{temp_before} to #{temp_after} => #{temp_val}"
+              puts "mins between samples #{minutes_between_samples} versus limit #{@max_minutes_between_samples}"
+            end
             # process solar insolence
 
             solar_before = rawdata[date_times[index - 1]][1]
@@ -202,22 +213,12 @@ module DataFeeds
             temperatures.push(nil)
             solar_insolance.push(nil)
           end
-        else
-          puts "index is nil for"
-
-          puts "datetime #{start_time}"
-          puts "datetime #{end_time}"
-          puts "datetime #{date_times}"
-          puts "datetime #{mins30step}"
-
-          puts "datetime #{datetime}"
-          puts "closest: #{closest}"
-          puts "index: #{index}"
-
-          temperatures.push(nil)
-          solar_insolance.push(nil)
+        rescue StandardError
+          puts "Data Exception at #{datetime}"
+          raise
         end
       end
+
       [temperatures, solar_insolance]
     end
   end
