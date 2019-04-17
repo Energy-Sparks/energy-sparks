@@ -4,24 +4,8 @@
   <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= @unsubscribe_emails %></p>
 <% end %>
 
-<% @alerts.each do |alert| %>
-  <h2><%= alert.title %></h2>
-  <p><%= alert.description %></p>
-  <p>Current status: <%= alert.rating %></p>
-
-  <% alert.detail.each do |detail| %>
-    <% if detail['type'].to_sym == :chart %>
-      <div id="alert-chart-data-<%= alert.id %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= alert.id %>' class="hide">
-        <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
-      </div>
-      <div id="alert-chart-wrapper-<%= alert.id %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= alert.id %>'></div>
-    <% elsif detail['type'].to_sym == :html %>
-      <%= detail['content'].html_safe %>
-    <% else %>
-      <p><%= detail['content'].html_safe %></p>
-    <% end %>
-  <% end %>
-  <p><%= alert.summary %></p>
-  <p>Find out more: <%= link_to alert.title, alert.help_url, target: "_blank" %></p>
+<% @alert_content.each do |alert_content| %>
+  <h2 class="mb-2 mt-2"><%= alert_content.email_title %></h2>
+  <%= sanitize alert_content.email_content %>
   <hr/>
  <% end %>

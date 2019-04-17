@@ -73,7 +73,7 @@
 <% if @find_out_more_alert %>
   <div class="row">
     <div class="col-md-12">
-      <%= render 'schools/find_out_more/alert', content: @find_out_more_alert_content, school: @school, find_out_more: @find_out_more_alert %>
+      <%= render 'schools/find_out_more/alert', content: @find_out_more_alert_content, school: @school, find_out_more: @find_out_more_alert, dashboard_title: @find_out_more_alert_content.teacher_dashboard_title %>
     </div>
   </div>
 

@@ -16,13 +16,8 @@ module Alerts
   private
 
     def process_find_out_mores(alert, calculation)
-      rating = alert.raw_rating
-      return if rating.blank?
-      find_out_more_types = FindOutMoreType.for_rating(rating.to_f.round(1)).where(alert_type: alert.alert_type)
-      find_out_more_types.each do |find_out_more_type|
-        content = find_out_more_type.current_content
-        next if content.nil?
-        calculation.find_out_mores.create!(alert: alert, content_version: content)
+      FetchContent.new(alert).content_versions(find_out_more_active: true).each do |content_version|
+        calculation.find_out_mores.create!(alert: alert, content_version: content_version)
       end
     end
   end
