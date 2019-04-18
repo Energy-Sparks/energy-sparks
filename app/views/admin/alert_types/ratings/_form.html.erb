@@ -1,0 +1,40 @@
+<h3>General</h3>
+<%= form.input :description, hint: 'Only used in the admin interface' %>
+<%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+<%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+
+<%= form.simple_fields_for :content, content do |content| %>
+
+  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards' %>
+
+  <h3>Variables</h3>
+
+  <%= render 'admin/alert_types/variables_accordion', template_variables: template_variables %>
+
+  <h3>Content</h3>
+
+  <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
+    <%= render 'preview_section', scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms) do %>
+      <%= content.input :sms_content, label: 'SMS content' %>
+    <% end %>
+  <% end %>
+
+  <%= render 'content_section', form: form, field: :email_active, field_name: 'Email content' do %>
+    <%= render 'preview_section', scope: 'email', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email) do %>
+      <%= content.input :email_title, as: :string %>
+      <%= content.input :email_content, as: :trix_editor %>
+    <% end %>
+  <% end %>
+
+  <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
+    <%= content.input :teacher_dashboard_title, hint: 'Shows on teacher dashboards' %>
+    <%= content.input :pupil_dashboard_title, hint: 'Shows on pupil dashboards' %>
+
+    <%= render 'preview_section', scope: 'find-out-more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
+      <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>
+      <%= content.input :page_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
+    <% end %>
+
+  <% end %>
+
+<% end %>

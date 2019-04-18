@@ -27,7 +27,7 @@
     <h2 class="mb-3">Things to investigate:</h2>
     <% @find_out_more_alerts.each do |content| %>
       <div class="col-md-12">
-        <%= render 'schools/find_out_more/alert', find_out_more: content.find_out_more,  content: content, school: @school %>
+        <%= render 'schools/find_out_more/alert', find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
       </div>
     <% end %>
   </div>

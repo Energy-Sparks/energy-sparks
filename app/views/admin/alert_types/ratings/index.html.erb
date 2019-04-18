@@ -1,0 +1,35 @@
+<%= render 'admin/alert_types/nav', alert_type: @alert_type %>
+
+<%= button_to 'Apply Find Out More changes', admin_find_out_more_calculation_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %>
+
+<%= link_to 'New content rating range', new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Rating from</th>
+      <th>Rating to</th>
+      <th>Description</th>
+      <th>Active?</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ratings.each do |rating| %>
+      <tr>
+        <td><%= rating.rating_from %></td>
+        <td><%= rating.rating_to %></td>
+        <td><%= rating.description %></td>
+        <td>
+          <span class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span>
+          <span class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
+          <span class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn btn-primary btn-sm'%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
