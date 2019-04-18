@@ -8,6 +8,10 @@
 #  reading_date         :date             not null
 #  updated_at           :datetime         not null
 #
+# Indexes
+#
+#  index_carbon_intensity_readings_on_reading_date  (reading_date) UNIQUE
+#
 
 module DataFeeds
   class CarbonIntensityReading < ApplicationRecord

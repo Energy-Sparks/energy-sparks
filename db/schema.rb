@@ -328,6 +328,7 @@ ActiveRecord::Schema.define(version: 2019_04_18_082242) do
     t.decimal "carbon_intensity_x48", null: false, array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["reading_date"], name: "index_carbon_intensity_readings_on_reading_date", unique: true
   end
 
   create_table "contacts", force: :cascade do |t|
