@@ -47,7 +47,11 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   scope :latest, -> { where(replaced_by_id: nil) }
 
-  def interpolated(field, variables)
-    TemplateInterpolation.new(send(field)).interpolate(variables)
+  def self.template_fields
+    [
+      :pupil_dashboard_title, :teacher_dashboard_title,
+      :page_title, :page_content,
+      :email_title, :email_content, :sms_content
+    ]
   end
 end
