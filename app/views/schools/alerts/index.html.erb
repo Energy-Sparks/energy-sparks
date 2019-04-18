@@ -3,27 +3,23 @@
   <div class="col-md-12">
     <h1>Latest alerts</h1>
     <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
-    <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
   </div>
 </div>
 
-<% if @weekly_alerts.empty? %>
-  <h3>We have no weekly alerts for this school</h3>
-<% else %>
-  <h3>Weekly Alerts</h3>
-  <%= render 'alerts', alerts: @weekly_alerts %>
+<% if [:electric_and_gas, :gas_only].include?(@school.fuel_types) %>
+  <% if @gas_alerts.empty? %>
+    <h3>We have no Gas alerts for this school at the moment</h3>
+  <% else %>
+    <h3>Gas Alerts</h3>
+    <%= render 'alerts', alerts: @gas_alerts %>
+  <% end %>
 <% end %>
 
-<% if @termly_alerts.empty? %>
-  <h3>We have no termly alerts for this school</h3>
-<% else %>
-  <h3>Termly Alerts</h3>
-  <%= render 'alerts', alerts: @termly_alerts %>
-<% end %>
-
-<% if @holiday_alerts.empty? %>
-  <h3>We have no holiday alerts for this school</h3>
-<% else %>
-  <h3>Before holiday Alerts</h3>
-  <%= render 'alerts', alerts: @holiday_alerts %>
+<% if [:electric_and_gas, :electric_only].include?(@school.fuel_types) %>
+  <% if @electricity_alerts.empty? %>
+    <h3>We have no Electricity alerts for this school at the moment</h3>
+  <% else %>
+    <h3>Electricity Alerts</h3>
+    <%= render 'alerts', alerts: @electricity_alerts %>
+  <% end %>
 <% end %>

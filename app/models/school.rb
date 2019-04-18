@@ -57,14 +57,14 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
 
-  has_many :alert_subscriptions,  inverse_of: :school, dependent: :destroy
-  has_many :alerts,               inverse_of: :school, dependent: :destroy
+  has_many :alerts,                     inverse_of: :school, dependent: :destroy
+  has_many :find_out_more_calculations, inverse_of: :school
 
   has_many :simulations,          inverse_of: :school, dependent: :destroy
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
-  has_many :alert_subscription_events,    through: :alert_subscriptions
+  has_many :alert_subscription_events,    through: :contacts
 
   belongs_to :calendar
   belongs_to :calendar_area
@@ -111,7 +111,7 @@ class School < ApplicationRecord
   end
 
   def area_name
-    school_group.name
+    school_group.name if school_group
   end
 
   def active_meters
@@ -159,10 +159,10 @@ class School < ApplicationRecord
   end
 
   def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
-    if has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
-      :electric_and_gas
+    if is_school_dual_fuel?(threshold)
+      dual_fuel_fuel_type
     elsif has_enough_readings_for_meter_types?(:electricity, threshold)
-      :electric_only
+      electricity_fuel_type
     elsif has_enough_readings_for_meter_types?(:gas, threshold)
       :gas_only
     else
@@ -170,12 +170,28 @@ class School < ApplicationRecord
     end
   end
 
-  def has_badge?(id)
-    sash.badge_ids.include?(id)
+  def is_school_dual_fuel?(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
+    has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
   end
 
-  def alert_subscriptions?
-    alert_subscriptions.any?
+  def dual_fuel_fuel_type
+    has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
+  end
+
+  def electricity_fuel_type
+    has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
+  end
+
+  def has_solar_pv?
+    meters.detect(&:solar_pv?)
+  end
+
+  def has_storage_heaters?
+    meters.detect(&:storage_heaters?)
+  end
+
+  def has_badge?(id)
+    sash.badge_ids.include?(id)
   end
 
   def current_term
@@ -224,6 +240,15 @@ class School < ApplicationRecord
 
   def scoreboard_position
     scoreboard.position(self) + 1
+  end
+
+  def latest_find_out_mores
+    calculation = find_out_more_calculations.order(created_at: :desc).first
+    if calculation
+      calculation.find_out_mores
+    else
+      FindOutMore.none
+    end
   end
 
 private

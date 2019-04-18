@@ -1,41 +1,30 @@
 module Alerts
   class GenerateSubscriptionEvents
-    def initialize(school)
+    def initialize(school, alert)
       @school = school
+      @alert = alert
     end
 
     def perform
-      @school.alerts.latest.each do |alert|
-        process_subscriptions(alert)
+      FetchContent.new(@alert).content_versions.each do |content|
+        email_active = content.alert_type_rating.email_active
+        sms_active = content.alert_type_rating.sms_active
+        @school.contacts.each do |contact|
+          first_or_create_alert_subscription_event(contact, content, email_active: email_active, sms_active: sms_active)
+        end
       end
     end
 
   private
 
-    def process_subscriptions(alert)
-      subscriptions(@school, alert.alert_type).each do |subscription|
-        subscription.contacts.each do |contact|
-          first_or_create_alert_subscription_event(alert, contact, subscription)
-        end
-      end
-    end
-
-    def first_or_create_alert_subscription_event(alert, contact, subscription)
-      if contact.email_address?
-        AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'email').first_or_create!
+    def first_or_create_alert_subscription_event(contact, content_version, email_active: true, sms_active: true)
+      if email_active && contact.email_address?
+        AlertSubscriptionEvent.create_with(content_version: content_version).find_or_create_by!(contact: contact, alert: @alert, communication_type: 'email')
       end
 
-      if contact.mobile_phone_number?
-        AlertSubscriptionEvent.where(contact: contact, alert: alert, alert_subscription: subscription, communication_type: 'sms').first_or_create!
+      if sms_active && contact.mobile_phone_number?
+        AlertSubscriptionEvent.create_with(content_version: content_version).find_or_create_by!(contact: contact, alert: @alert, communication_type: 'sms')
       end
-    end
-
-    def any_subscriptions?(school, alert_type)
-      subscriptions(school, alert_type).any?
-    end
-
-    def subscriptions(school, alert_type)
-      school.alert_subscriptions.where(alert_type: alert_type)
     end
   end
 end

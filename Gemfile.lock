@@ -195,7 +195,7 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
-    backports (3.11.4)
+    backports (3.12.0)
     bcrypt (3.1.12)
     better_errors (2.5.0)
       coderay (>= 1.0.0)
@@ -261,6 +261,7 @@ GEM
       nokogiri (~> 1.8)
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
+    closed_struct (1.0.0)
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.5)
@@ -389,6 +390,7 @@ GEM
     msgpack (1.2.6)
     multi_json (1.13.1)
     multipart-post (2.0.0)
+    mustache (1.1.0)
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
@@ -397,7 +399,7 @@ GEM
     net-ssh (5.1.0)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.10.1)
+    nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     oj (3.7.8)
@@ -660,6 +662,7 @@ DEPENDENCIES
   chartkick
   chromedriver-helper
   climate_control
+  closed_struct
   database_cleaner
   devise
   dotenv-rails
@@ -679,6 +682,7 @@ DEPENDENCIES
   mailgun_rails
   merit!
   momentjs-rails
+  mustache (~> 1.0)
   oj
   overcommit
   pg (= 1.0.0)

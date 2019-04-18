@@ -2,28 +2,20 @@
 <div class="row padded-row">
   <div class="col-md-12">
     <h1 property="name"><%= link_to @school.name, @school %> Alert notifications</h1>
-    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
-    <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
-    </div>
+    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
+  </div>
 </div>
 
-<% if @holiday_alerts.any? %>
-  <h2>Holiday Alerts</h2>
-  <%= render 'table', alerts: @holiday_alerts, school: @school %>
+<% if @latest_alerts.any? %>
+  <h2>Latest alerts by type</h2>
+  <%= render 'table', alerts: @latest_alerts, school: @school %>
 <% else %>
-  <p>No before holiday alerts</p>
+  <p>No alerts</p>
 <% end %>
 
-<% if @weekly_alerts.any? %>
-  <h2>Weekly Alerts</h2>
-  <%= render 'table', alerts: @weekly_alerts, school: @school %>
-<% else %>
-  <p>No weekly alerts</p>
+<% if @alerts.any? %>
+  <h2>Historic alerts</h2>
+  <%= render 'table', alerts: @alerts, school: @school %>
 <% end %>
 
-<% if @termly_alerts.any? %>
-  <h2>Termly Alerts</h2>
-  <%= render 'table', alerts: @termly_alerts, school: @school %>
-<% else %>
-  <p>No termly alerts</p>
-<% end %>
+

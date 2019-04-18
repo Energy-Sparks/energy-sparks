@@ -58,14 +58,24 @@ module ApplicationHelper
     end
   end
 
+  def class_for_alert_colour(colour)
+    return class_for_alert_colour(:unknown) if colour.nil?
+    case colour.to_sym
+    when :red then 'bg-danger'
+    when :yellow then 'bg-warning'
+    when :green then 'bg-success'
+    else 'bg-secondary'
+    end
+  end
+
   def class_for_alert_rating(rating)
-    return 'bg-secondary' if rating.nil?
+    return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
-      'bg-success'
+      class_for_alert_colour(:green)
     elsif rating > 6
-      'bg-warning'
+      class_for_alert_colour(:yellow)
     else
-      'bg-danger'
+      class_for_alert_colour(:red)
     end
   end
 
@@ -89,7 +99,7 @@ module ApplicationHelper
   end
 
   def alert_icon(alert)
-    fuel_type_icon(alert.alert_type.fuel_type) || 'calendar-check-o'
+    alert.alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert.alert_type.fuel_type)
   end
 
   def fuel_type_icon(fuel_type)
@@ -161,5 +171,24 @@ module ApplicationHelper
   def format_school_time(school_time)
     return school_time if school_time.blank?
     sprintf('%04d', school_time).insert(2, ':')
+  end
+
+  def table_headers_from_array(array)
+    header = array[0]
+    header.map do |column|
+      html_class = column == header.first ? '' : 'text-center'
+      [column, html_class]
+    end
+  end
+
+  def table_body_from_array(array)
+    array[1, array.length - 1]
+  end
+
+  def table_row_from_array(row)
+    row.map do |column|
+      html_class = column == row.first ? '' : 'text-right'
+      [column, html_class]
+    end
   end
 end

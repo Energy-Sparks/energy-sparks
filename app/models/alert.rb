@@ -22,6 +22,9 @@ class Alert < ApplicationRecord
   belongs_to :school,     inverse_of: :alerts
   belongs_to :alert_type, inverse_of: :alerts
 
+  has_many :find_out_mores, inverse_of: :alert
+  has_many :alert_subscription_events
+
   delegate :title, to: :alert_type
   delegate :description, to: :alert_type
   delegate :display_fuel_type, to: :alert_type
@@ -33,6 +36,8 @@ class Alert < ApplicationRecord
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
   scope :usable,              -> { where(status: [:good, :poor])}
+
+  scope :rating_between, ->(from, to) { where("(data->>'rating')::decimal BETWEEN ? AND ?", from, to) }
 
   enum status: [:good, :poor, :not_enough_data, :failed]
 
@@ -60,5 +65,23 @@ class Alert < ApplicationRecord
 
   def rating
     data['rating'].nil? ? 'Unrated' : "#{data['rating'].round(0)}/10"
+  end
+
+  def raw_rating
+    data['rating']
+  end
+
+  def template_variables
+    data.fetch('template_data', {}).deep_transform_keys do |key|
+      :"#{key.to_s.gsub('£', 'gbp')}"
+    end
+  end
+
+  def charts
+    data.fetch('chart_data', {}).values
+  end
+
+  def tables
+    data.fetch('table_data', {}).values
   end
 end

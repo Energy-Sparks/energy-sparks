@@ -10,7 +10,7 @@ FactoryBot.define do
       active                { true }
     end
 
-    initialize_with { Dashboard::Meter.new(school, nil, meter_type, mpan_mprn, name) }
+    initialize_with { Dashboard::Meter.new(type: meter_type, identifier: mpan_mprn, name: name, meter_collection: school, amr_data: nil) }
 
     factory :dashboard_gas_meter_with_validated_reading do
       transient do

@@ -1,26 +1,43 @@
-<% content_for :page_title do %>Alert for <%= @school.name %><% end %>
+<% content_for :page_title, @content.page_title %>
 
-<h1><%= @alert.summary %></h1>
+<h1><%= @content.page_title %></h1>
 
-<div class="row">
-  <% @alert.detail.select{|detail| detail['type'].to_sym == :chart}.each do |detail| %>
-    <div class="col-md-12">
-      <div id="alert-chart-data-<%= @alert.id %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= @alert.id %>' class="hide">
-      <%= sort_out_data_for_alerts_chart(detail['content']).html_safe %>
-      </div>
-      <div id="alert-chart-wrapper-<%= @alert.id %>" class="alert-reports-chart" data-no-remote-data data-chart-type='<%= @alert.id %>'></div>
+<div class="row justify-content-md-center align-items-center">
+  <% @charts.each_with_index do |chart, index| %>
+    <div class="col-md-auto">
+      <div id="chart_<%=index%>" class="analysis-chart" data-no-advice="true" data-chart-index="<%=index%>" data-chart-y-axis-units="£" data-chart-json="<%= school_chart_path(@school, format: :json, chart_type: chart, chart_y_axis_units: :kwh) %>"></div>
     </div>
   <% end %>
-  <div class="col-md-7">
-    <h5><%= @alert.title %></h5>
-    <p class="card-text">This alert <%= @alert.description.downcase %></p>
-    <% @alert.detail.reject{|detail| detail['type'].to_sym == :chart}.each do |detail| %>
-      <% if detail['type'].to_sym == :html %>
-        <%= detail['content'].html_safe %>
-      <% else %>
-        <p><%= detail['content'].html_safe %></p>
+  <% unless @tables.empty? %>
+    <div class="col-md-5 pt-3 pl-3">
+      <% @tables.each do |table| %>
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <% table_headers_from_array(table).each do |column, html_class| %>
+                <th class="<%= html_class %>"><%= column %></th>
+              <% end  %>
+            </tr>
+          </thead>
+          <tbody>
+            <% table_body_from_array(table).each do |row| %>
+              <tr>
+                <% table_row_from_array(row).each do |column, html_class| %>
+                  <td class="<%= html_class %>"><%= column %></td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       <% end %>
-    <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="row">
+  <div class="col-md-7">
+    <div class="trix-content">
+      <%= sanitize @content.page_content %>
+    </div>
   </div>
   <div class="col-md-5">
     <% if @activity_types %>
@@ -30,5 +47,5 @@
       <% end %>
     <% end %>
   </div>
-  </div>
+</div>
 </div>
