@@ -63,4 +63,16 @@ class ScheduleDataManagerService
       process_feed_data(data, "DataFeeds::SolarPvTuos", @solar_pv_tuos_area_id, :solar_pv)
     end
   end
+
+  def co2
+    cache_key = "co2-feed"
+    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      uk_grid_carbon_intensity_data = GridCarbonIntensity.new
+      DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
+        uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
+      end
+      CO2Parameterised.fill_in_missing_uk_grid_carbon_intensity_data_with_parameterised(uk_grid_carbon_intensity_data)
+      uk_grid_carbon_intensity_data
+    end
+  end
 end
