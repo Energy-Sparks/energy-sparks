@@ -1,12 +1,16 @@
 module Teachers
   class SchoolsController < ApplicationController
     include ActivityTypeFilterable
+    include SchoolAggregation
 
     load_and_authorize_resource
     skip_before_action :authenticate_user!
 
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
+
+      # Warm cache
+      aggregate_school(@school)
 
       @activities_count = @school.activities.count
       @find_out_more_alert = @school.latest_find_out_mores.sample
