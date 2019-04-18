@@ -1,0 +1,11 @@
+<h3><%= meter.name %></h3>
+<p>Number of readings: <%= (meter.amr_data.nil? ? '0' : meter.amr_data.length) %></p>
+<p>Meter type: <%= meter.meter_type %></p>
+<p>Fuel type: <%= meter.fuel_type %></p>
+<p>id: <%= meter.id %></p>
+<p>external_meter_id: <%= meter.external_meter_id %></p>
+<p>mpan mprn: <%= meter.mpan_mprn %></p>
+
+
+<!-- ]}, @solar_pv_meter=#<Dashboard::Meter:0x00007fb0827b2b10 ...>>, @meter_type=:solar_pv, @fuel_type=:solar_pv, @id=2200021955152, @mpan_mprn=2200021955152, @name="Electricity consumed from solar PV panels", @floor_area=nil, @number_of_pupils=nil, @solar_pv_installation=#<SolarPVPanels:0x00007fb082410e58 @solar_pv_panel_config=#<SolarPVPanels::SolarPVPanelConfiguration:0x00007fb082410de0 @config_by_date_range={Wed, 01 Jan 2014..Sat, 01 Jan 2050=>{:kwp=>6.0, :orientation=>0, :tilt=>30, :shading=>0, :fit_£_per_kwh=>0.3}}>>, @meter_correction_rules=[], @sub_meters=[], @external_meter_id=nil, @meter_attributes={:solar_pv=>[{:start_date=>Wed, 01 Jan 2014, :kwp=>6.0, :orientation=>0, :tilt=>30, :shading=>0, :fit_£_per_kwh=>0.3}]}, @model_cache=#<AnalyseHeatingAndHotWater::ModelCache:0x00007fb082410958 @meter=#<Dashboard::Meter:0x00007fb0827b2b10 ...>, @processed_model_overrides=false, @models={}>, @solar_pv_setup=#<SolarPVPanels:0x00007fb0824108e0 @solar_pv_panel_config=#<SolarPVPanels::SolarPVPanelConfiguration:0x00007fb0824108b8 @config_by_date_range={Wed, 01 Jan 2014..Sat, 01 Jan 2050=>{:kwp=>6.0, :orientation=>0, :tilt=>30, :shading=>0, :fit_£_per_kwh=>0.3}}>>>
+ -->

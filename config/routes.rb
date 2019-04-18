@@ -123,6 +123,8 @@ Rails.application.routes.draw do
       end
     end
     resource :find_out_more_calculation
+
+    get 'school_managements/:school_id', to: 'school_managements#show'
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'

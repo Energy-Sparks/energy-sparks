@@ -1,0 +1,27 @@
+<h1>School management for <%= @school.name %>
+
+<h2>Meter collection debug</h2>
+
+<hr/>
+<h2>Heat meters</h2>
+<% @meter_collection.heat_meters.each do |hm| %>
+  <%= render 'admin/school_managements/dashboard_meter', meter: hm %>
+<% end %>
+<h2>Electricity meters</h2>
+<% @meter_collection.electricity_meters.each do |hm| %>
+  <%= render 'admin/school_managements/dashboard_meter', meter: hm %>
+<% end %>
+
+<% if @meter_collection.solar_pv_meter %>
+  <h2>Solar PV meter</h2>
+  <%= render 'admin/school_managements/dashboard_meter', meter: @meter_collection.solar_pv_meter %>
+<% end %>
+
+<% if @meter_collection.storage_heater_meter %>
+  <h2>Storage meter</h2>
+  <%= render 'admin/school_managements/dashboard_meter', meter: @meter_collection.storage_heater_meter %>
+<% end %>
+
+<h2>Aggregated meters</h2>
+<%= render 'admin/school_managements/dashboard_meter', meter: @meter_collection.aggregated_heat_meters %>
+<%= render 'admin/school_managements/dashboard_meter', meter: @meter_collection.aggregated_electricity_meters %>
