@@ -2,11 +2,15 @@
 
 <h1><%= @content.page_title %></h1>
 
-<% if @tables.empty? %>
- <%= render 'schools/find_out_more/charts', school: @school, charts: @charts %>
-<% else %>
-  <div class="row justify-content-xl-center align-items-center">
-    <%= render 'schools/find_out_more/charts', school: @school, charts: @charts %>
+<div class="row justify-content-md-center align-items-center">
+  <% if @tables.empty? %>
+    <div class="col col-lg-10">
+      <%= render 'schools/find_out_more/charts', school: @school, charts: @charts %>
+    </div>
+  <% else %>
+    <div class="col col-lg-6">
+      <%= render 'schools/find_out_more/charts', school: @school, charts: @charts %>
+    </div>
     <div class="col-md-auto">
       <% @tables.each do |table| %>
         <table class="table table-striped">
@@ -29,9 +33,8 @@
         </table>
       <% end %>
     </div>
-  </div>
-<% end %>
-
+  <% end %>
+</div>
 <div class="row">
   <div class="col-md-7">
     <div class="trix-content">
