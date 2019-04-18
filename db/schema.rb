@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_18_082242) do
+ActiveRecord::Schema.define(version: 2019_04_18_082243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -338,6 +338,16 @@ ActiveRecord::Schema.define(version: 2019_04_18_082242) do
     t.text "email_address"
     t.text "mobile_phone_number"
     t.index ["school_id"], name: "index_contacts_on_school_id"
+  end
+
+  create_table "dark_sky_temperature_readings", force: :cascade do |t|
+    t.bigint "area_id"
+    t.date "reading_date", null: false
+    t.decimal "temperature_celsius_x48", null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_dark_sky_temperature_readings_on_area_id"
+    t.index ["reading_date"], name: "index_dark_sky_temperature_readings_on_reading_date", unique: true
   end
 
   create_table "data_feed_readings", force: :cascade do |t|
