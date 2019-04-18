@@ -7,6 +7,7 @@ namespace :data_feeds do
     data = UKGridCarbonIntensityFeed.new.download(start_date, end_date)
 
     data.each do |reading_date, carbon_intensity_x48|
+      next if carbon_intensity_x48.size != 48
       record = DataFeeds::CarbonIntensityReading.find_by(reading_date: reading_date)
       if record
         record.update(carbon_intensity_x48: carbon_intensity_x48)
