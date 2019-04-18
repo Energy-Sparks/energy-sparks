@@ -2,9 +2,8 @@
 <div class="row padded-row">
   <div class="col-md-12">
     <h1 property="name"><%= link_to @school.name, @school %> Alert notifications</h1>
-    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %>
-    <%= link_to 'Alerts for this school', school_alert_subscriptions_path(@school), class: 'btn btn-secondary' %></p>
-    </div>
+    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
+  </div>
 </div>
 
 <% if @latest_alerts.any? %>

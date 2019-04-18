@@ -76,7 +76,7 @@ RSpec.describe 'alert type management', type: :system do
 
         click_on 'Preview'
 
-        within '#preview .content' do
+        within '#find-out-more-preview .content' do
           expect(page).to have_content('You are using 10% too much gas!')
         end
       end
@@ -84,11 +84,26 @@ RSpec.describe 'alert type management', type: :system do
       check 'SMS content'
       fill_in 'SMS content', with: 'Your gas usage is too high'
 
+      within '.sms_active' do
+        click_on 'Preview'
+
+        within '#sms-preview .content' do
+          expect(page).to have_content('Your gas usage is too high')
+        end
+      end
+
       check 'Email content'
       fill_in 'Email title', with: 'Gas usage'
+
       within '.email_active' do
         editor = find('trix-editor')
         editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+
+        click_on 'Preview'
+
+        within '#email-preview .content' do
+          expect(page).to have_content('You are using 10% too much gas!')
+        end
       end
 
       click_on 'Create content'

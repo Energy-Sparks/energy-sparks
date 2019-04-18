@@ -43,25 +43,6 @@ describe School do
     end
   end
 
-  describe '#alert_subscriptions?' do
-    context 'when any alerts are set up for the school' do
-      it 'returns true' do
-        alert_type = create :alert_type
-        contact = create :contact, :with_email_address, school_id: subject.id
-        alert = AlertSubscription.create(alert_type: alert_type, school: subject, contacts: [contact])
-        expect(subject.contacts.count).to be 1
-        expect(subject.alert_subscriptions.count).to be 1
-        expect(subject.contacts.first.alert_subscriptions.first).to eq alert
-        expect(subject.alert_subscriptions?).to be true
-      end
-    end
-    context 'when no alert subscriptions are set up for the school' do
-      it 'returns false' do
-        expect(subject.alert_subscriptions?).to be false
-      end
-    end
-  end
-
   describe "knows whether the previous week has a full amount of readings" do
     let(:end_date) { Time.zone.today.prev_occurring(:saturday) }
     let(:start_date) { end_date - 8.days }

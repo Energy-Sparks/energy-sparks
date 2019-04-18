@@ -5,8 +5,6 @@ describe Alerts::GenerateSmsNotifications do
   let!(:alert_1)                    { create(:alert, school: school) }
   let!(:alert_2)                    { create(:alert, school: school) }
   let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
-  let!(:alert_subscription_sms_1) { create(:alert_subscription, alert_type: alert_1.alert_type, school: school, contacts: [sms_contact]) }
-  let!(:alert_subscription_sms_2) { create(:alert_subscription, alert_type: alert_2.alert_type, school: school, contacts: [sms_contact]) }
 
   let!(:alert_type_rating_1){ create :alert_type_rating, alert_type: alert_1.alert_type, sms_active: true }
   let!(:alert_type_rating_2){ create :alert_type_rating, alert_type: alert_2.alert_type, sms_active: true }

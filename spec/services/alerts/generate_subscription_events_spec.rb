@@ -31,10 +31,6 @@ describe Alerts::GenerateSubscriptionEvents do
     let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
     let!(:sms_and_email_contact)    { create(:contact_with_name_email_phone, school: school) }
 
-    let!(:alert_subscription_email)           { create(:alert_subscription, alert_type: alert.alert_type, school: school, contacts: [email_contact]) }
-    let!(:alert_subscription_sms)             { create(:alert_subscription, alert_type: alert.alert_type, school: school, contacts: [sms_contact]) }
-    let!(:alert_subscription_email_and_sms)   { create(:alert_subscription, alert_type: alert.alert_type, school: school, contacts: [sms_and_email_contact]) }
-
     context 'contacts with email, sms and both' do
 
       context 'with some content' do
@@ -55,7 +51,7 @@ describe Alerts::GenerateSubscriptionEvents do
         end
 
         it 'ignores if events already exist' do
-          AlertSubscriptionEvent.create(alert: alert, alert_subscription: alert_subscription_email, contact: email_contact, status: :sent, communication_type: :email)
+          AlertSubscriptionEvent.create(alert: alert, contact: email_contact, status: :sent, communication_type: :email)
           expect(AlertSubscriptionEvent.count).to be 1
           service.perform
           expect(AlertSubscriptionEvent.count).to be 4
