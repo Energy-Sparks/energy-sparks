@@ -43,25 +43,6 @@ describe School do
     end
   end
 
-  describe '#alert_subscriptions?' do
-    context 'when any alerts are set up for the school' do
-      it 'returns true' do
-        alert_type = create :alert_type
-        contact = create :contact, :with_email_address, school_id: subject.id
-        alert = AlertSubscription.create(alert_type: alert_type, school: subject, contacts: [contact])
-        expect(subject.contacts.count).to be 1
-        expect(subject.alert_subscriptions.count).to be 1
-        expect(subject.contacts.first.alert_subscriptions.first).to eq alert
-        expect(subject.alert_subscriptions?).to be true
-      end
-    end
-    context 'when no alert subscriptions are set up for the school' do
-      it 'returns false' do
-        expect(subject.alert_subscriptions?).to be false
-      end
-    end
-  end
-
   describe "knows whether the previous week has a full amount of readings" do
     let(:end_date) { Time.zone.today.prev_occurring(:saturday) }
     let(:start_date) { end_date - 8.days }
@@ -289,9 +270,9 @@ describe School do
   describe '#latest_find_out_mores' do
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
-    let(:find_out_more_type){ create(:find_out_more_type, alert_type: electricity_fuel_alert_type) }
+    let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
 
-    let(:content_version_1){ create(:find_out_more_type_content_version, find_out_more_type: find_out_more_type)}
+    let(:content_version_1){ create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
     let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:calculation_1){ create(:find_out_more_calculation, school: school, created_at: 1.day.ago)}

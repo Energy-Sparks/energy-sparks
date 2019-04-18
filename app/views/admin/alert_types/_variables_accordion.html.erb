@@ -3,12 +3,13 @@
     <div class="card">
       <div class="card-header" id="templateVariablesHeader<%=index%>">
         <h2 class="mb-0 pt-0">
-          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#templateVariables<%=index%>" aria-expanded="true" aria-controls="collapseOne">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#templateVariables<%=index%>" aria-expanded="true" aria-controls="templateVariables<%= index %>">
             <%= heading %> variables
           </button>
         </h2>
       </div>
-      <div id="templateVariables<%=index%>" class="collapse" aria-labelledby="templateVariablesHeader" data-parent="#templateVariablesCard">
+
+      <div id="templateVariables<%=index%>" class="collapse" aria-labelledby="templateVariablesHeader<%=index %>" data-parent="#templateVariablesCard">
         <table class="table">
           <thead>
             <tr>
@@ -35,5 +36,6 @@
         </table>
       </div>
     </div>
+
   <% end %>
 </div>
