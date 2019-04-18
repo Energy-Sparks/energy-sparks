@@ -49,10 +49,7 @@ class AlertType < ApplicationRecord
   end
 
   def available_charts
-    constant_class = class_name.constantize
-    available_chart_variables = constant_class::TEMPLATE_VARIABLES.select { |_key, values| values[:units] == :chart }
-
-    available_chart_variables.map { |variable_name, values| [values[:description], variable_name] }
+    class_name.constantize.front_end_template_charts.map { |variable_name, values| [values[:description], variable_name] }
   end
 
   def update_activity_type_positions!(position_attributes)

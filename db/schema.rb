@@ -361,6 +361,14 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end
 
+  create_table "carbon_intensity_readings", force: :cascade do |t|
+    t.date "reading_date", null: false
+    t.decimal "carbon_intensity_x48", null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reading_date"], name: "index_carbon_intensity_readings_on_reading_date", unique: true
+  end
+
   create_table "contacts", force: :cascade do |t|
     t.bigint "school_id"
     t.text "name"
