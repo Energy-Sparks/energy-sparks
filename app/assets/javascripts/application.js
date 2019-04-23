@@ -35,4 +35,5 @@
 //= require tempusdominus-bootstrap-4.js
 
 //= require alert_reports
+//= require content
 

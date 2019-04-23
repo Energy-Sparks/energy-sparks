@@ -4,7 +4,7 @@ describe School do
 
   let(:today) { Time.zone.today }
   let(:calendar) { create :calendar_with_terms, template: true }
-  subject { create :school, calendar: calendar }
+  subject { create :school, :with_school_group, calendar: calendar }
 
   it 'is valid with valid attributes' do
     expect(subject).to be_valid
@@ -39,25 +39,6 @@ describe School do
     context 'when the school has no meters' do
       it 'returns false' do
         expect(subject.meters?(:gas)).to be(false)
-      end
-    end
-  end
-
-  describe '#alert_subscriptions?' do
-    context 'when any alerts are set up for the school' do
-      it 'returns true' do
-        alert_type = create :alert_type
-        contact = create :contact, :with_email_address, school_id: subject.id
-        alert = AlertSubscription.create(alert_type: alert_type, school: subject, contacts: [contact])
-        expect(subject.contacts.count).to be 1
-        expect(subject.alert_subscriptions.count).to be 1
-        expect(subject.contacts.first.alert_subscriptions.first).to eq alert
-        expect(subject.alert_subscriptions?).to be true
-      end
-    end
-    context 'when no alert subscriptions are set up for the school' do
-      it 'returns false' do
-        expect(subject.alert_subscriptions?).to be false
       end
     end
   end
@@ -276,7 +257,7 @@ describe School do
     end
   end
 
-  describe '#scoreboard_Position' do
+  describe '#scoreboard_position' do
     let!(:scoreboard)       { create :scoreboard }
     let!(:group)            { create(:school_group, scoreboard: scoreboard) }
     let!(:pointy_school)    { create :school, :with_points, score_points: 6, school_group: group }
@@ -284,5 +265,34 @@ describe School do
     it "knows it's position in it's scoreboard" do
       expect(pointy_school.scoreboard_position).to be 1
     end
+  end
+
+  describe '#latest_find_out_mores' do
+    let(:school){ create :school }
+    let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
+    let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
+
+    let(:content_version_1){ create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
+    let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
+    let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
+    let(:calculation_1){ create(:find_out_more_calculation, school: school, created_at: 1.day.ago)}
+    let(:calculation_2){ create(:find_out_more_calculation, school: school, created_at: Date.today)}
+
+    context 'where there is a calculation' do
+
+      let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_1) }
+      let!(:find_out_more_2){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_2) }
+
+      it 'selects the find out mores from the most recent calculation' do
+        expect(school.latest_find_out_mores).to match_array([find_out_more_2])
+      end
+    end
+
+    context 'where there is no calculation' do
+      it 'returns an empty set' do
+        expect(school.latest_find_out_mores).to be_empty
+      end
+    end
+
   end
 end

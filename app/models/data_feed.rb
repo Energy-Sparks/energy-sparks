@@ -1,4 +1,3 @@
-require 'csv'
 # == Schema Information
 #
 # Table name: data_feeds
@@ -18,15 +17,6 @@ require 'csv'
 class DataFeed < ApplicationRecord
   belongs_to  :area
   has_many    :data_feed_readings, dependent: :destroy
-
-  def to_csv(output_readings)
-    CSV.generate(headers: true, col_sep: "\t", encoding: 'ISO-8859-1') do |csv|
-      csv << %w(DateTime Value)
-      output_readings.each do |f|
-        csv << [f.at.strftime('%Y-%m-%d %H:%M'), f.value]
-      end
-    end
-  end
 
   def first_reading(feed_type)
     data_feed_readings.where(feed_type: feed_type).order(at: :asc).limit(1).first

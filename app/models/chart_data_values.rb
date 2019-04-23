@@ -70,8 +70,11 @@ private
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
       colour = colour_hash[data_type]
+
       if @chart[:config_name] == :teachers_landing_page_gas
         colour = index == 0 ? '#ffac21' : '#ff4500'
+        # Temporary TOFIX TODO until temperature adjusted charts are better behaved
+        data = data.map {|v| v.negative? ? 0 : v }
       end
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end

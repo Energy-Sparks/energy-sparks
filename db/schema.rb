@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_114650) do
+ActiveRecord::Schema.define(version: 2019_04_17_113406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -143,7 +143,6 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
   end
 
   create_table "alert_subscription_events", force: :cascade do |t|
-    t.bigint "alert_subscription_id"
     t.bigint "alert_id"
     t.bigint "contact_id"
     t.integer "status", default: 0, null: false
@@ -151,29 +150,48 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "email_id"
+    t.bigint "alert_type_rating_content_version_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
-    t.index ["alert_subscription_id"], name: "index_alert_subscription_events_on_alert_subscription_id"
+    t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
+    t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
   end
 
-  create_table "activity_types_alert_types", id: false, force: :cascade do |t|
+  create_table "alert_type_activity_types", force: :cascade do |t|
     t.bigint "activity_type_id", null: false
     t.bigint "alert_type_id", null: false
+    t.integer "position", default: 0, null: false
     t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
   end
 
-  create_table "alert_subscriptions", force: :cascade do |t|
-    t.bigint "alert_type_id"
-    t.bigint "school_id"
-    t.index ["alert_type_id"], name: "index_alert_subscriptions_on_alert_type_id"
-    t.index ["school_id"], name: "index_alert_subscriptions_on_school_id"
+  create_table "alert_type_rating_content_versions", force: :cascade do |t|
+    t.bigint "alert_type_rating_id", null: false
+    t.string "teacher_dashboard_title"
+    t.string "page_title"
+    t.text "page_content"
+    t.integer "replaced_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "colour", default: 0, null: false
+    t.string "pupil_dashboard_title"
+    t.string "sms_content"
+    t.string "email_title"
+    t.text "email_content"
+    t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
-  create_table "alert_subscriptions_contacts", id: false, force: :cascade do |t|
-    t.bigint "contact_id"
-    t.bigint "alert_subscription_id"
-    t.index ["alert_subscription_id"], name: "index_alert_subscriptions_contacts_on_alert_subscription_id"
-    t.index ["contact_id"], name: "index_alert_subscriptions_contacts_on_contact_id"
+  create_table "alert_type_ratings", force: :cascade do |t|
+    t.bigint "alert_type_id", null: false
+    t.decimal "rating_from", null: false
+    t.decimal "rating_to", null: false
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "sms_active", default: false
+    t.boolean "email_active", default: false
+    t.boolean "find_out_more_active", default: false
+    t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
   create_table "alert_types", force: :cascade do |t|
@@ -185,6 +203,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.text "analysis"
     t.text "class_name"
     t.boolean "show_ratings", default: true
+    t.boolean "has_variables", default: false
   end
 
   create_table "alerts", force: :cascade do |t|
@@ -269,6 +288,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.datetime "upload_datetime"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
+    t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -364,6 +384,32 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
     t.text "description"
     t.json "configuration", default: {}, null: false
     t.index ["area_id"], name: "index_data_feeds_on_area_id"
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_emails_on_contact_id"
+  end
+
+  create_table "find_out_more_calculations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_find_out_more_calculations_on_school_id"
+  end
+
+  create_table "find_out_mores", force: :cascade do |t|
+    t.bigint "alert_type_rating_content_version_id", null: false
+    t.bigint "alert_id", null: false
+    t.bigint "find_out_more_calculation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["alert_id"], name: "index_find_out_mores_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "fom_fom_content_v_id"
+    t.index ["find_out_more_calculation_id"], name: "index_find_out_mores_on_find_out_more_calculation_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -624,17 +670,23 @@ ActiveRecord::Schema.define(version: 2019_03_13_114650) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
-  add_foreign_key "alert_subscription_events", "alert_subscriptions"
+  add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
-  add_foreign_key "alert_subscriptions", "alert_types"
-  add_foreign_key "alert_subscriptions", "schools"
+  add_foreign_key "alert_subscription_events", "emails"
+  add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
+  add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "contacts", "schools"
   add_foreign_key "data_feed_readings", "data_feeds"
+  add_foreign_key "emails", "contacts", on_delete: :cascade
+  add_foreign_key "find_out_more_calculations", "schools", on_delete: :cascade
+  add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
+  add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
+  add_foreign_key "find_out_mores", "find_out_more_calculations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"

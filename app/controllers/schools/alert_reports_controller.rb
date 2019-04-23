@@ -4,8 +4,7 @@ class Schools::AlertReportsController < ApplicationController
   def index
     authorize! :read, AlertType
 
-    @termly_alerts = @school.alerts.termly.order(created_at: :desc)
-    @weekly_alerts = @school.alerts.weekly.order(created_at: :desc)
-    @holiday_alerts = @school.alerts.before_each_holiday.order(created_at: :desc)
+    @latest_alerts = @school.alerts.latest.sort_by(&:created_at).reverse
+    @alerts = @school.alerts - @school.alerts.latest
   end
 end

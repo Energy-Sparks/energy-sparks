@@ -35,7 +35,7 @@ class MeterCard
             values: Values.new(
               latest_reading_date: latest_reading_date,
               window_first_date: latest_reading_date - window.days,
-              average_usage: calulate_average_usage(school, supply, window).to_i,
+              average_usage: calulate_average_usage(school: school, supply: supply, window: window).to_i,
               most_usage: school.day_most_usage(supply, window)[0],
             )
           )
@@ -48,7 +48,7 @@ class MeterCard
       end
     end
 
-    def calulate_average_usage(school, supply, window)
+    def calulate_average_usage(school:, supply:, window:)
       last_n_days = school.last_n_days_with_readings(supply, window)
       school.daily_usage(supply: supply, dates: last_n_days).inject(0) { |a, e| a + e[1] } / window
     end

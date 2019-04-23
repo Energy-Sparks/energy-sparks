@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: e009dfb50a688ac706254baf9162111878035a04
-  tag: 0.40.3-rails6-beta-3
+  revision: 06524e97ff1f80ced19f1e7d3696746de1f0f4c2
+  tag: 0.41.8-rails6-beta3
   specs:
-    energy-sparks_analytics (0.40.3.pre.rails6.pre.beta3)
+    energy-sparks_analytics (0.41.8.pre.rails6.pre.beta3)
       activesupport (~> 6.0.0.beta3)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -195,7 +195,7 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
-    backports (3.11.4)
+    backports (3.12.0)
     bcrypt (3.1.12)
     better_errors (2.5.0)
       coderay (>= 1.0.0)
@@ -261,6 +261,7 @@ GEM
       nokogiri (~> 1.8)
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
+    closed_struct (1.0.0)
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.5)
@@ -396,6 +397,7 @@ GEM
     msgpack (1.2.6)
     multi_json (1.13.1)
     multipart-post (2.0.0)
+    mustache (1.1.0)
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
@@ -404,7 +406,7 @@ GEM
     net-ssh (5.1.0)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.10.1)
+    nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     oj (3.7.8)
@@ -675,6 +677,7 @@ DEPENDENCIES
   chartkick
   chromedriver-helper
   climate_control
+  closed_struct
   database_cleaner
   devise
   dotenv-rails
@@ -696,6 +699,7 @@ DEPENDENCIES
   mailgun_rails
   merit!
   momentjs-rails
+  mustache (~> 1.0)
   oj
   overcommit
   pg (= 1.0.0)
