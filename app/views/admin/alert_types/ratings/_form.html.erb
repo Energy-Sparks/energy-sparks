@@ -29,6 +29,7 @@
   <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
     <%= content.input :teacher_dashboard_title, hint: 'Shows on teacher dashboards' %>
     <%= content.input :pupil_dashboard_title, hint: 'Shows on pupil dashboards' %>
+    <%= content.input :chart_type, as: :radio_buttons, collection: @available_charts %>
 
     <%= render 'preview_section', scope: 'find-out-more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
       <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>

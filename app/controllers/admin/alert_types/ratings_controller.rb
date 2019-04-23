@@ -4,6 +4,7 @@ module Admin
       load_and_authorize_resource :alert_type
 
       before_action :set_template_variables
+      before_action :set_available_charts
 
       def index
         @ratings = @alert_type.ratings.order(rating_from: :asc)
@@ -53,13 +54,20 @@ module Admin
           content: [
             :colour,
             :pupil_dashboard_title, :teacher_dashboard_title, :page_title, :page_content,
-            :sms_content, :email_title, :email_content
+            :sms_content, :email_title, :email_content, :chart_type
           ]
         )
       end
 
       def set_template_variables
         @template_variables = @alert_type.cleaned_template_variables
+      end
+
+      def set_available_charts
+        available_chart_variables = @alert_type.class_name.constantize::TEMPLATE_VARIABLES.select { |_key, values| values[:units] == :chart }
+        dummy_alert_type_class = @alert_type.class_name.constantize.new(School.first)
+        @available_charts = available_chart_variables.map { |alert_chart_name, description_and_units| [description_and_units[:description].capitalize, dummy_alert_type_class.send(alert_chart_name)] }
+        @available_charts << ["None", :none]
       end
     end
   end
