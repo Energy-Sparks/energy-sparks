@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: e009dfb50a688ac706254baf9162111878035a04
-  tag: 0.40.3-rails6-beta-3
+  revision: 06524e97ff1f80ced19f1e7d3696746de1f0f4c2
+  tag: 0.41.8-rails6-beta3
   specs:
-    energy-sparks_analytics (0.40.3.pre.rails6.pre.beta3)
+    energy-sparks_analytics (0.41.8.pre.rails6.pre.beta3)
       activesupport (~> 6.0.0.beta3)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
