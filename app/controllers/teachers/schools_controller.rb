@@ -25,7 +25,7 @@ module Teachers
           :teacher_dashboard_title,
           with: @find_out_more_alert.alert.template_variables
         )
-        @find_out_more_alert_activity_types = @find_out_more_alert.activity_types.limit(3)
+        @find_out_more_alert_activity_types = ActivityTypeFilter.new(school: school, scope: @find_out_more.activity_types).activity_types.limit(3)
       end
     end
 
