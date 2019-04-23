@@ -54,6 +54,6 @@ class AlertType < ApplicationRecord
   end
 
   def ordered_activity_types
-    activity_types.order('alert_type_activity_types.position')
+    activity_types.order('alert_type_activity_types.position').group('alert_type_activity_types.position')
   end
 end
