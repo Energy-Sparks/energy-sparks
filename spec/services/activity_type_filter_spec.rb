@@ -27,7 +27,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science],
       activity_timings: [half_hour],
       impacts: [reducing_gas],
-      custom: true
+      custom: true,
+      repeatable: false
     )
   end
   let!(:activity_type_2) do
@@ -38,7 +39,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science, maths],
       activity_timings: [hour],
       topics: [energy],
-      impacts: [reducing_gas]
+      impacts: [reducing_gas],
+      repeatable: false
     )
   end
   let!(:activity_type_3) do
@@ -49,7 +51,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [maths],
       activity_timings: [half_hour],
       topics: [pie_charts],
-      impacts: [reducing_gas]
+      impacts: [reducing_gas],
+      repeatable: true
     )
   end
 
@@ -187,6 +190,22 @@ RSpec.describe ActivityTypeFilter, type: :service do
       it 'uses the scope' do
         expect(ActivityTypeFilter.new(scope: ActivityType.none).activity_types).to be_empty
       end
+    end
+  end
+
+  describe 'not_completed_or_repeatable' do
+
+    let(:school){ create(:school) }
+
+    subject { ActivityTypeFilter.new(school: school, query: {not_completed_or_repeatable: true}).activity_types.order(:name).to_a }
+
+    before do
+      create(:activity, activity_type: activity_type_1, school: school)
+      create(:activity, activity_type: activity_type_3, school: school)
+    end
+
+    it 'excludes the completed activities unless one is repeatable' do
+      expect(subject).to match_array([activity_type_2, activity_type_3])
     end
 
   end

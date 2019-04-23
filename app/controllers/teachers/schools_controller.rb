@@ -25,7 +25,8 @@ module Teachers
           :teacher_dashboard_title,
           with: @find_out_more_alert.alert.template_variables
         )
-        @find_out_more_alert_activity_types = ActivityTypeFilter.new(school: @school, scope: @find_out_more_alert.activity_types).activity_types.limit(3)
+        activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @find_out_more_alert.activity_types, query: { not_completed_or_repeatable: true })
+        @find_out_more_alert_activity_types = activity_type_filter.activity_types.limit(3)
       end
     end
 
