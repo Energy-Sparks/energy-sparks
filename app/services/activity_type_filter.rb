@@ -1,10 +1,10 @@
 class ActivityTypeFilter
   FILTERS = [:key_stages, :subjects, :topics, :activity_timings, :impacts].freeze
 
-  def initialize(query, school: nil)
+  def initialize(query: {}, school: nil, scope: nil)
     @query = query
     @school = school
-    @scope = ActivityType.active.left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id').custom_last
+    @scope = (scope || default_scope).left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id')
   end
 
   def activity_types
@@ -77,5 +77,9 @@ private
     else
       model.where(id: @query[key])
     end
+  end
+
+  def default_scope
+    ActivityType.active.custom_last
   end
 end
