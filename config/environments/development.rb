@@ -54,7 +54,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  config.active_record.logger = nil
+  #config.active_record.logger = nil
 
   config.log_level = :info
 
