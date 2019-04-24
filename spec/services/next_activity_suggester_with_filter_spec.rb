@@ -9,7 +9,7 @@ describe NextActivitySuggesterWithFilter do
   let!(:maths) { Subject.create(name: 'Maths') }
   let!(:school) { create :school, active: true, key_stages: [ks1, ks3] }
 
-  let(:activity_type_filter){ ActivityTypeFilter.new({}, school: school)}
+  let(:activity_type_filter){ ActivityTypeFilter.new(school: school)}
 
   subject { NextActivitySuggesterWithFilter.new(school, activity_type_filter) }
 
@@ -38,7 +38,7 @@ describe NextActivitySuggesterWithFilter do
     end
 
     context 'where the filter restricts the available activities' do
-      let(:activity_type_filter){ ActivityTypeFilter.new({subject_ids: [maths.id]}, school: school)}
+      let(:activity_type_filter){ ActivityTypeFilter.new(query: {subject_ids: [maths.id]}, school: school)}
       it 'does not top up with duplicate activity types' do
         expect(subject.suggest).to match_array(activity_types_with_suggestions_for_ks3)
       end

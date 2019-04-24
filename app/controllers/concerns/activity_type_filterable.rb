@@ -18,6 +18,6 @@ private
 
   def activity_type_filter
     school = @school || (current_user ? current_user.school : nil)
-    ActivityTypeFilter.new(activity_type_filter_query, school: school)
+    ActivityTypeFilter.new(query: activity_type_filter_query, school: school)
   end
 end
