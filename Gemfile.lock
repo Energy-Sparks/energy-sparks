@@ -192,6 +192,7 @@ GEM
     crass (1.0.4)
     css_parser (1.6.0)
       addressable
+    dalli (2.7.10)
     daru (0.1.6)
       backports
     database_cleaner (1.7.0)
@@ -603,6 +604,7 @@ DEPENDENCIES
   chromedriver-helper
   climate_control
   closed_struct
+  dalli
   database_cleaner
   devise
   dotenv-rails
