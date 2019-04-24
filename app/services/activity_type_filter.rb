@@ -1,17 +1,24 @@
 class ActivityTypeFilter
   FILTERS = [:key_stages, :subjects, :topics, :activity_timings, :impacts].freeze
 
-  def initialize(query, school: nil)
+  attr_reader :query
+
+  def initialize(query: {}, school: nil, scope: nil)
     @query = query
     @school = school
-    @scope = ActivityType.active.left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id').custom_last
+    @scope = (scope || default_scope).left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id')
   end
 
   def activity_types
-    FILTERS.inject(@scope) do |results, filter|
+    filtered = FILTERS.inject(@scope) do |results, filter|
       selected = send(:"selected_#{filter}")
       selected.any? ? results.where(filter => { id: selected }) : results
     end
+    if @school && not_completed_or_repeatable
+      completed_activity_type_ids = @school.activities.pluck(:activity_type_id)
+      filtered = filtered.where(repeatable: true).or(filtered.where.not(id: completed_activity_type_ids))
+    end
+    filtered
   end
 
   def for_category(category)
@@ -26,6 +33,10 @@ class ActivityTypeFilter
     else
       KeyStage.none
     end
+  end
+
+  def not_completed_or_repeatable
+    @query[:not_completed_or_repeatable]
   end
 
   def selected_subjects
@@ -77,5 +88,9 @@ private
     else
       model.where(id: @query[key])
     end
+  end
+
+  def default_scope
+    ActivityType.active.custom_last
   end
 end
