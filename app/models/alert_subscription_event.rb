@@ -37,4 +37,9 @@ class AlertSubscriptionEvent < ApplicationRecord
 
   enum status: [:pending, :sent]
   enum communication_type: [:email, :sms]
+
+
+  def associated_find_out_more
+    alert.find_out_mores.where(content_version: content_version).order('created_at DESC').first
+  end
 end
