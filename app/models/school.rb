@@ -44,7 +44,7 @@ class School < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
-  delegate :holiday_approaching?, to: :calendar
+  delegate :holiday_approaching?, :next_holiday, to: :calendar
 
   include Merit::UsageCalculations
   has_merit

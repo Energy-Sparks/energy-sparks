@@ -10,6 +10,7 @@
 #  has_variables :boolean          default(FALSE)
 #  id            :bigint(8)        not null, primary key
 #  show_ratings  :boolean          default(TRUE)
+#  source        :integer          default("analytics"), not null
 #  sub_category  :integer
 #  title         :text
 #
@@ -22,6 +23,7 @@ class AlertType < ApplicationRecord
   has_many :activity_types, through: :alert_type_activity_types
   has_many :ratings, class_name: 'AlertTypeRating'
 
+  enum source: [:analytics, :system]
   enum fuel_type: [:electricity, :gas]
   enum sub_category: [:hot_water, :heating, :baseload]
   enum frequency: [:termly, :weekly, :before_each_holiday]
