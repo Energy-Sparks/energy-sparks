@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 1e8d1ca7a07f44111478a86f1482f8601ec0cc58
-  tag: 0.41.8
+  revision: ee730f37fbbe0a175ec3e24bd198c93241b4a0c4
+  tag: 0.41.9
   specs:
-    energy-sparks_analytics (0.41.8)
+    energy-sparks_analytics (0.41.9)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
