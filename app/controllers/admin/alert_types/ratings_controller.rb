@@ -64,9 +64,7 @@ module Admin
       end
 
       def set_available_charts
-        available_chart_variables = @alert_type.class_name.constantize::TEMPLATE_VARIABLES.select { |_key, values| values[:units] == :chart }
-        dummy_alert_type_class = @alert_type.class_name.constantize.new(School.first)
-        @available_charts = available_chart_variables.map { |alert_chart_name, description_and_units| [description_and_units[:description].capitalize, dummy_alert_type_class.send(alert_chart_name)] }
+        @available_charts = @alert_type.available_charts
         @available_charts << ["None", :none]
       end
     end

@@ -46,6 +46,14 @@ class AlertType < ApplicationRecord
     end
   end
 
+  def available_charts
+    constant_class = class_name.constantize
+    available_chart_variables = constant_class::TEMPLATE_VARIABLES.select { |_key, values| values[:units] == :chart }
+    # TODO: this is whilst we wait on class versions of methods to get charts
+    dummy_alert_type_class = constant_class.new(School.first)
+    available_chart_variables.map { |alert_chart_variable_name, description_and_units| [description_and_units[:description].capitalize, dummy_alert_type_class.send(alert_chart_variable_name)] }
+  end
+
   def update_activity_type_positions!(position_attributes)
     transaction do
       alert_type_activity_types.destroy_all

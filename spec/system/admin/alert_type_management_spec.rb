@@ -6,7 +6,6 @@ RSpec.describe 'alert type management', type: :system do
 
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: 'Your gas usage is too high', has_variables: true) }
 
-
   describe 'managing associated activities' do
 
     let!(:activity_category) { create(:activity_category)}
@@ -51,6 +50,7 @@ RSpec.describe 'alert type management', type: :system do
       visit root_path
       click_on 'Manage'
       click_on 'Alert Types'
+      allow_any_instance_of(AlertType).to receive(:available_charts).and_return([['chart description A', :chart_a], ['chart description B', :chart_b]])
     end
 
     it 'allows creation and editing of alert content', js: true do
@@ -71,8 +71,12 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Page title', with: 'You are using too much gas!'
 
       within '.alert_type_rating_content_chart_type' do
+        expect(page).to have_unchecked_field('chart description A')
+        expect(page).to have_unchecked_field('chart description B')
         expect(page).to have_checked_field('None')
       end
+
+      choose 'chart description B'
 
       within '.find_out_more_active' do
         editor = find('trix-editor')
@@ -127,6 +131,7 @@ RSpec.describe 'alert type management', type: :system do
       expect(alert_type_rating.content_versions.size).to eq(2)
       second_content = alert_type_rating.current_content
       expect(second_content.page_title).to eq('Stop using so much gas!')
+      expect(second_content.chart_type).to eq('chart_b')
     end
   end
 end
