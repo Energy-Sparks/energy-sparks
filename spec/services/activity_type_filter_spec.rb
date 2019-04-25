@@ -27,7 +27,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science],
       activity_timings: [half_hour],
       impacts: [reducing_gas],
-      custom: true
+      custom: true,
+      repeatable: false
     )
   end
   let!(:activity_type_2) do
@@ -38,7 +39,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science, maths],
       activity_timings: [hour],
       topics: [energy],
-      impacts: [reducing_gas]
+      impacts: [reducing_gas],
+      repeatable: false
     )
   end
   let!(:activity_type_3) do
@@ -49,7 +51,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [maths],
       activity_timings: [half_hour],
       topics: [pie_charts],
-      impacts: [reducing_gas]
+      impacts: [reducing_gas],
+      repeatable: true
     )
   end
 
@@ -59,17 +62,17 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'when no parameters are passed in' do
       it 'uses the school key stages when a school is set' do
-        service = ActivityTypeFilter.new({}, school: school)
+        service = ActivityTypeFilter.new(school: school)
         expect(service.selected_key_stages).to match_array([ks1])
       end
       it 'uses none when no school is set' do
-        service = ActivityTypeFilter.new({}, school: nil)
+        service = ActivityTypeFilter.new(school: nil)
         expect(service.selected_key_stages).to match_array([])
       end
     end
     context 'when parameters are passed in' do
       it 'loads the key stages from the ids' do
-        service = ActivityTypeFilter.new({key_stage_ids: [ks2.id]}, school: school)
+        service = ActivityTypeFilter.new(query: {key_stage_ids: [ks2.id]}, school: school)
         expect(service.selected_key_stages).to match_array([ks2])
       end
     end
@@ -78,13 +81,13 @@ RSpec.describe ActivityTypeFilter, type: :service do
   describe '#selected_subjects' do
     context 'when no parameters are passed in' do
       it 'uses none' do
-        service = ActivityTypeFilter.new({})
+        service = ActivityTypeFilter.new()
         expect(service.selected_subjects).to match_array([])
       end
     end
     context 'when parameters are passed in' do
       it 'loads the subjects from the ids' do
-        service = ActivityTypeFilter.new({subject_ids: [science.id]})
+        service = ActivityTypeFilter.new(query: {subject_ids: [science.id]})
         expect(service.selected_subjects).to match_array([science])
       end
     end
@@ -93,13 +96,13 @@ RSpec.describe ActivityTypeFilter, type: :service do
   describe '#selected_topics' do
     context 'when no parameters are passed in' do
       it 'uses none' do
-        service = ActivityTypeFilter.new({})
+        service = ActivityTypeFilter.new
         expect(service.selected_topics).to match_array([])
       end
     end
     context 'when parameters are passed in' do
       it 'loads the topics from the ids' do
-        service = ActivityTypeFilter.new({topic_ids: [pie_charts.id]})
+        service = ActivityTypeFilter.new(query: {topic_ids: [pie_charts.id]})
         expect(service.selected_topics).to match_array([pie_charts])
       end
     end
@@ -109,18 +112,18 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'when no parameters are passed in' do
       it 'uses none' do
-        service = ActivityTypeFilter.new({})
+        service = ActivityTypeFilter.new
         expect(service.selected_topics).to match_array([])
       end
     end
 
     context 'when parameters are passed in' do
       it 'loads the timings from the ids' do
-        service = ActivityTypeFilter.new({activity_timing_ids: [half_hour.id]})
+        service = ActivityTypeFilter.new(query: {activity_timing_ids: [half_hour.id]})
         expect(service.selected_activity_timings).to match_array([half_hour])
       end
       it 'includes lower timings when selected' do
-        service = ActivityTypeFilter.new({activity_timing_ids: [hour.id]})
+        service = ActivityTypeFilter.new(query: {activity_timing_ids: [hour.id]})
         expect(service.selected_activity_timings).to match_array([half_hour, hour])
       end
     end
@@ -129,13 +132,13 @@ RSpec.describe ActivityTypeFilter, type: :service do
   describe '#selected_impacts' do
     context 'when no parameters are passed in' do
       it 'uses none' do
-        service = ActivityTypeFilter.new({})
+        service = ActivityTypeFilter.new
         expect(service.selected_impacts).to match_array([])
       end
     end
     context 'when parameters are passed in' do
       it 'loads the impacts from the ids' do
-        service = ActivityTypeFilter.new({impact_ids: [reducing_gas.id]})
+        service = ActivityTypeFilter.new(query: {impact_ids: [reducing_gas.id]})
         expect(service.selected_impacts).to match_array([reducing_gas])
       end
     end
@@ -143,7 +146,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
   describe 'activity_types' do
 
-    subject { ActivityTypeFilter.new(query).activity_types.order(:name).to_a }
+    subject { ActivityTypeFilter.new(query: query).activity_types.order(:name).to_a }
 
     context 'when a key stage is selected' do
       let(:query){ {key_stage_ids: ks2.id}}
@@ -176,6 +179,35 @@ RSpec.describe ActivityTypeFilter, type: :service do
       it 'should have custom activity type last' do
         expect(subject.last).to eq activity_type_1
       end
+
+      it 'includes the active activity types only' do
+        activity_type_1.update!(active: false)
+        expect(subject).to eq [activity_type_2, activity_type_3]
+      end
+    end
+
+    context 'with a custom scope' do
+      it 'uses the scope' do
+        expect(ActivityTypeFilter.new(scope: ActivityType.none).activity_types).to be_empty
+      end
     end
   end
+
+  describe 'not_completed_or_repeatable' do
+
+    let(:school){ create(:school) }
+
+    subject { ActivityTypeFilter.new(school: school, query: {not_completed_or_repeatable: true}).activity_types.order(:name).to_a }
+
+    before do
+      create(:activity, activity_type: activity_type_1, school: school)
+      create(:activity, activity_type: activity_type_3, school: school)
+    end
+
+    it 'excludes the completed activities unless one is repeatable' do
+      expect(subject).to match_array([activity_type_2, activity_type_3])
+    end
+
+  end
+
 end
