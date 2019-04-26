@@ -13,8 +13,6 @@
         <h4><%= fa_icon(alert_icon(@alert)) %> <%= @alert.summary %></h4>
       </div>
       <div class="card-body">
-        <h5><%= @alert.title %></h5>
-        <p class="card-text">This alert <%= @alert.description.downcase %></p>
         <% @alert.detail.each do |detail| %>
           <% if detail['type'].to_sym == :chart %>
             <div id="alert-chart-data-<%= @alert.id %>" data-chart-title='<%= detail['content']['title'] %>' data-chart-type='<%= @alert.id %>' class="hide">
