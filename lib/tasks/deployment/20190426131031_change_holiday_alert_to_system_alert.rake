@@ -5,7 +5,7 @@ namespace :after_party do
 
     alert_type = AlertType.where(class_name: 'AlertImpendingHoliday').first
 
-    description = <<~DOC
+    analysis = <<~DOC
       Alerts on whether a holiday is in the database that has a start date withing the next 7 days.
 
       If there is no holiday the alert will have a rating of 10 and no values for any of the variables.
@@ -16,8 +16,8 @@ namespace :after_party do
     DOC
     alert_type.update!(
       class_name: 'Alerts::System::UpcomingHoliday',
-      description: description,
-      analysis: '',
+      description: 'This alert checks whether there is an upcoming school holiday',
+      analysis: analysis,
       has_variables: true,
       source: :system
     )
