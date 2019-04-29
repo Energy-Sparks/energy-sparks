@@ -22,6 +22,10 @@ class AggregateSchoolService
     Rails.cache.delete(cache_key)
   end
 
+  def in_cache?
+    Rails.cache.exist?(cache_key)
+  end
+
 private
 
   def cache_key
