@@ -1,3 +1,5 @@
+require 'dashboard'
+
 namespace :data_feeds do
   desc 'Load carbon intensity data'
   task :carbon_intensity_loader, [:start_date, :end_date] => :environment do |_t, args|
