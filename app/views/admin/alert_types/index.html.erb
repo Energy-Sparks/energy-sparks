@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Source</th>
       <th>Fuel</th>
       <th>Frequency</th>
       <th>Template variables?</th>
@@ -14,6 +15,7 @@
     <% @alert_types.each do |alert_type| %>
       <tr>
         <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
+        <td><%= alert_type.source %></td>
         <td><%= alert_type.display_fuel_type %></td>
         <td><%= alert_type.frequency %></td>
         <td>

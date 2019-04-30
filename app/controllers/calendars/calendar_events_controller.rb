@@ -11,6 +11,7 @@ class Calendars::CalendarEventsController < ApplicationController
   end
 
   def new
+    @calendar_event = CalendarEvent.new
   end
 
   def edit
