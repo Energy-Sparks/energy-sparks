@@ -10,14 +10,8 @@ module Schools
       @activity_types = activity_type_filter.activity_types.limit(3)
       @alert = @find_out_more.alert
       @content = TemplateInterpolation.new(@find_out_more.content_version).interpolate(:page_title, :page_content, with: @alert.template_variables)
-      @chart = chart(@find_out_more.alert, @find_out_more.content_version.chart_variable)
+      @chart = @alert.chart_variables_hash[@find_out_more.content_version.chart_variable]
       @tables = @alert.tables
-    end
-
-  private
-
-    def chart(alert, chart_variable)
-      chart_variable == 'none' || chart_variable.nil? ? nil : alert.chart_variables_hash[chart_variable]
     end
   end
 end

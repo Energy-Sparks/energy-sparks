@@ -52,7 +52,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     [
       :pupil_dashboard_title, :teacher_dashboard_title,
       :page_title, :page_content,
-      :email_title, :email_content, :sms_content
+      :email_title, :email_content, :sms_content, :chart_variable
     ]
   end
 end

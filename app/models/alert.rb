@@ -77,10 +77,6 @@ class Alert < ApplicationRecord
     end
   end
 
-  def charts
-    chart_variables_hash.values
-  end
-
   def chart_variables_hash
     data.fetch('chart_data', {})
   end
