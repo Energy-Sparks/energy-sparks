@@ -10,46 +10,45 @@ module Alerts
     end
 
     def analyse
-      analysis_obj = alert_instance.new(@aggregate_school)
-      analysis_obj.analyse(@analysis_date)
-
-      analysis_report = analysis_obj.analysis_report
-      analysis_report.summary = "There was a problem running the #{@alert_type.title} alert. This is likely due to missing data." if analysis_report.summary.nil?
-      build_alert(analysis_obj, analysis_report, pull_template_data: (!(analysis_report.status == :failed) && @alert_type.has_variables?))
+      report = adapter_class(@alert_type).new(alert_type: @alert_type, school: @school, analysis_date: @analysis_date, aggregate_school: @aggregate_school).report
+      build_alert(report)
     end
 
   private
+
+    def adapter_class(alert_type)
+      if alert_type.system?
+        Adapters::SystemAdapter
+      else
+        Adapters::AnalyticsAdapter
+      end
+    end
 
     def calculate_analysis_date
       return Time.zone.today if @alert_type.fuel_type.nil?
       @aggregate_school.analysis_date(@alert_type.fuel_type)
     end
 
-    def alert_instance
-      @alert_type.class_name.constantize
-    end
-
-    def build_alert(analysis_obj, analysis_report, pull_template_data: true)
+    def build_alert(analysis_report)
       Alert.new(
         school_id:      @school.id,
         alert_type_id:  @alert_type.id,
         run_on:         @analysis_date,
         status:         analysis_report.status,
         summary:        analysis_report.summary,
-        data:           data_hash(analysis_obj, analysis_report, pull_template_data: pull_template_data),
+        data:           data_hash(analysis_report)
       )
     end
 
-    def data_hash(analysis_obj, analysis_report, pull_template_data:)
+    def data_hash(analysis_report)
       {
         help_url:      analysis_report.help_url,
         detail:        analysis_report.detail,
         rating:        analysis_report.rating,
-        template_data: pull_template_data ? analysis_obj.front_end_template_data : {},
-        chart_data:    pull_template_data ? analysis_obj.front_end_template_charts : {},
-        table_data:    pull_template_data ? analysis_obj.front_end_template_tables : {}
+        template_data: analysis_report.template_data,
+        chart_data:    analysis_report.chart_data,
+        table_data:    analysis_report.table_data
       }
-      # analysis_report.type is an enum from the analytics framework, describing an alert type
     end
   end
 end
