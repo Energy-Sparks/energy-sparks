@@ -24,37 +24,30 @@ describe Calendar do
 
   describe 'it knows when alert triggers are coming up' do
     it 'knows when the next holiday is' do
-      Timecop.freeze(Date.parse(autumn_term_half_term_holiday_start) - 1.week) do
-        expect(calendar.next_holiday.start_date.to_s(:db)).to eq autumn_term_half_term_holiday_start
-      end
+      today = Date.parse(autumn_term_half_term_holiday_start) - 1.week
+      expect(calendar.next_holiday(today: today).start_date.to_s(:db)).to eq autumn_term_half_term_holiday_start
 
-      Timecop.freeze(Date.parse(random_before_holiday_start_date) - 1.week) do
-        expect(calendar.next_holiday.start_date).to eq random_before_holiday.start_date
-      end
+      today = Date.parse(random_before_holiday_start_date) - 1.week
+      expect(calendar.next_holiday(today: today).start_date).to eq random_before_holiday.start_date
 
-      Timecop.freeze(Date.parse(random_after_holiday_start_date) - 1.week) do
-        expect(calendar.next_holiday.start_date).to eq random_after_holiday.start_date
-      end
+      today = Date.parse(random_after_holiday_start_date) - 1.week
+      expect(calendar.next_holiday(today: today).start_date).to eq random_after_holiday.start_date
     end
 
     it 'knows there is a holiday approaching' do
       holiday_start_date = Date.parse(autumn_terms[0][:end_date]) + 1.day
 
-      Timecop.freeze(holiday_start_date - 2.weeks) do
-        expect(calendar.holiday_approaching?).to be false
-      end
+      today = holiday_start_date - 2.weeks
+      expect(calendar.holiday_approaching?(today: today)).to be false
 
-      Timecop.freeze(holiday_start_date - 1.week) do
-        expect(calendar.holiday_approaching?).to be true
-      end
+      today = holiday_start_date - 1.week
+      expect(calendar.holiday_approaching?(today: today)).to be true
 
-      Timecop.freeze(holiday_start_date - 3.days) do
-        expect(calendar.holiday_approaching?).to be true
-      end
+      today = holiday_start_date - 3.days
+      expect(calendar.holiday_approaching?(today: today)).to be true
 
-      Timecop.freeze(holiday_start_date - 2.days) do
-        expect(calendar.holiday_approaching?).to be true
-      end
+      today = holiday_start_date - 2.days
+      expect(calendar.holiday_approaching?(today: today)).to be true
     end
   end
 end

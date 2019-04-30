@@ -536,7 +536,6 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    timecop (0.8.0)
     trix-rails (2.0.0)
       rails (> 4.1, < 6.0)
     twilio-ruby (5.12.2)
@@ -648,7 +647,6 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   statsample!
   test-prof
-  timecop
   trix-rails
   twilio-ruby
   tzinfo-data
