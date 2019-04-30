@@ -120,7 +120,7 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem "chromedriver-helper"
+  gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
 end
 
