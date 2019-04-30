@@ -4,8 +4,7 @@ module Measurements
   MEASUREMENT_OPTIONS = ActiveSupport::HashWithIndifferentAccess.new(
     kwh: 'energy used in kilowatt-hours',
     gb_pounds: 'energy cost in pounds',
-    co2: 'carbon dioxide in kilograms produced',
-    library_books: 'number of library books you could buy'
+    co2: 'carbon dioxide in kilograms produced'
   ).freeze
 
   def set_measurement_options
@@ -29,7 +28,12 @@ private
   end
 
   def default_measurement_or_preference
-    cookies[:energy_sparks_measurement] || @default_measurement
+    cookie_value = cookies[:energy_sparks_measurement]
+    if valid_measurement?(cookie_value)
+      cookie_value
+    else
+      @default_measurement
+    end
   end
 
   def set_cookie_preference(measurement)
