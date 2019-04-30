@@ -102,7 +102,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'climate_control'
   gem 'webmock'
-  gem 'timecop'
   gem 'foreman'
 end
 
