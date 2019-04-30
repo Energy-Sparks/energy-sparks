@@ -73,12 +73,12 @@ class Calendar < ApplicationRecord
     calendar_events.last.end_date
   end
 
-  def next_holiday
-    holidays.where('start_date > ?', Time.zone.today).order(start_date: :asc).first
+  def next_holiday(today: Time.zone.today)
+    holidays.where('start_date > ?', today).order(start_date: :asc).first
   end
 
-  def holiday_approaching?
-    next_holiday.start_date - Time.zone.today <= 7
+  def holiday_approaching?(today: Time.zone.today)
+    next_holiday(today: today).start_date - today <= 7
   end
 end
 
