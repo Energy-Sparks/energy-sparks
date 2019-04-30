@@ -50,8 +50,6 @@ module Alerts
           units: :chart
         },
       }.freeze
-
-      front_end_template_variables
     end
   end
 end
