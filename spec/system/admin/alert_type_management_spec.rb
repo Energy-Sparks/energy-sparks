@@ -50,7 +50,6 @@ RSpec.describe 'alert type management', type: :system do
       visit root_path
       click_on 'Manage'
       click_on 'Alert Types'
-      allow_any_instance_of(AlertType).to receive(:available_charts).and_return([['chart description A', :chart_a], ['chart description B', :chart_b]])
     end
 
     it 'allows creation and editing of alert content', js: true do
