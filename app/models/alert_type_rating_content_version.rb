@@ -3,7 +3,7 @@
 # Table name: alert_type_rating_content_versions
 #
 #  alert_type_rating_id    :bigint(8)        not null
-#  chart_type              :text             default("none")
+#  chart_variable          :text             default("none")
 #  colour                  :integer          default("red"), not null
 #  created_at              :datetime         not null
 #  email_content           :text

@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.string "sms_content"
     t.string "email_title"
     t.text "email_content"
-    t.text "chart_type", default: "none"
+    t.text "chart_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 

@@ -54,7 +54,7 @@ module Admin
           content: [
             :colour,
             :pupil_dashboard_title, :teacher_dashboard_title, :page_title, :page_content,
-            :sms_content, :email_title, :email_content, :chart_type
+            :sms_content, :email_title, :email_content, :chart_variable
           ]
         )
       end

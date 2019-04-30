@@ -70,7 +70,7 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Pupil dashboard title', with: 'You are using too much gas'
       fill_in 'Page title', with: 'You are using too much gas!'
 
-      within '.alert_type_rating_content_chart_type' do
+      within '.alert_type_rating_content_chart_variable' do
         expect(page).to have_unchecked_field('chart description A')
         expect(page).to have_unchecked_field('chart description B')
         expect(page).to have_checked_field('None')
@@ -131,7 +131,7 @@ RSpec.describe 'alert type management', type: :system do
       expect(alert_type_rating.content_versions.size).to eq(2)
       second_content = alert_type_rating.current_content
       expect(second_content.page_title).to eq('Stop using so much gas!')
-      expect(second_content.chart_type).to eq('chart_b')
+      expect(second_content.chart_variable).to eq('chart_b')
     end
   end
 end
