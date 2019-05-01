@@ -41,6 +41,11 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       calendar_area = create(:calendar_area, title: 'BANES', parent_area: england_and_wales)
       visit admin_calendar_areas_path
       click_on 'Edit'
+
+      fill_in 'Title', with: ''
+      click_on 'Update Calendar area'
+      expect(page).to have_content("Title can't be blank")
+
       fill_in 'Title', with: 'B & NES'
       click_on 'Update Calendar area'
 
