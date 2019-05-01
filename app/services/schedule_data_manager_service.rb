@@ -42,7 +42,7 @@ class ScheduleDataManagerService
   end
 
   def temperatures
-    weather_underground_temperatures
+    ENV['DARK_SKY_FOR_TEMPERATURES'] ? dark_sky_temperatures : weather_underground_temperatures
   end
 
   def solar_irradiation
@@ -79,7 +79,6 @@ private
       DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
         data.add(date, values.map(&:to_f))
       end
-
       data
     end
   end
