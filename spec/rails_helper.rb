@@ -10,6 +10,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'pry'
 require 'capybara/rspec'
+require 'webdrivers'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

@@ -94,8 +94,6 @@ GEM
     annotate (2.7.4)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 13.0)
-    archive-zip (0.12.0)
-      io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
     auto_strip_attributes (2.5.0)
@@ -179,9 +177,6 @@ GEM
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chroma (0.2.0)
-    chromedriver-helper (2.1.0)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
     closed_struct (1.0.0)
@@ -258,7 +253,6 @@ GEM
       concurrent-ruby (~> 1.0)
     iniparse (1.4.4)
     interpolate (0.3.0)
-    io-like (0.3.0)
     jaro_winkler (1.5.1)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -559,6 +553,10 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
+    webdrivers (3.8.0)
+      nokogiri (~> 1.6)
+      rubyzip (~> 1.0)
+      selenium-webdriver (~> 3.0)
     webmock (3.4.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -601,7 +599,6 @@ DEPENDENCIES
   capistrano3-puma
   capybara
   chartkick
-  chromedriver-helper
   climate_control
   closed_struct
   database_cleaner
@@ -653,6 +650,7 @@ DEPENDENCIES
   uglifier
   upsert (~> 2.2.1)
   web-console
+  webdrivers
   webmock
 
 RUBY VERSION
