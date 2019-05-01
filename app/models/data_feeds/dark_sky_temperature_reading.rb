@@ -11,8 +11,8 @@
 #
 # Indexes
 #
-#  index_dark_sky_temperature_readings_on_area_id       (area_id)
-#  index_dark_sky_temperature_readings_on_reading_date  (reading_date) UNIQUE
+#  index_dark_sky_temperature_readings_on_area_id                   (area_id)
+#  index_dark_sky_temperature_readings_on_area_id_and_reading_date  (area_id,reading_date) UNIQUE
 #
 
 module DataFeeds
