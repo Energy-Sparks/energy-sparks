@@ -6,6 +6,7 @@ class ScheduleDataManagerService
     @temperature_area_id = school.weather_underground_area_id
     @solar_irradiance_area_id = school.weather_underground_area_id
     @solar_pv_tuos_area_id = school.solar_pv_tuos_area_id
+    @dark_sky_area_id = school.dark_sky_area_id
   end
 
   def holidays
@@ -41,11 +42,7 @@ class ScheduleDataManagerService
   end
 
   def temperatures
-    cache_key = "#{@temperature_area_id}-temperatures"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      data = Temperatures.new('temperatures')
-      process_feed_data(data, "DataFeeds::WeatherUnderground", @temperature_area_id, :temperature)
-    end
+    weather_underground_temperatures
   end
 
   def solar_irradiation
@@ -61,6 +58,29 @@ class ScheduleDataManagerService
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarPV.new('solar pv')
       process_feed_data(data, "DataFeeds::SolarPvTuos", @solar_pv_tuos_area_id, :solar_pv)
+    end
+  end
+
+private
+
+  def weather_underground_temperatures
+    cache_key = "#{@temperature_area_id}-weather-underground-temperatures"
+    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      data = Temperatures.new('temperatures')
+      process_feed_data(data, "DataFeeds::WeatherUnderground", @temperature_area_id, :temperature)
+    end
+  end
+
+  def dark_sky_temperatures
+    cache_key = "#{@dark_sky_area_id}-dark-sky-temperatures"
+    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      data = Temperatures.new('temperatures')
+
+      DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+        data.add(date, values.map(&:to_f))
+      end
+
+      data
     end
   end
 end

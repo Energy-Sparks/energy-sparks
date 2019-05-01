@@ -22,7 +22,8 @@ module Admin
         params.require(:school_onboarding).permit(
           :calendar_area_id,
           :weather_underground_area_id,
-          :solar_pv_tuos_area_id
+          :solar_pv_tuos_area_id,
+          :dark_sky_area_id
         )
       end
     end
