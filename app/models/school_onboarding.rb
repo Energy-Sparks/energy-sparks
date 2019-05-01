@@ -7,6 +7,7 @@
 #  created_at                  :datetime         not null
 #  created_by_id               :bigint(8)
 #  created_user_id             :bigint(8)
+#  dark_sky_area_id            :bigint(8)
 #  id                          :bigint(8)        not null, primary key
 #  notes                       :text
 #  school_group_id             :bigint(8)
@@ -47,6 +48,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :calendar_area
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
+  belongs_to :dark_sky_area, class_name: 'Areas::DarkSkyArea'
   belongs_to :created_user, class_name: 'User'
   belongs_to :created_by, class_name: 'User'
 

@@ -7,6 +7,7 @@
 #  calendar_area_id            :bigint(8)
 #  calendar_id                 :bigint(8)
 #  created_at                  :datetime         not null
+#  dark_sky_area_id            :bigint(8)
 #  floor_area                  :decimal(, )
 #  id                          :bigint(8)        not null, primary key
 #  level                       :integer          default(0)
