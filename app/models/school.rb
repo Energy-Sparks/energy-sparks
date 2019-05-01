@@ -71,6 +71,7 @@ class School < ApplicationRecord
   belongs_to :calendar_area
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
+  belongs_to :dark_sky_area
   belongs_to :school_group
 
   has_one :school_onboarding

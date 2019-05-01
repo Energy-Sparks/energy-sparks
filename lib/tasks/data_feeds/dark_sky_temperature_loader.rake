@@ -30,7 +30,7 @@ namespace :data_feeds do
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 1
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday
 
-    Areas::DarkSkyArea.all.each do |area|
+    DarkSkyArea.all.each do |area|
       process_area(area, start_date, end_date)
     end
   end

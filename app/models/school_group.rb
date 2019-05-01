@@ -40,7 +40,7 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_calendar_area, class_name: 'CalendarArea'
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea'
   belongs_to :default_weather_underground_area, class_name: 'WeatherUndergroundArea'
-  belongs_to :default_dark_sky_area, class_name: 'Areas::DarkSkyArea'
+  belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea'
 
   validates :name, presence: true
 

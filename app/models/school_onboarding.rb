@@ -48,7 +48,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :calendar_area
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
-  belongs_to :dark_sky_area, class_name: 'Areas::DarkSkyArea'
+  belongs_to :dark_sky_area, class_name: 'DarkSkyArea'
   belongs_to :created_user, class_name: 'User'
   belongs_to :created_by, class_name: 'User'
 

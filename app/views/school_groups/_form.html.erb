@@ -40,7 +40,7 @@
 
       <div class="form-group">
         <%= f.label :default_dark_sky_area_id, 'Default Dark Sky Weather Data Feed Area' %>
-        <%= f.select :default_dark_sky_area_id, options_from_collection_for_select(Areas::DarkSkyArea.order(:title), 'id', 'title', @school_group.default_dark_sky_area_id), {include_blank: true}, { class: 'form-control' } %>
+        <%= f.select :default_dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.order(:title), 'id', 'title', @school_group.default_dark_sky_area_id), {include_blank: true}, { class: 'form-control' } %>
       </div>
     </div>
   </div>

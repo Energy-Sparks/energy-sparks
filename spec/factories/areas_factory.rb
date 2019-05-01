@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence(:title) {|n| "Weather Underground Area #{n}"}
   end
 
-  factory :dark_sky_area, class: 'Areas::DarkSkyArea' do
+  factory :dark_sky_area, class: 'DarkSkyArea' do
     sequence(:title) {|n| "Dark Sky Area #{n}"}
   end
 end

@@ -14,9 +14,6 @@
 #
 #  index_areas_on_parent_area_id  (parent_area_id)
 #
-
-module Areas
-  class DarkSkyArea < Area
-    has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id
-  end
+class DarkSkyArea < Area
+  has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id
 end
