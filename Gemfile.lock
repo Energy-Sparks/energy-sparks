@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 1e8d1ca7a07f44111478a86f1482f8601ec0cc58
-  tag: 0.41.8
+  revision: 34db6a485dc8256173be37ec3c5b464784dd31ba
+  tag: 0.41.8b-patch-for-middle-schools
   specs:
-    energy-sparks_analytics (0.41.8)
+    energy-sparks_analytics (0.41.8b.pre.patch.pre.for.pre.middle.pre.schools)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -311,7 +311,7 @@ GEM
     multipart-post (2.0.0)
     mustache (1.1.0)
     net-http-digest_auth (1.4.1)
-    net-http-persistent (3.0.0)
+    net-http-persistent (3.0.1)
       connection_pool (~> 2.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
