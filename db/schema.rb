@@ -334,6 +334,16 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.index ["school_id"], name: "index_contacts_on_school_id"
   end
 
+  create_table "dark_sky_temperature_readings", force: :cascade do |t|
+    t.bigint "area_id"
+    t.date "reading_date", null: false
+    t.decimal "temperature_celsius_x48", null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_dark_sky_temperature_readings_on_area_id"
+    t.index ["reading_date"], name: "index_dark_sky_temperature_readings_on_reading_date", unique: true
+  end
+
   create_table "data_feed_readings", force: :cascade do |t|
     t.bigint "data_feed_id"
     t.integer "feed_type"
