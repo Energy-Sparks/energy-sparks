@@ -18,7 +18,7 @@ describe SchoolCreator, :schools, type: :service do
         calendar_area: calendar_area,
         solar_pv_tuos_area: solar_pv_area,
         weather_underground_area: weather_underground_area,
-        dark_sky_area: dark_sky_area
+        dark_sky_area: dark_sky_area,
         school_group: school_group
     end
 
