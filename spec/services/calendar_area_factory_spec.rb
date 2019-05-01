@@ -19,8 +19,9 @@ describe CalendarAreaFactory do
   end
 
   let!(:england_and_wales){ create(:calendar_area, title: 'England and Wales') }
-  let(:attributes) { {title: 'Oxfordshire'} }
-  let!(:area){ CalendarAreaFactory.create(attributes, events) }
+
+  let(:populated_area) { CalendarArea.new({title: 'Oxfordshire'}) }
+  let!(:area){ CalendarAreaFactory.create(populated_area, events) }
 
   it 'creates a calendar area' do
     expect(area).to be_persisted
@@ -41,7 +42,7 @@ describe CalendarAreaFactory do
   end
 
   describe 'when the area is not valid' do
-    let(:attributes) { {} }
+    let(:populated_area) { CalendarArea.new({}) }
 
     it 'does not create any calendars or events' do
       expect(area.calendars.count).to eq(0)
