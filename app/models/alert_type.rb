@@ -10,6 +10,7 @@
 #  has_variables :boolean          default(FALSE)
 #  id            :bigint(8)        not null, primary key
 #  show_ratings  :boolean          default(TRUE)
+#  source        :integer          default("analytics"), not null
 #  sub_category  :integer
 #  title         :text
 #
@@ -22,6 +23,7 @@ class AlertType < ApplicationRecord
   has_many :activity_types, through: :alert_type_activity_types
   has_many :ratings, class_name: 'AlertTypeRating'
 
+  enum source: [:analytics, :system]
   enum fuel_type: [:electricity, :gas]
   enum sub_category: [:hot_water, :heating, :baseload]
   enum frequency: [:termly, :weekly, :before_each_holiday]
@@ -44,6 +46,13 @@ class AlertType < ApplicationRecord
     class_name.constantize.front_end_template_variables.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
+  end
+
+  def available_charts
+    constant_class = class_name.constantize
+    available_chart_variables = constant_class::TEMPLATE_VARIABLES.select { |_key, values| values[:units] == :chart }
+
+    available_chart_variables.map { |variable_name, values| [values[:description], variable_name] }
   end
 
   def update_activity_type_positions!(position_attributes)
