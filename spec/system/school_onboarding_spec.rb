@@ -44,9 +44,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_select('Calendar Area', selected: 'BANES calendar')
       expect(page).to have_select('Weather Underground Data Feed Area', selected: 'BANES weather')
       expect(page).to have_select('Solar PV from The University of Sheffield Data Feed Area', selected: 'BANES solar')
-
-      # Why does this fail?!
-      # expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
+      expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
 
       click_on 'Next'
 
