@@ -6,7 +6,7 @@ class CalendarFactoryFromEventHash
   end
 
   def create
-    @calendar = Calendar.where(default: @template, calendar_area: @area, title: @area.title, template: @template).first_or_create
+    @calendar = Calendar.where(default: @template, calendar_area: @area, title: @area.title, template: @template).first_or_create!
 
     raise ArgumentError unless CalendarEventType.any?
 
@@ -14,7 +14,10 @@ class CalendarFactoryFromEventHash
       event_type = CalendarEventType.select { |cet| event[:term].include? cet.title }.first
       raise ArgumentError if event_type.nil?
 
-      academic_year = AcademicYear.where('start_date <= ? and end_date >= ?', Date.parse(event[:start_date]), Date.parse(event[:start_date])).first
+      academic_year = if event[:start_date]
+                        AcademicYear.for_date(Date.parse(event[:start_date]))
+                      end
+
       @calendar.calendar_events.where(title: event[:term], start_date: event[:start_date], end_date: event[:end_date], calendar_event_type: event_type, academic_year: academic_year).first_or_create!
     end
 
