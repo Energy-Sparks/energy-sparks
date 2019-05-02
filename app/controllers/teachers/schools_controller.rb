@@ -8,7 +8,7 @@ module Teachers
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
-      if AggregateSchoolService.new(@school).in_cache?
+      if Rails.AggregateSchoolService.new(@school).in_cache? || ! Rails.application.config.action_controller.perform_caching
         @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
         setup_find_out_more
         setup_activity_suggestions
