@@ -68,7 +68,8 @@ gem 'cancancan', git: 'https://github.com/CanCanCommunity/cancancan.git', branch
 gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
-gem 'friendly_id', git: 'https://github.com/jamesjefferies/friendly_id.git', branch: 'support-for-active-record-6' # Pretties up URLs
+# Run against master until full Rails6 release is complete
+gem 'friendly_id', git: 'https://github.com/norman/friendly_id.git', branch: 'master' # Pretties up URLs
 gem 'merit', git: 'https://github.com/merit-gem/merit.git', branch: 'master'
 gem 'ruby-sun-times'
 
@@ -89,12 +90,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-core', git: 'https://github.com/rspec/rspec-core.git'
-  gem 'rspec-mocks', git: 'https://github.com/rspec/rspec-mocks.git'
-  gem 'rspec-expectations', git: 'https://github.com/rspec/rspec-expectations.git'
-  gem 'rspec-support', git: 'https://github.com/rspec/rspec-support.git'
-
-  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', branch: '4-0-dev'
+  gem 'rspec-rails', '~> 4.0.0.beta2'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'

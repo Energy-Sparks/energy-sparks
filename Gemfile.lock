@@ -46,14 +46,6 @@ GIT
       spreadsheet (~> 1.1)
 
 GIT
-  remote: https://github.com/jamesjefferies/friendly_id.git
-  revision: cdd5971f91c40e0c05e5afb498d2ec1b452ffb44
-  branch: support-for-active-record-6
-  specs:
-    friendly_id (5.2.5)
-      activerecord (>= 4.0.0)
-
-GIT
   remote: https://github.com/merit-gem/merit.git
   revision: e24acbb25b6f58c6eb0c683548223c7646bd0461
   branch: master
@@ -62,47 +54,12 @@ GIT
       ambry (~> 1.0.0)
 
 GIT
-  remote: https://github.com/rspec/rspec-core.git
-  revision: 7727a078e01df1677fe8ce787e3a751111364e00
+  remote: https://github.com/norman/friendly_id.git
+  revision: 67422c04e1bfed4207b2a04826bc67ec0e231ce7
+  branch: master
   specs:
-    rspec-core (3.9.0.pre)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-expectations.git
-  revision: 7a5c9f7fdaeec189b9856e4cedbad70ce86cba69
-  specs:
-    rspec-expectations (3.9.0.pre)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-mocks.git
-  revision: 55f0b116dc8c15a7acef9e7619bb0a3925bd18fa
-  specs:
-    rspec-mocks (3.9.0.pre)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-rails.git
-  revision: a8078b8729a9062161118f440f7d49da9b2de134
-  branch: 4-0-dev
-  specs:
-    rspec-rails (4.0.0.pre)
-      actionpack (>= 4.2)
-      activesupport (>= 4.2)
-      railties (>= 4.2)
-      rspec-core (= 3.9.0.pre)
-      rspec-expectations (= 3.9.0.pre)
-      rspec-mocks (= 3.9.0.pre)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-support.git
-  revision: e972ee6594ccc7ea3f8717ababcf6295c58aec33
-  specs:
-    rspec-support (3.9.0.pre)
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -502,6 +459,23 @@ GEM
       roo (>= 2.0.0, < 3)
       spreadsheet (> 0.9.0)
     rserve-client (0.3.5)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-rails (4.0.0.beta2)
+      actionpack (>= 4.2)
+      activesupport (>= 4.2)
+      railties (>= 4.2)
+      rspec-core (~> 3.8)
+      rspec-expectations (~> 3.8)
+      rspec-mocks (~> 3.8)
+      rspec-support (~> 3.8)
+    rspec-support (3.8.0)
     rubocop (0.63.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -628,7 +602,7 @@ GEM
       zip-zip
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.1.5)
+    zeitwerk (2.1.6)
     zip-zip (0.3)
       rubyzip (>= 1.0.0)
 
@@ -692,11 +666,7 @@ DEPENDENCIES
   rails-controller-testing
   redcarpet
   rollbar
-  rspec-core!
-  rspec-expectations!
-  rspec-mocks!
-  rspec-rails!
-  rspec-support!
+  rspec-rails (~> 4.0.0.beta2)
   ruby-sun-times
   sass-rails
   selenium-webdriver
