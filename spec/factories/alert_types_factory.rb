@@ -12,13 +12,55 @@
 #  sub_category         :integer
 #  title                :text
 #
+module Alerts
+  module System
+    class DummyAlert
+
+      def initialize(args = {})
+      end
+
+      def report
+        Alerts::Adapters::Report.new(
+          status: :good,
+          rating: 5.0,
+          summary: 'The alert has run',
+          template_data: {
+            template: 'variables'
+          },
+          chart_data: {
+            chart: 'variables'
+          },
+          table_data: {
+            table: 'variables'
+          }
+        )
+      end
+
+      def self.front_end_template_variables
+        { "Dummy alert" => TEMPLATE_VARIABLES, "Common" => {} }
+      end
+
+      TEMPLATE_VARIABLES = {
+        chart_a: {
+          description: 'chart description A',
+          units: :chart
+        },
+        chart_b: {
+          description: 'chart description B',
+          units: :chart
+        },
+      }.freeze
+    end
+  end
+end
+
 FactoryBot.define do
   factory :alert_type do
     sequence(:title)  {|n| "Alert Type #{n}"}
     fuel_type         { AlertType.fuel_types.keys.sample }
     sub_category      { AlertType.sub_categories.keys.sample }
     frequency         { AlertType.frequencies.keys.sample }
-    class_name        { 'AlertChangeInElectricityBaseloadShortTerm' }
+    class_name        { 'Alerts::System::DummyAlert' }
     show_ratings      { true }
     description       { title }
   end

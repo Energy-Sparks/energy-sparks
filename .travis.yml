@@ -12,7 +12,6 @@ addons:
       - google-chrome-stable
       - postgresql-10
       - postgresql-client-10
-      - chromium-chromedriver
 sudo: required
 before_script:
   - cp config/database.yml.travis config/database.yml
