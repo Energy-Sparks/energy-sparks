@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'scoring', to: 'home#scoring'
 
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
+  get 'data_feeds/dark_sky_temperature_readings', to: 'data_feeds/dark_sky_temperature_readings#show'
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 
