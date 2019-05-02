@@ -2,7 +2,9 @@ require 'dashboard'
 
 module DataFeeds
   class DarkSkyTemperatureLoader
-    def initialize(start_date = Date.yesterday - 1.day, end_date = Date.yesterday, dark_sky_api_interface = DarkSkyWeatherInterface.new)
+    # DarkSky FAQ recommends getting the last 10 days worth of data for consolidation purposes, some weather stations take a while
+    # to push their data
+    def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday, dark_sky_api_interface = DarkSkyWeatherInterface.new)
       @start_date = start_date
       @end_date = end_date
       @dark_sky_api_interface = dark_sky_api_interface
