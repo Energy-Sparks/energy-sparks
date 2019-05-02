@@ -122,6 +122,7 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
     resource :find_out_more_calculation
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
