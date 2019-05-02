@@ -22,7 +22,7 @@ module Admin
           @school = @alert.school
           content_version = AlertTypeRatingContentVersion.new(content_params.fetch(:content))
           @content = TemplateInterpolation.new(content_version).interpolate(*AlertTypeRatingContentVersion.template_fields, with: @alert.template_variables)
-          @charts = @alert.charts
+          @chart = @alert.chart_variables_hash[content_version.chart_variable]
           @tables = @alert.tables
         end
 
