@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 06524e97ff1f80ced19f1e7d3696746de1f0f4c2
-  tag: 0.41.8-rails6-beta3
+  revision: fe6c96d1db1733900aed3c14c6eee12ac287d8dc
+  tag: rails6-rc1-support
   specs:
-    energy-sparks_analytics (0.41.8.pre.rails6.pre.beta3)
+    energy-sparks_analytics (0.41.9.pre.patch.pre.for.pre.middle.pre.schools.pre.dark.pre.skies.pre.work.pre.weeks.pre.rails6.pre.rc1)
       activesupport (~> 6.0.0.beta3)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -46,14 +46,6 @@ GIT
       spreadsheet (~> 1.1)
 
 GIT
-  remote: https://github.com/jamesjefferies/friendly_id.git
-  revision: cdd5971f91c40e0c05e5afb498d2ec1b452ffb44
-  branch: support-for-active-record-6
-  specs:
-    friendly_id (5.2.5)
-      activerecord (>= 4.0.0)
-
-GIT
   remote: https://github.com/merit-gem/merit.git
   revision: e24acbb25b6f58c6eb0c683548223c7646bd0461
   branch: master
@@ -62,47 +54,12 @@ GIT
       ambry (~> 1.0.0)
 
 GIT
-  remote: https://github.com/rspec/rspec-core.git
-  revision: 7727a078e01df1677fe8ce787e3a751111364e00
+  remote: https://github.com/norman/friendly_id.git
+  revision: 67422c04e1bfed4207b2a04826bc67ec0e231ce7
+  branch: master
   specs:
-    rspec-core (3.9.0.pre)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-expectations.git
-  revision: 7a5c9f7fdaeec189b9856e4cedbad70ce86cba69
-  specs:
-    rspec-expectations (3.9.0.pre)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-mocks.git
-  revision: 55f0b116dc8c15a7acef9e7619bb0a3925bd18fa
-  specs:
-    rspec-mocks (3.9.0.pre)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-rails.git
-  revision: a8078b8729a9062161118f440f7d49da9b2de134
-  branch: 4-0-dev
-  specs:
-    rspec-rails (4.0.0.pre)
-      actionpack (>= 4.2)
-      activesupport (>= 4.2)
-      railties (>= 4.2)
-      rspec-core (= 3.9.0.pre)
-      rspec-expectations (= 3.9.0.pre)
-      rspec-mocks (= 3.9.0.pre)
-      rspec-support (= 3.9.0.pre)
-
-GIT
-  remote: https://github.com/rspec/rspec-support.git
-  revision: e972ee6594ccc7ea3f8717ababcf6295c58aec33
-  specs:
-    rspec-support (3.9.0.pre)
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -173,8 +130,6 @@ GEM
     annotate (2.7.4)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 13.0)
-    archive-zip (0.12.0)
-      io-like (~> 0.3.0)
     ast (2.4.0)
     auto_strip_attributes (2.5.0)
       activerecord (>= 4.0)
@@ -257,9 +212,6 @@ GEM
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chroma (0.2.0)
-    chromedriver-helper (2.1.0)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     clbustos-rtf (0.4.2)
     climate_control (0.2.0)
     closed_struct (1.0.0)
@@ -340,7 +292,6 @@ GEM
       ruby-vips (>= 2.0.13, < 3)
     iniparse (1.4.4)
     interpolate (0.3.0)
-    io-like (0.3.0)
     jaro_winkler (1.5.2)
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
@@ -400,7 +351,7 @@ GEM
     multipart-post (2.0.0)
     mustache (1.1.0)
     net-http-digest_auth (1.4.1)
-    net-http-persistent (3.0.0)
+    net-http-persistent (3.0.1)
       connection_pool (~> 2.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -517,6 +468,23 @@ GEM
       roo (>= 2.0.0, < 3)
       spreadsheet (> 0.9.0)
     rserve-client (0.3.5)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-rails (4.0.0.beta2)
+      actionpack (>= 4.2)
+      activesupport (>= 4.2)
+      railties (>= 4.2)
+      rspec-core (~> 3.8)
+      rspec-expectations (~> 3.8)
+      rspec-mocks (~> 3.8)
+      rspec-support (~> 3.8)
+    rspec-support (3.8.0)
     rubocop (0.63.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -628,7 +596,11 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
-    webmock (3.5.1)
+    webdrivers (3.8.0)
+      nokogiri (~> 1.6)
+      rubyzip (~> 1.0)
+      selenium-webdriver (~> 3.0)
+    webmock (3.4.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -645,7 +617,7 @@ GEM
       zip-zip
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.1.5)
+    zeitwerk (2.1.6)
     zip-zip (0.3)
       rubyzip (>= 1.0.0)
 
@@ -675,7 +647,6 @@ DEPENDENCIES
   capistrano3-puma
   capybara
   chartkick
-  chromedriver-helper
   climate_control
   closed_struct
   database_cleaner
@@ -712,11 +683,7 @@ DEPENDENCIES
   rails-controller-testing
   redcarpet
   rollbar
-  rspec-core!
-  rspec-expectations!
-  rspec-mocks!
-  rspec-rails!
-  rspec-support!
+  rspec-rails (~> 4.0.0.beta2)
   ruby-sun-times
   sass-rails
   selenium-webdriver
@@ -733,6 +700,7 @@ DEPENDENCIES
   uglifier
   upsert (~> 2.2.1)
   web-console
+  webdrivers
   webmock
   webpacker (~> 3.5)
 

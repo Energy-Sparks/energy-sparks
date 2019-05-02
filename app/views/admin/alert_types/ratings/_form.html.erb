@@ -31,6 +31,7 @@
     <%= content.input :pupil_dashboard_title, hint: 'Shows on pupil dashboards' %>
 
     <%= render 'preview_section', scope: 'find-out-more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
+      <%= content.input :chart_variable, as: :radio_buttons, collection: @available_charts %>
       <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>
       <%= content.input :page_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
     <% end %>
