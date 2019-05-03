@@ -1,6 +1,7 @@
 module Schools
   class AggregatedMeterCollectionsController < ApplicationController
-    before_action :set_school
+    load_and_authorize_resource :school
+    skip_before_action :authenticate_user!, only: [:show, :post]
 
     def show
       @number_of_meter_readings = @school.amr_validated_readings.count * 48
@@ -18,13 +19,11 @@ module Schools
       ass = AggregateSchoolService.new(@school)
       ass.aggregate_school unless ass.in_cache?
 
-      respond_to do |format|
-        format.json { render json: { referrer: session[:aggregated_meter_collection_referrer] }}
-      end
-    end
+      next_page = session[:aggregated_meter_collection_referrer] || school_path(@school)
 
-    def set_school
-      @school = School.friendly.find(params[:school_id])
+      respond_to do |format|
+        format.json { render json: { referrer: next_page }}
+      end
     end
   end
 end
