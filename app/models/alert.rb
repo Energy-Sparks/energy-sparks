@@ -77,8 +77,8 @@ class Alert < ApplicationRecord
     end
   end
 
-  def charts
-    data.fetch('chart_data', {}).values
+  def chart_variables_hash
+    data.fetch('chart_data', {})
   end
 
   def tables
