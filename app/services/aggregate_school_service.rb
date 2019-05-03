@@ -27,14 +27,14 @@ class AggregateSchoolService
   end
 
   def in_cache_or_cache_off?
-    in_cache? || caching_off?
+    in_cache? || self.class.caching_off?
+  end
+
+  def self.caching_off?
+    ! Rails.application.config.action_controller.perform_caching
   end
 
 private
-
-  def caching_off?
-    ! Rails.application.config.action_controller.perform_caching
-  end
 
   def cache_key
     "#{@school.id}-#{@school.name.parameterize}-aggregated_meter_collection"
