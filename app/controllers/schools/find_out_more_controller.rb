@@ -9,7 +9,7 @@ module Schools
       activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @find_out_more.activity_types, query: { not_completed_or_repeatable: true })
       @activity_types = activity_type_filter.activity_types.limit(3)
       @alert = @find_out_more.alert
-      @content = TemplateInterpolation.new(@find_out_more.content_version).interpolate(:page_title, :page_content, with: @alert.template_variables)
+      @content = TemplateInterpolation.new(@find_out_more.content_version).interpolate(:page_title, :page_content, :chart_title, with: @alert.template_variables)
       @chart = @alert.chart_variables_hash[@find_out_more.content_version.chart_variable]
       @tables = @alert.tables
     end
