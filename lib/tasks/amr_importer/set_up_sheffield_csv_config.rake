@@ -5,7 +5,6 @@ namespace :amr_sheffield do
     puts DateTime.now.utc
 
     AmrDataFeedConfig.where(
-      area_id: 3,
       description: 'Sheffield',
       s3_folder: 'sheffield',
       s3_archive_folder: 'archive-sheffield',

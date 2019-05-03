@@ -4,11 +4,7 @@ namespace :amr_frome do
     puts "Make sure Frome daily feed csv config is set up"
     puts DateTime.now.utc
 
-    england = CalendarArea.find_by(title: 'England and Wales')
-    area = CalendarArea.where(title: 'Frome', parent_area: england).first_or_create
-
     AmrDataFeedConfig.where(
-      area_id: area.id,
       description: 'Frome',
       s3_folder: 'frome',
       s3_archive_folder: 'archive-frome',

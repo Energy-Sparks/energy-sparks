@@ -5,7 +5,6 @@ namespace :amr_banes do
     puts DateTime.now.utc
 
     AmrDataFeedConfig.where(
-      area_id: 2,
       description: 'Banes',
       s3_folder: 'banes',
       s3_archive_folder: 'archive-banes',

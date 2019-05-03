@@ -3,11 +3,7 @@ namespace :after_party do
   task sheffield_gas_config: :environment do
     puts "Running deploy task 'sheffield_gas_config'"
 
-    england = CalendarArea.find_by(title: 'England and Wales')
-    area = CalendarArea.where(title: 'Sheffield', parent_area: england).first_or_create
-
     AmrDataFeedConfig.where(
-      area_id: area.id,
       description: 'Sheffield Gas',
       s3_folder: 'sheffield-gas',
       s3_archive_folder: 'archive-sheffield-gas',
