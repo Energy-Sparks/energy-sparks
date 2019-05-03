@@ -17,7 +17,7 @@ RSpec.configure do |config|
       #   we do not want max either, so this is a good compromise
 
       capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-        chromeOptions: { args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage window-size=1400,1400] }
+        chromeOptions: { args: %w[no-sandbox headless disable-gpu disable-dev-shm-usage window-size=1400,10000] }
       )
 
       Capybara::Selenium::Driver.new(
