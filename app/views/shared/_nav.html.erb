@@ -26,7 +26,6 @@
         <% if user_signed_in? && current_user.admin? && @school && @school.id %>
           <!-- temporary link -->
           <li class="nav-item"><%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'nav-link' %></li>
-          <li class="nav-item"><%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'nav-link' %></li>
         <% end %>
 
         <% if current_user && current_user.active_school_admin? && current_user.school.scoreboard %>
