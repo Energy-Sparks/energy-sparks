@@ -17,5 +17,13 @@
 
 module DataFeeds
   class DarkSkyTemperatureReading < ApplicationRecord
+    def self.download_all_data
+      <<~QUERY
+        SELECT a.title, dstr.reading_date, dstr.temperature_celsius_x48
+        FROM  dark_sky_temperature_readings dstr, areas a
+        WHERE dstr.area_id = a.id
+        ORDER BY a.id, dstr.reading_date ASC
+      QUERY
+    end
   end
 end
