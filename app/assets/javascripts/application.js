@@ -39,3 +39,5 @@
 //= require alert_reports
 //= require content
 
+//= require aggregated_meter_collection
+
