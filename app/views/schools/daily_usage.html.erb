@@ -1,10 +1,10 @@
-<% content_for :page_title do %>Explore usage data for <%= @school.name %><% end %>
+<% content_for :page_title, "Explore weekly usage by day for #{@school.name}" %>
 
 <div class="container charts" id="daily-usage">
   <div class="row">
     <div class="col-md-12">
-      <h1>Daily usage</h1>
-      <p>Explore daily power usage for <%= link_to @school.name, school_path(@school), id: "school" %></p>
+      <h1>Weekly usage by day</h1>
+      <p>Explore how much energy you use per day for <%= link_to @school.name, school_path(@school), id: "school" %></p>
     </div>
   </div>
 
@@ -54,3 +54,5 @@
 <% content_for :chartkick_js do %>
   <%= yield :charts_js %>
 <% end %>
+
+
