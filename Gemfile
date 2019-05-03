@@ -21,7 +21,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.41.8'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.41.8b-patch-for-middle-schools'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -95,7 +95,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'climate_control'
   gem 'webmock'
-  gem 'timecop'
 end
 
 group :development do
@@ -121,7 +120,7 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem "chromedriver-helper"
+  gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
 end
 

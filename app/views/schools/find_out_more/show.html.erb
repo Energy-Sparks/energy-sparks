@@ -3,13 +3,15 @@
 <h1><%= @content.page_title %></h1>
 
 <div class="row justify-content-md-center align-items-center">
-  <% @charts.each_with_index do |chart, index| %>
-    <div class="col-md-auto">
-      <div id="chart_<%=index%>" class="analysis-chart" data-no-advice="true" data-chart-index="<%=index%>" data-chart-y-axis-units="£" data-chart-json="<%= school_chart_path(@school, format: :json, chart_type: chart, chart_y_axis_units: :kwh) %>"></div>
+  <% if @tables.empty? %>
+    <div class="col col-lg-10">
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart if @chart %>
     </div>
-  <% end %>
-  <% unless @tables.empty? %>
-    <div class="col-md-5 pt-3 pl-3">
+  <% else %>
+    <div class="col col-lg-6">
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart if @chart %>
+    </div>
+    <div class="col-md-auto">
       <% @tables.each do |table| %>
         <table class="table table-striped">
           <thead class="thead-dark">
@@ -47,5 +49,4 @@
       <% end %>
     <% end %>
   </div>
-</div>
 </div>

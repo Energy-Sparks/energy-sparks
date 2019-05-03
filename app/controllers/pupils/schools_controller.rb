@@ -36,7 +36,6 @@ module Pupils
     def activity_setup(school)
       @activities_count = school.activities.count
       @first = school.activities.empty?
-      @completed_activity_count = school.activities.count
       @suggestion = NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest.first
     end
 

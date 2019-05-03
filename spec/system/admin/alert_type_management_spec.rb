@@ -6,7 +6,6 @@ RSpec.describe 'alert type management', type: :system do
 
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: 'Your gas usage is too high', has_variables: true) }
 
-
   describe 'managing associated activities' do
 
     let!(:activity_category) { create(:activity_category)}
@@ -70,6 +69,14 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Pupil dashboard title', with: 'You are using too much gas'
       fill_in 'Page title', with: 'You are using too much gas!'
 
+      within '.alert_type_rating_content_chart_variable' do
+        expect(page).to have_unchecked_field('chart description A')
+        expect(page).to have_unchecked_field('chart description B')
+        expect(page).to have_checked_field('None')
+      end
+
+      choose 'chart description B'
+
       within '.find_out_more_active' do
         editor = find('trix-editor')
         editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
@@ -123,7 +130,7 @@ RSpec.describe 'alert type management', type: :system do
       expect(alert_type_rating.content_versions.size).to eq(2)
       second_content = alert_type_rating.current_content
       expect(second_content.page_title).to eq('Stop using so much gas!')
+      expect(second_content.chart_variable).to eq('chart_b')
     end
   end
-
 end

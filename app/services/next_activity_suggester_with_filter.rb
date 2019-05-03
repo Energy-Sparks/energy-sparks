@@ -31,10 +31,10 @@ private
 
   def get_suggestions_based_on_last_activity
     last_activity_type = @school.activities.order(:created_at).last.activity_type
-
-    last_activity_type.activity_type_suggestions.each do |ats|
-      if this_activity_type_has_not_been_done_before_or_is_repeatable?(ats.suggested_type) && suggestion_can_be_added?(ats.suggested_type)
-        @suggestions << ats.suggested_type
+    activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(not_completed_or_repeatable: true), school: @school, scope: last_activity_type.suggested_types)
+    activity_type_filter.activity_types.each do |suggested_type|
+      if suggestion_can_be_added?(suggested_type)
+        @suggestions << suggested_type
       end
     end
   end
@@ -42,10 +42,6 @@ private
   def top_up_if_not_enough_suggestions
     more = @filter.activity_types.random_suggestions.sample(NUMBER_OF_SUGGESTIONS - @suggestions.length)
     @suggestions += more.select {|suggestion| suggestion_can_be_added?(suggestion)}
-  end
-
-  def this_activity_type_has_not_been_done_before_or_is_repeatable?(suggested_type)
-    suggested_type.repeatable || @school.activities.where(activity_type: suggested_type).empty?
   end
 
   def suggestion_can_be_added?(suggested_type)

@@ -21,4 +21,6 @@ class CalendarArea < Area
   has_many    :child_calendar_areas, class_name: 'CalendarArea', foreign_key: :parent_area_id
 
   scope :with_template, -> { includes(:calendars).where(calendars: { template: true })}
+
+  validates :title, presence: true
 end
