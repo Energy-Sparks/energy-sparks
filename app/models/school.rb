@@ -7,6 +7,7 @@
 #  calendar_area_id            :bigint(8)
 #  calendar_id                 :bigint(8)
 #  created_at                  :datetime         not null
+#  dark_sky_area_id            :bigint(8)
 #  floor_area                  :decimal(, )
 #  id                          :bigint(8)        not null, primary key
 #  level                       :integer          default(0)
@@ -70,6 +71,7 @@ class School < ApplicationRecord
   belongs_to :calendar_area
   belongs_to :weather_underground_area
   belongs_to :solar_pv_tuos_area
+  belongs_to :dark_sky_area
   belongs_to :school_group
 
   has_one :school_onboarding

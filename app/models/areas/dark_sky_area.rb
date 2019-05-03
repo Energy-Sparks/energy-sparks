@@ -14,8 +14,6 @@
 #
 #  index_areas_on_parent_area_id  (parent_area_id)
 #
-
-class Area < ApplicationRecord
-  belongs_to  :parent_area, class_name: 'Area'
-  has_many    :child_areas, class_name: 'Area', foreign_key: :parent_area_id
+class DarkSkyArea < Area
+  has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_104433) do
+ActiveRecord::Schema.define(version: 2019_05_01_111721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -267,6 +267,8 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.text "title"
     t.text "description"
     t.bigint "parent_area_id"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
@@ -332,6 +334,16 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.text "email_address"
     t.text "mobile_phone_number"
     t.index ["school_id"], name: "index_contacts_on_school_id"
+  end
+
+  create_table "dark_sky_temperature_readings", force: :cascade do |t|
+    t.bigint "area_id"
+    t.date "reading_date", null: false
+    t.decimal "temperature_celsius_x48", null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id", "reading_date"], name: "index_dark_sky_temperature_readings_on_area_id_and_reading_date", unique: true
+    t.index ["area_id"], name: "index_dark_sky_temperature_readings_on_area_id"
   end
 
   create_table "data_feed_readings", force: :cascade do |t|
@@ -472,6 +484,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.bigint "default_calendar_area_id"
     t.bigint "default_solar_pv_tuos_area_id"
     t.bigint "default_weather_underground_area_id"
+    t.bigint "default_dark_sky_area_id"
     t.index ["default_calendar_area_id"], name: "index_school_groups_on_default_calendar_area_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_weather_underground_area_id"], name: "index_school_groups_on_default_weather_underground_area_id"
@@ -507,6 +520,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.bigint "calendar_area_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "dark_sky_area_id"
     t.index ["calendar_area_id"], name: "index_school_onboardings_on_calendar_area_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
@@ -548,6 +562,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_104433) do
     t.bigint "weather_underground_area_id"
     t.bigint "solar_pv_tuos_area_id"
     t.bigint "school_group_id"
+    t.bigint "dark_sky_area_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

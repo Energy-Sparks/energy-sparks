@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 34db6a485dc8256173be37ec3c5b464784dd31ba
-  tag: 0.41.8b-patch-for-middle-schools
+  revision: 1435d4b65a4266ea4b4ed9eda8e8ce4701e9a30f
+  tag: 0.41.12
   specs:
-    energy-sparks_analytics (0.41.8b.pre.patch.pre.for.pre.middle.pre.schools)
+    energy-sparks_analytics (0.41.12)
       activesupport (~> 5.2.0)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
@@ -116,7 +116,7 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
-    backports (3.12.0)
+    backports (3.14.0)
     bcrypt (3.1.12)
     better_errors (2.4.0)
       coderay (>= 1.0.0)
@@ -297,7 +297,7 @@ GEM
     method_source (0.9.2)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2018.0812)
+    mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
@@ -542,7 +542,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.5)
+    unf_ext (0.0.7.6)
     unicode-display_width (1.4.0)
     uniform_notifier (1.11.0)
     upsert (2.2.1)

@@ -7,6 +7,7 @@ module Schools
         @school.calendar_area = @school.school_group.default_calendar_area
         @school.solar_pv_tuos_area = @school.school_group.default_solar_pv_tuos_area
         @school.weather_underground_area = @school.school_group.default_weather_underground_area
+        @school.dark_sky_area = @school.school_group.default_dark_sky_area
       end
     end
 
