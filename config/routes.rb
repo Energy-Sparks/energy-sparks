@@ -79,6 +79,9 @@ Rails.application.routes.draw do
       get :storage_heaters, to: 'analysis#storage_heaters'
       get :solar_pv, to: 'analysis#solar_pv'
       get :test, to: 'analysis#test'
+
+      get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
+      post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
     end
 
     # Maintain old scoreboard URL
@@ -92,6 +95,8 @@ Rails.application.routes.draw do
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
+
+
   end
 
   devise_for :users, controllers: { sessions: "sessions" }
