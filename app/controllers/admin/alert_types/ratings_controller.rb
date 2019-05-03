@@ -3,8 +3,8 @@ module Admin
     class RatingsController < AdminController
       load_and_authorize_resource :alert_type
 
-      before_action :set_template_variables
-      before_action :set_available_charts
+      before_action :set_template_variables, except: [:index]
+      before_action :set_available_charts, except: [:index]
 
       def index
         @ratings = @alert_type.ratings.order(rating_from: :asc)
