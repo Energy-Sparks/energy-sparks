@@ -25,7 +25,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
-      expect(header).to match /filename="all-amr-readings.csv"$/
+      expect(header).to match /all-amr-readings.csv$/
 
       # Then check the content
       meter.amr_validated_readings.each do |record|
@@ -38,7 +38,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
       click_on('Manage')
       click_on('Reports')
       click_on('AMR Report')
-      click_on(meter.mpan_mprn)
+      click_on(meter.mpan_mprn.to_s)
       expect(page).to have_content 'January'
     end
 
