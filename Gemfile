@@ -23,7 +23,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: 'rails6-rc1-support'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.41.12-rails6-rc1'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -64,7 +64,7 @@ gem 'trix-rails', require: 'trix'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
-gem 'cancancan', git: 'https://github.com/CanCanCommunity/cancancan.git', branch: 'feature/3.0.0' # Use cancancan for authorization
+gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 
 # Utils
 gem 'groupdate', '4.0.1' # Use groupdate to group usage stats

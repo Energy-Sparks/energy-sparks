@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'school groups', :school_groups, type: :system do
 
-  let!(:admin) { create(:user, role: 'admin') }
-  let!(:scoreboard){ create(:scoreboard, name: 'BANES and Frome') }
+  let!(:admin)                { create(:user, role: 'admin') }
+  let!(:scoreboard)           { create(:scoreboard, name: 'BANES and Frome') }
+  let!(:dark_sky_weather_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
   describe 'when logged in' do
     before(:each) do
@@ -19,6 +20,8 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       fill_in 'Name', with: 'BANES'
       fill_in 'Description', with: 'Bath & North East Somerset'
       select 'BANES and Frome', from: 'Scoreboard'
+      select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
+
       click_on 'Create School group'
 
       expect(SchoolGroup.where(name: 'BANES').count).to eq(1)

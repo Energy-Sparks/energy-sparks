@@ -76,6 +76,7 @@ RSpec.describe 'alert type management', type: :system do
       end
 
       choose 'chart description B'
+      fill_in 'Chart title', with: 'This is a chart'
 
       within '.find_out_more_active' do
         editor = find('trix-editor')
@@ -131,6 +132,7 @@ RSpec.describe 'alert type management', type: :system do
       second_content = alert_type_rating.current_content
       expect(second_content.page_title).to eq('Stop using so much gas!')
       expect(second_content.chart_variable).to eq('chart_b')
+      expect(second_content.chart_title).to eq('This is a chart')
     end
   end
 end

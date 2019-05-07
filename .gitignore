@@ -46,15 +46,16 @@ public/assets
 /storage/*
 !/storage/.keep
 
-/yarn-error.log
-
 /public/assets
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Web pack stuff
 /public/packs
 /public/packs-test
+
 yarn-debug.log*
 .yarn-integrity
 
@@ -66,4 +67,11 @@ yarn-debug.log*
 !storage.yml
 !cable.yml
 
-/node_modules
+
+# Keep node module directory
+/node_modules/*
+!/node_modules/.keep
+
+yarn-debug.log*
+.yarn-integrity
+/yarn-error.log

@@ -2,6 +2,11 @@ body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   overflow-x: hidden;
   font-size: 14px;
+  margin-top: 30px;
+}
+
+body.sub-nav {
+  margin-top: 110px;
 }
 
 div.application.container {

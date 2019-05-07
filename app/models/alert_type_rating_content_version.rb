@@ -3,6 +3,7 @@
 # Table name: alert_type_rating_content_versions
 #
 #  alert_type_rating_id    :bigint(8)        not null
+#  chart_title             :string           default("")
 #  chart_variable          :text             default("none")
 #  colour                  :integer          default("red"), not null
 #  created_at              :datetime         not null
@@ -52,7 +53,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     [
       :pupil_dashboard_title, :teacher_dashboard_title,
       :page_title, :page_content,
-      :email_title, :email_content, :sms_content, :chart_variable
+      :email_title, :email_content, :sms_content,
+      :chart_variable, :chart_title
     ]
   end
 end

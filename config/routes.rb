@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'scoring', to: 'home#scoring'
 
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
+  get 'data_feeds/dark_sky_temperature_readings', to: 'data_feeds/dark_sky_temperature_readings#show'
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 
@@ -79,6 +80,9 @@ Rails.application.routes.draw do
       get :storage_heaters, to: 'analysis#storage_heaters'
       get :solar_pv, to: 'analysis#solar_pv'
       get :test, to: 'analysis#test'
+
+      get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
+      post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
     end
 
     # Maintain old scoreboard URL
@@ -92,6 +96,8 @@ Rails.application.routes.draw do
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
+
+
   end
 
   devise_for :users, controllers: { sessions: "sessions" }

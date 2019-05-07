@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-xl navbar-custom sticky-top">
+<nav class="navbar navbar-expand-xl navbar-custom fixed-top">
   <%= render 'shared/test_site_warning' if request.host.include?('test') %>
   <div class="container">
     <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
@@ -26,7 +26,6 @@
         <% if user_signed_in? && current_user.admin? && @school && @school.id %>
           <!-- temporary link -->
           <li class="nav-item"><%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'nav-link' %></li>
-          <li class="nav-item"><%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'nav-link' %></li>
         <% end %>
 
         <% if current_user && current_user.active_school_admin? && current_user.school.scoreboard %>
