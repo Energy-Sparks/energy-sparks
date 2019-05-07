@@ -5,11 +5,11 @@
 <div class="row justify-content-md-center align-items-center">
   <% if @tables.empty? %>
     <div class="col col-lg-10">
-      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart if @chart %>
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content if @chart %>
     </div>
   <% else %>
     <div class="col col-lg-6">
-      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart if @chart %>
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content if @chart %>
     </div>
     <div class="col-md-auto">
       <% @tables.each do |table| %>

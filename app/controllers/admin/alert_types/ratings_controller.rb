@@ -51,11 +51,7 @@ module Admin
 
       def content_params
         params.require(:alert_type_rating).permit(
-          content: [
-            :colour,
-            :pupil_dashboard_title, :teacher_dashboard_title, :page_title, :page_content,
-            :sms_content, :email_title, :email_content, :chart_variable
-          ]
+          content: [:colour] + AlertTypeRatingContentVersion.template_fields
         )
       end
 
