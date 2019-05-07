@@ -5,7 +5,10 @@
   </head>
   <body>
     <%= render 'shared/nav' %>
+    <section class="home alerts">
+
     <%= render 'shared/alerts' %>
+  </section>
     <!-- don't render application container as you do for the other pages -->
     <%= yield %>
     <%= render 'shared/footer' %>
