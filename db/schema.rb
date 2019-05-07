@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_01_111721) do
+ActiveRecord::Schema.define(version: 2019_05_03_151119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2019_05_01_111721) do
     t.string "email_title"
     t.text "email_content"
     t.text "chart_variable", default: "none"
+    t.string "chart_title", default: ""
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 

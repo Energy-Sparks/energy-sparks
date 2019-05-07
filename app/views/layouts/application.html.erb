@@ -3,11 +3,11 @@
   <head>
     <%= render 'shared/head' %>
   </head>
-  <body vocab="http://schema.org/">
+  <body vocab="http://schema.org/" class="<%= 'sub-nav' if @school %>">
     <%= render 'shared/nav' %>
     <%= render 'shared/sub_nav' if @school && @school.id && ! @hide_subnav %>
-    <%= render 'shared/alerts' %>
     <div class="application container">
+      <%= render 'shared/alerts' %>
       <%= yield %>
     </div>
     <%= render 'shared/footer' %>

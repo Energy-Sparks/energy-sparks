@@ -1,3 +1,4 @@
+
 .navbar {
   /* border-radius: 0.25rem; */
   border-radius: 0;
@@ -31,6 +32,10 @@
   letter-spacing: 1px;
 }
 
+.sub-navbar {
+  z-index: 10;
+}
+
 .sub-navbar h4 a,
 .sub-navbar h4 a:hover,
 .sub-navbar h4 a:focus,
@@ -57,6 +62,9 @@
   }
 }
 
+.fixed-top-sub-nav {
+    margin-top: 60px;
+}
 
 .navbar-custom .navbar-nav li a {
   color: white;
