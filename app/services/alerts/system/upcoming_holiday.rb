@@ -1,22 +1,25 @@
 module Alerts
   module System
     class UpcomingHoliday
+      # Temporary constant to match analytics
+      TEMPLATE_VARIABLES = {
+        holiday_start_date: {
+          description: 'The date the next holiday is starting',
+          units: :string
+        },
+        holiday_end_date: {
+          description: 'The date the next holiday ends',
+          units: :string
+        },
+        holiday_title: {
+          description: 'The title of the event',
+          units: :string
+        }
+      }.freeze
+
       def self.front_end_template_variables
         {
-          'General' => {
-            holiday_start_date: {
-              description: 'The date the next holiday is starting',
-              units: :string
-            },
-            holiday_end_date: {
-              description: 'The date the next holiday ends',
-              units: :string
-            },
-            holiday_title: {
-              description: 'The title of the event',
-              units: :string
-            }
-          }
+          'General' => TEMPLATE_VARIABLES
         }
       end
 
