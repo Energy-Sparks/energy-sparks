@@ -98,8 +98,8 @@ module ApplicationHelper
     icon('fab', icon_type)
   end
 
-  def alert_icon(alert)
-    alert.alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert.alert_type.fuel_type)
+  def alert_icon(alert, size = nil)
+    alert.alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert.alert_type.fuel_type)} #{size}"
   end
 
   def fuel_type_icon(fuel_type)
