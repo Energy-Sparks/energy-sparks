@@ -21,8 +21,7 @@
 
   <div class="form-group">
     <%= f.label :description %>
-    <%= f.hidden_field :description %>
-    <trix-editor input="activity_type_description"></trix-editor>
+    <%= f.rich_text_area :description, required: true, autofocus: true %>
   </div>
 
   <div class="form-group">

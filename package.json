@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@rails/actiontext": "^6.0.0-beta1",
+    "@rails/activestorage": "^6.0.0-beta1",
+    "@rails/webpacker": "^4.0.2",
+    "trix": "^1.0.0",
+    "webpacker": "^4.2.3",
+    "core-js": "^3"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.3.1"
+  }
+}
