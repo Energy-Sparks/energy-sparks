@@ -7,10 +7,10 @@ module Schools
       @number_of_meter_readings = @school.amr_validated_readings.count * 48
       @number_of_meters = @school.meters.count
 
-      data_feed = DataFeed.where(area: @school.weather_underground_area).first
+      data_feed = @school.weather_underground_area.data_feed
       @number_of_weather_readings = DataFeedReading.where(data_feed: data_feed, feed_type: :temperature).count
 
-      data_feed = DataFeed.where(area: @school.solar_pv_tuos_area).first
+      data_feed = @school.solar_pv_tuos_area.data_feed
       @number_of_solar_pv_readings = DataFeedReading.where(data_feed: data_feed).count
     end
 

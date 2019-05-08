@@ -21,11 +21,42 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
     t.date "end_date"
   end
 
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "activities", force: :cascade do |t|
     t.bigint "school_id"
     t.bigint "activity_type_id"
     t.string "title"
-    t.text "description"
+    t.text "deprecated_description"
     t.date "happened_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -97,7 +128,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
 
   create_table "activity_types", force: :cascade do |t|
     t.string "name"
-    t.text "description"
+    t.text "deprecated_description"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -270,6 +301,8 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
     t.bigint "parent_area_id"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+    t.bigint "data_feed_id"
+    t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
@@ -363,11 +396,9 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
 
   create_table "data_feeds", force: :cascade do |t|
     t.text "type", null: false
-    t.bigint "area_id"
     t.text "title"
     t.text "description"
     t.json "configuration", default: {}, null: false
-    t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -641,6 +672,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
     t.index ["school_id"], name: "index_users_on_school_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
   add_foreign_key "activities", "schools"
@@ -664,6 +696,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
+  add_foreign_key "areas", "data_feeds", on_delete: :restrict
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"

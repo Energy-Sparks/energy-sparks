@@ -22,8 +22,8 @@ class ScheduleDataManagerService
     end
   end
 
-  def process_feed_data(output_data, data_feed_type, area_id, feed_type)
-    data_feed = DataFeed.find_by(type: data_feed_type, area_id: area_id)
+  def process_feed_data(output_data, area_id, feed_type)
+    data_feed = Area.find(area_id).data_feed
 
     query = <<-SQL
       SELECT date_trunc('day', at) AS day, array_agg(value ORDER BY at ASC) AS values
@@ -49,7 +49,7 @@ class ScheduleDataManagerService
     cache_key = "#{@solar_irradiance_area_id}-solar-irradiation"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarIrradiance.new('solar irradiance')
-      process_feed_data(data, "DataFeeds::WeatherUnderground", @solar_irradiance_area_id, :solar_irradiation)
+      process_feed_data(data, @solar_irradiance_area_id, :solar_irradiation)
     end
   end
 
@@ -57,7 +57,7 @@ class ScheduleDataManagerService
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-tuos"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarPV.new('solar pv')
-      process_feed_data(data, "DataFeeds::SolarPvTuos", @solar_pv_tuos_area_id, :solar_pv)
+      process_feed_data(data, @solar_pv_tuos_area_id, :solar_pv)
     end
   end
 
@@ -67,7 +67,7 @@ private
     cache_key = "#{@temperature_area_id}-weather-underground-temperatures"
     Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = Temperatures.new('temperatures')
-      process_feed_data(data, "DataFeeds::WeatherUnderground", @temperature_area_id, :temperature)
+      process_feed_data(data, @temperature_area_id, :temperature)
     end
   end
 

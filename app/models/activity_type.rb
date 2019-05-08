@@ -2,18 +2,18 @@
 #
 # Table name: activity_types
 #
-#  active               :boolean          default(TRUE)
-#  activity_category_id :bigint(8)
-#  badge_name           :string
-#  created_at           :datetime         not null
-#  custom               :boolean          default(FALSE)
-#  data_driven          :boolean          default(FALSE)
-#  description          :text
-#  id                   :bigint(8)        not null, primary key
-#  name                 :string
-#  repeatable           :boolean          default(TRUE)
-#  score                :integer
-#  updated_at           :datetime         not null
+#  active                 :boolean          default(TRUE)
+#  activity_category_id   :bigint(8)
+#  badge_name             :string
+#  created_at             :datetime         not null
+#  custom                 :boolean          default(FALSE)
+#  data_driven            :boolean          default(FALSE)
+#  deprecated_description :text
+#  id                     :bigint(8)        not null, primary key
+#  name                   :string
+#  repeatable             :boolean          default(TRUE)
+#  score                  :integer
+#  updated_at             :datetime         not null
 #
 # Indexes
 #
