@@ -1,8 +1,9 @@
 <%= render 'admin/alert_types/nav', alert_type: @alert_type %>
 
+<h2><%= @rating.description %> </h2>
 <p>Activity types associated with this alert type will appear in the Find Out More functionality.</p>
 
-<%= form_tag admin_alert_type_activity_types_path(@alert_type), method: :put do %>
+<%= form_tag admin_alert_type_rating_activity_types_path(@alert_type, @rating), method: :put do %>
   <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3'%>
   <% @activity_categories_and_types.each do |activity_category, activity_types| %>
     <h3><%= activity_category.name %></h2>

@@ -68,7 +68,7 @@ RSpec.describe "school alerts", type: :system do
       end
 
       before do
-        gas_fuel_alert_type.update!(activity_types: [activity_type])
+        alert_type_rating.update!(activity_types: [activity_type])
         Alerts::GenerateFindOutMores.new(school).perform
       end
 
