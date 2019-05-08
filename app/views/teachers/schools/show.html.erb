@@ -27,7 +27,7 @@
   <% if @school.meters_for_supply(:electricity).any? %>
     <div id="chart_wrapper_0" class="col-sm">
       <div class="d-flex justify-content-between align-items-center">
-        <h3><%= fa_icon fuel_type_icon(:electricity) %> Electricity</h3>
+        <div class="h3"><b><%= fa_icon fuel_type_icon(:electricity) %> Electricity</b></div>
         <div class="h5 explore">
           Explore
           <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
