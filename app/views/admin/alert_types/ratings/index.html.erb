@@ -29,7 +29,7 @@
         <td>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn btn-primary btn-sm' %>
-            <%= link_to 'Activity types', admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn btn-secondary btn-sm' %>
+            <%= link_to "Activity types (#{rating.activity_types.count})", admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn btn-secondary btn-sm' %>
           </div>
         </td>
       </tr>
