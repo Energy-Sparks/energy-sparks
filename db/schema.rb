@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_03_151119) do
+ActiveRecord::Schema.define(version: 2019_05_07_152342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -270,6 +270,8 @@ ActiveRecord::Schema.define(version: 2019_05_03_151119) do
     t.bigint "parent_area_id"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+    t.bigint "data_feed_id"
+    t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
@@ -363,11 +365,9 @@ ActiveRecord::Schema.define(version: 2019_05_03_151119) do
 
   create_table "data_feeds", force: :cascade do |t|
     t.text "type", null: false
-    t.bigint "area_id"
     t.text "title"
     t.text "description"
     t.json "configuration", default: {}, null: false
-    t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -663,6 +663,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_151119) do
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
+  add_foreign_key "areas", "data_feeds", on_delete: :restrict
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
