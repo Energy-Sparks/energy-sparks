@@ -28,6 +28,7 @@ module Pupils
       end
 
       @message = message_for_speech_bubble(@school)
+      @observations = @school.observations
     end
 
   private
