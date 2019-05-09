@@ -21,8 +21,7 @@ module DataFeeds
     end
 
     def import
-      SolarPvTuosArea.all.each do |sa|
-        data_feed = sa.data_feed
+      DataFeeds::SolarPvTuos.all.each do |data_feed|
         config_data = data_feed.configuration.deep_symbolize_keys
 
         latitude = config_data[:latitude]
