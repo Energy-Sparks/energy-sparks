@@ -3,6 +3,7 @@
 # Table name: amr_data_feed_configs
 #
 #  access_type             :text             not null
+#  area_id                 :bigint(8)
 #  column_separator        :text             default(","), not null
 #  created_at              :datetime         not null
 #  date_format             :text             not null
