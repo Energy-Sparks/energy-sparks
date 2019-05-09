@@ -51,7 +51,7 @@ module Merit
 
       #7 Evidence. Added link and/or video to activity
       grant_on ['activities#create', 'activities#update'], badge: 'evidence', to: :school do |activity|
-        /<a href=/.match(activity.description).present?
+        /<a href=/.match(activity.description.to_s).present?
       end
 
       #8 Reporter. 20 Activities

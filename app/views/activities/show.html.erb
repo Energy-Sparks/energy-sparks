@@ -13,10 +13,10 @@
 </div>
 
 <h3>What you did</h3>
-<% if @activity.description.present? %>
+<% if @activity.description %>
   <div class="row">
     <div class="col-md-12 activity">
-      <%= sanitize @activity.description %>
+      <%= @activity.description %>
     </div>
   </div>
   <p></p>
@@ -24,18 +24,18 @@
   <div class="row">
     <div class="col-md-12 activity">
       <p>You haven't entered what you did for this activity, please edit the activitiy and tell us what you did.</p>
-      <p><%=  link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
+      <p><%= link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
     </div>
   </div>
 <% end %>
 
-<% if @activity.activity_type.description.present? %>
+<% if @activity.activity_type.description %>
   <div class="row">
     <div class="col-md-12 text-white activity_type">
       <div class="card bg-secondary">
         <div class="card-body">
           <h3 class="card-title">Activity description</h3>
-          <p class="card-text"><%= sanitize @activity.activity_type.description %></p>
+          <p class="card-text"><%= @activity.activity_type.description %></p>
         </div>
       </div>
     </div>

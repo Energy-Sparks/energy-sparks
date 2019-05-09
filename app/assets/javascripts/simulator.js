@@ -39,8 +39,9 @@ $(document).ready(function() {
         var chartType = $(this).data('chart-type');
         var chartIndex = $(this).data('chart-index');
         var noAdvice = $(this).is("[data-no-advice]");
+        var noZoom = $(this).is("[data-no-zoom]");
 
-        chartSuccess(returnedData.charts[chartIndex], thisChart, chartIndex, noAdvice);
+        chartSuccess(returnedData.charts[chartIndex], thisChart, chartIndex, noAdvice, noZoom);
       });
       alignYAxes();
     }
