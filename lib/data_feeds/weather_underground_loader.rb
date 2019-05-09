@@ -14,19 +14,17 @@ module DataFeeds
     end
 
     def import
-      WeatherUndergroundArea.all.each do |wua|
-        wua.data_feeds.each do |data_feed|
-          area = data_feed.configuration.symbolize_keys
-          pp "Running for #{area[:name]}"
-          temperatures, solar_irradiation = process_area(area)
+      DataFeeds::WeatherUnderground.all.each do |data_feed|
+        area = data_feed.configuration.symbolize_keys
+        pp "Running for #{area[:name]}"
+        temperatures, solar_irradiation = process_area(area)
 
-          temperatures.each do |datetime, value|
-            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature) unless value.nil?
-          end
+        temperatures.each do |datetime, value|
+          DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :temperature) unless value.nil?
+        end
 
-          solar_irradiation.each do |datetime, value|
-            DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation) unless value.nil?
-          end
+        solar_irradiation.each do |datetime, value|
+          DataFeedReading.create(at: datetime, data_feed: data_feed, value: value, feed_type: :solar_irradiation) unless value.nil?
         end
       end
     end
