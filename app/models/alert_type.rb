@@ -19,8 +19,6 @@ class AlertType < ApplicationRecord
   has_many :alerts,                     dependent: :destroy
   has_many :alert_subscription_events,  dependent: :destroy
 
-  has_many :alert_type_activity_types
-  has_many :activity_types, through: :alert_type_activity_types
   has_many :ratings, class_name: 'AlertTypeRating'
 
   enum source: [:analytics, :system]
@@ -33,8 +31,6 @@ class AlertType < ApplicationRecord
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
   validates_presence_of :description
-
-  accepts_nested_attributes_for :alert_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?
@@ -53,16 +49,5 @@ class AlertType < ApplicationRecord
     available_chart_variables = constant_class::TEMPLATE_VARIABLES.select { |_key, values| values[:units] == :chart }
 
     available_chart_variables.map { |variable_name, values| [values[:description], variable_name] }
-  end
-
-  def update_activity_type_positions!(position_attributes)
-    transaction do
-      alert_type_activity_types.destroy_all
-      update!(alert_type_activity_types_attributes: position_attributes)
-    end
-  end
-
-  def ordered_activity_types
-    activity_types.order('alert_type_activity_types.position').group('activity_types.id, alert_type_activity_types.position')
   end
 end

@@ -8,6 +8,7 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'managing associated activities' do
 
+    let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type)}
     let!(:activity_category) { create(:activity_category)}
     let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
     let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
@@ -21,7 +22,9 @@ RSpec.describe 'alert type management', type: :system do
     it 'assigns activity types to alerts via a text box position' do
 
       click_on 'Your gas usage is too high'
-      click_on 'Associated activity types'
+      click_on 'Content management'
+
+      click_on 'Activity types'
 
       expect(page.find_field('Turn off the light').value).to be_blank
       expect(page.find_field('Turn down the heating').value).to be_blank
@@ -29,12 +32,13 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Turn down the heating', with: '1'
 
       click_on 'Update associated activity type', match: :first
+      click_on 'Activity types'
 
       expect(page.find_field('Turn off the light').value).to be_blank
       expect(page.find_field('Turn down the heating').value).to eq('1')
 
-      expect(gas_fuel_alert_type.activity_types).to match_array([activity_type_2])
-      expect(gas_fuel_alert_type.alert_type_activity_types.first.position).to eq(1)
+      expect(alert_type_rating.activity_types).to match_array([activity_type_2])
+      expect(alert_type_rating.alert_type_rating_activity_types.first.position).to eq(1)
 
     end
   end

@@ -158,11 +158,11 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
   end
 
-  create_table "alert_type_activity_types", force: :cascade do |t|
+  create_table "alert_type_rating_activity_types", force: :cascade do |t|
     t.bigint "activity_type_id", null: false
-    t.bigint "alert_type_id", null: false
     t.integer "position", default: 0, null: false
-    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
+    t.bigint "alert_type_rating_id", null: false
+    t.index ["alert_type_rating_id"], name: "index_alert_type_rating_activity_types_on_alert_type_rating_id"
   end
 
   create_table "alert_type_rating_content_versions", force: :cascade do |t|
@@ -693,6 +693,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
   add_foreign_key "alert_subscription_events", "emails"
+  add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
