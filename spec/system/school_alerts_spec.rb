@@ -46,8 +46,8 @@ RSpec.describe "school alerts", type: :system do
           alert_type_rating: alert_type_rating,
           teacher_dashboard_title: 'Your heating is on!',
           pupil_dashboard_title: 'It is too warm',
-          page_title: 'You might want to think about heating',
-          page_content: 'This is what you need to do'
+          find_out_more_title: 'You might want to think about heating',
+          find_out_more_content: 'This is what you need to do'
         )
       end
       let(:alert_summary){ 'Summary of the alert' }
