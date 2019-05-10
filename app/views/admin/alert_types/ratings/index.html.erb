@@ -22,9 +22,11 @@
         <td><%= rating.rating_to %></td>
         <td><%= rating.description %></td>
         <td>
-          <span class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span>
-          <span class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
-          <span class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span>
+          <span title="Teacher dashboard alert" class="<%='text-success' if rating.teacher_dashboard_alert_active? %>"><%= fa_icon('chalkboard-teacher fa-2x') %></span> &nbsp;
+          <span title="Pupil dashboard alert" class="<%='text-success' if rating.pupil_dashboard_alert_active? %>"><%= fa_icon('users fa-2x') %></span> &nbsp;
+          <span title="Find out more" class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span> &nbsp;
+          <span title="SMS" class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span> &nbsp;
+          <span title="Email" class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
         </td>
         <td>
           <div class="btn-group">
