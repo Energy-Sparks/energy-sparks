@@ -1,6 +1,6 @@
 namespace :after_party do
   desc 'Deployment task: enable_alert_templates'
-  task enable_alert_templates: :environment do
+  task enable_some_more_alert_templates: :environment do
     puts "Running deploy task 'enable_alert_templates'"
 
   # Originally enabled
