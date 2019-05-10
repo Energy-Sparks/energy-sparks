@@ -29,3 +29,6 @@ en:
       default: "%d/%m/%Y"
       short: "%d %b"
       long: "%d %B, %Y"
+  errors:
+    messages:
+      not_saved: 'We were unable to save'

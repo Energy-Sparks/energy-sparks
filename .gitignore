@@ -31,8 +31,6 @@ profiles
 .env
 *.txt
 *.sql
-*.yml
-!.overcommit.yml
 *.DS_Store
 *csv
 !etc/**/*csv
@@ -58,10 +56,22 @@ public/assets
 /public/packs
 /public/packs-test
 
+yarn-debug.log*
+.yarn-integrity
+
+# YAML stuff
+*.yml
+!.overcommit.yml
+!webpacker.yml
+!secrets.yml
+!storage.yml
+!cable.yml
+
+
 # Keep node module directory
 /node_modules/*
 !/node_modules/.keep
 
+/yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-/yarn-error.log

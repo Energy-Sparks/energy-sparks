@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_08_135315) do
+ActiveRecord::Schema.define(version: 2019_05_09_085824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -390,6 +390,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_135315) do
     t.datetime "updated_at", null: false
     t.index "date_trunc('day'::text, at)", name: "data_feed_readings_at_index"
     t.index ["at"], name: "index_data_feed_readings_on_at"
+    t.index ["data_feed_id", "feed_type", "at"], name: "unique_data_feed_readings", unique: true
     t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
     t.index ["feed_type"], name: "index_data_feed_readings_on_feed_type"
   end

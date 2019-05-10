@@ -9,6 +9,9 @@ class MoveAssociatedActivitiesToAlertTypeRatings < ActiveRecord::Migration[6.0]
         connection.execute(
           'UPDATE alert_type_rating_activity_types SET alert_type_rating_id = alert_type_ratings.id FROM alert_type_ratings WHERE alert_type_ratings.alert_type_id = alert_type_rating_activity_types.alert_type_id'
         )
+        connection.execute(
+          'DELETE FROM alert_type_rating_activity_types WHERE alert_type_rating_id IS NULL'
+        )
       end
     end
 

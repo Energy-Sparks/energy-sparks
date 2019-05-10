@@ -2,18 +2,17 @@
 #
 # Table name: activity_types
 #
-#  active                 :boolean          default(TRUE)
-#  activity_category_id   :bigint(8)
-#  badge_name             :string
-#  created_at             :datetime         not null
-#  custom                 :boolean          default(FALSE)
-#  data_driven            :boolean          default(FALSE)
-#  deprecated_description :text
-#  id                     :bigint(8)        not null, primary key
-#  name                   :string
-#  repeatable             :boolean          default(TRUE)
-#  score                  :integer
-#  updated_at             :datetime         not null
+#  active               :boolean          default(TRUE)
+#  activity_category_id :bigint(8)
+#  badge_name           :string
+#  created_at           :datetime         not null
+#  custom               :boolean          default(FALSE)
+#  data_driven          :boolean          default(FALSE)
+#  id                   :bigint(8)        not null, primary key
+#  name                 :string
+#  repeatable           :boolean          default(TRUE)
+#  score                :integer
+#  updated_at           :datetime         not null
 #
 # Indexes
 #
@@ -50,6 +49,10 @@ class ActivityType < ApplicationRecord
   has_many :suggested_types, through: :activity_type_suggestions
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
+
+  has_rich_text :description
+
+  self.ignored_columns = %w(deprecated_description)
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
