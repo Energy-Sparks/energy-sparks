@@ -31,8 +31,6 @@ profiles
 .env
 *.txt
 *.sql
-*.yml
-!.overcommit.yml
 *.DS_Store
 *csv
 !etc/**/*csv
@@ -48,16 +46,32 @@ public/assets
 /storage/*
 !/storage/.keep
 
-/node_modules
-/yarn-error.log
-
 /public/assets
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Web pack stuff
 /public/packs
 /public/packs-test
-/node_modules
+
+yarn-debug.log*
+.yarn-integrity
+
+# YAML stuff
+*.yml
+!.overcommit.yml
+!webpacker.yml
+!secrets.yml
+!storage.yml
+!cable.yml
+
+
+# Keep node module directory
+/node_modules/*
+!/node_modules/.keep
+
+/yarn-error.log
 yarn-debug.log*
 .yarn-integrity

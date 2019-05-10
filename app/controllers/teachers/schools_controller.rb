@@ -7,9 +7,15 @@ module Teachers
 
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
-      @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
-      setup_find_out_more
-      setup_activity_suggestions
+
+      if AggregateSchoolService.new(@school).in_cache_or_cache_off?
+        @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
+        setup_find_out_more
+        setup_activity_suggestions
+      else
+        session[:aggregated_meter_collection_referrer] = request.original_fullpath
+        redirect_to school_aggregated_meter_collection_path(@school)
+      end
     end
 
   private

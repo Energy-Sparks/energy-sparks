@@ -14,8 +14,6 @@
 //= require highcharts-modules/offline-exporting
 //= require chartkick
 
-//= require trix
-
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
 
@@ -38,4 +36,6 @@
 
 //= require alert_reports
 //= require content
+
+//= require aggregated_meter_collection
 

@@ -66,7 +66,7 @@ var commonChartOptions = {
 }
 
 
-function barColumnLine(d, c, chartIndex, seriesData, chartType) {
+function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
   var subChartType = d.chart1_subtype;
   console.log('bar or column or line ' + subChartType);
 
@@ -96,8 +96,9 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
   // Column charts
   if (chartType == 'column') {
     console.log('column: ' + subChartType);
-    c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
-
+    if (! noZoom) {
+      c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+    }
 
     if (subChartType == 'stacked') {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});

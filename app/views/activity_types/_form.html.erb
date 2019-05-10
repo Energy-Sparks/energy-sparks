@@ -21,8 +21,7 @@
 
   <div class="form-group">
     <%= f.label :description %>
-    <%= f.hidden_field :description %>
-    <trix-editor input="activity_type_description"></trix-editor>
+    <%= f.rich_text_area :description, required: true, autofocus: true %>
   </div>
 
   <div class="form-group">
@@ -65,10 +64,20 @@
       <label for="lastName">Delete?</label>
     </div>
   </div>
+
   <%= f.fields_for :activity_type_suggestions do |suggestion| %>
     <div class="row">
       <div class="col-md-8 mb-3">
-        <%= suggestion.collection_select( :suggested_type_id, ActivityType.all, :id, :name_with_key_stages, { include_blank: true }, {class: 'form-control'})  %>
+        <%= suggestion.select(
+          :suggested_type_id,
+          grouped_options_for_select(
+            ActivityCategory.listed_with_activity_types.map{|category, types| [category.name, types.map {|type| [type.name_with_key_stages, type.id]}]},
+            suggestion.object.suggested_type_id.to_s
+          ),
+          { include_blank: true },
+          { class: 'form-control select2'}
+        )
+        %>
       </div>
       <div class="col-md-1 mb-3">
         <%= suggestion.check_box :_destroy, class: 'form-control' %>

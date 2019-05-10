@@ -2,19 +2,20 @@ require 'rails_helper'
 
 RSpec.describe "school onboarding", :schools, type: :system do
 
-  let(:school_name) { 'Oldfield Park Infants'}
-
-  let(:calendar_area){ create(:calendar_area, title: 'BANES calendar') }
-  let!(:calendar){ create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
-  let(:solar_pv_area){ create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let(:weather_underground_area){ create(:weather_underground_area, title: 'BANES weather') }
+  let(:school_name)               { 'Oldfield Park Infants'}
+  let(:calendar_area)             { create(:calendar_area, title: 'BANES calendar') }
+  let!(:calendar)                 { create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
+  let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
+  let(:weather_underground_area)  { create(:weather_underground_area, title: 'BANES weather') }
+  let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:school_group) do
     create(
       :school_group,
       name: 'BANES',
       default_calendar_area: calendar_area,
       default_solar_pv_tuos_area: solar_pv_area,
-      default_weather_underground_area: weather_underground_area
+      default_weather_underground_area: weather_underground_area,
+      default_dark_sky_area: dark_sky_weather_area
     )
   end
 
@@ -43,6 +44,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_select('Calendar Area', selected: 'BANES calendar')
       expect(page).to have_select('Weather Underground Data Feed Area', selected: 'BANES weather')
       expect(page).to have_select('Solar PV from The University of Sheffield Data Feed Area', selected: 'BANES solar')
+      expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
 
       click_on 'Next'
 

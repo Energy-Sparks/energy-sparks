@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_03_104258) do
+ActiveRecord::Schema.define(version: 2019_05_09_085824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -21,11 +21,42 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.date "end_date"
   end
 
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "activities", force: :cascade do |t|
     t.bigint "school_id"
     t.bigint "activity_type_id"
     t.string "title"
-    t.text "description"
+    t.text "deprecated_description"
     t.date "happened_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -97,7 +128,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
 
   create_table "activity_types", force: :cascade do |t|
     t.string "name"
-    t.text "description"
+    t.text "deprecated_description"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -148,6 +179,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.string "email_title"
     t.text "email_content"
     t.text "chart_variable", default: "none"
+    t.string "chart_title", default: ""
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -265,6 +297,10 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.text "title"
     t.text "description"
     t.bigint "parent_area_id"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.bigint "data_feed_id"
+    t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
@@ -332,6 +368,16 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.index ["school_id"], name: "index_contacts_on_school_id"
   end
 
+  create_table "dark_sky_temperature_readings", force: :cascade do |t|
+    t.bigint "area_id"
+    t.date "reading_date", null: false
+    t.decimal "temperature_celsius_x48", null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id", "reading_date"], name: "index_dark_sky_temperature_readings_on_area_id_and_reading_date", unique: true
+    t.index ["area_id"], name: "index_dark_sky_temperature_readings_on_area_id"
+  end
+
   create_table "data_feed_readings", force: :cascade do |t|
     t.bigint "data_feed_id"
     t.integer "feed_type"
@@ -342,17 +388,16 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.datetime "updated_at", null: false
     t.index "date_trunc('day'::text, at)", name: "data_feed_readings_at_index"
     t.index ["at"], name: "index_data_feed_readings_on_at"
+    t.index ["data_feed_id", "feed_type", "at"], name: "unique_data_feed_readings", unique: true
     t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
     t.index ["feed_type"], name: "index_data_feed_readings_on_feed_type"
   end
 
   create_table "data_feeds", force: :cascade do |t|
     t.text "type", null: false
-    t.bigint "area_id"
     t.text "title"
     t.text "description"
     t.json "configuration", default: {}, null: false
-    t.index ["area_id"], name: "index_data_feeds_on_area_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -470,6 +515,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.bigint "default_calendar_area_id"
     t.bigint "default_solar_pv_tuos_area_id"
     t.bigint "default_weather_underground_area_id"
+    t.bigint "default_dark_sky_area_id"
     t.index ["default_calendar_area_id"], name: "index_school_groups_on_default_calendar_area_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_weather_underground_area_id"], name: "index_school_groups_on_default_weather_underground_area_id"
@@ -505,6 +551,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.bigint "calendar_area_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "dark_sky_area_id"
     t.index ["calendar_area_id"], name: "index_school_onboardings_on_calendar_area_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
@@ -546,6 +593,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.bigint "weather_underground_area_id"
     t.bigint "solar_pv_tuos_area_id"
     t.bigint "school_group_id"
+    t.bigint "dark_sky_area_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -623,6 +671,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
     t.index ["school_id"], name: "index_users_on_school_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
   add_foreign_key "activities", "schools"
@@ -645,6 +694,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_104258) do
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
+  add_foreign_key "areas", "data_feeds", on_delete: :restrict
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
