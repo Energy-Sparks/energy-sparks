@@ -29,12 +29,19 @@ describe Alerts::GenerateFindOutMores do
 
     context 'where the rating matches the range' do
 
-      it 'creates a parent calculation record' do
+      it 'uses an existing run if one is passed inn' do
+        content_generation_run = create(:content_generation_run, school: school)
+        service.perform(content_generation_run: content_generation_run)
+        expect(ContentGenerationRun.count).to be 1
+        expect(content_generation_run.find_out_mores.size).to eq(1)
+      end
+
+      it 'creates a content generation run if one is not passed in' do
         service.perform
-        expect(FindOutMoreCalculation.count).to be 1
-        calculation = FindOutMoreCalculation.first
-        expect(calculation.find_out_mores.size).to eq(1)
-        expect(calculation.school).to eq(school)
+        expect(ContentGenerationRun.count).to be 1
+        content_generation_run = ContentGenerationRun.first
+        expect(content_generation_run.find_out_mores.size).to eq(1)
+        expect(content_generation_run.school).to eq(school)
       end
 
       it 'creates a find out more pairing the alert and the content' do

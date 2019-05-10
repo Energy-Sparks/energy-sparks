@@ -68,9 +68,25 @@ RSpec.describe 'alert type management', type: :system do
 
       select 'red', from: 'Colour'
 
-      check 'Find out more'
+      check 'Teacher dashboard alert'
       fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
-      fill_in 'Pupil dashboard title', with: 'You are using too much gas'
+      within '.teacher_dashboard_alert_active' do
+        click_on 'Preview'
+        within '#teacher-dashboard-alert-preview .content' do
+          expect(page).to have_content('Your gas usage is too high')
+        end
+      end
+
+      check 'Pupil dashboard alert'
+      fill_in 'Pupil dashboard title', with: 'Your gas usage is too high'
+      within '.pupil_dashboard_alert_active' do
+        click_on 'Preview'
+        within '#pupil-dashboard-alert-preview .content' do
+          expect(page).to have_content('Your gas usage is too high')
+        end
+      end
+
+      check 'Find out more'
       fill_in 'Page title', with: 'You are using too much gas!'
 
       within '.alert_type_rating_content_find_out_more_chart_variable' do

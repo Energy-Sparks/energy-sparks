@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :find_out_more_calculation do
+  factory :content_generation_run do
     school
   end
 end

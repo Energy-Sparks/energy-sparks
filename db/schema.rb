@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_094406) do
+ActiveRecord::Schema.define(version: 2019_05_10_102007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -152,10 +152,12 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
     t.datetime "updated_at", null: false
     t.bigint "email_id"
     t.bigint "alert_type_rating_content_version_id"
+    t.bigint "find_out_more_id"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
+    t.index ["find_out_more_id"], name: "index_alert_subscription_events_on_find_out_more_id"
   end
 
   create_table "alert_type_rating_activity_types", force: :cascade do |t|
@@ -193,6 +195,8 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
     t.boolean "sms_active", default: false
     t.boolean "email_active", default: false
     t.boolean "find_out_more_active", default: false
+    t.boolean "teacher_dashboard_alert_active", default: false
+    t.boolean "pupil_dashboard_alert_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
@@ -370,6 +374,13 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
     t.index ["school_id"], name: "index_contacts_on_school_id"
   end
 
+  create_table "content_generation_runs", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_content_generation_runs_on_school_id"
+  end
+
   create_table "dark_sky_temperature_readings", force: :cascade do |t|
     t.bigint "area_id"
     t.date "reading_date", null: false
@@ -378,6 +389,20 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
     t.datetime "updated_at", null: false
     t.index ["area_id", "reading_date"], name: "index_dark_sky_temperature_readings_on_area_id_and_reading_date", unique: true
     t.index ["area_id"], name: "index_dark_sky_temperature_readings_on_area_id"
+  end
+
+  create_table "dashboard_alerts", force: :cascade do |t|
+    t.integer "dashboard", null: false
+    t.bigint "content_generation_run_id", null: false
+    t.bigint "alert_id", null: false
+    t.bigint "alert_type_rating_content_version_id", null: false
+    t.bigint "find_out_more_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_dashboard_alerts_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "index_dashboard_alerts_on_alert_type_rating_content_version_id"
+    t.index ["content_generation_run_id"], name: "index_dashboard_alerts_on_content_generation_run_id"
+    t.index ["find_out_more_id"], name: "index_dashboard_alerts_on_find_out_more_id"
   end
 
   create_table "data_feed_readings", force: :cascade do |t|
@@ -410,22 +435,15 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
     t.index ["contact_id"], name: "index_emails_on_contact_id"
   end
 
-  create_table "find_out_more_calculations", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_find_out_more_calculations_on_school_id"
-  end
-
   create_table "find_out_mores", force: :cascade do |t|
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "alert_id", null: false
-    t.bigint "find_out_more_calculation_id", null: false
+    t.bigint "content_generation_run_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alert_id"], name: "index_find_out_mores_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "fom_fom_content_v_id"
-    t.index ["find_out_more_calculation_id"], name: "index_find_out_mores_on_find_out_more_calculation_id"
+    t.index ["content_generation_run_id"], name: "index_find_out_mores_on_content_generation_run_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -693,6 +711,7 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
   add_foreign_key "alert_subscription_events", "emails"
+  add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
@@ -702,12 +721,16 @@ ActiveRecord::Schema.define(version: 2019_05_10_094406) do
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "contacts", "schools"
+  add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
+  add_foreign_key "dashboard_alerts", "alert_type_rating_content_versions", on_delete: :restrict
+  add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
+  add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "emails", "contacts", on_delete: :cascade
-  add_foreign_key "find_out_more_calculations", "schools", on_delete: :cascade
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
-  add_foreign_key "find_out_mores", "find_out_more_calculations", on_delete: :cascade
+  add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"

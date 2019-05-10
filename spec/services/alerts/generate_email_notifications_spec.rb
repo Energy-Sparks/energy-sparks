@@ -8,7 +8,7 @@ describe Alerts::GenerateEmailNotifications do
 
   let(:alert_type_rating_1){ create :alert_type_rating, alert_type: alert_1.alert_type, email_active: true }
   let(:alert_type_rating_2){ create :alert_type_rating, alert_type: alert_2.alert_type, email_active: true }
-  let(:content_version_1){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
+  let!(:content_version_1){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
   let(:content_version_2){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, email_title: 'You need to fix something!', email_content: 'You really do'}
 
   it 'sends email, only once' do
@@ -45,11 +45,12 @@ describe Alerts::GenerateEmailNotifications do
 
   it 'links to a find out more if there is one associated with the content' do
     alert_type_rating_1.update!(find_out_more_active: true)
-    alert_subscription_event_1 = AlertSubscriptionEvent.create(alert: alert_1, communication_type: :email, contact: email_contact, status: :pending, content_version: content_version_1)
 
     Alerts::GenerateFindOutMores.new(school).perform
-    find_out_more = school.latest_find_out_mores.first
+    find_out_more = school.latest_content.find_out_mores.first
     expect(find_out_more).to_not be_nil
+
+    alert_subscription_event_1 = AlertSubscriptionEvent.create(alert: alert_1, communication_type: :email, contact: email_contact, status: :pending, content_version: content_version_1, find_out_more: find_out_more)
 
     Alerts::GenerateEmailNotifications.new.perform
     email = ActionMailer::Base.deliveries.last

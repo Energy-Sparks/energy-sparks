@@ -20,7 +20,13 @@ module Admin
           @activity_types = get_activity_types
           @school = @alert.school
           content_version = AlertTypeRatingContentVersion.new(content_params.fetch(:content))
-          @content = TemplateInterpolation.new(content_version).interpolate(*AlertTypeRatingContentVersion.template_fields, with: @alert.template_variables)
+          @content = TemplateInterpolation.new(
+            content_version,
+            proxy: [:colour]
+          ).interpolate(
+            *AlertTypeRatingContentVersion.template_fields,
+            with: @alert.template_variables
+          )
           @chart = @alert.chart_variables_hash[content_version.find_out_more_chart_variable]
           @tables = @alert.tables
         end
@@ -44,7 +50,7 @@ module Admin
         def template_path(key)
           case key
           when 'find_out_more' then 'schools/find_out_more/show'
-          when 'email', 'sms' then key
+          when 'email', 'sms', 'alert' then key
           else 'no_template'
           end
         end
