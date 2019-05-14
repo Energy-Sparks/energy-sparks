@@ -7,6 +7,7 @@
 #  description   :text             not null
 #  frequency     :integer
 #  fuel_type     :integer
+#  has_ratings   :boolean          default(TRUE)
 #  has_variables :boolean          default(FALSE)
 #  id            :bigint(8)        not null, primary key
 #  show_ratings  :boolean          default(TRUE)
