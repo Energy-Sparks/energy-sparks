@@ -10,7 +10,7 @@ module Teachers
 
       if AggregateSchoolService.new(@school).in_cache_or_cache_off?
         @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
-        setup_find_out_more
+        setup_dashboard_alert
         setup_activity_suggestions
       else
         session[:aggregated_meter_collection_referrer] = request.original_fullpath
@@ -20,19 +20,22 @@ module Teachers
 
   private
 
-    def setup_find_out_more
-      @find_out_more_alert = @school.latest_find_out_mores.sample
+    def setup_dashboard_alert
+      @dashboard_alert = @school.latest_dashboard_alerts.teacher.sample
 
-      if @find_out_more_alert
-        @find_out_more_alert_content = TemplateInterpolation.new(
-          @find_out_more_alert.content_version,
+      if @dashboard_alert
+        @dashboard_alert_content = TemplateInterpolation.new(
+          @dashboard_alert.content_version,
+          with_objects: { find_out_more: @dashboard_alert.find_out_more },
           proxy: [:colour]
         ).interpolate(
           :teacher_dashboard_title,
-          with: @find_out_more_alert.alert.template_variables
+          with: @dashboard_alert.alert.template_variables
         )
-        activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @find_out_more_alert.activity_types, query: { not_completed_or_repeatable: true })
-        @find_out_more_alert_activity_types = activity_type_filter.activity_types.limit(3)
+        if @dashboard_alert_content.find_out_more
+          activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @dashboard_alert_content.find_out_more.activity_types, query: { not_completed_or_repeatable: true })
+          @find_out_more_activity_types = activity_type_filter.activity_types.limit(3)
+        end
       end
     end
 

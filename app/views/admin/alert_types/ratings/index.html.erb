@@ -1,6 +1,6 @@
 <%= render 'admin/alert_types/nav', alert_type: @alert_type %>
 
-<%= button_to 'Apply Find Out More changes', admin_find_out_more_calculation_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %>
+<%= button_to 'Apply changes', admin_content_generation_run_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %>
 
 <%= link_to 'New content rating range', new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
 
@@ -22,12 +22,17 @@
         <td><%= rating.rating_to %></td>
         <td><%= rating.description %></td>
         <td>
-          <span class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span>
-          <span class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
-          <span class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span>
+          <span title="Teacher dashboard alert" class="<%='text-success' if rating.teacher_dashboard_alert_active? %>"><%= fa_icon('chalkboard-teacher fa-2x') %></span> &nbsp;
+          <span title="Pupil dashboard alert" class="<%='text-success' if rating.pupil_dashboard_alert_active? %>"><%= fa_icon('users fa-2x') %></span> &nbsp;
+          <span title="Find out more" class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span> &nbsp;
+          <span title="SMS" class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span> &nbsp;
+          <span title="Email" class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
         </td>
         <td>
-          <%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn btn-primary btn-sm'%>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn btn-primary btn-sm' %>
+            <%= link_to "Activity types (#{rating.activity_types.count})", admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn btn-secondary btn-sm' %>
+          </div>
         </td>
       </tr>
     <% end %>

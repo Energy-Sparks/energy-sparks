@@ -9,7 +9,6 @@ module Amr
     let(:file_name) { 'example.csv' }
     let!(:config) {
       AmrDataFeedConfig.new(
-        area_id: 2,
         description: 'Banes',
         s3_folder: 'banes',
         s3_archive_folder: 'archive-banes',
@@ -31,7 +30,6 @@ module Amr
 
     let!(:frome_config) {
       AmrDataFeedConfig.new(
-        area_id: 3,
         description: 'Frome',
         s3_folder: 'frome',
         s3_archive_folder: 'archive-frome',
@@ -48,7 +46,6 @@ module Amr
 
     let!(:historical_frome_config) {
       AmrDataFeedConfig.new(
-        area_id: 4,
         description: 'Frome Historical',
         s3_folder: 'frome-historical',
         s3_archive_folder: 'archive-frome-historical',
@@ -66,7 +63,6 @@ module Amr
 
     let!(:sheffield_config) {
         AmrDataFeedConfig.new(
-        area_id: 3,
         description: 'Sheffield',
         s3_folder: 'sheffield',
         s3_archive_folder: 'archive-sheffield',
@@ -83,7 +79,6 @@ module Amr
 
     let!(:sheffield_gas_config) {
         AmrDataFeedConfig.new(
-        area_id: 3,
         description: 'Sheffield Gas',
         s3_folder: 'sheffield-gas',
         s3_archive_folder: 'archive-sheffield-gas',

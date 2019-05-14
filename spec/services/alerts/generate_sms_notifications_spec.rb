@@ -19,8 +19,7 @@ describe Alerts::GenerateSmsNotifications do
     expect(SendSms).to receive(:new).with("EnergySparks alert: You need to fix something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
     expect(send_sms_service).to receive(:send).ordered
 
-    Alerts::GenerateSubscriptionEvents.new(school, alert_1).perform
-    Alerts::GenerateSubscriptionEvents.new(school, alert_2).perform
+    Alerts::GenerateSubscriptionEvents.new(school).perform(frequency: AlertType.frequencies.keys)
     Alerts::GenerateSmsNotifications.new.perform
 
     expect(AlertSubscriptionEvent.all.all?{|event| event.status == 'sent'}).to eq(true)

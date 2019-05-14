@@ -1,4 +1,4 @@
-<% content_for :page_title do %><%= @school.name %><% end %>
+<%= content_for :page_title, @school.name %>
 
 <% if @school.active? %>
   <% if can? :deactivate, @school %>
@@ -18,71 +18,63 @@
   </div>
 <% end %>
 
-<div class="row">
-  <div class="col-sm">
-    <h2>Energy Usage </h2>
-  </div>
-  <div class=" align-self-end">
-    <%= link_to school_analysis_path(@school), class: 'btn btn-success' do %>
-      <%= fa_icon 'chart-pie' %> Learn more about how your school uses energy
-    <% end %>
-  </div>
+<div class="d-flex justify-content-between align-items-center">
+  <h2>Energy Usage</h2>
+  <div class="h5"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school) %></div>
 </div>
 <p></p>
 <div class="row teachers">
   <% if @school.meters_for_supply(:electricity).any? %>
     <div id="chart_wrapper_0" class="col-sm">
-      <div class="row no-gutters">
-        <div class="col-lg-7">
-          <h3><%= fa_icon fuel_type_icon(:electricity) %> Electricity</h3>
-        </div>
-        <div class="col-lg-5">
-          <%= link_to usage_school_path(@school, period: :daily, supply: :electricity), class: 'btn btn-primary', title: "See how the school's energy use varies over a week" do %>
-            <%= fa_icon 'chart-bar' %> Explore weekly
-          <% end %>
-          <%= link_to usage_school_path(@school, period: :hourly, supply: :electricity), class: 'btn btn-primary', title: "See how the school's energy use varies over a day" do %>
-            <%= fa_icon 'chart-bar' %> Explore daily
-          <% end %>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="h3"><b><%= fa_icon fuel_type_icon(:electricity) %> Electricity</b></div>
+        <div class="h5 explore">
+          Explore
+          <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
+          /
+          <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :electricity), title: "See how the school's energy use varies over a day" %>
+          usage
         </div>
       </div>
-      <p class="pull-right small ">14 days leading up to <%= nice_dates @school.last_full_week(:electricity).last if @school.last_full_week(:electricity) %></p>
-      <div id="chart_0" class="analysis-chart" data-no-advice="true" data-chart-index="0" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_electricity&chart_y_axis_units=kwh' %>"></div>
+
+      <div id="chart_0" class="analysis-chart" data-no-advice="true" data-no-zoom="true" data-chart-index="0" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_electricity&chart_y_axis_units=kwh' %>"></div>
     </div>
   <% end %>
   <% if @school.meters_for_supply(:gas).any? %>
     <div id="chart_wrapper_1" class="col-sm">
-      <div class="row no-gutters">
-        <div class="col-md-7">
-          <h3><%= fa_icon fuel_type_icon(:gas) %> Gas <span class="h6" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span></h3>
-        </div>
-        <div class="col-md-5">
-         <%= link_to usage_school_path(@school, period: :daily, supply: :gas), class: 'btn btn-primary', title: "See how the school's energy use varies over a week" do %>
-            <%= fa_icon 'chart-bar' %> Explore weekly
-          <% end %>
-          <%= link_to usage_school_path(@school, period: :hourly, supply: :gas), class: 'btn btn-primary', title: "See how the school's energy use varies over a day" do %>
-            <%= fa_icon 'chart-bar' %> Explore daily
-          <% end %>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="h3"><b><%= fa_icon fuel_type_icon(:gas) %> Gas</b></div>
+        <span class="small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
+        <div class="h5 explore">
+          Explore
+          <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a week" %>
+          /
+          <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :gas), title: "See how the school's energy use varies over a day" %>
+          usage
         </div>
       </div>
-      <p class="pull-right small">14 days leading up to <%= nice_dates @school.last_full_week(:gas).last if @school.last_full_week(:gas) %></p>
-      <div id="chart_1" class="analysis-chart" data-no-advice="true" data-chart-index="1" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_gas&chart_y_axis_units=kwh' %>"></div>
+      <div class="d-flex justify-content-between">
+
+      </div>
+
+      <div id="chart_1" class="analysis-chart" data-no-advice="true" data-no-zoom="true" data-chart-index="1" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_gas&chart_y_axis_units=kwh' %>"></div>
     </div>
   <% end %>
 </div>
 
-<% if @find_out_more_alert %>
+<% if @dashboard_alert %>
   <div class="row">
     <div class="col-md-12">
-      <%= render 'schools/find_out_more/alert', content: @find_out_more_alert_content, school: @school, find_out_more: @find_out_more_alert, dashboard_title: @find_out_more_alert_content.teacher_dashboard_title %>
+      <%= render 'schools/dashboard_alerts/alert', alert: @dashboard_alert.alert, content: @dashboard_alert_content, school: @school, find_out_more: @dashboard_alert_content.find_out_more, dashboard_title: @dashboard_alert_content.teacher_dashboard_title %>
     </div>
   </div>
 
-  <% unless @find_out_more_alert_activity_types.empty? %>
+  <% unless @find_out_more_activity_types.nil? || @find_out_more_activity_types.empty? %>
     <div class="row">
       <div class="col-md-12 jumbotron things-to-try pt-3 pb-3">
         <h2>Things to try</h2>
         <ul>
-          <% @find_out_more_alert_activity_types.each do |activity_type| %>
+          <% @find_out_more_activity_types.each do |activity_type| %>
             <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
           <% end %>
         </ul>

@@ -114,7 +114,7 @@ RSpec.describe ActivityTypesController, type: :controller do
           put :update, params: { id: activity_type.to_param, activity_type: new_attributes }
           activity_type.reload
           expect(activity_type.name).to eq new_attributes[:name]
-          expect(activity_type.description).to eq new_attributes[:description]
+          expect(activity_type.description.to_plain_text).to eq new_attributes[:description]
           expect(activity_type.active).to eq new_attributes[:active]
         end
 

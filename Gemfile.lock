@@ -1,10 +1,11 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 3026a32600fe79c31f9ed09e2a615dcaa42bd9bc
-  tag: 0.41.12-rails6-rc1
+  revision: 0cde88368b301c2a4d06ecc7caf940f6c59d2066
+  tag: 0.43.3
   specs:
-    energy-sparks_analytics (0.41.12.pre.rails6.pre.rc1)
-      activesupport (~> 6.0.0.beta3)
+    energy-sparks_analytics (0.43.3.pre.includes.pre.bishop.pre.sutton.pre.patch.pre.and.pre.significant.pre.figures.pre.walkley.pre.fix)
+      activesupport (~> 6.0.0.rc1)
+      benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
       hash_diff (~> 1.0.0)
       html-table (~> 1.5.1)
@@ -14,6 +15,7 @@ GIT
       require_all (~> 2.0.0)
       roo (~> 2.7.1)
       roo-xls (~> 1.2.0)
+      rspec (~> 3.8.0)
       ruby-prof (~> 0.17.0)
       ruby-sun-times (~> 0.1.5)
       soda-ruby (~> 0.2.25)
@@ -146,6 +148,8 @@ GEM
     aws-sigv4 (1.0.3)
     backports (3.14.0)
     bcrypt (3.1.12)
+    benchmark-memory (0.1.2)
+      memory_profiler (~> 0.9)
     better_errors (2.5.0)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -255,6 +259,9 @@ GEM
     ffi (1.9.25)
     font-awesome-sass (5.6.1)
       sassc (>= 1.11)
+    foreman (0.63.0)
+      dotenv (>= 0.7)
+      thor (>= 0.13.6)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     govuk-lint (3.10.0)
@@ -278,6 +285,9 @@ GEM
       domain_name (~> 0.5)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    image_processing (1.7.1)
+      mini_magick (~> 4.0)
+      ruby-vips (>= 2.0.13, < 3)
     iniparse (1.4.4)
     interpolate (0.3.0)
     jaro_winkler (1.5.2)
@@ -319,11 +329,13 @@ GEM
       nokogiri (~> 1.6)
       ntlm-http (~> 0.1, >= 0.1.1)
       webrobots (>= 0.0.9, < 0.2)
+    memory_profiler (0.9.13)
     method_source (0.9.2)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
+    mini_magick (4.9.2)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minimization (0.2.5)
@@ -389,6 +401,8 @@ GEM
     rack-canonical-host (0.2.3)
       addressable (> 0, < 3)
       rack (>= 1.0.0, < 3)
+    rack-proxy (0.6.5)
+      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.0.rc1)
@@ -453,6 +467,10 @@ GEM
       roo (>= 2.0.0, < 3)
       spreadsheet (> 0.9.0)
     rserve-client (0.3.5)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.3)
@@ -480,10 +498,12 @@ GEM
       unicode-display_width (~> 1.4.0)
     rubocop-rspec (1.32.0)
       rubocop (>= 0.60.0)
-    ruby-ole (1.2.12.1)
+    ruby-ole (1.2.12.2)
     ruby-prof (0.17.0)
     ruby-progressbar (1.10.0)
     ruby-sun-times (0.1.5)
+    ruby-vips (2.0.13)
+      ffi (~> 1.9)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
     rubyvis (0.6.1)
@@ -528,7 +548,7 @@ GEM
       hashie (~> 3.5)
       multipart-post (~> 2.0.0)
       sys-uname (~> 1.0.2)
-    spreadsheet (1.1.9)
+    spreadsheet (1.2.3)
       ruby-ole (>= 1.0)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -569,8 +589,8 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    unicode-display_width (1.4.0)
-    uniform_notifier (1.11.0)
+    unicode-display_width (1.4.1)
+    uniform_notifier (1.12.1)
     upsert (2.2.1)
     warden (1.2.8)
       rack (>= 2.0.6)
@@ -587,6 +607,10 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
+    webpacker (4.0.2)
+      activesupport (>= 4.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 4.2)
     webrobots (0.1.2)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
@@ -636,10 +660,12 @@ DEPENDENCIES
   fakefs
   fasterer
   font-awesome-sass (~> 5.6.1)
+  foreman
   friendly_id!
   govuk-lint
   groupdate (= 4.0.1)
   handlebars_assets
+  image_processing (~> 1.2)
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
@@ -679,6 +705,7 @@ DEPENDENCIES
   web-console
   webdrivers
   webmock
+  webpacker (~> 4.0)
 
 RUBY VERSION
    ruby 2.5.3p105

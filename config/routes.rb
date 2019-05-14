@@ -121,15 +121,16 @@ Rails.application.routes.draw do
 
     resources :alert_types, only: [:index, :show] do
       scope module: :alert_types do
-        resource :activity_types, only: [:show, :update]
-        resources :ratings, only: [:index, :new, :create, :edit, :update]
+        resources :ratings, only: [:index, :new, :create, :edit, :update] do
+          resource :activity_types, only: [:show, :update]
+        end
         namespace :ratings do
           resource :preview, only: :show, controller: 'preview'
         end
       end
     end
     resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
-    resource :find_out_more_calculation
+    resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'

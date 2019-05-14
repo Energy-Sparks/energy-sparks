@@ -25,10 +25,6 @@
 #  units_field             :text
 #  updated_at              :datetime         not null
 #
-# Indexes
-#
-#  index_amr_data_feed_configs_on_area_id  (area_id)
-#
 
 class AmrDataFeedConfig < ApplicationRecord
   def map_of_fields_to_indexes(header = nil)

@@ -5,7 +5,6 @@
 #  activity_category_id :bigint(8)
 #  activity_type_id     :bigint(8)
 #  created_at           :datetime         not null
-#  description          :text
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
 #  school_id            :bigint(8)
@@ -30,6 +29,10 @@ class Activity < ApplicationRecord
   belongs_to :activity_type
   belongs_to :activity_category
   validates_presence_of :school_id, :activity_type_id, :activity_category_id, :happened_on
+
+  has_rich_text :description
+
+  self.ignored_columns = %w(deprecated_description)
 
   def display_name
     activity_type.custom ? title : activity_type.name

@@ -8,6 +8,7 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'managing associated activities' do
 
+    let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type)}
     let!(:activity_category) { create(:activity_category)}
     let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
     let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
@@ -21,7 +22,9 @@ RSpec.describe 'alert type management', type: :system do
     it 'assigns activity types to alerts via a text box position' do
 
       click_on 'Your gas usage is too high'
-      click_on 'Associated activity types'
+      click_on 'Content management'
+
+      click_on 'Activity types'
 
       expect(page.find_field('Turn off the light').value).to be_blank
       expect(page.find_field('Turn down the heating').value).to be_blank
@@ -29,12 +32,13 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Turn down the heating', with: '1'
 
       click_on 'Update associated activity type', match: :first
+      click_on 'Activity types'
 
       expect(page.find_field('Turn off the light').value).to be_blank
       expect(page.find_field('Turn down the heating').value).to eq('1')
 
-      expect(gas_fuel_alert_type.activity_types).to match_array([activity_type_2])
-      expect(gas_fuel_alert_type.alert_type_activity_types.first.position).to eq(1)
+      expect(alert_type_rating.activity_types).to match_array([activity_type_2])
+      expect(alert_type_rating.alert_type_rating_activity_types.first.position).to eq(1)
 
     end
   end
@@ -64,12 +68,28 @@ RSpec.describe 'alert type management', type: :system do
 
       select 'red', from: 'Colour'
 
-      check 'Find out more'
+      check 'Teacher dashboard alert'
       fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
-      fill_in 'Pupil dashboard title', with: 'You are using too much gas'
+      within '.teacher_dashboard_alert_active' do
+        click_on 'Preview'
+        within '#teacher-dashboard-alert-preview .content' do
+          expect(page).to have_content('Your gas usage is too high')
+        end
+      end
+
+      check 'Pupil dashboard alert'
+      fill_in 'Pupil dashboard title', with: 'Your gas usage is too high'
+      within '.pupil_dashboard_alert_active' do
+        click_on 'Preview'
+        within '#pupil-dashboard-alert-preview .content' do
+          expect(page).to have_content('Your gas usage is too high')
+        end
+      end
+
+      check 'Find out more'
       fill_in 'Page title', with: 'You are using too much gas!'
 
-      within '.alert_type_rating_content_chart_variable' do
+      within '.alert_type_rating_content_find_out_more_chart_variable' do
         expect(page).to have_unchecked_field('chart description A')
         expect(page).to have_unchecked_field('chart description B')
         expect(page).to have_checked_field('None')
@@ -120,7 +140,7 @@ RSpec.describe 'alert type management', type: :system do
       alert_type_rating = gas_fuel_alert_type.ratings.first
       expect(alert_type_rating.content_versions.size).to eq(1)
       first_content = alert_type_rating.current_content
-      expect(first_content.page_title).to eq('You are using too much gas!')
+      expect(first_content.find_out_more_title).to eq('You are using too much gas!')
       expect(first_content.sms_content).to eq('Your gas usage is too high')
 
       click_on 'Edit'
@@ -130,9 +150,9 @@ RSpec.describe 'alert type management', type: :system do
 
       expect(alert_type_rating.content_versions.size).to eq(2)
       second_content = alert_type_rating.current_content
-      expect(second_content.page_title).to eq('Stop using so much gas!')
-      expect(second_content.chart_variable).to eq('chart_b')
-      expect(second_content.chart_title).to eq('This is a chart')
+      expect(second_content.find_out_more_title).to eq('Stop using so much gas!')
+      expect(second_content.find_out_more_chart_variable).to eq('chart_b')
+      expect(second_content.find_out_more_chart_title).to eq('This is a chart')
     end
   end
 end

@@ -11,7 +11,7 @@ function chartFailure(title, chartIndex) {
   $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#chart_wrapper_' + chartIndex + '" class="alert-link">chart</a></div>');
 }
 
-function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
+function chartSuccess(chart_data, chart, chartIndex, noAdvice, noZoom) {
 
   var chartDiv = chart.renderTo;
   var $chartDiv = $(chartDiv);
@@ -41,7 +41,7 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice) {
   }
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(chart_data, chart, chartIndex, seriesData, chartType);
+    barColumnLine(chart_data, chart, chartIndex, seriesData, chartType, noZoom);
 
   // Scatter
   } else if (chartType == 'scatter') {
@@ -70,6 +70,7 @@ function processAnalysisCharts(){
       var chartIndex = $(this).data('chart-index');
       var dataPath = $(this).data('chart-json');
       var noAdvice = $(this).is("[data-no-advice]");
+      var noZoom = $(this).is("[data-no-zoom]");
 
       var requestData = {
         chart_type: chartType,
@@ -108,7 +109,7 @@ function processAnalysisCharts(){
           if (this_chart_data.series_data == null) {
             chartFailure(this_chart_data.title, chartIndex);
           } else {
-            chartSuccess(this_chart_data, thisChart, chartIndex, noAdvice);
+            chartSuccess(this_chart_data, thisChart, chartIndex, noAdvice, noZoom);
           }
         },
         error: function(broken) {

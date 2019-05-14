@@ -4,20 +4,21 @@ module Alerts
       @school = school
     end
 
-    def perform
+    def perform(content_generation_run: nil)
       ActiveRecord::Base.transaction do
-        calculation = FindOutMoreCalculation.create!(school: @school)
+        content_generation_run ||= ContentGenerationRun.create!(school: @school)
         @school.alerts.latest.each do |alert|
-          process_find_out_mores(alert, calculation)
+          process_find_out_mores(alert, content_generation_run)
         end
+        content_generation_run.find_out_mores
       end
     end
 
   private
 
-    def process_find_out_mores(alert, calculation)
+    def process_find_out_mores(alert, content_generation_run)
       FetchContent.new(alert).content_versions(find_out_more_active: true).each do |content_version|
-        calculation.find_out_mores.create!(alert: alert, content_version: content_version)
+        content_generation_run.find_out_mores.create!(alert: alert, content_version: content_version)
       end
     end
   end

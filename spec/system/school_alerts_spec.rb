@@ -39,15 +39,26 @@ RSpec.describe "school alerts", type: :system do
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
-      let!(:alert_type_rating){ create(:alert_type_rating, alert_type: gas_fuel_alert_type, rating_from: 0, rating_to: 10, find_out_more_active: true)}
+      let!(:alert_type_rating) do
+        create(
+          :alert_type_rating,
+          alert_type: gas_fuel_alert_type,
+          rating_from: 0,
+          rating_to: 10,
+          find_out_more_active: true,
+          teacher_dashboard_alert_active: true,
+          pupil_dashboard_alert_active: true,
+          activity_types: [activity_type]
+        )
+      end
       let!(:alert_type_rating_content_version) do
         create(
           :alert_type_rating_content_version,
           alert_type_rating: alert_type_rating,
           teacher_dashboard_title: 'Your heating is on!',
           pupil_dashboard_title: 'It is too warm',
-          page_title: 'You might want to think about heating',
-          page_content: 'This is what you need to do'
+          find_out_more_title: 'You might want to think about heating',
+          find_out_more_content: 'This is what you need to do'
         )
       end
       let(:alert_summary){ 'Summary of the alert' }
@@ -68,8 +79,7 @@ RSpec.describe "school alerts", type: :system do
       end
 
       before do
-        gas_fuel_alert_type.update!(activity_types: [activity_type])
-        Alerts::GenerateFindOutMores.new(school).perform
+        Alerts::GenerateContent.new(school).perform
       end
 
       it 'can show a single alert with the associated activities' do

@@ -58,10 +58,10 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
 
-  has_many :alerts,                     inverse_of: :school, dependent: :destroy
-  has_many :find_out_more_calculations, inverse_of: :school
+  has_many :alerts,                  inverse_of: :school, dependent: :destroy
+  has_many :content_generation_runs, inverse_of: :school
 
-  has_many :simulations,          inverse_of: :school, dependent: :destroy
+  has_many :simulations, inverse_of: :school, dependent: :destroy
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
@@ -244,12 +244,15 @@ class School < ApplicationRecord
     scoreboard.position(self) + 1
   end
 
-  def latest_find_out_mores
-    calculation = find_out_more_calculations.order(created_at: :desc).first
-    if calculation
-      calculation.find_out_mores
+  def latest_content
+    content_generation_runs.order(created_at: :desc).first
+  end
+
+  def latest_dashboard_alerts
+    if latest_content
+      latest_content.dashboard_alerts
     else
-      FindOutMore.none
+      DashboardAlert.none
     end
   end
 

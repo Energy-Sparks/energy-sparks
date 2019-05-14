@@ -2,21 +2,21 @@
 #
 # Table name: alert_type_rating_content_versions
 #
-#  alert_type_rating_id    :bigint(8)        not null
-#  chart_title             :string           default("")
-#  chart_variable          :text             default("none")
-#  colour                  :integer          default("red"), not null
-#  created_at              :datetime         not null
-#  email_content           :text
-#  email_title             :string
-#  id                      :bigint(8)        not null, primary key
-#  page_content            :text
-#  page_title              :string
-#  pupil_dashboard_title   :string
-#  replaced_by_id          :integer
-#  sms_content             :string
-#  teacher_dashboard_title :string
-#  updated_at              :datetime         not null
+#  alert_type_rating_id         :bigint(8)        not null
+#  colour                       :integer          default("red"), not null
+#  created_at                   :datetime         not null
+#  email_content                :text
+#  email_title                  :string
+#  find_out_more_chart_title    :string           default("")
+#  find_out_more_chart_variable :text             default("none")
+#  find_out_more_content        :text
+#  find_out_more_title          :string
+#  id                           :bigint(8)        not null, primary key
+#  pupil_dashboard_title        :string
+#  replaced_by_id               :integer
+#  sms_content                  :string
+#  teacher_dashboard_title      :string
+#  updated_at                   :datetime         not null
 #
 # Indexes
 #
@@ -34,7 +34,15 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   enum colour: [:red, :yellow, :green]
 
   validates :colour, presence: true
-  validates :teacher_dashboard_title, :pupil_dashboard_title, :page_title, :page_content,
+  validates :teacher_dashboard_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.teacher_dashboard_alert_active?},
+    on: :create
+  validates :pupil_dashboard_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
+    on: :create
+  validates :find_out_more_title, :find_out_more_content,
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.find_out_more_active?},
     on: :create
@@ -52,9 +60,9 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def self.template_fields
     [
       :pupil_dashboard_title, :teacher_dashboard_title,
-      :page_title, :page_content,
+      :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
-      :chart_variable, :chart_title
+      :find_out_more_chart_variable, :find_out_more_chart_title
     ]
   end
 end
