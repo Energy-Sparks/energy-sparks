@@ -5,9 +5,7 @@ namespace :alerts do
     schools = School.active
     schools.each do |school|
       puts "Running WEEKLY alert subscription events for #{school.name}"
-      school.alerts.weekly.latest.each do |alert|
-        Alerts::GenerateSubscriptionEvents.new(school, alert).perform
-      end
+      Alerts::GenerateSubscriptionEvents.new(school).perform(frequency: [:weekly])
     end
     puts Time.zone.now
   end
@@ -17,14 +15,8 @@ namespace :alerts do
     schools = School.active
     schools.each do |school|
       if school.holiday_approaching?
-        puts "Running TERMLY alert subscription events for #{school.name}"
-        school.alerts.termly.latest.each do |alert|
-          Alerts::GenerateSubscriptionEvents.new(school, alert).perform
-        end
-
-        school.alerts.before_each_holiday.latest.each do |alert|
-          Alerts::GenerateSubscriptionEvents.new(school, alert).perform
-        end
+        puts "Running TERMLY, BEFORE_EACH_HOLIDAY alert subscription events for #{school.name}"
+        Alerts::GenerateSubscriptionEvents.new(school).perform(frequency: [:before_each_holiday, :termly])
       end
     end
     puts Time.zone.now
