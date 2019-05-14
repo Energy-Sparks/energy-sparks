@@ -34,7 +34,15 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   enum colour: [:red, :yellow, :green]
 
   validates :colour, presence: true
-  validates :teacher_dashboard_title, :pupil_dashboard_title, :find_out_more_title, :find_out_more_content,
+  validates :teacher_dashboard_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.teacher_dashboard_alert_active?},
+    on: :create
+  validates :pupil_dashboard_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
+    on: :create
+  validates :find_out_more_title, :find_out_more_content,
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.find_out_more_active?},
     on: :create
