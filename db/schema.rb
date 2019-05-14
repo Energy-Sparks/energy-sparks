@@ -229,7 +229,6 @@ ActiveRecord::Schema.define(version: 2019_05_10_102007) do
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
-    t.bigint "area_id"
     t.text "description", null: false
     t.text "s3_folder", null: false
     t.text "s3_archive_folder", null: false
@@ -250,7 +249,6 @@ ActiveRecord::Schema.define(version: 2019_05_10_102007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "handle_off_by_one", default: false
-    t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
