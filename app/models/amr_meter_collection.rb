@@ -47,6 +47,12 @@ class AmrMeterCollection < MeterCollection
     @solar_pv ||= @schedule_data_manager_service.solar_pv
   end
 
+  # rubocop:disable Naming/MemoizedInstanceVariableName
+  def grid_carbon_intensity
+    @uk_grid_carbon_intensity ||= @schedule_data_manager_service.co2
+  end
+  # rubocop:enable Naming/MemoizedInstanceVariableName
+
   def is_open?(time)
     ActiveSupport::Deprecation.warn('is_open? is deprecated, please replace with is_school_usually_open?(date, time_of_day)')
     school_day_in_hours(time)
@@ -80,6 +86,7 @@ private
     @area_name = active_record_school.area_name
     # Stored as big decimal
     @floor_area = active_record_school.floor_area.to_f
+    @default_energy_purchaser = @area_name # use the area name for the moment
 
     @solar_pv_meters = []
     @storage_heater_meters = []

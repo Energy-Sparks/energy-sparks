@@ -39,7 +39,7 @@ class Alert < ApplicationRecord
 
   scope :rating_between, ->(from, to) { where("(data->>'rating')::decimal BETWEEN ? AND ?", from, to) }
 
-  enum status: [:good, :poor, :not_enough_data, :failed]
+  enum status: [:good, :poor, :not_enough_data, :failed, :bad]
 
   def self.latest
     select('DISTINCT ON ("alert_type_id") alerts.*').order('alert_type_id', created_at: :desc)

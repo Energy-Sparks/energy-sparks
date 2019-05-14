@@ -28,6 +28,6 @@ class FindOutMore < ApplicationRecord
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
   def activity_types
-    alert.alert_type.ordered_activity_types
+    content_version.alert_type_rating.ordered_activity_types
   end
 end

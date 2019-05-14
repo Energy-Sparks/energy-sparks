@@ -7,7 +7,6 @@ describe AmrDataFeedReading do
 
   let(:amr_data_feed_config) {
     AmrDataFeedConfig.new(
-      area_id: 2,
       description: 'Banes',
       s3_folder: 'banes',
       s3_archive_folder: 'archive-banes',

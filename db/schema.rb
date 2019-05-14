@@ -158,11 +158,11 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
   end
 
-  create_table "alert_type_activity_types", force: :cascade do |t|
+  create_table "alert_type_rating_activity_types", force: :cascade do |t|
     t.bigint "activity_type_id", null: false
-    t.bigint "alert_type_id", null: false
     t.integer "position", default: 0, null: false
-    t.index ["alert_type_id", "activity_type_id"], name: "activity_alert_uniq", unique: true
+    t.bigint "alert_type_rating_id", null: false
+    t.index ["alert_type_rating_id"], name: "index_alert_type_rating_activity_types_on_alert_type_rating_id"
   end
 
   create_table "alert_type_rating_content_versions", force: :cascade do |t|
@@ -223,7 +223,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
-    t.bigint "area_id"
     t.text "description", null: false
     t.text "s3_folder", null: false
     t.text "s3_archive_folder", null: false
@@ -244,7 +243,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "handle_off_by_one", default: false
-    t.index ["area_id"], name: "index_amr_data_feed_configs_on_area_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -359,6 +357,14 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
     t.bigint "calendar_area_id"
     t.boolean "template", default: false
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
+  end
+
+  create_table "carbon_intensity_readings", force: :cascade do |t|
+    t.date "reading_date", null: false
+    t.decimal "carbon_intensity_x48", null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reading_date"], name: "index_carbon_intensity_readings_on_reading_date", unique: true
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -693,6 +699,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_085824) do
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
   add_foreign_key "alert_subscription_events", "emails"
+  add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
