@@ -46,6 +46,40 @@ describe Alerts::GenerateSubscriptionEvents do
           expect { service.perform(frequency: [:termly])}.to_not change { AlertSubscriptionEvent.count }
         end
 
+        it 'uses an existing run if one is passed inn' do
+          content_generation_run = create(:content_generation_run, school: school)
+          service.perform(frequency: [:weekly], content_generation_run: content_generation_run)
+          expect(ContentGenerationRun.count).to be 1
+          expect(content_generation_run.alert_subscription_events.size).to eq(4)
+        end
+
+        it 'creates a content generation run if one is not passed in' do
+          service.perform(frequency: [:weekly])
+          expect(ContentGenerationRun.count).to be 1
+          content_generation_run = ContentGenerationRun.first
+          expect(content_generation_run.alert_subscription_events.size).to eq(4)
+          expect(content_generation_run.school).to eq(school)
+        end
+
+        it 'assigns a find out more from the run, if it matches the content version' do
+          content_generation_run = create(:content_generation_run, school: school)
+          find_out_more = create(:find_out_more, content_version: content_version, alert: alert, content_generation_run: content_generation_run)
+
+          service.perform(frequency: [:weekly], content_generation_run: content_generation_run)
+          alert_subscription_event = content_generation_run.alert_subscription_events.first
+          expect(alert_subscription_event.find_out_more).to eq(find_out_more)
+        end
+
+        it 'does not assign the find out more if it is from different content' do
+          content_version_2 = create :alert_type_rating_content_version, alert_type_rating: alert_type_rating
+          content_generation_run = create(:content_generation_run, school: school)
+          find_out_more = create(:find_out_more, content_version: content_version_2, alert: alert, content_generation_run: content_generation_run)
+
+          service.perform(frequency: [:weekly], content_generation_run: content_generation_run)
+          alert_subscription_event = content_generation_run.alert_subscription_events.first
+          expect(alert_subscription_event.find_out_more).to be_nil
+        end
+
         it 'creates events and associates the content versions' do
           expect { service.perform(frequency: [:weekly])}.to change { AlertSubscriptionEvent.count }.by(4)
 
@@ -60,7 +94,7 @@ describe Alerts::GenerateSubscriptionEvents do
         end
 
         it 'ignores if events already exist' do
-          AlertSubscriptionEvent.create(alert: alert, contact: email_contact, status: :sent, communication_type: :email)
+          AlertSubscriptionEvent.create(alert: alert, contact: email_contact, status: :sent, communication_type: :email, content_generation_run: ContentGenerationRun.create(school: school))
           expect(AlertSubscriptionEvent.count).to eq 1
           service.perform(frequency: [:weekly])
           expect(AlertSubscriptionEvent.count).to eq 4

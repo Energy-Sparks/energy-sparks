@@ -19,5 +19,6 @@
 class ContentGenerationRun < ApplicationRecord
   has_many :find_out_mores
   has_many :dashboard_alerts
+  has_many :alert_subscription_events
   belongs_to :school
 end

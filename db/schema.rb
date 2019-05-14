@@ -153,9 +153,11 @@ ActiveRecord::Schema.define(version: 2019_05_10_102007) do
     t.bigint "email_id"
     t.bigint "alert_type_rating_content_version_id"
     t.bigint "find_out_more_id"
+    t.bigint "content_generation_run_id", null: false
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
+    t.index ["content_generation_run_id"], name: "index_alert_subscription_events_on_content_generation_run_id"
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
     t.index ["find_out_more_id"], name: "index_alert_subscription_events_on_find_out_more_id"
   end
@@ -710,6 +712,7 @@ ActiveRecord::Schema.define(version: 2019_05_10_102007) do
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
+  add_foreign_key "alert_subscription_events", "content_generation_runs", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "emails"
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade

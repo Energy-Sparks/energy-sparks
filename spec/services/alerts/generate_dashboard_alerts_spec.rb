@@ -45,7 +45,7 @@ describe Alerts::GenerateDashboardAlerts do
         expect(content_generation_run.school).to eq(school)
       end
 
-      it 'creates a find out more pairing the alert and the content for each active dashboard' do
+      it 'creates a dashboard alert pairing the alert and the content for each active dashboard' do
         service.perform
         expect(DashboardAlert.count).to be 2
         teacher_alert = DashboardAlert.teacher.first

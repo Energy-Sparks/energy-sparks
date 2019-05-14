@@ -16,6 +16,7 @@ class MoveDashboardTitlesToOwnObject < ActiveRecord::Migration[6.0]
     end
 
     add_reference :alert_subscription_events, :find_out_more, foreign_key: {on_delete: :nullify}
+    add_reference :alert_subscription_events, :content_generation_run, null: false, foreign_key: {on_delete: :cascade}
 
     reversible do |dir|
       dir.up do
