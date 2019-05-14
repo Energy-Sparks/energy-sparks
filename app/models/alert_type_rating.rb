@@ -2,16 +2,18 @@
 #
 # Table name: alert_type_ratings
 #
-#  alert_type_id        :bigint(8)        not null
-#  created_at           :datetime         not null
-#  description          :string           not null
-#  email_active         :boolean          default(FALSE)
-#  find_out_more_active :boolean          default(FALSE)
-#  id                   :bigint(8)        not null, primary key
-#  rating_from          :decimal(, )      not null
-#  rating_to            :decimal(, )      not null
-#  sms_active           :boolean          default(FALSE)
-#  updated_at           :datetime         not null
+#  alert_type_id                  :bigint(8)        not null
+#  created_at                     :datetime         not null
+#  description                    :string           not null
+#  email_active                   :boolean          default(FALSE)
+#  find_out_more_active           :boolean          default(FALSE)
+#  id                             :bigint(8)        not null, primary key
+#  pupil_dashboard_alert_active   :boolean          default(FALSE)
+#  rating_from                    :decimal(, )      not null
+#  rating_to                      :decimal(, )      not null
+#  sms_active                     :boolean          default(FALSE)
+#  teacher_dashboard_alert_active :boolean          default(FALSE)
+#  updated_at                     :datetime         not null
 #
 # Indexes
 #

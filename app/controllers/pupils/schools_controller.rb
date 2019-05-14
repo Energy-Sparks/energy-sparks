@@ -8,14 +8,17 @@ module Pupils
     before_action :redirect_if_inactive
 
     def show
-      @find_out_more_alerts = @school.latest_find_out_mores.sample(2).map do |find_out_more|
+      @dashboard_alerts = @school.latest_dashboard_alerts.pupil.sample(2).map do |dashboard_alert|
         TemplateInterpolation.new(
-          find_out_more.content_version,
-          with_objects: { find_out_more: find_out_more },
+          dashboard_alert.content_version,
+          with_objects: {
+            find_out_more: dashboard_alert.find_out_more,
+            alert: dashboard_alert.alert
+          },
           proxy: [:colour]
         ).interpolate(
           :pupil_dashboard_title,
-          with: find_out_more.alert.template_variables
+          with: dashboard_alert.alert.template_variables
         )
       end
       activity_setup(@school)

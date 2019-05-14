@@ -267,7 +267,7 @@ describe School do
     end
   end
 
-  describe '#latest_find_out_mores' do
+  describe '#latest_dashboard_alerts' do
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
     let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
@@ -275,22 +275,22 @@ describe School do
     let(:content_version_1){ create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
     let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
-    let(:calculation_1){ create(:find_out_more_calculation, school: school, created_at: 1.day.ago)}
-    let(:calculation_2){ create(:find_out_more_calculation, school: school, created_at: Date.today)}
+    let(:content_generation_run_1){ create(:content_generation_run, school: school, created_at: 1.day.ago)}
+    let(:content_generation_run_2){ create(:content_generation_run, school: school, created_at: Date.today)}
 
-    context 'where there is a calculation' do
+    context 'where there is a content run' do
 
-      let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_1) }
-      let!(:find_out_more_2){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_2) }
+      let!(:dashboard_alert_1){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_1) }
+      let!(:dashboard_alert_2){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_2) }
 
-      it 'selects the find out mores from the most recent calculation' do
-        expect(school.latest_find_out_mores).to match_array([find_out_more_2])
+      it 'selects the dashboard alerts from the most recent run' do
+        expect(school.latest_dashboard_alerts).to match_array([dashboard_alert_2])
       end
     end
 
-    context 'where there is no calculation' do
+    context 'where there is no run' do
       it 'returns an empty set' do
-        expect(school.latest_find_out_mores).to be_empty
+        expect(school.latest_dashboard_alerts).to be_empty
       end
     end
 

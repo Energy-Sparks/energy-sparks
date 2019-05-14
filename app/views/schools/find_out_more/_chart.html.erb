@@ -1,6 +1,6 @@
 <div id="chart_wrapper_1" class="col-md-auto">
-  <% unless content.chart_title.blank? %>
-    <h3 class="analysis"><%= content.chart_title %></h3>
+  <% unless content.find_out_more_chart_title.blank? %>
+    <h3 class="analysis"><%= content.find_out_more_chart_title %></h3>
   <% end %>
   <div id="chart_1" class="analysis-chart find-out-more" data-no-advice data-chart-index="1" data-chart-type="<%= chart %>" data-chart-y-axis-units="£" data-chart-json="<%= school_chart_path(school, format: :json, chart_type: chart, chart_y_axis_units: :kwh) %>">
   </div>

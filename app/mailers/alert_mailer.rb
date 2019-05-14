@@ -17,7 +17,7 @@ class AlertMailer < ApplicationMailer
         event.content_version,
         with_objects: {
           alert: event.alert,
-          find_out_more: event.associated_find_out_more
+          find_out_more: event.find_out_more
         },
       ).interpolate(
         :email_content, :email_title,
