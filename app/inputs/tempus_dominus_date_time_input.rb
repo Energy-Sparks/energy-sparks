@@ -11,7 +11,6 @@ class TempusDominusDateTimeInput < TempusDominusDateInput
     if value.nil? && options.key?(:default_date_time)
       value = options[:default_date_time].strftime("%d/%m/%Y %H:%M")
     end
-    puts value
     value
   end
 end
