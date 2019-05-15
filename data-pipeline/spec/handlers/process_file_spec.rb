@@ -85,7 +85,7 @@ describe DataPipeline::Handlers::ProcessFile do
 
         it 'normalises them' do
           request = client.api_requests.last
-          expect(request[:params][:body].readlines.all?{|line| line.match?(/\r\n\Z/)}).to eq(true)
+          expect(request[:params][:body].readlines.all?{|line| line.match?(/[^\r]\n\Z/)}).to eq(true)
         end
       end
 
