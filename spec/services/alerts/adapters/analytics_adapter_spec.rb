@@ -18,11 +18,11 @@ describe Alerts::Adapters::AnalyticsAdapter do
       {template: 'variables'}
     end
 
-    def front_end_template_charts
+    def front_end_template_chart_data
       {chart: 'variables'}
     end
 
-    def front_end_template_tables
+    def front_end_template_table_data
       {table: 'variables'}
     end
 

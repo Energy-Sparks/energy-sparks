@@ -8,8 +8,8 @@ module Alerts
         variables = if pull_variable_data?(analysis_report)
                       {
                         template_data: analysis_obj.front_end_template_data,
-                        chart_data:    analysis_obj.front_end_template_charts,
-                        table_data:    analysis_obj.front_end_template_tables
+                        chart_data:    analysis_obj.front_end_template_chart_data,
+                        table_data:    analysis_obj.front_end_template_table_data
                       }
                     else
                       {}

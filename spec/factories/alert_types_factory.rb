@@ -36,6 +36,13 @@ module Alerts
         )
       end
 
+      def front_end_template_chart_data
+      end
+
+      def self.front_end_template_charts
+        TEMPLATE_VARIABLES
+      end
+
       def self.front_end_template_variables
         { "Dummy alert" => TEMPLATE_VARIABLES, "Common" => {} }
       end
