@@ -31,4 +31,10 @@ $(document).ready(function() {
     pane.find('.loading').show();
     pane.find('.content').html('');
   });
+
+  $('.content-section .tab-pane:has(.is-invalid)').each(function(){
+    var tab_pane = $(this);
+    var tab = $('#' + tab_pane.attr('aria-labelledby'));
+    tab.find('.text-danger').removeClass('d-none');
+  });
 });
