@@ -7,11 +7,11 @@ module Admin
       before_action :set_available_charts, except: [:index]
 
       def index
-        @ratings = @alert_type.ratings.order(rating_from: :asc)
+        @ratings = @alert_type.ratings.order(rating_from: :asc, rating_to: :asc, description: :asc)
       end
 
       def new
-        @rating = AlertTypeRating.new
+        @rating = @alert_type.has_ratings? ? AlertTypeRating.new : AlertTypeRating.new(rating_from: 0, rating_to: 10)
         @content = AlertTypeRatingContentVersion.new
       end
 

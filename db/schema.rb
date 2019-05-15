@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 2019_05_14_140558) do
     t.boolean "show_ratings", default: true
     t.boolean "has_variables", default: false
     t.integer "source", default: 0, null: false
+    t.boolean "has_ratings", default: true
   end
 
   create_table "alerts", force: :cascade do |t|
