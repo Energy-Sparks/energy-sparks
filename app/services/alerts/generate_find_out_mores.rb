@@ -17,7 +17,7 @@ module Alerts
   private
 
     def process_find_out_mores(alert, content_generation_run)
-      FetchContent.new(alert).content_versions(find_out_more_active: true).each do |content_version|
+      FetchContent.new(alert).content_versions(scope: :find_out_more).each do |content_version|
         content_generation_run.find_out_mores.create!(alert: alert, content_version: content_version)
       end
     end
