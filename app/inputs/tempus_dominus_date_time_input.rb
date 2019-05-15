@@ -7,10 +7,11 @@ class TempusDominusDateTimeInput < TempusDominusDateInput
   end
 
   def input_value
-    value = @builder.object.send(attribute_name)
+    value = @builder.object.send(attribute_name).try(:strftime, "%d/%m/%Y %H:%M")
     if value.nil? && options.key?(:default_date_time)
-      value = options[:default_date_time].to_s(:long_ordinal)
+      value = options[:default_date_time].strftime("%d/%m/%Y %H:%M")
     end
+    puts value
     value
   end
 end

@@ -10,7 +10,7 @@ $(document).ready(function() {
 
   $('div.input-group.tempus-dominus-date-time').each(function() {
     $(this).datetimepicker({
-      format: 'MMMM Do YYYY hh:mm',
+      format: 'DD/MM/YYYY HH:mm',
       allowInputToggle: true,
       sideBySide: true
     });
