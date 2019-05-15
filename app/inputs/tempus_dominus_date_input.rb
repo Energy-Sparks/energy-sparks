@@ -11,7 +11,11 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value
-    @builder.object.send(attribute_name).try(:strftime, "%d/%m/%Y") || Time.zone.today.strftime("%d/%m/%Y")
+    value = @builder.object.send(attribute_name).try(:strftime, "%d/%m/%Y")
+    if value.nil? && options.key?(:default_date)
+      value = options[:default_date].try(:strftime, "%d/%m/%Y")
+    end
+    value
   end
 
   def div_button
