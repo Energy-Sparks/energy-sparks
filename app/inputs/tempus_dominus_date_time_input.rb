@@ -6,10 +6,22 @@ class TempusDominusDateTimeInput < TempusDominusDateInput
     end
   end
 
+  def input_group_class
+    "tempus-dominus-date-time".freeze
+  end
+
+  def input_value_key
+    :default_date_time
+  end
+
+  def input_value_format
+    "%d/%m/%Y %H:%M".freeze
+  end
+
   def input_value
-    value = @builder.object.send(attribute_name).try(:strftime, "%d/%m/%Y %H:%M")
-    if value.nil? && options.key?(:default_date_time)
-      value = options[:default_date_time].strftime("%d/%m/%Y %H:%M")
+    value = @builder.object.send(attribute_name).try(:strftime, input_value_format)
+    if value.nil? && options.key?(input_value_key)
+      value = options[input_value_key].strftime(input_value_format)
     end
     value
   end
