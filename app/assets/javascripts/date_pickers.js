@@ -7,4 +7,11 @@ $(document).ready(function() {
       allowInputToggle: true,
     });
   });
+
+  $('div.input-group.tempus-dominus-date-time').each(function() {
+    $(this).datetimepicker({
+      allowInputToggle: true,
+      sideBySide: true
+    });
+  });
 });
