@@ -7,6 +7,10 @@ class TempusDominusDateTimeInput < TempusDominusDateInput
   end
 
   def input_value
-    @builder.object.send(attribute_name) || Time.zone.now
+    value = @builder.object.send(attribute_name)
+    if value.nil? && options.key?(:default_date_time)
+      value = options[:default_date_time].to_s(:long_ordinal)
+    end
+    value
   end
 end
