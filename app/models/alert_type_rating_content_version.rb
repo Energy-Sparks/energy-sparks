@@ -98,15 +98,27 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     ]
   end
 
+  def meets_timings?(scope:, today:)
+    start_date, end_date = start_end_end_date(scope)
+    meets_start_date = start_date ? start_date <= today : true
+    meets_end_date = end_date ? end_date >= today : true
+    meets_start_date && meets_end_date
+  end
+
   def timings_are_correct(scope)
-    start_date_field = :"#{scope}_start_date"
-    end_date_field = :"#{scope}_end_date"
-    start_date = self[start_date_field]
-    end_date = self[end_date_field]
+    start_date, end_date = start_end_end_date(scope)
     if start_date.present? && end_date.present?
       if end_date < start_date
-        errors.add(end_date_field, 'must be on or after start date')
+        errors.add(:"#{scope}_end_date", 'must be on or after start date')
       end
     end
+  end
+
+private
+
+  def start_end_end_date(scope)
+    start_date_field = :"#{scope}_start_date"
+    end_date_field = :"#{scope}_end_date"
+    return self[start_date_field], self[end_date_field]
   end
 end

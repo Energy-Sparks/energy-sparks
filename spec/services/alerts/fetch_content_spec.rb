@@ -66,6 +66,18 @@ describe Alerts::FetchContent do
         expect(service.content_versions(scope: :find_out_more)).to match_array([])
       end
     end
+
+    describe 'timings' do
+      let!(:content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating, find_out_more_start_date: Date.new(2019, 5, 15)}
+
+      it 'returns no content when the timings do not match' do
+        expect(service.content_versions(scope: :find_out_more, today: Date.new(2019, 5, 14))).to match_array([])
+      end
+
+      it 'returns content when the timings match' do
+        expect(service.content_versions(scope: :find_out_more, today: Date.new(2019, 5, 16))).to match_array([content_version])
+      end
+    end
   end
 
   context 'when there is no content' do
