@@ -23,6 +23,7 @@ module DataPipeline
           file.body.each_line do |line|
             file_body.puts line.encode('UTF-8', universal_newline: true)
           end
+          file_body.rewind
         else
           file_body = file.body
         end
