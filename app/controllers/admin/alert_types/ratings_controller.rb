@@ -52,7 +52,7 @@ module Admin
 
       def content_params
         params.require(:alert_type_rating).permit(
-          content: [:colour] + AlertTypeRatingContentVersion.template_fields
+          content: [:colour] + AlertTypeRatingContentVersion.template_fields + AlertTypeRatingContentVersion.timing_fields
         )
       end
 

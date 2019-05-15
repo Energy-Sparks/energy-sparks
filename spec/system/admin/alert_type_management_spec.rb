@@ -70,18 +70,27 @@ RSpec.describe 'alert type management', type: :system do
 
       check 'Teacher dashboard alert'
       fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
+
+
       within '.teacher_dashboard_alert_active' do
+
+        click_on 'Timings'
+        select '2019',     from: "alert_type_rating_content_teacher_dashboard_alert_start_date_1i"
+        select 'December', from: "alert_type_rating_content_teacher_dashboard_alert_start_date_2i"
+        select '1',        from: "alert_type_rating_content_teacher_dashboard_alert_start_date_3i"
+
         click_on 'Preview'
-        within '#teacher-dashboard-alert-preview .content' do
+        within '#teacher_dashboard_alert-preview .content' do
           expect(page).to have_content('Your gas usage is too high')
         end
+
       end
 
       check 'Pupil dashboard alert'
       fill_in 'Pupil dashboard title', with: 'Your gas usage is too high'
       within '.pupil_dashboard_alert_active' do
         click_on 'Preview'
-        within '#pupil-dashboard-alert-preview .content' do
+        within '#pupil_dashboard_alert-preview .content' do
           expect(page).to have_content('Your gas usage is too high')
         end
       end
@@ -104,7 +113,7 @@ RSpec.describe 'alert type management', type: :system do
 
         click_on 'Preview'
 
-        within '#find-out-more-preview .content' do
+        within '#find_out_more-preview .content' do
           expect(page).to have_content('You are using 10% too much gas!')
         end
       end
@@ -142,6 +151,7 @@ RSpec.describe 'alert type management', type: :system do
       first_content = alert_type_rating.current_content
       expect(first_content.find_out_more_title).to eq('You are using too much gas!')
       expect(first_content.sms_content).to eq('Your gas usage is too high')
+      expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
 
       click_on 'Edit'
 

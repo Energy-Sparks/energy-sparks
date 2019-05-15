@@ -14,33 +14,33 @@
   <h3>Content</h3>
 
   <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
-    <%= render 'preview_section', scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms) do %>
+    <%= render 'preview_section', content: content, scope: :sms, preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms) do %>
       <%= content.input :sms_content, label: 'SMS content' %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :email_active, field_name: 'Email content' do %>
-    <%= render 'preview_section', scope: 'email', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email) do %>
+    <%= render 'preview_section', content: content, scope: :email, preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email) do %>
       <%= content.input :email_title, as: :string %>
       <%= content.input :email_content, as: :trix_editor %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :teacher_dashboard_alert_active, field_name: 'Teacher dashboard alert' do %>
-    <%= render 'preview_section', scope: 'teacher-dashboard-alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :teacher_dashboard_title) do %>
+    <%= render 'preview_section', content: content, scope: :teacher_dashboard_alert, preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :teacher_dashboard_title) do %>
       <%= content.input :teacher_dashboard_title %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
-    <%= render 'preview_section', scope: 'pupil-dashboard-alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
+    <%= render 'preview_section', content: content, scope: :pupil_dashboard_alert, preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
       <%= content.input :pupil_dashboard_title %>
     <% end %>
 
   <% end %>
 
   <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
-    <%= render 'preview_section', scope: 'find-out-more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
+    <%= render 'preview_section', content: content, scope: :find_out_more, preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
       <%= content.input :find_out_more_chart_variable, as: :radio_buttons, collection: @available_charts %>
       <%= content.input :find_out_more_chart_title %>
       <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>
