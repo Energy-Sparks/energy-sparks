@@ -26,15 +26,25 @@
     <% end %>
   <% end %>
 
-  <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
-    <%= content.input :teacher_dashboard_title, hint: 'Shows on teacher dashboards' %>
-    <%= content.input :pupil_dashboard_title, hint: 'Shows on pupil dashboards' %>
+  <%= render 'content_section', form: form, field: :teacher_dashboard_alert_active, field_name: 'Teacher dashboard alert' do %>
+    <%= render 'preview_section', scope: 'teacher-dashboard-alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :teacher_dashboard_title) do %>
+      <%= content.input :teacher_dashboard_title %>
+    <% end %>
+  <% end %>
 
+  <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
+    <%= render 'preview_section', scope: 'pupil-dashboard-alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
+      <%= content.input :pupil_dashboard_title %>
+    <% end %>
+
+  <% end %>
+
+  <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
     <%= render 'preview_section', scope: 'find-out-more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
-      <%= content.input :chart_variable, as: :radio_buttons, collection: @available_charts %>
-      <%= content.input :chart_title %>
-      <%= content.input :page_title, hint: 'Main title at top of Find Out More Page' %>
-      <%= content.input :page_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
+      <%= content.input :find_out_more_chart_variable, as: :radio_buttons, collection: @available_charts %>
+      <%= content.input :find_out_more_chart_title %>
+      <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>
+      <%= content.input :find_out_more_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
     <% end %>
 
   <% end %>

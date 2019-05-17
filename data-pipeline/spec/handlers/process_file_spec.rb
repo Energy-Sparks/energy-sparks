@@ -7,6 +7,7 @@ describe DataPipeline::Handlers::ProcessFile do
   describe '#process' do
 
     let(:sheffield_csv)     { File.open('spec/support/files/sheffield_export.csv') }
+    let(:cr_csv)            { File.open('spec/support/files/cr.csv') }
     let(:sheffield_gas_csv) { File.open('spec/support/files/sheffield_export.csv') }
     let(:sheffield_zip)     { File.open('spec/support/files/sheffield_export.zip') }
     let(:unknown_file)      { File.open('spec/support/files/1x1.png') }
@@ -30,6 +31,8 @@ describe DataPipeline::Handlers::ProcessFile do
           case context.params[:key]
           when 'sheffield/export.csv'
             { body: sheffield_csv }
+          when 'sheffield/cr.csv'
+            { body: cr_csv }
           when 'sheffield/export.zip'
             { body: sheffield_zip }
           when 'sheffield/image.png'
@@ -69,10 +72,21 @@ describe DataPipeline::Handlers::ProcessFile do
         expect(request[:operation_name]).to eq(:put_object)
         expect(request[:params][:key]).to eq('sheffield/export.csv')
         expect(request[:params][:bucket]).to eq('data-bucket')
+
       end
 
       it 'returns a success code' do
         expect(response[:statusCode]).to eq(200)
+      end
+
+      context 'when the file has mixed line endings' do
+
+        let(:event){ DataPipeline::Support::Events.cr_csv_added }
+
+        it 'normalises them' do
+          request = client.api_requests.last
+          expect(request[:params][:body].readlines.all?{|line| line.match?(/[^\r]\n\Z/)}).to eq(true)
+        end
       end
 
     end

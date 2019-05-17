@@ -130,7 +130,7 @@ Rails.application.routes.draw do
       end
     end
     resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
-    resource :find_out_more_calculation
+    resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'

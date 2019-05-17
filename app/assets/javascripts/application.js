@@ -18,7 +18,6 @@
 //= require handlebars
 
 //= require activities
-//= require calendars
 //= require data_explorer
 //= require schools
 //= require users
@@ -38,4 +37,4 @@
 //= require content
 
 //= require aggregated_meter_collection
-
+//= require date_pickers

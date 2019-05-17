@@ -32,3 +32,10 @@ en:
   errors:
     messages:
       not_saved: 'We were unable to save'
+  simple_form:
+    labels:
+      defaults:
+        find_out_more_chart_variable: 'Chart variable'
+        find_out_more_chart_title: 'Chart title'
+        find_out_more_content: 'Page content'
+        find_out_more_title: 'Page title'

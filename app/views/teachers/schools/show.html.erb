@@ -62,19 +62,19 @@
   <% end %>
 </div>
 
-<% if @find_out_more_alert %>
+<% if @dashboard_alert %>
   <div class="row">
     <div class="col-md-12">
-      <%= render 'schools/find_out_more/alert', content: @find_out_more_alert_content, school: @school, find_out_more: @find_out_more_alert, dashboard_title: @find_out_more_alert_content.teacher_dashboard_title %>
+      <%= render 'schools/dashboard_alerts/alert', alert: @dashboard_alert.alert, content: @dashboard_alert_content, school: @school, find_out_more: @dashboard_alert_content.find_out_more, dashboard_title: @dashboard_alert_content.teacher_dashboard_title %>
     </div>
   </div>
 
-  <% unless @find_out_more_alert_activity_types.empty? %>
+  <% unless @find_out_more_activity_types.nil? || @find_out_more_activity_types.empty? %>
     <div class="row">
       <div class="col-md-12 jumbotron things-to-try pt-3 pb-3">
         <h2>Things to try</h2>
         <ul>
-          <% @find_out_more_alert_activity_types.each do |activity_type| %>
+          <% @find_out_more_activity_types.each do |activity_type| %>
             <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
           <% end %>
         </ul>
