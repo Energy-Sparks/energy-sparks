@@ -129,6 +129,9 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :equivalence_types do
+      resource :preview, only: :show, controller: 'preview'
+    end
     resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do

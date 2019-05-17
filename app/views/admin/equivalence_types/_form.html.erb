@@ -1,0 +1,6 @@
+<%= form.input :meter_type, collection: EquivalenceType.meter_types.keys %>
+<%= form.input :time_period, collection: EquivalenceType.time_periods.keys %>
+
+<%= form.simple_fields_for :content, content do |content| %>
+  <%= content.input :equivalence %>
+<% end %>

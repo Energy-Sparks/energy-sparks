@@ -1,0 +1,25 @@
+<h1>Equivalence type management</h1>
+
+<%= link_to 'New equivalence type', new_admin_equivalence_type_path(@alert_type), class: 'btn btn-primary mb-3' %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Equivalence</th>
+      <th>Meter type</th>
+      <th>Time period</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @equivalence_types.each do |equivalence_type| %>
+      <tr>
+        <td><%= equivalence_type.current_content.equivalence %></td>
+        <td><%= equivalence_type.meter_type %></td>
+        <td><%= equivalence_type.time_period %></td>
+        <td><%= link_to 'Edit', edit_admin_equivalence_type_path(equivalence_type), class: 'btn btn-primary btn-sm' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

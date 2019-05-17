@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_10_102007) do
+ActiveRecord::Schema.define(version: 2019_05_17_120105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -443,6 +443,33 @@ ActiveRecord::Schema.define(version: 2019_05_10_102007) do
     t.index ["contact_id"], name: "index_emails_on_contact_id"
   end
 
+  create_table "equivalence_type_content_versions", force: :cascade do |t|
+    t.text "equivalence", null: false
+    t.bigint "equivalence_type_id", null: false
+    t.bigint "replaced_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["equivalence_type_id"], name: "index_equivalence_type_content_versions_on_equivalence_type_id"
+    t.index ["replaced_by_id"], name: "eqtcv_eqtcv_repl"
+  end
+
+  create_table "equivalence_types", force: :cascade do |t|
+    t.integer "meter_type", null: false
+    t.integer "time_period", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "equivalences", force: :cascade do |t|
+    t.bigint "equivalence_type_content_version_id", null: false
+    t.bigint "school_id", null: false
+    t.json "data", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["equivalence_type_content_version_id"], name: "index_equivalences_on_equivalence_type_content_version_id"
+    t.index ["school_id"], name: "index_equivalences_on_school_id"
+  end
+
   create_table "find_out_mores", force: :cascade do |t|
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "alert_id", null: false
@@ -737,6 +764,10 @@ ActiveRecord::Schema.define(version: 2019_05_10_102007) do
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
   add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "emails", "contacts", on_delete: :cascade
+  add_foreign_key "equivalence_type_content_versions", "equivalence_type_content_versions", column: "replaced_by_id", on_delete: :nullify
+  add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
+  add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade
+  add_foreign_key "equivalences", "schools", on_delete: :cascade
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
