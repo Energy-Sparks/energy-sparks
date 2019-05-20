@@ -1,8 +1,10 @@
 <%= render 'admin/shared/variables_accordion', template_variables: {"Conversion" => template_variables }, units_field: :converted_to %>
 
-<%= form.input :meter_type, collection: EquivalenceType.meter_types.keys %>
-<%= form.input :time_period, collection: EquivalenceType.time_periods.keys %>
+<%= render 'admin/shared/preview_section', scope: 'equivalence', preview_url: admin_equivalences_path do %>
+  <%= form.input :meter_type, collection: EquivalenceType.meter_types.keys %>
+  <%= form.input :time_period, collection: EquivalenceType.time_periods.keys %>
 
-<%= form.simple_fields_for :content, content do |content| %>
-  <%= content.input :equivalence %>
+  <%= form.simple_fields_for :content, content do |content| %>
+    <%= content.input :equivalence %>
+  <% end %>
 <% end %>

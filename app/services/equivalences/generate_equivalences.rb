@@ -12,7 +12,8 @@ module Equivalences
         @school.equivalences.destroy_all
         EquivalenceType.all.map do |equivalence_type|
           begin
-            Calculator.new(@school, analytics).perform(equivalence_type)
+            equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
+            equivalence.save!
           rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType => e
             puts "#{e.message} for #{@school.name}"
           end

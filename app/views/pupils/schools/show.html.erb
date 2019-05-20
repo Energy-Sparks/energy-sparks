@@ -1,18 +1,7 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
 <% if  @equivalence %>
-  <div class="row padded-row">
-    <div class="col-md-1">
-      <%= image_tag("lightbulb.png", class: "pupil-dashboard") %>
-    </div>
-    <div class="col-md-11">
-      <div class="row">
-        <hgroup class="speech">
-          <h3><%= @equivalence_content.equivalence %></h3>
-        </hgroup>
-      </div>
-    </div>
-  </div>
+  <%= render 'equivalence', equivalence_content: @equivalence_content %>
 <% end %>
 
 <div class="row">

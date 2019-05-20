@@ -13,15 +13,14 @@ module Equivalences
       @analytics = analytics
     end
 
-    def perform(equivalence_type)
-      content = equivalence_type.current_content
+    def perform(equivalence_type, content = equivalence_type.current_content)
       variables = TemplateInterpolation.new(content).variables(:equivalence).map(&:to_sym)
       data = variables.inject({}) do |data_collection, variable|
         time_period = TIME_PERIODS.fetch(equivalence_type.time_period.to_sym)
         data_collection[variable] = @analytics.front_end_convert(variable, time_period, equivalence_type.meter_type.to_sym)
         data_collection
       end
-      Equivalence.create!(school: @school, content_version: content, data: data)
+      Equivalence.new(school: @school, content_version: content, data: data)
     end
   end
 end

@@ -2,7 +2,7 @@ module Admin
   class EquivalenceTypesController < AdminController
     load_and_authorize_resource
 
-    before_action :set_template_variables, except: :index
+    before_action :set_template_variables, except: [:index, :show]
 
     def index
     end
