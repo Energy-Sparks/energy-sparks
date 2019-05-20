@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
   get 'data_feeds/dark_sky_temperature_readings', to: 'data_feeds/dark_sky_temperature_readings#show'
+  get 'data_feeds/solar_pv_tuos_readings',  to: 'data_feeds/solar_pv_tuos_readings#show'
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 

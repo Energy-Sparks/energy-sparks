@@ -24,10 +24,15 @@
         <td></td>
         <td></td>
       </tr>
-       <tr>
+      <tr>
         <td>Dark Sky Weather data</td>
         <td></td>
         <td><%= link_to "CSV", data_feeds_dark_sky_temperature_readings_path(format: "csv") %></td>
+      </tr>
+      <tr>
+        <td>Solar PV 2 data</td>
+        <td></td>
+        <td><%= link_to "CSV", data_feeds_solar_pv_tuos_readings_path(format: "csv") %></td>
       </tr>
       <% DataFeeds::WeatherUnderground.all.each do |data_feed| %>
         <tr>
