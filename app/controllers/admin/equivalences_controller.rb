@@ -1,7 +1,7 @@
 module Admin
   class EquivalencesController < AdminController
     def show
-      school = School.first
+      school = School.find(params[:school_id])
       equivalence_type = EquivalenceType.new(equivalence_type_params)
       content = EquivalenceTypeContentVersion.new(content_params[:content])
       aggregate_school = AggregateSchoolService.new(school).aggregate_school

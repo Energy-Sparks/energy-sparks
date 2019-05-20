@@ -1,6 +1,13 @@
 <%= render 'admin/shared/variables_accordion', template_variables: {"Conversion" => template_variables }, units_field: :converted_to %>
 
+
 <%= render 'admin/shared/preview_section', scope: 'equivalence', preview_url: admin_equivalences_path do %>
+
+  <hr />
+  <%= form.label :school_id, 'Preview with' %>
+  <%= select_tag :school_id, options_from_collection_for_select(School.active.order(:name), :id, :name) %>
+  <hr />
+
   <%= form.input :meter_type, collection: EquivalenceType.meter_types.keys %>
   <%= form.input :time_period, collection: EquivalenceType.time_periods.keys %>
 
