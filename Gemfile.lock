@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 0cde88368b301c2a4d06ecc7caf940f6c59d2066
-  tag: 0.43.3
+  revision: e27c9891b6bfa37efefe9f32f7b6cfa61351d4c3
+  tag: master
   specs:
-    energy-sparks_analytics (0.43.3.pre.includes.pre.bishop.pre.sutton.pre.patch.pre.and.pre.significant.pre.figures.pre.walkley.pre.fix)
+    energy-sparks_analytics (0.44.0.pre.new.pre.solar.pre.pv.pre.equivalences.pre.bug.pre.fixes)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
