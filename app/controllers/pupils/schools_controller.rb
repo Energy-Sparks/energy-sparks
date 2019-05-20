@@ -22,13 +22,12 @@ module Pupils
         )
       end
       activity_setup(@school)
+      equivalence_setup(@school)
 
       @scoreboard = @school.scoreboard
       if @scoreboard
         @surrounding_schools = @scoreboard.surrounding_schools(@school)
       end
-
-      @message = message_for_speech_bubble(@school)
     end
 
   private
@@ -43,15 +42,16 @@ module Pupils
       @suggestion = NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest.first
     end
 
-    def message_for_speech_bubble(school)
-      equivalence = school.equivalences.sample
-      template = TemplateInterpolation.new(
-        equivalence.content_version
-      ).interpolate(
-        :equivalence,
-        with: equivalence.formatted_variables
-      )
-      template.equivalence
+    def equivalence_setup(school)
+      @equivalence = school.equivalences.sample
+      if @equivalence
+        @equivalence_content = TemplateInterpolation.new(
+          @equivalence.content_version
+        ).interpolate(
+          :equivalence,
+          with: @equivalence.formatted_variables
+        )
+      end
     end
   end
 end
