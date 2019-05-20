@@ -2,6 +2,7 @@ module Admin
   class EquivalenceTypesController < AdminController
     load_and_authorize_resource
 
+    before_action :set_template_variables, except: :index
 
     def index
     end
@@ -42,6 +43,12 @@ module Admin
       params.require(:equivalence_type).permit(
         content: [:equivalence]
       )
+    end
+
+    def set_template_variables
+      @template_variables = EnergyConversions.front_end_conversion_list.deep_transform_keys do |key|
+        :"#{key.to_s.gsub('£', 'gbp')}"
+      end
     end
   end
 end

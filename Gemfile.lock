@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 577a012be5e2d4db2e35272dc6e96a3b6b607105
+  revision: c43366d61cee75298ffe880408ff225d50c5710d
   tag: master
   specs:
     energy-sparks_analytics (0.44.0.pre.new.pre.solar.pre.pv.pre.equivalences.pre.bug.pre.fixes)
