@@ -33,6 +33,11 @@
 
       <% end %>
 
+      <tr>
+        <td>Solar PV 2 data</td>
+        <td></td>
+        <td><%= link_to "CSV", data_feeds_solar_pv_tuos_readings_path(format: "csv") %></td>
+      </tr>
       <% DataFeeds::WeatherUnderground.all.each do |data_feed| %>
         <tr>
           <td><%= link_to "#{data_feed.title} - temperature", data_feed_path(data_feed, :temperature) %></td>
