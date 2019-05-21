@@ -32,5 +32,15 @@ module DataFeeds
         ORDER BY a.id, sptr.reading_date ASC
       QUERY
     end
+
+    def self.download_for_area_id(area_id)
+      <<~QUERY
+        SELECT a.title, sptr.reading_date, sptr.generation_mw_x48, sptr.gsp_name, sptr.gsp_id, sptr.latitude, sptr.longitude, sptr.distance_km
+        FROM  solar_pv_tuos_readings sptr, areas a
+        WHERE sptr.area_id = a.id
+        AND   sptr.area_id = #{area_id}
+        ORDER BY a.id, sptr.reading_date ASC
+      QUERY
+    end
   end
 end
