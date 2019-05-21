@@ -7,7 +7,7 @@
   <div class="col-md-12">
     <div class="card mb-3">
       <div class="card-header text-white <%= class_for_alert_rating(@alert.rating) %>">
-        <h4><%= fa_icon(alert_icon(@alert)) %> <%= @alert.alert_type.title %></h4>
+        <h4><%= fa_icon(alert_icon(@alert)) %> <%= @alert.alert_type.title %> (<%= @alert.rating %>)</h4>
       </div>
       <div class="card-body">
         <h5>Template variables</h5>
