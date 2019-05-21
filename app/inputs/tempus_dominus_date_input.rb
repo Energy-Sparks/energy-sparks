@@ -1,7 +1,8 @@
 class TempusDominusDateInput < SimpleForm::Inputs::Base
-  def input(_wrapper_options)
+  def input(wrapper_options)
+    merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
     template.content_tag(:div, class: 'input-group date tempus-dominus-date', data: { target_input: 'nearest' }, id: wrapper_id) do
-      template.concat @builder.text_field(attribute_name, input_html_options)
+      template.concat @builder.text_field(attribute_name, merged_input_options)
       template.concat div_button
     end
   end

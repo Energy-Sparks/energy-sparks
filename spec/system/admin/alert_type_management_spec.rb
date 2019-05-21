@@ -78,9 +78,8 @@ RSpec.describe 'alert type management', type: :system do
         within '.teacher_dashboard_alert_active' do
 
           click_on 'Timings'
-          select '2019',     from: "alert_type_rating_content_teacher_dashboard_alert_start_date_1i"
-          select 'December', from: "alert_type_rating_content_teacher_dashboard_alert_start_date_2i"
-          select '1',        from: "alert_type_rating_content_teacher_dashboard_alert_start_date_3i"
+          find_field('Start date').click
+          fill_in 'Start date', with: '01/12/2019'
 
           click_on 'Preview'
           within '#teacher_dashboard_alert-preview .content' do
