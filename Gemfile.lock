@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: c43366d61cee75298ffe880408ff225d50c5710d
-  tag: master
+  revision: 78b9bcaf1b1ec50fef45dade6d4b18fe146eebe7
+  tag: 0.44.0-new-solar-pv-equivalences-final-bug-fixes
   specs:
-    energy-sparks_analytics (0.44.0.pre.new.pre.solar.pre.pv.pre.equivalences.pre.bug.pre.fixes)
+    energy-sparks_analytics (0.44.0.pre.new.pre.solar.pre.pv.pre.equivalences.pre.final.pre.bug.pre.fixes)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
