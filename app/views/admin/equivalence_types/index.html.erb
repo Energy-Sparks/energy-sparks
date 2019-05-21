@@ -4,7 +4,7 @@
 
 <%= form_tag admin_equivalences_path, class: 'float-right' do %>
   <%= select_tag :school_id, options_from_collection_for_select(School.active.order(:name), :id, :name) %>
-  <%= submit_tag 'Create equivalences', class: 'btn btn-warning' %>
+  <%= submit_tag 'Update equivalences', class: 'btn btn-warning' %>
 <% end %>
 
 <table class="table table-striped">
