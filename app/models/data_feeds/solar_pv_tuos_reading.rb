@@ -2,7 +2,7 @@
 #
 # Table name: solar_pv_tuos_readings
 #
-#  area_id           :bigint(8)
+#  area_id           :bigint(8)        not null
 #  created_at        :datetime         not null
 #  distance_km       :decimal(, )
 #  generation_mw_x48 :decimal(, )      not null, is an Array
@@ -18,6 +18,10 @@
 #
 #  index_solar_pv_tuos_readings_on_area_id                   (area_id)
 #  index_solar_pv_tuos_readings_on_area_id_and_reading_date  (area_id,reading_date) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (area_id => areas.id) ON DELETE => cascade
 #
 
 module DataFeeds

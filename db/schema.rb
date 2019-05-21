@@ -650,7 +650,7 @@ ActiveRecord::Schema.define(version: 2019_05_20_084806) do
   end
 
   create_table "solar_pv_tuos_readings", force: :cascade do |t|
-    t.bigint "area_id"
+    t.bigint "area_id", null: false
     t.text "gsp_name"
     t.integer "gsp_id"
     t.decimal "latitude"
@@ -775,6 +775,7 @@ ActiveRecord::Schema.define(version: 2019_05_20_084806) do
   add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
+  add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end
