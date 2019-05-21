@@ -36,5 +36,8 @@ $(document).ready(function() {
     var tab_pane = $(this);
     var tab = $('#' + tab_pane.attr('aria-labelledby'));
     tab.find('.text-danger').removeClass('d-none');
+
+    // shim until we get better tempus dominus error handling
+    tab_pane.find('.invalid-feedback').show();
   });
 });
