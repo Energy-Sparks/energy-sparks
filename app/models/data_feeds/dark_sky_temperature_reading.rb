@@ -25,5 +25,15 @@ module DataFeeds
         ORDER BY a.id, dstr.reading_date ASC
       QUERY
     end
+
+    def self.download_for_area_id(area_id)
+      <<~QUERY
+        SELECT a.title, dstr.reading_date, dstr.temperature_celsius_x48
+        FROM  dark_sky_temperature_readings dstr, areas a
+        WHERE dstr.area_id = a.id
+        AND   dstr.area_id = #{area_id}
+        ORDER BY a.id, dstr.reading_date ASC
+      QUERY
+    end
   end
 end
