@@ -1,23 +1,11 @@
-<%= form_for([@school, activity], direct_upload: true, html: {class: "activity-form"}) do |f| %>
+<%= simple_form_for([@school, activity], direct_upload: true, html: {class: "activity-form"}) do |f| %>
 
   <%= render 'shared/errors', subject: activity, subject_name: 'activity' %>
 
   <div class="form-group">
     <%= f.label :happened_on, "When did you do the activity?" %>
     <p class="small"> You can record a recent activity or even record older activities to build up a record of all of the energy saving activities you've carried out as a school.</p>
-    <div class="input-group">
-      <div class="input-group date" id="activity_date_picker_field" data-target-input="nearest" data-default-date="<%= activity.happened_on.strftime("%d/%m/%Y")%>">
-       <%= f.text_field(:happened_on,
-          { class: 'form-control datetimepicker-input',
-            data: { target: "#activity_date_picker_field" },
-            value: activity.happened_on.strftime("%d/%m/%Y")
-          }
-        ) %>
-        <div class="input-group-append" data-target="#activity_date_picker_field" data-toggle="datetimepicker">
-          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-        </div>
-      </div>
-    </div>
+    <%= f.input :happened_on, as: :tempus_dominus_date, default_date: Time.zone.today %>
   </div>
 
   <div class="form-group">

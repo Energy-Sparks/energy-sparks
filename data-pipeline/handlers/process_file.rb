@@ -18,11 +18,21 @@ module DataPipeline
                       else @environment['UNPROCESSABLE_BUCKET']
                       end
 
+        if next_bucket == @environment['AMR_DATA_BUCKET']
+          file_body = StringIO.new
+          file.body.each_line do |line|
+            file_body.puts line.encode('UTF-8', universal_newline: true)
+          end
+          file_body.rewind
+        else
+          file_body = file.body
+        end
+
         response = @client.put_object(
           bucket: next_bucket,
           key: key,
           content_type: file.content_type,
-          body: file.body
+          body: file_body
         )
 
         @logger.info("Moved: #{key} to: #{next_bucket}")
