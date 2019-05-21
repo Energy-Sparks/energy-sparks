@@ -9,7 +9,9 @@ module Schools
 
       data_feed = @school.weather_underground_area.data_feed
       @number_of_weather_readings = DataFeedReading.where(data_feed: data_feed, feed_type: :temperature).count
-      @number_of_solar_pv_readings = DataFeeds::SolarPvTuosReading.where(area_id: @school.solar_pv_tuos_area.id).count * 48
+
+      data_feed = @school.solar_pv_tuos_area.data_feed
+      @number_of_solar_pv_readings = DataFeedReading.where(data_feed: data_feed).count
     end
 
     def post
