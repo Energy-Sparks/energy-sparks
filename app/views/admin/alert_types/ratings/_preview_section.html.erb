@@ -28,8 +28,14 @@
 
   <% unless local_assigns[:no_timings] %>
     <div class="tab-pane fade show" id="<%= scope %>-timings" role="tabpanel" aria-labelledby="<%= scope %>-timings-tab">
-      <%= content.input :"#{scope}_start_date", label: 'Start date', include_blank: true, start_year: 2019 %>
-      <%= content.input :"#{scope}_end_date", label: 'End date', include_blank: true, start_year: 2019 %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= content.input :"#{scope}_start_date", as: :tempus_dominus_date, label: 'Start date' %>
+        </div>
+        <div class="col-md-6">
+          <%= content.input :"#{scope}_end_date", as: :tempus_dominus_date, label: 'End date' %>
+        </div>
+      </div>
     </div>
   <% end %>
 
