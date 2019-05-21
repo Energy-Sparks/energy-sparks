@@ -3,13 +3,15 @@
 # Table name: alerts
 #
 #  alert_type_id :bigint(8)
+#  chart_data    :json
 #  created_at    :datetime         not null
-#  data          :json
 #  id            :bigint(8)        not null, primary key
+#  rating        :decimal(, )
 #  run_on        :date
 #  school_id     :bigint(8)
 #  status        :integer
-#  summary       :text
+#  table_data    :json
+#  template_data :json
 #  updated_at    :datetime         not null
 #
 # Indexes
@@ -37,22 +39,12 @@ class Alert < ApplicationRecord
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
   scope :usable,              -> { where(status: [:good, :poor])}
 
-  scope :rating_between, ->(from, to) { where("(data->>'rating')::decimal BETWEEN ? AND ?", from, to) }
+  scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
 
   enum status: [:good, :poor, :not_enough_data, :failed, :bad]
 
   def self.latest
     select('DISTINCT ON ("alert_type_id") alerts.*').order('alert_type_id', created_at: :desc)
-  end
-
-  # Data hash may end up being attributes of alert
-  # Also uses string keys as serialised as JSON in DB
-  def detail
-    data['detail']
-  end
-
-  def help_url
-    data['help_url']
   end
 
   def frequency
@@ -63,25 +55,21 @@ class Alert < ApplicationRecord
     alert_type.show_ratings
   end
 
-  def rating
-    data['rating'].nil? ? 'Unrated' : "#{data['rating'].round(0)}/10"
-  end
-
-  def raw_rating
-    data['rating']
+  def formatted_rating
+    rating.nil? ? 'Unrated' : "#{rating.round(0)}/10"
   end
 
   def template_variables
-    data.fetch('template_data', {}).deep_transform_keys do |key|
+    template_data.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
   end
 
   def chart_variables_hash
-    data.fetch('chart_data', {})
+    chart_data
   end
 
   def tables
-    data.fetch('table_data', {}).values
+    table_data.values
   end
 end

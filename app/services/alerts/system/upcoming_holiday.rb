@@ -42,7 +42,6 @@ module Alerts
           Adapters::Report.new(
             status: :good,
             rating: [0.0, (next_holiday.start_date - @today).to_i.to_f].max,
-            summary: 'The school has a holiday approaching in their calendar',
             template_data: {
               holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
               holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
@@ -52,8 +51,7 @@ module Alerts
         else
           Adapters::Report.new(
             status: :good,
-            rating: 10.0,
-            summary: 'The school has no holiday approaching',
+            rating: 10.0
           )
         end
       end

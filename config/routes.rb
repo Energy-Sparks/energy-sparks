@@ -64,7 +64,6 @@ Rails.application.routes.draw do
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations
 
-      resources :alerts, only: [:index, :show]
       resources :find_out_more, controller: :find_out_more
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports

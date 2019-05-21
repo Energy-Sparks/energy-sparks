@@ -14,27 +14,6 @@ RSpec.describe "school alerts", type: :system do
   end
 
   context 'with generated alert' do
-    it 'should show alert' do
-      alert_summary = 'Summary of the alert'
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, summary: alert_summary)
-      click_on("Alerts")
-
-      expect(Alert.first.title).to eq gas_fuel_alert_type.title
-      expect(page.has_content?(alert_summary)).to be true
-    end
-
-    it 'should show only the latest alert' do
-      poor_alert_summary = 'POOR'
-      good_alert_summary = 'GOOD'
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :poor, summary: poor_alert_summary, created_at: DateTime.parse('2019-01-02'))
-      Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, status: :good, summary: good_alert_summary, created_at: DateTime.parse('2019-01-02') + 10.minutes)
-
-      click_on("Alerts")
-
-      expect(page.has_content?(good_alert_summary)).to be true
-      expect(page.has_content?(poor_alert_summary)).to_not be true
-    end
-
 
     describe 'Find Out More' do
 
@@ -67,14 +46,10 @@ RSpec.describe "school alerts", type: :system do
           alert_type: gas_fuel_alert_type,
           run_on: gas_date, school: school,
           status: :good,
-          data: {
-            detail: [],
-            rating: 9.0,
-            table_data: {
-              dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
-            }
-          },
-          summary: alert_summary
+          rating: 9.0,
+          table_data: {
+            dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
+          }
         )
       end
 
@@ -114,13 +89,4 @@ RSpec.describe "school alerts", type: :system do
     end
   end
 
-  context 'with no generated reports' do
-    it 'should show reports' do
-      sign_in(user)
-      visit root_path
-      click_on("Alerts")
-      expect(page).to have_content("We have no Gas alerts for this school")
-      expect(page).to_not have_content("We have no Electricity alerts for this school")
-    end
-  end
 end
