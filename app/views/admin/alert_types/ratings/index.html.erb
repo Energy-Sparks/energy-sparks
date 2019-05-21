@@ -2,14 +2,16 @@
 
 <%= button_to 'Apply changes', admin_content_generation_run_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %>
 
-<%= link_to 'New content rating range', new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
+<%= link_to "New content#{ ' rating range' if @alert_type.has_ratings?}", new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
 
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Rating from</th>
-      <th>Rating to</th>
+      <% if @alert_type.has_ratings? %>
+        <th>Rating from</th>
+        <th>Rating to</th>
+      <% end %>
       <th>Description</th>
       <th>Active?</th>
       <th></th>
@@ -18,8 +20,10 @@
   <tbody>
     <% @ratings.each do |rating| %>
       <tr>
-        <td><%= rating.rating_from %></td>
-        <td><%= rating.rating_to %></td>
+        <% if @alert_type.has_ratings? %>
+          <td><%= rating.rating_from %></td>
+          <td><%= rating.rating_to %></td>
+        <% end %>
         <td><%= rating.description %></td>
         <td>
           <span title="Teacher dashboard alert" class="<%='text-success' if rating.teacher_dashboard_alert_active? %>"><%= fa_icon('chalkboard-teacher fa-2x') %></span> &nbsp;
