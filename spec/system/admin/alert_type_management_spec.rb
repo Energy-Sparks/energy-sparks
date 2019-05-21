@@ -73,41 +73,52 @@ RSpec.describe 'alert type management', type: :system do
 
         check 'Teacher dashboard alert'
         fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
+
+
         within '.teacher_dashboard_alert_active' do
+
+          click_on 'Timings'
+          find_field('Start date').click
+          fill_in 'Start date', with: '01/12/2019'
+
           click_on 'Preview'
-          within '#teacher-dashboard-alert-preview .content' do
+          within '#teacher_dashboard_alert-preview .content' do
             expect(page).to have_content('Your gas usage is too high')
           end
+
         end
 
         check 'Pupil dashboard alert'
         fill_in 'Pupil dashboard title', with: 'Your gas usage is too high'
+
         within '.pupil_dashboard_alert_active' do
           click_on 'Preview'
-          within '#pupil-dashboard-alert-preview .content' do
+          within '#pupil_dashboard_alert-preview .content' do
             expect(page).to have_content('Your gas usage is too high')
           end
         end
 
         check 'Find out more'
-        fill_in 'Page title', with: 'You are using too much gas!'
-
-        within '.alert_type_rating_content_find_out_more_chart_variable' do
-          expect(page).to have_unchecked_field('chart description A')
-          expect(page).to have_unchecked_field('chart description B')
-          expect(page).to have_checked_field('None')
-        end
-
-        choose 'chart description B'
-        fill_in 'Chart title', with: 'This is a chart'
 
         within '.find_out_more_active' do
+
+          fill_in 'Page title', with: 'You are using too much gas!'
+
+          within '.alert_type_rating_content_find_out_more_chart_variable' do
+            expect(page).to have_unchecked_field('chart description A')
+            expect(page).to have_unchecked_field('chart description B')
+            expect(page).to have_checked_field('None')
+          end
+
+          choose 'chart description B'
+          fill_in 'Chart title', with: 'This is a chart'
+
           editor = find('trix-editor')
           editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
 
           click_on 'Preview'
 
-          within '#find-out-more-preview .content' do
+          within '#find_out_more-preview .content' do
             expect(page).to have_content('You are using 10% too much gas!')
           end
         end
@@ -145,6 +156,7 @@ RSpec.describe 'alert type management', type: :system do
         first_content = alert_type_rating.current_content
         expect(first_content.find_out_more_title).to eq('You are using too much gas!')
         expect(first_content.sms_content).to eq('Your gas usage is too high')
+        expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
 
         click_on 'Edit'
 

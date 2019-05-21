@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_14_125128) do
+ActiveRecord::Schema.define(version: 2019_05_14_140558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -184,6 +184,16 @@ ActiveRecord::Schema.define(version: 2019_05_14_125128) do
     t.text "email_content"
     t.text "find_out_more_chart_variable", default: "none"
     t.string "find_out_more_chart_title", default: ""
+    t.date "find_out_more_start_date"
+    t.date "find_out_more_end_date"
+    t.date "teacher_dashboard_alert_start_date"
+    t.date "teacher_dashboard_alert_end_date"
+    t.date "pupil_dashboard_alert_start_date"
+    t.date "pupil_dashboard_alert_end_date"
+    t.date "sms_start_date"
+    t.date "sms_end_date"
+    t.date "email_start_date"
+    t.date "email_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
