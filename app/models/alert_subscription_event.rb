@@ -35,8 +35,7 @@
 #
 
 class AlertSubscriptionEvent < ApplicationRecord
-  belongs_to :alert_subscription, inverse_of: :alert_subscription_events
-  belongs_to :contact,            inverse_of: :alert_subscription_events
+  belongs_to :contact, inverse_of: :alert_subscription_events
   belongs_to :alert
   belongs_to :email
   belongs_to :find_out_more
