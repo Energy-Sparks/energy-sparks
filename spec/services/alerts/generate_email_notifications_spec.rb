@@ -33,8 +33,10 @@ describe Alerts::GenerateEmailNotifications do
 
     expect(email.subject).to include('Energy Sparks alerts')
     expect(email.html_part.body.to_s).to include('You need to do something')
-    expect(email.html_part.body.to_s).to include("I don't want to see alerts like this")
     expect(email.html_part.body.to_s).to include('You need to fix something')
+
+    expect(email.html_part.body.to_s).to include("I don't want to see alerts like this")
+    expect(email.html_part.body.to_s).to include(alert_subscription_event_1.unsubscription_uuid)
 
     expect(email.html_part.body.to_s).to_not include('Find Out More')
 
