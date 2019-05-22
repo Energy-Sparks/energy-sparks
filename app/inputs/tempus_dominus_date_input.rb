@@ -1,13 +1,14 @@
 class TempusDominusDateInput < SimpleForm::Inputs::Base
-  def input(_wrapper_options)
-    template.content_tag(:div, class: 'input-group date tempus-dominus-date', data: { target_input: 'nearest' }, id: "#{object_name}_#{attribute_name}") do
-      template.concat @builder.text_field(attribute_name, input_html_options)
+  def input(wrapper_options)
+    merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
+    template.content_tag(:div, class: 'input-group date tempus-dominus-date', data: { target_input: 'nearest' }, id: wrapper_id) do
+      template.concat @builder.text_field(attribute_name, merged_input_options)
       template.concat div_button
     end
   end
 
   def input_html_options
-    super.merge(class: 'form-control datetimepicker-input', value: input_value, data: { target: "##{object_name}_#{attribute_name}" })
+    super.merge(class: 'form-control datetimepicker-input', value: input_value, data: { target: "##{wrapper_id}" })
   end
 
   def input_value
@@ -19,7 +20,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def div_button
-    template.content_tag(:div, class: 'input-group-append', data: { target: "##{object_name}_#{attribute_name}", toggle: 'datetimepicker' }) do
+    template.content_tag(:div, class: 'input-group-append', data: { target: "##{wrapper_id}", toggle: 'datetimepicker' }) do
       template.concat span_table
     end
   end
@@ -36,5 +37,9 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
 
   def icon_table
     "<i class='fa fa-calendar'></i>".html_safe
+  end
+
+  def wrapper_id
+    "#{object_name.gsub(/[^_a-z]/, '_')}_#{attribute_name}_dominus"
   end
 end
