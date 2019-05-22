@@ -5,7 +5,7 @@ module Alerts
     end
 
     def content_versions(scope:, today: Time.zone.today)
-      rating = @alert.raw_rating
+      rating = @alert.rating
       return [] if rating.blank?
 
       alert_type_ratings = AlertTypeRating.

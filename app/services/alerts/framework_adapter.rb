@@ -35,20 +35,11 @@ module Alerts
         alert_type_id:  @alert_type.id,
         run_on:         @analysis_date,
         status:         analysis_report.status,
-        summary:        analysis_report.summary,
-        data:           data_hash(analysis_report)
-      )
-    end
-
-    def data_hash(analysis_report)
-      {
-        help_url:      analysis_report.help_url,
-        detail:        analysis_report.detail,
         rating:        analysis_report.rating,
         template_data: analysis_report.template_data,
         chart_data:    analysis_report.chart_data,
         table_data:    analysis_report.table_data
-      }
+      )
     end
   end
 end
