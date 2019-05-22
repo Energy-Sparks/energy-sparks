@@ -2,41 +2,37 @@ module Alerts
   module Adapters
     class AnalyticsAdapter < Adapter
       def report
-        analysis_obj = alert_class.new(@aggregate_school)
-        analysis_report = generate_report(analysis_obj)
+        analysis_object = alert_class.new(@aggregate_school)
+        analysis_object.valid_alert? ? produce_report(analysis_object) : invalid_alert_report
+      end
 
-        variables = if pull_variable_data?(analysis_report)
+    private
+
+      def invalid_alert_report
+        Report.new(status: :not_valid, rating: nil)
+      end
+
+      def produce_report(analysis_object)
+        analysis_object.analyse(@analysis_date)
+
+        variables = if pull_variable_data?(analysis_object)
                       {
-                        template_data: analysis_obj.front_end_template_data,
-                        chart_data:    analysis_obj.front_end_template_chart_data,
-                        table_data:    analysis_obj.front_end_template_table_data
+                        template_data: analysis_object.front_end_template_data,
+                        chart_data:    analysis_object.front_end_template_chart_data,
+                        table_data:    analysis_object.front_end_template_table_data
                       }
                     else
                       {}
                     end
 
         Report.new({
-          status:   analysis_report.status,
-          summary:  summary(analysis_report),
-          detail:   analysis_report.detail,
-          help_url: analysis_report.help_url,
-          rating:   analysis_report.rating,
+          status:   analysis_object.status,
+          rating:   analysis_object.rating,
         }.merge(variables))
       end
 
-    private
-
-      def generate_report(analysis_obj)
-        analysis_obj.analyse(@analysis_date)
-        analysis_obj.analysis_report
-      end
-
-      def pull_variable_data?(analysis_report)
-        !(analysis_report.status == :failed) && @alert_type.has_variables?
-      end
-
-      def summary(analysis_report)
-        analysis_report.summary || "There was a problem running the #{@alert_type.title} alert. This is likely due to missing data."
+      def pull_variable_data?(analysis_object)
+        !(analysis_object.status == :failed) && @alert_type.has_variables?
       end
     end
   end

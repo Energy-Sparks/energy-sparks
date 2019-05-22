@@ -32,7 +32,6 @@ module Alerts
         Adapters::Report.new(
           status: :good,
           rating: 10.0,
-          summary: 'Content managed alert',
           template_data: {
             school_name: @school.name
           }

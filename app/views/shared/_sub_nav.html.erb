@@ -35,7 +35,6 @@
           <li class="nav-item dropdown">
             <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-success btn-sm' if @school.scoreboard %>
             <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm'  %>
-            <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-success btn-sm' if can? :read, AlertType %>
           </li>
           <%- if can? :update, @school -%>
             <li class="nav-item dropdown">

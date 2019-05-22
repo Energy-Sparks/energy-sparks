@@ -247,10 +247,12 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
     t.bigint "alert_type_id"
     t.date "run_on"
     t.integer "status"
-    t.text "summary"
-    t.json "data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "template_data", default: {}
+    t.json "table_data", default: {}
+    t.json "chart_data", default: {}
+    t.decimal "rating"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end

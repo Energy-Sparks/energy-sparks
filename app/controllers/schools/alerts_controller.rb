@@ -1,14 +1,10 @@
-class Schools::AlertsController < ApplicationController
-  load_and_authorize_resource :school
+module Schools
+  class AlertsController < ApplicationController
+    load_and_authorize_resource :school
 
-  def index
-    authorize! :read, AlertType
-
-    @gas_alerts = @school.alerts.gas.latest.sort_by { |a| a.data['rating'] || 99 }
-    @electricity_alerts = @school.alerts.electricity.latest.sort_by { |a| a.data['rating'] || 99 }
-  end
-
-  def show
-    @alert = Alert.find(params[:id])
+    def show
+      @alert = Alert.find(params[:id])
+      authorize! :read, @alert
+    end
   end
 end
