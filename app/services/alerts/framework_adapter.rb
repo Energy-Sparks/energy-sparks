@@ -35,10 +35,10 @@ module Alerts
         alert_type_id:  @alert_type.id,
         run_on:         @analysis_date,
         status:         analysis_report.status,
-        rating:        analysis_report.rating,
-        template_data: analysis_report.template_data,
-        chart_data:    analysis_report.chart_data,
-        table_data:    analysis_report.table_data
+        rating:         analysis_report.rating,
+        template_data:  analysis_report.template_data,
+        chart_data:     analysis_report.chart_data,
+        table_data:     analysis_report.table_data
       )
     end
   end

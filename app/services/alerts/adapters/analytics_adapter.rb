@@ -9,7 +9,7 @@ module Alerts
     private
 
       def invalid_alert_report
-        Report.new(status: :invalid, rating: nil)
+        Report.new(status: :not_valid, rating: nil)
       end
 
       def produce_report(analysis_object)
