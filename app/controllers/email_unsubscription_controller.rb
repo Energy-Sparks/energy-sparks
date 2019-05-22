@@ -1,13 +1,12 @@
 class EmailUnsubscriptionController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action :load_content
 
   def new
-    @alert_subscription_event = AlertSubscriptionEvent.find_by!(unsubscription_uuid: params[:uuid])
     @alert_type_rating_unsubscription = AlertTypeRatingUnsubscription.new
   end
 
   def create
-    @alert_subscription_event = AlertSubscriptionEvent.find_by!(unsubscription_uuid: params[:uuid])
     @alert_type_rating_unsubscription = AlertTypeRatingUnsubscription.generate(
       scope: :email,
       event: @alert_subscription_event,
@@ -23,5 +22,12 @@ class EmailUnsubscriptionController < ApplicationController
   end
 
   def show
+  end
+
+private
+
+  def load_content
+    @alert_subscription_event = AlertSubscriptionEvent.find_by!(unsubscription_uuid: params[:uuid])
+    @content = AlertMailer.create_content([@alert_subscription_event]).first
   end
 end

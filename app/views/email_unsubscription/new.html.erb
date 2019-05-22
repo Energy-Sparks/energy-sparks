@@ -1,3 +1,17 @@
+<h1 class="mt-2">Unsubscribe</h1>
+
+<p>We're sorry you don't want to receive alerts like this one by email:</p>
+
+<div class="card bg-light m-2">
+  <div class="card-body">
+    <h5 class="card-title"><%= @content.email_title %></h5>
+    <div class="trix-content">
+      <%= sanitize @content.email_content %>
+    </div>
+  </div>
+</div>
+
+<p>Please let us know why and we'll use this information to improve our service.</p>
 
 <%= simple_form_for @alert_type_rating_unsubscription, url: email_unsubscription_path(uuid: params[:uuid])do |form| %>
   <%= form.input :reason %>
