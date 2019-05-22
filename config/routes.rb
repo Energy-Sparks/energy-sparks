@@ -97,9 +97,9 @@ Rails.application.routes.draw do
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
-
-
   end
+
+  resource :email_unsubscription, only: [:new, :create, :show]
 
   devise_for :users, controllers: { sessions: "sessions" }
 
