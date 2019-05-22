@@ -23,7 +23,6 @@ module Alerts
         Alerts::Adapters::Report.new(
           status: :good,
           rating: 5.0,
-          summary: 'The alert has run',
           template_data: {
             template: 'variables'
           },

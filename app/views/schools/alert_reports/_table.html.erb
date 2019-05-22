@@ -22,8 +22,8 @@
             <%= link_to index + 1, school_find_out_more_path(school, find_out_more)  %>
           <% end %>
         </td>
-        <td class="text-white <%= class_for_alert_rating(alert.data['rating']) %>"><%= alert.status %></td>
-        <td class="text-white <%= class_for_alert_rating(alert.data['rating']) %>"><%= alert.rating %></td>
+        <td class="text-white <%= class_for_alert_rating(alert.rating) %>"><%= alert.status %></td>
+        <td class="text-white <%= class_for_alert_rating(alert.rating) %>"><%= alert.formatted_rating %></td>
         <td><%= nice_dates alert.run_on %></td>
         <td><%= nice_date_times alert.created_at %></td>
         <td><%= link_to(alert.alert_subscription_events.sent.email.count, school_alert_subscription_events_path(@school)) %></td>
