@@ -13,7 +13,7 @@
 
 <p>Please let us know why and we'll use this information to improve our service.</p>
 
-<%= simple_form_for @alert_type_rating_unsubscription, url: email_unsubscription_path(uuid: params[:uuid])do |form| %>
+<%= simple_form_for @alert_type_rating_unsubscription, url: email_unsubscription_path(uuid: @alert_subscription_event.unsubscription_uuid) do |form| %>
   <%= form.input :reason %>
   <%= form.input :unsubscription_period, as: :radio_buttons, collection: [['One month', :one_month], ['6 months', :six_months], ["I don't want to see them again", :forever]], label: "Don't show me alerts like this for:"%>
   <%= form.submit 'Submit', class: 'btn btn-primary' %>

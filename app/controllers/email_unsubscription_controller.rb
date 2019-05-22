@@ -1,6 +1,6 @@
 class EmailUnsubscriptionController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :load_content
+  before_action :load_content, only: [:new, :create]
 
   def new
     @alert_type_rating_unsubscription = AlertTypeRatingUnsubscription.new
