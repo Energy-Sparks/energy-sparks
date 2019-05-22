@@ -1,0 +1,28 @@
+<h1>Email Unsubscriptions</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Alert type</th>
+      <th>Alert type rating</th>
+      <th>Alert</th>
+      <th>Contact</th>
+      <th>Reason</th>
+      <th>Unsubscribed for</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @email_unsubscriptions.each do |unsubscription| %>
+      <tr>
+        <td><%= unsubscription.alert_type_rating.alert_type.title %></td>
+        <td><%= unsubscription.alert_type_rating.description %> (<%= unsubscription.alert_type_rating.rating_from %>-<%= unsubscription.alert_type_rating.rating_to %>)</td>
+        <td><%= link_to 'Alert', school_alert_path(unsubscription.alert_subscription_event.alert.school_id, unsubscription.alert_subscription_event.alert) %></td>
+        <td><%= unsubscription.contact.name %> (<%= link_to unsubscription.contact.school.name, school_path(unsubscription.contact.school) %>)</td>
+        <td><%= unsubscription.reason %></td>
+        <td><%= unsubscription.unsubscription_period %></td>
+        <td><%= unsubscription.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
