@@ -184,6 +184,16 @@ ActiveRecord::Schema.define(version: 2019_05_21_131820) do
     t.text "email_content"
     t.text "find_out_more_chart_variable", default: "none"
     t.string "find_out_more_chart_title", default: ""
+    t.date "find_out_more_start_date"
+    t.date "find_out_more_end_date"
+    t.date "teacher_dashboard_alert_start_date"
+    t.date "teacher_dashboard_alert_end_date"
+    t.date "pupil_dashboard_alert_start_date"
+    t.date "pupil_dashboard_alert_end_date"
+    t.date "sms_start_date"
+    t.date "sms_end_date"
+    t.date "email_start_date"
+    t.date "email_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -652,6 +662,21 @@ ActiveRecord::Schema.define(version: 2019_05_21_131820) do
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
+  create_table "solar_pv_tuos_readings", force: :cascade do |t|
+    t.bigint "area_id", null: false
+    t.text "gsp_name"
+    t.integer "gsp_id"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.decimal "distance_km"
+    t.date "reading_date", null: false
+    t.decimal "generation_mw_x48", null: false, array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id", "reading_date"], name: "index_solar_pv_tuos_readings_on_area_id_and_reading_date", unique: true
+    t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
+  end
+
   create_table "subjects", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -763,6 +788,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_131820) do
   add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
+  add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end

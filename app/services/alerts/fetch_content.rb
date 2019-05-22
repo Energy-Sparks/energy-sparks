@@ -4,11 +4,17 @@ module Alerts
       @alert = alert
     end
 
-    def content_versions(scope = {})
+    def content_versions(scope:, today: Time.zone.today)
       rating = @alert.rating
       return [] if rating.blank?
-      alert_type_ratings = AlertTypeRating.for_rating(rating.to_f.round(1)).where(scope.merge(alert_type: @alert.alert_type))
-      alert_type_ratings.map(&:current_content).compact
+
+      alert_type_ratings = AlertTypeRating.
+        for_rating(rating.to_f.round(1)).
+        where(alert_type: @alert.alert_type).
+        where(:"#{scope}_active" => true)
+
+      current_content = alert_type_ratings.map(&:current_content).compact
+      current_content.select {|content| content.meets_timings?(scope: scope, today: today)}
     end
   end
 end
