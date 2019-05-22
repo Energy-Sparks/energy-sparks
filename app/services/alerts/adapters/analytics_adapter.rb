@@ -3,6 +3,12 @@ module Alerts
     class AnalyticsAdapter < Adapter
       def report
         analysis_object = alert_class.new(@aggregate_school)
+        analysis_object.valid_alert? ? produce_report(analysis_object) : nil
+      end
+
+    private
+
+      def produce_report(analysis_object)
         analysis_object.analyse(@analysis_date)
 
         variables = if pull_variable_data?(analysis_object)
@@ -20,8 +26,6 @@ module Alerts
           rating:   analysis_object.rating,
         }.merge(variables))
       end
-
-    private
 
       def pull_variable_data?(analysis_object)
         !(analysis_object.status == :failed) && @alert_type.has_variables?
