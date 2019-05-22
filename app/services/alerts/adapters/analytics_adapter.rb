@@ -3,10 +3,14 @@ module Alerts
     class AnalyticsAdapter < Adapter
       def report
         analysis_object = alert_class.new(@aggregate_school)
-        analysis_object.valid_alert? ? produce_report(analysis_object) : nil
+        analysis_object.valid_alert? ? produce_report(analysis_object) : invalid_alert_report
       end
 
     private
+
+      def invalid_alert_report
+        Report.new(status: :invalid, rating: nil)
+      end
 
       def produce_report(analysis_object)
         analysis_object.analyse(@analysis_date)

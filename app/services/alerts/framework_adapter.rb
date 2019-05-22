@@ -11,7 +11,7 @@ module Alerts
 
     def analyse
       report = adapter_class(@alert_type).new(alert_type: @alert_type, school: @school, analysis_date: @analysis_date, aggregate_school: @aggregate_school).report
-      build_alert(report) if report
+      build_alert(report)
     end
 
   private

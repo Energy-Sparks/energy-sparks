@@ -100,7 +100,9 @@ module Alerts
 
     context 'when the alert is not valid' do
       it 'does not return a report' do
-        expect(Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotValidClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report).to be nil
+        invalid_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotValidClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+        expect(invalid_report.status).to eq :invalid
+        expect(invalid_report.rating).to be nil
       end
     end
   end
