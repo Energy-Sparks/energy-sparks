@@ -6,6 +6,7 @@ class AlertTypeRatingUnsubscriptions < ActiveRecord::Migration[6.0]
       t.references :alert_subscription_event, foreign_key: {on_delete: :cascade}, index: {name: 'altunsub_event'}
       t.integer :scope, null: false
       t.text :reason
+      t.integer :unsubscription_period, null: false
       t.date :effective_until
       t.timestamps
     end

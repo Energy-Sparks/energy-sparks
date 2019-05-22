@@ -204,6 +204,7 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
     t.bigint "alert_subscription_event_id"
     t.integer "scope", null: false
     t.text "reason"
+    t.integer "unsubscription_period", null: false
     t.date "effective_until"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

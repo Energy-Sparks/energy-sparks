@@ -13,6 +13,7 @@
 #  id                                   :bigint(8)        not null, primary key
 #  message                              :text
 #  status                               :integer          default("pending"), not null
+#  unsubscription_uuid                  :string
 #  updated_at                           :datetime         not null
 #
 # Indexes

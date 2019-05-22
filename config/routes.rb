@@ -99,7 +99,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :email_unsubscription, only: [:new, :create, :show]
+  resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
   devise_for :users, controllers: { sessions: "sessions" }
 
