@@ -146,5 +146,4 @@ describe 'Meter', :meters do
     end
 
   end
-
 end
