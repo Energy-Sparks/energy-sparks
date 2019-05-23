@@ -31,6 +31,7 @@ class Meter < ApplicationRecord
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
+  scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
   enum meter_type: [:electricity, :gas]
 
