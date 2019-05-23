@@ -43,4 +43,25 @@ describe MeterManagement do
 
   end
 
+  describe 'delete_meter!' do
+    let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, meter: meter) }
+    let!(:existing_amr_validated_reading){ create(:amr_validated_reading, meter: meter) }
+
+    context 'if a meter is to be deleted with amr validated readings' do
+      it 'removes the meter from associated amr_data_feed_readings' do
+        MeterManagement.new(meter).delete_meter!
+        existing_amr_data_feed_reading.reload
+        expect(existing_amr_data_feed_reading.meter).to be_nil
+      end
+
+      it 'removes amr_validated_readings associated with the meter' do
+        MeterManagement.new(meter).delete_meter!
+        expect(AmrValidatedReading.where(id: existing_amr_validated_reading.id)).to be_empty
+      end
+
+      it 'deletes the meter' do
+        expect { MeterManagement.new(meter).delete_meter! }.to change { Meter.count }.from(1).to(0)
+      end
+    end
+  end
 end

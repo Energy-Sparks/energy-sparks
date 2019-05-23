@@ -15,6 +15,14 @@ class MeterManagement
     end
   end
 
+  def delete_meter!
+    @meter.transaction do
+      remove_amr_validated_readings
+      nullify_amr_data_feed_readings
+      @meter.delete
+    end
+  end
+
 private
 
   def assign_amr_data_feed_readings
