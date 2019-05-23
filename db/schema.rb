@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_21_131820) do
+ActiveRecord::Schema.define(version: 2019_05_22_083755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 2019_05_21_131820) do
     t.bigint "alert_type_rating_content_version_id"
     t.bigint "find_out_more_id"
     t.bigint "content_generation_run_id", null: false
+    t.string "unsubscription_uuid"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
@@ -195,6 +196,21 @@ ActiveRecord::Schema.define(version: 2019_05_21_131820) do
     t.date "email_start_date"
     t.date "email_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
+  end
+
+  create_table "alert_type_rating_unsubscriptions", force: :cascade do |t|
+    t.bigint "alert_type_rating_id", null: false
+    t.bigint "contact_id", null: false
+    t.bigint "alert_subscription_event_id"
+    t.integer "scope", null: false
+    t.text "reason"
+    t.integer "unsubscription_period", null: false
+    t.date "effective_until"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_subscription_event_id"], name: "altunsub_event"
+    t.index ["alert_type_rating_id"], name: "index_alert_type_rating_unsubscriptions_on_alert_type_rating_id"
+    t.index ["contact_id"], name: "index_alert_type_rating_unsubscriptions_on_contact_id"
   end
 
   create_table "alert_type_ratings", force: :cascade do |t|
@@ -751,6 +767,9 @@ ActiveRecord::Schema.define(version: 2019_05_21_131820) do
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
+  add_foreign_key "alert_type_rating_unsubscriptions", "alert_subscription_events", on_delete: :cascade
+  add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
+  add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "areas", "data_feeds", on_delete: :restrict

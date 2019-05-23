@@ -98,9 +98,9 @@ Rails.application.routes.draw do
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
-
-
   end
+
+  resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
   devise_for :users, controllers: { sessions: "sessions" }
 
@@ -131,6 +131,9 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resources :unsubscriptions, only: [:index]
+
     resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do

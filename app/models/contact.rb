@@ -20,6 +20,7 @@
 class Contact < ApplicationRecord
   belongs_to :school, inverse_of: :contacts
   has_many   :alert_subscription_events
+  has_many   :alert_type_rating_unsubscriptions
 
   validates :mobile_phone_number, presence: true, unless: ->(contact) { contact.email_address.present? }
   validates :email_address,       presence: true, unless: ->(contact) { contact.mobile_phone_number.present? }
