@@ -59,10 +59,8 @@ module Schools
     end
 
     def destroy
-      @meter.safe_destroy
+      MeterManagement.new(@meter).delete_meter!
       redirect_to school_meters_path(@school)
-    rescue EnergySparks::SafeDestroyError => e
-      redirect_to school_meters_path(@school), alert: "Delete failed: #{e.message}"
     end
 
   private

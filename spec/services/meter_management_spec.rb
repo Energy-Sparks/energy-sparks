@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe MeterManagement do
 
-  let(:meter){ create(:electricity_meter) }
+  let!(:meter) { create(:electricity_meter) }
 
   describe 'process_creation!' do
 
@@ -44,10 +44,10 @@ describe MeterManagement do
   end
 
   describe 'delete_meter!' do
-    let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, meter: meter) }
-    let!(:existing_amr_validated_reading){ create(:amr_validated_reading, meter: meter) }
-
     context 'if a meter is to be deleted with amr validated readings' do
+      let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, meter: meter) }
+      let!(:existing_amr_validated_reading){ create(:amr_validated_reading, meter: meter) }
+
       it 'removes the meter from associated amr_data_feed_readings' do
         MeterManagement.new(meter).delete_meter!
         existing_amr_data_feed_reading.reload
@@ -59,6 +59,12 @@ describe MeterManagement do
         expect(AmrValidatedReading.where(id: existing_amr_validated_reading.id)).to be_empty
       end
 
+      it 'deletes the meter' do
+        expect { MeterManagement.new(meter).delete_meter! }.to change { Meter.count }.from(1).to(0)
+      end
+    end
+
+    context 'if a meter is to be deleted with no readings' do
       it 'deletes the meter' do
         expect { MeterManagement.new(meter).delete_meter! }.to change { Meter.count }.from(1).to(0)
       end

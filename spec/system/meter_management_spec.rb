@@ -69,6 +69,25 @@ RSpec.describe "meter management", :meters, type: :system do
     end
   end
 
+  context 'when the school has a meter with readings' do
+    let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
+
+    before(:each) {
+      click_on 'Manage meters'
+    }
+
+    it 'allows deletion of inactive meters' do
+      click_on 'Deactivate'
+      click_on 'Delete'
+      expect(school.meters.count).to eq(0)
+    end
+
+    it 'does show the CSV download button if there are readings' do
+      expect(meter.amr_validated_readings.empty?).to be false
+      expect(page).to have_content('CSV')
+    end
+  end
+
   context 'when a meter has readings, they can be downloaded' do
     let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
