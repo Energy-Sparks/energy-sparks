@@ -17,8 +17,11 @@ class MeterManagement
 
   def delete_meter!
     @meter.transaction do
+      Rails.logger.info "Removing validated readings"
       remove_amr_validated_readings
+      Rails.logger.info "Nullify amr readings"
       nullify_amr_data_feed_readings
+      Rails.logger.info "Delete meter"
       @meter.delete
     end
   end
@@ -31,6 +34,7 @@ private
 
   def remove_amr_validated_readings
     @meter.amr_validated_readings.delete_all
+    AggregateSchoolService.new(@meter.school).invalidate_cache
   end
 
   def nullify_amr_data_feed_readings
