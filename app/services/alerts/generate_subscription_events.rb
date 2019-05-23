@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module Alerts
   class GenerateSubscriptionEvents
     def initialize(school, content_generation_run:)
@@ -28,13 +30,16 @@ module Alerts
     end
 
     def first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, communication_type)
-      AlertSubscriptionEvent.create_with(
-        content_version: content_version,
-        content_generation_run: @content_generation_run,
-        find_out_more: find_out_more
-      ).find_or_create_by!(
-        contact: contact, alert: alert, communication_type: communication_type
-      )
+      if contact.alert_type_rating_unsubscriptions.active(Time.zone.today).where(alert_type_rating: content_version.alert_type_rating).empty?
+        AlertSubscriptionEvent.create_with(
+          content_version: content_version,
+          content_generation_run: @content_generation_run,
+          find_out_more: find_out_more,
+          unsubscription_uuid: SecureRandom.uuid
+        ).find_or_create_by!(
+          contact: contact, alert: alert, communication_type: communication_type
+        )
+      end
     end
   end
 end

@@ -13,6 +13,7 @@
 #  id                                   :bigint(8)        not null, primary key
 #  message                              :text
 #  status                               :integer          default("pending"), not null
+#  unsubscription_uuid                  :string
 #  updated_at                           :datetime         not null
 #
 # Indexes
@@ -35,8 +36,7 @@
 #
 
 class AlertSubscriptionEvent < ApplicationRecord
-  belongs_to :alert_subscription, inverse_of: :alert_subscription_events
-  belongs_to :contact,            inverse_of: :alert_subscription_events
+  belongs_to :contact, inverse_of: :alert_subscription_events
   belongs_to :alert
   belongs_to :email
   belongs_to :find_out_more

@@ -70,11 +70,23 @@ describe Alerts::GenerateSubscriptionEvents do
           expect(email_contact.alert_subscription_events.count).to eq 1
           expect(email_contact.alert_subscription_events.first.communication_type).to eq 'email'
           expect(email_contact.alert_subscription_events.first.content_version).to eq content_version
+          expect(email_contact.alert_subscription_events.first.unsubscription_uuid).to_not be_nil
           expect(sms_contact.alert_subscription_events.count).to eq 1
           expect(sms_contact.alert_subscription_events.first.communication_type).to eq 'sms'
           expect(sms_contact.alert_subscription_events.first.content_version).to eq content_version
           expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
           expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array ['sms','email']
+        end
+
+        it 'does not create any events for the scope if there is an unsubscription record that matches the rating' do
+          create :alert_type_rating_unsubscription, contact: email_contact, alert_type_rating: alert_type_rating, scope: :email
+
+          expect { service.perform(frequency: [:weekly])}.to change { content_generation_run.alert_subscription_events.count }.by(3)
+
+          expect(email_contact.alert_subscription_events.count).to eq 0
+          expect(sms_contact.alert_subscription_events.count).to eq 1
+          expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
+          expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array ['email', 'sms']
         end
 
         it 'ignores if events already exist' do

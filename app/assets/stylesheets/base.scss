@@ -23,7 +23,8 @@ address {
   font-size: initial;
 }
 
-label, p, dl, li{
+// FIXME why do we apply this to some elements but not others?
+label, p, dl, li, .form-group{
   font-size: 20px;
 }
 
