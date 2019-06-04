@@ -49,14 +49,20 @@ functions:
     handler: handler.DataPipeline::Handler.unpack_attachments
     events:
       - s3: ${self:provider.environment.INBOX_BUCKET}
+    layers:
+      - arn:aws:lambda:::awslayer:AmazonLinux1803
   process-file:
     handler: handler.DataPipeline::Handler.process_file
     events:
       - s3: ${self:provider.environment.PROCESS_BUCKET}
+    layers:
+      - arn:aws:lambda:::awslayer:AmazonLinux1803
   uncompress:
     handler: handler.DataPipeline::Handler.uncompress_file
     events:
       - s3: ${self:provider.environment.COMPRESSED_BUCKET}
+    layers:
+      - arn:aws:lambda:::awslayer:AmazonLinux1803
 
 resources:
   Resources:
