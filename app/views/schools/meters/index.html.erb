@@ -91,7 +91,7 @@
           </td>
           <td>
             <div class="btn-group btn-group-sm" role="group">
-              <% if can? :delete, @meter %>
+              <% if can? :delete, meter %>
                 <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
               <% else %>
                 <button class="btn btn-sm btn-danger" disabled title="Only admins can delete meters with meter readings">Delete</button>

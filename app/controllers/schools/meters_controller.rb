@@ -59,7 +59,7 @@ module Schools
     end
 
     def destroy
-      MeterManagement.new(@meter).delete_meter! if can? :delete, @meter
+      MeterManagement.new(@meter).delete_meter!
       redirect_to school_meters_path(@school)
     end
 

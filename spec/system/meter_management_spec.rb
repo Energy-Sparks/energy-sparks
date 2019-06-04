@@ -27,11 +27,11 @@ RSpec.describe "meter management", :meters, type: :system do
     context 'when the school has a meter with readings' do
       let!(:meter) { create(:electricity_meter_with_reading, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
 
-      it 'allows deletion of inactive meters' do
+      it 'the meter cannot be deleted' do
         click_on 'Manage meters'
         click_on 'Deactivate'
-        click_on 'Delete'
-        expect(school.meters.count).to eq(1)
+        expect(meter.amr_data_feed_readings.count).to eq(1)
+        expect(page).to have_button('Delete', disabled: true)
       end
     end
   end
