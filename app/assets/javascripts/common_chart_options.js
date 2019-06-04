@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    numericSymbols: null,  //otherwise by default ['k', 'M', 'G', 'T', 'P', 'E']
+    thousandsSep: ','
+  }
+});
+
 var commonChartOptions = {
   title: { text: null },
   xAxis: { showEmpty: false },
