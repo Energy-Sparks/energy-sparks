@@ -188,7 +188,7 @@ function isAStringAndStartsWith(thing, startingWith) {
     });
   }
 
-  (typeof thing === 'string' || thing instanceof String) && thing.startsWith(startingWith);
+  return (typeof thing === 'string' || thing instanceof String) && thing.startsWith(startingWith);
 }
 
 function scatter(d, c, chartIndex, seriesData) {
