@@ -99,11 +99,6 @@ class Meter < ApplicationRecord
     attributes(:solar_pv)
   end
 
-  def safe_destroy
-    raise EnergySparks::SafeDestroyError, 'Meter has associated readings' if amr_data_feed_readings.any?
-    destroy
-  end
-
   def correct_mpan_check_digit?
     return true if gas?
     mpan = mpan_mprn.to_s

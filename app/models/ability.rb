@@ -16,10 +16,10 @@ class Ability
       end
       can :index, AlertSubscriptionEvent, school_id: user.school_id
       can :manage, Contact, school_id: user.school_id
-      can [:index, :crud], Meter, school_id: user.school_id
+      can [:index, :create, :read, :update], Meter, school_id: user.school_id
       can :activate, Meter, active: false, school_id: user.school_id
       can :deactivate, Meter, active: true, school_id: user.school_id
-      can :delete, Meter do |meter|
+      can [:destroy, :delete], Meter do |meter|
         meter.school_id == user.school_id && meter.amr_data_feed_readings.count == 0
       end
       can :read, ActivityCategory
