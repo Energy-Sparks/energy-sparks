@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    numericSymbols: null,  //otherwise by default ['k', 'M', 'G', 'T', 'P', 'E']
+    thousandsSep: ','
+  }
+});
+
 var commonChartOptions = {
   title: { text: null },
   xAxis: { showEmpty: false },
@@ -84,10 +91,19 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
 
   // LINE charts
   if (chartType == 'line') {
-    if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
-      console.log('Yaxis - Temperature');
-      c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    if (y2AxisLabel !== undefined) {
+      if (y2AxisLabel == 'Temperature') {
+        axisTitle = '°C';
+        pointFormat = '{point.y:.2f} °C';
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon')) {
+        axisTitle = 'kWh';
+        pointFormat = '{point.y:.2f} kWh';
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
+        axisTitle = 'W/m2';
+        pointFormat = '{point.y:.2f} W/m2';
+      }
+      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     } else {
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
     }
@@ -164,12 +180,15 @@ function updateChartLabels(data, chart){
 function isAStringAndStartsWith(thing, startingWith) {
   // IE Polyfill for startsWith
   if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function(search, pos) {
-      return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
-    };
+    Object.defineProperty(String.prototype, 'startsWith', {
+      value: function(search, pos) {
+        pos = !pos || pos < 0 ? 0 : +pos;
+        return this.substring(pos, pos + search.length) === search;
+      }
+    });
   }
 
-  (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
+  return (typeof thing === 'string' || thing instanceof String) && thing.startsWith(startingWith);
 }
 
 function scatter(d, c, chartIndex, seriesData) {
