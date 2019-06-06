@@ -91,7 +91,7 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
 
   // LINE charts
   if (chartType == 'line') {
-    if (y2AxisLabel !== undefined) {
+    if (y2AxisLabel !== undefined && y2AxisLabel.length) {
       if (y2AxisLabel == 'Temperature') {
         axisTitle = '°C';
         pointFormat = '{point.y:.2f} °C';
