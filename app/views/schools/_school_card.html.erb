@@ -14,6 +14,12 @@
           <% if school.meters_for_supply(:gas).any? %>
             <%= fa_icon(fuel_type_icon(:gas)) %>
           <% end %>
+          <% if school.has_solar_pv? %>
+            <%= fa_icon(:sun) %>
+          <% end %>
+          <% if school.has_storage_heaters? %>
+            <%= fa_icon(:plug) %>
+          <% end %>
         <% end %>
         <%= school.address %> <%= school.postcode %>
       </div>
