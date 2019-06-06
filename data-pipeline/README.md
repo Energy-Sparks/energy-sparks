@@ -69,6 +69,10 @@ application to process files from previously unseen prefixes.
 To start receiving emails to a new stage a new SES rule will have to be
 added to move the email to the `es-STAGE-data-pipeline-inbox` bucket.
 
+### File expiry
+File expiry is managed manually through the S3 web interface and will
+need setting up for new buckets.
+
 
 ### Monitoring
 

@@ -165,3 +165,9 @@ div.meter-attributes {
     background-color: white;
   }
 }
+
+// Stops bootstrap hiding error messages for wrapped inputs
+// OK for us as we don't render invalid feedback unless there is an error
+.invalid-feedback {
+  display: block !important;
+}
