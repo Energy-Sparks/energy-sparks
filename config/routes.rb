@@ -81,6 +81,7 @@ Rails.application.routes.draw do
       get :heating_model_fitting, to: 'analysis#heating_model_fitting'
       get :storage_heaters, to: 'analysis#storage_heaters'
       get :solar_pv, to: 'analysis#solar_pv'
+      get :carbon_emissions, to: 'analysis#carbon_emissions'
       get :test, to: 'analysis#test'
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
