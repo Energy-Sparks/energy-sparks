@@ -17,7 +17,7 @@ class ChartDataValues
     'electricity' => '#ff4500',
     '' => '#ff4500',
     'gas' => '#3bc0f0',
-    'solar pv (consumed onsite)' => '#ffee8f',
+    'solar pv (consumed onsite)' => '#ffac21',
     'storage heaters' => "#501e74",
   }.freeze
 
