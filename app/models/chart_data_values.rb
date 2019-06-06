@@ -8,15 +8,17 @@ class ChartDataValues
     SeriesNames::SCHOOLDAYOPEN => '#5cb85c',
     SeriesNames::HOLIDAY => '#ff4500',
     SeriesNames::WEEKEND => '#ffac21',
-    'electricity' => '#ff4500',
-    '' => '#ff4500',
-    'gas' => '#3bc0f0',
     SeriesNames::HEATINGDAY => '#3bc0f0',
     SeriesNames::NONHEATINGDAY => '#5cb85c',
     SeriesNames::HEATINGDAYMODEL => '#ff4500',
     SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
-    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
+    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
+    'electricity' => '#ff4500',
+    '' => '#ff4500',
+    'gas' => '#3bc0f0',
+    'solar pv (consumed onsite)' => '#ffee8f',
+    'storage heaters' => "#501e74",
   }.freeze
 
   def initialize(chart, chart_type)
