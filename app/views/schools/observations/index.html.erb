@@ -1,0 +1,31 @@
+<h1>Temperature recordings</h1>
+<h2><%= @school.name %></h2>
+
+<% if @school.observations.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>At</th>
+        <th>Observation</th>
+        <th>Recording location</th>
+        <th>Temperature &deg;C</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @observations.each do |observation| %>
+        <% observation.temperature_recordings.each_with_index do |temperature_recording, index| %>
+          <tr scope="row">
+            <td><%= nice_date_times observation.at %></td>
+            <td><%= observation.description %></td>
+            <td><%= temperature_recording.location.name %></td>
+            <td><%= temperature_recording.centigrade %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no observations recorded at the moment</p>
+<% end %>
+
+<p><%= link_to 'Add new temperature recordings', new_school_observation_path(@school), class: 'btn btn-success' %></p>

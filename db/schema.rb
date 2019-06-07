@@ -506,6 +506,14 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
     t.index ["name"], name: "index_key_stages_on_name", unique: true
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.text "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_locations_on_school_id"
+  end
+
   create_table "merit_actions", force: :cascade do |t|
     t.bigint "user_id"
     t.string "action_method"
@@ -555,6 +563,15 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
+  end
+
+  create_table "observations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "at", null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
   create_table "sashes", force: :cascade do |t|
@@ -703,6 +720,16 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
     t.string "version", null: false
   end
 
+  create_table "temperature_recordings", force: :cascade do |t|
+    t.bigint "observation_id", null: false
+    t.bigint "location_id", null: false
+    t.decimal "centigrade", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_temperature_recordings_on_location_id"
+    t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
+  end
+
   create_table "terms", force: :cascade do |t|
     t.bigint "calendar_id"
     t.string "academic_year"
@@ -787,7 +814,9 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "meters", "schools"
+  add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
@@ -808,6 +837,8 @@ ActiveRecord::Schema.define(version: 2019_05_22_083755) do
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
+  add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
+  add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end
