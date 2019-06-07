@@ -75,45 +75,15 @@
     </div>
   </div>
 
-  <div class="col card-deck  ">
-    <% if @scoreboard %>
+  <div class="col card-deck">
+    <% if @podium %>
       <div class="card surrounding-schools">
         <div class="card-body">
-          <h4>Your school is <%= scoreboard_position(@school) %> on the scoreboard.</h4>
-          <div class="row align-items-end">
-            <% @surrounding_schools.reverse.each_with_index do |school, index| %>
-              <div class="col-4 text-center">
-                <h5>
-                  <span class="badge mt-3 badge-<%= @school == school ? 'success' : 'light' %>">
-                    <%= scoreboard_position(school) %>
-                  </span>
-                </h5>
-                <div class="bar <%= 'bar-current' if @school == school%>">
-                  <div class="bar-arrow"></div>
-                  <div class="bar-body bar-body-<%=index%>">
-                    <h6>
-                      <span class="badge mt-3">
-                        <%= school.sum_points || 0 %> points
-                      </span>
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-          </div>
-          <div class="row">
-            <% @surrounding_schools.reverse.each do |school| %>
-              <div class="col-4 text-center">
-                <h6>
-                  <% if @school == school %>
-                    <%= school.name %>
-                  <% else %>
-                    <%= link_to school.name, pupils_school_path(school) %>
-                  <% end %>
-                </h6>
-              </div>
-            <% end %>
-          </div>
+          <% if @podium.includes_school? %>
+            <%= render 'podium', podium: @podium %>
+          <% else %>
+            <%= render 'no_points_podium', podium: @podium %>
+          <% end %>
         </div>
         <div class="card-footer text-center">
           <h4>

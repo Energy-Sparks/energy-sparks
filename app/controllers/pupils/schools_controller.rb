@@ -24,7 +24,7 @@ module Pupils
       activity_setup(@school)
       @scoreboard = @school.scoreboard
       if @scoreboard
-        @surrounding_schools = @scoreboard.surrounding_schools(@school)
+        @podium = Podium.create(school: @school, scoreboard: @scoreboard)
       end
 
       @message = message_for_speech_bubble(@school)
