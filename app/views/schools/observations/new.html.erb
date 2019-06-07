@@ -1,8 +1,23 @@
 <h1>Record your school's temperatures</h1>
 
+<h2>Aim</h2>
+<p>Find out whether your school is too warm or too cold. If the school is too warm the heating could be turned down to save energy.</p>
+
+<h2>Why are we doing this?</h2>
+<p>Getting the temperature right in the classroom is important; too hot and everyone falls asleep and doesn’t learn, too cold and we shiver, and must put extra jumpers on.</p>
+
+<p>A hot classroom is also expensive as more heating is needed, and heating costs money. The best temperature for schools is 18°C, but corridors and sports halls can be 15°C. If some areas of your school are hotter than this, you are wasting energy and could save energy by turning down the heating. For every 1°C you reduce the temperature, you save the school about 10% of its heating costs.</p>
+
+<h2>How to carry out this activity</h2>
+<p>This activity needs to be carried out when your school heating is running. For most schools this is from October to April. Record the classroom or area of the schools where you are measuring the temperature. Now record the temperature in that room.</p>
+
+<p>To get a good measurement of the overall temperature in the room, you should put the thermometer away from any radiators or heaters, spotlights, electrical equipment like whiteboards or computers, air conditioning vents, windows, outside walls and direct sunlight. You should be careful not to hold the thermometer while taking your measurement as your body heat will warm the thermometer. The best way to measure the temperature is to put the thermometer down on a table or shelf, and wait until the temperature reading stops changing.</p>
+
+<p>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</p>
+
+<h3>Enter temperatures</h3>
 <%= simple_form_for([@school, @observation]) do |f| %>
-  <%= f.input :description, label: 'What we did' %>
-  <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: "form-control form-control-lg " } %>
+  <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: "form-control form-control-lg", data: { max_date_time: h(Time.now.httpdate) }} %>
   <%= f.fields_for :temperature_recordings do |temperature_form| %>
     <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
   <% end %>
