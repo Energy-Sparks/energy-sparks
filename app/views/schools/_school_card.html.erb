@@ -7,19 +7,17 @@
         <% end -%>
       </h3>
       <div class="card-text">
-        <% if user_signed_in? && current_user.admin? %>
-          <% if school.meters_for_supply(:electricity).any? %>
-            <%= fa_icon(fuel_type_icon(:electricity)) %>
-          <% end %>
-          <% if school.meters_for_supply(:gas).any? %>
-            <%= fa_icon(fuel_type_icon(:gas)) %>
-          <% end %>
-          <% if school.has_solar_pv? %>
-            <%= fa_icon(:sun) %>
-          <% end %>
-          <% if school.has_storage_heaters? %>
-            <%= fa_icon(:plug) %>
-          <% end %>
+        <% if school.meters_for_supply(:electricity).any? %>
+          <%= fa_icon(fuel_type_icon(:electricity)) %>
+        <% end %>
+        <% if school.meters_for_supply(:gas).any? %>
+          <%= fa_icon(fuel_type_icon(:gas)) %>
+        <% end %>
+        <% if school.has_solar_pv? %>
+          <%= fa_icon(:sun) %>
+        <% end %>
+        <% if school.has_storage_heaters? %>
+          <%= fab_icon(:intercom) %>
         <% end %>
         <%= school.address %> <%= school.postcode %>
       </div>
