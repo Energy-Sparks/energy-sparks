@@ -6,13 +6,6 @@
 
 // Popper is a requirement for bootstrap and is included either in the bootstrap gem
 // or as a dependency
-//= require popper
-//= require bootstrap
-
-//= require highcharts
-//= require highcharts-modules/exporting
-//= require highcharts-modules/offline-exporting
-//= require chartkick
 
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
@@ -26,8 +19,6 @@
 //= require bootstrap-year-calendar
 //= require calendar_year_view
 
-//= require common_chart_options
-//= require analysis
 //= require simulator
 
 //= require moment
