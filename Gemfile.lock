@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 6607fb02cd28a46aa795722905ab422649d00f4e
-  tag: 0.45.1
+  revision: b0a990d90fc2c52ecba3c0d963a4a85aead8b946
+  tag: 0.45.2
   specs:
-    energy-sparks_analytics (0.45.1.pre.fixes.pre.electric.pre.only.pre.hot.pre.water.pre.insulation.pre.bug)
+    energy-sparks_analytics (0.45.2.pre.separate.pre.schedule.pre.data.pre.manager)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
