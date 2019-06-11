@@ -23,12 +23,12 @@
               <td>{{<%= key %>}}</td>
               <td><%= details[:description] %></td>
               <td>
-                <% if details[:units].is_a?(Hash) %>
-                  <% details[:units].each do |key, value| %>
+                <% if details[units_field].is_a?(Hash) %>
+                  <% details[units_field].each do |key, value| %>
                     <%= key %> (<%= value %>)
                   <% end %>
                 <% else %>
-                  <%= details[:units] %>
+                  <%= details[units_field] %>
                 <% end %>
               </td>
             </tr>
