@@ -43,7 +43,7 @@ module Admin
 
         def content_params
           params.require(:alert_type_rating).permit(
-            content: AlertTypeRatingContentVersion.template_fields
+            content: AlertTypeRatingContentVersion.template_fields + [:colour]
           )
         end
 

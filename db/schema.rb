@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_120105) do
+ActiveRecord::Schema.define(version: 2019_05_22_083755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.bigint "alert_type_rating_content_version_id"
     t.bigint "find_out_more_id"
     t.bigint "content_generation_run_id", null: false
+    t.string "unsubscription_uuid"
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
@@ -184,7 +185,32 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.text "email_content"
     t.text "find_out_more_chart_variable", default: "none"
     t.string "find_out_more_chart_title", default: ""
+    t.date "find_out_more_start_date"
+    t.date "find_out_more_end_date"
+    t.date "teacher_dashboard_alert_start_date"
+    t.date "teacher_dashboard_alert_end_date"
+    t.date "pupil_dashboard_alert_start_date"
+    t.date "pupil_dashboard_alert_end_date"
+    t.date "sms_start_date"
+    t.date "sms_end_date"
+    t.date "email_start_date"
+    t.date "email_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
+  end
+
+  create_table "alert_type_rating_unsubscriptions", force: :cascade do |t|
+    t.bigint "alert_type_rating_id", null: false
+    t.bigint "contact_id", null: false
+    t.bigint "alert_subscription_event_id"
+    t.integer "scope", null: false
+    t.text "reason"
+    t.integer "unsubscription_period", null: false
+    t.date "effective_until"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_subscription_event_id"], name: "altunsub_event"
+    t.index ["alert_type_rating_id"], name: "index_alert_type_rating_unsubscriptions_on_alert_type_rating_id"
+    t.index ["contact_id"], name: "index_alert_type_rating_unsubscriptions_on_contact_id"
   end
 
   create_table "alert_type_ratings", force: :cascade do |t|
@@ -213,6 +239,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.boolean "show_ratings", default: true
     t.boolean "has_variables", default: false
     t.integer "source", default: 0, null: false
+    t.boolean "has_ratings", default: true
   end
 
   create_table "alerts", force: :cascade do |t|
@@ -220,10 +247,12 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.bigint "alert_type_id"
     t.date "run_on"
     t.integer "status"
-    t.text "summary"
-    t.json "data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "template_data", default: {}
+    t.json "table_data", default: {}
+    t.json "chart_data", default: {}
+    t.decimal "rating"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
@@ -504,6 +533,14 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.index ["name"], name: "index_key_stages_on_name", unique: true
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.text "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_locations_on_school_id"
+  end
+
   create_table "merit_actions", force: :cascade do |t|
     t.bigint "user_id"
     t.string "action_method"
@@ -553,6 +590,15 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
+  end
+
+  create_table "observations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "at", null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
   create_table "sashes", force: :cascade do |t|
@@ -676,6 +722,21 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
     t.index ["user_id"], name: "index_simulations_on_user_id"
   end
 
+  create_table "solar_pv_tuos_readings", force: :cascade do |t|
+    t.bigint "area_id", null: false
+    t.text "gsp_name"
+    t.integer "gsp_id"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.decimal "distance_km"
+    t.date "reading_date", null: false
+    t.decimal "generation_mw_x48", null: false, array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id", "reading_date"], name: "index_solar_pv_tuos_readings_on_area_id_and_reading_date", unique: true
+    t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
+  end
+
   create_table "subjects", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -684,6 +745,16 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
 
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
+  end
+
+  create_table "temperature_recordings", force: :cascade do |t|
+    t.bigint "observation_id", null: false
+    t.bigint "location_id", null: false
+    t.decimal "centigrade", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_temperature_recordings_on_location_id"
+    t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
   end
 
   create_table "terms", force: :cascade do |t|
@@ -750,6 +821,9 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
+  add_foreign_key "alert_type_rating_unsubscriptions", "alert_subscription_events", on_delete: :cascade
+  add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
+  add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "areas", "data_feeds", on_delete: :restrict
@@ -771,7 +845,9 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "meters", "schools"
+  add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
@@ -791,6 +867,9 @@ ActiveRecord::Schema.define(version: 2019_05_17_120105) do
   add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
+  add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
+  add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
+  add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end

@@ -11,8 +11,8 @@ describe Alerts::GenerateEmailNotifications do
   let!(:content_version_1){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
   let!(:content_version_2){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, email_title: 'You need to fix something!', email_content: 'You really do'}
 
-  it 'sends email, only once' do
-    Alerts::GenerateSubscriptionEvents.new(school).perform(frequency: AlertType.frequencies.keys)
+  it 'sends email, only once and offers a way to unsubscribe' do
+    Alerts::GenerateContent.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
     alert_subscription_event_1 = AlertSubscriptionEvent.find_by!(content_version: content_version_1)
     alert_subscription_event_2 = AlertSubscriptionEvent.find_by!(content_version: content_version_2)
 
@@ -34,6 +34,9 @@ describe Alerts::GenerateEmailNotifications do
     expect(email.subject).to include('Energy Sparks alerts')
     expect(email.html_part.body.to_s).to include('You need to do something')
     expect(email.html_part.body.to_s).to include('You need to fix something')
+
+    expect(email.html_part.body.to_s).to include("I don't want to see alerts like this")
+    expect(email.html_part.body.to_s).to include(alert_subscription_event_1.unsubscription_uuid)
 
     expect(email.html_part.body.to_s).to_not include('Find Out More')
 

@@ -1,0 +1,10 @@
+<h1>Record your school's temperatures</h1>
+
+<%= simple_form_for([@school, @observation]) do |f| %>
+  <%= f.input :description, label: 'What we did' %>
+  <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: "form-control form-control-lg " } %>
+  <%= f.fields_for :temperature_recordings do |temperature_form| %>
+    <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
+  <% end %>
+  <%= f.submit 'Create temperature recordings', class: 'btn btn-success' %>
+<% end %>

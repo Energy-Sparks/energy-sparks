@@ -23,7 +23,8 @@ address {
   font-size: initial;
 }
 
-label, p, dl, li{
+// FIXME why do we apply this to some elements but not others?
+label, p, dl, li, .form-group{
   font-size: 20px;
 }
 
@@ -163,4 +164,10 @@ div.meter-attributes {
     color: black;
     background-color: white;
   }
+}
+
+// Stops bootstrap hiding error messages for wrapped inputs
+// OK for us as we don't render invalid feedback unless there is an error
+.invalid-feedback {
+  display: block !important;
 }

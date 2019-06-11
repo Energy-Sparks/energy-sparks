@@ -26,8 +26,9 @@ module Pupils
 
       @scoreboard = @school.scoreboard
       if @scoreboard
-        @surrounding_schools = @scoreboard.surrounding_schools(@school)
+        @podium = Podium.create(school: @school, scoreboard: @scoreboard)
       end
+      @observations = @school.observations
     end
 
   private

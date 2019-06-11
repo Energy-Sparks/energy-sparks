@@ -38,3 +38,4 @@
 
 //= require aggregated_meter_collection
 //= require date_pickers
+

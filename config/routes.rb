@@ -11,8 +11,9 @@ Rails.application.routes.draw do
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
 
+  get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
+  get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
-  get 'data_feeds/dark_sky_temperature_readings', to: 'data_feeds/dark_sky_temperature_readings#show'
 
   get 'help/(:help_page)', to: 'home#help', as: :help
 
@@ -40,7 +41,9 @@ Rails.application.routes.draw do
 
   resources :schools do
     resources :activities
+
     scope module: :schools do
+      resources :observations, only: [:show, :new, :create, :index]
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
@@ -64,7 +67,8 @@ Rails.application.routes.draw do
       get 'simulations/new_exemplar', to: 'simulations#new_exemplar', as: :new_exemplar_simulation
       resources :simulations
 
-      resources :alerts, only: [:index, :show]
+      resources :alerts, only: [:show]
+
       resources :find_out_more, controller: :find_out_more
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
@@ -96,9 +100,9 @@ Rails.application.routes.draw do
       get 'compare_daily_usage', to: 'stats#compare_daily_usage'
       get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
-
-
   end
+
+  resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
   devise_for :users, controllers: { sessions: "sessions" }
 
@@ -133,6 +137,9 @@ Rails.application.routes.draw do
       resource :preview, only: :show, controller: 'preview'
     end
     resource :equivalences
+
+    resources :unsubscriptions, only: [:index]
+
     resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do

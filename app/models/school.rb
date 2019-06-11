@@ -57,6 +57,7 @@ class School < ApplicationRecord
   has_many :school_times,         inverse_of: :school, dependent: :destroy
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
+  has_many :observations,         inverse_of: :school, dependent: :destroy
 
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
