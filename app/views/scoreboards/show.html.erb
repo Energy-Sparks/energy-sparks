@@ -21,24 +21,29 @@
       <tbody>
       <% @schools.each_with_index do |school, i| %>
           <tr>
-            <td scope="row">
-              <% if school.sum_points %>
+            <% if school.sum_points %>
+              <td scope="row">
                 <h2><span class="badge badge-primary"><%= i+1 %></span></h2>
-              <% end %>
-            </td>
-
-            <td><h2>
-              <%= link_to school.name, school_path(school) %></h2></td>
-
-            <td>
-              <h2>
-              <span class="badge badge-success"><%= school.sum_points %></span>
-              &nbsp;
-              <% if school.points_since > 0 %>
-                  <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
-              <% end %>
-              </h2>
-            </td>
+              </td>
+              <td>
+                <h2><%= link_to school.name, school_path(school) %></h2>
+              </td>
+              <td>
+                <h2>
+                  <%= link_to school.sum_points, school_activities_path(school), class: 'badge badge-success' %>
+                  &nbsp;
+                  <% if school.points_since > 0 %>
+                    <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+                  <% end %>
+                </h2>
+              </td>
+            <% else %>
+              <td />
+              <td>
+                <h2><%= link_to school.name, school_path(school) %></h2>
+              </td>
+              <td />
+            <% end %>
           </tr>
       <% end %>
       </tbody>
