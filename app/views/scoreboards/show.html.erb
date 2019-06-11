@@ -1,10 +1,10 @@
 <% content_for :page_title, 'Scoreboard' %>
 
-<div class=" container">
+<div class="container mt-2">
   <div class="row">
     <div class="col-md-12">
       <h1>Scoreboard: <%= @scoreboard.name %></h1>
-      <p>See how well each of our <%= @scoreboard.name%> Energy Sparks schools are recording their energy saving activities! Scoreboard points are earned from recording activities investigating energy use, learning about energy and taking energy saving action around their school.</p>
+      <p>See how well each of our <%= @scoreboard.name%> Energy Sparks schools are recording their energy saving <%= link_to 'activities', activity_categories_path %>! Scoreboard points are earned from recording <%= link_to 'activities', activity_categories_path %> investigating energy use, learning about energy and taking energy saving action around their school.</p>
     </div>
   </div>
 
