@@ -1,20 +1,32 @@
 class TempusDominusDateInput < SimpleForm::Inputs::Base
   def input(wrapper_options)
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
-    template.content_tag(:div, class: 'input-group date tempus-dominus-date', data: { target_input: 'nearest' }, id: wrapper_id) do
+    template.content_tag(:div, class: "input-group date #{input_group_class}", data: { target_input: 'nearest' }, id: wrapper_id) do
       template.concat @builder.text_field(attribute_name, merged_input_options)
       template.concat div_button
     end
+  end
+
+  def input_group_class
+    "tempus-dominus-date".freeze
   end
 
   def input_html_options
     super.merge(class: 'form-control datetimepicker-input', value: input_value, data: { target: "##{wrapper_id}" })
   end
 
+  def input_value_key
+    :default_date
+  end
+
+  def input_value_format
+    "%d/%m/%Y".freeze
+  end
+
   def input_value
-    value = @builder.object.send(attribute_name).try(:strftime, "%d/%m/%Y")
-    if value.nil? && options.key?(:default_date)
-      value = options[:default_date].try(:strftime, "%d/%m/%Y")
+    value = @builder.object.send(attribute_name).try(:strftime, input_value_format)
+    if value.nil? && options.key?(input_value_key)
+      value = options[input_value_key].try(:strftime, input_value_format)
     end
     value
   end

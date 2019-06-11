@@ -41,7 +41,9 @@ Rails.application.routes.draw do
 
   resources :schools do
     resources :activities
+
     scope module: :schools do
+      resources :observations, only: [:show, :new, :create, :index]
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts

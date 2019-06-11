@@ -33,28 +33,11 @@ class Scoreboard < ApplicationRecord
     schools.active.select('schools.*, SUM(num_points) AS sum_points')
         .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
         .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
-        .order('sum_points DESC NULLS LAST')
+        .order(Arel.sql('sum_points DESC NULLS LAST, MAX(merit_score_points.created_at) DESC, schools.name ASC'))
         .group('schools.id, merit_scores.sash_id')
   end
 
   def position(school)
     scored_schools.index(school)
-  end
-
-  # NOTE: this returns schools [HIGH -> LOW] to
-  # matcth the result of score_schools
-  # even if the UI requires them the other way round
-  def surrounding_schools(school)
-    school_position = position(school)
-    scored = scored_schools.to_a
-    return scored if scored.size < 4
-    starting_position = if school_position == 0
-                          0
-                        elsif school_position == (scored.size - 1)
-                          -3
-                        else
-                          school_position - 1
-                        end
-    scored[starting_position, 3].compact
   end
 end

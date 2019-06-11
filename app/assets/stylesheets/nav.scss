@@ -36,13 +36,22 @@
   z-index: 10;
 }
 
+.sub-navbar .badge {
+  padding: 0.4em;
+}
+
 .sub-navbar h4 a,
 .sub-navbar h4 a:hover,
 .sub-navbar h4 a:focus,
 .sub-navbar h4 a:active {
-    color: white;
-    vertical-align: middle;
-  }
+  color: white;
+  vertical-align: middle;
+}
+
+.sub-navbar h3,
+.sub-navbar h4 {
+  margin: 0px;
+}
 
 .sub-navbar li.nav-item a,
 .sub-navbar li.nav-item a:hover,

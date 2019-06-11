@@ -1,11 +1,11 @@
 <!-- the expand-xl sets the breakpoint as to when to collapse the menu -->
 <nav class="navbar navbar-expand-xl bg-secondary navbar-dark sub-navbar fixed-top fixed-top-sub-nav">
   <div class="container d-flex align-items-stretch justify-content-sm-between bd-highlight">
-    <div class="bd-highlight school-name">
+    <div class="school-name align-self-center">
       <h4><%= link_to @school.name, school_path(@school) %></h4>
     </div>
     <% if @school.scoreboard %>
-      <div class="bd-highlight">
+      <div class="align-self-center">
         <h3 class="display-6">
           <%= link_to scoreboard_path(@school.scoreboard) do %>
             <span class="badge badge-success ">
@@ -26,7 +26,7 @@
         </h3>
       </div>
     <% end %>
-    <div class="bd-highlight">
+    <div class="align-self-center">
       <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
