@@ -1,0 +1,33 @@
+<h4>Your school is <%= podium.school_position.ordinal %> on the scoreboard.</h4>
+<div class="row align-items-end">
+  <% podium.low_to_high.each do |position| %>
+    <div class="col-4 text-center">
+      <h5>
+        <span class="badge mt-3 badge-<%= podium.current_school?(position) ? 'success' : 'light' %>">
+          <%= position.ordinal%>
+        </span>
+      </h5>
+      <span class="badge mt-1">
+        <%= position.points %> points
+      </span>
+      <div class="bar <%= 'bar-current' if podium.current_school?(position) %>">
+        <div class="bar-arrow"></div>
+        <div class="bar-body" style="height:<%= (position.normalised_points * 149).to_i + 1 %>px">
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="row">
+  <% podium.low_to_high.each do |position| %>
+    <div class="col-4 text-center">
+      <h6>
+        <% if podium.current_school?(position) %>
+          <%= position.school.name %>
+        <% else %>
+          <%= link_to position.school.name, pupils_school_path(position.school) %>
+        <% end %>
+      </h6>
+    </div>
+  <% end %>
+</div>
