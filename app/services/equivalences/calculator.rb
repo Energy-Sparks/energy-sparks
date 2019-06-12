@@ -1,6 +1,8 @@
 require 'mustache'
 module Equivalences
   class Calculator
+    class CalculationError < StandardError; end
+
     TIME_PERIODS = {
       last_week: { week: -1 },
       last_school_week: { schoolweek: -1 },
@@ -22,6 +24,8 @@ module Equivalences
       end
       relevant = data.values.all? {|values| values[:show_equivalence]}
       Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant)
+    rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart => e
+      raise CalculationError, e.message
     end
   end
 end
