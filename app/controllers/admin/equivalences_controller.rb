@@ -14,7 +14,7 @@ module Admin
       )
       render 'show', layout: nil
     rescue Equivalences::Calculator::CalculationError => e
-      render text: "#{e.message} for #{school.name}"
+      render plain: "#{e.message} for #{school.name}"
     end
 
     def create
