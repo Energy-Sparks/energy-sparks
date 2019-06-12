@@ -67,11 +67,7 @@ class CalendarsController < ApplicationController
 private
 
   def calendar_params
-    params.require(:calendar).permit(:name, terms_attributes: term_params)
-  end
-
-  def term_params
-    [:id, :academic_year, :name, :start_date, :end_date, :_destroy]
+    params.require(:calendar).permit(:name)
   end
 
   def build_terms
