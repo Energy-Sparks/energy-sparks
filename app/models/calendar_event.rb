@@ -38,7 +38,7 @@ class CalendarEvent < ApplicationRecord
 
   before_save :update_academic_year
 
-  validates :calendar, :start_date, :end_date, presence: true
+  validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
 
   validate :start_date_end_date_order, :no_overlaps
 
