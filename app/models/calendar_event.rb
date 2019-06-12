@@ -36,11 +36,17 @@ class CalendarEvent < ApplicationRecord
 
   after_create :check_whether_child_needs_creating
 
+  before_save :update_academic_year
+
   validates :calendar, :start_date, :end_date, presence: true
 
   validate :start_date_end_date_order, :no_overlaps
 
 private
+
+  def update_academic_year
+    self.academic_year = AcademicYear.for_date(start_date) if start_date
+  end
 
   def check_whether_child_needs_creating
     if calendar.calendars.any?
