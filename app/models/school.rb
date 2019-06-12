@@ -62,6 +62,8 @@ class School < ApplicationRecord
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
 
+  has_many :equivalences
+
   has_many :simulations, inverse_of: :school, dependent: :destroy
 
   has_many :amr_data_feed_readings,       through: :meters

@@ -49,5 +49,10 @@ describe Calendar do
       today = holiday_start_date - 2.days
       expect(calendar.holiday_approaching?(today: today)).to be true
     end
+
+    it 'knows there is a holiday approaching' do
+      empty_calendar = create(:calendar)
+      expect(calendar.holiday_approaching?).to be false
+    end
   end
 end

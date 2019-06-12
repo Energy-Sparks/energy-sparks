@@ -133,6 +133,10 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :equivalence_types do
+      resource :preview, only: :show, controller: 'preview'
+    end
+    resource :equivalences
 
     resources :unsubscriptions, only: [:index]
 
