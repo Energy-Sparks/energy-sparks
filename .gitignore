@@ -70,7 +70,6 @@ yarn-debug.log*
 
 # Keep node module directory
 /node_modules/*
-!/node_modules/.keep
 
 /yarn-error.log
 yarn-debug.log*
