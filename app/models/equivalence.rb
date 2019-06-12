@@ -25,6 +25,8 @@ class Equivalence < ApplicationRecord
   belongs_to :school
   belongs_to :content_version, class_name: 'EquivalenceTypeContentVersion', foreign_key: :equivalence_type_content_version_id
 
+  scope :relevant, -> { where(relevant: true) }
+
 
   def formatted_variables
     variables.inject({}) do |formatted, (name, values)|
