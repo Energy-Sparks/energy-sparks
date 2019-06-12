@@ -32,7 +32,7 @@
       <tr>
         <td><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path  %></td>
         <td></td>
-        <td><%= link_to "CSV", data_feeds_carbon_intensity_readings_path(format: "csv") %></td>
+        <td><%= link_to "Carbon intensity data CSV", data_feeds_carbon_intensity_readings_path(format: "csv") %></td>
       </tr>
       <% DarkSkyArea.all.each do |area| %>
          <tr>
