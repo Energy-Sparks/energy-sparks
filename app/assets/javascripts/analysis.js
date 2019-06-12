@@ -106,7 +106,9 @@ function processAnalysisCharts(){
         data: requestData,
         success: function (returnedData) {
           var this_chart_data = returnedData.charts[processChartIndex];
-          if (this_chart_data.series_data == null) {
+          if (this_chart_data == undefined) {
+            chartFailure("We do not have enough data at the moment to display this ", chartIndex);
+          } else if (this_chart_data.series_data == null) {
             chartFailure(this_chart_data.title, chartIndex);
           } else {
             chartSuccess(this_chart_data, thisChart, chartIndex, noAdvice, noZoom);

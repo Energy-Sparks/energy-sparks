@@ -1,0 +1,7 @@
+<h2>Edit equivalence type</h2>
+
+<%= simple_form_for @equivalence_type, url: admin_equivalence_type_path(@equivalence_type) do |form| %>
+  <%= render 'form', form: form, alert_type: @equivalence_type, content: @content, template_variables: @template_variables %>
+  <%= form.button :submit, 'Update equivalence type' %>
+<% end %>
+
