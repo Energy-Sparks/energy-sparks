@@ -6,6 +6,7 @@
 #  data                                :json
 #  equivalence_type_content_version_id :bigint(8)        not null
 #  id                                  :bigint(8)        not null, primary key
+#  relevant                            :boolean          default(TRUE)
 #  school_id                           :bigint(8)        not null
 #  updated_at                          :datetime         not null
 #

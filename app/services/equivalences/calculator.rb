@@ -20,7 +20,8 @@ module Equivalences
         data_collection[variable] = @analytics.front_end_convert(variable, time_period, equivalence_type.meter_type.to_sym)
         data_collection
       end
-      Equivalence.new(school: @school, content_version: content, data: data)
+      relevant = data.values.all? {|values| values[:show_equivalence]}
+      Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant)
     end
   end
 end
