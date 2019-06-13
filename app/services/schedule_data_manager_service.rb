@@ -9,9 +9,9 @@ class ScheduleDataManagerService
     @dark_sky_area_id = school.dark_sky_area_id
   end
 
-  def holidays
+  def holidays(_area_name)
     cache_key = "#{@calendar_id}-holidays"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    @holidays ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       hol_data = HolidayData.new
 
       Calendar.find(@calendar_id).holidays.order(:start_date).map do |holiday|
@@ -41,29 +41,29 @@ class ScheduleDataManagerService
     output_data
   end
 
-  def temperatures
-    ENV['DARK_SKY_FOR_TEMPERATURES'] ? dark_sky_temperatures : weather_underground_temperatures
+  def temperatures(_area_name)
+    @temperatures ||= ENV['DARK_SKY_FOR_TEMPERATURES'] ? dark_sky_temperatures : weather_underground_temperatures
   end
 
-  def solar_irradiation
+  def solar_irradiation(_area_name)
     cache_key = "#{@solar_irradiance_area_id}-solar-irradiation"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    @solar_irradiation ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarIrradianceFromPV.new('solar irradiance from pv')
       populate_data_from_solar_pv_readings(data)
     end
   end
 
-  def solar_pv
+  def solar_pv(_area_name)
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    @solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarPV.new('solar pv')
       populate_data_from_solar_pv_readings(data)
     end
   end
 
-  def co2
+  def uk_grid_carbon_intensity
     cache_key = "co2-feed"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    @uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       uk_grid_carbon_intensity_data = GridCarbonIntensity.new
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
         uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
