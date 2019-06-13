@@ -44,7 +44,7 @@ module Pupils
     end
 
     def equivalence_setup(school)
-      @equivalence = school.equivalences.sample
+      @equivalence = school.equivalences.relevant.sample
       if @equivalence
         @equivalence_content = TemplateInterpolation.new(
           @equivalence.content_version

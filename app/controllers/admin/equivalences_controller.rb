@@ -5,15 +5,15 @@ module Admin
       equivalence_type = EquivalenceType.new(equivalence_type_params)
       content = EquivalenceTypeContentVersion.new(content_params[:content])
       aggregate_school = AggregateSchoolService.new(school).aggregate_school
-      equivalence = Equivalences::Calculator.new(school, EnergyConversions.new(aggregate_school)).perform(equivalence_type, content)
+      @equivalence = Equivalences::Calculator.new(school, EnergyConversions.new(aggregate_school)).perform(equivalence_type, content)
       @equivalence_content = TemplateInterpolation.new(
         content
       ).interpolate(
         :equivalence,
-        with: equivalence.formatted_variables
+        with: @equivalence.formatted_variables
       )
       render 'show', layout: nil
-    rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType => e
+    rescue Equivalences::Calculator::CalculationError => e
       render text: "#{e.message} for #{school.name}"
     end
 

@@ -52,6 +52,10 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def carbon_emissions
+    render_generic_chart_template
+  end
+
   def solar_pv
     render_generic_chart_template
   end
