@@ -17,13 +17,23 @@
 #
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
-
-
 class Observation < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings
 
-  validates_presence_of :description, :at
+  validates_presence_of :at, :school
+  validate :at_date_cannot_be_in_the_future
+  validates_associated :temperature_recordings
 
-  accepts_nested_attributes_for :temperature_recordings, reject_if: proc {|attributes| attributes['centigrade'].blank? }
+  accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings_and_locations
+
+  def at_date_cannot_be_in_the_future
+    errors.add(:at, "Can't be in the future") if at.present? && at > Time.zone.today.end_of_day
+  end
+
+private
+
+  def reject_temperature_recordings_and_locations(attributes)
+    (attributes['centigrade'].blank? && attributes.dig('location_attributes', 'name').blank?)
+  end
 end

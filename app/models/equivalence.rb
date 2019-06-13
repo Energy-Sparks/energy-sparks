@@ -6,6 +6,7 @@
 #  data                                :json
 #  equivalence_type_content_version_id :bigint(8)        not null
 #  id                                  :bigint(8)        not null, primary key
+#  relevant                            :boolean          default(TRUE)
 #  school_id                           :bigint(8)        not null
 #  updated_at                          :datetime         not null
 #
@@ -23,6 +24,8 @@
 class Equivalence < ApplicationRecord
   belongs_to :school
   belongs_to :content_version, class_name: 'EquivalenceTypeContentVersion', foreign_key: :equivalence_type_content_version_id
+
+  scope :relevant, -> { where(relevant: true) }
 
 
   def formatted_variables
