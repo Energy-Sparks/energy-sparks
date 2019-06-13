@@ -131,6 +131,9 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
       } else if (y2AxisLabel == 'Degree Days') {
         axisTitle = 'Degree days';
         pointFormat = '{point.y:.2f} Degree days';
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity of Electricity Grid')) {
+        axisTitle = 'kg/kWh';
+        pointFormat = '{point.y:.2f} kg/kWh';
       } else if (y2AxisLabel == 'Solar Irradiance') {
         axisTitle = 'W/m2';
         pointFormat = '{point.y:.2f} W/m2';
