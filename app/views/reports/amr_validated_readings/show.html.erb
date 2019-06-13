@@ -7,7 +7,7 @@
 <div id="calendar" class="calendar"></div>
 
 <div class='calendar-legend row'>
-  <div class='legend-scale amr-readings'>
+  <div class='legend-scale vertical'>
     <ul class='legend-labels'>
       <% @colour_hash.each do |type, colour| %>
         <li><span style='background:<%= colour %>;'></span><%= "#{@amr_types[type][:name]} (#{type})" %></li>

@@ -14,7 +14,7 @@ module Equivalences
           begin
             equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
             equivalence.save!
-          rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart => e
+          rescue Calculator::CalculationError => e
             puts "#{e.message} for #{@school.name}"
           end
         end
