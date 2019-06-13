@@ -25,7 +25,11 @@
               <%= fa_icon('school') %>
             </div>
           </div>
-          <%= location_form.text_field :name, class: "form-control form-control-lg " %>
+          <% if @location_names.any? %>
+            <%= location_form.text_field :name, class: "form-control form-control-lg awesomplete", data: { list: @location_names } %>
+          <% else %>
+           <%= location_form.text_field :name, class: "form-control form-control-lg"  %>
+          <% end %>
         </div>
         <% if temperature_form.index.zero? %>
           <small class='form-text text-muted'>For example: Class 1</small>

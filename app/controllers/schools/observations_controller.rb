@@ -7,6 +7,7 @@ module Schools
 
     def new
       @observation = @school.observations.build
+      @location_names = @school.locations.pluck(:name)
 
       10.times.each { @observation.temperature_recordings.build(location: Location.new) }
     end
