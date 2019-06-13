@@ -16,7 +16,7 @@ $(document).ready(function() {
           tooltipClass = 'valid-tooltip';
           var tooltipContent = "This is a good temperature for energy efficient schools. Well done!";
         } else if (temperatureValue >= 19) {
-          var tooltipContent = "Energy Sparks recommends classroom temperatures are no higher than 18C. Try turning down your heating to save energy. If you turn down your heating by 1C you will save money";
+          var tooltipContent = "Energy Sparks recommends classroom temperatures are no higher than 18C. Try turning down your heating to save energy and money.";
         }
 
         $(this).after('<div class="' + tooltipClass + ' temperature-tooltip">' + tooltipContent + '</div>');
