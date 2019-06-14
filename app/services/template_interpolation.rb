@@ -24,7 +24,7 @@ class TemplateInterpolation
     from_templates = fields.inject([]) do |variables, field|
       variables + get_variables(@object.send(field))
     end
-    from_templates.uniq
+    from_templates.uniq.map {|variable| variable.gsub('gbp', '£') }
   end
 
 private
