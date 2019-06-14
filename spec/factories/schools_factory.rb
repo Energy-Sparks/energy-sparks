@@ -7,6 +7,7 @@ FactoryBot.define do
     active          { true }
     address         { '1 Station Road' }
     postcode        { 'ab1 2cd' }
+    floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
     sash
 
