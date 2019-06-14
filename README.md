@@ -51,6 +51,10 @@ You may also need to restore the default grants.
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
 ```
+5) Nobble email users on test
+```
+bundle exec rake utility:prepare_test_server
+```
 
 ## More notes on environment creation
 
