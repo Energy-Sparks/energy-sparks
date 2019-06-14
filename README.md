@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/BathHacked/energy-sparks.svg?branch=master)](https://travis-ci.org/BathHacked/energy-sparks)
-[![Maintainability](https://api.codeclimate.com/v1/badges/d71b5b77250c7b468c29/maintainability)](https://codeclimate.com/repos/5ae9d48381589502d00011c7/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d71b5b77250c7b468c29/test_coverage)](https://codeclimate.com/repos/5ae9d48381589502d00011c7/test_coverage)
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/maintainability)](https://codeclimate.com/github/BathHacked/energy-sparks/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/test_coverage)](https://codeclimate.com/github/BathHacked/energy-sparks/test_coverage)
 
 
 
