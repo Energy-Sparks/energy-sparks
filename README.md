@@ -26,7 +26,7 @@ For now you may wish to read the evolving documentation in [the project wiki](ht
 
 # For Developers
 
-The application is a Rails 5.2, Ruby 2.5.3 project.
+The application is a Rails 6, Ruby 2.5.3 project.
 
 Read the CONTRIBUTING.md guidelines for how to get started.
 
