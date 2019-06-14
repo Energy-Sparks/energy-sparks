@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 6607fb02cd28a46aa795722905ab422649d00f4e
-  tag: 0.45.1
+  revision: 311d8b1faed2acc50cc372ac2cbc80d95d8a02b0
+  tag: 0.48.1
   specs:
-    energy-sparks_analytics (0.45.1.pre.fixes.pre.electric.pre.only.pre.hot.pre.water.pre.insulation.pre.bug)
+    energy-sparks_analytics (0.48.1.pre.fix.pre.for.pre.somerset.pre.equivalences)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -146,7 +146,7 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
-    backports (3.14.0)
+    backports (3.15.0)
     bcrypt (3.1.12)
     benchmark-memory (0.1.2)
       memory_profiler (~> 0.9)

@@ -12,7 +12,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_html_options
-    super.merge(class: 'form-control datetimepicker-input', value: input_value, data: { target: "##{wrapper_id}" })
+    super.deep_merge(class: 'form-control datetimepicker-input', value: input_value, data: { target: "##{wrapper_id}" })
   end
 
   def input_value_key

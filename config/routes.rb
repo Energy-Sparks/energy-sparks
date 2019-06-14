@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
+  get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   get 'help/(:help_page)', to: 'home#help', as: :help
@@ -83,6 +84,7 @@ Rails.application.routes.draw do
       get :heating_model_fitting, to: 'analysis#heating_model_fitting'
       get :storage_heaters, to: 'analysis#storage_heaters'
       get :solar_pv, to: 'analysis#solar_pv'
+      get :carbon_emissions, to: 'analysis#carbon_emissions'
       get :test, to: 'analysis#test'
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
@@ -133,6 +135,10 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :equivalence_types do
+      resource :preview, only: :show, controller: 'preview'
+    end
+    resource :equivalences
 
     resources :unsubscriptions, only: [:index]
 
