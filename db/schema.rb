@@ -495,6 +495,7 @@ ActiveRecord::Schema.define(version: 2019_06_12_144201) do
     t.json "data", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "relevant", default: true
     t.index ["equivalence_type_content_version_id"], name: "index_equivalences_on_equivalence_type_content_version_id"
     t.index ["school_id"], name: "index_equivalences_on_school_id"
   end
