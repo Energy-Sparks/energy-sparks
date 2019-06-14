@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'adding a new observation as admin' do
+describe 'adding a new temperature recording as admin' do
 
   let(:school_name) { 'Active school'}
   let!(:school)     { create(:school, name: school_name) }
@@ -15,19 +15,31 @@ describe 'adding a new observation as admin' do
   end
 
   it 'allows an observation to be added' do
-    fill_in 'What we did', with: description
     fill_in 'Temperature', match: :first, with: 20
     fill_in 'Place', match: :first, with: 'Hall'
     expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1).and change { Location.count }.by(1)
     expect(page).to have_content('Temperature recordings')
-    expect(page).to have_content(description)
   end
 
-  it 'validates and takes you back without losing data' do
+  it 'validates at and takes you back without losing data' do
     fill_in 'Temperature', match: :first, with: 20
     fill_in 'Place', match: :first, with: 'Hall'
+    fill_in 'At', with: ''
     expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
-    fill_in 'What we did', with: description
+
+    fill_in 'At', with: Date.tomorrow
+    expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+    fill_in 'At', with: Date.yesterday
     expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1).and change { Location.count }.by(1)
+  end
+
+  it 'keeps hold of any partially entered data which fails validation' do
+    fill_in 'observation_temperature_recordings_attributes_1_location_attributes_name', with: 'Hall'
+    fill_in 'observation_temperature_recordings_attributes_0_centigrade', with: 20
+    expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+    fill_in 'observation_temperature_recordings_attributes_0_location_attributes_name', with: 'Kitchen'
+    fill_in 'observation_temperature_recordings_attributes_1_centigrade', with: 18
+    expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(2).and change { Location.count }.by(2)
+
   end
 end

@@ -4,10 +4,16 @@
       <%= temperature_form.label :centigrade, :temperature do %>Temperature<% end %>
       <div class="input-group">
         <div class="input-group-prepend">
-           <div class="input-group-text"><%= fa_icon('temperature-high') %></div>
+          <span class="input-group-text"><%= fa_icon('temperature-high') %></span>
         </div>
-        <%= temperature_form.text_field :centigrade, placeholder: '18', class: "form-control form-control-lg " %>
+        <%= temperature_form.number_field :centigrade, hint: 18, class: "form-control form-control-lg temperature" %>
+        <div class="input-group-append">
+          <span class="input-group-text">&deg; C</span>
+        </div>
       </div>
+      <% if temperature_form.index.zero? %>
+        <small class='form-text text-muted'>Enter the temperature in centigrade as a number</small>
+      <% end %>
     </div>
     <%= temperature_form.simple_fields_for :location do |location_form| %>
       <div class="col-md-6 form-group">
@@ -19,8 +25,11 @@
               <%= fa_icon('school') %>
             </div>
           </div>
-          <%= location_form.text_field :name, placeholder: 'Example: Class 1', class: "form-control form-control-lg " %>
+          <%= location_form.text_field :name, class: "form-control form-control-lg " %>
         </div>
+        <% if temperature_form.index.zero? %>
+          <small class='form-text text-muted'>For example: Class 1</small>
+        <% end %>
       </div>
     <% end %>
   </div>

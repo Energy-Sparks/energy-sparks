@@ -15,5 +15,12 @@
 
 module DataFeeds
   class CarbonIntensityReading < ApplicationRecord
+    def self.download_all_data
+      <<~QUERY
+        SELECT reading_date, carbon_intensity_x48
+        FROM  carbon_intensity_readings
+        ORDER BY reading_date ASC
+      QUERY
+    end
   end
 end

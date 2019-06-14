@@ -1,6 +1,8 @@
 require 'mustache'
 module Equivalences
   class Calculator
+    class CalculationError < StandardError; end
+
     TIME_PERIODS = {
       last_week: { week: -1 },
       last_school_week: { schoolweek: -1 },
@@ -20,7 +22,10 @@ module Equivalences
         data_collection[variable] = @analytics.front_end_convert(variable, time_period, equivalence_type.meter_type.to_sym)
         data_collection
       end
-      Equivalence.new(school: @school, content_version: content, data: data)
+      relevant = data.values.all? {|values| values[:show_equivalence]}
+      Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant)
+    rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart => e
+      raise CalculationError, e.message
     end
   end
 end
