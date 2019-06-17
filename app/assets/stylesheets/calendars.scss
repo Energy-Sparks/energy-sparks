@@ -23,12 +23,17 @@ div.calendar-legend {
     }
     .legend-scale.vertical ul li {
         float: none;
-        width: 800px;
+        width: 100%;
     }
     ul.legend-labels li span {
         display: block;
         float: left;
         height: 30px;
-        width: 175px;
+        width: 50px;
+    }
+
+    ul.legend-labels li div.description {
+        margin-left: 65px;
+        text-align: left;
     }
 }

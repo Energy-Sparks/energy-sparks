@@ -1,29 +1,51 @@
 <h1>Temperature recordings</h1>
 <h2><%= @school.name %></h2>
 
-<% if @school.observations.any? %>
-  <table class="table table-striped">
+<% if @observations.any? %>
+  <table class="table table-striped table-sm">
     <thead>
       <tr>
-        <th>At</th>
-        <th>Observation</th>
-        <th>Recording location</th>
-        <th>Temperature &deg;C</th>
+        <th>Recording date</th>
+        <% @locations.each do |location| %>
+          <th><%= location.name %></th>
+        <% end %>
+        <% if can? :delete, Observation %>
+          <th>Actions</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
-      <% @observations.each do |observation| %>
-        <% observation.temperature_recordings.each_with_index do |temperature_recording, index| %>
-          <tr scope="row">
-            <td><%= nice_date_times observation.at %></td>
-            <td><%= observation.description %></td>
-            <td><%= temperature_recording.location.name %></td>
-            <td><%= temperature_recording.centigrade %></td>
-          </tr>
-        <% end %>
+      <% @observations.order(at: :desc).each do |observation| %>
+        <tr scope="row">
+          <td><%= nice_date_times observation.at %></td>
+          <% @locations.each do |location| %>
+            <%  if observation.temperature_recordings.find_by(location: location) %>
+              <td class='<%= temperature_cell_colour(observation.temperature_recordings.find_by(location: location).centigrade) %>'><%= observation.temperature_recordings.find_by(location: location).centigrade  %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+
+          <% end %>
+          <% if can? :delete, observation %>
+            <td><%= link_to 'Delete', school_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+          <% end %>
+        </tr>
       <% end %>
     </tbody>
   </table>
+
+  <hr/>
+
+  <div class='calendar-legend row'>
+    <div class='legend-scale vertical'>
+      <ul class='legend-labels'>
+        <li><span class="<%= temperature_cell_colour(16) %>"></span><div class="description">This may be a little chilly. Could your school add more roof and wall insulation to help keep the school warmer without using more energy?</div></li>
+        <li><span class="<%= temperature_cell_colour(18) %>"></span><div class="description">This is a good temperature for energy efficient schools. Well done!</div></li>
+        <li><span class="<%= temperature_cell_colour(19) %>"></span><div class="description">Energy Sparks recommends classroom temperatures are no higher than 18C. Try turning down your heating to save energy and money.</div></li>
+      </ul>
+    </div>
+  </div>
+
 <% else %>
   <p>There are no observations recorded at the moment</p>
 <% end %>

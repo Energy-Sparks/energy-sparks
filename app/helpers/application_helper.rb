@@ -68,6 +68,16 @@ module ApplicationHelper
     end
   end
 
+  def temperature_cell_colour(temperature)
+    if temperature >= 19
+     'table-danger'
+    elsif temperature < 18.0
+      'table-primary'
+    else
+      'table-success'
+    end
+  end
+
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9

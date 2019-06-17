@@ -26,6 +26,7 @@ module Schools
     end
 
     def index
+      @locations = @school.locations.order(name: :asc)
     end
 
   private
