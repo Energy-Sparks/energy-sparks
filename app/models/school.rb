@@ -47,7 +47,6 @@ class School < ApplicationRecord
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
 
-  include Merit::UsageCalculations
   has_merit
 
   has_and_belongs_to_many :key_stages, join_table: :school_key_stages
