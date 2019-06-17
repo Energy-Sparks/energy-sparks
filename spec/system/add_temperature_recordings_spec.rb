@@ -21,6 +21,33 @@ describe 'adding a new temperature recording as admin' do
     expect(page).to have_content('Temperature recordings')
   end
 
+  it 're-uses existing locations' do
+    fill_in 'Temperature', match: :first, with: 20
+    fill_in 'Place', match: :first, with: 'Hall'
+    click_on('Create temperature recordings')
+    expect(Location.count).to be 1
+    click_on('Add new temperature recordings')
+    fill_in 'Temperature', match: :first, with: 20
+    fill_in 'Place', match: :first, with: 'Hall'
+    click_on('Create temperature recordings')
+    expect(Observation.count).to be 2
+    expect(TemperatureRecording.count).to be 2
+    expect(Location.count).to be 1
+  end
+
+  it 'shows auto complete location suggestions', js: true do
+    Location.create(school: school, name: 'ABCDEF')
+    Location.create(school: school, name: 'GHIJKL')
+
+    expect(school.locations.count).to be 2
+
+    refresh
+
+    fill_in 'Temperature', match: :first, with: 20
+    fill_in 'Place', match: :first, with: 'AB'
+    expect(page).to have_content('ABCDEF')
+  end
+
   it 'validates at and takes you back without losing data' do
     fill_in 'Temperature', match: :first, with: 20
     fill_in 'Place', match: :first, with: 'Hall'
@@ -40,6 +67,5 @@ describe 'adding a new temperature recording as admin' do
     fill_in 'observation_temperature_recordings_attributes_0_location_attributes_name', with: 'Kitchen'
     fill_in 'observation_temperature_recordings_attributes_1_centigrade', with: 18
     expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(2).and change { Location.count }.by(2)
-
   end
 end
