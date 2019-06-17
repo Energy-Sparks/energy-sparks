@@ -70,7 +70,7 @@ module ApplicationHelper
 
   def temperature_cell_colour(temperature)
     if temperature >= 19
-     'table-danger'
+      'table-danger'
     elsif temperature < 18.0
       'table-primary'
     else
