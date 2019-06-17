@@ -2,13 +2,6 @@
 
 <% if @equivalences_content.present? %>
   <div id="equivalencesCarousel" class="carousel slide" data-interval="false">
-    <div class="carousel-inner">
-      <% @equivalences_content.each_with_index do |equivalence_content, index|  %>
-        <div class="carousel-item <%= 'active' if index == 0 %>">
-          <%= render 'equivalence', equivalence_content: equivalence_content %>
-        </div>
-      <% end %>
-    </div>
     <% if @equivalences_content.size > 1 %>
       <div class="row justify-content-end">
         <a href="#equivalencesCarousel" role="button" data-slide="prev" class="h3">
@@ -21,6 +14,13 @@
         </a>
       </div>
     <% end %>
+    <div class="carousel-inner">
+      <% @equivalences_content.each_with_index do |equivalence_content, index|  %>
+        <div class="carousel-item <%= 'active' if index == 0 %>">
+          <%= render 'equivalence', equivalence_content: equivalence_content %>
+        </div>
+      <% end %>
+    </div>
   </div>
 <% end %>
 
