@@ -1,6 +1,6 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<% if !@equivalences_content.empty? %>
+<% if @equivalences_content.present? %>
   <div id="equivalencesCarousel" class="carousel slide" data-interval="false">
     <div class="carousel-inner">
       <% @equivalences_content.each_with_index do |equivalence_content, index|  %>
