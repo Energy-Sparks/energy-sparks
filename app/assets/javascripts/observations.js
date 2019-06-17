@@ -8,7 +8,7 @@ $(document).ready(function() {
 
       if (temperatureValue.length) {
         if (temperatureValue < 18) {
-          var tooltipClass = 'invalid-tooltip g-primary';
+          var tooltipClass = 'invalid-tooltip bg-primary';
           var tooltipContent = "This may be a little chilly. Could your school add more roof and wall insulation to help keep the school warmer without using more energy?";
         } else if (temperatureValue >= 18 && temperatureValue < 19) {
           var tooltipClass = 'valid-tooltip';
