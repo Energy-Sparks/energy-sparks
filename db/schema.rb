@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_12_085712) do
+ActiveRecord::Schema.define(version: 2019_06_12_144201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -758,17 +758,6 @@ ActiveRecord::Schema.define(version: 2019_06_12_085712) do
     t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
   end
 
-  create_table "terms", force: :cascade do |t|
-    t.bigint "calendar_id"
-    t.string "academic_year"
-    t.string "name", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["calendar_id"], name: "index_terms_on_calendar_id"
-  end
-
   create_table "topics", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -871,6 +860,5 @@ ActiveRecord::Schema.define(version: 2019_06_12_085712) do
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
-  add_foreign_key "terms", "calendars"
   add_foreign_key "users", "schools"
 end

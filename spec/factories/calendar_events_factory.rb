@@ -14,5 +14,10 @@ FactoryBot.define do
       description { 'this is a new holiday' }
       association :calendar_event_type, term_time: false, holiday: true
     end
+    factory :bank_holiday_event  do
+      title       { 'new holiday' }
+      description { 'this is a new bank holiday event' }
+      association :calendar_event_type, term_time: false, holiday: false, bank_holiday: false
+    end
   end
 end
