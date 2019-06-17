@@ -4,19 +4,48 @@
   <%= render 'equivalence', equivalence_content: @equivalence_content %>
 <% end %>
 
-<div class="row">
-  <div class="col-md-9"></div>
+<div class="row justify-content-center mb-3">
+  <% if @school.meters_for_supply(:electricity).any? %>
+    <div class="col-md-3 text-center btn btn-dark m-2">
+      <h1><%= fa_icon fuel_type_icon(:electricity) %></h1>
+      <h2>Electricity</h2>
+      <div class="h5 explore">
+        Explore
+        <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
+        /
+        <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :electricity), title: "See how the school's energy use varies over a day" %>
+        usage
+      </div>
+    </div>
+  <% end %>
+  <% if @school.meters_for_supply(:gas).any? %>
+    <div class="col-md-3 text-center btn btn-dark m-2">
+      <h1><%= fa_icon fuel_type_icon(:gas) %></h1>
+      <h2>Gas</h2>
+      <div class="h5 explore">
+        Explore
+        <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a week" %>
+        /
+        <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :gas), title: "See how the school's energy use varies over a day" %>
+        usage
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="row padded-row align-items-end">
+  <div class="col-md-9">
+    <h2 class="mb-3">Things to investigate:</h2>
+  </div>
   <div class="col-md-3">
   <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
-    <%= fa_icon 'lightbulb' %> See how your school uses energy&hellip;
+    <%= fa_icon 'lightbulb' %> Find out more about how your school uses energy
   <% end %>
   </div>
 </div>
-<hr/>
 
 <% unless @dashboard_alerts.empty? %>
   <div class="row">
-    <h2 class="mb-3">Things to investigate:</h2>
     <% @dashboard_alerts.each do |content| %>
       <div class="col-md-12">
         <%= render 'schools/dashboard_alerts/alert', alert: content.alert, find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
