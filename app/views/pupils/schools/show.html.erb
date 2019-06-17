@@ -4,16 +4,7 @@
   <%= render 'equivalence', equivalence_content: @equivalence_content %>
 <% end %>
 
-<div class="row">
-  <div class="col-md-9"></div>
-  <div class="col-md-3">
-  <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
-    <%= fa_icon 'lightbulb' %> See how your school uses energy&hellip;
-  <% end %>
-  </div>
-</div>
-<hr/>
-<div class="row justify-content-center">
+<div class="row justify-content-center mb-3">
   <% if @school.meters_for_supply(:electricity).any? %>
     <div class="col-md-3 text-center btn btn-dark m-2">
       <h1><%= fa_icon fuel_type_icon(:electricity) %></h1>
@@ -41,11 +32,20 @@
     </div>
   <% end %>
 </div>
-<hr/>
+
+<div class="row padded-row align-items-end">
+  <div class="col-md-9">
+    <h2 class="mb-3">Things to investigate:</h2>
+  </div>
+  <div class="col-md-3">
+  <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
+    <%= fa_icon 'lightbulb' %> Find out more about how your school uses energy
+  <% end %>
+  </div>
+</div>
 
 <% unless @dashboard_alerts.empty? %>
   <div class="row">
-    <h2 class="mb-3">Things to investigate:</h2>
     <% @dashboard_alerts.each do |content| %>
       <div class="col-md-12">
         <%= render 'schools/dashboard_alerts/alert', alert: content.alert, find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
