@@ -14,6 +14,9 @@ describe TemplateInterpolation do
       def template_3
         "Your school is {{position}} in the scoreboard"
       end
+      def template_4
+        "Your school spent {{gbp}}"
+      end
     end
   end
 
@@ -32,6 +35,11 @@ describe TemplateInterpolation do
     it 'only returns unique variables' do
       variables = TemplateInterpolation.new(object.new).variables(:template_1, :template_2, :template_3)
       expect(variables).to eq(['usage', 'position'])
+    end
+
+    it 'changes gbp for £' do
+      variables = TemplateInterpolation.new(object.new).variables(:template_4)
+      expect(variables).to eq(['£'])
     end
 
   end

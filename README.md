@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/BathHacked/energy-sparks.svg?branch=master)](https://travis-ci.org/BathHacked/energy-sparks)
-[![Maintainability](https://api.codeclimate.com/v1/badges/d71b5b77250c7b468c29/maintainability)](https://codeclimate.com/repos/5ae9d48381589502d00011c7/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d71b5b77250c7b468c29/test_coverage)](https://codeclimate.com/repos/5ae9d48381589502d00011c7/test_coverage)
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/maintainability)](https://codeclimate.com/github/BathHacked/energy-sparks/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/test_coverage)](https://codeclimate.com/github/BathHacked/energy-sparks/test_coverage)
 
 
 
@@ -27,7 +26,7 @@ For now you may wish to read the evolving documentation in [the project wiki](ht
 
 # For Developers
 
-The application is a Rails 5.2, Ruby 2.5.3 project.
+The application is a Rails 6, Ruby 2.5.3 project.
 
 Read the CONTRIBUTING.md guidelines for how to get started.
 
@@ -50,6 +49,10 @@ You may also need to restore the default grants.
 
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
+```
+5) Nobble email users on test
+```
+bundle exec rake utility:prepare_test_server
 ```
 
 ## More notes on environment creation
