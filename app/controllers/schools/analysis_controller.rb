@@ -82,7 +82,8 @@ private
 
   def pages
     @dashboard_set = @school.fuel_types_for_analysis
-    DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
+    analyis_pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
+    analyis_pages.reject {|page| page == :carbon_emissions && cannot?(:analyse, :carbon_emissions)}
   end
 
   def render_generic_chart_template(extra_chart_config = {})
