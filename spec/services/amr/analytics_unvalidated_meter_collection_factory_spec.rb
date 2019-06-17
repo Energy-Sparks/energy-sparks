@@ -18,6 +18,7 @@ module Amr
       expect(meter_collection.name).to eq school_name
       expect(meter_collection.address).to eq school.address
       expect(meter_collection.postcode).to eq school.postcode
+      expect(meter_collection.floor_area.class).to eq Float
       expect(meter_collection.urn).to eq school.urn
       expect(meter_collection.number_of_pupils).to eq school.number_of_pupils
 
