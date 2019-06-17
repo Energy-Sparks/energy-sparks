@@ -33,9 +33,9 @@
     <% if @observations.empty? %>
       <div class="align-self-center">
         <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy</h5>
-        <div class="ml-auto p-2">
-          <%= link_to 'Enter temperatures', new_school_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
-        </div>
+      </div>
+      <div class="ml-auto p-2">
+        <%= link_to 'Enter temperatures', new_school_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
       </div>
     <% else %>
       <div class="align-self-center p-2">
