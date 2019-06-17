@@ -15,7 +15,7 @@
 <hr/>
 <div class="row justify-content-center">
   <% if @school.meters_for_supply(:electricity).any? %>
-    <div class="col-md-3 text-center btn btn-outline-dark m-2">
+    <div class="col-md-3 text-center btn btn-dark m-2">
       <h1><%= fa_icon fuel_type_icon(:electricity) %></h1>
       <h2>Electricity</h2>
       <div class="h5 explore">
@@ -28,7 +28,7 @@
     </div>
   <% end %>
   <% if @school.meters_for_supply(:gas).any? %>
-    <div class="col-md-3 text-center btn btn-outline-dark m-2">
+    <div class="col-md-3 text-center btn btn-dark m-2">
       <h1><%= fa_icon fuel_type_icon(:gas) %></h1>
       <h2>Gas</h2>
       <div class="h5 explore">
