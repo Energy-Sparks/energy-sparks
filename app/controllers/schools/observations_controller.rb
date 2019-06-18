@@ -33,7 +33,7 @@ module Schools
   private
 
     def set_location_names
-      @location_names = @school.locations.pluck(:name).join(',')
+      @location_names = @school.locations.pluck(:name).push('').join(',')
     end
 
     def observation_params
