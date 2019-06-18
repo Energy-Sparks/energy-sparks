@@ -1,19 +1,17 @@
 <fieldset>
   <div class="form-row">
     <div class="col-md-6 form-group">
-
-
-  <%= temperature_form.input :centigrade, as: :number, required: false, label: "Temperature" do %>
-     <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><%= fa_icon('temperature-high') %></span>
-        </div>
-        <%= temperature_form.input_field :centigrade, hint: 18, class: "form-control form-control-lg temperature" %>
+      <%= temperature_form.input :centigrade, as: :number, required: false, label: "Temperature" do %>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><%= fa_icon('temperature-high') %></span>
+          </div>
+          <%= temperature_form.input_field :centigrade, hint: 18, class: "form-control form-control-lg temperature" %>
           <div class="input-group-append">
             <span class="input-group-text">&deg; C</span>
           </div>
-     </div>
-  <% end %>
+        </div>
+      <% end %>
       <% if temperature_form.index.zero? %>
         <small class='form-text text-muted'>Enter the temperature in centigrade as a number</small>
       <% end %>
