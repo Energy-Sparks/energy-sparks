@@ -4,8 +4,11 @@
       <th>Fuel Type</th>
       <th>Alert Type</th>
       <th>Find out mores</th>
-      <th>Status</th>
+      <th>Displayable?</th>
       <th>Rating</th>
+      <th>Status</th>
+      <th>Valid?</th>
+      <th>Enough data?</th>
       <th>Alert Date</th>
       <th>Created At</th>
       <th>Emails sent</th>
@@ -22,8 +25,11 @@
             <%= link_to index + 1, school_find_out_more_path(school, find_out_more)  %>
           <% end %>
         </td>
-        <td class="text-white <%= class_for_alert_rating(alert.rating) %>"><%= alert.status %></td>
+        <td class="text-white <%= class_for_boolean(alert.displayable) %>"><%= y_n alert.displayable %></td>
         <td class="text-white <%= class_for_alert_rating(alert.rating) %>"><%= alert.formatted_rating %></td>
+        <td><%= alert.status %></td>
+        <td class="text-white <%= class_for_boolean(alert.analytics_valid) %>"><%= y_n alert.analytics_valid %></td>
+        <td class="text-white <%= class_for_enough_data(alert.enough_data) %>"><%= alert.enough_data %></td>
         <td><%= nice_dates alert.run_on %></td>
         <td><%= nice_date_times alert.created_at %></td>
         <td><%= link_to(alert.alert_subscription_events.sent.email.count, school_alert_subscription_events_path(@school)) %></td>
