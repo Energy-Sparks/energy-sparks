@@ -76,19 +76,25 @@
 
 <div class="alert text-white bg-success" role="alert">
   <div class="d-flex">
-    <div class="p-2 align-self-center">
+    <div class="align-self-center p-2">
       <%= fa_icon('temperature-high fa-3x') %>
     </div>
-    <div class="p-2 align-self-center">
-      <% if @observations.empty? %>
+    <% if @observations.empty? %>
+      <div class="align-self-center">
         <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy</h5>
-      <% else %>
+      </div>
+      <div class="ml-auto p-2">
+        <%= link_to 'Enter temperatures', new_school_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
+      </div>
+    <% else %>
+      <div class="align-self-center p-2">
         <h5>Update your classroom temperatures to see if you are saving energy</h5>
-      <% end %>
-    </div>
-    <div class="ml-auto p-2">
-      <%= link_to 'Enter temperatures', new_school_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
-    </div>
+      </div>
+      <div class="ml-auto">
+          <%= link_to 'Previous temperatures', school_observations_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
+          <%= link_to 'Enter new temperatures', new_school_observation_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
+      </div>
+    <% end %>
   </div>
 </div>
 
