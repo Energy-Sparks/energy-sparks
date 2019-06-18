@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class Schools::ChartsController < ApplicationController
   include SchoolAggregation
   include Measurements

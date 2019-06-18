@@ -1,19 +1,19 @@
-require 'dashboard'
-
 class Schools::AnalysisController < ApplicationController
   include SchoolAggregation
   include Measurements
 
   skip_before_action :authenticate_user!
   before_action :set_school
-  before_action :check_fuel_types
+  before_action :set_chart_configuration
+  before_action :check_for_data
+
   before_action :build_aggregate_school, except: [:analysis]
   before_action :set_nav
   before_action :set_measurement_options
 
   def analysis
     # Redirect to correct dashboard
-    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
+    redirect_to action: @chart_configuration.initial_page, school_id: @school.slug
   end
 
   def main_dashboard_electric
@@ -62,8 +62,8 @@ class Schools::AnalysisController < ApplicationController
 
 private
 
-  def check_fuel_types
-    if @school.fuel_types_for_analysis == :none
+  def check_for_data
+    if @chart_configuration.no_data?
       redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
     end
   end
@@ -75,15 +75,9 @@ private
   end
 
   def set_nav
-    @nav_array = pages.map do |page|
-      { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
+    @nav_array = @chart_configuration.pages.map do |page|
+      { name: @chart_configuration.dashboard_page_configuration[page][:name], path: "#{page}_path" }
     end
-  end
-
-  def pages
-    @dashboard_set = @school.fuel_types_for_analysis
-    analyis_pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
-    analyis_pages.reject {|page| page == :carbon_emissions && cannot?(:analyse, :carbon_emissions)}
   end
 
   def render_generic_chart_template(extra_chart_config = {})
@@ -91,9 +85,8 @@ private
 
     @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
 
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-
+    @title = @chart_configuration.title(action_name)
+    @charts = @chart_configuration.charts(action_name)
     @number_of_charts = @charts.size
 
     render :generic_chart_template
@@ -101,5 +94,9 @@ private
 
   def set_school
     @school = School.friendly.find(params[:school_id])
+  end
+
+  def set_chart_configuration
+    @chart_configuration = Charts::Configuration.new(@school, @aggregate_school)
   end
 end

@@ -42,9 +42,11 @@ RSpec.describe "analysis view", type: :system do
   end
 
   def stub_out_the_aggregation_etc
-    allow_any_instance_of(School).to receive(:fuel_types_for_analysis).and_return(:electric_only)
+    allow_any_instance_of(Charts::Configuration).to receive(:no_data?).and_return(false)
+    allow_any_instance_of(Charts::Configuration).to receive(:pages).and_return([:main_dashboard_electric])
     allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).with(school).and_return(school)
     allow_any_instance_of(ChartData).to receive(:data).and_return([])
+    allow(MeterAttributes).to receive(:for).and_return({})
   end
 end
 
