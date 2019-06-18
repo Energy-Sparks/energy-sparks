@@ -15,10 +15,6 @@ describe 'deleting a temperature recording as admin' do
   end
 
   it 'allows an observation to be deleted, which deletes temperature recordings, but not locations' do
- #   click_on('Delete')
-    # expect(Observation.count).to be 0
-    # expect(TemperatureRecording.count).to be 0
-    # expect(Location.count).to be 1
     expect { click_on('Delete') }.to change { Observation.count }.by(-1).and change { TemperatureRecording.count }.by(-1).and change { Location.count }.by(0)
   end
 
