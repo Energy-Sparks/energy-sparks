@@ -8,10 +8,6 @@ module Alerts
 
     private
 
-      def invalid_alert_report
-        Report.new(status: :not_valid, rating: nil)
-      end
-
       def produce_report(analysis_object)
         analysis_object.analyse(@analysis_date)
 
@@ -26,14 +22,26 @@ module Alerts
                     end
 
         Report.new({
-          status:   analysis_object.status,
-          rating:   analysis_object.rating,
+          valid:       true,
+          status:      analysis_object.status,
+          rating:      analysis_object.rating,
+          enough_data: analysis_object.enough_data
         }.merge(variables))
       end
 
       def pull_variable_data?(analysis_object)
-        !(analysis_object.status == :failed) && @alert_type.has_variables?
+        !(analysis_object.status == :failed) && (analysis_object.enough_data == :enough) && @alert_type.has_variables?
       end
+
+      def invalid_alert_report
+        Report.new(
+          valid:       false,
+          status:      nil,
+          rating:      nil,
+          enough_data: nil
+        )
+      end
+
     end
   end
 end

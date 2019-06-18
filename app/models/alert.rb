@@ -2,17 +2,20 @@
 #
 # Table name: alerts
 #
-#  alert_type_id :bigint(8)
-#  chart_data    :json
-#  created_at    :datetime         not null
-#  id            :bigint(8)        not null, primary key
-#  rating        :decimal(, )
-#  run_on        :date
-#  school_id     :bigint(8)
-#  status        :integer
-#  table_data    :json
-#  template_data :json
-#  updated_at    :datetime         not null
+#  alert_type_id   :bigint(8)
+#  analytics_valid :boolean          default(TRUE), not null
+#  chart_data      :json
+#  created_at      :datetime         not null
+#  displayable     :boolean          default(TRUE), not null
+#  enough_data     :integer          default("enough"), not null
+#  id              :bigint(8)        not null, primary key
+#  rating          :decimal(, )
+#  run_on          :date
+#  school_id       :bigint(8)
+#  status          :integer
+#  table_data      :json
+#  template_data   :json
+#  updated_at      :datetime         not null
 #
 # Indexes
 #
@@ -41,7 +44,16 @@ class Alert < ApplicationRecord
 
   scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
 
-  enum status: [:good, :poor, :not_enough_data, :failed, :bad, :not_valid]
+  enum status: {
+    good: 0,
+    poor: 1,
+    failed: 3,
+    bad: 4
+    # no longer used
+    # not_enough_data: 2
+    # not_valid: 5
+  }
+  enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate]
 
   def self.latest
     select('DISTINCT ON ("alert_type_id") alerts.*').order('alert_type_id', created_at: :desc)
