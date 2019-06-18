@@ -59,6 +59,13 @@ describe 'adding a new temperature recording as admin' do
     expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1).and change { Location.count }.by(1)
   end
 
+  it 'keeps hold of any partially entered data which fails validation as this was failing under certain circumstances' do
+    fill_in 'observation_temperature_recordings_attributes_0_location_attributes_name', with: 'The Hall'
+    fill_in 'observation_temperature_recordings_attributes_0_centigrade', with: 150
+    expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+    expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+  end
+
   it 'keeps hold of any partially entered data which fails validation' do
     fill_in 'observation_temperature_recordings_attributes_1_location_attributes_name', with: 'Hall'
     fill_in 'observation_temperature_recordings_attributes_0_centigrade', with: 20
