@@ -41,7 +41,6 @@ module Alerts
           enough_data: nil
         )
       end
-
     end
   end
 end

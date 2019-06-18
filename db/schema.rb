@@ -255,7 +255,7 @@ ActiveRecord::Schema.define(version: 2019_06_18_125104) do
     t.decimal "rating"
     t.boolean "displayable", default: true, null: false
     t.boolean "analytics_valid", default: true, null: false
-    t.integer "enough_data", default: 0, null: false
+    t.integer "enough_data"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end

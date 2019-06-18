@@ -2,7 +2,7 @@ class AddDisplayableColumnsToAlerts < ActiveRecord::Migration[6.0]
   def change
     add_column :alerts, :displayable, :boolean, null: false, default: true
     add_column :alerts, :analytics_valid, :boolean, null: false, default: true
-    add_column :alerts, :enough_data, :integer, null: false, default: 0
+    add_column :alerts, :enough_data, :integer
 
     reversible do |dir|
       dir.up do

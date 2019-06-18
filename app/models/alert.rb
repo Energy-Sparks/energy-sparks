@@ -7,7 +7,7 @@
 #  chart_data      :json
 #  created_at      :datetime         not null
 #  displayable     :boolean          default(TRUE), not null
-#  enough_data     :integer          default("enough"), not null
+#  enough_data     :integer
 #  id              :bigint(8)        not null, primary key
 #  rating          :decimal(, )
 #  run_on          :date
