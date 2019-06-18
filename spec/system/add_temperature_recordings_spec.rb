@@ -5,7 +5,6 @@ describe 'adding a new temperature recording as admin' do
   let(:school_name) { 'Active school'}
   let!(:school)     { create(:school, name: school_name) }
   let!(:user)       { create(:user, role: 'admin', school: school)}
-  let(:description) { 'Here is what we saw' }
 
   before(:each) do
     sign_in(user)

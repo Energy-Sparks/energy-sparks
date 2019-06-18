@@ -29,6 +29,11 @@ module Schools
       @locations = @school.locations.order(name: :asc)
     end
 
+    def destroy
+      @observation.destroy
+      redirect_to school_observations_path(@school), notice: 'Successfully deleted.'
+    end
+
   private
 
     def set_location_names
