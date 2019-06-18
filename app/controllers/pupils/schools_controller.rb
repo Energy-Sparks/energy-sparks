@@ -44,13 +44,13 @@ module Pupils
     end
 
     def equivalence_setup(school)
-      @equivalence = school.equivalences.relevant.sample
-      if @equivalence
-        @equivalence_content = TemplateInterpolation.new(
-          @equivalence.content_version
+      @equivalences = school.equivalences.relevant
+      @equivalences_content = @equivalences.map do |equivalence|
+        TemplateInterpolation.new(
+          equivalence.content_version
         ).interpolate(
           :equivalence,
-          with: @equivalence.formatted_variables
+          with: equivalence.formatted_variables
         )
       end
     end

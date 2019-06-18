@@ -3,15 +3,25 @@ require 'rails_helper'
 describe CalendarEvent do
 
   let(:calendar){ build(:calendar) }
+
+  it 'sets its own academic year' do
+    academic_year = create(:academic_year, start_date: Date.new(2019, 9, 1), end_date: Date.new(2020, 8, 31))
+    event = create(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+    expect(event.academic_year).to eq(nil)
+
+    event_2 = create(:holiday, calendar: calendar, start_date: Date.new(2020, 1, 22), end_date: Date.new(2020, 1, 30))
+    expect(event_2 .academic_year).to eq(academic_year)
+  end
+
   describe '#valid?' do
 
     it 'is valid with default attributes' do
-      expect(build(:calendar_event, calendar: calendar)).to be_valid
+      expect(build(:holiday, calendar: calendar)).to be_valid
     end
 
     describe 'date orders' do
       it 'is not valid when the end date and start date are in the wrong order' do
-        expect(build(:calendar_event, calendar: calendar, start_date: Date.new(2018, 2, 2), end_date: Date.new(2018, 2, 1))).to_not be_valid
+        expect(build(:holiday, calendar: calendar, start_date: Date.new(2018, 2, 2), end_date: Date.new(2018, 2, 1))).to_not be_valid
       end
     end
 
@@ -30,7 +40,7 @@ describe CalendarEvent do
           expect(build(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 31), end_date: Date.new(2018, 2, 1))).to be_valid
         end
         it 'is valid when the other is not of the right type' do
-          create(:calendar_event, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          create(:bank_holiday_event, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
           expect(build(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 12), end_date: Date.new(2018, 2, 1))).to be_valid
         end
       end
@@ -49,7 +59,7 @@ describe CalendarEvent do
           expect(build(:term, calendar: calendar, start_date: Date.new(2018, 1, 31), end_date: Date.new(2018, 2, 1))).to be_valid
         end
         it 'is valid when the other is not of the right type' do
-          create(:calendar_event, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          create(:bank_holiday_event, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
           expect(build(:term, calendar: calendar, start_date: Date.new(2018, 1, 12), end_date: Date.new(2018, 2, 1))).to be_valid
         end
       end
