@@ -22,11 +22,6 @@
         <%= location_form.hidden_field :school_id, value: @school.id %>
         <%= location_form.label :name, :place do %>Place<% end %>
         <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <%= fa_icon('school') %>
-            </div>
-          </div>
           <% if @location_names.present? %>
             <%= location_form.text_field :name, class: "form-control form-control-lg awesomplete", data: { list: @location_names } %>
           <% else %>
@@ -34,7 +29,7 @@
           <% end %>
         </div>
         <% if temperature_form.index.zero? %>
-          <small class='form-text text-muted'>For example: Class 1</small>
+          <small class='form-text text-muted down-for-awesomplete'>For example: Class 1</small>
         <% end %>
       </div>
     <% end %>
