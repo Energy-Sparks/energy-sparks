@@ -30,4 +30,9 @@ class TemperatureRecording < ApplicationRecord
   validates_associated :location
 
   accepts_nested_attributes_for :location
+
+  def location_attributes=(attributes)
+    school = School.find(attributes['school_id'])
+    self.location = school.locations.where(name: attributes['name']).first_or_initialize
+  end
 end
