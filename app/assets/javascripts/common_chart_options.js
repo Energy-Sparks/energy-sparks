@@ -92,6 +92,10 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
   // LINE charts
   if (chartType == 'line') {
     if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+
+      var axisTitle;
+      var pointFormat;
+
       if (y2AxisLabel == 'Temperature') {
         axisTitle = '°C';
         pointFormat = '{point.y:.2f} °C';
@@ -102,7 +106,7 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
         axisTitle = 'W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
-      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
+      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true});
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     } else {
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
@@ -121,8 +125,12 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
     } else {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
-
     if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+
+      var axisTitle;
+      var pointFormat;
+      var max;
+
       console.log('Y2 axis label' + y2AxisLabel);
       colour = '#232b49';
       if (y2AxisLabel == 'Temperature') {
@@ -131,14 +139,15 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
       } else if (y2AxisLabel == 'Degree Days') {
         axisTitle = 'Degree days';
         pointFormat = '{point.y:.2f} Degree days';
-      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity of Electricity Grid')) {
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
         axisTitle = 'kg/kWh';
         pointFormat = '{point.y:.2f} kg/kWh';
+        max = 0.5;
       } else if (y2AxisLabel == 'Solar Irradiance') {
         axisTitle = 'W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
-      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true });
+      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max});
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     }
   }
