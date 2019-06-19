@@ -26,10 +26,10 @@
           <% end %>
         </td>
         <td class="text-white <%= class_for_boolean(alert.displayable) %>"><%= y_n alert.displayable %></td>
-        <td class="text-white <%= class_for_alert_rating(alert.rating) %>"><%= alert.formatted_rating %></td>
+        <td><%= alert.formatted_rating %></td>
         <td><%= alert.status %></td>
-        <td class="text-white <%= class_for_boolean(alert.analytics_valid) %>"><%= y_n alert.analytics_valid %></td>
-        <td class="text-white <%= class_for_enough_data(alert.enough_data) %>"><%= alert.enough_data %></td>
+        <td><%= y_n alert.analytics_valid %></td>
+        <td><%= alert.enough_data %></td>
         <td><%= nice_dates alert.run_on %></td>
         <td><%= nice_date_times alert.created_at %></td>
         <td><%= link_to(alert.alert_subscription_events.sent.email.count, school_alert_subscription_events_path(@school)) %></td>
