@@ -104,17 +104,6 @@ module ApplicationHelper
     boolean ? 'bg-success' : 'bg-danger'
   end
 
-  def class_for_enough_data(enough_data)
-    case enough_data
-    when :enough, 'enough'
-      'bg-success'
-    when :minimum_might_not_be_accurate, 'minimum_might_not_be_accurate'
-      'bg-warning'
-    else
-      'bg-danger'
-    end
-  end
-
   def fa_icon(icon_type)
     icon('fas', icon_type)
   end
