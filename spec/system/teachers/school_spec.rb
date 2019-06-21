@@ -45,7 +45,7 @@ RSpec.describe "teachers school view", type: :system do
 
         expect(page.has_content? 'Gas').to be true
         # if redirect fails it will stille be processing
-        expect(page).to have_content('processing')
+        expect(page).to_not have_content('processing')
         expect(page).to_not have_content("we're having trouble processing your energy data today")
       end
     end
