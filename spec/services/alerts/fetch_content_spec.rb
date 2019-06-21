@@ -6,8 +6,8 @@ describe Alerts::FetchContent do
   let!(:alert){ create(:alert, school: school, rating: rating)}
 
   let(:rating){ 5.0 }
-  let(:active){ true }
-  let!(:alert){ create(:alert, school: school, rating: rating)}
+  let(:displayable){ true }
+  let!(:alert){ create(:alert, school: school, rating: rating, displayable: displayable)}
   let!(:alert_type_rating){ create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, find_out_more_active: true}
 
   let(:service) { Alerts::FetchContent.new(alert) }
@@ -18,6 +18,13 @@ describe Alerts::FetchContent do
 
     it 'finds matching content for the alert type that matches the rating' do
       expect(service.content_versions(scope: :find_out_more)).to match_array([content_version])
+    end
+
+    context 'where the alert is not displayable' do
+      let(:displayable){ false }
+      it 'does not return any content' do
+        expect(service.content_versions(scope: :find_out_more)).to match_array([])
+      end
     end
 
     context 'with a newer content version' do
