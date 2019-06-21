@@ -100,6 +100,10 @@ module ApplicationHelper
     end
   end
 
+  def class_for_boolean(boolean)
+    boolean ? 'bg-success' : 'bg-danger'
+  end
+
   def fa_icon(icon_type)
     icon('fas', icon_type)
   end
@@ -200,5 +204,9 @@ module ApplicationHelper
       html_class = column == row.first ? '' : 'text-right'
       [column, html_class]
     end
+  end
+
+  def y_n(boolean)
+    boolean ? 'Yes' : 'No'
   end
 end

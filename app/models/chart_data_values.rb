@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :series_data, :x_axis_ranges
+  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
@@ -62,6 +62,16 @@ class ChartDataValues
     self
   end
 
+  def series_data
+    return @series_data unless @series_data.is_a? Array
+
+    # Temporary TOFIX TODO as analytics should not return negative values
+    @series_data.map do |series|
+      series[:data] = series[:data].map { |v| v.round(8) }
+      series
+    end
+  end
+
 private
 
   def colour_hash
@@ -75,8 +85,6 @@ private
 
       if @chart[:config_name] == :teachers_landing_page_gas
         colour = index == 0 ? '#ffac21' : '#ff4500'
-        # Temporary TOFIX TODO until temperature adjusted charts are better behaved
-        data = data.map {|v| v.negative? ? 0 : v }
       end
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
