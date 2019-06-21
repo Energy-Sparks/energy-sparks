@@ -146,7 +146,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
   describe 'activity_types' do
 
-    subject { ActivityTypeFilter.new(query: query).activity_types.order(:name).to_a }
+    subject { ActivityTypeFilter.new(query: query).activity_types.to_a }
 
     context 'when a key stage is selected' do
       let(:query){ {key_stage_ids: ks2.id}}
@@ -182,7 +182,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
       it 'includes the active activity types only' do
         activity_type_1.update!(active: false)
-        expect(subject).to eq [activity_type_2, activity_type_3]
+        expect(subject).to match_array [activity_type_2, activity_type_3]
       end
     end
 
@@ -197,7 +197,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     let(:school){ create(:school) }
 
-    subject { ActivityTypeFilter.new(school: school, query: {not_completed_or_repeatable: true}).activity_types.order(:name).to_a }
+    subject { ActivityTypeFilter.new(school: school, query: {not_completed_or_repeatable: true}).activity_types.to_a }
 
     before do
       create(:activity, activity_type: activity_type_1, school: school)
