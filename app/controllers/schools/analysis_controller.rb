@@ -1,11 +1,12 @@
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
+  before_action :set_school
+
   include SchoolAggregation
   include Measurements
 
   skip_before_action :authenticate_user!
-  before_action :set_school
   before_action :check_fuel_types
   before_action :build_aggregate_school, except: [:analysis]
   before_action :set_nav
@@ -69,9 +70,8 @@ private
   end
 
   def build_aggregate_school
-    # Get this loaded and warm the cache before starting the chart rendering
-    # and use for heat model fitting tabs
-    @aggregate_school = aggregate_school(@school)
+    # use for heat model fitting tabs
+    @aggregate_school = aggregate_school
   end
 
   def set_nav

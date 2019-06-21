@@ -44,9 +44,9 @@ RSpec.configure do |config|
     # page.driver.browser.manage.window.resize_to(2800,10000)
   end
 
-  config.after(:each, type: :system, js: true) do
+  config.after(:each, type: :system, js: true) do |example|
     errors = page.driver.browser.manage.logs.get(:browser)
-    if errors.present?
+    if errors.present? && !example.metadata.has_key?(:errors_expected)
       aggregate_failures 'javascript errrors' do
         errors.each do |error|
           expect(error.level).not_to eq('SEVERE'), error.message
