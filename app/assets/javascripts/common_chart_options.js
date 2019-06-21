@@ -91,7 +91,7 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
 
   // LINE charts
   if (chartType == 'line') {
-    if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+    if (y2AxisLabel !== undefined &&  y2AxisLabel !== null && y2AxisLabel.length) {
 
       var axisTitle;
       var pointFormat;
@@ -125,7 +125,8 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
     } else {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
-    if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+
+    if (y2AxisLabel !== undefined && y2AxisLabel !== null && y2AxisLabel.length) {
 
       var axisTitle;
       var pointFormat;
