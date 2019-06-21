@@ -2,7 +2,6 @@ require 'dashboard'
 
 module Amr
   class AnalyticsValidatedMeterCollectionFactory < AnalyticsUnvalidatedMeterCollectionFactory
-
   private
 
     def heat_meters
