@@ -11,7 +11,7 @@ module Amr
     let!(:g_meter)    { create(:gas_meter_with_validated_reading_dates, start_date: Date.parse('01/06/2019'), end_date: Date.parse('02/06/2019'), school: school) }
 
     it 'builds an Validated meter collection' do
-      meter_collection = AnalyticsValidatedMeterCollectionFactory.new(school, MeterCollection, 1).build
+      meter_collection = AnalyticsValidatedMeterCollectionFactory.new(school, MeterCollection).build
 
       expect(e_meter.amr_validated_readings.count).to be 2
 
