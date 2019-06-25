@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "analysis view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
-  let(:school)     { create(:school, name: school_name, floor_area: nil)}
+  let(:school)     { create(:school, :with_school_group, name: school_name, floor_area: nil)}
 
   it 'redirects back to the school home page if no meters are set' do
     visit school_analysis_path(school)
