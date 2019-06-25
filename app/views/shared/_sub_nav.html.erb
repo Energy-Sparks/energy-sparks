@@ -34,7 +34,7 @@
         <ul class="nav navbar-nav">
           <li class="nav-item dropdown">
             <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-success btn-sm' if @school.scoreboard %>
-            <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm'  %>
+            <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm' if @school.configuration %>
           </li>
           <%- if can? :update, @school -%>
             <li class="nav-item dropdown">

@@ -11,6 +11,10 @@ FactoryBot.define do
     website         { "http://#{name.camelize}.test" }
     sash
 
+    after(:build) do |school, _evaluator|
+      build(:configuration, school: school)
+    end
+
     factory :school_with_same_name do
       name { "test school"}
     end
