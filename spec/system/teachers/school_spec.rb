@@ -36,18 +36,30 @@ RSpec.describe "teachers school view", type: :system do
       allow_any_instance_of(ChartData).to receive(:data).and_return([])
     end
 
-    it 'redirects to the loading page and then back to the dashboard page once complete' do
-      visit teachers_school_path(school)
+    context 'with a successful load' do
+      before(:each) do
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+      end
+      it 'renders a loading page and then back to the dashboard page once complete' do
+        visit teachers_school_path(school)
 
-      expect(page.has_content? 'Gas').to be true
-      expect(page.has_content? 'processing').to be false
+        expect(page.has_content? 'Gas').to be true
+        # if redirect fails it will stille be processing
+        expect(page).to_not have_content('processing')
+        expect(page).to_not have_content("we're having trouble processing your energy data today")
+      end
     end
 
-    it 'redirects by default to the dashboard page' do
-      visit school_aggregated_meter_collection_path(school)
+    context 'with a loading error' do
+      before(:each) do
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
+      end
 
-      expect(page.has_content? 'Gas').to be true
-      expect(page.has_content? 'processing').to be false
+      it 'shows an error message', errors_expected: true do
+        visit teachers_school_path(school)
+
+        expect(page).to have_content("we're having trouble processing your energy data today")
+      end
     end
   end
 
