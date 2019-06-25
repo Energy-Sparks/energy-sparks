@@ -1,21 +1,18 @@
 module Teachers
   class SchoolsController < ApplicationController
+    load_and_authorize_resource
+
+    include SchoolAggregation
     include ActivityTypeFilterable
 
-    load_and_authorize_resource
     skip_before_action :authenticate_user!
 
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
-      if AggregateSchoolService.new(@school).in_cache_or_cache_off?
-        @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
-        setup_dashboard_alert
-        setup_activity_suggestions
-      else
-        session[:aggregated_meter_collection_referrer] = request.original_fullpath
-        redirect_to school_aggregated_meter_collection_path(@school)
-      end
+      @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
+      setup_dashboard_alert
+      setup_activity_suggestions
     end
 
   private
