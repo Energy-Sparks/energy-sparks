@@ -216,24 +216,6 @@ describe School do
     end
   end
 
-  describe '#fuel_types_for_analysis?' do
-    it 'gas and electricity' do
-      meter = create(:electricity_meter_with_validated_reading, school: subject, reading_count: 1)
-      meter2 = create(:gas_meter_with_validated_reading, school: subject, reading_count: 1)
-      expect(subject.fuel_types_for_analysis).to be :electric_and_gas
-    end
-
-    it 'electricity' do
-      meter = create(:electricity_meter_with_validated_reading, school: subject, reading_count: 1)
-      expect(subject.fuel_types_for_analysis).to be :electric_only
-    end
-
-    it 'gas' do
-      meter = create(:gas_meter_with_validated_reading, school: subject, reading_count: 1)
-      expect(subject.fuel_types_for_analysis).to be :gas_only
-    end
-  end
-
   describe '#scoreboard_position' do
     let!(:scoreboard)       { create :scoreboard }
     let!(:group)            { create(:school_group, scoreboard: scoreboard) }
