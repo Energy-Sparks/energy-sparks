@@ -28,7 +28,7 @@ module Pupils
       if @scoreboard
         @podium = Podium.create(school: @school, scoreboard: @scoreboard)
       end
-      @observations = @school.observations
+      @temperature_observations = @school.observations.temperature
     end
 
   private

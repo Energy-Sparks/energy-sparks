@@ -11,7 +11,7 @@
 <p>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</p>
 
 <h3>Enter temperatures</h3>
-<%= simple_form_for([@school, @observation]) do |f| %>
+<%= simple_form_for([@school, @observation], url: school_temperature_observations_path(@school)) do |f| %>
   <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: "form-control form-control-lg", data: { max_date_time: h(Time.now.httpdate) }} %>
   <%= f.fields_for :temperature_recordings do |temperature_form| %>
     <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
