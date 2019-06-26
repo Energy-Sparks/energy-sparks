@@ -19,6 +19,7 @@ RSpec.describe "analysis view", type: :system do
       expect(page).to have_content('Please edit the school details')
     end
 
+
     it 'does not request for floor area and pupil numbers to be populated if they are' do
       floor_area = 20
       number_of_pupils = 100
@@ -42,7 +43,6 @@ RSpec.describe "analysis view", type: :system do
   end
 
   def stub_out_the_aggregation_etc
-    allow_any_instance_of(School).to receive(:fuel_types_for_analysis).and_return(:electric_only)
     allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
     allow_any_instance_of(ChartData).to receive(:data).and_return([])
   end
