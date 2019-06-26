@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_25_103251) do
+ActiveRecord::Schema.define(version: 2019_06_26_130220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -610,6 +610,7 @@ ActiveRecord::Schema.define(version: 2019_06_25_103251) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "observation_type", null: false
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
 

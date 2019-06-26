@@ -1,7 +1,7 @@
 module Schools
-  class ObservationsController < ApplicationController
+  class TemperatureObservationsController < ApplicationController
     load_resource :school
-    load_and_authorize_resource through: :school
+    load_and_authorize_resource :observation, through: :school, parent: false
 
     skip_before_action :authenticate_user!, only: [:index, :show]
     before_action :set_location_names, only: [:new, :create]
@@ -11,8 +11,9 @@ module Schools
     end
 
     def create
+      @observation.observation_type = :temperature
       if @observation.save
-        redirect_to school_observations_path(@school)
+        redirect_to school_temperature_observations_path(@school)
       else
         render :new
       end
@@ -27,7 +28,7 @@ module Schools
 
     def destroy
       @observation.destroy
-      redirect_to school_observations_path(@school), notice: 'Successfully deleted.'
+      redirect_to school_temperature_observations_path(@school), notice: 'Successfully deleted.'
     end
 
   private
