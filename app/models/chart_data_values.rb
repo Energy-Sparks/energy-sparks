@@ -32,7 +32,6 @@ class ChartDataValues
       @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_label       = chart[:x_axis_label]
       @y_axis_label       = chart[:y_axis_label]
-      @x_axis_categories  = chart[:x_axis]
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
@@ -46,13 +45,13 @@ class ChartDataValues
     end
   end
 
-  def process(interventions_scope: Observation.none)
+  def process
     return self if @chart.nil?
     @x_data_hash = reverse_x_data_if_required
 
     @series_data = []
 
-    @annotations = create_annotations(interventions_scope)
+    @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
       column_or_bar
@@ -184,11 +183,9 @@ private
     date_to_and_from.map { |bit| bit.join(' ') }.join(' - ')
   end
 
-  def create_annotations(interventions_scope)
-    annotator = Charts::Annotate.new(interventions_scope: interventions_scope)
+  def annotations_configuration
     case @chart_type
-    when :group_by_week_electricity then annotator.annotate_weekly(@x_axis_categories)
-    else []
+    when :group_by_week_electricity then :weekly
     end
   end
 end

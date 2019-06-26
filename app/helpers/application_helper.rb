@@ -135,7 +135,7 @@ module ApplicationHelper
     end
   end
 
-  def chart_tag(chart_type, index: 1, chart_config: {})
+  def chart_tag(school, chart_type, index: 1, chart_config: {})
     html_chart_data = chart_config.inject({}) do |collection, (data_item_key, data_item_value)|
       collection["chart-#{data_item_key.to_s.parameterize}"] = data_item_value
       collection
@@ -147,7 +147,8 @@ module ApplicationHelper
       class: 'analysis-chart',
       data: {
         "chart-index" => index,
-        "chart-type" => chart_type
+        "chart-type" => chart_type,
+        "chart-annotations" => school_annotations_path(school)
       }.merge(html_chart_data)
     )
   end

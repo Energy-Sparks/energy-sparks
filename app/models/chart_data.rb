@@ -1,6 +1,5 @@
 class ChartData
-  def initialize(school, aggregated_school, chart_type, show_benchmark_figures, custom_chart_config)
-    @school = school
+  def initialize(aggregated_school, chart_type, show_benchmark_figures, custom_chart_config)
     @aggregated_school = aggregated_school
     @chart_type = chart_type
     @custom_chart_config = custom_chart_config
@@ -11,7 +10,7 @@ class ChartData
     chart_manager = ChartManager.new(@aggregated_school, @show_benchmark_figures)
     chart_config = customised_chart_config(chart_manager)
 
-    values = ChartDataValues.new(chart_manager.run_chart(chart_config, @chart_type), @chart_type).process(interventions_scope: @school.observations.intervention)
+    values = ChartDataValues.new(chart_manager.run_chart(chart_config, @chart_type), @chart_type).process
 
     [values]
   end

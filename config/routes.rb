@@ -74,6 +74,7 @@ Rails.application.routes.draw do
 
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'charts#show'
+      get :annotations, to: 'annotations#show'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
       get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
