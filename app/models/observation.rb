@@ -23,7 +23,7 @@ class Observation < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings
 
-  enum observation_type: [:temperature]
+  enum observation_type: [:temperature, :intervention]
 
   validates_presence_of :at, :school
   validate :at_date_cannot_be_in_the_future

@@ -22,7 +22,7 @@ class Schools::ChartsController < ApplicationController
           mpan_mprn: params[:mpan_mprn],
           y_axis_units: params.fetch(:chart_y_axis_units, :kwh).to_sym
         }
-        @output = ChartData.new(aggregate_school, @chart_type, show_benchmark_figures?, chart_config).data
+        @output = ChartData.new(@school, aggregate_school, @chart_type, show_benchmark_figures?, chart_config).data
       end
     end
   end

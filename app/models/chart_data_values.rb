@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges
+  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
@@ -23,6 +23,7 @@ class ChartDataValues
 
   def initialize(chart, chart_type)
     if chart
+      @chart_type         = chart_type
       @chart              = chart
       @title              = chart[:title]
       @x_axis_categories  = chart[:x_axis]
@@ -38,17 +39,20 @@ class ChartDataValues
       @x_data             = chart[:x_data]
       @y2_data            = chart[:y2_data]
       @y2_chart_type      = chart[:y2_chart_type]
+      @annotations        = []
       @y2_axis_label = '' # Set later
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
   end
 
-  def process
+  def process(interventions_scope: Observation.none)
     return self if @chart.nil?
     @x_data_hash = reverse_x_data_if_required
 
     @series_data = []
+
+    @annotations = create_annotations(interventions_scope)
 
     if @chart1_type == :column || @chart1_type == :bar
       column_or_bar
@@ -178,5 +182,13 @@ private
       date_to_and_from[1].delete_at(0)
     end
     date_to_and_from.map { |bit| bit.join(' ') }.join(' - ')
+  end
+
+  def create_annotations(interventions_scope)
+    annotator = Charts::Annotate.new(interventions_scope: interventions_scope)
+    case @chart_type
+    when :group_by_week_electricity then annotator.annotate_weekly(@x_axis_categories)
+    else []
+    end
   end
 end

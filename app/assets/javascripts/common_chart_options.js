@@ -177,6 +177,7 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
   });
 
   updateChartLabels(d, c);
+  processAnnotations(d, c);
 
   c.redraw();
 }
@@ -223,6 +224,7 @@ function scatter(d, c, chartIndex, seriesData) {
     console.log(seriesData[key].name);
     c.addSeries(seriesData[key], false);
   });
+  processAnnotations(d, c);
   c.redraw();
 }
 
@@ -257,5 +259,30 @@ function orderedPointFormat(label){
     return label + format;
   } else {
     return format + ' ' + label;
+  }
+}
+
+function processAnnotations(chartData, chart){
+  if(chartData.annotations){
+    var xAxis = chart.xAxis[0];
+    var xAxisCategories = xAxis.categories;
+
+    var annotations = chartData.annotations.map(function(annotation){
+      var categoryIndex = xAxisCategories.indexOf(annotation.x_axis_category);
+      return {
+        point: {
+          x: categoryIndex,
+          y: xAxis.series[0].getValidPoints()[categoryIndex].total,
+          xAxis: 0,
+          yAxis: 0
+        },
+        text: annotation.event + ' (' + annotation.date + ')'
+      };
+    });
+    chart.addAnnotation({
+      labelOptions:{
+      },
+      labels: annotations
+    }, false);
   }
 }
