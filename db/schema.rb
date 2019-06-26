@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_18_125104) do
+ActiveRecord::Schema.define(version: 2019_06_25_103251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -403,6 +403,14 @@ ActiveRecord::Schema.define(version: 2019_06_18_125104) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reading_date"], name: "index_carbon_intensity_readings_on_reading_date", unique: true
+  end
+
+  create_table "configurations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.json "analysis_charts", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -823,6 +831,7 @@ ActiveRecord::Schema.define(version: 2019_06_18_125104) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools"
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "alert_type_rating_content_versions", on_delete: :restrict
