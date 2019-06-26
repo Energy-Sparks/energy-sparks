@@ -33,8 +33,10 @@ module Schools
     let(:dashboard_config) {{ electric_only: %i[main_dashboard_electric electricity_detail], gas_only: %i[main_dashboard_gas gas_detail boiler_control] }}
 
     it 'returns chart config' do
+      allow_any_instance_of(ChartData).to receive(:success?).and_return(true)
       GenerateChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
       page_config.delete(:main_dashboard_gas)
+
       expect(school.configuration.analysis_charts_as_symbols).to eq page_config
     end
   end

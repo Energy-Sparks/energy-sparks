@@ -25,21 +25,28 @@ module Schools
       Rails.logger.info "Generating chart configuration for #{@school.name} - using default values"
       page_and_chart_config = {}
       pages.each do |page|
-        page_and_chart_config[page.to_sym] = page_config(page)
+        white_listed_page_config = white_listed_page_config(page)
+        page_and_chart_config[page.to_sym] = white_listed_page_config unless white_listed_page_config[:charts].empty?
       end
       @school.configuration.update!(analysis_charts: page_and_chart_config)
     end
 
   private
 
-    def _remove?(chart_type, chart_config = { y_axis_units: :kwh })
-      output = ChartData.new(@aggregated_meter_collection, chart_type, false, chart_config).data
-      output.first.series_data.nil?
+    def white_listed_page_config(page)
+      page_configuration = page_config(page)
+      list_of_charts = page_configuration[:charts]
+      list_of_charts.select { |chart| keep?(chart) }
+      { name: page_configuration[:name], charts: list_of_charts }
+    end
+
+    def keep?(chart_type, chart_config = { y_axis_units: :kwh })
+      ChartData.new(@aggregated_meter_collection, chart_type, false, chart_config).success?
     rescue EnergySparksNotEnoughDataException
-      true
+      false
     rescue => exception
       Rails.logger.error "Chart generation failed unexpectedly for #{chart_type} and #{@school.name} - #{exception.message}"
-      true
+      false
     end
 
     def pages

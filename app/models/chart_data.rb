@@ -15,6 +15,10 @@ class ChartData
     [values]
   end
 
+  def success?
+    data.first.series_data.nil?
+  end
+
 private
 
   # JJ This should be handled in the analytics code
