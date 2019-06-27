@@ -145,6 +145,7 @@ function processAnnotations(loaded_annotations, chart){
 
   var annotations = loaded_annotations.map(function(annotation){
     var categoryIndex = xAxisCategories.indexOf(annotation.x_axis_category);
+    var date = new Date(annotation.date);
     return {
       point: {
         x: categoryIndex,
@@ -152,7 +153,7 @@ function processAnnotations(loaded_annotations, chart){
         xAxis: 0,
         yAxis: 0
       },
-      text: annotation.event + ' (' + annotation.date + ')'
+      text: annotation.event + ' (' + date.toLocaleDateString() + ')'
     };
   });
   chart.addAnnotation({
