@@ -69,7 +69,9 @@ gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 # Utils
 gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
+
+# Bundle update installs 0.7.0 for some weird reason!
+gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
 # Run against master until full Rails6 release is complete
 gem 'friendly_id', git: 'https://github.com/norman/friendly_id.git', branch: 'master' # Pretties up URLs
 gem 'merit', git: 'https://github.com/merit-gem/merit.git', branch: 'master'
@@ -101,6 +103,7 @@ group :development, :test do
   gem 'foreman'
   gem 'guard-rspec', require: false
   gem 'terminal-notifier-guard', require: false
+  gem 'rb-readline', require: false
 end
 
 group :development do
