@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.3'
+ruby '2.6.3'
 
 # Rails/Core
 gem 'rails', '~> 6.0.0.rc1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
