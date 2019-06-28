@@ -247,9 +247,8 @@ GEM
     formatador (0.2.5)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    govuk-lint (3.11.4)
-      rubocop (~> 0.72)
-      rubocop-rails (~> 2)
+    govuk-lint (3.10.0)
+      rubocop (~> 0.58)
       rubocop-rspec (~> 1.28)
       scss_lint
     groupdate (4.0.1)
@@ -494,9 +493,6 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
-    rubocop-rails (2.1.0)
-      rack (>= 1.1)
-      rubocop (>= 0.72.0)
     rubocop-rspec (1.33.0)
       rubocop (>= 0.60.0)
     ruby-ole (1.2.12.2)
@@ -650,7 +646,7 @@ DEPENDENCIES
   font-awesome-sass (~> 5.6.1)
   foreman
   friendly_id!
-  govuk-lint
+  govuk-lint (= 3.10.0)
   groupdate (= 4.0.1)
   guard-rspec
   handlebars_assets

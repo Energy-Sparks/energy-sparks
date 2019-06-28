@@ -114,7 +114,7 @@ group :development do
   gem "binding_of_caller"
   gem 'annotate'
   gem 'pry'
-  gem 'govuk-lint'
+  gem 'govuk-lint', '3.10.0'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
