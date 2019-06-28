@@ -2,12 +2,13 @@
 #
 # Table name: observations
 #
-#  at          :datetime         not null
-#  created_at  :datetime         not null
-#  description :text
-#  id          :bigint(8)        not null, primary key
-#  school_id   :bigint(8)        not null
-#  updated_at  :datetime         not null
+#  at               :datetime         not null
+#  created_at       :datetime         not null
+#  description      :text
+#  id               :bigint(8)        not null, primary key
+#  observation_type :integer          not null
+#  school_id        :bigint(8)        not null
+#  updated_at       :datetime         not null
 #
 # Indexes
 #
@@ -17,9 +18,12 @@
 #
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
+
 class Observation < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings
+
+  enum observation_type: [:temperature]
 
   validates_presence_of :at, :school
   validate :at_date_cannot_be_in_the_future
