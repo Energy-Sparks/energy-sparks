@@ -27,7 +27,7 @@
 
           <% end %>
           <% if can? :delete, observation %>
-            <td><%= link_to 'Delete', school_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+            <td><%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
           <% end %>
         </tr>
       <% end %>
@@ -58,4 +58,4 @@
   <p>There are no observations recorded at the moment</p>
 <% end %>
 
-<p><%= link_to 'Add new temperature recordings', new_school_observation_path(@school), class: 'btn btn-success' %></p>
+<p><%= link_to 'Add new temperature recordings', new_school_temperature_observation_path(@school), class: 'btn btn-success' %></p>
