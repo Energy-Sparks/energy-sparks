@@ -36,7 +36,7 @@ module Schools
     def white_listed_page_config(page)
       page_configuration = page_config(page)
       list_of_charts = page_configuration[:charts]
-      list_of_charts.select { |chart| keep?(chart) }
+      list_of_charts = list_of_charts.select { |chart| keep?(chart) }
       { name: page_configuration[:name], charts: list_of_charts }
     end
 

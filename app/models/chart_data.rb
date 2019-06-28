@@ -16,7 +16,7 @@ class ChartData
   end
 
   def success?
-    data.first.series_data.nil?
+    ! data.first.series_data.nil?
   end
 
 private

@@ -16,7 +16,7 @@ module Schools
                         electricity_detail:      {
                                 name:   'Electricity Detail',
                                 charts: %i[
-                                  daytype_breakdown_electricity
+                                  baseload
                                   group_by_week_electricity
                                 ]
                               },
@@ -36,6 +36,18 @@ module Schools
       allow_any_instance_of(ChartData).to receive(:success?).and_return(true)
       GenerateChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
       page_config.delete(:main_dashboard_gas)
+
+      expect(school.configuration.analysis_charts_as_symbols).to eq page_config
+    end
+
+    it 'returns chart reduced config if a chart fails' do
+      allow_any_instance_of(ChartData).to receive(:success?) do |_amc, chart_type, _thing, _chart_config|
+        chart_type != :baseload
+      end
+
+      GenerateChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
+      page_config.delete(:main_dashboard_gas)
+      page_config[:electricity_detail].delete(:baseload)
 
       expect(school.configuration.analysis_charts_as_symbols).to eq page_config
     end
