@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "analysis view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
-  let(:school)     { create(:school, name: school_name, floor_area: nil)}
+  let(:school)     { create(:school, :with_school_group, name: school_name, floor_area: nil)}
 
   it 'redirects back to the school home page if no meters are set' do
     visit school_analysis_path(school)
@@ -18,6 +18,7 @@ RSpec.describe "analysis view", type: :system do
       visit school_analysis_path(school)
       expect(page).to have_content('Please edit the school details')
     end
+
 
     it 'does not request for floor area and pupil numbers to be populated if they are' do
       floor_area = 20
@@ -42,8 +43,7 @@ RSpec.describe "analysis view", type: :system do
   end
 
   def stub_out_the_aggregation_etc
-    allow_any_instance_of(School).to receive(:fuel_types_for_analysis).and_return(:electric_only)
-    allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).with(school).and_return(school)
+    allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
     allow_any_instance_of(ChartData).to receive(:data).and_return([])
   end
 end

@@ -99,6 +99,8 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'foreman'
+  gem 'guard-rspec', require: false
+  gem 'terminal-notifier-guard', require: false
 end
 
 group :development do
@@ -107,10 +109,6 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'better_errors'
   gem "binding_of_caller"
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'spring-commands-rspec'
   gem 'annotate'
   gem 'pry'
   gem 'govuk-lint'
@@ -126,13 +124,4 @@ group :test do
   gem 'database_cleaner'
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
-end
-
-#Capistrano gems
-group :development do
-  gem 'capistrano',         require: false
-  gem 'capistrano-rvm',     require: false
-  gem 'capistrano-rails',   require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano3-puma',   require: false
 end

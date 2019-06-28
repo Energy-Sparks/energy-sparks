@@ -3,11 +3,12 @@
 require 'dashboard'
 
 class Schools::SimulationsController < ApplicationController
+  load_and_authorize_resource :school
+  load_and_authorize_resource :simulation, through: :school, except: [:new_exemplar, :new_fitted]
+
   include SchoolAggregation
   include NewSimulatorChartConfig
 
-  load_and_authorize_resource :school
-  load_and_authorize_resource :simulation, through: :school, except: [:new_exemplar, :new_fitted]
 
   def index
     @simulations = @simulations.order(:created_at)
@@ -24,7 +25,7 @@ class Schools::SimulationsController < ApplicationController
 
   def new
     #TODO sort this out including method renames ;)
-    @local_school = aggregate_school(@school)
+    @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
 
@@ -36,7 +37,7 @@ class Schools::SimulationsController < ApplicationController
     #TODO sort this out including method renames ;)
     @simulation = @school.simulations.new
     authorize! :create, @simulation
-    @local_school = aggregate_school(@school)
+    @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
     @simulation_configuration = @actual_simulator.fit(default_appliance_configuration)
@@ -47,7 +48,7 @@ class Schools::SimulationsController < ApplicationController
     #TODO sort this out including method renames ;)
     @simulation = @school.simulations.new
     authorize! :create, @simulation
-    @local_school = aggregate_school(@school)
+    @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
     fitted_parameters = @actual_simulator.fit(default_appliance_configuration)
@@ -97,7 +98,7 @@ class Schools::SimulationsController < ApplicationController
 
   def edit
     #TODO sort this out including method renames ;)
-    @local_school = aggregate_school(@school)
+    @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @simulation.configuration
     sort_out_simulation_stuff
@@ -108,7 +109,7 @@ private
   def common_show(charts_group)
     @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[charts_group][:charts]
     @simulation_configuration = @simulation.configuration
-    local_school = aggregate_school(@school)
+    local_school = aggregate_school
 
     simulator = ElectricitySimulator.new(local_school)
     simulator.simulate(@simulation_configuration)

@@ -67,7 +67,7 @@ class ChartDataValues
 
     # Temporary TOFIX TODO as analytics should not return negative values
     @series_data.map do |series|
-      series[:data] = series[:data].map { |v| v.round(8) }
+      series[:data] = series[:data].map { |v| v.is_a?(Float) ? v.round(8) : v }
       series
     end
   end

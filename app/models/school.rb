@@ -79,6 +79,7 @@ class School < ApplicationRecord
   belongs_to :school_group
 
   has_one :school_onboarding
+  has_one :configuration, class_name: 'Schools::Configuration'
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
@@ -140,20 +141,8 @@ class School < ApplicationRecord
     meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
   end
 
-  def threshold_for_readings_required
-    Amr::AnalyticsValidatedMeterCollectionFactory::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS
-  end
-
-  def meters_with_enough_validated_readings_for_analysis(supply, threshold = threshold_for_readings_required)
-    meters.where(meter_type: supply).joins(:amr_validated_readings).group('amr_validated_readings.meter_id, meters.id').having('count(amr_validated_readings.meter_id) > ?', threshold)
-  end
-
   def both_supplies?
     meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
-  end
-
-  def has_enough_readings_for_meter_types?(supply, threshold = threshold_for_readings_required)
-    meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
   end
 
   def fuel_types
@@ -168,28 +157,8 @@ class School < ApplicationRecord
     end
   end
 
-  def fuel_types_for_analysis(threshold = threshold_for_readings_required)
-    if is_school_dual_fuel?(threshold)
-      dual_fuel_fuel_type
-    elsif has_enough_readings_for_meter_types?(:electricity, threshold)
-      electricity_fuel_type
-    elsif has_enough_readings_for_meter_types?(:gas, threshold)
-      :gas_only
-    else
-      :none
-    end
-  end
-
-  def is_school_dual_fuel?(threshold = threshold_for_readings_required)
-    has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
-  end
-
-  def dual_fuel_fuel_type
-    has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
-  end
-
-  def electricity_fuel_type
-    has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
+  def fuel_types_for_analysis
+    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
   end
 
   def has_solar_pv?
