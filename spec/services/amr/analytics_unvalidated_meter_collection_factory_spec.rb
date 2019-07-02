@@ -26,7 +26,8 @@ module Amr
 
       expect(first_electricity_meter.mpan_mprn).to eq e_meter.mpan_mprn
       expect(first_electricity_meter.amr_data.keys.size).to eq 2
-      expect(first_electricity_meter.amr_data.keys.first).to eq Date.parse(e_meter.amr_data_feed_readings.first.reading_date)
+      expect(first_electricity_meter.amr_data.keys).to eq e_meter.amr_data_feed_readings.map {|reading| Date.parse(reading.reading_date) }.flatten
+
       expect(first_electricity_meter.amr_data.values.first.kwh_data_x48).to eq e_meter.amr_data_feed_readings.first.readings.map(&:to_f)
 
       first_gas_meter = meter_collection.heat_meters.first
