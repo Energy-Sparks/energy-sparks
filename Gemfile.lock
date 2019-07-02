@@ -437,6 +437,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rb-readline (0.5.5)
     redcarpet (3.4.0)
     regexp_parser (1.5.1)
     reportbuilder (1.4.2)
@@ -669,6 +670,7 @@ DEPENDENCIES
   rack-canonical-host
   rails (~> 6.0.0.rc1)
   rails-controller-testing
+  rb-readline
   redcarpet
   rollbar
   rspec-rails (~> 4.0.0.beta2)
