@@ -12,7 +12,7 @@ class Schools::AnalysisController < ApplicationController
   before_action :set_measurement_options
 
   def analysis
-    if @school.configuration && @school.configuration.analysis_charts.present?
+    if @school.analysis?
       # Redirect to correct dashboard
       redirect_to action: pages.keys.first, school_id: @school.slug
     end
