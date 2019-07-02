@@ -6,6 +6,7 @@ FactoryBot.define do
 
     trait :intervention do
       observation_type { :intervention }
+      intervention_type
     end
 
     factory :observation_with_temperature_recording_and_location do
