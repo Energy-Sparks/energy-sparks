@@ -20,7 +20,9 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <h2>Energy Usage</h2>
-  <div class="h5"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school) %></div>
+  <% if @school.configuration %>
+    <div class="h5"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school) %></div>
+  <% end %>
 </div>
 <p></p>
 <div class="row teachers">
