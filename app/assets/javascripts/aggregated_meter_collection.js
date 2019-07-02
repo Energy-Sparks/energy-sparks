@@ -1,10 +1,15 @@
 "use strict";
 
 $(document).ready(function() {
-  if ($("div.aggregated-meter-collection-loader").length) {
+  if ($(".aggregated-meter-collection-loader").length) {
     // Post to controller
-    $.post(window.location.href, function(data) {
-      window.location.href = data.referrer;
+    $(".aggregated-meter-collection-loader .error").hide();
+    $.post($('.aggregated-meter-collection-loader').data('aggregation-path'), function(data) {
+      window.location.reload(true)
+    }).fail(function() {
+      $(".aggregated-meter-collection-loader .stats").hide();
+      $(".aggregated-meter-collection-loader .error").show();
+
     });
   }
 });

@@ -79,6 +79,7 @@ class School < ApplicationRecord
   belongs_to :school_group
 
   has_one :school_onboarding
+  has_one :configuration, class_name: 'Schools::Configuration'
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
@@ -157,27 +158,7 @@ class School < ApplicationRecord
   end
 
   def fuel_types_for_analysis
-    if is_school_dual_fuel?
-      dual_fuel_fuel_type
-    elsif meters_with_validated_readings(:electricity).exists?
-      electricity_fuel_type
-    elsif meters_with_validated_readings(:gas).exists?
-      :gas_only
-    else
-      :none
-    end
-  end
-
-  def is_school_dual_fuel?
-    meters_with_validated_readings(:gas).exists? && meters_with_validated_readings(:electricity).exists?
-  end
-
-  def dual_fuel_fuel_type
-    has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
-  end
-
-  def electricity_fuel_type
-    has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
+    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
   end
 
   def has_solar_pv?

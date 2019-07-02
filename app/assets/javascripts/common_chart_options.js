@@ -19,6 +19,13 @@ var commonChartOptions = {
     shadow: false
   },
   plotOptions: {
+    series: {
+      states: {
+        inactive: {
+          opacity: 1
+        }
+      }
+    },
     bar: {
       stacking: 'normal',
     },
