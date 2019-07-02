@@ -4,5 +4,4 @@ class InterventionType < ApplicationRecord
 
   validates :intervention_type_group, :title, presence: true
   validates :title, uniqueness: true
-
 end

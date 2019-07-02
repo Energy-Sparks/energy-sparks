@@ -72,6 +72,8 @@ Rails.application.routes.draw do
 
       resources :find_out_more, controller: :find_out_more
 
+      resources :interventions
+
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'

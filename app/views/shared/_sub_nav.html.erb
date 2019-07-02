@@ -49,6 +49,7 @@
                 <%= link_to 'Manage contacts', school_contacts_path(@school), class: 'dropdown-item' if can? :manage, Contact %>
                 <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item' if can? :manage, Contact %>
                 <%= link_to 'Alert subscription events', school_alert_subscription_events_path(@school), class: 'dropdown-item' if can? :manage, Contact %>
+                <%= link_to 'Interventions', school_interventions_path(@school), class: 'dropdown-item' if can? :index, Observation %>
               </div>
             </li>
           <%- end -%>
