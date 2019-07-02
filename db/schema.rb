@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_130220) do
+ActiveRecord::Schema.define(version: 2019_07_02_104342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -540,6 +540,18 @@ ActiveRecord::Schema.define(version: 2019_06_26_130220) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "intervention_type_groups", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "intervention_types", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "intervention_type_group_id", null: false
+    t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
+  end
+
   create_table "key_stages", force: :cascade do |t|
     t.string "name"
     t.index ["name"], name: "index_key_stages_on_name", unique: true
@@ -611,6 +623,8 @@ ActiveRecord::Schema.define(version: 2019_06_26_130220) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "observation_type", null: false
+    t.bigint "intervention_type_id"
+    t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
@@ -848,8 +862,10 @@ ActiveRecord::Schema.define(version: 2019_06_26_130220) do
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "meters", "schools"
+  add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
