@@ -157,6 +157,10 @@ class School < ApplicationRecord
     end
   end
 
+  def analysis?
+    configuration && configuration.analysis_charts.present?
+  end
+
   def fuel_types_for_analysis
     Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
   end
