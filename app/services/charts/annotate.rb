@@ -16,7 +16,7 @@ module Charts
         relevant_start_date = date_categories.find {|date| (date..(date + 6.days)).cover?(intervention.at.to_date)}
         {
           id: intervention.id,
-          event: intervention.description,
+          event: intervention.intervention_type.title,
           date: intervention.at.to_date,
           x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)]
         }
