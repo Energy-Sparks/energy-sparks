@@ -101,6 +101,7 @@ group :development, :test do
   gem 'foreman'
   gem 'guard-rspec', require: false
   gem 'terminal-notifier-guard', require: false
+  gem 'rb-readline', require: false
 end
 
 group :development do
