@@ -171,7 +171,7 @@ GEM
       moment-timezone-rails (~> 1.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
     builder (3.2.3)
-    bullet (5.9.0)
+    bullet (6.0.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.6.1)
@@ -610,7 +610,7 @@ GEM
       zip-zip
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.1.6)
+    zeitwerk (2.1.8)
     zip-zip (0.3)
       rubyzip (>= 1.0.0)
 
