@@ -185,7 +185,7 @@ private
 
   def annotations_configuration
     case @chart_type
-    when :group_by_week_electricity then :weekly
+    when :group_by_week_electricity, :group_by_week_gas, :electricity_co2_last_year_weekly_with_co2_intensity then :weekly
     end
   end
 end
