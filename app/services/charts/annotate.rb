@@ -18,7 +18,8 @@ module Charts
           id: intervention.id,
           event: intervention.intervention_type.title,
           date: intervention.at.to_date,
-          x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)]
+          x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)],
+          icon: intervention.intervention_type.intervention_type_group.icon
         }
       end
     end

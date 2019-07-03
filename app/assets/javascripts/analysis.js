@@ -151,16 +151,21 @@ function processAnnotations(loaded_annotations, chart){
         x: categoryIndex,
         y: xAxis.series[0].getValidPoints()[categoryIndex].total,
         xAxis: 0,
-        yAxis: 0
+        yAxis: 0,
       },
-      text: annotation.event + ' (' + date.toLocaleDateString() + ')'
+      text: '<i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="'+annotation.event+'"></i>',
     };
   });
   chart.addAnnotation({
     labelOptions:{
+      useHTML: true,
+      style: {
+        fontSize: '15px'
+      }
     },
     labels: annotations
   }, true);
+  $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
 }
 
 $(document).ready(processAnalysisCharts);

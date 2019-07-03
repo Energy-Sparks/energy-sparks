@@ -36,7 +36,8 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: 'Changed boiler',
                 id: intervention_1.id,
-                date: Date.new(2018, 6, 28)
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle'
               }
             ]
           )
@@ -55,13 +56,15 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: 'Changed boiler',
                 id: intervention_1.id,
-                date: Date.new(2018, 6, 28)
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle'
               },
               {
                 x_axis_category: '08 Jul 2018',
                 event: 'Changed bulbs',
                 id: intervention_2.id,
-                date: Date.new(2018, 7, 8)
+                date: Date.new(2018, 7, 8),
+                icon: 'question-circle'
               }
             ]
           )
