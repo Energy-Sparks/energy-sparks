@@ -4,7 +4,7 @@ RSpec.describe 'alert type management', type: :system do
 
   let!(:admin)  { create(:user, role: 'admin')}
 
-  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: 'Your gas usage is too high', has_variables: true, has_ratings: has_ratings) }
+  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: 'Your gas usage is too high', has_ratings: has_ratings) }
   let(:has_ratings){ true }
 
   describe 'managing associated activities' do

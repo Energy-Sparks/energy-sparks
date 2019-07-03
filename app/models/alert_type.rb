@@ -2,18 +2,17 @@
 #
 # Table name: alert_types
 #
-#  analysis      :text
-#  class_name    :text
-#  description   :text             not null
-#  frequency     :integer
-#  fuel_type     :integer
-#  has_ratings   :boolean          default(TRUE)
-#  has_variables :boolean          default(FALSE)
-#  id            :bigint(8)        not null, primary key
-#  show_ratings  :boolean          default(TRUE)
-#  source        :integer          default("analytics"), not null
-#  sub_category  :integer
-#  title         :text
+#  analysis     :text
+#  class_name   :text
+#  description  :text             not null
+#  frequency    :integer
+#  fuel_type    :integer
+#  has_ratings  :boolean          default(TRUE)
+#  id           :bigint(8)        not null, primary key
+#  show_ratings :boolean          default(TRUE)
+#  source       :integer          default("analytics"), not null
+#  sub_category :integer
+#  title        :text
 #
 
 class AlertType < ApplicationRecord
@@ -31,7 +30,7 @@ class AlertType < ApplicationRecord
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
-  validates_presence_of :description
+  validates_presence_of :description, :frequency
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?

@@ -30,7 +30,7 @@ module Alerts
       end
 
       def pull_variable_data?(analysis_object)
-        ![nil, :failed].include?(analysis_object.status) && (analysis_object.enough_data == :enough) && @alert_type.has_variables?
+        ![nil, :failed].include?(analysis_object.status) && (analysis_object.enough_data == :enough)
       end
 
       def invalid_alert_report
