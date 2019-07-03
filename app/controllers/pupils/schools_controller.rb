@@ -45,7 +45,7 @@ module Pupils
 
     def equivalence_setup(school)
       @equivalences = school.equivalences.relevant
-      @equivalences_content = @equivalences.map do |equivalence|
+      @equivalences_content = @equivalences.includes(:content_version).map do |equivalence|
         TemplateInterpolation.new(
           equivalence.content_version
         ).interpolate(
