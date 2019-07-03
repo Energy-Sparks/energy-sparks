@@ -9,7 +9,6 @@
 #  fuel_type    :integer
 #  has_ratings  :boolean          default(TRUE)
 #  id           :bigint(8)        not null, primary key
-#  show_ratings :boolean          default(TRUE)
 #  source       :integer          default("analytics"), not null
 #  sub_category :integer
 #  title        :text

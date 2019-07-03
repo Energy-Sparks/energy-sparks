@@ -18,5 +18,4 @@ describe 'Alert' do
     no_rating_alert = create(:alert, rating: nil)
     expect(no_rating_alert.formatted_rating).to eq 'Unrated'
   end
-
 end

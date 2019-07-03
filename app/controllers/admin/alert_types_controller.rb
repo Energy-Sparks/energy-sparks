@@ -23,7 +23,7 @@ module Admin
   private
 
     def alert_type_params
-      params.require(:alert_type).permit(:title, :description, :analysis, :show_ratings, :frequency, :fuel_type)
+      params.require(:alert_type).permit(:title, :description, :analysis, :frequency)
     end
   end
 end
