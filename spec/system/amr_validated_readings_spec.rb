@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "amr validated readings", :amr_validated_readings, type: :system do
 
-  let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school)     { create_active_school(name: school_name)}
-  let!(:admin)      { create(:user, role: 'admin')}
+  let(:school_name)   { 'Oldfield Park Infants'}
+  let!(:school)       { create(:school,:with_school_group, name: school_name)}
+  let!(:admin)        { create(:user, role: 'admin')}
 
   before(:each) do
     sign_in(admin)
@@ -17,10 +17,11 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
     it 'allows a download of all CSV data' do
       click_on('Reports')
       click_on('AMR Report')
+
       expect(page.has_content?(school.name)).to be true
       expect(page.has_content?(meter.mpan_mprn)).to be true
 
-      click_on 'Download all AMR data'
+      click_on 'All Validated AMR data'
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
