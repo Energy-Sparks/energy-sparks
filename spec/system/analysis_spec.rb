@@ -3,18 +3,23 @@ require 'rails_helper'
 RSpec.describe "analysis view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
-  let(:school)     { create(:school, :with_school_group, name: school_name, floor_area: nil)}
+  let(:school)      { create(:school, :with_school_group, name: school_name, floor_area: nil)}
+
+  before(:each) do
+    allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
+    allow_any_instance_of(ChartData).to receive(:data).and_return([])
+  end
 
   it 'redirects back to the school home page if no meters are set' do
+    school.configuration.update(analysis_charts: {})
     visit school_analysis_path(school)
-    expect(page).to have_content 'Analysis is currently unavailable due to a lack of validated meter readings'
+    expect(page).to have_content 'Currently we do not have enough data to generate the in-depth Analysis for your school'
   end
 
   context 'when a school has an electricity meter' do
     let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
     it 'requests for floor area and pupil numbers to be populated' do
-      stub_out_the_aggregation_etc
       visit school_analysis_path(school)
       expect(page).to have_content('Please edit the school details')
     end
@@ -24,7 +29,6 @@ RSpec.describe "analysis view", type: :system do
       floor_area = 20
       number_of_pupils = 100
       school.update(floor_area: floor_area, number_of_pupils: number_of_pupils)
-      stub_out_the_aggregation_etc
       visit school_analysis_path(school)
       expect(page).to_not have_content('Please edit the school details')
       expect(page).to have_content(floor_area)
@@ -32,7 +36,6 @@ RSpec.describe "analysis view", type: :system do
     end
 
     it 'allows units to be selected', js: :true do
-      stub_out_the_aggregation_etc
       visit school_analysis_path(school)
       expect(page).to have_content('Currently your measurements are in energy used in kilowatt-hours')
       click_on('Change energy usage units', match: :first)
@@ -41,10 +44,4 @@ RSpec.describe "analysis view", type: :system do
       expect(find('#measurement_co2').selected?).to be false
     end
   end
-
-  def stub_out_the_aggregation_etc
-    allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
-    allow_any_instance_of(ChartData).to receive(:data).and_return([])
-  end
 end
-

@@ -7,14 +7,15 @@ class Schools::AnalysisController < ApplicationController
   include Measurements
 
   skip_before_action :authenticate_user!
-  before_action :check_fuel_types
   before_action :build_aggregate_school, except: [:analysis]
   before_action :set_nav
   before_action :set_measurement_options
 
   def analysis
-    # Redirect to correct dashboard
-    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
+    if @school.analysis?
+      # Redirect to correct dashboard
+      redirect_to action: pages.keys.first, school_id: @school.slug
+    end
   end
 
   def main_dashboard_electric
@@ -63,26 +64,19 @@ class Schools::AnalysisController < ApplicationController
 
 private
 
-  def check_fuel_types
-    if @school.fuel_types_for_analysis == :none
-      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
-    end
-  end
-
   def build_aggregate_school
     # use for heat model fitting tabs
     @aggregate_school = aggregate_school
   end
 
   def set_nav
-    @nav_array = pages.map do |page|
-      { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
+    @nav_array = pages.map do |page, config|
+      { name: config[:name], path: "#{page}_path" }
     end
   end
 
   def pages
-    @dashboard_set = @school.fuel_types_for_analysis
-    analyis_pages = DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
+    analyis_pages = @school.configuration.analysis_charts_as_symbols
     analyis_pages.reject {|page| page == :carbon_emissions && cannot?(:analyse, :carbon_emissions)}
   end
 
