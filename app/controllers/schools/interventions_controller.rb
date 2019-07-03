@@ -3,7 +3,7 @@ module Schools
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
 
-    before_action :load_intervention_type_groups, except: [:index, :destroy]
+    before_action :load_intervention_types, except: [:index, :destroy]
 
     def index
       @interventions = @observations.intervention.order('at ASC')
@@ -39,8 +39,13 @@ module Schools
 
   private
 
-    def load_intervention_type_groups
-      @intervention_type_groups = InterventionTypeGroup.includes(:intervention_types).references(:intervention_types).order('intervention_type_groups.title ASC, intervention_types.title ASC')
+    def load_intervention_types
+      @intervention_type_group = if @observation.intervention_type
+                                   @observation.intervention_type.intervention_type_group
+                                 else
+                                   InterventionTypeGroup.find(params[:intervention_type_group_id])
+                                 end
+      @intervention_types = @intervention_type_group.intervention_types.order('title ASC')
     end
 
     def observation_params

@@ -1,3 +1,3 @@
-<%= f.input :at, as: :tempus_dominus_date, label: 'Date', default_date: Time.zone.now.to_date, input_html: { class: "form-control form-control-lg", data: { max_date: h(Time.now.httpdate) }} %>
-<%= f.input :intervention_type_id, label: 'Intervention', required: true, collection: intervention_type_groups, as: :grouped_select, group_method: :intervention_types %>
+<%= f.input :at, as: :tempus_dominus_date, label: 'Date', input_html: { class: "form-control form-control-lg", data: { max_date: h(Time.now.httpdate) }} %>
+<%= f.input :intervention_type_id, label: 'Intervention', required: true, collection: intervention_types, as: :radio_buttons %>
 <%= f.input :description, as: :text, label: 'Notes' %>
