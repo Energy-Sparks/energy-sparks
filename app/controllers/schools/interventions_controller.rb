@@ -21,6 +21,22 @@ module Schools
       end
     end
 
+    def edit
+    end
+
+    def update
+      if @observation.update(observation_params)
+        redirect_to school_interventions_path(@school)
+      else
+        render :edit
+      end
+    end
+
+    def destroy
+      @observation.destroy!
+      redirect_to school_interventions_path(@school)
+    end
+
   private
 
     def load_intervention_type_groups

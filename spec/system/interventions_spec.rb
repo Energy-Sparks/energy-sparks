@@ -12,7 +12,7 @@ describe 'adding interventions' do
     sign_in(user)
   end
 
-  it 'allows a user to add an intervention' do
+  it 'allows a user to add and edit interventions' do
 
     visit teachers_school_path(school)
 
@@ -28,6 +28,27 @@ describe 'adding interventions' do
     expect(intervention.intervention_type).to eq(boiler_intervention)
     expect(intervention.at.to_date).to eq(Date.new(2019, 7, 1))
 
+    within '.application' do
+      click_on 'Edit'
+    end
+
+    fill_in 'Date', with: '20/06/2019'
+    click_on 'Update intervention'
+
+    intervention.reload
+    expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
+
+  end
+
+  it 'destroys interventions' do
+    intervention = create(:observation, :intervention, school: school)
+
+    visit teachers_school_path(school)
+    click_on 'Interventions'
+
+    expect{
+      click_on 'Delete'
+    }.to change{Observation.count}.from(1).to(0)
   end
 
 end
