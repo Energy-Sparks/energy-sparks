@@ -30,7 +30,7 @@ class AlertType < ApplicationRecord
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
-  validates_presence_of :description, :frequency
+  validates_presence_of :description, :frequency, :title
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?

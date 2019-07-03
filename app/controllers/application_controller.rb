@@ -1,18 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
-  before_action :set_ga_code
+  before_action :analytics_code
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
   end
-
-  # def after_sign_in_path_for(resource)
-  #   if resource.school.present?
-  #     return resource.school
-  #   end
-  #   root_path
-  # end
 
   def route_not_found
     render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
@@ -20,10 +13,8 @@ class ApplicationController < ActionController::Base
 
 private
 
-  def set_ga_code
-    # rubocop:disable Naming/MemoizedInstanceVariableName
+  def analytics_code
     @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']
-    # rubocop:enable  Naming/MemoizedInstanceVariableName
   end
 
   def current_school

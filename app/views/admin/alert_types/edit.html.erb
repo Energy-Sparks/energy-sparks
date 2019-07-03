@@ -1,0 +1,30 @@
+<h1>Edit: <%= @alert_type.title %> alert type</h1>
+
+<%= simple_form_for(@alert_type, url: admin_alert_type_path(@alert_type)) do |f| %>
+
+  <%= render 'shared/errors', subject: @alert_type, subject_name: 'alert type' %>
+
+  <div class="form-group">
+    <%= f.input :title, as: :string, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :description, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :analysis, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <% AlertType.frequencies.keys.each do |frequency| %>
+      <div class="form-check">
+        <%= f.radio_button :frequency, frequency, class: "form-check-input" %>
+        <%= f.label "frequency_#{frequency.to_sym}", frequency.humanize.capitalize, class: "form-check-label" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= f.submit class: 'btn btn-success' %>
+  <%= link_to 'Cancel', admin_alert_type_path(@alert_type), class: 'btn btn-warning' %>
+<% end %>

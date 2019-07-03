@@ -125,7 +125,7 @@ Rails.application.routes.draw do
       resources :alert_mailers, only: :show
     end
 
-    resources :alert_types, only: [:index, :show] do
+    resources :alert_types, only: [:index, :show, :edit, :update] do
       scope module: :alert_types do
         resources :ratings, only: [:index, :new, :create, :edit, :update] do
           resource :activity_types, only: [:show, :update]
