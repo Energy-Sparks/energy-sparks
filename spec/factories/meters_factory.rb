@@ -12,7 +12,11 @@ FactoryBot.define do
       end
 
       after(:create) do |meter, evaluator|
-        create_list(:amr_data_feed_reading, evaluator.reading_count, meter: meter, amr_data_feed_config: evaluator.config)
+        end_date = Date.parse('01/06/2019')
+        start_date = end_date - (evaluator.reading_count - 1).days
+        (start_date..end_date).each do |this_date|
+          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config)
+        end
       end
     end
 
@@ -28,8 +32,8 @@ FactoryBot.define do
 
     factory :gas_meter_with_validated_reading_dates do
       transient do
-        start_date { Date.yesterday }
-        end_date   { Date.today }
+        start_date { Date.parse('01/06/2019') }
+        end_date   { Date.parse('02/06/2019') }
       end
 
       after(:create) do |meter, evaluator|
@@ -53,7 +57,11 @@ FactoryBot.define do
       end
 
       after(:create) do |meter, evaluator|
-        create_list(:amr_data_feed_reading, evaluator.reading_count, meter: meter, amr_data_feed_config: evaluator.config)
+        end_date = Date.parse('01/06/2019')
+        start_date = end_date - (evaluator.reading_count - 1).days
+        (start_date..end_date).each do |this_date|
+          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config)
+        end
       end
     end
 
@@ -69,8 +77,8 @@ FactoryBot.define do
 
     factory :electricity_meter_with_validated_reading_dates do
       transient do
-        start_date { Date.yesterday }
-        end_date   { Date.today }
+        start_date { Date.parse('01/06/2019') }
+        end_date   { Date.parse('02/06/2019') }
       end
 
       after(:create) do |meter, evaluator|

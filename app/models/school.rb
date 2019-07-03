@@ -47,7 +47,6 @@ class School < ApplicationRecord
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
 
-  include Merit::UsageCalculations
   has_merit
 
   has_and_belongs_to_many :key_stages, join_table: :school_key_stages
@@ -61,6 +60,10 @@ class School < ApplicationRecord
 
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
+
+  has_many :equivalences
+
+  has_many :locations
 
   has_many :simulations, inverse_of: :school, dependent: :destroy
 
@@ -76,6 +79,7 @@ class School < ApplicationRecord
   belongs_to :school_group
 
   has_one :school_onboarding
+  has_one :configuration, class_name: 'Schools::Configuration'
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
@@ -137,16 +141,8 @@ class School < ApplicationRecord
     meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
   end
 
-  def meters_with_enough_validated_readings_for_analysis(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
-    meters.where(meter_type: supply).joins(:amr_validated_readings).group('amr_validated_readings.meter_id, meters.id').having('count(amr_validated_readings.meter_id) > ?', threshold)
-  end
-
   def both_supplies?
     meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
-  end
-
-  def has_enough_readings_for_meter_types?(supply, threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
-    meters_with_enough_validated_readings_for_analysis(supply, threshold).any?
   end
 
   def fuel_types
@@ -161,28 +157,12 @@ class School < ApplicationRecord
     end
   end
 
-  def fuel_types_for_analysis(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
-    if is_school_dual_fuel?(threshold)
-      dual_fuel_fuel_type
-    elsif has_enough_readings_for_meter_types?(:electricity, threshold)
-      electricity_fuel_type
-    elsif has_enough_readings_for_meter_types?(:gas, threshold)
-      :gas_only
-    else
-      :none
-    end
+  def analysis?
+    configuration && configuration.analysis_charts.present?
   end
 
-  def is_school_dual_fuel?(threshold = AmrValidatedMeterCollection::NUMBER_OF_READINGS_REQUIRED_FOR_ANALYTICS)
-    has_enough_readings_for_meter_types?(:gas, threshold) && has_enough_readings_for_meter_types?(:electricity, threshold)
-  end
-
-  def dual_fuel_fuel_type
-    has_solar_pv? ? :electric_and_gas_and_solar_pv : :electric_and_gas
-  end
-
-  def electricity_fuel_type
-    has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
+  def fuel_types_for_analysis
+    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
   end
 
   def has_solar_pv?

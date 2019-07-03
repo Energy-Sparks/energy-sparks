@@ -1,26 +1,21 @@
 module Schools
   class AggregatedMeterCollectionsController < ApplicationController
     load_and_authorize_resource :school
-    skip_before_action :authenticate_user!, only: [:show, :post]
-
-    def show
-      @number_of_meter_readings = @school.amr_validated_readings.count * 48
-      @number_of_meters = @school.meters.count
-
-      data_feed = @school.weather_underground_area.data_feed
-      @number_of_weather_readings = DataFeedReading.where(data_feed: data_feed, feed_type: :temperature).count
-      @number_of_solar_pv_readings = DataFeeds::SolarPvTuosReading.where(area_id: @school.solar_pv_tuos_area.id).count * 48
-    end
+    skip_before_action :authenticate_user!
 
     def post
       # JSON request to load cache
-      ass = AggregateSchoolService.new(@school)
-      ass.aggregate_school unless ass.in_cache?
 
-      next_page = session[:aggregated_meter_collection_referrer] || school_path(@school)
+      service = AggregateSchoolService.new(@school)
+      service.aggregate_school unless service.in_cache?
 
       respond_to do |format|
-        format.json { render json: { referrer: next_page }}
+        format.json { render json: { status: 'aggregated' }}
+      end
+    rescue => e
+      Rollbar.error(e)
+      respond_to do |format|
+        format.json { render json: { status: 'error', message: e.message }, status: :internal_server_error}
       end
     end
   end

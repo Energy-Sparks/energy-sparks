@@ -23,7 +23,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.45.1'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.48.2'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -69,7 +69,9 @@ gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 # Utils
 gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
+
+# Bundle update installs 0.7.0 for some weird reason!
+gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
 # Run against master until full Rails6 release is complete
 gem 'friendly_id', git: 'https://github.com/norman/friendly_id.git', branch: 'master' # Pretties up URLs
 gem 'merit', git: 'https://github.com/merit-gem/merit.git', branch: 'master'
@@ -99,6 +101,12 @@ group :development, :test do
   gem 'climate_control'
   gem 'webmock'
   gem 'foreman'
+  gem 'guard-rspec', require: false
+  gem 'terminal-notifier-guard', require: false
+  gem 'rb-readline', require: false
+  gem 'govuk-lint', '3.10.0'
+  gem 'rubocop', '0.63.1'
+  gem 'rubocop-rspec', '1.32.0'
 end
 
 group :development do
@@ -107,13 +115,8 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'better_errors'
   gem "binding_of_caller"
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'spring-commands-rspec'
   gem 'annotate'
   gem 'pry'
-  gem 'govuk-lint'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
@@ -126,13 +129,4 @@ group :test do
   gem 'database_cleaner'
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
-end
-
-#Capistrano gems
-group :development do
-  gem 'capistrano',         require: false
-  gem 'capistrano-rvm',     require: false
-  gem 'capistrano-rails',   require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano3-puma',   require: false
 end

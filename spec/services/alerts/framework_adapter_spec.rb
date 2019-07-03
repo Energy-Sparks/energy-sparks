@@ -12,6 +12,7 @@ describe Alerts::FrameworkAdapter do
       alert_type: alert_type,
       status: :good,
       rating: 5.0 ,
+      enough_data: :enough,
       template_data: {template: 'variables'},
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'}

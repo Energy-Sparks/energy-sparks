@@ -2,13 +2,12 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Edit Calendar Event</h5>
+        <h5 class="modal-title"><span class="event-action"></span> Calendar Event</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <%= simple_form_for([@calendar, CalendarEvent.last], html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
-      <%= f.hidden_field :calendar_id, value: @calendar.id %>
+      <%= simple_form_for([@calendar, CalendarEvent.new], method: :patch, html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
 
       <div class="modal-body">
         <input name="event-index" type="hidden">

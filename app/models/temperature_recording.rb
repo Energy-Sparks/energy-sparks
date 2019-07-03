@@ -26,6 +26,13 @@ class TemperatureRecording < ApplicationRecord
   belongs_to :location
 
   validates_presence_of :centigrade, :location
+  validates_numericality_of :centigrade, greater_than: 0, less_than: 50
+  validates_associated :location
 
-  accepts_nested_attributes_for :location, reject_if: proc {|attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :location
+
+  def location_attributes=(attributes)
+    school = School.find(attributes['school_id'])
+    self.location = school.locations.where(name: attributes['name']).first_or_initialize
+  end
 end

@@ -20,9 +20,22 @@ class TemplateInterpolation
     ClosedStruct.new(templated)
   end
 
+  def variables(*fields)
+    from_templates = fields.inject([]) do |variables, field|
+      variables + get_variables(@object.send(field))
+    end
+    from_templates.uniq.map {|variable| variable.gsub('gbp', '£') }
+  end
+
 private
 
   def process(template, variables)
     Mustache.render(template, variables)
+  end
+
+  def get_variables(template)
+    mustache = Mustache.new
+    mustache.template = template
+    mustache.template.tags
   end
 end

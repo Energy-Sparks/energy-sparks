@@ -78,7 +78,8 @@ class Calendar < ApplicationRecord
   end
 
   def holiday_approaching?(today: Time.zone.today)
-    next_holiday(today: today).start_date - today <= 7
+    next_after_today = next_holiday(today: today)
+    next_after_today.present? && (next_after_today.start_date - today <= 7)
   end
 end
 

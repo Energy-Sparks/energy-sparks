@@ -26,19 +26,22 @@ module Alerts
 
     def calculate_analysis_date
       return Time.zone.today if @alert_type.fuel_type.nil?
-      @aggregate_school.analysis_date(@alert_type.fuel_type)
+      AggregateSchoolService.analysis_date(@aggregate_school, @alert_type.fuel_type)
     end
 
     def build_alert(analysis_report)
       Alert.new(
-        school_id:      @school.id,
-        alert_type_id:  @alert_type.id,
-        run_on:         @analysis_date,
-        status:         analysis_report.status,
-        rating:         analysis_report.rating,
-        template_data:  analysis_report.template_data,
-        chart_data:     analysis_report.chart_data,
-        table_data:     analysis_report.table_data
+        school_id:       @school.id,
+        alert_type_id:   @alert_type.id,
+        run_on:          @analysis_date,
+        displayable:     analysis_report.displayable?,
+        analytics_valid: analysis_report.valid,
+        status:          analysis_report.status,
+        rating:          analysis_report.rating,
+        enough_data:     analysis_report.enough_data,
+        template_data:   analysis_report.template_data,
+        chart_data:      analysis_report.chart_data,
+        table_data:      analysis_report.table_data
       )
     end
   end

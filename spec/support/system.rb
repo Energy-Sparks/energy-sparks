@@ -27,7 +27,7 @@ RSpec.configure do |config|
     #   we do not want max either, so this is a good compromise
 
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: { args: %w[headless no-sandbox disable-gpu disable-dev-shm-usage window-size=1400,10000] }
+      chromeOptions: { args: %w[headless no-sandbox disable-gpu disable-dev-shm-usage window-size=1400,10000], w3c: false}
     )
 
     Capybara::Selenium::Driver.new(
@@ -43,4 +43,19 @@ RSpec.configure do |config|
     # driven_by :headless_firefox
     # page.driver.browser.manage.window.resize_to(2800,10000)
   end
+
+  config.after(:each, type: :system, js: true) do |example|
+    errors = page.driver.browser.manage.logs.get(:browser)
+    if errors.present? && !example.metadata.has_key?(:errors_expected)
+      aggregate_failures 'javascript errrors' do
+        errors.each do |error|
+          expect(error.level).not_to eq('SEVERE'), error.message
+          next unless error.level == 'WARNING'
+          STDERR.puts 'WARN: javascript warning'
+          STDERR.puts error.message
+        end
+      end
+    end
+  end
+
 end

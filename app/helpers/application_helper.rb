@@ -68,6 +68,16 @@ module ApplicationHelper
     end
   end
 
+  def temperature_cell_colour(temperature)
+    if temperature >= 19
+      'table-danger'
+    elsif temperature < 18
+      'table-primary'
+    else
+      'table-success'
+    end
+  end
+
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
@@ -88,6 +98,10 @@ module ApplicationHelper
     else
       'bg-danger'
     end
+  end
+
+  def class_for_boolean(boolean)
+    boolean ? 'bg-success' : 'bg-danger'
   end
 
   def fa_icon(icon_type)
@@ -190,5 +204,9 @@ module ApplicationHelper
       html_class = column == row.first ? '' : 'text-right'
       [column, html_class]
     end
+  end
+
+  def y_n(boolean)
+    boolean ? 'Yes' : 'No'
   end
 end
