@@ -80,7 +80,7 @@ function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
       var thisId = this.id;
-      var thisChart = Highcharts.chart(thisId, commonChartOptions);
+      var thisChart = Highcharts.chart(thisId, commonChartOptions());
       var chartType = $(this).data('chart-type');
       var yAxisUnits = $(this).data('chart-y-axis-units');
       var mpanMprn = $(this).data('chart-mpan-mprn');

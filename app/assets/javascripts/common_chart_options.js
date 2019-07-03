@@ -5,87 +5,89 @@ Highcharts.setOptions({
   }
 });
 
-var commonChartOptions = {
-  title: { text: null },
-  xAxis: { showEmpty: false },
-  yAxis: { showEmpty: false },
-  tooltip: {
-    backgroundColor: null,
-    borderWidth: 0,
-    shadow: false,
-    useHTML: true,
-    style: {
-        padding: 0
-    }
-  },
-  legend: {
-    align: 'center',
-    x: -30,
-    margin: 20,
-    verticalAlign: 'bottom',
-    floating: false,
-    backgroundColor: 'white',
-    shadow: false
-  },
-  plotOptions: {
-    series: {
-      states: {
-        inactive: {
-          opacity: 1
-        }
+function commonChartOptions(){
+  return {
+    title: { text: null },
+    xAxis: { showEmpty: false },
+    yAxis: { showEmpty: false },
+    tooltip: {
+      backgroundColor: null,
+      borderWidth: 0,
+      shadow: false,
+      useHTML: true,
+      style: {
+          padding: 0
       }
     },
-    bar: {
-      stacking: 'normal',
+    legend: {
+      align: 'center',
+      x: -30,
+      margin: 20,
+      verticalAlign: 'bottom',
+      floating: false,
+      backgroundColor: 'white',
+      shadow: false
     },
-    column: {
-      dataLabels: {
-        color: '#232b49'
-      },
-    },
-    pie: {
-      allowPointSelect: true,
-      colors: ["#9c3367", "#67347f", "#501e74", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
-      cursor: 'pointer',
-      dataLabels: { enabled: false },
-      showInLegend: true,
-      point: {
-        events: {
-          legendItemClick: function () {
-            return false;
+    plotOptions: {
+      series: {
+        states: {
+          inactive: {
+            opacity: 1
           }
         }
-      }
-    },
-    line: {
-      tooltip: {
-        headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: orderedPointFormat('kW')
-      }
-    },
-    scatter: {
-      marker: {
-        radius: 5,
+      },
+      bar: {
+        stacking: 'normal',
+      },
+      column: {
+        dataLabels: {
+          color: '#232b49'
+        },
+      },
+      pie: {
+        allowPointSelect: true,
+        colors: ["#9c3367", "#67347f", "#501e74", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
+        cursor: 'pointer',
+        dataLabels: { enabled: false },
+        showInLegend: true,
+        point: {
+          events: {
+            legendItemClick: function () {
+              return false;
+            }
+          }
+        }
+      },
+      line: {
+        tooltip: {
+          headerFormat: '<b>{point.key}</b><br>',
+          pointFormat: orderedPointFormat('kW')
+        }
+      },
+      scatter: {
+        marker: {
+          radius: 5,
+          states: {
+            hover: {
+              enabled: true,
+              lineColor: 'rgb(100,100,100)'
+            }
+          }
+        },
         states: {
           hover: {
-            enabled: true,
-            lineColor: 'rgb(100,100,100)'
+            marker: {
+              enabled: false
+            }
           }
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br>',
+          pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
         }
-      },
-      states: {
-        hover: {
-          marker: {
-            enabled: false
-          }
-        }
-      },
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
       }
     }
-  }
+  };
 }
 
 
