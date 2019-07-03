@@ -8,7 +8,7 @@ $(document).ready(function() {
       allowInputToggle: true,
     };
     var maxDate = date_picker.children('input').data('maxDate');
-    if (maxDate.length) {
+    if (maxDate) {
       options.maxDate = moment(new Date(maxDate));
     }
     $(this).datetimepicker(options);
