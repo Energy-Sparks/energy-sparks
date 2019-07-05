@@ -41,3 +41,4 @@
 //= require date_pickers
 
 //= require observations
+//= require form_wizard

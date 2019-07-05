@@ -1,5 +1,5 @@
 <h3>Tell us about an energy saving action</h3>
 <%= simple_form_for([@school, @observation], url: school_intervention_path(@school, @observation)) do |f| %>
-  <%= render 'form', f: f, intervention_types: @intervention_types, intervention_type_group: @intervention_type_group%>
+  <%= render 'form', f: f, intervention_types: @intervention_types, intervention_type_group: @intervention_type_group, previous_page: school_interventions_path(@school) %>
   <%= f.submit 'Update', class: 'btn btn-success' %>
 <% end %>
