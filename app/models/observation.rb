@@ -38,7 +38,7 @@ class Observation < ApplicationRecord
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings_and_locations
 
   def at_date_cannot_be_in_the_future
-    errors.add(:at, "Can't be in the future") if at.present? && at > Time.zone.today.end_of_day
+    errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
   end
 
 private
