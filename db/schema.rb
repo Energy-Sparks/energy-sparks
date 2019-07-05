@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_03_160730) do
+ActiveRecord::Schema.define(version: 2019_07_05_153155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -408,6 +408,7 @@ ActiveRecord::Schema.define(version: 2019_07_03_160730) do
     t.json "analysis_charts", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 

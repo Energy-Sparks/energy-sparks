@@ -12,7 +12,8 @@ module Schools
         has_storage_heaters: @school.has_storage_heaters?,
         dual_fuel: is_school_dual_fuel?,
         fuel_types_for_analysis: fuel_types_for_analysis,
-        no_meters_with_validated_readings: no_meters_with_validated_readings?
+        no_meters_with_validated_readings: no_meters_with_validated_readings?,
+        has_gas: @school.meters_with_validated_readings(:gas).any?
         )
     end
 

@@ -9,7 +9,8 @@ module Schools
       Schools::Configuration.create(school: @school) unless @school.configuration
 
       fuel_configuration = GenerateFuelConfiguration.new(@school).generate
-      GenerateChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
+      GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
+      GenerateGasDashboardChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
     end
   end
 end
