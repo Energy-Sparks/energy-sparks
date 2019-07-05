@@ -39,10 +39,9 @@ module Alerts
         {table: 'variables'}
       end
 
-      def self.alert_type(has_variables: true)
+      def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertClass',
-          has_variables: has_variables,
           source: :analytics
       end
 
@@ -53,10 +52,9 @@ module Alerts
         :failed
       end
 
-      def self.alert_type(has_variables: true)
+      def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertFailedClass',
-          has_variables: has_variables,
           source: :analytics
       end
     end
@@ -66,10 +64,9 @@ module Alerts
         nil
       end
 
-      def self.alert_type(has_variables: true)
+      def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertNoStatusClass',
-          has_variables: has_variables,
           source: :analytics
       end
     end
@@ -79,10 +76,9 @@ module Alerts
         :not_enough
       end
 
-      def self.alert_type(has_variables: true)
+      def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertNotEnoughDataClass',
-          has_variables: has_variables,
           source: :analytics
       end
     end
@@ -92,10 +88,9 @@ module Alerts
         false
       end
 
-      def self.alert_type(has_variables: true)
+      def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertNotValidClass',
-          has_variables: has_variables,
           source: :analytics
       end
     end
@@ -142,16 +137,6 @@ module Alerts
         expect(normalised_report.table_data).to eq({})
       end
     end
-
-    context 'where the alert type does not have variables' do
-      it 'does not add the variables to the report' do
-        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertClass.alert_type(has_variables: false), school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
-        expect(normalised_report.template_data).to eq({})
-        expect(normalised_report.chart_data).to eq({})
-        expect(normalised_report.table_data).to eq({})
-      end
-    end
-
 
     context 'when the alert is not valid' do
       it 'returns an invalid report' do

@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   namespace :reports do
     get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
     get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
+    get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
   end
 
   namespace :admin do
@@ -125,7 +126,7 @@ Rails.application.routes.draw do
       resources :alert_mailers, only: :show
     end
 
-    resources :alert_types, only: [:index, :show] do
+    resources :alert_types, only: [:index, :show, :edit, :update] do
       scope module: :alert_types do
         resources :ratings, only: [:index, :new, :create, :edit, :update] do
           resource :activity_types, only: [:show, :update]
