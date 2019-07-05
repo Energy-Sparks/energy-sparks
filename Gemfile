@@ -105,9 +105,9 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'govuk-lint', '3.10.0'
-  gem 'rubocop', '0.63.1'
-  gem 'rubocop-rspec', '1.32.0'
+  #gem 'govuk-lint', '3.10.0'
+  #gem 'rubocop', '0.63.1'
+  #gem 'rubocop-rspec', '1.32.0'
 end
 
 group :development do
