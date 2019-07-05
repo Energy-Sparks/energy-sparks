@@ -62,10 +62,6 @@ class Alert < ApplicationRecord
     alert_type.frequency
   end
 
-  def show_ratings?
-    alert_type.show_ratings
-  end
-
   def formatted_rating
     rating.nil? ? 'Unrated' : "#{rating.round(0)}/10"
   end
