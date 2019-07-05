@@ -17,7 +17,7 @@ class ChartData
     [values]
   end
 
-  def success?
+  def has_chart_data?
     ! data.first.series_data.nil?
   rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false

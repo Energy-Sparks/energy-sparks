@@ -85,13 +85,13 @@ module Schools
       let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, no_meters_with_validated_readings: false) }
 
       it 'returns chart config' do
-        allow(chart_data).to receive(:success?).and_return(true)
+        allow(chart_data).to receive(:has_chart_data?).and_return(true)
         GenerateChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
         expect(school.configuration.analysis_charts_as_symbols).to eq electric_only_page_config
       end
 
       it 'returns chart reduced config if a chart fails' do
-        allow(chart_data).to receive(:success?).and_return(true, true, true, false, true, true)
+        allow(chart_data).to receive(:has_chart_data?).and_return(true, true, true, false, true, true)
         GenerateChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
         expect(school.configuration.analysis_charts_as_symbols).to eq electric_only_page_config_no_baseload
       end
@@ -102,7 +102,7 @@ module Schools
       let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, no_meters_with_validated_readings: false) }
 
       it 'returns a single fuel main dashboard if dual fuel fails' do
-        allow(chart_data).to receive(:success?).and_return(true, false, true, false, true, false, false, true, true)
+        allow(chart_data).to receive(:has_chart_data?).and_return(true, false, true, false, true, false, false, true, true)
         GenerateChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
         expect(school.configuration.analysis_charts_as_symbols).to eq dual_fuel_failed_electricity
       end
