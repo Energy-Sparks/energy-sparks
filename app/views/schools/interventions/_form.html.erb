@@ -1,3 +1,9 @@
+<h2>What did you do?</h2>
+<%= f.input :intervention_type_id, label: intervention_type_group.title, required: true, collection: intervention_types, as: :radio_buttons, label_class: 'h2'%>
+<%= f.input :description, as: :text, label: 'Describe what was done' %>
+
+<h3>When did you do it?</h3>
 <%= f.input :at, as: :tempus_dominus_date, label: 'Date', input_html: { class: "form-control form-control-lg", data: { max_date: h(Time.now.httpdate) }} %>
-<%= f.input :intervention_type_id, label: 'Intervention', required: true, collection: intervention_types, as: :radio_buttons %>
-<%= f.input :description, as: :text, label: 'Notes' %>
+
+<h3>Is that correct?</h3>
+<%= f.submit 'Confirm', class: 'btn btn-success' %>

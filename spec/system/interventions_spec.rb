@@ -23,8 +23,8 @@ describe 'adding interventions' do
 
     fill_in 'Date', with: '01/07/2019'
     choose 'Changed boiler'
-    fill_in 'Notes', with: 'We changed to a more efficient boiler'
-    click_on 'Create'
+    fill_in 'Describe what was done', with: 'We changed to a more efficient boiler'
+    click_on 'Confirm'
 
     intervention = school.observations.intervention.first
     expect(intervention.intervention_type).to eq(boiler_intervention)
@@ -35,7 +35,7 @@ describe 'adding interventions' do
     end
 
     fill_in 'Date', with: '20/06/2019'
-    click_on 'Update'
+    click_on 'Confirm'
 
     intervention.reload
     expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
