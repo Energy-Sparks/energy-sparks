@@ -26,7 +26,6 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - bundle exec rails db:create
-  - bundle exec govuk-lint-ruby app lib data-pipeline/handlers 
   - bundle exec bundle-audit check --update
   - yarn
   - bundle exec rails webpacker:compile
