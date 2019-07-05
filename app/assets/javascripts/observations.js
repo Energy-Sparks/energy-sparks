@@ -46,4 +46,12 @@ $(document).ready(function() {
 
   });
 
+  function setConfirmation(){
+    $('#intervention_date_confirmation').html($('#observation_at').val());
+    $('#intervention_type_confirmation').html($('input[name="observation[intervention_type_id]"]:checked').next('label').html());
+  }
+
+  $('form.intervention input').on('change', setConfirmation);
+  $('form.intervention .wizard-button').on('click', setConfirmation);
+
 });

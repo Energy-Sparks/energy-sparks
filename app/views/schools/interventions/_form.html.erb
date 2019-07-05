@@ -14,6 +14,7 @@
 </fieldset>
 
 <fieldset class="wizard-stage" id="confirmation">
+  <p>On <span id="intervention_date_confirmation"></span> you <span id="intervention_type_confirmation"></span></p>
   <h3>Is that correct?</h3>
   <%= link_to 'Back', previous_page, class: 'wizard-button btn btn-secondary d-none', data: {to_stage: 'when_did_you_do_it'}%>
   <%= f.submit 'Confirm', class: 'btn btn-success' %>
