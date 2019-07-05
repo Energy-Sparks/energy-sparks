@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class Schools::AnalysisController < ApplicationController
   before_action :set_school
 
@@ -85,8 +83,8 @@ private
 
     @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
 
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
+    @title = @school.configuration.analysis_charts_as_symbols[action_name.to_sym][:name]
+    @charts = @school.configuration.analysis_charts_as_symbols[action_name.to_sym][:charts]
 
     @number_of_charts = @charts.size
 
