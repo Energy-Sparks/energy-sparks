@@ -10,8 +10,12 @@ body.sub-nav {
 }
 
 div.application.container {
-    padding-top: 30px;
-    padding-bottom: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+div.application.container.extra-padding {
+  padding-top: 50px;
 }
 
 section.home.alerts {
