@@ -42,11 +42,6 @@ module Schools
 
     def keep?(chart_type, chart_config = { y_axis_units: :kwh })
       ChartData.new(@aggregated_meter_collection, chart_type, false, chart_config).success?
-    rescue EnergySparksNotEnoughDataException
-      false
-    rescue => exception
-      Rails.logger.error "Chart generation failed unexpectedly for #{chart_type} and #{@school.name} - #{exception.message}"
-      false
     end
 
     def pages
