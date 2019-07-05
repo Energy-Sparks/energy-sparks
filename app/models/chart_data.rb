@@ -19,10 +19,11 @@ class ChartData
 
   def success?
     ! data.first.series_data.nil?
-  rescue EnergySparksNotEnoughDataException
+  rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false
-  rescue => exception
-    Rails.logger.error "Chart generation failed unexpectedly for #{chart_type} and #{@school.name} - #{exception.message}"
+  rescue => e
+    Rails.logger.error "Chart generation failed unexpectedly for #{chart_type} and #{@school.name} - #{e.message}"
+    Rollbar.error(e)
     false
   end
 
