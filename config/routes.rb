@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   namespace :reports do
     get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
     get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
+    get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
   end
 
   namespace :admin do
