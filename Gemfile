@@ -102,6 +102,7 @@ group :development, :test do
   gem 'webmock'
   gem 'foreman'
   gem 'guard-rspec', require: false
+  gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
   gem 'govuk-lint', '3.10.0'
