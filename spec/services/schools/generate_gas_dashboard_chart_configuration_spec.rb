@@ -26,7 +26,7 @@ module Schools
         allow(ChartData).to receive(:new).and_return(chart_data)
         allow(chart_data).to receive(:has_chart_data?).and_return(false, true)
         GenerateGasDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
-        expect(school.configuration.gas_dashboard_chart_type).to eq 'last_2_weeks_gas'
+        expect(school.configuration.gas_dashboard_chart_type).to eq 'teachers_landing_page_gas_simple'
       end
     end
 
