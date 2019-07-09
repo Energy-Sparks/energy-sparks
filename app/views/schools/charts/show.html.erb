@@ -41,5 +41,5 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 
 <div id="chart_wrapper_1">
   <h3 class="analysis">Loading: <%= @title %></h3>
-  <%= chart_tag(@chart_type.to_s, index: 1, chart_config: {y_axis_units:  @measurement}) %>
+  <%= chart_tag(@school, @chart_type.to_s, index: 1, chart_config: {y_axis_units:  @measurement}) %>
 </div>

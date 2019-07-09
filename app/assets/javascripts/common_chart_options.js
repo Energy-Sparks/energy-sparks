@@ -10,6 +10,15 @@ function commonChartOptions(){
     title: { text: null },
     xAxis: { showEmpty: false },
     yAxis: { showEmpty: false },
+    tooltip: {
+      backgroundColor: null,
+      borderWidth: 0,
+      shadow: false,
+      useHTML: true,
+      style: {
+          padding: 0
+      }
+    },
     legend: {
       align: 'center',
       x: -30,

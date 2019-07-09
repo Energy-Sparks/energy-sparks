@@ -10,4 +10,5 @@ json.charts @output.each do |chart_data_values|
   json.advice_footer      chart_data_values.advice_footer
   json.y2_axis_label      chart_data_values.y2_axis_label
   json.series_data        chart_data_values.series_data
+  json.annotations        chart_data_values.annotations
 end
