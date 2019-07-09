@@ -18,8 +18,8 @@ RSpec.describe "teachers school view", type: :system do
   end
 
   describe 'when the school is gas only I can visit the teacher dashboard and it only shows me a ' do
-    let!(:gas_meter)  { create(:gas_meter, school: school)}
     it 'gas chart' do
+      school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
       visit teachers_school_path(school)
       expect(page.has_content? 'Electricity').to be false
       expect(page.has_content? 'Gas').to be true
@@ -27,9 +27,6 @@ RSpec.describe "teachers school view", type: :system do
   end
 
   describe 'has a loading page which redirects to the right place', js: true do
-
-    let!(:gas_meter)  { create(:gas_meter, school: school)}
-
     before(:each) do
       allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
@@ -39,6 +36,7 @@ RSpec.describe "teachers school view", type: :system do
     context 'with a successful load' do
       before(:each) do
         allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+        school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
       end
       it 'renders a loading page and then back to the dashboard page once complete' do
         visit teachers_school_path(school)

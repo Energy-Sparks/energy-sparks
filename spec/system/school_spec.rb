@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe "school", type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school) { create(:school, name: school_name)}
-  let!(:admin)  { create(:user, role: 'admin')}
-  let!(:ks1) { KeyStage.create(name: 'KS1') }
-  let!(:ks2) { KeyStage.create(name: 'KS2') }
-  let!(:ks3) { KeyStage.create(name: 'KS3') }
+  let!(:school)     { create(:school, name: school_name)}
+  let!(:admin)      { create(:user, role: 'admin')}
+  let!(:ks1)        { KeyStage.create(name: 'KS1') }
+  let!(:ks2)        { KeyStage.create(name: 'KS2') }
+  let!(:ks3)        { KeyStage.create(name: 'KS3') }
 
   it 'shows me a school page' do
     visit root_path
@@ -28,9 +28,8 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with gas meter' do
-      let!(:gas_meter)  { create(:gas_meter, school: school)}
-
       it 'shows me a school page' do
+        school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
         click_on(school_name)
         expect(page.has_content? "Gas").to be true
         expect(page.has_content? "Electricity").to be false
@@ -38,9 +37,9 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with both meters' do
-      let!(:gas_meter)  { create(:gas_meter, school: school)}
       let!(:electricity_meter)  { create(:electricity_meter, school: school)}
       it 'shows me a school page with both meters' do
+        school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
         click_on(school_name)
         expect(page.has_content? school_name).to be true
         expect(page.has_content? "Gas").to be true
