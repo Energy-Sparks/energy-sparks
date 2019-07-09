@@ -10,6 +10,14 @@ module Teachers
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
+      setup_charts
+      setup_dashboard_alert
+      setup_activity_suggestions
+    end
+
+  private
+
+    def setup_charts
       @charts = {}
 
       if @school.meters_for_supply(:electricity).any?
@@ -19,12 +27,7 @@ module Teachers
       if @school.configuration.gas_dashboard_chart_type.to_sym != :no_chart
         @charts[:gas] = @school.configuration.gas_dashboard_chart_type.to_sym
       end
-
-      setup_dashboard_alert
-      setup_activity_suggestions
     end
-
-  private
 
     def setup_dashboard_alert
       @dashboard_alert = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher.sample
