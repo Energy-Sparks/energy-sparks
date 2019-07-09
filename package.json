@@ -9,6 +9,8 @@
     "webpacker": "^4.2.3"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
+    "@fortawesome/fontawesome-pro": "^5.9.0",
     "webpack-dev-server": "^3.3.1"
   }
 }

@@ -108,6 +108,11 @@ module ApplicationHelper
     boolean ? 'bg-success' : 'bg-danger'
   end
 
+  def icon(style, name)
+    content_class = "#{style} fa-#{name}"
+    content_tag(:i, nil, class: content_class )
+  end
+
   def fa_icon(icon_type)
     icon('fas', icon_type)
   end
