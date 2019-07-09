@@ -408,6 +408,7 @@ ActiveRecord::Schema.define(version: 2019_07_09_130552) do
     t.json "analysis_charts", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
