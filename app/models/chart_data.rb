@@ -45,7 +45,7 @@ private
 
   # TODO have this chart configuration set up correctly in analytics
   def teachers_landing_page_gas_simple_config
-   {
+    {
       name:             'Comparison of last 2 weeks gas consumption',
       chart1_type:      :column,
       series_breakdown: :none,
