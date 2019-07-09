@@ -19,12 +19,12 @@ module Schools
   private
 
     def gas_dashboard_chart_type
-      return :no_chart unless @fuel_configuration.has_gas
+      return Schools::Configuration::NO_CHART unless @fuel_configuration.has_gas
       chart_config = { y_axis_units: :kwh }
       working_chart = Schools::Configuration.gas_dashboard_chart_types.keys.reverse.find do |chart_type|
         ChartData.new(@aggregated_meter_collection, chart_type.to_sym, false, chart_config).has_chart_data?
       end
-      working_chart || :no_chart
+      working_chart || Schools::Configuration::NO_CHART
     end
   end
 end

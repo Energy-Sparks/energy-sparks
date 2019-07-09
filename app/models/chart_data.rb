@@ -29,7 +29,7 @@ class ChartData
 private
 
   def customised_chart_config(chart_manager)
-    return teachers_landing_page_gas_simple_config if @chart_type == :teachers_landing_page_gas_simple
+    return teachers_landing_page_gas_simple_config if @chart_type == Schools::Configuration::TEACHERS_GAS_SIMPLE
 
     chart_config = chart_manager.get_chart_config(@chart_type)
     if chart_config.key?(:yaxis_units) && chart_config[:yaxis_units] == :kwh

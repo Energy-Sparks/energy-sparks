@@ -30,7 +30,7 @@
     <div id="chart_wrapper_<%= index %>" class="col-sm">
       <div class="d-flex justify-content-between align-items-center">
         <div class="h3"><b><%= fa_icon fuel_type_icon(fuel_type) %> <%= fuel_type.to_s.capitalize %></b></div>
-        <% if chart_type == :teachers_landing_page_gas %>
+        <% if chart_type == Schools::Configuration::TEACHERS_GAS %>
           <span class="small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
         <% end %>
         <div class="h5 explore">

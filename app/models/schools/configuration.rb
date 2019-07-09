@@ -22,7 +22,11 @@ module Schools
   class Configuration < ApplicationRecord
     belongs_to :school
 
-    enum gas_dashboard_chart_type: [:no_chart, :teachers_landing_page_gas_simple, :teachers_landing_page_gas]
+    NO_CHART = :no_chart
+    TEACHERS_GAS_SIMPLE = :teachers_landing_page_gas_simple
+    TEACHERS_GAS = :teachers_landing_page_gas
+
+    enum gas_dashboard_chart_type: [NO_CHART, TEACHERS_GAS_SIMPLE, TEACHERS_GAS]
 
     def analysis_charts_as_symbols
       configuration = {}

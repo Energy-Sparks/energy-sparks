@@ -18,7 +18,7 @@ module Schools
         allow(ChartData).to receive(:new).and_return(chart_data)
         allow(chart_data).to receive(:has_chart_data?).and_return(true)
         GenerateGasDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
-        expect(school.configuration.gas_dashboard_chart_type).to eq 'teachers_landing_page_gas'
+        expect(school.configuration.gas_dashboard_chart_type).to eq Schools::Configuration::TEACHERS_GAS.to_s
       end
 
       it 'returns the non-temperature compensated one if the temperature one fails' do
@@ -26,7 +26,7 @@ module Schools
         allow(ChartData).to receive(:new).and_return(chart_data)
         allow(chart_data).to receive(:has_chart_data?).and_return(false, true)
         GenerateGasDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
-        expect(school.configuration.gas_dashboard_chart_type).to eq 'teachers_landing_page_gas_simple'
+        expect(school.configuration.gas_dashboard_chart_type).to eq Schools::Configuration::TEACHERS_GAS_SIMPLE.to_s
       end
     end
 
@@ -34,7 +34,7 @@ module Schools
       let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, no_meters_with_validated_readings: false, has_gas: false) }
       it 'has a nil dashboard set' do
         GenerateGasDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
-        expect(school.configuration.gas_dashboard_chart_type).to eq 'no_chart'
+        expect(school.configuration.gas_dashboard_chart_type).to eq Schools::Configuration::NO_CHART.to_s
       end
     end
   end
