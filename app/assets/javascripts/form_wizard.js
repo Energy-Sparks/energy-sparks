@@ -1,5 +1,6 @@
 "use strict"
 $(document).ready(function() {
+
   $('.wizard').each(function(){
     var form = $(this);
     form.find('.wizard-stage').hide();
@@ -14,7 +15,6 @@ $(document).ready(function() {
       }
     });
 
-    // TODO check for errors
     if(form.find('.is-invalid').length){
       form.find('.is-invalid').first().parents('.wizard-stage').show();
     }else{
