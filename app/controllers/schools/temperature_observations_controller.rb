@@ -24,6 +24,7 @@ module Schools
 
     def index
       @locations = @school.locations.order(name: :asc)
+      @observations = @observations.temperature
     end
 
     def destroy

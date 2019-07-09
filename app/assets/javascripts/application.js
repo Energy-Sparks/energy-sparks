@@ -12,6 +12,7 @@
 //= require highcharts
 //= require highcharts-modules/exporting
 //= require highcharts-modules/offline-exporting
+//= require highcharts-modules/annotations
 //= require chartkick
 
 // This is used (handlebars) but slight overkill I think
