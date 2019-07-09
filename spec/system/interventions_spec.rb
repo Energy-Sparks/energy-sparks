@@ -16,8 +16,7 @@ describe 'adding interventions' do
 
     visit teachers_school_path(school)
 
-    click_on 'Interventions'
-    click_on 'New intervention'
+    click_on 'Record an energy saving action'
 
     click_on boiler_intervention.intervention_type_group.title
 
