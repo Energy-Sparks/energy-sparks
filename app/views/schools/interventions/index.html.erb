@@ -1,6 +1,8 @@
 <h1>Your energy saving actions</h1>
 
-<p><%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-primary' %></p>
+<% if can? :create, Observation %>
+  <p><%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-primary' %></p>
+<% end %>
 
 <table class="table table-borderless">
   <% @interventions.group_by{|intervention| [intervention.at.strftime("%Y"), intervention.at.strftime("%B")]}.each do |(year, month), interventions|%>
@@ -19,14 +21,16 @@
             <%= fa_icon("#{intervention.intervention_type.intervention_type_group.icon} fa-2x") %>
           </td>
           <td>
-            <h4><%= intervention.intervention_type.title %></h4>
+            <h4><%= link_to intervention.intervention_type.title, school_intervention_path(@school, intervention)%></h4>
             <%= nice_dates(intervention.at) %>
           </td>
           <td class="text-right">
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
-              <%= link_to 'Delete', school_intervention_path(@school, intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-            </div>
+            <% if can?(:manage, intervention) %>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
+                <%= link_to 'Delete', school_intervention_path(@school, intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              </div>
+            <% end %>
           </td>
         </tr>
       <% end %>

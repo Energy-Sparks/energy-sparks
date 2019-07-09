@@ -1,5 +1,6 @@
 module Schools
   class InterventionsController < ApplicationController
+    skip_before_action :authenticate_user!, only: [:index, :show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
 
@@ -35,6 +36,9 @@ module Schools
     def destroy
       @observation.destroy!
       redirect_to school_interventions_path(@school)
+    end
+
+    def show
     end
 
   private

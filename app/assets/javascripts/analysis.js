@@ -171,7 +171,7 @@ function processAnnotations(loaded_annotations, chart){
         xAxis: 0,
         yAxis: 0,
       },
-      text: '<i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i>',
+      text: '<a href="' + annotation.url + '"><i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
     };
   });
   chart.addAnnotation({
