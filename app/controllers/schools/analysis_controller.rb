@@ -85,12 +85,19 @@ private
 
     @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
 
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-
+    @title = title_and_chart_configuration[:name]
+    @charts = title_and_chart_configuration[:charts]
     @number_of_charts = @charts.size
 
     render :generic_chart_template
+  end
+
+  def title_and_chart_configuration
+    if action_name.to_sym == :test || action_name.to_sym == :heating_model_fitting
+      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym]
+    else
+      @school.configuration.analysis_charts_as_symbols[action_name.to_sym]
+    end
   end
 
   def set_school
