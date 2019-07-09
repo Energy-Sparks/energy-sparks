@@ -26,40 +26,23 @@
 </div>
 <p></p>
 <div class="row teachers">
-  <% if @school.meters_for_supply(:electricity).any? %>
-    <div id="chart_wrapper_0" class="col-sm">
+  <% @charts.each_with_index do |(fuel_type, chart_type), index| %>
+    <div id="chart_wrapper_<%= index %>" class="col-sm">
       <div class="d-flex justify-content-between align-items-center">
-        <div class="h3"><b><%= fa_icon fuel_type_icon(:electricity) %> Electricity</b></div>
+        <div class="h3"><b><%= fa_icon fuel_type_icon(fuel_type) %> <%= fuel_type.to_s.capitalize %></b></div>
+        <% if chart_type == :teachers_landing_page_gas %>
+          <span class="small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
+        <% end %>
         <div class="h5 explore">
           Explore
-          <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
+          <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
           /
-          <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :electricity), title: "See how the school's energy use varies over a day" %>
+          <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
           usage
         </div>
       </div>
 
-      <div id="chart_0" class="analysis-chart" data-no-advice="true" data-no-zoom="true" data-chart-index="0" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_electricity&chart_y_axis_units=kwh' %>"></div>
-    </div>
-  <% end %>
-  <% if @school.meters_for_supply(:gas).any? %>
-    <div id="chart_wrapper_1" class="col-sm">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="h3"><b><%= fa_icon fuel_type_icon(:gas) %> Gas</b></div>
-        <span class="small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
-        <div class="h5 explore">
-          Explore
-          <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a week" %>
-          /
-          <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :gas), title: "See how the school's energy use varies over a day" %>
-          usage
-        </div>
-      </div>
-      <div class="d-flex justify-content-between">
-
-      </div>
-
-      <div id="chart_1" class="analysis-chart" data-no-advice="true" data-no-zoom="true" data-chart-index="1" data-chart-y-axis-units="kwh" data-chart-json="<%= school_chart_path(@school) + '.json?chart_type=teachers_landing_page_gas&chart_y_axis_units=kwh' %>"></div>
+      <div id="chart_<%= index %>" class="analysis-chart" data-no-advice="true" data-no-zoom="true" data-chart-index="<%= index %>" data-chart-y-axis-units="gb_pounds" data-chart-json='<%= school_chart_path(@school) + ".json?chart_type=#{chart_type}&chart_y_axis_units=gb_pounds" %>'></div>
     </div>
   <% end %>
 </div>

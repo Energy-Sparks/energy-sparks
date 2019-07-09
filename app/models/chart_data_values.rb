@@ -83,7 +83,7 @@ private
       data_type = tidy_label(data_type)
       colour = colour_hash[data_type]
 
-      if @chart[:config_name] == :teachers_landing_page_gas
+      if Schools::Configuration.gas_dashboard_chart_types.keys.include?(@chart[:config_name].to_s)
         colour = index == 0 ? '#ffac21' : '#ff4500'
       end
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }

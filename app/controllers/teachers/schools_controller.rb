@@ -10,7 +10,16 @@ module Teachers
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
-      @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
+      @charts = {}
+
+      if @school.meters_for_supply(:electricity).any?
+        @charts[:electricity] = :teachers_landing_page_electricity
+      end
+
+      if @school.configuration.gas_dashboard_chart_type.to_sym != :none
+        @charts[:gas] = @school.configuration.gas_dashboard_chart_type.to_sym
+      end
+
       setup_dashboard_alert
       setup_activity_suggestions
     end
