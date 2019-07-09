@@ -158,6 +158,7 @@ function processAnnotations(loaded_annotations, chart){
     var categoryIndex = xAxisCategories.indexOf(annotation.x_axis_category);
     var date = new Date(annotation.date);
     var point = xAxis.series[0].getValidPoints()[categoryIndex];
+    var date = new Date(annotation.date);
     if(xAxis.series[0].stackKey){
       var y = point.total;
     } else {
@@ -170,7 +171,7 @@ function processAnnotations(loaded_annotations, chart){
         xAxis: 0,
         yAxis: 0,
       },
-      text: '<i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="'+annotation.event+'"></i>',
+      text: '<i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i>',
     };
   });
   chart.addAnnotation({
