@@ -33,4 +33,14 @@ class AmrDataFeedReading < ApplicationRecord
   belongs_to :meter, optional: true
   belongs_to :amr_data_feed_import_log
   belongs_to :amr_data_feed_config
+
+  def self.download_all_data
+    <<~QUERY
+      SELECT s.urn, s.name, m.mpan_mprn, amr.reading_date, amr.readings
+      FROM  amr_data_feed_readings amr, meters m, schools s
+      WHERE amr.meter_id = m.id
+      AND   m.school_id  = s.id
+      ORDER BY s.id, m.mpan_mprn ASC
+    QUERY
+  end
 end
