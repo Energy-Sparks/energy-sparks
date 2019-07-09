@@ -74,3 +74,6 @@ yarn-debug.log*
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore this file as it holds our Font Awesome key
+.npmrc
