@@ -39,6 +39,9 @@ describe 'adding interventions' do
     intervention.reload
     expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
 
+    click_on 'Changed boiler'
+    expect(page).to have_content('We changed to a more efficient boiler')
+
   end
 
   it 'destroys interventions' do
