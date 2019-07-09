@@ -6,7 +6,7 @@ module Schools
     before_action :load_intervention_types, except: [:index, :destroy]
 
     def index
-      @interventions = @observations.intervention.order('at ASC')
+      @interventions = @observations.intervention.order('at DESC')
     end
 
     def new
