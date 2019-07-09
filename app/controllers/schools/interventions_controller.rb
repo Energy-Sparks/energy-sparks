@@ -49,7 +49,7 @@ module Schools
                                  else
                                    InterventionTypeGroup.find(params[:intervention_type_group_id])
                                  end
-      @intervention_types = @intervention_type_group.intervention_types.order('title ASC')
+      @intervention_types = @intervention_type_group.intervention_types.display_order
     end
 
     def observation_params
