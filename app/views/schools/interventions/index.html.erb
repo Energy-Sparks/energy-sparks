@@ -1,0 +1,29 @@
+<h1>Interventions</h1>
+
+<p><%= link_to 'New intervention', new_school_intervention_path(@school), class: 'btn btn-primary' %></p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Type of Event</th>
+      <th>Notes</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @interventions.each do |intervention| %>
+      <tr scope="row">
+        <td><%= nice_dates(intervention.at) %></td>
+        <td><%= intervention.intervention_type.title %></td>
+        <td><%= intervention.description %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
+            <%= link_to 'Delete', school_intervention_path(@school, intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

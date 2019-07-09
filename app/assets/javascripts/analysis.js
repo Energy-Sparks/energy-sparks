@@ -52,6 +52,23 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice, noZoom) {
     pie(chart_data, chart, chartIndex, seriesData, $chartDiv);
   }
 
+  if(chart_data.annotations){
+    var xAxis = chart.xAxis[0];
+    var xAxisCategories = xAxis.categories;
+    $.ajax({
+      type: 'GET',
+      dataType: "json",
+      url: $chartDiv.data('chart-annotations'),
+      data: {
+        date_grouping: chart_data.annotations,
+        x_axis_categories: xAxisCategories
+      },
+      success: function (returnedData) {
+        processAnnotations(returnedData, chart)
+      }
+    });
+  }
+
   $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
 
   // Activate any popovers
@@ -120,6 +137,35 @@ function processAnalysisCharts(){
       });
     });
   }
+}
+
+function processAnnotations(loaded_annotations, chart){
+  var xAxis = chart.xAxis[0];
+  var xAxisCategories = xAxis.categories;
+
+  var annotations = loaded_annotations.map(function(annotation){
+    var categoryIndex = xAxisCategories.indexOf(annotation.x_axis_category);
+    var date = new Date(annotation.date);
+    return {
+      point: {
+        x: categoryIndex,
+        y: xAxis.series[0].getValidPoints()[categoryIndex].total,
+        xAxis: 0,
+        yAxis: 0,
+      },
+      text: '<i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="'+annotation.event+'"></i>',
+    };
+  });
+  chart.addAnnotation({
+    labelOptions:{
+      useHTML: true,
+      style: {
+        fontSize: '15px'
+      }
+    },
+    labels: annotations
+  }, true);
+  $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
 }
 
 $(document).ready(processAnalysisCharts);
