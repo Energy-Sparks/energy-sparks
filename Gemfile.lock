@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 85b622a7fe1217abe4e3ec241f5994446d459d97
-  tag: 0.48.2
+  revision: 0d175c60d0b6da77ee4a05135df52f991e386d6b
+  tag: 0.48.3
   specs:
-    energy-sparks_analytics (0.48.2.pre.fix.pre.for.pre.chart.pre.config.pre.degree.pre.days.pre.asc.pre.alert.pre.too)
+    energy-sparks_analytics (0.48.3.pre.big.pre.decimal.pre.hash.pre.diff.pre.chart.pre.config.pre.chart.pre.failure.pre.degree.pre.days)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
-      hash_diff (~> 1.0.0)
+      hashdiff (~> 0.4.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       mechanize (~> 2.7.6)
@@ -271,7 +271,6 @@ GEM
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
-    hash_diff (1.0.0)
     hashdiff (0.4.0)
     hashie (3.6.0)
     html-table (1.5.2)
@@ -561,6 +560,7 @@ GEM
     structured_warnings (0.3.0)
     sys-uname (1.0.4)
       ffi (>= 1.0.0)
+    terminal-notifier (2.0.0)
     terminal-notifier-guard (1.7.0)
     test-prof (0.9.0)
     text-table (1.2.4)
@@ -683,6 +683,7 @@ DEPENDENCIES
   simple_form
   simplecov
   statsample!
+  terminal-notifier
   terminal-notifier-guard
   test-prof
   trix-rails

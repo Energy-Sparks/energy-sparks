@@ -13,6 +13,10 @@ module ApplicationHelper
     bool ? '' : 'bg-warning'
   end
 
+  def show_sub_nav?(school, hide_subnav)
+    school.present? && school.id && hide_subnav.nil?
+  end
+
   def html_from_markdown(folder, file)
     folder_dir = Rails.root.join('markdown_pages').join(folder.to_s)
     if File.exist? folder_dir

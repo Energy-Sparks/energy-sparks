@@ -69,7 +69,6 @@ FactoryBot.define do
     sub_category      { AlertType.sub_categories.keys.sample }
     frequency         { AlertType.frequencies.keys.sample }
     class_name        { 'Alerts::System::DummyAlert' }
-    show_ratings      { true }
     description       { title }
   end
 end
