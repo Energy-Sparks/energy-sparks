@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class ChartData
   def initialize(aggregated_school, chart_type, show_benchmark_figures, custom_chart_config)
     @aggregated_school = aggregated_school
@@ -13,6 +15,16 @@ class ChartData
     values = ChartDataValues.new(chart_manager.run_chart(chart_config, @chart_type), @chart_type).process
 
     [values]
+  end
+
+  def has_chart_data?
+    ! data.first.series_data.nil?
+  rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
+    false
+  rescue => e
+    Rails.logger.error "Chart generation failed unexpectedly for #{chart_type} and #{@school.name} - #{e.message}"
+    Rollbar.error(e)
+    false
   end
 
 private
