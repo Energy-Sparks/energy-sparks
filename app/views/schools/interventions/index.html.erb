@@ -22,7 +22,7 @@
             <h4><%= intervention.intervention_type.title %></h4>
             <%= nice_dates(intervention.at) %>
           </td>
-          <td>
+          <td class="text-right">
             <div class="btn-group">
               <%= link_to 'Edit', edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
               <%= link_to 'Delete', school_intervention_path(@school, intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
