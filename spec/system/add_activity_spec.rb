@@ -31,8 +31,9 @@ describe 'adding a new activity' do
   it 'allows an activity to be created with custom title', js: true do
     select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
-    editor = find('trix-editor')
-    editor.click.set(activity_description)
+
+    fill_in_trix with: activity_description, js: true
+
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully created.')).to be true
     expect(page.has_content?(activity_description)).to be true

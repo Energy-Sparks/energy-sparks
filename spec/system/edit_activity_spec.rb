@@ -37,8 +37,7 @@ describe 'editing an activity' do
     expect(page.has_content?('Update your activity'))
     select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
-    editor = find('trix-editor')
-    editor.click.set(new_activity_description)
+    fill_in_trix with: new_activity_description, js: true
 
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully updated.')).to be true
