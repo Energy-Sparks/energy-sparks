@@ -20,7 +20,7 @@ describe 'adding interventions' do
 
     click_on boiler_intervention.intervention_type_group.title
 
-    fill_in 'Date', with: '01/07/2019'
+    fill_in 'Start date', with: '01/07/2019'
     choose 'Changed boiler'
     fill_in 'Describe what was done', with: 'We changed to a more efficient boiler'
     click_on 'Confirm'
