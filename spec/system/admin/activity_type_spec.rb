@@ -33,7 +33,7 @@ RSpec.describe "activity type", type: :system do
 
     it 'can add a new activity for KS1 with filters' do
       fill_in('Name', with: 'New activity')
-      first('input#activity_type_description_trix_input_activity_type', visible: false).set("the description")
+      fill_in_trix with: "the description"
       fill_in('Score', with: 20)
       fill_in('Badge name', with: 'Badddddger')
 
@@ -59,7 +59,7 @@ RSpec.describe "activity type", type: :system do
 
     it 'can does not crash if you forget the score' do
       fill_in('Name', with: 'New activity')
-      first('input#activity_type_description_trix_input_activity_type', visible: false).set("the description")
+      fill_in_trix with: "the description"
       fill_in('Badge name', with: 'Badddddger')
 
       check('KS1')
