@@ -119,3 +119,30 @@
     </ul>
   </div>
 </div>
+
+
+<div class="row mt-4 mb-3">
+  <div class="col">
+    <h2>Have your energy saving actions made a difference?</h2>
+    <ul class="nav nav-pills nav-fill mt-3">
+      <% if @school.configuration %>
+        <% if @school.configuration.can_show_analysis_chart?(:electricity_detail, :group_by_week_electricity) %>
+          <li class="nav-item mr-2 ml-2 mb-2">
+            <%= link_to 'Look at your electricity data', school_electricity_detail_path(@school, anchor: 'chart_wrapper_group_by_week_electricity'), class: 'nav-link btn btn-info' %>
+          </li>
+        <% end %>
+        <% if @school.configuration.can_show_analysis_chart?(:gas_detail, :group_by_week_gas) %>
+          <li class="nav-item mr-2 ml-2 mb-2">
+            <%= link_to 'Look at your gas data', school_gas_detail_path(@school, anchor: 'chart_wrapper_group_by_week_gas'), class: 'nav-link btn btn-info' %>
+          </li>
+        <% end %>
+      <% end %>
+      <li class="nav-item mr-2 ml-2 mb-2">
+        <%= link_to 'See your record of actions', school_interventions_path(@school), class: 'nav-link btn btn-info' %>
+      </li>
+      <li class="nav-item mr-2 ml-2 mb-2">
+        <%= link_to 'See your activity log', school_activities_path(@school), class: 'nav-link btn btn-info' %>
+      </li>
+    </ul>
+  </div>
+</div>

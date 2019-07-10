@@ -19,5 +19,15 @@ module Schools
         expect(configuration.analysis_charts_as_symbols).to eq page_config
       end
     end
+
+    describe '#can_show_analysis_chart?' do
+      it 'returns true if the chart is configured' do
+        configuration = Configuration.create(school: school, analysis_charts: page_config)
+
+        expect(configuration.can_show_analysis_chart?(:main_dashboard_electric, :benchmark)).to eq(true)
+        expect(configuration.can_show_analysis_chart?(:main_dashboard_electric, :other)).to eq(false)
+        expect(configuration.can_show_analysis_chart?(:main_dashboard_gas, :benchmark)).to eq(false)
+      end
+    end
   end
 end
