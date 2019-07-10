@@ -47,7 +47,6 @@ gem 'bootstrap-email'
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'redcarpet' # Use redcarpet to convert markdown
-gem 'font-awesome-sass', '~> 5.6.1' # For icons
 gem 'simple_form'
 # Highcharts now included directly
 
