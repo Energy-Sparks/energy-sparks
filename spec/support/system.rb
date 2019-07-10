@@ -38,6 +38,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
+    @supports_js = true
 
     driven_by :headless_chrome
     # driven_by :headless_firefox

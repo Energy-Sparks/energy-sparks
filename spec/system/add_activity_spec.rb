@@ -32,7 +32,7 @@ describe 'adding a new activity' do
     select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
 
-    fill_in_trix with: activity_description, js: true
+    fill_in_trix with: activity_description
 
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully created.')).to be true

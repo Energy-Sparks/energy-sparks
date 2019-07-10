@@ -1,6 +1,6 @@
 module EnergySparksFormHelpers
-  def fill_in_trix(identifier = 'trix-editor', with:, js: false)
-    if js
+  def fill_in_trix(identifier = 'trix-editor', with:)
+    if @supports_js
       editor = first(identifier)
       editor.click.set(with)
     else

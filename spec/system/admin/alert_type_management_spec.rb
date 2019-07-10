@@ -114,7 +114,7 @@ RSpec.describe 'alert type management', type: :system do
           choose 'chart description B'
           fill_in 'Chart title', with: 'This is a chart'
 
-          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.', js: true
+          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
           click_on 'Preview'
 
@@ -138,7 +138,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'Email title', with: 'Gas usage'
 
         within '.email_active' do
-          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.', js: true
+          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
           click_on 'Preview'
 
