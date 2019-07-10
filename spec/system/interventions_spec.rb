@@ -33,7 +33,7 @@ describe 'adding interventions' do
       click_on 'Edit'
     end
 
-    fill_in 'Date', with: '20/06/2019'
+    fill_in 'Start date', with: '20/06/2019'
     click_on 'Confirm'
 
     intervention.reload
