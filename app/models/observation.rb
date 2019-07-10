@@ -33,12 +33,12 @@ class Observation < ApplicationRecord
   validate :at_date_cannot_be_in_the_future
   validates_associated :temperature_recordings
 
-  validates :intervention_type, presence: true, if: :intervention?
+  validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings_and_locations
 
   def at_date_cannot_be_in_the_future
-    errors.add(:at, "Can't be in the future") if at.present? && at > Time.zone.today.end_of_day
+    errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
   end
 
 private

@@ -86,7 +86,7 @@ private
       data_type = tidy_label(data_type)
       colour = colour_hash[data_type]
 
-      if @chart[:config_name] == :teachers_landing_page_gas
+      if Schools::Configuration.gas_dashboard_chart_types.key?(@chart[:config_name].to_s)
         colour = index == 0 ? '#ffac21' : '#ff4500'
       end
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
@@ -186,6 +186,7 @@ private
   def annotations_configuration
     case @chart_type
     when :group_by_week_electricity, :group_by_week_gas, :electricity_co2_last_year_weekly_with_co2_intensity then :weekly
+    when :baseload_lastyear then :daily
     end
   end
 end

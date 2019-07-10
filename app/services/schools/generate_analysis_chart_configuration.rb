@@ -1,7 +1,7 @@
 require 'dashboard'
 
 module Schools
-  class GenerateChartConfiguration
+  class GenerateAnalysisChartConfiguration
     def initialize(
         school,
         aggregated_meter_collection,
