@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_10_120437) do
+ActiveRecord::Schema.define(version: 2019_07_10_153319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -631,6 +631,30 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
+  create_table "programme_type_activity_types", force: :cascade do |t|
+    t.bigint "programme_type_id", null: false
+    t.bigint "activity_type_id", null: false
+    t.integer "position", default: 0, null: false
+    t.index ["programme_type_id", "activity_type_id"], name: "programme_type_activity_type_uniq", unique: true
+  end
+
+  create_table "programme_types", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.boolean "active", default: false
+  end
+
+  create_table "programmes", force: :cascade do |t|
+    t.bigint "programme_type_id"
+    t.bigint "school_id"
+    t.integer "status", default: 0, null: false
+    t.date "started_on"
+    t.date "ended_on"
+    t.text "title"
+    t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
+    t.index ["school_id"], name: "index_programmes_on_school_id"
+  end
+
   create_table "sashes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -870,6 +894,8 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
+  add_foreign_key "programmes", "programme_types", on_delete: :cascade
+  add_foreign_key "programmes", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
