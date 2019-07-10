@@ -47,7 +47,7 @@ module Schools
     end
 
     def is_school_dual_fuel?
-      has_gas? &&  has_electricity?
+      has_gas? && has_electricity?
     end
 
     def dual_fuel_fuel_type
