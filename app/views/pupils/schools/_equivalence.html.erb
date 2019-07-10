@@ -5,7 +5,9 @@
   <div class="col-md-11">
     <div class="row">
       <hgroup class="speech">
-        <h3><%= equivalence_content.equivalence %></h3>
+        <div class="trix-content">
+          <%= sanitize equivalence_content.equivalence %>
+        </div>
       </hgroup>
     </div>
   </div>

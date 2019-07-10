@@ -54,6 +54,7 @@ class Ability
       can :show, Scoreboard
       can :manage, SchoolOnboarding, created_user_id: nil
       can :read, FindOutMore
+      can :read, Observation
     elsif user.school_onboarding?
       can :manage, SchoolOnboarding do |onboarding|
         onboarding.created_user == user

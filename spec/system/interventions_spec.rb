@@ -16,13 +16,14 @@ describe 'adding interventions' do
 
     visit teachers_school_path(school)
 
-    click_on 'Interventions'
-    click_on 'New intervention'
+    click_on 'Record an energy saving action'
+
+    click_on boiler_intervention.intervention_type_group.title
 
     fill_in 'Date', with: '01/07/2019'
-    select 'Changed boiler', from: 'Intervention'
-    fill_in 'Notes', with: 'We changed to a more efficient boiler'
-    click_on 'Create intervention'
+    choose 'Changed boiler'
+    fill_in 'Describe what was done', with: 'We changed to a more efficient boiler'
+    click_on 'Confirm'
 
     intervention = school.observations.intervention.first
     expect(intervention.intervention_type).to eq(boiler_intervention)
@@ -33,10 +34,13 @@ describe 'adding interventions' do
     end
 
     fill_in 'Date', with: '20/06/2019'
-    click_on 'Update intervention'
+    click_on 'Confirm'
 
     intervention.reload
     expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
+
+    click_on 'Changed boiler'
+    expect(page).to have_content('We changed to a more efficient boiler')
 
   end
 
