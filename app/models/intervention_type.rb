@@ -4,6 +4,7 @@
 #
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
+#  other                      :boolean          default(FALSE)
 #  title                      :string           not null
 #
 # Indexes
@@ -20,5 +21,7 @@ class InterventionType < ApplicationRecord
   has_many :observations
 
   validates :intervention_type_group, :title, presence: true
-  validates :title, uniqueness: true
+  validates :title, uniqueness: { scope: :intervention_type_group_id }
+
+  scope :display_order, -> { order(:other, :title) }
 end

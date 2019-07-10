@@ -9,3 +9,8 @@ div.invalid-tooltip.temperature-tooltip {
   left: 130px;
   top: -80px;
 }
+
+.highcharts-annotation a, .highcharts-annotation a:hover{
+  color: inherit;
+  text-decoration: inherit;
+}

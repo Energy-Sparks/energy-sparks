@@ -23,5 +23,23 @@ module Charts
         }
       end
     end
+
+    def annotate_daily(x_axis_start, x_axis_end)
+      return if x_axis_start.blank? || x_axis_end.blank?
+      first_date = Date.parse(x_axis_start)
+      last_date = Date.parse(x_axis_end)
+
+      relevant_interventions = @interventions_scope.where('at BETWEEN ? AND ?', first_date, last_date)
+
+      relevant_interventions.map do |intervention|
+        {
+          id: intervention.id,
+          event: intervention.intervention_type.title,
+          date: intervention.at.to_date,
+          x_axis_category: intervention.at.strftime('%Y-%m-%d'),
+          icon: intervention.intervention_type.intervention_type_group.icon
+        }
+      end
+    end
   end
 end
