@@ -75,5 +75,5 @@ yarn-debug.log*
 yarn-debug.log*
 .yarn-integrity
 
-# Ignore this file as it holds our Font Awesome key
+# Ignore FontAwesome credentials
 .npmrc
