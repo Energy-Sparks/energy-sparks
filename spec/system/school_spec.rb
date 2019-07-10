@@ -37,9 +37,8 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'school with both meters' do
-      let!(:electricity_meter)  { create(:electricity_meter, school: school)}
       it 'shows me a school page with both meters' do
-        school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
+        school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE, electricity: true)
         click_on(school_name)
         expect(page.has_content? school_name).to be true
         expect(page.has_content? "Gas").to be true

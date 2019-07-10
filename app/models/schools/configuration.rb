@@ -4,6 +4,8 @@
 #
 #  analysis_charts          :json             not null
 #  created_at               :datetime         not null
+#  electricity              :boolean          default(FALSE), not null
+#  gas                      :boolean          default(FALSE), not null
 #  gas_dashboard_chart_type :integer          default("no_chart"), not null
 #  id                       :bigint(8)        not null, primary key
 #  school_id                :bigint(8)        not null

@@ -62,8 +62,8 @@ RSpec.describe "teachers school view", type: :system do
   end
 
   describe 'when the school is electricity only I can visit the teacher dashboard and it only shows me a ' do
-    let!(:electricity_meter)  { create(:electricity_meter, school: school)}
     it 'electricity chart' do
+      school.configuration.update(electricity: true)
       visit teachers_school_path(school)
       expect(page.has_content? 'Electricity').to be true
       expect(page.has_content? 'Gas').to be false

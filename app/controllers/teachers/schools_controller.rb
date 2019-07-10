@@ -20,7 +20,7 @@ module Teachers
     def setup_charts
       @charts = {}
 
-      if @school.meters_for_supply(:electricity).any?
+      if @school.configuration.electricity
         @charts[:electricity] = :teachers_landing_page_electricity
       end
 

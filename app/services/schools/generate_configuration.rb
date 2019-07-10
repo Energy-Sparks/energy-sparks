@@ -6,9 +6,9 @@ module Schools
     end
 
     def generate
-      Schools::Configuration.create(school: @school) unless @school.configuration
+      configuration = Schools::Configuration.where(school: @school).first_or_create
 
-      fuel_configuration = GenerateFuelConfiguration.new(@school).generate
+      fuel_configuration = GenerateFuelConfiguration.new(@school, configuration).generate
       GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
       GenerateGasDashboardChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
     end
