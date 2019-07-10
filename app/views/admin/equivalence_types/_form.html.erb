@@ -11,6 +11,6 @@
   <%= form.input :time_period, collection: EquivalenceType.time_periods.keys %>
 
   <%= form.simple_fields_for :content, content do |content| %>
-    <%= content.input :equivalence %>
+    <%= content.input :equivalence, as: :trix_editor %>
   <% end %>
 <% end %>

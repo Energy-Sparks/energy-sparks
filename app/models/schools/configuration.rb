@@ -2,11 +2,14 @@
 #
 # Table name: configurations
 #
-#  analysis_charts :json             not null
-#  created_at      :datetime         not null
-#  id              :bigint(8)        not null, primary key
-#  school_id       :bigint(8)        not null
-#  updated_at      :datetime         not null
+#  analysis_charts          :json             not null
+#  created_at               :datetime         not null
+#  electricity              :boolean          default(FALSE), not null
+#  gas                      :boolean          default(FALSE), not null
+#  gas_dashboard_chart_type :integer          default("no_chart"), not null
+#  id                       :bigint(8)        not null, primary key
+#  school_id                :bigint(8)        not null
+#  updated_at               :datetime         not null
 #
 # Indexes
 #
@@ -20,6 +23,12 @@
 module Schools
   class Configuration < ApplicationRecord
     belongs_to :school
+
+    NO_CHART = :no_chart
+    TEACHERS_GAS_SIMPLE = :teachers_landing_page_gas_simple
+    TEACHERS_GAS = :teachers_landing_page_gas
+
+    enum gas_dashboard_chart_type: [NO_CHART, TEACHERS_GAS_SIMPLE, TEACHERS_GAS]
 
     def analysis_charts_as_symbols
       configuration = {}

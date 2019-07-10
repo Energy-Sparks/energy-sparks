@@ -1,19 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe 'alert type management', type: :system do
+RSpec.describe 'equivalence type management', type: :system do
 
   let!(:admin)  { create(:user, role: 'admin')}
 
   before do
     sign_in(admin)
     visit root_path
-    click_on 'Equivalence Types'
   end
 
   it 'allows the creation and editing of equivalences' do
+    click_on 'Manage'
+    click_on 'Equivalence Types'
     click_on 'New equivalence type'
 
-    fill_in 'Equivalence', with: 'Your school used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
+    fill_in_trix with: 'Your school used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
 
     select 'last_month', from: 'Time period'
     select 'electric', from: 'Meter type'
@@ -28,7 +29,7 @@ RSpec.describe 'alert type management', type: :system do
 
     click_on 'Edit'
 
-    fill_in 'Equivalence', with: 'You used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
+    fill_in_trix with: 'You used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
     click_on 'Update equivalence type'
 
     expect(equivalence_type.content_versions.count).to eq(2)

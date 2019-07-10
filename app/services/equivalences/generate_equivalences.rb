@@ -15,7 +15,7 @@ module Equivalences
             equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
             equivalence.save!
           rescue Calculator::CalculationError => e
-            puts "#{e.message} for #{@school.name}"
+            Rails.logger.debug("#{e.message} for #{@school.name}")
           end
         end
       end

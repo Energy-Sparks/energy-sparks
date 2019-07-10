@@ -27,7 +27,7 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       visit admin_calendar_areas_path
       click_on 'New Calendar area'
       click_on 'Create Calendar area'
-      expect(page).to have_content("Title can't be blank")
+      expect(page).to have_content("can't be blank")
 
       fill_in 'Title', with: 'Oxfordshire'
       fill_in 'Terms CSV', with: events
@@ -44,7 +44,7 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
 
       fill_in 'Title', with: ''
       click_on 'Update Calendar area'
-      expect(page).to have_content("Title can't be blank")
+      expect(page).to have_content("can't be blank")
 
       fill_in 'Title', with: 'B & NES'
       click_on 'Update Calendar area'

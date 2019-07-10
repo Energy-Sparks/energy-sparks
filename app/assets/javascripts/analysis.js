@@ -52,6 +52,34 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice, noZoom) {
     pie(chart_data, chart, chartIndex, seriesData, $chartDiv);
   }
 
+  if(chart_data.annotations){
+    var xAxis = chart.xAxis[0];
+
+    var xAxisCategories = xAxis.categories;
+    if(chart_data.annotations == 'weekly'){
+      var data = {
+        date_grouping: chart_data.annotations,
+        x_axis_categories: xAxisCategories
+      };
+    } else {
+      var data = {
+        date_grouping: chart_data.annotations,
+        x_axis_start: xAxisCategories[0],
+        x_axis_end: xAxisCategories.slice(-1)[0]
+      };
+    }
+
+    $.ajax({
+      type: 'GET',
+      dataType: "json",
+      url: $chartDiv.data('chart-annotations'),
+      data: data,
+      success: function (returnedData) {
+        processAnnotations(returnedData, chart)
+      }
+    });
+  }
+
   $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
 
   // Activate any popovers
@@ -120,6 +148,42 @@ function processAnalysisCharts(){
       });
     });
   }
+}
+
+function processAnnotations(loaded_annotations, chart){
+  var xAxis = chart.xAxis[0];
+  var xAxisCategories = xAxis.categories;
+
+  var annotations = loaded_annotations.map(function(annotation){
+    var categoryIndex = xAxisCategories.indexOf(annotation.x_axis_category);
+    var date = new Date(annotation.date);
+    var point = xAxis.series[0].getValidPoints()[categoryIndex];
+    var date = new Date(annotation.date);
+    if(xAxis.series[0].stackKey){
+      var y = point.total;
+    } else {
+      var y = point.y;
+    }
+    return {
+      point: {
+        x: categoryIndex,
+        y: y,
+        xAxis: 0,
+        yAxis: 0,
+      },
+      text: '<a href="' + annotation.url + '"><i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
+    };
+  });
+  chart.addAnnotation({
+    labelOptions:{
+      useHTML: true,
+      style: {
+        fontSize: '15px'
+      }
+    },
+    labels: annotations
+  }, true);
+  $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
 }
 
 $(document).ready(processAnalysisCharts);

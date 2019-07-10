@@ -19,7 +19,7 @@
   <tbody>
     <% @equivalence_types.each do |equivalence_type| %>
       <tr>
-        <td><%= equivalence_type.current_content.equivalence %></td>
+        <td><%= strip_tags equivalence_type.current_content.equivalence %></td>
         <td><%= equivalence_type.meter_type %></td>
         <td><%= equivalence_type.time_period %></td>
         <td><%= link_to 'Edit', edit_admin_equivalence_type_path(equivalence_type), class: 'btn btn-primary btn-sm' %></td>

@@ -114,8 +114,7 @@ RSpec.describe 'alert type management', type: :system do
           choose 'chart description B'
           fill_in 'Chart title', with: 'This is a chart'
 
-          editor = find('trix-editor')
-          editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
           click_on 'Preview'
 
@@ -139,8 +138,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'Email title', with: 'Gas usage'
 
         within '.email_active' do
-          editor = find('trix-editor')
-          editor.click.set('You are using {{gas_percentage}} too much gas! You need to do something about it.')
+          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
           click_on 'Preview'
 

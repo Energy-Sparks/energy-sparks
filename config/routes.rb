@@ -43,7 +43,11 @@ Rails.application.routes.draw do
   resources :schools do
     resources :activities
 
+
     scope module: :schools do
+
+      resource :action, only: [:new]
+
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
@@ -72,8 +76,11 @@ Rails.application.routes.draw do
 
       resources :find_out_more, controller: :find_out_more
 
+      resources :interventions
+
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'charts#show'
+      get :annotations, to: 'annotations#show'
       get :analysis, to: 'analysis#analysis'
       get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
       get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
