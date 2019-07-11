@@ -18,7 +18,7 @@ RSpec.describe ActivitiesController, type: :controller do
   }
 
   let(:invalid_attributes) {
-    { school_id: nil }
+    { happened_on: nil }
   }
 
   describe "GET #index" do
