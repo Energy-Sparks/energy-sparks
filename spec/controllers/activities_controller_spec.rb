@@ -124,11 +124,6 @@ RSpec.describe ActivitiesController, type: :controller do
         expect(school.points).to eql(activity_type.score)
       end
 
-      it 'adds badges' do
-        school.reload
-        expect( school.badges.first.name ).to eql('beginner')
-      end
-
     end
   end
 

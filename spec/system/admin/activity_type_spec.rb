@@ -35,7 +35,6 @@ RSpec.describe "activity type", type: :system do
       fill_in('Name', with: 'New activity')
       fill_in_trix with: "the description"
       fill_in('Score', with: 20)
-      fill_in('Badge name', with: 'Badddddger')
 
       check('KS1')
       check('Science')
@@ -60,13 +59,11 @@ RSpec.describe "activity type", type: :system do
     it 'can does not crash if you forget the score' do
       fill_in('Name', with: 'New activity')
       fill_in_trix with: "the description"
-      fill_in('Badge name', with: 'Badddddger')
 
       check('KS1')
 
       click_on('Create Activity type')
 
-      expect(page.has_content?('Badddddger'))
       expect(page.has_content?("Score can't be blank"))
 
       expect(page.has_content?("Activity type was successfully created.")).to_not be true

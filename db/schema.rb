@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_10_120437) do
+ActiveRecord::Schema.define(version: 2019_07_11_081420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "activity_category_id"
+    t.integer "points", default: 0
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
@@ -71,7 +72,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
-    t.string "badge_name"
   end
 
   create_table "activity_timings", force: :cascade do |t|
@@ -134,7 +134,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.datetime "updated_at", null: false
     t.bigint "activity_category_id"
     t.integer "score"
-    t.string "badge_name"
     t.boolean "repeatable", default: true
     t.boolean "data_driven", default: false
     t.boolean "custom", default: false
@@ -338,16 +337,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.bigint "data_feed_id"
     t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
     t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
-  end
-
-  create_table "badges_sashes", force: :cascade do |t|
-    t.bigint "badge_id"
-    t.bigint "sash_id"
-    t.boolean "notified_user", default: false
-    t.datetime "created_at"
-    t.index ["badge_id", "sash_id"], name: "index_badges_sashes_on_badge_id_and_sash_id"
-    t.index ["badge_id"], name: "index_badges_sashes_on_badge_id"
-    t.index ["sash_id"], name: "index_badges_sashes_on_sash_id"
   end
 
   create_table "bank_holidays", force: :cascade do |t|
@@ -568,43 +557,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.index ["school_id"], name: "index_locations_on_school_id"
   end
 
-  create_table "merit_actions", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "action_method"
-    t.integer "action_value"
-    t.boolean "had_errors", default: false
-    t.string "target_model"
-    t.bigint "target_id"
-    t.text "target_data"
-    t.boolean "processed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_merit_actions_on_user_id"
-  end
-
-  create_table "merit_activity_logs", force: :cascade do |t|
-    t.bigint "action_id"
-    t.string "related_change_type"
-    t.bigint "related_change_id"
-    t.string "description"
-    t.datetime "created_at"
-    t.index ["related_change_id", "related_change_type"], name: "merit_activity_logs_for_related_changes"
-  end
-
-  create_table "merit_score_points", force: :cascade do |t|
-    t.bigint "score_id"
-    t.integer "num_points", default: 0
-    t.string "log"
-    t.datetime "created_at"
-    t.index ["score_id"], name: "index_merit_score_points_on_score_id"
-  end
-
-  create_table "merit_scores", force: :cascade do |t|
-    t.bigint "sash_id"
-    t.string "category", default: "default"
-    t.index ["sash_id"], name: "index_merit_scores_on_sash_id"
-  end
-
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "meter_type"
@@ -629,11 +581,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.bigint "intervention_type_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
-  end
-
-  create_table "sashes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "school_groups", force: :cascade do |t|
@@ -711,7 +658,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: false
     t.integer "urn", null: false
-    t.bigint "sash_id"
     t.integer "level", default: 0
     t.bigint "calendar_id"
     t.string "slug"
@@ -726,7 +672,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_120437) do
     t.bigint "school_group_id"
     t.bigint "dark_sky_area_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
-    t.index ["sash_id"], name: "index_schools_on_sash_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
   end
