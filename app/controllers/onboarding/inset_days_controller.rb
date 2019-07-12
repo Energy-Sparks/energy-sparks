@@ -47,7 +47,6 @@ module Onboarding
     def complete_event_details(event)
       if event.start_date
         event.end_date = event.start_date
-        event.academic_year = AcademicYear.for_date(event.start_date)
       end
     end
 

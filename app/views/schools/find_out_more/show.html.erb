@@ -1,15 +1,15 @@
-<% content_for :page_title, @content.page_title %>
+<% content_for :page_title, @content.find_out_more_title %>
 
-<h1><%= @content.page_title %></h1>
+<h1><%= @content.find_out_more_title %></h1>
 
 <div class="row justify-content-md-center align-items-center">
   <% if @tables.empty? %>
     <div class="col col-lg-10">
-      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart if @chart %>
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content if @chart %>
     </div>
   <% else %>
     <div class="col col-lg-6">
-      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart if @chart %>
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content if @chart %>
     </div>
     <div class="col-md-auto">
       <% @tables.each do |table| %>
@@ -38,7 +38,7 @@
 <div class="row">
   <div class="col-md-7">
     <div class="trix-content">
-      <%= sanitize @content.page_content %>
+      <%= sanitize @content.find_out_more_content %>
     </div>
   </div>
   <div class="col-md-5">

@@ -2,16 +2,18 @@
 #
 # Table name: alert_type_ratings
 #
-#  alert_type_id        :bigint(8)        not null
-#  created_at           :datetime         not null
-#  description          :string           not null
-#  email_active         :boolean          default(FALSE)
-#  find_out_more_active :boolean          default(FALSE)
-#  id                   :bigint(8)        not null, primary key
-#  rating_from          :decimal(, )      not null
-#  rating_to            :decimal(, )      not null
-#  sms_active           :boolean          default(FALSE)
-#  updated_at           :datetime         not null
+#  alert_type_id                  :bigint(8)        not null
+#  created_at                     :datetime         not null
+#  description                    :string           not null
+#  email_active                   :boolean          default(FALSE)
+#  find_out_more_active           :boolean          default(FALSE)
+#  id                             :bigint(8)        not null, primary key
+#  pupil_dashboard_alert_active   :boolean          default(FALSE)
+#  rating_from                    :decimal(, )      not null
+#  rating_to                      :decimal(, )      not null
+#  sms_active                     :boolean          default(FALSE)
+#  teacher_dashboard_alert_active :boolean          default(FALSE)
+#  updated_at                     :datetime         not null
 #
 # Indexes
 #
@@ -25,6 +27,8 @@
 class AlertTypeRating < ApplicationRecord
   belongs_to :alert_type
   has_many :content_versions, class_name: 'AlertTypeRatingContentVersion'
+  has_many :alert_type_rating_activity_types
+  has_many :activity_types, through: :alert_type_rating_activity_types
 
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
 
@@ -32,6 +36,8 @@ class AlertTypeRating < ApplicationRecord
   validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
 
   validate :ratings_not_out_of_order
+
+  accepts_nested_attributes_for :alert_type_rating_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
   def current_content
     content_versions.latest.first
@@ -46,6 +52,17 @@ class AlertTypeRating < ApplicationRecord
     else
       false
     end
+  end
+
+  def update_activity_type_positions!(position_attributes)
+    transaction do
+      alert_type_rating_activity_types.destroy_all
+      update!(alert_type_rating_activity_types_attributes: position_attributes)
+    end
+  end
+
+  def ordered_activity_types
+    activity_types.order('alert_type_rating_activity_types.position').group('activity_types.id, alert_type_rating_activity_types.position')
   end
 
 

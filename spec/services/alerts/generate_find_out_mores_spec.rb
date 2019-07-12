@@ -3,7 +3,8 @@ require 'rails_helper'
 describe Alerts::GenerateFindOutMores do
 
   let(:school)  { create(:school) }
-  let(:service) { Alerts::GenerateFindOutMores.new(school) }
+  let(:content_generation_run){ create(:content_generation_run, school: school) }
+  let(:service) { Alerts::GenerateFindOutMores.new(school, content_generation_run: content_generation_run) }
 
   context 'no alerts' do
     it 'does nothing, no find out mores created' do
@@ -29,18 +30,10 @@ describe Alerts::GenerateFindOutMores do
 
     context 'where the rating matches the range' do
 
-      it 'creates a parent calculation record' do
-        service.perform
-        expect(FindOutMoreCalculation.count).to be 1
-        calculation = FindOutMoreCalculation.first
-        expect(calculation.find_out_mores.size).to eq(1)
-        expect(calculation.school).to eq(school)
-      end
-
       it 'creates a find out more pairing the alert and the content' do
         service.perform
         expect(FindOutMore.count).to be 1
-        find_out_more = FindOutMore.first
+        find_out_more = content_generation_run.find_out_mores.first
         expect(find_out_more.alert).to eq(alert)
         expect(find_out_more.content_version).to eq(find_out_more_content_version)
       end
@@ -49,7 +42,7 @@ describe Alerts::GenerateFindOutMores do
         let(:active){ false }
         it 'does not include the alert' do
           service.perform
-          expect(FindOutMore.count).to be 0
+          expect(content_generation_run.find_out_mores.count).to be 0
         end
       end
 

@@ -1,13 +1,19 @@
 FactoryBot.define do
   factory :school do
     sequence(:urn)
+    sequence(:number_of_pupils)
     sequence(:name) { |n| "test #{n} school" }
     school_type     { :primary }
     active          { true }
     address         { '1 Station Road' }
     postcode        { 'ab1 2cd' }
+    floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
     sash
+
+    after(:build) do |school, _evaluator|
+      build(:configuration, school: school)
+    end
 
     factory :school_with_same_name do
       name { "test school"}

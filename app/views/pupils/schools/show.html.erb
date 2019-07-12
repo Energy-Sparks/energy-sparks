@@ -1,41 +1,105 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
-<div class="row padded-row">
-  <div class="col-md-1">
-    <%= image_tag("lightbulb.png", class: "pupil-dashboard") %>
-  </div>
-  <div class="col-md-11">
-    <div class="row">
-      <hgroup class="speech">
-        <h3><%= @message %></h3>
-      </hgroup>
+<% if @equivalences_content.present? %>
+  <div id="equivalencesCarousel" class="carousel slide" data-interval="false">
+    <% if @equivalences_content.size > 1 %>
+      <div class="row justify-content-end">
+        <a href="#equivalencesCarousel" role="button" data-slide="prev" class="h3">
+          &lt;
+          <span class="sr-only">Previous</span>
+        </a>
+        <a  href="#equivalencesCarousel" role="button" data-slide="next" class="h3">
+          &gt;
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    <% end %>
+    <div class="carousel-inner">
+      <% @equivalences_content.each_with_index do |equivalence_content, index|  %>
+        <div class="carousel-item <%= 'active' if index == 0 %>">
+          <%= render 'equivalence', equivalence_content: equivalence_content %>
+        </div>
+      <% end %>
     </div>
   </div>
+<% end %>
+
+<div class="row justify-content-center mb-3">
+  <% if @school.meters_for_supply(:electricity).any? %>
+    <div class="col-md-3 text-center btn btn-dark m-2">
+      <h1><%= fa_icon fuel_type_icon(:electricity) %></h1>
+      <h2>Electricity</h2>
+      <div class="h5 explore">
+        Explore
+        <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
+        /
+        <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :electricity), title: "See how the school's energy use varies over a day" %>
+        usage
+      </div>
+    </div>
+  <% end %>
+  <% if @school.meters_for_supply(:gas).any? %>
+    <div class="col-md-3 text-center btn btn-dark m-2">
+      <h1><%= fa_icon fuel_type_icon(:gas) %></h1>
+      <h2>Gas</h2>
+      <div class="h5 explore">
+        Explore
+        <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a week" %>
+        /
+        <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :gas), title: "See how the school's energy use varies over a day" %>
+        usage
+      </div>
+    </div>
+  <% end %>
 </div>
-<div class="row">
-  <div class="col-md-9"></div>
+
+<div class="row padded-row align-items-end">
+  <div class="col-md-9">
+    <h2 class="mb-3">Things to investigate:</h2>
+  </div>
   <div class="col-md-3">
   <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
-    <%= fa_icon 'lightbulb' %> See how your school uses energy&hellip;
+    <%= fa_icon 'lightbulb' %> Find out more about how your school uses energy
   <% end %>
   </div>
 </div>
-<hr/>
 
-<% unless @find_out_more_alerts.empty? %>
+<% unless @dashboard_alerts.empty? %>
   <div class="row">
-    <h2 class="mb-3">Things to investigate:</h2>
-    <% @find_out_more_alerts.each do |content| %>
+    <% @dashboard_alerts.each do |content| %>
       <div class="col-md-12">
-        <%= render 'schools/find_out_more/alert', find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
+        <%= render 'schools/dashboard_alerts/alert', alert: content.alert, find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
       </div>
     <% end %>
   </div>
 <% end %>
 
+<div class="alert text-white bg-success" role="alert">
+  <div class="d-flex">
+    <div class="align-self-center p-2">
+      <%= fa_icon('temperature-high fa-3x') %>
+    </div>
+    <% if @temperature_observations.empty? %>
+      <div class="align-self-center">
+        <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy</h5>
+      </div>
+      <div class="ml-auto p-2">
+        <%= link_to 'Enter temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
+      </div>
+    <% else %>
+      <div class="align-self-center p-2">
+        <h5>Update your classroom temperatures to see if you are saving energy</h5>
+      </div>
+      <div class="ml-auto">
+          <%= link_to 'Previous temperatures', school_temperature_observations_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
+          <%= link_to 'Enter new temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
+      </div>
+    <% end %>
+  </div>
+</div>
 
 <div class="row">
-  <div class="col-md-6 card-deck">
+  <div class="col card-deck">
     <div class="card">
       <div class="card-body">
         <% if @first %>
@@ -58,45 +122,15 @@
     </div>
   </div>
 
-  <div class="col-md-6">
-    <% if @scoreboard %>
+  <div class="col card-deck">
+    <% if @podium %>
       <div class="card surrounding-schools">
         <div class="card-body">
-          <h4>Your school is <%= scoreboard_position(@school) %> on the scoreboard.</h4>
-          <div class="row align-items-end">
-            <% @surrounding_schools.reverse.each_with_index do |school, index| %>
-              <div class="col-4 text-center">
-                <h5>
-                  <span class="badge mt-3 badge-<%= @school == school ? 'success' : 'light' %>">
-                    <%= scoreboard_position(school) %>
-                  </span>
-                </h5>
-                <div class="bar <%= 'bar-current' if @school == school%>">
-                  <div class="bar-arrow"></div>
-                  <div class="bar-body bar-body-<%=index%>">
-                    <h6>
-                      <span class="badge mt-3">
-                        <%= school.sum_points || 0 %> points
-                      </span>
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-          </div>
-          <div class="row">
-            <% @surrounding_schools.reverse.each do |school| %>
-              <div class="col-4 text-center">
-                <h6>
-                  <% if @school == school %>
-                    <%= school.name %>
-                  <% else %>
-                    <%= link_to school.name, pupils_school_path(school) %>
-                  <% end %>
-                </h6>
-              </div>
-            <% end %>
-          </div>
+          <% if @podium.includes_school? %>
+            <%= render 'podium', podium: @podium %>
+          <% else %>
+            <%= render 'no_points_podium', podium: @podium %>
+          <% end %>
         </div>
         <div class="card-footer text-center">
           <h4>

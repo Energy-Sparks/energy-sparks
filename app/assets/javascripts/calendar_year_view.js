@@ -5,26 +5,37 @@ $(document).ready(function() {
 
     function editEvent(event) {
 
-      var startDate = null;
-      var endDate = null;
+      var lastEvent =  event.events[event.events.length - 1];
+      var startDate = lastEvent.startDate;
+      var endDate = lastEvent.endDate;
 
-      if (event.events.length) {
-        var lastEvent =  event.events[event.events.length - 1];
-        startDate = lastEvent.startDate;
-        endDate = lastEvent.endDate;
-        var calendarId =  $('#calendar_event_calendar_id').val();
+      var calendarId =  $('#event-modal').data('calendar');
 
-        $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
+      $(".event-action").html('Edit');
+      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
+      $('#event-modal input[name="_method"]').val('patch');
 
-        $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
-        $('#event-modal input[name="calendar_event[title]"]').val(lastEvent.name);
-      } else {
-        startDate = event.startDate;
-        endDate = event.endDate;
-      }
-      $('#event-modal input[name="event-index"]').val(event ? event.id : '');
-      $('#event-modal input[name="calendar_event[start_date]"]').val(startDate ? startDate.toLocaleDateString("en-GB") : '');
-      $('#event-modal input[name="calendar_event[end_date]"]').val(endDate ? endDate.toLocaleDateString("en-GB") : '');
+      $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
+      $('#event-modal input[name="calendar_event[title]"]').val(lastEvent.title);
+
+      $('#event-modal input[name="calendar_event[start_date]"]').val(startDate.toLocaleDateString("en-GB"));
+      $('#event-modal input[name="calendar_event[end_date]"]').val(endDate.toLocaleDateString("en-GB"));
+
+      $('#event-modal').modal();
+    }
+
+    function newEvent(event) {
+      var calendarId =  $('#event-modal').data('calendar');
+
+      $(".event-action").html('New');
+      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
+      $('#event-modal input[name="_method"]').val('post');
+
+      $("#calendar_event_calendar_event_type_id").val('');
+      $('#event-modal input[name="calendar_event[title]"]').val('');
+
+      $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
+      $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
 
       $('#event-modal').modal();
     }
@@ -34,11 +45,14 @@ $(document).ready(function() {
 
       $('#calendar').calendar({
         enableContextMenu: false,
-        enableRangeSelection: true,
+        enableRangeSelection: false,
         style: 'background',
-        //contextMenuItems:[{ text: 'Update', click: editEvent }],
-        selectRange: function(e) {
-          editEvent({ startDate: e.startDate, endDate: e.endDate, events: e.events });
+        clickDay: function(e) {
+          if(e.events.length){
+            editEvent({ events: e.events });
+          }else{
+            newEvent({ date: e.date });
+          }
         },
         mouseOnDay: function(e) {
           if(e.events.length > 0) {
@@ -49,7 +63,7 @@ $(document).ready(function() {
               content += '<div class="event-tooltip-content">'
               + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
               + '<div class="event-location">' + startDate.toDateString() + ' - ' + endDate.toDateString() + '</div>'
-              + '</div>';
+              + '</div><hr />';
             }
 
             $(e.element).popover({
@@ -89,7 +103,8 @@ $(document).ready(function() {
             name: returnedData[i].name,
             startDate: new Date(returnedData[i].startDate),
             endDate: new Date(returnedData[i].endDate),
-            color: returnedData[i].color
+            color: returnedData[i].color,
+            title: returnedData[i].title
           });
         }
         $('.calendar').data('calendar').setDataSource(data);

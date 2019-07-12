@@ -2,13 +2,12 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Edit Calendar Event</h5>
+        <h5 class="modal-title"><span class="event-action"></span> Calendar Event</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <%= form_for([@calendar, CalendarEvent.last], html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
-      <%= f.hidden_field :calendar_id, value: @calendar.id %>
+      <%= simple_form_for([@calendar, CalendarEvent.new], method: :patch, html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
 
       <div class="modal-body">
         <input name="event-index" type="hidden">
@@ -25,38 +24,12 @@
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <%= f.label :start_date %>
-              <div class="input-group">
-                <div class="input-group date" id="start_date_picker_field" data-target-input="nearest">
-                 <%= f.text_field(:start_date,
-                    { class: 'form-control datetimepicker-input',
-                      data: { target: "#start_date_picker_field" },
-                      value: f.object.start_date.try(:strftime, "%d/%m/%Y")
-                    }
-                  ) %>
-                  <div class="input-group-append" data-target="#start_date_picker_field" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                  </div>
-                </div>
-              </div>
+              <%= f.input :start_date, as: :tempus_dominus_date %>
             </div>
           </div>
           <div class="col">
             <div class="form-group">
-              <%= f.label :end_date %>
-                <div class="input-group">
-                  <div class="input-group date" id="end_date_picker_field" data-target-input="nearest">
-                   <%= f.text_field(:end_date,
-                      { class: 'form-control datetimepicker-input',
-                        data: { target: "#end_date_picker_field" },
-                        value: f.object.end_date.try(:strftime, "%d/%m/%Y")
-                      }
-                    ) %>
-                    <div class="input-group-append" data-target="#end_date_picker_field" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
+              <%= f.input :end_date, as: :tempus_dominus_date %>
             </div>
           </div>
         </div>

@@ -1,19 +1,21 @@
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
+  before_action :set_school
+
   include SchoolAggregation
   include Measurements
 
   skip_before_action :authenticate_user!
-  before_action :set_school
-  before_action :check_fuel_types
   before_action :build_aggregate_school, except: [:analysis]
   before_action :set_nav
   before_action :set_measurement_options
 
   def analysis
-    # Redirect to correct dashboard
-    redirect_to action: DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set][0], school_id: @school.slug
+    if @school.analysis?
+      # Redirect to correct dashboard
+      redirect_to action: pages.keys.first, school_id: @school.slug
+    end
   end
 
   def main_dashboard_electric
@@ -52,33 +54,30 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def carbon_emissions
+    render_generic_chart_template
+  end
+
   def solar_pv
     render_generic_chart_template
   end
 
 private
 
-  def check_fuel_types
-    if @school.fuel_types_for_analysis == :none
-      redirect_to school_path(@school), notice: "Analysis is currently unavailable due to a lack of validated meter readings"
-    end
-  end
-
   def build_aggregate_school
-    # Get this loaded and warm the cache before starting the chart rendering
-    # and use for heat model fitting tabs
-    @aggregate_school = aggregate_school(@school)
+    # use for heat model fitting tabs
+    @aggregate_school = aggregate_school
   end
 
   def set_nav
-    @nav_array = pages.map do |page|
-      { name: DashboardConfiguration::DASHBOARD_PAGE_GROUPS[page][:name], path: "#{page}_path" }
+    @nav_array = pages.map do |page, config|
+      { name: config[:name], path: "#{page}_path" }
     end
   end
 
   def pages
-    @dashboard_set = @school.fuel_types_for_analysis
-    DashboardConfiguration::DASHBOARD_FUEL_TYPES[@dashboard_set]
+    analyis_pages = @school.configuration.analysis_charts_as_symbols
+    analyis_pages.reject {|page| page == :carbon_emissions && cannot?(:analyse, :carbon_emissions)}
   end
 
   def render_generic_chart_template(extra_chart_config = {})
@@ -86,12 +85,19 @@ private
 
     @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
 
-    @title = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:name]
-    @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym][:charts]
-
+    @title = title_and_chart_configuration[:name]
+    @charts = title_and_chart_configuration[:charts]
     @number_of_charts = @charts.size
 
     render :generic_chart_template
+  end
+
+  def title_and_chart_configuration
+    if action_name.to_sym == :test || action_name.to_sym == :heating_model_fitting
+      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym]
+    else
+      @school.configuration.analysis_charts_as_symbols[action_name.to_sym]
+    end
   end
 
   def set_school

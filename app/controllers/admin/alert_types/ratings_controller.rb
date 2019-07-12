@@ -3,15 +3,15 @@ module Admin
     class RatingsController < AdminController
       load_and_authorize_resource :alert_type
 
-      before_action :set_template_variables
-      before_action :set_available_charts
+      before_action :set_template_variables, except: [:index]
+      before_action :set_available_charts, except: [:index]
 
       def index
-        @ratings = @alert_type.ratings.order(rating_from: :asc)
+        @ratings = @alert_type.ratings.order(rating_from: :asc, rating_to: :asc, description: :asc)
       end
 
       def new
-        @rating = AlertTypeRating.new
+        @rating = @alert_type.has_ratings? ? AlertTypeRating.new : AlertTypeRating.new(rating_from: 0, rating_to: 10)
         @content = AlertTypeRatingContentVersion.new
       end
 
@@ -45,17 +45,14 @@ module Admin
       def rating_params
         params.require(:alert_type_rating).permit(
           :description, :rating_from, :rating_to,
-          :sms_active, :email_active, :find_out_more_active
+          :sms_active, :email_active, :find_out_more_active,
+          :teacher_dashboard_alert_active, :pupil_dashboard_alert_active
         )
       end
 
       def content_params
         params.require(:alert_type_rating).permit(
-          content: [
-            :colour,
-            :pupil_dashboard_title, :teacher_dashboard_title, :page_title, :page_content,
-            :sms_content, :email_title, :email_content, :chart_variable
-          ]
+          content: [:colour] + AlertTypeRatingContentVersion.template_fields + AlertTypeRatingContentVersion.timing_fields
         )
       end
 

@@ -2,16 +2,6 @@
 
 $(document).ready(function() {
   if ($("form.activity-form").length) {
-    var $datePickerDiv = $('div#activity_date_picker_field');
-    var dateValue = moment($('#activity_happened_on').val(), 'DD/MM/YYYY');
-
-    if ($datePickerDiv.length) {
-      $datePickerDiv.datetimepicker({
-        format: 'DD/MM/YYYY',
-        allowInputToggle: true,
-        date: dateValue
-      });
-    }
 
     function showHideTitle(customState) {
       if (customState) {
@@ -30,5 +20,9 @@ $(document).ready(function() {
     activityTypeCustomCheck({target: '#activity_activity_type_id'});
 
     $('#activity_activity_type_id').select2({theme: 'bootstrap'});
+  }
+
+  if ($("form#activity_type_form").length) {
+    $('select.form-control.select2').select2({theme: 'bootstrap'});
   }
 });

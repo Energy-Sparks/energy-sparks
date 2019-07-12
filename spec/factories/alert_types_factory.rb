@@ -21,9 +21,10 @@ module Alerts
 
       def report
         Alerts::Adapters::Report.new(
+          valid: true,
           status: :good,
           rating: 5.0,
-          summary: 'The alert has run',
+          enough_data: :enough,
           template_data: {
             template: 'variables'
           },
@@ -34,6 +35,13 @@ module Alerts
             table: 'variables'
           }
         )
+      end
+
+      def front_end_template_chart_data
+      end
+
+      def self.front_end_template_charts
+        TEMPLATE_VARIABLES
       end
 
       def self.front_end_template_variables
@@ -61,7 +69,6 @@ FactoryBot.define do
     sub_category      { AlertType.sub_categories.keys.sample }
     frequency         { AlertType.frequencies.keys.sample }
     class_name        { 'Alerts::System::DummyAlert' }
-    show_ratings      { true }
     description       { title }
   end
 end

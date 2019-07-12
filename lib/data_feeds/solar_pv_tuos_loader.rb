@@ -21,16 +21,14 @@ module DataFeeds
     end
 
     def import
-      SolarPvTuosArea.all.each do |sa|
-        sa.data_feeds.each do |data_feed|
-          config_data = data_feed.configuration.deep_symbolize_keys
+      DataFeeds::SolarPvTuos.all.each do |data_feed|
+        config_data = data_feed.configuration.deep_symbolize_keys
 
-          latitude = config_data[:latitude]
-          longitude = config_data[:longitude]
+        latitude = config_data[:latitude]
+        longitude = config_data[:longitude]
 
-          @dates.each do |date_range_chunk|
-            process_data_for_each_chunk(config_data, data_feed, date_range_chunk, latitude, longitude)
-          end
+        @dates.each do |date_range_chunk|
+          process_data_for_each_chunk(config_data, data_feed, date_range_chunk, latitude, longitude)
         end
       end
     end

@@ -1,32 +1,50 @@
 module Teachers
   class SchoolsController < ApplicationController
+    load_and_authorize_resource
+
+    include SchoolAggregation
     include ActivityTypeFilterable
 
-    load_and_authorize_resource
     skip_before_action :authenticate_user!
 
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
-      @charts = [:teachers_landing_page_electricity, :teachers_landing_page_gas]
-      setup_find_out_more
+
+      setup_charts
+      setup_dashboard_alert
       setup_activity_suggestions
     end
 
   private
 
-    def setup_find_out_more
-      @find_out_more_alert = @school.latest_find_out_mores.sample
+    def setup_charts
+      @charts = {}
 
-      if @find_out_more_alert
-        @find_out_more_alert_content = TemplateInterpolation.new(
-          @find_out_more_alert.content_version,
+      if @school.configuration.electricity
+        @charts[:electricity] = :teachers_landing_page_electricity
+      end
+
+      if @school.configuration.gas_dashboard_chart_type.to_sym != Schools::Configuration::NO_CHART
+        @charts[:gas] = @school.configuration.gas_dashboard_chart_type.to_sym
+      end
+    end
+
+    def setup_dashboard_alert
+      @dashboard_alert = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher.sample
+
+      if @dashboard_alert
+        @dashboard_alert_content = TemplateInterpolation.new(
+          @dashboard_alert.content_version,
+          with_objects: { find_out_more: @dashboard_alert.find_out_more },
           proxy: [:colour]
         ).interpolate(
           :teacher_dashboard_title,
-          with: @find_out_more_alert.alert.template_variables
+          with: @dashboard_alert.alert.template_variables
         )
-        activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @find_out_more_alert.activity_types, query: { not_completed_or_repeatable: true })
-        @find_out_more_alert_activity_types = activity_type_filter.activity_types.limit(3)
+        if @dashboard_alert_content.find_out_more
+          activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @dashboard_alert_content.find_out_more.activity_types, query: { not_completed_or_repeatable: true })
+          @find_out_more_activity_types = activity_type_filter.activity_types.limit(3)
+        end
       end
     end
 

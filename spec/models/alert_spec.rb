@@ -16,16 +16,6 @@ describe 'Alert' do
 
   it 'has a rating of unrated if no rating is et' do
     no_rating_alert = create(:alert, rating: nil)
-    expect(no_rating_alert.rating).to eq 'Unrated'
-  end
-
-  it 'has helper methods to get detail and rating data' do
-    help_url = 'https://example.com'
-    detail = 'The details'
-    rating = 6
-    alert = create(:alert, data: { 'rating' => rating, 'detail' => detail, 'help_url' => help_url })
-    expect(alert.help_url).to eq help_url
-    expect(alert.detail).to eq detail
-    expect(alert.rating).to eq '6/10'
+    expect(no_rating_alert.formatted_rating).to eq 'Unrated'
   end
 end

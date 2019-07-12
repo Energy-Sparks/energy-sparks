@@ -17,12 +17,17 @@ module Admin
       private
 
         def load_rating_requirements
-          # TODO: match activity types ordering
-          @activity_types = @alert_type.ordered_activity_types.limit(3)
+          @activity_types = get_activity_types
           @school = @alert.school
           content_version = AlertTypeRatingContentVersion.new(content_params.fetch(:content))
-          @content = TemplateInterpolation.new(content_version).interpolate(*AlertTypeRatingContentVersion.template_fields, with: @alert.template_variables)
-          @chart = @alert.chart_variables_hash[content_version.chart_variable]
+          @content = TemplateInterpolation.new(
+            content_version,
+            proxy: [:colour]
+          ).interpolate(
+            *AlertTypeRatingContentVersion.template_fields,
+            with: @alert.template_variables
+          )
+          @chart = @alert.chart_variables_hash[content_version.find_out_more_chart_variable]
           @tables = @alert.tables
         end
 
@@ -38,15 +43,23 @@ module Admin
 
         def content_params
           params.require(:alert_type_rating).permit(
-            content: AlertTypeRatingContentVersion.template_fields
+            content: AlertTypeRatingContentVersion.template_fields + [:colour]
           )
         end
 
         def template_path(key)
           case key
           when 'find_out_more' then 'schools/find_out_more/show'
-          when 'email', 'sms' then key
+          when 'email', 'sms', 'alert' then key
           else 'no_template'
+          end
+        end
+
+        def get_activity_types
+          if params[:alert_type_rating_id]
+            AlertTypeRating.find(params[:alert_type_rating_id]).ordered_activity_types.limit(3)
+          else
+            ActivityType.none
           end
         end
       end

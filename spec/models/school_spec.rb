@@ -3,7 +3,7 @@ require 'rails_helper'
 describe School do
 
   let(:today) { Time.zone.today }
-  let(:calendar) { create :calendar_with_terms, template: true }
+  let(:calendar) { create :calendar, template: true }
   subject { create :school, :with_school_group, calendar: calendar }
 
   it 'is valid with valid attributes' do
@@ -216,47 +216,6 @@ describe School do
     end
   end
 
-  describe '#has_enough_readings_for_meter_types?' do
-    it 'does for electricity' do
-      meter = create(:electricity_meter_with_validated_reading, reading_count: 3)
-      expect(meter.school.has_enough_readings_for_meter_types?(:electricity, 2)).to be true
-    end
-
-    it 'does not for electricity' do
-      meter = create(:electricity_meter_with_validated_reading, reading_count: 1)
-      expect(meter.school.has_enough_readings_for_meter_types?(:electricity, 2)).to be false
-    end
-
-    it 'does not with no readings for electricity' do
-      meter = create(:electricity_meter)
-      expect(meter.school.has_enough_readings_for_meter_types?(:electricity, 1)).to be false
-    end
-  end
-
-  describe '#fuel_types_for_analysis?' do
-    it 'gas and electricity' do
-      meter = create(:electricity_meter_with_validated_reading, school: subject, reading_count: 2)
-      meter2 = create(:gas_meter_with_validated_reading, school: subject, reading_count: 2)
-      expect(subject.fuel_types_for_analysis(1)).to be :electric_and_gas
-    end
-
-    it 'electricity' do
-      meter = create(:electricity_meter_with_validated_reading, school: subject, reading_count: 2)
-      expect(subject.fuel_types_for_analysis(1)).to be :electric_only
-    end
-
-    it 'gas' do
-      meter = create(:gas_meter_with_validated_reading, school: subject, reading_count: 2)
-      expect(subject.fuel_types_for_analysis(1)).to be :gas_only
-    end
-
-    it 'neither' do
-      meter = create(:electricity_meter_with_validated_reading)
-      meter = create(:gas_meter_with_validated_reading)
-      expect(subject.fuel_types_for_analysis(5)).to be :none
-    end
-  end
-
   describe '#scoreboard_position' do
     let!(:scoreboard)       { create :scoreboard }
     let!(:group)            { create(:school_group, scoreboard: scoreboard) }
@@ -267,7 +226,7 @@ describe School do
     end
   end
 
-  describe '#latest_find_out_mores' do
+  describe '#latest_dashboard_alerts' do
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
     let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
@@ -275,22 +234,22 @@ describe School do
     let(:content_version_1){ create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
     let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
-    let(:calculation_1){ create(:find_out_more_calculation, school: school, created_at: 1.day.ago)}
-    let(:calculation_2){ create(:find_out_more_calculation, school: school, created_at: Date.today)}
+    let(:content_generation_run_1){ create(:content_generation_run, school: school, created_at: 1.day.ago)}
+    let(:content_generation_run_2){ create(:content_generation_run, school: school, created_at: Date.today)}
 
-    context 'where there is a calculation' do
+    context 'where there is a content run' do
 
-      let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_1) }
-      let!(:find_out_more_2){ create(:find_out_more, alert: alert_1, content_version: content_version_1, calculation: calculation_2) }
+      let!(:dashboard_alert_1){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_1) }
+      let!(:dashboard_alert_2){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_2) }
 
-      it 'selects the find out mores from the most recent calculation' do
-        expect(school.latest_find_out_mores).to match_array([find_out_more_2])
+      it 'selects the dashboard alerts from the most recent run' do
+        expect(school.latest_dashboard_alerts).to match_array([dashboard_alert_2])
       end
     end
 
-    context 'where there is no calculation' do
+    context 'where there is no run' do
       it 'returns an empty set' do
-        expect(school.latest_find_out_mores).to be_empty
+        expect(school.latest_dashboard_alerts).to be_empty
       end
     end
 

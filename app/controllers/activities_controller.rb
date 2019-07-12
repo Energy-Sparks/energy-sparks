@@ -17,8 +17,6 @@ class ActivitiesController < ApplicationController
 
   # GET /activities/new
   def new
-    @activity.happened_on = Time.zone.today.strftime("%d/%m/%Y")
-
     if params[:activity_type_id].present?
       activity_type = ActivityType.find(params[:activity_type_id])
       if activity_type.present?
@@ -77,6 +75,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_params
-    params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on)
+    params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content)
   end
 end

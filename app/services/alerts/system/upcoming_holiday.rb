@@ -1,22 +1,25 @@
 module Alerts
   module System
     class UpcomingHoliday
+      # Temporary constant to match analytics
+      TEMPLATE_VARIABLES = {
+        holiday_start_date: {
+          description: 'The date the next holiday is starting',
+          units: :string
+        },
+        holiday_end_date: {
+          description: 'The date the next holiday ends',
+          units: :string
+        },
+        holiday_title: {
+          description: 'The title of the event',
+          units: :string
+        }
+      }.freeze
+
       def self.front_end_template_variables
         {
-          'General' => {
-            holiday_start_date: {
-              description: 'The date the next holiday is starting',
-              units: :string
-            },
-            holiday_end_date: {
-              description: 'The date the next holiday ends',
-              units: :string
-            },
-            holiday_title: {
-              description: 'The title of the event',
-              units: :string
-            }
-          }
+          'General' => TEMPLATE_VARIABLES
         }
       end
 
@@ -37,9 +40,10 @@ module Alerts
         if @school.holiday_approaching?(today: @today)
           next_holiday = @school.next_holiday(today: @today)
           Adapters::Report.new(
+            valid: true,
             status: :good,
             rating: [0.0, (next_holiday.start_date - @today).to_i.to_f].max,
-            summary: 'The school has a holiday approaching in their calendar',
+            enough_data: :enough,
             template_data: {
               holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
               holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
@@ -48,9 +52,10 @@ module Alerts
           )
         else
           Adapters::Report.new(
+            valid: true,
             status: :good,
             rating: 10.0,
-            summary: 'The school has no holiday approaching',
+            enough_data: :enough
           )
         end
       end

@@ -23,7 +23,7 @@ module Alerts
       alert_types.map do |alert_type|
         begin
           alert = @alert_framework_adapter.new(alert_type, @school).analyse
-          alert.save
+          alert.save!
         rescue => e
           Rails.logger.error "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
           Rails.logger.error e.backtrace.join("\n")

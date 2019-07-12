@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :series_data, :x_axis_ranges
+  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
@@ -8,19 +8,22 @@ class ChartDataValues
     SeriesNames::SCHOOLDAYOPEN => '#5cb85c',
     SeriesNames::HOLIDAY => '#ff4500',
     SeriesNames::WEEKEND => '#ffac21',
-    'electricity' => '#ff4500',
-    '' => '#ff4500',
-    'gas' => '#3bc0f0',
     SeriesNames::HEATINGDAY => '#3bc0f0',
     SeriesNames::NONHEATINGDAY => '#5cb85c',
     SeriesNames::HEATINGDAYMODEL => '#ff4500',
     SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
-    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
+    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
+    'electricity' => '#ff4500',
+    '' => '#ff4500',
+    'gas' => '#3bc0f0',
+    'solar pv (consumed onsite)' => '#ffac21',
+    'storage heaters' => "#501e74",
   }.freeze
 
   def initialize(chart, chart_type)
     if chart
+      @chart_type         = chart_type
       @chart              = chart
       @title              = chart[:title]
       @x_axis_categories  = chart[:x_axis]
@@ -29,13 +32,13 @@ class ChartDataValues
       @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_label       = chart[:x_axis_label]
       @y_axis_label       = chart[:y_axis_label]
-      @x_axis_categories  = chart[:x_axis]
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
       @x_data             = chart[:x_data]
       @y2_data            = chart[:y2_data]
       @y2_chart_type      = chart[:y2_chart_type]
+      @annotations        = []
       @y2_axis_label = '' # Set later
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
@@ -47,6 +50,8 @@ class ChartDataValues
     @x_data_hash = reverse_x_data_if_required
 
     @series_data = []
+
+    @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
       column_or_bar
@@ -60,6 +65,16 @@ class ChartDataValues
     self
   end
 
+  def series_data
+    return @series_data unless @series_data.is_a? Array
+
+    # Temporary TOFIX TODO as analytics should not return negative values
+    @series_data.map do |series|
+      series[:data] = series[:data].map { |v| v.is_a?(Float) ? v.round(8) : v }
+      series
+    end
+  end
+
 private
 
   def colour_hash
@@ -71,10 +86,8 @@ private
       data_type = tidy_label(data_type)
       colour = colour_hash[data_type]
 
-      if @chart[:config_name] == :teachers_landing_page_gas
+      if Schools::Configuration.gas_dashboard_chart_types.key?(@chart[:config_name].to_s)
         colour = index == 0 ? '#ffac21' : '#ff4500'
-        # Temporary TOFIX TODO until temperature adjusted charts are better behaved
-        data = data.map {|v| v.negative? ? 0 : v }
       end
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
@@ -168,5 +181,12 @@ private
       date_to_and_from[1].delete_at(0)
     end
     date_to_and_from.map { |bit| bit.join(' ') }.join(' - ')
+  end
+
+  def annotations_configuration
+    case @chart_type
+    when :group_by_week_electricity, :group_by_week_gas, :electricity_co2_last_year_weekly_with_co2_intensity then :weekly
+    when :baseload_lastyear then :daily
+    end
   end
 end

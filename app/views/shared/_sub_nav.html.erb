@@ -1,11 +1,11 @@
 <!-- the expand-xl sets the breakpoint as to when to collapse the menu -->
-<nav class="navbar navbar-expand-xl bg-secondary navbar-dark sub-navbar">
+<nav class="navbar navbar-expand-xl bg-secondary navbar-dark sub-navbar fixed-top fixed-top-sub-nav">
   <div class="container d-flex align-items-stretch justify-content-sm-between bd-highlight">
-    <div class="bd-highlight school-name">
+    <div class="school-name align-self-center">
       <h4><%= link_to @school.name, school_path(@school) %></h4>
     </div>
     <% if @school.scoreboard %>
-      <div class="bd-highlight">
+      <div class="align-self-center">
         <h3 class="display-6">
           <%= link_to scoreboard_path(@school.scoreboard) do %>
             <span class="badge badge-success ">
@@ -26,16 +26,15 @@
         </h3>
       </div>
     <% end %>
-    <div class="bd-highlight">
+    <div class="align-self-center">
       <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
         <ul class="nav navbar-nav">
           <li class="nav-item dropdown">
-            <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard), class: 'btn btn-success btn-sm' if @school.scoreboard %>
-            <%= link_to 'Analysis', school_analysis_path(@school), class: 'btn btn-success btn-sm'  %>
-            <%= link_to 'Alerts', school_alerts_path(@school), class: 'btn btn-success btn-sm' if can? :read, AlertType %>
+            <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard),  class: 'btn btn-success btn-sm' if @school.scoreboard %>
+            <%= link_to 'Analysis',   school_analysis_path(@school),        class: 'btn btn-success btn-sm' if @school.analysis? %>
           </li>
           <%- if can? :update, @school -%>
             <li class="nav-item dropdown">
@@ -50,6 +49,7 @@
                 <%= link_to 'Manage contacts', school_contacts_path(@school), class: 'dropdown-item' if can? :manage, Contact %>
                 <%= link_to 'Alert reports', school_alert_reports_path(@school), class: 'dropdown-item' if can? :manage, Contact %>
                 <%= link_to 'Alert subscription events', school_alert_subscription_events_path(@school), class: 'dropdown-item' if can? :manage, Contact %>
+                <%= link_to 'Interventions', school_interventions_path(@school), class: 'dropdown-item' if can? :index, Observation %>
               </div>
             </li>
           <%- end -%>

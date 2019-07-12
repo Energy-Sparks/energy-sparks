@@ -1,0 +1,10 @@
+<div class="row justify-content-md-center">
+  <div class="col col-lg-8">
+    <h3>
+      <%= fa_icon("#{@observation.intervention_type.intervention_type_group.icon}") %>
+      <%= @observation.intervention_type.title %>
+    </h3>
+    <h4><%= nice_dates(@observation.at) %></h4>
+    <%= simple_format(@observation.description) %>
+  </div>
+</div>

@@ -9,15 +9,13 @@ describe Alerts::FrameworkAdapter do
   let(:alert) do
     Alert.new(
       run_on: gas_date,
-      summary: 'The alert has run',
       alert_type: alert_type,
       status: :good,
-      data: {
-        help_url: nil, detail: [], rating: 5.0 ,
-        template_data: {template: 'variables'},
-        chart_data: {chart: 'variables'},
-        table_data: {table: 'variables'}
-      }
+      rating: 5.0 ,
+      enough_data: :enough,
+      template_data: {template: 'variables'},
+      chart_data: {chart: 'variables'},
+      table_data: {table: 'variables'}
     )
   end
 

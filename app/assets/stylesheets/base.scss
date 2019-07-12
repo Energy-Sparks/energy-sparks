@@ -2,11 +2,24 @@ body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   overflow-x: hidden;
   font-size: 14px;
+  margin-top: 30px;
+}
+
+body.sub-nav {
+  margin-top: 110px;
 }
 
 div.application.container {
-    padding-top: 30px;
-    padding-bottom: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+div.application.container.extra-padding {
+  padding-top: 50px;
+}
+
+section.home.alerts {
+  padding-top: 30px;
 }
 
 address {
@@ -14,7 +27,8 @@ address {
   font-size: initial;
 }
 
-label, p, dl, li{
+// FIXME why do we apply this to some elements but not others?
+label, p, dl, li, .form-group{
   font-size: 20px;
 }
 
@@ -50,6 +64,10 @@ h6 {
   font-weight: 700;
 }
 
+div.h5.explore {
+  margin-bottom: 0.25rem;
+}
+
 hr.bulb-light,
 hr.bulb-primary {
   padding: 0;
@@ -62,7 +80,7 @@ hr.bulb-primary {
 hr.bulb-light:after,
 hr.bulb-primary:after {
   content: "\f0eb";
-  font-family: 'Font Awesome\ 5 Free';;
+  font-family: 'Font Awesome\ 5 Pro';;
   display: inline-block;
   position: relative;
   top: -0.8em;
@@ -150,4 +168,10 @@ div.meter-attributes {
     color: black;
     background-color: white;
   }
+}
+
+// Stops bootstrap hiding error messages for wrapped inputs
+// OK for us as we don't render invalid feedback unless there is an error
+.invalid-feedback {
+  display: block !important;
 }

@@ -1,0 +1,22 @@
+<h3>Tell us about an energy saving moment</h3>
+
+<h1>What did you do?</h1>
+
+<div class="row justify-content-md-center">
+  <div class="col col-lg-8">
+    <div class="list-group list-group-flush mt-5">
+      <% @intervention_type_groups.each do |intervention_type_group| %>
+        <%= link_to new_school_intervention_path(intervention_type_group_id: intervention_type_group.id), class: 'h3 list-group-item list-group-item-action d-flex align-items-center' do %>
+            <span class="p-3 w-25 text-center"><%= fa_icon("#{intervention_type_group.icon} fa-2x") %></span>
+            <%= intervention_type_group.title %>
+            <span class="ml-auto"><%= fa_icon("chevron-right fa-2x") %></span>
+        <% end %>
+      <% end %>
+      <%= link_to new_school_activity_path, class: 'h3 list-group-item list-group-item-action d-flex align-items-center' do %>
+          <span class="p-3 w-25 text-center"><%= fa_icon("clipboard-check fa-2x") %></span>
+          Completed an activity
+          <span class="ml-auto"><%= fa_icon("chevron-right fa-2x") %></span>
+      <% end %>
+    </div>
+  </div>
+</div>

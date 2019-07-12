@@ -1,28 +1,40 @@
 language: ruby
-cache: bundler
+cache:
+  directories:
+  - node_modules
+  yarn: true
+env:
+  global:
+  - NODE_ENV=test
 services:
-  - postgresql
+- postgresql
 dist: xenial
 addons:
-  postgresql: "10"
+  postgresql: '10'
   sources:
-    - google-chrome
+  - google-chrome
   apt:
     packages:
-      - google-chrome-stable
-      - postgresql-10
-      - postgresql-client-10
+    - google-chrome-stable
+    - postgresql-10
+    - postgresql-client-10
 sudo: required
 before_script:
-  - cp config/database.yml.travis config/database.yml
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+- cp config/database.yml.travis config/database.yml
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
 script:
-  - bundle exec rails db:create
-  - bundle exec govuk-lint-ruby -R app lib data-pipeline/handlers
-  - bundle exec bundle-audit check --update
-  - script/test-data-pipeline.sh
-  - bundle exec rspec
+- bundle exec rails db:create
+- bundle exec govuk-lint-ruby app lib data-pipeline/handlers
+- bundle exec bundle-audit check --update
+- yarn
+- bundle exec rails webpacker:compile
+- script/test-data-pipeline.sh
+- bundle exec rspec
 after_success:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+before_install:
+- openssl aes-256-cbc -K $encrypted_e1f3d221cce1_key -iv $encrypted_e1f3d221cce1_iv
+  -in .npmrc.enc -out .npmrc -d

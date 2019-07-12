@@ -7,9 +7,17 @@ namespace :amr_importer do
 
     School.all.each do |each_school|
       puts "Validate and persist for #{each_school.name}"
-      Amr::ValidateAndPersistReadingsService.new(each_school).perform
-      puts "Clear cache for #{each_school.name}"
-      AggregateSchoolService.new(each_school).invalidate_cache
+      begin
+        Amr::ValidateAndPersistReadingsService.new(each_school).perform
+        puts "Clear cache for #{each_school.name}"
+        AggregateSchoolService.new(each_school).invalidate_cache
+      rescue => e
+        puts "Exception: running validation for #{each_school.name}: #{e.class} #{e.message}"
+        puts e.backtrace.join("\n")
+        Rails.logger.error "Exception: running validation for #{each_school.name}: #{e.class} #{e.message}"
+        Rails.logger.error e.backtrace.join("\n")
+        Rollbar.error(e)
+      end
     end
 
     total_amr_readings_after = AmrValidatedReading.count

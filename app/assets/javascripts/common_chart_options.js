@@ -1,72 +1,97 @@
-var commonChartOptions = {
-  title: { text: null },
-  xAxis: { showEmpty: false },
-  yAxis: { showEmpty: false },
-  legend: {
-    align: 'center',
-    x: -30,
-    margin: 20,
-    verticalAlign: 'bottom',
-    floating: false,
-    backgroundColor: 'white',
-    shadow: false
-  },
-  plotOptions: {
-    bar: {
-      stacking: 'normal',
+Highcharts.setOptions({
+  lang: {
+    numericSymbols: null,  //otherwise by default ['k', 'M', 'G', 'T', 'P', 'E']
+    thousandsSep: ','
+  }
+});
+
+function commonChartOptions(){
+  return {
+    title: { text: null },
+    xAxis: { showEmpty: false },
+    yAxis: { showEmpty: false },
+    tooltip: {
+      backgroundColor: null,
+      borderWidth: 0,
+      shadow: false,
+      useHTML: true,
+      style: {
+          padding: 0
+      }
     },
-    column: {
-      dataLabels: {
-        color: '#232b49'
-      },
+    legend: {
+      align: 'center',
+      x: -30,
+      margin: 20,
+      verticalAlign: 'bottom',
+      floating: false,
+      backgroundColor: 'white',
+      shadow: false
     },
-    pie: {
-      allowPointSelect: true,
-      colors: ["#9c3367", "#67347f", "#501e74", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
-      cursor: 'pointer',
-      dataLabels: { enabled: false },
-      showInLegend: true,
-      point: {
-        events: {
-          legendItemClick: function () {
-            return false;
+    plotOptions: {
+      series: {
+        states: {
+          inactive: {
+            opacity: 1
           }
         }
-      }
-    },
-    line: {
-      tooltip: {
-        headerFormat: '<b>{point.key}</b><br>',
-        pointFormat: orderedPointFormat('kW')
-      }
-    },
-    scatter: {
-      marker: {
-        radius: 5,
+      },
+      bar: {
+        stacking: 'normal',
+      },
+      column: {
+        dataLabels: {
+          color: '#232b49'
+        },
+      },
+      pie: {
+        allowPointSelect: true,
+        colors: ["#9c3367", "#67347f", "#501e74", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
+        cursor: 'pointer',
+        dataLabels: { enabled: false },
+        showInLegend: true,
+        point: {
+          events: {
+            legendItemClick: function () {
+              return false;
+            }
+          }
+        }
+      },
+      line: {
+        tooltip: {
+          headerFormat: '<b>{point.key}</b><br>',
+          pointFormat: orderedPointFormat('kW')
+        }
+      },
+      scatter: {
+        marker: {
+          radius: 5,
+          states: {
+            hover: {
+              enabled: true,
+              lineColor: 'rgb(100,100,100)'
+            }
+          }
+        },
         states: {
           hover: {
-            enabled: true,
-            lineColor: 'rgb(100,100,100)'
+            marker: {
+              enabled: false
+            }
           }
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br>',
+          pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
         }
-      },
-      states: {
-        hover: {
-          marker: {
-            enabled: false
-          }
-        }
-      },
-      tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
       }
     }
-  }
+  };
 }
 
 
-function barColumnLine(d, c, chartIndex, seriesData, chartType) {
+function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
   var subChartType = d.chart1_subtype;
   console.log('bar or column or line ' + subChartType);
 
@@ -84,10 +109,23 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
 
   // LINE charts
   if (chartType == 'line') {
-    if (y2AxisLabel !== undefined && y2AxisLabel == 'Temperature') {
-      console.log('Yaxis - Temperature');
-      c.addAxis({ title: { text: '°C' }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true });
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: '{point.y:.2f} °C' }}}});
+    if (y2AxisLabel) {
+
+      var axisTitle;
+      var pointFormat;
+
+      if (y2AxisLabel == 'Temperature') {
+        axisTitle = '°C';
+        pointFormat = '{point.y:.2f} °C';
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon')) {
+        axisTitle = 'kWh';
+        pointFormat = '{point.y:.2f} kWh';
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
+        axisTitle = 'W/m2';
+        pointFormat = '{point.y:.2f} W/m2';
+      }
+      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true});
+      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     } else {
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
     }
@@ -96,8 +134,9 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
   // Column charts
   if (chartType == 'column') {
     console.log('column: ' + subChartType);
-    c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
-
+    if (! noZoom) {
+      c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+    }
 
     if (subChartType == 'stacked') {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
@@ -105,7 +144,12 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
       c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
 
-    if (y2AxisLabel !== undefined && y2AxisLabel.length) {
+    if (y2AxisLabel) {
+
+      var axisTitle;
+      var pointFormat;
+      var max;
+
       console.log('Y2 axis label' + y2AxisLabel);
       colour = '#232b49';
       if (y2AxisLabel == 'Temperature') {
@@ -114,11 +158,15 @@ function barColumnLine(d, c, chartIndex, seriesData, chartType) {
       } else if (y2AxisLabel == 'Degree Days') {
         axisTitle = 'Degree days';
         pointFormat = '{point.y:.2f} Degree days';
+      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
+        axisTitle = 'kg/kWh';
+        pointFormat = '{point.y:.2f} kg/kWh';
+        max = 0.5;
       } else if (y2AxisLabel == 'Solar Irradiance') {
         axisTitle = 'W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
-      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true });
+      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max});
       c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     }
   }
@@ -163,12 +211,15 @@ function updateChartLabels(data, chart){
 function isAStringAndStartsWith(thing, startingWith) {
   // IE Polyfill for startsWith
   if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function(search, pos) {
-      return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
-    };
+    Object.defineProperty(String.prototype, 'startsWith', {
+      value: function(search, pos) {
+        pos = !pos || pos < 0 ? 0 : +pos;
+        return this.substring(pos, pos + search.length) === search;
+      }
+    });
   }
 
-  (typeof thing === 'string' || thing instanceof String) && thing.startsWith('Energy')
+  return (typeof thing === 'string' || thing instanceof String) && thing.startsWith(startingWith);
 }
 
 function scatter(d, c, chartIndex, seriesData) {

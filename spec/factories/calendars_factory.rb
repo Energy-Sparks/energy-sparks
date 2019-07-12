@@ -16,7 +16,9 @@ FactoryBot.define do
       # attributes; `create_list`'s second argument is the number of records
       # to create and we make sure the user is associated properly to the post
       after(:create) do |calendar, evaluator|
-        create_list(:calendar_event, evaluator.posts_count, calendar: calendar)
+        evaluator.posts_count.times do |i|
+          create(:term, calendar: calendar, start_date: i.weeks.from_now, end_date: (i.weeks.from_now + 6.days))
+        end
       end
     end
 

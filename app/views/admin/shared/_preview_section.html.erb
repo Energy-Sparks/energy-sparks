@@ -1,0 +1,49 @@
+<ul class="nav nav-tabs mb-2 preview-tabs" id="<%= scope %>-content-preview" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" href="#<%= scope %>-content" id="<%= scope %>-content-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-content" aria-selected="true">
+      <span class="text-danger d-none"><%= fa_icon('exclamation-triangle') %></span>
+      Content
+    </a>
+  </li>
+  <% unless local_assigns[:no_timings] %>
+    <li class="nav-item">
+      <a class="nav-link" href="#<%= scope %>-timings" id="<%= scope %>-timings-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-timings" aria-selected="true">
+        <span class="text-danger d-none"><%= fa_icon('exclamation-triangle') %></span>
+        Timings
+      </a>
+    </li>
+  <% end %>
+  <li class="nav-item">
+    <a class="nav-link preview-tab" href="#<%= scope %>-preview" id="<%= scope %>-preview-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-preview">
+      Preview
+    </a>
+  </li>
+</ul>
+
+<div class="tab-content" id="<%= scope %>-content-panes">
+
+  <div class="tab-pane fade show active" id="<%= scope %>-content" role="tabpanel" aria-labelledby="<%= scope %>-content-tab">
+    <%= yield %>
+  </div>
+
+  <% unless local_assigns[:no_timings] %>
+    <div class="tab-pane fade show" id="<%= scope %>-timings" role="tabpanel" aria-labelledby="<%= scope %>-timings-tab">
+      <div class="row">
+        <div class="col-md-6">
+          <%= content.input :"#{scope}_start_date", as: :tempus_dominus_date, label: 'Start date' %>
+        </div>
+        <div class="col-md-6">
+          <%= content.input :"#{scope}_end_date", as: :tempus_dominus_date, label: 'End date' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="tab-pane fade" id="<%= scope %>-preview" role="tabpanel" aria-labelledby="<%= scope %>-preview-tab" data-content-url="<%= preview_url %>">
+    <div class="loading">
+      <h3 class="mb-3 mt-3"><%= fa_icon('spinner') %> Loading...</h3>
+    </div>
+    <div class="content pt-3 pb-3">
+    </div>
+  </div>
+</div>

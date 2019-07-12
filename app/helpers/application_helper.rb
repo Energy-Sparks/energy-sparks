@@ -13,6 +13,10 @@ module ApplicationHelper
     bool ? '' : 'bg-warning'
   end
 
+  def show_sub_nav?(school, hide_subnav)
+    school.present? && school.id && hide_subnav.nil?
+  end
+
   def html_from_markdown(folder, file)
     folder_dir = Rails.root.join('markdown_pages').join(folder.to_s)
     if File.exist? folder_dir
@@ -68,6 +72,16 @@ module ApplicationHelper
     end
   end
 
+  def temperature_cell_colour(temperature)
+    if temperature >= 19
+      'table-danger'
+    elsif temperature < 18
+      'table-primary'
+    else
+      'table-success'
+    end
+  end
+
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
@@ -90,6 +104,15 @@ module ApplicationHelper
     end
   end
 
+  def class_for_boolean(boolean)
+    boolean ? 'bg-success' : 'bg-danger'
+  end
+
+  def icon(style, name)
+    content_class = "#{style} fa-#{name}"
+    content_tag(:i, nil, class: content_class)
+  end
+
   def fa_icon(icon_type)
     icon('fas', icon_type)
   end
@@ -98,8 +121,8 @@ module ApplicationHelper
     icon('fab', icon_type)
   end
 
-  def alert_icon(alert)
-    alert.alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert.alert_type.fuel_type)
+  def alert_icon(alert, size = nil)
+    alert.alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert.alert_type.fuel_type)} #{size}"
   end
 
   def fuel_type_icon(fuel_type)
@@ -121,7 +144,7 @@ module ApplicationHelper
     end
   end
 
-  def chart_tag(chart_type, index: 1, chart_config: {})
+  def chart_tag(school, chart_type, index: 1, chart_config: {})
     html_chart_data = chart_config.inject({}) do |collection, (data_item_key, data_item_value)|
       collection["chart-#{data_item_key.to_s.parameterize}"] = data_item_value
       collection
@@ -133,7 +156,8 @@ module ApplicationHelper
       class: 'analysis-chart',
       data: {
         "chart-index" => index,
-        "chart-type" => chart_type
+        "chart-type" => chart_type,
+        "chart-annotations" => school_annotations_path(school)
       }.merge(html_chart_data)
     )
   end
@@ -190,5 +214,9 @@ module ApplicationHelper
       html_class = column == row.first ? '' : 'text-right'
       [column, html_class]
     end
+  end
+
+  def y_n(boolean)
+    boolean ? 'Yes' : 'No'
   end
 end

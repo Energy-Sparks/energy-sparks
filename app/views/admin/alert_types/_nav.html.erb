@@ -1,18 +1,7 @@
 <h1><%= alert_type.title %></h1>
 <div class="row mb-3" id="nav-row">
   <ul class="nav nav-tabs">
-    <li>
-      <%= nav_link('Overview', admin_alert_type_path(alert_type)) %>
-    </li>
-    <li>
-      <%= nav_link('Associated activity types', admin_alert_type_activity_types_path(alert_type)) %>
-    </li>
-    <li>
-      <% if alert_type.has_variables %>
-        <%= nav_link('Content management', admin_alert_type_ratings_path(alert_type)) %>
-      <% else %>
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Content management (not available: no template variables)</a>
-      <% end %>
-    </li>
+    <%= nav_link('Overview', admin_alert_type_path(alert_type)) %>
+    <%= nav_link('Content management', admin_alert_type_ratings_path(alert_type)) %>
   </ul>
 </div>
