@@ -41,7 +41,7 @@ $(document).ready(function() {
         var noAdvice = $(this).is("[data-no-advice]");
         var noZoom = $(this).is("[data-no-zoom]");
 
-        chartSuccess(returnedData.charts[chartIndex], thisChart, chartIndex, noAdvice, noZoom);
+        chartSuccess(returnedData.charts[chartIndex], thisChart, noAdvice, noZoom);
       });
       alignYAxes();
     }

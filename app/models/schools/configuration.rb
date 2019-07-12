@@ -39,5 +39,9 @@ module Schools
       end
       configuration
     end
+
+    def can_show_analysis_chart?(page, chart_name)
+      analysis_charts_as_symbols.fetch(page) {{}}.fetch(:charts) {[]}.include?(chart_name)
+    end
   end
 end
