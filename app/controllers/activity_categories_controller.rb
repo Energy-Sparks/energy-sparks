@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivityCategoriesController < ApplicationController
   include ActivityTypeFilterable
 
@@ -63,7 +65,7 @@ class ActivityCategoriesController < ApplicationController
     end
   end
 
-private
+  private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_category_params

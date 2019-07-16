@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: update_academic_years_for_events'
   task update_academic_years_for_events: :environment do

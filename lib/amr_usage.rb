@@ -1,25 +1,27 @@
+# frozen_string_literal: true
+
 # Library of function to calculate energy usage for a school
 # This library is included in the School model
 module AmrUsage
-  MINUTES = ["00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"].freeze
+  MINUTES = ['00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30', '24:00'].freeze
   # daily_usage: get daily usage across all meters for a given
   # supply for a range of dates
   def daily_usage(supply: nil, dates: nil, date_format: nil, meter: nil)
     return nil unless dates
     datetime_range = (dates.first.beginning_of_day..dates.last.end_of_day)
 
-    # TODO this is a bit messy
+    # TODO: this is a bit messy
     result_array = readings_with_selected_meters(supply, meter)
-                    .where(reading_date: datetime_range)
-                    .order(:reading_date)
-                    .group_by(&:reading_date)
-                    .map { |reading_date, amr_readings| [reading_date, amr_readings.sum(&:one_day_kwh).to_f] }
+                   .where(reading_date: datetime_range)
+                   .order(:reading_date)
+                   .group_by(&:reading_date)
+                   .map { |reading_date, amr_readings| [reading_date, amr_readings.sum(&:one_day_kwh).to_f] }
 
     fill_in_blank_dates(dates, result_array, date_format)
   end
 
   def fill_in_blank_dates(dates, result_array, date_format)
-    # TODO this ensures empties are populated with 0.0
+    # TODO: this ensures empties are populated with 0.0
     (dates.first..dates.last).map do |date|
       result_for_date = result_array.select { |record| record[0] == date}.first
       if result_for_date.nil?
@@ -53,18 +55,18 @@ module AmrUsage
   end
 
   def last_n_days_with_readings(supply, window = 7, to_date = Date.current)
-    latest = self.last_reading_date(supply, to_date)
+    latest = last_reading_date(supply, to_date)
     latest.nil? ? nil : latest - window.days..latest
   end
 
   # last_friday_with_readings: get date of the last friday which has readings
   def last_friday_with_readings(supply = nil)
-    readings_with_selected_meters(supply, nil).where("extract(dow from reading_date) = ?", 5).maximum(:reading_date)
+    readings_with_selected_meters(supply, nil).where('extract(dow from reading_date) = ?', 5).maximum(:reading_date)
   end
 
   # return the date range of the last full week with readings
   def last_full_week(supply)
-    friday = self.last_friday_with_readings(supply)
+    friday = last_friday_with_readings(supply)
     friday.nil? ? nil : friday - 4.days..friday
   end
 
@@ -85,10 +87,10 @@ module AmrUsage
     previous_sat..previous_sat + 6.days # week runs from Sat to Fri
   end
 
-private
+  private
 
   def readings_with_selected_meters(supply, meter)
-    self.amr_validated_readings.where(conditional_supply(supply)).where(conditional_meter(meter))
+    amr_validated_readings.where(conditional_supply(supply)).where(conditional_meter(meter))
   end
 
   def conditional_supply(supply)
@@ -96,6 +98,6 @@ private
   end
 
   def conditional_meter(meter)
-    { meters: { mpan_mprn: meter } } if meter.present? && meter != "all"
+    { meters: { mpan_mprn: meter } } if meter.present? && meter != 'all'
   end
 end

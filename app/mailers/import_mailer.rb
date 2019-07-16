@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportMailer < ApplicationMailer
   def import_summary
     @logs = params[:logs]

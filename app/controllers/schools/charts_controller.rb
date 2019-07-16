@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 class Schools::ChartsController < ApplicationController
@@ -27,7 +29,7 @@ class Schools::ChartsController < ApplicationController
     end
   end
 
-private
+  private
 
   def show_benchmark_figures?
     current_user.try(:admin?)

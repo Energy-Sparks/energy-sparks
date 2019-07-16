@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NextActivitySuggesterWithFilter
   NUMBER_OF_SUGGESTIONS = 5
 
@@ -15,13 +17,13 @@ class NextActivitySuggesterWithFilter
       get_suggestions_based_on_last_activity
     end
 
-    #ensure minimum of five suggestions
+    # ensure minimum of five suggestions
     top_up_if_not_enough_suggestions if @suggestions.length < NUMBER_OF_SUGGESTIONS
 
     @suggestions
   end
 
-private
+  private
 
   def get_initial_suggestions
     ActivityTypeSuggestion.initial.order(:id).each do |ats|
@@ -33,9 +35,7 @@ private
     last_activity_type = @school.activities.order(:created_at).last.activity_type
     activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(not_completed_or_repeatable: true), school: @school, scope: last_activity_type.suggested_types)
     activity_type_filter.activity_types.each do |suggested_type|
-      if suggestion_can_be_added?(suggested_type)
-        @suggestions << suggested_type
-      end
+      @suggestions << suggested_type if suggestion_can_be_added?(suggested_type)
     end
   end
 

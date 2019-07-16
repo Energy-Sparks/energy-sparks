@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: create_default_intervention_types'
   task create_default_intervention_types: :environment do

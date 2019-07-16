@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class ConsentController < BaseController
     skip_before_action :authenticate_user!

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class AlertTypesController < AdminController
     load_and_authorize_resource
@@ -20,7 +22,7 @@ module Admin
       end
     end
 
-  private
+    private
 
     def alert_type_params
       params.require(:alert_type).permit(:title, :description, :analysis, :frequency)

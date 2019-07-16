@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivityTypeFilter
   FILTERS = [:key_stages, :subjects, :topics, :activity_timings, :impacts].freeze
 
@@ -80,7 +82,7 @@ class ActivityTypeFilter
     @all_impacts ||= Impact.order(:name)
   end
 
-private
+  private
 
   def load_selected(model, key)
     if @query[key].blank?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class AccountController < BaseController
     skip_before_action :authenticate_user!, only: [:new, :create]
@@ -36,7 +38,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)

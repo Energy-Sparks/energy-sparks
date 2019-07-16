@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnergySparks
   class PointsDisplayNormaliser
     def self.normalise(points)

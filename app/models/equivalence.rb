@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: equivalences
@@ -27,15 +29,13 @@ class Equivalence < ApplicationRecord
 
   scope :relevant, -> { where(relevant: true) }
 
-
   def formatted_variables
-    variables.inject({}) do |formatted, (name, values)|
+    variables.each_with_object({}) do |(name, values), formatted|
       formatted[name] = values[:formatted_equivalence]
-      formatted
     end
   end
 
-private
+  private
 
   def variables
     data.deep_transform_keys do |key|

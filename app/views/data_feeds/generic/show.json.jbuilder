@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Lint/ParenthesesAsGroupedExpression
 json.calendar_events (@first_read.reading_date.to_date..Time.zone.today).each do |the_date|
   json.startDate  the_date

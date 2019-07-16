@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: add_content_managed_alert'
   task add_content_managed_alert: :environment do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class Importer
     def initialize(config, bucket = nil, s3_client = nil)
@@ -13,10 +15,10 @@ module Amr
         import_file(file_name)
         archive_file(file_name)
       end
-      Rails.logger.info "Downloaded all"
+      Rails.logger.info 'Downloaded all'
     end
 
-  private
+    private
 
     def get_file_from_s3(file_name)
       key = "#{@config.s3_folder}/#{file_name}"

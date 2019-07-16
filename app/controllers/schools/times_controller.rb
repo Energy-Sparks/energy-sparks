@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class TimesController < ApplicationController
     before_action :set_school
@@ -14,7 +16,7 @@ module Schools
       end
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])

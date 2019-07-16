@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Charts
   class Annotate
     def initialize(interventions_scope:)

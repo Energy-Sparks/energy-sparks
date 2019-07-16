@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'aws-sdk-s3'
 require 'mail'
 
@@ -20,7 +22,6 @@ module DataPipeline
         prefix = sent_to.to_s.split('@').first
 
         @logger.info("Prefix: #{prefix}")
-
 
         responses = email.attachments.map do |attachment|
           @logger.info("Moving: #{attachment.filename} to: #{@environment['PROCESS_BUCKET']}")

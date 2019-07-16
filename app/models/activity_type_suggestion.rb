@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activity_type_suggestions
@@ -20,7 +22,7 @@
 
 class ActivityTypeSuggestion < ApplicationRecord
   belongs_to :activity_type
-  belongs_to :suggested_type, class_name: "ActivityType"
+  belongs_to :suggested_type, class_name: 'ActivityType'
 
   scope :initial, -> { where(activity_type: nil) }
 end

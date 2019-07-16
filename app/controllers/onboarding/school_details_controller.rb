@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class SchoolDetailsController < BaseController
     before_action :set_key_stages
@@ -37,7 +39,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def set_key_stages
       @key_stages = KeyStage.order(:name)

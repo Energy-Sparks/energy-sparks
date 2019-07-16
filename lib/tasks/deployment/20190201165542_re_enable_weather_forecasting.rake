@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: re_enable_weather_forecasting'
   task re_enable_weather_forecasting: :environment do

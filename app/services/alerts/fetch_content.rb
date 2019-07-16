@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Alerts
   class FetchContent
     def initialize(alert)
@@ -8,10 +10,10 @@ module Alerts
       rating = @alert.rating
       return [] if rating.blank? || !@alert.displayable?
 
-      alert_type_ratings = AlertTypeRating.
-        for_rating(rating.to_f.round(1)).
-        where(alert_type: @alert.alert_type).
-        where(:"#{scope}_active" => true)
+      alert_type_ratings = AlertTypeRating
+                           .for_rating(rating.to_f.round(1))
+                           .where(alert_type: @alert.alert_type)
+                           .where("#{scope}_active": true)
 
       current_content = alert_type_ratings.map(&:current_content).compact
       current_content.select {|content| content.meets_timings?(scope: scope, today: today)}

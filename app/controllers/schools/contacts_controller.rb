@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Schools::ContactsController < ApplicationController
   load_and_authorize_resource :school
   load_and_authorize_resource :contact, through: :school
@@ -33,7 +35,7 @@ class Schools::ContactsController < ApplicationController
     redirect_to school_contacts_path(@school), notice: "#{display_name} was successfully deleted."
   end
 
-private
+  private
 
   def contact_params
     params.require(:contact).permit(

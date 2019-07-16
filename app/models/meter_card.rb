@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MeterCard
   class Values
     attr_reader :latest_reading_date, :window_first_date, :average_usage, :most_usage
@@ -36,7 +38,7 @@ class MeterCard
               latest_reading_date: latest_reading_date,
               window_first_date: latest_reading_date - window.days,
               average_usage: calulate_average_usage(school: school, supply: supply, window: window).to_i,
-              most_usage: school.day_most_usage(supply, window)[0],
+              most_usage: school.day_most_usage(supply, window)[0]
             )
           )
         rescue => e

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: bulk_load_carbon_intensity'
   task bulk_load_carbon_intensity: :environment do

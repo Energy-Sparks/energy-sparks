@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ScoreboardsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show]
@@ -43,11 +45,11 @@ class ScoreboardsController < ApplicationController
   def destroy
     @scoreboard.safe_destroy
     redirect_to scoreboards_url, notice: 'Scoreboard deleted'
-  rescue EnergySparks::SafeDestroyError => error
-    redirect_to scoreboards_url, alert: "Delete failed: #{error.message}"
+  rescue EnergySparks::SafeDestroyError => e
+    redirect_to scoreboards_url, alert: "Delete failed: #{e.message}"
   end
 
-private
+  private
 
   def scoreboard_params
     params.require(:scoreboard).permit(:name, :description)

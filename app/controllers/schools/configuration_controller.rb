@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class ConfigurationController < ApplicationController
     before_action :set_school
@@ -25,7 +27,7 @@ module Schools
       redirect_to school_path(@school)
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])

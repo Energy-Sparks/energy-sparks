@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 namespace :data_feeds do
   desc 'One off load'
   task one_off: [:environment] do
     pp DateTime.current
-    %w(frome sheffield).each do |region|
+    %w[frome sheffield].each do |region|
       wua = WeatherUndergroundArea.find_by(title: region.capitalize)
       pva = SolarPvTuosArea.find_by(title: region.capitalize)
 
@@ -13,11 +15,11 @@ namespace :data_feeds do
       import_feed(wu.id, "etc/one_off_data_load/#{region}-temperaturedata.csv", :temperature)
       pp "reading count after : #{DataFeedReading.count}"
       pp DateTime.current
-      pp "import irradiation"
+      pp 'import irradiation'
       import_feed(wu.id, "etc/one_off_data_load/#{region}-solardata.csv", :solar_irradiation)
       pp "reading count after : #{DataFeedReading.count}"
       pp DateTime.current
-      pp "import pv"
+      pp 'import pv'
       import_feed(pv.id, "etc/one_off_data_load/pv-data-#{region}.csv", :solar_pv)
       pp "reading count after : #{DataFeedReading.count}"
       pp DateTime.current
@@ -37,6 +39,6 @@ namespace :data_feeds do
     end
     pp "ready to import #{items.size}"
     DataFeedReading.import(items)
-    pp "finished"
+    pp 'finished'
   end
 end

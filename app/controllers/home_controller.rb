@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
@@ -32,7 +34,7 @@ class HomeController < ApplicationController
     @help_page = params[:help_page].tr('^A-Za-z0-9_', '') if params[:help_page]
   end
 
-private
+  private
 
   def redirect_if_logged_in
     if user_signed_in?

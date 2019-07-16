@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SchoolGroupsController < ApplicationController
   load_and_authorize_resource
 
@@ -37,11 +39,11 @@ class SchoolGroupsController < ApplicationController
   def destroy
     @school_group.safe_destroy
     redirect_to school_groups_url, notice: 'School group deleted'
-  rescue EnergySparks::SafeDestroyError => error
-    redirect_to school_groups_url, alert: "Delete failed: #{error.message}"
+  rescue EnergySparks::SafeDestroyError => e
+    redirect_to school_groups_url, alert: "Delete failed: #{e.message}"
   end
 
-private
+  private
 
   def school_group_params
     params.require(:school_group).permit(

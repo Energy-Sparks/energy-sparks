@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: add_default_school_groups_and_scoreboards'
   task add_default_school_groups_and_scoreboards: :environment do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class TemperatureObservationsController < ApplicationController
     load_resource :school
@@ -32,7 +34,7 @@ module Schools
       redirect_to school_temperature_observations_path(@school), notice: 'Successfully deleted.'
     end
 
-  private
+    private
 
     def set_location_names
       @location_names = @school.locations.pluck(:name).push('').join(',')

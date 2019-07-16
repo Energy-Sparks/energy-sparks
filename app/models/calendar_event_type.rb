@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: calendar_event_types
@@ -17,7 +19,7 @@
 class CalendarEventType < ApplicationRecord
   has_many :calendar_events
 
-  INSET_DAY = 'Inset Day'.freeze
+  INSET_DAY = 'Inset Day'
 
   scope :term,          -> { where(term_time: true) }
   scope :inset_day,     -> { where(inset_day: true) }

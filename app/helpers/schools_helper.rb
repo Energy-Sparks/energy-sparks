@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchoolsHelper
   include Measurements
 
@@ -11,16 +13,16 @@ module SchoolsHelper
 
     column_chart(
       compare_daily_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: @measurement),
-      id: "chart",
+      id: 'chart',
       xtitle: 'Day of the week',
       ytitle: ytitle,
       height: '500px',
       colors: colours_for_supply(supply),
       library: {
-         credits: { enabled: true },
-          yAxis: {
-              lineWidth: 1
-          }
+        credits: { enabled: true },
+        yAxis: {
+          lineWidth: 1
+        }
       }
     )
   end
@@ -41,22 +43,22 @@ module SchoolsHelper
 
   def compare_hourly_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kW')
     line_chart(compare_hourly_usage_school_path(supply: supply, first_date: first_date, to_date: to_date, meter: meter, measurement: measurement),
-          id: "chart",
-          xtitle: 'Time of day',
-          ytitle: 'kW',
-          height: '500px',
-          colors: colours_for_supply(supply),
-          library: {
-            credits: { enabled: true },
-            xAxis: {
-                tickmarkPlacement: 'on'
-            },
-            yAxis: {
-                lineWidth: 1,
-                tickInterval: 2
-            }
-          }
-    )
+               id: 'chart',
+               xtitle: 'Time of day',
+               ytitle: 'kW',
+               height: '500px',
+               colors: colours_for_supply(supply),
+               library: {
+                 credits: { enabled: true },
+                 xAxis: {
+                   tickmarkPlacement: 'on'
+                 },
+                 yAxis: {
+                   lineWidth: 1,
+                   tickInterval: 2
+                 }
+               }
+              )
   end
 
   def kid_date(date)
@@ -68,11 +70,11 @@ module SchoolsHelper
   end
 
   def colours_for_supply(supply)
-    supply == "electricity" ? %w(#3bc0f0 #232b49) : %w(#ffac21 #ff4500)
+    supply == 'electricity' ? %w[#3bc0f0 #232b49] : %w[#ffac21 #ff4500]
   end
 
   def meter_display_name(mpan_mprn)
-    return mpan_mprn if mpan_mprn == "all"
+    return mpan_mprn if mpan_mprn == 'all'
     meter = Meter.find_by_mpan_mprn(mpan_mprn)
     meter.present? ? meter.display_name : meter
   end
@@ -81,22 +83,22 @@ module SchoolsHelper
     measurement_symbol = measurement.to_sym
     fuel_type = supply.to_sym
 
-    precision = lambda { |reading| [reading[0], number_with_precision(convert_measurement(:kwh, measurement_symbol, fuel_type, reading[1]), precision: to_precision)] }
+    precision = ->(reading) { [reading[0], number_with_precision(convert_measurement(:kwh, measurement_symbol, fuel_type, reading[1]), precision: to_precision)] }
 
     school.daily_usage(supply: supply,
-      dates: dates,
-      date_format: '%A',
-      meter: meter
-    ).map(&precision)
+                       dates: dates,
+                       date_format: '%A',
+                       meter: meter
+                      ).map(&precision)
   end
 
   def hourly_usage_to_precision(school, supply, date, meter, scale = :kw, to_precision = 1)
-    precision = lambda { |reading| [reading[0], number_with_precision(reading[1], precision: to_precision)] }
+    precision = ->(reading) { [reading[0], number_with_precision(reading[1], precision: to_precision)] }
     school.hourly_usage_for_date(supply: supply,
-      date: date,
-      meter: meter,
-      scale: scale
-    ).map(&precision)
+                                 date: date,
+                                 meter: meter,
+                                 scale: scale
+                                ).map(&precision)
   end
 
   def last_full_week(supply)
@@ -188,8 +190,8 @@ module SchoolsHelper
     when :solar_pv
       -1 * scale_unit_from_kwh(:£, :electricity)
     else
-      raise EnergySparksUnexpectedStateException.new("Error: £: unknown fuel type #{fuel_type}") unless fuel_type.nil?
-      raise EnergySparksUnexpectedStateException.new('Error: £: nil fuel type')
+      raise EnergySparksUnexpectedStateException, "Error: £: unknown fuel type #{fuel_type}" unless fuel_type.nil?
+      raise EnergySparksUnexpectedStateException, 'Error: £: nil fuel type'
     end
   end
 end

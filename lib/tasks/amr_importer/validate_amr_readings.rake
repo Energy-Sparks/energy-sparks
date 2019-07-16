@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 namespace :amr_importer do
-  desc "Validate readings"
+  desc 'Validate readings'
   task validate_amr_readings: :environment do
     puts DateTime.now.utc
     total_amr_readings_before = AmrValidatedReading.count

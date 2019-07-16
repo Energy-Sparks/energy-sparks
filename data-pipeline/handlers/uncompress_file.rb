@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'aws-sdk-s3'
 require 'zip'
 
@@ -30,13 +32,13 @@ module DataPipeline
         { statusCode: 200, body: JSON.generate(responses: upload_responses) }
       end
 
-    private
+      private
 
       def move_to_process_bucket(key, content)
         @client.put_object(
           bucket: @environment['PROCESS_BUCKET'],
           key: key,
-          body: content,
+          body: content
         )
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Alerts
@@ -14,7 +16,7 @@ module Alerts
       build_alert(report)
     end
 
-  private
+    private
 
     def adapter_class(alert_type)
       if alert_type.system?
@@ -31,17 +33,17 @@ module Alerts
 
     def build_alert(analysis_report)
       Alert.new(
-        school_id:       @school.id,
-        alert_type_id:   @alert_type.id,
-        run_on:          @analysis_date,
-        displayable:     analysis_report.displayable?,
+        school_id: @school.id,
+        alert_type_id: @alert_type.id,
+        run_on: @analysis_date,
+        displayable: analysis_report.displayable?,
         analytics_valid: analysis_report.valid,
-        status:          analysis_report.status,
-        rating:          analysis_report.rating,
-        enough_data:     analysis_report.enough_data,
-        template_data:   analysis_report.template_data,
-        chart_data:      analysis_report.chart_data,
-        table_data:      analysis_report.table_data
+        status: analysis_report.status,
+        rating: analysis_report.rating,
+        enough_data: analysis_report.enough_data,
+        template_data: analysis_report.template_data,
+        chart_data: analysis_report.chart_data,
+        table_data: analysis_report.table_data
       )
     end
   end

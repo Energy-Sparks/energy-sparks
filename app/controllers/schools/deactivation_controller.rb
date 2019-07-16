@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class DeactivationController < ApplicationController
     def create

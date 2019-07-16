@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def nice_date_times(datetime)
-    return "" if datetime.nil?
+    return '' if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
   end
 
   def nice_dates(date)
-    return "" if date.nil?
+    return '' if date.nil?
     "#{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')} "
   end
 
@@ -52,13 +54,13 @@ module ApplicationHelper
 
   def class_for_last_date(last_date)
     if last_date.nil?
-      "table-light"
+      'table-light'
     elsif last_date < Time.zone.now - 30.days
-      "table-danger"
+      'table-danger'
     elsif last_date < Time.zone.now - 5.days
-      "table-warning"
+      'table-warning'
     else
-      "table-success"
+      'table-success'
     end
   end
 
@@ -145,9 +147,8 @@ module ApplicationHelper
   end
 
   def chart_tag(school, chart_type, index: 1, chart_config: {})
-    html_chart_data = chart_config.inject({}) do |collection, (data_item_key, data_item_value)|
+    html_chart_data = chart_config.each_with_object({}) do |(data_item_key, data_item_value), collection|
       collection["chart-#{data_item_key.to_s.parameterize}"] = data_item_value
-      collection
     end
     content_tag(
       :div,
@@ -155,9 +156,9 @@ module ApplicationHelper
       id: "chart_#{index}",
       class: 'analysis-chart',
       data: {
-        "chart-index" => index,
-        "chart-type" => chart_type,
-        "chart-annotations" => school_annotations_path(school)
+        'chart-index' => index,
+        'chart-type' => chart_type,
+        'chart-annotations' => school_annotations_path(school)
       }.merge(html_chart_data)
     )
   end
@@ -194,7 +195,7 @@ module ApplicationHelper
 
   def format_school_time(school_time)
     return school_time if school_time.blank?
-    sprintf('%04d', school_time).insert(2, ':')
+    format('%04d', school_time).insert(2, ':')
   end
 
   def table_headers_from_array(array)

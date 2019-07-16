@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AlertMailer < ApplicationMailer
   add_template_helper(AlertsChartsHelper)
 

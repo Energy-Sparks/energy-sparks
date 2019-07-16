@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
@@ -11,13 +13,13 @@ module Amr
 
     def build
       @meter_class.new(
-        meter_collection:   @meter_collection,
-        amr_data:           AMRData.new(@meter_type),
-        type:               @meter_type,
-        identifier:         @active_record_meter.mpan_mprn,
-        name:               @active_record_meter.name,
-        external_meter_id:  @active_record_meter.id,
-        meter_attributes:   @active_record_meter.meter_attributes
+        meter_collection: @meter_collection,
+        amr_data: AMRData.new(@meter_type),
+        type: @meter_type,
+        identifier: @active_record_meter.mpan_mprn,
+        name: @active_record_meter.name,
+        external_meter_id: @active_record_meter.id,
+        meter_attributes: @active_record_meter.meter_attributes
       )
     end
   end

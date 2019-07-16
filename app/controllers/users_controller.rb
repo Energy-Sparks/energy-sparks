@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   load_and_authorize_resource
 
@@ -52,7 +54,7 @@ class UsersController < ApplicationController
     end
   end
 
-private
+  private
 
   def user_params
     params[:user].delete(:password) if params[:user][:password].blank?

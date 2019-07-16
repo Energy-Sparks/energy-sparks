@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :alerts do
   desc 'Run alert content job'
   task generate_content: [:environment] do

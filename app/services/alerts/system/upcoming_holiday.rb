@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Alerts
   module System
     class UpcomingHoliday
@@ -45,8 +47,8 @@ module Alerts
             rating: [0.0, (next_holiday.start_date - @today).to_i.to_f].max,
             enough_data: :enough,
             template_data: {
-              holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
-              holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
+              holiday_start_date: next_holiday.start_date.strftime('%d/%m/%Y'),
+              holiday_end_date: next_holiday.end_date.strftime('%d/%m/%Y'),
               holiday_title: next_holiday.title
             }
           )

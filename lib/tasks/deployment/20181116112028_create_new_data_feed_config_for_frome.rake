@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: create_new_data_feed_config_for_frome'
   task create_new_data_feed_config_for_frome: :environment do
@@ -12,9 +14,9 @@ namespace :after_party do
         name: 'Frome',
         latitude: 51.2308,
         longitude: -2.3201,
-        start_date:  Date.new(2013, 8, 12), # may be better in controlling program
+        start_date: Date.new(2013, 8, 12), # may be better in controlling program
         end_date: Date.new(2018, 9, 26), # ditto, inclusive
-        method:    :weighted_average,
+        method: :weighted_average,
         max_minutes_between_samples: 120, # ignore data where samples from station are too far apart
         max_temperature: 38.0,
         min_temperature: -15.0,
@@ -22,13 +24,13 @@ namespace :after_party do
         max_solar_insolence: 2000.0,
         weather_stations_for_temperature:
         { # weight for averaging, selection: the weather station names are found by browsing weather underground local station data
-          'IFROME9'    => 0.25,
-          'IFROME5'    => 0.25,
-          'IWARMINS4'  => 0.1,
+          'IFROME9' => 0.25,
+          'IFROME5' => 0.25,
+          'IWARMINS4' => 0.1,
           'IWILTSHI36' => 0.1,
-          'IRADSTOC7'  => 0.1,
-          'IKILMERS2'  => 0.1,
-          'IUPTONNO2'  => 0.1
+          'IRADSTOC7' => 0.1,
+          'IKILMERS2' => 0.1,
+          'IUPTONNO2' => 0.1
         },
         weather_stations_for_solar: # has to be a temperature station for the moment - saves loading twice
         {

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class InterventionsController < ApplicationController
     skip_before_action :authenticate_user!, only: [:index, :show]
@@ -41,7 +43,7 @@ module Schools
     def show
     end
 
-  private
+    private
 
     def load_intervention_types
       @intervention_type_group = if @observation.intervention_type

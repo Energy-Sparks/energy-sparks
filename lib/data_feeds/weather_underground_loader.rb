@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DataFeeds
   class WeatherUndergroundLoader
     # This will actually fire up and get the data
@@ -68,18 +70,17 @@ module DataFeeds
 
           processeddata.each do |station_name, data|
             # average temperatures
-            if !data[0][loop_count].nil?
+            unless data[0][loop_count].nil?
               temp_weight = area[:weather_stations_for_temperature][station_name]
               avg_sum_temp += data[0][loop_count] * temp_weight
               sample_weight_temp += temp_weight
             end
 
             # average solar insolence
-            if !data[1][loop_count].nil? && area[:weather_stations_for_solar].key?(station_name)
-              solar_weight = area[:weather_stations_for_solar][station_name]
-              avg_sum_solar += data[1][loop_count] * solar_weight
-              sample_weight_solar += solar_weight
-            end
+            next unless !data[1][loop_count].nil? && area[:weather_stations_for_solar].key?(station_name)
+            solar_weight = area[:weather_stations_for_solar][station_name]
+            avg_sum_solar += data[1][loop_count] * solar_weight
+            sample_weight_solar += solar_weight
           end
 
           avg_temp = sample_weight_temp > 0.0 ? (avg_sum_temp / sample_weight_temp).round(2) : nil
@@ -145,8 +146,8 @@ module DataFeeds
     end
 
     def generate_single_day_station_history_url(station_name, date)
-      sprintf(
-        "https://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1",
+      format(
+        'https://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=%s&year=%d&month=%d&day=%d&graphspan=day&format=1',
         station_name,
         date.year,
         date.month,
@@ -175,46 +176,44 @@ module DataFeeds
       mins30step = (1.to_f / 48)
 
       start_time.step(end_time, mins30step).each do |datetime|
-        begin
-          if date_times.last < datetime
-            puts "Problem shortage of data for this weather station, terminating interpolation early at #{datetime}"
-            return [temperatures, solar_insolance]
-          end
-          index = date_times.bsearch_index {|x, _| x >= datetime } # closest
-
-          time_before = date_times[index - 1]
-          time_after = date_times[index]
-
-          minutes_between_samples = (time_after - time_before) * 24 * 60
-
-          if minutes_between_samples <= @max_minutes_between_samples && datetime > date_times.first
-            # process temperatures
-
-            temp_before = rawdata[date_times[index - 1]][0]
-            temp_after = rawdata[date_times[index]][0]
-            debug = !@debug_start_date.nil? && datetime >= @debug_start_date && datetime <= @debug_end_date
-
-            temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime, debug).round(2)
-            temperatures.push(temp_val)
-
-            if debug
-              puts "Interpolation for #{station_name} #{datetime} T = #{temp_before} to #{temp_after} => #{temp_val}"
-              puts "mins between samples #{minutes_between_samples} versus limit #{@max_minutes_between_samples}"
-            end
-            # process solar insolence
-
-            solar_before = rawdata[date_times[index - 1]][1]
-            solar_after = rawdata[date_times[index]][1]
-            solar_val = simple_interpolate(solar_after.to_f, solar_before.to_f, time_after, time_before, datetime).round(2)
-            solar_insolance.push(solar_val)
-          else
-            temperatures.push(nil)
-            solar_insolance.push(nil)
-          end
-        rescue StandardError
-          puts "Data Exception at #{datetime}"
-          raise
+        if date_times.last < datetime
+          puts "Problem shortage of data for this weather station, terminating interpolation early at #{datetime}"
+          return [temperatures, solar_insolance]
         end
+        index = date_times.bsearch_index {|x, _| x >= datetime } # closest
+
+        time_before = date_times[index - 1]
+        time_after = date_times[index]
+
+        minutes_between_samples = (time_after - time_before) * 24 * 60
+
+        if minutes_between_samples <= @max_minutes_between_samples && datetime > date_times.first
+          # process temperatures
+
+          temp_before = rawdata[date_times[index - 1]][0]
+          temp_after = rawdata[date_times[index]][0]
+          debug = !@debug_start_date.nil? && datetime >= @debug_start_date && datetime <= @debug_end_date
+
+          temp_val = simple_interpolate(temp_after.to_f, temp_before.to_f, time_after, time_before, datetime, debug).round(2)
+          temperatures.push(temp_val)
+
+          if debug
+            puts "Interpolation for #{station_name} #{datetime} T = #{temp_before} to #{temp_after} => #{temp_val}"
+            puts "mins between samples #{minutes_between_samples} versus limit #{@max_minutes_between_samples}"
+          end
+          # process solar insolence
+
+          solar_before = rawdata[date_times[index - 1]][1]
+          solar_after = rawdata[date_times[index]][1]
+          solar_val = simple_interpolate(solar_after.to_f, solar_before.to_f, time_after, time_before, datetime).round(2)
+          solar_insolance.push(solar_val)
+        else
+          temperatures.push(nil)
+          solar_insolance.push(nil)
+        end
+      rescue StandardError
+        puts "Data Exception at #{datetime}"
+        raise
       end
 
       [temperatures, solar_insolance]

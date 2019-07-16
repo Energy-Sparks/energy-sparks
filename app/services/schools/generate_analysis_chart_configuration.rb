@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Schools
   class GenerateAnalysisChartConfiguration
     def initialize(
-        school,
-        aggregated_meter_collection,
-        fuel_configuration,
-        dashboard_fuel_types = DashboardConfiguration::DASHBOARD_FUEL_TYPES,
-        dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
-      )
+      school,
+      aggregated_meter_collection,
+      fuel_configuration,
+      dashboard_fuel_types = DashboardConfiguration::DASHBOARD_FUEL_TYPES,
+      dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
+    )
       @school = school
       @aggregated_meter_collection = aggregated_meter_collection
       @fuel_configuration = fuel_configuration
@@ -31,7 +33,7 @@ module Schools
       @school.configuration.update!(analysis_charts: page_and_chart_config)
     end
 
-  private
+    private
 
     def white_listed_page_config(page)
       page_configuration = page_config(page)

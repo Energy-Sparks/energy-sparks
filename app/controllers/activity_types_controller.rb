@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivityTypesController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show]
@@ -7,7 +9,7 @@ class ActivityTypesController < ApplicationController
   # GET /activity_types
   # GET /activity_types.json
   def index
-    @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
+    @activity_types = @activity_types.includes(:activity_category).order('activity_categories.name', :name)
   end
 
   # GET /activity_types/1
@@ -76,7 +78,7 @@ class ActivityTypesController < ApplicationController
     end
   end
 
-private
+  private
 
   def add_activity_type_suggestions(number_of_suggestions_so_far = 0)
     (0..(7 - number_of_suggestions_so_far)).each { @activity_type.activity_type_suggestions.build }
@@ -85,19 +87,19 @@ private
   # Never trust parameters from the scary internet, only allow the white list through.
   def activity_type_params
     params.require(:activity_type).permit(:name,
-        :description,
-        :active,
-        :activity_category_id,
-        :score,
-        :badge_name,
-        :repeatable,
-        :data_driven,
-        key_stage_ids: [],
-        impact_ids: [],
-        subject_ids: [],
-        topic_ids: [],
-        activity_timing_ids: [],
-        activity_type_suggestions_attributes: suggestions_params)
+                                          :description,
+                                          :active,
+                                          :activity_category_id,
+                                          :score,
+                                          :badge_name,
+                                          :repeatable,
+                                          :data_driven,
+                                          key_stage_ids: [],
+                                          impact_ids: [],
+                                          subject_ids: [],
+                                          topic_ids: [],
+                                          activity_timing_ids: [],
+                                          activity_type_suggestions_attributes: suggestions_params)
   end
 
   def suggestions_params

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module AlertTypes
     class ActivityTypesController < AdminController
@@ -5,9 +7,8 @@ module Admin
         @alert_type = AlertType.find(params[:alert_type_id])
         @rating = @alert_type.ratings.find(params[:rating_id])
         @activity_categories_and_types = ActivityCategory.listed_with_activity_types
-        @positions = @rating.alert_type_rating_activity_types.inject({}) do |positions, alert_type_activity_types|
+        @positions = @rating.alert_type_rating_activity_types.each_with_object({}) do |alert_type_activity_types, positions|
           positions[alert_type_activity_types.activity_type_id] = alert_type_activity_types.position
-          positions
         end
       end
 

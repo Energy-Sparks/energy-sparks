@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class UpsertValidatedReadings
     def initialize(validated_meter_collection)
@@ -14,7 +16,7 @@ module Amr
       process_dashboard_meters(gas_meters)
     end
 
-  private
+    private
 
     def process_dashboard_meters(dashboard_meters)
       return if dashboard_meters.empty?

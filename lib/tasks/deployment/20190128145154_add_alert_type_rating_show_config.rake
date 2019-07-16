@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: add_alert_type_rating_show_config'
   task add_alert_type_rating_show_config: :environment do

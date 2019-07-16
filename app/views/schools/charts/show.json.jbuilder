@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.charts @output.each do |chart_data_values|
   json.chart_index        1
   json.title              chart_data_values.title

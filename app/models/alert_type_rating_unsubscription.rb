@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: alert_type_rating_unsubscriptions
@@ -35,7 +37,6 @@ class AlertTypeRatingUnsubscription < ApplicationRecord
   enum unsubscription_period: [:one_month, :six_months, :forever]
 
   scope :active, ->(today) { where('effective_until IS NULL OR effective_until < ?', today)}
-
 
   validates :alert_type_rating, :reason, :unsubscription_period, presence: true
 

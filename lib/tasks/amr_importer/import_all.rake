@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 namespace :amr do
-  desc "Import data from csv"
+  desc 'Import data from csv'
   task import_all: :environment do
     AmrDataFeedConfig.all.each do |config|
       puts "#{DateTime.now.utc} #{config.description} start"

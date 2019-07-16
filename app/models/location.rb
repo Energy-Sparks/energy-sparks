@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: locations
@@ -16,7 +18,6 @@
 #
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
-
 
 class Location < ApplicationRecord
   belongs_to :school

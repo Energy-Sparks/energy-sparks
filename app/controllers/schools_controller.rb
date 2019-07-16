@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SchoolsController < ApplicationController
   include ActivityTypeFilterable
   include Measurements
@@ -95,7 +97,7 @@ class SchoolsController < ApplicationController
     end
   end
 
-private
+  private
 
   def set_key_stages
     @key_stages = KeyStage.order(:name)
@@ -127,11 +129,11 @@ private
   end
 
   def period
-    params[:period].present? ? params[:period] : "hourly"
+    params[:period].present? ? params[:period] : 'hourly'
   end
 
   def set_first_date
-    if period == "hourly"
+    if period == 'hourly'
       begin
         @first_date = Date.parse params[:first_date]
       rescue
@@ -143,13 +145,13 @@ private
       rescue
         @first_date = @school.last_reading_date(@supply)
       end
-      #ensure we're looking at beginning of the week
+      # ensure we're looking at beginning of the week
       @first_date = @first_date.beginning_of_week(:sunday) if @first_date.present?
     end
   end
 
   def set_to_date
-    if period == "hourly"
+    if period == 'hourly'
       begin
         @to_date = Date.parse params[:to_date]
       rescue
@@ -162,7 +164,7 @@ private
         last_reading = @school.last_reading_date(@supply)
         @to_date = last_reading - 7.days if last_reading.present?
       end
-      #ensure we're looking at beginning of the week
+      # ensure we're looking at beginning of the week
       @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
     end
   end

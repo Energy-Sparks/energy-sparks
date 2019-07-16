@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :equivalences do
   desc 'Run equivalences job'
   task create: [:environment] do

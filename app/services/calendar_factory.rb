@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CalendarFactory
   def initialize(existing_calendar, title = existing_calendar.title, area = existing_calendar.calendar_area, template = false)
     @existing_calendar = existing_calendar

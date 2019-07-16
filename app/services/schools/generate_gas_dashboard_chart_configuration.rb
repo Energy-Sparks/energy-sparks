@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Schools
   class GenerateGasDashboardChartConfiguration
     def initialize(
-        school,
-        aggregated_meter_collection,
-        fuel_configuration
-      )
+      school,
+      aggregated_meter_collection,
+      fuel_configuration
+    )
       @school = school
       @aggregated_meter_collection = aggregated_meter_collection
       @fuel_configuration = fuel_configuration
@@ -16,7 +18,7 @@ module Schools
       @school.configuration.update!(gas_dashboard_chart_type: gas_dashboard_chart_type)
     end
 
-  private
+    private
 
     def gas_dashboard_chart_type
       return Schools::Configuration::NO_CHART unless @fuel_configuration.has_gas

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class FuelConfiguration
     attr_reader :has_solar_pv, :has_storage_heaters, :dual_fuel, :fuel_types_for_analysis, :no_meters_with_validated_readings, :has_gas

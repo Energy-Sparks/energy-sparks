@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChartDataValues
   attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations
 
@@ -18,7 +20,7 @@ class ChartDataValues
     '' => '#ff4500',
     'gas' => '#3bc0f0',
     'solar pv (consumed onsite)' => '#ffac21',
-    'storage heaters' => "#501e74",
+    'storage heaters' => '#501e74'
   }.freeze
 
   def initialize(chart, chart_type)
@@ -75,7 +77,7 @@ class ChartDataValues
     end
   end
 
-private
+  private
 
   def colour_hash
     COLOUR_HASH
@@ -92,7 +94,7 @@ private
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
 
-    if @y2_data != nil && @y2_chart_type == :line
+    if !@y2_data.nil? && @y2_chart_type == :line
       @y2_axis_label = @y2_data.keys[0]
       @y2_data.each do |data_type, data|
         @series_data << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
@@ -117,7 +119,7 @@ private
       { name: data_type, color: colour_options[index], type: @chart1_type, data: data }
     end
 
-    if @y2_data != nil && @y2_chart_type == :line
+    if !@y2_data.nil? && @y2_chart_type == :line
       @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
         data_type = tidy_and_keep_label(data_type)
         { name: data_type, color: colour_options[index], type: @chart1_type, data: data }

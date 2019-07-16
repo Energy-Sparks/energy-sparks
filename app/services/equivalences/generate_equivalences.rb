@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Equivalences
   class GenerateEquivalences
     def initialize(school, analytics_class)
@@ -11,12 +13,10 @@ module Equivalences
       @school.transaction do
         @school.equivalences.destroy_all
         EquivalenceType.all.map do |equivalence_type|
-          begin
-            equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
-            equivalence.save!
-          rescue Calculator::CalculationError => e
-            Rails.logger.debug("#{e.message} for #{@school.name}")
-          end
+          equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
+          equivalence.save!
+        rescue Calculator::CalculationError => e
+          Rails.logger.debug("#{e.message} for #{@school.name}")
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class EquivalencesController < AdminController
     def show
@@ -23,7 +25,7 @@ module Admin
       redirect_back fallback_location: admin_equivalence_types_path
     end
 
-  private
+    private
 
     def equivalence_type_params
       params.require(:equivalence_type).permit(:meter_type, :time_period)

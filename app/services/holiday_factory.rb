@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HolidayFactory
   def initialize(calendar)
     @calendar = calendar
@@ -37,7 +39,7 @@ class HolidayFactory
     end
   end
 
-private
+  private
 
   def update_previous_events(calendar_event, pre_save, post_save)
     previous_event = @calendar.terms_and_holidays.find_by(end_date: calendar_event.start_date_was - 1.day)
@@ -66,11 +68,11 @@ private
   end
 
   def move_neighbour(event, field, new_date)
-    lambda { event.update!(field => new_date) }
+    -> { event.update!(field => new_date) }
   end
 
   def destroy_neighbour(event)
-    lambda { event.destroy }
+    -> { event.destroy }
   end
 
   def process_changes(calendar_event, pre_save, post_save)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: remove_unenrolled_schools'
   task remove_unenrolled_schools: :environment do

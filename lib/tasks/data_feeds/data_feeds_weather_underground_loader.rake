@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :data_feeds do
   desc 'Set up data feeds'
   task :weather_underground_loader, [:start_date, :end_date] => :environment do |_t, args|
@@ -8,7 +10,7 @@ namespace :data_feeds do
     p "Clear out readings for #{start_date} - #{end_date} - records #{old_readings.count}"
     old_readings.delete_all
 
-    p "Now import"
+    p 'Now import'
     DataFeeds::WeatherUndergroundLoader.new(start_date, end_date).import
     new_readings = DataFeedReading.where(feed_type: [:solar_irradiation, :temperature]).where('at >= ? and at <= ?', start_date, end_date)
     p "New readings for #{start_date} - #{end_date} - records #{new_readings.count}"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class CsvParserAndUpserter
     attr_reader :inserted_record_count

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CalendarEventTypeFactory
   def self.create
     term_colour = 'rgb(255,172,33)'
@@ -23,7 +25,6 @@ class CalendarEventTypeFactory
     CalendarEventType.all
   end
 end
-
 
 # $yellow: #ffee8f; // term times? rgb(255,238,143)
 # $light-orange: #ffac21; // orange  rgb(255,172,33)

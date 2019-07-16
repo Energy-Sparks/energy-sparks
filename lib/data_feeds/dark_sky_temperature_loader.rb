@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module DataFeeds
@@ -19,7 +21,7 @@ module DataFeeds
       p "Imported #{@insert_count} records, Updated #{@update_count} records"
     end
 
-  private
+    private
 
     def process_area(area)
       data = @dark_sky_api_interface.historic_temperatures(
@@ -42,14 +44,14 @@ module DataFeeds
       record = DarkSkyTemperatureReading.find_by(reading_date: reading_date, area_id: area.id)
       if record
         record.update(temperature_celsius_x48: temperature_celsius_x48)
-        @update_count = @update_count + 1
+        @update_count += 1
       else
         DarkSkyTemperatureReading.create(
           reading_date: reading_date,
           temperature_celsius_x48: temperature_celsius_x48,
           area_id: area.id
         )
-        @insert_count = @insert_count + 1
+        @insert_count += 1
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class SchoolTimesController < BaseController
     def edit
@@ -14,7 +16,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def school_params
       params.require(:school).permit(

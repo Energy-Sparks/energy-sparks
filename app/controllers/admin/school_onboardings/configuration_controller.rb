@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module SchoolOnboardings
     class ConfigurationController < AdminController
@@ -18,7 +20,7 @@ module Admin
         redirect_to new_admin_school_onboarding_email_path(@school_onboarding)
       end
 
-    private
+      private
 
       def school_params
         params.require(:school_onboarding).permit(

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: update_behaviour_groups_with_new_wording'
   task update_behaviour_groups_with_new_wording: :environment do

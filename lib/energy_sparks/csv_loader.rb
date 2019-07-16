@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 module EnergySparks
   class CsvLoader
@@ -6,7 +8,7 @@ module EnergySparks
         headers: true,
         header_converters: :symbol,
         skip_blanks: true,
-        converters: lambda {|f| f ? f.strip : nil}
+        converters: ->(f) { f ? f.strip : nil}
       }
     end
 

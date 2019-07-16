@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
   class AnalyticsValidatedMeterCollectionFactory < AnalyticsUnvalidatedMeterCollectionFactory
-  private
+    private
 
     def heat_meters
       @active_record_school.meters_with_validated_readings(:gas)

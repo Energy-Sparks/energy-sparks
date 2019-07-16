@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :alerts do
   desc 'Run alerts job'
   task create: [:environment] do

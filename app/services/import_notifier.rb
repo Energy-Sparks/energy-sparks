@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportNotifier
   def initialize(description: nil)
     @description = description

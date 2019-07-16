@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class CalendarAreasController < AdminController
     load_and_authorize_resource
@@ -30,7 +32,7 @@ module Admin
       end
     end
 
-  private
+    private
 
     def calendar_area_params
       params.require(:calendar_area).permit(:title, :description)

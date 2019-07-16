@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :configuration do
   desc 'Run alerts job'
   task generate_for_schools: [:environment] do
@@ -6,8 +8,8 @@ namespace :configuration do
       puts "Running all configuration creation for #{school.name}"
       begin
         Schools::GenerateConfiguration.new(school).generate
-      rescue => exception
-        puts "Generation of configuration failure for #{school.name} because #{exception.message}"
+      rescue => e
+        puts "Generation of configuration failure for #{school.name} because #{e.message}"
       end
     end
     puts Time.zone.now

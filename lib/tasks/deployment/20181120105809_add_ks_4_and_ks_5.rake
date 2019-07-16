@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: add_ks_4_and_ks_5'
   task add_ks_4_and_ks_5: :environment do

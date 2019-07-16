@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 class ChartData
@@ -17,7 +19,7 @@ class ChartData
   end
 
   def has_chart_data?
-    ! data.first.series_data.nil?
+    !data.first.series_data.nil?
   rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false
   rescue => e
@@ -26,7 +28,7 @@ class ChartData
     false
   end
 
-private
+  private
 
   def customised_chart_config(chart_manager)
     return teachers_landing_page_gas_simple_config if @chart_type == Schools::Configuration::TEACHERS_GAS_SIMPLE
@@ -43,18 +45,18 @@ private
     chart_config
   end
 
-  # TODO have this chart configuration set up correctly in analytics
+  # TODO: have this chart configuration set up correctly in analytics
   def teachers_landing_page_gas_simple_config
     {
-      name:             'Comparison of last 2 weeks gas consumption',
-      chart1_type:      :column,
+      name: 'Comparison of last 2 weeks gas consumption',
+      chart1_type: :column,
       series_breakdown: :none,
-      x_axis_reformat:  { date: '%A' },
-      timescale:        [{ workweek: 0 }, { workweek: -1 }],
-      x_axis:           :day,
+      x_axis_reformat: { date: '%A' },
+      timescale: [{ workweek: 0 }, { workweek: -1 }],
+      x_axis: :day,
       meter_definition: :allheat,
-      yaxis_units:      :£,
-      yaxis_scaling:    :none,
+      yaxis_units: :£,
+      yaxis_scaling: :none
     }
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
@@ -20,7 +22,7 @@ module Amr
       )
     end
 
-  private
+    private
 
     def floor_area
       @active_record_school.floor_area.to_f

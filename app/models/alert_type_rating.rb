@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: alert_type_ratings
@@ -65,14 +67,13 @@ class AlertTypeRating < ApplicationRecord
     activity_types.order('alert_type_rating_activity_types.position').group('activity_types.id, alert_type_rating_activity_types.position')
   end
 
-
-private
+  private
 
   def save_and_replace(content, to_replace)
     transaction do
       save!
       content.save!
-      to_replace.update!(replaced_by: content) if to_replace
+      to_replace&.update!(replaced_by: content)
     end
   end
 

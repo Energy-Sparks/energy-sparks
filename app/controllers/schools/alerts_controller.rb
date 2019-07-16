@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class AlertsController < ApplicationController
     load_and_authorize_resource :school

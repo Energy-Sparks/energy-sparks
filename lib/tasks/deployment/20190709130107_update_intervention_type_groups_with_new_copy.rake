@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: update_intervention_type_groups_with_new_copy'
   task update_intervention_type_groups_with_new_copy: :environment do

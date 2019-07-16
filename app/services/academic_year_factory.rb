@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class AcademicYearFactory
   def initialize(start_year = 1990, end_year = 2023)
     @start_year = start_year
     @end_year = end_year
-    raise ArgumentError.new("End year: #{end_year} must be greater than start year: #{start_year}") if start_year > end_year
+    raise ArgumentError, "End year: #{end_year} must be greater than start year: #{start_year}" if start_year > end_year
   end
 
   def create

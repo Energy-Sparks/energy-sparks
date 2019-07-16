@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: update_carbon_data'
   task update_carbon_data: :environment do

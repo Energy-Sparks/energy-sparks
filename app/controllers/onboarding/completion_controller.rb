@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class CompletionController < BaseController
     skip_before_action :check_complete, only: :show

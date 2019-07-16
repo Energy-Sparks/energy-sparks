@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 namespace :amr_importer do
-  desc "Validate readings"
+  desc 'Validate readings'
   task :validate_amr_readings_by_school_id, [:school_id] => :environment do |_t, args|
     puts DateTime.now.utc
     total_amr_readings_before = AmrValidatedReading.count

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CalendarFactoryFromEventHash
   def initialize(event_hash, area, template = false)
     @event_hash = event_hash
@@ -26,7 +28,7 @@ class CalendarFactoryFromEventHash
     @calendar
   end
 
-private
+  private
 
   def create_holidays_between_terms
     HolidayFactory.new(@calendar).create

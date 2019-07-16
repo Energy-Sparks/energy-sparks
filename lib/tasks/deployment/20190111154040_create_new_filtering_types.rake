@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: create_new_filtering_types'
   task create_new_filtering_types: :environment do
@@ -13,7 +15,7 @@ namespace :after_party do
         'Reducing energy use overnight'
       ]
 
-      subjects = %w(Science Geography Maths Citizenship)
+      subjects = %w[Science Geography Maths Citizenship]
 
       topics = [
         'Working scientifically',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: schools
@@ -205,12 +207,12 @@ class School < ApplicationRecord
 
   def badges_by_date(order: :desc, limit: nil)
     sash.badges_sashes.order(created_at: order)
-      .limit(limit)
-      .map(&:badge)
+        .limit(limit)
+        .map(&:badge)
   end
 
   def points_since(since = 1.month.ago)
-    self.score_points.where("created_at > '#{since}'").sum(:num_points)
+    score_points.where("created_at > '#{since}'").sum(:num_points)
   end
 
   def school_admin
@@ -237,7 +239,7 @@ class School < ApplicationRecord
     end
   end
 
-private
+  private
 
   # Create Merit::Sash relation
   # Having the sash relation makes life easier elsewhere

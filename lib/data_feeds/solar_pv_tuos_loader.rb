@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sun_times'
 
 module DataFeeds
@@ -67,14 +69,13 @@ module DataFeeds
       data.each do |_key, value|
         value.each do |components|
           _id, datetimestr, generation, capacity, _stations = components
-          unless generation.nil?
-            time = Time.zone.parse(datetimestr).to_datetime
-            halfhour_yield = generation / capacity / 2.0
-            total_yield += halfhour_yield
-            solar_pv_yield[time] = halfhour_yield
-            # puts "Download: #{time} #{halfhour_yield}"
-            data_count += 1
-          end
+          next if generation.nil?
+          time = Time.zone.parse(datetimestr).to_datetime
+          halfhour_yield = generation / capacity / 2.0
+          total_yield += halfhour_yield
+          solar_pv_yield[time] = halfhour_yield
+          # puts "Download: #{time} #{halfhour_yield}"
+          data_count += 1
         end
       end
       puts "total yield #{total_yield} items #{data_count}"
@@ -138,12 +139,11 @@ module DataFeeds
 
       # if too far from median remove
       data.each_with_index do |entry, index|
-        if entry > median_yield + @yield_diff_criteria || entry < median_yield - @yield_diff_criteria
-          bad_indexes.push(index)
-          message = "Warning: rejecting yield for #{names[index]} value #{entry} from values #{data} for #{datetime}"
-          puts message
-          @errors.push(message)
-        end
+        next unless entry > median_yield + @yield_diff_criteria || entry < median_yield - @yield_diff_criteria
+        bad_indexes.push(index)
+        message = "Warning: rejecting yield for #{names[index]} value #{entry} from values #{data} for #{datetime}"
+        puts message
+        @errors.push(message)
       end
       # then remove them from the analysis
       bad_indexes.each do |j|
@@ -167,12 +167,11 @@ module DataFeeds
     def remove_nil_values(data, names, distances, datetime, latitude, longitude)
       bad_indexes = []
       data.each_with_index do |entry, index|
-        if entry.nil?
-          bad_indexes.push(index)
-          message = "Warning: nil value for #{datetime} #{names[index]}, ignoring" if daytime?(datetime, latitude, longitude, 1.5)
-          puts message
-          @errors.push(message)
-        end
+        next unless entry.nil?
+        bad_indexes.push(index)
+        message = "Warning: nil value for #{datetime} #{names[index]}, ignoring" if daytime?(datetime, latitude, longitude, 1.5)
+        puts message
+        @errors.push(message)
       end
 
       # then remove them from the analysis
@@ -247,7 +246,7 @@ module DataFeeds
       dates
     end
 
-  private
+    private
 
     def process_data_for_each_chunk(config_data, data_feed, date_range_chunk, latitude, longitude)
       start_date, end_date = date_range_chunk

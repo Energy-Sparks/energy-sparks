@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module ActivityTypeFilterable
   extend ActiveSupport::Concern
 
-private
+  private
 
   def activity_type_filter_query
     permitted = params.permit(

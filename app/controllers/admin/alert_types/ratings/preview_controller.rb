@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module AlertTypes
     module Ratings
@@ -14,7 +16,7 @@ module Admin
           end
         end
 
-      private
+        private
 
         def load_rating_requirements
           @activity_types = get_activity_types

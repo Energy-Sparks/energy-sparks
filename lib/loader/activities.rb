@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 module Loader
@@ -28,13 +30,13 @@ module Loader
           at = ActivityType.find_by_id(row['id'])
           puts "Activity #{row['id']} not found" unless at
           if at
-            #new properties
-            at.data_driven = true if row['data_driven'] == "1"
-            at.repeatable = true if row['repeatable'] == "1"
-            at.custom = true if row['custom'] == "1"
+            # new properties
+            at.data_driven = true if row['data_driven'] == '1'
+            at.repeatable = true if row['repeatable'] == '1'
+            at.custom = true if row['custom'] == '1'
             at.save!
 
-            #now suggestions
+            # now suggestions
             5.times do |i|
               suggested = ActivityType.find_by_id(row["suggestion_#{i + 1}"])
               puts "Skipping suggestion suggestion_#{i + 1} (#{row["suggestion_#{i + 1}"]}) for #{at.id}" unless suggested

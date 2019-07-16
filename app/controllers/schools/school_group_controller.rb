@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class SchoolGroupController < ApplicationController
     before_action :set_school
@@ -15,10 +17,10 @@ module Schools
 
     def update
       @school.update!(school_group_id: params[:school_group_id])
-      redirect_to school_path(@school), notice: "School groups updated"
+      redirect_to school_path(@school), notice: 'School groups updated'
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])

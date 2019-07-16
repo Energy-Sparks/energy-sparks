@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: observations
@@ -41,7 +43,7 @@ class Observation < ApplicationRecord
     errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
   end
 
-private
+  private
 
   def reject_temperature_recordings_and_locations(attributes)
     (attributes['centigrade'].blank? && attributes.dig('location_attributes', 'name').blank?)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class DataFeedTranslator
     def initialize(config, array_of_rows)
@@ -11,7 +13,7 @@ module Amr
       @array_of_rows.map { |row| translate_row_to_hash(row) }
     end
 
-  private
+    private
 
     def translate_row_to_hash(row)
       mpan_mprn = fetch_from_row(:mpan_mprn_index, row)

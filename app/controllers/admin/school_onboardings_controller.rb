@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'securerandom'
 module Admin
   class SchoolOnboardingsController < AdminController
@@ -20,8 +22,7 @@ module Admin
       end
     end
 
-
-  private
+    private
 
     def school_onboarding_params
       params.require(:school_onboarding).permit(:school_name, :contact_email, :school_group_id, :notes)

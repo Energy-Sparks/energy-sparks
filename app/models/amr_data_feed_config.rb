@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: amr_data_feed_configs
@@ -30,7 +32,7 @@ class AmrDataFeedConfig < ApplicationRecord
     this_header = header || header_example
     header_array = this_header.split(',')
     {
-      mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
+      mpan_mprn_index: header_array.find_index(mpan_mprn_field),
       reading_date_index: header_array.find_index(reading_date_field),
       postcode_index: header_array.find_index(postcode_field),
       units_index: header_array.find_index(units_field),

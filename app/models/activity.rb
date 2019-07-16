@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activities
@@ -32,7 +34,7 @@ class Activity < ApplicationRecord
 
   has_rich_text :description
 
-  self.ignored_columns = %w(deprecated_description)
+  self.ignored_columns = %w[deprecated_description]
 
   def display_name
     activity_type.custom ? title : activity_type.name

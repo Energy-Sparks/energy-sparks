@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Schools
@@ -20,7 +22,7 @@ module Schools
       )
     end
 
-  private
+    private
 
     def fuel_types_for_analysis
       if is_school_dual_fuel?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :alerts do
   desc 'Run alert subscription emails job'
   task create_alert_subscription_emails: [:environment] do

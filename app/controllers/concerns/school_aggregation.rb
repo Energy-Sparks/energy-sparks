@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchoolAggregation
   extend ActiveSupport::Concern
 
@@ -5,7 +7,7 @@ module SchoolAggregation
     before_action :check_aggregated_school_in_cache
   end
 
-private
+  private
 
   def check_aggregated_school_in_cache
     unless aggregate_school_service.in_cache_or_cache_off?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: calendar_events
@@ -42,7 +44,7 @@ class CalendarEvent < ApplicationRecord
 
   validate :start_date_end_date_order, :no_overlaps
 
-private
+  private
 
   def update_academic_year
     self.academic_year = AcademicYear.for_date(start_date) if start_date
@@ -52,7 +54,7 @@ private
     if calendar.calendars.any?
       calendar.calendars.each do |child_calendar|
         next if there_is_an_overlapping_child_event?(self, child_calendar)
-        duplicate = self.dup
+        duplicate = dup
         duplicate.calendar = child_calendar
         duplicate.save!
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: change_holiday_alert_to_system_alert'
   task change_holiday_alert_to_system_alert: :environment do

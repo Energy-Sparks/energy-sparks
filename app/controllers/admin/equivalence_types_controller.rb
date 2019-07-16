@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class EquivalenceTypesController < AdminController
     load_and_authorize_resource
@@ -33,7 +35,7 @@ module Admin
       end
     end
 
-  private
+    private
 
     def equivalence_type_params
       params.require(:equivalence_type).permit(:meter_type, :time_period)

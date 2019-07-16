@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: meters
@@ -72,11 +74,11 @@ class Meter < ApplicationRecord
   end
 
   def solar_pv?
-    ! solar_pv.nil?
+    !solar_pv.nil?
   end
 
   def storage_heaters?
-    ! storage_heaters.nil?
+    !storage_heaters.nil?
   end
 
   def meter_corrections

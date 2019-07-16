@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mustache'
 module Equivalences
   class Calculator
@@ -17,10 +19,9 @@ module Equivalences
 
     def perform(equivalence_type, content = equivalence_type.current_content)
       variables = TemplateInterpolation.new(content).variables(:equivalence).map(&:to_sym)
-      data = variables.inject({}) do |data_collection, variable|
+      data = variables.each_with_object({}) do |variable, data_collection|
         time_period = TIME_PERIODS.fetch(equivalence_type.time_period.to_sym)
         data_collection[variable] = @analytics.front_end_convert(variable, time_period, equivalence_type.meter_type.to_sym)
-        data_collection
       end
       relevant = data.values.all? {|values| values[:show_equivalence]}
       Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant)

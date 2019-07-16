@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: emails
@@ -23,6 +25,6 @@ class Email < ApplicationRecord
   has_many   :alerts, through: :alert_subscription_events
 
   def sent?
-    ! sent_at.nil?
+    !sent_at.nil?
   end
 end

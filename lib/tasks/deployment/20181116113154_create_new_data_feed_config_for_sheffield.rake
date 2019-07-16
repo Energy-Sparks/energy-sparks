@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: create_new_data_feed_config_for_sheffield'
   task create_new_data_feed_config_for_sheffield: :environment do
@@ -12,9 +14,9 @@ namespace :after_party do
         name: 'Sheffield',
         latitude: 53.3811,
         longitude: -1.4701,
-        start_date:  Date.new(2013, 1, 1), # may be better in controlling program
+        start_date: Date.new(2013, 1, 1), # may be better in controlling program
         end_date: Date.new(2018, 9, 25), # ditto, inclusive
-        method:    :weighted_average,
+        method: :weighted_average,
         max_minutes_between_samples: 120, # ignore data where samples from station are too far apart
         max_temperature: 38.0,
         min_temperature: -15.0,
@@ -22,11 +24,11 @@ namespace :after_party do
         max_solar_insolence: 2000.0,
         weather_stations_for_temperature:
         { # weight for averaging, selection: the weather station names are found by browsing weather underground local station data
-          'ISHEFFIE84'  => 0.1,
-          'ISHEFFIE18'  => 0.25,
-          'ISOUTHYO31'  => 0.3,
-          'ISOUTHYO29'  => 0.1,
-          'ISHEFFIE56'  => 0.25
+          'ISHEFFIE84' => 0.1,
+          'ISHEFFIE18' => 0.25,
+          'ISOUTHYO31' => 0.3,
+          'ISOUTHYO29' => 0.1,
+          'ISHEFFIE56' => 0.25
         },
         weather_stations_for_solar: # has to be a temperature station for the moment - saves loading twice
         {
@@ -49,7 +51,7 @@ namespace :after_party do
         proxies: [
           { id: 257, name: 'Sheffield City', code: 'SHEC', latitude: 53.37445, longitude: -1.47708 },
           { id: 207, name: 'Neepsend', code: 'NEEP', latitude: 53.40642, longitude: -1.48696 },
-          { id: 213, name: 'Norton Lees', code: 'NORL', latitude: 53.34823, longitude: -1.46998 },
+          { id: 213, name: 'Norton Lees', code: 'NORL', latitude: 53.34823, longitude: -1.46998 }
         ]
       }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class CheckingValidatedReadingsForAMeter
     NAN_READINGS = Array.new(48, Float::NAN).freeze

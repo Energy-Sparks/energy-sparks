@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Onboarding
   class BaseController < ApplicationController
     before_action :load_school_onboarding
     before_action :check_complete
     before_action :hide_subnav
 
-  private
+    private
 
     def load_school_onboarding
       @school_onboarding = if current_user
@@ -16,9 +18,7 @@ module Onboarding
     end
 
     def redirect_if_event(event, path)
-      if @school_onboarding.has_event?(event)
-        redirect_to path
-      end
+      redirect_to path if @school_onboarding.has_event?(event)
     end
 
     def check_complete

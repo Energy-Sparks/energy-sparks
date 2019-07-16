@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin::Emails
   class AlertMailersController < AdminController
     layout 'layouts/alert_mailer'

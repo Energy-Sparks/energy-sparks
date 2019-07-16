@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 class ScheduleDataManagerService
@@ -36,7 +38,7 @@ class ScheduleDataManagerService
 
     result = ActiveRecord::Base.connection.execute(query)
     result.each do |row|
-      output_data.add(Date.parse(row["day"]), row["values"].delete('{}').split(',').map(&:to_f))
+      output_data.add(Date.parse(row['day']), row['values'].delete('{}').split(',').map(&:to_f))
     end
     output_data
   end
@@ -62,7 +64,7 @@ class ScheduleDataManagerService
   end
 
   def uk_grid_carbon_intensity
-    cache_key = "co2-feed"
+    cache_key = 'co2-feed'
     @uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       uk_grid_carbon_intensity_data = GridCarbonIntensity.new
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
@@ -73,7 +75,7 @@ class ScheduleDataManagerService
     end
   end
 
-private
+  private
 
   def weather_underground_temperatures
     cache_key = "#{@temperature_area_id}-weather-underground-temperatures"

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SessionsController < Devise::SessionsController
-  #Needed for merit integration
+  # Needed for merit integration
   def create
     super do |user|
       @session = user

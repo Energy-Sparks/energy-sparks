@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module AlertTypes
     class RatingsController < AdminController
@@ -40,7 +42,7 @@ module Admin
         end
       end
 
-    private
+      private
 
       def rating_params
         params.require(:alert_type_rating).permit(
@@ -62,7 +64,7 @@ module Admin
 
       def set_available_charts
         @available_charts = @alert_type.available_charts
-        @available_charts << ["None", :none]
+        @available_charts << ['None', :none]
       end
     end
   end

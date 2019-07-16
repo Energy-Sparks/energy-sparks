@@ -171,6 +171,7 @@ GEM
       jquery-rails (~> 4.2, >= 4.2.0)
       moment-timezone-rails (~> 1.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
+    brakeman (4.5.1)
     builder (3.2.3)
     bullet (6.0.1)
       activesupport (>= 3.0.0)
@@ -245,10 +246,6 @@ GEM
     formatador (0.2.5)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    govuk-lint (3.10.0)
-      rubocop (~> 0.58)
-      rubocop-rspec (~> 1.28)
-      scss_lint
     groupdate (4.0.1)
       activesupport (>= 4.2)
     guard (2.15.0)
@@ -365,7 +362,6 @@ GEM
       ast (~> 2.4.0)
     pg (1.0.0)
     popper_js (1.14.5)
-    powerpack (0.1.2)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
       prawn-layout (>= 0.8.4, < 0.9)
@@ -484,14 +480,18 @@ GEM
       rspec-mocks (~> 3.8)
       rspec-support (~> 3.8)
     rspec-support (3.8.2)
-    rubocop (0.63.1)
+    rubocop (0.73.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
-      parser (>= 2.5, != 2.5.1.1)
-      powerpack (~> 0.1)
+      parser (>= 2.6)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (~> 1.4.0)
+      unicode-display_width (>= 1.4.0, < 1.7)
+    rubocop-performance (1.4.0)
+      rubocop (>= 0.71.0)
+    rubocop-rails (2.2.1)
+      rack (>= 1.1)
+      rubocop (>= 0.72.0)
     rubocop-rspec (1.32.0)
       rubocop (>= 0.60.0)
     ruby-ole (1.2.12.2)
@@ -525,9 +525,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scss_lint (0.58.0)
-      rake (>= 0.9, < 13)
-      sass (~> 3.5, >= 3.5.5)
     selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
@@ -578,7 +575,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    unicode-display_width (1.4.1)
+    unicode-display_width (1.6.0)
     uniform_notifier (1.12.1)
     upsert (2.2.1)
     warden (1.2.8)
@@ -628,6 +625,7 @@ DEPENDENCIES
   bootstrap (~> 4.3.0)
   bootstrap-email
   bootstrap4-datetime-picker-rails
+  brakeman
   bullet
   bundler-audit
   byebug
@@ -645,7 +643,6 @@ DEPENDENCIES
   fasterer
   foreman
   friendly_id!
-  govuk-lint (= 3.10.0)
   groupdate (= 4.0.1)
   guard-rspec
   handlebars_assets
@@ -672,8 +669,10 @@ DEPENDENCIES
   redcarpet
   rollbar
   rspec-rails (~> 4.0.0.beta2)
-  rubocop (= 0.63.1)
-  rubocop-rspec (= 1.32.0)
+  rubocop
+  rubocop-performance
+  rubocop-rails
+  rubocop-rspec
   ruby-sun-times
   sass-rails
   selenium-webdriver

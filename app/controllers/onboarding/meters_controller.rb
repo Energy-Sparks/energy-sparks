@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class MetersController < BaseController
     def new
@@ -30,7 +32,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)

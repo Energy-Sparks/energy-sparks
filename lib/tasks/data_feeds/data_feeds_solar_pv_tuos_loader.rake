@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :data_feeds do
   desc 'Set up data feeds'
   task :solar_pv_tuos_loader, [:start_date, :end_date] => :environment do |_t, args|

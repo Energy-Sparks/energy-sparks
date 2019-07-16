@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TempusDominusDateInput < SimpleForm::Inputs::Base
   def input(wrapper_options)
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
@@ -8,7 +10,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_group_class
-    "tempus-dominus-date".freeze
+    'tempus-dominus-date'
   end
 
   def input_html_options
@@ -20,7 +22,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value_format
-    "%d/%m/%Y".freeze
+    '%d/%m/%Y'
   end
 
   def input_value

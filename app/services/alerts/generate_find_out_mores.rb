@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Alerts
   class GenerateFindOutMores
     def initialize(school, content_generation_run:)

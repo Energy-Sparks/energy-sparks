@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module DataFeeds
@@ -17,7 +19,7 @@ module DataFeeds
       p "Imported #{@insert_count} records, Updated #{@update_count} records"
     end
 
-  private
+    private
 
     def nearest_gsp_area(area)
       @solar_pv_tuos_interface.find_nearest_areas(area.latitude, area.longitude).first
@@ -59,7 +61,7 @@ module DataFeeds
       record = SolarPvTuosReading.find_by(reading_date: reading_date, area_id: area.id)
       if record
         record.update(generation_mw_x48: generation_mw_x48, gsp_id: gsp_id, gsp_name: gsp_name, latitude: latitude, longitude: longitude, distance_km: distance_km)
-        @update_count = @update_count + 1
+        @update_count += 1
       else
         SolarPvTuosReading.create(
           reading_date: reading_date,
@@ -70,7 +72,7 @@ module DataFeeds
           longitude: longitude,
           area_id: area.id,
           distance_km: distance_km)
-        @insert_count = @insert_count + 1
+        @insert_count += 1
       end
     end
   end

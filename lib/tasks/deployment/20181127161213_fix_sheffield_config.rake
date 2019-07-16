@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: fix_sheffield_config'
   task fix_sheffield_config: :environment do

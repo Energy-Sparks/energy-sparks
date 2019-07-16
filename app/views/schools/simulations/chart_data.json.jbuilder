@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # $yellow: #ffee8f;       /* yellow rgb(255,238,143) */
 # $light-orange: #ffac21; /* orange  rgb(255,172,33) */
 # $dark-orange: #ff4500;  /* almost red; rgb(255,69,0) */
@@ -11,7 +13,7 @@
 chart_index = -1
 
 json.charts @output.each do |chart|
-  chart_index = chart_index + 1
+  chart_index += 1
 
   # This is to handle the side by side charts which behave slightly
   # differently - needs sorting at some point
@@ -62,7 +64,7 @@ json.charts @output.each do |chart|
       { name: data_type, color: colour_hash[data_type], type: chart_data[:chart1_type], data: data, index: index }
     end
 
-    if chart_data[:y2_data] != nil && chart_data[:y2_chart_type] == :line
+    if !chart_data[:y2_data].nil? && chart_data[:y2_chart_type] == :line
       json.y2_axis_label chart_data[:y2_data].keys[0]
       y_data_hash = chart_data[:y2_data]
       y_data_hash.each do |data_type, data|
@@ -88,7 +90,7 @@ json.charts @output.each do |chart|
       { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
     end
 
-    if chart_data[:y2_data] != nil && chart_data[:y2_chart_type] == :line
+    if !chart_data[:y2_data].nil? && chart_data[:y2_chart_type] == :line
       series_array = x_data_hash.each_with_index.map do |(data_type, data), index|
         data_type = tidy_and_keep_label(data_type)
         { name: data_type, color: colour_options[index], type: chart_data[:chart1_type], data: data }
@@ -109,7 +111,6 @@ json.charts @output.each do |chart|
       end
 
     end
-
 
   elsif chart_data[:chart1_type] == :pie
 

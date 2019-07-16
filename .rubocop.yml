@@ -1,12 +1,67 @@
-Style/NumericPredicate:
-  Enabled: false
+AllCops:
+  Include:
+    - 'app/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'data-pipeline/handlers/**/*.rb'
+# Disable specs for now
+#   - 'spec/**/*.rb'
+  Exclude:
+    - 'lib/data_feeds/weather_underground_loader.rb'
+    - 'lib/data_feeds/solar_pv_tuos_loader.rb'
+    - 'lib/data_feeds/dark_sky_temperature_loader.rb'
+    - 'lib/data_feeds/solar_pv_tuos_v2_loader.rb'
+    - 'bin/**'
+    - 'script/**'
+    - 'node_modules/**'
+    - 'node_modules/node-sass/src/libsass/script/spec'
+require:
+  - rubocop-rails
+  - rubocop-performance
+# Disable specs for now
+# - rubocop-rspec
+
+# Rails cops
 Rails/DynamicFindBy:
+  Enabled: false
+Rails/Output:
+  Enabled: false
+Rails/SkipsModelValidations:
+  Enabled: false
+Rails/HasAndBelongsToMany:
+  Enabled: false
+Rails/Presence:
+  Enabled: false
+Rails/InverseOf:
+  Enabled: false
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+Rails/Blank:
+  Enabled: false
+Rails/FilePath:
+  Enabled: false
+Rails/Delegate:
+  Enabled: false
+Rails/HelperInstanceVariable:
+  Enabled: false
+Rails/OutputSafety:
+  Enabled: false
+Rails/Validation:
+  Enabled: false
+
+# Performance cops
+Performance/CompareWithBlock:
+  Enabled: false
+
+# General cops
+Style/NumericPredicate:
   Enabled: false
 Style/SymbolArray:
   Enabled: false
-Style/IdenticalConditionalBranches:
+Style/SafeNavigation:
   Enabled: false
-Rails/Presence:
+Style/IdenticalConditionalBranches:
   Enabled: false
 Style/RescueStandardError:
   Enabled: false
@@ -22,27 +77,73 @@ Lint/BooleanSymbol:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
-Rails/OutputSafety:
-  Enabled: false
 Style/DateTime:
   Enabled: false
 Style/InverseMethods:
   Enabled: false
 Style/RedundantReturn:
   Enabled: false
-Rails/InverseOf:
-  Enabled: false
-Rails/HasManyOrHasOneDependent:
-  Enabled: false
 Layout/SpaceInsideBlockBraces:
-  Enabled: false
-Rails/LexicallyScopedActionFilter:
-  Enabled: false
-Rails/Blank:
-  Enabled: false
-Performance/CompareWithBlock:
-  Enabled: false
-Rails/FilePath:
   Enabled: false
 EmptyLineAfterGuardClause:
   Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Naming/AccessorMethodName:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: false
+Naming/PredicateName:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Style/AsciiComments:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+
+# Rspec cops
+#
+# Have switched this off for now, as would want to fix any relevant cops which the
+# rest of the codebase comply in the tests rather than switch them off
+
+# RSpec/MultipleExpectations:
+#   Enabled: false
+# RSpec/AnyInstance:
+#   Enabled: false
+# RSpec/ExampleLength:
+#   Enabled: false
+# RSpec/ExpectInHook:
+#   Enabled: false
+# RSpec/LetSetup:
+#   Enabled: false
+# RSpec/ContextWording:
+#   Enabled: false
+# RSpec/DescribeClass:
+#   Enabled: false
+
+
+
+
+
+

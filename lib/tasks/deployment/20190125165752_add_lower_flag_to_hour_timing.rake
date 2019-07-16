@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: add_lower_flag_to_hour_timing'
   task add_lower_flag_to_hour_timing: :environment do

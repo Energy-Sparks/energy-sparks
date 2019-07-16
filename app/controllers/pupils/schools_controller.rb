@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Pupils
   class SchoolsController < ApplicationController
     include ActionView::Helpers::NumberHelper
@@ -31,7 +33,7 @@ module Pupils
       @temperature_observations = @school.observations.temperature
     end
 
-  private
+    private
 
     def redirect_if_inactive
       redirect_to teachers_school_path(@school), notice: 'Pupil dashboard unavailable: School is not active' unless @school.active?

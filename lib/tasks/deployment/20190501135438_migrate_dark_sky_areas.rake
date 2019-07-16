@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: migrate_dark_sky_areas'
   task migrate_dark_sky_areas: :environment do

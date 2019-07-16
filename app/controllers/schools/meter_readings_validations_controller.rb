@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class MeterReadingsValidationsController < ApplicationController
     def create

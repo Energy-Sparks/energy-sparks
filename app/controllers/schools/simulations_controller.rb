@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Warning - this pulls in statsample which seems to do something
 # to array#sum - https://github.com/clbustos/statsample/issues/45
 require 'dashboard'
@@ -8,7 +10,6 @@ class Schools::SimulationsController < ApplicationController
 
   include SchoolAggregation
   include NewSimulatorChartConfig
-
 
   def index
     @simulations = @simulations.order(:created_at)
@@ -24,7 +25,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
@@ -34,7 +35,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new_fitted
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @simulation = @school.simulations.new
     authorize! :create, @simulation
     @local_school = aggregate_school
@@ -45,7 +46,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new_exemplar
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @simulation = @school.simulations.new
     authorize! :create, @simulation
     @local_school = aggregate_school
@@ -69,8 +70,8 @@ class Schools::SimulationsController < ApplicationController
       notes = simulation_params[:notes]
     else
       default = true
-      title = "Default appliance configuration"
-      notes = "This simulation has been run with the default appliance configurations, you can create a new simulation with your own configurations."
+      title = 'Default appliance configuration'
+      notes = 'This simulation has been run with the default appliance configurations, you can create a new simulation with your own configurations.'
     end
     @simulation = Simulation.create(user: current_user, school: @school, configuration: simulation_configuration, default: default, title: title, notes: notes)
 
@@ -97,14 +98,14 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def edit
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @simulation.configuration
     sort_out_simulation_stuff
   end
 
-private
+  private
 
   def common_show(charts_group)
     @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[charts_group][:charts]
@@ -146,7 +147,7 @@ private
     results
   end
 
-  # TODO works but is messy
+  # TODO: works but is messy
   def merge_into_existing_configuration(simulation_params, simulation_configuration)
     updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
     updated_simulation_configuration.each do |appliance, configuration_hash|
@@ -190,7 +191,7 @@ private
 
         @output = [
           { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator) },
-          { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) },
+          { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) }
         ]
         render 'schools/simulations/chart_data'
       end
@@ -212,11 +213,15 @@ private
   end
 
   def is_float?(string)
-    true if Float(string) rescue false
+    true if Float(string)
+  rescue
+    false
   end
 
   def is_integer?(string)
-    true if Integer(string) rescue false
+    true if Integer(string)
+  rescue
+    false
   end
 
   def convert_to_correct_format(key, value)

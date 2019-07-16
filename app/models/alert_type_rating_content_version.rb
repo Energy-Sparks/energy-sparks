@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: alert_type_rating_content_versions
@@ -46,25 +48,25 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   validates :colour, presence: true
 
   validates :teacher_dashboard_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.teacher_dashboard_alert_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.teacher_dashboard_alert_active?},
+            on: :create
   validates :pupil_dashboard_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
+            on: :create
   validates :find_out_more_title, :find_out_more_content,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.find_out_more_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.find_out_more_active?},
+            on: :create
   validates :sms_content,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active?},
+            on: :create
   validates :email_title, :email_content,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active?},
+            on: :create
 
   validate on: :create do |content|
     if content.alert_type_rating
@@ -77,7 +79,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   end
 
   scope :latest, -> { where(replaced_by_id: nil) }
-
 
   def self.template_fields
     [
@@ -114,7 +115,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     end
   end
 
-private
+  private
 
   def start_end_end_date(scope)
     start_date_field = :"#{scope}_start_date"

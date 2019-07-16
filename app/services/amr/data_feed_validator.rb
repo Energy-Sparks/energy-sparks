@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class DataFeedValidator
     def initialize(config, array_of_rows)
@@ -12,7 +14,7 @@ module Amr
       @array_of_rows
     end
 
-  private
+    private
 
     def sort_out_off_by_one_array(array_of_rows)
       array_of_rows.each_cons(2) do |row, next_row|
@@ -24,7 +26,7 @@ module Amr
       end
 
       array_of_rows.last.slice!(index_of_midnight_for_off_by_one)
-      array_of_rows.last << "0.0"
+      array_of_rows.last << '0.0'
       array_of_rows
     end
 

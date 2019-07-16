@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: add_new_alert_type'
   task add_new_alert_type_heating_sensitivity: :environment do

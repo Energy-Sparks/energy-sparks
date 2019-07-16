@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activity_types
@@ -52,7 +54,7 @@ class ActivityType < ApplicationRecord
 
   has_rich_text :description
 
-  self.ignored_columns = %w(deprecated_description)
+  self.ignored_columns = %w[deprecated_description]
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')

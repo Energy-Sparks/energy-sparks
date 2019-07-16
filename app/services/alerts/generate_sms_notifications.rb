@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Alerts
   class GenerateSmsNotifications
     def initialize(send_sms_service = SendSms)
@@ -8,12 +10,12 @@ module Alerts
       AlertSubscriptionEvent.where(status: :pending, communication_type: :sms).each do |event|
         next if event.content_version.nil?
         sms_content = TemplateInterpolation.new(
-          event.content_version,
+          event.content_version
         ).interpolate(
           :sms_content,
           with: event.alert.template_variables
         ).sms_content
-        @send_sms_service.new("EnergySparks alert: " + sms_content, event.contact.mobile_phone_number).send
+        @send_sms_service.new('EnergySparks alert: ' + sms_content, event.contact.mobile_phone_number).send
         event.update(status: :sent)
       end
     end

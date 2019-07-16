@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'securerandom'
 
 module Alerts
@@ -18,7 +20,7 @@ module Alerts
       end
     end
 
-  private
+    private
 
     def content_and_contacts_for(alert, scope)
       FetchContent.new(alert).content_versions(scope: scope).each do |content_version|

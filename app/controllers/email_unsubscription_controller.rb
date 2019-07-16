@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmailUnsubscriptionController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :load_content, only: [:new, :create]
@@ -24,7 +26,7 @@ class EmailUnsubscriptionController < ApplicationController
   def show
   end
 
-private
+  private
 
   def load_content
     @alert_subscription_event = AlertSubscriptionEvent.find_by!(unsubscription_uuid: params[:uuid])

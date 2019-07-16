@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Podium
   class Position
     attr_reader :school, :points, :position, :normalised_points

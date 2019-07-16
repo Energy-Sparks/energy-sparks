@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mustache'
 require 'closed_struct'
 
@@ -9,13 +11,11 @@ class TemplateInterpolation
   end
 
   def interpolate(*fields, with: {})
-    pre_defined = @proxy.inject(@with_objects) do |collection, field|
+    pre_defined = @proxy.each_with_object(@with_objects) do |field, collection|
       collection[field] = @object.send(field)
-      collection
     end
-    templated = fields.inject(pre_defined) do |collection, field|
+    templated = fields.each_with_object(pre_defined) do |field, collection|
       collection[field] = process(@object.send(field), with)
-      collection
     end
     ClosedStruct.new(templated)
   end
@@ -27,7 +27,7 @@ class TemplateInterpolation
     from_templates.uniq.map {|variable| variable.gsub('gbp', '£') }
   end
 
-private
+  private
 
   def process(template, variables)
     Mustache.render(template, variables)

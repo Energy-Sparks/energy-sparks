@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
@@ -15,7 +17,7 @@ module Amr
       add_meters_and_amr_data
     end
 
-  private
+    private
 
     def add_meters_and_amr_data
       heat_meters.map do |active_record_meter|

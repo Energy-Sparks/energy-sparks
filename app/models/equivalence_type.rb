@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: equivalence_types
@@ -37,13 +39,13 @@ class EquivalenceType < ApplicationRecord
     end
   end
 
-private
+  private
 
   def save_and_replace(content, to_replace)
     transaction do
       save!
       content.save!
-      to_replace.update!(replaced_by: content) if to_replace
+      to_replace&.update!(replaced_by: content)
     end
   end
 end

@@ -1,5 +1,6 @@
-require 'csv'
+# frozen_string_literal: true
 
+require 'csv'
 
 module Loader
   class Schools

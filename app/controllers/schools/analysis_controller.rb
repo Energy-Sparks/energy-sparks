@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 class Schools::AnalysisController < ApplicationController
@@ -62,7 +64,7 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
-private
+  private
 
   def build_aggregate_school
     # use for heat model fitting tabs

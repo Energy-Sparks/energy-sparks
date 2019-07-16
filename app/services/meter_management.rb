@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MeterManagement
   def initialize(meter)
     @meter = meter
@@ -17,16 +19,16 @@ class MeterManagement
 
   def delete_meter!
     @meter.transaction do
-      Rails.logger.info "Removing validated readings"
+      Rails.logger.info 'Removing validated readings'
       remove_amr_validated_readings
-      Rails.logger.info "Nullify amr readings"
+      Rails.logger.info 'Nullify amr readings'
       nullify_amr_data_feed_readings
-      Rails.logger.info "Delete meter"
+      Rails.logger.info 'Delete meter'
       @meter.delete
     end
   end
 
-private
+  private
 
   def assign_amr_data_feed_readings
     AmrDataFeedReading.where(mpan_mprn: @meter.mpan_mprn).update_all(meter_id: @meter.id)

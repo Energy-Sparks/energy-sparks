@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: set_historical_frome_config_to_handle_off_by_one'
   task set_historical_frome_config_to_handle_off_by_one: :environment do

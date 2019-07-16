@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: alerts
@@ -41,7 +43,7 @@ class Alert < ApplicationRecord
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
 
-  scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
+  scope :rating_between, ->(from, to) { where('rating BETWEEN ? AND ?', from, to) }
 
   enum status: {
     good: 0,

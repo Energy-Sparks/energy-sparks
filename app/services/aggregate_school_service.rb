@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 class AggregateSchoolService
@@ -32,7 +34,7 @@ class AggregateSchoolService
   end
 
   def self.caching_off?
-    ! Rails.application.config.action_controller.perform_caching
+    !Rails.application.config.action_controller.perform_caching
   end
 
   def self.analysis_date(meter_collection, fuel_type)
@@ -46,7 +48,7 @@ class AggregateSchoolService
     end
   end
 
-private
+  private
 
   def cache_key
     "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection"

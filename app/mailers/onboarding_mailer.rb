@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class OnboardingMailer < ApplicationMailer
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
-    make_bootstrap_mail(to: @school_onboarding.contact_email, subject: "Set up your school on Energy Sparks")
+    make_bootstrap_mail(to: @school_onboarding.contact_email, subject: 'Set up your school on Energy Sparks')
   end
 
   def completion_email

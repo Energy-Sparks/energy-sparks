@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   include SchoolsHelper
@@ -12,13 +14,13 @@ class StatsController < ApplicationController
 
     measurement = measurement_unit(params[:measurement])
 
-    if comparison == "whole-school"
+    if comparison == 'whole-school'
       first_series = daily_usage_to_precision(school, supply, from..from + 6.days, meter, measurement)
       data << { name: 'Week starting ' + kid_date(from), color: colours_for_supply(supply)[0], data: first_series }
       if to_date.present?
         second_series = daily_usage_to_precision(school, supply, to_date..to_date + 6.days, meter, measurement)
 
-        #TODO better labelling
+        # TODO: better labelling
         second_series = second_series.map.with_index do |day, index|
           # this week's dates with previous week's usage
           [first_series[index][0], day[1]]
@@ -40,12 +42,12 @@ class StatsController < ApplicationController
     render json: data
   end
 
-  #compare hourly usage across two dates
+  # compare hourly usage across two dates
   # GET /schools/:id/compare_hourly_usage?comparison=type&supply=:supply&meter=:mpan_mprn&first_date=:first_date&to_date=:second_date&second_meter=mpan_mprn
   def compare_hourly_usage
     from = first_date
     data = []
-    if comparison == "whole-school"
+    if comparison == 'whole-school'
       first_series = hourly_usage_to_precision(school, supply, from, meter)
       data << { name: kid_date(from), color: colours_for_supply(supply)[0], data: first_series }
       if to_date.present?
@@ -63,8 +65,7 @@ class StatsController < ApplicationController
     render json: data
   end
 
-private
-
+  private
 
   # Use callbacks to share common setup or constraints between actions.
   def school
@@ -95,6 +96,6 @@ private
   end
 
   def comparison
-    params[:comparison] || "whole-school"
+    params[:comparison] || 'whole-school'
   end
 end

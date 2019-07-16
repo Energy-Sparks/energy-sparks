@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: enable_remaining_alerts'
   task enable_remaining_alerts: :environment do
@@ -5,12 +7,12 @@ namespace :after_party do
 
     # Put your task implementation HERE.
     ActiveRecord::Base.transaction do
-      %w(
+      %w[
         AlertWeekendGasConsumptionShortTerm
         AlertHeatingOnOff
         AlertHotWaterEfficiency
         AlertThermostaticControl
-      ).each do |class_name|
+      ].each do |class_name|
         puts "Enabling variables for #{class_name}"
         AlertType.find_by!(class_name: class_name).update!(has_variables: true)
       end

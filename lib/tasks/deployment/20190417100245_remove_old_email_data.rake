@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: remove_old_email_data'
   task remove_old_email_data: :environment do

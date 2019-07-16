@@ -1,29 +1,31 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: enable_alert_templates'
   task enable_some_more_alert_templates: :environment do
     puts "Running deploy task 'enable_alert_templates'"
 
-  # Originally enabled
-  # AlertChangeInDailyElectricityShortTerm
-  # AlertChangeInDailyGasShortTerm
-  # AlertChangeInElectricityBaseloadShortTerm
-  # AlertOutOfHoursElectricityUsage
-  # AlertOutOfHoursGasUsage
+    # Originally enabled
+    # AlertChangeInDailyElectricityShortTerm
+    # AlertChangeInDailyGasShortTerm
+    # AlertChangeInElectricityBaseloadShortTerm
+    # AlertOutOfHoursElectricityUsage
+    # AlertOutOfHoursGasUsage
 
-  # Failing
-  # AlertWeekendGasConsumptionShortTerm
-  # AlertHeatingOnOff
-  # AlertHotWaterEfficiency
-  # AlertThermostaticControl
+    # Failing
+    # AlertWeekendGasConsumptionShortTerm
+    # AlertHeatingOnOff
+    # AlertHotWaterEfficiency
+    # AlertThermostaticControl
 
     ActiveRecord::Base.transaction do
-      %w(
+      %w[
         AlertElectricityAnnualVersusBenchmark
         AlertElectricityBaseloadVersusBenchmark
         AlertGasAnnualVersusBenchmark
         AlertHeatingComingOnTooEarly
         AlertHeatingSensitivityAdvice
-      ).each do |class_name|
+      ].each do |class_name|
         puts "Enabling variables for #{class_name}"
         AlertType.find_by!(class_name: class_name).update!(has_variables: true)
       end

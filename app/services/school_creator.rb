@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SchoolCreator
   def initialize(school)
     @school = school
@@ -51,7 +53,7 @@ class SchoolCreator
     generate_calendar
   end
 
-private
+  private
 
   def should_send_activation_email?
     @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
@@ -73,5 +75,5 @@ private
     end
     result
   end
-  alias_method :record_events, :record_event
+  alias record_events record_event
 end
