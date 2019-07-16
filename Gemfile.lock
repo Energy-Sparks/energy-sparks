@@ -234,8 +234,8 @@ GEM
     extendmatrix (0.4)
     factory_bot (5.0.2)
       activesupport (>= 4.2.0)
-    factory_bot_rails (5.0.2)
-      factory_bot (~> 5.0.2)
+    factory_bot_rails (5.0.1)
+      factory_bot (~> 5.0.0)
       railties (>= 4.2.0)
     fakefs (0.20.1)
     faraday (0.15.4)
@@ -619,7 +619,7 @@ DEPENDENCIES
   devise
   dotenv-rails (~> 2.7.4)
   energy-sparks_analytics!
-  factory_bot_rails
+  factory_bot_rails (= 5.0.1)
   fakefs
   fasterer
   foreman

@@ -96,7 +96,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0.0.beta2'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '5.0.1'
   gem 'climate_control'
   gem 'webmock'
   gem 'foreman'
