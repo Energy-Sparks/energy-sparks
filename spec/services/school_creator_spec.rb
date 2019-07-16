@@ -36,6 +36,7 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
       expect(school.weather_underground_area).to eq(weather_underground_area)
       expect(school.dark_sky_area).to eq(dark_sky_area)
+      expect(school.configuration).to_not be_nil
     end
 
     it 'converts the onboarding user to a school admin' do

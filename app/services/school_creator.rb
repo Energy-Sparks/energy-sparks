@@ -49,6 +49,7 @@ class SchoolCreator
 
   def process_new_configuration!
     generate_calendar
+    generate_configuration
   end
 
 private
@@ -64,6 +65,10 @@ private
         @school.update!(calendar: calendar)
       end
     end
+  end
+
+  def generate_configuration
+    Schools::Configuration.create!(school: @school)
   end
 
   def record_event(onboarding, *events)
