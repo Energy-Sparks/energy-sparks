@@ -68,6 +68,7 @@ private
   end
 
   def generate_configuration
+    return if @school.configuration
     Schools::Configuration.create!(school: @school)
   end
 
