@@ -1,27 +1,27 @@
 "use strict";
 
-function chartFailure(title, chartIndex) {
-  var $divWrapper = $('div#chart_wrapper_' + chartIndex);
-  var $titleH3 = $('div#chart_wrapper_' + chartIndex + ' h3');
+function chartFailure(chart, title) {
+  var $chartDiv = $(chart.renderTo);
+  var $chartWrapper = $chartDiv.parent();
+  var $titleH3 = $chartWrapper.find('h3');
 
   $titleH3.text(title + ' chart');
-  $divWrapper.addClass('alert alert-warning');
-  $('div#chart_' + chartIndex).remove();
+  $chartWrapper.addClass('alert alert-warning');
+  $chartDiv.remove();
 
-  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#chart_wrapper_' + chartIndex + '" class="alert-link">chart</a></div>');
+  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="' + $chartWrapper.id + '" class="alert-link">chart</a></div>');
 }
 
-function chartSuccess(chart_data, chart, chartIndex, noAdvice, noZoom) {
+function chartSuccess(chart_data, chart, noAdvice, noZoom) {
 
-  var chartDiv = chart.renderTo;
-  var $chartDiv = $(chartDiv);
+  var $chartDiv = $(chart.renderTo);
   var chartType = chart_data.chart1_type;
   var seriesData = chart_data.series_data;
 
   if (! noAdvice) {
     var titleH3 = $chartDiv.prev('h3');
 
-    if (chartIndex === 0) {
+    if ($chartDiv.data('chart-index') === 0) {
       titleH3.text(chart_data.title);
     } else {
       titleH3.before('<hr class="analysis"/>');
@@ -41,15 +41,15 @@ function chartSuccess(chart_data, chart, chartIndex, noAdvice, noZoom) {
   }
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(chart_data, chart, chartIndex, seriesData, chartType, noZoom);
+    barColumnLine(chart_data, chart, seriesData, chartType, noZoom);
 
   // Scatter
   } else if (chartType == 'scatter') {
-    scatter(chart_data, chart, chartIndex, seriesData);
+    scatter(chart_data, chart, seriesData);
 
   // Pie
   } else if (chartType == 'pie') {
-    pie(chart_data, chart, chartIndex, seriesData, $chartDiv);
+    pie(chart_data, chart, seriesData, $chartDiv);
   }
 
   if(chart_data.annotations){
@@ -95,7 +95,6 @@ function processAnalysisCharts(){
       var chartType = $(this).data('chart-type');
       var yAxisUnits = $(this).data('chart-y-axis-units');
       var mpanMprn = $(this).data('chart-mpan-mprn');
-      var chartIndex = $(this).data('chart-index');
       var dataPath = $(this).data('chart-json');
       var noAdvice = $(this).is("[data-no-advice]");
       var noZoom = $(this).is("[data-no-zoom]");
@@ -107,24 +106,15 @@ function processAnalysisCharts(){
       };
 
 
-      // Each chart handles it's own data, except for the simulator
-      var processChartIndex = 0;
-
       if (dataPath === undefined) {
         var currentPath = window.location.href;
         dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
       }
 
-      console.log(chartIndex);
       console.log(chartType);
       console.log(dataPath);
       console.log(requestData);
       thisChart.showLoading();
-
-      if ($(this).hasClass('simulator-chart')) {
-        // the simulator uses the chart index
-        processChartIndex = chartIndex;
-      }
 
       $.ajax({
         type: 'GET',
@@ -133,17 +123,17 @@ function processAnalysisCharts(){
         url: dataPath,
         data: requestData,
         success: function (returnedData) {
-          var this_chart_data = returnedData.charts[processChartIndex];
+          var this_chart_data = returnedData.charts[0];
           if (this_chart_data == undefined) {
-            chartFailure("We do not have enough data at the moment to display this ", chartIndex);
+            chartFailure(thisChart, "We do not have enough data at the moment to display this ");
           } else if (this_chart_data.series_data == null) {
-            chartFailure(this_chart_data.title, chartIndex);
+            chartFailure(this_chart_data.title, thisId);
           } else {
-            chartSuccess(this_chart_data, thisChart, chartIndex, noAdvice, noZoom);
+            chartSuccess(this_chart_data, thisChart, noAdvice, noZoom);
           }
         },
         error: function(broken) {
-          chartFailure("We do not have enough data at the moment to display this ", chartIndex);
+          chartFailure(thisChart, "We do not have enough data at the moment to display this ");
         }
       });
     });
