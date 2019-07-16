@@ -1,0 +1,26 @@
+<h1>Programme Types</h1>
+
+<% if @programme_types.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @programme_types.each do |programme_type| %>
+        <tr>
+          <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
+          <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type), class: 'btn btn-primary btn-sm'%></td>
+          <td><%= link_to 'Delete', admin_programme_type_path(programme_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no programme types</p>
+<% end %>
+
+<%= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm'%></td>

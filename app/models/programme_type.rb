@@ -9,4 +9,6 @@
 
 class ProgrammeType < ApplicationRecord
   has_many :activity_types
+
+  validates_presence_of :title
 end

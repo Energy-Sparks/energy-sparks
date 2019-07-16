@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
   resources :activity_types
   resources :activity_categories
+  resources :programme_types,   only: [:show, :index]
+
   resources :calendars do
     scope module: :calendars do
       resources :calendar_events
@@ -42,6 +44,7 @@ Rails.application.routes.draw do
 
   resources :schools do
     resources :activities
+    resources :programmes
 
 
     scope module: :schools do
@@ -132,6 +135,8 @@ Rails.application.routes.draw do
     namespace :emails do
       resources :alert_mailers, only: :show
     end
+
+    resources :programme_types
 
     resources :alert_types, only: [:index, :show, :edit, :update] do
       scope module: :alert_types do
