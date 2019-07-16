@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.3'
+ruby '2.6.3'
 
 # Rails/Core
 gem 'rails', '~> 6.0.0.rc1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -18,7 +18,7 @@ gem 'rack-attack'
 # Database/Data
 gem 'pg', '1.0.0' # Use postgresql as the database for Active Record
 gem 'after_party' # load data after deploy
-gem 'upsert', '~> 2.2.1'
+gem 'upsert', git: 'https://github.com/seamusabshere/upsert.git'
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 

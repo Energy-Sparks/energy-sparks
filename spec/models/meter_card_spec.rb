@@ -45,7 +45,7 @@ describe MeterCard do
 
   it 'returns no values if something goes awry within the calculations' do
     meter = create :gas_meter_with_validated_reading, school: school
-    meter.amr_validated_readings.first.update(one_day_kwh: BigDecimal.new('NaN'))
+    meter.amr_validated_readings.first.update(one_day_kwh: BigDecimal('NaN'))
     meter_card = MeterCard.create(school: school, supply: :gas, window: 7)
     expect(meter_card).to_not have_values
   end
