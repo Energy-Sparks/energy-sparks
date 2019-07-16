@@ -39,9 +39,9 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 
 <%= render 'nav' %>
 
-<% @number_of_charts.times do |number| %>
-  <div id="chart_wrapper_<%= number %>">
-    <h3 class="analysis">Loading: <%= @charts[number].to_s.humanize %></h3>
-    <%= chart_tag(@school, @charts[number].to_s, index: number, chart_config: @chart_config) %>
+<% @charts.each_with_index do |chart, index| %>
+  <div id="chart_wrapper_<%= chart %>">
+    <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
+    <%= chart_tag(@school, chart.to_s, index: index, chart_config: @chart_config) %>
   </div>
 <% end %>
