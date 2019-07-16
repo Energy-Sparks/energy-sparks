@@ -91,7 +91,7 @@ function commonChartOptions(){
 }
 
 
-function barColumnLine(d, c, chartIndex, seriesData, chartType, noZoom) {
+function barColumnLine(d, c, seriesData, chartType, noZoom) {
   var subChartType = d.chart1_subtype;
   console.log('bar or column or line ' + subChartType);
 
@@ -222,7 +222,7 @@ function isAStringAndStartsWith(thing, startingWith) {
   return (typeof thing === 'string' || thing instanceof String) && thing.startsWith(startingWith);
 }
 
-function scatter(d, c, chartIndex, seriesData) {
+function scatter(d, c, seriesData) {
   console.log('scatter');
 
 
@@ -237,7 +237,7 @@ function scatter(d, c, chartIndex, seriesData) {
   c.redraw();
 }
 
-function pie(d, c, chartIndex, seriesData, $chartDiv) {
+function pie(d, c, seriesData, $chartDiv) {
   $chartDiv.addClass('pie-chart');
   var chartHeight = $chartDiv.height();
   var yAxisLabel = d.y_axis_label;

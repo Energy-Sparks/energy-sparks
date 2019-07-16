@@ -87,7 +87,6 @@ private
 
     @title = title_and_chart_configuration[:name]
     @charts = title_and_chart_configuration[:charts]
-    @number_of_charts = @charts.size
 
     render :generic_chart_template
   end
