@@ -157,6 +157,14 @@ class School < ApplicationRecord
     end
   end
 
+  def has_gas?
+    configuration.gas
+  end
+
+  def has_electricity?
+    configuration.electricity
+  end
+
   def analysis?
     configuration && configuration.analysis_charts.present?
   end
