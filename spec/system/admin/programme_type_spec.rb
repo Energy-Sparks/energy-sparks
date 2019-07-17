@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'programme type management', type: :system do
 
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:user, role: 'admin') }
 
   describe 'managing' do
 
@@ -12,7 +12,7 @@ describe 'programme type management', type: :system do
       click_on 'Programme Types'
     end
 
-    it 'allows the user to create a programme type' do
+    it 'allows the user to create, edit and delete a programme type' do
       description = 'SPN1'
       old_title = 'Super programme number 1'
       new_title = 'Super programme number 2'

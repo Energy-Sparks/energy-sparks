@@ -142,13 +142,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_153319) do
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
 
-  create_table "activity_types_programme_types", force: :cascade do |t|
-    t.bigint "programme_type_id", null: false
-    t.bigint "activity_type_id", null: false
-    t.integer "position", default: 0, null: false
-    t.index ["programme_type_id", "activity_type_id"], name: "programme_type_activity_type_uniq", unique: true
-  end
-
   create_table "alert_subscription_events", force: :cascade do |t|
     t.bigint "alert_id"
     t.bigint "contact_id"
@@ -636,6 +629,13 @@ ActiveRecord::Schema.define(version: 2019_07_10_153319) do
     t.bigint "intervention_type_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
+  end
+
+  create_table "programme_type_activity_types", force: :cascade do |t|
+    t.bigint "programme_type_id", null: false
+    t.bigint "activity_type_id", null: false
+    t.integer "position", default: 0, null: false
+    t.index ["programme_type_id", "activity_type_id"], name: "programme_type_activity_type_uniq", unique: true
   end
 
   create_table "programme_types", force: :cascade do |t|

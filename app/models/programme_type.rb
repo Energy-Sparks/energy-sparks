@@ -11,5 +11,8 @@
 class ProgrammeType < ApplicationRecord
   has_many :activity_types
 
+  has_many :alert_type_rating_activity_types
+  has_many :activity_types, through: :progamme_type_activity_types
+
   validates_presence_of :title
 end
