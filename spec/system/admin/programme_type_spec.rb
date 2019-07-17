@@ -38,5 +38,38 @@ describe 'programme type management', type: :system do
       click_on 'Delete'
       expect(page).to have_content('There are no programme types')
     end
+
+    context 'manages order' do
+
+      let!(:activity_category)  { create(:activity_category)}
+      let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
+      let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
+
+      it 'assigns activity types to programme types via a text box position' do
+
+        description = 'SPN1'
+        old_title = 'Super programme number 1'
+
+        programme_type = ProgrammeType.create(description: description, title: old_title)
+
+        visit current_path
+
+        click_on 'Edit activities'
+
+        expect(page.find_field('Turn off the light').value).to be_blank
+        expect(page.find_field('Turn down the heating').value).to be_blank
+
+        fill_in 'Turn down the heating', with: '1'
+
+        click_on 'Update associated activity type', match: :first
+        click_on 'Edit activities'
+        expect(page.find_field('Turn off the light').value).to be_blank
+        expect(page.find_field('Turn down the heating').value).to eq('1')
+
+        expect(programme_type.activity_types).to match_array([activity_type_2])
+        expect(programme_type.programme_type_activity_types.first.position).to eq(1)
+
+      end
+    end
   end
 end
