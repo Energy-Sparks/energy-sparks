@@ -8,11 +8,11 @@ module Alerts
     def perform
       generate(AlertType.no_fuel)
 
-      if @school.meters_with_validated_readings(:electricity).any?
+      if @school.has_electricity?
         generate(AlertType.electricity)
       end
 
-      if @school.meters_with_validated_readings(:gas).any?
+      if @school.has_gas?
         generate(AlertType.gas)
       end
     end
