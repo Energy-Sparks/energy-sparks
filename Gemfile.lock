@@ -56,6 +56,12 @@ GIT
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
 
+GIT
+  remote: https://github.com/seamusabshere/upsert.git
+  revision: b4a198be9253eefc3e25d88e10c21d9acb9ab6d4
+  specs:
+    upsert (3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -577,7 +583,6 @@ GEM
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
     uniform_notifier (1.12.1)
-    upsert (2.2.1)
     warden (1.2.8)
       rack (>= 2.0.6)
     web-console (4.0.0)
@@ -686,14 +691,14 @@ DEPENDENCIES
   twilio-ruby
   tzinfo-data
   uglifier
-  upsert (~> 2.2.1)
+  upsert!
   web-console
   webdrivers
   webmock
   webpacker (~> 4.0)
 
 RUBY VERSION
-   ruby 2.5.3p105
+   ruby 2.6.3p62
 
 BUNDLED WITH
    1.17.3
