@@ -68,6 +68,10 @@ environment: Load balanced (1 - 1)
 ### Load Balancer:
 
 Classic load balancer
+Add Listener - Listener Port 443
+               Listener Protocol HTTPS
+               Instance Port 80
+               Instance Protocol HTTP
 
 ### Instances:
 
@@ -81,6 +85,8 @@ IAM DevOps
 ### Software:
 
 Add environment properties
+
+
 
 * For existing database:
 
