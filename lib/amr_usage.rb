@@ -74,9 +74,9 @@ module AmrUsage
     usage = daily_usage(supply: supply, dates: last_n_days_with_readings(supply, window))
     return nil unless usage
 
-    # rubocop:disable Performance/UnneededSort
+    # rubocop:disable Style/UnneededSort
     usage.sort { |a, b| a[1] <=> b[1] }.last
-    # rubocop:enable  Performance/UnneededSort
+    # rubocop:enable  Style/UnneededSort
   end
 
   # return date range for week in which this date falls
