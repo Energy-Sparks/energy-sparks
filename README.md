@@ -59,25 +59,26 @@ bundle exec rake utility:prepare_test_server
 
 * Create web version
 * In More options
-capacity:
+
+### capacity:
 
 environment: Load balanced (1 - 1)
  add classic load balance
 
-Load Balancer:
+### Load Balancer:
 
 Classic load balancer
 
-Instances:
+### Instances:
 
 Set instances to t2.small
 
-Security:
+### Security:
 
 Add previously created key in security
 IAM DevOps
 
-Software:
+### Software:
 
 Add environment properties
 
