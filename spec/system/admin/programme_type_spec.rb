@@ -44,6 +44,7 @@ describe 'programme type management', type: :system do
       let!(:activity_category)  { create(:activity_category)}
       let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
       let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
+      let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
 
       it 'assigns activity types to programme types via a text box position' do
 
@@ -60,15 +61,20 @@ describe 'programme type management', type: :system do
         expect(page.find_field('Turn down the heating').value).to be_blank
 
         fill_in 'Turn down the heating', with: '1'
+        fill_in 'Turn off the lights', with: '2'
 
         click_on 'Update associated activity type', match: :first
-        click_on 'Edit activities'
-        expect(page.find_field('Turn off the light').value).to be_blank
-        expect(page.find_field('Turn down the heating').value).to eq('1')
+        click_on old_title
 
-        expect(programme_type.activity_types).to match_array([activity_type_2])
+
+        # expect(page.find_field('Turn off the light').value).to be_blank
+        # expect(page.find_field('Turn down the heating').value).to eq('1')
+
+        expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
         expect(programme_type.programme_type_activity_types.first.position).to eq(1)
+        expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
+        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating','Turn off the lights']
       end
     end
   end
