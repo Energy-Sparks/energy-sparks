@@ -104,9 +104,10 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'govuk-lint', '3.10.0'
-  gem 'rubocop', '0.63.1'
-  gem 'rubocop-rspec', '1.32.0'
+  gem 'rubocop', '0.73.0'
+  gem 'rubocop-rails', '2.2.1'
+  gem 'rubocop-performance', '1.4.0'
+  gem 'rubocop-rspec'
 end
 
 group :development do
@@ -120,6 +121,7 @@ group :development do
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
+  gem 'brakeman'
 end
 
 group :test do
