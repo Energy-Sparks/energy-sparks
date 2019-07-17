@@ -36,7 +36,7 @@ module Admin
   private
 
     def programme_type_params
-      params.require(:programme_type).permit(:title, :active)
+      params.require(:programme_type).permit(:title, :description, :active)
     end
   end
 end

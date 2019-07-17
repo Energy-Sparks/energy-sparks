@@ -640,6 +640,7 @@ ActiveRecord::Schema.define(version: 2019_07_10_153319) do
 
   create_table "programme_types", force: :cascade do |t|
     t.text "title"
+    t.text "description"
     t.boolean "active", default: false
   end
 

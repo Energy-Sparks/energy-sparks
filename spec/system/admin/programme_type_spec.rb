@@ -6,11 +6,6 @@ describe 'programme type management', type: :system do
 
   describe 'managing' do
 
-    # let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type)}
-    # let!(:activity_category) { create(:activity_category)}
-    # let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
-    # let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
-
     before do
       sign_in(admin)
       visit root_path
@@ -18,17 +13,27 @@ describe 'programme type management', type: :system do
     end
 
     it 'allows the user to create a programme type' do
+      description = 'SPN1'
+      old_title = 'Super programme number 1'
+      new_title = 'Super programme number 2'
       click_on 'New Programme Type'
-      fill_in 'Title', with: 'Super programme number 1'
+      fill_in 'Title', with: old_title
+      fill_in 'Description', with: description
       click_on 'Save'
       expect(page).to have_content('Programme Types')
-      expect(page).to have_content('Super programme number 1')
+      expect(page).to have_content(old_title)
+      expect(page).to have_content('Inactive')
 
       click_on 'Edit'
-      fill_in 'Title', with: 'Super programme number 2'
+      fill_in 'Title', with: new_title
+      check("Active", allow_label_click: true)
       click_on 'Save'
       expect(page).to have_content('Programme Types')
-      expect(page).to have_content('Super programme number 2')
+      expect(page).to have_content(new_title)
+      expect(page).to have_content('Active')
+      click_on new_title
+      expect(page).to have_content(description)
+      click_on 'All programme types'
 
       click_on 'Delete'
       expect(page).to have_content('There are no programme types')
