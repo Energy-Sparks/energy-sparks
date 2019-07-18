@@ -22,4 +22,6 @@
 #
 
 class Programme < ApplicationRecord
+  belongs_to :programme_type
+  has_many :programme_activities
 end
