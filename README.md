@@ -57,8 +57,14 @@ bundle exec rake utility:prepare_test_server
 
 ## More notes on environment creation
 
-* Create web version
-* In More options
+* Create web version with sample app, but everything else you need (see below for options)
+* Once created set environment variables - get existing ones by runnig ```eb printenv``` and then set them on the new environment (easiest to have a branch which is configured as a default to use new environment using ```.elasticbeanstalk/config.yml```) using ```eb setenv THIS_VAR=x THAT_VAR=y``` etc
+* Check environment variables through web console (AWS_ACCESS_KEY usually requires adding manually)
+* Then deploy actual branch
+* Check SSH works
+* Set up DNS in Route 53
+* Set up cert and get it to create DNS record
+* Wait for it to be validated, then add to load balancer
 
 ### capacity:
 
@@ -86,21 +92,11 @@ IAM DevOps
 
 Add environment properties
 
-
-
-* For existing database:
+## For existing database:
 
 Get the RDS launch wizard group and add access INBOUND for the AWSEBSecurityGroup created by EB for the new instance
 
-Deploy latest code
-Check SSH works
-Set up DNS in Route 53
-Set up cert and get it to create DNS record
-Wait for it to be validated, then add to load balancer
-
-(Add 443 listener)
-
-* For new database:
+## For new database:
 
 1) Set up appropriate database in RDS - make sure the password doesn't have any (or too many) special characters, best to keep to digits and letters if possible!
 2) Use pg_dump to get dump of current production database
