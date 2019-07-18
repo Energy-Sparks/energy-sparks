@@ -14,16 +14,22 @@ describe 'programme', type: :system do
 
 
   before do
-    #sign_in(user)
-    #visit root_path
-    #visit new_school_programme_path
-    #click_on 'Programme Types'
+    sign_in(user)
+    visit root_path
+    click_on 'See active programmes'
   end
 
-  it 'allows the user to create, edit and delete a programme type' do
-    expect(ProgrammeType.count).to be 1
-    expect(ProgrammeType.first.activity_types.count).to be 3
-    pp ProgrammeType.first.activity_types
-  end
+  it 'allows the user see details of a programme' do
+    expect(page).to have_content('Programmes')
+    click_on programme_type.title
+    expect(page).to have_content(programme_type.title)
+    expect(page).to have_content(programme_type.description)
+    expect(programme_type.activity_types.count).to be > 0
+    programme_type.activity_types.each do |activity_type|
+      expect(page).to have_content(activity_type.name)
+    end
 
+    click_on 'Start this programme'
+
+  end
 end

@@ -23,5 +23,6 @@
 
 class Programme < ApplicationRecord
   belongs_to :programme_type
+  belongs_to :school
   has_many :programme_activities
 end
