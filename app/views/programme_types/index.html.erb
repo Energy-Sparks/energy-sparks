@@ -1,0 +1,10 @@
+<h1>Programmes</h1>
+
+<ul>
+<% @programme_types.each do |programme_type| %>
+  <li>
+    <%= link_to programme_type.title, programme_type_path(programme_type) %>
+    <%= link_to 'Start', new_school_programme_type_programme_path(@school, programme_type) if @school %>
+  </li>
+<% end %>
+</ul>

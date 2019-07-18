@@ -23,5 +23,10 @@
 
 class Programme < ApplicationRecord
   belongs_to :programme_type
+  belongs_to :school
   has_many :programme_activities
+
+  delegate :description, to: :programme_type
+
+  enum status: [:started, :completed, :abandoned]
 end
