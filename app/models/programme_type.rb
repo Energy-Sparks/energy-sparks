@@ -9,10 +9,10 @@
 #
 
 class ProgrammeType < ApplicationRecord
-  has_many :activity_types
-
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
+
+  has_many :programmes
 
   validates_presence_of :title
 
