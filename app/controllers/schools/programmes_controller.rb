@@ -8,26 +8,24 @@ module Schools
     end
 
     def new
-      # ProgrammeType.find(params[:programme_type_id])
-
-      # puts @school
-      # puts @programme_type
-      # puts params[:programme_type_id]
-      # puts params
-
-   #   "school_id"=>"active-school", "programme_type_id"=>"1"
-
-     # ProgrammeCreate.new(@school, @programme_type)
       @programme = Programme.create(school: @school, programme_type: @programme_type, title: @programme_type.title)
 
-      pp @programme
+      @programme_type.activity_types.each do |activity_type|
+        position = ProgrammeTypeActivityType.find_by(programme_type: @programme_type, activity_type: activity_type).position
+        programme_activity = if @school.activities.find_by(activity_type: activity_type)
+          activity = @school.activities.find_by(activity_type: activity_type)
+          ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position, activity: activity)
+        else
+          ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position)
+        end
+
+        @programme.programme_activities << programme_activity
+      end
+
       redirect_to school_programme_path(@school, @programme)
     end
 
     def show
-      puts "HELLO"
-      pp @programme
-      pp @school
     end
   end
 end

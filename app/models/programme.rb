@@ -7,7 +7,7 @@
 #  programme_type_id :bigint(8)
 #  school_id         :bigint(8)
 #  started_on        :date
-#  status            :integer          default(0), not null
+#  status            :integer          default("started"), not null
 #  title             :text
 #
 # Indexes

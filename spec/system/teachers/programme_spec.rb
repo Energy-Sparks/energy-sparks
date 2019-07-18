@@ -6,14 +6,7 @@ describe 'programme', type: :system do
   let!(:school) { create_active_school(name: school_name)}
   let!(:user)  { create(:user, role: 'school_user', school: school) }
   let!(:programme_type) { create(:programme_type_with_activity_types) }
-
   let!(:activity)  { create(:activity, school: school, activity_type: programme_type.activity_types.first ) }
-
-  # let(:activity_type_name) { 'Exciting activity' }
-  # let(:other_activity_type_name) { 'Exciting activity (please specify)' }
-  # let(:activity_description) { 'What we did' }
-  # let(:custom_title) { 'Custom title' }
-
 
   before do
     sign_in(user)
@@ -31,14 +24,9 @@ describe 'programme', type: :system do
       expect(page).to have_content(activity_type.name)
     end
 
-
-
-
     click_on 'Start this programme'
 
     expect(school.programmes.count).to be 1
-
-
 
     programme_type.activity_types.each do |activity_type|
       expect(page).to have_content(activity_type.name)
