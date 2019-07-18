@@ -5,6 +5,8 @@ class ProgrammeTypesController < ApplicationController
 
   # GET /programme_types
   def index
+    redirect_to school_programmes_path(@school) if @school
+    @programme_types = ProgrammeType.active
   end
 
   # GET /
@@ -16,5 +18,4 @@ class ProgrammeTypesController < ApplicationController
   def school?
     @school = current_user.school if current_user && current_user.school
   end
-
 end

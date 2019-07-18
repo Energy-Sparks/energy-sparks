@@ -7,7 +7,7 @@
 #  programme_type_id :bigint(8)
 #  school_id         :bigint(8)
 #  started_on        :date
-#  status            :integer          default(0), not null
+#  status            :integer          default("started"), not null
 #  title             :text
 #
 # Indexes
@@ -25,6 +25,7 @@ class Programme < ApplicationRecord
   belongs_to :programme_type
   belongs_to :school
   has_many :programme_activities
+  has_many :activities, through: :programme_activities
 
   delegate :description, to: :programme_type
 

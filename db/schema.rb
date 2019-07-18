@@ -633,11 +633,11 @@ ActiveRecord::Schema.define(version: 2019_07_18_101824) do
 
   create_table "programme_activities", force: :cascade do |t|
     t.bigint "programme_id", null: false
-    t.bigint "activity_id", null: false
-    t.bigint "activity_type_id"
+    t.bigint "activity_type_id", null: false
+    t.bigint "activity_id"
     t.integer "position", default: 0, null: false
-    t.index ["activity_type_id"], name: "index_programme_activities_on_activity_type_id"
-    t.index ["programme_id", "activity_id"], name: "programme_activity_uniq", unique: true
+    t.index ["activity_id"], name: "index_programme_activities_on_activity_id"
+    t.index ["programme_id", "activity_type_id"], name: "programme_activity_type_uniq", unique: true
   end
 
   create_table "programme_type_activity_types", force: :cascade do |t|

@@ -3,7 +3,15 @@
 <p><%= @programme.description %></p>
 <h2>Activities</h2>
 <ol class="activities">
-  <% @programme.programme_type.activity_types.order(:position).each do |activity_type| %>
-    <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+  <% @programme.programme_activities.order(:position).each do |programme_activity| %>
+    <li>
+      <% if programme_activity.activity_id? %>
+        <%= link_to "#{programme_activity.name}", school_activity_path(@school, programme_activity.activity) %> (Completed)
+      <% else %>
+        <%= link_to "#{programme_activity.name}", activity_type_path(programme_activity.activity_type) %>
+      <% end %>
+    </li>
   <% end %>
 </ol>
+
+<%= link_to 'All programmes', school_programmes_path(@school), class: 'btn btn-sm btn-success' %>

@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :programme_type do
-    sequence(:title) {|n| "Programme Type #{n}"}
+    sequence(:title)  { |n| "Programme Type #{n}"}
+    active            { true }
 
     factory :programme_type_with_activity_types do
       transient do
