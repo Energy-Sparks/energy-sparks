@@ -60,8 +60,9 @@ bundle exec rake utility:prepare_test_server
 * Create web version with sample app, but everything else you need (see below for options)
 * Once created set environment variables - get existing ones by runnig ```eb printenv``` and then set them on the new environment (easiest to have a branch which is configured as a default to use new environment using ```.elasticbeanstalk/config.yml```) using ```eb setenv THIS_VAR=x THAT_VAR=y``` etc
 * Check environment variables through web console (AWS_ACCESS_KEY usually requires adding manually)
-* Then deploy actual branch
 * Check SSH works
+* Whilst SSH'd - set up NPM fontawesome pro config if required
+* Then deploy actual branch
 * Set up DNS in Route 53
 * Set up cert and get it to create DNS record
 * Wait for it to be validated, then add to load balancer
