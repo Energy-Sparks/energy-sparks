@@ -13,11 +13,11 @@ module Schools
       @programme_type.activity_types.each do |activity_type|
         position = ProgrammeTypeActivityType.find_by(programme_type: @programme_type, activity_type: activity_type).position
         programme_activity = if @school.activities.find_by(activity_type: activity_type)
-          activity = @school.activities.find_by(activity_type: activity_type)
-          ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position, activity: activity)
-        else
-          ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position)
-        end
+                               activity = @school.activities.find_by(activity_type: activity_type)
+                               ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position, activity: activity)
+                             else
+                               ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position)
+                             end
 
         @programme.programme_activities << programme_activity
       end

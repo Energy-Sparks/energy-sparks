@@ -16,5 +16,4 @@ class ProgrammeTypesController < ApplicationController
   def school?
     @school = current_user.school if current_user && current_user.school
   end
-
 end
