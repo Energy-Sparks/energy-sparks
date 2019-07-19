@@ -14,6 +14,8 @@ class ProgrammeType < ApplicationRecord
 
   has_many :programmes
 
+  scope :active, -> { where(active: true) }
+
   validates_presence_of :title
 
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }

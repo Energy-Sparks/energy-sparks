@@ -5,6 +5,8 @@ class ProgrammeTypesController < ApplicationController
 
   # GET /programme_types
   def index
+  #  redirect_to school_programmes_path(@school) if @school
+    @programme_types = ProgrammeType.active
   end
 
   # GET /
