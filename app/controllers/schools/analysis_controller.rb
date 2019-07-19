@@ -76,7 +76,7 @@ private
   end
 
   def pages
-    analyis_pages = @school.configuration.analysis_charts_as_symbols
+    @school.configuration.analysis_charts_as_symbols
   end
 
   def render_generic_chart_template(extra_chart_config = {})
