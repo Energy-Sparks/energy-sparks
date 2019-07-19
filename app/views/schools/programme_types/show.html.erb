@@ -1,0 +1,23 @@
+<h1><%= @programme_type.title %> for <%= @school.name %></h1>
+
+<p><%= @programme_type.description %></p>
+
+
+<p><%= link_to 'Start this programme', new_school_programme_type_programme_path(@school, @programme_type), class: 'btn btn-sm btn-primary' if @can_start_programme %></p>
+
+<h2>Activities</h2>
+<p>Although you haven't started this programme, you might have completed some of the activities, they will show in this list as Completed.</p>
+<ol class="activities">
+  <% @programme_type.programme_type_activity_types.order(:position).each do |programme_type_activity_type| %>
+    <li>
+      <% activity = @school.activities.where(activity_type_id: programme_type_activity_type.activity_type.id).first %>
+      <% if activity %>
+        <%= link_to "#{activity.activity_type.name}", school_activity_path(@school, activity) %> (Completed)
+      <% else %>
+        <%= link_to "#{programme_type_activity_type.activity_name}", activity_type_path(programme_type_activity_type.activity_type) %>
+      <% end %>
+    </li>
+  <% end %>
+</ol>
+
+<%= link_to 'All programmes', school_programmes_path(@school), class: 'btn btn-sm btn-success' %>

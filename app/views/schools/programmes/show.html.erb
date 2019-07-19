@@ -1,6 +1,7 @@
-<h1><%= @programme.title %></h1>
+<h1><%= @programme.title %> for <%= @school.name %></h1>
 
 <p><%= @programme.description %></p>
+<p>Current status: <%= @programme.status.humanize.capitalize %></p>
 <h2>Activities</h2>
 <ol class="activities">
   <% @programme.programme_activities.order(:position).each do |programme_activity| %>

@@ -17,4 +17,8 @@ class ProgrammeTypeActivityType < ApplicationRecord
   belongs_to :programme_type
 
   validates :activity_type, :programme_type, presence: true
+
+  def activity_name
+    activity_type.name
+  end
 end

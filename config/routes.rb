@@ -20,7 +20,6 @@ Rails.application.routes.draw do
 
   resources :activity_types
   resources :activity_categories
-  resources :programme_types,   only: [:show, :index]
 
   resources :calendars do
     scope module: :calendars do
