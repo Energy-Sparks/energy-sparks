@@ -15,7 +15,6 @@ describe 'programme', type: :system do
   before do
     sign_in(user)
     visit root_path
-    click_on 'See active programmes'
   end
 
   it 'hides inactive programme types' do
@@ -45,14 +44,13 @@ describe 'programme', type: :system do
     expect(page).to_not have_content("#{programme_type.activity_types.second.name} (Completed)")
     expect(page).to_not have_content("#{programme_type.activity_types.third.name} (Completed)")
 
-    click_on 'All programmes'
-    expect(page).to have_content("#{programme_type.title} Started")
+    click_on 'School page'
+    expect(page).to have_content("Started")
   end
 
   it 'does not allows a school user from a different school to start a programme for that school' do
     click_on 'Schools'
     click_on other_school_name
-    click_on 'See active programmes'
     expect(page).to_not have_content 'Start programme'
   end
 end

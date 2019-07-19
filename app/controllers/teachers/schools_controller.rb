@@ -13,9 +13,15 @@ module Teachers
       setup_charts
       setup_dashboard_alert
       setup_activity_suggestions
+      setup_programmes
     end
 
   private
+
+    def setup_programmes
+      @programme_types = ProgrammeType.active
+      @can_start_programme = current_user && current_user.school && current_user.school.id == @school.id
+    end
 
     def setup_charts
       @charts = {}
