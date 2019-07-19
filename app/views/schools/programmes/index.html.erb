@@ -1,0 +1,34 @@
+<h1>Programmes for <%= @school.name %></h1>
+
+<% if @programme_types.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th></th>
+        <th>Activities in Programme</th>
+        <th>Completed activities</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @programme_types.each do |programme_type| %>
+        <tr>
+          <% programme = @school.programmes.where(programme_type: programme_type).first %>
+          <% if programme %>
+            <td><%= link_to programme_type.title, school_programme_path(@school, programme) %></td>
+            <td><%= programme.status.humanize.capitalize %></td>
+            <td><%= programme_type.activity_types.count %></td>
+            <td><%= programme.activities.count %></td>
+          <% else %>
+            <td><%= link_to programme_type.title, programme_type_path(programme_type) %></td>
+            <td><%= link_to 'Start programme', new_school_programme_type_programme_path(@school, programme_type), class: 'btn btn-sm btn-success' if current_user.school.id == @school.id %></td>
+            <td><%= programme_type.activity_types.count %></td>
+            <td></td>
+         <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no programmes</p>
+<% end %>
