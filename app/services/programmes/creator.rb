@@ -1,6 +1,5 @@
 module Programmes
   class Creator
-
     def initialize(school, programme_type)
       @school = school
       @programme_type = programme_type
@@ -33,7 +32,3 @@ module Programmes
     end
   end
 end
-
-
-
-
