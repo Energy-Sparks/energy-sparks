@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Schools
@@ -20,7 +22,7 @@ module Schools
       )
     end
 
-  private
+    private
 
     def fuel_types_for_analysis
       if is_school_dual_fuel?
@@ -55,7 +57,11 @@ module Schools
     end
 
     def electricity_fuel_type
-      @school.has_storage_heaters? ? :electric_and_storage_heaters : :electric_only
+      @school.has_storage_heaters? ? :electric_and_storage_heaters : electric_only_fuel_type
+    end
+
+    def electric_only_fuel_type
+      @school.has_solar_pv? ? :electric_and_solar_pv : :electric_only
     end
   end
 end
