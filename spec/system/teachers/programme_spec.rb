@@ -6,6 +6,7 @@ describe 'programme', type: :system do
   let!(:school) { create_active_school(name: school_name)}
   let!(:user)  { create(:user, role: 'school_user', school: school) }
   let!(:programme_type) { create(:programme_type_with_activity_types) }
+
   let!(:inactive_programme_type) { create(:programme_type, active: false) }
   let!(:activity)  { create(:activity, school: school, activity_type: programme_type.activity_types.first ) }
 
@@ -38,7 +39,6 @@ describe 'programme', type: :system do
     expect(Activity.first.school).to eq school
     expect(school.programmes.first.activities.count).to be 1
 
-
-    expect(page).to have_content("#{programme_type.activity_types.first.name} completed")
+    expect(page).to have_content("#{programme_type.activity_types.first.name} (Completed)")
   end
 end

@@ -5,6 +5,7 @@ module Schools
     load_and_authorize_resource :programme
 
     def index
+      @programme_types = ProgrammeType.active
     end
 
     def new
