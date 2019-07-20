@@ -41,14 +41,6 @@ GIT
       spreadsheet (~> 1.1)
 
 GIT
-  remote: https://github.com/merit-gem/merit.git
-  revision: e24acbb25b6f58c6eb0c683548223c7646bd0461
-  branch: master
-  specs:
-    merit (3.0.2)
-      ambry (~> 1.0.0)
-
-GIT
   remote: https://github.com/norman/friendly_id.git
   revision: cf2f5337afd6cb7dd5d898904598ebfa21799faa
   branch: master
@@ -125,7 +117,6 @@ GEM
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     after_party (1.11.2)
-    ambry (1.0.0)
     annotate (2.7.5)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 13.0)
@@ -657,7 +648,6 @@ DEPENDENCIES
   listen (~> 3.0.5)
   lograge
   mailgun_rails
-  merit!
   momentjs-rails
   mustache (~> 1.0)
   oj

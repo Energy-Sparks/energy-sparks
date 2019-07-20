@@ -3,7 +3,7 @@ class SchoolsController < ApplicationController
   include Measurements
 
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
   # GET /schools
@@ -18,12 +18,6 @@ class SchoolsController < ApplicationController
   # GET /schools/1.json
   def show
     redirect_to teachers_school_path(@school), status: :found
-  end
-
-  # GET /schools/:id/awards
-  def awards
-    @all_badges = Merit::Badge.all.to_a.sort
-    @badges = @school.badges_by_date(order: :asc)
   end
 
   def suggest_activity

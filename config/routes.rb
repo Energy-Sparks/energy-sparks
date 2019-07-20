@@ -102,7 +102,6 @@ Rails.application.routes.draw do
     get '/scoreboard', to: redirect('/schools')
 
     member do
-      get 'awards'
       get 'suggest_activity'
       get 'data_explorer'
       get 'usage'
