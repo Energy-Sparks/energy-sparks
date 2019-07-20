@@ -30,4 +30,6 @@ class Programme < ApplicationRecord
   delegate :description, to: :programme_type
 
   enum status: [:started, :completed, :abandoned]
+
+  scope :active,  -> { joins(:programme_type).merge(ProgrammeType.active) }
 end
