@@ -31,5 +31,5 @@ class Programme < ApplicationRecord
 
   enum status: [:started, :completed, :abandoned]
 
-  scope :active,  -> { joins(:programme_type).merge(ProgrammeType.active) }
+  scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
 end
