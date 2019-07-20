@@ -23,7 +23,7 @@ describe User do
         it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }
       end
 
-      %i[index show usage awards suggest_activity].each do |action|
+      %i[index show usage suggest_activity].each do |action|
         it{ is_expected.to be_able_to(action, school) }
       end
 
@@ -37,7 +37,7 @@ describe User do
       let(:school) { create(:school) }
       let(:user) { create(:user, role: :guest) }
 
-      %i[index show usage awards].each do |action|
+      %i[index show usage].each do |action|
         it { is_expected.to be_able_to(action, school) }
       end
 
