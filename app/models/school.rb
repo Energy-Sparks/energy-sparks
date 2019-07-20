@@ -191,7 +191,6 @@ class School < ApplicationRecord
     7 * number_of_active_meters
   end
 
-<<<<<<< HEAD
   def has_last_full_week_of_readings?
     previous_friday = Time.zone.today.prev_occurring(:friday)
 
