@@ -31,7 +31,7 @@ class Activity < ApplicationRecord
 
   has_many   :programme_activities
 
-  validates_presence_of :school_id, :activity_type_id, :activity_category_id, :happened_on
+  validates_presence_of :school, :activity_type, :activity_category, :happened_on
 
   has_rich_text :description
 
