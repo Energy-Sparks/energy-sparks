@@ -6,7 +6,6 @@ class Ability
     alias_action :create, :read, :update, :destroy, to: :crud
     if user.admin?
       can :manage, :all
-      can :analyse, :carbon_emissions
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :crud, Calendar, id: user.school.try(:calendar_id)
