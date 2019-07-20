@@ -151,6 +151,14 @@ class School < ApplicationRecord
     end
   end
 
+  def has_gas?
+    configuration.gas
+  end
+
+  def has_electricity?
+    configuration.electricity
+  end
+
   def analysis?
     configuration && configuration.analysis_charts.present?
   end
@@ -183,6 +191,7 @@ class School < ApplicationRecord
     7 * number_of_active_meters
   end
 
+<<<<<<< HEAD
   def has_last_full_week_of_readings?
     previous_friday = Time.zone.today.prev_occurring(:friday)
 

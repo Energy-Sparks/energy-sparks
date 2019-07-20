@@ -141,16 +141,6 @@ PreCommit:
     required: true
     quiet: true
 
-  BerksfileCheck:
-    enabled: false
-    description: 'Check Berksfile lock'
-    required_executable: 'berks'
-    flags: ['list', '--quiet']
-    install_command: 'gem install berks'
-    include:
-      - 'Berksfile'
-      - 'Berksfile.lock'
-
   BrokenSymlinks:
     enabled: true
     description: 'Check for broken symlinks'
@@ -178,77 +168,6 @@ PreCommit:
     enabled: true
     description: 'Check for case-insensitivity conflicts'
     quiet: true
-
-  ChamberCompare:
-    enabled: false
-    description: 'Check that settings are equivalent between namespaces'
-    required_executable: 'chamber'
-    flags: ['compare']
-    install_command: 'gem install chamber'
-    namespaces:
-      - ['development']
-      - ['test']
-      - ['production']
-    exclusions: []
-    include: &chamber_settings_files
-      - 'config/settings*.yml'
-      - 'config/settings*.yml.erb'
-      - 'config/settings/**/*.yml'
-      - 'config/settings/**/*.yml.erb'
-      - 'settings*.yml'
-      - 'settings*.yml.erb'
-      - 'settings/**/*.yml'
-      - 'settings/**/*.yml.erb'
-
-  ChamberSecurity:
-    enabled: false
-    description: 'Check that settings have been secured with Chamber'
-    required_executable: 'chamber'
-    flags: ['secure', '--files']
-    install_command: 'gem install chamber'
-    include: *chamber_settings_files
-
-  ChamberVerification:
-    enabled: false
-    description: 'Verify that all settings changes have been approved'
-    required_executable: 'chamber'
-    flags: ['sign', '--verify']
-    install_command: 'gem install chamber'
-    include: *chamber_settings_files
-
-  CoffeeLint:
-    enabled: false
-    description: 'Analyze with coffeelint'
-    required_executable: 'coffeelint'
-    flags: ['--reporter=csv']
-    install_command: 'npm install -g coffeelint'
-    include: '**/*.coffee'
-
-  Credo:
-    enabled: false
-    description: 'Analyze with credo'
-    required_executable: 'mix'
-    flags: ['credo', '--all', '--strict', '--format', 'flycheck']
-    include:
-      - '**/*.ex'
-      - '**/*.exs'
-
-  CssLint:
-    enabled: false
-    description: 'Analyze with csslint'
-    required_executable: 'csslint'
-    flags: ['--quiet', '--format=compact']
-    install_command: 'npm install -g csslint'
-    include: '**/*.css'
-
-  Dogma:
-    enabled: false
-    description: 'Analyze with dogma'
-    required_executable: 'mix'
-    flags: ['dogma']
-    include:
-      - '**/*.ex'
-      - '**/*.exs'
 
   EsLint:
     enabled: false
@@ -312,16 +231,8 @@ PreCommit:
     include:
       - '**/Dockerfile*'
 
-  HamlLint:
-    enabled: false
-    description: 'Analyze with haml-lint'
-    required_executable: 'haml-lint'
-    install_command: 'gem install haml-lint'
-    flags: ['--no-summary']
-    include: '**/*.haml'
-
   HardTabs:
-    enabled: false
+    enabled: true
     description: 'Check for hard tabs'
     quiet: true
     required_executable: 'grep'
@@ -362,13 +273,6 @@ PreCommit:
       - '**/*.jpg'
       - '**/*.png'
       - '**/*.svg'
-
-  JavaCheckstyle:
-    enabled: false
-    description: 'Analyze with checkstyle'
-    required_executable: 'checkstyle'
-    flags: ['-c', '/sun_checks.xml']
-    include: '**/*.java'
 
   Jscs:
     enabled: false
@@ -429,18 +333,11 @@ PreCommit:
     description: 'Check source files for license headers'
 
   LocalPathsInGemfile:
-    enabled: false
+    enabled: true
     description: 'Check for local paths in Gemfile'
     required_executable: 'grep'
     flags: ['-IHnE', "^[^#]*((\\bpath:)|(:path[ \t]*=>))"]
     include: '**/Gemfile'
-
-  Mdl:
-    enabled: false
-    description: 'Analyze markdown files with mdl'
-    required_executable: 'mdl'
-    install_command: 'gem install mdl'
-    include: '**/*.md'
 
   MergeConflicts:
     enabled: true
@@ -448,115 +345,6 @@ PreCommit:
     quiet: true
     required_executable: 'grep'
     flags: ['-IHn', "^<<<<<<<[ \t]"]
-
-  PuppetMetadataJsonLint:
-    enabled: false
-    description: 'Checking module metadata'
-    flags: ['--strict-license', '--strict-dependencies', '--fail-on-warning']
-    include: 'metadata.json'
-    required_executable: 'metadata-json-lint'
-    install_command: 'gem install metadata-json-lint'
-
-  NginxTest:
-    enabled: false
-    description: 'Test nginx configs'
-    required_executable: 'nginx'
-    flags: ['-t']
-    include: '**/nginx.conf'
-
-  Pep257:  # Deprecated – use Pydocstyle instead.
-    enabled: false
-    description: 'Analyze docstrings with pep257'
-    required_executable: 'pep257'
-    install_command: 'pip install pep257'
-    include: '**/*.py'
-
-  Pep8:  # Deprecated – use Pycodestyle instead.
-    enabled: false
-    description: 'Analyze with pep8'
-    required_executable: 'pep8'
-    install_command: 'pip install pep8'
-    include: '**/*.py'
-
-  PhpLint:
-    enabled: false
-    description: 'Testing with PHP lint'
-    required_executable: 'php'
-    command: 'php'
-    flags: ['-l']
-    include: '**/*.php'
-
-  PhpCs:
-    enabled: false
-    description: 'Analyze with PHP_CodeSniffer'
-    command: 'vendor/bin/phpcs'
-    flags: ['--standard=PSR2', '--report=csv']
-    include: '**/*.php'
-
-  PhpStan:
-    description: 'Analyze with phpstan'
-    enabled: false
-    command: 'phpstan'
-    flags: ['analyze', '--errorFormat=raw']
-    include:
-      - '**/*.php'
-
-  Pronto:
-    enabled: false
-    description: 'Analyzing with pronto'
-    required_executable: 'pronto'
-    install_command: 'gem install pronto'
-    flags: ['run', '--staged', '--exit-code']
-
-  PuppetLint:
-    enabled: false
-    description: 'Analyze with puppet-lint'
-    required_executable: 'puppet-lint'
-    install_command: 'gem install puppet-lint'
-    flags:
-      - '--log-format="%{fullpath}:%{line}:%{column}:%{KIND}: %{message} (%{check})"'
-      - '--fail-on-warnings'
-      - '--error-level=all'
-    include: '**/*.pp'
-
-  Pycodestyle:
-    enabled: false
-    description: 'Analyze with pycodestyle'
-    required_executable: 'pycodestyle'
-    install_command: 'pip install pycodestyle'
-    include: '**/*.py'
-
-  Pydocstyle:
-    enabled: false
-    description: 'Analyze docstrings with pydocstyle'
-    required_executable: 'pydocstyle'
-    install_command: 'pip install pydocstyle'
-    include: '**/*.py'
-
-  Pyflakes:
-    enabled: false
-    description: 'Analyze with pyflakes'
-    required_executable: 'pyflakes'
-    install_command: 'pip install pyflakes'
-    include: '**/*.py'
-
-  Pylint:
-    enabled: false
-    description: 'Analyze with Pylint'
-    required_executable: 'pylint'
-    install_command: 'pip install pylint'
-    flags:
-      - '--msg-template="{path}:{line}:{C}: {msg} ({symbol})"'
-      - '--reports=n'
-      - '--persistent=n'
-    include: '**/*.py'
-
-  PythonFlake8:
-    enabled: false
-    description: 'Analyze with flake8'
-    required_executable: 'flake8'
-    install_command: 'pip install flake8'
-    include: '**/*.py'
 
   RakeTarget:
     enabled: false
@@ -596,26 +384,12 @@ PreCommit:
       - '**/Gemfile'
       - '**/Rakefile'
 
-  RstLint:
-    enabled: false
-    description: 'Analyze reStructuredText files with rst-lint'
-    required_executable: 'rst-lint'
-    install_command: 'pip install restructuredtext_lint'
-    include: '**/*.rst'
-
   RuboCop:
-    enabled: false
+    enabled: true
     description: 'Analyze with RuboCop'
     required_executable: 'rubocop'
-    flags: ['--format=emacs', '--force-exclusion', '--display-cop-names']
+    flags: ['--format=simple', '--force-exclusion', '--display-cop-names', 'app', 'lib', 'data-pipeline/handlers']
     install_command: 'gem install rubocop'
-    include:
-      - '**/*.gemspec'
-      - '**/*.rake'
-      - '**/*.rb'
-      - '**/*.ru'
-      - '**/Gemfile'
-      - '**/Rakefile'
 
   RubyLint:
     enabled: false
@@ -627,19 +401,6 @@ PreCommit:
       - '**/*.gemspec'
       - '**/*.rb'
 
-  Scalariform:
-    enabled: false
-    description: 'Check formatting with Scalariform'
-    required_executable: 'scalariform'
-    flags: ['--test']
-    include: '**/*.scala'
-
-  Scalastyle:
-    enabled: false
-    description: 'Analyze with Scalastyle'
-    required_executable: 'scalastyle'
-    include: '**/*.scala'
-
   ScssLint:
     enabled: false
     description: 'Analyze with scss-lint'
@@ -649,27 +410,12 @@ PreCommit:
     install_command: 'gem install scss_lint'
     include: '**/*.scss'
 
-  SemiStandard:
-    enabled: false
-    description: 'Analyze with semistandard'
-    required_executable: 'semistandard'
-    flags: ['--verbose']
-    install_command: 'npm install -g semistandard'
-    include: '**/*.js'
-
   ShellCheck:
     enabled: false
     description: 'Analyze with ShellCheck'
     required_executable: 'shellcheck'
     flags: ['--format=gcc']
     include: '**/*.sh'
-
-  SlimLint:
-    enabled: false
-    description: 'Analyze with slim-lint'
-    required_executable: 'slim-lint'
-    install_command: 'gem install slim_lint'
-    include: '**/*.slim'
 
   Sqlint:
     enabled: false
@@ -678,22 +424,6 @@ PreCommit:
     install_command: 'gem install sqlint'
     include: '**/*.sql'
 
-  Standard:
-    enabled: false
-    description: 'Analyze with standard'
-    required_executable: 'standard'
-    flags: ['--verbose']
-    install_command: 'npm install -g standard'
-    include: '**/*.js'
-
-  TsLint:
-      enabled: false
-      description: 'Analyze with TSLint'
-      required_executable: 'tslint'
-      install_command: 'npm install -g tslint typescript'
-      flags: ['--t=prose']
-      include: '**/*.ts'
-
   TrailingWhitespace:
     enabled: true
     description: 'Check for trailing whitespace'
@@ -701,7 +431,7 @@ PreCommit:
     flags: ['-IHn', "[ \t]$"]
 
   TravisLint:
-    enabled: false
+    enabled: true
     description: 'Check Travis CI configuration'
     required_executable: 'travis'
     flags: ['lint']
@@ -745,23 +475,6 @@ PreCommit:
     enabled: false
     eol: "\n" # or "\r\n" for Windows-style newlines
 
-  XmlLint:
-    enabled: false
-    description: 'Analyze with xmllint'
-    required_executable: 'xmllint'
-    flags: ['--noout']
-    include:
-      - '**/*.xml'
-      - '**/*.svg'
-
-  XmlSyntax:
-    enabled: false
-    description: 'Check XML syntax'
-    required_library: 'rexml/document'
-    include:
-      - '**/*.xml'
-      - '**/*.svg'
-
   YamlLint:
     enabled: false
     description: 'Analyze with YAMLlint'
@@ -796,15 +509,6 @@ PostCheckout:
     required: false
     quiet: false
     skip_file_checkout: true
-
-  BowerInstall:
-    enabled: false
-    description: 'Install bower dependencies'
-    requires_files: true
-    required_executable: 'bower'
-    install_command: 'npm install -g bower'
-    flags: ['install']
-    include: 'bower.json'
 
   BundleInstall:
     enabled: false
@@ -872,15 +576,6 @@ PostCommit:
     required: false
     quiet: false
 
-  BowerInstall:
-    enabled: false
-    description: 'Install bower dependencies'
-    requires_files: true
-    required_executable: 'bower'
-    install_command: 'npm install -g bower'
-    flags: ['install']
-    include: 'bower.json'
-
   BundleInstall:
     enabled: false
     description: 'Install Bundler dependencies'
@@ -899,15 +594,6 @@ PostCommit:
     required_executable: './node_modules/.bin/commitplease'
     install_command: 'npm install --save-dev commitplease'
     flags: ['-1']
-
-  ComposerInstall:
-    enabled: false
-    description: 'Install composer dependencies'
-    requires_files: true
-    required_executable: 'composer'
-    install_command: 'curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer'
-    flags: ['install']
-    include: 'composer.json'
 
   GitGuilt:
     enabled: false
@@ -961,15 +647,6 @@ PostMerge:
     requires_files: false
     quiet: false
 
-  BowerInstall:
-    enabled: false
-    description: 'Install bower dependencies'
-    requires_files: true
-    required_executable: 'bower'
-    install_command: 'npm install -g bower'
-    flags: ['install']
-    include: 'bower.json'
-
   BundleInstall:
     enabled: false
     description: 'Install Bundler dependencies'
@@ -981,15 +658,6 @@ PostMerge:
       - 'Gemfile'
       - 'Gemfile.lock'
       - '*.gemspec'
-
-  ComposerInstall:
-    enabled: false
-    description: 'Install composer dependencies'
-    requires_files: true
-    required_executable: 'composer'
-    install_command: 'curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer'
-    flags: ['install']
-    include: 'composer.json'
 
   GitLfs:
     enabled: false
@@ -1035,15 +703,6 @@ PostRewrite:
     requires_files: false
     quiet: false
 
-  BowerInstall:
-    enabled: false
-    description: 'Install bower dependencies'
-    requires_files: true
-    required_executable: 'bower'
-    install_command: 'npm install -g bower'
-    flags: ['install']
-    include: 'bower.json'
-
   BundleInstall:
     enabled: false
     description: 'Install Bundler dependencies'
@@ -1055,15 +714,6 @@ PostRewrite:
       - 'Gemfile'
       - 'Gemfile.lock'
       - '*.gemspec'
-
-  ComposerInstall:
-    enabled: false
-    description: 'Install composer dependencies'
-    requires_files: true
-    required_executable: 'composer'
-    install_command: 'curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer'
-    flags: ['install']
-    include: 'composer.json'
 
   IndexTags:
     enabled: false
@@ -1109,16 +759,8 @@ PrePush:
     enabled: true
     description: 'Check for vulnerable versions of gems'
     required_executable: 'bundle-audit'
-    flags: ['--update']
+    flags: ['check', '--update']
     install_command: 'gem install bundler-audit'
-
-  GovUkLint:
-    enabled: true
-    description: 'Analyze with GovLinter'
-    required_executable: 'govuk-lint-ruby'
-    flags: ['app','lib', '-R']
-    install_command: 'gem install govuk_lint'
-    command: ['bundle', 'exec', 'govuk-lint-ruby']
 
   Brakeman:
     enabled: false
@@ -1127,49 +769,11 @@ PrePush:
     flags: ['--exit-on-warn', '--quiet', '--summary']
     install_command: 'gem install brakeman'
 
-  CargoTest:
-    enabled: false
-    description: 'Run tests with cargo'
-    required_executable: 'cargo'
-    flags: ['test']
-    include: 'src/**/*.rs'
-
-  GitLfs:
-    enabled: false
-    description: 'Upload files tracked by Git LFS'
-    required_executable: 'git-lfs'
-    install_command: 'brew install git-lfs'
-
-  Minitest:
-    enabled: false
-    description: 'Run Minitest test suite'
-    command: ['ruby', '-Ilib:test', '-rminitest', "-e 'exit! Minitest.run'"]
-    include: 'test/**/*_test.rb'
-
-  PhpUnit:
-    enabled: false
-    description: 'Run PhpUnit test suite'
-    command: 'vendor/bin/phpunit'
-    flags: ['--bootstrap', 'vendor/autoload.php', 'tests']
-    install_command: 'composer require --dev phpunit/phpunit'
-
   ProtectedBranches:
     enabled: false
     description: 'Check for illegal pushes to protected branches'
     destructive_only: true
     branches: ['master']
-
-  Pytest:
-    enabled: false
-    description: 'Run pytest test suite'
-    required_executable: 'pytest'
-    install_command: 'pip install -U pytest'
-
-  PythonNose:
-    enabled: false
-    description: 'Run nose test suite'
-    required_executable: 'nosetests'
-    install_command: 'pip install -U nose'
 
   RSpec:
     enabled: false
@@ -1185,11 +789,6 @@ PrePush:
     #  - '...'
     required_executable: 'rake'
     install_command: 'gem install rake'
-
-  TestUnit:
-    enabled: false
-    description: 'Run Test::Unit test suite'
-    command: ['ruby', '-Ilib:test', '-rtest/unit', "-e 'exit! Test::Unit::AutoRunner.run'"]
 
 # Hooks that run during `git rebase`, before any commits are rebased.
 # If a hook fails, the rebase is aborted.
