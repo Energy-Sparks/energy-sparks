@@ -61,19 +61,6 @@ describe School do
     end
   end
 
-  describe '#badges_by_date' do
-    it 'returns an array of badges ordered by date' do
-      badge = create :badge
-      badges_sash = (1..5).collect { |n| create :badges_sash, badge_id: badge.id, sash_id: subject.sash_id, created_at: today.days_ago(n) }
-
-      expect(subject.badges_by_date).to eq(
-        badges_sash
-          .sort { |x, y| x.created_at <=> y.created_at }
-          .map(&:badge)
-      )
-    end
-  end
-
   describe '#fuel_types' do
     it 'identifies dual fuel if it has both meters' do
       gas_meter = create(:gas_meter_with_reading, school: subject)

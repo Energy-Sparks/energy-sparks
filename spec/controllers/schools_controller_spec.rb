@@ -89,15 +89,6 @@ RSpec.describe SchoolsController, type: :controller do
     end
   end
 
-  describe "GET #awards" do
-    it 'assigns awards as @badges' do
-      school = create :school, :with_badges
-
-      get :awards, params: {id: school.to_param}
-      expect(assigns(:badges)).to include(school.badges.first)
-    end
-  end
-
   describe "GET #usage" do
     let!(:school) { FactoryBot.create :school }
     let(:period) { :daily }

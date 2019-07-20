@@ -30,11 +30,10 @@ class Scoreboard < ApplicationRecord
   end
 
   def scored_schools
-    schools.active.select('schools.*, SUM(num_points) AS sum_points')
-        .joins('left join merit_scores ON merit_scores.sash_id = schools.sash_id')
-        .joins('left join merit_score_points ON merit_score_points.score_id = merit_scores.id')
-        .order(Arel.sql('sum_points DESC NULLS LAST, MAX(merit_score_points.created_at) DESC, schools.name ASC'))
-        .group('schools.id, merit_scores.sash_id')
+    schools.active.select('schools.*, SUM(activities.points) AS sum_points').
+      joins('LEFT JOIN activities ON activities.school_id = schools.id').
+      order(Arel.sql('sum_points DESC NULLS LAST, MAX(activities.happened_on) DESC, schools.name ASC')).
+      group('schools.id')
   end
 
   def position(school)
