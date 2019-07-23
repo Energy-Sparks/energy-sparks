@@ -88,21 +88,20 @@
   <div class="col-md-12 jumbotron pt-3 pb-3">
     <h2>Follow an energy saving programme</h2>
 
-      <% @programme_types.each do |programme_type| %>
-        <% programme = @school.programmes.where(programme_type: programme_type).first %>
-        <% if programme %>
-          <h4><%= link_to programme_type.title, school_programme_path(@school, programme) %> - <small><%= programme.status.humanize.capitalize %></small></h4>
-        <% else %>
-          <div class="row justify-content-between">
-            <div class="col-9">
-              <h4><%= link_to programme_type.title, school_programme_type_path(@school, programme_type) %></h4>
-            </div>
-            <div class="col-3 text-right">
-              <%= button_to 'Start programme', school_programmes_path(@school, programme_type_id: programme_type), class: 'btn btn-sm btn-success pull-right' if can?(:start_programme, @school) %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
+    <% @started_programmes.each do |programme| %>
+      <h4><%= link_to programme.title, school_programme_path(@school, programme) %> - <small><%= programme.status.humanize.capitalize %></small></h4>
+    <% end %>
+
+    <% @available_programmes.each do |programme_type| %>
+      <div class="row justify-content-between">
+        <div class="col-9">
+          <h4><%= link_to programme_type.title, school_programme_type_path(@school, programme_type) %></h4>
+        </div>
+        <div class="col-3 text-right">
+          <%= button_to 'Start programme', school_programmes_path(@school, programme_type_id: programme_type), class: 'btn btn-sm btn-success pull-right' if can?(:start_programme, @school) %>
+        </div>
+      </div>
+    <% end %>
 
   </div>
 </div>

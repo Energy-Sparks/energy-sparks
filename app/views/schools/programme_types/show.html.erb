@@ -8,13 +8,12 @@
 <h2>Activities</h2>
 <p>Although you haven't started this programme, you might have completed some of the activities, they will show in this list as Completed.</p>
 <ol class="activities">
-  <% @programme_type.programme_type_activity_types.order(:position).each do |programme_type_activity_type| %>
+  <% @programme_type.activity_types_and_school_activity(@school).each do |activity_type, activity| %>
     <li>
-      <% activity = @school.activities.where(activity_type_id: programme_type_activity_type.activity_type.id).first %>
       <% if activity %>
-        <%= link_to "#{activity.activity_type.name}", school_activity_path(@school, activity) %> (Completed)
+        <%= link_to "#{activity_type.name}", school_activity_path(@school, activity) %> (Completed)
       <% else %>
-        <%= link_to "#{programme_type_activity_type.activity_name}", activity_type_path(programme_type_activity_type.activity_type) %>
+        <%= link_to "#{activity_type.name}", activity_type_path(activity_type) %>
       <% end %>
     </li>
   <% end %>

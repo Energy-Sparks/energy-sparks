@@ -19,7 +19,8 @@ module Teachers
   private
 
     def setup_programmes
-      @programme_types = ProgrammeType.active
+      @started_programmes = @school.programmes.active
+      @available_programmes = ProgrammeType.active.where.not(id: @started_programmes.map(&:programme_type_id))
     end
 
     def setup_charts
