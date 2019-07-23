@@ -15,6 +15,7 @@ describe 'programme', type: :system do
   before do
     sign_in(user)
     visit root_path
+    click_on 'Start or continue a programme'
   end
 
   it 'hides inactive programme types' do

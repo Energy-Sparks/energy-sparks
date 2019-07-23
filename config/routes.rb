@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
-      resources :programme_types, only: [:show]
+      resources :programme_types, only: [:index, :show]
       resources :programmes, only: [:show, :index, :create]
 
       resource :action, only: [:new]

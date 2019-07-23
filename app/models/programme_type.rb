@@ -26,4 +26,11 @@ class ProgrammeType < ApplicationRecord
       update!(programme_type_activity_types_attributes: position_attributes)
     end
   end
+
+  def activity_types_and_school_activity(school)
+    programme_type_activity_types.order(:position).map do |programme_type_activity_type|
+      activity = school.activities.find_by(activity_type_id: programme_type_activity_type.activity_type_id)
+      [programme_type_activity_type.activity_type, activity]
+    end
+  end
 end

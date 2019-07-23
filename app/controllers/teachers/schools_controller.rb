@@ -13,14 +13,9 @@ module Teachers
       setup_charts
       setup_dashboard_alert
       setup_activity_suggestions
-      setup_programmes
     end
 
   private
-
-    def setup_programmes
-      @programme_types = ProgrammeType.active
-    end
 
     def setup_charts
       @charts = {}
