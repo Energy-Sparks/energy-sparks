@@ -6,34 +6,24 @@ module Programmes
     end
 
     def create
-      @programme = Programme.create(
+      programme = Programme.create(
         school: @school,
         programme_type: @programme_type,
         title: @programme_type.title,
         description: @programme_type.description
       )
 
-      @programme_type.activity_types.each do |activity_type|
-        @programme.programme_activities << programme_activity(activity_type)
+      @programme_type.programme_type_activity_types.each do |programme_type_activity_type|
+        create_programme_activity(programme, programme_type_activity_type.activity_type, programme_type_activity_type.position)
       end
-      @programme
+      programme
     end
 
     private
 
-    def programme_activity(activity_type)
-      position = position(activity_type)
-
-      if @school.activities.find_by(activity_type: activity_type)
-        activity = @school.activities.find_by(activity_type: activity_type)
-        ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position, activity: activity)
-      else
-        ProgrammeActivity.create(programme: @programme, activity_type: activity_type, position: position)
-      end
-    end
-
-    def position(activity_type)
-      ProgrammeTypeActivityType.find_by(programme_type: @programme_type, activity_type: activity_type).position
+    def create_programme_activity(programme, activity_type, position)
+      activity = @school.activities.find_by(activity_type: activity_type)
+      programme.programme_activities.create!(activity_type: activity_type, position: position, activity: activity)
     end
   end
 end
