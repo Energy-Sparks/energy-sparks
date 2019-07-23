@@ -2,6 +2,7 @@
 #
 # Table name: programmes
 #
+#  description       :text
 #  ended_on          :date
 #  id                :bigint(8)        not null, primary key
 #  programme_type_id :bigint(8)

@@ -6,7 +6,12 @@ module Programmes
     end
 
     def create
-      @programme = Programme.create(school: @school, programme_type: @programme_type, title: @programme_type.title)
+      @programme = Programme.create(
+        school: @school,
+        programme_type: @programme_type,
+        title: @programme_type.title,
+        description: @programme_type.description
+      )
 
       @programme_type.activity_types.each do |activity_type|
         @programme.programme_activities << programme_activity(activity_type)
