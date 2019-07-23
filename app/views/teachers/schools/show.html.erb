@@ -93,15 +93,14 @@
         <% if programme %>
           <h4><%= link_to programme_type.title, school_programme_path(@school, programme) %> - <small><%= programme.status.humanize.capitalize %></small></h4>
         <% else %>
-
-        <div class="row justify-content-between">
-          <div class="col-9">
-            <h4><%= link_to programme_type.title, school_programme_type_path(@school, programme_type) %></h4>
+          <div class="row justify-content-between">
+            <div class="col-9">
+              <h4><%= link_to programme_type.title, school_programme_type_path(@school, programme_type) %></h4>
+            </div>
+            <div class="col-3 text-right">
+              <%= button_to 'Start programme', school_programmes_path(@school, programme_type_id: programme_type), class: 'btn btn-sm btn-success pull-right' if can?(:start_programme, @school) %>
+            </div>
           </div>
-          <div class="col-3 text-right">
-            <%= link_to 'Start programme', new_school_programme_type_programme_path(@school, programme_type), class: 'btn btn-sm btn-success pull-right' if can?(:start_programme, @school) %>
-          </div>
-        </div>
         <% end %>
       <% end %>
 
