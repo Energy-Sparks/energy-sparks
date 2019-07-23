@@ -31,6 +31,7 @@ class Ability
       can :read, FindOutMore
       can :manage, Observation
       can :crud, Programme, school_id: user.school_id
+      can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
     elsif user.school_user?
       can :manage, Activity, school: { id: user.school_id, active: true }
@@ -44,6 +45,7 @@ class Ability
       can :read, FindOutMore
       can :manage, Observation
       can :crud, Programme, school_id: user.school_id
+      can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
     elsif user.guest?
       can :read, Activity, school: { active: true }

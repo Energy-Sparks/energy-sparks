@@ -3,7 +3,7 @@
 <p><%= @programme_type.description %></p>
 
 
-<p><%= link_to 'Start this programme', new_school_programme_type_programme_path(@school, @programme_type), class: 'btn btn-sm btn-primary' if @can_start_programme %></p>
+<p><%= link_to 'Start this programme', new_school_programme_type_programme_path(@school, @programme_type), class: 'btn btn-sm btn-primary' if can?(:start_programme, @school) %></p>
 
 <h2>Activities</h2>
 <p>Although you haven't started this programme, you might have completed some of the activities, they will show in this list as Completed.</p>
