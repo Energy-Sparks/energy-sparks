@@ -10,7 +10,8 @@ module Programmes
         school: @school,
         programme_type: @programme_type,
         title: @programme_type.title,
-        description: @programme_type.description
+        description: @programme_type.description,
+        started_on: Time.zone.today
       )
 
       @programme_type.programme_type_activity_types.each do |programme_type_activity_type|

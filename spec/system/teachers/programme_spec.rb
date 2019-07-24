@@ -36,17 +36,15 @@ describe 'programme', type: :system do
   it 'allows a school user to start a programme for their school' do
     click_on programme_type.title
     click_on 'Start this programme'
-    expect(page).to have_content("#{programme_type.title} for #{school_name}")
+    expect(page).to have_content(programme_type.title)
     programme_type.activity_types.each do |activity_type|
       expect(page).to have_content(activity_type.name)
     end
 
-    expect(page).to have_content("#{programme_type.activity_types.first.name} (Completed)")
-    expect(page).to_not have_content("#{programme_type.activity_types.second.name} (Completed)")
-    expect(page).to_not have_content("#{programme_type.activity_types.third.name} (Completed)")
+    expect(page.all('.activities .completed').size).to eq(1)
+    expect(page).to have_content("Points scored: 25")
+    expect(page).to have_content("Points: 25")
 
-    click_on 'School page'
-    expect(page).to have_content("Started")
   end
 
   it 'does not allows a school user from a different school to start a programme for that school' do
