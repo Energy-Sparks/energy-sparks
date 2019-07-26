@@ -19,9 +19,8 @@ class ActivityCreator
 
   def process_programmes
     started_active_programmes.each do |programme|
-      next if programme_activities(programme).empty?
-
       programme_activities(programme).each { |programme_activity| update_with_activity!(programme_activity) }
+      programme.completed! if programme.programme_activities.all?(&:activity)
     end
   end
 
