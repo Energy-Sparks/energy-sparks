@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_11_081420) do
+ActiveRecord::Schema.define(version: 2019_07_24_102949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -583,6 +583,40 @@ ActiveRecord::Schema.define(version: 2019_07_11_081420) do
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
+  create_table "programme_activities", force: :cascade do |t|
+    t.bigint "programme_id", null: false
+    t.bigint "activity_type_id", null: false
+    t.bigint "activity_id"
+    t.integer "position", default: 0, null: false
+    t.index ["activity_id"], name: "index_programme_activities_on_activity_id"
+    t.index ["programme_id", "activity_type_id"], name: "programme_activity_type_uniq", unique: true
+  end
+
+  create_table "programme_type_activity_types", force: :cascade do |t|
+    t.bigint "programme_type_id", null: false
+    t.bigint "activity_type_id", null: false
+    t.integer "position", default: 0, null: false
+    t.index ["programme_type_id", "activity_type_id"], name: "programme_type_activity_type_uniq", unique: true
+  end
+
+  create_table "programme_types", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.boolean "active", default: false
+  end
+
+  create_table "programmes", force: :cascade do |t|
+    t.bigint "programme_type_id"
+    t.bigint "school_id"
+    t.integer "status", default: 0, null: false
+    t.date "started_on", null: false
+    t.date "ended_on"
+    t.text "title"
+    t.text "description"
+    t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
+    t.index ["school_id"], name: "index_programmes_on_school_id"
+  end
+
   create_table "school_groups", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -815,6 +849,8 @@ ActiveRecord::Schema.define(version: 2019_07_11_081420) do
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
+  add_foreign_key "programmes", "programme_types", on_delete: :cascade
+  add_foreign_key "programmes", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
