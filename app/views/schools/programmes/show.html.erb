@@ -4,7 +4,7 @@
     <%= link_to 'Back', school_programme_types_path(@school), class: 'btn btn-sm btn-secondary mb-4' %>
 
     <div class="jumbotron">
-      <h1 class="display-4"><%= @programme.title %></h1>
+      <h2><%= @programme.title %></h2>
       <p class="lead mt-3"><%= @programme.description %></p>
       <hr class="my-4">
       <p class="lead">Started: <%= nice_dates(@programme.started_on) %></p>
