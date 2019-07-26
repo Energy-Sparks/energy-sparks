@@ -21,10 +21,10 @@
             <div class="flex-grow-1">
               <h4><%= activity_type.name %></h4>
               <dl class="row">
-                <dt class="col-sm-3">Points scored:</dt>
-                <dd class="col-sm-9"><%= activity.points %></dd>
+                <dt class="col-sm-2">Points:</dt>
+                <dd class="col-sm-1"><%= activity.points %></dd>
                 <dt class="col-sm-3">Happened on:</dt>
-                <dd class="col-sm-9"><%= nice_dates(activity.happened_on) %></dd>
+                <dd class="col-sm-6"><%= nice_dates(activity.happened_on) %></dd>
               </dl>
             </div>
           <% end %>
@@ -34,8 +34,8 @@
             <div class="flex-grow-1">
               <h4><%= activity_type.name %></h4>
               <dl class="row">
-                <dt class="col-sm-3">Points:</dt>
-                <dd class="col-sm-9"><%= activity_type.score %></dd>
+                <dt class="col-sm-2">Points:</dt>
+                <dd class="col-sm-11"><%= activity_type.score %></dd>
               </dl>
             </div>
           <% end %>

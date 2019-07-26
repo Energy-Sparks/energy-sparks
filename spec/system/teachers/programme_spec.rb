@@ -42,7 +42,7 @@ describe 'programme', type: :system do
     end
 
     expect(page.all('.activities .completed').size).to eq(1)
-    expect(page).to have_content("Points scored: 25")
+    expect(page).to have_content("Points: 25")
     expect(page).to have_content("Points: 25")
 
   end
