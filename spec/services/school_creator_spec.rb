@@ -36,6 +36,7 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
       expect(school.weather_underground_area).to eq(weather_underground_area)
       expect(school.dark_sky_area).to eq(dark_sky_area)
+      expect(school.configuration).to_not be_nil
     end
 
     it 'converts the onboarding user to a school admin' do
@@ -103,7 +104,6 @@ describe SchoolCreator, :schools, type: :service do
         expect(ActionMailer::Base.deliveries.size).to eq(0)
       end
     end
-
   end
 
   describe '#process_new_school!' do
@@ -116,14 +116,12 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.school_times.count).to eq(5)
       expect(school.school_times.map(&:day)).to match_array(%w{monday tuesday wednesday thursday friday})
     end
-
   end
 
-  describe '#process_new_school!' do
-    let(:school){ create :school, calendar_area: calendar_area}
-
+  describe '#process_new_configuration!' do
+    let(:school)        { create :school, calendar_area: calendar_area}
     let(:calendar_area) { create :calendar_area }
-    let!(:calendar) { create :calendar_with_terms, template: true, calendar_area: calendar_area}
+    let!(:calendar)     { create :calendar_with_terms, template: true, calendar_area: calendar_area}
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service = SchoolCreator.new(school)
@@ -131,12 +129,24 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.calendar.based_on).to eq(calendar)
     end
 
-    it 'leaves the calendar empty if there is no templaate for the area' do
+    it 'leaves the calendar empty if there is no template for the area' do
       school.update(calendar_area: create(:calendar_area))
       service = SchoolCreator.new(school)
       service.process_new_configuration!
       expect(school.calendar).to be_nil
     end
-  end
 
+    it 'does not create a new configuration if one exists' do
+      configuration = Schools::Configuration.create(school: school)
+      service = SchoolCreator.new(school)
+      service.process_new_configuration!
+      expect(school.configuration).to eq configuration
+    end
+
+    it 'does create a new configuration if required' do
+      service = SchoolCreator.new(school)
+      service.process_new_configuration!
+      expect(school.configuration).to_not be_nil
+    end
+  end
 end
