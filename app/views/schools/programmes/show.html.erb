@@ -7,8 +7,12 @@
       <h2><%= @programme.title %></h2>
       <p class="lead mt-3"><%= @programme.description %></p>
       <hr class="my-4">
-      <p class="lead">Started: <%= nice_dates(@programme.started_on) %></p>
-      <p class="lead">Current status: <%= @programme.status.humanize.capitalize %></p>
+      <dl class="row">
+        <dt class="col-sm-2">Started:</dt>
+        <dd class="col-sm-3"><%= nice_dates(@programme.started_on) %></dd>
+        <dt class="col-sm-2">Status:</dt>
+        <dd class="col-sm-2"><%= @programme.status.humanize.capitalize %></dd>
+      </dl>
     </div>
 
     <h2>Activities</h2>
