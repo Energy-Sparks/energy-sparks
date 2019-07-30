@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_11_081420) do
+ActiveRecord::Schema.define(version: 2019_07_30_134447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -695,6 +695,12 @@ ActiveRecord::Schema.define(version: 2019_07_11_081420) do
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_simulations_on_school_id"
     t.index ["user_id"], name: "index_simulations_on_user_id"
+  end
+
+  create_table "site_settings", force: :cascade do |t|
+    t.boolean "message_for_no_contacts", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "solar_pv_tuos_readings", force: :cascade do |t|

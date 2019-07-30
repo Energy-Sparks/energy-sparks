@@ -162,6 +162,7 @@ Rails.application.routes.draw do
     namespace :reports do
       resources :alert_subscribers, only: :index
     end
+    resource :settings, only: [:show, :update]
   end
 
   namespace :teachers do
