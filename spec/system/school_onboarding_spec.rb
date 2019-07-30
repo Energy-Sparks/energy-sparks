@@ -205,7 +205,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       visit new_onboarding_completion_path(onboarding)
 
-      within '#alert_contacts' do
+      within '#alert-contacts' do
         expect(page).to have_content(user.name)
         click_on 'Edit'
       end
@@ -214,7 +214,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Save contact'
       expect(school.contacts.first.mobile_phone_number).to eq('07123 4567890')
 
-      within '#alert_contacts' do
+      within '#alert-contacts' do
         click_on 'Delete'
       end
 

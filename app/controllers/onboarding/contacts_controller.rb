@@ -11,7 +11,7 @@ module Onboarding
     def create
       @contact = @school_onboarding.school.contacts.new(contact_params)
       if @contact.save
-        redirect_to new_onboarding_completion_path(@school_onboarding)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'alert-contacts')
       else
         render :new
       end
@@ -20,7 +20,7 @@ module Onboarding
     def update
       @contact = @school_onboarding.school.contacts.find(params[:id])
       if @contact.update(contact_params)
-        redirect_to new_onboarding_completion_path(@school_onboarding)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'alert-contacts')
       else
         render :edit
       end
@@ -29,7 +29,7 @@ module Onboarding
     def destroy
       contact = @school_onboarding.school.contacts.find(params[:id])
       contact.destroy
-      redirect_to new_onboarding_completion_path(@school_onboarding)
+      redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'alert-contacts')
     end
 
   private

@@ -8,7 +8,7 @@ module Onboarding
       @meter = @school_onboarding.school.meters.new(meter_params)
       if @meter.save
         MeterManagement.new(@meter).process_creation!
-        redirect_to new_onboarding_completion_path(@school_onboarding)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'meters')
       else
         render :new
       end
