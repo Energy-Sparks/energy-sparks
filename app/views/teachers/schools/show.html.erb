@@ -63,6 +63,26 @@
   </div>
 <% end %>
 
+<% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert text-white bg-warning" role="alert">
+        <div class="d-flex">
+          <div class="p-2 align-self-center">
+            <%= fa_icon('exclamation-circle fa-3x') %>
+          </div>
+          <div class="p-2 align-self-center">
+            <h5>Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.</h5>
+          </div>
+          <div class="ml-auto p-2">
+            <%= link_to 'Add alert contacts', school_contacts_path(@school), class: 'btn btn-light btn', role: 'button' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <% if @dashboard_alert %>
   <div class="row">
     <div class="col-md-12">

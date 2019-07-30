@@ -6,6 +6,7 @@ module Admin
 
     def update
       SiteSettings.create!(settings_params)
+      redirect_to admin_settings_path, notice: 'Settings updated'
     end
 
   private
