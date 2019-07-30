@@ -1,37 +1,12 @@
-<div class="row col-md-12">
-  <%= form_for([@school, @contact]) do |f| %>
+<p>Please enter either a name, e.g. Joe Bloggs or a description, e.g. Caretaker</p>
 
-  <%= render 'shared/errors', subject: @contact, subject_name: 'contact' %>
+<%= f.input :name, as: :string%>
+<%= f.input :description %>
 
-    <p>Please enter either a name, e.g. Joe Bloggs or a description, e.g. Caretaker</p>
 
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name, class: 'form-control' %>
-    </div>
+<p>Please enter at least one method of communication</p>
+<%= f.input :email_address, as: :email %>
+<%= f.input :mobile_phone_number, as: :string %>
 
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.text_field :description, class: 'form-control' %>
-    </div>
-
-    <p>Please enter at least one method of communication</p>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-      <%= f.label :email_address %>
-      <%= f.text_field :email_address, class: 'form-control' %>
-      </div>
-      <div class="form-group col-md-6">
-      <%= f.label :mobile_phone_number %>
-      <%= f.text_field :mobile_phone_number, class: 'form-control' %>
-      </div>
-    </div>
-
-    <%= f.submit "Save contact", class: 'btn btn-primary' %>
-  <% end %>
-</div>
-
-<div class="other-actions">
-  <%= link_to 'Back', school_contacts_path(@school), class: 'btn btn-secondary' %>
-</div>
+<%= f.submit "Save contact", class: 'btn btn-primary' %>
 

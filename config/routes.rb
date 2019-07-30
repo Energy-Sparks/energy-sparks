@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       resources :meters,        only: [:new, :create, :edit, :update]
       resource :school_times,   only: [:edit, :update]
       resources :inset_days,    only: [:new, :create, :edit, :update, :destroy]
+      resources :contacts,      only: [:new, :create, :edit, :update, :destroy]
     end
   end
 

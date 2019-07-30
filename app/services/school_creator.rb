@@ -16,8 +16,15 @@ class SchoolCreator
         record_event(onboarding, :school_admin_created) do
           onboarding.created_user.update!(school: @school, role: :school_admin)
         end
-        record_events(onboarding, :default_school_times_added, :default_alerts_assigned) do
+        record_events(onboarding, :default_school_times_added) do
           process_new_school!
+        end
+        record_events(onboarding, :alert_contact_created) do
+          @school.contacts.create!(
+            name: onboarding.created_user.name,
+            email_address: onboarding.created_user.email,
+            description: 'School Energy Sparks contact'
+          )
         end
         process_new_configuration!
         record_event(onboarding, :school_calendar_created) if @school.calendar
