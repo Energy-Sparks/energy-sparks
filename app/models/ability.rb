@@ -30,6 +30,9 @@ class Ability
       end
       can :read, FindOutMore
       can :manage, Observation
+      can :crud, Programme, school_id: user.school_id
+      can :start_programme, School, id: user.school_id
+      can :read, ProgrammeType
     elsif user.school_user?
       can :manage, Activity, school: { id: user.school_id, active: true }
       can :index, School
@@ -41,6 +44,9 @@ class Ability
       can :show, Scoreboard
       can :read, FindOutMore
       can :manage, Observation
+      can :crud, Programme, school_id: user.school_id
+      can :start_programme, School, id: user.school_id
+      can :read, ProgrammeType
     elsif user.guest?
       can :read, Activity, school: { active: true }
       can :read, ActivityCategory
@@ -52,6 +58,8 @@ class Ability
       can :manage, SchoolOnboarding, created_user_id: nil
       can :read, FindOutMore
       can :read, Observation
+      can :read, Programme, school_id: user.school_id
+      can :read, ProgrammeType
     elsif user.school_onboarding?
       can :manage, SchoolOnboarding do |onboarding|
         onboarding.created_user == user

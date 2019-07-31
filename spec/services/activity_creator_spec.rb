@@ -23,4 +23,34 @@ describe ActivityCreator do
     expect(activity).to be_persisted
   end
 
+  context 'with a programme' do
+    let!(:school)         { create :school }
+    let(:programme_type)  { create :programme_type_with_activity_types }
+    let(:activity_type)   { programme_type.activity_types.first }
+    let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
+
+    it 'completes the activity in the programme' do
+      activity = build(:activity, activity_type: activity_type, school: school)
+      ActivityCreator.new(activity).process
+
+      expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be activity.id
+    end
+
+    it "completes the programme if all the activities are completed" do
+      programme.programme_activities.each do |programme_activity|
+        activity = build(:activity, activity_type: programme_activity.activity_type, school: school)
+        ActivityCreator.new(activity).process
+      end
+      programme.reload
+      expect(programme.completed?).to eq(true)
+    end
+
+    it "doesn't complete if the programme isn't active" do
+      programme_type.update(active: false)
+      activity = build(:activity, activity_type: activity_type, school: school)
+      ActivityCreator.new(activity).process
+
+      expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be nil
+    end
+  end
 end
