@@ -10,7 +10,7 @@ module Onboarding
       @calendar_event = @school_onboarding.school.calendar.calendar_events.new(calendar_event_params)
       complete_event_details(@calendar_event)
       if @calendar_event.save
-        redirect_to new_onboarding_completion_path(@school_onboarding)
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'inset-days')
       else
         render :new
       end
@@ -25,7 +25,7 @@ module Onboarding
       @calendar_event.attributes = calendar_event_params
       complete_event_details(@calendar_event)
       if @calendar_event.save
-        redirect_to new_onboarding_completion_path(@school_onboarding, acnhor: 'inset-days')
+        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'inset-days')
       else
         render :edit
       end
@@ -34,7 +34,7 @@ module Onboarding
     def destroy
       calendar_event = @school_onboarding.school.calendar.calendar_events.find(params[:id])
       calendar_event.destroy
-      redirect_to new_onboarding_completion_path(@school_onboarding, acnhor: 'inset-days')
+      redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'inset-days')
     end
 
   private

@@ -170,7 +170,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_content('Inset days: 1')
     end
 
-    it 'lets the user edit their details and the school details' do
+    it 'adds the onboarding user as an alert contact and allows management' do
       user = create(:user, role: 'school_onboarding')
       onboarding.update!(created_user: user)
       school = build(:school)
@@ -192,6 +192,41 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Update school details'
       school.reload
       expect(school.name).to eq('Correct school')
+
+    end
+
+    it 'lets the user edit and add contacts' do
+      user = create(:user, role: 'school_onboarding')
+      onboarding.update!(created_user: user)
+      school = build(:school)
+      SchoolCreator.new(school).onboard_school!(onboarding)
+
+      sign_in(user)
+
+      visit new_onboarding_completion_path(onboarding)
+
+      within '#alert-contacts' do
+        expect(page).to have_content(user.name)
+        click_on 'Edit'
+      end
+
+      fill_in 'Mobile phone number', with: '07123 4567890'
+      click_on 'Save contact'
+      expect(school.contacts.first.mobile_phone_number).to eq('07123 4567890')
+
+      within '#alert-contacts' do
+        click_on 'Delete'
+      end
+
+      expect(school.contacts.size).to eq(0)
+
+      click_on 'Add an alert contact'
+
+      fill_in 'Name', with: 'Joe Bloggs'
+      fill_in 'Email', with: 'test@example.com'
+      click_on 'Save contact'
+
+      expect(school.contacts.size).to eq(1)
 
     end
 

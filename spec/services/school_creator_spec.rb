@@ -60,13 +60,20 @@ describe SchoolCreator, :schools, type: :service do
       expect(school_onboarding.school).to eq(school)
     end
 
+    it 'creates an alert contact for the school administrator' do
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      contact = school.contacts.first
+      expect(contact.email_address).to eq(onboarding_user.email)
+      expect(contact.name).to eq(onboarding_user.name)
+    end
+
     it 'creates onboarding events' do
       service = SchoolCreator.new(school)
       service.onboard_school!(school_onboarding)
       expect(school_onboarding).to have_event(:school_details_created)
       expect(school_onboarding).to have_event(:school_admin_created)
       expect(school_onboarding).to have_event(:default_school_times_added)
-      expect(school_onboarding).to have_event(:default_alerts_assigned)
     end
 
     it 'returns the unsaved school if it is not valid' do

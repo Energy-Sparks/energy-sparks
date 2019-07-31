@@ -28,6 +28,7 @@ class SchoolOnboardingEvent < ApplicationRecord
     school_admin_created: 30,
     default_school_times_added: 40,
     default_alerts_assigned: 50,
+    alert_contact_created: 51,
     school_calendar_created: 60,
     school_details_created: 70,
     school_details_updated: 71,
