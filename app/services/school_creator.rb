@@ -5,20 +5,15 @@ class SchoolCreator
 
   def onboard_school!(onboarding)
     if @school.valid?
-      @school.update!(
-        school_group: onboarding.school_group,
-        calendar_area: onboarding.calendar_area,
-        solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
-        weather_underground_area: onboarding.weather_underground_area,
-        dark_sky_area: onboarding.dark_sky_area
-      )
       @school.transaction do
+        copy_onboarding_details_to_school(onboarding)
         record_event(onboarding, :school_admin_created) do
           onboarding.created_user.update!(school: @school, role: :school_admin)
         end
-        record_events(onboarding, :default_school_times_added, :default_alerts_assigned) do
+        record_events(onboarding, :default_school_times_added) do
           process_new_school!
         end
+        create_default_contact(onboarding)
         process_new_configuration!
         record_event(onboarding, :school_calendar_created) if @school.calendar
         record_event(onboarding, :school_details_created) do
@@ -53,6 +48,26 @@ class SchoolCreator
   end
 
 private
+
+  def copy_onboarding_details_to_school(onboarding)
+      @school.update!(
+        school_group: onboarding.school_group,
+        calendar_area: onboarding.calendar_area,
+        solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
+        weather_underground_area: onboarding.weather_underground_area,
+        dark_sky_area: onboarding.dark_sky_area
+      )
+  end
+
+  def create_default_contact(onboarding)
+    record_events(onboarding, :alert_contact_created) do
+      @school.contacts.create!(
+        name: onboarding.created_user.name,
+        email_address: onboarding.created_user.email,
+        description: 'School Energy Sparks contact'
+      )
+    end
+  end
 
   def should_send_activation_email?
     @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
