@@ -1,0 +1,19 @@
+<table class="table table-borderless">
+  <% observations.group_by{|observation| [observation.at.strftime("%Y"), observation.at.strftime("%B")]}.each do |(year, month), grouped_observations|%>
+    <thead>
+      <tr>
+        <th colspan="3">
+          <h2><%= month %> <span class="h3"><%= year %></span></h2>
+          <span><%= pluralize(grouped_observations.size, 'action') %></span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% grouped_observations.each do |observation| %>
+        <tr scope="row">
+          <%= render "schools/observations/timeline/#{observation.observation_type}", observation: observation %>
+        </tr>
+      <% end %>
+    </tbody>
+  <% end %>
+</table>

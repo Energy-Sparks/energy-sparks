@@ -1,0 +1,7 @@
+<td class="ml-5 p-3 text-center">
+  <%= fa_icon("temperature-high fa-2x") %>
+</td>
+<td>
+  <h4><%= link_to "Recorded temperatures in #{observation.locations.map(&:name).uniq.to_sentence}", school_temperature_observation_path(@school, observation)%></h4>
+  <%= nice_dates(observation.at) %>
+</td>

@@ -148,3 +148,11 @@
 </div>
 
 <%= render 'schools/actions/investigate', school: @school %>
+
+<h1>What's been going on?</h1>
+
+<div class="row justify-content-md-center">
+  <div class="col col-md-10">
+    <%= render 'schools/observations/timeline', observations: @observations %>
+  </div>
+</div>

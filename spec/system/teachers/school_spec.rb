@@ -15,6 +15,15 @@ RSpec.describe "teachers school view", type: :system do
       visit teachers_school_path(school)
       expect(page.has_content? school_name).to be true
     end
+
+    it 'displays interventions and temperature recordings in a timeline' do
+      intervention_type = create(:intervention_type, title: 'Upgraded insulation')
+      create(:observation, :intervention, school: school, intervention_type: intervention_type)
+      create(:observation_with_temperature_recording_and_location, school: school)
+      visit teachers_school_path(school)
+      expect(page).to have_content('Recorded temperatures in')
+      expect(page).to have_content('Upgraded insulation')
+    end
   end
 
   describe 'when the school is gas only I can visit the teacher dashboard and it only shows me a ' do
