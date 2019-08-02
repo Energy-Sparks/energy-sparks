@@ -27,6 +27,9 @@ class HomeController < ApplicationController
   def scoring
   end
 
+  def privacy_policy
+  end
+
   def help
     # assign page, remove any non-alphanumeric characters, allow underscores
     @help_page = params[:help_page].tr('^A-Za-z0-9_', '') if params[:help_page]
