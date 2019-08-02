@@ -30,7 +30,7 @@ module Alerts
       end
 
       def pull_variable_data?(analysis_object)
-        analysis_object.enough_data == :enough
+        (analysis_object.enough_data == :enough) && (analysis_object.relevance == :relevant)
       end
 
       def invalid_alert_report(analysis_object)

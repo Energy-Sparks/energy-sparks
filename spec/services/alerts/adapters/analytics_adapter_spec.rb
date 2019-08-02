@@ -68,6 +68,18 @@ module Alerts
       end
     end
 
+    class DummyAnalyticsAlertNotRelevantClass < DummyAnalyticsAlertClass
+      def relevance
+        :not_relevant
+      end
+
+      def self.alert_type
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAnalyticsAlertNotRelevantClass',
+          source: :analytics
+      end
+    end
+
     class DummyAnalyticsAlertNotValidClass < DummyAnalyticsAlertClass
       def valid_alert?
         false
@@ -98,6 +110,15 @@ module Alerts
     context 'where the alert type does not have enough data' do
       it 'does not add the variables to the report' do
         normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotEnoughDataClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+        expect(normalised_report.template_data).to eq({})
+        expect(normalised_report.chart_data).to eq({})
+        expect(normalised_report.table_data).to eq({})
+      end
+    end
+
+    context 'where the alert type is not relevant' do
+      it 'does not add the variables to the report' do
+        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotRelevantClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
