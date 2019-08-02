@@ -23,20 +23,18 @@ module Alerts
 
         Report.new({
           valid:       true,
-          status:      analysis_object.status,
           rating:      analysis_object.rating,
           enough_data: analysis_object.enough_data
         }.merge(variables))
       end
 
       def pull_variable_data?(analysis_object)
-        ![nil, :failed].include?(analysis_object.status) && (analysis_object.enough_data == :enough)
+        analysis_object.enough_data == :enough
       end
 
       def invalid_alert_report
         Report.new(
           valid:       false,
-          status:      nil,
           rating:      nil,
           enough_data: nil
         )

@@ -15,10 +15,6 @@ module Alerts
       def analyse(_analysis_date)
       end
 
-      def status
-        :good
-      end
-
       def rating
         5.0
       end
@@ -48,25 +44,10 @@ module Alerts
     end
 
     class DummyAnalyticsAlertFailedClass < DummyAnalyticsAlertClass
-      def status
-        :failed
-      end
 
       def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertFailedClass',
-          source: :analytics
-      end
-    end
-
-    class DummyAnalyticsAlertNoStatusClass < DummyAnalyticsAlertClass
-      def status
-        nil
-      end
-
-      def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAnalyticsAlertNoStatusClass',
           source: :analytics
       end
     end
@@ -103,21 +84,11 @@ module Alerts
     it 'should return an analysis report' do
       normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAnalyticsAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
       expect(normalised_report.valid).to eq true
-      expect(normalised_report.status).to eq :good
       expect(normalised_report.enough_data).to eq :enough
       expect(normalised_report.rating).to eq 5.0
       expect(normalised_report.template_data).to eq({template: 'variables'})
       expect(normalised_report.chart_data).to eq({chart: 'variables'})
       expect(normalised_report.table_data).to eq({table: 'variables'})
-    end
-
-    context 'where the alert has failed' do
-      it 'does not add the variables to the report' do
-        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertFailedClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
-        expect(normalised_report.template_data).to eq({})
-        expect(normalised_report.chart_data).to eq({})
-        expect(normalised_report.table_data).to eq({})
-      end
     end
 
     context 'where the alert type does not have enough data' do
@@ -129,20 +100,10 @@ module Alerts
       end
     end
 
-    context 'where the alert type does not have a status' do
-      it 'does not add the variables to the report' do
-        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNoStatusClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
-        expect(normalised_report.template_data).to eq({})
-        expect(normalised_report.chart_data).to eq({})
-        expect(normalised_report.table_data).to eq({})
-      end
-    end
-
     context 'when the alert is not valid' do
       it 'returns an invalid report' do
         normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotValidClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.valid).to eq false
-        expect(normalised_report.status).to eq nil
         expect(normalised_report.enough_data).to eq nil
         expect(normalised_report.rating).to eq nil
       end

@@ -41,7 +41,6 @@ module Alerts
           next_holiday = @school.next_holiday(today: @today)
           Adapters::Report.new(
             valid: true,
-            status: :good,
             rating: [0.0, (next_holiday.start_date - @today).to_i.to_f].max,
             enough_data: :enough,
             template_data: {
@@ -53,7 +52,6 @@ module Alerts
         else
           Adapters::Report.new(
             valid: true,
-            status: :good,
             rating: 10.0,
             enough_data: :enough
           )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_134447) do
+ActiveRecord::Schema.define(version: 2019_08_02_135709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -243,7 +243,6 @@ ActiveRecord::Schema.define(version: 2019_07_30_134447) do
     t.bigint "school_id"
     t.bigint "alert_type_id"
     t.date "run_on"
-    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "template_data", default: {}
