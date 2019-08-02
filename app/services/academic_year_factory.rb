@@ -7,7 +7,7 @@ class AcademicYearFactory
 
   def create
     (@start_year..@end_year).each do |year|
-      AcademicYear.where(start_date: Date.parse("01-09-#{year}"), end_date: "31-08-#{year + 1}").first_or_create
+      AcademicYear.where(start_date: Date.parse("01-09-#{year}"), end_date: "31-08-#{year + 1}").first_or_create!
     end
     AcademicYear.all
   end

@@ -14,8 +14,8 @@ class ScheduleDataManagerService
     @holidays ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       hol_data = HolidayData.new
 
-      Calendar.find(@calendar_id).holidays.order(:start_date).map do |holiday|
-        hol_data << SchoolDatePeriod.new(:holiday, holiday.title, holiday.start_date, holiday.end_date)
+      Calendar.find(@calendar_id).holidays.order(:start_date).includes(:academic_year).map do |holiday|
+        hol_data << Holiday.new(:holiday, holiday.title, holiday.start_date, holiday.end_date, (holiday.academic_year.start_date.year..holiday.academic_year.end_date.year))
       end
 
       Holidays.new(hol_data)
