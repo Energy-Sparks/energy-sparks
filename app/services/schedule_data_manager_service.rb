@@ -15,7 +15,7 @@ class ScheduleDataManagerService
       hol_data = HolidayData.new
 
       Calendar.find(@calendar_id).holidays.order(:start_date).includes(:academic_year).map do |holiday|
-        hol_data << Holiday.new(:holiday, holiday.title, holiday.start_date, holiday.end_date, (holiday.academic_year.start_date.year..holiday.academic_year.end_date.year))
+        hol_data.add(holiday.title, holiday.start_date, holiday.end_date)
       end
 
       Holidays.new(hol_data)
