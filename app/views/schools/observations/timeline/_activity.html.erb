@@ -1,0 +1,7 @@
+<td class="p-3 text-center">
+  <%= fa_icon("clipboard-check fa-2x") %>
+</td>
+<td>
+  <h4>Completed an activity: <%= link_to observation.activity.display_name, school_activity_path(@school, observation.activity)%></h4>
+  <%= nice_dates(observation.at) %>
+</td>

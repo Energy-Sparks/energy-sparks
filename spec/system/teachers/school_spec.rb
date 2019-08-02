@@ -20,9 +20,11 @@ RSpec.describe "teachers school view", type: :system do
       intervention_type = create(:intervention_type, title: 'Upgraded insulation')
       create(:observation, :intervention, school: school, intervention_type: intervention_type)
       create(:observation_with_temperature_recording_and_location, school: school)
+      create(:activity, school: school)
       visit teachers_school_path(school)
       expect(page).to have_content('Recorded temperatures in')
       expect(page).to have_content('Upgraded insulation')
+      expect(page).to have_content('Completed an activity')
     end
   end
 
