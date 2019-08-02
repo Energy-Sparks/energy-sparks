@@ -24,6 +24,7 @@ module Alerts
           valid: true,
           rating: 5.0,
           enough_data: :enough,
+          relevance: :relevant,
           template_data: {
             template: 'variables'
           },

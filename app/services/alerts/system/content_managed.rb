@@ -33,6 +33,7 @@ module Alerts
           valid: true,
           rating: 10.0,
           enough_data: :enough,
+          relevance: :relevant,
           template_data: {
             school_name: @school.name
           }

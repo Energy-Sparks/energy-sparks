@@ -23,6 +23,10 @@ module Alerts
         :enough
       end
 
+      def relevance
+        :relevant
+      end
+
       def front_end_template_data
         {template: 'variables'}
       end

@@ -3,7 +3,7 @@ module Alerts
     class AnalyticsAdapter < Adapter
       def report
         analysis_object = alert_class.new(@aggregate_school)
-        analysis_object.valid_alert? ? produce_report(analysis_object) : invalid_alert_report
+        analysis_object.valid_alert? ? produce_report(analysis_object) : invalid_alert_report(analysis_object)
       end
 
     private
@@ -24,7 +24,8 @@ module Alerts
         Report.new({
           valid:       true,
           rating:      analysis_object.rating,
-          enough_data: analysis_object.enough_data
+          enough_data: analysis_object.enough_data,
+          relevance:   analysis_object.relevance
         }.merge(variables))
       end
 
@@ -32,11 +33,12 @@ module Alerts
         analysis_object.enough_data == :enough
       end
 
-      def invalid_alert_report
+      def invalid_alert_report(analysis_object)
         Report.new(
           valid:       false,
           rating:      nil,
-          enough_data: nil
+          enough_data: nil,
+          relevance:   analysis_object.relevance
         )
       end
     end
