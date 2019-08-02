@@ -5,3 +5,10 @@
   <h5><%= link_to "Recorded temperatures in #{observation.locations.map(&:name).uniq.to_sentence}", school_temperature_observation_path(@school, observation)%></h5>
   <%= nice_dates(observation.at) %>
 </td>
+<% if show_actions && can?(:delete, observation) %>
+  <td class="text-right">
+    <div class="btn-group">
+      <%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </div>
+  </td>
+<% end %>

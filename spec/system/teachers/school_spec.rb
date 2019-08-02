@@ -22,7 +22,12 @@ RSpec.describe "teachers school view", type: :system do
       create(:observation_with_temperature_recording_and_location, school: school)
       activity_type = create(:activity_type) # doesn't get saved if built with activity below
       ActivityCreator.new(build(:activity, school: school, activity_type: activity_type)).process
+
       visit teachers_school_path(school)
+      expect(page).to have_content('Recorded temperatures in')
+      expect(page).to have_content('Upgraded insulation')
+      expect(page).to have_content('Completed an activity')
+      click_on 'View all actions'
       expect(page).to have_content('Recorded temperatures in')
       expect(page).to have_content('Upgraded insulation')
       expect(page).to have_content('Completed an activity')

@@ -56,7 +56,7 @@ module Teachers
     end
 
     def setup_timeline
-      @observations = @school.observations.order('at DESC')
+      @observations = @school.observations.order('at DESC').limit(10)
     end
   end
 end

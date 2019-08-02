@@ -5,3 +5,11 @@
   <h5><%= link_to observation.intervention_type.title, school_intervention_path(@school, observation)%></h5>
   <%= nice_dates(observation.at) %>
 </td>
+<% if show_actions && can?(:manage, observation) %>
+  <td class="text-right">
+    <div class="btn-group">
+      <%= link_to 'Edit', edit_school_intervention_path(@school, observation), class: 'btn btn-warning' %>
+      <%= link_to 'Delete', school_intervention_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </div>
+  </td>
+<% end %>

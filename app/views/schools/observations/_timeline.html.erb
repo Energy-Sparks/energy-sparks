@@ -11,7 +11,7 @@
     <tbody>
       <% grouped_observations.each do |observation| %>
         <tr scope="row">
-          <%= render "schools/observations/timeline/#{observation.observation_type}", observation: observation %>
+          <%= render "schools/observations/timeline/#{observation.observation_type}", observation: observation, show_actions: show_actions %>
         </tr>
       <% end %>
     </tbody>
