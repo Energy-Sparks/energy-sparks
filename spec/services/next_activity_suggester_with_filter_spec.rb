@@ -16,12 +16,12 @@ describe NextActivitySuggesterWithFilter do
   context "with no activity types set for the school nor any initial suggestions rely on top up" do
     let!(:activity_types_for_ks1_ks2) { create_list(:activity_type, 3, key_stages: [ks1, ks2])}
     let!(:activity_types_for_ks2)     { create_list(:activity_type, 3, key_stages: [ks2])}
-    let!(:activity_types_for_ks3)     { create_list(:activity_type, 2, key_stages: [ks1, ks2])}
+    let!(:activity_types_for_ks3)     { create_list(:activity_type, 2, key_stages: [ks3])}
 
     let(:no_activity_types_set_or_inital_expected) { activity_types_for_ks1_ks2 + activity_types_for_ks3 }
 
     it "suggests any 5 if no suggestions using the filter" do
-      expect(subject.suggest).to match_array(no_activity_types_set_or_inital_expected)
+      expect(subject.suggest_from_activity_history).to match_array(no_activity_types_set_or_inital_expected)
     end
   end
 
@@ -34,13 +34,13 @@ describe NextActivitySuggesterWithFilter do
     let(:activity_types_with_suggestions) { activity_types_with_suggestions_for_ks1_ks2 + activity_types_with_suggestions_for_ks3 }
 
     it "suggests the first five initial suggestions" do
-     expect(subject.suggest).to match_array(activity_types_with_suggestions)
+     expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions)
     end
 
     context 'where the filter restricts the available activities' do
       let(:activity_type_filter){ ActivityTypeFilter.new(query: {subject_ids: [maths.id]}, school: school)}
       it 'does not top up with duplicate activity types' do
-        expect(subject.suggest).to match_array(activity_types_with_suggestions_for_ks3)
+        expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions_for_ks3)
       end
     end
   end
@@ -54,7 +54,7 @@ describe NextActivitySuggesterWithFilter do
       ks2_this_one = activity_type_with_further_suggestions.suggested_types.third
       ks2_this_one.update(key_stages: [ks2], name: 'DROP ME')
 
-      result = subject.suggest
+      result = subject.suggest_from_activity_history
       expected = activity_type_with_further_suggestions.suggested_types.reject {|ats| ats.id == ks2_this_one.id }
 
       expect(result).to match_array(expected)
@@ -74,7 +74,7 @@ describe NextActivitySuggesterWithFilter do
       non_repeatable_done.update( name: 'DROP ME', repeatable: false)
       activity = create(:activity, activity_type: non_repeatable_done, school: school)
 
-      result = subject.suggest
+      result = subject.suggest_from_activity_history
       activity_type_with_further_suggestions.reload
       expected = activity_type_with_further_suggestions.suggested_types.reject {|ats| ats.id == non_repeatable_done.id }
 

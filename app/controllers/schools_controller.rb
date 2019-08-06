@@ -23,7 +23,7 @@ class SchoolsController < ApplicationController
   def suggest_activity
     @filter = activity_type_filter
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggesterWithFilter.new(@school, @filter).suggest
+    @suggestions = NextActivitySuggesterWithFilter.new(@school, @filter).suggest_from_activity_history
   end
 
   # GET /schools/new

@@ -51,7 +51,7 @@ module Teachers
     def setup_activity_suggestions
       @first = @school.activities.empty?
       @activities_count = @school.activities.count
-      @suggestions = NextActivitySuggesterWithFilter.new(@school, activity_type_filter).suggest
+      @suggestions = NextActivitySuggesterWithFilter.new(@school, activity_type_filter).suggest_from_activity_history
     end
   end
 end
