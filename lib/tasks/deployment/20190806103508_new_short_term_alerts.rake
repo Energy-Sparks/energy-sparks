@@ -8,7 +8,7 @@ namespace :after_party do
         source: :analytics,
         fuel_type: :electricity,
         frequency: :weekly,
-        class_name: 'AlertSchoolWeekComparisonElectricity:',
+        class_name: 'AlertSchoolWeekComparisonElectricity',
         title: 'Comparison of last 2 school weeks electricity',
         description: 'Compares the electricity usage between over the last 2 school weeks.'
       ).first_or_create!
