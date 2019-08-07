@@ -42,17 +42,20 @@ module Teachers
           :teacher_dashboard_title,
           with: @dashboard_alert.alert.template_variables
         )
-        if @dashboard_alert_content.find_out_more
-          activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @dashboard_alert_content.find_out_more.activity_types, query: { not_completed_or_repeatable: true })
-          @find_out_more_activity_types = activity_type_filter.activity_types.limit(3)
-        end
       end
     end
 
     def setup_activity_suggestions
-      @first = @school.activities.empty?
       @activities_count = @school.activities.count
-      @suggestions = NextActivitySuggesterWithFilter.new(@school, activity_type_filter).suggest_from_activity_history
+      suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
+      @activities_from_programmes = suggester.suggest_from_programmes.limit(1)
+      @activities_from_alerts = suggester.suggest_from_programmes.sample(1)
+      if @activities_from_programmes.empty?
+        started_programmes = @school.programmes.active
+        @suggested_programme = ProgrammeType.active.where.not(id: started_programmes.map(&:programme_type_id)).sample
+      end
+      cards_filled = [@activities_from_programmes + @activities_from_alerts + [@suggested_programme]].flatten.compact.size
+      @activities_from_activity_history = suggester.suggest_from_activity_history.slice(0, (3 - cards_filled))
     end
 
     def setup_timeline

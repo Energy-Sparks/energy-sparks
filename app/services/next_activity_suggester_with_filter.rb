@@ -21,7 +21,7 @@ class NextActivitySuggesterWithFilter
   end
 
   def suggest_from_programmes
-    scope = @school.programme_activity_types.where('programmes.status = ? AND programme_activities.activity_id IS NULL', Programme.statuses[:started])
+    scope = @school.programme_activity_types.where('programmes.status = ? AND programme_activities.activity_id IS NULL', Programme.statuses[:started]).order('programme_activities.position ASC').group('activity_types.id, programme_activities.position')
     activity_type_filter = ActivityTypeFilter.new(query: @filter.query, school: @school, scope: scope)
     activity_type_filter.activity_types
   end

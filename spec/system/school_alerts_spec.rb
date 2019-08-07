@@ -64,7 +64,7 @@ RSpec.describe "school alerts", type: :system do
 
         expect(page).to have_content('Your heating is on!')
 
-        within '.things-to-try' do
+        within '.activity-card' do
           expect(page).to have_content("Turn off the heating")
         end
 
