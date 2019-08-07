@@ -1,5 +1,5 @@
 class NextActivitySuggesterWithFilter
-  NUMBER_OF_SUGGESTIONS = 5
+  NUMBER_OF_SUGGESTIONS = 6
 
   def initialize(school, filter)
     @school = school

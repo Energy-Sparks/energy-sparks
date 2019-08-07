@@ -49,7 +49,7 @@ module Teachers
       @activities_count = @school.activities.count
       suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
       @activities_from_programmes = suggester.suggest_from_programmes.limit(1)
-      @activities_from_alerts = suggester.suggest_from_programmes.sample(1)
+      @activities_from_alerts = suggester.suggest_from_find_out_mores.sample(1)
       if @activities_from_programmes.empty?
         started_programmes = @school.programmes.active
         @suggested_programme = ProgrammeType.active.where.not(id: started_programmes.map(&:programme_type_id)).sample

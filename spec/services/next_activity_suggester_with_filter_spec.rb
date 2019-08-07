@@ -21,7 +21,7 @@ describe NextActivitySuggesterWithFilter do
 
       let(:no_activity_types_set_or_inital_expected) { activity_types_for_ks1_ks2 + activity_types_for_ks3 }
 
-      it "suggests any 5 if no suggestions using the filter" do
+      it "suggests any 6 if no suggestions using the filter" do
         expect(subject.suggest_from_activity_history).to match_array(no_activity_types_set_or_inital_expected)
       end
     end
