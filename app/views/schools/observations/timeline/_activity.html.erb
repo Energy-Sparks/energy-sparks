@@ -1,0 +1,15 @@
+<td class="p-3 text-center">
+  <%= fa_icon("clipboard-check fa-2x") %>
+</td>
+<td>
+  <h5>Completed an activity: <%= link_to observation.activity.display_name, school_activity_path(@school, observation.activity)%></h5>
+  <%= nice_dates(observation.at) %>
+</td>
+<% if show_actions && can?(:manage, observation.activity) %>
+  <td class="text-right">
+    <div class="btn-group">
+      <%= link_to 'Edit', edit_school_activity_path(@school, observation.activity), class: 'btn btn-warning' %>
+      <%= link_to 'Delete', school_activity_path(@school, observation.activity), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </div>
+  </td>
+<% end %>

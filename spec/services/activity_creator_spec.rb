@@ -23,6 +23,15 @@ describe ActivityCreator do
     expect(activity).to be_persisted
   end
 
+  it 'creates an observation for the activity' do
+    activity = build(:activity, activity_type: activity_type)
+    ActivityCreator.new(activity).process
+    observation = Observation.find_by!(activity_id: activity.id)
+    expect(observation.observation_type).to eq("activity")
+    expect(observation.school).to eq(activity.school)
+    expect(observation.at).to eq(activity.happened_on)
+  end
+
   context 'with a programme' do
     let!(:school)         { create :school }
     let(:programme_type)  { create :programme_type_with_activity_types }
