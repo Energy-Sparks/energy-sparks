@@ -243,6 +243,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.bigint "school_id"
     t.bigint "alert_type_id"
     t.date "run_on"
+    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "template_data", default: {}
@@ -252,7 +253,6 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.boolean "displayable", default: true, null: false
     t.boolean "analytics_valid", default: true, null: false
     t.integer "enough_data"
-    t.integer "relevance", default: 0
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
