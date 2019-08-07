@@ -5,7 +5,7 @@ module Admin
         load_and_authorize_resource :alert_type
 
         def show
-          @alert = @alert_type.alerts.rating_between(from_parameter, to_parameter).order(created_at: :desc).first
+          @alert = @alert_type.alerts.where(displayable: true).rating_between(from_parameter, to_parameter).order(created_at: :desc).first
           if @alert
             load_rating_requirements
             render template_path(params[:template]), layout: nil
