@@ -243,7 +243,6 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.bigint "school_id"
     t.bigint "alert_type_id"
     t.date "run_on"
-    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "template_data", default: {}
@@ -253,6 +252,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.boolean "displayable", default: true, null: false
     t.boolean "analytics_valid", default: true, null: false
     t.integer "enough_data"
+    t.integer "relevance", default: 0
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
@@ -579,6 +579,8 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "observation_type", null: false
     t.bigint "intervention_type_id"
+    t.bigint "activity_id"
+    t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
@@ -854,6 +856,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "meters", "schools"
+  add_foreign_key "observations", "activities", on_delete: :cascade
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
