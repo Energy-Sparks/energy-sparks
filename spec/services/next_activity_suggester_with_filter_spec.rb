@@ -114,4 +114,56 @@ describe NextActivitySuggesterWithFilter do
       end
     end
   end
+
+  describe '.suggest_from_find_out_mores' do
+
+    let!(:activity_type){ create(:activity_type, name: 'Turn off the heating', key_stages: [ks1]) }
+    let!(:alert_type_rating) do
+      create(
+        :alert_type_rating,
+        find_out_more_active: true,
+        activity_types: [activity_type]
+      )
+    end
+    let!(:alert_type_rating_content_version) do
+      create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)
+    end
+    let!(:alert) do
+      Alert.create(
+        alert_type: alert_type_rating.alert_type,
+        run_on: Time.zone.today, school: school,
+        rating: 9.0
+      )
+    end
+
+    context 'where there is a content generation run' do
+      before do
+        Alerts::GenerateContent.new(school).perform
+      end
+
+      it 'returns activity types from the alerts' do
+        result = subject.suggest_from_find_out_mores
+        expect(result).to match_array([activity_type])
+      end
+
+      it 'filters on key stage' do
+        activity_type.update!(key_stages: [ks2])
+        result = subject.suggest_from_find_out_mores
+        expect(result).to match_array([])
+      end
+    end
+
+    context 'where there is no content' do
+      before do
+        Alerts::GenerateContent.new(school).perform
+      end
+
+      it 'returns no activity types' do
+        activity_type.update!(key_stages: [ks2])
+        result = subject.suggest_from_find_out_mores
+        expect(result).to match_array([])
+      end
+    end
+
+  end
 end

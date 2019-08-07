@@ -26,6 +26,17 @@ class NextActivitySuggesterWithFilter
     activity_type_filter.activity_types
   end
 
+  def suggest_from_find_out_mores
+    content = @school.latest_content
+    if content
+      scope = content.find_out_more_activity_types
+      activity_type_filter = ActivityTypeFilter.new(query: @filter.query, school: @school, scope: scope)
+      activity_type_filter.activity_types
+    else
+      ActivityType.none
+    end
+  end
+
 private
 
   def get_initial_suggestions(suggestions)
