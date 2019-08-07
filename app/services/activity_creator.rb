@@ -11,6 +11,7 @@ class ActivityCreator
 
     if @activity.save
       process_programmes if started_active_programmes.any?
+      create_observation
     end
     @activity.persisted?
   end
@@ -22,6 +23,15 @@ class ActivityCreator
       programme_activities(programme).each { |programme_activity| update_with_activity!(programme_activity) }
       programme.completed! if programme.programme_activities.all?(&:activity)
     end
+  end
+
+  def create_observation
+    Observation.create!(
+      school: @activity.school,
+      observation_type: :activity,
+      activity: @activity,
+      at: @activity.happened_on
+    )
   end
 
   def started_active_programmes

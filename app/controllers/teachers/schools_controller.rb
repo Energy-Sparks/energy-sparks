@@ -13,6 +13,7 @@ module Teachers
       setup_charts
       setup_dashboard_alert
       setup_activity_suggestions
+      setup_timeline
     end
 
   private
@@ -52,6 +53,10 @@ module Teachers
       @first = @school.activities.empty?
       @activities_count = @school.activities.count
       @suggestions = NextActivitySuggesterWithFilter.new(@school, activity_type_filter).suggest_from_activity_history
+    end
+
+    def setup_timeline
+      @observations = @school.observations.order('at DESC').limit(10)
     end
   end
 end
