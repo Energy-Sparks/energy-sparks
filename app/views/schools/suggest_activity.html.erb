@@ -64,34 +64,16 @@
     <% end %>
   </div>
   <div class="col-md-9">
-    <% @suggestions.in_groups_of(3, nil) do |group| %>
-      <div class="row padded-row">
-        <div class="card-deck">
-          <% group.each do |activity_type| %>
-            <% if activity_type.present? %>
-              <%= render 'activity_types/card', activity_type: activity_type %>
-            <% else %>
-              <div class="card secondary-card">
-                <div class="card-header">
-                </div>
-                <div class="card-body">
-                  <h4 class="card-title">Want some other suggestions?</h4>
-                  <p class="card-text">
-                    You can also design your own activities, you can still score points for these when you
-                    record them using the <%= link_to 'activity form', new_school_activity_path(@school) %>. For more
-                    ideas have a look at our full list of activities.
-                  </p>
 
-                </div>
-                <div class="card-footer text-right">
-                  <%= link_to 'View the full list of activities', activity_categories_path, class: 'btn btn-secondary' %>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+    <h3>Suggestions based on your previous activities</h3>
+    <%= render 'suggestion_card_deck', suggestions: @suggestions_from_activity_history %>
+
+    <h3>Suggestions based on your current <%= link_to 'programmes', school_programme_types_path(@school) %></h3>
+    <%= render 'suggestion_card_deck', suggestions: @suggestions_from_programmes %>
+
+    <h3>Suggestions based on your alerts</h3>
+    <%= render 'suggestion_card_deck', suggestions: @suggestions_from_alerts %>
+
   </div>
 </div>
 
