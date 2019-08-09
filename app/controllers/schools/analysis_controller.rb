@@ -62,6 +62,10 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def accounting
+    render_generic_chart_template
+  end
+
 private
 
   def build_aggregate_school
@@ -92,7 +96,9 @@ private
 
   def title_and_chart_configuration
     if action_name.to_sym == :test || action_name.to_sym == :heating_model_fitting
-      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym]
+    elsif action_name.to_sym == :accounting
+      meter_action = @school.configuration.gas ? :cost : :cost_electricity_only
+      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[meter_action]
     else
       @school.configuration.analysis_charts_as_symbols[action_name.to_sym]
     end

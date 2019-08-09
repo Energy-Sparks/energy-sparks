@@ -5,9 +5,12 @@
       <%= nav_link(nav[:name], send("school_#{nav[:path]}")) %>
     </li>
     <% end %>
-    <% if current_user && current_user.admin? %>
+    <% if can?(:view_experimental_analysis, @school) %>
       <!-- used for debug purposes -->
-      <li><%= nav_link('Test', send("school_test_path")) %></li>
+      <li><%= nav_link('Test', school_test_path) %></li>
+      <% if !@school.has_solar_pv? && !@school.has_storage_heaters? %>
+        <li><%= nav_link('Accounting', school_accounting_path) %></li>
+      <% end %>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heating Model Fitting</a>
