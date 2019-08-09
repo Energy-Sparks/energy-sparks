@@ -12,62 +12,6 @@ RSpec.describe SchoolsController, type: :controller do
     {name: nil}
   }
 
-  describe 'GET #suggest_activity' do
-    let(:school) { FactoryBot.create :school }
-
-    context "as a guest user" do
-      it "is not authorised" do
-        get :suggest_activity, params: { id: school.to_param }
-        expect(response).to have_http_status(:redirect  )
-      end
-    end
-    context "as an authorised school administrator" do
-
-      let!(:ks1) { KeyStage.create(name: 'KS1') }
-      let!(:ks2) { KeyStage.create(name: 'KS2') }
-      let!(:ks3) { KeyStage.create(name: 'KS3') }
-      let!(:school) { create :school, active: true, key_stages: [ks1, ks3] }
-
-      let(:activity_category) { create :activity_category }
-      let!(:activity_types) { create_list(:activity_type, 5, activity_category: activity_category, data_driven: true, key_stages: [ks1, ks2]) }
-
-      before(:each) { sign_in_user(:school_user, school.id) }
-
-      context "with a single activity type" do
-        it "is authorised" do
-          get :suggest_activity, params: { id: school.to_param }
-          expect(response).to_not have_http_status(:redirect  )
-          expect(assigns(:suggestions)).to match_array(activity_types)
-        end
-      end
-
-      context "with no activity types set for the school" do
-        it "suggests any 5 if no suggestions" do
-          get :suggest_activity, params: { id: school.to_param }
-          expect(assigns(:suggestions)).to match_array(activity_types)
-        end
-      end
-
-      context "with initial suggestions" do
-        let!(:activity_types_with_suggestions) { create_list(:activity_type, 5, :as_initial_suggestions, key_stages: [ks1, ks2])}
-        it "suggests the first five initial suggestions" do
-          get :suggest_activity, params: { id: school.to_param }
-          expect(assigns(:suggestions)).to match_array(activity_types_with_suggestions)
-        end
-      end
-
-      context "with suggestions based on last activity type" do
-        let!(:activity_type_with_further_suggestions) { create :activity_type, :with_further_suggestions, number_of_suggestions: 5 }
-        let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
-
-        it "suggests the five follow ons from original" do
-          get :suggest_activity, params: { id: school.to_param }
-          expect(assigns(:suggestions)).to match_array(last_activity.activity_type.activity_type_suggestions.map(&:suggested_type))
-        end
-      end
-    end
-  end
-
   describe "GET #index" do
     it "assigns schools that are active but not grouped as @ungrouped_active_schools" do
       school = FactoryBot.create :school, active: true
@@ -86,15 +30,6 @@ RSpec.describe SchoolsController, type: :controller do
       school = FactoryBot.create :school
       get :show, params: {id: school.to_param}
       expect(response).to redirect_to(teachers_school_path(school))
-    end
-  end
-
-  describe "GET #awards" do
-    it 'assigns awards as @badges' do
-      school = create :school, :with_badges
-
-      get :awards, params: {id: school.to_param}
-      expect(assigns(:badges)).to include(school.badges.first)
     end
   end
 

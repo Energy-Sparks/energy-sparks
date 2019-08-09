@@ -18,7 +18,7 @@ RSpec.describe ActivitiesController, type: :controller do
   }
 
   let(:invalid_attributes) {
-    { school_id: nil }
+    { happened_on: nil }
   }
 
   describe "GET #index" do
@@ -122,11 +122,6 @@ RSpec.describe ActivitiesController, type: :controller do
       it 'adds correct points to the school' do
         school.reload
         expect(school.points).to eql(activity_type.score)
-      end
-
-      it 'adds badges' do
-        school.reload
-        expect( school.badges.first.name ).to eql('beginner')
       end
 
     end

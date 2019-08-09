@@ -15,7 +15,7 @@ describe 'adding a new activity' do
   before(:each) do
     sign_in(admin)
     visit school_path(school)
-    click_on('More suggestions')
+    click_on('Choose another activity')
     click_on('Record your activity')
   end
 

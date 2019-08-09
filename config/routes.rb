@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
+  get 'privacy_policy', to: 'home#privacy_policy'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
 
   resources :activity_types
   resources :activity_categories
+
   resources :calendars do
     scope module: :calendars do
       resources :calendar_events
@@ -37,14 +39,17 @@ Rails.application.routes.draw do
       resources :meters,        only: [:new, :create, :edit, :update]
       resource :school_times,   only: [:edit, :update]
       resources :inset_days,    only: [:new, :create, :edit, :update, :destroy]
+      resources :contacts,      only: [:new, :create, :edit, :update, :destroy]
     end
   end
 
   resources :schools do
     resources :activities
 
-
     scope module: :schools do
+
+      resources :programme_types, only: [:index, :show]
+      resources :programmes, only: [:show, :index, :create]
 
       resource :action, only: [:new]
 
@@ -73,7 +78,6 @@ Rails.application.routes.draw do
       resources :simulations
 
       resources :alerts, only: [:show]
-
       resources :find_out_more, controller: :find_out_more
 
       resources :interventions
@@ -93,6 +97,7 @@ Rails.application.routes.draw do
       get :solar_pv, to: 'analysis#solar_pv'
       get :carbon_emissions, to: 'analysis#carbon_emissions'
       get :test, to: 'analysis#test'
+      get :timeline, to: 'timeline#show'
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
@@ -102,7 +107,6 @@ Rails.application.routes.draw do
     get '/scoreboard', to: redirect('/schools')
 
     member do
-      get 'awards'
       get 'suggest_activity'
       get 'data_explorer'
       get 'usage'
@@ -131,6 +135,12 @@ Rails.application.routes.draw do
   namespace :admin do
     namespace :emails do
       resources :alert_mailers, only: :show
+    end
+
+    resources :programme_types do
+      scope module: :programme_types do
+        resource :activity_types, only: [:show, :update]
+      end
     end
 
     resources :alert_types, only: [:index, :show, :edit, :update] do
@@ -162,6 +172,7 @@ Rails.application.routes.draw do
     namespace :reports do
       resources :alert_subscribers, only: :index
     end
+    resource :settings, only: [:show, :update]
   end
 
   namespace :teachers do

@@ -2,7 +2,7 @@ module SchoolAggregation
   extend ActiveSupport::Concern
 
   included do
-    before_action :check_aggregated_school_in_cache
+    before_action :check_aggregated_school_in_cache, unless: proc {|_c| request.xhr? }
   end
 
 private

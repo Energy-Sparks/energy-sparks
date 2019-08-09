@@ -33,11 +33,8 @@ class ActivitiesController < ApplicationController
   # POST /activities
   # POST /activities.json
   def create
-    if @activity.activity_type
-      @activity.activity_category_id = @activity.activity_type.activity_category_id
-    end
     respond_to do |format|
-      if @activity.save
+      if ActivityCreator.new(@activity).process
         format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully created.' }
         format.json { render :show, status: :created, location: @school }
       else

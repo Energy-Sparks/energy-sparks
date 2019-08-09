@@ -3,7 +3,7 @@ class SchoolsController < ApplicationController
   include Measurements
 
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :awards]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
   # GET /schools
@@ -20,16 +20,13 @@ class SchoolsController < ApplicationController
     redirect_to teachers_school_path(@school), status: :found
   end
 
-  # GET /schools/:id/awards
-  def awards
-    @all_badges = Merit::Badge.all.to_a.sort
-    @badges = @school.badges_by_date(order: :asc)
-  end
-
   def suggest_activity
     @filter = activity_type_filter
     @first = @school.activities.empty?
-    @suggestions = NextActivitySuggesterWithFilter.new(@school, @filter).suggest
+    suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
+    @suggestions_from_programmes = suggester.suggest_from_programmes.limit(6)
+    @suggestions_from_alerts = suggester.suggest_from_programmes.sample(6)
+    @suggestions_from_activity_history = suggester.suggest_from_activity_history.first(6)
   end
 
   # GET /schools/new
