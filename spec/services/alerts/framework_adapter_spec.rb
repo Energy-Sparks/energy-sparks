@@ -10,7 +10,6 @@ describe Alerts::FrameworkAdapter do
     Alert.new(
       run_on: gas_date,
       alert_type: alert_type,
-      status: :good,
       rating: 5.0 ,
       enough_data: :enough,
       template_data: {template: 'variables'},

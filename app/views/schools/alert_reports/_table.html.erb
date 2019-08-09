@@ -6,9 +6,9 @@
       <th>Find out mores</th>
       <th>Displayable?</th>
       <th>Rating</th>
-      <th>Status</th>
       <th>Valid?</th>
       <th>Enough data?</th>
+      <th>Relevant?</th>
       <th>Alert Date</th>
       <th>Created At</th>
       <th>Emails sent</th>
@@ -27,9 +27,9 @@
         </td>
         <td class="text-white <%= class_for_boolean(alert.displayable) %>"><%= y_n alert.displayable %></td>
         <td><%= alert.formatted_rating %></td>
-        <td><%= alert.status %></td>
         <td><%= y_n alert.analytics_valid %></td>
         <td><%= alert.enough_data %></td>
+        <td><%= alert.relevance %></td>
         <td><%= nice_dates alert.run_on %></td>
         <td><%= nice_date_times alert.created_at %></td>
         <td><%= link_to(alert.alert_subscription_events.sent.email.count, school_alert_subscription_events_path(@school)) %></td>

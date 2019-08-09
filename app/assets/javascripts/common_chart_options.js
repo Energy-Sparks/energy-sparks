@@ -181,7 +181,6 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
       console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: orderedPointFormat(yAxisLabel) }
-      seriesData[key].dashStyle =  'Dash';
     }
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);

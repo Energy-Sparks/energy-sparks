@@ -36,9 +36,9 @@ module Alerts
         run_on:          @analysis_date,
         displayable:     analysis_report.displayable?,
         analytics_valid: analysis_report.valid,
-        status:          analysis_report.status,
         rating:          analysis_report.rating,
         enough_data:     analysis_report.enough_data,
+        relevance:       analysis_report.relevance,
         template_data:   analysis_report.template_data,
         chart_data:      analysis_report.chart_data,
         table_data:      analysis_report.table_data
