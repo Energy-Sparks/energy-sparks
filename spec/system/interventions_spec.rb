@@ -48,7 +48,7 @@ describe 'adding interventions' do
     intervention = create(:observation, :intervention, school: school)
 
     visit teachers_school_path(school)
-    click_on 'Interventions'
+    click_on 'View all actions'
 
     expect{
       click_on 'Delete'

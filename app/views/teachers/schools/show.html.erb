@@ -47,29 +47,6 @@
   <% end %>
 </div>
 
-<% if can?(:create, Observation) || can?(:start_programme, @school) %>
-  <div class="row mt-3 mb-3">
-    <div class="col">
-      <h2>Act on energy usage</h2>
-      <ul class="nav nav-pills nav-fill mr-3 ml-3 mt-2">
-        <% if can?(:create, Observation) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Start an activity', suggest_activity_school_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-        <% if can?(:start_programme, @school) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Start or continue a programme', school_programme_types_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-<% end %>
-
 <% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
   <div class="row">
     <div class="col-md-12">
@@ -96,55 +73,83 @@
       <%= render 'schools/dashboard_alerts/alert', alert: @dashboard_alert.alert, content: @dashboard_alert_content, school: @school, find_out_more: @dashboard_alert_content.find_out_more, dashboard_title: @dashboard_alert_content.teacher_dashboard_title %>
     </div>
   </div>
-
-  <% unless @find_out_more_activity_types.nil? || @find_out_more_activity_types.empty? %>
-    <div class="row">
-      <div class="col-md-12 jumbotron things-to-try pt-3 pb-3">
-        <h2>Things to try</h2>
-        <ul>
-          <% @find_out_more_activity_types.each do |activity_type| %>
-            <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  <% end %>
 <% end %>
 
-<div class="card">
-  <div class="card-header">
-    <div class="row justify-content-between">
-      <div class="col-10">
-        <h4 class="">
-          <%= fa_icon('pen-square') %>
-          <% if @first %>
-            No activities completed, make a start!
-          <% else %>
-            You've completed <%= @activities_count %> activities
-          <% end %>
-        </h4>
+
+<% if @activities_count < 1 %>
+  <h2>You’ve not completed any activities yet</h2>
+<% else %>
+  <h2>You’ve completed <%= pluralize(@activities_count, 'learning activity')%></h2>
+<% end %>
+<h4>Try these next...</h4>
+<div class="row">
+  <div class="card-deck">
+    <% @activities_from_activity_history.each do |activity_type| %>
+      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
+    <% end %>
+    <% @activities_from_alerts.each do |activity_type| %>
+      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
+    <% end %>
+    <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+      <div class="card activity-card mb-2">
+        <div class="card-header">
+          <h5>Or, start a programme...</h5>
+          <p><span class="badge badge-success"><%= pluralize(@suggested_programme.activity_types.count, 'activity') %></span>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title"><%= @suggested_programme.title %></h4>
+          <p class="card-text">
+            <%= @suggested_programme.short_description %>
+          </p>
+        </div>
+        <div class="card-footer text-right">
+          <%= link_to 'More about this programme', school_programme_types_path(@school, @suggested_programme), class: 'btn btn-primary' %>
+        </div>
       </div>
-      <div class="col-2 text-right">
-        <%= link_to 'View activity log', school_activities_path(@school), class: 'btn btn-sm btn-secondary pull-right' %>
-      </div>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="row justify-content-between">
-      <div class="col-9">
-        <h4 class="">Activities to try next:</h4>
-      </div>
-      <div class="col-3 text-right">
-        <%= link_to 'More suggestions', suggest_activity_school_path(@school), class: 'btn btn-sm btn-primary pull-right' %>
-        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-sm btn-secondary pull-right' %>
-      </div>
-    </div>
-    <ul class="list-group list-group-flush">
-      <% @suggestions.first(3).each do |activity_type| %>
-        <li class="list-group-item"><%= fa_icon('edit') %> <%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+    <% else %>
+      <% @activities_from_programmes.each do |activity_type| %>
+        <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your programmes' %>
       <% end %>
-    </ul>
+    <% end %>
   </div>
 </div>
 
-<%= render 'schools/actions/investigate', school: @school %>
+
+<% if can?(:manage, Activity) || can?(:create, Observation) || can?(:start_programme, @school) %>
+  <div class="row mt-3 mb-3">
+    <div class="col">
+      <ul class="nav nav-pills nav-fill mr-3 ml-3 mt-2">
+        <% if can?(:manage, Activity) %>
+          <li class="nav-item mr-2 ml-2 mb-2">
+            <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'nav-link btn btn-info' %>
+          </li>
+        <% end %>
+        <% if can?(:create, Observation) %>
+          <li class="nav-item mr-2 ml-2 mb-2">
+            <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'nav-link btn btn-info' %>
+          </li>
+        <% end %>
+        <% if can?(:start_programme, @school) %>
+          <li class="nav-item mr-2 ml-2 mb-2">
+            <%= link_to 'Choose another programme', school_programme_types_path(@school), class: 'nav-link btn btn-info' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div class="row justify-content-between">
+  <div class="col-10">
+    <h1>What's been going on?</h1>
+  </div>
+  <div class="col-2 text-right">
+    <%= link_to 'View all actions', school_timeline_path(@school), class: 'btn btn-sm btn-secondary pull-right' %>
+  </div>
+</div>
+
+<div class="row justify-content-md-center">
+  <div class="col col-md-10">
+    <%= render 'schools/observations/timeline', observations: @observations, show_actions: false%>
+  </div>
+</div>

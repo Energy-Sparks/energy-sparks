@@ -27,6 +27,7 @@ class Programme < ApplicationRecord
   belongs_to :school
   has_many :programme_activities
   has_many :activities, through: :programme_activities
+  has_many :activity_types, through: :programme_activities
 
   delegate :description, to: :programme_type
 

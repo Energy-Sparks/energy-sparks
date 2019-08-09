@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
+  get 'privacy_policy', to: 'home#privacy_policy'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -77,7 +78,6 @@ Rails.application.routes.draw do
       resources :simulations
 
       resources :alerts, only: [:show]
-
       resources :find_out_more, controller: :find_out_more
 
       resources :interventions
@@ -97,6 +97,7 @@ Rails.application.routes.draw do
       get :solar_pv, to: 'analysis#solar_pv'
       get :carbon_emissions, to: 'analysis#carbon_emissions'
       get :test, to: 'analysis#test'
+      get :timeline, to: 'timeline#show'
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'

@@ -1,6 +1,7 @@
 <%= simple_form_for([:admin, programme_type]) do |f| %>
   <%= f.input :title %>
   <%= f.input :description %>
+  <%= f.input :short_description %>
   <%= f.input :active %>
   <%= f.submit 'Save', class: 'btn btn-success' %>
 <% end %>

@@ -1,5 +1,8 @@
 <div class="card activity-card mb-2">
   <div class="card-header">
+    <% if local_assigns[:based_on] %>
+      <h5>Based on <%= local_assigns[:based_on] %></h5>
+    <% end %>
     <p><span class="badge badge-success"><%= activity_type.score %></span>
     <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
   </div>
