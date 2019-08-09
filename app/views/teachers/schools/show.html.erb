@@ -67,10 +67,17 @@
   </div>
 <% end %>
 
-<% if @dashboard_alert %>
-  <div class="row">
+<% @dashboard_alerts.each do |alert_content|%>
+  <div class="row dashboard-alert">
     <div class="col-md-12">
-      <%= render 'schools/dashboard_alerts/alert', alert: @dashboard_alert.alert, content: @dashboard_alert_content, school: @school, find_out_more: @dashboard_alert_content.find_out_more, dashboard_title: @dashboard_alert_content.teacher_dashboard_title %>
+      <%= render 'schools/dashboard_alerts/alert', alert: alert_content.alert, content: alert_content, school: @school, find_out_more: alert_content.find_out_more, dashboard_title: alert_content.teacher_dashboard_title %>
+    </div>
+  </div>
+<% end %>
+<% if @dashboard_alerts.size > 1 %>
+  <div class="row">
+    <div class="col text-center">
+      <a href="#" class="btn btn-secondary more-alerts">Show <%= pluralize((@dashboard_alerts.size - 1), 'more alert')%></a>
     </div>
   </div>
 <% end %>
