@@ -22,9 +22,9 @@ module Alerts
       def report
         Alerts::Adapters::Report.new(
           valid: true,
-          status: :good,
           rating: 5.0,
           enough_data: :enough,
+          relevance: :relevant,
           template_data: {
             template: 'variables'
           },

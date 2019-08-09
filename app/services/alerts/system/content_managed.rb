@@ -31,9 +31,9 @@ module Alerts
       def report
         Adapters::Report.new(
           valid: true,
-          status: :good,
           rating: 10.0,
           enough_data: :enough,
+          relevance: :relevant,
           template_data: {
             school_name: @school.name
           }

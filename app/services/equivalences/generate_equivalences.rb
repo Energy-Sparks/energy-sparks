@@ -16,6 +16,9 @@ module Equivalences
             equivalence.save!
           rescue Calculator::CalculationError => e
             Rails.logger.debug("#{e.message} for #{@school.name}")
+          rescue => e
+            Rails.logger.error("#{e.message} for #{@school.name}")
+            Rollbar.error(e)
           end
         end
       end

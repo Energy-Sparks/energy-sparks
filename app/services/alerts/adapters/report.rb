@@ -1,12 +1,12 @@
 module Alerts
   module Adapters
     class Report
-      attr_reader :valid, :status, :rating, :enough_data, :template_data, :chart_data, :table_data
-      def initialize(valid:, status:, rating:, enough_data:, template_data: {}, chart_data: {}, table_data: {})
+      attr_reader :valid, :rating, :enough_data, :relevance, :template_data, :chart_data, :table_data
+      def initialize(valid:, rating:, enough_data:, relevance:, template_data: {}, chart_data: {}, table_data: {})
         @valid = valid
-        @status = status
         @rating = rating
         @enough_data = enough_data
+        @relevance = relevance
         @template_data = template_data
         @chart_data = chart_data
         @table_data = table_data
@@ -14,10 +14,9 @@ module Alerts
 
       def displayable?
         valid &&
-          !status.nil? &&
-          !(status == :failed) &&
           !enough_data.nil? &&
           !(enough_data == :not_enough) &&
+          relevance == :relevant &&
           !rating.nil?
       end
     end

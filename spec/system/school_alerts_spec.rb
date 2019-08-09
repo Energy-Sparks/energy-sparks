@@ -45,7 +45,6 @@ RSpec.describe "school alerts", type: :system do
         Alert.create(
           alert_type: gas_fuel_alert_type,
           run_on: gas_date, school: school,
-          status: :good,
           rating: 9.0,
           table_data: {
             dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]

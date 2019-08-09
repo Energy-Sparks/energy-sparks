@@ -10,9 +10,9 @@
 #  enough_data     :integer
 #  id              :bigint(8)        not null, primary key
 #  rating          :decimal(, )
+#  relevance       :integer          default("relevant")
 #  run_on          :date
 #  school_id       :bigint(8)
-#  status          :integer
 #  table_data      :json
 #  template_data   :json
 #  updated_at      :datetime         not null
@@ -43,16 +43,8 @@ class Alert < ApplicationRecord
 
   scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
 
-  enum status: {
-    good: 0,
-    poor: 1,
-    failed: 3,
-    bad: 4
-    # no longer used
-    # not_enough_data: 2
-    # not_valid: 5
-  }
   enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate]
+  enum relevance: [:relevant, :not_relevant, :never_relevant]
 
   def self.latest
     select('DISTINCT ON ("alert_type_id") alerts.*').order('alert_type_id', created_at: :desc)
