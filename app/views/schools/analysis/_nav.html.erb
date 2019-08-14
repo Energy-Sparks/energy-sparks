@@ -1,17 +1,18 @@
 <div class="row" id="nav-row">
   <ul class="nav nav-tabs">
     <% @nav_array.each do |nav| %>
-    <li>
-      <%= nav_link(nav[:name], send("school_#{nav[:path]}")) %>
-    </li>
+      <% if can? :analyse, nav[:page].to_sym %>
+        <li>
+          <%= nav_link(nav[:name], send("school_#{nav[:page]}_path")) %>
+        </li>
+      <% end %>
     <% end %>
-    <% if can?(:view_experimental_analysis, @school) %>
+    <% if can?(:analyse, :test) %>
       <!-- used for debug purposes -->
       <li><%= nav_link('Test', school_test_path) %></li>
-      <% if !@school.has_solar_pv? && !@school.has_storage_heaters? %>
-        <li><%= nav_link('Accounting', school_accounting_path) %></li>
-      <% end %>
+    <% end %>
 
+    <% if can?(:analyse, :heating_model_fitting) %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heating Model Fitting</a>
         <div class="dropdown-menu">
@@ -21,5 +22,6 @@
         </div>
       </li>
     <% end %>
+
   </ul>
 </div>

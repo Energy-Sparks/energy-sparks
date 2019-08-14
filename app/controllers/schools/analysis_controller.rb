@@ -62,7 +62,7 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
-  def accounting
+  def cost
     render_generic_chart_template
   end
 
@@ -75,7 +75,7 @@ private
 
   def set_nav
     @nav_array = pages.map do |page, config|
-      { name: config[:name], path: "#{page}_path" }
+      { name: config[:name], page: page }
     end
   end
 
@@ -96,9 +96,7 @@ private
 
   def title_and_chart_configuration
     if action_name.to_sym == :test || action_name.to_sym == :heating_model_fitting
-    elsif action_name.to_sym == :accounting
-      meter_action = @school.configuration.gas ? :cost : :cost_electricity_only
-      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[meter_action]
+      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym]
     else
       @school.configuration.analysis_charts_as_symbols[action_name.to_sym]
     end
