@@ -1,6 +1,6 @@
 branch-defaults:
   aws-eb-master:
-    environment: prod-2-8-7
+    environment: prod-2-10-1
   aws-eb-test:
     environment: test-2-8-7
     group_suffix: null
