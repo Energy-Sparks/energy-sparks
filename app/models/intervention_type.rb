@@ -5,6 +5,7 @@
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
 #  other                      :boolean          default(FALSE)
+#  points                     :integer
 #  title                      :string           not null
 #
 # Indexes
