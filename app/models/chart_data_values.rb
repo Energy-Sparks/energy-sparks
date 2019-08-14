@@ -87,10 +87,14 @@ private
       colour = colour_hash[data_type]
 
       if Schools::Configuration.gas_dashboard_chart_types.key?(@chart[:config_name].to_s)
-        colour = index == 0 ? '#ffac21' : '#ff4500'
+        colour = index == 0 ? '#FF8438' : '#FFC73E'
+        # else
+        #   index == 0 ? '#007EFF' : '#59D0FF'
       end
+
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
+
 
     if @y2_data != nil && @y2_chart_type == :line
       @y2_axis_label = @y2_data.keys[0]

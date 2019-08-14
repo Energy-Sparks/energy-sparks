@@ -12,14 +12,34 @@ $dark-blue: #232b49;    /* very dark blue rgb(35,43,73) */
 
 $green: #5cb85c;        /* nice green rgb(92,184,92) */
 
+
+
 //semantically named variables for highlight/low-light colours
 
-$text: $dark-blue;
+$new-yellow: #FFE5B8;
+$new-red: #FF3A5B;
+$dark: #222222;
 
-$electricDark: $dark-blue;
-$electricLight: $light-blue;
+$text: $dark;
 
-$gasDark: $dark-orange;
-$gasLight: $light-orange;
+$electricDark: #007EFF;
+$electricLight: #59D0FF;
 
+$gasDark: #FF8438;
+$gasLight: #FFC73E;
 
+$bg-positive: #50E3C2;
+$bg-neutral: #97E6FC;
+$bg-negative: #FF3A5B;
+
+.bg-positive {
+  background-image: linear-gradient(to right, $bg-positive 0%, #A1FFE9 100%);
+}
+
+.bg-neutral {
+  background-image: linear-gradient(to right, $bg-neutral 0%, #CBF4FF 100%);
+}
+
+.bg-negative {
+  background-image: linear-gradient(to right, $bg-negative 0%, #FF9B9C 100%);
+}

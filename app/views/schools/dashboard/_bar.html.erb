@@ -1,4 +1,4 @@
-<div class="alert text-white <%= colour %>" role="alert">
+<div class="alert <%= colour == 'bg-negative' ? 'text-white' : 'text-dark' %> <%= colour %>" role="alert">
   <div class="d-flex">
     <div class="p-2 align-self-center">
       <%= fa_icon(icon + '') %>
