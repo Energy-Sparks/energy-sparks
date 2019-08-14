@@ -9,6 +9,7 @@
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
 #  observation_type     :integer          not null
+#  points               :integer
 #  school_id            :bigint(8)        not null
 #  updated_at           :datetime         not null
 #

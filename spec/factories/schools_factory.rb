@@ -36,7 +36,8 @@ FactoryBot.define do
       end
 
       after(:create) do |school, evaluator|
-        create(:activity, school: school, points: evaluator.score_points)
+        activity_type = create(:activity_type, score: evaluator.score_points)
+        create(:activity, school: school, activity_type: activity_type)
       end
     end
   end

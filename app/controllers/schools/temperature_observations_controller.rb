@@ -11,8 +11,7 @@ module Schools
     end
 
     def create
-      @observation.observation_type = :temperature
-      if @observation.save
+      if TemperatureObservationCreator.new(@observation).process
         redirect_to school_temperature_observations_path(@school)
       else
         render :new

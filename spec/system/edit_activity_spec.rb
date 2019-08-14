@@ -10,7 +10,7 @@ describe 'editing an activity' do
   let!(:school) { create_active_school(name: school_name)}
   let!(:admin)  { create(:user, role: 'school_user', school: school)}
   let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
-  let!(:activity) { ActivityCreator.new(build(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)).process}
+  let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
 
   let(:other_activity_type_name) { 'Exciting activity (please specify)' }
   let!(:other_activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }

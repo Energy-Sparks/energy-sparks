@@ -4,9 +4,12 @@ FactoryBot.define do
     observation_type { :temperature }
     at               { Time.now.utc }
 
+    to_create { |instance| TemperatureObservationCreator.new(instance).process }
+
     trait :intervention do
       observation_type { :intervention }
       intervention_type
+      to_create { |instance| InterventionCreator.new(instance).process }
     end
 
     factory :observation_with_temperature_recording_and_location do
