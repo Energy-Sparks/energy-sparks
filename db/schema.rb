@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_13_152208) do
+ActiveRecord::Schema.define(version: 2019_08_14_134927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -330,12 +330,10 @@ ActiveRecord::Schema.define(version: 2019_08_13_152208) do
     t.text "type", null: false
     t.text "title"
     t.text "description"
-    t.bigint "parent_area_id"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.bigint "data_feed_id"
     t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
-    t.index ["parent_area_id"], name: "index_areas_on_parent_area_id"
   end
 
   create_table "bank_holidays", force: :cascade do |t|
@@ -344,6 +342,11 @@ ActiveRecord::Schema.define(version: 2019_08_13_152208) do
     t.text "title"
     t.text "notes"
     t.index ["calendar_area_id"], name: "index_bank_holidays_on_calendar_area_id"
+  end
+
+  create_table "calendar_areas", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "parent_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -838,6 +841,7 @@ ActiveRecord::Schema.define(version: 2019_08_13_152208) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "calendars", "calendar_areas", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools"
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
@@ -862,21 +866,22 @@ ActiveRecord::Schema.define(version: 2019_08_13_152208) do
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
-  add_foreign_key "school_groups", "areas", column: "default_calendar_area_id"
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
+  add_foreign_key "school_groups", "calendar_areas", column: "default_calendar_area_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
-  add_foreign_key "school_onboardings", "areas", column: "calendar_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
+  add_foreign_key "school_onboardings", "calendar_areas", on_delete: :restrict
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
   add_foreign_key "school_times", "schools"
+  add_foreign_key "schools", "calendar_areas", on_delete: :restrict
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
   add_foreign_key "simulations", "schools"

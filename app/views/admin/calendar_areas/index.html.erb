@@ -6,7 +6,6 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Description</th>
       <th></th>
     </tr>
   </thead>
@@ -14,7 +13,6 @@
     <% @calendar_areas.each do |calendar_area| %>
       <tr>
         <td><%= link_to calendar_area.title, admin_calendar_area_path(calendar_area) %></td>
-        <td><%= calendar_area.description %></td>
         <td>
           <div class="btn-group">
             <% if calendar_area.calendars.template.any? %>

@@ -2,7 +2,6 @@
 
 <%= simple_form_for @calendar_area, url: admin_calendar_areas_path  do |form| %>
   <%= form.input :title, as: :string%>
-  <%= form.input :description %>
   <%= simple_fields_for :terms do |terms| %>
     <%= terms.input :csv, as: :text, label: 'Terms CSV', hint: 'In CSV format with the headers "Term,Start Date,End Date"', required: false%>
   <% end %>

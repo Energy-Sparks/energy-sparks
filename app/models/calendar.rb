@@ -16,6 +16,10 @@
 #
 #  index_calendars_on_based_on_id  (based_on_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
+#
 
 class Calendar < ApplicationRecord
   belongs_to  :calendar_area
