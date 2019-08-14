@@ -1,14 +1,9 @@
-<div class="row mt-2 mb-2">
-  <div class="col-md-1">
-    <%= image_tag("lightbulb.png", class: "pupil-dashboard") %>
+<div class="row illustration-background">
+  <div class="col-6">
+    <h3><%= sanitize equivalence_content.equivalence.split('. ').first %></h3>
+    <h1><%= sanitize equivalence_content.equivalence.split('. ').last %></h1>
   </div>
-  <div class="col-md-11">
-    <div class="row">
-      <hgroup class="speech">
-        <div class="trix-content">
-          <%= sanitize equivalence_content.equivalence %>
-        </div>
-      </hgroup>
-    </div>
+  <div class="col-6 illustration-wrapper">
+    <%#= image_tag("meal.png", class: "") %>
   </div>
 </div>
