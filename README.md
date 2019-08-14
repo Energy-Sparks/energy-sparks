@@ -57,41 +57,65 @@ bundle exec rake utility:prepare_test_server
 
 ## More notes on environment creation
 
-* Create web version with sample app, but everything else you need (see below for options)
-* Once created set environment variables - get existing ones by runnig ```eb printenv``` and then set them on the new environment (easiest to have a branch which is configured as a default to use new environment using ```.elasticbeanstalk/config.yml```) using ```eb setenv THIS_VAR=x THAT_VAR=y``` etc
-* Check environment variables through web console (AWS_ACCESS_KEY usually requires adding manually)
-* Check SSH works
-* Whilst SSH'd - set up NPM fontawesome pro config if required
-* Then deploy actual branch
-* Set up DNS in Route 53
-* Set up cert and get it to create DNS record
-* Wait for it to be validated, then add to load balancer
+* Using the actions drop down, click Create Environment
+* Choose Web server environment and click Continue
+* Choose an environment name, normally we are using the AWS linux platform version, along with test or prod, i.e. prod-2-10-1 or test-2-8-7
+* Choose preconfigured platform of Ruby
+* Leave the application code setting as the Sample Application
+* Click 'Configure More Options' and set up:
 
-### capacity:
+### Capacity:
 
-environment: Load balanced (1 - 1)
- add classic load balance
+* Change environment to load balanced (1-1)
 
 ### Load Balancer:
 
-Classic load balancer
-Add Listener - Listener Port 443
-               Listener Protocol HTTPS
-               Instance Port 80
-               Instance Protocol HTTP
+* Choose a Classic load balancer
+
 
 ### Instances:
 
-Set instances to t2.small
+Set instance to t2.small
 
 ### Security:
 
-Add previously created key in security
-IAM DevOps
+Add previously created key in security [IAM DevOps](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#KeyPairs:sort=keyName) (i.e. EnergySparksProductionEC2Machine or EnergySparksTestEC2)
 
-### Software:
+### Software
 
-Add environment properties
+Leave this for now, we will add the environment variables once the environment has been created with the sample app
+
+ * Create environment
+
+## Once environment has been created
+
+  * Set environment variables
+
+    get existing ones by runnig ```eb printenv``` and then set them on the new environment (easiest to have a branch which is configured as a default to use new environment using ```.elasticbeanstalk/config.yml```) using ```eb setenv THIS_VAR=x THAT_VAR=y``` etc
+  * Check environment variables through web console (AWS_ACCESS_KEY usually requires adding manually)
+  * Check SSH works to new environment with ```eb ssh```
+  * Whilst SSH'd, check to to see if the font awesome pro config is present by running
+
+  ```
+  npm config ls -l | grep font
+  ```
+    if it isn't, then set as follows
+
+  ```
+  npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && npm config set "//npm.fontawesome.com/:_authToken" [PUT THE AUTHENTICATION TOKEN IN HERE]
+  ```
+
+  * Then deploy actual branch
+  * Set up DNS in Route 53
+  * Set up cert and get it to create DNS record if you didn't do this already
+
+  * Add Listener to Load Balancer -
+      Listener Port 443
+      Listener Protocol HTTPS
+      Instance Port 80
+      Instance Protocol HTTP
+
+    and add certificate once it has been validated
 
 ## For existing database:
 
