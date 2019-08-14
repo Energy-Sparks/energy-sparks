@@ -3,6 +3,7 @@ FactoryBot.define do
     title { "Test Calendar" }
     default { false }
     template { true }
+    calendar_area
 
     factory :calendar_with_terms do
       # posts_count is declared as a transient attribute and available in

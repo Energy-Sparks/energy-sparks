@@ -3,7 +3,7 @@
 # Table name: calendars
 #
 #  based_on_id      :bigint(8)
-#  calendar_area_id :bigint(8)
+#  calendar_area_id :bigint(8)        not null
 #  created_at       :datetime         not null
 #  default          :boolean
 #  deleted          :boolean          default(FALSE)
@@ -35,7 +35,7 @@ class Calendar < ApplicationRecord
   scope :template,  -> { where(template: true) }
   scope :custom,    -> { where(template: false) }
 
-  validates_presence_of :title
+  validates_presence_of :title, :calendar_area
 
   accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
 
@@ -84,6 +84,10 @@ class Calendar < ApplicationRecord
   def holiday_approaching?(today: Time.zone.today)
     next_after_today = next_holiday(today: today)
     next_after_today.present? && (next_after_today.start_date - today <= 7)
+  end
+
+  def academic_year_for(date)
+    calendar_area.academic_year_for(date)
   end
 end
 

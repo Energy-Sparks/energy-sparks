@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_134927) do
+ActiveRecord::Schema.define(version: 2019_08_14_143721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 2019_08_14_134927) do
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
+    t.bigint "calendar_area_id", null: false
+    t.index ["calendar_area_id"], name: "index_academic_years_on_calendar_area_id"
   end
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -381,7 +383,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_134927) do
     t.datetime "updated_at", null: false
     t.boolean "default"
     t.bigint "based_on_id"
-    t.bigint "calendar_area_id"
+    t.bigint "calendar_area_id", null: false
     t.boolean "template", default: false
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end
@@ -808,6 +810,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_134927) do
     t.index ["school_id"], name: "index_users_on_school_id"
   end
 
+  add_foreign_key "academic_years", "calendar_areas", on_delete: :cascade
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"

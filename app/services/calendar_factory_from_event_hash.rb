@@ -15,7 +15,7 @@ class CalendarFactoryFromEventHash
       raise ArgumentError if event_type.nil?
 
       academic_year = if event[:start_date]
-                        AcademicYear.for_date(Date.parse(event[:start_date]))
+                        @area.academic_year_for(Date.parse(event[:start_date]))
                       end
 
       @calendar.calendar_events.where(title: event[:term], start_date: event[:start_date], end_date: event[:end_date], calendar_event_type: event_type, academic_year: academic_year).first_or_create!

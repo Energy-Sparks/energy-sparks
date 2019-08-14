@@ -2,10 +2,11 @@ require 'rails_helper'
 
 describe CalendarEvent do
 
-  let(:calendar){ build(:calendar) }
+  let(:calendar_area){ create(:calendar_area) }
+  let(:calendar){ build(:calendar, calendar_area: calendar_area) }
 
   it 'sets its own academic year' do
-    academic_year = create(:academic_year, start_date: Date.new(2019, 9, 1), end_date: Date.new(2020, 8, 31))
+    academic_year = create(:academic_year, start_date: Date.new(2019, 9, 1), end_date: Date.new(2020, 8, 31), calendar_area: calendar_area)
     event = create(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
     expect(event.academic_year).to eq(nil)
 
