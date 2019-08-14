@@ -42,7 +42,7 @@
     </div>
   </div>
   <div class="col-md-5">
-    <% if @activity_types %>
+    <% unless @activity_types.empty? %>
       <h2>Activities which will help</h2>
       <% @activity_types.each do |activity_type| %>
         <%= render 'activity_types/card', activity_type: activity_type %>

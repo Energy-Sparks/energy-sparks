@@ -181,13 +181,13 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
       console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: orderedPointFormat(yAxisLabel) }
-      seriesData[key].dashStyle =  'Dash';
     }
     // The false parameter stops it being redrawed after every addition of series data
     c.addSeries(seriesData[key], false);
   });
 
   updateChartLabels(d, c);
+  normaliseYAxis(c);
 
   c.redraw();
 }
@@ -234,6 +234,7 @@ function scatter(d, c, seriesData) {
     console.log(seriesData[key].name);
     c.addSeries(seriesData[key], false);
   });
+  normaliseYAxis(c);
   c.redraw();
 }
 
@@ -269,4 +270,36 @@ function orderedPointFormat(label){
   } else {
     return format + ' ' + label;
   }
+}
+
+// If there are 2 axis and one or both of them dips under 0
+// then make sure the scales are in the same ratio
+
+function normaliseYAxis(chart){
+  if(chart.yAxis.length === 2){
+    var firstAxis = chart.yAxis[0];
+    var firstExtremes = firstAxis.getExtremes();
+    var secondAxis = chart.yAxis[1];
+    var secondExtremes = secondAxis.getExtremes();
+    if((firstExtremes.min < 0 && secondExtremes.min >= 0)){
+      normaliseAxis(secondAxis, firstExtremes, secondExtremes);
+    }
+    if((firstExtremes.min >= 0 && secondExtremes.min <  0)){
+      normaliseAxis(firstAxis, secondExtremes, firstExtremes);
+    }
+    if((firstExtremes.min < 0 && secondExtremes.min <  0)){
+      var firstMinMaxRatio = firstExtremes.max / firstExtremes.min;
+      var secondMinMaxRatio = secondExtremes.max / secondExtremes.min;
+      if(firstMinMaxRatio > secondMinMaxRatio){
+        normaliseAxis(secondAxis, firstExtremes, secondExtremes);
+      } else {
+        normaliseAxis(firstAxis, secondExtremes, firstExtremes);
+      }
+    }
+  }
+}
+
+function normaliseAxis(axisToChange, axisAExtremes, axisBExtremes){
+  var ratio = axisAExtremes.max / axisAExtremes.min;
+  axisToChange.setExtremes((axisBExtremes.max / ratio), axisBExtremes.max)
 }

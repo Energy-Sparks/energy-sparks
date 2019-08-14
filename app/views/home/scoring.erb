@@ -5,7 +5,7 @@
 
   <div class="row padded-row">
     <div class="col-md-12">
-      <h1 id="intro">Points and awards</h1>
+      <h1 id="intro">Points</h1>
     </div>
   </div>
 
@@ -33,35 +33,6 @@
             your school homepage
         <% end %>
         You can also compare your scores with other <%= t('application') %> users on our <%= link_to "public scoreboards", schools_path %>
-      </p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3 callout-text">
-      <h5>Awards</h5>
-    </div>
-    <div class="col-md-8">
-      <p>
-        As you use the <%= t('application') %> and record more activities you will also receive awards.
-        Awards help mark milestones and celebrate other aspects of your journey to become more energy efficient.
-      </p>
-      <p>
-        You can use awards to help motivate staff and pupils to take part in activities.
-      </p>
-      <p>
-        Your most recent award is always displayed on
-        <% if current_user.try(:school_admin_or_user?) %>
-          <%= link_to "your school homepage", school_path(current_user.school) %>.
-        <% else %>
-            your school homepage.
-        <% end %>
-        You can also view a
-        <% if current_user.try(:school_admin_or_user?) %>
-          <%= link_to "list of current awards", awards_school_path(current_user.school) %>
-        <% else %>
-            list of awards you can receive.
-        <% end %>
       </p>
     </div>
   </div>

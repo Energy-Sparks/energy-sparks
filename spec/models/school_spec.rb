@@ -43,56 +43,6 @@ describe School do
     end
   end
 
-  describe "knows whether the previous week has a full amount of readings" do
-    let(:end_date) { Time.zone.today.prev_occurring(:saturday) }
-    let(:start_date) { end_date - 8.days }
-
-    it 'no readings' do
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject)
-
-      expect(subject.has_last_full_week_of_readings?).to be false
-    end
-
-    it 'some readings' do
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject)
-
-      start_date = end_date - 1.day
-
-      (start_date..end_date).each do |date|
-        create(:amr_validated_reading, meter: meter_one, reading_date: date)
-      end
-      expect(subject.meters.first.amr_validated_readings.size).to be 2
-      expect(subject.has_last_full_week_of_readings?).to be false
-    end
-
-    it 'all readings' do
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject)
-
-      (start_date..end_date).each do |date|
-        create(:amr_validated_reading, meter: meter_one, reading_date: date)
-        create(:amr_validated_reading, meter: meter_two, reading_date: date)
-      end
-
-      expect(subject.meters.first.amr_validated_readings.size).to be 9
-      expect(subject.meters.second.amr_validated_readings.size).to be 9
-      expect(subject.has_last_full_week_of_readings?).to be true
-    end
-
-    it 'ignore inactive meters' do
-      meter_one = create(:gas_meter, school: subject)
-      meter_two = create(:electricity_meter, school: subject, active: false)
-
-      (start_date..end_date).each do |date|
-        create(:amr_validated_reading, meter: meter_one, reading_date: date)
-      end
-      expect(subject.meters.first.amr_validated_readings.size).to be 9
-      expect(subject.has_last_full_week_of_readings?).to be true
-    end
-  end
-
   describe '#current_term' do
 
     it 'returns the current term' do
@@ -108,19 +58,6 @@ describe School do
       last_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(6), end_date: today.yesterday.months_ago(3)
 
       expect(subject.last_term).to eq(last_term)
-    end
-  end
-
-  describe '#badges_by_date' do
-    it 'returns an array of badges ordered by date' do
-      badge = create :badge
-      badges_sash = (1..5).collect { |n| create :badges_sash, badge_id: badge.id, sash_id: subject.sash_id, created_at: today.days_ago(n) }
-
-      expect(subject.badges_by_date).to eq(
-        badges_sash
-          .sort { |x, y| x.created_at <=> y.created_at }
-          .map(&:badge)
-      )
     end
   end
 

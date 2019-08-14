@@ -40,7 +40,7 @@ module Pupils
     def activity_setup(school)
       @activities_count = school.activities.count
       @first = school.activities.empty?
-      @suggestion = NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest.first
+      @suggestion = NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest_from_activity_history.first
     end
 
     def equivalence_setup(school)

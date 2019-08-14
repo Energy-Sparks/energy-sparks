@@ -15,7 +15,6 @@
 #  name                        :string
 #  number_of_pupils            :integer
 #  postcode                    :string
-#  sash_id                     :bigint(8)
 #  school_group_id             :bigint(8)
 #  school_type                 :integer
 #  slug                        :string
@@ -30,7 +29,6 @@
 # Indexes
 #
 #  index_schools_on_calendar_id      (calendar_id)
-#  index_schools_on_sash_id          (sash_id)
 #  index_schools_on_school_group_id  (school_group_id)
 #  index_schools_on_urn              (urn) UNIQUE
 #
@@ -47,8 +45,6 @@ class School < ApplicationRecord
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
 
-  has_merit
-
   has_and_belongs_to_many :key_stages, join_table: :school_key_stages
 
   has_many :users,                dependent: :destroy
@@ -57,6 +53,9 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
   has_many :observations,         inverse_of: :school, dependent: :destroy
+
+  has_many :programmes,               inverse_of: :school, dependent: :destroy
+  has_many :programme_activity_types, through: :programmes, source: :activity_types
 
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
@@ -94,8 +93,6 @@ class School < ApplicationRecord
   validates_associated :school_times, on: :school_time_update
 
   accepts_nested_attributes_for :school_times
-
-  after_create :create_sash_relation
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
@@ -181,10 +178,6 @@ class School < ApplicationRecord
     meters.detect(&:storage_heaters?)
   end
 
-  def has_badge?(id)
-    sash.badge_ids.include?(id)
-  end
-
   def current_term
     calendar.terms.find_by('NOW()::DATE BETWEEN start_date AND end_date')
   end
@@ -211,14 +204,12 @@ class School < ApplicationRecord
     actual_readings == expected_readings_for_a_week
   end
 
-  def badges_by_date(order: :desc, limit: nil)
-    sash.badges_sashes.order(created_at: order)
-      .limit(limit)
-      .map(&:badge)
+  def points
+    activities.sum(:points)
   end
 
   def points_since(since = 1.month.ago)
-    self.score_points.where("created_at > '#{since}'").sum(:num_points)
+    activities.where('created_at > ?', since).sum(:points)
   end
 
   def school_admin
@@ -243,13 +234,5 @@ class School < ApplicationRecord
     else
       DashboardAlert.none
     end
-  end
-
-private
-
-  # Create Merit::Sash relation
-  # Having the sash relation makes life easier elsewhere
-  def create_sash_relation
-    badges
   end
 end

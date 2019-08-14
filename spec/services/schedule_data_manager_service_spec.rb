@@ -16,7 +16,7 @@ describe ScheduleDataManagerService do
       results = ScheduleDataManagerService.new(school).holidays(nil)
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
-      expect(school_date_period.type).to eq :holiday
+      expect(school_date_period.type).to_not be_nil
     end
   end
 end

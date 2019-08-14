@@ -1,47 +1,56 @@
 <% content_for :page_title do %>
-  <%= @school.name %> Contacts
+  <%= @school.name %> Alert Contacts
 <% end %>
 
-<div typeof="School">
-  <div class="row padded-row">
-    <div class="col-md-12">
-      <h1 property="name"><%= link_to @school.name, @school %> Contacts</h1>
-      <p><%= link_to 'New Contact', new_school_contact_path(@school), class: 'btn btn-primary' %></p>
-    </div>
-  </div>
-</div>
+<h1 property="name"><%= link_to @school.name, @school %> Alert Contacts</h1>
+
+<p>
+  Energy Sparks alerts:
+</p>
+
+<ul>
+  <li>give you warning of changes in your school's energy use</li>
+  <li>highlight long term problems with your energy consumption with focused recommendations to save energy</li>
+  <li>let you know if you are doing well compared to other schools and your past performance</li>
+</ul>
+
+<p>
+  The alerts can be sent by email or text message to a mobile phone. Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
+  Use this page to manage your existing alert contacts or add new contacts.
+</p>
+
+<p><%= link_to 'New Contact', new_school_contact_path(@school), class: 'btn btn-primary' %></p>
 
 <% unless @contacts.empty? %>
-  <div class="row">
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Mobile Phone Number</th>
-            <th>Email Address</th>
-            <th>Actions</th>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Mobile Phone Number</th>
+          <th>Email Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @contacts.each do |contact| %>
+          <tr scope="row">
+            <td><%= contact.name %></td>
+            <td><%= contact.description %></td>
+            <td><%= contact.mobile_phone_number %></td>
+            <td><%= contact.email_address %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+                <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              </div>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <% @contacts.each do |contact| %>
-            <tr scope="row">
-              <td><%= contact.name %></td>
-              <td><%= contact.description %></td>
-              <td><%= contact.mobile_phone_number %></td>
-              <td><%= contact.email_address %></td>
-              <td>
-                <div class="btn-group">
-                  <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
-                  <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 
 <% else %>

@@ -15,7 +15,7 @@ describe Podium do
 
   it 'includes the calculated points' do
     podium = Podium.create(scoreboard: scoreboard, school: school_3)
-    expect(podium.low_to_high.map(&:points)).to eq([20, 30, 40])
+    expect(podium.low_to_high.map(&:points)).to eq([2, 3, 4])
   end
 
   it 'includes the normalised points' do

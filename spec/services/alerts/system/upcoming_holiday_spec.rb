@@ -29,7 +29,11 @@ describe Alerts::System::UpcomingHoliday do
     let(:start_date){ Date.new(2019, 10, 1) }
 
     it 'has a rating of 10' do
-      expect(report.rating).to eq(10.0)
+      expect(report.rating).to eq(nil)
+    end
+
+    it 'is not relevant' do
+      expect(report.relevance).to eq(:not_relevant)
     end
     it 'has no variables' do
       expect(report.template_data).to be_empty

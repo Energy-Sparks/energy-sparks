@@ -7,6 +7,7 @@
 #  created_at           :datetime         not null
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
+#  points               :integer          default(0)
 #  school_id            :bigint(8)
 #  title                :string
 #  updated_at           :datetime         not null
@@ -28,7 +29,10 @@ class Activity < ApplicationRecord
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type
   belongs_to :activity_category
-  validates_presence_of :school_id, :activity_type_id, :activity_category_id, :happened_on
+
+  has_many   :programme_activities
+
+  validates_presence_of :school, :activity_type, :activity_category, :happened_on
 
   has_rich_text :description
 

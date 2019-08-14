@@ -1,4 +1,12 @@
 <h1><%= @school.name %></h1>
-<h2>Edit contact for alerts</h2> 
+<h2>Edit contact for alerts</h2>
 
-<%= render 'form' %>
+<div class="row col-md-12">
+  <%= simple_form_for([@school, @contact]) do |f| %>
+    <%= render 'form', f: f %>
+  <% end %>
+</div>
+
+<div class="other-actions">
+  <%= link_to 'Back', school_contacts_path(@school), class: 'btn btn-secondary' %>
+</div>
