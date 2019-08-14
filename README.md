@@ -66,24 +66,20 @@ bundle exec rake utility:prepare_test_server
 
 ### Capacity:
 
-environment: Load balanced (1 - 1)
+* Change environment to load balanced (1-1)
 
 ### Load Balancer:
 
-  * Choose a Classic load balancer
-  * Add Listener - Listener Port 443
-                  Listener Protocol HTTPS
-                  Instance Port 80
-                  Instance Protocol HTTP
-  * Add certificate (this can be a temporary one for now as we'll change it later to the right one)
+* Choose a Classic load balancer
+
 
 ### Instances:
 
-Set instances to t2.small
+Set instance to t2.small
 
 ### Security:
 
-Add previously created key in security IAM DevOps
+Add previously created key in security [IAM DevOps](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#KeyPairs:sort=keyName) (i.e. EnergySparksProductionEC2Machine or EnergySparksTestEC2)
 
 ### Software
 
@@ -98,7 +94,12 @@ Leave this for now, we will add the environment variables once the environment h
     get existing ones by runnig ```eb printenv``` and then set them on the new environment (easiest to have a branch which is configured as a default to use new environment using ```.elasticbeanstalk/config.yml```) using ```eb setenv THIS_VAR=x THAT_VAR=y``` etc
   * Check environment variables through web console (AWS_ACCESS_KEY usually requires adding manually)
   * Check SSH works to new environment with ```eb ssh```
-  * Whilst SSH'd - set up NPM fontawesome pro config as ```root``` if required
+  * Whilst SSH'd, check to to see if the font awesome pro config is present by running
+
+  ```
+  npm config ls -l | grep font
+  ```
+    if it isn't, then set as follows
 
   ```
   npm config set "@fortawesome:registry" https://npm.fontawesome.com/ && npm config set "//npm.fontawesome.com/:_authToken" [PUT THE AUTHENTICATION TOKEN IN HERE]
@@ -107,7 +108,14 @@ Leave this for now, we will add the environment variables once the environment h
   * Then deploy actual branch
   * Set up DNS in Route 53
   * Set up cert and get it to create DNS record if you didn't do this already
-  * Wait for it to be validated, then add to load balancer if you didn't do this already
+
+  * Add Listener to Load Balancer -
+      Listener Port 443
+      Listener Protocol HTTPS
+      Instance Port 80
+      Instance Protocol HTTP
+
+    and add certificate once it has been validated
 
 ## For existing database:
 
