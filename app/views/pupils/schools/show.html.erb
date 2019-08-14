@@ -14,35 +14,19 @@
   <div class="row">
     <% @dashboard_alerts.each do |content| %>
       <div class="col-md-12">
-        <%= render 'schools/dashboard_alerts/alert', alert: content.alert, find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
+        <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(content.colour), icon: alert_icon(content.alert, 'fa-3x'), content: content.pupil_dashboard_title, buttons: content.find_out_more ? { 'Find out more' => school_find_out_more_path(@school, content.find_out_more) } : {} %>
       </div>
     <% end %>
   </div>
 <% end %>
 
-<div class="alert text-white bg-success" role="alert">
-  <div class="d-flex">
-    <div class="align-self-center p-2">
-      <%= fa_icon('temperature-high fa-3x') %>
-    </div>
-    <% if @temperature_observations.empty? %>
-      <div class="align-self-center">
-        <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy</h5>
-      </div>
-      <div class="ml-auto p-2">
-        <%= link_to 'Enter temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
-      </div>
-    <% else %>
-      <div class="align-self-center p-2">
-        <h5>Update your classroom temperatures to see if you are saving energy</h5>
-      </div>
-      <div class="ml-auto">
-          <%= link_to 'Previous temperatures', school_temperature_observations_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
-          <%= link_to 'Enter new temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
-      </div>
-    <% end %>
-  </div>
-</div>
+
+<% if @temperature_observations.empty? %>
+  <%= render 'schools/dashboard/bar', colour: 'bg-success', icon: 'temperature-high fa-3x', content: 'Measure classroom temperatures to find out whether you should turn down the heating to save energy', buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school) } %>
+<% else %>
+  <%= render 'schools/dashboard/bar', colour: 'bg-success', icon: 'temperature-high fa-3x', content: 'Update your classroom temperatures to see if you are saving energy', buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Enter new temperatures' => new_school_temperature_observation_path(@school) } %>
+<% end %>
+
 
 <div class="row">
   <div class="col card-deck">

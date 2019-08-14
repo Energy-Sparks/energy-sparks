@@ -1,0 +1,17 @@
+<div class="alert text-white <%= colour %>" role="alert">
+  <div class="d-flex">
+    <div class="p-2 align-self-center">
+      <%= fa_icon(icon + '') %>
+    </div>
+    <div class="p-2 align-self-center">
+      <h5><%= content %></h5>
+    </div>
+    <% if buttons %>
+      <% buttons.each do |title, path| %>
+        <div class="ml-auto p-2">
+          <%= link_to title, path, class: 'btn btn-light btn rounded-pill font-weight-bold', role: 'button' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
