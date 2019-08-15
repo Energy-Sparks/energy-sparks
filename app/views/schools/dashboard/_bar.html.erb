@@ -9,9 +9,7 @@
     </div>
     <% buttons.each do |title, path| %>
       <div class="col-lg-3">
-        <%= link_to path do %>
-          <button class="btn btn-light btn rounded-pill font-weight-bold"><%= sanitize title %></button>
-        <% end %>
+        <%= link_to (sanitize title), path, class: "btn btn-light btn rounded-pill font-weight-bold" %>
       </div>
     <% end %>
   <% else %>
