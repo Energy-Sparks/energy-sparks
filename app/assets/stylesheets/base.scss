@@ -37,7 +37,7 @@ h4,
 h5,
 h6 {
   font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 div.application.container {
@@ -81,7 +81,19 @@ a:active,
 a.active {
   color: $light-blue-links;
   outline: none;
+  font-weight: bold;
 }
+
+.teachers a,
+          a:hover,
+          a:focus,
+          a:active,
+          a.active {
+            color: $dark;
+            text-decoration: underline;
+            outline: none;
+          }
+
 
 .alert div .btn {
   height: 60px;
