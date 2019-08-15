@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_06_122325) do
+ActiveRecord::Schema.define(version: 2019_08_13_152208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "activity_category_id"
-    t.integer "points", default: 0
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
@@ -541,6 +540,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.string "title", null: false
     t.bigint "intervention_type_group_id", null: false
     t.boolean "other", default: false
+    t.integer "points"
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
   end
 
@@ -580,6 +580,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_122325) do
     t.integer "observation_type", null: false
     t.bigint "intervention_type_id"
     t.bigint "activity_id"
+    t.integer "points"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"

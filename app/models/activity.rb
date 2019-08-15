@@ -7,7 +7,6 @@
 #  created_at           :datetime         not null
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
-#  points               :integer          default(0)
 #  school_id            :bigint(8)
 #  title                :string
 #  updated_at           :datetime         not null
@@ -31,6 +30,7 @@ class Activity < ApplicationRecord
   belongs_to :activity_category
 
   has_many   :programme_activities
+  has_many   :observations
 
   validates_presence_of :school, :activity_type, :activity_category, :happened_on
 
@@ -40,5 +40,9 @@ class Activity < ApplicationRecord
 
   def display_name
     activity_type.custom ? title : activity_type.name
+  end
+
+  def points
+    observations.sum(:points)
   end
 end

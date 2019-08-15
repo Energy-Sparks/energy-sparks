@@ -14,8 +14,7 @@ module Schools
     end
 
     def create
-      @observation.observation_type = :intervention
-      if @observation.save
+      if InterventionCreator.new(@observation).process
         redirect_to school_interventions_path(@school)
       else
         render :new
