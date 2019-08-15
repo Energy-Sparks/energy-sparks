@@ -4,12 +4,14 @@
   </div>
 
   <% if buttons %>
-    <div class='<%= "col-lg-#{11 - buttons.size * 2}" %>'>
-      <h5><%= content %></h5>
+    <div class='<%= "col-lg-#{11 - buttons.size * 3}" %>'>
+      <%= content %>
     </div>
     <% buttons.each do |title, path| %>
-      <div class="col-lg-2">
-        <%= link_to title, path, class: "btn btn-light btn rounded-pill font-weight-bold" %>
+      <div class="col-lg-3">
+        <%= link_to path do %>
+          <button class="btn btn-light btn rounded-pill font-weight-bold"><%= sanitize title %></button>
+        <% end %>
       </div>
     <% end %>
   <% else %>

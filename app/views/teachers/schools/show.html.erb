@@ -58,7 +58,7 @@
 <% if @dashboard_alert %>
   <div class="row">
     <div class="col-md-12">
-      <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(@dashboard_alert_content.colour), icon: alert_icon(@dashboard_alert.alert, 'fa-3x'), content: @dashboard_alert_content.teacher_dashboard_title, find_out_more_path: @dashboard_alert_content.find_out_more ? school_find_out_more_path(@school, @dashboard_alert_content.find_out_more) : nil,  buttons: @dashboard_alert_content.find_out_more ? {'Find out more' => school_find_out_more_path(@school, @dashboard_alert_content.find_out_more)} : {} %>
+      <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(@dashboard_alert_content.colour), icon: alert_icon(@dashboard_alert.alert, 'fa-3x'), content: @dashboard_alert_content.teacher_dashboard_title, find_out_more_path: @dashboard_alert_content.find_out_more ? school_find_out_more_path(@school, @dashboard_alert_content.find_out_more) : nil,  buttons: @dashboard_alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, @dashboard_alert_content.find_out_more)} : {} %>
     </div>
   </div>
 <% end %>
