@@ -26,7 +26,6 @@ function commonChartOptions(){
     },
     legend: {
       align: 'center',
-      x: -30,
       margin: 20,
       verticalAlign: 'bottom',
       floating: false,
@@ -95,6 +94,54 @@ function commonChartOptions(){
   };
 }
 
+function teachersChartOptions(pointFormat) {
+  return {
+    legend: {
+      itemStyle: {
+        fontWeight: 'normal'
+      }
+    },
+    plotOptions: {
+      series: {
+        pointWidth: 30, groupPadding: 0.075
+      },
+      column: {
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br>', pointFormat: pointFormat
+        }
+      }
+    },
+    yAxis: {
+      visible: false
+    },
+    xAxis: {
+      lineWidth: 3, lineColor: 'rgb(151,151,151)'
+    },
+    navigation: {
+      buttonOptions: {
+        enabled: false
+      }
+    }
+  }
+}
+
+function teachersColumn(chart_data, chart, seriesData) {
+
+  console.log('Teachers column chart');
+
+  var xAxisCategories = chart_data.x_axis_categories;
+  var yAxisLabel = chart_data.y_axis_label;
+
+  chart.xAxis[0].setCategories(xAxisCategories);
+  chart.update(teachersChartOptions(orderedPointFormat(yAxisLabel)));
+
+  Object.keys(seriesData).forEach(function (key) {
+    // The false parameter stops it being redrawed after every addition of series data
+    chart.addSeries(seriesData[key], false);
+  });
+
+  chart.redraw();
+}
 
 function barColumnLine(d, c, seriesData, chartType, noZoom) {
   var subChartType = d.chart1_subtype;

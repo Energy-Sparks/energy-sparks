@@ -12,7 +12,7 @@ function chartFailure(chart, title) {
   $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="' + $chartWrapper.id + '" class="alert-link">chart</a></div>');
 }
 
-function chartSuccess(chart_data, chart, noAdvice, noZoom) {
+function chartSuccess(chart_data, chart, noAdvice, noZoom, teachersDashboard) {
 
   var $chartDiv = $(chart.renderTo);
   var chartType = chart_data.chart1_type;
@@ -41,7 +41,13 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   }
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
-    barColumnLine(chart_data, chart, seriesData, chartType, noZoom);
+
+    if (teachersDashboard) {
+      teachersColumn(chart_data, chart, seriesData);
+    } else {
+      barColumnLine(chart_data, chart, seriesData, chartType, noZoom);
+    }
+
 
   // Scatter
   } else if (chartType == 'scatter') {
@@ -98,6 +104,7 @@ function processAnalysisCharts(){
       var dataPath = $(this).data('chart-json');
       var noAdvice = $(this).is("[data-no-advice]");
       var noZoom = $(this).is("[data-no-zoom]");
+      var teachersDashboard = $(this).is("[data-teachers-dashboard]");
 
       var requestData = {
         chart_type: chartType,
@@ -111,9 +118,9 @@ function processAnalysisCharts(){
         dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
       }
 
-      console.log(chartType);
-      console.log(dataPath);
-      console.log(requestData);
+      // console.log(chartType);
+      // console.log(dataPath);
+      // console.log(requestData);
       thisChart.showLoading();
 
       $.ajax({
@@ -129,7 +136,7 @@ function processAnalysisCharts(){
           } else if (this_chart_data.series_data == null) {
             chartFailure(this_chart_data.title, thisId);
           } else {
-            chartSuccess(this_chart_data, thisChart, noAdvice, noZoom);
+            chartSuccess(this_chart_data, thisChart, noAdvice, noZoom, teachersDashboard);
           }
         },
         error: function(broken) {

@@ -21,6 +21,13 @@ class ChartDataValues
     'storage heaters' => "#501e74",
   }.freeze
 
+  DARK_ELECTRICITY = '#007EFF'.freeze
+  LIGHT_ELECTRICITY = '#59D0FF'.freeze
+  DARK_GAS = '#FF8438'.freeze
+  LIGHT_GAS = '#FFC73E'.freeze
+
+  X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
+
   def initialize(chart, chart_type)
     if chart
       @chart_type         = chart_type
@@ -54,7 +61,13 @@ class ChartDataValues
     @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
-      column_or_bar
+      if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
+        teachers_column
+      else
+        column_or_bar
+      end
+
+
     elsif @chart1_type == :scatter
       scatter
     elsif @chart1_type == :line
@@ -81,16 +94,34 @@ private
     COLOUR_HASH
   end
 
+  def format_teachers_label(full_label)
+    # Remove leading Energy:
+    date_string = tidy_label(full_label)
+    start_date = Date.parse(date_string)
+    end_date = start_date + 6.days
+
+    "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
+  end
+
+  def teachers_column
+    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
+      colour = if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
+                 index == 0 ? DARK_GAS : LIGHT_GAS
+               else
+                 index == 0 ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
+               end
+
+      # Override Monday, Tuesday etc
+      @x_axis_categories = X_AXIS_CATEGORIES
+
+      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+    end
+  end
+
   def column_or_bar
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
       colour = colour_hash[data_type]
-
-      if Schools::Configuration.gas_dashboard_chart_types.key?(@chart[:config_name].to_s)
-        colour = index == 0 ? '#FF8438' : '#FFC73E'
-        # else
-        #   index == 0 ? '#007EFF' : '#59D0FF'
-      end
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
