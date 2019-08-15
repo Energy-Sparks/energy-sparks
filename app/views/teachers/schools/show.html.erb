@@ -30,19 +30,11 @@
 </div>
 
 <% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
-  <div class="row">
-    <div class="col-md-12">
-      <%= render 'schools/dashboard/bar', colour: 'bg-neutral', content: "Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.", icon: 'exclamation-circle fa-3x', buttons: { 'Add alert contacts' => school_contacts_path(@school)} %>
-    </div>
-  </div>
+  <%= render 'schools/dashboard/bar', colour: 'bg-neutral', content: "Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.", icon: 'exclamation-circle fa-3x', buttons: { 'Add alert contacts' => school_contacts_path(@school)} %>
 <% end %>
 
 <% if @dashboard_alert %>
-  <div class="row">
-    <div class="col-md-12">
-      <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(@dashboard_alert_content.colour), icon: alert_icon(@dashboard_alert.alert, 'fa-3x'), content: @dashboard_alert_content.teacher_dashboard_title, find_out_more_path: @dashboard_alert_content.find_out_more ? school_find_out_more_path(@school, @dashboard_alert_content.find_out_more) : nil,  buttons: @dashboard_alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, @dashboard_alert_content.find_out_more)} : {} %>
-    </div>
-  </div>
+  <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(@dashboard_alert_content.colour), icon: alert_icon(@dashboard_alert.alert, 'fa-3x'), content: @dashboard_alert_content.teacher_dashboard_title, find_out_more_path: @dashboard_alert_content.find_out_more ? school_find_out_more_path(@school, @dashboard_alert_content.find_out_more) : nil,  buttons: @dashboard_alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, @dashboard_alert_content.find_out_more)} : {} %>
 <% end %>
 
 
