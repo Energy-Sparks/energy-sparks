@@ -20,6 +20,8 @@ $new-yellow: #FFE5B8;
 $new-red: #FF3A5B;
 $dark: #222222;
 
+$new-light-blue: #97E6FC;
+
 $text: $dark;
 
 $electricDark: #007EFF;
@@ -31,6 +33,8 @@ $gasLight: #FFC73E;
 $bg-positive: #50E3C2;
 $bg-neutral: #97E6FC;
 $bg-negative: #FF3A5B;
+
+$grey: #C4CCD4;
 
 .bg-positive {
   background-image: linear-gradient(to right, $bg-positive 0%, #A1FFE9 100%);

@@ -71,7 +71,6 @@
   <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
 
     <div class="card mb-2 programme">
-
       <div class="card-body">
         <%= link_to school_programme_types_path(@school, @suggested_programme) do %>
           <h4 class="card-title"><%= @suggested_programme.title %></h4>
@@ -80,10 +79,9 @@
           </p>
         <% end %>
       </div>
-      <div class="card-footer text-right">
+      <div class="card-footer">
         <span class="bg-positive btn rounded-pill"><strong><%= sanitize pluralize(@suggested_programme.activity_types.count, '<span class="small">ACTIVITY</span>', '<span class="small">ACTIVITIES</span>') %></strong></span>
       </div>
-
     </div>
 
   <% else %>
