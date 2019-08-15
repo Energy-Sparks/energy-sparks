@@ -83,7 +83,12 @@ a.active {
   outline: none;
 }
 
-.alert div .btn {
+.info-bar {
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.info-bar div .btn {
   height: 60px;
   width: 260px;
   line-height: 2.1;
@@ -91,15 +96,15 @@ a.active {
   font-size: 20px;
 }
 
-.alert.bg-neutral div .btn {
+.info-bar.bg-neutral div .btn {
   border-color: $bg-neutral;
 }
 
-.alert.bg-positive div .btn {
+.info-bar.bg-positive div .btn {
   border-color: $bg-positive;
 }
 
-.alert.bg-negative div .btn {
+.info-bar.bg-negative div .btn {
   border-color: $bg-negative;
 }
 
