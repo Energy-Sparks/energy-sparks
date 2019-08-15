@@ -1,4 +1,4 @@
-<table class="table table-borderless">
+<table class="table table-borderless timeline">
   <% observations.group_by{|observation| [observation.at.strftime("%Y"), observation.at.strftime("%B")]}.each do |(year, month), grouped_observations|%>
     <thead>
       <tr>
