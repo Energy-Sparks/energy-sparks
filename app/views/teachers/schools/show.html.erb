@@ -34,9 +34,11 @@
 <% end %>
 
 <% if @dashboard_alert %>
-  <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(@dashboard_alert_content.colour), icon: alert_icon(@dashboard_alert.alert, 'fa-3x'), content: @dashboard_alert_content.teacher_dashboard_title, find_out_more_path: @dashboard_alert_content.find_out_more ? school_find_out_more_path(@school, @dashboard_alert_content.find_out_more) : nil,  buttons: @dashboard_alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, @dashboard_alert_content.find_out_more)} : {} %>
+  <div class="act-on-energy-usage">
+    <h3>Act on energy usage</h3>
+    <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(@dashboard_alert_content.colour), icon: alert_icon(@dashboard_alert.alert, 'fa-3x'), content: @dashboard_alert_content.teacher_dashboard_title, find_out_more_path: @dashboard_alert_content.find_out_more ? school_find_out_more_path(@school, @dashboard_alert_content.find_out_more) : nil,  buttons: @dashboard_alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, @dashboard_alert_content.find_out_more)} : {} %>
+  </div>
 <% end %>
-
 
 <% if @activities_count < 1 %>
   <h2>You’ve not completed any activities yet</h2>
