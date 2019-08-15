@@ -95,9 +95,9 @@
 </div>
 
 <% if can?(:manage, Activity) || can?(:create, Observation) || can?(:start_programme, @school) %>
-  <div class="card-deck">
+  <div class="card-deck actions">
     <% if can?(:manage, Activity) %>
-      <div class="card mb-2">
+      <div class="card mb-2 text-center">
         <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>

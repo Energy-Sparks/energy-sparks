@@ -126,6 +126,15 @@ a.active {
   }
 }
 
+.card-deck.actions {
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  .card {
+    border: 0;
+  }
+}
+
 .act-on-energy-usage {
   padding-top: 20px;
   padding-bottom: 100px;
