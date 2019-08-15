@@ -99,6 +99,25 @@ a.active {
 //   background-image: linear-gradient(0deg, #FCFFFF, #E7EDF0);
 // }
 
+.card-deck.teachers-dashboard {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $dark;
+    outline: none;
+  }
+  .card-footer {
+    background-color: white;
+    border-top: 0;
+  }
+
+  .card.programme {
+    border: 2px solid $bg-positive;
+  }
+}
+
 .act-on-energy-usage {
   padding-top: 20px;
   padding-bottom: 100px;

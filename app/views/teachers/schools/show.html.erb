@@ -41,65 +41,78 @@
 <% end %>
 
 <% if @activities_count < 1 %>
-  <h2>You’ve not completed any activities yet</h2>
+  <h2 class="p-2">You’ve not completed any activities yet</h2>
 <% else %>
-  <h2>You’ve completed <%= pluralize(@activities_count, 'learning activity')%></h2>
+  <h2 class="p-2">You’ve completed <%= pluralize(@activities_count, 'learning activity')%></h2>
 <% end %>
-<h4>Try these next...</h4>
-<div class="row">
-  <div class="card-deck">
-    <% @activities_from_activity_history.each do |activity_type| %>
-      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
-    <% end %>
-    <% @activities_from_alerts.each do |activity_type| %>
-      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
-    <% end %>
-    <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
-      <div class="card activity-card mb-2">
-        <div class="card-header">
-          <h5>Or, start a programme...</h5>
-          <p><span class="badge badge-success"><%= pluralize(@suggested_programme.activity_types.count, 'activity') %></span>
-        </div>
-        <div class="card-body">
+
+<div class="card-deck">
+  <div class="card border-0">
+    <h3 class="p-2">Try these next&hellip;</h3>
+  </div>
+  <div class="card border-0">
+  </div>
+    <div class="card border-0">
+      <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+        <h3 class="p-2">Or, start a programme&hellip;</h3>
+      <% end %>
+  </div>
+</div>
+
+<div class="card-deck teachers-dashboard">
+  <% @activities_from_activity_history.each do |activity_type| %>
+    <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
+  <% end %>
+
+  <% @activities_from_alerts.each do |activity_type| %>
+    <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
+  <% end %>
+
+  <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+
+    <div class="card mb-2 programme">
+
+      <div class="card-body">
+        <%= link_to school_programme_types_path(@school, @suggested_programme) do %>
           <h4 class="card-title"><%= @suggested_programme.title %></h4>
           <p class="card-text">
             <%= @suggested_programme.short_description %>
           </p>
-        </div>
-        <div class="card-footer text-right">
-          <%= link_to 'More about this programme', school_programme_types_path(@school, @suggested_programme), class: 'btn btn-primary' %>
-        </div>
+        <% end %>
       </div>
-    <% else %>
-      <% @activities_from_programmes.each do |activity_type| %>
-        <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your programmes' %>
-      <% end %>
+      <div class="card-footer text-right">
+        <span class="bg-positive btn rounded-pill"><strong><%= sanitize pluralize(@suggested_programme.activity_types.count, '<span class="small">ACTIVITY</span>', '<span class="small">ACTIVITIES</span>') %></strong></span>
+      </div>
+
+    </div>
+
+  <% else %>
+
+    <% @activities_from_programmes.each do |activity_type| %>
+      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your programmes' %>
     <% end %>
-  </div>
+
+  <% end %>
+
 </div>
 
-
 <% if can?(:manage, Activity) || can?(:create, Observation) || can?(:start_programme, @school) %>
-  <div class="row mt-3 mb-3">
-    <div class="col">
-      <ul class="nav nav-pills nav-fill mr-3 ml-3 mt-2">
-        <% if can?(:manage, Activity) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-        <% if can?(:create, Observation) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-        <% if can?(:start_programme, @school) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Choose another programme', school_programme_types_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+  <div class="card-deck">
+    <% if can?(:manage, Activity) %>
+      <div class="card mb-2">
+        <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:create, Observation) %>
+      <div class="card mb-2">
+        <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:start_programme, @school) %>
+      <div class="card mb-2">
+        <%= link_to 'Choose another programme', school_programme_types_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
   </div>
 <% end %>
 
