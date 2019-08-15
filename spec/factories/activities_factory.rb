@@ -6,6 +6,7 @@ FactoryBot.define do
     title             { 'test activity title' }
     description       { 'test activity description' }
     happened_on       { Date.today - 1.days }
-    points            { activity_type.score }
+
+    to_create { |instance| ActivityCreator.new(instance).process }
   end
 end
