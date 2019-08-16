@@ -30,7 +30,7 @@ EXAMPLE_CONFIG =  {:title=>"Comparison of last 2 weeks gas consumption - adjuste
      :chart1_type=>:column,
      :chart1_subtype=>nil,
      :y_axis_label=>"£",
-     :config_name=>:teachers_landing_page_gas}
+     :config_name=>:teachers_landing_page_gas,
      :configuration=>
       {:name=>"Comparison of last 2 weeks gas consumption - adjusted for outside temperature",
        :chart1_type=>:column,
