@@ -1,21 +1,17 @@
 footer {
   color: white;
   text-align: left;
-
-//  &.footer-position{
-//    position: absolute;
-//    bottom: 0;
-//   left:0;
-//    right:0;
-//  }
 }
+
 footer h3 {
   margin-bottom: 30px;
 }
+
 footer .footer-above {
   padding-top: 30px;
   background-color: $dark-blue;
 }
+
 footer .footer-below {
   padding: 5px 0;
   background-color: $dark-blue;
@@ -32,6 +28,7 @@ footer p {
   transition: all 0.3s ease-in-out;
   margin-top: 10px;
 }
+
 .btn-outline:hover,
 .btn-outline:focus,
 .btn-outline:active,
@@ -50,6 +47,7 @@ footer p {
   text-align: center;
   line-height: 45px;
 }
+
 .btn:focus,
 .btn:active,
 .btn.active {

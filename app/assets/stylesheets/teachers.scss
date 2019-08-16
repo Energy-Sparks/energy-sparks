@@ -6,25 +6,7 @@ div.teachers {
   }
 }
 
-.teachers a,
-          a:hover,
-          a:focus,
-          a:active,
-          a.active {
-            color: $dark;
-            text-decoration: underline;
-            outline: none;
-          }
-
 .card-deck.teachers-dashboard {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
-    outline: none;
-  }
   .card-footer, .card-header {
     background-color: white;
     border-top: 0;
@@ -55,18 +37,6 @@ div.teachers {
     border-bottom: 0;
     border-top: 0;
   }
-
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
-    text-decoration: underline;
-    outline: none;
-    font-weight: normal;
-  }
-
 }
 
 .card-deck.actions {

@@ -64,16 +64,6 @@ nav li {
   font-size: 14px;
 }
 
-a,
-a:hover,
-a:focus,
-a:active,
-a.active {
-  color: $light-blue-links;
-  outline: none;
-  font-weight: bold;
-}
-
 .bg-positive {
   background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
 }

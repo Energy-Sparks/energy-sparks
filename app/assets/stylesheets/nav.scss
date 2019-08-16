@@ -2,6 +2,10 @@
 .navbar {
   /* border-radius: 0.25rem; */
   border-radius: 0;
+
+  .dropdown-item:hover {
+    color: $dark;
+  }
 }
 
 .navbar-custom {
@@ -40,24 +44,9 @@
   padding: 0.4em;
 }
 
-.sub-navbar h4 a,
-.sub-navbar h4 a:hover,
-.sub-navbar h4 a:focus,
-.sub-navbar h4 a:active {
-  color: white;
-  vertical-align: middle;
-}
-
 .sub-navbar h3,
 .sub-navbar h4 {
   margin: 0px;
-}
-
-.sub-navbar li.nav-item a,
-.sub-navbar li.nav-item a:hover,
-.sub-navbar li.nav-item a:focus,
-.sub-navbar li.nav-item a:active {
-    color: black;
 }
 
 .sub-navbar a.btn {
@@ -75,29 +64,6 @@
     margin-top: 60px;
 }
 
-.navbar-custom .navbar-nav li a {
-  color: white;
-}
-
-.navbar-custom .navbar-nav li a:hover {
-  color: $light-blue;
-  outline: none;
-}
-.navbar-custom .navbar-nav li a:focus,
-.navbar-custom .navbar-nav li a:active {
-  color: white;
-}
-.navbar-custom .navbar-nav li.active a {
-  color: white;
-  background: $light-blue;
-}
-
-.navbar-custom .navbar-nav li.active a:hover,
-.navbar-custom .navbar-nav li.active a:focus,
-.navbar-custom .navbar-nav li.active a:active {
-  color: white;
-  background: $light-blue;
-}
 .navbar-custom .navbar-toggle {
   color: white;
   font-size: 10px;
