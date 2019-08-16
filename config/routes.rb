@@ -97,6 +97,7 @@ Rails.application.routes.draw do
       get :solar_pv, to: 'analysis#solar_pv'
       get :carbon_emissions, to: 'analysis#carbon_emissions'
       get :test, to: 'analysis#test'
+      get :cost, to: 'analysis#cost'
       get :timeline, to: 'timeline#show'
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'

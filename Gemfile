@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.6.3'
 
 # Rails/Core
-gem 'rails', '~> 6.0.0.rc1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.0.rc2' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -23,7 +23,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.50.0'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.50.1'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined

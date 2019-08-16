@@ -2,6 +2,11 @@ Highcharts.setOptions({
   lang: {
     numericSymbols: null,  //otherwise by default ['k', 'M', 'G', 'T', 'P', 'E']
     thousandsSep: ','
+  },
+  chart: {
+    style: {
+      fontFamily: 'Quicksand'
+    }
   }
 });
 
