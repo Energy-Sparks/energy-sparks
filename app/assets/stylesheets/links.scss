@@ -27,6 +27,18 @@ a.nav-link.active {
   outline: none;
 }
 
+a.btn,
+a.btn:hover,
+a.btn:focus,
+a.btn:active,
+a.btn.active {
+  color: $dark;
+  background-image: linear-gradient($white, $light-grey);
+  border-color: $grey;
+  font-weight: 700 !important;
+  border-radius: 50rem !important;
+}
+
 .navbar {
   a,
   a:hover,
