@@ -18,6 +18,10 @@ FactoryBot.define do
       name { "test school"}
     end
 
+    trait :with_calendar_area  do
+      calendar_area  { create(:calendar_area, :child) }
+    end
+
     trait :with_school_group do
       after(:create) do |school, evaluator|
         school.update(school_group: create(:school_group))
