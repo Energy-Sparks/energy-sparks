@@ -22,6 +22,8 @@
 class Scoreboard < ApplicationRecord
   extend FriendlyId
 
+  FIRST_YEAR = 2018
+
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :school_groups
@@ -39,14 +41,27 @@ class Scoreboard < ApplicationRecord
     name_changed? || super
   end
 
-  def scored_schools(recent_boundary: 1.month.ago)
-    schools.active.select('schools.*, SUM(observations.points) AS sum_points').select(
+  def active_academic_years(today: Time.zone.today)
+    calendar_area.academic_years.where("date_part('year', start_date) >= ? AND start_date <= ?", FIRST_YEAR, today).order(:start_date)
+  end
+
+  def scored_schools(recent_boundary: 1.month.ago, academic_year: nil)
+    scored = schools.active.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
       self.class.sanitize_sql_array(
         ['SUM(observations.points) FILTER (WHERE observations.at > ?) AS recent_points', recent_boundary]
       )
-    ).joins('LEFT JOIN observations ON observations.school_id = schools.id').
+    ).
       order(Arel.sql('sum_points DESC NULLS LAST, MAX(observations.at) DESC, schools.name ASC')).
       group('schools.id')
+    if academic_year
+      scored.joins(
+        self.class.sanitize_sql_array(
+          ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
+        )
+      )
+    else
+      scored.left_outer_joins(:observations)
+    end
   end
 
   def position(school)

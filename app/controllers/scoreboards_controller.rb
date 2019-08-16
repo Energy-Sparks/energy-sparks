@@ -8,7 +8,13 @@ class ScoreboardsController < ApplicationController
   end
 
   def show
-    @schools = @scoreboard.scored_schools
+    @academic_year = if params[:academic_year]
+                       @scoreboard.calendar_area.academic_years.find(params[:academic_year])
+                     else
+                       @scoreboard.calendar_area.academic_year_for(Time.zone.today)
+                     end
+    @active_academic_years = @scoreboard.active_academic_years
+    @schools = @scoreboard.scored_schools(academic_year: @academic_year)
   end
 
   # GET /scoreboards/new
