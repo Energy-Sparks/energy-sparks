@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @calendar_areas = @calendar_areas.where.not(parent_id: nil).order(:title)
+      @calendar_areas = @calendar_areas.where(parent_id: nil).order(:title)
     end
 
     def new
@@ -33,7 +33,7 @@ module Admin
   private
 
     def calendar_area_params
-      params.require(:calendar_area).permit(:title, :description)
+      params.require(:calendar_area).permit(:title, :description, :parent_id)
     end
   end
 end

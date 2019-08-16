@@ -6,6 +6,7 @@ class MoveCalendarAreaToOwnTable < ActiveRecord::Migration[6.0]
       t.bigint :parent_id
     end
     connection.execute "INSERT INTO calendar_areas (id, title, parent_id) SELECT id, title, parent_area_id FROM areas WHERE type = 'CalendarArea'"
+    connection.execute "SELECT setval('calendar_areas_id_seq', COALESCE((SELECT MAX(id)+1 FROM calendar_areas), 1), false);"
 
     remove_foreign_key :school_groups, :areas, column: :default_calendar_area_id
     add_foreign_key :school_groups, :calendar_areas, column: :default_calendar_area_id, on_delete: :nullify

@@ -30,11 +30,13 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       expect(page).to have_content("can't be blank")
 
       fill_in 'Title', with: 'Oxfordshire'
+      select 'England and Wales', from: 'Parent'
       fill_in 'Terms CSV', with: events
       click_on 'Create Calendar area'
 
       calendar_area = CalendarArea.where(title: 'Oxfordshire').first!
       expect(calendar_area.calendars.first.calendar_events.terms.count).to eq(1)
+      expect(calendar_area.parent_area).to eq(england_and_wales)
     end
 
     it 'can edit a calendar area' do

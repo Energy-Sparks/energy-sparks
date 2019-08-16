@@ -13,4 +13,9 @@ describe AcademicYearFactory, :academic_years, type: :service do
   it 'validates input' do
     expect{ service = AcademicYearFactory.new(calendar_area).create(start_year: 2018, end_year: 2012) }.to raise_error(ArgumentError)
   end
+
+  it 'allows setting of start and end month' do
+    service = AcademicYearFactory.new(calendar_area, start_date: '01-08', end_date: '31-07' ).create(start_year: 2012, end_year: 2012)
+    expect(AcademicYear.first.start_date.month).to eq(8)
+  end
 end
