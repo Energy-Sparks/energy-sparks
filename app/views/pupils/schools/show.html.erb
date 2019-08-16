@@ -12,14 +12,29 @@
 
 <% if @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
-    <%= render 'schools/dashboard/bar', colour: class_for_alert_colour(content.colour), icon: alert_icon(content.alert, 'fa-3x'), content: content.pupil_dashboard_title, buttons: content.find_out_more ? { 'Find out more&hellip;' => school_find_out_more_path(@school, content.find_out_more) } : {} %>
+    <%= render 'schools/dashboard/info_bar',
+          colour: class_for_alert_colour(content.colour),
+          icon: alert_icon(content.alert, 'fa-3x'),
+          content: content.pupil_dashboard_title,
+          buttons: content.find_out_more ? { 'Find out more&hellip;' => school_find_out_more_path(@school, content.find_out_more) } : {}
+    %>
    <% end %>
 <% end %>
 
 <% if @temperature_observations.empty? %>
-  <%= render 'schools/dashboard/bar', colour: 'bg-positive', icon: 'temperature-high fa-3x', content: 'Measure classroom temperatures to find out whether you should turn down the heating to save energy', buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school) } %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-positive',
+        icon: 'temperature-high fa-3x',
+        content: 'Measure classroom temperatures to find out whether you should turn down the heating to save energy',
+        buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school) }
+  %>
 <% else %>
-  <%= render 'schools/dashboard/bar', colour: 'bg-positive', icon: 'temperature-high fa-3x', content: 'Update your classroom temperatures to see if you are saving energy', buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Update temperatures' => new_school_temperature_observation_path(@school) } %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-positive',
+        icon: 'temperature-high fa-3x',
+        content: 'Update your classroom temperatures to see if you are saving energy',
+        buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Update temperatures' => new_school_temperature_observation_path(@school) }
+  %>
 <% end %>
 
 <div class="row">
