@@ -1,15 +1,6 @@
 <%= content_for :page_title, @school.name %>
 
-<% if @school.active? %>
-  <% if can? :deactivate, @school %>
-    <div class="alert alert-warning">
-      <%= @school.name %> is currently <strong>ACTIVE</strong>.
-      <% if can? :deactivate, @school %>
-        <%= link_to "Deactivate school", school_deactivation_path(@school), method: :post, class: 'btn btn-danger ml-3' %>
-      <% end %>
-    </div>
-  <% end %>
-<% else %>
+<% if ! @school.active? %>
   <div class="alert alert-warning">
     <%= @school.name %> is currently <strong>INACTIVE</strong> and won't be accessible to non-admin users.
     <% if can? :activate, @school %>

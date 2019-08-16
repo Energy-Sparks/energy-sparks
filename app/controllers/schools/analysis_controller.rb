@@ -62,6 +62,10 @@ class Schools::AnalysisController < ApplicationController
     render_generic_chart_template
   end
 
+  def cost
+    render_generic_chart_template
+  end
+
 private
 
   def build_aggregate_school
@@ -71,7 +75,7 @@ private
 
   def set_nav
     @nav_array = pages.map do |page, config|
-      { name: config[:name], path: "#{page}_path" }
+      { name: config[:name], page: page }
     end
   end
 

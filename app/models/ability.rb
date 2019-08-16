@@ -4,8 +4,15 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
     alias_action :create, :read, :update, :destroy, to: :crud
+
+    can :analyse, :all
+    cannot :analyse, :test
+    cannot :analyse, :heating_model_fitting
+
     if user.admin?
       can :manage, :all
+      can :analyse, :test
+      can :analyse, :heating_model_fitting
     elsif user.school_admin?
       can :manage, Activity, school_id: user.school_id
       can :crud, Calendar, id: user.school.try(:calendar_id)
@@ -47,6 +54,7 @@ class Ability
       can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
     elsif user.guest?
+      cannot :analyse, :cost
       can :read, Activity, school: { active: true }
       can :read, ActivityCategory
       can :show, ActivityType
@@ -60,6 +68,7 @@ class Ability
       can :read, Programme, school_id: user.school_id
       can :read, ProgrammeType
     elsif user.school_onboarding?
+      cannot :analyse, :cost
       can :manage, SchoolOnboarding do |onboarding|
         onboarding.created_user == user
       end
