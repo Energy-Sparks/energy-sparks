@@ -204,24 +204,12 @@ class School < ApplicationRecord
     actual_readings == expected_readings_for_a_week
   end
 
-  def points
-    observations.sum(:points)
-  end
-
-  def points_since(since = 1.month.ago)
-    observations.where('created_at > ?', since).sum(:points)
-  end
-
   def school_admin
     users.where(role: :school_admin)
   end
 
   def scoreboard
     school_group.scoreboard if school_group
-  end
-
-  def scoreboard_position
-    scoreboard.position(self) + 1
   end
 
   def latest_content

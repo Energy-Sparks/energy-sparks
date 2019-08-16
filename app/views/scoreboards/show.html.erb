@@ -32,7 +32,7 @@
                 <h2>
                   <%= link_to school.sum_points, school_timeline_path(school), class: 'badge badge-success' %>
                   &nbsp;
-                  <% if school.points_since > 0 %>
+                  <% if school.recent_points && school.recent_points > 0 %>
                     <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
                   <% end %>
                 </h2>

@@ -31,13 +31,15 @@ FactoryBot.define do
     end
 
     trait :with_points do
+
       transient do
         score_points { 1 }
+        activities_happened_on { 1.month.ago }
       end
 
       after(:create) do |school, evaluator|
         activity_type = create(:activity_type, score: evaluator.score_points)
-        create(:activity, school: school, activity_type: activity_type)
+        create(:activity, school: school, activity_type: activity_type, happened_on: evaluator.activities_happened_on)
       end
     end
   end
