@@ -1,12 +1,43 @@
 body {
-  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
-  font-size: 14px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
   margin-top: 30px;
+  overflow-x: hidden;
 }
 
 body.sub-nav {
   margin-top: 110px;
+}
+
+h1 {
+  font-size: 37.3px;
+}
+
+h2 {
+  font-size: 31.1px;
+}
+
+h3 {
+  font-size: 25.9px;
+}
+
+h4 {
+  font-size: 21.6px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
 }
 
 div.application.container {
@@ -27,13 +58,12 @@ address {
   font-size: initial;
 }
 
-// FIXME why do we apply this to some elements but not others?
-label, p, dl, li, .form-group{
-  font-size: 20px;
-}
-
 p.small {
   font-size: 16px;
+}
+
+span.very-small {
+  font-size: 12px;
 }
 
 footer li {
@@ -54,15 +84,7 @@ a.active {
 }
 
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
-}
+
 
 div.h5.explore {
   margin-bottom: 0.25rem;
@@ -137,30 +159,12 @@ div.bio {
   border: none;
 }
 
-div.activity {
-  div {
-    font-size: 20px
-  }
-}
-
-div.activity_type {
-  div {
-    font-size: 20px
-  }
-}
-
 div.hide {
   display: none;
 }
 
 table th.actions {
   width: 20%;
-}
-
-table.activities {
-  td {
-    font-size: 18px;
-  }
 }
 
 div.meter-attributes {

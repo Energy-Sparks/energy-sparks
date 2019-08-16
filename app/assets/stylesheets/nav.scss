@@ -6,8 +6,8 @@
 
 .navbar-custom {
   background: $dark-blue;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  font-weight: 500;
   border: none;
 }
 .navbar-custom a:focus {
@@ -111,7 +111,7 @@
 }
 @media (min-width: 768px) {
   .navbar-custom .navbar-brand {
-    font-size: 2em;
+    font-size: 25.9px;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;

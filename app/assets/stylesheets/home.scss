@@ -15,26 +15,11 @@ header img {
   display: block;
   margin: 0 auto 20px;
 }
-header .intro-text .name {
-  display: block;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  font-size: 2em;
-}
-header .intro-text .intro {
-  font-size: 1.25em;
-  font-weight: 300;
-}
+
 @media (min-width: 768px) {
   header .container {
     padding-top: 50px;
     padding-bottom: 50px;
-  }
-  header .intro-text .name {
-    font-size: 4.75em;
-  }
-  header .intro-text .intro {
-    font-size: 1.75em;
   }
 }
 
