@@ -91,11 +91,6 @@ RSpec.describe ActivitiesController, type: :controller do
         expect(assigns(:activity)).to be_a_new(Activity)
       end
 
-      it 'does not add points to the school' do
-        school.reload
-        expect( school.points ).to eql(0)
-      end
-
       it "re-renders the 'new' template" do
         expect(response).to render_template("new")
       end
@@ -117,11 +112,6 @@ RSpec.describe ActivitiesController, type: :controller do
 
       it "redirects to the activity" do
         expect(response).to redirect_to(school_activity_path(school, Activity.last))
-      end
-
-      it 'adds correct points to the school' do
-        school.reload
-        expect(school.points).to eql(activity_type.score)
       end
 
     end
