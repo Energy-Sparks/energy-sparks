@@ -205,11 +205,11 @@ class School < ApplicationRecord
   end
 
   def points
-    activities.sum(:points)
+    observations.sum(:points)
   end
 
   def points_since(since = 1.month.ago)
-    activities.where('created_at > ?', since).sum(:points)
+    observations.where('created_at > ?', since).sum(:points)
   end
 
   def school_admin

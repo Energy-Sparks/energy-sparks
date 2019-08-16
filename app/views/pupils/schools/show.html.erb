@@ -81,14 +81,14 @@
     </div>
     <% if @temperature_observations.empty? %>
       <div class="align-self-center">
-        <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy</h5>
+        <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy and earn 5 points</h5>
       </div>
       <div class="ml-auto p-2">
         <%= link_to 'Enter temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
       </div>
     <% else %>
       <div class="align-self-center p-2">
-        <h5>Update your classroom temperatures to see if you are saving energy</h5>
+        <h5>Update your classroom temperatures to see if you are saving energy and earn 5 points</h5>
       </div>
       <div class="ml-auto">
           <%= link_to 'Previous temperatures', school_temperature_observations_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
