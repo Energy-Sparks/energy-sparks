@@ -2,12 +2,21 @@
 #
 # Table name: scoreboards
 #
-#  created_at  :datetime         not null
-#  description :string
-#  id          :bigint(8)        not null, primary key
-#  name        :string           not null
-#  slug        :string           not null
-#  updated_at  :datetime         not null
+#  calendar_area_id :bigint(8)
+#  created_at       :datetime         not null
+#  description      :string
+#  id               :bigint(8)        not null, primary key
+#  name             :string           not null
+#  slug             :string           not null
+#  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_scoreboards_on_calendar_area_id  (calendar_area_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #
 
 class Scoreboard < ApplicationRecord
@@ -17,8 +26,9 @@ class Scoreboard < ApplicationRecord
 
   has_many :school_groups
   has_many :schools, through: :school_groups
+  belongs_to :calendar_area
 
-  validates :name, presence: true
+  validates :name, :calendar_area_id, presence: true
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Scoreboard has associated groups' if school_groups.any?

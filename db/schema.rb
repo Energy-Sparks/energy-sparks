@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_143721) do
+ActiveRecord::Schema.define(version: 2019_08_16_090526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -725,6 +725,8 @@ ActiveRecord::Schema.define(version: 2019_08_14_143721) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "calendar_area_id"
+    t.index ["calendar_area_id"], name: "index_scoreboards_on_calendar_area_id"
   end
 
   create_table "simulations", force: :cascade do |t|
@@ -887,6 +889,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_143721) do
   add_foreign_key "schools", "calendar_areas", on_delete: :restrict
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
+  add_foreign_key "scoreboards", "calendar_areas", on_delete: :restrict
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade

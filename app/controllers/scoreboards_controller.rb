@@ -34,6 +34,7 @@ class ScoreboardsController < ApplicationController
     if @scoreboard.update(scoreboard_params)
       redirect_to scoreboards_path, notice: 'Scoreboard was successfully updated.'
     else
+      @school_groups = @scoreboard.school_groups.order(:name)
       render :edit
     end
   end
@@ -49,6 +50,6 @@ class ScoreboardsController < ApplicationController
 private
 
   def scoreboard_params
-    params.require(:scoreboard).permit(:name, :description)
+    params.require(:scoreboard).permit(:name, :description, :calendar_area_id)
   end
 end
