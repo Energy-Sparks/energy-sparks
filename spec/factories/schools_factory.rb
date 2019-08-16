@@ -9,6 +9,7 @@ FactoryBot.define do
     postcode        { 'ab1 2cd' }
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
+    calendar_area   { create(:calendar_area, :child) }
 
     after(:build) do |school, _evaluator|
       build(:configuration, school: school)
@@ -16,10 +17,6 @@ FactoryBot.define do
 
     factory :school_with_same_name do
       name { "test school"}
-    end
-
-    trait :with_calendar_area  do
-      calendar_area  { create(:calendar_area, :child) }
     end
 
     trait :with_school_group do

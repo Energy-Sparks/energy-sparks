@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "teachers school view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
-  let!(:school)     { create(:school, :with_calendar_area, name: school_name, weather_underground_area: create(:weather_underground_area), solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
+  let!(:school)     { create(:school, name: school_name, weather_underground_area: create(:weather_underground_area), solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
   let!(:user)       { create(:user, role: :school_admin, school: school)}
 
   describe 'when logged in as teacher' do
