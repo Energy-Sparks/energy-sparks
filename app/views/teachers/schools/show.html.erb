@@ -83,7 +83,13 @@
         <% end %>
       </div>
       <div class="card-footer">
-        <span class="bg-positive btn rounded-pill"><strong><%= sanitize pluralize(@suggested_programme.activity_types.count, '<span class="small">ACTIVITY</span>', '<span class="small">ACTIVITIES</span>') %></strong></span>
+        <span class="bg-positive btn rounded-pill">
+          <strong><%= @suggested_programme.activity_types.count %>
+            <span class="small text-uppercase">
+              <%= 'activity'.pluralize(@suggested_programme.activity_types.count) %>
+            </span>
+          </strong>
+        </span>
       </div>
     </div>
 

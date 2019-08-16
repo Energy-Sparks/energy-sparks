@@ -12,7 +12,7 @@ function chartFailure(chart, title) {
   $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="' + $chartWrapper.id + '" class="alert-link">chart</a></div>');
 }
 
-function chartSuccess(chart_data, chart, noAdvice, noZoom, teachersDashboard) {
+function chartSuccess(chart_data, chart, noAdvice, noZoom) {
 
   var $chartDiv = $(chart.renderTo);
   var chartType = chart_data.chart1_type;
@@ -42,12 +42,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom, teachersDashboard) {
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
 
-    if (teachersDashboard) {
-      teachersColumn(chart_data, chart, seriesData);
-    } else {
-      barColumnLine(chart_data, chart, seriesData, chartType, noZoom);
-    }
-
+    barColumnLine(chart_data, chart, seriesData, chartType, noZoom);
 
   // Scatter
   } else if (chartType == 'scatter') {
@@ -93,6 +88,21 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom, teachersDashboard) {
 
   chart.hideLoading();
 }
+
+function teachersChartSuccess(chart_data, chart) {
+  var $chartDiv = $(chart.renderTo);
+  var chartType = chart_data.chart1_type;
+  var seriesData = chart_data.series_data;
+  teachersColumn(chart_data, chart, seriesData);
+
+  $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
+
+  // Activate any popovers
+  $('[data-toggle="popover"]').popover();
+
+  chart.hideLoading();
+}
+
 function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
@@ -112,15 +122,11 @@ function processAnalysisCharts(){
         mpan_mprn: mpanMprn
       };
 
-
       if (dataPath === undefined) {
         var currentPath = window.location.href;
         dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
       }
 
-      console.log(chartType);
-      console.log(dataPath);
-      console.log(requestData);
       thisChart.showLoading();
 
       $.ajax({
@@ -130,13 +136,17 @@ function processAnalysisCharts(){
         url: dataPath,
         data: requestData,
         success: function (returnedData) {
-          var this_chart_data = returnedData.charts[0];
-          if (this_chart_data == undefined) {
+          var thisChartData = returnedData.charts[0];
+          if (thisChartData == undefined) {
             chartFailure(thisChart, "We do not have enough data at the moment to display this ");
-          } else if (this_chart_data.series_data == null) {
-            chartFailure(this_chart_data.title, thisId);
+          } else if (thisChartData.series_data == null) {
+            chartFailure(thisChartData.title, thisId);
           } else {
-            chartSuccess(this_chart_data, thisChart, noAdvice, noZoom, teachersDashboard);
+            if (teachersDashboard) {
+              teachersChartSuccess(thisChartData, thisChart)
+            } else {
+              chartSuccess(thisChartData, thisChart, noAdvice, noZoom);
+            }
           }
         },
         error: function(broken) {

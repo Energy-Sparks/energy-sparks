@@ -12,20 +12,12 @@ a.btn,
 a.btn:hover,
 a.btn:focus,
 a.btn:active,
-a.btn.active {
-  text-decoration: none;
-  outline: none;
-}
-
+a.btn.active,
 a.badge,
 a.badge:hover,
 a.badge:focus,
 a.badge:active,
-a.badge.active {
-  text-decoration: none;
-  outline: none;
-}
-
+a.badge.active,
 a.nav-link,
 a.nav-link:hover,
 a.nav-link:focus,
@@ -47,7 +39,6 @@ a.nav-link.active {
     color: white;
   }
 }
-
 
 .sub-navbar .nav-item a:hover {
   background-color: $light-orange;

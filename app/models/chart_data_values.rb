@@ -105,16 +105,20 @@ private
 
   def teachers_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
-      colour = if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
-                 index == 0 ? DARK_GAS : LIGHT_GAS
-               else
-                 index == 0 ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
-               end
+      colour = teachers_chart_colour(index)
 
       # Override Monday, Tuesday etc
       @x_axis_categories = X_AXIS_CATEGORIES
 
       { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+    end
+  end
+
+  def teachers_chart_colour(index)
+    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
+      index.zero? ? DARK_GAS : LIGHT_GAS
+    else
+      index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
     end
   end
 
