@@ -118,9 +118,9 @@ function processAnalysisCharts(){
         dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
       }
 
-      // console.log(chartType);
-      // console.log(dataPath);
-      // console.log(requestData);
+      console.log(chartType);
+      console.log(dataPath);
+      console.log(requestData);
       thisChart.showLoading();
 
       $.ajax({
