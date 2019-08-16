@@ -7,9 +7,9 @@ namespace :after_party do
     AcademicYearFactory.new(scotland, start_date: '01-08', end_date: '31-07').create
 
     highlands_area = CalendarArea.where(title: 'Highland').first
-    highlands_area.update!(parent_area: scotland)
 
     if highlands_area
+      highlands_area.update!(parent_area: scotland)
       highlands_area.calendars.each do |calendar|
         calendar.calendar_events.each do |calendar_event|
           academic_year = calendar_event.calendar.academic_year_for(calendar_event.start_date)
