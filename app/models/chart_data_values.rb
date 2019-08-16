@@ -1,5 +1,7 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype, :y_axis_label, :x_axis_label, :x_axis_categories, :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations
+  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype,
+              :y_axis_label, :x_axis_label, :x_axis_categories,
+              :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
