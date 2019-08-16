@@ -74,6 +74,18 @@ a.active {
   font-weight: bold;
 }
 
+.bg-positive {
+  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
+}
+
+.bg-neutral {
+  background-image: linear-gradient(to right, $bg-neutral 0%, $bg-neutral-light 100%);
+}
+
+.bg-negative {
+  background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
+}
+
 div.h5.explore {
   margin-bottom: 0.25rem;
 }

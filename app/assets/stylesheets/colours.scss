@@ -13,37 +13,29 @@ $dark-blue: #232b49;    /* very dark blue rgb(35,43,73) */
 $green: #5cb85c;        /* nice green rgb(92,184,92) */
 
 
-
-//semantically named variables for highlight/low-light colours
+/* New colours for redesign, will probably take the place of the originals */
+/* at some point */
 
 $new-yellow: #FFE5B8;
 $new-red: #FF3A5B;
-$dark: #222222;
-
 $new-light-blue: #97E6FC;
+
+$dark: #222222;
 
 $text: $dark;
 
-$electricDark: #007EFF;
-$electricLight: #59D0FF;
+$electric-dark: #007EFF;
+$electric-light: #59D0FF;
 
-$gasDark: #FF8438;
-$gasLight: #FFC73E;
+$gas-dark: #FF8438;
+$gas-light: #FFC73E;
 
 $bg-positive: #50E3C2;
 $bg-neutral: #97E6FC;
 $bg-negative: #FF3A5B;
 
+$bg-positive-light: #A1FFE9;
+$bg-neutral-light: #CBF4FF;
+$bg-negative-light: #FF9B9C;
+
 $grey: #C4CCD4;
-
-.bg-positive {
-  background-image: linear-gradient(to right, $bg-positive 0%, #A1FFE9 100%);
-}
-
-.bg-neutral {
-  background-image: linear-gradient(to right, $bg-neutral 0%, #CBF4FF 100%);
-}
-
-.bg-negative {
-  background-image: linear-gradient(to right, $bg-negative 0%, #FF9B9C 100%);
-}
