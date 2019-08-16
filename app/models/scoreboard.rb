@@ -40,9 +40,11 @@ class Scoreboard < ApplicationRecord
   end
 
   def scored_schools(recent_boundary: 1.month.ago)
-    schools.active.select('schools.*, SUM(observations.points) AS sum_points, SUM(recent_observations.points) AS recent_points').
-      joins('LEFT JOIN observations ON observations.school_id = schools.id').
-      joins(self.class.sanitize_sql_array(['LEFT OUTER JOIN observations AS recent_observations ON recent_observations.school_id = schools.id AND recent_observations.at > ?', recent_boundary])).
+    schools.active.select('schools.*, SUM(observations.points) AS sum_points').select(
+      self.class.sanitize_sql_array(
+        ['SUM(observations.points) FILTER (WHERE observations.at > ?) AS recent_points', recent_boundary]
+      )
+    ).joins('LEFT JOIN observations ON observations.school_id = schools.id').
       order(Arel.sql('sum_points DESC NULLS LAST, MAX(observations.at) DESC, schools.name ASC')).
       group('schools.id')
   end
