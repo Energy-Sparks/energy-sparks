@@ -1,9 +1,10 @@
 div.illustration-background {
-  height: 400px;
+ // height: 300px;
   padding-top: 20px;
   background-image: linear-gradient(to right, #FCFFFF 0%, #FCFFFF 15%, #E7EDF0 50%, #FCFFFF 85%, #FCFFFF 100%);
 }
 
 div.illustration-wrapper {
-  padding-top: 100px;
+  overflow: visible;
+ // padding-top: 50px;
 }
