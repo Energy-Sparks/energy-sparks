@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_16_090526) do
+ActiveRecord::Schema.define(version: 2019_08_16_152233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -586,6 +586,7 @@ ActiveRecord::Schema.define(version: 2019_08_16_090526) do
     t.bigint "intervention_type_id"
     t.bigint "activity_id"
     t.integer "points"
+    t.boolean "visible", default: true
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
@@ -866,7 +867,7 @@ ActiveRecord::Schema.define(version: 2019_08_16_090526) do
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "meters", "schools"
-  add_foreign_key "observations", "activities", on_delete: :cascade
+  add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade

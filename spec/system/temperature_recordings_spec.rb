@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'temperature recordings as admin' do
 
   let(:school_name) { 'Active school'}
-  let!(:school)     { create(:school, name: school_name) }
+  let!(:school)     { create(:school, :with_calendar_area, name: school_name) }
   let!(:user)       { create(:user, role: 'admin', school: school)}
 
   context 'adding recordings' do
