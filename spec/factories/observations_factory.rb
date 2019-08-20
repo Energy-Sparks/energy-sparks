@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :observation do
-    school
+    school           { create(:school)}
     observation_type { :temperature }
     at               { Time.now.utc }
 

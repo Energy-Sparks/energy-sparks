@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :analytics_code
-  helper_method :site_settings
+  helper_method :site_settings, :current_school_podium
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
 
   def site_settings
     @site_settings ||= SiteSettings.current
+  end
+
+  def current_school_podium
+    if @school && @school.scoreboard
+      @school_podium ||= Podium.create(school: @school, scoreboard: @school.scoreboard)
+    end
   end
 
 private

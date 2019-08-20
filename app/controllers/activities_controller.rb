@@ -61,9 +61,10 @@ class ActivitiesController < ApplicationController
   # DELETE /activities/1
   # DELETE /activities/1.json
   def destroy
+    @activity.observations.each {|observation| ObservationRemoval.new(observation).process}
     @activity.destroy
     respond_to do |format|
-      format.html { redirect_to school_activities_path(@school), notice: 'Activity was successfully destroyed.' }
+      format.html { redirect_back fallback_location: school_activities_path(@school), notice: 'Activity was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

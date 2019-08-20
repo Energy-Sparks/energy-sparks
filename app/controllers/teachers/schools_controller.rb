@@ -31,7 +31,7 @@ module Teachers
     end
 
     def setup_dashboard_alert
-      @dashboard_alert = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher.sample
+      @dashboard_alert = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher_dashboard.sample
 
       if @dashboard_alert
         @dashboard_alert_content = TemplateInterpolation.new(

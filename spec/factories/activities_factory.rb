@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :activity do
-    school
+    school            { create(:school) }
     activity_type
     activity_category
     title             { 'test activity title' }

@@ -9,6 +9,7 @@ FactoryBot.define do
     postcode        { 'ab1 2cd' }
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
+    calendar_area   { create(:calendar_area, :child) }
 
     after(:build) do |school, _evaluator|
       build(:configuration, school: school)
@@ -31,13 +32,15 @@ FactoryBot.define do
     end
 
     trait :with_points do
+
       transient do
         score_points { 1 }
+        activities_happened_on { 1.month.ago }
       end
 
       after(:create) do |school, evaluator|
         activity_type = create(:activity_type, score: evaluator.score_points)
-        create(:activity, school: school, activity_type: activity_type)
+        create(:activity, school: school, activity_type: activity_type, happened_on: evaluator.activities_happened_on)
       end
     end
   end

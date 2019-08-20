@@ -23,12 +23,12 @@ module Schools
 
     def index
       @locations = @school.locations.order(name: :asc)
-      @observations = @observations.temperature
+      @observations = @observations.temperature.visible.order('at DESC')
     end
 
     def destroy
-      @observation.destroy
-      redirect_to school_temperature_observations_path(@school), notice: 'Successfully deleted.'
+      ObservationRemoval.new(@observation).process
+      redirect_back fallback_location: school_temperature_observations_path(@school), notice: 'Successfully deleted.'
     end
 
   private
