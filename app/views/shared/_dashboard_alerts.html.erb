@@ -1,7 +1,22 @@
-<% if dashboard_alert %>
-  <div class="row">
-    <div class="col-md-12">
-      <%= render 'schools/dashboard_alerts/alert', alert: dashboard_alert.alert, content: dashboard_alert_content, school: school, find_out_more: dashboard_alert_content.find_out_more, dashboard_title: dashboard_alert_content.teacher_dashboard_title %>
+<% unless @dashboard_alerts.empty? %>
+
+  <div class="act-on-energy-usage">
+    <h3>Act on energy usage</h3>
+    <% @dashboard_alerts.each do |alert_content|%>
+      <%= render 'schools/dashboard/info_bar',
+        colour: class_for_alert_colour(alert_content.colour),
+        icon: alert_icon(alert_content.alert, 'fa-3x'),
+        content: alert_content.teacher_dashboard_title,
+        buttons: alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, alert_content.find_out_more)} : {}
+      %>
+  <% end %>
+  <% if @dashboard_alerts.size > 1 %>
+    <div class="row">
+      <div class="col text-center">
+        <a href="#" class="btn btn-rounded more-alerts">Show <%= pluralize((@dashboard_alerts.size - 1), 'more alert')%></a>
+      </div>
     </div>
-  </div>
+  <% end %>
+</div>
+
 <% end %>
