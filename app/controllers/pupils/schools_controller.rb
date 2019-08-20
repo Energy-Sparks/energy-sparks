@@ -24,10 +24,6 @@ module Pupils
       activity_setup(@school)
       equivalence_setup(@school)
 
-      @scoreboard = @school.scoreboard
-      if @scoreboard
-        @podium = Podium.create(school: @school, scoreboard: @scoreboard)
-      end
       @temperature_observations = @school.observations.temperature
     end
 

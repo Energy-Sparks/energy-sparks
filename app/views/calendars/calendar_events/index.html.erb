@@ -5,7 +5,7 @@
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <% @academic_years.each do |academic_year| %>
-      <a class="nav-item nav-link <%= 'active' if academic_year == AcademicYear.current %>" id="nav-academic-year-<%= academic_year.start_date.year %>-tab" data-toggle="tab" href="#academic-year-<%= academic_year.start_date.year %>" role="tab" aria-controls="academic-year-<%= academic_year.start_date.year %>" aria-selected="<%= academic_year == AcademicYear.current %>">
+      <a class="nav-item nav-link <%= 'active' if academic_year.current?  %>" id="nav-academic-year-<%= academic_year.start_date.year %>-tab" data-toggle="tab" href="#academic-year-<%= academic_year.start_date.year %>" role="tab" aria-controls="academic-year-<%= academic_year.start_date.year %>" aria-selected="<%= academic_year.current? %>">
         <%= academic_year.start_date.year %> - <%= academic_year.end_date.year %>
       </a>
     <% end %>
@@ -14,7 +14,7 @@
 <div class="tab-content" id="nav-tabContent">
   <% @academic_years.each do |academic_year| %>
     <!-- add show active to div class for active one -->
-    <div class="tab-pane <%= 'active show' if academic_year == AcademicYear.current %>" id="academic-year-<%= academic_year.start_date.year %>" role="tabpanel" aria-labelledby="academic-year-<%= academic_year.start_date.year %>-tab">
+    <div class="tab-pane <%= 'active show' if academic_year.current? %>" id="academic-year-<%= academic_year.start_date.year %>" role="tabpanel" aria-labelledby="academic-year-<%= academic_year.start_date.year %>-tab">
 
       <table class="table table-striped">
         <thead>
