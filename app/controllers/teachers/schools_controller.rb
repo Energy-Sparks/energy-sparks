@@ -4,6 +4,7 @@ module Teachers
 
     include SchoolAggregation
     include ActivityTypeFilterable
+    include DashboardEnergyCharts
 
     skip_before_action :authenticate_user!
 
@@ -17,18 +18,6 @@ module Teachers
     end
 
   private
-
-    def setup_charts
-      @charts = {}
-
-      if @school.configuration.electricity
-        @charts[:electricity] = :teachers_landing_page_electricity
-      end
-
-      if @school.configuration.gas_dashboard_chart_type.to_sym != Schools::Configuration::NO_CHART
-        @charts[:gas] = @school.configuration.gas_dashboard_chart_type.to_sym
-      end
-    end
 
     def setup_dashboard_alert
       @dashboard_alerts = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher_dashboard.sample(3).map do |dashboard_alert|

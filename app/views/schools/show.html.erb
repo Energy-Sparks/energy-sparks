@@ -1,0 +1,16 @@
+<%= content_for :page_title, @school.name %>
+
+<% if ! @school.active? %>
+  <div class="alert alert-warning">
+    <%= @school.name %> is currently <strong>INACTIVE</strong> and won't be accessible to non-admin users.
+    <% if can? :activate, @school %>
+      <%= link_to "Activate school", school_activation_path(@school), method: :post, class: 'btn btn-success ml-3' %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render 'shared/dashboard_energy_charts', school: @school, charts: @charts %>
+
+<%= render 'shared/dashboard_alerts', school: @school, dashboard_alert_content: @dashboard_alert_content, dashboard_alert: @dashboard_alert %>
+
+<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
