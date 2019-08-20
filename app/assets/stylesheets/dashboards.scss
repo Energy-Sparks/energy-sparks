@@ -1,0 +1,46 @@
+div.dashboards {
+  div.analysis-chart, div.simulator-chart {
+    height: 400px;
+    padding-bottom: 40px;
+    padding-top: 20px;
+  }
+}
+
+.timeline-border-left {
+  border-left: 3px solid $dark;
+}
+
+.table.timeline {
+  td {
+    border-top: 0;
+  }
+  th {
+    border-bottom: 0;
+    border-top: 0;
+  }
+}
+
+.info-bar {
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.info-bar div .btn {
+  height: 60px;
+  width: 260px;
+  line-height: 2.1;
+  border-width: 2px;
+  font-size: 20px;
+}
+
+.info-bar.bg-neutral div .btn {
+  border-color: $bg-neutral;
+}
+
+.info-bar.bg-positive div .btn {
+  border-color: $bg-positive;
+}
+
+.info-bar.bg-negative div .btn {
+  border-color: $bg-negative;
+}
