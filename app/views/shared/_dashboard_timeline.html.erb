@@ -1,0 +1,16 @@
+<% unless @observations.empty? %>
+  <div class="row justify-content-between">
+    <div class="col-10">
+      <h1>What's been going on?</h1>
+    </div>
+    <div class="col-2 text-right">
+      <%= link_to 'View all actions', school_timeline_path(@school), class: 'btn btn-sm btn-secondary pull-right' %>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-center">
+    <div class="col col-md-10">
+      <%= render 'schools/observations/timeline', observations: @observations, show_actions: false%>
+    </div>
+  </div>
+<% end %>
