@@ -22,7 +22,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
   </div>
   <div id="y-axis-selection-form" class="collapse" >
     <div class="card-body text-dark">
-      <%= form_with(url: request.fullpath, method: :get) do |f| %>
+      <%= form_tag({}, method: :get) do |f| %>
         <div class="form-group">
           <% @measurement_options.each do |key, description| %>
             <div class="form-check">

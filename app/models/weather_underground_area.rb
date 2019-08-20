@@ -20,5 +20,5 @@
 #
 
 class WeatherUndergroundArea < Area
-  belongs_to :data_feed, class_name: 'DataFeeds::WeatherUnderground', foreign_key: :data_feed_id
+  belongs_to :data_feed, class_name: 'DataFeeds::WeatherUnderground', foreign_key: :data_feed_id, optional: true
 end

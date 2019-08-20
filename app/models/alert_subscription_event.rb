@@ -2,10 +2,10 @@
 #
 # Table name: alert_subscription_events
 #
-#  alert_id                             :bigint(8)
-#  alert_type_rating_content_version_id :bigint(8)
+#  alert_id                             :bigint(8)        not null
+#  alert_type_rating_content_version_id :bigint(8)        not null
 #  communication_type                   :integer          default("email"), not null
-#  contact_id                           :bigint(8)
+#  contact_id                           :bigint(8)        not null
 #  content_generation_run_id            :bigint(8)        not null
 #  created_at                           :datetime         not null
 #  email_id                             :bigint(8)
@@ -38,8 +38,8 @@
 class AlertSubscriptionEvent < ApplicationRecord
   belongs_to :contact, inverse_of: :alert_subscription_events
   belongs_to :alert
-  belongs_to :email
-  belongs_to :find_out_more
+  belongs_to :email, optional: true
+  belongs_to :find_out_more, optional: true
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
   belongs_to :content_generation_run
 

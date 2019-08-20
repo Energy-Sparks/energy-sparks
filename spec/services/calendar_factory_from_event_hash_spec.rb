@@ -14,8 +14,8 @@ describe CalendarFactoryFromEventHash do
       ]
       expect(Calendar.count).to be 1
 
-      area = CalendarArea.create(title: 'this new area')
-      calendar = CalendarFactoryFromEventHash.new(example_calendar_hash, area).create
+      new_area = CalendarArea.create(title: 'this new area', parent_area: area)
+      calendar = CalendarFactoryFromEventHash.new(example_calendar_hash, new_area).create
 
       expect(Calendar.count).to be 2
       expect(calendar.terms.count).to be 5

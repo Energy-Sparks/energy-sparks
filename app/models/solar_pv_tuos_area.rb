@@ -21,6 +21,6 @@
 
 # TUOS is The University of Sheffield
 class SolarPvTuosArea < Area
-  belongs_to :data_feed, class_name: 'DataFeeds::SolarPvTuos', foreign_key: :data_feed_id
+  belongs_to :data_feed, class_name: 'DataFeeds::SolarPvTuos', foreign_key: :data_feed_id, optional: true
   has_many :solar_pv_tuos_readings
 end
