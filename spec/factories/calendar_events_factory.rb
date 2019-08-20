@@ -4,6 +4,7 @@ FactoryBot.define do
     end_date    { 8.weeks.from_now }
     title       { 'new event' }
     description { 'this is a new event' }
+
     factory :term do
       title       { 'new term' }
       description { 'this is a new term' }
@@ -12,12 +13,12 @@ FactoryBot.define do
     factory :holiday do
       title       { 'new holiday' }
       description { 'this is a new holiday' }
-      association :calendar_event_type, term_time: false, holiday: true
+      association :calendar_event_type, term_time: false, holiday: true, analytics_event_type: :school_holiday
     end
     factory :bank_holiday_event  do
       title       { 'new holiday' }
       description { 'this is a new bank holiday event' }
-      association :calendar_event_type, term_time: false, holiday: false, bank_holiday: false
+      association :calendar_event_type, term_time: false, holiday: false, bank_holiday: false, analytics_event_type: :bank_holiday
     end
   end
 end
