@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
   let!(:admin) { create(:user, role: 'admin')}
+  let!(:calendar_area) { create(:calendar_area, title: 'Scotland')}
 
   describe 'when logged in' do
     before(:each) do
@@ -13,13 +14,15 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       visit scoreboards_path
       click_on 'New Scoreboard'
       click_on 'Create Scoreboard'
-      expect(page).to have_content("Name can't be blank")
+      expect(page).to have_content("can't be blank")
 
       fill_in 'Name', with: 'BANES and Frome'
       fill_in 'Description', with: 'A collection of schools'
+      select 'Scotland', from: 'Calendar area'
       click_on 'Create Scoreboard'
 
-      expect(Scoreboard.where(name: 'BANES and Frome').count).to eq(1)
+      scoreboard = Scoreboard.where(name: 'BANES and Frome').first
+      expect(scoreboard.calendar_area).to eq(calendar_area)
     end
 
     it 'can edit a scoreboard' do

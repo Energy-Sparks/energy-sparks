@@ -134,7 +134,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'lets the user edit inset days, meters and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
-      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
+      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar_area: calendar_area
       user = create(:user, role: 'school_onboarding')
       onboarding.update!(created_user: user)
       school = build(:school)

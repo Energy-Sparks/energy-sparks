@@ -12,6 +12,7 @@
 #  points               :integer
 #  school_id            :bigint(8)        not null
 #  updated_at           :datetime         not null
+#  visible              :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -21,7 +22,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (activity_id => activities.id) ON DELETE => cascade
+#  fk_rails_...  (activity_id => activities.id) ON DELETE => nullify
 #  fk_rails_...  (intervention_type_id => intervention_types.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
@@ -43,6 +44,8 @@ class Observation < ApplicationRecord
   validates :activity_id, presence: true, if: :activity?
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings_and_locations
+
+  scope :visible, -> { where(visible: true) }
 
   def at_date_cannot_be_in_the_future
     errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day

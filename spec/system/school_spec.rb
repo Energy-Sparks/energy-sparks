@@ -80,7 +80,7 @@ RSpec.describe "school", type: :system do
       end
 
       it 'allows me to set a school group for the school' do
-        group = create(:school_group, name: 'BANES')
+        group = create(:school_group, name: 'BANES', scoreboard: create(:scoreboard, calendar_area: school.calendar_area.parent_area))
         click_on(school_name)
         click_on('Manage groups')
         select 'BANES', from: 'Group'
