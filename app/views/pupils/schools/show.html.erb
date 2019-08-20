@@ -1,102 +1,41 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
 <% if @equivalences_content.present? %>
-  <div id="equivalencesCarousel" class="carousel slide" data-interval="false">
-    <% if @equivalences_content.size > 1 %>
-      <div class="row justify-content-end">
-        <a href="#equivalencesCarousel" role="button" data-slide="prev" class="h3">
-          &lt;
-          <span class="sr-only">Previous</span>
-        </a>
-        <a  href="#equivalencesCarousel" role="button" data-slide="next" class="h3">
-          &gt;
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
-    <% end %>
-    <div class="carousel-inner">
-      <% @equivalences_content.each_with_index do |equivalence_content, index|  %>
-        <div class="carousel-item <%= 'active' if index == 0 %>">
-          <%= render 'equivalence', equivalence_content: equivalence_content %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'equivalence', equivalence_content: @equivalences_content.sample %>
 <% end %>
-
-<div class="row justify-content-center mb-3">
-  <% if @school.meters_for_supply(:electricity).any? %>
-    <div class="col-md-3 text-center btn btn-dark m-2">
-      <h1><%= fa_icon fuel_type_icon(:electricity) %></h1>
-      <h2>Electricity</h2>
-      <div class="h5 explore">
-        Explore
-        <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
-        /
-        <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :electricity), title: "See how the school's energy use varies over a day" %>
-        usage
-      </div>
-    </div>
-  <% end %>
-  <% if @school.meters_for_supply(:gas).any? %>
-    <div class="col-md-3 text-center btn btn-dark m-2">
-      <h1><%= fa_icon fuel_type_icon(:gas) %></h1>
-      <h2>Gas</h2>
-      <div class="h5 explore">
-        Explore
-        <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a week" %>
-        /
-        <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: :gas), title: "See how the school's energy use varies over a day" %>
-        usage
-      </div>
-    </div>
-  <% end %>
-</div>
 
 <div class="row padded-row align-items-end">
   <div class="col-md-9">
-    <h2 class="mb-3">Things to investigate:</h2>
-  </div>
-  <div class="col-md-3">
-  <%= link_to school_analysis_path(@school), class: 'btn btn-lg btn-success' do %>
-    <%= fa_icon 'lightbulb' %> Find out more about how your school uses energy
-  <% end %>
+    <h2 class="mb-3">Things to do:</h2>
   </div>
 </div>
 
-<% unless @dashboard_alerts.empty? %>
-  <div class="row">
-    <% @dashboard_alerts.each do |content| %>
-      <div class="col-md-12">
-        <%= render 'schools/dashboard_alerts/alert', alert: content.alert, find_out_more: content.find_out_more,  content: content, dashboard_title: content.pupil_dashboard_title, school: @school %>
-      </div>
-    <% end %>
-  </div>
+<% if @dashboard_alerts.any? %>
+  <% @dashboard_alerts.each do |content| %>
+    <%= render 'schools/dashboard/info_bar',
+          colour: class_for_alert_colour(content.colour),
+          icon: alert_icon(content.alert, 'fa-3x'),
+          content: content.pupil_dashboard_title,
+          buttons: content.find_out_more ? { 'Find out more&hellip;' => school_find_out_more_path(@school, content.find_out_more) } : {}
+    %>
+   <% end %>
 <% end %>
 
-<div class="alert text-white bg-success" role="alert">
-  <div class="d-flex">
-    <div class="align-self-center p-2">
-      <%= fa_icon('temperature-high fa-3x') %>
-    </div>
-    <% if @temperature_observations.empty? %>
-      <div class="align-self-center">
-        <h5>Measure classroom temperatures to find out whether you should turn down the heating to save energy and earn 5 points</h5>
-      </div>
-      <div class="ml-auto p-2">
-        <%= link_to 'Enter temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light btn', role: 'button' %>
-      </div>
-    <% else %>
-      <div class="align-self-center p-2">
-        <h5>Update your classroom temperatures to see if you are saving energy and earn 5 points</h5>
-      </div>
-      <div class="ml-auto">
-          <%= link_to 'Previous temperatures', school_temperature_observations_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
-          <%= link_to 'Enter new temperatures', new_school_temperature_observation_path(@school), class: 'btn btn-light  btn-block', role: 'button' %>
-      </div>
-    <% end %>
-  </div>
-</div>
+<% if @temperature_observations.empty? %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-positive',
+        icon: 'temperature-high fa-3x',
+        content: 'Measure classroom temperatures to find out whether you should turn down the heating to save energy',
+        buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school) }
+  %>
+<% else %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-positive',
+        icon: 'temperature-high fa-3x',
+        content: 'Update your classroom temperatures to see if you are saving energy',
+        buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Update temperatures' => new_school_temperature_observation_path(@school) }
+  %>
+<% end %>
 
 <div class="row">
   <div class="col card-deck">

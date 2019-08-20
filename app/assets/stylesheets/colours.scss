@@ -12,14 +12,30 @@ $dark-blue: #232b49;    /* very dark blue rgb(35,43,73) */
 
 $green: #5cb85c;        /* nice green rgb(92,184,92) */
 
-//semantically named variables for highlight/low-light colours
 
-$text: $dark-blue;
+/* New colours for redesign, will probably take the place of the originals */
+/* at some point */
 
-$electricDark: $dark-blue;
-$electricLight: $light-blue;
+$new-yellow: #FFE5B8;
+$new-red: #FF3A5B;
+$new-light-blue: #97E6FC;
 
-$gasDark: $dark-orange;
-$gasLight: $light-orange;
+$dark: #222222;
 
+$text: $dark;
 
+$electric-dark: #007EFF;
+$electric-light: #59D0FF;
+
+$gas-dark: #FF8438;
+$gas-light: #FFC73E;
+
+$bg-positive: #50E3C2;
+$bg-neutral: #97E6FC;
+$bg-negative: #FF3A5B;
+
+$bg-positive-light: #A1FFE9;
+$bg-neutral-light: #CBF4FF;
+$bg-negative-light: #FF9B9C;
+
+$grey: #C4CCD4;
