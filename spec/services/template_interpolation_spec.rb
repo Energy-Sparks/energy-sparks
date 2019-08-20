@@ -17,6 +17,9 @@ describe TemplateInterpolation do
       def template_4
         "Your school spent {{gbp}}"
       end
+      def template_5
+        nil
+      end
     end
   end
 
@@ -75,10 +78,16 @@ describe TemplateInterpolation do
       expect(view_object.alert).to eq(instance)
     end
 
-    it 'sets the object' do
+    it 'proxies to existing objects' do
       instance = object.new
       view_object = TemplateInterpolation.new(instance, proxy: [:template_2]).interpolate(:template_1, with: {})
       expect(view_object.template_2).to eq("Your school is {{position}} in the leaderboard")
+    end
+
+    it 'handles nil templates' do
+      instance = object.new
+      view_object = TemplateInterpolation.new(instance).interpolate(:template_5, with: {})
+      expect(view_object.template_5).to eq("")
     end
   end
 end

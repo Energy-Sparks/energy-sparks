@@ -23,6 +23,14 @@ describe Podium do
     expect(podium.low_to_high.map(&:normalised_points).any?(&:nil?)).to eq(false)
   end
 
+  it 'includes the recent points' do
+    podium = Podium.create(scoreboard: scoreboard, school: school_3, recent_boundary: 2.months.ago)
+    expect(podium.low_to_high.map(&:recent_points)).to eq([2,3,4])
+
+    podium = Podium.create(scoreboard: scoreboard, school: school_3, recent_boundary: 2.days.ago)
+    expect(podium.low_to_high.map(&:recent_points)).to eq([0,0,0])
+  end
+
   it 'includes the ordinal high to low position as an integer' do
     podium = Podium.create(scoreboard: scoreboard, school: school_5)
     expect(podium.high_to_low.map(&:position)).to eq([1, 2, 3])

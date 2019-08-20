@@ -3,7 +3,7 @@
 # Table name: calendars
 #
 #  based_on_id      :bigint(8)
-#  calendar_area_id :bigint(8)
+#  calendar_area_id :bigint(8)        not null
 #  created_at       :datetime         not null
 #  default          :boolean
 #  deleted          :boolean          default(FALSE)
@@ -15,6 +15,10 @@
 # Indexes
 #
 #  index_calendars_on_based_on_id  (based_on_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #
 
 class Calendar < ApplicationRecord
@@ -31,7 +35,7 @@ class Calendar < ApplicationRecord
   scope :template,  -> { where(template: true) }
   scope :custom,    -> { where(template: false) }
 
-  validates_presence_of :title
+  validates_presence_of :title, :calendar_area
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :not_term_time, to: :calendar_events
 
@@ -66,6 +70,10 @@ class Calendar < ApplicationRecord
   def holiday_approaching?(today: Time.zone.today)
     next_after_today = next_holiday(today: today)
     next_after_today.present? && (next_after_today.start_date - today <= 7)
+  end
+
+  def academic_year_for(date)
+    calendar_area.academic_year_for(date)
   end
 end
 

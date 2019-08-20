@@ -46,7 +46,7 @@ class CalendarEvent < ApplicationRecord
 private
 
   def update_academic_year
-    self.academic_year = AcademicYear.for_date(start_date) if start_date
+    self.academic_year = calendar.academic_year_for(start_date) if start_date
   end
 
   def check_whether_child_needs_creating
