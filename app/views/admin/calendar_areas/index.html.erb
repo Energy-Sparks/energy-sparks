@@ -16,7 +16,7 @@
         <td><%= link_to calendar_area.title, admin_calendar_area_path(calendar_area) %></td>
         <td><%= calendar_area.description %></td>
         <td>
-          <div class="btn-group">
+          <div class="btn-group btn-group-sm" role="group">
             <% if calendar_area.calendars.template.any? %>
               <%= link_to 'Template calendar', calendar_path(calendar_area.calendars.template.first), class: 'btn btn-warning btn-sm'%>
             <% end %>
@@ -27,4 +27,3 @@
     <% end %>
   </tbody>
 </table>
-

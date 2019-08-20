@@ -27,16 +27,39 @@ a.nav-link.active {
   outline: none;
 }
 
-a.btn,
-a.btn:hover,
-a.btn:focus,
-a.btn:active,
-a.btn.active {
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active {
   color: $dark;
   background-image: linear-gradient($white, $light-grey);
   border-color: $grey;
   font-weight: 700 !important;
   border-radius: 50rem !important;
+}
+
+.btn-outline-dark {
+  background-image: none !important;
+  border-color: $dark;
+}
+
+.btn-outline-dark:hover {
+  color: $white;
+}
+
+.btn-group-sm {
+  .btn-sm {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+.btn-group {
+  .btn {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 }
 
 .navbar {
