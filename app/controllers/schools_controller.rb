@@ -2,6 +2,8 @@ class SchoolsController < ApplicationController
   include ActivityTypeFilterable
   include Measurements
   include DashboardEnergyCharts
+  include DashboardAlerts
+  include DashboardTimeline
 
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
@@ -17,11 +19,9 @@ class SchoolsController < ApplicationController
   # GET /schools/1
   def show
     setup_charts
-    setup_dashboard_alert
+    setup_dashboard_alerts
     setup_activity_suggestions
     setup_timeline
-
-    #redirect_to teachers_school_path(@school), status: :found
   end
 
   def suggest_activity
@@ -98,21 +98,6 @@ class SchoolsController < ApplicationController
 
 private
 
-  def setup_dashboard_alert
-    @dashboard_alert = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher.sample
-
-    if @dashboard_alert
-      @dashboard_alert_content = TemplateInterpolation.new(
-        @dashboard_alert.content_version,
-        with_objects: { find_out_more: @dashboard_alert.find_out_more },
-        proxy: [:colour]
-      ).interpolate(
-        :teacher_dashboard_title,
-        with: @dashboard_alert.alert.template_variables
-      )
-    end
-  end
-
   def setup_activity_suggestions
     @activities_count = @school.activities.count
     suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
@@ -124,10 +109,6 @@ private
     end
     cards_filled = [@activities_from_programmes + @activities_from_alerts + [@suggested_programme]].flatten.compact.size
     @activities_from_activity_history = suggester.suggest_from_activity_history.slice(0, (3 - cards_filled))
-  end
-
-  def setup_timeline
-    @observations = @school.observations.order('at DESC').limit(10)
   end
 
   def set_key_stages

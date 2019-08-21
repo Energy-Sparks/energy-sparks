@@ -50,82 +50,13 @@
   </div>
 </div>
 
-<div class="card-deck teachers-dashboard">
-  <% @activities_from_activity_history.each do |activity_type| %>
-    <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
-  <% end %>
 
-  <% @activities_from_alerts.each do |activity_type| %>
-    <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
-  <% end %>
+<%= render 'teachers/schools/activities_and_actions',
+school: @school,
+activities: @activities,
+activities_from_programmes: @activities_from_programmes,
+activities_from_alerts: @activities_from_alerts,
+suggested_programme: @suggested_programme,
+activities_from_activity_history: @activities_from_activity_history %>
 
-  <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
-
-    <div class="card mb-2 programme">
-      <div class="card-body">
-        <%= link_to school_programme_types_path(@school, @suggested_programme) do %>
-          <h4 class="card-title"><%= @suggested_programme.title %></h4>
-          <p class="card-text">
-            <%= @suggested_programme.short_description %>
-          </p>
-        <% end %>
-      </div>
-      <div class="card-footer">
-        <span class="bg-positive btn rounded-pill">
-          <strong><%= @suggested_programme.activity_types.count %>
-            <span class="small text-uppercase">
-              <%= 'activity'.pluralize(@suggested_programme.activity_types.count) %>
-            </span>
-          </strong>
-        </span>
-      </div>
-    </div>
-
-  <% else %>
-
-    <% @activities_from_programmes.each do |activity_type| %>
-      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your programmes' %>
-    <% end %>
-
-  <% end %>
-
-</div>
-
-<% if can?(:manage, Activity) || can?(:create, Observation) || can?(:start_programme, @school) %>
-  <div class="card-deck actions">
-    <% if can?(:manage, Activity) %>
-      <div class="card mb-2 text-center">
-        <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-      </div>
-    <% end %>
-    <% if can?(:create, Observation) %>
-      <div class="card mb-2">
-        <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-      </div>
-    <% end %>
-    <% if can?(:start_programme, @school) %>
-      <div class="card mb-2">
-        <%= link_to 'Choose another programme', school_programme_types_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-      </div>
-    <% end %>
-  </div>
-<% end %>
-
-<% unless @observations.empty? %>
-  <div class="row justify-content-between">
-    <div class="col-8">
-      <h2>What's been going on?</h2>
-    </div>
-    <div class="col-4 text-right">
-      <%= link_to school_timeline_path(@school), class: 'btn btn-sm btn-outline-dark rounded-pill pull-right' do %>
-        <%= far_icon('eye') %>  View all actions
-      <% end %>
-    </div>
-  </div>
-
-  <div class="row justify-content-md-center">
-    <div class="col col-md-10">
-      <%= render 'schools/observations/timeline', observations: @observations, show_actions: false%>
-    </div>
-  </div>
-<% end %>
+<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
