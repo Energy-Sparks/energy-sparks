@@ -31,8 +31,8 @@ class Observation < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings
   has_many   :locations, through: :temperature_recordings
-  belongs_to :intervention_type
-  belongs_to :activity
+  belongs_to :intervention_type, optional: true
+  belongs_to :activity, optional: true
 
   enum observation_type: [:temperature, :intervention, :activity]
 

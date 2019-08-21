@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_20_092428) do
+ActiveRecord::Schema.define(version: 2019_08_20_124824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "activities", force: :cascade do |t|
-    t.bigint "school_id"
-    t.bigint "activity_type_id"
+    t.bigint "school_id", null: false
+    t.bigint "activity_type_id", null: false
     t.string "title"
     t.text "deprecated_description"
     t.date "happened_on"
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
 
   create_table "activity_type_suggestions", force: :cascade do |t|
     t.bigint "activity_type_id"
-    t.bigint "suggested_type_id"
+    t.bigint "suggested_type_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["activity_type_id"], name: "index_activity_type_suggestions_on_activity_type_id"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "activity_category_id"
+    t.bigint "activity_category_id", null: false
     t.integer "score"
     t.boolean "repeatable", default: true
     t.boolean "data_driven", default: false
@@ -143,15 +143,15 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "alert_subscription_events", force: :cascade do |t|
-    t.bigint "alert_id"
-    t.bigint "contact_id"
+    t.bigint "alert_id", null: false
+    t.bigint "contact_id", null: false
     t.integer "status", default: 0, null: false
     t.integer "communication_type", default: 0, null: false
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "email_id"
-    t.bigint "alert_type_rating_content_version_id"
+    t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "find_out_more_id"
     t.bigint "content_generation_run_id", null: false
     t.string "unsubscription_uuid"
@@ -249,8 +249,8 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "alerts", force: :cascade do |t|
-    t.bigint "school_id"
-    t.bigint "alert_type_id"
+    t.bigint "school_id", null: false
+    t.bigint "alert_type_id", null: false
     t.date "run_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -290,7 +290,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
-    t.bigint "amr_data_feed_config_id"
+    t.bigint "amr_data_feed_config_id", null: false
     t.text "file_name"
     t.datetime "import_time"
     t.integer "records_imported"
@@ -300,9 +300,9 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "amr_data_feed_readings", force: :cascade do |t|
-    t.bigint "amr_data_feed_config_id"
+    t.bigint "amr_data_feed_config_id", null: false
     t.bigint "meter_id"
-    t.bigint "amr_data_feed_import_log_id"
+    t.bigint "amr_data_feed_import_log_id", null: false
     t.text "mpan_mprn", null: false
     t.text "reading_date", null: false
     t.text "readings", null: false, array: true
@@ -347,7 +347,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "calendar_area_id"
+    t.bigint "calendar_area_id", null: false
     t.date "holiday_date"
     t.text "title"
     t.text "notes"
@@ -372,9 +372,9 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "calendar_events", force: :cascade do |t|
-    t.bigint "academic_year_id"
+    t.bigint "academic_year_id", null: false
     t.bigint "calendar_id", null: false
-    t.bigint "calendar_event_type_id"
+    t.bigint "calendar_event_type_id", null: false
     t.text "title"
     t.text "description"
     t.date "start_date", null: false
@@ -416,7 +416,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "contacts", force: :cascade do |t|
-    t.bigint "school_id"
+    t.bigint "school_id", null: false
     t.text "name"
     t.text "description"
     t.text "email_address"
@@ -456,7 +456,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "data_feed_readings", force: :cascade do |t|
-    t.bigint "data_feed_id"
+    t.bigint "data_feed_id", null: false
     t.integer "feed_type"
     t.datetime "at"
     t.decimal "value"
@@ -571,7 +571,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "meters", force: :cascade do |t|
-    t.bigint "school_id"
+    t.bigint "school_id", null: false
     t.integer "meter_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -624,8 +624,8 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "programmes", force: :cascade do |t|
-    t.bigint "programme_type_id"
-    t.bigint "school_id"
+    t.bigint "programme_type_id", null: false
+    t.bigint "school_id", null: false
     t.integer "status", default: 0, null: false
     t.date "started_on", null: false
     t.date "ended_on"
@@ -693,7 +693,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   end
 
   create_table "school_times", force: :cascade do |t|
-    t.bigint "school_id"
+    t.bigint "school_id", null: false
     t.integer "opening_time", default: 850
     t.integer "closing_time", default: 1520
     t.integer "day"
@@ -741,8 +741,8 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
   create_table "simulations", force: :cascade do |t|
     t.text "title"
     t.text "notes"
-    t.bigint "school_id"
-    t.bigint "user_id"
+    t.bigint "school_id", null: false
+    t.bigint "user_id", null: false
     t.text "configuration"
     t.boolean "default"
     t.datetime "created_at", null: false

@@ -2,7 +2,7 @@
 #
 # Table name: alerts
 #
-#  alert_type_id   :bigint(8)
+#  alert_type_id   :bigint(8)        not null
 #  analytics_valid :boolean          default(TRUE), not null
 #  chart_data      :json
 #  created_at      :datetime         not null
@@ -12,7 +12,7 @@
 #  rating          :decimal(, )
 #  relevance       :integer          default("relevant")
 #  run_on          :date
-#  school_id       :bigint(8)
+#  school_id       :bigint(8)        not null
 #  table_data      :json
 #  template_data   :json
 #  updated_at      :datetime         not null

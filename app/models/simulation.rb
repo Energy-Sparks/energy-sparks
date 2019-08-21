@@ -7,10 +7,10 @@
 #  default       :boolean
 #  id            :bigint(8)        not null, primary key
 #  notes         :text
-#  school_id     :bigint(8)
+#  school_id     :bigint(8)        not null
 #  title         :text
 #  updated_at    :datetime         not null
-#  user_id       :bigint(8)
+#  user_id       :bigint(8)        not null
 #
 # Indexes
 #

@@ -2,8 +2,8 @@
 #
 # Table name: calendar_events
 #
-#  academic_year_id       :bigint(8)
-#  calendar_event_type_id :bigint(8)
+#  academic_year_id       :bigint(8)        not null
+#  calendar_event_type_id :bigint(8)        not null
 #  calendar_id            :bigint(8)        not null
 #  description            :text
 #  end_date               :date             not null
@@ -36,7 +36,7 @@ class CalendarEvent < ApplicationRecord
 
   after_create :check_whether_child_needs_creating
 
-  before_save :update_academic_year
+  before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
 

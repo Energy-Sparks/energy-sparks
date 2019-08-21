@@ -22,7 +22,7 @@
 
 class EquivalenceTypeContentVersion < ApplicationRecord
   belongs_to :equivalence_type
-  belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', foreign_key: :replaced_by_id
+  belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', foreign_key: :replaced_by_id, optional: true
 
   scope :latest, -> { where(replaced_by_id: nil) }
 end

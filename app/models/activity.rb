@@ -3,11 +3,11 @@
 # Table name: activities
 #
 #  activity_category_id :bigint(8)
-#  activity_type_id     :bigint(8)
+#  activity_type_id     :bigint(8)        not null
 #  created_at           :datetime         not null
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
-#  school_id            :bigint(8)
+#  school_id            :bigint(8)        not null
 #  title                :string
 #  updated_at           :datetime         not null
 #
@@ -27,7 +27,7 @@
 class Activity < ApplicationRecord
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type
-  belongs_to :activity_category
+  belongs_to :activity_category, optional: true
 
   has_many   :programme_activities
   has_many   :observations

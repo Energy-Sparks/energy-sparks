@@ -7,7 +7,7 @@
 #  id                  :bigint(8)        not null, primary key
 #  mobile_phone_number :text
 #  name                :text
-#  school_id           :bigint(8)
+#  school_id           :bigint(8)        not null
 #
 # Indexes
 #

@@ -10,8 +10,7 @@
 #
 
 class DataFeed < ApplicationRecord
-  belongs_to  :area
-  has_many    :data_feed_readings, dependent: :destroy
+  has_many :data_feed_readings, dependent: :destroy
 
   def first_reading(feed_type)
     data_feed_readings.where(feed_type: feed_type).order(at: :asc).limit(1).first
