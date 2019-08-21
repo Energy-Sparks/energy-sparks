@@ -45,22 +45,22 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
-  enum role: [:guest, :school_user, :admin, :school_admin, :school_onboarding, :pupil]
+  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil]
 
   validates :email, presence: true
 
   validates :pupil_password, presence: true, uniqueness: { scope: :school_id, message: 'is already in use' }, if: :pupil?
 
   def manages_school?(sid = nil)
-    admin? || (sid && school_admin_or_user? && school_id == sid)
+    admin? || (sid && school_admin_or_staff? && school_id == sid)
   end
 
   #is the user an administrator of an active school?
   def active_school_admin?
-    school_admin_or_user? && school.active?
+    school_admin_or_staff? && school.active?
   end
 
-  def school_admin_or_user?
-    school_admin? || school_user?
+  def school_admin_or_staff?
+    school_admin? || staff?
   end
 end

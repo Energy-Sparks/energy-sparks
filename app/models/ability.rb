@@ -39,7 +39,7 @@ class Ability
       can :crud, Programme, school_id: user.school_id
       can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
-    elsif user.school_user?
+    elsif user.staff?
       can :manage, Activity, school: { id: user.school_id, active: true }
       can :index, School
       can :show, School, active: true
