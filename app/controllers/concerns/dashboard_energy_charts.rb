@@ -4,6 +4,8 @@ module DashboardEnergyCharts
   def setup_charts(school_configuration)
     charts = {}
 
+    return charts if school_configuration.nil?
+
     if school_configuration.electricity
       charts[:electricity] = :teachers_landing_page_electricity
     end

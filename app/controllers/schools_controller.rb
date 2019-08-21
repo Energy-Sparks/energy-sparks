@@ -18,7 +18,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools/1
   def show
-    if current_user && current_user.school_id == @school.id
+    if current_user && (current_user.school_id == @school.id || current_user.admin?)
       redirect_to teachers_school_path(@school), status: :found
     else
       @charts = setup_charts(@school.configuration)
