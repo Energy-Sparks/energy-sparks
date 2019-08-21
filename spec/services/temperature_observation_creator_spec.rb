@@ -20,6 +20,12 @@ describe TemperatureObservationCreator do
     expect(observation.points).to eq(5)
   end
 
+  it 'scores 0 points for previous academic years' do
+    observation = build(:observation, at: 3.years.ago)
+    TemperatureObservationCreator.new(observation).process
+    expect(observation.points).to eq(nil)
+  end
+
   it 'scores 0 points if there is already an observation on that day' do
     school = create(:school)
     observation_1 = build(:observation, school: school)

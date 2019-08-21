@@ -29,7 +29,7 @@
 class AlertTypeRatingUnsubscription < ApplicationRecord
   belongs_to :alert_type_rating
   belongs_to :contact
-  belongs_to :alert_subscription_event
+  belongs_to :alert_subscription_event, optional: true
 
   enum scope: [:email, :sms]
   enum unsubscription_period: [:one_month, :six_months, :forever]

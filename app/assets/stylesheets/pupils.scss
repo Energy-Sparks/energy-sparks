@@ -1,53 +1,41 @@
+/* For pupil's dashboard */
+
+.illustration-background {
+  padding-top: 20px;
+  background-image: linear-gradient(to right, #FCFFFF 0%, #FCFFFF 15%, #E7EDF0 50%, #FCFFFF 85%, #FCFFFF 100%);
+}
+
+.illustration-wrapper {
+  overflow: visible;
+}
+
 .surrounding-schools {
   .bar{
     width: 95%;
-    margin: 10px auto;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-bottom: 3px;
+    margin-left: auto;
 
     &-body{
-      background-color: $yellow;
+      background-color: #fff9b2;
     }
 
     &-current {
       .bar-body{
-        background-color: $light-orange;
+        background-color: #ffde4d;
       }
     }
 
   }
 }
 
-hgroup.speech {
-  position: relative;
-  background: white;
-  border-radius: 3em;
-  border: 5px solid black;
-  margin-left: 50px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-right: 30px;
-
-  .trix-content{
-    font-size: 2.5em;
-  }
+.grey {
+  border-color: $grey;
 }
 
-hgroup.speech:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 40px;
-  width: 0;
-  height: 0;
-  border: 30px solid transparent;
-  border-top-color: black;
-  border-bottom: 0;
-  border-left: 0;
-  margin-left: -15px;
-  margin-bottom: -30px;
-}
-
-img.pupil-dashboard {
-  height: 200px;
+.activity-suggestion {
+  border: 2px solid $grey;
+  padding: 30px;
+  border-radius: 10px;
 }

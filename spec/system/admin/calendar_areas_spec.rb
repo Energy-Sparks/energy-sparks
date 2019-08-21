@@ -12,10 +12,11 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
   end
 
   let!(:england_and_wales){ create(:calendar_area, title: 'England and Wales') }
-  let!(:bank_holiday) { create :bank_holiday, title: 'Good Friday', holiday_date: "2012-04-06" }
+  let!(:bank_holiday) { create :bank_holiday, calendar_area: england_and_wales, title: 'Good Friday', holiday_date: "2015-04-06" }
 
   before do
     CalendarEventTypeFactory.create
+    AcademicYearFactory.new(england_and_wales).create(start_year: 2014, end_year: 2016)
   end
 
   describe 'when logged in' do
@@ -30,11 +31,13 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       expect(page).to have_content("can't be blank")
 
       fill_in 'Title', with: 'Oxfordshire'
+      select 'England and Wales', from: 'Parent'
       fill_in 'Terms CSV', with: events
       click_on 'Create Calendar area'
 
       calendar_area = CalendarArea.where(title: 'Oxfordshire').first!
       expect(calendar_area.calendars.first.calendar_events.terms.count).to eq(1)
+      expect(calendar_area.parent_area).to eq(england_and_wales)
     end
 
     it 'can edit a calendar area' do

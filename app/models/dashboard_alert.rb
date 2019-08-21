@@ -29,8 +29,8 @@
 class DashboardAlert < ApplicationRecord
   belongs_to :content_generation_run
   belongs_to :alert
-  belongs_to :find_out_more
+  belongs_to :find_out_more, optional: true
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
-  enum dashboard: [:teacher, :pupil]
+  enum dashboard: [:teacher, :pupil, :public, :management], _suffix: :dashboard
 end

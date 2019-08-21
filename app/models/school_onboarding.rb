@@ -43,14 +43,14 @@
 class SchoolOnboarding < ApplicationRecord
   validates :school_name, :contact_email, presence: true
 
-  belongs_to :school
-  belongs_to :school_group
-  belongs_to :calendar_area
-  belongs_to :weather_underground_area
-  belongs_to :solar_pv_tuos_area
-  belongs_to :dark_sky_area, class_name: 'DarkSkyArea'
-  belongs_to :created_user, class_name: 'User'
-  belongs_to :created_by, class_name: 'User'
+  belongs_to :school, optional: true
+  belongs_to :school_group, optional: true
+  belongs_to :calendar_area, optional: true
+  belongs_to :weather_underground_area, optional: true
+  belongs_to :solar_pv_tuos_area, optional: true
+  belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
+  belongs_to :created_user, class_name: 'User', optional: true
+  belongs_to :created_by, class_name: 'User', optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
 

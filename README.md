@@ -93,18 +93,18 @@ Click the Create environment button
   * Set environment variables
 
     get existing ones from an existing environment by running ```eb printenv``` and then set them on the new environment (easiest to have a branch which is configured as a default to use new environment using ```.elasticbeanstalk/config.yml```) using ```eb setenv THIS_VAR=x THAT_VAR=y``` etc
-    
+
     You will need to:
      * split the output from printenv in two and
      * remove the spaces which surround the = signs
      * take out AWS_ACCESS_KEY_ID as it will not process correctly
-     
+
   * Check environment variables through web console and add AWS_ACCESS_KEY_ID back in again
   * Click apply
-  
-  * Check SSH works to new environment with ```eb ssh``` 
+
+  * Check SSH works to new environment with ```eb ssh```
   * Then deploy actual branch
-  
+
   * Set up DNS in Route 53 if creating a brand new environment
   * Set up cert and get it to create DNS record if you didn't do this already or are not using an existing one
 
@@ -115,12 +115,12 @@ Click the Create environment button
       Instance Protocol HTTP
 
     and add certificate once it has been validated
-    
+
    * If you are running this environment in parallel with an existing one, make sure you:
      * set the APPLICATION_HOST to what you want it to be
      * stop the CRON jobs running if you are sharing a database on one of the environments
      * Note that the CDN will complain because of CORS unless you create a distribution for that.
-    
+
 ## Sort out Database config
 
 ### For existing database:

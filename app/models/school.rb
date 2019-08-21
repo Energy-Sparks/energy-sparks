@@ -70,12 +70,12 @@ class School < ApplicationRecord
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
 
-  belongs_to :calendar
-  belongs_to :calendar_area
-  belongs_to :weather_underground_area
-  belongs_to :solar_pv_tuos_area
-  belongs_to :dark_sky_area
-  belongs_to :school_group
+  belongs_to :calendar, optional: true
+  belongs_to :calendar_area, optional: true
+  belongs_to :weather_underground_area, optional: true
+  belongs_to :solar_pv_tuos_area, optional: true
+  belongs_to :dark_sky_area, optional: true
+  belongs_to :school_group, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -204,24 +204,12 @@ class School < ApplicationRecord
     actual_readings == expected_readings_for_a_week
   end
 
-  def points
-    observations.sum(:points)
-  end
-
-  def points_since(since = 1.month.ago)
-    observations.where('created_at > ?', since).sum(:points)
-  end
-
   def school_admin
     users.where(role: :school_admin)
   end
 
   def scoreboard
     school_group.scoreboard if school_group
-  end
-
-  def scoreboard_position
-    scoreboard.position(self) + 1
   end
 
   def latest_content

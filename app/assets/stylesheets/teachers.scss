@@ -5,3 +5,81 @@ div.teachers {
     padding-top: 20px;
   }
 }
+
+.card-deck.teachers-dashboard {
+  .card-footer, .card-header {
+    background-color: white;
+    border-top: 0;
+    border-bottom: 0;
+  }
+
+  .card.programme {
+    border: 2px solid $bg-positive;
+  }
+
+  .card.activity {
+    border: 2px solid $grey;
+    .card-footer .rounded-pill {
+      background-color: $new-light-blue;
+    }
+  }
+}
+
+.timeline-border-left {
+  border-left: 3px solid $dark;
+}
+
+.table.timeline {
+  td {
+    border-top: 0;
+  }
+  th {
+    border-bottom: 0;
+    border-top: 0;
+  }
+}
+
+.card-deck.actions {
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  .card {
+    border: 0;
+  }
+
+  .card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: $white;
+    border-top: 0;
+  }
+}
+
+.act-on-energy-usage {
+  padding-top: 20px;
+  padding-bottom: 100px;
+}
+
+.info-bar {
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.info-bar div .btn {
+  height: 60px;
+  width: 260px;
+  line-height: 2.1;
+  border-width: 2px;
+  font-size: 20px;
+}
+
+.info-bar.bg-neutral div .btn {
+  border-color: $bg-neutral;
+}
+
+.info-bar.bg-positive div .btn {
+  border-color: $bg-positive;
+}
+
+.info-bar.bg-negative div .btn {
+  border-color: $bg-negative;
+}

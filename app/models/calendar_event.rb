@@ -2,8 +2,8 @@
 #
 # Table name: calendar_events
 #
-#  academic_year_id       :bigint(8)
-#  calendar_event_type_id :bigint(8)
+#  academic_year_id       :bigint(8)        not null
+#  calendar_event_type_id :bigint(8)        not null
 #  calendar_id            :bigint(8)        not null
 #  description            :text
 #  end_date               :date             not null
@@ -33,10 +33,11 @@ class CalendarEvent < ApplicationRecord
   scope :inset_days,    -> { joins(:calendar_event_type).merge(CalendarEventType.inset_day) }
   scope :holidays,      -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
   scope :bank_holidays, -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
+  scope :not_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.not_term_time) }
 
   after_create :check_whether_child_needs_creating
 
-  before_save :update_academic_year
+  before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
 
@@ -45,7 +46,7 @@ class CalendarEvent < ApplicationRecord
 private
 
   def update_academic_year
-    self.academic_year = AcademicYear.for_date(start_date) if start_date
+    self.academic_year = calendar.academic_year_for(start_date) if start_date
   end
 
   def check_whether_child_needs_creating

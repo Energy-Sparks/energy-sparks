@@ -9,7 +9,7 @@
 #  meter_type          :integer
 #  mpan_mprn           :bigint(8)
 #  name                :string
-#  school_id           :bigint(8)
+#  school_id           :bigint(8)        not null
 #  updated_at          :datetime         not null
 #
 # Indexes

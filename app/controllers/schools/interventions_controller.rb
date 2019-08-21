@@ -7,7 +7,7 @@ module Schools
     before_action :load_intervention_types, except: [:index, :destroy]
 
     def index
-      @interventions = @observations.intervention.order('at DESC')
+      @interventions = @observations.intervention.visible.order('at DESC')
     end
 
     def new
@@ -33,8 +33,8 @@ module Schools
     end
 
     def destroy
-      @observation.destroy!
-      redirect_to school_interventions_path(@school)
+      ObservationRemoval.new(@observation).process
+      redirect_back fallback_location: school_interventions_path(@school)
     end
 
     def show

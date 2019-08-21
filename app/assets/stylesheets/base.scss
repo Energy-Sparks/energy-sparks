@@ -10,43 +10,12 @@ body.sub-nav {
   margin-top: 110px;
 }
 
-h1 {
-  font-size: 37.3px;
-}
-
-h2 {
-  font-size: 31.1px;
-}
-
-h3 {
-  font-size: 25.9px;
-}
-
-h4 {
-  font-size: 21.6px;
-}
-
-h5 {
-  font-size: 18px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-}
-
 div.application.container {
-  padding-top: 30px;
   padding-bottom: 30px;
 }
 
 div.application.container.extra-padding {
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 section.home.alerts {
@@ -74,63 +43,16 @@ nav li {
   font-size: 14px;
 }
 
-a,
-a:hover,
-a:focus,
-a:active,
-a.active {
-  color: $light-blue-links;
-  outline: none;
+.bg-positive {
+  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
 }
 
-
-
-
-div.h5.explore {
-  margin-bottom: 0.25rem;
+.bg-neutral {
+  background-image: linear-gradient(to right, $bg-neutral 0%, $bg-neutral-light 100%);
 }
 
-hr.bulb-light,
-hr.bulb-primary {
-  padding: 0;
-  border: none;
-  border-top: solid 5px;
-  text-align: center;
-  max-width: 250px;
-  margin: 25px auto 30px;
-}
-hr.bulb-light:after,
-hr.bulb-primary:after {
-  content: "\f0eb";
-  font-family: 'Font Awesome\ 5 Pro';;
-  display: inline-block;
-  position: relative;
-  top: -0.8em;
-  font-size: 2em;
-  padding: 0 0.25em;
-}
-hr.bulb-light {
-  border-color: white;
-}
-hr.bulb-light:after {
-  background-color: $dark-orange;
-  color: white;
-}
-
-.intro-text {
-  hr.bulb-light:after {
-    background-color: $light-blue;
-    color: white;
-  }
-
-}
-
-hr.bulb-primary {
-  border-color: $dark-blue;
-}
-hr.bulb-primary:after {
-  background-color: white;
-  color: $dark-blue;
+.bg-negative {
+  background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
 }
 
 section.padded-section {
