@@ -18,6 +18,8 @@ class SchoolsController < ApplicationController
 
   # GET /schools/1
   def show
+    redirect_to teachers_school_path(@school), status: :found if current_user && current_user.manages_school?(@school.id)
+
     setup_charts
     setup_dashboard_alerts
     setup_activity_suggestions
