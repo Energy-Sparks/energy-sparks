@@ -15,7 +15,7 @@ module EnergySparks
     # -- all .rb files in that directory are automatically loaded.
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     config.eager_load_paths << Rails.root.join('lib/')
     # Pull in folders without namespacing

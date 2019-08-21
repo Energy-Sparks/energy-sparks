@@ -25,7 +25,7 @@ class Calendar < ApplicationRecord
   belongs_to  :calendar_area
   has_many    :calendar_events, dependent: :destroy
 
-  belongs_to  :based_on, class_name: 'Calendar'
+  belongs_to  :based_on, class_name: 'Calendar', optional: true
   has_many    :calendars, class_name: 'Calendar', foreign_key: :based_on_id
 
   has_many    :schools
@@ -37,28 +37,14 @@ class Calendar < ApplicationRecord
 
   validates_presence_of :title, :calendar_area
 
+  delegate :terms, :holidays, :bank_holidays, :inset_days, :not_term_time, to: :calendar_events
+
   accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
 
   def reject_calendar_events(attributes)
     end_date_date = Date.parse(attributes[:end_date])
     end_date_default = end_date_date.month == 8 && end_date_date.day == 31
     attributes[:title].blank? || attributes[:start_date].blank? || end_date_default
-  end
-
-  def terms
-    calendar_events.terms
-  end
-
-  def holidays
-    calendar_events.holidays
-  end
-
-  def bank_holidays
-    calendar_events.bank_holidays
-  end
-
-  def inset_days
-    calendar_events.inset_days
   end
 
   def terms_and_holidays

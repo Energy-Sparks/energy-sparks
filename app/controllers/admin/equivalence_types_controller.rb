@@ -5,6 +5,7 @@ module Admin
     before_action :set_template_variables, except: [:index, :show]
 
     def index
+     @equivalence_types = @equivalence_types.order(created_at: :desc)
     end
 
     def new
@@ -36,7 +37,7 @@ module Admin
   private
 
     def equivalence_type_params
-      params.require(:equivalence_type).permit(:meter_type, :time_period)
+      params.require(:equivalence_type).permit(:meter_type, :time_period, :image_name)
     end
 
     def content_params

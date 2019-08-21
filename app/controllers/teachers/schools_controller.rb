@@ -4,44 +4,23 @@ module Teachers
 
     include SchoolAggregation
     include ActivityTypeFilterable
+    include DashboardEnergyCharts
+    include DashboardAlerts
+    include DashboardTimeline
 
     skip_before_action :authenticate_user!
 
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
-      setup_charts
-      setup_dashboard_alert
+      @charts = setup_charts(@school.configuration)
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.teacher_dashboard)
+      @observations = setup_timeline(@school.observations)
+
       setup_activity_suggestions
-      setup_timeline
     end
 
   private
-
-    def setup_charts
-      @charts = {}
-
-      if @school.configuration.electricity
-        @charts[:electricity] = :teachers_landing_page_electricity
-      end
-
-      if @school.configuration.gas_dashboard_chart_type.to_sym != Schools::Configuration::NO_CHART
-        @charts[:gas] = @school.configuration.gas_dashboard_chart_type.to_sym
-      end
-    end
-
-    def setup_dashboard_alert
-      @dashboard_alerts = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher_dashboard.sample(3).map do |dashboard_alert|
-        TemplateInterpolation.new(
-          dashboard_alert.content_version,
-          with_objects: { find_out_more: dashboard_alert.find_out_more, alert: dashboard_alert.alert },
-          proxy: [:colour]
-        ).interpolate(
-          :teacher_dashboard_title,
-          with: dashboard_alert.alert.template_variables
-        )
-      end
-    end
 
     def setup_activity_suggestions
       @activities_count = @school.activities.count
@@ -54,10 +33,6 @@ module Teachers
       end
       cards_filled = [@activities_from_programmes + @activities_from_alerts + [@suggested_programme]].flatten.compact.size
       @activities_from_activity_history = suggester.suggest_from_activity_history.slice(0, (3 - cards_filled))
-    end
-
-    def setup_timeline
-      @observations = @school.observations.order('at DESC').limit(10)
     end
   end
 end

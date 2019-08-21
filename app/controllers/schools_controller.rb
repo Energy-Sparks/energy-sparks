@@ -1,13 +1,15 @@
 class SchoolsController < ApplicationController
   include ActivityTypeFilterable
   include Measurements
+  include DashboardEnergyCharts
+  include DashboardAlerts
+  include DashboardTimeline
 
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
   # GET /schools
-  # GET /schools.json
   def index
     @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
     @ungrouped_active_schools = School.active.without_group.order(:name)
@@ -15,9 +17,14 @@ class SchoolsController < ApplicationController
   end
 
   # GET /schools/1
-  # GET /schools/1.json
   def show
-    redirect_to teachers_school_path(@school), status: :found
+    if current_user && (current_user.school_id == @school.id || current_user.admin?)
+      redirect_to teachers_school_path(@school), status: :found
+    else
+      @charts = setup_charts(@school.configuration)
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard)
+      @observations = setup_timeline(@school.observations)
+    end
   end
 
   def suggest_activity

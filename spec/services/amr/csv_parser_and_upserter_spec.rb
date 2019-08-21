@@ -8,7 +8,7 @@ module Amr
 
     let(:file_name) { 'example.csv' }
     let!(:config) {
-      AmrDataFeedConfig.new(
+      AmrDataFeedConfig.create!(
         description: 'Banes',
         s3_folder: 'banes',
         s3_archive_folder: 'archive-banes',
@@ -29,7 +29,7 @@ module Amr
     }
 
     let!(:frome_config) {
-      AmrDataFeedConfig.new(
+      AmrDataFeedConfig.create!(
         description: 'Frome',
         s3_folder: 'frome',
         s3_archive_folder: 'archive-frome',
@@ -45,7 +45,7 @@ module Amr
     }
 
     let!(:historical_frome_config) {
-      AmrDataFeedConfig.new(
+      AmrDataFeedConfig.create!(
         description: 'Frome Historical',
         s3_folder: 'frome-historical',
         s3_archive_folder: 'archive-frome-historical',
@@ -62,7 +62,7 @@ module Amr
     }
 
     let!(:sheffield_config) {
-        AmrDataFeedConfig.new(
+      AmrDataFeedConfig.create!(
         description: 'Sheffield',
         s3_folder: 'sheffield',
         s3_archive_folder: 'archive-sheffield',
@@ -78,7 +78,7 @@ module Amr
     }
 
     let!(:sheffield_gas_config) {
-        AmrDataFeedConfig.new(
+      AmrDataFeedConfig.create!(
         description: 'Sheffield Gas',
         s3_folder: 'sheffield-gas',
         s3_archive_folder: 'archive-sheffield-gas',
@@ -89,7 +89,7 @@ module Amr
         reading_date_field: '"Date"',
         reading_fields: '"hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"'.split(','),
         header_example: '"MPR","Date","hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"'
-        )
+      )
     }
 
     def example_csv

@@ -1,0 +1,18 @@
+<% unless observations.empty? %>
+  <div class="row justify-content-between">
+    <div class="col-8">
+      <h2>What's been going on?</h2>
+    </div>
+    <div class="col-4 text-right">
+      <%= link_to school_timeline_path(school), class: 'btn btn-sm btn-outline-dark rounded-pill pull-right' do %>
+        <%= far_icon('eye') %>  View all actions
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-center">
+    <div class="col col-md-10">
+      <%= render 'schools/observations/timeline', observations: observations, show_actions: false%>
+    </div>
+  </div>
+<% end %>

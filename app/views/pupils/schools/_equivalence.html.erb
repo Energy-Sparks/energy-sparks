@@ -6,6 +6,6 @@
 
   </div>
   <div class="col-6 illustration-wrapper">
-    <%= image_tag("equivalences/#{['car-colour','solar-panel-colour','meal-colour'].sample}.svg", class: "") %>
+    <%= image_tag("equivalences/#{equivalence_content.equivalence_type.image_name}.svg") if equivalence_content.equivalence_type.show_image? %>
   </div>
 </div>

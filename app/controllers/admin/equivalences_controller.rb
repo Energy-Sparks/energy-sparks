@@ -7,7 +7,8 @@ module Admin
       aggregate_school = AggregateSchoolService.new(school).aggregate_school
       @equivalence = Equivalences::Calculator.new(school, EnergyConversions.new(aggregate_school)).perform(equivalence_type, content)
       @equivalence_content = TemplateInterpolation.new(
-        content
+        content,
+        with_objects: { equivalence_type: equivalence_type }
       ).interpolate(
         :equivalence,
         with: @equivalence.formatted_variables
@@ -26,7 +27,7 @@ module Admin
   private
 
     def equivalence_type_params
-      params.require(:equivalence_type).permit(:meter_type, :time_period)
+      params.require(:equivalence_type).permit(:meter_type, :time_period, :image_name)
     end
 
     def content_params

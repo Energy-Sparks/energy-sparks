@@ -45,7 +45,7 @@
 
 class AlertTypeRatingContentVersion < ApplicationRecord
   belongs_to :alert_type_rating
-  belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id
+  belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id, optional: true
 
   enum colour: [:red, :yellow, :green]
 
