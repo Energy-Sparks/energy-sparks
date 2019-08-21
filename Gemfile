@@ -59,7 +59,7 @@ gem 'handlebars_assets'
 gem "mustache", "~> 1.0"
 
 # User input
-gem 'trix-rails', require: 'trix'
+gem 'trix-rails', require: 'trix', git: 'https://github.com/king601/trix/', branch: 'rails-6'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
