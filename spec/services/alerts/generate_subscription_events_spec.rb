@@ -90,7 +90,7 @@ describe Alerts::GenerateSubscriptionEvents do
         end
 
         it 'ignores if events already exist' do
-          existing_event = AlertSubscriptionEvent.create(alert: alert, contact: email_contact, status: :sent, communication_type: :email, content_generation_run: ContentGenerationRun.create(school: school))
+          existing_event = AlertSubscriptionEvent.create!(alert: alert, contact: email_contact, status: :sent, communication_type: :email, content_generation_run: ContentGenerationRun.create(school: school), content_version: content_version)
           expect(AlertSubscriptionEvent.count).to eq 1
           service.perform(frequency: [:weekly])
           expect(content_generation_run.alert_subscription_events.count).to eq 3

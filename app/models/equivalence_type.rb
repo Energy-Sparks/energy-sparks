@@ -4,6 +4,7 @@
 #
 #  created_at  :datetime         not null
 #  id          :bigint(8)        not null, primary key
+#  image_name  :integer          default("no_image"), not null
 #  meter_type  :integer          not null
 #  time_period :integer          not null
 #  updated_at  :datetime         not null
@@ -20,7 +21,9 @@ class EquivalenceType < ApplicationRecord
     last_year: 30
   }
 
-  validates :meter_type, :time_period, presence: true
+  enum image_name: [:no_image, :car, :car_colour, :meal, :meal_colour, :solar_panel, :solar_panel_colour]
+
+  validates :meter_type, :time_period, :image_name, presence: true
 
   def current_content
     content_versions.latest.first
@@ -35,6 +38,10 @@ class EquivalenceType < ApplicationRecord
     else
       false
     end
+  end
+
+  def show_image?
+    image_name.to_sym != :no_image
   end
 
 private

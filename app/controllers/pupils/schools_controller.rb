@@ -43,7 +43,8 @@ module Pupils
       @equivalences = school.equivalences.relevant
       @equivalences_content = @equivalences.includes(:content_version).map do |equivalence|
         TemplateInterpolation.new(
-          equivalence.content_version
+          equivalence.content_version,
+          with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
         ).interpolate(
           :equivalence,
           with: equivalence.formatted_variables
