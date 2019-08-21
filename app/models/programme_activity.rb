@@ -16,7 +16,7 @@
 
 class ProgrammeActivity < ApplicationRecord
   belongs_to :activity_type
-  belongs_to :activity
+  belongs_to :activity, optional: true
   belongs_to :programme
 
   delegate :name, to: :activity_type

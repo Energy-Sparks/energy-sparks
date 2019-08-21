@@ -11,7 +11,7 @@ class CalendarArea < ApplicationRecord
   has_many    :schools
   has_many    :calendars
   has_many    :bank_holidays
-  belongs_to  :parent_area, class_name: 'CalendarArea', foreign_key: :parent_id
+  belongs_to  :parent_area, class_name: 'CalendarArea', foreign_key: :parent_id, optional: true
   has_many    :child_areas, class_name: 'CalendarArea', foreign_key: :parent_id
   has_many    :academic_years
 

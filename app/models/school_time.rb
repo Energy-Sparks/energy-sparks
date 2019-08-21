@@ -6,7 +6,7 @@
 #  day          :integer
 #  id           :bigint(8)        not null, primary key
 #  opening_time :integer          default(850)
-#  school_id    :bigint(8)
+#  school_id    :bigint(8)        not null
 #
 # Indexes
 #

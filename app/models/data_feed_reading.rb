@@ -4,7 +4,7 @@
 #
 #  at           :datetime
 #  created_at   :datetime         not null
-#  data_feed_id :bigint(8)
+#  data_feed_id :bigint(8)        not null
 #  feed_type    :integer
 #  id           :bigint(8)        not null, primary key
 #  unit         :string

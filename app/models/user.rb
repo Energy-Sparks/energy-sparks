@@ -33,7 +33,7 @@
 #
 
 class User < ApplicationRecord
-  belongs_to :school
+  belongs_to :school, optional: true
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 

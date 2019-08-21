@@ -7,9 +7,6 @@ describe CalendarEvent do
 
   it 'sets its own academic year' do
     academic_year = create(:academic_year, start_date: Date.new(2019, 9, 1), end_date: Date.new(2020, 8, 31), calendar_area: calendar_area)
-    event = create(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
-    expect(event.academic_year).to eq(nil)
-
     event_2 = create(:holiday, calendar: calendar, start_date: Date.new(2020, 1, 22), end_date: Date.new(2020, 1, 30))
     expect(event_2 .academic_year).to eq(academic_year)
   end

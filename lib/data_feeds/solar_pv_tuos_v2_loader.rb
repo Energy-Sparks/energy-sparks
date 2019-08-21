@@ -61,7 +61,7 @@ module DataFeeds
         record.update(generation_mw_x48: generation_mw_x48, gsp_id: gsp_id, gsp_name: gsp_name, latitude: latitude, longitude: longitude, distance_km: distance_km)
         @update_count = @update_count + 1
       else
-        SolarPvTuosReading.create(
+        SolarPvTuosReading.create!(
           reading_date: reading_date,
           generation_mw_x48: generation_mw_x48,
           gsp_id: gsp_id,
