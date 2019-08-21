@@ -4,7 +4,6 @@ describe EncryptedField do
 
   it 'can encrypt end decrypt strings' do
     encrypted = EncryptedField.encrypt('testing 123')
-    puts encrypted
     expect(encrypted).to_not eq('testing 123')
     expect(EncryptedField.decrypt(encrypted)).to eq('testing 123')
   end
