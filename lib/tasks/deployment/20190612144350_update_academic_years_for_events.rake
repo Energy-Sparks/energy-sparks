@@ -5,7 +5,7 @@ namespace :after_party do
 
     CalendarEvent.transaction do
       CalendarEvent.where(academic_year: nil).all.each do |calendar_event|
-        academic_year = AcademicYear.for_date(calendar_event.start_date)
+        academic_year = calendar_event.calendar.academic_year_for(calendar_event.start_date)
         puts "Updating academic year for #{calendar_event.start_date}-#{calendar_event.end_date} to #{academic_year.title}"
         calendar_event.update!(academic_year: academic_year)
       end

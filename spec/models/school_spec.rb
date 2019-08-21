@@ -153,16 +153,6 @@ describe School do
     end
   end
 
-  describe '#scoreboard_position' do
-    let!(:scoreboard)       { create :scoreboard }
-    let!(:group)            { create(:school_group, scoreboard: scoreboard) }
-    let!(:pointy_school)    { create :school, :with_points, score_points: 6, school_group: group }
-
-    it "knows it's position in it's scoreboard" do
-      expect(pointy_school.scoreboard_position).to be 1
-    end
-  end
-
   describe '#latest_dashboard_alerts' do
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }

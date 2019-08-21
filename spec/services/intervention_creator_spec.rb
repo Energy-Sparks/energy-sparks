@@ -22,4 +22,10 @@ describe InterventionCreator do
     expect(observation.points).to eq(50)
   end
 
+  it 'scores 0 points for previous academic years' do
+    observation = build(:observation, intervention_type: intervention_type, at: 3.years.ago)
+    InterventionCreator.new(observation).process
+    expect(observation.points).to eq(nil)
+  end
+
 end

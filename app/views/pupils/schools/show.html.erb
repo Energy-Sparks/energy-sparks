@@ -70,18 +70,19 @@
     </div>
   </div>
 
+
   <div class="col card-deck actions">
-    <% if @podium %>
+    <% if current_school_podium %>
       <div class="card surrounding-schools">
         <div class="card-body">
-          <% if @podium.includes_school? %>
-            <%= render 'podium', podium: @podium %>
+          <% if current_school_podium.includes_school? %>
+            <%= render 'podium', podium: current_school_podium  %>
           <% else %>
-            <%= render 'no_points_podium', podium: @podium %>
+            <%= render 'no_points_podium', podium: current_school_podium  %>
           <% end %>
         </div>
         <div class="card-footer text-center">
-          <%= link_to 'See the scoreboard', scoreboard_path(@scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+          <%= link_to 'See the scoreboard', scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
         </div>
       </div>
     <% end %>

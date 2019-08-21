@@ -2,31 +2,37 @@
 #
 # Table name: alert_type_rating_content_versions
 #
-#  alert_type_rating_id               :bigint(8)        not null
-#  colour                             :integer          default("red"), not null
-#  created_at                         :datetime         not null
-#  email_content                      :text
-#  email_end_date                     :date
-#  email_start_date                   :date
-#  email_title                        :string
-#  find_out_more_chart_title          :string           default("")
-#  find_out_more_chart_variable       :text             default("none")
-#  find_out_more_content              :text
-#  find_out_more_end_date             :date
-#  find_out_more_start_date           :date
-#  find_out_more_title                :string
-#  id                                 :bigint(8)        not null, primary key
-#  pupil_dashboard_alert_end_date     :date
-#  pupil_dashboard_alert_start_date   :date
-#  pupil_dashboard_title              :string
-#  replaced_by_id                     :integer
-#  sms_content                        :string
-#  sms_end_date                       :date
-#  sms_start_date                     :date
-#  teacher_dashboard_alert_end_date   :date
-#  teacher_dashboard_alert_start_date :date
-#  teacher_dashboard_title            :string
-#  updated_at                         :datetime         not null
+#  alert_type_rating_id                  :bigint(8)        not null
+#  colour                                :integer          default("red"), not null
+#  created_at                            :datetime         not null
+#  email_content                         :text
+#  email_end_date                        :date
+#  email_start_date                      :date
+#  email_title                           :string
+#  find_out_more_chart_title             :string           default("")
+#  find_out_more_chart_variable          :text             default("none")
+#  find_out_more_content                 :text
+#  find_out_more_end_date                :date
+#  find_out_more_start_date              :date
+#  find_out_more_title                   :string
+#  id                                    :bigint(8)        not null, primary key
+#  management_dashboard_alert_end_date   :date
+#  management_dashboard_alert_start_date :date
+#  management_dashboard_title            :string
+#  public_dashboard_alert_end_date       :date
+#  public_dashboard_alert_start_date     :date
+#  public_dashboard_title                :string
+#  pupil_dashboard_alert_end_date        :date
+#  pupil_dashboard_alert_start_date      :date
+#  pupil_dashboard_title                 :string
+#  replaced_by_id                        :integer
+#  sms_content                           :string
+#  sms_end_date                          :date
+#  sms_start_date                        :date
+#  teacher_dashboard_alert_end_date      :date
+#  teacher_dashboard_alert_start_date    :date
+#  teacher_dashboard_title               :string
+#  updated_at                            :datetime         not null
 #
 # Indexes
 #
@@ -82,6 +88,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def self.template_fields
     [
       :pupil_dashboard_title, :teacher_dashboard_title,
+      :public_dashboard_title, :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
       :find_out_more_chart_variable, :find_out_more_chart_title
@@ -94,7 +101,9 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :pupil_dashboard_alert_start_date, :pupil_dashboard_alert_end_date,
       :find_out_more_start_date, :find_out_more_end_date,
       :sms_start_date, :sms_end_date,
-      :email_start_date, :email_end_date
+      :email_start_date, :email_end_date,
+      :public_dashboard_alert_start_date, :public_dashboard_alert_end_date,
+      :management_dashboard_alert_start_date, :management_dashboard_alert_end_date
     ]
   end
 

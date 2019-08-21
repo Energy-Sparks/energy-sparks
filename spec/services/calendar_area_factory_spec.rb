@@ -18,18 +18,12 @@ describe CalendarAreaFactory do
     CalendarEventTypeFactory.create
   end
 
-  let!(:england_and_wales){ create(:calendar_area, title: 'England and Wales') }
-
   let(:populated_area) { CalendarArea.new({title: 'Oxfordshire'}) }
   let!(:area){ CalendarAreaFactory.create(populated_area, events) }
 
   it 'creates a calendar area' do
     expect(area).to be_persisted
     expect(area.title).to eq('Oxfordshire')
-  end
-
-  it 'uses england and wales as a parent area' do
-    expect(area.parent_area).to eq(england_and_wales)
   end
 
   it 'creates a template calendar for the area' do

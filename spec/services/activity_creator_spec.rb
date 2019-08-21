@@ -27,6 +27,14 @@ describe ActivityCreator do
     expect(observation.points).to eq(50)
   end
 
+
+  it 'scores no points for a previous academic year' do
+    activity = build(:activity, activity_type: activity_type, happened_on: 3.years.ago)
+    ActivityCreator.new(activity).process
+    observation = Observation.find_by!(activity_id: activity.id)
+    expect(observation.points).to eq(nil)
+  end
+
   context 'with a programme' do
     let!(:school)         { create :school }
     let(:programme_type)  { create :programme_type_with_activity_types }
