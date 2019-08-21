@@ -13,10 +13,11 @@ module Teachers
     def show
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
-      setup_charts
-      setup_dashboard_alerts
+      @charts = setup_charts(@school.configuration)
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.teacher_dashboard)
+      @observations = setup_timeline(@school.observations)
+
       setup_activity_suggestions
-      setup_timeline
     end
 
   private

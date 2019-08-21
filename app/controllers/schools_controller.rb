@@ -18,11 +18,13 @@ class SchoolsController < ApplicationController
 
   # GET /schools/1
   def show
-    redirect_to teachers_school_path(@school), status: :found if current_user && current_user.manages_school?(@school.id)
-
-    setup_charts
-    setup_dashboard_alerts
-    setup_timeline
+    if current_user && current_user.school_id == @school.id
+      redirect_to teachers_school_path(@school), status: :found
+    else
+      @charts = setup_charts(@school.configuration)
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard)
+      @observations = setup_timeline(@school.observations)
+    end
   end
 
   def suggest_activity

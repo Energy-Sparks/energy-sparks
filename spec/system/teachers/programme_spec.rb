@@ -15,7 +15,6 @@ describe 'programme', type: :system do
   before do
     sign_in(user)
     visit root_path
-    puts path
     click_on 'Choose another programme'
   end
 

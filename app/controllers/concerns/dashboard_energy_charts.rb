@@ -1,15 +1,19 @@
 module DashboardEnergyCharts
   extend ActiveSupport::Concern
 
-  def setup_charts
-    @charts = {}
+  def setup_charts(school_configuration)
+    charts = {}
 
-    if @school.configuration.electricity
-      @charts[:electricity] = :teachers_landing_page_electricity
+    if school_configuration.electricity
+      charts[:electricity] = :teachers_landing_page_electricity
     end
 
-    if @school.configuration.gas_dashboard_chart_type.to_sym != Schools::Configuration::NO_CHART
-      @charts[:gas] = @school.configuration.gas_dashboard_chart_type.to_sym
+    gas_dashboard_chart_type = school_configuration.gas_dashboard_chart_type.to_sym
+
+    if gas_dashboard_chart_type != Schools::Configuration::NO_CHART
+      charts[:gas] = gas_dashboard_chart_type
     end
+
+    charts
   end
 end
