@@ -38,30 +38,40 @@
 <% end %>
 
 <div class="row">
-  <div class="col card-deck">
+  <div class="col card-deck actions">
     <div class="card">
       <div class="card-body">
-        <% if @first %>
-          <h4>No activities completed, make a start!</h4>
-        <% else %>
-          <h4>You've completed <%= @activities_count %> activities</h4>
-        <% end %>
+        <h4 class="text-center">
+          <strong>
+            <% if @first %>
+              No activities completed, make a start!
+            <% else %>
+              You've completed <%= @activities_count %> activities
+            <% end %>
+          </strong>
+        </h4>
         <% if @suggestion %>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Try this one <%= @first ? 'first' : 'next' %>:
-              <p><%= fa_icon('edit') %> <%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
-              <h1 class="badge badge-success"><%= @suggestion.score %> </h1> points
-            </li>
-          </ul>
+          <h5 class="text-center">Try this one <%= @first ? 'first' : 'next' %>:</h5>
+          <div class="activity-suggestion">
+            <p><%= link_to @suggestion.name, activity_type_path(@suggestion) %></p>
+            <span class="btn bg-neutral rounded-pill">
+              <strong class="text-uppercase">
+                <%= @suggestion.score %><span class="small"> points</span>
+              </strong>
+              /
+              <span class="key-stages"><%= @suggestion.key_stage_list %></span>
+            </span>
+          </div>
         <% end %>
       </div>
       <div class="card-footer text-center">
-        <h4><%= fa_icon('pencil-alt') %> <%= link_to 'All activities', activity_categories_path %></h4>
+        <%= link_to 'All activities', activity_categories_path, class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
       </div>
     </div>
   </div>
 
-  <div class="col card-deck">
+
+  <div class="col card-deck actions">
     <% if current_school_podium %>
       <div class="card surrounding-schools">
         <div class="card-body">
@@ -72,9 +82,7 @@
           <% end %>
         </div>
         <div class="card-footer text-center">
-          <h4>
-          <%= link_to 'See the Scoreboard', scoreboard_path(current_school_podium.scoreboard) %>
-          </h4>
+          <%= link_to 'See the scoreboard', scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
         </div>
       </div>
     <% end %>
