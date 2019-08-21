@@ -26,7 +26,7 @@
 
 module DataFeeds
   class SolarPvTuosReading < ApplicationRecord
-    belongs_to :solar_pv_tuos_area
+    belongs_to :solar_pv_tuos_area, foreign_key: :area_id
 
     def self.download_all_data
       <<~QUERY

@@ -3,7 +3,7 @@
 # Table name: activity_types
 #
 #  active               :boolean          default(TRUE)
-#  activity_category_id :bigint(8)
+#  activity_category_id :bigint(8)        not null
 #  created_at           :datetime         not null
 #  custom               :boolean          default(FALSE)
 #  data_driven          :boolean          default(FALSE)

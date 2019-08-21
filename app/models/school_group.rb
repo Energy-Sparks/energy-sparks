@@ -35,12 +35,12 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
-  belongs_to :scoreboard
+  belongs_to :scoreboard, optional: true
 
-  belongs_to :default_calendar_area, class_name: 'CalendarArea'
-  belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea'
-  belongs_to :default_weather_underground_area, class_name: 'WeatherUndergroundArea'
-  belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea'
+  belongs_to :default_calendar_area, class_name: 'CalendarArea', optional: true
+  belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
+  belongs_to :default_weather_underground_area, class_name: 'WeatherUndergroundArea', optional: true
+  belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
 
   validates :name, presence: true
 

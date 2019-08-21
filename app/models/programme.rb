@@ -5,8 +5,8 @@
 #  description       :text
 #  ended_on          :date
 #  id                :bigint(8)        not null, primary key
-#  programme_type_id :bigint(8)
-#  school_id         :bigint(8)
+#  programme_type_id :bigint(8)        not null
+#  school_id         :bigint(8)        not null
 #  started_on        :date             not null
 #  status            :integer          default("started"), not null
 #  title             :text

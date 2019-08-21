@@ -2,8 +2,8 @@
 #
 # Table name: amr_data_feed_readings
 #
-#  amr_data_feed_config_id     :bigint(8)
-#  amr_data_feed_import_log_id :bigint(8)
+#  amr_data_feed_config_id     :bigint(8)        not null
+#  amr_data_feed_import_log_id :bigint(8)        not null
 #  created_at                  :datetime         not null
 #  description                 :text
 #  id                          :bigint(8)        not null, primary key

@@ -3,10 +3,12 @@ require 'rails_helper'
 describe MeterManagement do
 
   let!(:meter) { create(:electricity_meter) }
+  let(:config) { create(:amr_data_feed_config) }
+  let(:log) { create(:amr_data_feed_import_log) }
 
   describe 'process_creation!' do
 
-    let!(:amr_data_feed_reading){ create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, meter: nil) }
+    let!(:amr_data_feed_reading){ create(:amr_data_feed_reading, amr_data_feed_config: config, amr_data_feed_import_log: log, mpan_mprn: meter.mpan_mprn, meter: nil) }
 
     it 'assigns amr_data_feed_readings to the meter' do
       MeterManagement.new(meter).process_creation!
@@ -17,10 +19,10 @@ describe MeterManagement do
 
   describe 'process_mpan_mpnr_change!' do
 
-    let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, meter: meter) }
+    let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, amr_data_feed_config: config, amr_data_feed_import_log: log, meter: meter) }
     let!(:existing_amr_validated_reading){ create(:amr_validated_reading, meter: meter) }
 
-    let!(:unassigned_amr_data_feed_reading){ create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, meter: nil) }
+    let!(:unassigned_amr_data_feed_reading){ create(:amr_data_feed_reading, amr_data_feed_config: config, amr_data_feed_import_log: log, mpan_mprn: meter.mpan_mprn, meter: nil) }
 
     context 'if the mpan_mprn has changed' do
       it 'assigns amr_data_feed_readings to the meter using the new mpan_mprn' do
@@ -45,7 +47,7 @@ describe MeterManagement do
 
   describe 'delete_meter!' do
     context 'if a meter is to be deleted with amr validated readings' do
-      let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, meter: meter) }
+      let!(:existing_amr_data_feed_reading){ create(:amr_data_feed_reading, amr_data_feed_config: config, amr_data_feed_import_log: log, meter: meter) }
       let!(:existing_amr_validated_reading){ create(:amr_validated_reading, meter: meter) }
 
       it 'removes the meter from associated amr_data_feed_readings' do

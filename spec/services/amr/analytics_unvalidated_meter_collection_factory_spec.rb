@@ -7,6 +7,7 @@ module Amr
     let(:school_name) { 'Active school'}
     let!(:school)     { create(:school, :with_school_group, name: school_name) }
     let!(:config)     { create(:amr_data_feed_config) }
+    let!(:log)        { create(:amr_data_feed_import_log) }
     let!(:e_meter)    { create(:electricity_meter_with_reading, reading_count: 2, school: school, config: config) }
     let!(:g_meter)    { create(:gas_meter_with_reading, school: school) }
 
@@ -38,7 +39,7 @@ module Amr
     end
 
     it 'skips invalid date formats' do
-      e_meter.amr_data_feed_readings << AmrDataFeedReading.create(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, rand), reading_date: Date.tomorrow.strftime('%b %e %Y'), mpan_mprn: e_meter.mpan_mprn)
+      e_meter.amr_data_feed_readings << AmrDataFeedReading.create!(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, rand), reading_date: Date.tomorrow.strftime('%b %e %Y'), mpan_mprn: e_meter.mpan_mprn, amr_data_feed_import_log: log)
 
       expect(e_meter.amr_data_feed_readings.count).to be 3
       meter_collection = AnalyticsUnvalidatedMeterCollectionFactory.new(school).build
@@ -46,7 +47,7 @@ module Amr
     end
 
     it 'skips blank readings' do
-      e_meter.amr_data_feed_readings << AmrDataFeedReading.create(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, nil), reading_date: Date.tomorrow.strftime('%b %e %Y'), mpan_mprn: e_meter.mpan_mprn)
+      e_meter.amr_data_feed_readings << AmrDataFeedReading.create!(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, nil), reading_date: Date.tomorrow.strftime('%b %e %Y'), mpan_mprn: e_meter.mpan_mprn, amr_data_feed_import_log: log)
 
       expect(e_meter.amr_data_feed_readings.count).to be 3
       meter_collection = AnalyticsUnvalidatedMeterCollectionFactory.new(school).build
