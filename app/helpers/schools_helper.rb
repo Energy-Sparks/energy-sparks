@@ -1,10 +1,6 @@
 module SchoolsHelper
   include Measurements
 
-  def scoreboard_position(school)
-    "#{school.scoreboard_position}#{school.scoreboard_position.ordinal}"
-  end
-
   def daily_usage_chart(supply, first_date, to_date, meter = nil, measurement = 'kwh')
     @measurement = measurement_unit(measurement)
     ytitle = sort_out_y_title(@measurement)

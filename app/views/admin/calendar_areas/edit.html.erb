@@ -2,6 +2,5 @@
 
 <%= simple_form_for @calendar_area, url: admin_calendar_area_path(@calendar_area)  do |form| %>
   <%= form.input :title, as: :string%>
-  <%= form.input :description %>
   <%= form.button :submit, 'Update Calendar area' %>
 <% end %>

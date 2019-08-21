@@ -2,8 +2,8 @@
   <%= fa_icon("#{observation.intervention_type.intervention_type_group.icon} fa-2x") %>
 </td>
 <td>
-  <h5><%= link_to observation.intervention_type.title, school_intervention_path(@school, observation)%></h5>
-  <%= nice_dates(observation.at) %>
+  <h3><strong><%= link_to observation.intervention_type.title, school_intervention_path(@school, observation)%></strong></h3>
+  <span class="text-muted"><%= nice_dates(observation.at) %></span>
 </td>
 <% if show_actions && can?(:manage, observation) %>
   <td class="text-right">

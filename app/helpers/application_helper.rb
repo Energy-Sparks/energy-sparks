@@ -65,9 +65,9 @@ module ApplicationHelper
   def class_for_alert_colour(colour)
     return class_for_alert_colour(:unknown) if colour.nil?
     case colour.to_sym
-    when :red then 'bg-danger'
-    when :yellow then 'bg-warning'
-    when :green then 'bg-success'
+    when :red then 'bg-negative'
+    when :yellow then 'bg-neutral'
+    when :green then 'bg-positive'
     else 'bg-secondary'
     end
   end

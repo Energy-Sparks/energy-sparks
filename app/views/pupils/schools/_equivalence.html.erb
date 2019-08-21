@@ -1,14 +1,13 @@
-<div class="row mt-2 mb-2">
-  <div class="col-md-1">
-    <%= image_tag("lightbulb.png", class: "pupil-dashboard") %>
+<div class="row illustration-background">
+  <div class="col-6">
+    <h3><%= sanitize equivalence_content.equivalence.split('. ').first %></h3>
+    <h2><%= sanitize equivalence_content.equivalence.split('. ').last %></h2>
+
+    <%= link_to '#', class: 'btn btn-sm btn-outline-dark rounded-pill pull-right' do %>
+        <%= far_icon('eye') %>  Find out how much energy was used
+    <% end %>
   </div>
-  <div class="col-md-11">
-    <div class="row">
-      <hgroup class="speech">
-        <div class="trix-content">
-          <%= sanitize equivalence_content.equivalence %>
-        </div>
-      </hgroup>
-    </div>
+  <div class="col-6 illustration-wrapper">
+    <%= image_tag("equivalences/#{['car-colour','solar-panel-colour','meal-colour'].sample}.svg", class: "") %>
   </div>
 </div>

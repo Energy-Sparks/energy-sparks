@@ -8,7 +8,13 @@ class ScoreboardsController < ApplicationController
   end
 
   def show
-    @schools = @scoreboard.scored_schools
+    @academic_year = if params[:academic_year]
+                       @scoreboard.calendar_area.academic_years.find(params[:academic_year])
+                     else
+                       @scoreboard.calendar_area.academic_year_for(Time.zone.today)
+                     end
+    @active_academic_years = @scoreboard.active_academic_years
+    @schools = @scoreboard.scored_schools(academic_year: @academic_year)
   end
 
   # GET /scoreboards/new
@@ -34,6 +40,7 @@ class ScoreboardsController < ApplicationController
     if @scoreboard.update(scoreboard_params)
       redirect_to scoreboards_path, notice: 'Scoreboard was successfully updated.'
     else
+      @school_groups = @scoreboard.school_groups.order(:name)
       render :edit
     end
   end
@@ -49,6 +56,6 @@ class ScoreboardsController < ApplicationController
 private
 
   def scoreboard_params
-    params.require(:scoreboard).permit(:name, :description)
+    params.require(:scoreboard).permit(:name, :description, :calendar_area_id)
   end
 end

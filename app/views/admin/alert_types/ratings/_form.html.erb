@@ -42,7 +42,18 @@
     <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
       <%= content.input :pupil_dashboard_title %>
     <% end %>
+  <% end %>
 
+  <%= render 'content_section', form: form, field: :public_dashboard_alert_active, field_name: 'Public dashboard alert' do %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'public_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :public_dashboard_title) do %>
+      <%= content.input :public_dashboard_title %>
+    <% end %>
+  <% end %>
+
+  <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Management dashboard alert' do %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :management_dashboard_title) do %>
+      <%= content.input :management_dashboard_title %>
+    <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
