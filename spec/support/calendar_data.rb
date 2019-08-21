@@ -12,7 +12,7 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
 
   let(:area_and_calendar_title) { 'Area and Calendar title'}
   let!(:area) { create(:calendar_area, title: area_and_calendar_title) }
-  let!(:academic_years) { AcademicYearFactory.new(2011, 2019).create }
+  let!(:academic_years) { AcademicYearFactory.new(area).create(start_year: 2011, end_year: 2019) }
   let!(:bank_holiday) { create :bank_holiday, title: 'Good Friday', holiday_date: "2012-04-06" }
 
   let!(:calendar_events) { CalendarEventTypeFactory.create }

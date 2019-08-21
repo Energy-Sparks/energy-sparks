@@ -99,6 +99,26 @@ RSpec.describe 'alert type management', type: :system do
           end
         end
 
+        check 'Public dashboard alert'
+        fill_in 'Public dashboard title', with: 'This school is using gas'
+
+        within '.public_dashboard_alert_active' do
+          click_on 'Preview'
+          within '#public_dashboard_alert-preview .content' do
+            expect(page).to have_content('This school is using gas')
+          end
+        end
+
+        check 'Management dashboard alert'
+        fill_in 'Management dashboard title', with: 'Your school is using gas'
+
+        within '.management_dashboard_alert_active' do
+          click_on 'Preview'
+          within '#management_dashboard_alert-preview .content' do
+            expect(page).to have_content('Your school is using gas')
+          end
+        end
+
         check 'Find out more'
 
         within '.find_out_more_active' do
@@ -156,6 +176,8 @@ RSpec.describe 'alert type management', type: :system do
         expect(first_content.find_out_more_title).to eq('You are using too much gas!')
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
         expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
+        expect(first_content.public_dashboard_title).to eq('This school is using gas')
+        expect(first_content.management_dashboard_title).to eq('Your school is using gas')
 
         click_on 'Edit'
 
