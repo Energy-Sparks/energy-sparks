@@ -16,8 +16,8 @@
   <% end %>
 </div>
 <p></p>
-<div class="row dashboards">
-  <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
+<div class="row teachers">
+  <%= render 'teachers/schools/charts', charts: @charts %>
 </div>
 
 <% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
@@ -29,7 +29,28 @@
   %>
 <% end %>
 
-<%= render 'shared/dashboard_alerts', dashboard_alert: @dashboard_alert, school: @school, dashboard_alert_content: @dashboard_alert_content %>
+<% unless @dashboard_alerts.empty?%>
+
+  <div class="act-on-energy-usage">
+    <h3>Act on energy usage</h3>
+    <% @dashboard_alerts.each do |alert_content|%>
+      <%= render 'schools/dashboard/info_bar',
+        colour: class_for_alert_colour(alert_content.colour),
+        icon: alert_icon(alert_content.alert, 'fa-3x'),
+        content: alert_content.teacher_dashboard_title,
+        buttons: alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, alert_content.find_out_more)} : {}
+      %>
+  <% end %>
+  <% if @dashboard_alerts.size > 1 %>
+    <div class="row">
+      <div class="col text-center">
+        <a href="#" class="btn btn-rounded more-alerts">Show <%= pluralize((@dashboard_alerts.size - 1), 'more alert')%></a>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% end %>
 
 <% if @activities_count < 1 %>
   <h2 class="p-2">You’ve not completed any activities yet</h2>
