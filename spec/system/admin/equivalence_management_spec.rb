@@ -16,27 +16,39 @@ RSpec.describe 'equivalence type management', type: :system do
 
     fill_in_trix with: 'Your school used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
 
-    select 'last_month', from: 'Time period'
-    select 'electric', from: 'Meter type'
+    select 'Last month', from: 'Time period'
+    select 'Electric', from: 'Meter type'
+
+    expect(page).to have_content(EquivalenceType.image_names.keys.first.humanize)
 
     click_on 'Create equivalence type'
 
     equivalence_type = EquivalenceType.first
     expect(equivalence_type.electricity?).to eq true
     expect(equivalence_type.last_month?).to eq true
+
+    expect(equivalence_type.show_image?).to eq false
+    expect(equivalence_type.image_name).to eq :no_image.to_s
+
     first_content = equivalence_type.current_content
     expect(first_content.equivalence).to include('Your school used')
 
     click_on 'Edit'
 
     fill_in_trix with: 'You used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
+    select 'Car colour', from: 'Image name'
+
+    select 'Gas', from: 'Meter type'
     click_on 'Update equivalence type'
+
+    equivalence_type.reload
+    expect(equivalence_type.gas?).to eq true
+
+    expect(equivalence_type.image_name).to eq :car_colour.to_s
+    expect(equivalence_type.show_image?).to eq true
 
     expect(equivalence_type.content_versions.count).to eq(2)
     first_content = equivalence_type.current_content
     expect(first_content.equivalence).to include('You used')
-
-
   end
-
 end

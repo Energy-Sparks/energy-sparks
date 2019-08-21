@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_20_092428) do
+ActiveRecord::Schema.define(version: 2019_08_21_081947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -369,6 +369,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
     t.boolean "school_occupied", default: false
     t.boolean "bank_holiday", default: false
     t.boolean "inset_day", default: false
+    t.integer "analytics_event_type", default: 0, null: false
   end
 
   create_table "calendar_events", force: :cascade do |t|
@@ -500,6 +501,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_092428) do
     t.integer "time_period", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "image_name", default: 0, null: false
   end
 
   create_table "equivalences", force: :cascade do |t|
