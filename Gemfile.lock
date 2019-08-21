@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 50fc2e8a2ed102f25b2818b47776ecfbd98f5ab1
-  tag: 0.50.0
+  revision: 167dc1fd9dc82ba036af37f2a8b2bebe6391b57c
+  tag: 0.50.1
   specs:
-    energy-sparks_analytics (0.50.0)
+    energy-sparks_analytics (0.50.1)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -48,66 +48,72 @@ GIT
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
 
+GIT
+  remote: https://github.com/seamusabshere/upsert.git
+  revision: b4a198be9253eefc3e25d88e10c21d9acb9ab6d4
+  specs:
+    upsert (3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
+    actioncable (6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
-      activejob (= 6.0.0.rc1)
-      activerecord (= 6.0.0.rc1)
-      activestorage (= 6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    actionmailbox (6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
+      activejob (= 6.0.0.rc2)
+      activerecord (= 6.0.0.rc2)
+      activestorage (= 6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       mail (>= 2.7.1)
-    actionmailer (6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
-      actionview (= 6.0.0.rc1)
-      activejob (= 6.0.0.rc1)
+    actionmailer (6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
+      actionview (= 6.0.0.rc2)
+      activejob (= 6.0.0.rc2)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (6.0.0.rc1)
-      actionview (= 6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    actionpack (6.0.0.rc2)
+      actionview (= 6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       rack (~> 2.0)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actiontext (6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
-      activerecord (= 6.0.0.rc1)
-      activestorage (= 6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    actiontext (6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
+      activerecord (= 6.0.0.rc2)
+      activestorage (= 6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       nokogiri (>= 1.8.5)
-    actionview (6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    actionview (6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    activejob (6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    activejob (6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       globalid (>= 0.3.6)
-    activemodel (6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
-    activerecord (6.0.0.rc1)
-      activemodel (= 6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    activemodel (6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
+    activerecord (6.0.0.rc2)
+      activemodel (= 6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
     activerecord-import (1.0.2)
       activerecord (>= 3.2)
-    activestorage (6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
-      activejob (= 6.0.0.rc1)
-      activerecord (= 6.0.0.rc1)
+    activestorage (6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
+      activejob (= 6.0.0.rc2)
+      activerecord (= 6.0.0.rc2)
       marcel (~> 0.3.1)
-    activesupport (6.0.0.rc1)
+    activesupport (6.0.0.rc2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-      zeitwerk (~> 2.1, >= 2.1.4)
+      zeitwerk (~> 2.1, >= 2.1.8)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     after_party (1.11.2)
@@ -318,7 +324,7 @@ GEM
     mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
     mini_magick (4.9.4)
-    mini_mime (1.0.1)
+    mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minimization (0.2.5)
       text-table (~> 1.2)
@@ -336,7 +342,7 @@ GEM
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
     netrc (0.11.0)
-    nio4r (2.3.1)
+    nio4r (2.4.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     notiffany (0.1.1)
@@ -387,20 +393,20 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rails (6.0.0.rc1)
-      actioncable (= 6.0.0.rc1)
-      actionmailbox (= 6.0.0.rc1)
-      actionmailer (= 6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
-      actiontext (= 6.0.0.rc1)
-      actionview (= 6.0.0.rc1)
-      activejob (= 6.0.0.rc1)
-      activemodel (= 6.0.0.rc1)
-      activerecord (= 6.0.0.rc1)
-      activestorage (= 6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    rails (6.0.0.rc2)
+      actioncable (= 6.0.0.rc2)
+      actionmailbox (= 6.0.0.rc2)
+      actionmailer (= 6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
+      actiontext (= 6.0.0.rc2)
+      actionview (= 6.0.0.rc2)
+      activejob (= 6.0.0.rc2)
+      activemodel (= 6.0.0.rc2)
+      activerecord (= 6.0.0.rc2)
+      activestorage (= 6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       bundler (>= 1.3.0)
-      railties (= 6.0.0.rc1)
+      railties (= 6.0.0.rc2)
       sprockets-rails (>= 2.0.0)
     rails-controller-testing (1.0.4)
       actionpack (>= 5.0.1.x)
@@ -409,16 +415,16 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.0.4)
+    rails-html-sanitizer (1.2.0)
       loofah (~> 2.2, >= 2.2.2)
-    railties (6.0.0.rc1)
-      actionpack (= 6.0.0.rc1)
-      activesupport (= 6.0.0.rc1)
+    railties (6.0.0.rc2)
+      actionpack (= 6.0.0.rc2)
+      activesupport (= 6.0.0.rc2)
       method_source
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
-    rake (12.3.2)
+    rake (12.3.3)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
@@ -568,7 +574,6 @@ GEM
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
     uniform_notifier (1.12.1)
-    upsert (2.2.1)
     warden (1.2.8)
       rack (>= 2.0.6)
     web-console (4.0.0)
@@ -653,7 +658,7 @@ DEPENDENCIES
   rack (= 2.0.6)
   rack-attack
   rack-canonical-host
-  rails (~> 6.0.0.rc1)
+  rails (~> 6.0.0.rc2)
   rails-controller-testing
   rb-readline
   redcarpet
@@ -676,14 +681,14 @@ DEPENDENCIES
   twilio-ruby
   tzinfo-data
   uglifier
-  upsert (~> 2.2.1)
+  upsert!
   web-console
   webdrivers
   webmock
   webpacker (~> 4.0)
 
 RUBY VERSION
-   ruby 2.5.3p105
+   ruby 2.6.3p62
 
 BUNDLED WITH
    1.17.3

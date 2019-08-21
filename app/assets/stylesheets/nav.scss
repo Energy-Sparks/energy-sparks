@@ -2,12 +2,16 @@
 .navbar {
   /* border-radius: 0.25rem; */
   border-radius: 0;
+
+  .dropdown-item:hover {
+    color: $dark;
+  }
 }
 
 .navbar-custom {
   background: $dark-blue;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
+  font-weight: 500;
   border: none;
 }
 .navbar-custom a:focus {
@@ -40,26 +44,6 @@
   padding: 0.4em;
 }
 
-.sub-navbar h4 a,
-.sub-navbar h4 a:hover,
-.sub-navbar h4 a:focus,
-.sub-navbar h4 a:active {
-  color: white;
-  vertical-align: middle;
-}
-
-.sub-navbar h3,
-.sub-navbar h4 {
-  margin: 0px;
-}
-
-.sub-navbar li.nav-item a,
-.sub-navbar li.nav-item a:hover,
-.sub-navbar li.nav-item a:focus,
-.sub-navbar li.nav-item a:active {
-    color: black;
-}
-
 .sub-navbar a.btn {
     margin-right: 2px;
     margin-left: 2px;
@@ -75,29 +59,6 @@
     margin-top: 60px;
 }
 
-.navbar-custom .navbar-nav li a {
-  color: white;
-}
-
-.navbar-custom .navbar-nav li a:hover {
-  color: $light-blue;
-  outline: none;
-}
-.navbar-custom .navbar-nav li a:focus,
-.navbar-custom .navbar-nav li a:active {
-  color: white;
-}
-.navbar-custom .navbar-nav li.active a {
-  color: white;
-  background: $light-blue;
-}
-
-.navbar-custom .navbar-nav li.active a:hover,
-.navbar-custom .navbar-nav li.active a:focus,
-.navbar-custom .navbar-nav li.active a:active {
-  color: white;
-  background: $light-blue;
-}
 .navbar-custom .navbar-toggle {
   color: white;
   font-size: 10px;
@@ -111,7 +72,7 @@
 }
 @media (min-width: 768px) {
   .navbar-custom .navbar-brand {
-    font-size: 2em;
+    font-size: 25.9px;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;

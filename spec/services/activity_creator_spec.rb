@@ -11,25 +11,28 @@ describe ActivityCreator do
     expect(activity.activity_category).to eq(activity_category)
   end
 
-  it 'sets the points from the type' do
-    activity = build(:activity, activity_type: activity_type)
-    ActivityCreator.new(activity).process
-    expect(activity.points).to eq(50)
-  end
-
   it 'saves the activity' do
     activity = build(:activity, activity_type: activity_type)
     ActivityCreator.new(activity).process
     expect(activity).to be_persisted
   end
 
-  it 'creates an observation for the activity' do
+  it 'creates an observation for the activity with the points' do
     activity = build(:activity, activity_type: activity_type)
     ActivityCreator.new(activity).process
     observation = Observation.find_by!(activity_id: activity.id)
     expect(observation.observation_type).to eq("activity")
     expect(observation.school).to eq(activity.school)
     expect(observation.at).to eq(activity.happened_on)
+    expect(observation.points).to eq(50)
+  end
+
+
+  it 'scores no points for a previous academic year' do
+    activity = build(:activity, activity_type: activity_type, happened_on: 3.years.ago)
+    ActivityCreator.new(activity).process
+    observation = Observation.find_by!(activity_id: activity.id)
+    expect(observation.points).to eq(nil)
   end
 
   context 'with a programme' do

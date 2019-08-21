@@ -31,7 +31,7 @@ module Teachers
     end
 
     def setup_dashboard_alert
-      @dashboard_alerts = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher.sample(3).map do |dashboard_alert|
+      @dashboard_alerts = @school.latest_dashboard_alerts.includes(:content_version, :find_out_more).teacher_dashboard.sample(3).map do |dashboard_alert|
         TemplateInterpolation.new(
           dashboard_alert.content_version,
           with_objects: { find_out_more: dashboard_alert.find_out_more, alert: dashboard_alert.alert },

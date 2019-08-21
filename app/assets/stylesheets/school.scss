@@ -26,7 +26,7 @@ div.school-card-row {
 }
 
 .gas-card {
-  border: 5px solid $gasLight;
+  border: 5px solid $gas-light;
 
   .card-header {
     background-color: #fff;
@@ -43,13 +43,13 @@ div.school-card-row {
   }
 
   .btn {
-    background-color: $gasDark;
-    border-color: $gasDark;
+    background-color: $gas-dark;
+    border-color: $gas-dark;
   }
 }
 
 .electricity-card {
-  border: 5px solid $electricLight;
+  border: 5px solid $electric-light;
 
   .card-header {
     background-color: #fff;
@@ -66,25 +66,25 @@ div.school-card-row {
   }
 
   .btn {
-    background-color: $electricDark;
-    border-color: $electricDark;
+    background-color: $electric-dark;
+    border-color: $electric-dark;
   }
 }
 
 .electricity-light {
-  border: 2px solid $electricLight;
+  border: 2px solid $electric-light;
 }
 
 .electricity-dark {
-  border: 2px solid $electricDark;
+  border: 2px solid $electric-dark;
 }
 
 .gas-light {
-  border: 2px solid $gasLight;
+  border: 2px solid $gas-light;
 }
 
 .gas-dark {
-  border: 2px solid $gasDark;
+  border: 2px solid $gas-dark;
 }
 
 .secondary-card {
@@ -117,17 +117,7 @@ div.school-card-row {
       background-color: #fff;
       border-top: 0px;
     }
-    .btn {
-      font-size: 20px;
-    }
-    .card-body {
-      p {
-        font-size: 18px;
-      }
-    }
   }
-
-
 }
 
 #activity-cards {
@@ -140,36 +130,6 @@ div.school-card-row {
     .btn {
       background-color: $green;
       border-color: $green;
-    }
-  }
-
-}
-
-
-#electricity-cards {
-  padding-bottom: 35px;
-
-  .dashboard {
-    .card {
-      border: 5px solid $electricLight;
-    }
-    .btn {
-      background-color: $electricDark;
-      border-color: $electricDark;
-    }
-  }
-}
-
-#gas-cards {
-  padding-bottom: 35px;
-
-  .dashboard {
-    .card {
-      border: 5px solid $gasLight;
-    }
-    .btn {
-      background-color: $gasDark;
-      border-color: $gasDark;
     }
   }
 

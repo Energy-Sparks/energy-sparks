@@ -6,10 +6,10 @@ $(document).ready(function() {
   })
   if($('.more-alerts')){
     $('.more-alerts').on('click', function(e) {
-      $('.dashboard-alert').show();
+      $('.act-on-energy-usage .alert').show();
       $(this).hide();
       event.preventDefault();
     });
-    $(".dashboard-alert:not(:first)").hide();
+    $(".act-on-energy-usage .alert:not(:first)").hide();
   }
 });

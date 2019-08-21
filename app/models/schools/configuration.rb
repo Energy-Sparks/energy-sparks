@@ -27,6 +27,9 @@ module Schools
     NO_CHART = :no_chart
     TEACHERS_GAS_SIMPLE = :teachers_landing_page_gas_simple
     TEACHERS_GAS = :teachers_landing_page_gas
+    TEACHERS_ELECTRICITY = :teachers_landing_page_electricity
+
+    TEACHERS_DASHBOARD_CHARTS = [TEACHERS_GAS_SIMPLE, TEACHERS_GAS, TEACHERS_ELECTRICITY].freeze
 
     enum gas_dashboard_chart_type: [NO_CHART, TEACHERS_GAS_SIMPLE, TEACHERS_GAS]
 

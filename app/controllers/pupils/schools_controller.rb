@@ -8,7 +8,7 @@ module Pupils
     before_action :redirect_if_inactive
 
     def show
-      @dashboard_alerts = @school.latest_dashboard_alerts.pupil.sample(2).map do |dashboard_alert|
+      @dashboard_alerts = @school.latest_dashboard_alerts.pupil_dashboard.sample(2).map do |dashboard_alert|
         TemplateInterpolation.new(
           dashboard_alert.content_version,
           with_objects: {
@@ -24,10 +24,6 @@ module Pupils
       activity_setup(@school)
       equivalence_setup(@school)
 
-      @scoreboard = @school.scoreboard
-      if @scoreboard
-        @podium = Podium.create(school: @school, scoreboard: @scoreboard)
-      end
       @temperature_observations = @school.observations.temperature
     end
 

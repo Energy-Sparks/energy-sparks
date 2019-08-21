@@ -2,8 +2,8 @@
   <%= fa_icon("clipboard-check fa-2x") %>
 </td>
 <td>
-  <h5>Completed an activity: <%= link_to observation.activity.display_name, school_activity_path(@school, observation.activity)%></h5>
-  <%= nice_dates(observation.at) %>
+  <h3><strong>Completed an activity:</strong> <%= link_to observation.activity.display_name, school_activity_path(@school, observation.activity)%></h3>
+  <span class="text-muted"><%= nice_dates(observation.at) %></span>
 </td>
 <% if show_actions && can?(:manage, observation.activity) %>
   <td class="text-right">

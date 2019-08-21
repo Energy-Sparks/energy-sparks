@@ -5,7 +5,6 @@ class ActivityCreator
 
   def process
     if @activity.activity_type
-      @activity.points = @activity.activity_type.score
       @activity.activity_category = @activity.activity_type.activity_category
     end
 
@@ -26,11 +25,16 @@ class ActivityCreator
   end
 
   def create_observation
+    academic_year = @activity.school.calendar_area.academic_year_for(@activity.happened_on)
+    points = if academic_year && academic_year.current?
+               @activity.activity_type.score
+             end
     Observation.create!(
       school: @activity.school,
       observation_type: :activity,
       activity: @activity,
-      at: @activity.happened_on
+      at: @activity.happened_on,
+      points: points
     )
   end
 
