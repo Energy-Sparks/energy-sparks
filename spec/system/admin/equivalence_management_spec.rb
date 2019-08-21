@@ -19,7 +19,7 @@ RSpec.describe 'equivalence type management', type: :system do
     select 'Last month', from: 'Time period'
     select 'Electric', from: 'Meter type'
 
-    expect(page).to have_content(EquivalenceType.image_names.keys.first.humanize)
+    expect(page).to have_select('Image name', selected: 'No image')
 
     click_on 'Create equivalence type'
 
