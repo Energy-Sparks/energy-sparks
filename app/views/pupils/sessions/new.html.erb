@@ -1,0 +1,16 @@
+<% content_for :page_title, 'Pupil sign in' %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1>Pupil sign in for <%= @school.name %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= simple_form_for :pupil, url: pupils_school_session_path(@school), html: { autocomplete: 'off' } do |f| %>
+      <%= f.input :password, as: :string %>
+      <%= f.submit "Sign in", class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
+

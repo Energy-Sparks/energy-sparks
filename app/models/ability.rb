@@ -53,6 +53,17 @@ class Ability
       can :crud, Programme, school_id: user.school_id
       can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
+    elsif user.pupil?
+      can :manage, Activity, school: { id: user.school_id, active: true }
+      can :index, School
+      can :show, School, active: true
+      can :usage, School, active: true
+      can :suggest_activity, School, active: true, id: user.school_id
+      can :read, ActivityCategory
+      can :show, ActivityType
+      can :show, Scoreboard
+      can :read, FindOutMore
+      can :manage, Observation
     elsif user.guest?
       cannot :analyse, :cost
       can :read, Activity, school: { active: true }
