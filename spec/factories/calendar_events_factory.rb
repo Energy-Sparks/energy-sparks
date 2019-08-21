@@ -5,6 +5,15 @@ FactoryBot.define do
     title       { 'new event' }
     description { 'this is a new event' }
 
+    after(:build) do |object|
+      if object.calendar && object.calendar.calendar_area && object.start_date
+        AcademicYearFactory.new(object.calendar.calendar_area).create(
+          start_year: object.start_date.year - 1,
+          end_year: object.start_date.year + 1
+        )
+      end
+    end
+
     factory :term do
       title       { 'new term' }
       description { 'this is a new term' }

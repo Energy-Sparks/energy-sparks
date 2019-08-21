@@ -12,10 +12,11 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
   end
 
   let!(:england_and_wales){ create(:calendar_area, title: 'England and Wales') }
-  let!(:bank_holiday) { create :bank_holiday, title: 'Good Friday', holiday_date: "2012-04-06" }
+  let!(:bank_holiday) { create :bank_holiday, calendar_area: england_and_wales, title: 'Good Friday', holiday_date: "2015-04-06" }
 
   before do
     CalendarEventTypeFactory.create
+    AcademicYearFactory.new(england_and_wales).create(start_year: 2014, end_year: 2016)
   end
 
   describe 'when logged in' do

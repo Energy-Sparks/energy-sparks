@@ -1,17 +1,23 @@
-<div class="card activity-card mb-2">
+<div class="card activity mb-2">
   <div class="card-header">
     <% if local_assigns[:based_on] %>
-      <h5>Based on <%= local_assigns[:based_on] %></h5>
+      <span class="small">Based on <%= local_assigns[:based_on] %></span>
     <% end %>
-    <p><span class="badge badge-success"><%= activity_type.score %></span>
-    <span class="badge badge-secondary"><%= activity_type.activity_category.name %></span></p>
+
   </div>
   <div class="card-body">
-    <h4 class="card-title"><%= "#{activity_type.name} (#{activity_type.key_stage_list})" %></h4>
-    <p class="card-text">
-    </p>
+    <%= link_to activity_type_path(activity_type) do %>
+    <%= "#{activity_type.name} (#{activity_type.key_stage_list})" %>
+    <% end %>
+
   </div>
-  <div class="card-footer text-right">
-    <%= link_to 'Read about this activity', activity_type_path(activity_type), class: 'btn btn-primary' %>
+  <div class="card-footer">
+    <span class="btn rounded-pill">
+      <strong class="text-uppercase">
+        <%= activity_type.score %><span class="small"> points</span>
+      </strong>
+      /
+      <span class="key-stages"><%= activity_type.key_stage_list %></span>
+    </span>
   </div>
 </div>

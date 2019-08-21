@@ -4,5 +4,7 @@ FactoryBot.define do
     readings      { Array.new(48, rand) }
     association :meter, factory: :gas_meter
     mpan_mprn     { Random.new.rand(240000000000000)}
+    amr_data_feed_import_log
+    amr_data_feed_config
   end
 end

@@ -10,133 +10,137 @@
 <% end %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h2>Energy Usage</h2>
+  <h1>Energy Usage&hellip;</h1>
   <% if @school.configuration %>
-    <div class="h5"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school) %></div>
+    <div class="h5"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
   <% end %>
 </div>
 <p></p>
 <div class="row teachers">
-  <% @charts.each_with_index do |(fuel_type, chart_type), index| %>
-    <div id="chart_wrapper_<%= index %>" class="col-sm">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="h4"><b><%= fa_icon fuel_type_icon(fuel_type) %> <%= fuel_type.to_s.capitalize %></b></div>
-        <% if chart_type == Schools::Configuration::TEACHERS_GAS %>
-          <span class="very-small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
-        <% end %>
-        <div class="h5 explore">
-          Explore
-          <%= link_to 'weekly', usage_school_path(@school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
-          /
-          <%= link_to 'daily', usage_school_path(@school, period: :hourly, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
-          usage
-        </div>
-      </div>
+  <%= render 'teachers/schools/charts', charts: @charts %>
+</div>
 
-      <div id="chart_<%= index %>" class="analysis-chart" data-no-advice="true" data-no-zoom="true" data-chart-index="<%= index %>" data-chart-y-axis-units="gb_pounds" data-chart-json='<%= school_chart_path(@school) + ".json?chart_type=#{chart_type}&chart_y_axis_units=gb_pounds" %>'></div>
+<% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-neutral',
+        content: "Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.",
+        icon: 'exclamation-circle fa-3x',
+        buttons: { 'Add alert contacts' => school_contacts_path(@school)}
+  %>
+<% end %>
+
+<% unless @dashboard_alerts.empty?%>
+
+  <div class="act-on-energy-usage">
+    <h3>Act on energy usage</h3>
+    <% @dashboard_alerts.each do |alert_content|%>
+      <%= render 'schools/dashboard/info_bar',
+        colour: class_for_alert_colour(alert_content.colour),
+        icon: alert_icon(alert_content.alert, 'fa-3x'),
+        content: alert_content.teacher_dashboard_title,
+        buttons: alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, alert_content.find_out_more)} : {}
+      %>
+  <% end %>
+  <% if @dashboard_alerts.size > 1 %>
+    <div class="row">
+      <div class="col text-center">
+        <a href="#" class="btn btn-rounded more-alerts">Show <%= pluralize((@dashboard_alerts.size - 1), 'more alert')%></a>
+      </div>
     </div>
   <% end %>
 </div>
 
-<% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="alert text-white bg-warning">
-        <div class="d-flex">
-          <div class="p-2 align-self-center">
-            <%= fa_icon('exclamation-circle fa-3x') %>
-          </div>
-          <div class="p-2 align-self-center">
-            <h5>Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.</h5>
-          </div>
-          <div class="ml-auto p-2">
-            <%= link_to 'Add alert contacts', school_contacts_path(@school), class: 'btn btn-light btn', role: 'button' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 <% end %>
-
-<% if @dashboard_alert %>
-  <div class="row">
-    <div class="col-md-12">
-      <%= render 'schools/dashboard_alerts/alert', alert: @dashboard_alert.alert, content: @dashboard_alert_content, school: @school, find_out_more: @dashboard_alert_content.find_out_more, dashboard_title: @dashboard_alert_content.teacher_dashboard_title %>
-    </div>
-  </div>
-<% end %>
-
 
 <% if @activities_count < 1 %>
-  <h2>You’ve not completed any activities yet</h2>
+  <h2 class="p-2">You’ve not completed any activities yet</h2>
 <% else %>
-  <h2>You’ve completed <%= pluralize(@activities_count, 'learning activity')%></h2>
+  <h2 class="p-2">You’ve completed <%= pluralize(@activities_count, 'learning activity')%></h2>
 <% end %>
-<h4>Try these next...</h4>
-<div class="row">
-  <div class="card-deck">
-    <% @activities_from_activity_history.each do |activity_type| %>
-      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
-    <% end %>
-    <% @activities_from_alerts.each do |activity_type| %>
-      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
-    <% end %>
-    <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
-      <div class="card activity-card mb-2">
-        <div class="card-header">
-          <h5>Or, start a programme...</h5>
-          <p><span class="badge badge-success"><%= pluralize(@suggested_programme.activity_types.count, 'activity') %></span>
-        </div>
-        <div class="card-body">
+
+<div class="card-deck">
+  <div class="card border-0">
+    <h3 class="p-2">Try these next&hellip;</h3>
+  </div>
+  <div class="card border-0">
+  </div>
+    <div class="card border-0">
+      <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+        <h3 class="p-2">Or, start a programme&hellip;</h3>
+      <% end %>
+  </div>
+</div>
+
+<div class="card-deck teachers-dashboard">
+  <% @activities_from_activity_history.each do |activity_type| %>
+    <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
+  <% end %>
+
+  <% @activities_from_alerts.each do |activity_type| %>
+    <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
+  <% end %>
+
+  <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+
+    <div class="card mb-2 programme">
+      <div class="card-body">
+        <%= link_to school_programme_types_path(@school, @suggested_programme) do %>
           <h4 class="card-title"><%= @suggested_programme.title %></h4>
           <p class="card-text">
             <%= @suggested_programme.short_description %>
           </p>
-        </div>
-        <div class="card-footer text-right">
-          <%= link_to 'More about this programme', school_programme_types_path(@school, @suggested_programme), class: 'btn btn-primary' %>
-        </div>
+        <% end %>
       </div>
-    <% else %>
-      <% @activities_from_programmes.each do |activity_type| %>
-        <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your programmes' %>
-      <% end %>
+      <div class="card-footer">
+        <span class="bg-positive btn rounded-pill">
+          <strong><%= @suggested_programme.activity_types.count %>
+            <span class="small text-uppercase">
+              <%= 'activity'.pluralize(@suggested_programme.activity_types.count) %>
+            </span>
+          </strong>
+        </span>
+      </div>
+    </div>
+
+  <% else %>
+
+    <% @activities_from_programmes.each do |activity_type| %>
+      <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your programmes' %>
     <% end %>
-  </div>
+
+  <% end %>
+
 </div>
 
-
 <% if can?(:manage, Activity) || can?(:create, Observation) || can?(:start_programme, @school) %>
-  <div class="row mt-3 mb-3">
-    <div class="col">
-      <ul class="nav nav-pills nav-fill mr-3 ml-3 mt-2">
-        <% if can?(:manage, Activity) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-        <% if can?(:create, Observation) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-        <% if can?(:start_programme, @school) %>
-          <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Choose another programme', school_programme_types_path(@school), class: 'nav-link btn btn-info' %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+  <div class="card-deck actions">
+    <% if can?(:manage, Activity) %>
+      <div class="card mb-2 text-center">
+        <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:create, Observation) %>
+      <div class="card mb-2">
+        <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:start_programme, @school) %>
+      <div class="card mb-2">
+        <%= link_to 'Choose another programme', school_programme_types_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
   </div>
 <% end %>
 
 <% unless @observations.empty? %>
   <div class="row justify-content-between">
-    <div class="col-10">
-      <h1>What's been going on?</h1>
+    <div class="col-8">
+      <h2>What's been going on?</h2>
     </div>
-    <div class="col-2 text-right">
-      <%= link_to 'View all actions', school_timeline_path(@school), class: 'btn btn-sm btn-secondary pull-right' %>
+    <div class="col-4 text-right">
+      <%= link_to school_timeline_path(@school), class: 'btn btn-sm btn-outline-dark rounded-pill pull-right' do %>
+        <%= far_icon('eye') %>  View all actions
+      <% end %>
     </div>
   </div>
 

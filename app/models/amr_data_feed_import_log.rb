@@ -2,7 +2,7 @@
 #
 # Table name: amr_data_feed_import_logs
 #
-#  amr_data_feed_config_id :bigint(8)
+#  amr_data_feed_config_id :bigint(8)        not null
 #  created_at              :datetime         not null
 #  file_name               :text
 #  id                      :bigint(8)        not null, primary key

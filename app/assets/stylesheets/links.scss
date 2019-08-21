@@ -1,0 +1,150 @@
+a,
+a:hover,
+a:focus,
+a:active,
+a.active {
+  color: $dark;
+  text-decoration: underline;
+  outline: none;
+}
+
+a.btn,
+a.btn:hover,
+a.btn:focus,
+a.btn:active,
+a.btn.active,
+a.badge,
+a.badge:hover,
+a.badge:focus,
+a.badge:active,
+a.badge.active,
+a.nav-link,
+a.nav-link:hover,
+a.nav-link:focus,
+a.nav-link:active,
+a.nav-link.active {
+  text-decoration: none;
+  outline: none;
+}
+
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active {
+  color: $dark;
+  background-image: linear-gradient($white, $light-grey);
+  border-color: $grey;
+  font-weight: 700 !important;
+  border-radius: 50rem !important;
+}
+
+.btn-outline-dark {
+  background-image: none !important;
+  border-color: $dark;
+}
+
+.btn-outline-dark:hover {
+  color: $white;
+}
+
+.btn-group {
+  .btn {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+.navbar {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    outline: none;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+  }
+}
+
+.sub-navbar .nav-item a:hover {
+  background-color: $light-orange;
+}
+
+.card-deck.teachers-dashboard {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $dark;
+    outline: none;
+  }
+}
+
+.table.timeline {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $dark;
+    text-decoration: underline;
+    outline: none;
+    font-weight: normal;
+  }
+}
+
+div.activity_type {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $light-orange;
+  }
+}
+
+.highcharts-annotation a,
+.highcharts-annotation a:hover{
+  color: inherit;
+  text-decoration: inherit;
+}
+
+footer {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $white;
+  }
+}
+
+section.highlight {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $dark-blue;
+    outline: none;
+  }
+}
+
+.navbar-custom .navbar-nav li.active {
+  a
+  a:hover,
+  a:focus,
+  a:active {
+    background: $light-blue;
+  }
+}
+
+.sub-navbar li.nav-item a,
+.sub-navbar li.nav-item a:hover,
+.sub-navbar li.nav-item a:focus,
+.sub-navbar li.nav-item a:active {
+    color: black;
+}
