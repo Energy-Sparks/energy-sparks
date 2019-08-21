@@ -1,0 +1,16 @@
+<%= content_for :page_title, @school.name %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Energy Usage&hellip;</h1>
+  <% if @school.configuration %>
+    <div class="h5"><%= link_to "Learn more about this school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
+  <% end %>
+</div>
+<p></p>
+<div class="row dashboards">
+  <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
+</div>
+
+<%= render 'shared/dashboard_alerts', school: @school, dashboard_alert_content: @dashboard_alert_content, dashboard_alert: @dashboard_alert %>
+
+<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
