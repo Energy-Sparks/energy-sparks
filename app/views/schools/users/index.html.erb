@@ -1,4 +1,38 @@
-<h2>Staff accounts</h2>
+<h2>School admin accounts</h2>
+
+<p>
+  School admin accounts managed here
+</p>
+<table class="table table-condensed school_admin">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Account confirmed?</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @school_admins.each do |user| %>
+      <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= y_n(user.confirmed?) %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to('Edit', edit_school_school_admin_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
+              <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+            </div>
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'New school admin account', new_school_school_admin_path(@school), class: 'btn btn-primary' %>
+
+<h2 class="mt-2">Staff accounts</h2>
 
 <p>
   Staff accounts managed here
@@ -34,7 +68,7 @@
 
 <%= link_to 'New staff account', new_school_staff_path(@school), class: 'btn btn-primary' %>
 
-<h2>Pupil accounts</h2>
+<h2 class="mt-2">Pupil accounts</h2>
 
 <p>
   Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required.
@@ -66,37 +100,3 @@
 </table>
 
 <%= link_to 'New pupil account', new_school_pupil_path(@school), class: 'btn btn-primary' %>
-
-<h2>School admin accounts</h2>
-
-<p>
-  School admin accounts managed here
-</p>
-<table class="table table-condensed school_admin">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Account confirmed?</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @school_admins.each do |user| %>
-      <tr>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= y_n(user.confirmed?) %></td>
-          <td>
-            <div class="btn-group">
-              <%= link_to('Edit', edit_school_school_admin_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
-              <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
-            </div>
-          </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to 'New school admin account', new_school_school_admin_path(@school), class: 'btn btn-primary' %>

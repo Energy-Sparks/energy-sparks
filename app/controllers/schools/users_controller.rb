@@ -1,7 +1,7 @@
 module Schools
   class UsersController < ApplicationController
     load_and_authorize_resource :school
-    load_and_authorize_resource :user
+    load_and_authorize_resource :user, through: :school
 
 
     def index
