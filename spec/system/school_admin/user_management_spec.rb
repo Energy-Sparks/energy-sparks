@@ -51,17 +51,19 @@ describe 'School admin user management' do
   describe 'for staff' do
     let!(:teacher_role){ create :staff_role, title: 'Teacher' }
 
-    it 'can create teachers' do
+    it 'can create staff' do
 
       click_on 'Manage users'
       click_on 'New staff account'
 
       fill_in 'Name', with: 'Mrs Jones'
       fill_in 'Email', with: 'mrsjones@test.com'
+      select 'Teacher', from: 'Role'
       click_on 'Create account'
 
       staff = school.users.staff.first
       expect(staff.email).to eq('mrsjones@test.com')
+      expect(staff.staff_role).to eq(teacher_role)
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Energy Sparks: confirm your account')
@@ -89,6 +91,36 @@ describe 'School admin user management' do
   end
 
   describe 'for school admins' do
+    it 'can create school admins' do
+
+      click_on 'Manage users'
+      click_on 'New school admin account'
+
+      fill_in 'Name', with: 'Mrs Jones'
+      fill_in 'Email', with: 'mrsjones@test.com'
+      click_on 'Create account'
+
+      school_admin = school.users.school_admin.last
+      expect(school_admin.email).to eq('mrsjones@test.com')
+
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq('Energy Sparks: confirm your account')
+    end
+
+    it 'can edit school admins' do
+
+      click_on 'Manage users'
+      within '.school_admin' do
+        click_on 'Edit'
+      end
+
+      fill_in 'Name', with: 'Ms Jones'
+      click_on 'Update account'
+
+      school_admin.reload
+      expect(school_admin.name).to eq('Ms Jones')
+
+    end
 
   end
 

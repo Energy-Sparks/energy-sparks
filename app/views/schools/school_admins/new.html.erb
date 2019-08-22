@@ -1,0 +1,6 @@
+<h1>New school admin account</h1>
+
+<%= simple_form_for @school_admin, url: school_school_admins_path(@school) do |f| %>
+  <%= render 'form', f: f %>
+  <%= f.submit 'Create account', class: 'btn btn-rounded'%>
+<% end %>

@@ -95,6 +95,15 @@ class User < ApplicationRecord
     )
   end
 
+  def self.new_school_admin(school, attributes)
+    new(
+      attributes.merge(
+        role: :school_admin,
+        school: school
+      )
+    )
+  end
+
 protected
 
   def password_required?
