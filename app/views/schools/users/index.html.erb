@@ -1,0 +1,32 @@
+<h2>Pupil accounts</h2>
+
+<p>
+  Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required.
+  These accounts can be created to be used in classrooms or with eco-teams and the passwords can be shared with the pupils.
+</p>
+<table class="table table-condensed pupils">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Password</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pupils.each do |user| %>
+      <tr>
+          <td><%= user.name %></td>
+          <td><%= user.pupil_password %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_school_pupil_path(@school, user), class: 'btn btn-primary btn-sm' %>
+              <%= link_to 'Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            </div>
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'New pupil account', new_school_pupil_path(@school), class: 'btn btn-primary' %>

@@ -102,6 +102,12 @@ Rails.application.routes.draw do
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
+
+      resources :users, only: [:index, :destroy]
+      resources :school_admins, only: [:new, :create, :edit, :update]
+      resources :staff, only: [:new, :create, :edit, :update], controller: :staff
+      resources :pupils, only: [:new, :create, :edit, :update]
+
     end
 
     # Maintain old scoreboard URL

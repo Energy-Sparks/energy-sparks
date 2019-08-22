@@ -39,6 +39,10 @@ class Ability
       can :crud, Programme, school_id: user.school_id
       can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
+      can :manage, User, school_id: user.school_id
+      cannot :delete, User do |other_user|
+        user.id == other_user.id
+      end
     elsif user.staff?
       can :manage, Activity, school: { id: user.school_id, active: true }
       can :index, School

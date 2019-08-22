@@ -34,6 +34,8 @@
 #  fk_rails_...  (school_id => schools.id)
 #
 
+require 'securerandom'
+
 class User < ApplicationRecord
   attribute :pupil_password, EncryptedField::Type.new
 
@@ -62,5 +64,16 @@ class User < ApplicationRecord
 
   def school_admin_or_staff?
     school_admin? || staff?
+  end
+
+  def self.new_pupil(school, attributes)
+    new(
+      attributes.merge(
+        role: :pupil,
+        school: school,
+        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV['APPLICATION_HOST']}",
+        password: SecureRandom.uuid
+      )
+    )
   end
 end

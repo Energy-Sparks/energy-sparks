@@ -47,6 +47,7 @@
                 <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
                 <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
                 <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
+                <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage, User %>
                 <%= link_to 'Alert reports', school_alert_reports_path(school), class: 'dropdown-item' if can? :index, Alert %>
                 <%= link_to 'Alert subscription events', school_alert_subscription_events_path(school), class: 'dropdown-item' if can? :index, AlertSubscriptionEvent %>
                 <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
