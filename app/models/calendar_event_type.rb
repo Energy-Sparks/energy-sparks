@@ -3,7 +3,7 @@
 # Table name: calendar_event_types
 #
 #  alias                :text
-#  analytics_event_type :integer          default(0), not null
+#  analytics_event_type :integer          default("term_time"), not null
 #  bank_holiday         :boolean          default(FALSE)
 #  colour               :text
 #  description          :text

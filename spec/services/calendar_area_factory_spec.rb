@@ -12,16 +12,17 @@ describe CalendarAreaFactory do
     ]
   }
 
-  let!(:bank_holiday) { create :bank_holiday, calendar_area: parent_area, title: 'Good Friday', holiday_date: "2012-04-06" }
+  let(:parent_area)      { create(:calendar_area, title: 'England') }
+  let(:populated_area)    { build(:calendar_area, title: 'Oxfordshire', parent_area: parent_area) }
+
+  let!(:parent_calendar)  { create :calendar, calendar_area: parent_area, template: true }
 
   before do
-    CalendarEventTypeFactory.create
+    create_all_calendar_events
     AcademicYearFactory.new(parent_area).create(start_year: 2011, end_year: 2016)
   end
 
-  let(:populated_area) { CalendarArea.new({title: 'Oxfordshire', parent_area: parent_area}) }
-  let(:parent_area){ create(:calendar_area, title: 'England') }
-  let!(:area){ CalendarAreaFactory.create(populated_area, events) }
+  let(:area) { CalendarAreaFactory.create(populated_area, events) }
 
   it 'creates a calendar area' do
     expect(area.errors).to be_empty

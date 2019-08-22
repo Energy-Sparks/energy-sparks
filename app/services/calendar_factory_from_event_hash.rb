@@ -3,12 +3,14 @@ class CalendarFactoryFromEventHash
     @event_hash = event_hash
     @area = area
     @template = template
+    @parent_calendar = parent_calendar
   end
 
   def create
     @calendar = Calendar.where(default: @template, calendar_area: @area, title: @area.title, template: @template).first_or_create!
 
     raise ArgumentError unless CalendarEventType.any?
+    raise ArgumentError, "No parent/template calendar is set for this calendar area: #{@area.title}" if @parent_calendar.nil?
 
     @event_hash.each do |event|
       event_type = CalendarEventType.select { |cet| event[:term].include? cet.title }.first
@@ -24,20 +26,19 @@ class CalendarFactoryFromEventHash
 
 private
 
+  def parent_calendar
+    Calendar.find_by(calendar_area: @area, template: true) || Calendar.find_by(calendar_area: @area.parent_area, template: true)
+  end
+
   def create_holidays_between_terms
     HolidayFactory.new(@calendar).create
   end
 
   def create_bank_holidays
-    calendar_event_type = CalendarEventType.bank_holiday.first
-    find_bank_holidays(@area).each do |bh|
-      @calendar.calendar_events.where(title: bh.title, start_date: bh.holiday_date, end_date: bh.holiday_date, calendar_event_type: calendar_event_type).first_or_create!
-    end
-  end
+    bank_holiday = CalendarEventType.bank_holiday.first
 
-  def find_bank_holidays(area)
-    bhs = BankHoliday.where(calendar_area: area)
-    return bhs if bhs.any?
-    find_bank_holidays(area.parent_area)
+    @parent_calendar.bank_holidays.each do |bh|
+      @calendar.calendar_events.where(title: bh.title, start_date: bh.start_date, end_date: bh.end_date, calendar_event_type: bank_holiday).first_or_create!
+    end
   end
 end
