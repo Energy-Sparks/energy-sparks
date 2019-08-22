@@ -3,11 +3,13 @@ module Schools
     load_and_authorize_resource :school
 
     def new
+      authorize! :manage_users, @school
       @school_admin = @school.users.school_admin.new
       authorize! :create, @school_admin
     end
 
     def create
+      authorize! :manage_users, @school
       @school_admin = User.new_school_admin(@school, school_admin_params)
       if @school_admin.save
         redirect_to school_users_path(@school)

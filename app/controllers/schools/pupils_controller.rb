@@ -3,6 +3,7 @@ module Schools
     load_and_authorize_resource :school
 
     def new
+      authorize! :manage_users, @school
       @pupil = @school.users.pupil.new
       authorize! :create, @pupil
     end

@@ -3,7 +3,9 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource :user
 
+
     def index
+      authorize! :manage_users, @school
       @school_admins = @users.school_admin
       @staff = @users.staff
       @pupils = @users.pupil
