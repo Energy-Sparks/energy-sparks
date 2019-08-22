@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 class CalendarsController < ApplicationController
   load_and_authorize_resource
 
   # GET /calendars
   # GET /calendars.json
   def index
-    @template_calendars = Calendar.template
+    @top_level_calendars = Calendar.template.includes(:schools).where(based_on_id: nil).order(:title)
+    @child_template_calendars = Calendar.template.includes(:schools).where.not(based_on_id: nil).order(:title)
     @customised_calendars = Calendar.custom.includes(:schools).order('schools.name')
   end
 
@@ -20,9 +23,7 @@ class CalendarsController < ApplicationController
 
   # GET /calendars/1/edit
   def edit
-    if @calendar.template?
-      redirect_to calendar_path(@calendar)
-    end
+    redirect_to calendar_path(@calendar) if @calendar.template?
     build_terms
   end
 
@@ -64,7 +65,7 @@ class CalendarsController < ApplicationController
     end
   end
 
-private
+  private
 
   def calendar_params
     params.require(:calendar).permit(:name)

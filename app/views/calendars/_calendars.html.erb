@@ -3,7 +3,6 @@
     <tr>
       <th>Name</th>
       <th>Based on</th>
-      <th>Created at</th>
       <th>Last updated at</th>
       <th></th>
     </tr>
@@ -13,13 +12,12 @@
     <% calendars.each do |calendar| %>
       <tr>
         <td><%= calendar.title %></td>
-        <td><%= calendar.based_on.title unless calendar.based_on.nil? %></td>
-        <td><%= nice_date_times(calendar.created_at) %></td>
+        <td><%= link_to calendar.based_on.title, calendar_path(calendar.based_on) unless calendar.based_on.nil? %></td>
         <td><%= nice_date_times(calendar.updated_at) %></td>
         <td>
           <div class="btn-group">
-            <%= link_to 'Show', calendar, class: 'btn btn-info' %>
-            <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            <%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %>
+            <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' if can?(:destroy, calendar) %>
           </div>
         </td>
       </tr>
