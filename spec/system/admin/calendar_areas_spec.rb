@@ -39,6 +39,9 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       calendar_area = CalendarArea.where(title: 'Oxfordshire').first!
       expect(calendar_area.calendars.first.calendar_events.terms.count).to eq(1)
       expect(calendar_area.parent_area).to eq(england_and_wales)
+
+      calendar = Calendar.find_by(title: 'Oxfordshire')
+      expect(calendar.based_on).to eq england_and_wales_calendar
     end
 
     it 'can edit a calendar area' do
@@ -56,7 +59,5 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       calendar_area.reload
       expect(calendar_area.title).to eq('B & NES')
     end
-
   end
-
 end

@@ -7,7 +7,7 @@ class CalendarFactoryFromEventHash
   end
 
   def create
-    @calendar = Calendar.where(default: @template, calendar_area: @area, title: @area.title, template: @template).first_or_create!
+    @calendar = Calendar.where(default: @template, calendar_area: @area, title: @area.title, template: @template, based_on: @parent_calendar).first_or_create!
 
     raise ArgumentError unless CalendarEventType.any?
     raise ArgumentError, "No parent/template calendar is set for this calendar area: #{@area.title}" if @parent_calendar.nil?
