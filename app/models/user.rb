@@ -2,6 +2,9 @@
 #
 # Table name: users
 #
+#  confirmation_sent_at   :datetime
+#  confirmation_token     :string
+#  confirmed_at           :datetime
 #  created_at             :datetime         not null
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
@@ -20,18 +23,22 @@
 #  role                   :integer          default("guest"), not null
 #  school_id              :bigint(8)
 #  sign_in_count          :integer          default(0), not null
+#  staff_role_id          :bigint(8)
 #  updated_at             :datetime         not null
 #
 # Indexes
 #
+#  index_users_on_confirmation_token            (confirmation_token) UNIQUE
 #  index_users_on_email                         (email) UNIQUE
 #  index_users_on_reset_password_token          (reset_password_token) UNIQUE
 #  index_users_on_school_id                     (school_id)
 #  index_users_on_school_id_and_pupil_password  (school_id,pupil_password) UNIQUE
+#  index_users_on_staff_role_id                 (staff_role_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
 #
 
 require 'securerandom'
@@ -40,12 +47,13 @@ class User < ApplicationRecord
   attribute :pupil_password, EncryptedField::Type.new
 
   belongs_to :school, optional: true
+  belongs_to :staff_role, optional: true
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
   enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil]
 
@@ -72,8 +80,24 @@ class User < ApplicationRecord
         role: :pupil,
         school: school,
         email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV['APPLICATION_HOST']}",
-        password: SecureRandom.uuid
+        password: SecureRandom.uuid,
+        confirmed_at: Time.zone.now
       )
     )
+  end
+
+  def self.new_staff(school, attributes)
+    new(
+      attributes.merge(
+        role: :staff,
+        school: school
+      )
+    )
+  end
+
+protected
+
+  def password_required?
+    confirmed? ? super : false
   end
 end

@@ -124,7 +124,7 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { sessions: "sessions" }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
   scope :admin do

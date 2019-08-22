@@ -126,6 +126,7 @@ end
 group :test do
   gem 'test-prof'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'webdrivers'
