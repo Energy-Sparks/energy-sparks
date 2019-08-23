@@ -22,7 +22,11 @@ class Schools::ContactsController < ApplicationController
   def create
     authorize! :enable_alerts, @contact.user if @contact.user
     if @contact.save
-      redirect_to school_contacts_path(@school), notice: "Alerts enabled for #{@contact.display_name}"
+      if @contact.user == current_user
+        redirect_to school_path(@school), notice: "Alerts enabled"
+      else
+        redirect_to school_contacts_path(@school), notice: "Alerts enabled for #{@contact.display_name}"
+      end
     else
       render :new
     end
@@ -30,7 +34,11 @@ class Schools::ContactsController < ApplicationController
 
   def update
     if @contact.update(contact_params)
-      redirect_to school_contacts_path(@school), notice: "#{@contact.display_name} was successfully updated."
+      if @contact.user == current_user
+        redirect_to school_path(@school), notice: "Details updated"
+      else
+        redirect_to school_contacts_path(@school), notice: "#{@contact.display_name} was successfully updated."
+      end
     else
       render :edit
     end
@@ -39,7 +47,11 @@ class Schools::ContactsController < ApplicationController
   def destroy
     display_name = @contact.display_name
     @contact.destroy
-    redirect_to school_contacts_path(@school), notice: "#{display_name} was successfully deleted."
+    if @contact.user == current_user
+      redirect_to school_path(@school), notice: "Alerts disabled"
+    else
+      redirect_to school_contacts_path(@school), notice: "Alerts disabled for #{display_name}"
+    end
   end
 
 private

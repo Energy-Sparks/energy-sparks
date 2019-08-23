@@ -19,6 +19,11 @@
               <%= link_to 'Electricity usage by week', usage_school_path(current_user.school, period: :daily, supply: :electricity), class: 'dropdown-item' %>
               <%= link_to 'Analysis', school_analysis_path(current_user.school), class: 'dropdown-item' %>
               <%= link_to 'Simulations', school_simulations_path(current_user.school), class: 'dropdown-item' %>
+              <% if current_user.contact %>
+                <%= link_to 'My alerts', edit_school_contact_path(current_user.school, current_user.contact), class: 'dropdown-item' %>
+              <% else %>
+                <%= link_to 'My alerts', new_school_contact_path(current_user.school, user_id: current_user.id), class: 'dropdown-item' %>
+              <% end %>
             </div>
           </li>
         <% end %>
