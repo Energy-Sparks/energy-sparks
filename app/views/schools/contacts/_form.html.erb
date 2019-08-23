@@ -1,12 +1,18 @@
-<p>Please enter either a name, e.g. Joe Bloggs or a description, e.g. Caretaker</p>
+<% if f.object.user.nil? %>
+  <p>Please enter either a name, e.g. Joe Bloggs or a description, e.g. Caretaker</p>
+<% end %>
 
-<%= f.input :name, as: :string%>
+<%= f.input :user_id, as: :hidden %>
+<%= f.input :name, as: :string, readonly: f.object.user.present? %>
 <%= f.input :description %>
 
 
-<p>Please enter at least one method of communication</p>
-<%= f.input :email_address, as: :email %>
+<% if f.object.user.nil? %>
+  <p>Please enter at least one method of communication</p>
+<% end %>
+
+<%= f.input :email_address, as: :email, readonly: f.object.user.present?%>
 <%= f.input :mobile_phone_number, as: :string %>
 
-<%= f.submit "Save contact", class: 'btn btn-primary' %>
+<%= f.submit "Save", class: 'btn btn-primary' %>
 

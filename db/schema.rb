@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_22_083355) do
+ActiveRecord::Schema.define(version: 2019_08_23_081320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -421,7 +421,11 @@ ActiveRecord::Schema.define(version: 2019_08_22_083355) do
     t.text "description"
     t.text "email_address"
     t.text "mobile_phone_number"
+    t.bigint "user_id"
+    t.bigint "staff_role_id"
     t.index ["school_id"], name: "index_contacts_on_school_id"
+    t.index ["staff_role_id"], name: "index_contacts_on_staff_role_id"
+    t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
   create_table "content_generation_runs", force: :cascade do |t|
@@ -873,6 +877,8 @@ ActiveRecord::Schema.define(version: 2019_08_22_083355) do
   add_foreign_key "calendars", "calendar_areas", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools"
+  add_foreign_key "contacts", "staff_roles", on_delete: :restrict
+  add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade

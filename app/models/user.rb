@@ -48,6 +48,7 @@ class User < ApplicationRecord
 
   belongs_to :school, optional: true
   belongs_to :staff_role, optional: true
+  has_one :contact
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
@@ -57,9 +58,13 @@ class User < ApplicationRecord
 
   enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil]
 
+  scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
+
   validates :email, presence: true
 
   validates :pupil_password, presence: true, uniqueness: { scope: :school_id, message: 'is already in use' }, if: :pupil?
+
+  after_save :update_contact
 
   def manages_school?(sid = nil)
     admin? || (sid && school_admin_or_staff? && school_id == sid)
@@ -72,6 +77,10 @@ class User < ApplicationRecord
 
   def school_admin_or_staff?
     school_admin? || staff?
+  end
+
+  def display_name
+    name || email
   end
 
   def self.new_pupil(school, attributes)
@@ -104,9 +113,25 @@ class User < ApplicationRecord
     )
   end
 
+  def self.new_school_onboarding(attributes)
+    new(
+      attributes.merge(
+        role: :school_onboarding,
+        confirmed_at: Time.zone.now
+      )
+    )
+  end
+
 protected
 
   def password_required?
     confirmed? ? super : false
+  end
+
+  def update_contact
+    if contact
+      contact.popualate_from_user(self)
+      contact.save
+    end
   end
 end

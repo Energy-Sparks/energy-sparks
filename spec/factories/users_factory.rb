@@ -14,7 +14,12 @@ FactoryBot.define do
     end
 
     factory :staff do
+      name { 'A Teacher' }
       role { :staff }
+    end
+
+    factory :admin do
+      role { :admin }
     end
 
     trait :has_school_assigned do
