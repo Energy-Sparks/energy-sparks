@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  include SchoolAggregation
   include ActivityTypeFilterable
   include Measurements
   include DashboardEnergyCharts
@@ -8,6 +9,8 @@ class SchoolsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
+
+  before_action :check_aggregated_school_in_cache, only: [:show]
 
   # GET /schools
   def index

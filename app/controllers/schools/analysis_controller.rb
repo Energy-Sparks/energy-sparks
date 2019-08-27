@@ -7,6 +7,7 @@ class Schools::AnalysisController < ApplicationController
   include Measurements
 
   skip_before_action :authenticate_user!
+  before_action :check_aggregated_school_in_cache
   before_action :build_aggregate_school, except: [:analysis]
   before_action :set_nav
   before_action :set_measurement_options
