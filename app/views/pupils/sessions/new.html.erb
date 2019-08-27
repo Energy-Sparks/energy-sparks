@@ -7,10 +7,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= simple_form_for :pupil, url: pupils_school_session_path(@school), html: { autocomplete: 'off' } do |f| %>
-      <%= f.input :password, as: :string %>
-      <%= f.submit "Sign in", class: 'btn btn-primary' %>
-    <% end %>
+    <%= render 'form', school: @school %>
   </div>
 </div>
 

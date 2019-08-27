@@ -7,7 +7,8 @@ describe 'pupil passwords' do
   let!(:pupil){ create(:pupil, pupil_password: 'theelectrons', school: school) }
 
   it 'allows the pupil to log in just using the pupil password' do
-    visit new_pupils_school_session_path(school)
+    visit school_path(school)
+    click_on "Log in with your pupil password"
 
     fill_in 'Password', with: 'theelectrons'
     click_on 'Sign in'
