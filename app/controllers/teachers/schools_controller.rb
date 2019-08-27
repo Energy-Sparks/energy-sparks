@@ -1,5 +1,5 @@
 module Teachers
-  class SchoolsController < TeachersController
+  class SchoolsController < ApplicationController
     load_and_authorize_resource
 
     include SchoolAggregation
@@ -12,6 +12,7 @@ module Teachers
     before_action :check_aggregated_school_in_cache
 
     def show
+      authorize! :show_teachers_dash, @school
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
       @charts = setup_charts(@school.configuration)

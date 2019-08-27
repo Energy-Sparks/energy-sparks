@@ -17,7 +17,7 @@ class Ability
       can :manage, Activity, school_id: user.school_id
       can :crud, Calendar, id: user.school.try(:calendar_id)
       can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
-      can [:update, :manage_school_times, :suggest_activity, :manage_users], School, id: user.school_id
+      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash], School, id: user.school_id
       can [:read, :usage], School do |school|
         school.active? || user.school_id == school.id
       end
@@ -48,6 +48,7 @@ class Ability
       can :index, School
       can :show, School, active: true
       can :usage, School, active: true
+      can :show_teachers_dash, School, id: user.school_id, active: true
       can :suggest_activity, School, active: true, id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
