@@ -62,7 +62,8 @@ private
       :email_address,
       :mobile_phone_number,
       :name,
-      :user_id
+      :user_id,
+      :staff_role_id
     )
   end
 end

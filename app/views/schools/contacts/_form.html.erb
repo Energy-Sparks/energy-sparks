@@ -8,6 +8,8 @@
 
 
 <% if f.object.user.nil? %>
+  <%= f.input :staff_role_id, label: 'Role', collection: StaffRole.order(:title) %>
+
   <p>Please enter at least one method of communication</p>
 <% end %>
 
