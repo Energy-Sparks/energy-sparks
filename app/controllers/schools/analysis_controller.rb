@@ -14,55 +14,11 @@ class Schools::AnalysisController < ApplicationController
   def analysis
     if @school.analysis?
       # Redirect to correct dashboard
-      redirect_to action: pages.keys.first, school_id: @school.slug
+      redirect_to school_analysis_tab_path(school: @school, tab: pages.keys.first)
     end
   end
 
-  def main_dashboard_electric
-    render_generic_chart_template
-  end
-
-  def main_dashboard_gas
-    render_generic_chart_template
-  end
-
-  def electricity_detail
-    render_generic_chart_template
-  end
-
-  def main_dashboard_electric_and_gas
-    render_generic_chart_template
-  end
-
-  def gas_detail
-    render_generic_chart_template
-  end
-
-  def boiler_control
-    render_generic_chart_template
-  end
-
-  def test
-    render_generic_chart_template
-  end
-
-  def heating_model_fitting
-    render_generic_chart_template(mpan_mprn: params.require(:mpan_mprn))
-  end
-
-  def storage_heaters
-    render_generic_chart_template
-  end
-
-  def carbon_emissions
-    render_generic_chart_template
-  end
-
-  def solar_pv
-    render_generic_chart_template
-  end
-
-  def cost
+  def show
     render_generic_chart_template
   end
 
@@ -84,6 +40,8 @@ private
   end
 
   def render_generic_chart_template(extra_chart_config = {})
+    extra_chart_config[:mpan_mprn] = params[:mpan_mprn] if params[:mpan_mprn].present?
+
     @measurement = measurement_unit(params[:measurement])
 
     @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
@@ -95,10 +53,11 @@ private
   end
 
   def title_and_chart_configuration
-    if action_name.to_sym == :test || action_name.to_sym == :heating_model_fitting
-      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[action_name.to_sym]
+    tab = params[:tab].to_sym
+    if [:test, :heating_model_fitting].include?(tab)
+      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[tab]
     else
-      @school.configuration.analysis_charts_as_symbols[action_name.to_sym]
+      @school.configuration.analysis_charts_as_symbols[tab]
     end
   end
 
