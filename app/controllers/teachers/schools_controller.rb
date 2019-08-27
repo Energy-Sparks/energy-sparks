@@ -1,5 +1,5 @@
 module Teachers
-  class SchoolsController < ApplicationController
+  class SchoolsController < TeachersController
     load_and_authorize_resource
 
     include SchoolAggregation
