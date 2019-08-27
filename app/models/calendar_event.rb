@@ -33,6 +33,7 @@ class CalendarEvent < ApplicationRecord
   scope :inset_days,    -> { joins(:calendar_event_type).merge(CalendarEventType.inset_day) }
   scope :holidays,      -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
   scope :bank_holidays, -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
+  scope :not_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.not_term_time) }
 
   after_create :check_whether_child_needs_creating
 

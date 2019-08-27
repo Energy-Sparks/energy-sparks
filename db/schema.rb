@@ -369,6 +369,7 @@ ActiveRecord::Schema.define(version: 2019_08_23_081320) do
     t.boolean "school_occupied", default: false
     t.boolean "bank_holiday", default: false
     t.boolean "inset_day", default: false
+    t.integer "analytics_event_type", default: 0, null: false
   end
 
   create_table "calendar_events", force: :cascade do |t|
