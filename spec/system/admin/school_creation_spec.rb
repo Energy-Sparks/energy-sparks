@@ -31,7 +31,7 @@ RSpec.describe "school creation", :schools, type: :system do
       click_on 'Manual School Setup'
     end
 
-    fill_in 'Name', with: "St Mary's School"
+    fill_in 'School name', with: "St Mary's School"
     fill_in 'Unique Reference Number', with: '4444244'
     fill_in 'Number of pupils', with: 300
     fill_in 'Floor area in square metres', with: 400
