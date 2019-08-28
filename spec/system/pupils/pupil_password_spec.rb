@@ -10,6 +10,13 @@ describe 'pupil passwords' do
     visit school_path(school)
     click_on "Log in with your pupil password"
 
+    click_on 'Sign in'
+    expect(page).to have_content('Please enter a password')
+
+    fill_in 'Password', with: 'theprotons'
+    click_on 'Sign in'
+    expect(page).to have_content("Sorry, that password doesn't work")
+
     fill_in 'Password', with: 'theelectrons'
     click_on 'Sign in'
 
