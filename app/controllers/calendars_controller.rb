@@ -24,7 +24,7 @@ class CalendarsController < ApplicationController
   # GET /calendars/1/edit
   def edit
     build_terms
-    redirect_to calendar_path(@calendar) if @calendar.template?x
+    redirect_to calendar_path(@calendar) if @calendar.template?
   end
 
   # POST /calendars
