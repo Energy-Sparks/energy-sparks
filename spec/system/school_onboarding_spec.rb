@@ -117,6 +117,13 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Postcode', with: 'A1 2BC'
       fill_in 'Website', with: 'http://oldfield.sch.uk'
 
+      check 'Our school has solar PV panels'
+      uncheck 'Our school has its own swimming pool'
+      check 'Our school serves school dinners on site'
+      check 'Dinners are cooked on site'
+      check 'The kitchen cooks dinners for other schools'
+      fill_in 'How many schools does your school cook dinners for?', with: '5'
+
       choose 'Primary'
       check 'KS1'
 
@@ -124,6 +131,11 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       click_on "I've finished"
       expect(onboarding).to have_event(:onboarding_complete)
+      onboarding.reload
+
+      expect(onboarding.school.has_solar_panels?).to eq(true)
+      expect(onboarding.school.has_swimming_pool?).to eq(false)
+      expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
 
       expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
 

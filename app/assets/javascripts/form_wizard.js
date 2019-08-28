@@ -21,4 +21,29 @@ $(document).ready(function() {
       form.find('.wizard-stage').first().show();
     }
   });
+
+  $('[data-revealed-by]').hide();
+
+  $('[data-reveals]').on('change', function(){
+    var checkbox = $(this);
+    if(this.checked) {
+      $(checkbox.data('reveals')).show();
+    }else{
+      $(checkbox.data('reveals')).hide();
+      $(checkbox.data('reveals')).find('input').each(function(){
+        var input = $(this);
+        switch(input.attr('type')) {
+          case 'hidden':
+            break;
+          case 'checkbox':
+            input.prop('checked', false).change();
+            break;
+          default:
+            input.val('');
+        }
+
+      });
+    }
+  });
+  $('[data-reveals]').trigger('change');
 });

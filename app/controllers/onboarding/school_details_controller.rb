@@ -53,6 +53,12 @@ module Onboarding
         :urn,
         :number_of_pupils,
         :floor_area,
+        :has_solar_panels,
+        :has_swimming_pool,
+        :serves_dinners,
+        :cooks_dinners_onsite,
+        :cooks_dinners_for_other_schools,
+        :cooks_dinners_for_other_schools_count,
         key_stage_ids: []
       )
     end

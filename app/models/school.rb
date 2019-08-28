@@ -2,29 +2,35 @@
 #
 # Table name: schools
 #
-#  active                      :boolean          default(FALSE)
-#  address                     :text
-#  calendar_area_id            :bigint(8)
-#  calendar_id                 :bigint(8)
-#  created_at                  :datetime         not null
-#  dark_sky_area_id            :bigint(8)
-#  floor_area                  :decimal(, )
-#  id                          :bigint(8)        not null, primary key
-#  level                       :integer          default(0)
-#  met_office_area_id          :bigint(8)
-#  name                        :string
-#  number_of_pupils            :integer
-#  postcode                    :string
-#  school_group_id             :bigint(8)
-#  school_type                 :integer
-#  slug                        :string
-#  solar_irradiance_area_id    :bigint(8)
-#  solar_pv_tuos_area_id       :bigint(8)
-#  temperature_area_id         :bigint(8)
-#  updated_at                  :datetime         not null
-#  urn                         :integer          not null
-#  weather_underground_area_id :bigint(8)
-#  website                     :string
+#  active                                :boolean          default(FALSE)
+#  address                               :text
+#  calendar_area_id                      :bigint(8)
+#  calendar_id                           :bigint(8)
+#  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
+#  cooks_dinners_for_other_schools_count :integer
+#  cooks_dinners_onsite                  :boolean          default(FALSE), not null
+#  created_at                            :datetime         not null
+#  dark_sky_area_id                      :bigint(8)
+#  floor_area                            :decimal(, )
+#  has_solar_panels                      :boolean          default(FALSE), not null
+#  has_swimming_pool                     :boolean          default(FALSE), not null
+#  id                                    :bigint(8)        not null, primary key
+#  level                                 :integer          default(0)
+#  met_office_area_id                    :bigint(8)
+#  name                                  :string
+#  number_of_pupils                      :integer
+#  postcode                              :string
+#  school_group_id                       :bigint(8)
+#  school_type                           :integer
+#  serves_dinners                        :boolean          default(FALSE), not null
+#  slug                                  :string
+#  solar_irradiance_area_id              :bigint(8)
+#  solar_pv_tuos_area_id                 :bigint(8)
+#  temperature_area_id                   :bigint(8)
+#  updated_at                            :datetime         not null
+#  urn                                   :integer          not null
+#  weather_underground_area_id           :bigint(8)
+#  website                               :string
 #
 # Indexes
 #
@@ -88,7 +94,8 @@ class School < ApplicationRecord
 
   validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn
-  validates :floor_area, :number_of_pupils, numericality: { greater_than: 0, allow_blank: true }
+  validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
+  validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
 
   validates_associated :school_times, on: :school_time_update
 

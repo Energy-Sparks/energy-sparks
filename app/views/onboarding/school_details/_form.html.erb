@@ -1,44 +1,6 @@
-<div class="row justify-content-md-center">
-  <div class="col col-md-10 col-lg-8">
-    <h1>Your school details</h1>
+<h1>Your school details</h1>
 
-    <%= simple_form_for(school, url: onboarding_school_details_path(school_onboarding)) do |f| %>
-
-      <%= f.input :name, label: 'School name'%>
-      <%= f.input :urn, label: 'Unique Reference Number (URN)' %>
-
-      <h2>School Type</h2>
-      <div class="form-group">
-        <% School.school_types.keys.each do |school_type| %>
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
-            <%= f.label "school_type_#{school_type.to_sym}", school_type.capitalize,  class: "form-check-label" %>
-          </div>
-        <% end %>
-      </div>
-
-      <p>Please select which Key Stages this school teaches.</p>
-      <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
-        <div class="custom-control custom-checkbox custom-control-inline">
-          <%= b.check_box(class: "custom-control-input") %>
-          <%= b.label(class: "custom-control-label") do %>
-            <%= b.object.name %>
-          <% end %>
-        </div>
-      <% end %>
-      <hr/>
-
-      <div class="form-row">
-        <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
-        <%= f.input :floor_area, label: 'Floor area in square metres', hint: "If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT", wrapper_html: {class: 'col-md-6'}%>
-      </div>
-
-      <h2>Address</h2>
-      <%= f.input :address %>
-      <%= f.input :postcode %>
-      <%= f.input :website %>
-
-      <%= f.button :submit, 'Update school details' %>
-    <% end %>
-  </div>
-</div>
+<%= simple_form_for(school, url: onboarding_school_details_path(school_onboarding)) do |f| %>
+  <%= render 'schools/details_form', f: f, key_stages: @key_stages %>
+  <%= f.button :submit, 'Update school details' %>
+<% end %>
