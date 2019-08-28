@@ -117,12 +117,12 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Postcode', with: 'A1 2BC'
       fill_in 'Website', with: 'http://oldfield.sch.uk'
 
-      check 'Does your school have solar PV panels?'
-      uncheck 'Does your school have its own swimming pool?'
-      check 'Does your school serve school dinners on site?'
-      check 'Are the dinners cooked on site?'
-      check 'Does your kitchen cook dinners for more than your school?'
-      fill_in 'How many schools does does your school cook dinners for?', with: '5'
+      check 'Our school has solar PV panels'
+      uncheck 'Our school has its own swimming pool'
+      check 'Our school serves school dinners on site'
+      check 'Dinners are cooked on site'
+      check 'The kitchen cooks dinners for other schools'
+      fill_in 'How many schools does your school cook dinners for?', with: '5'
 
       choose 'Primary'
       check 'KS1'
