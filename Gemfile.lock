@@ -655,7 +655,7 @@ DEPENDENCIES
   rack (= 2.0.6)
   rack-attack
   rack-canonical-host
-  rails (~> 6.0.0.rc2)
+  rails (~> 6.0.0)
   rails-controller-testing
   rb-readline
   redcarpet
