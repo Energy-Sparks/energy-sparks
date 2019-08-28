@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  include SchoolAggregation
   include ActivityTypeFilterable
   include Measurements
   include DashboardEnergyCharts
@@ -8,6 +9,8 @@ class SchoolsController < ApplicationController
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
+
+  before_action :check_aggregated_school_in_cache, only: [:show]
 
   # GET /schools
   def index
@@ -19,7 +22,7 @@ class SchoolsController < ApplicationController
   # GET /schools/1
   def show
     if current_user && (current_user.school_id == @school.id || current_user.admin?)
-      redirect_to teachers_school_path(@school), status: :found
+      redirect_to_dashboard
     else
       @charts = setup_charts(@school.configuration)
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard)
@@ -168,6 +171,14 @@ private
       end
       #ensure we're looking at beginning of the week
       @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
+    end
+  end
+
+  def redirect_to_dashboard
+    if current_user.pupil?
+      redirect_to pupils_school_path(@school), status: :found
+    else
+      redirect_to teachers_school_path(@school), status: :found
     end
   end
 end

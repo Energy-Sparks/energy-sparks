@@ -9,6 +9,8 @@ class Schools::SimulationsController < ApplicationController
   include SchoolAggregation
   include NewSimulatorChartConfig
 
+  before_action :check_aggregated_school_in_cache
+
 
   def index
     @simulations = @simulations.order(:created_at)

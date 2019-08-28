@@ -102,6 +102,12 @@ Rails.application.routes.draw do
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
+
+      resources :users, only: [:index, :destroy]
+      resources :school_admins, only: [:new, :create, :edit, :update]
+      resources :staff, only: [:new, :create, :edit, :update], controller: :staff
+      resources :pupils, only: [:new, :create, :edit, :update]
+
     end
 
     # Maintain old scoreboard URL
@@ -118,7 +124,7 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { sessions: "sessions" }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
   scope :admin do
@@ -181,6 +187,8 @@ Rails.application.routes.draw do
   end
 
   namespace :pupils do
-    resources :schools, only: :show
+    resources :schools, only: :show do
+      resource :session, only: [:new, :create]
+    end
   end
 end

@@ -8,9 +8,10 @@ module Teachers
     include DashboardAlerts
     include DashboardTimeline
 
-    skip_before_action :authenticate_user!
+    before_action :check_aggregated_school_in_cache
 
     def show
+      authorize! :show_teachers_dash, @school
       redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
 
       @charts = setup_charts(@school.configuration)

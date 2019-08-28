@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_21_081947) do
+ActiveRecord::Schema.define(version: 2019_08_23_081320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -422,7 +422,11 @@ ActiveRecord::Schema.define(version: 2019_08_21_081947) do
     t.text "description"
     t.text "email_address"
     t.text "mobile_phone_number"
+    t.bigint "user_id"
+    t.bigint "staff_role_id"
     t.index ["school_id"], name: "index_contacts_on_school_id"
+    t.index ["staff_role_id"], name: "index_contacts_on_staff_role_id"
+    t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
   create_table "content_generation_runs", force: :cascade do |t|
@@ -774,6 +778,12 @@ ActiveRecord::Schema.define(version: 2019_08_21_081947) do
     t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
   end
 
+  create_table "staff_roles", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "subjects", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -818,9 +828,17 @@ ActiveRecord::Schema.define(version: 2019_08_21_081947) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "pupil_password"
+    t.bigint "staff_role_id"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["school_id", "pupil_password"], name: "index_users_on_school_id_and_pupil_password", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
+    t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
 
   add_foreign_key "academic_years", "calendar_areas", on_delete: :cascade
@@ -860,6 +878,8 @@ ActiveRecord::Schema.define(version: 2019_08_21_081947) do
   add_foreign_key "calendars", "calendar_areas", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools"
+  add_foreign_key "contacts", "staff_roles", on_delete: :restrict
+  add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
@@ -907,4 +927,5 @@ ActiveRecord::Schema.define(version: 2019_08_21_081947) do
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "users", "schools"
+  add_foreign_key "users", "staff_roles", on_delete: :restrict
 end
