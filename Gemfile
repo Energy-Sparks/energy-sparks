@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.6.3'
 
 # Rails/Core
-gem 'rails', '~> 6.0.0.rc2' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -59,7 +59,7 @@ gem 'handlebars_assets'
 gem "mustache", "~> 1.0"
 
 # User input
-gem 'trix-rails', require: 'trix'
+gem 'trix-rails', require: 'trix', git: 'https://github.com/king601/trix/', branch: 'rails-6'
 
 # Auth & Users
 gem 'devise' # Use devise for authentication
