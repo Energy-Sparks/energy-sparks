@@ -1,6 +1,6 @@
 <h1>Calendars</h1>
 <p>Click on show to select a calendar. You can then edit any events on the calendar, or add new ones.</p>
-<p><b>Note:</b> - updating a template calendar automatically updates any dependent calendars.</p>
+<p><b>Note:</b> - updating a country calendar with bank holidays, or an area or MAT calendar with term times automatically updates any dependent calendars.</p>
 
 <% if @top_level_calendars.any? %>
   <%= render 'template_calendars', calendars: @top_level_calendars, title: 'Top level calendars' %>

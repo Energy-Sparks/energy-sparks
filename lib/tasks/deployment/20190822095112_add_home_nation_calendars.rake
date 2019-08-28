@@ -15,7 +15,8 @@ namespace :after_party do
     Calendar.find_by(title: 'Sheffield').update(based_on_id: eawca.id)
     Calendar.find_by(title: 'Oxfordshire').update(based_on_id: eawca.id)
 
-    Calendar.find_by(title: 'Highland').update(based_on_id: sca.id)
+    highland_calendar = Calendar.find_by(title: 'Highland')
+    highland_calendar.update(based_on_id: sca.id) if highland_calendar
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
