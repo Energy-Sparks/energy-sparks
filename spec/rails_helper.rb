@@ -11,6 +11,7 @@ require 'rspec/rails'
 require 'pry'
 require 'capybara/rspec'
 require 'webdrivers'
+require 'capybara/email/rspec'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

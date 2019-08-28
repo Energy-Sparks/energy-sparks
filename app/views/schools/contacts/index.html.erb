@@ -15,44 +15,79 @@
 </ul>
 
 <p>
-  The alerts can be sent by email or text message to a mobile phone. Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
+  The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone. Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
   Use this page to manage your existing alert contacts or add new contacts.
 </p>
 
-<p><%= link_to 'New Contact', new_school_contact_path(@school), class: 'btn btn-primary' %></p>
+<h2>Account contacts </h2>
 
-<% unless @contacts.empty? %>
-
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Mobile Phone Number</th>
-          <th>Email Address</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @contacts.each do |contact| %>
-          <tr scope="row">
-            <td><%= contact.name %></td>
-            <td><%= contact.description %></td>
-            <td><%= contact.mobile_phone_number %></td>
-            <td><%= contact.email_address %></td>
-            <td>
-              <div class="btn-group">
-                <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
-                <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-
-<% else %>
-  <p>No contacts are currently set up for this school.</p>
+<%= form_tag new_school_contact_path, method: :get do %>
+  <%= label_tag :user_id, 'Enable alerts for:' %>
+  <%= select_tag :user_id, options_from_collection_for_select(@accounts_without_contacts, :id, :display_name) %>
+  <%= submit_tag 'Next', class: 'btn btn-rounded'%>
 <% end %>
+
+<div class="table-responsive mt-2">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Mobile Phone Number</th>
+        <th>Email Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @account_contacts.each do |contact| %>
+        <tr scope="row">
+          <td><%= contact.name %></td>
+          <td><%= contact.staff_role.try(:title) %></td>
+          <td><%= contact.mobile_phone_number %></td>
+          <td><%= contact.email_address %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+              <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h2>Standalone contacts </h2>
+<p><%= link_to 'Enable alerts for an email or phone number', new_school_contact_path(@school), class: 'btn btn-primary' %></p>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Role</th>
+        <th>Mobile Phone Number</th>
+        <th>Email Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @standalone_contacts.each do |contact| %>
+        <tr scope="row">
+          <td><%= contact.name %></td>
+          <td><%= contact.description %></td>
+          <td><%= contact.staff_role.try(:title) %></td>
+          <td><%= contact.mobile_phone_number %></td>
+          <td><%= contact.email_address %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+              <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

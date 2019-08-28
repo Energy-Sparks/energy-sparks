@@ -1,14 +1,10 @@
 module SchoolAggregation
   extend ActiveSupport::Concern
 
-  included do
-    before_action :check_aggregated_school_in_cache, unless: proc {|_c| request.xhr? }
-  end
-
 private
 
   def check_aggregated_school_in_cache
-    unless aggregate_school_service.in_cache_or_cache_off?
+    unless aggregate_school_service.in_cache_or_cache_off? || request.xhr?
       setup_loading_stats
       @aggregation_path = school_aggregated_meter_collection_path(@school)
       render 'schools/aggregated_meter_collections/show'

@@ -8,7 +8,7 @@ describe 'editing an activity' do
   let(:new_activity_description) { 'What we did - or did we?' }
   let(:custom_title) { 'Custom title' }
   let!(:school) { create_active_school(name: school_name)}
-  let!(:admin)  { create(:user, role: 'school_user', school: school)}
+  let!(:admin)  { create(:user, role: 'staff', school: school)}
   let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
   let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
 

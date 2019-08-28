@@ -223,7 +223,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       end
 
       fill_in 'Mobile phone number', with: '07123 4567890'
-      click_on 'Save contact'
+      click_on 'Save'
       expect(school.contacts.first.mobile_phone_number).to eq('07123 4567890')
 
       within '#alert-contacts' do
@@ -236,7 +236,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       fill_in 'Name', with: 'Joe Bloggs'
       fill_in 'Email', with: 'test@example.com'
-      click_on 'Save contact'
+      click_on 'Save'
 
       expect(school.contacts.size).to eq(1)
 

@@ -1,0 +1,15 @@
+<h1>Your Energy Sparks account</h1>
+
+<p>Welcome <%= @resource.name %></p>
+
+<p>An account has been created for you on Energy Sparks.</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), class: 'btn btn-primary mb-3 mt-3' %>
+
+<p>
+  If you have any questions or concerns then please contact the <%= t('application') %> team by replying to
+  this email.
+</p>
+

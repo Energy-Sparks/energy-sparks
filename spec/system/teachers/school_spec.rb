@@ -6,40 +6,39 @@ RSpec.describe "teachers school view", type: :system do
   let!(:school)     { create(:school, name: school_name, weather_underground_area: create(:weather_underground_area), solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
   let!(:user)       { create(:user, role: :school_admin, school: school)}
 
-  describe 'when logged in as teacher' do
-    before(:each) do
-      sign_in(user)
-    end
+  before(:each) do
+    sign_in(user)
+  end
 
-    it 'I can visit the teacher dashboard' do
-      visit teachers_school_path(school)
-      expect(page.has_content? school_name).to be true
-    end
 
-    it 'displays interventions and temperature recordings in a timeline' do
-      intervention_type = create(:intervention_type, title: 'Upgraded insulation')
-      create(:observation, :intervention, school: school, intervention_type: intervention_type)
-      create(:observation_with_temperature_recording_and_location, school: school)
-      activity_type = create(:activity_type) # doesn't get saved if built with activity below
-      create(:activity, school: school, activity_type: activity_type)
+  it 'I can visit the teacher dashboard' do
+    visit teachers_school_path(school)
+    expect(page.has_content? school_name).to be true
+  end
 
-      visit teachers_school_path(school)
-      expect(page).to have_content('Recorded temperatures in')
-      expect(page).to have_content('Upgraded insulation')
-      expect(page).to have_content('Completed an activity')
-      click_on 'View all actions'
-      expect(page).to have_content('Recorded temperatures in')
-      expect(page).to have_content('Upgraded insulation')
-      expect(page).to have_content('Completed an activity')
-    end
+  it 'displays interventions and temperature recordings in a timeline' do
+    intervention_type = create(:intervention_type, title: 'Upgraded insulation')
+    create(:observation, :intervention, school: school, intervention_type: intervention_type)
+    create(:observation_with_temperature_recording_and_location, school: school)
+    activity_type = create(:activity_type) # doesn't get saved if built with activity below
+    create(:activity, school: school, activity_type: activity_type)
+
+    visit teachers_school_path(school)
+    expect(page).to have_content('Recorded temperatures in')
+    expect(page).to have_content('Upgraded insulation')
+    expect(page).to have_content('Completed an activity')
+    click_on 'View all actions'
+    expect(page).to have_content('Recorded temperatures in')
+    expect(page).to have_content('Upgraded insulation')
+    expect(page).to have_content('Completed an activity')
   end
 
   describe 'when the school is gas only I can visit the teacher dashboard and it only shows me a ' do
     it 'gas chart' do
-      school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
+      school.configuration.update!(gas: true, electricity: false, gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
       visit teachers_school_path(school)
-      expect(page.has_content? 'Electricity').to be false
-      expect(page.has_content? 'Gas').to be true
+      expect(page).to have_content('Gas')
+      expect(page).to_not have_content 'Electricity'
     end
   end
 
@@ -58,7 +57,7 @@ RSpec.describe "teachers school view", type: :system do
       it 'renders a loading page and then back to the dashboard page once complete' do
         visit teachers_school_path(school)
 
-        expect(page.has_content? 'Gas').to be true
+        expect(page).to have_content('Gas')
         # if redirect fails it will stille be processing
         expect(page).to_not have_content('processing')
         expect(page).to_not have_content("we're having trouble processing your energy data today")
@@ -82,8 +81,8 @@ RSpec.describe "teachers school view", type: :system do
     it 'electricity chart' do
       school.configuration.update(electricity: true)
       visit teachers_school_path(school)
-      expect(page.has_content? 'Electricity').to be true
-      expect(page.has_content? 'Gas').to be false
+      expect(page).to have_content 'Electricity'
+      expect(page).to_not have_content('Gas')
     end
   end
 end

@@ -10,9 +10,7 @@ module Onboarding
     end
 
     def create
-      @user = User.new(
-        user_params.merge(role: 'school_onboarding')
-      )
+      @user = User.new_school_onboarding(user_params)
       if @user.save
         @school_onboarding.update!(created_user: @user)
         @school_onboarding.events.create!(event: :onboarding_user_created)
