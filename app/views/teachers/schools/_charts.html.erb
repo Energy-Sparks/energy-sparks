@@ -24,6 +24,6 @@
          data-no-zoom="true"
          data-chart-index="<%= index %>"
          data-chart-y-axis-units="gb_pounds"
-         data-chart-json='<%= school_chart_path(@school) + ".json?chart_type=#{chart_type}&chart_y_axis_units=gb_pounds" %>'></div>
+         data-chart-json='<%= school_chart_path(@school, format: :json, chart_type: chart_type, chart_y_axis_units: :gb_pounds) %>'></div>
   </div>
 <% end %>

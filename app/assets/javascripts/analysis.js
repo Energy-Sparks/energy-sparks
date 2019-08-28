@@ -9,7 +9,7 @@ function chartFailure(chart, title) {
   $chartWrapper.addClass('alert alert-warning');
   $chartDiv.remove();
 
-  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="' + $chartWrapper.id + '" class="alert-link">chart</a></div>');
+  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#' + $chartWrapper.attr('id') + '" class="alert-link">chart</a></div>');
 }
 
 function chartSuccess(chart_data, chart, noAdvice, noZoom) {
@@ -140,7 +140,7 @@ function processAnalysisCharts(){
           if (thisChartData == undefined) {
             chartFailure(thisChart, "We do not have enough data at the moment to display this ");
           } else if (thisChartData.series_data == null) {
-            chartFailure(thisChartData.title, thisId);
+            chartFailure(thisChart, thisChartData.title);
           } else {
             if (teachersDashboard) {
               teachersChartSuccess(thisChartData, thisChart)

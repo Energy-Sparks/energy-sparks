@@ -85,19 +85,16 @@ Rails.application.routes.draw do
       get :alert_reports, to: 'alert_reports#index', as: :alert_reports
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
+
       get :analysis, to: 'analysis#analysis'
-      get :main_dashboard_electric, to: 'analysis#main_dashboard_electric'
-      get :main_dashboard_gas, to: 'analysis#main_dashboard_gas'
-      get :electricity_detail, to: 'analysis#electricity_detail'
-      get :gas_detail, to: 'analysis#gas_detail'
-      get :main_dashboard_electric_and_gas, to: 'analysis#main_dashboard_electric_and_gas'
-      get :boiler_control, to: 'analysis#boiler_control'
-      get :heating_model_fitting, to: 'analysis#heating_model_fitting'
-      get :storage_heaters, to: 'analysis#storage_heaters'
-      get :solar_pv, to: 'analysis#solar_pv'
-      get :carbon_emissions, to: 'analysis#carbon_emissions'
-      get :test, to: 'analysis#test'
-      get :cost, to: 'analysis#cost'
+      get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
+      [
+        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
+        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
+      ].each do |tab|
+        get "/#{tab}", to: redirect("/analysis/#{tab}")
+      end
+
       get :timeline, to: 'timeline#show'
 
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'

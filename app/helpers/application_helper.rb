@@ -165,7 +165,8 @@ module ApplicationHelper
       data: {
         "chart-index" => index,
         "chart-type" => chart_type,
-        "chart-annotations" => school_annotations_path(school)
+        "chart-annotations" => school_annotations_path(school),
+        "chart-json" => school_chart_path(@school, format: :json, chart_type: chart_type)
       }.merge(html_chart_data)
     )
   end
