@@ -22,11 +22,7 @@ class Schools::ContactsController < ApplicationController
   def create
     authorize! :enable_alerts, @contact.user if @contact.user
     if @contact.save
-      if @contact.user == current_user
-        redirect_to school_path(@school), notice: "Alerts enabled"
-      else
-        redirect_to school_contacts_path(@school), notice: "Alerts enabled for #{@contact.display_name}"
-      end
+      redirect_user(current_user_notice: 'Alerts enabled', notice: "Alerts enabled for #{@contact.display_name}")
     else
       render :new
     end
@@ -34,24 +30,15 @@ class Schools::ContactsController < ApplicationController
 
   def update
     if @contact.update(contact_params)
-      if @contact.user == current_user
-        redirect_to school_path(@school), notice: "Details updated"
-      else
-        redirect_to school_contacts_path(@school), notice: "#{@contact.display_name} was successfully updated."
-      end
+      redirect_user(current_user_notice: 'Details updated', notice: "#{@contact.display_name} was successfully updated")
     else
       render :edit
     end
   end
 
   def destroy
-    display_name = @contact.display_name
     @contact.destroy
-    if @contact.user == current_user
-      redirect_to school_path(@school), notice: "Alerts disabled"
-    else
-      redirect_to school_contacts_path(@school), notice: "Alerts disabled for #{display_name}"
-    end
+    redirect_user(current_user_notice: 'Alerts disabled', notice: "Alerts disabled for #{@contact.display_name}")
   end
 
 private
@@ -65,5 +52,13 @@ private
       :user_id,
       :staff_role_id
     )
+  end
+
+  def redirect_user(current_user_notice:, notice:)
+    if @contact.user == current_user
+      redirect_to school_path(@school), notice: current_user_notice
+    else
+      redirect_to school_contacts_path(@school), notice: notice
+    end
   end
 end
