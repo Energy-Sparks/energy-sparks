@@ -26,11 +26,19 @@
           <% end %>
         </div>
       <% end %>
+
       <hr/>
 
       <div class="form-row">
-        <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
         <%= f.input :floor_area, label: 'Floor area in square metres', hint: "If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT", wrapper_html: {class: 'col-md-6'}%>
+        <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
+
+        <%= f.input :has_solar_panels, label: 'Does your school have solar PV panels?' %>
+        <%= f.input :has_swimming_pool, label: 'Does your school have its own swimming pool?' %>
+        <%= f.input :serves_dinners, label: 'Does your school serve school dinners on site?', input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
+        <%= f.input :cooks_dinners_onsite, label: 'Are the dinners cooked on site?', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
+        <%= f.input :cooks_dinners_for_other_schools, label: 'Does your kitchen cook dinners for more than your school?', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
+        <%= f.input :cooks_dinners_for_other_schools_count, label: 'How many schools does does your school cook dinners for?', wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>
       </div>
 
       <h2>Address</h2>
