@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_090148) do
+ActiveRecord::Schema.define(version: 2019_08_29_123516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(version: 2019_08_28_090148) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "handle_off_by_one", default: false
+    t.boolean "row_per_reading", default: false
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -321,6 +322,21 @@ ActiveRecord::Schema.define(version: 2019_08_28_090148) do
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
+  end
+
+  create_table "amr_single_readings", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id"
+    t.bigint "meter_id"
+    t.bigint "amr_data_feed_import_log_id"
+    t.text "mpan_mprn", null: false
+    t.text "reading_date_time", null: false
+    t.text "reading", null: false
+    t.integer "reading_type", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_single_readings_on_amr_data_feed_config_id"
+    t.index ["amr_data_feed_import_log_id"], name: "index_amr_single_readings_on_amr_data_feed_import_log_id"
+    t.index ["meter_id"], name: "index_amr_single_readings_on_meter_id"
   end
 
   create_table "amr_validated_readings", force: :cascade do |t|

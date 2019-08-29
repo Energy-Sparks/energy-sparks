@@ -18,6 +18,7 @@
 #  provider_id_field       :text
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
+#  row_per_reading         :boolean          default(FALSE)
 #  s3_archive_folder       :text             not null
 #  s3_folder               :text             not null
 #  total_field             :text
