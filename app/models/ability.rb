@@ -17,7 +17,7 @@ class Ability
       can :manage, Activity, school_id: user.school_id
       can :crud, Calendar, id: user.school.try(:calendar_id)
       can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
-      can [:update, :manage_school_times, :suggest_activity], School, id: user.school_id
+      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash, :show_pupils_dash], School, id: user.school_id
       can [:read, :usage], School do |school|
         school.active? || user.school_id == school.id
       end
@@ -39,11 +39,16 @@ class Ability
       can :crud, Programme, school_id: user.school_id
       can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
-    elsif user.school_user?
+      can :manage, User, school_id: user.school_id
+      cannot :delete, User do |other_user|
+        user.id == other_user.id
+      end
+    elsif user.staff?
       can :manage, Activity, school: { id: user.school_id, active: true }
       can :index, School
       can :show, School, active: true
       can :usage, School, active: true
+      can [:show_teachers_dash, :show_pupils_dash], School, id: user.school_id, active: true
       can :suggest_activity, School, active: true, id: user.school_id
       can :read, ActivityCategory
       can :show, ActivityType
@@ -53,6 +58,20 @@ class Ability
       can :crud, Programme, school_id: user.school_id
       can :start_programme, School, id: user.school_id
       can :read, ProgrammeType
+      can :enable_alerts, User, school_id: user.school_id, id: user.id
+      can :manage, Contact, school_id: user.school_id, user_id: user.id
+    elsif user.pupil?
+      can :manage, Activity, school: { id: user.school_id, active: true }
+      can :index, School
+      can :show, School, active: true
+      can :usage, School, active: true
+      can :show_pupils_dash, School, id: user.school_id, active: true
+      can :suggest_activity, School, active: true, id: user.school_id
+      can :read, ActivityCategory
+      can :show, ActivityType
+      can :show, Scoreboard
+      can :read, FindOutMore
+      can :manage, Observation
     elsif user.guest?
       cannot :analyse, :cost
       can :read, Activity, school: { active: true }

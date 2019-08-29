@@ -7,6 +7,7 @@ class Schools::ChartsController < ApplicationController
   include Measurements
 
   skip_before_action :authenticate_user!
+  before_action :check_aggregated_school_in_cache
 
   def show
     @chart_type = params[:chart_type].to_sym

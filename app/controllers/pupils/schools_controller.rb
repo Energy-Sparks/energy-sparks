@@ -4,10 +4,10 @@ module Pupils
     include ActivityTypeFilterable
 
     load_and_authorize_resource
-    skip_before_action :authenticate_user!
     before_action :redirect_if_inactive
 
     def show
+      authorize! :show_pupils_dash, @school
       @dashboard_alerts = @school.latest_dashboard_alerts.pupil_dashboard.sample(2).map do |dashboard_alert|
         TemplateInterpolation.new(
           dashboard_alert.content_version,

@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    @user.confirmed_at = Time.zone.now
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }

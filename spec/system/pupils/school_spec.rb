@@ -4,7 +4,7 @@ RSpec.describe "pupils school view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
   let!(:school) { create(:school, name: school_name)}
-  let!(:user)  { create(:user, role: :school_user, school: school)}
+  let!(:user)  { create(:pupil, school: school)}
 
 
   let(:equivalence_type)  { create(:equivalence_type )}
