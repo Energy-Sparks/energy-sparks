@@ -74,7 +74,7 @@ bundle exec rake utility:prepare_test_server
 
 ### Instances:
 
-* Set instance to t2.small
+* Set instance to t2.small - make sure there is at least 20Gb disk space available.
 
 ### Security:
 
