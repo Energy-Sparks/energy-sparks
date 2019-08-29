@@ -14,11 +14,12 @@
 #  meter_description_field :text
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
+#  number_of_header_rows   :integer          default(0), not null
 #  postcode_field          :text
 #  provider_id_field       :text
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
-#  row_per_reading         :boolean          default(FALSE)
+#  row_per_reading         :boolean          default(FALSE), not null
 #  s3_archive_folder       :text             not null
 #  s3_folder               :text             not null
 #  total_field             :text

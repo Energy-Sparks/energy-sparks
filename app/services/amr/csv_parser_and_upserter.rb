@@ -11,10 +11,13 @@ module Amr
       Rails.logger.info "Loading: #{@config.local_bucket_path}/#{@file_name}"
       amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
 
+      array_of_rows = CsvParser.new(@config, @file_name).perform
+      array_of_rows = DataFeedValidator.new(@config, array_of_rows).perform
+
       @inserted_record_count = if @config.row_per_reading
-                                 row_per_reading(amr_data_feed_import_log)
+                                 row_per_reading(array_of_rows, amr_data_feed_import_log)
                                else
-                                 row_per_day(amr_data_feed_import_log)
+                                 row_per_day(array_of_rows, amr_data_feed_import_log)
                                end
 
       Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count}"
@@ -24,14 +27,12 @@ module Amr
 
     private
 
-    def row_per_day(amr_data_feed_import_log)
-      array_of_rows = CsvParser.new(@config, @file_name).perform
-      array_of_rows = DataFeedValidator.new(@config, array_of_rows).perform
+    def row_per_day(array_of_rows, amr_data_feed_import_log)
       array_of_data_feed_reading_hashes = DataFeedTranslator.new(@config, array_of_rows).perform
       DataFeedUpserter.new(array_of_data_feed_reading_hashes, amr_data_feed_import_log.id).perform
     end
 
-    def row_per_reading(amr_data_feed_import_log)
+    def row_per_reading(array_of_rows, amr_data_feed_import_log)
     end
   end
 end

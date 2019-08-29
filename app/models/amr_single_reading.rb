@@ -9,7 +9,8 @@
 #  meter_id                    :bigint(8)
 #  mpan_mprn                   :text             not null
 #  reading                     :text             not null
-#  reading_date_time           :text             not null
+#  reading_date_time           :datetime         not null
+#  reading_date_time_as_text   :text             not null
 #  reading_type                :integer          not null
 #  updated_at                  :datetime         not null
 #

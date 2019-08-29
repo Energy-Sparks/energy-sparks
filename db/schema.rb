@@ -287,7 +287,8 @@ ActiveRecord::Schema.define(version: 2019_08_29_123516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "handle_off_by_one", default: false
-    t.boolean "row_per_reading", default: false
+    t.boolean "row_per_reading", default: false, null: false
+    t.integer "number_of_header_rows", default: 0, null: false
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -329,7 +330,8 @@ ActiveRecord::Schema.define(version: 2019_08_29_123516) do
     t.bigint "meter_id"
     t.bigint "amr_data_feed_import_log_id"
     t.text "mpan_mprn", null: false
-    t.text "reading_date_time", null: false
+    t.text "reading_date_time_as_text", null: false
+    t.datetime "reading_date_time", null: false
     t.text "reading", null: false
     t.integer "reading_type", null: false
     t.datetime "created_at", precision: 6, null: false
