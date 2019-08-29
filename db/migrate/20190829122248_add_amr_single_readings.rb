@@ -11,5 +11,8 @@ class AddAmrSingleReadings < ActiveRecord::Migration[6.0]
       t.integer       :reading_type,              null: false
       t.timestamps
     end
+
+    add_index :amr_single_readings, [:mpan_mprn, :reading_date_time_as_text], unique: true,  name: 'amr_single_readings_uniq'
+
   end
 end

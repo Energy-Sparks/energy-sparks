@@ -339,6 +339,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_123516) do
     t.index ["amr_data_feed_config_id"], name: "index_amr_single_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_single_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_single_readings_on_meter_id"
+    t.index ["mpan_mprn", "reading_date_time_as_text"], name: "amr_single_readings_uniq", unique: true
   end
 
   create_table "amr_validated_readings", force: :cascade do |t|
