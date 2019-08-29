@@ -36,7 +36,7 @@ RSpec.describe 'equivalence type management', type: :system do
     click_on 'Edit'
 
     fill_in_trix with: 'You used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
-    select 'Car colour', from: 'Image name'
+    select 'Petrol car', from: 'Image name'
 
     select 'Gas', from: 'Meter type'
     click_on 'Update equivalence type'
@@ -44,7 +44,7 @@ RSpec.describe 'equivalence type management', type: :system do
     equivalence_type.reload
     expect(equivalence_type.gas?).to eq true
 
-    expect(equivalence_type.image_name).to eq :car_colour.to_s
+    expect(equivalence_type.image_name).to eq :petrol_car.to_s
     expect(equivalence_type.show_image?).to eq true
 
     expect(equivalence_type.content_versions.count).to eq(2)
