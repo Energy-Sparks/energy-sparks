@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<% if @activity_type.active? %>
+<% if @activity_type.active? && current_user && current_user.school %>
   <div class="row padded-row">
     <div class="col-md-12">
       <% if @recorded == 0 %>
