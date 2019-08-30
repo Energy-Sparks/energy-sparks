@@ -1,0 +1,29 @@
+<h2><%= title %></h2>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Based on</th>
+      <th>Dependent Calendars</th>
+      <th>Dependent School calendars</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% calendars.each do |calendar| %>
+      <tr>
+        <td><%= calendar.title %></td>
+        <td><%= link_to calendar.based_on.title, calendar_path(calendar.based_on) unless calendar.based_on.nil? %></td>
+        <td><%= calendar.calendars.count %></td>
+        <td><%= School.joins(:calendar).where('calendars.based_on_id = ?', calendar.id).count %></td>
+        <td>
+          <div class='btn-group'>
+          <%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %>
+          <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' if can?(:destroy, calendar) %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

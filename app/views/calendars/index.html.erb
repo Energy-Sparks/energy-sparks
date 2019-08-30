@@ -1,37 +1,17 @@
 <h1>Calendars</h1>
 <p>Click on show to select a calendar. You can then edit any events on the calendar, or add new ones.</p>
-<p><b>Note:</b> - updating a template calendar does not automatically update any dependent calendars.</p>
+<p><b>Note:</b> - updating a country calendar with bank holidays, or an area or MAT calendar with term times automatically updates any dependent calendars.</p>
 
-<% if @template_calendars.any? %>
-  <h2>Template Calendars for Area</h2>
-    <table class="table table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Dependent Calendars</th>
-        <th>Dependent School calendars</th>
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @template_calendars.each do |calendar| %>
-        <tr>
-          <td><%= calendar.title %></td>
-          <td><%= calendar.calendars.count %></td>
-          <td><%= School.joins(:calendar).where('calendars.based_on_id = ?', calendar.id).count %></td>
-          <td>
-            <div class='btn-group'>
-            <%= link_to 'Show', calendar, class: 'btn btn-info' %>
-            <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<% if @top_level_calendars.any? %>
+  <%= render 'template_calendars', calendars: @top_level_calendars, title: 'Top level calendars' %>
 <% else %>
-  <h2>There are no Calendar Templates </h2>
+  <h2>There are no Top level calendars</h2>
+<% end %>
+
+<% if @child_template_calendars.any? %>
+  <%= render 'template_calendars', calendars: @child_template_calendars, title: 'Area calendars' %>
+<% else %>
+  <h2>There are no Area calendars</h2>
 <% end %>
 
 <% if @customised_calendars.any? %>
