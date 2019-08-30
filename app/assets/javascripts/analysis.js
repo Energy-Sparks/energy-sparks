@@ -112,6 +112,7 @@ function processAnalysisCharts(){
       var yAxisUnits = $(this).data('chart-y-axis-units');
       var mpanMprn = $(this).data('chart-mpan-mprn');
       var dataPath = $(this).data('chart-json');
+      var transformations = $(this).data('chart-transformations');
       var noAdvice = $(this).is("[data-no-advice]");
       var noZoom = $(this).is("[data-no-zoom]");
       var teachersDashboard = $(this).is("[data-teachers-dashboard]");
@@ -119,7 +120,8 @@ function processAnalysisCharts(){
       var requestData = {
         chart_type: chartType,
         chart_y_axis_units: yAxisUnits,
-        mpan_mprn: mpanMprn
+        mpan_mprn: mpanMprn,
+        transformations: transformations
       };
 
       if (dataPath === undefined) {
