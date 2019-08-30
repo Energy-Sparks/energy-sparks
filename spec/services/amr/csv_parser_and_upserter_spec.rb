@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'fileutils'
 require 'fakefs/spec_helpers'
 
+
+
 module Amr
   describe CsvParserAndUpserter do
     include FakeFS::SpecHelpers
@@ -210,10 +212,13 @@ module Amr
     context 'highlands' do
       it 'imports a csv' do
         FakeFS.deactivate!
+        expect(AmrDataFeedReading.count).to be 0
         importer = CsvParserAndUpserter.new(highlands_config, 'example.csv')
         importer.perform
-        expect(AmrSingleReading.count).to_not be 0
-        expect(importer.inserted_record_count).to_not be nil
+        # expect(AmrSingleReading.count).to_not be 480
+        # pp AmrDataFeedReading.all
+        expect(AmrDataFeedReading.count).to be 11
+        expect(importer.inserted_record_count).to be 11
         FakeFS.activate!
       end
     end

@@ -15,11 +15,14 @@ module Amr
       array_of_rows = DataFeedValidator.new(@config, array_of_rows).perform
       array_of_data_feed_reading_hashes = DataFeedTranslator.new(@config, array_of_rows).perform
 
-      @inserted_record_count = if @config.row_per_reading
-                                 row_per_reading(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
-                               else
-                                 row_per_day(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
-                               end
+      array_of_data_feed_reading_hashes = SingleReadConverter.new(array_of_data_feed_reading_hashes).perform if @config.row_per_reading
+      @inserted_record_count = row_per_day(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+
+      # @inserted_record_count = if @config.row_per_reading
+      #                            row_per_reading(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+      #                          else
+      #                            row_per_day(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+      #                          end
 
       Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count}"
       amr_data_feed_import_log.update(records_imported: @inserted_record_count)
@@ -33,6 +36,32 @@ module Amr
     end
 
     def row_per_reading(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+      populate_single_readings(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+
+      query = <<-SQL
+        SELECT date_trunc('day', reading_date_time) AS day, mpan_mprn, array_agg(reading ORDER BY reading_date_time ASC) AS values
+        FROM amr_single_readings
+        GROUP BY date_trunc('day', reading_date_time), mpan_mprn
+        ORDER BY day ASC
+      SQL
+
+      result = ActiveRecord::Base.connection.execute(query)
+      result.each do |row|
+         AmrDataFeedReading.upsert_all([{
+          amr_data_feed_config_id: @config.id,
+          mpan_mprn: row["mpan_mprn"],
+          reading_date: row["day"],
+          readings: row["values"].delete('{}').split(',').map(&:to_f),
+          amr_data_feed_import_log_id: amr_data_feed_import_log.id,
+          created_at: DateTime.now.utc,
+          updated_at: DateTime.now.utc
+        }], unique_by: [:mpan_mprn, :reading_date])
+      end
+    end
+
+    def populate_single_readings(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
+      puts array_of_data_feed_reading_hashes
+
       array_of_data_feed_reading_hashes.each do |data_feed_reading_hash|
         AmrSingleReading.upsert_all([{
               amr_data_feed_config_id: @config.id,
@@ -50,27 +79,3 @@ module Amr
     end
   end
 end
-
-#     def row_per_reading(array_of_data_feed_reading_hashes, amr_data_feed_import_log)
-
-#       array_of_data_feed_reading_hashes.each do |data_feed_reading_hash|
-
-#         reading_day = Date.parse(data_feed_reading_hash[:reading_date])
-#         reading_day_time = Time.parse(data_feed_reading_hash[:reading_date])
-#         first_reading_time = reading_day.to_time + 30.minutes
-
-#         reading_index = ((reading_day_time - first_reading_time) / 30.minutes).to_i
-
-#         data_feed_reading_hash[:date] = reading_day
-#         data_feed_reading_hash[:reading_index] = reading_index
-#       end
-
-
-#       puts array_of_data_feed_reading_hashes.first
-#       puts array_of_data_feed_reading_hashes.second
-#       puts array_of_data_feed_reading_hashes.third
-
-# #     {:amr_data_feed_config_id=>36, :meter_id=>nil, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :postcode=>nil, :units=>nil, :description=>nil, :meter_serial_number=>nil, :provider_record_id=>nil, :readings=>["14.4"]}
-# #     {:amr_data_feed_config_id=>36, :meter_id=>nil, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 01:00:00", :postcode=>nil, :units=>nil, :description=>nil, :meter_serial_number=>nil, :provider_record_id=>nil, :readings=>["15"]}
-
-#     end
