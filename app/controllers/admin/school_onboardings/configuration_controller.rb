@@ -7,7 +7,6 @@ module Admin
         if @school_onboarding.school_group
           @school_onboarding.calendar_area = @school_onboarding.school_group.default_calendar_area
           @school_onboarding.solar_pv_tuos_area = @school_onboarding.school_group.default_solar_pv_tuos_area
-          @school_onboarding.weather_underground_area = @school_onboarding.school_group.default_weather_underground_area
           @school_onboarding.dark_sky_area = @school_onboarding.school_group.default_dark_sky_area
 
         end
@@ -23,7 +22,6 @@ module Admin
       def school_params
         params.require(:school_onboarding).permit(
           :calendar_area_id,
-          :weather_underground_area_id,
           :solar_pv_tuos_area_id,
           :dark_sky_area_id
         )

@@ -1,0 +1,19 @@
+class DropDataFeeds < ActiveRecord::Migration[6.0]
+  def change
+    remove_column :areas, :data_feed_id, :integer
+    drop_table  :data_feed_readings
+    drop_table  :data_feeds
+  end
+end
+
+
+
+# Deleted rows
+# [
+# {id: 2, type: "DataFeeds::SolarPvTuos", title: "Solar PV Tuos Bath", description: nil, configuration: {"name"=>"Bath", "latitude"=>51.39, "longitude"=>-2.37, "proxies"=>[{"id"=>152, "name"=>"Iron Acton", "code"=>"IROA", "latitude"=>51.56933, "longitude"=>-2.47937}, {"id"=>198, "name"=>"Melksham", "code"=>"MELK", "latitude"=>51.39403, "longitude"=>-2.14938}, {"id"=>253, "name"=>"Seabank", "code"=>"SEAB", "latitude"=>51.53663, "longitude"=>-2.66869}]}},
+# {id: 1, type: "DataFeeds::WeatherUnderground", title: "Weather Underground Bath", description: nil, configuration: {"name"=>"Bath", "max_minutes_between_samples"=>120, "weather_stations_for_temperature"=>{"ISOMERSE15"=>0.5, "IBRISTOL11"=>0.2, "ISOUTHGL2"=>0.1, "IBATH9"=>0.1, "IBASTWER2"=>0.1, "ISWAINSW2"=>0.1, "IBASMIDF2"=>0.1}, "weather_stations_for_solar"=>{"ISOMERSE15"=>0.5}, "temperature_csv_file_name"=>"bathtemperaturedata.csv", "solar_csv_file_name"=>"bathsolar_insolencedata.csv", "csv_format"=>"portrait"}},
+# {id: 3, type: "DataFeeds::WeatherUnderground", title: "Weather Underground Frome", description: nil, configuration: {"name"=>"Frome", "latitude"=>51.2308, "longitude"=>-2.3201, "start_date"=>"2013-08-12", "end_date"=>"2018-09-26", "method"=>"weighted_average", "max_minutes_between_samples"=>120, "max_temperature"=>38.0, "min_temperature"=>-15.0, "solar_scale_factor"=>1.0, "max_solar_insolence"=>2000.0, "weather_stations_for_temperature"=>{"IFROME9"=>0.25, "IFROME5"=>0.25, "IWARMINS4"=>0.1, "IWILTSHI36"=>0.1, "IRADSTOC7"=>0.1, "IKILMERS2"=>0.1, "IUPTONNO2"=>0.1}, "weather_stations_for_solar"=>{"IKILMERS2"=>0.5, "IUPTONNO2"=>0.5}, "temperature_csv_file_name"=>"Frome temperaturedata.csv", "solar_csv_file_name"=>"Frome solardata.csv", "csv_format"=>"landscape"}},
+# {id: 4, type: "DataFeeds::SolarPvTuos", title: "Solar PV Tuos Frome", description: nil, configuration: {"name"=>"Frome", "latitude"=>51.2308, "longitude"=>-2.3201, "proxies"=>[{"id"=>152, "name"=>"Iron Acton", "code"=>"IROA", "latitude"=>51.56933, "longitude"=>-2.47937}, {"id"=>198, "name"=>"Melksham", "code"=>"MELK", "latitude"=>51.39403, "longitude"=>-2.14938}, {"id"=>253, "name"=>"Seabank", "code"=>"SEAB", "latitude"=>51.53663, "longitude"=>-2.66869}]}},
+# {id: 5, type: "DataFeeds::WeatherUnderground", title: "Weather Underground Sheffield", description: nil, configuration: {"name"=>"Sheffield", "latitude"=>53.3811, "longitude"=>-1.4701, "start_date"=>"2013-01-01", "end_date"=>"2018-09-25", "method"=>"weighted_average", "max_minutes_between_samples"=>120, "max_temperature"=>38.0, "min_temperature"=>-15.0, "solar_scale_factor"=>1.32, "max_solar_insolence"=>2000.0, "weather_stations_for_temperature"=>{"ISHEFFIE84"=>0.1, "ISHEFFIE18"=>0.25, "ISOUTHYO31"=>0.3, "ISOUTHYO29"=>0.1, "ISHEFFIE56"=>0.25}, "weather_stations_for_solar"=>{"ISHEFFIE18"=>0.33, "ISOUTHYO31"=>0.33, "ISHEFFIE56"=>0.33}, "temperature_csv_file_name"=>"Sheffield temperaturedata.csv", "solar_csv_file_name"=>"Sheffield solardata.csv", "csv_format"=>"landscape"}},
+# {id: 6, type: "DataFeeds::SolarPvTuos", title: "Solar PV Tuos Sheffield", description: nil, configuration: {"name"=>"Sheffield", "latitude"=>53.3811, "longitude"=>-1.4701, "proxies"=>[{"id"=>257, "name"=>"Sheffield City", "code"=>"SHEC", "latitude"=>53.37445, "longitude"=>-1.47708}, {"id"=>207, "name"=>"Neepsend", "code"=>"NEEP", "latitude"=>53.40642, "longitude"=>-1.48696}, {"id"=>213, "name"=>"Norton Lees", "code"=>"NORL", "latitude"=>53.34823, "longitude"=>-1.46998}]}}
+# ]

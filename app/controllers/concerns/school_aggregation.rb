@@ -14,9 +14,7 @@ private
   def setup_loading_stats
     @number_of_meter_readings = @school.amr_validated_readings.count * 48
     @number_of_meters = @school.meters.count
-
-    data_feed = @school.weather_underground_area.data_feed
-    @number_of_weather_readings = DataFeedReading.where(data_feed: data_feed, feed_type: :temperature).count
+    @number_of_weather_readings = DataFeeds::DarkSkyTemperatureReading.where(area_id: @school.dark_sky_area.id).count * 48
     @number_of_solar_pv_readings = DataFeeds::SolarPvTuosReading.where(area_id: @school.solar_pv_tuos_area.id).count * 48
   end
 
