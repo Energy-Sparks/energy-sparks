@@ -35,6 +35,8 @@ profiles
 *csv
 !etc/**/*csv
 !spec/fixtures/**/*csv
+!data-pipeline/spec/support/files/**/*csv
+
 etc/bulk_import/*csv
 
 # Don't commit assets!
