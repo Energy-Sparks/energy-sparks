@@ -34,6 +34,8 @@ profiles
 *.DS_Store
 *csv
 !etc/**/*csv
+!data-pipeline/spec/support/files/**/*csv
+
 etc/bulk_import/*csv
 
 # Don't commit assets!
