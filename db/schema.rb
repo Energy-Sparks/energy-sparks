@@ -325,23 +325,6 @@ ActiveRecord::Schema.define(version: 2019_08_29_123516) do
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
   end
 
-  create_table "amr_single_readings", force: :cascade do |t|
-    t.bigint "amr_data_feed_config_id"
-    t.bigint "meter_id"
-    t.bigint "amr_data_feed_import_log_id"
-    t.text "mpan_mprn", null: false
-    t.text "reading_date_time_as_text", null: false
-    t.datetime "reading_date_time", null: false
-    t.text "reading", null: false
-    t.integer "reading_type", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["amr_data_feed_config_id"], name: "index_amr_single_readings_on_amr_data_feed_config_id"
-    t.index ["amr_data_feed_import_log_id"], name: "index_amr_single_readings_on_amr_data_feed_import_log_id"
-    t.index ["meter_id"], name: "index_amr_single_readings_on_meter_id"
-    t.index ["mpan_mprn", "reading_date_time_as_text"], name: "amr_single_readings_uniq", unique: true
-  end
-
   create_table "amr_validated_readings", force: :cascade do |t|
     t.bigint "meter_id", null: false
     t.decimal "kwh_data_x48", null: false, array: true
