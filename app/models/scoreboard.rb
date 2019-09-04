@@ -45,7 +45,7 @@ class Scoreboard < ApplicationRecord
     calendar_area.academic_years.where("date_part('year', start_date) >= ? AND start_date <= ?", FIRST_YEAR, today).order(:start_date)
   end
 
-  def scored_schools(recent_boundary: 1.month.ago, academic_year: nil)
+  def scored_schools(recent_boundary: 1.month.ago, academic_year: calendar_area.academic_year_for(Time.zone.today))
     scored = schools.active.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
       self.class.sanitize_sql_array(
         ['SUM(observations.points) FILTER (WHERE observations.at > ?) AS recent_points', recent_boundary]
@@ -56,7 +56,7 @@ class Scoreboard < ApplicationRecord
     if academic_year
       scored.joins(
         self.class.sanitize_sql_array(
-          ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
+          ['INNER JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
         )
       )
     else
