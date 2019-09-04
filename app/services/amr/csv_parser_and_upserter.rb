@@ -14,6 +14,8 @@ module Amr
       array_of_rows = CsvParser.new(@config, @file_name).perform
       array_of_rows = DataFeedValidator.new(@config, array_of_rows).perform
       array_of_data_feed_reading_hashes = DataFeedTranslator.new(@config, array_of_rows).perform
+
+      array_of_data_feed_reading_hashes = SingleReadConverter.new(array_of_data_feed_reading_hashes).perform if @config.row_per_reading
       @inserted_record_count = DataFeedUpserter.new(array_of_data_feed_reading_hashes, amr_data_feed_import_log.id).perform
 
       Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count}"

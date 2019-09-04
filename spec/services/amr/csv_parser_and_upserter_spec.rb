@@ -2,55 +2,29 @@ require 'rails_helper'
 require 'fileutils'
 require 'fakefs/spec_helpers'
 
+
+
 module Amr
   describe CsvParserAndUpserter do
     include FakeFS::SpecHelpers
 
     let(:file_name) { 'example.csv' }
-    let!(:config) {
-      AmrDataFeedConfig.create!(
-        description: 'Banes',
-        s3_folder: 'banes',
-        s3_archive_folder: 'archive-banes',
-        local_bucket_path: 'tmp/amr_files_bucket/banes',
-        access_type: 'SFTP',
-        date_format: "%b %e %Y %I:%M%p",
-        mpan_mprn_field: 'M1_Code1',
-        reading_date_field: 'Date',
-        reading_fields: "[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00]".split(','),
-        msn_field: 'M1_Code2',
-        provider_id_field: 'ID',
-        total_field: 'Total Units',
-        meter_description_field: 'Location',
-        postcode_field: 'PostCode',
-        units_field: 'Units',
-        header_example: "ID,Date,Location,Type,PostCode,Units,Total Units,[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00],M1_Code1,M1_Code2"
-      )
-    }
+    let!(:config)   { create(:amr_data_feed_config) }
 
-    let!(:frome_config) {
-      AmrDataFeedConfig.create!(
+    let!(:frome_config) { create(:amr_data_feed_config,
         description: 'Frome',
-        s3_folder: 'frome',
-        s3_archive_folder: 'archive-frome',
-        local_bucket_path: 'tmp/amr_files_bucket/frome',
-        access_type: 'Email',
         date_format: "%d/%m/%y",
         mpan_mprn_field: 'Site Id',
         msn_field: 'Meter Number',
         reading_date_field: 'Reading Date',
+        number_of_header_rows: 0,
         reading_fields:  '00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30'.split(','),
         header_example: "Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30",
       )
     }
 
-    let!(:historical_frome_config) {
-      AmrDataFeedConfig.create!(
+    let!(:historical_frome_config) {  create(:amr_data_feed_config,
         description: 'Frome Historical',
-        s3_folder: 'frome-historical',
-        s3_archive_folder: 'archive-frome-historical',
-        local_bucket_path: 'tmp/amr_files_bucket/frome-historical',
-        access_type: 'Email',
         date_format: "%d/%m/%Y",
         mpan_mprn_field: 'Site Id',
         msn_field: 'Meter Number',
@@ -61,13 +35,8 @@ module Amr
       )
     }
 
-    let!(:sheffield_config) {
-      AmrDataFeedConfig.create!(
+    let!(:sheffield_config) { create(:amr_data_feed_config,
         description: 'Sheffield',
-        s3_folder: 'sheffield',
-        s3_archive_folder: 'archive-sheffield',
-        local_bucket_path: 'tmp/amr_files_bucket/sheffield',
-        access_type: 'Email',
         date_format: "%d/%m/%Y",
         mpan_mprn_field: 'MPAN',
         reading_date_field: 'ConsumptionDate',
@@ -77,18 +46,26 @@ module Amr
       )
     }
 
-    let!(:sheffield_gas_config) {
-      AmrDataFeedConfig.create!(
+    let!(:sheffield_gas_config) { create(:amr_data_feed_config,
         description: 'Sheffield Gas',
-        s3_folder: 'sheffield-gas',
-        s3_archive_folder: 'archive-sheffield-gas',
-        local_bucket_path: 'tmp/amr_files_bucket/sheffield-gas',
-        access_type: 'Email',
         date_format: "%d/%m/%Y",
         mpan_mprn_field: '"MPR"',
         reading_date_field: '"Date"',
         reading_fields: '"hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"'.split(','),
         header_example: '"MPR","Date","hr0030","hr0100","hr0130","hr0200","hr0230","hr0300","hr0330","hr0400","hr0430","hr0500","hr0530","hr0600","hr0630","hr0700","hr0730","hr0800","hr0830","hr0900","hr0930","hr1000","hr1030","hr1100","hr1130","hr1200","hr1230","hr1300","hr1330","hr1400","hr1430","hr1500","hr1530","hr1600","hr1630","hr1700","hr1730","hr1800","hr1830","hr1900","hr1930","hr2000","hr2030","hr2100","hr2130","hr2200","hr2230","hr2300","hr2330","hr0000"'
+      )
+    }
+
+    let!(:highlands_config) { create(:amr_data_feed_config,
+        description: 'Highlands',
+        date_format: "%e %b %Y %H:%M:%S",
+        mpan_mprn_field: 'MPR',
+        reading_date_field: 'ReadDatetime',
+        reading_fields: ['kWh'],
+        header_example: 'MPR,ReadDatetime,kWh,ReadType',
+        row_per_reading: true,
+        number_of_header_rows: 2,
+        local_bucket_path: Rails.root.join('spec', 'fixtures', 'amr_highlands')
       )
     }
 
@@ -146,7 +123,6 @@ module Amr
 
     def example_frome
       <<~HEREDOC
-      Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
       10545307,K0229111D6,12/11/18,9.9,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
       HEREDOC
     end
@@ -233,6 +209,21 @@ module Amr
       importer.inserted_record_count
     end
 
+    context 'highlands' do
+      it 'imports a csv' do
+        FakeFS.deactivate!
+        expect(AmrDataFeedReading.count).to be 0
+        importer = CsvParserAndUpserter.new(highlands_config, 'example.csv')
+        importer.perform
+        # expect(AmrSingleReading.count).to_not be 480
+        # pp AmrDataFeedReading.all
+        expect(AmrDataFeedReading.count).to be 11
+        expect(importer.inserted_record_count).to be 11
+        FakeFS.activate!
+      end
+    end
+
+
     context 'sheffield' do
       before(:each) do
         FileUtils.mkdir_p sheffield_config.local_bucket_path
@@ -277,8 +268,8 @@ module Amr
         write_file_and_expect_readings(example_frome, frome_config, "9.9")
       end
 
-      it 'should parse a simple historic file' do
-        write_file_and_expect_readings(example_frome_historic, frome_config, "11.11")
+      it 'should parse a simple frome historic file with handle off by one' do
+        write_file_and_expect_readings(example_frome_historic, historical_frome_config, "4.465528")
       end
     end
 
@@ -300,6 +291,7 @@ module Amr
       end
 
       it 'should handle no header if config set' do
+        config.update(number_of_header_rows: 0)
         write_file_and_expect_readings(example_banes_no_header, config)
       end
 
