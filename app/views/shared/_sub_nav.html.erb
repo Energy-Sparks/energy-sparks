@@ -33,7 +33,8 @@
       <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
         <ul class="nav navbar-nav">
           <li class="nav-item dropdown">
-            <%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'btn btn-sm' if can?(:show_pupils_dash, @school) && !current_user.pupil? %>
+            <%= link_to 'Pupil dashboard', pupils_school_path(@school),     class: 'btn btn-sm' if show_pupils_dashboard_button? %>
+            <%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'btn btn-sm' if show_teachers_dashboard_button? %>
             <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard),  class: 'btn btn-sm' if school.scoreboard %>
           </li>
           <%- if can? :update, school -%>
