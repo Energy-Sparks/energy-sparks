@@ -38,7 +38,7 @@ describe CalendarEvent do
           expect(build(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 31), end_date: Date.new(2018, 2, 1))).to be_valid
         end
         it 'is valid when the other is not of the right type' do
-          create(:bank_holiday_event, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          create(:bank_holiday, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
           expect(build(:holiday, calendar: calendar, start_date: Date.new(2018, 1, 12), end_date: Date.new(2018, 2, 1))).to be_valid
         end
       end
@@ -57,7 +57,7 @@ describe CalendarEvent do
           expect(build(:term, calendar: calendar, start_date: Date.new(2018, 1, 31), end_date: Date.new(2018, 2, 1))).to be_valid
         end
         it 'is valid when the other is not of the right type' do
-          create(:bank_holiday_event, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          create(:bank_holiday, calendar: calendar, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
           expect(build(:term, calendar: calendar, start_date: Date.new(2018, 1, 12), end_date: Date.new(2018, 2, 1))).to be_valid
         end
       end

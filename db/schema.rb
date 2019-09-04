@@ -348,14 +348,6 @@ ActiveRecord::Schema.define(version: 2019_08_29_123516) do
     t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
   end
 
-  create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "calendar_area_id", null: false
-    t.date "holiday_date"
-    t.text "title"
-    t.text "notes"
-    t.index ["calendar_area_id"], name: "index_bank_holidays_on_calendar_area_id"
-  end
-
   create_table "calendar_areas", force: :cascade do |t|
     t.string "title", null: false
     t.bigint "parent_id"
