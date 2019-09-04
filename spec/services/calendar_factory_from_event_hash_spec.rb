@@ -12,14 +12,15 @@ describe CalendarFactoryFromEventHash do
         {:term=>"2015-16 Term 4", :start_date=>"2016-02-22", :end_date=>"2016-04-01"},
         {:term=>"2015-16 Term 5", :start_date=>"2016-04-18", :end_date=>"2016-05-27"}
       ]
-      expect(Calendar.count).to be 1
 
       new_area = CalendarArea.create(title: 'this new area', parent_area: area)
-      calendar = CalendarFactoryFromEventHash.new(example_calendar_hash, new_area).create
+      parent_template_calendar = create(:calendar, calendar_area: new_area, template: true)
 
-      expect(Calendar.count).to be 2
-      expect(calendar.terms.count).to be 5
+      create(:bank_holiday, calendar: parent_template_calendar)
 
+      expect { CalendarFactoryFromEventHash.new(example_calendar_hash, new_area).create }.to change { Calendar.count }.by(1)
+
+      calendar = Calendar.last
       # 1 Bank Holiday, 5 terms and 4 holidays
       expect(calendar.holidays.count).to be (4)
       expect(calendar.inset_days.count).to be 0

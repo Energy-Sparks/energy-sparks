@@ -11,11 +11,12 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
     CSV
   end
 
-  let!(:england_and_wales){ create(:calendar_area, title: 'England and Wales') }
-  let!(:bank_holiday) { create :bank_holiday, calendar_area: england_and_wales, title: 'Good Friday', holiday_date: "2015-04-06" }
+  let!(:england_and_wales)          { create :calendar_area, title: 'England and Wales'  }
+  let!(:england_and_wales_calendar) { create :calendar, calendar_area: england_and_wales }
+  let!(:bank_holiday)               { create :bank_holiday, title: 'Good Friday', start_date: "2012-04-06", end_date: "2012-04-06" }
 
   before do
-    CalendarEventTypeFactory.create
+    create_all_calendar_events
     AcademicYearFactory.new(england_and_wales).create(start_year: 2014, end_year: 2016)
   end
 
@@ -38,6 +39,9 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       calendar_area = CalendarArea.where(title: 'Oxfordshire').first!
       expect(calendar_area.calendars.first.calendar_events.terms.count).to eq(1)
       expect(calendar_area.parent_area).to eq(england_and_wales)
+
+      calendar = Calendar.find_by(title: 'Oxfordshire')
+      expect(calendar.based_on).to eq england_and_wales_calendar
     end
 
     it 'can edit a calendar area' do
@@ -55,7 +59,5 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       calendar_area.reload
       expect(calendar_area.title).to eq('B & NES')
     end
-
   end
-
 end

@@ -103,7 +103,7 @@ function teachersChartOptions(pointFormat) {
     },
     plotOptions: {
       series: {
-        pointWidth: 30, groupPadding: 0.075
+        pointWidth: 30, groupPadding: 0.050
       },
       column: {
         tooltip: {
@@ -111,12 +111,14 @@ function teachersChartOptions(pointFormat) {
         }
       }
     },
-    yAxis: {
-      visible: false
-    },
     xAxis: {
       lineWidth: 3, lineColor: 'rgb(151,151,151)'
     },
+    yAxis: [{
+      title: {
+        text: "£"
+      }
+    }],
     navigation: {
       buttonOptions: {
         enabled: false
