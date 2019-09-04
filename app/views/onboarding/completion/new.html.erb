@@ -28,6 +28,24 @@
           <dd><%=@school.postcode %></dd>
           <dt>Website:</dt>
           <dd><%=@school.website %></dd>
+          <dt>Has solar panels?</dt>
+          <dd><%= @school.has_solar_panels ? 'Yes' : 'No' %></dd>
+          <dt>Has swimming pool?</dt>
+          <dd><%= @school.has_swimming_pool ? 'Yes' : 'No' %></dd>
+          <dt>Serves school dinners?</dt>
+          <dd><%= @school.serves_dinners ? 'Yes' : 'No' %></dd>
+          <% if @school.serves_dinners %>
+            <dt>Cooks dinners on site</dt>
+            <dd><%= @school.cooks_dinners_onsite ? 'Yes' : 'No' %></dd>
+            <% if @school.cooks_dinners_onsite %>
+              <dt>Cook dinners for other schools:</dt>
+              <dd><%= @school.cooks_dinners_for_other_schools ? 'Yes' : 'No' %></dd>
+              <% if @school.cooks_dinners_for_other_schools %>
+                <dt>Number of schools:</dt>
+                <dd><%= @school.cooks_dinners_for_other_schools_count %></dd>
+              <% end %>
+            <% end %>
+          <% end %>
         </dl>
         <%= link_to 'Edit school details', edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
       </div>

@@ -1,5 +1,5 @@
 <%= f.input :name, label: 'School name'%>
-<%= f.input :urn, label: 'Unique Reference Number (URN)' %>
+<%= f.input :urn, label: 'Unique Reference Number', hint: 'This is your URN in England, SEED in Scotland' %>
 
 <h2>School Type</h2>
 <div class="form-group">
@@ -11,7 +11,11 @@
   <% end %>
 </div>
 
+<hr/>
+
+<p>Currently Energy Sparks supports Key Stages for filtering relevant activities. If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6.</p>
 <p>Please select which Key Stages this school teaches.</p>
+
 <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
   <div class="custom-control custom-checkbox custom-control-inline">
     <%= b.check_box(class: "custom-control-input") %>
