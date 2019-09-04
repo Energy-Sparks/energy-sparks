@@ -33,11 +33,21 @@ describe Scoreboard, :scoreboards, type: :model do
       expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
     end
 
-    it 'accepts an academic year and restricts' do
-      academic_year_1 = create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar_area: scoreboard.calendar_area)
-      academic_year_2 = create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar_area: scoreboard.calendar_area)
-      expect(subject.scored_schools(academic_year: academic_year_1).map(&:sum_points).any?(&:zero?)).to eq(false)
-      expect(subject.scored_schools(academic_year: academic_year_2).map(&:sum_points).all?(&:nil?)).to eq(true)
+    context 'with academic years' do
+      let(:this_academic_year) { create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar_area: scoreboard.calendar_area) }
+      let(:last_academic_year) { create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar_area: scoreboard.calendar_area)   }
+
+      it 'accepts an academic year and restricts' do
+        expect(subject.scored_schools(academic_year: this_academic_year).map(&:sum_points).any?(&:zero?)).to eq(false)
+        expect(subject.scored_schools(academic_year: last_academic_year).map(&:sum_points).all?(&:nil?)).to eq(true)
+      end
+
+      it 'also defaults to the current academic year' do
+        create :school, :with_points, score_points: 6, school_group: group, activities_happened_on: 18.months.ago
+        expect(subject.scored_schools(academic_year: last_academic_year).to_a.size).to be 1
+        expect(subject.scored_schools(academic_year: this_academic_year).to_a.size).to be 5
+        expect(subject.scored_schools.to_a.size).to be 5
+      end
     end
 
     it 'returns the position of a school' do
@@ -46,5 +56,4 @@ describe Scoreboard, :scoreboards, type: :model do
       end
     end
   end
-
 end
