@@ -1,7 +1,7 @@
 <% content_for :page_title do %><%= @school.name %><% end %>
 
 <% if @equivalences_content.present? %>
-  <%= render 'equivalence', equivalence_content: @equivalences_content.sample %>
+  <%= render 'equivalence', equivalence_content: @equivalences_content.sample, school: @school %>
 <% end %>
 
 <div class="row padded-row align-items-end">
