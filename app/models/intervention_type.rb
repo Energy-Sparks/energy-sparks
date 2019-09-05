@@ -27,6 +27,6 @@ class InterventionType < ApplicationRecord
   scope :display_order, -> { order(:other, :title) }
 
   def display_with_points
-    points ? "#{title} (#{points})" : title
+    points ? "#{title} (#{points} points)" : title
   end
 end
