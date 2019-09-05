@@ -51,22 +51,40 @@ describe 'School admin user management' do
   describe 'for staff' do
     let!(:teacher_role){ create :staff_role, title: 'Teacher' }
 
-    it 'can create staff' do
+    context 'it can create staff' do
 
-      click_on 'Manage users'
-      click_on 'New staff account'
+      before(:each) do
+        click_on 'Manage users'
+        click_on 'New staff account'
 
-      fill_in 'Name', with: 'Mrs Jones'
-      fill_in 'Email', with: 'mrsjones@test.com'
-      select 'Teacher', from: 'Role'
-      click_on 'Create account'
+        fill_in 'Name', with: 'Mrs Jones'
+        fill_in 'Email', with: 'mrsjones@test.com'
+        select 'Teacher', from: 'Role'
+      end
 
-      staff = school.users.staff.first
-      expect(staff.email).to eq('mrsjones@test.com')
-      expect(staff.staff_role).to eq(teacher_role)
+      it 'can create staff without generating an alert contact' do
+        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
 
-      email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq('Energy Sparks: confirm your account')
+        staff = school.users.staff.first
+        expect(staff.email).to eq('mrsjones@test.com')
+        expect(staff.staff_role).to eq(teacher_role)
+
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Energy Sparks: confirm your account')
+      end
+
+      it 'can create staff with an alert contact' do
+
+        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(1)
+
+        staff = school.users.staff.first
+        expect(staff.email).to eq('mrsjones@test.com')
+        expect(staff.staff_role).to eq(teacher_role)
+
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Energy Sparks: confirm your account')
+      end
+
     end
 
     it 'can edit and delete staff' do
