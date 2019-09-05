@@ -1,5 +1,7 @@
 module Schools
   class StaffController < ApplicationController
+    include AlertContactCreator
+
     load_and_authorize_resource :school
 
     def new
@@ -37,18 +39,6 @@ module Schools
 
     def staff_params
       params.require(:user).permit(:name, :email, :staff_role_id)
-    end
-
-    def create_alert_contact(school, user)
-      email_address = staff_params[:email]
-      user_name = staff_params[:name]
-      staff_role_id = staff_params[:staff_role_id]
-
-      Contact.create!(email_address: email_address, name: user_name, school: school, user: user, staff_role_id: staff_role_id)
-    end
-
-    def auto_create_alert_contact?
-      params[:user] && params[:user].key?(:auto_create_alert_contact)
     end
   end
 end

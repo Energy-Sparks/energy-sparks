@@ -62,8 +62,8 @@ describe 'School admin user management' do
         select 'Teacher', from: 'Role'
       end
 
-      it 'can create staff without generating an alert contact' do
-        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
+      it 'can create staff with an alert contact' do
+        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(1)
 
         staff = school.users.staff.first
         expect(staff.email).to eq('mrsjones@test.com')
@@ -73,9 +73,9 @@ describe 'School admin user management' do
         expect(email.subject).to eq('Energy Sparks: confirm your account')
       end
 
-      it 'can create staff with an alert contact' do
-
-        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(1)
+      it 'can create staff without generating an alert contact' do
+        uncheck 'Auto create alert contact'
+        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
 
         staff = school.users.staff.first
         expect(staff.email).to eq('mrsjones@test.com')
@@ -123,6 +123,38 @@ describe 'School admin user management' do
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Energy Sparks: confirm your account')
+    end
+
+    context 'it can create school admins' do
+
+      before(:each) do
+        click_on 'Manage users'
+        click_on 'New school admin account'
+
+        fill_in 'Name', with: 'Mrs Jones'
+        fill_in 'Email', with: 'mrsjones@test.com'
+      end
+
+      it 'with an alert contact' do
+        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(1)
+
+        school_admin = school.users.school_admin.last
+        expect(school_admin.email).to eq('mrsjones@test.com')
+
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Energy Sparks: confirm your account')
+      end
+
+      it 'without generating an alert contact' do
+        uncheck 'Auto create alert contact'
+        expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
+
+        school_admin = school.users.school_admin.last
+        expect(school_admin.email).to eq('mrsjones@test.com')
+
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Energy Sparks: confirm your account')
+      end
     end
 
     it 'can edit school admins' do
