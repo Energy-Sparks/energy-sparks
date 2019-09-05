@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 6be3d092817b63b588cebc5d3343ab2c96ee7b11
-  tag: 0.50.4
+  revision: f6734d75213fb3088b9a2b4c3df92ca380fb639d
+  tag: 0.50.6
   specs:
-    energy-sparks_analytics (0.50.4)
+    energy-sparks_analytics (0.50.6)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
-      hashdiff (~> 0.4.0)
+      hashdiff (~> 1.0.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       mechanize (~> 2.7.6)
@@ -274,7 +274,7 @@ GEM
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
-    hashdiff (0.4.0)
+    hashdiff (1.0.0)
     hashie (3.6.0)
     html-table (1.5.2)
       strongtyping
