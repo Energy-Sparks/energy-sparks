@@ -1,4 +1,4 @@
-<div class="card-deck teachers-dashboard">
+<div class="card-deck activities">
   <% activities_from_activity_history.each do |activity_type| %>
     <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
   <% end %>
