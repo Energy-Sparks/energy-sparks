@@ -52,20 +52,52 @@ RSpec.describe 'equivalence type management', type: :system do
     expect(first_content.equivalence).to include('You used')
   end
 
-  it 'allows the deletion of eqiuvalences with content types' do
-    equivalence_type = create(:equivalence_type, meter_type: :electricity, time_period: :last_month)
-    equivalence_text = "You used {{kwh}} of electricity last month, that's like {{number_trees}} trees"
-    content_version = create(
-      :equivalence_type_content_version,
-      equivalence_type: equivalence_type,
-      equivalence: equivalence_text
-    )
+  context 'allows the deletion equivalences with context types' do
 
-    click_on 'Manage'
-    click_on 'Equivalence Types'
+    before(:each) do
+      equivalence_type = create(:equivalence_type, meter_type: :electricity, time_period: :last_month)
+      equivalence_text = "You used {{kwh}} of electricity last month, that's like {{number_trees}} trees"
+      content_version = create(
+        :equivalence_type_content_version,
+        equivalence_type: equivalence_type,
+        equivalence: equivalence_text
+      )
 
-    expect(page).to have_content equivalence_text
-    expect(page).to have_content('Delete')
-    expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1)
+      click_on 'Manage'
+      click_on 'Equivalence Types'
+
+      expect(page).to have_content equivalence_text
+    end
+
+    it 'only' do
+      expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1)
+    end
+
+    it 'and equivalences too' do
+      school = create(:school)
+
+      allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+
+      analytics = double :analytics
+
+      expect(analytics).to receive(:new).and_return(analytics)
+
+      expect(analytics).to receive(:front_end_convert).with(:kwh, {month: -1}, :electricity).and_return(
+        {
+          formatted_equivalence: '100 kwh',
+          show_equivalence: true
+        }
+      )
+
+      expect(analytics).to receive(:front_end_convert).with(:number_trees, {month: -1}, :electricity).and_return(
+        {
+          formatted_equivalence: '200,000',
+          show_equivalence: true
+        }
+      )
+
+      expect { Equivalences::GenerateEquivalences.new(school, analytics).perform }.to change { Equivalence.count }.by(1)
+      expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1).and change { Equivalence.count }.by(-1)
+    end
   end
 end
