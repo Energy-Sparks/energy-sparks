@@ -34,6 +34,12 @@ module Admin
       end
     end
 
+    def destroy
+      @equivalence_type.content_versions.destroy
+      @equivalence_type.destroy
+      redirect_to admin_equivalence_types_path, notice: "Equivalence type was successfully deleted."
+    end
+
   private
 
     def equivalence_type_params

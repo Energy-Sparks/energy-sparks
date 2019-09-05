@@ -51,4 +51,21 @@ RSpec.describe 'equivalence type management', type: :system do
     first_content = equivalence_type.current_content
     expect(first_content.equivalence).to include('You used')
   end
+
+  it 'allows the deletion of eqiuvalences with content types' do
+    equivalence_type = create(:equivalence_type, meter_type: :electricity, time_period: :last_month)
+    equivalence_text = "You used {{kwh}} of electricity last month, that's like {{number_trees}} trees"
+    content_version = create(
+      :equivalence_type_content_version,
+      equivalence_type: equivalence_type,
+      equivalence: equivalence_text
+    )
+
+    click_on 'Manage'
+    click_on 'Equivalence Types'
+
+    expect(page).to have_content equivalence_text
+    expect(page).to have_content('Delete')
+    expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1)
+  end
 end
