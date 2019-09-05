@@ -24,7 +24,7 @@ module Amr
         else
           readings = Array.new(48)
           readings[reading_index] = reading
-          new_record = { reading_date: reading_day, readings: readings, mpan_mprn: single_reading[:mpan_mprn], amr_data_feed_config_id: single_reading[:amr_data_feed_config_id] }
+          new_record = { reading_date: reading_day, readings: readings, mpan_mprn: single_reading[:mpan_mprn], amr_data_feed_config_id: single_reading[:amr_data_feed_config_id], meter_id: single_reading[:meter_id] }
           @results_array << new_record
         end
       end
