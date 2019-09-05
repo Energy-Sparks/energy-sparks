@@ -1,6 +1,6 @@
 <% content_for :page_title, @content.find_out_more_title %>
 
-<h1><%= @content.find_out_more_title %></h1>
+<h3 class="pt-4"><%= @content.find_out_more_title %></h3>
 
 <div class="row justify-content-md-center align-items-center">
   <% if @tables.empty? %>
@@ -41,7 +41,7 @@
       <%= sanitize @content.find_out_more_content %>
     </div>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-5 activities">
     <% unless @activity_types.empty? %>
       <h2>Activities which will help</h2>
       <% @activity_types.each do |activity_type| %>
