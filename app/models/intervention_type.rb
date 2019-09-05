@@ -25,4 +25,8 @@ class InterventionType < ApplicationRecord
   validates :title, uniqueness: { scope: :intervention_type_group_id }
 
   scope :display_order, -> { order(:other, :title) }
+
+  def display_with_points
+    points ? "#{title} (#{points})" : title
+  end
 end
