@@ -20,7 +20,9 @@ module DataPipeline
 
         if next_bucket == @environment['AMR_DATA_BUCKET']
           file_body = StringIO.new
+
           file.body.each_line do |line|
+            line = remove_utf8_invalids(line)
             line = remove_utf8_nulls(line)
             next if line.strip.empty?
 
@@ -41,6 +43,10 @@ module DataPipeline
         @logger.info("Moved: #{key} to: #{next_bucket}")
 
         { statusCode: 200, body: JSON.generate(response: response) }
+      end
+
+      def remove_utf8_invalids(line)
+        line.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
       end
 
       def remove_utf8_nulls(line)
