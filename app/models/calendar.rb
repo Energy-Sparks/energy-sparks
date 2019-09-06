@@ -2,15 +2,17 @@
 #
 # Table name: calendars
 #
-#  based_on_id      :bigint(8)
-#  calendar_area_id :bigint(8)        not null
-#  created_at       :datetime         not null
-#  default          :boolean
-#  deleted          :boolean          default(FALSE)
-#  id               :bigint(8)        not null, primary key
-#  template         :boolean          default(FALSE)
-#  title            :string           not null
-#  updated_at       :datetime         not null
+#  bank_holiday_calendar :boolean          default(FALSE), not null
+#  based_on_id           :bigint(8)
+#  calendar_area_id      :bigint(8)        not null
+#  created_at            :datetime         not null
+#  default               :boolean
+#  deleted               :boolean          default(FALSE)
+#  id                    :bigint(8)        not null, primary key
+#  template              :boolean          default(FALSE)
+#  term_calendar         :boolean          default(FALSE), not null
+#  title                 :string           not null
+#  updated_at            :datetime         not null
 #
 # Indexes
 #

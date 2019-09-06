@@ -23,5 +23,12 @@ FactoryBot.define do
       end
     end
 
+    factory :bank_holiday_calendar do
+      bank_holiday_calendar { true }
+    end
+
+    factory :term_calendar do
+      term_calendar         { true }
+    end
   end
 end
