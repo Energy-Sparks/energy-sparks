@@ -21,9 +21,9 @@ module DataPipeline
         if next_bucket == @environment['AMR_DATA_BUCKET']
           file_body = StringIO.new
           file.body.each_line do |line|
+            line = remove_utf8_nulls(line)
             next if line.strip.empty?
 
-            line = remove_utf8_nulls(line)
             file_body.puts line.encode('UTF-8', universal_newline: true)
           end
           file_body.rewind
