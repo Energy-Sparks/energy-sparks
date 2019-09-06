@@ -1,5 +1,7 @@
 module Schools
   class StaffController < ApplicationController
+    include AlertContactCreator
+
     load_and_authorize_resource :school
 
     def new
@@ -11,6 +13,7 @@ module Schools
     def create
       @staff = User.new_staff(@school, staff_params)
       if @staff.save
+        create_alert_contact(@school, @staff) if auto_create_alert_contact?
         redirect_to school_users_path(@school)
       else
         render :new
