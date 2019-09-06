@@ -1,10 +1,11 @@
 <div class="card activity mb-2">
-  <div class="card-header">
-    <% if local_assigns[:based_on] %>
-      <span class="small">Based on <%= local_assigns[:based_on] %></span>
-    <% end %>
 
-  </div>
+  <% if local_assigns[:based_on] %>
+    <div class="card-header">
+      <span class="small">Based on <%= local_assigns[:based_on] %></span>
+    </div>
+  <% end %>
+
   <div class="card-body">
     <%= link_to activity_type_path(activity_type) do %>
     <%= "#{activity_type.name} (#{activity_type.key_stage_list})" %>
