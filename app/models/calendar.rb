@@ -36,6 +36,9 @@ class Calendar < ApplicationRecord
 
   scope :template,  -> { where(template: true) }
   scope :custom,    -> { where(template: false) }
+  scope :bank_holiday_calendar, -> { where(bank_holiday_calendar: true) }
+  scope :term_calendar, -> { where(term_calendar: true) }
+  scope :school_calendar, -> { where(term_calendar: false, bank_holiday_calendar: false) }
 
   validates_presence_of :title, :calendar_area
 

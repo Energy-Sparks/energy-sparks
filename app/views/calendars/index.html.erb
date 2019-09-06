@@ -3,20 +3,20 @@
 <p><b>Note:</b> - updating a country calendar with bank holidays, or an area or MAT calendar with term times automatically updates any dependent calendars.</p>
 
 <% if @top_level_calendars.any? %>
-  <%= render 'template_calendars', calendars: @top_level_calendars, title: 'Top level calendars' %>
+  <%= render 'bank_holiday_calendars', calendars: @top_level_calendars, title: 'Bank holiday calendars' %>
 <% else %>
-  <h2>There are no Top level calendars</h2>
+  <h2>There are no Bank Holiday calendars</h2>
 <% end %>
 
 <% if @child_template_calendars.any? %>
-  <%= render 'template_calendars', calendars: @child_template_calendars, title: 'Area calendars' %>
+  <%= render 'term_calendars', calendars: @child_template_calendars, title: 'Term calendars' %>
 <% else %>
-  <h2>There are no Area calendars</h2>
+  <h2>There are no Term calendars</h2>
 <% end %>
 
 <% if @customised_calendars.any? %>
-  <h2>Calendars for Enrolled Schools</h2>
+  <h2>School Calendars</h2>
   <%= render 'calendars', calendars: @customised_calendars %>
 <% else %>
-  <h2>There are no Customised Calendars </h2>
+  <h2>There are no School Calendars </h2>
 <% end %>
