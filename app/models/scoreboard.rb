@@ -56,7 +56,7 @@ class Scoreboard < ApplicationRecord
     if academic_year
       scored.joins(
         self.class.sanitize_sql_array(
-          ['INNER JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
+          ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
         )
       )
     else
