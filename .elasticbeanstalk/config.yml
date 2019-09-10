@@ -2,7 +2,7 @@ branch-defaults:
   aws-eb-master:
     environment: prod-2-10-1
   aws-eb-test:
-    environment: test-2-8-7
+    environment: test-2-9-6
     group_suffix: null
 global:
   application_name: energy-sparks

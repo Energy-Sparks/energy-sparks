@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_090148) do
+ActiveRecord::Schema.define(version: 2019_08_29_123516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -287,6 +287,8 @@ ActiveRecord::Schema.define(version: 2019_08_28_090148) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "handle_off_by_one", default: false
+    t.boolean "row_per_reading", default: false, null: false
+    t.integer "number_of_header_rows", default: 0, null: false
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -344,14 +346,6 @@ ActiveRecord::Schema.define(version: 2019_08_28_090148) do
     t.decimal "longitude", precision: 10, scale: 6
     t.bigint "data_feed_id"
     t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
-  end
-
-  create_table "bank_holidays", force: :cascade do |t|
-    t.bigint "calendar_area_id", null: false
-    t.date "holiday_date"
-    t.text "title"
-    t.text "notes"
-    t.index ["calendar_area_id"], name: "index_bank_holidays_on_calendar_area_id"
   end
 
   create_table "calendar_areas", force: :cascade do |t|

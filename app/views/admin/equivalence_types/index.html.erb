@@ -24,9 +24,13 @@
         <td><%= equivalence_type.meter_type.humanize %></td>
         <td><%= equivalence_type.time_period.humanize %></td>
         <td><%= equivalence_type.image_name.humanize %></td>
-        <td><%= link_to 'Edit', edit_admin_equivalence_type_path(equivalence_type), class: 'btn btn-primary btn-sm' %></td>
+        <td>
+          <div class='btn-group'>
+            <%= link_to 'Edit', edit_admin_equivalence_type_path(equivalence_type), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Delete', admin_equivalence_type_path(equivalence_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-primary btn-sm' %>
+          </div>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-

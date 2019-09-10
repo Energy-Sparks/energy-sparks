@@ -63,6 +63,18 @@ module DataPipeline
         file_event(filename: 'sheffield/cr.csv', bucket: 'file-bucket')
       end
 
+      def self.cr_empty_lines_csv_added
+        file_event(filename: 'cr_empty_lines.csv', bucket: 'file-bucket')
+      end
+
+      def self.highlands_csv_added
+        file_event(filename: 'highlands.csv', bucket: 'file-bucket')
+      end
+
+       def self.highlands_invalid_character_csv_added
+        file_event(filename: 'highlands-invalid-character.csv', bucket: 'file-bucket')
+      end
+
       def self.csv_sheffield_gas_added
         file_event(filename: 'sheffield-gas/Sheffield+City+Council+-+Energy+Sparks+%28Daily+Email%2920190303.csv', bucket: 'file-bucket')
       end

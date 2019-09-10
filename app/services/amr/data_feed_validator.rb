@@ -7,7 +7,7 @@ module Amr
 
     def perform
       @array_of_rows = sort_out_off_by_one_array(@array_of_rows) if @config.handle_off_by_one
-      @array_of_rows.delete_at(0) if drop_header?(@array_of_rows)
+      @array_of_rows.shift(@config.number_of_header_rows)
       @array_of_rows.delete_if { |row| invalid_row?(row) }
       @array_of_rows
     end
@@ -30,10 +30,6 @@ module Amr
 
     def index_of_midnight_for_off_by_one
       @index_of_midnight_for_off_by_one || @config.header_example.split(',').find_index(@config.reading_fields.first)
-    end
-
-    def drop_header?(array_of_rows)
-      array_of_rows[0][0].tr('"', '') == @config.header_first_thing.tr('"', '')
     end
 
     def invalid_row?(row)

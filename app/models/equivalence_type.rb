@@ -21,7 +21,7 @@ class EquivalenceType < ApplicationRecord
     last_year: 30
   }
 
-  enum image_name: [:no_image, :car, :car_colour, :meal, :meal_colour, :solar_panel, :solar_panel_colour]
+  enum image_name: [:no_image, :petrol_car, :electric_car, :meal, :solar_panel, :books, :electric_shower, :house, :kettle, :phone, :pizza, :roast_meal, :television, :tree, :video_game, :offshore_wind_turbine, :onshore_wind_turbine, :gas_shower, :solar_panel_bw, :electric_car_bw, :meal_bw]
 
   validates :meter_type, :time_period, :image_name, presence: true
 

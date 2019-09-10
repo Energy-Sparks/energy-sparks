@@ -6,12 +6,14 @@ describe DataPipeline::Handlers::ProcessFile do
 
   describe '#process' do
 
-    let(:sheffield_csv)     { File.open('spec/support/files/sheffield_export.csv') }
-    let(:cr_csv)            { File.open('spec/support/files/cr.csv') }
-    let(:sheffield_gas_csv) { File.open('spec/support/files/sheffield_export.csv') }
-    let(:sheffield_zip)     { File.open('spec/support/files/sheffield_export.zip') }
-    let(:unknown_file)      { File.open('spec/support/files/1x1.png') }
-
+    let(:sheffield_csv)       { File.open('spec/support/files/sheffield_export.csv') }
+    let(:cr_csv)              { File.open('spec/support/files/cr.csv') }
+    let(:cr_empty_lines_csv)  { File.open('spec/support/files/cr_empty_lines.csv') }
+    let(:highlands_csv)       { File.open('spec/support/files/highlands.csv') }
+    let(:highlands_invalid_character_csv)       { File.open('spec/support/files/highlands-invalid-character.csv', "r:UTF-8") }
+    let(:sheffield_gas_csv)   { File.open('spec/support/files/sheffield_export.csv') }
+    let(:sheffield_zip)       { File.open('spec/support/files/sheffield_export.zip') }
+    let(:unknown_file)        { File.open('spec/support/files/1x1.png') }
     let(:logger) { Logger.new(IO::NULL) }
     let(:client) { Aws::S3::Client.new(stub_responses: true) }
     let(:environment) {
@@ -33,6 +35,12 @@ describe DataPipeline::Handlers::ProcessFile do
             { body: sheffield_csv }
           when 'sheffield/cr.csv'
             { body: cr_csv }
+          when 'cr_empty_lines.csv'
+            { body: cr_empty_lines_csv }
+          when 'highlands-invalid-character.csv'
+            { body: highlands_invalid_character_csv }
+          when 'highlands.csv'
+            { body: highlands_csv }
           when 'sheffield/export.zip'
             { body: sheffield_zip }
           when 'sheffield/image.png'
@@ -86,6 +94,43 @@ describe DataPipeline::Handlers::ProcessFile do
         it 'normalises them' do
           request = client.api_requests.last
           expect(request[:params][:body].readlines.all?{|line| line.match?(/[^\r]\n\Z/)}).to eq(true)
+        end
+      end
+
+      context 'when the file has empty lines' do
+
+        let(:event){ DataPipeline::Support::Events.cr_empty_lines_csv_added }
+
+        it 'removes them' do
+          request = client.api_requests.last
+
+          expect(request[:params][:body].readlines.any?{|line| line.match?(/^$/)}).to eq(false)
+        end
+      end
+
+      context 'when the file has nulls and empty lines' do
+
+        let(:event){ DataPipeline::Support::Events.highlands_csv_added }
+
+        it 'removes them' do
+          request = client.api_requests.last
+
+          expect(request[:params][:body].readlines.any?{|line| line.match?(/\u0000/)}).to eq(false)
+          request[:params][:body].rewind
+          expect(request[:params][:body].readlines.any?{|line| line.match?(/^$/)}).to eq(false)
+        end
+      end
+
+        context 'when the file has nulls and empty lines and invalid characters' do
+
+        let(:event){ DataPipeline::Support::Events.highlands_invalid_character_csv_added }
+
+        it 'removes them' do
+          request = client.api_requests.last
+
+          expect(request[:params][:body].readlines.any?{|line| line.match?(/\u0000/)}).to eq(false)
+          request[:params][:body].rewind
+          expect(request[:params][:body].readlines.any?{|line| line.match?(/^$/)}).to eq(false)
         end
       end
 
