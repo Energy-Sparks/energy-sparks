@@ -103,7 +103,7 @@ function teachersChartOptions(pointFormat) {
     },
     plotOptions: {
       series: {
-        pointWidth: 30, groupPadding: 0.050
+        pointPadding: 0.02, groupPadding: 0.07
       },
       column: {
         tooltip: {
