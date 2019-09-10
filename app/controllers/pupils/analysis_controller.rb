@@ -23,19 +23,12 @@ module Pupils
       @chart_type = BASE_CHARTS.fetch(energy).fetch(presentation)
       @measurement = measurement_unit(params[:measurement])
       @title = @chart_type.to_s.humanize
-      @transformations = process_transformations
     end
 
     private
 
     def set_school
       @school = School.friendly.find(params[:school_id])
-    end
-
-    def process_transformations
-      params.fetch(:transformations, []).each_slice(2).map do |(transformation_type, transformation_value)|
-        [transformation_type.first.to_sym, transformation_value.first.to_i]
-      end
     end
   end
 end

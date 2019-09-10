@@ -53,6 +53,10 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
     pie(chart_data, chart, seriesData, $chartDiv);
   }
 
+  if(chart_data.allowed_operations){
+    processAnalysisOperations($chartDiv, chart_data.allowed_operations)
+  }
+
   if(chart_data.annotations){
     var xAxis = chart.xAxis[0];
 
@@ -107,6 +111,7 @@ function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
       processAnalysisChart(this);
+      setupAnalysisControls(this);
     });
   }
 }
@@ -197,6 +202,48 @@ function processAnnotations(loaded_annotations, chart){
     labels: annotations
   }, true);
   $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
+}
+
+function setupAnalysisControls(chart_container){
+  var controls = $(chart_container).parent().find('.analysis_controls');
+  if(controls){
+    controls.find('.move_back').on('click', function(event){
+      event.preventDefault();
+      pushTransformation(chart_container, 'move', -1);
+    });
+    controls.find('.move_forward').on('click', function(event){
+      event.preventDefault();
+      pushTransformation(chart_container, 'move', 1);
+    });
+  }
+}
+
+function processAnalysisOperations(chart_container, operations){
+  var controls = $(chart_container).parent().find('.analysis_controls');
+  if(controls){
+    $.each(operations, function(operation, directions ) {
+      $.each(directions, function(direction, enabled ) {
+        controls.find(`.${operation}_${direction}`).attr('disabled', !enabled);
+      });
+    });
+  }
+}
+
+function pushTransformation(chart_container, transformation_type, transformation_value){
+  var transformations = $(chart_container).data('chart-transformations');
+  var last_transformation = transformations[transformations.length -1];
+
+  if(transformation_type != 'drilldown' && last_transformation && last_transformation[0] == transformation_type){
+    var new_transformation_value = last_transformation[1] + transformation_value;
+    transformations.pop();
+    if(new_transformation_value != 0){
+      transformations.push([transformation_type, last_transformation[1] + transformation_value]);
+    }
+  } else {
+    transformations.push([transformation_type, transformation_value]);
+  }
+  $(chart_container).data('chart-transformations', transformations);
+  processAnalysisChart(chart_container);
 }
 
 $(document).ready(processAnalysisCharts);

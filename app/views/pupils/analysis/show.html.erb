@@ -2,10 +2,15 @@
 
 <h1><%= @title %></h1>
 
-<%= link_to '<<', url_for(transformations: (@transformations + [[:move, -1]])) %>
-<%= link_to '>>', url_for(transformations: (@transformations + [[:move, 1]])) %>
-<%= @transformations %>
 
 <div id="chart_wrapper_1">
-  <%= chart_tag(@school, @chart_type.to_s, index: 1, show_advice: false, chart_config: {y_axis_units:  @measurement, transformations: @transformations}) %>
+  <div class='analysis_controls'>
+    <div class="btn-group" role="group">
+      <%= button_to '<<', "#", class: 'btn btn-rounded move_back', disabled: true %>
+      <%= button_to '>>', "#", class: 'btn btn-rounded move_forward', disabled: true %>
+    </div>
+  </div>
+
+  <%= chart_tag(@school, @chart_type.to_s, index: 1, show_advice: false, chart_config: {y_axis_units:  @measurement, transformations: []}) %>
+
 </div>
