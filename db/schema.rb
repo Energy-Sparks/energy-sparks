@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_123516) do
+ActiveRecord::Schema.define(version: 2019_09_10_145956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -388,6 +388,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_123516) do
     t.bigint "based_on_id"
     t.bigint "calendar_area_id", null: false
     t.boolean "template", default: false
+    t.integer "calendar_type"
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end
 

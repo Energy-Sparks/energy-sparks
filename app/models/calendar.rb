@@ -4,6 +4,7 @@
 #
 #  based_on_id      :bigint(8)
 #  calendar_area_id :bigint(8)        not null
+#  calendar_type    :integer
 #  created_at       :datetime         not null
 #  default          :boolean
 #  deleted          :boolean          default(FALSE)
@@ -30,14 +31,13 @@ class Calendar < ApplicationRecord
 
   has_many    :schools
 
-  default_scope { where(deleted: false) }
-
-  scope :template,  -> { where(template: true) }
   scope :custom,    -> { where(template: false) }
 
   validates_presence_of :title, :calendar_area
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :not_term_time, to: :calendar_events
+
+  enum calendar_type: [:national, :regional, :school]
 
   accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
 

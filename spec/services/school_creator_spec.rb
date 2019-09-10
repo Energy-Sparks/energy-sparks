@@ -6,7 +6,7 @@ describe SchoolCreator, :schools, type: :service do
     let(:school)                    { build :school}
     let(:onboarding_user)           { create :user, role: 'school_onboarding'}
     let(:calendar_area)             { create(:calendar_area, title: 'BANES calendar') }
-    let(:calendar)                  { create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
+ #   let(:calendar)                  { create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
     let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
     let(:weather_underground_area)  { create(:weather_underground_area, title: 'BANES weather') }
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
@@ -128,12 +128,12 @@ describe SchoolCreator, :schools, type: :service do
   describe '#process_new_configuration!' do
     let(:school)        { create :school, calendar_area: calendar_area}
     let(:calendar_area) { create :calendar_area }
-    let!(:calendar)     { create :calendar_with_terms, template: true, calendar_area: calendar_area}
+    let!(:regional_calendar)     { create :calendar_with_terms, calendar_type: :regional, calendar_area: calendar_area}
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service = SchoolCreator.new(school)
       service.process_new_configuration!
-      expect(school.calendar.based_on).to eq(calendar)
+      expect(school.calendar.based_on).to eq(regional_calendar)
     end
 
     it 'leaves the calendar empty if there is no template for the area' do

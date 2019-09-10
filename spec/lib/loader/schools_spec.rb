@@ -3,7 +3,7 @@ require 'loader/schools.rb'
 
 describe 'Loader::Schools' do
   let!(:sample_file) { 'spec/fixtures/schools-sample.csv' }
-  let!(:calendar) { create :calendar_with_terms, template: true }
+  let!(:calendar) { create :calendar_with_terms, calendar_type: :school }
 
   # "URN","Name","Type","Address","Postcode","Website","Ecoschool Status"
   # 109153,"St Saviour’s CofE Junior School","primary","Brookleaze Place, Larkhall, Bath","BA1 6RB","http://www.stsaviours-jun.co.uk/",

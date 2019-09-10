@@ -3,6 +3,7 @@ FactoryBot.define do
     title { "Test Calendar" }
     default { false }
     template { true }
+    calendar_type { :school }
     calendar_area
 
     factory :calendar_with_terms do

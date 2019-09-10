@@ -20,9 +20,13 @@
           <td><%= link_to calendar_area.title, admin_calendar_area_path(calendar_area) %></td>
           <td>
             <div class="btn-group">
-              <% if calendar_area.calendars.template.any? %>
-                <%= link_to 'Template calendar', calendar_path(calendar_area.calendars.template.first), class: 'btn btn-warning btn-sm'%>
+              <% if calendar_area.calendars.regional.any? %>
+                <%= link_to 'Regional calendar', calendar_path(calendar_area.calendars.regional.first), class: 'btn btn-warning btn-sm'%>
               <% end %>
+              <% if calendar_area.calendars.national.any? %>
+                <%= link_to 'National calendar', calendar_path(calendar_area.calendars.national.first), class: 'btn btn-warning btn-sm'%>
+              <% end %>
+
               <%= link_to 'Edit', edit_admin_calendar_area_path(calendar_area), class: 'btn btn-primary btn-sm'%>
             </div>
           </td>
