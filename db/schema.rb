@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_145956) do
     t.date "start_date"
     t.date "end_date"
     t.bigint "calendar_area_id", null: false
+    t.integer "calendar_id"
     t.index ["calendar_area_id"], name: "index_academic_years_on_calendar_area_id"
   end
 

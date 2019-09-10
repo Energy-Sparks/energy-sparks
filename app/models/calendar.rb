@@ -31,8 +31,6 @@ class Calendar < ApplicationRecord
 
   has_many    :schools
 
-  scope :custom,    -> { where(template: false) }
-
   validates_presence_of :title, :calendar_area
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :not_term_time, to: :calendar_events
@@ -76,6 +74,3 @@ class Calendar < ApplicationRecord
     calendar_area.academic_year_for(date)
   end
 end
-
-# As a reminder!
-# c.calendar_events.joins(:calendar_event_type).group('calendar_event_types.title').order('calendar_event_types.title').count
