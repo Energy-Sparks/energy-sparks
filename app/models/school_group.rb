@@ -39,7 +39,6 @@ class SchoolGroup < ApplicationRecord
 
   belongs_to :default_calendar_area, class_name: 'CalendarArea', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
-  belongs_to :default_weather_underground_area, class_name: 'WeatherUndergroundArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
 
   validates :name, presence: true
