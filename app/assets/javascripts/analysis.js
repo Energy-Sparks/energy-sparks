@@ -106,57 +106,61 @@ function teachersChartSuccess(chart_data, chart) {
 function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
-      var thisId = this.id;
-      var thisChart = Highcharts.chart(thisId, commonChartOptions());
-      var chartType = $(this).data('chart-type');
-      var yAxisUnits = $(this).data('chart-y-axis-units');
-      var mpanMprn = $(this).data('chart-mpan-mprn');
-      var dataPath = $(this).data('chart-json');
-      var transformations = $(this).data('chart-transformations');
-      var noAdvice = $(this).is("[data-no-advice]");
-      var noZoom = $(this).is("[data-no-zoom]");
-      var teachersDashboard = $(this).is("[data-teachers-dashboard]");
-
-      var requestData = {
-        chart_type: chartType,
-        chart_y_axis_units: yAxisUnits,
-        mpan_mprn: mpanMprn,
-        transformations: transformations
-      };
-
-      if (dataPath === undefined) {
-        var currentPath = window.location.href;
-        dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
-      }
-
-      thisChart.showLoading();
-
-      $.ajax({
-        type: 'GET',
-        async: true,
-        dataType: "json",
-        url: dataPath,
-        data: requestData,
-        success: function (returnedData) {
-          var thisChartData = returnedData.charts[0];
-          if (thisChartData == undefined) {
-            chartFailure(thisChart, "We do not have enough data at the moment to display this ");
-          } else if (thisChartData.series_data == null) {
-            chartFailure(thisChart, thisChartData.title);
-          } else {
-            if (teachersDashboard) {
-              teachersChartSuccess(thisChartData, thisChart)
-            } else {
-              chartSuccess(thisChartData, thisChart, noAdvice, noZoom);
-            }
-          }
-        },
-        error: function(broken) {
-          chartFailure(thisChart, "We do not have enough data at the moment to display this ");
-        }
-      });
+      processAnalysisChart(this);
     });
   }
+}
+
+function processAnalysisChart(chart_container){
+  var thisId = chart_container.id;
+  var thisChart = Highcharts.chart(thisId, commonChartOptions());
+  var chartType = $(chart_container).data('chart-type');
+  var yAxisUnits = $(chart_container).data('chart-y-axis-units');
+  var mpanMprn = $(chart_container).data('chart-mpan-mprn');
+  var dataPath = $(chart_container).data('chart-json');
+  var transformations = $(chart_container).data('chart-transformations');
+  var noAdvice = $(chart_container).is("[data-no-advice]");
+  var noZoom = $(chart_container).is("[data-no-zoom]");
+  var teachersDashboard = $(chart_container).is("[data-teachers-dashboard]");
+
+  var requestData = {
+    chart_type: chartType,
+    chart_y_axis_units: yAxisUnits,
+    mpan_mprn: mpanMprn,
+    transformations: transformations
+  };
+
+  if (dataPath === undefined) {
+    var currentPath = window.location.href;
+    dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
+  }
+
+  thisChart.showLoading();
+
+  $.ajax({
+    type: 'GET',
+    async: true,
+    dataType: "json",
+    url: dataPath,
+    data: requestData,
+    success: function (returnedData) {
+      var thisChartData = returnedData.charts[0];
+      if (thisChartData == undefined) {
+        chartFailure(thisChart, "We do not have enough data at the moment to display this ");
+      } else if (thisChartData.series_data == null) {
+        chartFailure(thisChart, thisChartData.title);
+      } else {
+        if (teachersDashboard) {
+          teachersChartSuccess(thisChartData, thisChart)
+        } else {
+          chartSuccess(thisChartData, thisChart, noAdvice, noZoom);
+        }
+      }
+    },
+    error: function(broken) {
+      chartFailure(thisChart, "We do not have enough data at the moment to display this ");
+    }
+  });
 }
 
 function processAnnotations(loaded_annotations, chart){
