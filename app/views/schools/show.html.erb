@@ -11,32 +11,34 @@
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
-<div class="row dashboards">
-  <div class="col-md-6 text-center">
-    <div class="card">
-      <div class="card-body">
-        <div class="card-title">
-          <h2><%= @school.name  %> Staff</h2>
+<% unless user_signed_in? %>
+  <div class="row dashboards mb-4">
+    <div class="col-md-6 text-center">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h2><%= @school.name  %> Staff</h2>
+          </div>
+          <div class="card-text">
+            <%= link_to 'Log in with your email address and password', new_user_session_path, class: 'btn btn-rounded'%>
+          </div>
         </div>
-        <div class="card-text">
-          <%= link_to 'Log in with your email address and password', new_user_session_path, class: 'btn btn-rounded'%>
+      </div>
+    </div>
+    <div class="col-md-6 text-center">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h2><%= @school.name  %> Pupils</h2>
+          </div>
+          <div class="card-text">
+            <%=  link_to 'Log in with your pupil password', new_pupils_school_session_path(@school), class: 'btn btn-rounded'%>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md-6 text-center">
-    <div class="card">
-      <div class="card-body">
-        <div class="card-title">
-          <h2><%= @school.name  %> Pupils</h2>
-        </div>
-        <div class="card-text">
-          <%=  link_to 'Log in with your pupil password', new_pupils_school_session_path(@school), class: 'btn btn-rounded'%>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<% end %>
 
 
 

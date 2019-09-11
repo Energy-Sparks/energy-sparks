@@ -41,7 +41,7 @@ module Schools
     end
 
     def keep?(chart_type, chart_config = { y_axis_units: :kwh })
-      ChartData.new(@aggregated_meter_collection, chart_type, false, chart_config).has_chart_data?
+      ChartData.new(@aggregated_meter_collection, chart_type, chart_config).has_chart_data?
     end
 
     def pages
