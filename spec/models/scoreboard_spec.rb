@@ -44,9 +44,9 @@ describe Scoreboard, :scoreboards, type: :model do
 
       it 'also defaults to the current academic year' do
         create :school, :with_points, score_points: 6, school_group: group, activities_happened_on: 18.months.ago
-        expect(subject.scored_schools(academic_year: last_academic_year).to_a.size).to be 1
-        expect(subject.scored_schools(academic_year: this_academic_year).to_a.size).to be 5
-        expect(subject.scored_schools.to_a.size).to be 5
+        expect(subject.scored_schools(academic_year: last_academic_year).to_a.size).to be 6
+        expect(subject.scored_schools(academic_year: this_academic_year).to_a.size).to be 6
+        expect(subject.scored_schools.to_a.size).to be 6
       end
     end
 

@@ -31,6 +31,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_feed_areas do
+      after(:create) do |school, evaluator|
+        school.update(dark_sky_area: create(:dark_sky_area), solar_pv_tuos_area: create(:solar_pv_tuos_area))
+      end
+    end
+
     trait :with_points do
 
       transient do

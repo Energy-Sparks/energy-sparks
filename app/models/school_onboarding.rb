@@ -46,7 +46,6 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
   belongs_to :calendar_area, optional: true
-  belongs_to :weather_underground_area, optional: true
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :created_user, class_name: 'User', optional: true
