@@ -1,5 +1,5 @@
-<div class="row dashbards">
-  <% if school.meters_for_supply(:electricity).any? %>
+<div class="row">
+  <% if school.has_electricity? %>
     <div class="col text-center pb-3">
       <div class="card electricity-dark electricity-card">
         <div class="card-body">
@@ -17,7 +17,7 @@
       </div>
     </div>
   <% end %>
-  <% if school.meters_for_supply(:gas).any? %>
+  <% if school.has_gas? %>
     <div class="col text-center pb-3">
       <div class="card gas-dark gas-card">
         <div class="card-body">
