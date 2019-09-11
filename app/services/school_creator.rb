@@ -54,7 +54,6 @@ private
         school_group: onboarding.school_group,
         calendar_area: onboarding.calendar_area,
         solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
-        weather_underground_area: onboarding.weather_underground_area,
         dark_sky_area: onboarding.dark_sky_area
       )
   end

@@ -3,8 +3,6 @@ require 'dashboard'
 class ScheduleDataManagerService
   def initialize(school)
     @calendar_id = school.calendar_id
-    @temperature_area_id = school.weather_underground_area_id
-    @solar_irradiance_area_id = school.weather_underground_area_id
     @solar_pv_tuos_area_id = school.solar_pv_tuos_area_id
     @dark_sky_area_id = school.dark_sky_area_id
   end
@@ -25,31 +23,20 @@ class ScheduleDataManagerService
     end
   end
 
-  def process_feed_data(output_data, area_id, feed_type)
-    data_feed = Area.find(area_id).data_feed
-
-    query = <<-SQL
-      SELECT date_trunc('day', at) AS day, array_agg(value ORDER BY at ASC) AS values
-      FROM data_feed_readings
-      WHERE feed_type = #{DataFeedReading.feed_types[feed_type]}
-      AND data_feed_id = #{data_feed.id}
-      GROUP BY date_trunc('day', at)
-      ORDER BY day ASC
-    SQL
-
-    result = ActiveRecord::Base.connection.execute(query)
-    result.each do |row|
-      output_data.add(Date.parse(row["day"]), row["values"].delete('{}').split(',').map(&:to_f))
-    end
-    output_data
-  end
-
   def temperatures(_area_name)
-    @temperatures ||= ENV['DARK_SKY_FOR_TEMPERATURES'] ? dark_sky_temperatures : weather_underground_temperatures
+    cache_key = "#{@dark_sky_area_id}-dark-sky-temperatures"
+    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      data = Temperatures.new('temperatures')
+
+      DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+        data.add(date, values.map(&:to_f))
+      end
+      data
+    end
   end
 
   def solar_irradiation(_area_name)
-    cache_key = "#{@solar_irradiance_area_id}-solar-irradiation"
+    cache_key = "#{@solar_pv_tuos_area_id}-solar-irradiation"
     @solar_irradiation ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarIrradianceFromPV.new('solar irradiance from pv')
       populate_data_from_solar_pv_readings(data)
@@ -77,26 +64,6 @@ class ScheduleDataManagerService
   end
 
 private
-
-  def weather_underground_temperatures
-    cache_key = "#{@temperature_area_id}-weather-underground-temperatures"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      data = Temperatures.new('temperatures')
-      process_feed_data(data, @temperature_area_id, :temperature)
-    end
-  end
-
-  def dark_sky_temperatures
-    cache_key = "#{@dark_sky_area_id}-dark-sky-temperatures"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      data = Temperatures.new('temperatures')
-
-      DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
-        data.add(date, values.map(&:to_f))
-      end
-      data
-    end
-  end
 
   def populate_data_from_solar_pv_readings(data)
     DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
