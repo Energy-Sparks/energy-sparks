@@ -54,7 +54,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   }
 
   if(chart_data.allowed_operations){
-    processAnalysisOperations($chartDiv, chart_data.allowed_operations)
+    processAnalysisOperations($chartDiv, chart_data.allowed_operations, chart_data.drilldown_available)
   }
 
   if(chart_data.annotations){
@@ -118,7 +118,7 @@ function processAnalysisCharts(){
 
 function processAnalysisChart(chart_container){
   var thisId = chart_container.id;
-  var thisChart = Highcharts.chart(thisId, commonChartOptions());
+  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chart_container, event)}));
   var chartType = $(chart_container).data('chart-type');
   var yAxisUnits = $(chart_container).data('chart-y-axis-units');
   var mpanMprn = $(chart_container).data('chart-mpan-mprn');
@@ -215,17 +215,43 @@ function setupAnalysisControls(chart_container){
       event.preventDefault();
       pushTransformation(chart_container, 'move', 1);
     });
+
+    controls.find('.drillup').hide();
+    controls.find('.drillup').on('click', function(event){
+      event.preventDefault();
+
+      var transformations = $(chart_container).data('chart-transformations');
+      var inDrilldown = transformations.some(isDrilldownTransformation);
+      var lastDrilldownIndex = transformations.reverse().findIndex(isDrilldownTransformation);
+      var sliceTo = transformations.length - lastDrilldownIndex - 1;
+      var newTransformtions = transformations.reverse().slice(0, sliceTo);
+
+      $(chart_container).data('chart-transformations', newTransformtions);
+      processAnalysisChart(chart_container);
+    });
   }
 }
 
-function processAnalysisOperations(chart_container, operations){
+function processAnalysisOperations(chart_container, operations, drilldown_available){
   var controls = $(chart_container).parent().find('.analysis_controls');
   if(controls){
-    $.each(operations, function(operation, directions ) {
-      $.each(directions, function(direction, enabled ) {
-        controls.find(`.${operation}_${direction}`).attr('disabled', !enabled);
+    $.each(operations, function(operation, config ) {
+      $.each(config.directions, function(direction, enabled ) {
+        var control = controls.find(`.${operation}_${direction}`);
+        control.attr('disabled', !enabled);
+        control.find('span.period').html(config.timescale_description);
       });
     });
+
+    $(chart_container).data('chart-drilldown-available', drilldown_available);
+
+    var transformations = $(chart_container).data('chart-transformations');
+    var inDrilldown = transformations.some(isDrilldownTransformation);
+    if(inDrilldown){
+      controls.find('.drillup').show();
+    } else {
+      controls.find('.drillup').hide();
+    }
   }
 }
 
@@ -244,6 +270,16 @@ function pushTransformation(chart_container, transformation_type, transformation
   }
   $(chart_container).data('chart-transformations', transformations);
   processAnalysisChart(chart_container);
+}
+
+function processChartClick(chart_container, event){
+  if($(chart_container).data('chart-drilldown-available')){
+    pushTransformation(chart_container, 'drilldown', event.point.index)
+  }
+}
+
+function isDrilldownTransformation(transformation){
+  return transformation[0] == 'drilldown';
 }
 
 $(document).ready(processAnalysisCharts);

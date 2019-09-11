@@ -84,14 +84,19 @@ private
       manipulator = ChartManagerTimescaleManipulation.factory(operation_type, chart_config, @aggregated_school)
       allowed_operations[operation_type] = if manipulator.chart_suitable_for_timescale_manipulation?
         {
-          forward: (manipulator.can_go_forward_in_time_one_period? rescue false), # remove rescue once manipulation for drilled down charts is fixed
-          back: (manipulator.can_go_back_in_time_one_period? rescue false) # remove rescue once manipulation for drilled down charts is fixed
+          timescale_description: manipulator.timescale_description,
+          directions: {
+            forward: (manipulator.can_go_forward_in_time_one_period? rescue false), # remove rescue once manipulation for drilled down charts is fixed
+            back: (manipulator.can_go_back_in_time_one_period? rescue false) # remove rescue once manipulation for drilled down charts is fixed
+          }
         }
                                            else
         {
-          description: 'period',
-          forward: false,
-          back: false
+          timescale_description: 'period',
+          directions: {
+            forward: false,
+            back: false
+          }
         }
                                            end
     end

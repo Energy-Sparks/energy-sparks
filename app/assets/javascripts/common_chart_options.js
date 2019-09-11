@@ -10,7 +10,7 @@ Highcharts.setOptions({
   }
 });
 
-function commonChartOptions(){
+function commonChartOptions(clickListener){
   return {
     title: { text: null },
     xAxis: { showEmpty: false },
@@ -34,6 +34,11 @@ function commonChartOptions(){
     },
     plotOptions: {
       series: {
+        point: {
+          events: {
+            click: clickListener
+          }
+        },
         states: {
           inactive: {
             opacity: 1
