@@ -25,7 +25,7 @@ class ScheduleDataManagerService
 
   def temperatures(_area_name)
     cache_key = "#{@dark_sky_area_id}-dark-sky-temperatures"
-    Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    @temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = Temperatures.new('temperatures')
 
       DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
