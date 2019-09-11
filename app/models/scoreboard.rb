@@ -2,23 +2,20 @@
 #
 # Table name: scoreboards
 #
-#  academic_year_calendar_id :bigint(8)
-#  calendar_area_id          :bigint(8)
-#  created_at                :datetime         not null
-#  description               :string
-#  id                        :bigint(8)        not null, primary key
-#  name                      :string           not null
-#  slug                      :string           not null
-#  updated_at                :datetime         not null
+#  calendar_area_id :bigint(8)
+#  created_at       :datetime         not null
+#  description      :string
+#  id               :bigint(8)        not null, primary key
+#  name             :string           not null
+#  slug             :string           not null
+#  updated_at       :datetime         not null
 #
 # Indexes
 #
-#  index_scoreboards_on_academic_year_calendar_id  (academic_year_calendar_id)
-#  index_scoreboards_on_calendar_area_id           (calendar_area_id)
+#  index_scoreboards_on_calendar_area_id  (calendar_area_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (academic_year_calendar_id => calendars.id) ON DELETE => cascade
 #  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #
 

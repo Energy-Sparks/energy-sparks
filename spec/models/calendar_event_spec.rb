@@ -3,7 +3,7 @@ require 'rails_helper'
 describe CalendarEvent do
 
   let(:calendar_area){ create(:calendar_area) }
-  let(:calendar){ build(:calendar, calendar_area: calendar_area) }
+  let(:calendar){ create(:calendar, :with_academic_year, calendar_area: calendar_area) }
 
   it 'sets its own academic year' do
     academic_year = create(:academic_year, start_date: Date.new(2019, 9, 1), end_date: Date.new(2020, 8, 31), calendar_area: calendar_area)

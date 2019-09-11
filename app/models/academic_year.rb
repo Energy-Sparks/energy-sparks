@@ -19,7 +19,7 @@
 
 class AcademicYear < ApplicationRecord
   has_many :calendar_events
-  belongs_to :calendar_area
+  belongs_to :calendar, optional: true
 
   scope :for_date, ->(date) { where('start_date <= ? AND end_date >= ?', date, date) }
 

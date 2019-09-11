@@ -77,7 +77,6 @@ class School < ApplicationRecord
   has_many :alert_subscription_events,    through: :contacts
 
   belongs_to :calendar, optional: true
-  belongs_to :calendar_area, optional: true
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :school_group, optional: true

@@ -9,11 +9,6 @@ RSpec.configure do |rspec|
 end
 
 RSpec.shared_context "calendar data", shared_context: :metadata do
-
-  let(:area_and_calendar_title) { 'Area and Calendar title'}
-  let!(:area) { create(:calendar_area, title: area_and_calendar_title) }
-  let!(:academic_years) { AcademicYearFactory.new(area).create(start_year: 2011, end_year: 2019) }
-
   let!(:calendar_events) { create_all_calendar_events }
 
   let(:autumn_term_half_term_holiday_start) { "2017-10-21" }
@@ -24,7 +19,8 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
      { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
   }
 
-  let!(:parent_template_calendar) { create(:regional_calendar, calendar_area: area) }
+  let!(:parent_template_calendar) { create(:regional_calendar, :with_academic_years) }
+
   let!(:bank_holiday) { create :bank_holiday, calendar: parent_template_calendar, title: 'Good Friday', start_date: "2012-04-06", end_date: "2012-04-06" }
   let!(:calendar) { CalendarFactoryFromEventHash.new(autumn_terms, area).create }
 
