@@ -345,8 +345,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_145956) do
     t.text "description"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.bigint "data_feed_id"
-    t.index ["data_feed_id"], name: "index_areas_on_data_feed_id"
   end
 
   create_table "calendar_areas", force: :cascade do |t|
@@ -454,28 +452,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_145956) do
     t.index ["alert_type_rating_content_version_id"], name: "index_dashboard_alerts_on_alert_type_rating_content_version_id"
     t.index ["content_generation_run_id"], name: "index_dashboard_alerts_on_content_generation_run_id"
     t.index ["find_out_more_id"], name: "index_dashboard_alerts_on_find_out_more_id"
-  end
-
-  create_table "data_feed_readings", force: :cascade do |t|
-    t.bigint "data_feed_id", null: false
-    t.integer "feed_type"
-    t.datetime "at"
-    t.decimal "value"
-    t.string "unit"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index "date_trunc('day'::text, at)", name: "data_feed_readings_at_index"
-    t.index ["at"], name: "index_data_feed_readings_on_at"
-    t.index ["data_feed_id", "feed_type", "at"], name: "unique_data_feed_readings", unique: true
-    t.index ["data_feed_id"], name: "index_data_feed_readings_on_data_feed_id"
-    t.index ["feed_type"], name: "index_data_feed_readings_on_feed_type"
-  end
-
-  create_table "data_feeds", force: :cascade do |t|
-    t.text "type", null: false
-    t.text "title"
-    t.text "description"
-    t.json "configuration", default: {}, null: false
   end
 
   create_table "emails", force: :cascade do |t|
@@ -873,7 +849,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_145956) do
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
   add_foreign_key "amr_validated_readings", "meters"
-  add_foreign_key "areas", "data_feeds", on_delete: :restrict
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
@@ -887,7 +862,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_145956) do
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
-  add_foreign_key "data_feed_readings", "data_feeds"
   add_foreign_key "emails", "contacts", on_delete: :cascade
   add_foreign_key "equivalence_type_content_versions", "equivalence_type_content_versions", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade

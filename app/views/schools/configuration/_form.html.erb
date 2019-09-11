@@ -10,11 +10,6 @@
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :weather_underground_area_id, 'Weather Underground Data Feed Area' %>
-      <%= f.select :weather_underground_area_id, options_from_collection_for_select(WeatherUndergroundArea.all, 'id', 'title', (@school.weather_underground_area.id if @school.weather_underground_area)),{}, { class: 'form-control' }%>
-    </div>
-
-    <div class="form-group col-md-6">
       <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
       <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all, 'id', 'title', (@school.solar_pv_tuos_area.id if @school.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
     </div>
