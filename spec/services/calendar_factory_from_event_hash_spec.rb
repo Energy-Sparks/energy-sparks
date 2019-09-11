@@ -14,7 +14,7 @@ describe CalendarFactoryFromEventHash do
       ]
 
       new_area = CalendarArea.create(title: 'this new area', parent_area: area)
-      parent_template_calendar = create(:calendar, calendar_area: new_area, calendar_type: :regional)
+      parent_template_calendar = create(:regional_calendar, calendar_area: new_area)
 
       create(:bank_holiday, calendar: parent_template_calendar)
 
