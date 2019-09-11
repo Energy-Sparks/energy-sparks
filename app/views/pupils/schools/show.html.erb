@@ -6,9 +6,11 @@
 
 <div class="row padded-row align-items-end">
   <div class="col-md-9">
-    <h2 class="mb-3">Things to do:</h2>
+    <h2>Things to do:</h2>
   </div>
 </div>
+
+<%= render 'explore_old_charts', school: @school %>
 
 <% if @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>

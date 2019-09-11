@@ -128,14 +128,6 @@ class School < ApplicationRecord
     meters.where(active: true)
   end
 
-  def meters_for_supply(supply)
-    meters.where(meter_type: supply)
-  end
-
-  def meters?(supply = nil)
-    meters_for_supply(supply).any?
-  end
-
   def meters_with_readings(supply = Meter.meter_types.keys)
     meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
   end
