@@ -34,11 +34,6 @@ function commonChartOptions(clickListener){
     },
     plotOptions: {
       series: {
-        point: {
-          events: {
-            click: clickListener
-          }
-        },
         states: {
           inactive: {
             opacity: 1
@@ -52,6 +47,11 @@ function commonChartOptions(clickListener){
         dataLabels: {
           color: '#232b49'
         },
+        point: {
+          events: {
+            click: clickListener
+          }
+        }
       },
       pie: {
         allowPointSelect: true,

@@ -9,20 +9,25 @@ module Pupils
 
     BASE_CHARTS = {
       electricity: {
-        when: :group_by_week_electricity
+        when: {
+          chart: :group_by_week_electricity,
+          title: 'When electricity was used in the last year'
+        }
       }
     }.freeze
 
     def index
+      render params[:category] || :index
     end
 
     def show
       energy = params.require(:energy).to_sym
       presentation = params.require(:presentation).to_sym
 
-      @chart_type = BASE_CHARTS.fetch(energy).fetch(presentation)
+      chart_config = BASE_CHARTS.fetch(energy).fetch(presentation)
+      @chart_type = chart_config.fetch(:chart)
       @measurement = measurement_unit(params[:measurement])
-      @title = @chart_type.to_s.humanize
+      @title = chart_config.fetch(:title)
     end
 
     private
