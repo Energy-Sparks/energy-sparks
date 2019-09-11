@@ -6,7 +6,6 @@ describe SchoolCreator, :schools, type: :service do
     let(:school)                    { build :school}
     let(:onboarding_user)           { create :user, role: 'school_onboarding'}
     let(:calendar_area)             { create(:calendar_area, title: 'BANES calendar') }
- #   let(:calendar)                  { create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
     let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
     let!(:school_group)             { create(:school_group, name: 'BANES') }
@@ -125,7 +124,7 @@ describe SchoolCreator, :schools, type: :service do
   describe '#process_new_configuration!' do
     let(:school)        { create :school, calendar_area: calendar_area}
     let(:calendar_area) { create :calendar_area }
-    let!(:regional_calendar)     { create :calendar_with_terms, calendar_type: :regional, calendar_area: calendar_area}
+    let!(:regional_calendar)     { create :regional_calendar, :with_terms, calendar_area: calendar_area}
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service = SchoolCreator.new(school)
