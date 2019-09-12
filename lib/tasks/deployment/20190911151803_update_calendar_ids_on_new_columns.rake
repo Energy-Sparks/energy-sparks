@@ -20,7 +20,9 @@ namespace :after_party do
       end
 
       SchoolOnboarding.all.each do |school_onboarding|
-        calendar_area_name = school_onboarding.calendar_area.title
+        calendar_area = school_onboarding.calendar_area || school_onboarding.school_group.default_calendar_area
+
+        calendar_area_name = calendar_area.title
         calendar = Calendar.where("title like ?", "%#{calendar_area_name}%").first
 
         school_onboarding.update!(template_calendar_id: calendar.id)
