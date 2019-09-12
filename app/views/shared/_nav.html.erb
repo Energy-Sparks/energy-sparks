@@ -28,12 +28,21 @@
           </li>
         <% end %>
 
-        <% if current_user && current_user.active_school_admin? && current_user.school.scoreboard %>
-          <li><%= link_to "Scoreboard", scoreboard_path(current_user.school.scoreboard), class: 'nav-link' %></li>
+        <% if current_user && current_user.default_scoreboard %>
+          <li><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
         <% end %>
-        <li class="nav-item">
-          <%= link_to "Schools", schools_path, class: 'nav-link' %>
-        </li>
+        <% if current_user && current_user.school_group %>
+          <li class="nav-item">
+            <%= link_to "#{current_user.school_group.name} Schools", school_group_path(current_user.school_group), class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "All Schools", schools_path, class: 'nav-link' %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Schools", schools_path, class: 'nav-link' %>
+          </li>
+        <% end %>
         <% if user_signed_in? && current_user.admin? %>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage</a>

@@ -30,10 +30,7 @@ class Ability
       can :manage, Activity, school_id: user.school_id
       can :crud, Calendar, id: user.school.try(:calendar_id)
       can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
-      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash, :show_pupils_dash], School, id: user.school_id
-      can [:read, :usage], School do |school|
-        user.school_id == school.id
-      end
+      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash, :show_pupils_dash, :read, :usage, :start_programme], School, id: user.school_id
       can :manage, Contact, school_id: user.school_id
       can [:index, :create, :read, :update], Meter, school_id: user.school_id
       can :activate, Meter, active: false, school_id: user.school_id
@@ -46,8 +43,30 @@ class Ability
       end
       can :manage, Observation, school_id: user.school_id
       can :crud, Programme, school_id: user.school_id
-      can :start_programme, School, id: user.school_id
-      can :manage, User, school_id: user.school_id
+      can [:manage, :enable_alerts], User, school_id: user.school_id
+      cannot :delete, User do |other_user|
+        user.id == other_user.id
+      end
+    elsif user.group_admin?
+      can :show, SchoolGroup, id: user.school_group_id
+      can :manage, Activity, school: { school_group_id: user.school_group_id }
+      can :crud, Calendar do |calendar|
+        user.school_group.calendars.include?(calendar)
+      end
+      can :manage, CalendarEvent do |calendar_event|
+        user.school_group.calendars.include?(calendar_event.calendar)
+      end
+      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash, :show_pupils_dash, :read, :usage, :start_programme], School, school_group_id: user.school_group_id
+      can :manage, Contact, school: { school_group_id: user.school_group_id }
+      can [:index, :create, :read, :update], Meter, school: { school_group_id: user.school_group_id }
+      can :activate, Meter, active: false, school: { school_group_id: user.school_group_id }
+      can :deactivate, Meter, active: true, school: { school_group_id: user.school_group_id }
+      can [:destroy, :delete], Meter do |meter|
+        meter.school.school_group_id == user.school_group_id && meter.amr_data_feed_readings.count == 0
+      end
+      can :manage, Observation, school: { school_group_id: user.school_group_id }
+      can :crud, Programme, school: { school_group_id: user.school_group_id }
+      can [:enable_alerts, :manage], User, school: { school_group_id: user.school_group_id }
       cannot :delete, User do |other_user|
         user.id == other_user.id
       end

@@ -27,6 +27,8 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
   end
+
+  resources :school_groups, only: :show
   resources :scoreboards
 
   resources :onboarding, path: 'school_setup', only: [:show] do
