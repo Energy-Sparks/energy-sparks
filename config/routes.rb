@@ -27,8 +27,9 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
   end
+
+  resources :school_groups, only: :show
   resources :scoreboards
-  resources :school_groups
 
   resources :onboarding, path: 'school_setup', only: [:show] do
     scope module: :onboarding do
@@ -137,6 +138,9 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+
+    resources :school_groups
+
     namespace :emails do
       resources :alert_mailers, only: :show
     end

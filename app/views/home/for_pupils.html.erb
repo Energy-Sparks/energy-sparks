@@ -103,7 +103,7 @@
         You can use the <%= t('application') %> graphs to see how much difference your changes have made to your school's
         energy use, and even use your maths skills to find out how much money your school has saved.
       </p>
-      <% if current_user.try(:school_admin_or_staff?) %>
+      <% if current_user && current_user.schoool
           Visit <%= link_to "your school's homepage", school_path(current_user.school) %> now to start saving energy!
       <% end %>
     </div>
