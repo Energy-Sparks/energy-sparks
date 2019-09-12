@@ -25,6 +25,7 @@
 #
 #  fk_rails_...  (default_calendar_area_id => calendar_areas.id) ON DELETE => nullify
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
+#  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
 #  fk_rails_...  (default_weather_underground_area_id => areas.id)
 #  fk_rails_...  (scoreboard_id => scoreboards.id)
 #

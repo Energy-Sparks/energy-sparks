@@ -16,6 +16,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (academic_year_calendar_id => calendars.id) ON DELETE => nullify
 #  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #
 
