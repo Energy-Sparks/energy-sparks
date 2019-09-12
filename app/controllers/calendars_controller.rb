@@ -3,14 +3,6 @@
 class CalendarsController < ApplicationController
   load_and_authorize_resource
 
-  # GET /calendars
-  # GET /calendars.json
-  def index
-    @national_calendars = Calendar.national.includes(:schools).order(:title)
-    @regional_calendars = Calendar.regional.includes(:schools).order(:title)
-    @school_calendars = Calendar.school.includes(:schools).order('schools.name')
-  end
-
   # GET /calendars/1
   # GET /calendars/1.json
   def show

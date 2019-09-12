@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :activity_types
   resources :activity_categories
 
-  resources :calendars, only: [:index, :show, :destroy] do
+  resources :calendars, only: [:show, :destroy] do
     scope module: :calendars do
       resources :calendar_events
     end
@@ -164,7 +164,8 @@ Rails.application.routes.draw do
 
     resources :unsubscriptions, only: [:index]
 
-    resources :calendar_areas, only: [:index, :new, :create, :edit, :update]
+    resources :calendars
+
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
