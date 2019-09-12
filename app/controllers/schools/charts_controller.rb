@@ -23,7 +23,7 @@ class Schools::ChartsController < ApplicationController
           mpan_mprn: params[:mpan_mprn],
           y_axis_units: params.fetch(:chart_y_axis_units, :kwh).to_sym
         }
-        @output = ChartData.new(aggregate_school, @chart_type, show_benchmark_figures?, chart_config).data
+        @output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
       end
     end
   end
@@ -36,5 +36,11 @@ private
 
   def set_school
     @school = School.friendly.find(params[:school_id])
+  end
+
+  def get_transformations
+    params.fetch(:transformations, {}).values.map do |(transformation_type, transformation_value)|
+      [transformation_type.to_sym, transformation_value.to_i]
+    end
   end
 end

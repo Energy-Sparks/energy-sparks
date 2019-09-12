@@ -10,7 +10,7 @@ Highcharts.setOptions({
   }
 });
 
-function commonChartOptions(){
+function commonChartOptions(clickListener){
   return {
     title: { text: null },
     xAxis: { showEmpty: false },
@@ -47,6 +47,11 @@ function commonChartOptions(){
         dataLabels: {
           color: '#232b49'
         },
+        point: {
+          events: {
+            click: clickListener
+          }
+        }
       },
       pie: {
         allowPointSelect: true,
