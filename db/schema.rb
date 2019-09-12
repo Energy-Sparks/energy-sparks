@@ -887,7 +887,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_151545) do
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "calendar_areas", column: "default_calendar_area_id", on_delete: :nullify
-  add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :cascade
+  add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
@@ -895,7 +895,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_151545) do
   add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "calendar_areas", on_delete: :restrict
-  add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :cascade
+  add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
@@ -905,7 +905,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_151545) do
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
   add_foreign_key "scoreboards", "calendar_areas", on_delete: :restrict
-  add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :cascade
+  add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
