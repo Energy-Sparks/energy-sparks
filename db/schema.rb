@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_11_151545) do
+ActiveRecord::Schema.define(version: 2019_09_12_120206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -711,6 +711,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_151545) do
     t.boolean "cooks_dinners_onsite", default: false, null: false
     t.boolean "cooks_dinners_for_other_schools", default: false, null: false
     t.integer "cooks_dinners_for_other_schools_count"
+    t.integer "template_calendar_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true

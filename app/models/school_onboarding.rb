@@ -39,7 +39,7 @@
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_pv_tuos_area_id => areas.id) ON DELETE => restrict
-#  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => cascade
+#  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => nullify
 #  fk_rails_...  (weather_underground_area_id => areas.id) ON DELETE => restrict
 #
 
