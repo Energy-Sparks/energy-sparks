@@ -1,5 +1,6 @@
 class CalendarFactoryFromEventHash
-  def initialize(event_hash, template_calendar, template = false, calendar_type = :regional)
+  def initialize(title:, event_hash:, template_calendar:, template: false, calendar_type: :regional)
+    @title = title
     @event_hash = event_hash
     @template_calendar = template_calendar
     @template = template
@@ -7,7 +8,9 @@ class CalendarFactoryFromEventHash
   end
 
   def create
-    @calendar = Calendar.where(calendar_type: @calendar_type, title: @template_calendar.title, based_on: @template_calendar).first_or_create!
+    @calendar = Calendar.where(calendar_type: @calendar_type, title: @title, based_on: @template_calendar).first_or_create
+
+    return @calendar unless @calendar.persisted?
 
     create_events_from_parent
 

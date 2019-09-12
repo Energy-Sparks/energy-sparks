@@ -24,7 +24,7 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
   let!(:academic_year_2) { create(:academic_year, calendar: parent_template_calendar, start_date: '2017-09-01', end_date: '2018-08-30')}
 
   let!(:bank_holiday) { create :bank_holiday, calendar: parent_template_calendar, title: 'Good Friday', start_date: "2012-04-06", end_date: "2012-04-06" }
-  let!(:calendar) { CalendarFactoryFromEventHash.new(autumn_terms, parent_template_calendar).create }
+  let!(:calendar) { CalendarFactoryFromEventHash.new(title: 'calendar title', event_hash: autumn_terms, template_calendar: parent_template_calendar).create }
 
   let(:random_before_holiday_start_date) { '01/01/2017' }
   let(:random_after_holiday_start_date)  { '16/12/2017' }

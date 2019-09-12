@@ -15,14 +15,17 @@ describe CalendarFactoryFromEventHash do
 
       parent_template_calendar = create(:regional_calendar, :with_academic_years)
       create(:bank_holiday, calendar: parent_template_calendar)
+      new_calendar_title = 'New calendar'
 
-      expect { CalendarFactoryFromEventHash.new(example_calendar_hash, parent_template_calendar).create }.to change { Calendar.count }.by(1)
+
+      expect { CalendarFactoryFromEventHash.new(title: new_calendar_title, event_hash: example_calendar_hash, template_calendar: parent_template_calendar).create }.to change { Calendar.count }.by(1)
 
       calendar = Calendar.last
       # 1 Bank Holiday, 5 terms and 4 holidays
       expect(calendar.holidays.count).to be (4)
       expect(calendar.inset_days.count).to be 0
       expect(calendar.calendar_events.count).to be 10
+      expect(calendar.title).to eq new_calendar_title
     end
   end
 end

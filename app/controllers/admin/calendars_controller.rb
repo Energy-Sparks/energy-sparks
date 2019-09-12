@@ -13,8 +13,22 @@ module Admin
 
     def create
       terms = EnergySparks::CsvLoader.from_text(params.fetch(:terms) {{}}.fetch(:csv) {''})
+      based_on_calendar = Calendar.find(calendar_params[:based_on_id])
 
-      if CalendarFactoryFromEventHash.new(terms, parent_calendar, true).create
+      @calendar = CalendarFactory.new(existing_calendar: based_on_calendar, title: calendar_params[:title], calendar_type: Calendar.calendar_types[calendar_params[:calendar_type]]).build
+
+#       class CalendarFactory
+#   def initialize(existing_calendar:, title: existing_calendar.title, template: false, calendar_type: :school)
+
+# CalendarFactoryFromEventHash.new(
+#         title: calendar_params[:title],
+#         event_hash: terms,
+#         template_calendar: based_on_calendar,
+#         calendar_type: Calendar.calendar_types[calendar_params[:calendar_type]]
+#       ).create.persisted?
+
+      if @calendar.save
+        # New create terms and holidays from hash
         redirect_to admin_calendars_path, notice: 'Calendar created'
       else
         render :new
