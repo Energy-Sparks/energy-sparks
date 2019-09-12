@@ -35,6 +35,7 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  has_many :users
   belongs_to :scoreboard, optional: true
 
   belongs_to :default_calendar_area, class_name: 'CalendarArea', optional: true
@@ -45,6 +46,7 @@ class SchoolGroup < ApplicationRecord
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
+    raise EnergySparks::SafeDestroyError, 'Group has associated users' if users.any?
     destroy
   end
 

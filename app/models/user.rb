@@ -21,6 +21,7 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  role                   :integer          default("guest"), not null
+#  school_group_id        :bigint(8)
 #  school_id              :bigint(8)
 #  sign_in_count          :integer          default(0), not null
 #  staff_role_id          :bigint(8)
@@ -31,12 +32,14 @@
 #  index_users_on_confirmation_token            (confirmation_token) UNIQUE
 #  index_users_on_email                         (email) UNIQUE
 #  index_users_on_reset_password_token          (reset_password_token) UNIQUE
+#  index_users_on_school_group_id               (school_group_id)
 #  index_users_on_school_id                     (school_id)
 #  index_users_on_school_id_and_pupil_password  (school_id,pupil_password) UNIQUE
 #  index_users_on_staff_role_id                 (staff_role_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id)
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
 #
@@ -48,6 +51,7 @@ class User < ApplicationRecord
 
   belongs_to :school, optional: true
   belongs_to :staff_role, optional: true
+  belongs_to :school_group, optional: true
   has_one :contact
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
@@ -56,7 +60,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
-  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil]
+  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin]
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 

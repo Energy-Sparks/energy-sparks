@@ -22,9 +22,18 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :school %>
+    <%= f.label :school_id, 'School'%>
     <%= f.select :school_id,
       options_from_collection_for_select(@schools, 'id', 'name', user.school_id),
+      { include_blank: true},
+      { class: 'form-control' }
+    %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :school_group_id, 'School group' %>
+    <%= f.select :school_group_id,
+      options_from_collection_for_select(@school_groups, 'id', 'name', user.school_group_id),
       { include_blank: true},
       { class: 'form-control' }
     %>
