@@ -15,11 +15,13 @@ namespace :after_party do
 
     sg = SchoolGroup.find_by(name: "Highlands")
 
-    ActiveRecord::Base.transaction do
-      sg.update(default_dark_sky_area_id: dsa.id, default_calendar_area_id: ca)
+    if sg.present?
+      ActiveRecord::Base.transaction do
+        sg.update(default_dark_sky_area_id: dsa.id, default_calendar_area_id: ca)
 
-      sg.schools.each do |school|
-        school.update(dark_sky_area_id: sg.default_dark_sky_area_id)
+        sg.schools.each do |school|
+          school.update(dark_sky_area_id: sg.default_dark_sky_area_id)
+        end
       end
     end
 
