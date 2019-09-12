@@ -80,7 +80,7 @@ class User < ApplicationRecord
   end
 
   def default_scoreboard
-    if group_admin?
+    if group_admin? && school_group.scoreboard
       school_group.scoreboard
     elsif school
       school.scoreboard

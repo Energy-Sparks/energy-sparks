@@ -2,9 +2,11 @@
   <div class="col-lg-10">
     <h3><%= name %></h3>
   </div>
-  <div class="col-lg-2">
-    <%= link_to 'View scoreboard', scoreboard_path(scoreboard), class: 'btn btn-primary float-right'  %>
-  </div>
+  <% if scoreboard %>
+    <div class="col-lg-2">
+      <%= link_to 'View scoreboard', scoreboard_path(scoreboard), class: 'btn btn-primary float-right'  %>
+    </div>
+  <% end %>
 </div>
 <% schools.each_slice(3) do |row| %>
   <div class="row school-card-row">
