@@ -2,22 +2,21 @@
 #
 # Table name: scoreboards
 #
-#  calendar_area_id :bigint(8)
-#  created_at       :datetime         not null
-#  description      :string
-#  id               :bigint(8)        not null, primary key
-#  name             :string           not null
-#  slug             :string           not null
-#  updated_at       :datetime         not null
+#  academic_year_calendar_id :bigint(8)
+#  created_at                :datetime         not null
+#  description               :string
+#  id                        :bigint(8)        not null, primary key
+#  name                      :string           not null
+#  slug                      :string           not null
+#  updated_at                :datetime         not null
 #
 # Indexes
 #
-#  index_scoreboards_on_calendar_area_id  (calendar_area_id)
+#  index_scoreboards_on_academic_year_calendar_id  (academic_year_calendar_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (academic_year_calendar_id => calendars.id) ON DELETE => nullify
-#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #
 
 class Scoreboard < ApplicationRecord
@@ -29,10 +28,9 @@ class Scoreboard < ApplicationRecord
 
   has_many :school_groups
   has_many :schools, through: :school_groups
-  belongs_to :calendar_area
   belongs_to :academic_year_calendar, class_name: 'Calendar', optional: true
 
-  validates :name, :calendar_area_id, presence: true
+  validates :name, :academic_year_calendar_id, presence: true
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Scoreboard has associated groups' if school_groups.any?
@@ -44,7 +42,7 @@ class Scoreboard < ApplicationRecord
   end
 
   def active_academic_years(today: Time.zone.today)
-    calendar_area.academic_years.where("date_part('year', start_date) >= ? AND start_date <= ?", FIRST_YEAR, today).order(:start_date)
+    academic_year_calendar.academic_years.where("date_part('year', start_date) >= ? AND start_date <= ?", FIRST_YEAR, today).order(:start_date)
   end
 
   def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
@@ -73,6 +71,6 @@ class Scoreboard < ApplicationRecord
   private
 
   def this_academic_year
-    calendar_area.academic_year_for(Time.zone.today)
+    academic_year_calendar.academic_year_for(Time.zone.today)
   end
 end

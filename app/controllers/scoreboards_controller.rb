@@ -56,6 +56,6 @@ class ScoreboardsController < ApplicationController
 private
 
   def scoreboard_params
-    params.require(:scoreboard).permit(:name, :description, :calendar_area_id)
+    params.require(:scoreboard).permit(:name, :description, :academic_year_calendar_id)
   end
 end
