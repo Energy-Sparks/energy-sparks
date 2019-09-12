@@ -1,20 +1,18 @@
 class CalendarFactoryFromEventHash
-  def initialize(event_hash, area, template = false, calendar_type = :regional)
+  def initialize(event_hash, template_calendar, template = false, calendar_type = :regional)
     @event_hash = event_hash
-    @area = area
+    @template_calendar = template_calendar
     @template = template
-    @parent_calendar = parent_calendar
     @calendar_type = calendar_type
   end
 
   def create
-    @calendar = Calendar.where(calendar_type: @calendar_type, calendar_area: @area, title: @area.title, template: @template, based_on: @parent_calendar).first_or_create!
+    @calendar = Calendar.where(calendar_type: @calendar_type, title: @template_calendar.title, based_on: @template_calendar).first_or_create!
 
     create_events_from_parent
 
     raise ArgumentError unless CalendarEventType.any?
-    raise ArgumentError, "No parent calendar is set for this calendar area: #{@area.title}" if @parent_calendar.nil?
-    raise ArgumentError, "The calendar already has terms from it's parent: #{@parent_calendar.title}" if @calendar.terms.any?
+    raise ArgumentError, "The calendar already has terms from it's parent: #{@template_calendar.title}" if @calendar.terms.any?
 
     @event_hash.each do |event|
       event_type = CalendarEventType.select { |cet| event[:term].include? cet.title }.first
@@ -30,13 +28,9 @@ class CalendarFactoryFromEventHash
 private
 
   def create_events_from_parent
-    @parent_calendar.calendar_events.each do |calendar_event|
+    @template_calendar.calendar_events.each do |calendar_event|
       @calendar.calendar_events.where(title: calendar_event.title, start_date: calendar_event.start_date, end_date: calendar_event.end_date, calendar_event_type: calendar_event.calendar_event_type).first_or_create!
     end
-  end
-
-  def parent_calendar
-    Calendar.find_by(calendar_area: @area) || Calendar.find_by(calendar_area: @area.parent_area)
   end
 
   def create_holidays_between_terms

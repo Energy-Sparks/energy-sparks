@@ -3,7 +3,7 @@ class CalendarAreaFactory
     calendar_area.transaction do
       begin
         calendar_area.save!
-        CalendarFactoryFromEventHash.new(terms, calendar_area, true).create
+        CalendarFactoryFromEventHash.new(terms, true).create
       rescue ActiveRecord::RecordInvalid => e
         calendar_area.errors.add(:base, e.message)
         raise ActiveRecord::Rollback

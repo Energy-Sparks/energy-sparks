@@ -32,10 +32,12 @@ class Calendar < ApplicationRecord
 
   enum calendar_type: [:national, :regional, :school]
 
+  scope :template, -> { regional }
+
   accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
 
   def academic_year_for(date)
-    based_on ? based_on.academic_year_for(date) : academic_years.for_date(date).first
+    academic_years.for_date(date).first || based_on && based_on.academic_year_for(date)
   end
 
   def terms_and_holidays

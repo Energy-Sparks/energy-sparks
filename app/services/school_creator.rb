@@ -52,7 +52,7 @@ private
   def copy_onboarding_details_to_school(onboarding)
       @school.update!(
         school_group: onboarding.school_group,
-        calendar_area: onboarding.calendar_area,
+        template_calendar: onboarding.template_calendar,
         solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
         dark_sky_area: onboarding.dark_sky_area
       )
@@ -73,11 +73,11 @@ private
   end
 
   def generate_calendar
-    if (area = @school.calendar_area)
-      if (template = area.calendars.regional.first)
-        calendar = CalendarFactory.new(existing_calendar: template, title: @school.name, calendar_type: :school).create
-        @school.update!(calendar: calendar)
-      end
+    if (template_calendar = @school.template_calendar)
+      calendar = CalendarFactory.new(existing_calendar: template_calendar, title: @school.name, calendar_type: :school).create
+      @school.update!(calendar: calendar)
+    else
+      @school.update!(calendar: nil)
     end
   end
 

@@ -25,7 +25,7 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       sign_in(admin)
     end
 
-    it 'create a calendar area with the events for the calendar added via a text field' do
+    pending 'create a calendar area with the events for the calendar added via a text field' do
       visit admin_calendar_areas_path
       click_on 'New Calendar area'
       click_on 'Create Calendar area'
@@ -44,7 +44,7 @@ RSpec.describe 'calendar areas', :calendar_areas, type: :system do
       expect(calendar.based_on).to eq england_and_wales_calendar
     end
 
-    it 'can edit a calendar area' do
+    pending 'can edit a calendar area' do
       calendar_area = create(:calendar_area, title: 'BANES', parent_area: england_and_wales)
       visit admin_calendar_areas_path
       click_on 'Edit'

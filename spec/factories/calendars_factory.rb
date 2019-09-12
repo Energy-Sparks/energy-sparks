@@ -5,8 +5,14 @@ FactoryBot.define do
     template { true }
     calendar_type { :school }
 
+    factory :template_calendar do
+      calendar_type { :regional }
+      with_terms
+    end
+
     factory :school_calendar do
       calendar_type { :school }
+      with_academic_years
     end
 
     factory :regional_calendar do
@@ -17,8 +23,16 @@ FactoryBot.define do
       calendar_type { :national }
     end
 
-    trait :with_academic_year do
-      association :academic_year
+    trait :with_academic_years do
+      transient do
+        academic_year_count { 1 }
+      end
+
+      after(:create) do |calendar, evaluator|
+        evaluator.academic_year_count.times do |i|
+          create(:academic_year, calendar: calendar)
+        end
+      end
     end
 
     trait :with_terms do

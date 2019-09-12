@@ -2,19 +2,10 @@
 #
 # Table name: academic_years
 #
-#  calendar_area_id :bigint(8)        not null
-#  calendar_id      :integer
-#  end_date         :date
-#  id               :bigint(8)        not null, primary key
-#  start_date       :date
-#
-# Indexes
-#
-#  index_academic_years_on_calendar_area_id  (calendar_area_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => cascade
+#  calendar_id :integer
+#  end_date    :date
+#  id          :bigint(8)        not null, primary key
+#  start_date  :date
 #
 
 class AcademicYear < ApplicationRecord

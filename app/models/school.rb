@@ -4,7 +4,6 @@
 #
 #  active                                :boolean          default(FALSE)
 #  address                               :text
-#  calendar_area_id                      :bigint(8)
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
@@ -121,6 +120,10 @@ class School < ApplicationRecord
       [:postcode, :name],
       [:urn, :name]
     ]
+  end
+
+  def academic_year_for(date)
+    calendar.academic_year_for(date)
   end
 
   def area_name
