@@ -2,24 +2,27 @@
 #
 # Table name: meters
 #
-#  active              :boolean          default(TRUE)
-#  created_at          :datetime         not null
-#  id                  :bigint(8)        not null, primary key
-#  meter_serial_number :text
-#  meter_type          :integer
-#  mpan_mprn           :bigint(8)
-#  name                :string
-#  school_id           :bigint(8)        not null
-#  updated_at          :datetime         not null
+#  active                          :boolean          default(TRUE)
+#  created_at                      :datetime         not null
+#  id                              :bigint(8)        not null, primary key
+#  low_carbon_hub_installations_id :bigint(8)
+#  meter_serial_number             :text
+#  meter_type                      :integer
+#  mpan_mprn                       :bigint(8)
+#  name                            :string
+#  school_id                       :bigint(8)        not null
+#  updated_at                      :datetime         not null
 #
 # Indexes
 #
-#  index_meters_on_meter_type  (meter_type)
-#  index_meters_on_mpan_mprn   (mpan_mprn) UNIQUE
-#  index_meters_on_school_id   (school_id)
+#  index_meters_on_low_carbon_hub_installations_id  (low_carbon_hub_installations_id)
+#  index_meters_on_meter_type                       (meter_type)
+#  index_meters_on_mpan_mprn                        (mpan_mprn) UNIQUE
+#  index_meters_on_school_id                        (school_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (low_carbon_hub_installations_id => low_carbon_hub_installations.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id)
 #
 
