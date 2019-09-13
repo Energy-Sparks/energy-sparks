@@ -2,29 +2,33 @@
 #
 # Table name: meters
 #
-#  active              :boolean          default(TRUE)
-#  created_at          :datetime         not null
-#  id                  :bigint(8)        not null, primary key
-#  meter_serial_number :text
-#  meter_type          :integer
-#  mpan_mprn           :bigint(8)
-#  name                :string
-#  school_id           :bigint(8)        not null
-#  updated_at          :datetime         not null
+#  active                         :boolean          default(TRUE)
+#  created_at                     :datetime         not null
+#  id                             :bigint(8)        not null, primary key
+#  low_carbon_hub_installation_id :bigint(8)
+#  meter_serial_number            :text
+#  meter_type                     :integer
+#  mpan_mprn                      :bigint(8)
+#  name                           :string
+#  school_id                      :bigint(8)        not null
+#  updated_at                     :datetime         not null
 #
 # Indexes
 #
-#  index_meters_on_meter_type  (meter_type)
-#  index_meters_on_mpan_mprn   (mpan_mprn) UNIQUE
-#  index_meters_on_school_id   (school_id)
+#  index_meters_on_low_carbon_hub_installation_id  (low_carbon_hub_installation_id)
+#  index_meters_on_meter_type                      (meter_type)
+#  index_meters_on_mpan_mprn                       (mpan_mprn) UNIQUE
+#  index_meters_on_school_id                       (school_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (low_carbon_hub_installation_id => low_carbon_hub_installations.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id)
 #
 
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
+  belongs_to :low_carbon_hub_installation, optional: true
 
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
@@ -33,14 +37,14 @@ class Meter < ApplicationRecord
   scope :inactive, -> { where(active: false) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
-  enum meter_type: [:electricity, :gas]
+  enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
   delegate :area_name, to: :school
 
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
 
-  validates_format_of :mpan_mprn, with: /\A[1-3]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A[1-3,6,7,9]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
   def fuel_type
