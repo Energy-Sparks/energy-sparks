@@ -4,12 +4,7 @@ describe ScheduleDataManagerService do
   include_context 'calendar data'
 
   describe '#holidays' do
-    let!(:school)           { create_active_school }
-    let!(:school_calendar) do
-      cal = CalendarFactory.new(existing_calendar: calendar, title: 'New calendar', calendar_type: :school).create
-      cal.schools << school
-      cal
-    end
+    let!(:school)                                    { create(:school, calendar: calendar) }
     let(:date_version_of_holiday_date_from_calendar) { Date.parse(random_before_holiday_start_date) }
 
     it 'assigns school date periods for the analytics code' do

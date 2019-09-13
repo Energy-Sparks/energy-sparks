@@ -34,9 +34,12 @@ RSpec.describe 'calendars', :calendar, type: :system do
       select 'England and Wales', from: 'Based on'
       fill_in 'Terms CSV', with: events
       click_on 'Create Calendar'
+      expect(page).to have_content("Calendar created")
+      expect(page).to_not have_content("can't be blank")
 
       calendar = Calendar.regional.first!
       expect(calendar.terms.count).to eq(1)
+
       expect(calendar.based_on).to eq(england_and_wales_calendar)
     end
 
