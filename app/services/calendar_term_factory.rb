@@ -16,6 +16,7 @@ class CalendarTermFactory
   end
 
 private
+
   def create_holidays_between_terms
     HolidayFactory.new(@calendar).create
   end
