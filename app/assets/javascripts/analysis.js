@@ -54,7 +54,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   }
 
   if(chart_data.allowed_operations){
-    processAnalysisOperations($chartDiv, chart_data.allowed_operations, chart_data.drilldown_available)
+    processAnalysisOperations($chartDiv, chart_data.allowed_operations, chart_data.drilldown_available, chart_data.parent_timescale_description)
   }
 
   if(chart_data.annotations){
@@ -232,7 +232,7 @@ function setupAnalysisControls(chart_container){
   }
 }
 
-function processAnalysisOperations(chart_container, operations, drilldown_available){
+function processAnalysisOperations(chart_container, operations, drilldown_available, parent_timescale_description){
   var controls = $(chart_container).parent().find('.analysis_controls');
   if(controls){
     $.each(operations, function(operation, config ) {
@@ -247,10 +247,12 @@ function processAnalysisOperations(chart_container, operations, drilldown_availa
 
     var transformations = $(chart_container).data('chart-transformations');
     var inDrilldown = transformations.some(isDrilldownTransformation);
+    var drillup = controls.find('.drillup');
     if(inDrilldown){
-      controls.find('.drillup').show();
+      drillup.find('span.period').html(parent_timescale_description);
+      drillup.show();
     } else {
-      controls.find('.drillup').hide();
+      drillup.hide();
     }
   }
 }
