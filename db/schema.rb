@@ -564,8 +564,8 @@ ActiveRecord::Schema.define(version: 2019_09_13_110315) do
     t.string "name"
     t.bigint "mpan_mprn"
     t.text "meter_serial_number"
-    t.bigint "low_carbon_hub_installations_id"
-    t.index ["low_carbon_hub_installations_id"], name: "index_meters_on_low_carbon_hub_installations_id"
+    t.bigint "low_carbon_hub_installation_id"
+    t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
@@ -882,7 +882,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_110315) do
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
-  add_foreign_key "meters", "low_carbon_hub_installations", column: "low_carbon_hub_installations_id", on_delete: :cascade
+  add_foreign_key "meters", "low_carbon_hub_installations", column: "low_carbon_hub_installation_id", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict

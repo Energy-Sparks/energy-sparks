@@ -28,6 +28,7 @@
 
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
+  belongs_to :low_carbon_hub_installation, optional: true
 
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
@@ -36,14 +37,14 @@ class Meter < ApplicationRecord
   scope :inactive, -> { where(active: false) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
-  enum meter_type: [:electricity, :gas]
+  enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
   delegate :area_name, to: :school
 
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
 
-  validates_format_of :mpan_mprn, with: /\A[1-3]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A[1-3,6,7,9]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
   def fuel_type

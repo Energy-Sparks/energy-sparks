@@ -21,8 +21,9 @@
 class LowCarbonHubInstallation < ApplicationRecord
   belongs_to :school, inverse_of: :low_carbon_hub_installations
 
+  has_many :meters
+
   def school_number
     school.urn
   end
-
 end

@@ -15,7 +15,6 @@ module Amr
     private
 
     def meter_setup
-
     end
 
     def current_information
