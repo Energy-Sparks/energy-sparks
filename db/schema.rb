@@ -893,7 +893,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_110315) do
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
-  add_foreign_key "meters", "low_carbon_hub_installations", column: "low_carbon_hub_installation_id", on_delete: :cascade
+  add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
