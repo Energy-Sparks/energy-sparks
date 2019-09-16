@@ -207,7 +207,7 @@ function processAnnotations(loaded_annotations, chart){
 
 function setupAnalysisControls(chart_container){
   var controls = $(chart_container).parent().find('.analysis_controls');
-  if(controls){
+  if(controls.length){
     controls.find('.move_back').on('click', function(event){
       event.preventDefault();
       pushTransformation(chart_container, 'move', -1);
@@ -233,10 +233,10 @@ function setupAnalysisControls(chart_container){
   }
 }
 
-function processAnalysisOperations(chart, operations, drilldownAvailable, noZoom, parentTimescaleDescription){
+function processAnalysisOperations(chart, operations, drilldownAvailable, parentTimescaleDescription){
   var chartContainer = $(chart.renderTo);
   var controls = $(chartContainer).parent().find('.analysis_controls');
-  if(controls){
+  if(controls.length){
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
@@ -247,7 +247,7 @@ function processAnalysisOperations(chart, operations, drilldownAvailable, noZoom
 
     $(chartContainer).data('chart-drilldown-available', drilldownAvailable);
 
-    if(noZoom && drilldownAvailable){
+    if(drilldownAvailable){
       chart.update({subtitle: {text: 'Click on the chart to explore the data'}});
     }
 
@@ -280,9 +280,12 @@ function pushTransformation(chart_container, transformation_type, transformation
   processAnalysisChart(chart_container);
 }
 
-function processChartClick(chart_container, event){
-  if($(chart_container).data('chart-drilldown-available')){
-    pushTransformation(chart_container, 'drilldown', event.point.index)
+function processChartClick(chartContainer, event){
+  var controls = $(chartContainer).parent().find('.analysis_controls');
+  if(controls.length){
+    if($(chartContainer).data('chart-drilldown-available')){
+      pushTransformation(chartContainer, 'drilldown', event.point.index)
+    }
   }
 }
 
