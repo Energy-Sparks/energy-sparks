@@ -4,7 +4,7 @@
   <h2>Calendar and Data Feed configuration</h2>
   <div class="form-group">
     <%= f.label :template_calendar_id, 'Template calendar' %>
-    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.template.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
+    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
   </div>
 
   <div class="form-row">

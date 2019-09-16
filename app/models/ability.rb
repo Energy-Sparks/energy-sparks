@@ -40,7 +40,7 @@ class Ability
       else
         school_scope = { id: user.school_id }
         related_school_scope = { school_id: user.school_id }
-        can [:update, :show], Calendar, id: user.school.try(:calendar_id)
+        can [:show, :update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user == user
