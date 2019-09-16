@@ -2,6 +2,6 @@
   <% unless content.find_out_more_chart_title.blank? %>
     <h4 class="analysis"><%= content.find_out_more_chart_title %></h4>
   <% end %>
-  <div id="chart_1" class="analysis-chart find-out-more" data-no-advice data-chart-index="1" data-chart-type="<%= chart %>" data-chart-y-axis-units="£" data-chart-json="<%= school_chart_path(school, format: :json, chart_type: chart, chart_y_axis_units: :kwh) %>">
+  <%= chart_tag(school, chart_type.to_s, index: index, show_advice: false, chart_config: {y_axis_units: '£'}, html_class: 'analysis-chart find-out-more') %>
   </div>
 </div>

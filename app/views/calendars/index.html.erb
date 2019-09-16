@@ -1,22 +1,22 @@
 <h1>Calendars</h1>
 <p>Click on show to select a calendar. You can then edit any events on the calendar, or add new ones.</p>
-<p><b>Note:</b> - updating a country calendar with bank holidays, or an area or MAT calendar with term times automatically updates any dependent calendars.</p>
+<p><b>Note:</b> - updating a National calendar with bank holidays, or Regional calendar with term times automatically updates any dependent calendars.</p>
 
-<% if @top_level_calendars.any? %>
-  <%= render 'template_calendars', calendars: @top_level_calendars, title: 'Top level calendars' %>
+<% if @national_calendars.any? %>
+  <%= render 'national_calendars', calendars: @national_calendars, title: 'National calendars' %>
 <% else %>
-  <h2>There are no Top level calendars</h2>
+  <h2>There are no National calendars</h2>
 <% end %>
 
-<% if @child_template_calendars.any? %>
-  <%= render 'template_calendars', calendars: @child_template_calendars, title: 'Area calendars' %>
+<% if @regional_calendars.any? %>
+  <%= render 'regional_calendars', calendars: @regional_calendars, title: 'Regional calendars' %>
 <% else %>
-  <h2>There are no Area calendars</h2>
+  <h2>There are no Regional calendars</h2>
 <% end %>
 
-<% if @customised_calendars.any? %>
-  <h2>Calendars for Enrolled Schools</h2>
-  <%= render 'calendars', calendars: @customised_calendars %>
+<% if @school_calendars.any? %>
+  <h2>School calendars</h2>
+  <%= render 'school_calendars', calendars: @school_calendars %>
 <% else %>
   <h2>There are no Customised Calendars </h2>
 <% end %>
