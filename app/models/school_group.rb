@@ -6,6 +6,7 @@
 #  default_calendar_area_id            :bigint(8)
 #  default_dark_sky_area_id            :bigint(8)
 #  default_solar_pv_tuos_area_id       :bigint(8)
+#  default_template_calendar_id        :bigint(8)
 #  default_weather_underground_area_id :bigint(8)
 #  description                         :string
 #  id                                  :bigint(8)        not null, primary key
@@ -18,13 +19,15 @@
 #
 #  index_school_groups_on_default_calendar_area_id             (default_calendar_area_id)
 #  index_school_groups_on_default_solar_pv_tuos_area_id        (default_solar_pv_tuos_area_id)
+#  index_school_groups_on_default_template_calendar_id         (default_template_calendar_id)
 #  index_school_groups_on_default_weather_underground_area_id  (default_weather_underground_area_id)
 #  index_school_groups_on_scoreboard_id                        (scoreboard_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (default_calendar_area_id => areas.id)
+#  fk_rails_...  (default_calendar_area_id => calendar_areas.id) ON DELETE => nullify
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
+#  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
 #  fk_rails_...  (default_weather_underground_area_id => areas.id)
 #  fk_rails_...  (scoreboard_id => scoreboards.id)
 #
@@ -35,9 +38,12 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  has_many :calendars, through: :schools
+  has_many :users
   belongs_to :scoreboard, optional: true
 
   belongs_to :default_calendar_area, class_name: 'CalendarArea', optional: true
+  belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
 
@@ -45,6 +51,7 @@ class SchoolGroup < ApplicationRecord
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
+    raise EnergySparks::SafeDestroyError, 'Group has associated users' if users.any?
     destroy
   end
 

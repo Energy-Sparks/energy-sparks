@@ -6,7 +6,7 @@ describe ScheduleDataManagerService do
   describe '#holidays' do
     let!(:school)           { create_active_school }
     let!(:school_calendar) do
-      cal = CalendarFactory.new(calendar, 'New calendar').create
+      cal = CalendarFactory.new(existing_calendar: calendar, title: 'New calendar', calendar_type: :school).create
       cal.schools << school
       cal
     end

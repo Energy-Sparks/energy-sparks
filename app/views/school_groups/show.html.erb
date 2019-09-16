@@ -1,0 +1,3 @@
+<% content_for :page_title, @school_group.name %>
+
+<%= render 'schools/list', name: @school_group.name, scoreboard: @school_group.scoreboard, schools: @school_group.schools.order(:name) %>

@@ -1,9 +1,10 @@
 class CalendarFactory
-  def initialize(existing_calendar, title = existing_calendar.title, area = existing_calendar.calendar_area, template = false)
+  def initialize(existing_calendar:, title: existing_calendar.title, area: existing_calendar.calendar_area, template: false, calendar_type: :school)
     @existing_calendar = existing_calendar
     @title = title
     @area = area
     @template = template
+    @calendar_type = calendar_type
   end
 
   def build
@@ -11,6 +12,7 @@ class CalendarFactory
     @new_calendar.calendar_area = @area
     @new_calendar.title = @title
     @new_calendar.template = @template
+    @new_calendar.calendar_type = @calendar_type
     @new_calendar.based_on = @existing_calendar
 
     @existing_calendar.calendar_events.each do |calendar_event|

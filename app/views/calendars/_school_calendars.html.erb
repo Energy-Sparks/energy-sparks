@@ -2,17 +2,18 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Based on</th>
       <th>Last updated at</th>
       <th></th>
     </tr>
   </thead>
 
   <tbody>
-    <% calendars.each do |calendar| %>
+    <% calendars.group_by(&:based_on).each do |based_on, calendars| %>
+      <tr class='table-active'><td colspan="4"></td></tr>
+      <tr class='table-active'><td colspan="4"><strong>Parent calendars: <%= based_on.title %>, <%= based_on.based_on.title %></strong></td></tr>
+      <% calendars.each do |calendar| %>
       <tr>
         <td><%= calendar.title %></td>
-        <td><%= link_to calendar.based_on.title, calendar_path(calendar.based_on) unless calendar.based_on.nil? %></td>
         <td><%= nice_date_times(calendar.updated_at) %></td>
         <td>
           <div class="btn-group">
@@ -21,6 +22,7 @@
           </div>
         </td>
       </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
