@@ -19,7 +19,8 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   var seriesData = chart_data.series_data;
 
   if (! noAdvice) {
-    var titleH3 = $chartDiv.prev('h3');
+    var $chartWrapper = $chartDiv.parent();
+    var titleH3 = $chartWrapper.find('h3');
 
     if ($chartDiv.data('chart-index') === 0) {
       titleH3.text(chart_data.title);
