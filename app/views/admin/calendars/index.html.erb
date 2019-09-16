@@ -12,8 +12,7 @@
 
 <h2>Regional calendars</h2>
 <p>These calendars get their bank holidays from the calendar they are based on. Adding any terms to these calendars will automatically update any dependent school calendars.</p>
-<p><%= link_to 'New regional calendar', new_admin_calendar_path, class: 'btn' %></p>
-
+<p><%= link_to 'New regional calendar', new_admin_calendar_path(calendar_type: :regional), class: 'btn' %></p>
 
 <% if @regional_calendars.any? %>
   <%= render 'regional_calendars', calendars: @regional_calendars %>

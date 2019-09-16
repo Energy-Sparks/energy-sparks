@@ -9,7 +9,8 @@ module Admin
     end
 
     def new
-      @calendar.calendar_type = :regional
+      calendar_type_string = params[:calendar_type]
+      @calendar.calendar_type = Calendar.calendar_types[calendar_type_string] if calendar_type_string
     end
 
     def create
