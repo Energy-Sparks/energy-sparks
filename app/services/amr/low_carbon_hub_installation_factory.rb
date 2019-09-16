@@ -15,7 +15,7 @@ module Amr
       installation
     end
 
-    
+
     private
 
     def meter_setup(installation)
@@ -26,19 +26,19 @@ module Amr
 
         pp readings_hash.first
 
-        if mpan_mprn.digits.length == 14
+        # if mpan_mprn.digits.length == 14
 
-          digits = mpan_mprn.digits.reverse
-          digits[1] = nil
+        #   digits = mpan_mprn.digits.reverse
+        #   digits[1] = nil
 
-          mpan_mprn = digits.join.to_i
-        end
+        #   mpan_mprn = digits.join.to_i
+        # end
 
-        pp meter_type
-        pp mpan_mprn.digits.length
-        pp mpan_mprn
+        # pp meter_type
+        # pp mpan_mprn.digits.length
+        # pp mpan_mprn
 
-        meter = Meter.where(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: installation.id, school: @school).first_or_create!
+        meter = Meter.where(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: installation.id, school: @school, pseudo_mpan: true).first_or_create!
 
         pp meter
 

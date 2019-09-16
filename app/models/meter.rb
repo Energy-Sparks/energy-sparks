@@ -41,10 +41,13 @@ class Meter < ApplicationRecord
 
   delegate :area_name, to: :school
 
+  attr_accessor :pseudo_mpan
+
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
 
-  validates_format_of :mpan_mprn, with: /\A[1-3,6,7,9]\d{12}\Z/, if: :electricity?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A[1-3]\d{12}\Z/, if: :traditional_mpan?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo_mpan?, message: 'for electricity meters should be a 13 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
   def fuel_type
@@ -109,5 +112,15 @@ class Meter < ApplicationRecord
     primes = [3, 5, 7, 13, 17, 19, 23, 29, 31, 37, 41, 43]
     expected_check = (0..11).inject(0) { |sum, n| sum + (mpan[n, 1].to_i * primes[n]) } % 11 % 10
     expected_check.to_s == mpan.last
+  end
+
+  private
+
+  def traditional_mpan?
+    electricity? && ! @pseudo_mpan
+  end
+
+  def pseudo_mpan?
+    electricity? && @pseudo_mpan
   end
 end
