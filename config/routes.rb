@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :activity_types
   resources :activity_categories
 
-  resources :calendars, only: [:show, :destroy] do
+  resources :calendars, only: [:show] do
     scope module: :calendars do
       resources :calendar_events
     end
