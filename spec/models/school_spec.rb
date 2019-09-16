@@ -29,20 +29,6 @@ describe School do
     end
   end
 
-  describe '#meters?' do
-    context 'when the school has meters of type :gas' do
-      it 'returns true' do
-        create :gas_meter_with_reading, school_id: subject.id
-        expect(subject.meters?(:gas)).to be(true)
-      end
-    end
-    context 'when the school has no meters' do
-      it 'returns false' do
-        expect(subject.meters?(:gas)).to be(false)
-      end
-    end
-  end
-
   describe '#current_term' do
 
     it 'returns the current term' do
