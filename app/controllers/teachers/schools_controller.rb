@@ -12,8 +12,6 @@ module Teachers
 
     def show
       authorize! :show_teachers_dash, @school
-      redirect_to enrol_path unless @school.active? || (current_user && current_user.manages_school?(@school.id))
-
       @charts = setup_charts(@school.configuration)
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.teacher_dashboard)
       @observations = setup_timeline(@school.observations)

@@ -22,6 +22,11 @@ FactoryBot.define do
       role { :admin }
     end
 
+    factory :group_admin do
+      role { :group_admin }
+      school_group
+    end
+
     trait :has_school_assigned do
       school
     end
