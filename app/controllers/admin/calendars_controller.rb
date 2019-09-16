@@ -27,17 +27,6 @@ module Admin
       end
     end
 
-    def edit
-    end
-
-    def update
-      if @calendar_area.update(calendar_area_params)
-        redirect_to admin_calendar_areas_path, notice: 'Calendar area updated'
-      else
-        render :edit
-      end
-    end
-
   private
 
     def calendar_params

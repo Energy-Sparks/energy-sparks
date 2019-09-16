@@ -168,7 +168,7 @@ Rails.application.routes.draw do
 
     resources :unsubscriptions, only: [:index]
 
-    resources :calendars
+    resources :calendars, only: [:new, :create, :index, :show]
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do

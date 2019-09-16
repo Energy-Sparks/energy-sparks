@@ -42,21 +42,5 @@ RSpec.describe 'calendars', :calendar, type: :system do
 
       expect(calendar.based_on).to eq(england_and_wales_calendar)
     end
-
-    pending 'can edit a calendar area' do
-      calendar_area = create(:calendar_area, title: 'BANES', parent_area: england_and_wales)
-      visit admin_calendar_areas_path
-      click_on 'Edit'
-
-      fill_in 'Title', with: ''
-      click_on 'Update Calendar area'
-      expect(page).to have_content("can't be blank")
-
-      fill_in 'Title', with: 'B & NES'
-      click_on 'Update Calendar area'
-
-      calendar_area.reload
-      expect(calendar_area.title).to eq('B & NES')
-    end
   end
 end

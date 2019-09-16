@@ -5,7 +5,7 @@
   <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
   <div class="form-group">
     <%= f.label :template_calendar_id, 'Template calendar' %>
-    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.template.order(:title), 'id', 'title', (@school.template_calendar_id if @school.template_calendar)),{},{ disabled: !edit_calendar_area, class: 'form-control' }%>
+    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.template.order(:title), 'id', 'title', (@school.template_calendar_id if @school.template_calendar)),{},{ disabled: !edit_template_calendar, class: 'form-control' }%>
   </div>
 
   <div class="form-row">

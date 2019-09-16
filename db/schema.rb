@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_120206) do
+ActiveRecord::Schema.define(version: 2019_09_16_103125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -343,11 +343,6 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.text "description"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-  end
-
-  create_table "calendar_areas", force: :cascade do |t|
-    t.string "title", null: false
-    t.bigint "parent_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
