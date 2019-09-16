@@ -4,7 +4,9 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   let(:school_name)               { 'Oldfield Park Infants'}
   let(:calendar_area)             { create(:calendar_area, title: 'BANES calendar') }
-  let!(:calendar)                 { create(:calendar_with_terms, calendar_area: calendar_area, template: true) }
+
+  # This calendar is there to allow for the calendar area selection
+  let!(:calendar)                 { create(:regional_calendar, :with_terms, calendar_area: calendar_area) }
   let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:school_group) do

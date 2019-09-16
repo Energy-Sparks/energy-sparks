@@ -6,9 +6,9 @@ class CalendarsController < ApplicationController
   # GET /calendars
   # GET /calendars.json
   def index
-    @top_level_calendars = Calendar.template.includes(:schools).where(based_on_id: nil).order(:title)
-    @child_template_calendars = Calendar.template.includes(:schools).where.not(based_on_id: nil).order(:title)
-    @customised_calendars = Calendar.custom.includes(:schools).order('schools.name')
+    @national_calendars = Calendar.national.includes(:schools).order(:title)
+    @regional_calendars = Calendar.regional.includes(:schools).order(:title)
+    @school_calendars = Calendar.school.includes(:schools).order('schools.name')
   end
 
   # GET /calendars/1

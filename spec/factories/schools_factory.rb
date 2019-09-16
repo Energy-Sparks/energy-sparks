@@ -27,7 +27,7 @@ FactoryBot.define do
 
     trait :with_calendar do
       after(:create) do |school, evaluator|
-        school.update(calendar: create(:calendar))
+        school.update(calendar: create(:school_calendar))
       end
     end
 
