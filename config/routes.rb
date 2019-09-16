@@ -187,7 +187,7 @@ Rails.application.routes.draw do
     resources :schools, only: :show do
       resource :session, only: [:new, :create]
       get :analysis, to: 'analysis#index'
-      get 'analysis/:energy/:presentation', to: 'analysis#show', as: :analysis_tab
+      get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
     end
   end
 end

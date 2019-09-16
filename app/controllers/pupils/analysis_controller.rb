@@ -7,33 +7,30 @@ module Pupils
 
     before_action :check_aggregated_school_in_cache
 
-    BASE_CHARTS = {
-      electricity: {
-        when: {
-          chart: :group_by_week_electricity,
-          title: 'When electricity was used in the last year'
-        }
-      }
-    }.freeze
-
     def index
       render params[:category] || :index
     end
 
     def show
-      energy = params.require(:energy).to_sym
-      presentation = params.require(:presentation).to_sym
-
-      chart_config = BASE_CHARTS.fetch(energy).fetch(presentation)
-      @chart_type = chart_config.fetch(:chart)
-      @measurement = measurement_unit(params[:measurement])
-      @title = chart_config.fetch(:title)
+      @chart_type = get_chart_config
     end
 
     private
 
     def set_school
       @school = School.friendly.find(params[:school_id])
+    end
+
+    def get_chart_config
+      energy = params.require(:energy)
+      presentation = params.require(:presentation)
+      secondary_presentation = params[:secondary_presentation]
+
+      dashboard_config = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:pupil_analysis_page]
+      base_chart_config = [energy, presentation, secondary_presentation].compact.inject(dashboard_config) do |config, page_name|
+        config[:sub_pages].find {|page| page[:name].downcase == page_name}
+      end
+      base_chart_config[:charts].first
     end
   end
 end
