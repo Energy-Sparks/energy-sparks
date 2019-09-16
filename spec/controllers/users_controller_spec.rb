@@ -26,14 +26,6 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
-    describe "GET #show" do
-      it "assigns the requested user as @user" do
-        user = FactoryBot.create :user
-        get :show, params: { id: user.to_param }
-        expect(assigns(:user)).to eq(user)
-      end
-    end
-
     describe "GET #new" do
       it "assigns active schools as @schools" do
         school = FactoryBot.create :school, active: true
@@ -67,7 +59,7 @@ RSpec.describe UsersController, type: :controller do
 
         it "redirects to the created user" do
           post :create, params: { user: valid_attributes }
-          expect(response).to redirect_to(User.last)
+          expect(response).to redirect_to(users_path)
         end
       end
 
@@ -103,10 +95,10 @@ RSpec.describe UsersController, type: :controller do
           expect(assigns(:user)).to eq(user)
         end
 
-        it "redirects to the user" do
+        it "redirects to the users" do
           user = FactoryBot.create :user
           put :update, params: { id: user.to_param, user: new_attributes }
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(users_path)
         end
       end
 

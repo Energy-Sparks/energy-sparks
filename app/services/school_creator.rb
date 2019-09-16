@@ -74,8 +74,8 @@ private
 
   def generate_calendar
     if (area = @school.calendar_area)
-      if (template = area.calendars.find_by(template: true))
-        calendar = CalendarFactory.new(template, @school.name).create
+      if (template = area.calendars.regional.first)
+        calendar = CalendarFactory.new(existing_calendar: template, title: @school.name, calendar_type: :school).create
         @school.update!(calendar: calendar)
       end
     end

@@ -15,7 +15,7 @@ describe CalendarAreaFactory do
   let(:parent_area)      { create(:calendar_area, title: 'England') }
   let(:populated_area)    { build(:calendar_area, title: 'Oxfordshire', parent_area: parent_area) }
 
-  let!(:parent_calendar)  { create :calendar, calendar_area: parent_area, template: true }
+  let!(:parent_calendar)  { create :calendar, calendar_area: parent_area, calendar_type: :regional }
 
   before do
     create_all_calendar_events
@@ -30,9 +30,9 @@ describe CalendarAreaFactory do
     expect(area.title).to eq('Oxfordshire')
   end
 
-  it 'creates a template calendar for the area' do
+  it 'creates a regional calendar for the area' do
     expect(area.calendars.count).to eq(1)
-    expect(area.calendars.first.template?).to eq(true)
+    expect(area.calendars.first.regional?).to eq(true)
   end
 
   it 'processes the terms to create events for the calendar' do

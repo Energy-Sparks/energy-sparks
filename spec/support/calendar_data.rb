@@ -24,7 +24,7 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
      { term: "2017-18 Term 2", start_date: "2017-10-30", end_date: "2017-12-15" }]
   }
 
-  let!(:parent_template_calendar) { create(:calendar, calendar_area: area, template: true) }
+  let!(:parent_template_calendar) { create(:regional_calendar, calendar_area: area) }
   let!(:bank_holiday) { create :bank_holiday, calendar: parent_template_calendar, title: 'Good Friday', start_date: "2012-04-06", end_date: "2012-04-06" }
   let!(:calendar) { CalendarFactoryFromEventHash.new(autumn_terms, area).create }
 

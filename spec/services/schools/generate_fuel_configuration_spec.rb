@@ -4,7 +4,7 @@ module Schools
   describe GenerateFuelConfiguration do
 
     let(:today)    { Time.zone.today }
-    let(:calendar) { create :calendar, template: true }
+    let(:calendar) { create :calendar, calendar_type: :school }
     let!(:school)  { create :school, :with_school_group, calendar: calendar }
 
     before(:each) do

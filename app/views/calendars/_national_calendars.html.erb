@@ -1,0 +1,20 @@
+<h2><%= title %></h2>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dependent Calendars</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% calendars.each do |calendar| %>
+      <tr>
+        <td><%= calendar.title %></td>
+        <td><%= calendar.calendars.count %></td>
+        <td><div class='btn-group'><%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %></div></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

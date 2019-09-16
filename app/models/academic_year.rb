@@ -3,6 +3,7 @@
 # Table name: academic_years
 #
 #  calendar_area_id :bigint(8)        not null
+#  calendar_id      :integer
 #  end_date         :date
 #  id               :bigint(8)        not null, primary key
 #  start_date       :date
