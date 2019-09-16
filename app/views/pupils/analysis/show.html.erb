@@ -24,6 +24,6 @@
     </div>
   </div>
 
-  <%= chart_tag(@school, @chart_type.to_s, index: 1, show_advice: false, chart_config: {y_axis_units:  @measurement, transformations: []}) %>
+  <%= chart_tag(@school, @chart_type.to_s, index: 1, show_advice: false, no_zoom: true, chart_config: {y_axis_units:  @measurement, transformations: []}) %>
 
 </div>
