@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_103125) do
+ActiveRecord::Schema.define(version: 2019_09_16_130240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -373,12 +373,9 @@ ActiveRecord::Schema.define(version: 2019_09_16_103125) do
 
   create_table "calendars", force: :cascade do |t|
     t.string "title", null: false
-    t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "default"
     t.bigint "based_on_id"
-    t.boolean "template", default: false
     t.integer "calendar_type"
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end

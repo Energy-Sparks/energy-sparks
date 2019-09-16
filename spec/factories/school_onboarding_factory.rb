@@ -4,9 +4,6 @@ FactoryBot.define do
     uuid                      { SecureRandom.uuid }
     sequence(:school_name)    { |n| "New School #{n}" }
     sequence(:contact_email)  { |n| "new_school_#{n}@test.com" }
-  #  template_calendar
-
-  #association :template_calendar, :with_terms, factory: :calendar
 
     trait :with_events do
       transient do

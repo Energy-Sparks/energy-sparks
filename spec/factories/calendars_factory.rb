@@ -1,8 +1,6 @@
 FactoryBot.define do
   factory :calendar do
     title { "Test Calendar" }
-    default { false }
-    template { true }
     calendar_type { :school }
 
     factory :template_calendar do

@@ -5,10 +5,7 @@
 #  based_on_id   :bigint(8)
 #  calendar_type :integer
 #  created_at    :datetime         not null
-#  default       :boolean
-#  deleted       :boolean          default(FALSE)
 #  id            :bigint(8)        not null, primary key
-#  template      :boolean          default(FALSE)
 #  title         :string           not null
 #  updated_at    :datetime         not null
 #
