@@ -11,12 +11,13 @@ module Amr
     def perform
       installation = LowCarbonHubInstallation.where(school_id: @school.id, rbee_meter_id: @rbee_meter_id).first_or_create!
       installation.update(information: information.to_json)
+
       meter_setup(installation)
       installation
     end
 
-
     private
+
 
     def meter_setup(installation)
       initial_readings.each do |meter_type, details|
@@ -26,19 +27,10 @@ module Amr
 
         pp readings_hash.first
 
-        # if mpan_mprn.digits.length == 14
-
-        #   digits = mpan_mprn.digits.reverse
-        #   digits[1] = nil
-
-        #   mpan_mprn = digits.join.to_i
-        # end
-
-        # pp meter_type
-        # pp mpan_mprn.digits.length
-        # pp mpan_mprn
-
-        meter = Meter.where(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: installation.id, school: @school, pseudo_mpan: true).first_or_create!
+        unless existing_meter?(meter_type, mpan_mprn, installation.id)
+          meter = Meter.new(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: installation.id, school: @school, pseudo_mpan: true)
+          meter.save!
+        end
 
         pp meter
 
@@ -47,16 +39,20 @@ module Amr
       end
     end
 
+    def existing_meter?(meter_type, mpan_mprn, low_carbon_hub_installation_id)
+      Meter.where(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: low_carbon_hub_installation_id, school: @school).present?
+    end
+
     def information
       @low_carbon_hub_api.full_installation_information(@rbee_meter_id)
     end
 
     def initial_readings
-      readings(first_reading_date, first_reading_date + 5.days)
+      readings(first_reading_date, first_reading_date + 1.day)
     end
 
     def first_reading_date
-      @low_carbon_hub_api.first_meter_reading_date(@rbee_meter_id)
+      @first_reading_date ||= @low_carbon_hub_api.first_meter_reading_date(@rbee_meter_id)
     end
 
     def readings(start_date = Date.yesterday, end_date = Date.yesterday - 5.days)
