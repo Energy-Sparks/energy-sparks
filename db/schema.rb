@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_130240) do
+ActiveRecord::Schema.define(version: 2019_09_16_131052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -810,6 +810,7 @@ ActiveRecord::Schema.define(version: 2019_09_16_130240) do
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
 
+  add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
@@ -842,6 +843,7 @@ ActiveRecord::Schema.define(version: 2019_09_16_130240) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools"
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict

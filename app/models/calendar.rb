@@ -13,6 +13,10 @@
 #
 #  index_calendars_on_based_on_id  (based_on_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (based_on_id => calendars.id) ON DELETE => restrict
+#
 
 class Calendar < ApplicationRecord
   has_many    :calendar_events, dependent: :destroy

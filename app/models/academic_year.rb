@@ -7,10 +7,14 @@
 #  id          :bigint(8)        not null, primary key
 #  start_date  :date
 #
+# Foreign Keys
+#
+#  fk_rails_...  (calendar_id => calendars.id) ON DELETE => restrict
+#
 
 class AcademicYear < ApplicationRecord
   has_many :calendar_events
-  belongs_to :calendar, optional: true
+  belongs_to :calendar
 
   scope :for_date, ->(date) { where('start_date <= ? AND end_date >= ?', date, date) }
 
