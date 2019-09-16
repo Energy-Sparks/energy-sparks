@@ -15,7 +15,7 @@ class CalendarArea < ApplicationRecord
   has_many    :child_areas, class_name: 'CalendarArea', foreign_key: :parent_id
   has_many    :academic_years
 
-  scope :with_template, -> { includes(:calendars).where(calendars: { template: true })}
+  scope :regional, -> { includes(:calendars).where(calendars: { calendar_type: :regional })}
 
   validates :title, presence: true
 

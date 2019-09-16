@@ -2,60 +2,41 @@
 Schools
 <% end %>
 <section id="enrolled">
-  <div class="container">
+  <div class="row padded-row">
+    <div class="col-lg-12">
+      <h2>Participating Schools</h2>
+
+      <p>
+        These schools are using <%= t('application') %> to reduce their energy usage. See their usage data, compare
+        scores and learn about their energy saving activities
+      </p>
+
+    </div>
+  </div>
+
+  <% @scoreboards.each do |scoreboard| %>
+    <%= render 'schools/list', name: scoreboard.name, scoreboard: scoreboard, schools: scoreboard.schools.active.order(:name) %>
+  <% end %>
+
+  <% if @ungrouped_active_schools.any? %>
     <div class="row padded-row">
       <div class="col-lg-12">
-        <h2>Participating Schools</h2>
-
-        <p>
-          These schools are using <%= t('application') %> to reduce their energy usage. See their usage data, compare
-          scores and learn about their energy saving activities
-        </p>
-
+        <h3>Other schools</h3>
       </div>
     </div>
-    <% @scoreboards.each do |scoreboard| %>
-      <div class="row padded-row">
-        <div class="col-lg-10">
-          <h3><%= scoreboard.name %></h3>
-        </div>
-        <div class="col-lg-2">
-          <%= link_to 'View scoreboard', scoreboard_path(scoreboard), class: 'btn btn-primary float-right'  %>
-        </div>
-      </div>
-      <% scoreboard.schools.active.order(:name).each_slice(3) do |row| %>
-          <div class="row school-card-row">
-            <div class="col-lg-12">
-                <div class="card-deck">
-                  <% row.each do |school| %>
-                      <%= render partial: 'schools/school_card', locals: {school: school} %>
-                  <% end %>
-                </div>
-            </div>
-          </div>
-      <% end %>
-    <% end %>
-
-    <% if @ungrouped_active_schools.any? %>
-      <div class="row padded-row">
+    <% @ungrouped_active_schools.each_slice(3) do |row| %>
+      <div class="row school-card-row">
         <div class="col-lg-12">
-          <h3>Other schools</h3>
+          <div class="card-deck">
+            <% row.each do |school| %>
+              <%= render partial: 'schools/school_card', locals: {school: school} %>
+            <% end %>
+          </div>
         </div>
       </div>
-      <% @ungrouped_active_schools.each_slice(3) do |row| %>
-          <div class="row school-card-row">
-            <div class="col-lg-12">
-                <div class="card-deck">
-                  <% row.each do |school| %>
-                      <%= render partial: 'schools/school_card', locals: {school: school} %>
-                  <% end %>
-                </div>
-            </div>
-          </div>
-      <% end %>
     <% end %>
+  <% end %>
 
-  </div>
 </section>
 
 <section id="eligible">

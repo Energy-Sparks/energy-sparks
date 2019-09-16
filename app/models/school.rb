@@ -27,6 +27,7 @@
 #  solar_irradiance_area_id              :bigint(8)
 #  solar_pv_tuos_area_id                 :bigint(8)
 #  temperature_area_id                   :bigint(8)
+#  template_calendar_id                  :integer
 #  updated_at                            :datetime         not null
 #  urn                                   :integer          not null
 #  weather_underground_area_id           :bigint(8)
@@ -40,6 +41,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #  fk_rails_...  (calendar_id => calendars.id)
 #  fk_rails_...  (school_group_id => school_groups.id)
 #
@@ -77,6 +79,7 @@ class School < ApplicationRecord
   has_many :alert_subscription_events,    through: :contacts
 
   belongs_to :calendar, optional: true
+  belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :calendar_area, optional: true
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true

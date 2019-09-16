@@ -12,7 +12,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
     end
 
     it 'can add a new school group with validation' do
-      visit school_groups_path
+      visit admin_school_groups_path
       click_on 'New School group'
       click_on 'Create School group'
       expect(page).to have_content("Name can't be blank")
@@ -29,7 +29,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
     it 'can edit a school group' do
       school_group = create(:school_group, name: 'BANES')
-      visit school_groups_path
+      visit admin_school_groups_path
       click_on 'Edit'
       fill_in 'Name', with: 'B & NES'
       click_on 'Update School group'
@@ -40,7 +40,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
     it 'can delete a school group' do
       school_group = create(:school_group)
-      visit school_groups_path
+      visit admin_school_groups_path
 
       expect {
         click_on 'Delete'
