@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_120206) do
+ActiveRecord::Schema.define(version: 2019_09_12_102852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -818,9 +818,11 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.bigint "school_group_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["school_group_id"], name: "index_users_on_school_group_id"
     t.index ["school_id", "pupil_password"], name: "index_users_on_school_id_and_pupil_password", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
@@ -912,6 +914,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools"
   add_foreign_key "users", "staff_roles", on_delete: :restrict
 end
