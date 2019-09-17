@@ -208,11 +208,11 @@ function processAnnotations(loaded_annotations, chart){
 function setupAnalysisControls(chart_container){
   var controls = $(chart_container).parent().find('.analysis_controls');
   if(controls.length){
-    controls.find('.move_back').on('click', function(event){
+    controls.find('.move_back').hide().on('click', function(event){
       event.preventDefault();
       pushTransformation(chart_container, 'move', -1);
     });
-    controls.find('.move_forward').on('click', function(event){
+    controls.find('.move_forward').hide().on('click', function(event){
       event.preventDefault();
       pushTransformation(chart_container, 'move', 1);
     });
