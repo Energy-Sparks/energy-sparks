@@ -240,7 +240,11 @@ function processAnalysisOperations(chart, operations, drilldownAvailable, parent
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
-        control.attr('disabled', !enabled);
+        if(enabled){
+          control.show();
+        } else {
+          control.hide();
+        }
         control.find('span.period').html(config.timescale_description);
       });
     });
