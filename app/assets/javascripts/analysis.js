@@ -55,7 +55,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   }
 
   if(chart_data.allowed_operations){
-    processAnalysisOperations(chart, chart_data.allowed_operations, chart_data.drilldown_available, noZoom, chart_data.parent_timescale_description)
+    processAnalysisOperations(chart, chart_data.allowed_operations, chart_data.drilldown_available, chart_data.parent_timescale_description)
   }
 
   if(chart_data.annotations){
