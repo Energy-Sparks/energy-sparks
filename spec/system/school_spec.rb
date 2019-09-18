@@ -89,6 +89,20 @@ RSpec.describe "school", type: :system do
         expect(school.school_group).to eq(group)
       end
 
+      it 'only allows selection on groups with the same academic years' do
+        regional_calendar = create(:regional_calendar)
+        school_calendar = create(:school_calendar, based_on: regional_calendar)
+        school.update!(calendar: school_calendar, template_calendar: regional_calendar)
+
+        create(:school_group, name: 'BANES', scoreboard: create(:scoreboard, academic_year_calendar: regional_calendar.based_on))
+        create(:school_group, name: 'Oxford', scoreboard: create(:scoreboard))
+
+        click_on(school_name)
+        click_on('Manage groups')
+
+        expect(page).to have_select('Group', :options => ['', 'BANES'])
+      end
+
       it 'allows activation from school page' do
         school.update(active: false)
         click_on(school_name)
