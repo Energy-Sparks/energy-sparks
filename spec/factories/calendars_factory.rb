@@ -15,6 +15,15 @@ FactoryBot.define do
 
     factory :regional_calendar do
       calendar_type { :regional }
+
+      transient do
+        national_title { 'national calendar' }
+      end
+
+      after(:create) do |calendar, evaluator|
+        national_calendar = create(:national_calendar, :with_academic_years, title: evaluator.national_title)
+        calendar.update!(based_on: national_calendar)
+      end
     end
 
     factory :national_calendar do

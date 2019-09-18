@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AcademicYearFactory, :academic_years, type: :service do
 
-  let(:calendar){ create(:regional_calendar) }
+  let(:calendar) { create(:calendar) }
 
   it 'creates academic years inclusive' do
     service = AcademicYearFactory.new(calendar)

@@ -126,6 +126,10 @@ class School < ApplicationRecord
     calendar.academic_year_for(date)
   end
 
+  def national_calendar
+    calendar.based_on.based_on
+  end
+
   def area_name
     school_group.name if school_group
   end

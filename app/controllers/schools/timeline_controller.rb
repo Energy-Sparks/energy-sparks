@@ -9,7 +9,7 @@ module Schools
                        end
       first_observation = @school.observations.order('at ASC').first
       @active_academic_years = if first_observation
-                                 @school.calendar.based_on.academic_years.where('end_date >= ? AND start_date <= ?', first_observation.at, Time.zone.today)
+                                 @school.national_calendar.academic_years.where('end_date >= ? AND start_date <= ?', first_observation.at, Time.zone.today)
                                else
                                  []
                                end
