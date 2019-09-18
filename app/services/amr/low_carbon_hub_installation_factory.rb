@@ -8,7 +8,6 @@ module Amr
       @rbee_meter_id = rbee_meter_id
       @amr_data_feed_config = amr_data_feed_config
       @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: nil, import_time: DateTime.now.utc)
-
     end
 
     def perform
