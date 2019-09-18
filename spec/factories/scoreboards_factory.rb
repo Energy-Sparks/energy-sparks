@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :scoreboard do
     sequence(:name) {|n| "Scoreboard #{n}"}
-    calendar_area { create(:calendar_area, :parent) }
+    academic_year_calendar { create(:calendar, :with_academic_years) }
   end
 end

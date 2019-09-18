@@ -9,7 +9,7 @@ FactoryBot.define do
     postcode        { 'ab1 2cd' }
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
-    calendar_area   { create(:calendar_area, :child) }
+    calendar        { create(:school_calendar) }
 
     after(:build) do |school, _evaluator|
       build(:configuration, school: school)

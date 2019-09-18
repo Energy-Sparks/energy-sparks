@@ -26,12 +26,11 @@ module Schools
     end
 
     def set_groups
-      if @school.calendar_area
-        parent_calendar_area = @school.calendar_area.parent_area
-        @school_groups = SchoolGroup.includes(:scoreboard).where(scoreboards: { calendar_area_id: parent_calendar_area.id }).order(:name)
-      else
-        @school_groups = SchoolGroup.order(:name)
-      end
+      @school_groups = if @school.template_calendar
+                         SchoolGroup.includes(:scoreboard).where(scoreboards: { academic_year_calendar_id: template_calendar.id }).order(:name)
+                       else
+                         SchoolGroup.order(:name)
+                       end
     end
   end
 end

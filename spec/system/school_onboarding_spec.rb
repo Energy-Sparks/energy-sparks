@@ -3,17 +3,16 @@ require 'rails_helper'
 RSpec.describe "school onboarding", :schools, type: :system do
 
   let(:school_name)               { 'Oldfield Park Infants'}
-  let(:calendar_area)             { create(:calendar_area, title: 'BANES calendar') }
 
   # This calendar is there to allow for the calendar area selection
-  let!(:calendar)                 { create(:regional_calendar, :with_terms, calendar_area: calendar_area) }
+  let!(:template_calendar)        { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
   let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:school_group) do
     create(
       :school_group,
       name: 'BANES',
-      default_calendar_area: calendar_area,
+      default_template_calendar: template_calendar,
       default_solar_pv_tuos_area: solar_pv_area,
       default_dark_sky_area: dark_sky_weather_area
     )
@@ -41,7 +40,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       select 'BANES', from: 'Group'
       click_on 'Next'
 
-      expect(page).to have_select('Calendar Area', selected: 'BANES calendar')
+      expect(page).to have_select('Template calendar', selected: 'BANES calendar')
       expect(page).to have_select('Solar PV from The University of Sheffield Data Feed Area', selected: 'BANES solar')
       expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
 
@@ -81,7 +80,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
         :school_onboarding, :with_events,
         event_names: [:email_sent],
         school_name: school_name,
-        calendar_area: calendar_area,
+        template_calendar: template_calendar,
         created_by: admin
       )
     end
@@ -145,7 +144,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'lets the user edit inset days, meters and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
-      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar_area: calendar_area
+      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
       user = create(:user, role: 'school_onboarding')
       onboarding.update!(created_user: user)
       school = build(:school)

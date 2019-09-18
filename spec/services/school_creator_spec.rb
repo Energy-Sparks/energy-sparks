@@ -5,7 +5,7 @@ describe SchoolCreator, :schools, type: :service do
   describe '#onboard_school!' do
     let(:school)                    { build :school}
     let(:onboarding_user)           { create :user, role: 'school_onboarding'}
-    let(:calendar_area)             { create(:calendar_area, title: 'BANES calendar') }
+    let!(:template_calendar)          { create(:template_calendar, title: 'BANES calendar') }
     let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
     let!(:school_group)             { create(:school_group, name: 'BANES') }
@@ -13,7 +13,7 @@ describe SchoolCreator, :schools, type: :service do
     let(:school_onboarding) do
       create :school_onboarding,
         created_user: onboarding_user,
-        calendar_area: calendar_area,
+        template_calendar: template_calendar,
         solar_pv_tuos_area: solar_pv_area,
         dark_sky_area: dark_sky_area,
         school_group: school_group
@@ -29,7 +29,8 @@ describe SchoolCreator, :schools, type: :service do
       service = SchoolCreator.new(school)
       service.onboard_school!(school_onboarding)
       expect(school.school_group).to eq(school_group)
-      expect(school.calendar_area).to eq(calendar_area)
+      expect(school.template_calendar).to eq template_calendar
+      expect(school.calendar.based_on).to eq(template_calendar)
       expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
       expect(school.dark_sky_area).to eq(dark_sky_area)
       expect(school.configuration).to_not be_nil
@@ -122,18 +123,17 @@ describe SchoolCreator, :schools, type: :service do
   end
 
   describe '#process_new_configuration!' do
-    let(:school)        { create :school, calendar_area: calendar_area}
-    let(:calendar_area) { create :calendar_area }
-    let!(:regional_calendar)     { create :regional_calendar, :with_terms, calendar_area: calendar_area}
+    let(:template_calendar)   { create(:template_calendar, title: 'BANES calendar') }
+    let(:school)              { create :school, template_calendar: template_calendar}
 
     it 'uses the calendar factory to create a calendar if there is one' do
       service = SchoolCreator.new(school)
       service.process_new_configuration!
-      expect(school.calendar.based_on).to eq(regional_calendar)
+      expect(school.calendar.based_on).to eq(template_calendar)
     end
 
     it 'leaves the calendar empty if there is no template for the area' do
-      school.update(calendar_area: create(:calendar_area))
+      school.update(template_calendar: nil)
       service = SchoolCreator.new(school)
       service.process_new_configuration!
       expect(school.calendar).to be_nil

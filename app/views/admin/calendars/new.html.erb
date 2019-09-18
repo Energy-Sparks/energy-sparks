@@ -1,0 +1,18 @@
+<h1>New Calendar</h1>
+<%= simple_form_for @calendar, url: admin_calendars_path(@calendar)  do |form| %>
+
+  <% if @calendar.calendar_type %>
+    <p>Regional Calendar</p>
+    <%= form.hidden_field :calendar_type %>
+  <% else %>
+    <%= form.input :calendar_type, as: :radio_buttons, collection: Calendar.calendar_types.keys, label_method: :humanize %>
+  <% end %>
+
+  <%= form.input :based_on_id, as: :select, collection: Calendar.national, include_blank: false %>
+  <%= form.input :title, as: :string%>
+  <%= simple_fields_for :terms do |terms| %>
+    <%= terms.input :csv, as: :text, label: 'Terms CSV', hint: 'In CSV format with the headers "Term,Start Date,End Date and date format dd/mm/yyyy"', required: false%>
+  <% end %>
+  <%= form.button :submit, 'Create Calendar' %>
+<% end %>
+

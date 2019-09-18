@@ -1,6 +1,8 @@
 module EnergySparksDataHelpers
   def create_active_school(*args)
     create(:school, *args).tap do |school|
+      template_calendar = create(:regional_calendar)
+      school.template_calendar = template_calendar
       school_creator = SchoolCreator.new(school)
       school_creator.process_new_school!
       school_creator.process_new_configuration!

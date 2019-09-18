@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
-  let!(:admin) { create(:user, role: 'admin')}
-  let!(:calendar_area) { create(:calendar_area, title: 'Scotland')}
+  let!(:admin)                  { create(:user, role: 'admin') }
+  let!(:regional_calendar)      { create(:regional_calendar, national_title: 'Scotland') }
 
   describe 'when logged in' do
     before(:each) do
@@ -18,11 +18,11 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
       fill_in 'Name', with: 'BANES and Frome'
       fill_in 'Description', with: 'A collection of schools'
-      select 'Scotland', from: 'Calendar area'
+      select 'Scotland', from: 'Academic year calendar'
       click_on 'Create Scoreboard'
 
       scoreboard = Scoreboard.where(name: 'BANES and Frome').first
-      expect(scoreboard.calendar_area).to eq(calendar_area)
+      expect(scoreboard.academic_year_calendar).to eq(regional_calendar.based_on)
     end
 
     it 'can edit a scoreboard' do

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe School do
 
   let(:today) { Time.zone.today }
-  let(:calendar) { create :calendar, template: true }
+  let(:calendar) { create :calendar }
   subject { create :school, :with_school_group, calendar: calendar }
 
   it 'is valid with valid attributes' do
