@@ -3,7 +3,7 @@
 
   <% if @calendar.calendar_type %>
     <p>Regional Calendar</p>
-    <%= form.hidden_field :calendar_type, value: :regional %>
+    <%= form.hidden_field :calendar_type %>
   <% else %>
     <%= form.input :calendar_type, as: :radio_buttons, collection: Calendar.calendar_types.keys, label_method: :humanize %>
   <% end %>
