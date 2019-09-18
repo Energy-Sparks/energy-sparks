@@ -13,9 +13,14 @@ module Amr
       installation = LowCarbonHubInstallation.where(school_id: @school.id, rbee_meter_id: @rbee_meter_id,).first_or_create!
       installation.update(information: information.to_json)
 
-      readings = LowCarbonHubDownloader.new(low_carbon_hub_installation: installation, start_date: first_reading_date, end_date: first_reading_date + 1.day, low_carbon_hub_api: @low_carbon_hub_api).readings
+      LowCarbonHubDownloadAndUpsert.new(
+        low_carbon_hub_installation: installation,
+        start_date: first_reading_date,
+        end_date: first_reading_date + 1.day,
+        low_carbon_hub_api: @low_carbon_hub_api,
+        amr_data_feed_config: @amr_data_feed_config
+      ).perform
 
-      LowCarbonHubUpserter.new(low_carbon_hub_installation: installation, readings: readings, amr_data_feed_config: @amr_data_feed_config).perform
       installation
     end
 
