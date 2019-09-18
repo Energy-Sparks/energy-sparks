@@ -27,6 +27,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
     it 'create a regional calendar with the events for the calendar added via a text field' do
       visit admin_calendars_path
       click_on 'New regional calendar'
+      pp html
       click_on 'Create Calendar'
       expect(page).to have_content("can't be blank")
 
