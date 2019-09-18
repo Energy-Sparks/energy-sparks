@@ -10,6 +10,7 @@ module Amr
     end
 
     def perform
+      Rails.logger.info "Upserting #{@readings.count} for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
       @readings.each do |meter_type, details|
         mpan_mprn = details[:mpan_mprn]
         readings_hash = details[:readings]
@@ -32,7 +33,8 @@ module Amr
           }
         end
 
-        DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
+        records_inserted_count = DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
+        Rails.logger.info "Upserted #{records_inserted_count} for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
       end
     end
   end

@@ -2,7 +2,12 @@ require 'dashboard'
 
 module Amr
   class LowCarbonHubInstallationFactory
-    def initialize(school:, rbee_meter_id:, low_carbon_hub_api: LowCarbonHubMeterReadings.new, amr_data_feed_config:)
+    def initialize(
+        school:,
+        rbee_meter_id:,
+        amr_data_feed_config:,
+        low_carbon_hub_api: LowCarbonHubMeterReadings.new
+      )
       @low_carbon_hub_api = low_carbon_hub_api
       @school = school
       @rbee_meter_id = rbee_meter_id

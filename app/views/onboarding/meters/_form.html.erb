@@ -7,7 +7,7 @@
     <p>Your MPRN should be printed on your gas bill. The format of a MPRN is standard. It is between 6-10 numerical digits long. Do not confuse your MPRN with your gas supplier account number or the meter serial number printed on your gas meter.</p>
     <%= simple_form_for meter, url: url do |form| %>
 
-      <%= form.input :meter_type, as: :radio_buttons, collection: Meter.meter_types.keys, label_method: :humanize %>
+      <%= form.input :meter_type, as: :radio_buttons, collection: Meter::CREATABLE_METERS.map(&:to_s), label_method: :humanize %>
 
       <%= form.input :mpan_mprn, label: 'Meter Point Number' %>
       <%= form.input :name, label: 'Meter Name', hint: 'You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.' %>

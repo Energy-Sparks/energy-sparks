@@ -38,7 +38,12 @@ class Meter < ApplicationRecord
   scope :inactive, -> { where(active: false) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
-  enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
+
+  CREATABLE_METERS = [:electricity, :gas].freeze
+  PSEUDO_METERS = [:solar_pv, :exported_solar_pv, :electricity].freeze
+  METER_TYPES = (CREATABLE_METERS + PSEUDO_METERS).uniq
+
+  enum meter_type: METER_TYPES
 
   delegate :area_name, to: :school
 
