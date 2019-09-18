@@ -19,7 +19,8 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   var seriesData = chart_data.series_data;
 
   if (! noAdvice) {
-    var titleH3 = $chartDiv.prev('h3');
+    var $chartWrapper = $chartDiv.parent();
+    var titleH3 = $chartWrapper.find('h3');
 
     if ($chartDiv.data('chart-index') === 0) {
       titleH3.text(chart_data.title);
@@ -54,7 +55,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   }
 
   if(chart_data.allowed_operations){
-    processAnalysisOperations($chartDiv, chart_data.allowed_operations, chart_data.drilldown_available)
+    processAnalysisOperations(chart, chart_data.allowed_operations, chart_data.drilldown_available, chart_data.parent_timescale_description)
   }
 
   if(chart_data.annotations){
@@ -206,12 +207,12 @@ function processAnnotations(loaded_annotations, chart){
 
 function setupAnalysisControls(chart_container){
   var controls = $(chart_container).parent().find('.analysis_controls');
-  if(controls){
-    controls.find('.move_back').on('click', function(event){
+  if(controls.length){
+    controls.find('.move_back').hide().on('click', function(event){
       event.preventDefault();
       pushTransformation(chart_container, 'move', -1);
     });
-    controls.find('.move_forward').on('click', function(event){
+    controls.find('.move_forward').hide().on('click', function(event){
       event.preventDefault();
       pushTransformation(chart_container, 'move', 1);
     });
@@ -232,25 +233,36 @@ function setupAnalysisControls(chart_container){
   }
 }
 
-function processAnalysisOperations(chart_container, operations, drilldown_available){
-  var controls = $(chart_container).parent().find('.analysis_controls');
-  if(controls){
+function processAnalysisOperations(chart, operations, drilldownAvailable, parentTimescaleDescription){
+  var chartContainer = $(chart.renderTo);
+  var controls = $(chartContainer).parent().find('.analysis_controls');
+  if(controls.length){
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
-        control.attr('disabled', !enabled);
+        if(enabled){
+          control.show();
+        } else {
+          control.hide();
+        }
         control.find('span.period').html(config.timescale_description);
       });
     });
 
-    $(chart_container).data('chart-drilldown-available', drilldown_available);
+    $(chartContainer).data('chart-drilldown-available', drilldownAvailable);
 
-    var transformations = $(chart_container).data('chart-transformations');
+    if(drilldownAvailable){
+      chart.update({subtitle: {text: 'Click on the chart to explore the data'}});
+    }
+
+    var transformations = $(chartContainer).data('chart-transformations');
     var inDrilldown = transformations.some(isDrilldownTransformation);
+    var drillup = controls.find('.drillup');
     if(inDrilldown){
-      controls.find('.drillup').show();
+      drillup.find('span.period').html(parentTimescaleDescription);
+      drillup.show();
     } else {
-      controls.find('.drillup').hide();
+      drillup.hide();
     }
   }
 }
@@ -272,9 +284,12 @@ function pushTransformation(chart_container, transformation_type, transformation
   processAnalysisChart(chart_container);
 }
 
-function processChartClick(chart_container, event){
-  if($(chart_container).data('chart-drilldown-available')){
-    pushTransformation(chart_container, 'drilldown', event.point.index)
+function processChartClick(chartContainer, event){
+  var controls = $(chartContainer).parent().find('.analysis_controls');
+  if(controls.length){
+    if($(chartContainer).data('chart-drilldown-available')){
+      pushTransformation(chartContainer, 'drilldown', event.point.index)
+    }
   }
 }
 

@@ -1,0 +1,73 @@
+<% content_for :page_title, "Here's the gas data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>gas</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="card-deck">
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :kwh), class: 'h2 stretched-link text-decoration-none' do %>
+        find out <strong>when</strong> the gas was used
+      <% end %>
+    </div>
+  </div>
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :cost), class: 'h2 stretched-link text-decoration-none' do %>
+        find out <strong>how much</strong> the gas cost
+      <% end %>
+    </div>
+  </div>
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :co2), class: 'h2 stretched-link text-decoration-none' do %>
+        find out how much <strong>carbon dioxide</strong> was generated
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<h2>I want to look at&hellip;</h2>
+
+<div class="card-deck">
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4 text-center">
+      <div class="p-4">
+        <%= fa_icon "chart-pie-alt fa-3x" %>
+      </div>
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :pie), class: 'h2 stretched-link text-decoration-none' do %>
+        Pie charts
+      <% end %>
+    </div>
+  </div>
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4 text-center">
+      <div class="p-4">
+        <%= fa_icon "chart-bar fa-3x" %>
+      </div>
+      <%= link_to pupils_school_analysis_path(@school, category: :gas_bar), class: 'h2 stretched-link text-decoration-none' do %>
+        Bar charts
+      <% end %>
+    </div>
+  </div>
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4 text-center">
+      <div class="p-4">
+        <%= fa_icon "chart-line-down fa-3x" %>
+      </div>
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :line), class: 'h2 stretched-link text-decoration-none' do %>
+        Line graphs
+      <% end %>
+    </div>
+  </div>
+</div>

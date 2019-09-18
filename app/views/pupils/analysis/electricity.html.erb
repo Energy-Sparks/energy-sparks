@@ -11,20 +11,27 @@
 </div>
 <hr />
 
-<h2>I want to find out&hellip;</h2>
+<h2>I want to&hellip;</h2>
 
 <div class="card-deck">
   <div class="card electricity-dark electricity-card m-4">
     <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :when), class: 'h2 stretched-link text-decoration-none' do %>
-        <strong>when</strong> the electricity was used
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :kwh), class: 'h2 stretched-link text-decoration-none' do %>
+        find out <strong>when</strong> the electricity was used
       <% end %>
     </div>
   </div>
   <div class="card electricity-dark electricity-card m-4">
     <div class="card-body p-4">
-      <%= link_to '#', class: 'h2 stretched-link text-decoration-none' do %>
-        <strong>how much</strong> the electricity cost
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :cost), class: 'h2 stretched-link text-decoration-none' do %>
+        find out <strong>how much</strong> the electricity cost
+      <% end %>
+    </div>
+  </div>
+  <div class="card electricity-dark electricity-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :co2), class: 'h2 stretched-link text-decoration-none' do %>
+        find out how much <strong>carbon dioxide</strong> was generated
       <% end %>
     </div>
   </div>
@@ -38,7 +45,7 @@
       <div class="p-4">
         <%= fa_icon "chart-pie-alt fa-3x" %>
       </div>
-      <%= link_to '#', class: 'h2 stretched-link text-decoration-none' do %>
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :pie), class: 'h2 stretched-link text-decoration-none' do %>
         Pie charts
       <% end %>
     </div>
@@ -48,7 +55,7 @@
       <div class="p-4">
         <%= fa_icon "chart-bar fa-3x" %>
       </div>
-      <%= link_to '#', class: 'h2 stretched-link text-decoration-none' do %>
+      <%= link_to pupils_school_analysis_path(@school, category: :electricity_bar), class: 'h2 stretched-link text-decoration-none' do %>
         Bar charts
       <% end %>
     </div>
@@ -58,7 +65,7 @@
       <div class="p-4">
         <%= fa_icon "chart-line-down fa-3x" %>
       </div>
-      <%= link_to '#', class: 'h2 stretched-link text-decoration-none' do %>
+      <%= link_to pupils_school_analysis_path(@school, category: :electricity_line), class: 'h2 stretched-link text-decoration-none' do %>
         Line graphs
       <% end %>
     </div>

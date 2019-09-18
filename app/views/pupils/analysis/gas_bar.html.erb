@@ -1,0 +1,38 @@
+<% content_for :page_title, "Here's the gas data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school, category: :gas), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>gas</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="card-deck">
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :bar, secondary_presentation: :bench), class: 'h2 stretched-link text-decoration-none' do %>
+        find out how my school's gas use compares with other schools
+      <% end %>
+    </div>
+  </div>
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :bar, secondary_presentation: :week), class: 'h2 stretched-link text-decoration-none' do %>
+        find out how much gas was used last year
+      <% end %>
+    </div>
+  </div>
+  <div class="card gas-dark gas-card m-4">
+    <div class="card-body p-4">
+      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :bar, secondary_presentation: :year), class: 'h2 stretched-link text-decoration-none' do %>
+        find out how gas use has changed long term
+      <% end %>
+    </div>
+  </div>
+</div>

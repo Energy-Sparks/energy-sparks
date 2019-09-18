@@ -11,7 +11,9 @@ json.charts @output.each do |chart_data_values|
   json.y2_axis_label       chart_data_values.y2_axis_label
   json.series_data         chart_data_values.series_data
   json.annotations         chart_data_values.annotations
-  json.allowed_operations  chart_data_values.allowed_operations
-  json.drilldown_available chart_data_values.drilldown_available
-  json.transformations     chart_data_values.transformations
+
+  json.allowed_operations           chart_data_values.allowed_operations
+  json.drilldown_available          chart_data_values.drilldown_available
+  json.transformations              chart_data_values.transformations
+  json.parent_timescale_description chart_data_values.parent_timescale_description
 end
