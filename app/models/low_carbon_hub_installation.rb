@@ -26,4 +26,12 @@ class LowCarbonHubInstallation < ApplicationRecord
   def school_number
     school.urn
   end
+
+  def electricity_meter
+    meters.electricity.first
+  end
+
+  def latest_electricity_reading
+    Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
+  end
 end
