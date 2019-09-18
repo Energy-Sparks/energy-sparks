@@ -10,12 +10,10 @@ module Loader
       json = JSON.parse(file)
       bank_holiday_type = CalendarEventType.bank_holiday.first
 
-      CalendarArea.where(parent_id: nil).each do |calendar_area|
-        calendar = Calendar.find_by(calendar_area_id: calendar_area.id)
+      Calendar.national.each do |calendar|
+        puts "Processing calendar: #{calendar.title} - bh before: #{calendar.bank_holidays.count}"
 
-        puts "Processing calendar: #{calendar.title} - bh before: #{calendar.bank_holidays.count} #{calendar_area.title}"
-
-        json[calendar_area.title.parameterize]['events'].each do |bank_holiday|
+        json[calendar.title.parameterize]['events'].each do |bank_holiday|
           CalendarEvent.where(
             calendar: calendar,
             calendar_event_type: bank_holiday_type,

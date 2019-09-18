@@ -1,15 +1,21 @@
 <h1>Calendars</h1>
 <p>Click on show to select a calendar. You can then edit any events on the calendar, or add new ones.</p>
-<p><b>Note:</b> - updating a National calendar with bank holidays, or Regional calendar with term times automatically updates any dependent calendars.</p>
 
+
+<h2>National calendars</h2>
+<p>These calendars hold the bank holidays, adding a bank holiday to one of the national calendars will automatically update any dependent calendars.</p>
 <% if @national_calendars.any? %>
   <%= render 'national_calendars', calendars: @national_calendars, title: 'National calendars' %>
 <% else %>
   <h2>There are no National calendars</h2>
 <% end %>
 
+<h2>Regional calendars</h2>
+<p>These calendars get their bank holidays from the calendar they are based on. Adding any terms to these calendars will automatically update any dependent school calendars.</p>
+<p><%= link_to 'New regional calendar', new_admin_calendar_path(calendar_type: :regional), class: 'btn' %></p>
+
 <% if @regional_calendars.any? %>
-  <%= render 'regional_calendars', calendars: @regional_calendars, title: 'Regional calendars' %>
+  <%= render 'regional_calendars', calendars: @regional_calendars %>
 <% else %>
   <h2>There are no Regional calendars</h2>
 <% end %>

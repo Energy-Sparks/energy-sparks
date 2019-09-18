@@ -9,9 +9,9 @@ class ScoreboardsController < ApplicationController
 
   def show
     @academic_year = if params[:academic_year]
-                       @scoreboard.calendar_area.academic_years.find(params[:academic_year])
+                       @scoreboard.academic_year_calendar.academic_years.find(params[:academic_year])
                      else
-                       @scoreboard.calendar_area.academic_year_for(Time.zone.today)
+                       @scoreboard.academic_year_calendar.academic_year_for(Time.zone.today)
                      end
     @active_academic_years = @scoreboard.active_academic_years
     @schools = @scoreboard.scored_schools(academic_year: @academic_year)
@@ -56,6 +56,6 @@ class ScoreboardsController < ApplicationController
 private
 
   def scoreboard_params
-    params.require(:scoreboard).permit(:name, :description, :calendar_area_id)
+    params.require(:scoreboard).permit(:name, :description, :academic_year_calendar_id)
   end
 end

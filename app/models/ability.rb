@@ -31,7 +31,7 @@ class Ability
         school_scope = { school_group_id: user.school_group_id }
         related_school_scope = { school: { school_group_id: user.school_group_id } }
         can :show, SchoolGroup, id: user.school_group_id
-        can :crud, Calendar do |calendar|
+        can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
         end
         can :manage, CalendarEvent do |calendar_event|
@@ -40,7 +40,7 @@ class Ability
       else
         school_scope = { id: user.school_id }
         related_school_scope = { school_id: user.school_id }
-        can :crud, Calendar, id: user.school.try(:calendar_id)
+        can [:show, :update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user == user
