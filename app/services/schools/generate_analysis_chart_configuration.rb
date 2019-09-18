@@ -16,7 +16,7 @@ module Schools
       @dashboard_page_configuration = dashboard_page_configuration
     end
 
-    def generate
+    def generate(pages = pages_from_fuel_types)
       if @fuel_configuration.no_meters_with_validated_readings
         Rails.logger.info "No readings for #{@school.name}, so no configuration"
         return
@@ -44,16 +44,8 @@ module Schools
       ChartData.new(@aggregated_meter_collection, chart_type, chart_config).has_chart_data?
     end
 
-    def pages
+    def pages_from_fuel_types
       @dashboard_fuel_types[@fuel_configuration.fuel_types_for_analysis]
-    end
-
-    def title(page)
-      @dashboard_page_configuration[page.to_sym][:name]
-    end
-
-    def charts(page)
-      @dashboard_page_configuration[page.to_sym][:charts]
     end
 
     def page_config(page)
