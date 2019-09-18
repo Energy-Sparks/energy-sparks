@@ -4,7 +4,7 @@ class ObservationRemoval
   end
 
   def process
-    academic_year = @observation.school.calendar_area.academic_year_for(@observation.at)
+    academic_year = @observation.school.academic_year_for(@observation.at)
     if academic_year && academic_year.current?
       @observation.destroy
     else

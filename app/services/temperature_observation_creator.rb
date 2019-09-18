@@ -6,7 +6,7 @@ class TemperatureObservationCreator
   def process
     @observation.observation_type = :temperature
     if @observation.valid?
-      academic_year = @observation.school.calendar_area.academic_year_for(@observation.at)
+      academic_year = @observation.school.academic_year_for(@observation.at)
       same_day_observations = @observation.school.observations.temperature.where('DATE(at) = DATE(?)', @observation.at)
       if same_day_observations.empty? && academic_year && academic_year.current?
         @observation.points = 5

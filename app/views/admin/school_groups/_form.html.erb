@@ -24,8 +24,8 @@
         The following defaults are used to pre-populate values when creating a school. Changing them here will not affect areas for schools currently in this group.
       </p>
       <div class="form-group">
-        <%= f.label :default_calendar_area_id, 'Default Calendar Area' %>
-        <%= f.select :default_calendar_area_id, options_from_collection_for_select(CalendarArea.order(:title), 'id', 'title', @school_group.default_calendar_area_id), {include_blank: true}, { class: 'form-control' } %>
+        <%= f.label :default_template_calendar_id, 'Default Template Calendar' %>
+        <%= f.select :default_template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', @school_group.default_template_calendar_id), {include_blank: true}, { class: 'form-control' } %>
       </div>
 
       <div class="form-group">

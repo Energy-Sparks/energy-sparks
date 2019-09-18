@@ -2,24 +2,19 @@
 #
 # Table name: academic_years
 #
-#  calendar_area_id :bigint(8)        not null
-#  calendar_id      :integer
-#  end_date         :date
-#  id               :bigint(8)        not null, primary key
-#  start_date       :date
-#
-# Indexes
-#
-#  index_academic_years_on_calendar_area_id  (calendar_area_id)
+#  calendar_id :integer
+#  end_date    :date
+#  id          :bigint(8)        not null, primary key
+#  start_date  :date
 #
 # Foreign Keys
 #
-#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => cascade
+#  fk_rails_...  (calendar_id => calendars.id) ON DELETE => restrict
 #
 
 class AcademicYear < ApplicationRecord
   has_many :calendar_events
-  belongs_to :calendar_area
+  belongs_to :calendar
 
   scope :for_date, ->(date) { where('start_date <= ? AND end_date >= ?', date, date) }
 
