@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe 'adding interventions' do
 
-  let!(:school)     { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
+  let!(:school)     { create(:school, :with_calendar, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
   let!(:user)       { create(:user, role: :school_admin, school: school)}
 
   let!(:boiler_intervention){ create :intervention_type, title: 'Changed boiler' }
@@ -46,6 +46,7 @@ describe 'adding interventions' do
 
   it 'destroys interventions' do
     intervention = create(:observation, :intervention, school: school)
+    school.calendar.update(based_on: create(:regional_calendar, :with_academic_years))
 
     visit teachers_school_path(school)
     click_on 'View all actions'

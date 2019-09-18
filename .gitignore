@@ -80,3 +80,7 @@ yarn-debug.log*
 
 # Ignore FontAwesome credentials
 .npmrc
+
+# Database dumps
+database-dump
+*.Z

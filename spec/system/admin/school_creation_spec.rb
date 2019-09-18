@@ -7,10 +7,8 @@ RSpec.describe "school creation", :schools, type: :system do
 
   let!(:ks1) { KeyStage.create(name: 'KS1') }
 
-  let!(:calendar_area)  { create(:calendar_area, title: 'BANES calendar') }
-
   # This calendar is there to allow for the calendar area selection
-  let!(:calendar)       { create(:regional_calendar, :with_terms, calendar_area: calendar_area) }
+  let!(:calendar)       { create(:template_calendar, title: 'BANES calendar') }
   let!(:solar_pv_area)  { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let!(:dark_sky_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
@@ -18,7 +16,7 @@ RSpec.describe "school creation", :schools, type: :system do
     create(
       :school_group,
       name: 'BANES',
-      default_calendar_area: calendar_area,
+      default_template_calendar: calendar,
       default_solar_pv_tuos_area: solar_pv_area,
       default_dark_sky_area: dark_sky_area
     )
@@ -50,7 +48,7 @@ RSpec.describe "school creation", :schools, type: :system do
     select 'BANES', from: 'Group'
     click_on 'Next'
 
-    expect(page).to have_select('Calendar Area', selected: 'BANES calendar')
+    expect(page).to have_select('Template calendar', selected: 'BANES calendar')
     expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
     expect(page).to have_select('Solar PV from The University of Sheffield Data Feed Area', selected: 'BANES solar')
 
@@ -61,7 +59,7 @@ RSpec.describe "school creation", :schools, type: :system do
     school = School.where(urn: '4444244').first
     expect(school.key_stages).to match_array([ks1])
     expect(school.school_group).to eq(school_group)
-    expect(school.calendar_area).to eq(calendar_area)
+    expect(school.template_calendar).to eq(calendar)
     expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
     expect(school.dark_sky_area).to eq(dark_sky_area)
   end

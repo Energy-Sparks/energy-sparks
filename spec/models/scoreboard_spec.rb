@@ -27,15 +27,16 @@ describe Scoreboard, :scoreboards, type: :model do
   describe '#scored_schools' do
 
     let!(:group)    { create(:school_group, scoreboard: subject) }
-    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, school_group: group, activities_happened_on: 6.months.ago}}
+    let!(:template_calendar) { create(:template_calendar)}
+    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, school_group: group, activities_happened_on: 6.months.ago, template_calendar: template_calendar}}
 
     it 'returns schools in points order' do
       expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
     end
 
     context 'with academic years' do
-      let(:this_academic_year) { create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar_area: scoreboard.calendar_area) }
-      let(:last_academic_year) { create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar_area: scoreboard.calendar_area)   }
+      let(:this_academic_year) { create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar: template_calendar) }
+      let(:last_academic_year) { create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar: template_calendar) }
 
       it 'accepts an academic year and restricts' do
         expect(subject.scored_schools(academic_year: this_academic_year).map(&:sum_points).any?(&:zero?)).to eq(false)

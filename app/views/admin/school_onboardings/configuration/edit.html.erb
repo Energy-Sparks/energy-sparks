@@ -3,8 +3,8 @@
 <%= form_for(@school_onboarding, url: admin_school_onboarding_configuration_path) do |f| %>
   <h2>Calendar and Data Feed configuration</h2>
   <div class="form-group">
-    <%= f.label :calendar_area_id, 'Calendar Area' %>
-    <%= f.select :calendar_area_id, options_from_collection_for_select(CalendarArea.regional.order(:title), 'id', 'title', (@school_onboarding.calendar_area.id if @school_onboarding.calendar_area)),{},{class: 'form-control'}%>
+    <%= f.label :template_calendar_id, 'Template calendar' %>
+    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
   </div>
 
   <div class="form-row">
