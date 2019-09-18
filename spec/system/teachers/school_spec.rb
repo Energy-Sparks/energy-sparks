@@ -3,8 +3,10 @@ require 'rails_helper'
 RSpec.describe "teachers school view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
-  let!(:school)     { create(:school, :with_feed_areas, name: school_name) }
-  let!(:user)       { create(:user, role: :school_admin, school: school)}
+  let!(:regional_calendar)  { create(:regional_calendar) }
+  let!(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
+  let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name) }
+  let!(:user)               { create(:user, role: :school_admin, school: school)}
 
   before(:each) do
     sign_in(user)

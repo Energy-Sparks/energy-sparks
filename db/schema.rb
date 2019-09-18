@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_120206) do
+ActiveRecord::Schema.define(version: 2019_09_16_131052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -19,9 +19,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
-    t.bigint "calendar_area_id", null: false
     t.integer "calendar_id"
-    t.index ["calendar_area_id"], name: "index_academic_years_on_calendar_area_id"
   end
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -347,11 +345,6 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.decimal "longitude", precision: 10, scale: 6
   end
 
-  create_table "calendar_areas", force: :cascade do |t|
-    t.string "title", null: false
-    t.bigint "parent_id"
-  end
-
   create_table "calendar_event_types", force: :cascade do |t|
     t.text "title"
     t.text "description"
@@ -380,13 +373,9 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
 
   create_table "calendars", force: :cascade do |t|
     t.string "title", null: false
-    t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "default"
     t.bigint "based_on_id"
-    t.bigint "calendar_area_id", null: false
-    t.boolean "template", default: false
     t.integer "calendar_type"
     t.index ["based_on_id"], name: "index_calendars_on_based_on_id"
   end
@@ -620,12 +609,10 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.bigint "scoreboard_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "default_calendar_area_id"
     t.bigint "default_solar_pv_tuos_area_id"
     t.bigint "default_weather_underground_area_id"
     t.bigint "default_dark_sky_area_id"
     t.bigint "default_template_calendar_id"
-    t.index ["default_calendar_area_id"], name: "index_school_groups_on_default_calendar_area_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
     t.index ["default_weather_underground_area_id"], name: "index_school_groups_on_default_weather_underground_area_id"
@@ -658,12 +645,10 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.bigint "school_group_id"
     t.bigint "weather_underground_area_id"
     t.bigint "solar_pv_tuos_area_id"
-    t.bigint "calendar_area_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "dark_sky_area_id"
     t.bigint "template_calendar_id"
-    t.index ["calendar_area_id"], name: "index_school_onboardings_on_calendar_area_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -695,7 +680,6 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.integer "level", default: 0
     t.bigint "calendar_id"
     t.string "slug"
-    t.bigint "calendar_area_id"
     t.bigint "temperature_area_id"
     t.bigint "solar_irradiance_area_id"
     t.bigint "met_office_area_id"
@@ -723,10 +707,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "calendar_area_id"
     t.bigint "academic_year_calendar_id"
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
-    t.index ["calendar_area_id"], name: "index_scoreboards_on_calendar_area_id"
   end
 
   create_table "simulations", force: :cascade do |t|
@@ -828,7 +810,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
 
-  add_foreign_key "academic_years", "calendar_areas", on_delete: :cascade
+  add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories"
   add_foreign_key "activities", "activity_types"
@@ -861,7 +843,7 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
-  add_foreign_key "calendars", "calendar_areas", on_delete: :restrict
+  add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools"
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
@@ -889,7 +871,6 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
   add_foreign_key "programmes", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
-  add_foreign_key "school_groups", "calendar_areas", column: "default_calendar_area_id", on_delete: :nullify
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
@@ -897,17 +878,14 @@ ActiveRecord::Schema.define(version: 2019_09_12_120206) do
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
   add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
-  add_foreign_key "school_onboardings", "calendar_areas", on_delete: :restrict
   add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
   add_foreign_key "school_times", "schools"
-  add_foreign_key "schools", "calendar_areas", on_delete: :restrict
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
-  add_foreign_key "scoreboards", "calendar_areas", on_delete: :restrict
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"

@@ -2,7 +2,6 @@
 #
 # Table name: school_onboardings
 #
-#  calendar_area_id            :bigint(8)
 #  contact_email               :string           not null
 #  created_at                  :datetime         not null
 #  created_by_id               :bigint(8)
@@ -21,7 +20,6 @@
 #
 # Indexes
 #
-#  index_school_onboardings_on_calendar_area_id             (calendar_area_id)
 #  index_school_onboardings_on_created_by_id                (created_by_id)
 #  index_school_onboardings_on_created_user_id              (created_user_id)
 #  index_school_onboardings_on_school_group_id              (school_group_id)
@@ -33,7 +31,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
@@ -48,8 +45,7 @@ class SchoolOnboarding < ApplicationRecord
 
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
-  belongs_to :calendar_area, optional: true
-  belongs_to :template_calendar, optional: true
+  belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :created_user, class_name: 'User', optional: true

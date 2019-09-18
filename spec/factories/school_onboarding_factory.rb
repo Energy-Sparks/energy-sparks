@@ -14,6 +14,5 @@ FactoryBot.define do
         onboarding.events = evaluator.event_names.map{|event_name| onboarding.events.build(event: event_name) }
       end
     end
-
   end
 end

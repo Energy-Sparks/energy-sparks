@@ -133,3 +133,6 @@ Get the RDS launch wizard group and add access INBOUND for the AWSEBSecurityGrou
 2) Use pg_dump to get dump of current production database
 3) Use psql to get data into new database
 
+## Browser testing provided by:
+
+![Browserstack](https://raw.githubusercontent.com/BathHacked/energy-sparks/master/markdown_pages/browserstack-logo.png)

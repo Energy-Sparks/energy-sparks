@@ -3,7 +3,6 @@
 # Table name: school_groups
 #
 #  created_at                          :datetime         not null
-#  default_calendar_area_id            :bigint(8)
 #  default_dark_sky_area_id            :bigint(8)
 #  default_solar_pv_tuos_area_id       :bigint(8)
 #  default_template_calendar_id        :bigint(8)
@@ -17,7 +16,6 @@
 #
 # Indexes
 #
-#  index_school_groups_on_default_calendar_area_id             (default_calendar_area_id)
 #  index_school_groups_on_default_solar_pv_tuos_area_id        (default_solar_pv_tuos_area_id)
 #  index_school_groups_on_default_template_calendar_id         (default_template_calendar_id)
 #  index_school_groups_on_default_weather_underground_area_id  (default_weather_underground_area_id)
@@ -25,7 +23,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (default_calendar_area_id => calendar_areas.id) ON DELETE => nullify
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
 #  fk_rails_...  (default_weather_underground_area_id => areas.id)
@@ -42,7 +39,6 @@ class SchoolGroup < ApplicationRecord
   has_many :users
   belongs_to :scoreboard, optional: true
 
-  belongs_to :default_calendar_area, class_name: 'CalendarArea', optional: true
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true

@@ -9,7 +9,7 @@ RSpec.describe "calendar view", type: :system do
     it 'shows the calendar' do
       sign_in(admin)
       visit calendar_path(calendar)
-      expect(page.has_content?(area_and_calendar_title)).to be true
+      expect(page.has_content?(calendar.title)).to be true
       expect(page.has_content?('January')).to be true
     end
   end
