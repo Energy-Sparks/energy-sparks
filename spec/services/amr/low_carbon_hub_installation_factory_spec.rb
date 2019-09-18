@@ -4,13 +4,14 @@ require 'dashboard'
 module Amr
   describe LowCarbonHubInstallationFactory do
 
-    let!(:school)              { create(:school) }
-    let(:low_carbon_hub_api)  { double("low_carbon_hub_api") }
-    let(:rbee_meter_id)       { 216057958 }
-    let(:information)         { { info: 'Some info' } }
-    let(:start_date)          { Date.parse('02/08/2016') }
-    let(:end_date)            { start_date + 1.day }
-    let(:readings)            {
+    let!(:school)               { create(:school) }
+    let(:low_carbon_hub_api)    { double("low_carbon_hub_api") }
+    let(:rbee_meter_id)         { 216057958 }
+    let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
+    let(:information)           { { info: 'Some info' } }
+    let(:start_date)            { Date.parse('02/08/2016') }
+    let(:end_date)              { start_date + 1.day }
+    let(:readings)              {
       {
         solar_pv: {
           mpan_mprn: 70000000123085,
@@ -36,20 +37,30 @@ module Amr
       }
     }
 
-    it 'creates the meters' do
+    it 'creates the meters and initial readings' do
       expect(low_carbon_hub_api).to receive(:full_installation_information).with(rbee_meter_id).and_return(information)
       expect(low_carbon_hub_api).to receive(:first_meter_reading_date).with(rbee_meter_id).and_return(start_date)
       expect(low_carbon_hub_api).to receive(:download).with(rbee_meter_id, school.urn, start_date, end_date).and_return(readings)
 
-      factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, low_carbon_hub_api: low_carbon_hub_api)
+      expect(amr_data_feed_config).to_not be nil
+
+      factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, low_carbon_hub_api: low_carbon_hub_api, amr_data_feed_config: amr_data_feed_config)
       expect { factory.perform }.to change { Meter.count }.by(3)
       expect(Meter.solar_pv.count).to be 1
       expect(Meter.electricity.count).to be 1
       expect(Meter.exported_solar_pv.count).to be 1
 
-      expect(Meter.solar_pv.first.mpan_mprn).to be readings[:solar_pv][:mpan_mprn]
-      expect(Meter.electricity.first.mpan_mprn).to be readings[:electricity][:mpan_mprn]
-      expect(Meter.exported_solar_pv.first.mpan_mprn).to be readings[:exported_solar_pv][:mpan_mprn]
+      solar_pv_meter = Meter.solar_pv.first
+      electricity_meter = Meter.electricity.first
+      exported_solar_pv_meter = Meter.exported_solar_pv.first
+
+      expect(solar_pv_meter.mpan_mprn).to be readings[:solar_pv][:mpan_mprn]
+      expect(electricity_meter.mpan_mprn).to be readings[:electricity][:mpan_mprn]
+      expect(exported_solar_pv_meter.mpan_mprn).to be readings[:exported_solar_pv][:mpan_mprn]
+
+      expect(solar_pv_meter.amr_data_feed_readings.count).to be 2
+      expect(electricity_meter.amr_data_feed_readings.count).to be 2
+      expect(exported_solar_pv_meter.amr_data_feed_readings.count).to be 2
     end
   end
 end
