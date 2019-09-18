@@ -58,6 +58,12 @@ class Meter < ApplicationRecord
     meter_type.to_sym
   end
 
+  def self.non_gas_meter_types
+    meter_types = Meter::METER_TYPES.dup
+    meter_types.delete(:gas)
+    meter_types
+  end
+
   def first_validated_reading
     amr_validated_readings.minimum(:reading_date)
   end

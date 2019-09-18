@@ -10,7 +10,7 @@ namespace :after_party do
       s3_folder: 'N/A',
       s3_archive_folder: 'N/A',
       local_bucket_path: 'N/A',
-      date_format: 'N/A',
+      date_format: '%Y-%m-%d',        # This is required for the VALIDATION
       reading_date_field: 'N/A',
       mpan_mprn_field: 'N/A',
       reading_fields: ['N/A']
