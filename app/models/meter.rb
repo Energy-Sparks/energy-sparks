@@ -10,6 +10,7 @@
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
+#  pseudo                         :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  updated_at                     :datetime         not null
 #
@@ -40,8 +41,6 @@ class Meter < ApplicationRecord
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
   delegate :area_name, to: :school
-
-  attr_accessor :pseudo_mpan
 
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
@@ -107,7 +106,7 @@ class Meter < ApplicationRecord
   end
 
   def correct_mpan_check_digit?
-    return true if gas?
+    return true if gas? || pseudo
     mpan = mpan_mprn.to_s
     primes = [3, 5, 7, 13, 17, 19, 23, 29, 31, 37, 41, 43]
     expected_check = (0..11).inject(0) { |sum, n| sum + (mpan[n, 1].to_i * primes[n]) } % 11 % 10
@@ -117,10 +116,10 @@ class Meter < ApplicationRecord
   private
 
   def traditional_mpan?
-    electricity? && ! @pseudo_mpan
+    electricity? && ! pseudo
   end
 
   def pseudo_mpan?
-    electricity? && @pseudo_mpan
+    electricity? && pseudo
   end
 end

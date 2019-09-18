@@ -26,10 +26,7 @@ module Amr
         mpan_mprn = details[:mpan_mprn]
         readings_hash = details[:readings]
 
-        unless existing_meter?(meter_type, mpan_mprn, installation.id)
-          meter = Meter.new(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: installation.id, school: @school, pseudo_mpan: true)
-          meter.save!
-        end
+        meter = Meter.where(meter_type: meter_type, mpan_mprn: mpan_mprn, low_carbon_hub_installation_id: installation.id, school: @school, pseudo: true).first_or_create!
 
         data_feed_reading_array = readings_hash.map do |reading_date, one_day_amr_reading|
           {

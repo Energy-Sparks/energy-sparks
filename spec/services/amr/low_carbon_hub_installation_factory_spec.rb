@@ -37,6 +37,7 @@ module Amr
       }
     }
 
+
     it 'creates the meters and initial readings' do
       expect(low_carbon_hub_api).to receive(:full_installation_information).with(rbee_meter_id).and_return(information)
       expect(low_carbon_hub_api).to receive(:first_meter_reading_date).with(rbee_meter_id).and_return(start_date)
@@ -61,6 +62,10 @@ module Amr
       expect(solar_pv_meter.amr_data_feed_readings.count).to be 2
       expect(electricity_meter.amr_data_feed_readings.count).to be 2
       expect(exported_solar_pv_meter.amr_data_feed_readings.count).to be 2
+
+      expect(solar_pv_meter.pseudo).to be true
+      expect(electricity_meter.pseudo).to be true
+      expect(exported_solar_pv_meter.pseudo).to be true
     end
   end
 end

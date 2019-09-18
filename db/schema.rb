@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_131052) do
+ActiveRecord::Schema.define(version: 2019_09_18_103500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -556,6 +556,7 @@ ActiveRecord::Schema.define(version: 2019_09_16_131052) do
     t.bigint "mpan_mprn"
     t.text "meter_serial_number"
     t.bigint "low_carbon_hub_installation_id"
+    t.boolean "pseudo", default: false
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
