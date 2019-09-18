@@ -28,7 +28,7 @@ module Schools
         white_listed_page_config = white_listed_page_config(page)
         page_and_chart_config[page.to_sym] = white_listed_page_config unless white_listed_page_config[:charts].empty?
       end
-      @school.configuration.update!(analysis_charts: page_and_chart_config)
+      page_and_chart_config
     end
 
   private
