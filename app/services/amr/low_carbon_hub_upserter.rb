@@ -18,6 +18,7 @@ module Amr
         meter = Meter.where(
           meter_type: meter_type,
           mpan_mprn: mpan_mprn,
+          name: meter_type.to_s.humanize,
           low_carbon_hub_installation_id: @low_carbon_hub_installation.id,
           school: @low_carbon_hub_installation.school,
           pseudo: true
