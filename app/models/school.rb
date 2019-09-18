@@ -4,7 +4,6 @@
 #
 #  active                                :boolean          default(FALSE)
 #  address                               :text
-#  calendar_area_id                      :bigint(8)
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
@@ -82,7 +81,7 @@ class School < ApplicationRecord
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
-  belongs_to :calendar_area, optional: true
+
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :school_group, optional: true
@@ -123,6 +122,14 @@ class School < ApplicationRecord
       [:postcode, :name],
       [:urn, :name]
     ]
+  end
+
+  def academic_year_for(date)
+    calendar.academic_year_for(date)
+  end
+
+  def national_calendar
+    calendar.based_on.based_on
   end
 
   def area_name

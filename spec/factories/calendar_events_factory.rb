@@ -6,8 +6,8 @@ FactoryBot.define do
     description { 'this is a new event' }
 
     after(:build) do |object|
-      if object.calendar && object.calendar.calendar_area && object.start_date
-        AcademicYearFactory.new(object.calendar.calendar_area).create(
+      if object.calendar && object.start_date
+        AcademicYearFactory.new(object.calendar).create(
           start_year: object.start_date.year - 1,
           end_year: object.start_date.year + 1
         )
