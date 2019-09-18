@@ -46,6 +46,23 @@ module Schools
                                   group_by_week_gas
                                 ]
                               },
+                        pupil_analysis: {
+                                name:   'Pupil analysis',
+                                sub_pages: [
+                                  {
+                                    name: 'Electric',
+                                    charts: %i[
+                                      daytype_breakdown_electricity
+                                    ]
+                                  },
+                                  {
+                                    name: 'Gas',
+                                    charts: %i[
+                                      group_by_week_gas
+                                    ]
+                                  }
+                                ]
+                              }
                       }}
 
     let(:dashboard_config) {{
@@ -58,6 +75,7 @@ module Schools
       page_config.delete(:main_dashboard_gas)
       page_config.delete(:main_dashboard_electric_and_gas)
       page_config.delete(:gas_detail)
+      page_config.delete(:pupil_analysis)
       page_config
     end
 
@@ -71,9 +89,26 @@ module Schools
       page_config.delete(:main_dashboard_electric)
       page_config.delete(:main_dashboard_gas)
       page_config.delete(:electricity_detail)
+      page_config.delete(:pupil_analysis)
       page_config[:main_dashboard_electric_and_gas][:charts].delete(:daytype_breakdown_electricity)
       page_config[:main_dashboard_electric_and_gas][:charts].delete(:group_by_week_electricity)
       page_config
+    end
+
+    let(:pupil_analysis_failed_gas) do
+      {
+        pupil_analysis: {
+          name:   'Pupil analysis',
+          sub_pages: [
+            {
+              name: 'Electric',
+              charts: %i[
+                daytype_breakdown_electricity
+              ]
+            }
+          ]
+        }
+      }
     end
 
     let(:chart_data) { instance_double(ChartData) }
@@ -105,6 +140,22 @@ module Schools
         allow(chart_data).to receive(:has_chart_data?).and_return(true, false, true, false, true, false, false, true, true)
         chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
         expect(chart_config).to eq dual_fuel_failed_electricity
+      end
+    end
+
+    context 'a configuration with sub pages' do
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, no_meters_with_validated_readings: false) }
+
+      it 'filters out failing sub pages' do
+        allow(chart_data).to receive(:has_chart_data?).and_return(true, false)
+        chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate([:pupil_analysis])
+        expect(chart_config).to eq pupil_analysis_failed_gas
+      end
+
+      it 'filters out a page completely if all sub pages fail' do
+        allow(chart_data).to receive(:has_chart_data?).and_return(false, false)
+        chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate([:pupil_analysis])
+        expect(chart_config).to eq({})
       end
     end
   end

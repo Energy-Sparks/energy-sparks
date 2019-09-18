@@ -14,60 +14,37 @@
 <h2>I want to&hellip;</h2>
 
 <div class="card-deck">
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :kwh), class: 'h2 stretched-link text-decoration-none' do %>
-        find out <strong>when</strong> the gas was used
-      <% end %>
-    </div>
-  </div>
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :cost), class: 'h2 stretched-link text-decoration-none' do %>
-        find out <strong>how much</strong> the gas cost
-      <% end %>
-    </div>
-  </div>
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :co2), class: 'h2 stretched-link text-decoration-none' do %>
-        find out how much <strong>carbon dioxide</strong> was generated
-      <% end %>
-    </div>
-  </div>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'kWh'} do %>
+    find out <strong>when</strong> the gas was used
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Cost'} do %>
+    find out <strong>how much</strong> the gas cost
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'CO2'} do %>
+    find out how much <strong>carbon dioxide</strong> was generated
+  <% end %>
+
 </div>
 
 <h2>I want to look at&hellip;</h2>
 
 <div class="card-deck">
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4 text-center">
-      <div class="p-4">
-        <%= fa_icon "chart-pie-alt fa-3x" %>
-      </div>
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :pie), class: 'h2 stretched-link text-decoration-none' do %>
-        Pie charts
-      <% end %>
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Pie'}, centre: true do %>
+    <div class="p-4">
+      <%= fa_icon "chart-pie-alt fa-3x" %>
     </div>
-  </div>
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4 text-center">
-      <div class="p-4">
-        <%= fa_icon "chart-bar fa-3x" %>
-      </div>
-      <%= link_to pupils_school_analysis_path(@school, category: :gas_bar), class: 'h2 stretched-link text-decoration-none' do %>
-        Bar charts
-      <% end %>
+    Pie charts
+  <% end %>
+
+  <%= render 'category_link', school: @school, energy: :gas, category: :gas_bar, category_name: 'Bar charts', icon: 'chart-bar' %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Line'}, centre: true do %>
+    <div class="p-4">
+      <%= fa_icon "chart-line-down fa-3x" %>
     </div>
-  </div>
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4 text-center">
-      <div class="p-4">
-        <%= fa_icon "chart-line-down fa-3x" %>
-      </div>
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :line), class: 'h2 stretched-link text-decoration-none' do %>
-        Line graphs
-      <% end %>
-    </div>
-  </div>
+    Line graphs
+  <% end %>
 </div>

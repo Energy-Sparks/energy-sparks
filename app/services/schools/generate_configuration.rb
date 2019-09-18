@@ -9,14 +9,18 @@ module Schools
       configuration = Schools::Configuration.where(school: @school).first_or_create
 
       fuel_configuration = GenerateFuelConfiguration.new(@school).generate
-      analysis_chart_configuration = GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
       gas_dashboard_chart_type = GenerateGasDashboardChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
+
+      analysis_chart_configuration = GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration)
+      analysis_charts = analysis_chart_configuration.generate
+      pupil_analysis_charts = analysis_chart_configuration.generate([:pupil_analysis_page])
 
       configuration.update!(
         gas: fuel_configuration.has_gas,
         electricity: fuel_configuration.has_electricity,
         gas_dashboard_chart_type: gas_dashboard_chart_type,
-        analysis_charts: analysis_chart_configuration
+        analysis_charts: analysis_charts,
+        pupil_analysis_charts: pupil_analysis_charts
       )
 
       configuration

@@ -26,11 +26,12 @@ module Pupils
       presentation = params.require(:presentation)
       secondary_presentation = params[:secondary_presentation]
 
-      dashboard_config = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[:pupil_analysis_page]
-      base_chart_config = [energy, presentation, secondary_presentation].compact.inject(dashboard_config) do |config, page_name|
-        config[:sub_pages].find {|page| page[:name].downcase == page_name}
-      end
-      base_chart_config[:charts].first
+      sub_pages = [energy, presentation, secondary_presentation].compact
+
+      charts = @school.configuration.get_charts(:pupil_analysis_charts, :pupil_analysis_page, *sub_pages)
+      chart = charts.first
+      raise ActionController::RoutingError.new("Chart for :pupil_analysis_page #{sub_pages.join(' ')} not found") unless chart
+      chart
     end
   end
 end

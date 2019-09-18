@@ -14,25 +14,17 @@
 <h2>I want to&hellip;</h2>
 
 <div class="card-deck">
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :bar, secondary_presentation: :bench), class: 'h2 stretched-link text-decoration-none' do %>
-        find out how my school's gas use compares with other schools
-      <% end %>
-    </div>
-  </div>
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :bar, secondary_presentation: :week), class: 'h2 stretched-link text-decoration-none' do %>
-        find out how much gas was used last year
-      <% end %>
-    </div>
-  </div>
-  <div class="card gas-dark gas-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :gas, presentation: :bar, secondary_presentation: :year), class: 'h2 stretched-link text-decoration-none' do %>
-        find out how gas use has changed long term
-      <% end %>
-    </div>
-  </div>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
+    find out how my school's gas use compares with other schools
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Week'} do %>
+    find out how much gas was used last year
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Year'} do %>
+    find out how gas use has changed long term
+  <% end %>
+
 </div>
