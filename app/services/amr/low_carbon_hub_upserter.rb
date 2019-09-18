@@ -2,36 +2,38 @@ require 'dashboard'
 
 module Amr
   class LowCarbonHubUpserter
-    def initialize(low_carbon_hub_installation, low_carbon_hub_api = LowCarbonHubMeterReadings.new)
+    def initialize(low_carbon_hub_installation:, readings:, amr_data_feed_config:)
       @low_carbon_hub_installation = low_carbon_hub_installation
-      @low_carbon_hub_api = low_carbon_hub_api
+      @readings = readings
+      @amr_data_feed_config = amr_data_feed_config
+      @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: nil, import_time: DateTime.now.utc)
     end
 
     def perform
-      pp current_information
-      pp readings
-    end
+      @readings.each do |meter_type, details|
+        mpan_mprn = details[:mpan_mprn]
+        readings_hash = details[:readings]
 
-    private
+        meter = Meter.where(
+          meter_type: meter_type,
+          mpan_mprn: mpan_mprn,
+          low_carbon_hub_installation_id: @low_carbon_hub_installation.id,
+          school: @low_carbon_hub_installation.school,
+          pseudo: true
+        ).first_or_create!
 
-    def meter_setup
-    end
+        data_feed_reading_array = readings_hash.map do |reading_date, one_day_amr_reading|
+          {
+            amr_data_feed_config_id: @amr_data_feed_config.id,
+            meter_id: meter.id,
+            mpan_mprn: mpan_mprn,
+            reading_date: reading_date,
+            readings: one_day_amr_reading.kwh_data_x48
+          }
+        end
 
-    def current_information
-      @low_carbon_hub_api.full_installation_information(low_carbon_hub_installation.rbee_meter_id)
-    end
-
-    def first_reading_date
-      @low_carbon_hub_api.first_meter_reading_date(low_carbon_hub_installation.rbee_meter_id)
-    end
-
-    def readings(start_date = Date.yesterday, end_date = Date.yesterday - 5.days)
-      @low_carbon_hub_api.download(
-        low_carbon_hub_installation.rbee_meter_id,
-        low_carbon_hub_installation.school_number,
-        start_date,
-        end_date
-      )
+        DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
+      end
     end
   end
 end
