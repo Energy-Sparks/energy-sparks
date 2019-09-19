@@ -25,8 +25,17 @@ module Amr
 
       electricity_meters.map do |active_record_meter|
         dashboard_meter = add_amr_data(active_record_meter)
+
+        # does meter have related sub meters?
+        if active_record_meter.low_carbon_hub_installation.present?
+          dashboard_meter = add_sub_meters(dashboard_meter, active_record_meter)
+        end
+
         @meter_collection.add_electricity_meter(dashboard_meter)
       end
+
+      Rails.logger.info "Meter collection created with: heat meters: #{@meter_collection.heat_meters.count} elec meters: #{@meter_collection.electricity_meters.count} sub_meters: #{@meter_collection.electricity_meters.first.sub_meters.count}"
+
       @meter_collection
     end
 
@@ -34,8 +43,18 @@ module Amr
       @active_record_school.meters_with_readings(:gas)
     end
 
+    # We validate sub meters as we do normal meters, included as electricity meters
     def electricity_meters
       @active_record_school.meters_with_readings(Meter.non_gas_meter_types)
+    end
+
+    def add_sub_meters(dashboard_meter, active_record_meter)
+      active_record_sub_meters = active_record_meter.low_carbon_hub_installation.meters.sub_meter
+      active_record_sub_meters.each do |acitve_record_sub_meter|
+        dashboard_sub_meter = add_amr_data(acitve_record_sub_meter)
+        dashboard_meter.sub_meters.push dashboard_sub_meter
+      end
+      dashboard_meter
     end
 
     def any_meters_with_readings?
