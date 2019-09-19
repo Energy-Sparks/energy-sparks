@@ -13,7 +13,7 @@ module Teachers
     def show
       authorize! :show_teachers_dash, @school
       @charts = setup_charts(@school.configuration)
-      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.teacher_dashboard)
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.teacher_dashboard, :teacher_dashboard_title)
       @observations = setup_timeline(@school.observations)
 
       setup_activity_suggestions
