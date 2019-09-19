@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_131052) do
+ActiveRecord::Schema.define(version: 2019_09_19_085118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -288,6 +288,7 @@ ActiveRecord::Schema.define(version: 2019_09_16_131052) do
     t.boolean "handle_off_by_one", default: false
     t.boolean "row_per_reading", default: false, null: false
     t.integer "number_of_header_rows", default: 0, null: false
+    t.integer "process_type", default: 0, null: false
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -396,6 +397,7 @@ ActiveRecord::Schema.define(version: 2019_09_16_131052) do
     t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.boolean "gas", default: false, null: false
     t.boolean "electricity", default: false, null: false
+    t.json "pupil_analysis_charts", default: {}, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
@@ -537,6 +539,17 @@ ActiveRecord::Schema.define(version: 2019_09_16_131052) do
     t.index ["school_id"], name: "index_locations_on_school_id"
   end
 
+  create_table "low_carbon_hub_installations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.text "rbee_meter_id"
+    t.json "information", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
+    t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
+  end
+
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "meter_type"
@@ -546,6 +559,9 @@ ActiveRecord::Schema.define(version: 2019_09_16_131052) do
     t.string "name"
     t.bigint "mpan_mprn"
     t.text "meter_serial_number"
+    t.bigint "low_carbon_hub_installation_id"
+    t.boolean "pseudo", default: false
+    t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
@@ -863,6 +879,9 @@ ActiveRecord::Schema.define(version: 2019_09_16_131052) do
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
+  add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
+  add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
+  add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict

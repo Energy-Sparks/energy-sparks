@@ -17,13 +17,7 @@
       </div>
     </div>
 
-    <div id="chart_<%= index %>"
-         class="analysis-chart"
-         data-teachers-dashboard="true"
-         data-no-advice="true"
-         data-no-zoom="true"
-         data-chart-index="<%= index %>"
-         data-chart-y-axis-units="gb_pounds"
-         data-chart-json='<%= school_chart_path(school) + ".json?chart_type=#{chart_type}&chart_y_axis_units=gb_pounds" %>'></div>
+    <%= chart_tag(@school, chart_type.to_s, index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
+
   </div>
 <% end %>

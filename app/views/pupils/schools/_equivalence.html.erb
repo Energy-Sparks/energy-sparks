@@ -4,7 +4,7 @@
       <%= sanitize equivalence_content.equivalence %>
     </div>
     <% if defined?(school) %>
-      <p><%= link_to 'Find out how much energy has been used', school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
+      <p><%= link_to 'Find out how much energy has been used', pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
     <% end %>
   </div>
   <div class="col-6 illustration-wrapper">
