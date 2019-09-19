@@ -22,6 +22,7 @@ module Schools
         expect(fuel_config.dual_fuel).to be true
         expect(fuel_config.no_meters_with_validated_readings).to be false
         expect(fuel_config.has_gas).to be true
+        expect(fuel_config.has_electricity).to be true
       end
 
       it 'electricity' do
@@ -41,6 +42,7 @@ module Schools
         fuel_config = GenerateFuelConfiguration.new(school).generate
         expect(fuel_config.fuel_types_for_analysis).to be :gas_only
         expect(fuel_config.has_gas).to be true
+        expect(fuel_config.has_electricity).to be false
       end
     end
   end

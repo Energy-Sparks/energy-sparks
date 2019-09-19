@@ -1,0 +1,30 @@
+<% content_for :page_title, "Here's the gas data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school, category: :gas), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>gas</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="card-deck">
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
+    find out how my school's gas use compares with other schools
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Week'} do %>
+    find out how much gas was used last year
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Year'} do %>
+    find out how gas use has changed long term
+  <% end %>
+
+</div>

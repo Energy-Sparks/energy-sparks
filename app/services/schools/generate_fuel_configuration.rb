@@ -4,21 +4,19 @@ require 'dashboard'
 
 module Schools
   class GenerateFuelConfiguration
-    def initialize(school, configuration = school.configuration)
+    def initialize(school)
       @school = school
-      @configuration = configuration
     end
 
     def generate
-      @configuration.update(gas: has_gas?, electricity: has_electricity?)
-
       FuelConfiguration.new(
         has_solar_pv: @school.has_solar_pv?,
         has_storage_heaters: @school.has_storage_heaters?,
         dual_fuel: is_school_dual_fuel?,
         fuel_types_for_analysis: fuel_types_for_analysis,
         no_meters_with_validated_readings: no_meters_with_validated_readings?,
-        has_gas: has_gas?
+        has_gas: has_gas?,
+        has_electricity: has_electricity?
       )
     end
 
