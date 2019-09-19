@@ -1,0 +1,16 @@
+<h1>Create a new Low Carbon Hub installation</h1>
+<h2><%= @school.name %></h2>
+
+
+<%= simple_form_for [@school, @low_carbon_hub_installation] do |form| %>
+  <%= render 'shared/errors', subject: @low_carbon_hub_installation, subject_name: 'low carbon hub installation' %>
+
+  <%= form.input :amr_data_feed_config_id, collection: AmrDataFeedConfig.low_carbon_hub_api.pluck(:description, :id), label_method: :first, value_method: :second, include_blank: false %>
+  <%= form.input :rbee_meter_id, as: :string %>
+
+
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary'%>
+  </div>
+
+<% end %>
