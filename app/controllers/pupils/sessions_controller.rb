@@ -8,7 +8,7 @@ module Pupils
       if password.blank?
         redirect_to new_user_session_path(role: 'pupil', school: school), alert: 'Please enter a password'
       else
-        pupil = school.users.pupil.to_a.find {|user| user.pupil_password == password}
+        pupil = school.authenticate_pupil(password)
         if pupil
           sign_in(:user, pupil)
           redirect_to pupils_school_path(school), notice: 'Signed in successfully'
