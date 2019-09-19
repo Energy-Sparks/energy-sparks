@@ -2,24 +2,28 @@
 #
 # Table name: low_carbon_hub_installations
 #
-#  created_at    :datetime         not null
-#  id            :bigint(8)        not null, primary key
-#  information   :json
-#  rbee_meter_id :integer
-#  school_id     :bigint(8)        not null
-#  updated_at    :datetime         not null
+#  amr_data_feed_config_id :bigint(8)        not null
+#  created_at              :datetime         not null
+#  id                      :bigint(8)        not null, primary key
+#  information             :json
+#  rbee_meter_id           :text
+#  school_id               :bigint(8)        not null
+#  updated_at              :datetime         not null
 #
 # Indexes
 #
-#  index_low_carbon_hub_installations_on_school_id  (school_id)
+#  index_low_carbon_hub_installations_on_amr_data_feed_config_id  (amr_data_feed_config_id)
+#  index_low_carbon_hub_installations_on_school_id                (school_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (amr_data_feed_config_id => amr_data_feed_configs.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
 class LowCarbonHubInstallation < ApplicationRecord
   belongs_to :school, inverse_of: :low_carbon_hub_installations
+  belongs_to :amr_data_feed_config
 
   has_many :meters
 

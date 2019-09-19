@@ -16,6 +16,7 @@
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
 #  postcode_field          :text
+#  process_type            :integer          default("s3_folder"), not null
 #  provider_id_field       :text
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
@@ -28,6 +29,8 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
+  enum process_type: [:s3_folder, :low_carbon_hub_api]
+
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example
     header_array = this_header.split(',')

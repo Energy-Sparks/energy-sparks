@@ -2,10 +2,10 @@ require 'dashboard'
 
 module Amr
   class LowCarbonHubUpserter
-    def initialize(low_carbon_hub_installation:, readings:, amr_data_feed_config:)
+    def initialize(low_carbon_hub_installation:, readings:)
       @low_carbon_hub_installation = low_carbon_hub_installation
       @readings = readings
-      @amr_data_feed_config = amr_data_feed_config
+      @amr_data_feed_config = @low_carbon_hub_installation.amr_data_feed_config
       @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: nil, import_time: DateTime.now.utc)
     end
 

@@ -13,7 +13,8 @@ namespace :after_party do
       date_format: '%Y-%m-%d',        # This is required for the VALIDATION
       reading_date_field: 'N/A',
       mpan_mprn_field: 'N/A',
-      reading_fields: ['N/A']
+      reading_fields: ['N/A'],
+      process_type: :low_carbon_hub_api
     ).first_or_create
 
     # Update task as completed.  If you remove the line below, the task will

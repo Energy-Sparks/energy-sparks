@@ -40,12 +40,9 @@ class Meter < ApplicationRecord
   scope :pseudo, -> { where(pseudo: true) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
+  CREATABLE_METER_TYPES = [:electricity, :gas].freeze
 
-  CREATABLE_METERS = [:electricity, :gas].freeze
-  PSEUDO_METERS = [:solar_pv, :exported_solar_pv, :electricity].freeze
-  METER_TYPES = (CREATABLE_METERS + PSEUDO_METERS).uniq
-
-  enum meter_type: METER_TYPES
+  enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
   delegate :area_name, to: :school
 
@@ -61,9 +58,7 @@ class Meter < ApplicationRecord
   end
 
   def self.non_gas_meter_types
-    meter_types = Meter::METER_TYPES.dup
-    meter_types.delete(:gas)
-    meter_types
+    Meter.meter_types.keys - ['gas']
   end
 
   def first_validated_reading

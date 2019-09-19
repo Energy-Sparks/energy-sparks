@@ -7,8 +7,6 @@ namespace :amr do
 
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday
 
-    amr_data_feed_config = AmrDataFeedConfig.find_by(description: 'Low carbon hub', access_type: 'API')
-
     LowCarbonHubInstallation.all.each do |installation|
       puts "Running for #{installation.rbee_meter_id}"
 
@@ -18,7 +16,7 @@ namespace :amr do
                      installation.latest_electricity_reading < default_start_date ? installation.latest_electricity_reading : default_start_date
                    end
 
-      Amr::LowCarbonHubDownloadAndUpsert.new(low_carbon_hub_installation: installation, amr_data_feed_config: amr_data_feed_config, start_date: start_date, end_date: end_date).perform
+      Amr::LowCarbonHubDownloadAndUpsert.new(low_carbon_hub_installation: installation, start_date: start_date, end_date: end_date).perform
     end
   end
 end

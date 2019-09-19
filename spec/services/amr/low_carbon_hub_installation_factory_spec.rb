@@ -6,8 +6,8 @@ module Amr
 
     let!(:school)               { create(:school) }
     let(:low_carbon_hub_api)    { double("low_carbon_hub_api") }
-    let(:rbee_meter_id)         { 216057958 }
-    let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
+    let(:rbee_meter_id)         { "216057958" }
+    let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :low_carbon_hub_api) }
     let(:information)           { { info: 'Some info' } }
     let(:start_date)            { Date.parse('02/08/2016') }
     let(:end_date)              { start_date + 1.day }
@@ -46,13 +46,13 @@ module Amr
 
       factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, low_carbon_hub_api: low_carbon_hub_api, amr_data_feed_config: amr_data_feed_config)
       expect { factory.perform }.to change { Meter.count }.by(3)
-      expect(Meter.solar_pv.count).to be 1
-      expect(Meter.electricity.count).to be 1
-      expect(Meter.exported_solar_pv.count).to be 1
+      expect(school.meters.solar_pv.count).to be 1
+      expect(school.meters.electricity.count).to be 1
+      expect(school.meters.exported_solar_pv.count).to be 1
 
-      solar_pv_meter = Meter.solar_pv.first
-      electricity_meter = Meter.electricity.first
-      exported_solar_pv_meter = Meter.exported_solar_pv.first
+      solar_pv_meter = school.meters.solar_pv.first
+      electricity_meter = school.meters.electricity.first
+      exported_solar_pv_meter = school.meters.exported_solar_pv.first
 
       expect(solar_pv_meter.mpan_mprn).to be readings[:solar_pv][:mpan_mprn]
       expect(electricity_meter.mpan_mprn).to be readings[:electricity][:mpan_mprn]
