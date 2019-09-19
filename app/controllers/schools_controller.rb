@@ -25,7 +25,7 @@ class SchoolsController < ApplicationController
       redirect_to_dashboard
     else
       @charts = setup_charts(@school.configuration)
-      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard)
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
       @observations = setup_timeline(@school.observations)
     end
   end

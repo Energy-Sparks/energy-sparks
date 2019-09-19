@@ -5,7 +5,7 @@
 <% end %>
 
 <% @alert_content.each do |alert_content| %>
-  <h2 class="mb-2 mt-2"><%= alert_content.email_title %></h2>
+  <h2 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h2>
   <%= sanitize alert_content.email_content %>
   <% if alert_content.find_out_more %>
     <p>
