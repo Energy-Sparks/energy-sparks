@@ -4,7 +4,6 @@ module Schools
     load_and_authorize_resource through: :school
 
     def index
-      @low_carbon_hub_installations = @school.low_carbon_hub_installations
     end
 
     def new
