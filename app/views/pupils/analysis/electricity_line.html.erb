@@ -14,18 +14,13 @@
 <h2>I want to&hellip;</h2>
 
 <div class="card-deck">
-  <div class="card electricity-dark electricity-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :line, secondary_presentation: :"7days"), class: 'h2 stretched-link text-decoration-none' do %>
-        find out how much electricity was used in the last 7 days
-      <% end %>
-    </div>
-  </div>
-  <div class="card electricity-dark electricity-card m-4">
-    <div class="card-body p-4">
-      <%= link_to pupils_school_analysis_tab_path(@school, energy: :electricity, presentation: :line, secondary_presentation: :base), class: 'h2 stretched-link text-decoration-none' do %>
-        find out how much electricity was used by lights and appliances running all the time
-      <% end %>
-    </div>
-  </div>
+
+  <%= render 'chart_link', school: @school, energy: :electricity, chart_config: {energy: 'Electricity', presentation: 'Line', secondary_presentation: '7days'} do %>
+    find out how much electricity was used in the last 7 days
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :electricity, chart_config: {energy: 'Electricity', presentation: 'Line', secondary_presentation: 'Base'} do %>
+    find out how much electricity was used by lights and appliances running all the time
+  <% end %>
+
 </div>

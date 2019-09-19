@@ -37,7 +37,7 @@ private
   end
 
   def pages
-    @school.configuration.analysis_charts_as_symbols
+    @school.configuration.analysis_charts_as_symbols(:analysis_charts)
   end
 
   def render_generic_chart_template(extra_chart_config = {})
@@ -58,7 +58,7 @@ private
     if [:test, :heating_model_fitting].include?(tab)
       DashboardConfiguration::DASHBOARD_PAGE_GROUPS[tab]
     else
-      @school.configuration.analysis_charts_as_symbols[tab]
+      @school.configuration.analysis_charts_as_symbols(:analysis_charts)[tab]
     end
   end
 
