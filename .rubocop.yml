@@ -49,6 +49,8 @@ Rails/OutputSafety:
   Enabled: false
 Rails/Validation:
   Enabled: false
+Rails/EnumHash:
+  Enabled: false
 
 # Performance cops
 Performance/CompareWithBlock:

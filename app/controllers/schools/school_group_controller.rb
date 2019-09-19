@@ -27,7 +27,7 @@ module Schools
 
     def set_groups
       @school_groups = if @school.template_calendar
-                         SchoolGroup.includes(:scoreboard).where(scoreboards: { academic_year_calendar_id: template_calendar.id }).order(:name)
+                         SchoolGroup.includes(:scoreboard).where(scoreboards: { academic_year_calendar_id: @school.template_calendar.based_on_id }).order(:name)
                        else
                          SchoolGroup.order(:name)
                        end

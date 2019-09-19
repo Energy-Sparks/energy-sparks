@@ -6,7 +6,7 @@
       <%= render 'schools/dashboard/info_bar',
         colour: class_for_alert_colour(alert_content.colour),
         icon: alert_icon(alert_content.alert, 'fa-3x'),
-        content: alert_content.teacher_dashboard_title,
+        content: alert_content.send(content_field),
         buttons: alert_content.find_out_more ? {'Find out more&hellip;' => school_find_out_more_path(@school, alert_content.find_out_more)} : {}
       %>
   <% end %>

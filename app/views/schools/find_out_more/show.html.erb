@@ -1,6 +1,6 @@
 <% content_for :page_title, @content.find_out_more_title %>
 
-<h4 class="pt-4"><%= @content.find_out_more_title %></h4>
+<h4 class="pt-4"><%= sanitize @content.find_out_more_title %></h4>
 
 <div class="row justify-content-md-center align-items-center">
   <% if @tables.empty? %>
