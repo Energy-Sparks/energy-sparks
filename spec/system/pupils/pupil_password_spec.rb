@@ -10,19 +10,40 @@ describe 'pupil passwords' do
     visit school_path(school)
     click_on "Log in with your pupil password"
 
-    click_on 'Sign in'
+    # blank password
+    within '#pupil' do
+      click_on 'Sign in'
+    end
     expect(page).to have_content('Please enter a password')
 
-    fill_in 'Password', with: 'theprotons'
-    click_on 'Sign in'
+    # incorrect password
+    fill_in 'Your pupil password', with: 'theprotons'
+    within '#pupil' do
+      click_on 'Sign in'
+    end
     expect(page).to have_content("Sorry, that password doesn't work")
 
-    fill_in 'Password', with: 'theelectrons'
-    click_on 'Sign in'
+    fill_in 'Your pupil password', with: 'theelectrons'
+    within '#pupil' do
+      click_on 'Sign in'
+    end
 
     expect(page).to have_content('Signed in successfully')
     expect(page.current_path).to eq(pupils_school_path(school))
+  end
 
+  it 'allows the pupil to select their school' do
+    visit new_user_session_path(role: :pupil)
+
+
+    select school.name, from: 'Select your school'
+    fill_in 'Your pupil password', with: 'theelectrons'
+    within '#pupil' do
+      click_on 'Sign in'
+    end
+
+    expect(page).to have_content('Signed in successfully')
+    expect(page.current_path).to eq(pupils_school_path(school))
   end
 
 end
