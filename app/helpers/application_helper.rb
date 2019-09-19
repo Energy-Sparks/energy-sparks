@@ -139,6 +139,10 @@ module ApplicationHelper
       'bolt'
     when :gas
       'fire'
+    when :solar_pv
+      'sun'
+    when :exported_solar_pv
+      'arrow-right'
     end
   end
 

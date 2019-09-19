@@ -67,8 +67,10 @@ module Schools
 
     def load_meters
       @meters ||= @school.meters
-      @active_meters = @meters.active.order(:mpan_mprn)
-      @inactive_meters = @meters.inactive.order(:mpan_mprn)
+      @active_meters = @meters.active.real.order(:mpan_mprn)
+      @inactive_meters = @meters.inactive.real.order(:mpan_mprn)
+      @active_pseudo_meters = @meters.active.pseudo.order(:mpan_mprn)
+      @inactive_pseudo_meters = @meters.inactive.pseudo.order(:mpan_mprn)
       @invalid_mpan = @active_meters.select(&:electricity?).reject(&:correct_mpan_check_digit?)
     end
 
