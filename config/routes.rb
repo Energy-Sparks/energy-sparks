@@ -66,6 +66,8 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
+      resources :low_carbon_hub_installations, only: [:show, :index, :create, :new, :destroy]
+
       resource :meter_readings_validation, only: [:create]
       resource :alert_emails, only: [:create]
 
@@ -140,6 +142,7 @@ Rails.application.routes.draw do
   namespace :admin do
 
     resources :school_groups
+
 
     namespace :emails do
       resources :alert_mailers, only: :show
