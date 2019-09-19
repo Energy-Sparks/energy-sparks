@@ -1,6 +1,8 @@
 <h1>Low carbon hub installations for <%= link_to @school.name, school_path(@school) %></h1>
 
 <p><%= link_to 'All school meters',  school_meters_path(@school) %></p>
+
+<p>Please note, you can only create a new Low carbon hub installation between <%= Time.find_zone('UTC').parse('12pm').localtime.strftime('%H:%M') %> and <%= Time.find_zone('UTC').parse('1pm').localtime.strftime('%H:%M') %></p>
 <p><%= link_to 'New Low carbon hub installation', new_school_low_carbon_hub_installation_path, class: 'btn' %></p>
 
 <% if @school.low_carbon_hub_installations.any? %>

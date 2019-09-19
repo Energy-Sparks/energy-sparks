@@ -22,6 +22,8 @@ module Schools
       else
         render :new
       end
+    rescue EnergySparksUnexpectedStateException
+      redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Low carbon hub API is not available at the moment'
     end
 
     def destroy

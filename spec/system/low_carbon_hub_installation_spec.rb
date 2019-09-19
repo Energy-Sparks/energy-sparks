@@ -11,19 +11,19 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       sign_in(school_admin)
       visit root_path
 
+      @low_carbon_hub_api_instance = double("API")
 
-      low_carbon_hub_api_instance = double("API")
-      allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api_instance)
-
-      expect(low_carbon_hub_api_instance).to receive(:full_installation_information).with(rbee_meter_id).and_return(information)
-      expect(low_carbon_hub_api_instance).to receive(:first_meter_reading_date).with(rbee_meter_id).and_return(start_date)
-      expect(low_carbon_hub_api_instance).to receive(:download).with(rbee_meter_id, school.urn, start_date, end_date).and_return(readings)
-    end
-
-    it 'I can add a low carbon hub installation' do
       click_on 'Manage Low carbon hub installations'
       expect(page).to have_content("There are no Low carbon hub installations at the moment for this school")
       click_on 'New Low carbon hub installation'
+    end
+
+    it 'I can add a low carbon hub installation' do
+      allow(LowCarbonHubMeterReadings).to receive(:new).and_return(@low_carbon_hub_api_instance)
+
+      expect(@low_carbon_hub_api_instance).to receive(:full_installation_information).with(rbee_meter_id).and_return(information)
+      expect(@low_carbon_hub_api_instance).to receive(:first_meter_reading_date).with(rbee_meter_id).and_return(start_date)
+      expect(@low_carbon_hub_api_instance).to receive(:download).with(rbee_meter_id, school.urn, start_date, end_date).and_return(readings)
 
       fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
       expect { click_on 'Create' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
@@ -42,6 +42,14 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { LowCarbonHubInstallation.count }.by(-1)
 
       expect(page).to have_content("There are no Low carbon hub installations at the moment for this school")
+    end
+
+    it 'handles being run out of hours properly' do
+      expect(LowCarbonHubMeterReadings).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
+
+      click_on 'Create'
+      expect(page).to have_content("There are no Low carbon hub installations at the moment for this school")
+      expect(page).to have_content("Low carbon hub API is not available at the moment")
     end
   end
 end
