@@ -135,4 +135,4 @@ Get the RDS launch wizard group and add access INBOUND for the AWSEBSecurityGrou
 
 ## Browser testing provided by:
 
-![Browserstack](https://raw.githubusercontent.com/BathHacked/energy-sparks/master/markdown_pages/browserstack-logo.png)
+[![Browserstack](https://raw.githubusercontent.com/BathHacked/energy-sparks/master/markdown_pages/browserstack-logo.png)](https://www.browserstack.com/)
