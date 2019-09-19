@@ -9,7 +9,7 @@ module Amr
     end
 
     def electricity_meters
-      @active_record_school.meters_with_validated_readings(:electricity)
+      @active_record_school.meters_with_validated_readings(Meter.non_gas_meter_types)
     end
 
     def any_meters_with_readings?

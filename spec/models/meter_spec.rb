@@ -17,6 +17,10 @@ describe 'Meter', :meters do
   describe 'meter attributes' do
     let(:meter) { build(:electricity_meter) }
 
+    it 'is not pseudo by default' do
+      expect(meter.pseudo).to be false
+    end
+
     it 'can get them all' do
       meter =  build(:electricity_meter)
       expect(meter.meter_attributes(DummyMeterAttributes)).to eq DummyMeterAttributes::ATTRIBUTES
