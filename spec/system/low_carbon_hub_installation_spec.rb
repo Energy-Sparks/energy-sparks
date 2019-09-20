@@ -4,12 +4,12 @@ require 'dashboard'
 RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type: :system do
   include_context "low carbon hub data"
 
-  let!(:school_admin) { create(:user, role: 'school_admin', school_id: school.id) }
+  let!(:admin) { create(:user, role: :admin) }
 
-  context 'as school admin' do
+  context 'as an admin' do
     before(:each) do
-      sign_in(school_admin)
-      visit root_path
+      sign_in(admin)
+      visit school_path(school)
 
       click_on 'Manage Low carbon hub installations'
       expect(page).to have_content("There are no Low carbon hub installations at the moment for this school")
