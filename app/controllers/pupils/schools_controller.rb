@@ -4,7 +4,6 @@ module Pupils
     include ActivityTypeFilterable
 
     load_and_authorize_resource
-    before_action :redirect_if_inactive
 
     def show
       authorize! :show_pupils_dash, @school
@@ -28,10 +27,6 @@ module Pupils
     end
 
   private
-
-    def redirect_if_inactive
-      redirect_to teachers_school_path(@school), notice: 'Pupil dashboard unavailable: School is not active' unless @school.active?
-    end
 
     def activity_setup(school)
       @activities_count = school.activities.count
