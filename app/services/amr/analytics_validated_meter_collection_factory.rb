@@ -8,8 +8,9 @@ module Amr
       @active_record_school.meters_with_validated_readings(:gas)
     end
 
+    # Sub meters are handled separately, see unvalidated meter collection factory
     def electricity_meters
-      @active_record_school.meters_with_validated_readings(Meter.non_gas_meter_types)
+      @active_record_school.meters_with_validated_readings(:electricity)
     end
 
     def any_meters_with_readings?
