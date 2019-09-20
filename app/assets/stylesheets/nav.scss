@@ -1,17 +1,22 @@
-
 .navbar {
-  /* border-radius: 0.25rem; */
+
   border-radius: 0;
 
   .dropdown-item:hover {
     color: $dark;
   }
+
+  padding: 1px;
+}
+
+.nav-item {
+  line-height: 2.2;
 }
 
 .navbar-custom {
   background: $dark-blue;
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   border: none;
 }
 .navbar-custom a:focus {
@@ -20,10 +25,6 @@
 .navbar-custom .navbar-brand {
   color: white;
   padding-top: 0rem;
-}
-
-.navbar-custom .nav {
-  padding-top: 0.25rem;
 }
 
 .navbar-custom .navbar-brand:hover,
@@ -40,10 +41,6 @@
   z-index: 10;
 }
 
-.sub-navbar .badge {
-  padding: 0.4em;
-}
-
 .sub-navbar a.btn {
     margin-right: 2px;
     margin-left: 2px;
@@ -56,7 +53,7 @@
 }
 
 .fixed-top-sub-nav {
-    margin-top: 60px;
+    margin-top: 48px;
 }
 
 .navbar-custom .navbar-toggle {
@@ -64,6 +61,7 @@
   font-size: 10px;
   border-color: white;
 }
+
 .navbar-custom .navbar-toggle:hover,
 .navbar-custom .navbar-toggle:focus {
   background-color: $light-blue;
@@ -77,12 +75,6 @@
     -moz-transition: all 0.3s;
     transition: all 0.3s;
   }
-  .navbar-custom.affix {
-    padding: 10px 0;
-  }
-  .navbar-custom.affix .navbar-brand {
-    font-size: 1.5em;
-  }
 }
 
 .navbar-custom .dropdown-menu {
@@ -94,4 +86,23 @@
 }
 .custom-toggler .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+
+/* Trouble */
+/* Top, Right, Bottom, Left */
+
+.nav-lozenge {
+  background: #232B49;
+  background-image: linear-gradient(180deg, #252E50 0%, #374268 99%);
+  border-radius: 25px;
+  border: 1px solid #161D37;
+  padding: 7px;
+
+  .nav-link {
+    display: inline;
+    text-align: center;
+    vertical-align: center;
+    padding: 0;
+  }
 }

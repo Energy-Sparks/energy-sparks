@@ -66,6 +66,17 @@ a.nav-link.active {
     font-weight: bold;
     color: white;
   }
+
+  .nav-lozenge {
+    .btn,
+    .btn:hover,
+    .btn:focus,
+    .btn:active,
+    .btn.active {
+      float: right;
+      color: $dark;
+    }
+  }
 }
 
 .sub-navbar .nav-item a:hover {

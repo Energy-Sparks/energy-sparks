@@ -81,15 +81,15 @@
           <%= link_to "Contact", contact_path, class: 'nav-link' %>
         </li>
         <span class="nav-lozenge">
-          <li class="nav-item">
-            <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>
-            <% if user_signed_in? %>
-              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
-            <% else %>
-              <%= link_to "Sign In", new_user_session_path, class: 'btn btn-sm' %>
-            <% end %>
-          </li>
-        </span>
+        <li class="nav-item">
+          <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>
+          <% if user_signed_in? %>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
+          <% else %>
+            <%= link_to "Sign In", new_user_session_path, class: 'btn btn-sm' %>
+          <% end %>
+        </li>
+      </span>
       </ul>
     </div>
   </div>
