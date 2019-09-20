@@ -75,6 +75,11 @@ class Ability
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :read, :school_menu
       end
+    elsif user.management?
+      can :show_management_dash, School, id: user.school_id, active: true
+      can :manage, Observation, school: { id: user.school_id, active: true }
+      can :enable_alerts, User, id: user.id
+      can [:create, :update, :destroy], Contact, user_id: user.id
     elsif user.guest?
       cannot :analyse, :cost
       can :manage, SchoolOnboarding, created_user_id: nil

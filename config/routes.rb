@@ -189,6 +189,10 @@ Rails.application.routes.draw do
     resources :schools, only: :show
   end
 
+  namespace :management do
+    resources :schools, only: :show
+  end
+
   namespace :pupils do
     resources :schools, only: :show do
       resource :session, only: [:new, :create]
