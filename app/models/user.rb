@@ -70,15 +70,6 @@ class User < ApplicationRecord
 
   after_save :update_contact
 
-  #is the user an administrator of an active school?
-  def active_school_admin?
-    school_admin_or_staff? && school.active?
-  end
-
-  def school_admin_or_staff?
-    school_admin? || staff?
-  end
-
   def default_scoreboard
     if group_admin? && school_group.scoreboard
       school_group.scoreboard
