@@ -4,7 +4,7 @@
     <h4 class="card-title">Select Energy Type
     </h4>
 
-    <% Meter.meter_types.keys.each_with_index do |type| %>
+    <% Meter::CREATABLE_METER_TYPES.each_with_index do |type| %>
 
         <% disabled = type == :electricty ? school.has_electricity? : school.has_gas? %>
 
