@@ -1,0 +1,6 @@
+<h1>Edit management account</h1>
+
+<%= simple_form_for @management, url: school_management_path(@school, @management) do |f| %>
+  <%= render 'form', f: f %>
+  <%= f.submit 'Update account', class: 'btn btn-rounded'%>
+<% end %>

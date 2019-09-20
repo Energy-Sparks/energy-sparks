@@ -60,7 +60,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
-  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin]
+  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin, :management]
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
@@ -98,6 +98,15 @@ class User < ApplicationRecord
     new(
       attributes.merge(
         role: :staff,
+        school: school
+      )
+    )
+  end
+
+  def self.new_management(school, attributes)
+    new(
+      attributes.merge(
+        role: :management,
         school: school
       )
     )
