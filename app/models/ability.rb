@@ -52,7 +52,6 @@ class Ability
       can [:index, :create, :read, :update], Meter, related_school_scope
       can :activate, Meter, { active: false }.merge(related_school_scope)
       can :deactivate, Meter, { active: true }.merge(related_school_scope)
-      can :manage, LowCarbonHubInstallation, related_school_scope
       can [:destroy, :delete], Meter, related_school_scope
       cannot [:destroy, :delete], Meter do |meter|
         meter.amr_data_feed_readings.count > 0

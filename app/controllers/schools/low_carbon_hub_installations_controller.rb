@@ -4,6 +4,8 @@ module Schools
     load_and_authorize_resource through: :school
 
     def index
+      @start_time = formatted_localised_utc_time('12pm')
+      @end_time = formatted_localised_utc_time('1pm')
     end
 
     def new
@@ -36,6 +38,10 @@ module Schools
       params.require(:low_carbon_hub_installation).permit(
         :rbee_meter_id, :amr_data_feed_config_id
       )
+    end
+
+    def formatted_localised_utc_time(time_string)
+      Time.find_zone('UTC').parse(time_string).localtime.strftime('%H:%M')
     end
   end
 end
