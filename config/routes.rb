@@ -66,6 +66,8 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
+      resources :low_carbon_hub_installations, only: [:show, :index, :create, :new, :destroy]
+
       resource :meter_readings_validation, only: [:create]
       resource :alert_emails, only: [:create]
 
@@ -93,7 +95,7 @@ Rails.application.routes.draw do
         :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
         :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
       ].each do |tab|
-        get "/#{tab}", to: redirect("/analysis/#{tab}")
+        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis/#{tab}")
       end
 
       get :timeline, to: 'timeline#show'
@@ -140,6 +142,7 @@ Rails.application.routes.draw do
   namespace :admin do
 
     resources :school_groups
+
 
     namespace :emails do
       resources :alert_mailers, only: :show
@@ -191,6 +194,8 @@ Rails.application.routes.draw do
   namespace :pupils do
     resources :schools, only: :show do
       resource :session, only: [:new, :create]
+      get :analysis, to: 'analysis#index'
+      get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
     end
   end
 end

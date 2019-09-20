@@ -8,6 +8,7 @@
 #  gas                      :boolean          default(FALSE), not null
 #  gas_dashboard_chart_type :integer          default("no_chart"), not null
 #  id                       :bigint(8)        not null, primary key
+#  pupil_analysis_charts    :json             not null
 #  school_id                :bigint(8)        not null
 #  updated_at               :datetime         not null
 #
@@ -33,18 +34,36 @@ module Schools
 
     enum gas_dashboard_chart_type: [NO_CHART, TEACHERS_GAS_SIMPLE, TEACHERS_GAS]
 
-    def analysis_charts_as_symbols
+    def analysis_charts_as_symbols(charts_field = :analysis_charts)
       configuration = {}
-      analysis_charts.each do |page, config|
-        config = config.deep_symbolize_keys
-        config[:charts] = config[:charts].map(&:to_sym)
-        configuration[page.to_sym] = config
+      self[charts_field].each do |page, config|
+        configuration[page.to_sym] = symbolize_charts_config(config)
       end
       configuration
     end
 
-    def can_show_analysis_chart?(page, chart_name)
-      analysis_charts_as_symbols.fetch(page) {{}}.fetch(:charts) {[]}.include?(chart_name)
+    def get_charts(charts_field, page, *sub_pages)
+      page_config = analysis_charts_as_symbols(charts_field).fetch(page) {{}}
+      base_chart_config = sub_pages.inject(page_config) do |config, page_name|
+        config[:sub_pages].find {|sub_page| sub_page[:name] == page_name} || { sub_pages: [] }
+      end
+      base_chart_config.fetch(:charts) {[]}
+    end
+
+    def can_show_analysis_chart?(charts_field, page, *sub_pages, chart_name)
+      get_charts(charts_field, page, *sub_pages).include?(chart_name)
+    end
+
+    private
+
+    def symbolize_charts_config(charts_config)
+      config = charts_config.deep_symbolize_keys
+      if config.key?(:sub_pages)
+        config[:sub_pages] = config[:sub_pages].map {|sub_page| symbolize_charts_config(sub_page) }
+      else
+        config[:charts] = config[:charts].map(&:to_sym)
+      end
+      config
     end
   end
 end

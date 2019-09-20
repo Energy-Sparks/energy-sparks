@@ -40,7 +40,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (calendar_area_id => calendar_areas.id) ON DELETE => restrict
 #  fk_rails_...  (calendar_id => calendars.id)
 #  fk_rails_...  (school_group_id => school_groups.id)
 #

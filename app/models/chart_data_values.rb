@@ -1,7 +1,8 @@
 class ChartDataValues
   attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
-              :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations
+              :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
+              :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
@@ -30,7 +31,7 @@ class ChartDataValues
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
-  def initialize(chart, chart_type)
+  def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil)
     if chart
       @chart_type         = chart_type
       @chart              = chart
@@ -49,6 +50,10 @@ class ChartDataValues
       @y2_chart_type      = chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
+      @transformations = transformations
+      @allowed_operations = allowed_operations
+      @drilldown_available = drilldown_available
+      @parent_timescale_description = parent_timescale_description
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
