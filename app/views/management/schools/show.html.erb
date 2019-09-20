@@ -1,1 +1,32 @@
-<h1><%= @school.name %> management dashboard</h1>
+<%= content_for :page_title, @school.name %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h2>Energy Usage&hellip;</h2>
+  <% if @school.configuration %>
+    <div class="h5"><%= link_to "Review your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
+  <% end %>
+</div>
+
+<div class="row dashboards">
+  <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
+</div>
+
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+
+<div class="row padded-row management-energy-saving-actions d-flex justify-content-center mb-3">
+  <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-rounded' %>
+</div>
+
+<% if @school.configuration %>
+  <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :group_by_week_electricity) %>
+    <h2>Annual electricity overview</h2>
+
+    <%= chart_tag(@school, :group_by_week_electricity, index: 100, show_advice: false, no_zoom: true ) %>
+  <% end %>
+  <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :gas_detail, :group_by_week_gas) %>
+    <h2>Annual gas overview</h2>
+    <%= chart_tag(@school, :group_by_week_gas, index: 101, show_advice: false, no_zoom: true ) %>
+  <% end %>
+<% end %>
+
+<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
