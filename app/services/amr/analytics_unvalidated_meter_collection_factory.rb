@@ -34,8 +34,6 @@ module Amr
         @meter_collection.add_electricity_meter(dashboard_meter)
       end
 
-      Rails.logger.info "Meter collection created with: heat meters: #{@meter_collection.heat_meters.count} elec meters: #{@meter_collection.electricity_meters.count} sub_meters: #{@meter_collection.electricity_meters.first.sub_meters.count}"
-
       @meter_collection
     end
 
