@@ -18,10 +18,10 @@
 </div>
 
 
-<table class='table'>
+<table class="table table-borderless management-priorities">
   <thead>
     <tr>
-      <th>Energy saving opportunities</th>
+      <th class="h2">Energy saving opportunities</th>
       <th>Potential saving</th>
       <th>Cost</th>
       <th>Payback</th>
@@ -32,7 +32,7 @@
     <% @management_priorities.each do |priority| %>
       <tr>
         <td><%= priority.management_priorities_title  %></td>
-        <td><%= priority.average_one_year_saving_gbp %> /year</td>
+        <td><%= priority.average_one_year_saving_gbp %> <small>/year</small></td>
         <td><%= priority.average_capital_cost %></td>
         <td><%= priority.average_payback_years %></td>
         <td>

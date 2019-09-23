@@ -48,3 +48,25 @@ div.dashboards {
 div.management-energy-saving-actions {
   background-color: $light-grey;
 }
+
+table.management-priorities {
+  border-collapse: separate;
+  border-spacing: 0px 15px;
+  tbody {
+    td {
+      border-top: 1px $grey solid;
+      border-bottom: 1px $grey solid;
+      padding: 30px;
+    }
+    td:first-child{
+      border-left: 1px $grey solid;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+    td:last-child{
+      border-right: 1px $grey solid;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+}
