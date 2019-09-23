@@ -21,7 +21,7 @@ module Management
     private
 
     def setup_priorities
-      @school.latest_management_priorities.sample(5).map do |priority|
+      @school.latest_management_priorities.limit(5).map do |priority|
         template_variables = priority.alert.template_variables.with_indifferent_access
         TemplateInterpolation.new(
           priority.content_version,
