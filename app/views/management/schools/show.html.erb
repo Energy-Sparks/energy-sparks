@@ -17,6 +17,34 @@
   <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-rounded' %>
 </div>
 
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Energy saving opportunities</th>
+      <th>Potential saving</th>
+      <th>Cost</th>
+      <th>Payback</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @management_priorities.each do |priority| %>
+      <tr>
+        <td><%= priority.management_priorities_title  %></td>
+        <td><%= priority.average_one_year_saving_gbp %> /year</td>
+        <td><%= priority.average_capital_cost %></td>
+        <td><%= priority.average_payback_years %></td>
+        <td>
+          <% if priority.find_out_more %>
+            <%= link_to 'Find out more', school_find_out_more_path(@school, priority.find_out_more), class: 'btn btn-rounded' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <% if @school.configuration %>
   <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :group_by_week_electricity) %>
     <h2>Annual electricity overview</h2>

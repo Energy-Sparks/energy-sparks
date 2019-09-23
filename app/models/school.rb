@@ -232,4 +232,12 @@ class School < ApplicationRecord
       DashboardAlert.none
     end
   end
+
+  def latest_management_priorities
+    if latest_content
+      latest_content.management_priorities
+    else
+      ManagementPriority.none
+    end
+  end
 end
