@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_23_093945) do
+ActiveRecord::Schema.define(version: 2019_09_23_101452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 2019_09_23_093945) do
     t.boolean "analytics_valid", default: true, null: false
     t.integer "enough_data"
     t.integer "relevance", default: 0
+    t.json "priority_template_data", default: {}
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
