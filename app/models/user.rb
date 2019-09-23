@@ -66,7 +66,8 @@ class User < ApplicationRecord
 
   validates :email, presence: true
 
-  validates :pupil_password, presence: true, uniqueness: { scope: :school_id, message: 'is already in use' }, if: :pupil?
+  validates :pupil_password, presence: true, if: :pupil?
+  validate :pupil_password_unique, if: :pupil?
 
   after_save :update_contact
 
@@ -140,6 +141,14 @@ protected
     if contact
       contact.popualate_from_user(self)
       contact.save
+    end
+  end
+
+  def pupil_password_unique
+    return if pupil_password.blank?
+    existing_user = school.authenticate_pupil(pupil_password)
+    if existing_user && existing_user != self
+      errors.add(:pupil_password, "is already in use for '#{existing_user.name}'")
     end
   end
 end

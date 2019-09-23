@@ -2,6 +2,18 @@ require 'rails_helper'
 require "cancan/matchers"
 
 describe User do
+
+  describe 'pupil validation' do
+    let(:school){ create(:school) }
+    let!(:existing_pupil){ create(:pupil, pupil_password: 'testtest', school: school) }
+
+    it 'checks for unique passwords within the school' do
+      expect(build(:pupil, school: school, pupil_password: 'testtest')).to_not be_valid
+      expect(build(:pupil, school: school, pupil_password: 'testtest123')).to be_valid
+      expect(build(:pupil, school: create(:school), pupil_password: 'testtest')).to be_valid
+    end
+  end
+
   describe 'abilities' do
     subject(:ability) { Ability.new(user) }
     let(:user)        { nil }
