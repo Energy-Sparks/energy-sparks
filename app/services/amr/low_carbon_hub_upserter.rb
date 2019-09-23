@@ -35,6 +35,7 @@ module Amr
         end
 
         records_inserted_count = DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
+        @amr_data_feed_import_log.update(records_imported: records_inserted_count)
         Rails.logger.info "Upserted #{records_inserted_count} for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
       end
     end
