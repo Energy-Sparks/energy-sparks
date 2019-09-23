@@ -10,7 +10,7 @@ module Alerts
           Alerts::GenerateFindOutMores.new(@school, content_generation_run: content_generation_run).perform
           Alerts::GenerateDashboardAlerts.new(@school, content_generation_run: content_generation_run).perform
           Alerts::GenerateManagementPriorities.new(@school, content_generation_run: content_generation_run).perform
-          Alerts::GenerateSubscriptionEvents.new(@school, content_generation_run: content_generation_run).perform(frequency: subscription_frequency)
+          Alerts::GenerateSubscriptionEvents.new(@school, content_generation_run: content_generation_run).perform(frequency: subscription_frequency) if @school.active?
         end
       end
     end

@@ -34,13 +34,15 @@ class Meter < ApplicationRecord
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
+  CREATABLE_METER_TYPES = [:electricity, :gas].freeze
+  SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
+
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :real, -> { where(pseudo: false) }
   scope :pseudo, -> { where(pseudo: true) }
+  scope :sub_meter, -> { where(pseudo: true, meter_type: SUB_METER_TYPES) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
-
-  CREATABLE_METER_TYPES = [:electricity, :gas].freeze
 
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
