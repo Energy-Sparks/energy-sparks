@@ -12,29 +12,16 @@
       <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
 
         <ul class="nav navbar-nav">
-          <span class="nav-lozenge">
-          <li class="nav-item dropdown">
-            <% if podium %>
-              <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>
-                <% if school.active? && podium.includes_school? %>
-                  <%= podium.school_position.ordinal %>
-                  <% if podium.includes_school? %>
-                    <%= podium.school_position.points %> points
-                    <% if podium.school_position.recent_points > 0 %>
-                      <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
-                    <% end %>
-                  <% else %>
-                    No points yet
-                  <% end %>
-                <% end %>
-              <% end %>
-            <% end %>
-            <%= link_to 'Pupil dashboard', pupils_school_path(@school),     class: 'btn btn-sm' if show_pupils_dashboard_button? %>
-            <%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'btn btn-sm' if show_teachers_dashboard_button? %>
-            <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard),  class: 'btn btn-sm' if school.scoreboard %>
+
+          <li class="nav-item p-2">
+            <%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'btn btn-sm' if show_pupils_dashboard_button? %>
           </li>
+          <li class="nav-item  p-2">
+            <%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'btn btn-sm' if show_teachers_dashboard_button? %>
+          </li>
+
           <%- if can? :update, school -%>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown p-2">
               <a class="dropdown-toggle btn btn-sm" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
               <div class="dropdown-menu">
                 <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
@@ -52,7 +39,37 @@
               </div>
             </li>
           <%- end -%>
-        </span>
+
+          <span class="nav-lozenge">
+            <li class="nav-item">
+              <% if podium %>
+                <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>
+                  <% if school.active? && podium.includes_school? %>
+                    <div class="nav-link">
+                      <%= fa_icon('crown') %>
+                    </div>
+                    <div class="nav-link">
+                      <%= podium.school_position.ordinal %>
+                    </div>
+                    <% if podium.includes_school? %>
+                      <%= podium.school_position.points %> points
+                      <% if podium.school_position.recent_points > 0 %>
+                        <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
+                      <% end %>
+                    <% else %>
+                      No points yet
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard),  class: 'btn btn-sm' if school.scoreboard %>
+            </li>
+          </span>
+
+
+
+
+
         </ul>
       </div>
     </div>

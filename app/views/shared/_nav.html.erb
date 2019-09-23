@@ -8,78 +8,7 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="nav navbar-nav">
-        <% if current_user && current_user.active_school_admin? %>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My school</a>
-            <div class="dropdown-menu" aria-labelledby="my_school">
-              <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
-              <%= link_to 'Gas usage by day', usage_school_path(current_user.school, period: :hourly, supply: :gas) , class: 'dropdown-item' if current_user.school.has_gas? %>
-              <%= link_to 'Electricity usage by day', usage_school_path(current_user.school, period: :hourly, supply: :electricity), class: 'dropdown-item' if current_user.school.has_electricity? %>
-              <%= link_to 'Gas usage by week', usage_school_path(current_user.school, period: :daily, supply: :gas), class: 'dropdown-item'  if current_user.school.has_gas? %>
-              <%= link_to 'Electricity usage by week', usage_school_path(current_user.school, period: :daily, supply: :electricity), class: 'dropdown-item' if current_user.school.has_electricity? %>
-              <%= link_to 'Analysis', school_analysis_path(current_user.school), class: 'dropdown-item' %>
-              <%= link_to 'Simulations', school_simulations_path(current_user.school), class: 'dropdown-item' %>
-              <% if current_user.contact %>
-                <%= link_to 'My alerts', edit_school_contact_path(current_user.school, current_user.contact), class: 'dropdown-item' %>
-              <% else %>
-                <%= link_to 'My alerts', new_school_contact_path(current_user.school, user_id: current_user.id), class: 'dropdown-item' %>
-              <% end %>
-            </div>
-          </li>
-        <% end %>
-
-        <% if current_user && current_user.default_scoreboard %>
-          <li><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
-        <% end %>
-        <% if current_user && current_user.school_group %>
-          <li class="nav-item">
-            <%= link_to "#{current_user.school_group.name} Schools", school_group_path(current_user.school_group), class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "All Schools", schools_path, class: 'nav-link' %>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to "Schools", schools_path, class: 'nav-link' %>
-          </li>
-        <% end %>
-        <% if user_signed_in? && current_user.admin? %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage</a>
-              <div class="dropdown-menu">
-                <%= link_to "Activity Categories", activity_categories_path, class: 'dropdown-item' %>
-                <%= link_to "Activity Types", activity_types_path, class: 'dropdown-item' %>
-                <%= link_to "Programme Types", admin_programme_types_path, class: 'dropdown-item' %>
-                <%= link_to "Alert Types", admin_alert_types_path, class: 'dropdown-item' %>
-                <%= link_to "Calendars", admin_calendars_path, class: 'dropdown-item' %>
-                <%= link_to "Equivalence Types", admin_equivalence_types_path, class: 'dropdown-item' %>
-                <%= link_to "Manual School Setup", new_school_path, class: 'dropdown-item' %>
-                <%= link_to "Automatic School Setup", admin_school_onboardings_path, class: 'dropdown-item' %>
-                <%= link_to "School Groups", admin_school_groups_path, class: 'dropdown-item' %>
-                <%= link_to "Scoreboards", scoreboards_path, class: 'dropdown-item' %>
-                <%= link_to "Site Settings", admin_settings_path, class: 'dropdown-item' %>
-                <%= link_to "Users", users_path, class: 'dropdown-item' %>
-                <%= link_to "Reports", reports_path, class: 'dropdown-item' %>
-              </div>
-            </li>
-        <% end %>
-        <li class="nav-item">
-          <a href="http://blog.energysparks.uk" class="nav-link" target="_blank">Blog</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
-          <div class="dropdown-menu" aria-labelledby="aboutDropDown">
-            <%= link_to "For Teachers", for_teachers_path, class: 'dropdown-item' %>
-            <%= link_to "For Pupils", for_pupils_path, class: 'dropdown-item' %>
-            <%= link_to "Enrol", enrol_path, class: 'dropdown-item' %>
-            <%= link_to "Getting Started", getting_started_path, class: 'dropdown-item' %>
-            <%= link_to "Scoring", scoring_path, class: 'dropdown-item' %>
-            <%= link_to "Activities", activity_categories_path, class: 'dropdown-item' %>
-          </div>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Contact", contact_path, class: 'nav-link' %>
-        </li>
+        <%= render 'shared/common_nav_bar_menus' %>
         <span class="nav-lozenge">
           <li class="nav-item">
             <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>

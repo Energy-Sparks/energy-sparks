@@ -6,6 +6,12 @@ body {
   overflow-x: hidden;
 }
 
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
 body.sub-nav {
   margin-top: 110px;
 }
