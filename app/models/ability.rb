@@ -48,7 +48,11 @@ class Ability
         end
         can :read, :school_menu
       end
-      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash, :show_pupils_dash, :read, :usage, :start_programme], School, school_scope
+      can [
+        :update, :manage_school_times, :suggest_activity, :manage_users,
+        :show_teachers_dash, :show_pupils_dash, :show_management_dash,
+        :read, :usage, :start_programme
+      ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
