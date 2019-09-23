@@ -19,6 +19,9 @@
 #  management_dashboard_alert_end_date   :date
 #  management_dashboard_alert_start_date :date
 #  management_dashboard_title            :string
+#  management_priorities_end_date        :string
+#  management_priorities_start_date      :string
+#  management_priorities_title           :string
 #  public_dashboard_alert_end_date       :date
 #  public_dashboard_alert_start_date     :date
 #  public_dashboard_title                :string
@@ -91,7 +94,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :public_dashboard_title, :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
-      :find_out_more_chart_variable, :find_out_more_chart_title
+      :find_out_more_chart_variable, :find_out_more_chart_title,
+      :management_priorities_title
     ]
   end
 
@@ -103,7 +107,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :sms_start_date, :sms_end_date,
       :email_start_date, :email_end_date,
       :public_dashboard_alert_start_date, :public_dashboard_alert_end_date,
-      :management_dashboard_alert_start_date, :management_dashboard_alert_end_date
+      :management_dashboard_alert_start_date, :management_dashboard_alert_end_date,
+      :management_priorities_start_date, :management_priorities_end_date
     ]
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_19_085118) do
+ActiveRecord::Schema.define(version: 2019_09_23_093945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -200,6 +200,9 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
     t.date "management_dashboard_alert_start_date"
     t.date "management_dashboard_alert_end_date"
     t.string "management_dashboard_title"
+    t.string "management_priorities_title"
+    t.string "management_priorities_start_date"
+    t.string "management_priorities_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -232,6 +235,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
     t.boolean "pupil_dashboard_alert_active", default: false
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false
+    t.boolean "management_priorities_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
