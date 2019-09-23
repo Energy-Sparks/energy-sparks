@@ -201,8 +201,8 @@ ActiveRecord::Schema.define(version: 2019_09_23_104823) do
     t.date "management_dashboard_alert_end_date"
     t.string "management_dashboard_title"
     t.string "management_priorities_title"
-    t.string "management_priorities_start_date"
-    t.string "management_priorities_end_date"
+    t.date "management_priorities_start_date"
+    t.date "management_priorities_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 

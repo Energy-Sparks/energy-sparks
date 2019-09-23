@@ -19,8 +19,8 @@
 #  management_dashboard_alert_end_date   :date
 #  management_dashboard_alert_start_date :date
 #  management_dashboard_title            :string
-#  management_priorities_end_date        :string
-#  management_priorities_start_date      :string
+#  management_priorities_end_date        :date
+#  management_priorities_start_date      :date
 #  management_priorities_title           :string
 #  public_dashboard_alert_end_date       :date
 #  public_dashboard_alert_start_date     :date
