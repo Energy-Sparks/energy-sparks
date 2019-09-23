@@ -16,6 +16,8 @@
         <%= sanitize ap(@alert.chart_data, index: false, plain: true)%>
         <h5>Table data</h5>
         <%= sanitize ap(@alert.table_data, index: false, plain: true)%>
+        <h5>Priority data</h5>
+        <%= sanitize ap(@alert.priority_template_data, index: false, plain: true)%>
       </div>
       <div class="card-footer text-muted">
         <p class="card-text"><b>Rating</b>: <%= @alert.rating %></p>

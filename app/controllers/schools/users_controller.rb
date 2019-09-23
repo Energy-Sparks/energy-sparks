@@ -9,6 +9,7 @@ module Schools
       @school_admins = @users.school_admin
       @staff = @users.staff
       @pupils = @users.pupil
+      @management = @users.management
     end
 
     def destroy

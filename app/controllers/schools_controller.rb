@@ -183,6 +183,8 @@ private
   def redirect_to_dashboard
     if current_user.pupil?
       redirect_to pupils_school_path(@school), status: :found
+    elsif current_user.management?
+      redirect_to management_school_path(@school), status: :found
     else
       redirect_to teachers_school_path(@school), status: :found
     end

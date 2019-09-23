@@ -1,0 +1,5 @@
+<%= f.input :name, required: :true %>
+<%= f.input :email, required: :true %>
+<%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title %>
+
+<%= render 'schools/users/auto_create_alert_contact' %>

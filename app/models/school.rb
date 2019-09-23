@@ -236,4 +236,12 @@ class School < ApplicationRecord
   def authenticate_pupil(pupil_password)
     users.pupil.to_a.find {|user| user.pupil_password == pupil_password}
   end
+
+  def latest_management_priorities
+    if latest_content
+      latest_content.management_priorities
+    else
+      ManagementPriority.none
+    end
+  end
 end

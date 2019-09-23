@@ -109,3 +109,41 @@
 <% end %>
 
 <%= link_to 'New pupil account', new_school_pupil_path(@school), class: 'btn btn-primary' %>
+
+<h2 class="mt-2">Management accounts</h2>
+<p>Management accounts have access to management Energy Sparks functionality and alerts but cannot manage other accounts</p>
+
+<% if @management.any? %>
+  <table class="table table-condensed management">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Account confirmed?</th>
+        <th>Role</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @management.each do |user| %>
+        <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= y_n(user.confirmed?) %></td>
+            <td><%= user.staff_role.try(:title) %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to('Edit', edit_school_management_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
+                <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+              </div>
+            </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no management accounts for this school.</p>
+<% end %>
+
+<%= link_to 'New management account', new_school_management_path(@school), class: 'btn btn-primary' %>

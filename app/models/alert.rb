@@ -2,20 +2,21 @@
 #
 # Table name: alerts
 #
-#  alert_type_id   :bigint(8)        not null
-#  analytics_valid :boolean          default(TRUE), not null
-#  chart_data      :json
-#  created_at      :datetime         not null
-#  displayable     :boolean          default(TRUE), not null
-#  enough_data     :integer
-#  id              :bigint(8)        not null, primary key
-#  rating          :decimal(, )
-#  relevance       :integer          default("relevant")
-#  run_on          :date
-#  school_id       :bigint(8)        not null
-#  table_data      :json
-#  template_data   :json
-#  updated_at      :datetime         not null
+#  alert_type_id          :bigint(8)        not null
+#  analytics_valid        :boolean          default(TRUE), not null
+#  chart_data             :json
+#  created_at             :datetime         not null
+#  displayable            :boolean          default(TRUE), not null
+#  enough_data            :integer
+#  id                     :bigint(8)        not null, primary key
+#  priority_template_data :json
+#  rating                 :decimal(, )
+#  relevance              :integer          default("relevant")
+#  run_on                 :date
+#  school_id              :bigint(8)        not null
+#  table_data             :json
+#  template_data          :json
+#  updated_at             :datetime         not null
 #
 # Indexes
 #
