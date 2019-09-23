@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_23_101452) do
+ActiveRecord::Schema.define(version: 2019_09_23_104823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -555,6 +555,19 @@ ActiveRecord::Schema.define(version: 2019_09_23_101452) do
     t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
   end
 
+  create_table "management_priorities", force: :cascade do |t|
+    t.bigint "content_generation_run_id", null: false
+    t.bigint "alert_id", null: false
+    t.bigint "find_out_more_id"
+    t.bigint "alert_type_rating_content_version_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_management_priorities_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "mp_altrcv"
+    t.index ["content_generation_run_id"], name: "index_management_priorities_on_content_generation_run_id"
+    t.index ["find_out_more_id"], name: "index_management_priorities_on_find_out_more_id"
+  end
+
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "meter_type"
@@ -886,6 +899,10 @@ ActiveRecord::Schema.define(version: 2019_09_23_101452) do
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
+  add_foreign_key "management_priorities", "alert_type_rating_content_versions", on_delete: :restrict
+  add_foreign_key "management_priorities", "alerts", on_delete: :cascade
+  add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "management_priorities", "find_out_mores", on_delete: :nullify
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify
