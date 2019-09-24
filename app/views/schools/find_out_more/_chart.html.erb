@@ -2,6 +2,5 @@
   <% unless content.find_out_more_chart_title.blank? %>
     <h4 class="analysis"><%= content.find_out_more_chart_title %></h4>
   <% end %>
-  <%= chart_tag(school, chart_type.to_s, index: index, show_advice: false, chart_config: {y_axis_units: '£'}, html_class: 'analysis-chart find-out-more') %>
-  </div>
+  <%= chart_tag(school, chart.to_s, show_advice: false, chart_config: {y_axis_units: '£'}, html_class: 'analysis-chart find-out-more') %>
 </div>
