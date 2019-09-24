@@ -192,8 +192,8 @@ Rails.application.routes.draw do
   end
 
   namespace :pupils do
+    resource :session, only: [:create]
     resources :schools, only: :show do
-      resource :session, only: [:new, :create]
       get :analysis, to: 'analysis#index'
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
     end
