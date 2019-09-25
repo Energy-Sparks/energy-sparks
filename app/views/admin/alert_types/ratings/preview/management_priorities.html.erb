@@ -1,2 +1,1 @@
-<%# TODO: make like dashboard template %>
-<%= sanitize @content.management_priorities_title %>
+<%= render 'management/schools/priorities', management_priorities: [@content], school: @school %>
