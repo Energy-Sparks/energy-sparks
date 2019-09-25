@@ -12,7 +12,7 @@
           <label class="form-check-label">
             <input class="form-check-input" type="radio" name="supplyType"
                    id="supply-type-<%= type %>>" value="<%= type %>"
-                   <%= supply == type ? "checked" : "" %>
+                   <%= supply == type.to_s ? "checked" : "" %>
                    <%= disabled ? "" : "disabled" %> >
             <%= type.capitalize %>
           </label>
