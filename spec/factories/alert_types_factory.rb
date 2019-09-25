@@ -34,7 +34,7 @@ module Alerts
           table_data: {
             table: 'variables'
           },
-          priority_template_data: {
+          priority_data: {
             priority: 'variables'
           }
         )

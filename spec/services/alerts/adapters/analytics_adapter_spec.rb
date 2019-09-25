@@ -39,7 +39,7 @@ module Alerts
         {table: 'variables'}
       end
 
-      def priority_template_data
+      def priority_data
         {priority: 'variables'}
       end
 
@@ -109,7 +109,7 @@ module Alerts
       expect(normalised_report.template_data).to eq({template: 'variables'})
       expect(normalised_report.chart_data).to eq({chart: 'variables'})
       expect(normalised_report.table_data).to eq({table: 'variables'})
-      expect(normalised_report.priority_template_data).to eq({priority: 'variables'})
+      expect(normalised_report.priority_data).to eq({priority: 'variables'})
     end
 
     context 'where the alert type does not have enough data' do

@@ -22,6 +22,7 @@ module Admin
           content_version = AlertTypeRatingContentVersion.new(content_params.fetch(:content))
           @content = TemplateInterpolation.new(
             content_version,
+            with_objects: { find_out_more: nil },
             proxy: [:colour]
           ).interpolate(
             *AlertTypeRatingContentVersion.template_fields,
