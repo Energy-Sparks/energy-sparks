@@ -15,6 +15,9 @@ class HomeController < ApplicationController
   def for_pupils
   end
 
+  def for_management
+  end
+
   def contact
   end
 
