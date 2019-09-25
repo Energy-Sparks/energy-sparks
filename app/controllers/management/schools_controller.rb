@@ -21,7 +21,7 @@ module Management
     private
 
     def setup_priorities
-      @school.latest_management_priorities.limit(5).map do |priority|
+      @school.latest_management_priorities.by_priority.limit(5).map do |priority|
         TemplateInterpolation.new(
           priority.content_version,
           with_objects: { find_out_more: priority.find_out_more },

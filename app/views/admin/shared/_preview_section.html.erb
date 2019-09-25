@@ -13,6 +13,14 @@
       </a>
     </li>
   <% end %>
+  <% unless local_assigns[:no_weightings] %>
+    <li class="nav-item">
+      <a class="nav-link" href="#<%= scope %>-weightings" id="<%= scope %>-weightings-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-weightings" aria-selected="true">
+        <span class="text-danger d-none"><%= fa_icon('exclamation-triangle') %></span>
+        Priority weighting
+      </a>
+    </li>
+  <% end %>
   <li class="nav-item">
     <a class="nav-link preview-tab" href="#<%= scope %>-preview" id="<%= scope %>-preview-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-preview">
       Preview
@@ -36,6 +44,12 @@
           <%= content.input :"#{scope}_end_date", as: :tempus_dominus_date, label: 'End date' %>
         </div>
       </div>
+    </div>
+  <% end %>
+
+  <% unless local_assigns[:no_weightings] %>
+    <div class="tab-pane fade show" id="<%= scope %>-weightings" role="tabpanel" aria-labelledby="<%= scope %>-weightings-tab">
+      <%= content.input :"#{scope}_weighting", label: 'Weighting', hint: 'Normal range 0.0-10.0. Default 5.0' %>
     </div>
   <% end %>
 

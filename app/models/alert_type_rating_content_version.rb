@@ -9,31 +9,39 @@
 #  email_end_date                        :date
 #  email_start_date                      :date
 #  email_title                           :string
+#  email_weighting                       :float            default(5.0)
 #  find_out_more_chart_title             :string           default("")
 #  find_out_more_chart_variable          :text             default("none")
 #  find_out_more_content                 :text
 #  find_out_more_end_date                :date
 #  find_out_more_start_date              :date
 #  find_out_more_title                   :string
+#  find_out_more_weighting               :float            default(5.0)
 #  id                                    :bigint(8)        not null, primary key
 #  management_dashboard_alert_end_date   :date
 #  management_dashboard_alert_start_date :date
+#  management_dashboard_alert_weighting  :float            default(5.0)
 #  management_dashboard_title            :string
 #  management_priorities_end_date        :date
 #  management_priorities_start_date      :date
 #  management_priorities_title           :string
+#  management_priorities_weighting       :float            default(5.0)
 #  public_dashboard_alert_end_date       :date
 #  public_dashboard_alert_start_date     :date
+#  public_dashboard_alert_weighting      :float            default(5.0)
 #  public_dashboard_title                :string
 #  pupil_dashboard_alert_end_date        :date
 #  pupil_dashboard_alert_start_date      :date
+#  pupil_dashboard_alert_weighting       :float            default(5.0)
 #  pupil_dashboard_title                 :string
 #  replaced_by_id                        :integer
 #  sms_content                           :string
 #  sms_end_date                          :date
 #  sms_start_date                        :date
+#  sms_weighting                         :float            default(5.0)
 #  teacher_dashboard_alert_end_date      :date
 #  teacher_dashboard_alert_start_date    :date
+#  teacher_dashboard_alert_weighting     :float            default(5.0)
 #  teacher_dashboard_title               :string
 #  updated_at                            :datetime         not null
 #
@@ -51,6 +59,33 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id, optional: true
 
   enum colour: [:red, :yellow, :green]
+
+  def self.functionality
+    [
+      :teacher_dashboard_alert, :pupil_dashboard_alert,
+      :public_dashboard_alert, :management_dashboard_alert,
+      :management_priorities, :sms, :email
+    ]
+  end
+
+  def self.template_fields
+    [
+      :pupil_dashboard_title, :teacher_dashboard_title,
+      :public_dashboard_title, :management_dashboard_title,
+      :find_out_more_title, :find_out_more_content,
+      :email_title, :email_content, :sms_content,
+      :find_out_more_chart_variable, :find_out_more_chart_title,
+      :management_priorities_title
+    ]
+  end
+
+  def self.timing_fields
+    self.functionality.map {|function| [:"#{function}_start_date", :"#{function}_end_date"]}.flatten
+  end
+
+  def self.weighting_fields
+    self.functionality.map {|function| :"#{function}_weighting"}
+  end
 
   validates :colour, presence: true
 
@@ -74,43 +109,31 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active?},
     on: :create
+  validates :management_dashboard_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_dashboard_alert_active?},
+    on: :create
+  validates :management_priorities_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active?},
+    on: :create
+
+  functionality.each do |function|
+    validates :"#{function}_weighting",
+      numericality: { greater_than_or_equal_to: 0 },
+      if: ->(content) { content.alert_type_rating && content.alert_type_rating.read_attribute(:"#{function}_active")}
+  end
 
   validate on: :create do |content|
     if content.alert_type_rating
-      content.timings_are_correct(:find_out_more) if content.alert_type_rating.find_out_more_active?
-      content.timings_are_correct(:sms) if content.alert_type_rating.sms_active?
-      content.timings_are_correct(:email) if content.alert_type_rating.email_active?
-      content.timings_are_correct(:teacher_dashboard_alert) if content.alert_type_rating.teacher_dashboard_alert_active?
-      content.timings_are_correct(:pupil_dashboard_alert) if content.alert_type_rating.pupil_dashboard_alert_active?
+      self.class.functionality.each do |function|
+        content.timings_are_correct(function) if content.alert_type_rating.read_attribute(:"#{function}_active")
+      end
     end
   end
 
   scope :latest, -> { where(replaced_by_id: nil) }
 
-
-  def self.template_fields
-    [
-      :pupil_dashboard_title, :teacher_dashboard_title,
-      :public_dashboard_title, :management_dashboard_title,
-      :find_out_more_title, :find_out_more_content,
-      :email_title, :email_content, :sms_content,
-      :find_out_more_chart_variable, :find_out_more_chart_title,
-      :management_priorities_title
-    ]
-  end
-
-  def self.timing_fields
-    [
-      :teacher_dashboard_alert_start_date, :teacher_dashboard_alert_end_date,
-      :pupil_dashboard_alert_start_date, :pupil_dashboard_alert_end_date,
-      :find_out_more_start_date, :find_out_more_end_date,
-      :sms_start_date, :sms_end_date,
-      :email_start_date, :email_end_date,
-      :public_dashboard_alert_start_date, :public_dashboard_alert_end_date,
-      :management_dashboard_alert_start_date, :management_dashboard_alert_end_date,
-      :management_priorities_start_date, :management_priorities_end_date
-    ]
-  end
 
   def meets_timings?(scope:, today:)
     start_date, end_date = start_end_end_date(scope)

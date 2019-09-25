@@ -2,24 +2,13 @@ module Pupils
   class SchoolsController < ApplicationController
     include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
+    include DashboardAlerts
 
     load_and_authorize_resource
 
     def show
       authorize! :show_pupils_dash, @school
-      @dashboard_alerts = @school.latest_dashboard_alerts.pupil_dashboard.sample(2).map do |dashboard_alert|
-        TemplateInterpolation.new(
-          dashboard_alert.content_version,
-          with_objects: {
-            find_out_more: dashboard_alert.find_out_more,
-            alert: dashboard_alert.alert
-          },
-          proxy: [:colour]
-        ).interpolate(
-          :pupil_dashboard_title,
-          with: dashboard_alert.alert.template_variables
-        )
-      end
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.pupil_dashboard, :pupil_dashboard_title, limit: 2)
       activity_setup(@school)
       equivalence_setup(@school)
 
