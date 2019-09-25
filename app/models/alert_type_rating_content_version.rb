@@ -74,6 +74,14 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active?},
     on: :create
+  validates :management_dashboard_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_dashboard_alert_active?},
+    on: :create
+  validates :management_priorities_title,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active?},
+    on: :create
 
   validate on: :create do |content|
     if content.alert_type_rating
@@ -82,6 +90,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       content.timings_are_correct(:email) if content.alert_type_rating.email_active?
       content.timings_are_correct(:teacher_dashboard_alert) if content.alert_type_rating.teacher_dashboard_alert_active?
       content.timings_are_correct(:pupil_dashboard_alert) if content.alert_type_rating.pupil_dashboard_alert_active?
+      content.timings_are_correct(:management_dashboard_alert) if content.alert_type_rating.management_dashboard_alert_active?
+      content.timings_are_correct(:management_priorities) if content.alert_type_rating.management_priorities_active?
     end
   end
 
