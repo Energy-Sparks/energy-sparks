@@ -48,6 +48,7 @@
 <% end %>
 
 <% if @school.configuration %>
+  <div class="h5"><%= link_to "Review your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %></div>
   <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :group_by_week_electricity) %>
     <h2>Annual electricity overview</h2>
 
