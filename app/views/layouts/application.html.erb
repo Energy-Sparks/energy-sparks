@@ -4,10 +4,15 @@
     <%= render 'shared/head' %>
   </head>
   <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school, @hide_subnav) %>">
-    <%= render 'shared/nav' %>
-    <%= render 'shared/sub_nav', podium: current_school_podium, school: @school if show_sub_nav?(@school, @hide_subnav) %>
+    <% if show_sub_nav?(@school, @hide_subnav) %>
+      <%= render 'shared/mini_nav' %>
+      <%= render 'shared/sub_nav', podium: current_school_podium, school: @school %>
+    <% else %>
+      <%= render 'shared/nav' %>
+    <% end %>
+
     <div class="application container <%= 'extra-padding' unless show_sub_nav?(@school, @hide_subnav) %>">
-      <%= render 'shared/alerts' %>
+      <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>
     </div>
     <%= render 'shared/footer' %>

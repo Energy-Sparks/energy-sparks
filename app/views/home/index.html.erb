@@ -2,86 +2,107 @@
 
 <!-- Header -->
 <header>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <%= image_tag("logo-transparent.png", class: "img-fluid") %>
-        <div class="h1">Helping our schools become more energy efficient</div>
+  <div class="row masthead">
+    <div class="col-7">
+    </div>
+    <div class="col-5 masthead-content">
+      <div class="row pt-5">
+        <div class="col">
+        <p class="headline-text">We help schools become more energy efficient</p>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col">
+        <p class="headline-sub-text">Energy Sparks is an online, school-specific energy analysis tool and energy education programme.</p>
+        </div>
+      </div>
+      <div class="row ">
+
+        <div class="col-md-8 offset-md-3">
+        <%= link_to sanitize("Get started&hellip;"), '#', class: 'btn bg-positive' %>
+        </div>
       </div>
     </div>
   </div>
 </header>
 
-<section class="padded-section" id="participating">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <h2>Participating Schools</h2>
-        <hr class="bulb-primary">
+<div id="carousel-example-1z" class="carousel slide pt-2 pb-2" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-1z" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-1z" data-slide-to="1"></li>
+    <li data-target="#carousel-example-1z" data-slide-to="2"></li>
+    <li data-target="#carousel-example-1z" data-slide-to="3"></li>
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    <div class="carousel-item active text-center p-4">
+      <div class="row">
+        <div class="col-1 offset-md-2"><i class="fas fa-coins fa-4x"></i></div>
+        <div class="col-6"><h2>Help your school save energy, money and prevent climate change.</h2></div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <h3><%= link_to pluralize(@active_schools, "school"), schools_path %> currently enrolled</h3>
-        <p>Find out more about <%= link_to "how to enrol", enrol_path %></p>
+    <div class="carousel-item text-center p-4">
+      <div class="row">
+        <div class="col-1 offset-md-2"><i class="fas fa-chart-line fa-4x"></i></div>
+        <div class="col-6"><h2>Show your school how much and when you are using energy.</h2> </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- About Section -->
-<section class="padded-section highlight" id="get-involved">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <h2>Get Involved</h2>
-        <hr class="bulb-light">
+    <div class="carousel-item text-center p-4">
+      <div class="row">
+        <div class="col-1 offset-md-2"><i class="fas fa-bell-exclamation fa-4x"></i></div>
+        <div class="col-6"><h4>Get tailored energy saving advice designed just for your school and automated alerts to let you know when your energy use changes.</h4></div>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-4">
-        <p>
-          <%= t('application') %> helps make school energy usage data more accessible for everyone.
-        </p>
-        <p>
-          Empower your pupils, school staff and parents to take action to make your school more energy efficient.
-        </p>
-        <p>
-          See school specific analysis which presents both short and long-term energy saving opportunities.
-        </p>
-      </div>
-      <div class="col-lg-4">
-        <p>
-          Discover energy related activities for primary and secondary pupils with supporting online resources that guide pupils through an energy saving programme.
-        </p>
-        <p>
-          <%= link_to "Contact us", contact_path %> to learn how you can get involved.
-        </p>
+    <div class="carousel-item text-center p-4">
+      <div class="row">
+        <div class="col-1 offset-md-2"><i class="fas fa-lightbulb-on fa-4x"></i></div>
+        <div class="col-6"><h3>Share energy saving ideas, compare energy use and compete against other schools.</h3></div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- Sponsors -->
-<section class="padded-section" id="partners">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <h2>Partners</h2>
-        <hr class="bulb-primary">
+<div class="funnels mt-3">
+  <div class="application container">
+    <div class="card-deck pt-5">
+      <div class="card">
+        <div class="card-image">
+        <%= image_tag("funnel-manager.png", class: "img-fluid funnel-image") %>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">For school management&hellip;</h4>
+          <p class="card-text">Online charting and analysis of your school's energy use using up to date smart meter data. Notifications of changes in energy consumption.</p>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Energy Sparks for Managers', for_management_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <p>
-          Energy Sparks is a product of Transition Bath. Significant ongoing funding is being provided by the Department of Business, Energy and Industrial Strategy.
-          We are currently working with partners at Bath and North East Somerset Council, Somerset Council, Sheffield City Council and Oxfordshire County Council.
-        </p>
-        <p>
-          Additional sponsorship and support has been provided by Bath:Hacked, the Open Data Institute, Bath &amp; West Community Energy, the Naturesave Trust and the OVO Foundation.
-        </p>
+      <div class="card">
+        <div class="card-image">
+          <%= image_tag("funnel-teachers.png", class: "img-fluid  funnel-image") %>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">For teachers &hellip;</h4>
+          <p class="card-text">Eco-team and curriculum linked energy education and saving activities. Energy related lesson plans and downloadable resources.</p>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Energy Sparks for Teachers', for_teachers_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">
+          <%= image_tag("funnel-pupils.png", class: "img-fluid  funnel-image") %>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">For pupils &hellip;</h4>
+          <p class="card-text">Provides lots of exciting activities for eco-teams to follow. Opportunities to compete with other local schools to see who can save the most energy.</p>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Energy Sparks for Pupils', for_pupils_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+        </div>
+
       </div>
     </div>
   </div>
-</section>
+</div>
 
+<%= render 'testimonial' %>

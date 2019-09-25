@@ -3,40 +3,37 @@
   <div class="footer-above">
     <div class="container">
       <div class="row">
-        <div class="col-md-8">
-          <h4>Energy Sparks</h4>
-        </div>
-        <div class="col-md-4">
-          <h4>Links</h4>
+        <div class="col-4">
+          <p class="very-small">
+            Energy Sparks is a product of <a href="//transitionbath.org">Transition Bath</a>, a registered charity in England and Wales, registration 1139853 and a company limited by guarantee, registration 6898132. It provides free access to all schools.
+          </p>
+          <div class="row">
+            <div class="col-2">
+<%= fab_icon('creative-commons fa-2x') %>
+</div>
+<div class="col-10">
+
+          <p class="very-small">
+
+
+          Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>.
+          </p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-4">
-          <p class="small">An online, school-specific energy analysis tool and energy education programme.</p>
-          <p class="small">For feedback &amp; questions, please email: <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></p>
         </div>
-        <div class="col-md-4">
-          <p class="small">
-            Energy Sparks is a product of <a href="//transitionbath.org">Transition Bath</a>, a registered charity in England and Wales, registration 1139853 and a company limited by guarantee, registration 6898132.
-          </p>
-          <ul class="text-center list-inline">
-            <li class="list-inline-item">
-              <a href="https://www.facebook.com/EnergySparksUK/" class="btn-social btn-outline"><%= fab_icon('facebook-f') %></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://twitter.com/EnergySparks" class="btn-social btn-outline"><%= fab_icon('twitter') %></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://github.com/BathHacked/energy-sparks" class="btn-social btn-outline"><%= fab_icon('github') %></a>
-            </li>
+        <div class="col-5">
+          <h6>More information</h6>
+          <div class="row">
+            <div class="col">
+          <ul class="list-unstyled">
+            <li><%= link_to "Energy Sparks for Teachers", for_teachers_path %></li>
+            <li><%= link_to "Energy Sparks For Pupils", for_pupils_path %></li>
+            <li><%= link_to "Contact us", contact_path %></li>
+            <li><%= link_to "Register your school", enrol_path %></li>
           </ul>
         </div>
-        <div class="col-md-4">
-          <ul class="list-unstyled">
-            <li><%= link_to "For Teachers", for_teachers_path %></li>
-            <li><%= link_to "For Pupils", for_pupils_path %></li>
-            <li><%= link_to "Contact", contact_path %></li>
-            <li><%= link_to "Enrol", enrol_path %></li>
+        <div class="col justify-center">
+           <ul class="list-unstyled">
             <li><%= link_to "Team", team_path %></li>
             <li><%= link_to "Partners", team_path(anchor: "partners") %></li>
             <li><%= link_to "Open data", datasets_path %></li>
@@ -44,17 +41,32 @@
           </ul>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="footer-below">
-    <div class="container">
-      <div class="row">
-        <div class="text-center col-lg-12">
-          Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>.
+
+
+
+        </div>
+
+        <div class="col-3">
+          <h6>Follow Energy Sparks</h6>
+          <ul class="list-inline">
+            <li class="list-inline-item p-2">
+              <a href="https://twitter.com/energy_sparks" class=""><%= fab_icon('twitter fa-2x') %></a>
+            </li>
+            <li class="list-inline-item p-2">
+              <a href="https://www.facebook.com/EnergySparksUK/" class=""><%= fab_icon('facebook-square fa-2x') %></a>
+            </li>
+            <li class="list-inline-item p-2">
+              <a href="https://github.com/BathHacked/energy-sparks" class=""><%= fab_icon('github fa-2x') %></a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+
         </div>
       </div>
-    </div>
-  </div>
+
 </footer>
 
 <%= render 'shared/google_analytics', analytics_code: @analytics_code if Rails.env.production? && !@analytics_code.blank? %>
