@@ -73,11 +73,19 @@ li.nav-item a.btn:hover,
 li.nav-item a.btn:focus,
 li.nav-item a.btn:active {
  // float: right;
+  margin-bottom: 3px;
   color: $dark;
   margin-right: 2px;
   margin-left: 2px;
+}
 
-
+.sub-nav  {
+  li.nav-item a.btn,
+  li.nav-item a.btn:hover,
+  li.nav-item a.btn:focus,
+  li.nav-item a.btn:active {
+    margin-bottom: 0px;
+  }
 }
 
 .card-deck.activities {

@@ -24,10 +24,4 @@
   <%= link_to "Contact", contact_path, class: 'nav-link' %>
 </li>
 
-<% unless current_user %>
-  <li class="nav-item">
-    <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>
-  </li>
-<% end %>
-
 <%= render 'shared/manage_menu' if user_signed_in? && current_user.admin? %>

@@ -6,12 +6,6 @@ body {
   overflow-x: hidden;
 }
 
-// @media (min-width: 1200px) {
-//   .container {
-//     max-width: 1320px;
-//   }
-// }
-
 body.sub-nav {
   margin-top: 110px;
 }
@@ -106,4 +100,9 @@ div.meter-attributes {
 // OK for us as we don't render invalid feedback unless there is an error
 .invalid-feedback {
   display: block !important;
+}
+
+
+.funnel-image {
+  border-radius: 0.5rem 0.5rem;
 }
