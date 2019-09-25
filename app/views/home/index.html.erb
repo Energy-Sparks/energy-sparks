@@ -2,9 +2,26 @@
 
 <!-- Header -->
 <header>
-  <div class="row">
-    <div class="col-lg-12">
-      <%= image_tag("masthead.png", class: "img-fluid masthead") %>
+  <div class="row masthead">
+    <div class="col-7">
+    </div>
+    <div class="col-5 masthead-content">
+      <div class="row pt-5">
+        <div class="col">
+        <p class="headline-text">We help schools become more energy efficient</p>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col">
+        <p class="headline-sub-text">Energy Sparks is an online, school-specific energy analysis tool and energy education programme.</p>
+        </div>
+      </div>
+      <div class="row ">
+
+        <div class="col-md-8 offset-md-3">
+        <%= link_to sanitize("Get started&hellip;"), '#', class: 'btn bg-positive' %>
+        </div>
+      </div>
     </div>
   </div>
 </header>

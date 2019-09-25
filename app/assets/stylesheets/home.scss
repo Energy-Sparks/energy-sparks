@@ -3,10 +3,6 @@ header {
   background-position: center;
 }
 
-.masthead {
-  padding-top: 30px;
-}
-
 header .container {
   padding-top: 50px;
   padding-bottom: 50px;
@@ -14,8 +10,45 @@ header .container {
 
 header img {
   display: block;
-  margin: 0 auto 20px;
+  margin: 0 auto 0px;
 }
+
+.masthead {
+  background-image: image-url('background-image.png');
+  padding: 0 10px 0 0;
+  color: white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 650px;
+}
+
+@media (min-width: 768px) {
+  .headline-text {
+    font-size: 40px;
+  }
+  .headline-sub-text {
+    font-size: 20px;
+  }
+  .masthead .btn {
+    font-size: 18px;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1140px) {
+  .headline-text {
+    font-size: 50px;
+  }
+  .headline-sub-text {
+    font-size: 30px;
+  }
+  .masthead .btn {
+    font-size: 30px;
+    padding: 20px;
+  }
+}
+
 
 @media (min-width: 768px) {
   header .container {
