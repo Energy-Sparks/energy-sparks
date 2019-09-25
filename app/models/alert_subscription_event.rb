@@ -12,6 +12,7 @@
 #  find_out_more_id                     :bigint(8)
 #  id                                   :bigint(8)        not null, primary key
 #  message                              :text
+#  priority                             :float            default(0.0), not null
 #  status                               :integer          default("pending"), not null
 #  unsubscription_uuid                  :string
 #  updated_at                           :datetime         not null
@@ -45,4 +46,6 @@ class AlertSubscriptionEvent < ApplicationRecord
 
   enum status: [:pending, :sent]
   enum communication_type: [:email, :sms]
+
+  validates :priority, numericality: true
 end

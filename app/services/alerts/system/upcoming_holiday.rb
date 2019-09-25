@@ -48,6 +48,9 @@ module Alerts
               holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
               holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
               holiday_title: next_holiday.title
+            },
+            priority_data: {
+              time_of_year_relevance: 10.0
             }
           )
         else

@@ -49,6 +49,7 @@ describe Alerts::GenerateDashboardAlerts do
         teacher_alert = content_generation_run.dashboard_alerts.teacher_dashboard.first
         expect(teacher_alert.alert).to eq(alert)
         expect(teacher_alert.content_version).to eq(content_version)
+        expect(teacher_alert.priority).to eq(0.15)
 
         pupil_alert = content_generation_run.dashboard_alerts.pupil_dashboard.first
         expect(pupil_alert.alert).to eq(alert)

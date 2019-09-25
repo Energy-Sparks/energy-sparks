@@ -7,7 +7,7 @@ describe Alerts::FetchContent do
 
   let(:rating){ 5.0 }
   let(:displayable){ true }
-  let!(:alert){ create(:alert, school: school, rating: rating, displayable: displayable)}
+  let!(:alert){ create(:alert, school: school, rating: rating, displayable: displayable,  priority_data: {'time_of_year_relevance' => 7.0})}
   let!(:alert_type_rating){ create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, find_out_more_active: true}
 
   let(:service) { Alerts::FetchContent.new(alert) }
@@ -91,5 +91,24 @@ describe Alerts::FetchContent do
     it 'returns no content' do
       expect(service.content_versions(scope: :find_out_more)).to match_array([])
     end
+  end
+
+  describe 'with score' do
+
+    let!(:content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating, find_out_more_weighting: 4}
+
+    it 'calculates the scores based on the rating, time_of_year_relevance and weighting' do
+      expect(service.content_versions_with_priority(scope: :find_out_more)).to match_array([[content_version, 0.168]])
+    end
+
+    context 'where the alert returns no time_of_year_relevance' do
+      let!(:alert){ create(:alert, school: school, rating: rating, displayable: displayable,  priority_data: {})}
+
+      it 'uses 5.0' do
+        expect(service.content_versions_with_priority(scope: :find_out_more)).to match_array([[content_version, 0.12 ]])
+      end
+
+    end
+
   end
 end

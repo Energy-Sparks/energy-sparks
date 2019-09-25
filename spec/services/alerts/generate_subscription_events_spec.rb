@@ -53,6 +53,7 @@ describe Alerts::GenerateSubscriptionEvents do
           service.perform(frequency: [:weekly])
           alert_subscription_event = content_generation_run.alert_subscription_events.first
           expect(alert_subscription_event.find_out_more).to eq(find_out_more)
+          expect(alert_subscription_event.priority).to eq(0.15)
         end
 
         it 'does not assign the find out more if it is from different content' do
