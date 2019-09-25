@@ -56,6 +56,12 @@
     <% end %>
   <% end %>
 
+  <%= render 'content_section', form: form, field: :management_priorities_active, field_name: 'Management priorities' do %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'management_priorities', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :management_priorities) do %>
+      <%= content.input :management_priorities_title %>
+    <% end %>
+  <% end %>
+
   <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'find_out_more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
       <%= content.input :find_out_more_chart_variable, as: :radio_buttons, collection: @available_charts %>

@@ -9,6 +9,7 @@
 #  displayable     :boolean          default(TRUE), not null
 #  enough_data     :integer
 #  id              :bigint(8)        not null, primary key
+#  priority_data   :json
 #  rating          :decimal(, )
 #  relevance       :integer          default("relevant")
 #  run_on          :date

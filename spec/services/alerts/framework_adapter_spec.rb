@@ -14,7 +14,8 @@ describe Alerts::FrameworkAdapter do
       enough_data: :enough,
       template_data: {template: 'variables'},
       chart_data: {chart: 'variables'},
-      table_data: {table: 'variables'}
+      table_data: {table: 'variables'},
+      priority_data: {priority: 'variables'}
     )
   end
 
