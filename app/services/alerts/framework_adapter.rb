@@ -31,18 +31,18 @@ module Alerts
 
     def build_alert(analysis_report)
       Alert.new(
-        school_id:              @school.id,
-        alert_type_id:          @alert_type.id,
-        run_on:                 @analysis_date,
-        displayable:            analysis_report.displayable?,
-        analytics_valid:        analysis_report.valid,
-        rating:                 analysis_report.rating,
-        enough_data:            analysis_report.enough_data,
-        relevance:              analysis_report.relevance,
-        template_data:          analysis_report.template_data,
-        chart_data:             analysis_report.chart_data,
-        table_data:             analysis_report.table_data,
-        priority_template_data: analysis_report.priority_template_data
+        school_id:        @school.id,
+        alert_type_id:    @alert_type.id,
+        run_on:           @analysis_date,
+        displayable:      analysis_report.displayable?,
+        analytics_valid:  analysis_report.valid,
+        rating:           analysis_report.rating,
+        enough_data:      analysis_report.enough_data,
+        relevance:        analysis_report.relevance,
+        template_data:    analysis_report.template_data,
+        chart_data:       analysis_report.chart_data,
+        table_data:       analysis_report.table_data,
+        priority_data:    analysis_report.priority_data
       )
     end
   end
