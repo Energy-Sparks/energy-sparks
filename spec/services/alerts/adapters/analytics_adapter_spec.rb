@@ -39,7 +39,7 @@ module Alerts
         {table: 'variables'}
       end
 
-      def priority_data
+      def priority_template_data
         {priority: 'variables'}
       end
 

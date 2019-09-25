@@ -33,4 +33,6 @@ class ManagementPriority < ApplicationRecord
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
   validates :priority, numericality: true
+
+  scope :by_priority, -> { order(priority: :desc) }
 end

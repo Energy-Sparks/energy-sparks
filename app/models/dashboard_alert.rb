@@ -36,4 +36,6 @@ class DashboardAlert < ApplicationRecord
   enum dashboard: [:teacher, :pupil, :public, :management], _suffix: :dashboard
 
   validates :priority, numericality: true
+
+  scope :by_priority, -> { order(priority: :desc) }
 end

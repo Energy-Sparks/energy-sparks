@@ -48,4 +48,6 @@ class AlertSubscriptionEvent < ApplicationRecord
   enum communication_type: [:email, :sms]
 
   validates :priority, numericality: true
+
+  scope :by_priority, -> { order(priority: :desc) }
 end

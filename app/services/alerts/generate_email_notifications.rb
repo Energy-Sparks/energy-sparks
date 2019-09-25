@@ -2,7 +2,7 @@ module Alerts
   class GenerateEmailNotifications
     def perform
       Contact.all.each do |contact|
-        events = contact.alert_subscription_events.where(status: :pending, communication_type: :email)
+        events = contact.alert_subscription_events.where(status: :pending, communication_type: :email).by_priority
         if events.any?
           email = Email.create(contact: contact)
           events.update_all(email_id: email.id)
