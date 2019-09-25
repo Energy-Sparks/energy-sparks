@@ -66,22 +66,18 @@ a.nav-link.active {
     font-weight: bold;
     color: white;
   }
-
-  .sub-navbar,
-  .nav-lozenge {
-    .btn,
-    .btn:hover,
-    .btn:focus,
-    .btn:active,
-    .btn.active {
-      float: right;
-      color: $dark;
-    }
-  }
 }
 
-.sub-navbar .nav-item a:hover {
-  background-color: $light-orange;
+li.nav-item a.btn,
+li.nav-item a.btn:hover,
+li.nav-item a.btn:focus,
+li.nav-item a.btn:active {
+ // float: right;
+  color: $dark;
+  margin-right: 2px;
+  margin-left: 2px;
+
+
 }
 
 .card-deck.activities {
@@ -143,20 +139,4 @@ section.highlight {
     color: $dark-blue;
     outline: none;
   }
-}
-
-.navbar-custom .navbar-nav li.active {
-  a
-  a:hover,
-  a:focus,
-  a:active {
-    background: $light-blue;
-  }
-}
-
-.sub-navbar li.nav-item a,
-.sub-navbar li.nav-item a:hover,
-.sub-navbar li.nav-item a:focus,
-.sub-navbar li.nav-item a:active {
-    color: black;
 }

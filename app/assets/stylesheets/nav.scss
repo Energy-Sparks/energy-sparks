@@ -1,32 +1,20 @@
 .navbar {
-
   border-radius: 0;
   background: $dark-blue;
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
   font-weight: 400;
   border: none;
-
-  .dropdown-item:hover {
-    color: $dark;
-  }
-
-  a:focus {
-    outline: none;
-  }
-
   padding: 1px;
 
-  .navbar-brand {
-      color: white;
-      padding-top: 0rem;
-  }
-
+  .navbar-brand,
   .navbar-brand:hover,
   .navbar-brand:focus,
   .navbar-brand:active,
   .navbar-brand.active {
     color: white;
+    font-size: 18px;
   }
+
   .navbar-nav {
     letter-spacing: 1px;
   }
@@ -43,23 +31,22 @@
     color: white;
     border-color: $light-blue;
   }
-  @media (min-width: 768px) {
-    .navbar-brand {
-      font-size: 25.9px;
-      -webkit-transition: all 0.3s;
-      -moz-transition: all 0.3s;
-      transition: all 0.3s;
-    }
-  }
 
   .dropdown-menu {
     background: $dark-blue;
   }
 
-  .custom-toggler.navbar-toggler {
-    border-color: rgb(255,255,255);
+  .dropdown-item:hover {
+    color: $dark;
   }
-  .custom-toggler .navbar-toggler-icon {
+
+  .navbar-toggler {
+    border-color: rgb(255,255,255);
+    margin: 6px;
+  }
+  .navbar-toggler-icon {
+    width: 1em;
+    height: 1.25em;
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
   }
 }
@@ -70,17 +57,6 @@
   .nav-item {
     color: white;
   }
-
-  .navbar-brand {
-    font-size: 18px;
-  }
-
-  .navbar-toggler {
-    border-color: rgb(255,255,255);
-  }
-  .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-  }
 }
 
 .nav-item {
@@ -90,29 +66,24 @@
 .sub-navbar {
   z-index: 10;
 
-    .nav-link {
+  .nav-link {
     display: inline;
     text-align: center;
     vertical-align: center;
     padding: 0;
   }
-}
 
-.sub-navbar a.btn {
-    margin-right: 2px;
-    margin-left: 2px;
-}
-
-.sub-navbar div.container.d-flex {
-  div.bd-highlight.school-name {
-    max-width: 45%;
+  @media (min-width: 992px) {
+    .navbar-brand {
+      font-size: 22px;
+    }
   }
+
 }
 
 .fixed-top-sub-nav {
     margin-top: 46px;
 }
-
 
 /* Trouble */
 /* Top, Right, Bottom, Left */
@@ -122,12 +93,14 @@
   background-image: linear-gradient(180deg, #252E50 0%, #374268 99%);
   border-radius: 25px;
   border: 1px solid #161D37;
-  padding: 7px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding: 5px;
 
   .nav-link {
     display: inline;
     text-align: center;
     vertical-align: center;
-    padding: 0;
+    padding: 0px;
   }
 }

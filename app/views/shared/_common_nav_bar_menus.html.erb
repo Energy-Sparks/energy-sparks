@@ -15,7 +15,6 @@
     <%= link_to "Schools", schools_path, class: 'nav-link' %>
   </li>
 <% end %>
-<%= render 'shared/manage_menu' if user_signed_in? && current_user.admin? %>
 
 <li class="nav-item">
   <a href="http://blog.energysparks.uk" class="nav-link" target="_blank">Blog</a>
@@ -24,6 +23,11 @@
 <li class="nav-item">
   <%= link_to "Contact", contact_path, class: 'nav-link' %>
 </li>
-<li class="nav-item">
-  <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>
-</li>
+
+<% unless current_user %>
+  <li class="nav-item">
+    <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>
+  </li>
+<% end %>
+
+<%= render 'shared/manage_menu' if user_signed_in? && current_user.admin? %>

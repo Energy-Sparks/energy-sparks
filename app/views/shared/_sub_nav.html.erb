@@ -1,56 +1,22 @@
 <!-- the expand-xl sets the breakpoint as to when to collapse the menu -->
-<nav class="navbar navbar-expand-xl navbar-custom fixed-top fixed-top-sub-nav">
-  <div class="container d-flex align-items-stretch justify-content-sm-between bd-highlight">
-    <div class="school-name align-self-center">
-      <h4><%= link_to school.name, school_path(school) %></h4>
-    </div>
-
-    <div class="align-self-center">
-      <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top fixed-top-sub-nav sub-navbar">
+  <div class="container">
+    <%= link_to school.name, school_path(school), class: "navbar-brand" %>
+    <div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse justify-content-end" id="subnavbarNavDropdown">
+      <div class="collapse navbar-collapse" id="subnavbarNavDropdown">
+        <ul class="navbar-nav">
+          <%= render 'shared/dashboards' %>
 
-        <ul class="nav navbar-nav">
-
-          <li class="nav-item p-2">
-            <%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'btn btn-sm' if show_pupils_dashboard_button? %>
-          </li>
-          <li class="nav-item  p-2">
-            <%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'btn btn-sm' if show_teachers_dashboard_button? %>
-          </li>
-
-          <%- if can? :update, school -%>
-            <li class="nav-item dropdown p-2">
-              <a class="dropdown-toggle btn btn-sm" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
-              <div class="dropdown-menu">
-                <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
-                <%= link_to 'Calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
-                <%= link_to 'Data feed configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
-                <%= link_to 'Manage groups', edit_school_school_group_path(school), class: 'dropdown-item' if can? :group, school %>
-                <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
-                <%= link_to 'Manage Low carbon hub installations', school_low_carbon_hub_installations_path(school), class: 'dropdown-item' if can? :manage, LowCarbonHubInstallation %>
-                <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
-                <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
-                <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
-                <%= link_to 'Alert reports', school_alert_reports_path(school), class: 'dropdown-item' if can? :index, Alert %>
-                <%= link_to 'Alert subscription events', school_alert_subscription_events_path(school), class: 'dropdown-item' if can? :index, AlertSubscriptionEvent %>
-                <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
-              </div>
-            </li>
-          <%- end -%>
+          <%= render 'shared/manage_school', school: @school if can? :update, school %>
 
           <span class="nav-lozenge">
             <li class="nav-item">
               <% if podium %>
                 <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>
                   <% if school.active? && podium.includes_school? %>
-                    <div class="nav-link">
-                      <%= fa_icon('crown') %>
-                    </div>
-                    <div class="nav-link">
-                      <%= podium.school_position.ordinal %>
-                    </div>
                     <% if podium.includes_school? %>
                       <%= podium.school_position.points %> points
                       <% if podium.school_position.recent_points > 0 %>
@@ -59,19 +25,23 @@
                     <% else %>
                       No points yet
                     <% end %>
+
+                    <div class="nav-link">
+                      <%= fa_icon('crown') %>
+                    </div>
+                    <div class="nav-link">
+                      <%= podium.school_position.ordinal %>
+                    </div>
+
                   <% end %>
                 <% end %>
               <% end %>
-              <%= link_to 'Scoreboard', scoreboard_path(@school.scoreboard),  class: 'btn btn-sm' if school.scoreboard %>
+
             </li>
           </span>
-
-
-
-
-
         </ul>
       </div>
     </div>
   </div>
 </nav>
+

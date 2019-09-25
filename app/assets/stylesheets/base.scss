@@ -2,15 +2,15 @@ body {
   font-family: 'Quicksand', sans-serif;
   font-weight: 500;
   font-size: 18px;
-  margin-top: 18  px;
+  margin-top: 18px;
   overflow-x: hidden;
 }
 
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1320px;
-  }
-}
+// @media (min-width: 1200px) {
+//   .container {
+//     max-width: 1320px;
+//   }
+// }
 
 body.sub-nav {
   margin-top: 110px;
