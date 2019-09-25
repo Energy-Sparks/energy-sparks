@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_19_085118) do
+ActiveRecord::Schema.define(version: 2019_09_25_104439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -200,6 +200,9 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
     t.date "management_dashboard_alert_start_date"
     t.date "management_dashboard_alert_end_date"
     t.string "management_dashboard_title"
+    t.string "management_priorities_title"
+    t.date "management_priorities_start_date"
+    t.date "management_priorities_end_date"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -232,6 +235,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
     t.boolean "pupil_dashboard_alert_active", default: false
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false
+    t.boolean "management_priorities_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
@@ -261,6 +265,7 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
     t.boolean "analytics_valid", default: true, null: false
     t.integer "enough_data"
     t.integer "relevance", default: 0
+    t.json "priority_data", default: {}
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
@@ -548,6 +553,19 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
+  end
+
+  create_table "management_priorities", force: :cascade do |t|
+    t.bigint "content_generation_run_id", null: false
+    t.bigint "alert_id", null: false
+    t.bigint "find_out_more_id"
+    t.bigint "alert_type_rating_content_version_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_management_priorities_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "mp_altrcv"
+    t.index ["content_generation_run_id"], name: "index_management_priorities_on_content_generation_run_id"
+    t.index ["find_out_more_id"], name: "index_management_priorities_on_find_out_more_id"
   end
 
   create_table "meters", force: :cascade do |t|
@@ -881,6 +899,10 @@ ActiveRecord::Schema.define(version: 2019_09_19_085118) do
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
+  add_foreign_key "management_priorities", "alert_type_rating_content_versions", on_delete: :restrict
+  add_foreign_key "management_priorities", "alerts", on_delete: :cascade
+  add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "management_priorities", "find_out_mores", on_delete: :nullify
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify

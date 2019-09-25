@@ -3,5 +3,6 @@
   <div class="dropdown-menu">
     <%= link_to 'Pupil dashboard', pupils_school_path(@school), class: 'dropdown-item' if show_pupils_dashboard_button? %>
     <%= link_to 'Teacher dashboard', teachers_school_path(@school), class: 'dropdown-item' if show_teachers_dashboard_button? %>
+    <%= link_to 'Management dashboard', management_school_path(@school), class: 'dropdown-item' if show_management_dashboard_button? %>
   </div>
 </li>

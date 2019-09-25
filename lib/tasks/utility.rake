@@ -11,6 +11,12 @@ namespace :utility do
     unless ENV['SEND_AUTOMATED_EMAILS']
       puts "Removing non Energy Sparks email addresses and mobile numbers"
       Contact.where.not(email_address: "hello@energysparks.uk").update_all(email_address: '', mobile_phone_number: '')
+
+      puts "Resetting pupil passwords"
+      User.pupil.update_all(pupil_password: nil)
+      User.pupil.all.each_with_index do |pupil, index|
+        pupil.update!(pupil_password: "pupil#{index}")
+      end
     end
   end
 end

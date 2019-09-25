@@ -13,6 +13,11 @@ FactoryBot.define do
       pupil_password { 'test' }
     end
 
+    factory :management do
+      role { :management }
+      name { 'A Manager' }
+    end
+
     factory :staff do
       name { 'A Teacher' }
       role { :staff }

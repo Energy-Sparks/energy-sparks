@@ -55,6 +55,11 @@ describe TemplateInterpolation do
       expect(view_object.methods).to_not include(:template_2)
     end
 
+    it 'exposes the underlying variables' do
+      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: {usage: 'low'})
+      expect(view_object.template_variables).to eq({usage: 'low'})
+    end
+
     it 'interpolates multiple fields' do
       view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, :template_2, with: {usage: 'low', position: 3})
       expect(view_object.template_1).to eq('Your energy usage is quite low')
