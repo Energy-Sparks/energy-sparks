@@ -6,7 +6,7 @@ FactoryBot.define do
 
     factory :school_admin  do
       role { :school_admin }
-      staff_role
+      association :staff_role, factory: [:staff_role, :management]
     end
 
     factory :pupil do
@@ -17,13 +17,13 @@ FactoryBot.define do
     factory :staff do
       name { 'A Teacher' }
       role { :staff }
-      staff_role
+      association :staff_role, factory: [:staff_role, :teacher]
     end
 
     factory :onboarding_user do
       name { 'A Teacher' }
       role { :school_onboarding }
-      staff_role
+      association :staff_role, factory: [:staff_role, :teacher]
     end
 
     factory :admin do

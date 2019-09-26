@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Management dashboard' do
 
   let!(:school){ create(:school) }
-  let(:staff){ create(:staff, school: school) }
+  let(:staff){ create(:staff, school: school, staff_role: create(:staff_role, :management)) }
   let!(:intervention){ create(:observation, school: school) }
 
   before(:each) do
@@ -12,7 +12,6 @@ describe 'Management dashboard' do
 
   it 'allows login and access to management dashboard' do
     visit root_path
-    click_on 'Management dashboard' # TODO: use role
     expect(page).to have_content("#{school.name}")
     expect(page).to have_content("Energy Usage")
 
@@ -56,7 +55,6 @@ describe 'Management dashboard' do
 
     it 'displays the priorities in a table' do
       visit root_path
-      click_on 'Management dashboard' # TODO: use role
       expect(page).to have_content('Spending too much money on heating')
       expect(page).to have_content('£2,000')
     end

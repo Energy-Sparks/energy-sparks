@@ -50,7 +50,7 @@ describe 'School admin user management' do
   end
 
   describe 'for staff' do
-    let!(:teacher_role){ create :staff_role, title: 'Teacher' }
+    let!(:teacher_role){ create :staff_role, :teacher, title: 'Teacher' }
 
     context 'it can create staff' do
 
@@ -111,7 +111,7 @@ describe 'School admin user management' do
 
   describe 'for school admins' do
 
-    let!(:management_role){ create(:staff_role, title: 'Management') }
+    let!(:management_role){ create(:staff_role, :management, title: 'Management') }
 
     it 'can create school admins' do
 

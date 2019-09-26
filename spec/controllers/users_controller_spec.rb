@@ -6,7 +6,7 @@ RSpec.describe UsersController, type: :controller do
       email: 'school@test.com',
       password: 'testpassword',
       role: :staff,
-      staff_role_id: create(:staff_role).id
+      staff_role_id: create(:staff_role, :teacher).id
     }
   }
   let(:invalid_attributes) {

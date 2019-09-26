@@ -20,7 +20,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   let(:admin) { create(:admin)}
 
-  let!(:headteacher_role) { create(:staff_role, title: 'Headteacher')}
+  let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher')}
 
   context 'as an admin' do
 
