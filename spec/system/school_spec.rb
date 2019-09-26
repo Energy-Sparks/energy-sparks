@@ -4,7 +4,7 @@ RSpec.describe "school", type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:school)     { create(:school, name: school_name)}
-  let!(:admin)      { create(:user, role: 'admin')}
+  let!(:admin)      { create(:admin)}
   let!(:ks1)        { KeyStage.create(name: 'KS1') }
   let!(:ks2)        { KeyStage.create(name: 'KS2') }
   let!(:ks3)        { KeyStage.create(name: 'KS3') }

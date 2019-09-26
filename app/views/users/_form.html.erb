@@ -1,45 +1,13 @@
-<%= form_for(user) do |f| %>
+<%= simple_form_for(user) do |f| %>
 
-  <%= render 'shared/errors', subject: user, subject_name: 'user' %>
+  <%= f.input :name %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <%= f.input :role, collection: User.roles.keys, label_method: :titleize %>
+  <%= f.input :school_id, collection: @schools, hint: 'For staff and school admins'%>
+  <%= f.input :school_group_id, collection: @school_groups, hint: 'For group admins'%>
 
-  <div class="form-group">
-    <%= f.label :email %>
-    <%= f.text_field :email, class: 'form-control' %>
-  </div>
+  <%= f.input :staff_role_id, label: 'Staff role', collection: StaffRole.order(:title), label_method: :title, hint: 'For school admins and staff'%>
 
-  <div class="form-group">
-    <%= f.label :password %>
-    <%= f.password_field :password, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :role %>
-    <%= f.select :role,
-      User.roles.keys.map {|role| [role.titleize,role]},
-      {},
-      { class: 'form-control' }
-    %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :school_id, 'School'%>
-    <%= f.select :school_id,
-      options_from_collection_for_select(@schools, 'id', 'name', user.school_id),
-      { include_blank: true},
-      { class: 'form-control' }
-    %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :school_group_id, 'School group' %>
-    <%= f.select :school_group_id,
-      options_from_collection_for_select(@school_groups, 'id', 'name', user.school_group_id),
-      { include_blank: true},
-      { class: 'form-control' }
-    %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit class: 'btn btn-primary' %>
-  </div>
+  <%= f.submit class: 'btn btn-primary' %>
 <% end %>

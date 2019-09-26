@@ -4,7 +4,7 @@ RSpec.describe "calendar view", type: :system do
   include_context 'calendar data'
 
   describe 'does lots of good calendar work', js: true do
-    let!(:admin)  { create(:user, role: 'admin') }
+    let!(:admin)  { create(:admin) }
 
     it 'shows the calendar' do
       sign_in(admin)
@@ -17,7 +17,7 @@ RSpec.describe "calendar view", type: :system do
   describe 'a school admin can only do things with their calendar' do
 
     let!(:school)           { create_active_school }
-    let!(:school_admin)     { create(:user, role: :school_admin, school: school) }
+    let!(:school_admin)     { create(:school_admin, school: school) }
     let!(:school_calendar) do
 
       cal = CalendarFactory.new(existing_calendar: calendar, title: 'New calendar', calendar_type: :school).create

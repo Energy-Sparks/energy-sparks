@@ -2,9 +2,11 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   let(:valid_attributes) {
-    { email: 'school@test.com',
+    {
+      email: 'school@test.com',
       password: 'testpassword',
-      role: :staff
+      role: :staff,
+      staff_role_id: create(:staff_role).id
     }
   }
   let(:invalid_attributes) {
@@ -16,7 +18,7 @@ RSpec.describe UsersController, type: :controller do
     end
     describe "GET #index" do
       it "assigns all users as @users" do
-        user = FactoryBot.create :user
+        user = create :staff
         get :index, params: {}
         expect(assigns(:users)).to include user
       end
@@ -36,8 +38,8 @@ RSpec.describe UsersController, type: :controller do
 
     describe "GET #edit" do
       it "assigns active schools as @schools" do
-        user = FactoryBot.create :user
-        school = FactoryBot.create :school, active: true
+        user = create :staff
+        school = create :school, active: true
         get :edit, params: { id: user.to_param }
         expect(assigns(:schools)).to include school
       end
@@ -83,20 +85,20 @@ RSpec.describe UsersController, type: :controller do
         }
 
         it "updates the requested user" do
-          user = FactoryBot.create :user
+          user = create :staff
           put :update, params: { id: user.to_param, user: new_attributes }
           user.reload
           expect(user.email).to eq new_attributes[:email]
         end
 
         it "assigns the requested user as @user" do
-          user = FactoryBot.create :user
+          user = create :staff
           put :update, params: { id: user.to_param, user: new_attributes }
           expect(assigns(:user)).to eq(user)
         end
 
         it "redirects to the users" do
-          user = FactoryBot.create :user
+          user = create :staff
           put :update, params: { id: user.to_param, user: new_attributes }
           expect(response).to redirect_to(users_path)
         end
@@ -104,13 +106,13 @@ RSpec.describe UsersController, type: :controller do
 
       context "with invalid params" do
         it "assigns the user as @user" do
-          user = FactoryBot.create :user
+          user = create :staff
           put :update, params: { id: user.to_param, user: invalid_attributes }
           expect(assigns(:user)).to eq(user)
         end
 
         it "re-renders the 'edit' template" do
-          user = FactoryBot.create :user
+          user = create :staff
           put :update, params: { id: user.to_param, user: invalid_attributes }
           expect(response).to render_template("edit")
         end
@@ -119,29 +121,18 @@ RSpec.describe UsersController, type: :controller do
 
     describe "DELETE #destroy" do
       it "destroys the requested user" do
-        user = FactoryBot.create :user
+        user = create :staff
         expect {
           delete :destroy, params: { id: user.to_param }
         }.to change(User, :count).by(-1)
       end
 
       it "redirects to the users list" do
-        user = FactoryBot.create :user
+        user = create :staff
         delete :destroy, params: { id: user.to_param }
         expect(response).to redirect_to(users_url)
       end
     end
   end
 
-  context "As a guest user" do
-    before(:each) do
-      sign_in_user(:guest)
-    end
-    describe "GET #index" do
-      it "redirects to the root url" do
-        get :index, params: {}
-        expect(response).to redirect_to(root_url)
-      end
-    end
-  end
 end

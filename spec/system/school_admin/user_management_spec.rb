@@ -5,6 +5,7 @@ describe 'School admin user management' do
   let(:school){ create(:school) }
   let(:school_admin){ create(:school_admin, school: school) }
 
+
   before(:each) do
     sign_in(school_admin)
     visit teachers_school_path(school)
@@ -109,6 +110,9 @@ describe 'School admin user management' do
   end
 
   describe 'for school admins' do
+
+    let!(:management_role){ create(:staff_role, title: 'Management') }
+
     it 'can create school admins' do
 
       click_on 'Manage users'
@@ -116,6 +120,7 @@ describe 'School admin user management' do
 
       fill_in 'Name', with: 'Mrs Jones'
       fill_in 'Email', with: 'mrsjones@test.com'
+      select 'Management', from: 'Role'
       click_on 'Create account'
 
       school_admin = school.users.school_admin.last
@@ -133,6 +138,7 @@ describe 'School admin user management' do
 
         fill_in 'Name', with: 'Mrs Jones'
         fill_in 'Email', with: 'mrsjones@test.com'
+        select 'Management', from: 'Role'
       end
 
       it 'with an alert contact' do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Onboarding::CompletionController, type: :controller do
 
-  let(:user){ create(:user, role: 'school_onboarding') }
+  let(:user){ create(:onboarding_user) }
   let!(:onboarding) do
     create(:school_onboarding, created_user: user)
   end

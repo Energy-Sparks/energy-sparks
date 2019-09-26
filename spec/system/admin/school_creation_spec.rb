@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "school creation", :schools, type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:admin)}
 
   let!(:ks1) { KeyStage.create(name: 'KS1') }
 

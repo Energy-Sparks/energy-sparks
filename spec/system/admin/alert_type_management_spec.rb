@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'alert type management', type: :system do
 
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:admin)}
 
   let(:gas_fuel_alert_type_title) { 'Your gas usage is too high' }
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: has_ratings) }
