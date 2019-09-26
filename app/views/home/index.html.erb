@@ -62,7 +62,7 @@
     <div class="carousel-item text-center p-4">
       <div class="row justify-content-center">
         <div class="col-1"><i class="fas fa-users-class fa-4x"></i></div>
-        <div class="col-8"><h2>Explore eco-team and classroom activities for pupils.</h2></div>
+        <div class="col-7"><h2>Explore eco-team and classroom activities for pupils.</h2></div>
       </div>
     </div>
     <div class="carousel-item text-center p-4">
@@ -120,4 +120,9 @@
   </div>
 </div>
 
-<%= render 'testimonial' %>
+<%= render 'testimonial',
+  quote: 'Engaging with Energy Sparks has been a really worthwhile experience. Not only has the school saved money, the children have become more aware of the ways that they can help to reduce energy use&hellip;',
+  by: 'Jennie Nixon',
+  title: 'Head of School',
+  location: 'Whiteways Primary School, Sheffield'
+%>
