@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_26_120554) do
+ActiveRecord::Schema.define(version: 2019_09_26_150602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 2019_09_26_120554) do
     t.bigint "find_out_more_id"
     t.bigint "content_generation_run_id", null: false
     t.string "unsubscription_uuid"
-    t.float "priority", default: 0.0, null: false
+    t.decimal "priority", default: "0.0", null: false
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
@@ -204,14 +204,14 @@ ActiveRecord::Schema.define(version: 2019_09_26_120554) do
     t.string "management_priorities_title"
     t.date "management_priorities_start_date"
     t.date "management_priorities_end_date"
-    t.float "email_weighting", default: 5.0
-    t.float "sms_weighting", default: 5.0
-    t.float "management_dashboard_alert_weighting", default: 5.0
-    t.float "management_priorities_weighting", default: 5.0
-    t.float "pupil_dashboard_alert_weighting", default: 5.0
-    t.float "public_dashboard_alert_weighting", default: 5.0
-    t.float "teacher_dashboard_alert_weighting", default: 5.0
-    t.float "find_out_more_weighting", default: 5.0
+    t.decimal "email_weighting", default: "5.0"
+    t.decimal "sms_weighting", default: "5.0"
+    t.decimal "management_dashboard_alert_weighting", default: "5.0"
+    t.decimal "management_priorities_weighting", default: "5.0"
+    t.decimal "pupil_dashboard_alert_weighting", default: "5.0"
+    t.decimal "public_dashboard_alert_weighting", default: "5.0"
+    t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
+    t.decimal "find_out_more_weighting", default: "5.0"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -453,7 +453,7 @@ ActiveRecord::Schema.define(version: 2019_09_26_120554) do
     t.bigint "find_out_more_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "priority", default: 0.0, null: false
+    t.decimal "priority", default: "0.0", null: false
     t.index ["alert_id"], name: "index_dashboard_alerts_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "index_dashboard_alerts_on_alert_type_rating_content_version_id"
     t.index ["content_generation_run_id"], name: "index_dashboard_alerts_on_content_generation_run_id"
@@ -572,7 +572,7 @@ ActiveRecord::Schema.define(version: 2019_09_26_120554) do
     t.bigint "alert_type_rating_content_version_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "priority", default: 0.0, null: false
+    t.decimal "priority", default: "0.0", null: false
     t.index ["alert_id"], name: "index_management_priorities_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "mp_altrcv"
     t.index ["content_generation_run_id"], name: "index_management_priorities_on_content_generation_run_id"

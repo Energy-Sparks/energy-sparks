@@ -9,7 +9,7 @@
 #  dashboard                            :integer          not null
 #  find_out_more_id                     :bigint(8)
 #  id                                   :bigint(8)        not null, primary key
-#  priority                             :float            default(0.0), not null
+#  priority                             :decimal(, )      default(0.0), not null
 #  updated_at                           :datetime         not null
 #
 # Indexes

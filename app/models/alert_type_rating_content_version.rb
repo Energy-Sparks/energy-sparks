@@ -9,39 +9,39 @@
 #  email_end_date                        :date
 #  email_start_date                      :date
 #  email_title                           :string
-#  email_weighting                       :float            default(5.0)
+#  email_weighting                       :decimal(, )      default(5.0)
 #  find_out_more_chart_title             :string           default("")
 #  find_out_more_chart_variable          :text             default("none")
 #  find_out_more_content                 :text
 #  find_out_more_end_date                :date
 #  find_out_more_start_date              :date
 #  find_out_more_title                   :string
-#  find_out_more_weighting               :float            default(5.0)
+#  find_out_more_weighting               :decimal(, )      default(5.0)
 #  id                                    :bigint(8)        not null, primary key
 #  management_dashboard_alert_end_date   :date
 #  management_dashboard_alert_start_date :date
-#  management_dashboard_alert_weighting  :float            default(5.0)
+#  management_dashboard_alert_weighting  :decimal(, )      default(5.0)
 #  management_dashboard_title            :string
 #  management_priorities_end_date        :date
 #  management_priorities_start_date      :date
 #  management_priorities_title           :string
-#  management_priorities_weighting       :float            default(5.0)
+#  management_priorities_weighting       :decimal(, )      default(5.0)
 #  public_dashboard_alert_end_date       :date
 #  public_dashboard_alert_start_date     :date
-#  public_dashboard_alert_weighting      :float            default(5.0)
+#  public_dashboard_alert_weighting      :decimal(, )      default(5.0)
 #  public_dashboard_title                :string
 #  pupil_dashboard_alert_end_date        :date
 #  pupil_dashboard_alert_start_date      :date
-#  pupil_dashboard_alert_weighting       :float            default(5.0)
+#  pupil_dashboard_alert_weighting       :decimal(, )      default(5.0)
 #  pupil_dashboard_title                 :string
 #  replaced_by_id                        :integer
 #  sms_content                           :string
 #  sms_end_date                          :date
 #  sms_start_date                        :date
-#  sms_weighting                         :float            default(5.0)
+#  sms_weighting                         :decimal(, )      default(5.0)
 #  teacher_dashboard_alert_end_date      :date
 #  teacher_dashboard_alert_start_date    :date
-#  teacher_dashboard_alert_weighting     :float            default(5.0)
+#  teacher_dashboard_alert_weighting     :decimal(, )      default(5.0)
 #  teacher_dashboard_title               :string
 #  updated_at                            :datetime         not null
 #
