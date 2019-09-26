@@ -39,7 +39,7 @@ module Schools
     private
 
     def school_admin_params
-      params.require(:user).permit(:name, :email)
+      params.require(:user).permit(:name, :email, :staff_role_id)
     end
   end
 end

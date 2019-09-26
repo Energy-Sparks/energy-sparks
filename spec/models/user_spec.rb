@@ -19,7 +19,7 @@ describe User do
     let(:user)        { nil }
 
     context "when is an admin" do
-      let(:user) { create(:user, role: :admin) }
+      let(:user) { create(:admin) }
 
       %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User).each do |thing|
         it { is_expected.to be_able_to(:manage, thing.constantize.new) }
@@ -29,7 +29,7 @@ describe User do
     context "when is a school user" do
       let(:school) { create(:school) }
       let(:another_school) { create(:school) }
-      let(:user) { create(:user, role: :staff, school: school) }
+      let(:user) { create(:staff, school: school) }
 
       %w(ActivityType ActivityCategory Calendar CalendarEvent School User).each do |thing|
         it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }

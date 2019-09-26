@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "school alerts", type: :system do
   let!(:school) { create(:school) }
-  let!(:user)  { create(:user, school: school, role: :staff)}
+  let!(:user)  { create(:staff, staff_role: create(:staff_role, :teacher), school: school)}
   let(:description) { 'all about this alert type' }
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, description: description) }
   let(:gas_date) { Date.parse('2019-01-01') }
@@ -10,7 +10,6 @@ RSpec.describe "school alerts", type: :system do
 
   before(:each) do
     sign_in(user)
-    visit root_path
   end
 
   context 'with generated alert' do
@@ -57,9 +56,7 @@ RSpec.describe "school alerts", type: :system do
       end
 
       it 'can show a single alert with the associated activities' do
-
-        # TODO: navigate properly once links are in
-        visit teachers_school_path(school)
+        visit root_path
 
         expect(page).to have_content('Your heating is on!')
         expect(page).to have_content("Turn off the heating")
@@ -75,8 +72,8 @@ RSpec.describe "school alerts", type: :system do
       end
 
       it 'shows find out more alerts on the pupil dashboard' do
-        # TODO: navigate properly once links are in
-        visit pupils_school_path(school)
+        visit root_path
+        click_on 'Pupil dashboard'
 
         expect(page).to have_content('It is too warm')
       end

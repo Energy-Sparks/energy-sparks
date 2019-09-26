@@ -73,17 +73,12 @@ class Ability
       can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, active: true
       can :manage, Observation, school: { id: user.school_id, active: true }
       if user.staff?
-        can [:show_teachers_dash, :start_programme], School, id: user.school_id, active: true
+        can [:show_teachers_dash, :show_management_dash, :start_programme], School, id: user.school_id, active: true
         can :crud, Programme, school: { id: user.school_id, active: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :read, :school_menu
       end
-    elsif user.management?
-      can :show_management_dash, School, id: user.school_id, active: true
-      can :manage, Observation, school: { id: user.school_id, active: true }
-      can :enable_alerts, User, id: user.id
-      can [:create, :update, :destroy], Contact, user_id: user.id
     elsif user.guest?
       cannot :analyse, :cost
       can :manage, SchoolOnboarding, created_user_id: nil

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'school groups', :school_groups, type: :system do
 
-  let!(:admin)                { create(:user, role: 'admin') }
+  let!(:admin)                { create(:admin) }
   let!(:scoreboard)           { create(:scoreboard, name: 'BANES and Frome') }
   let!(:dark_sky_weather_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
