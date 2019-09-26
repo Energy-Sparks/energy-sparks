@@ -25,30 +25,29 @@ header img {
 
 @media (min-width: 768px) {
   .headline-text {
-    font-size: 40px;
+    font-size: $f2;
   }
   .headline-sub-text {
-    font-size: 20px;
+    font-size: $f4;
   }
   .masthead .btn {
-    font-size: 18px;
+    font-size: $f4;
     padding: 10px;
   }
 }
 
 @media (min-width: 1140px) {
   .headline-text {
-    font-size: 50px;
+    font-size: $f1;
   }
   .headline-sub-text {
-    font-size: 30px;
+    font-size: $f3;
   }
   .masthead .btn {
-    font-size: 30px;
+    font-size: $f3;
     padding: 20px;
   }
 }
-
 
 @media (min-width: 768px) {
   header .container {
@@ -100,13 +99,13 @@ header img {
   p:before {
     content: open-quote;
     font-weight: bold;
-    font-size:25px;
+    font-size: $f3;
   }
 
    p:after {
     content: close-quote;
     font-weight: bold;
-    font-size:25px;
+    font-size: $f3;
   }
 }
 
@@ -119,11 +118,6 @@ header img {
   padding-left: 50px;
   padding-right: 50px;
   padding-bottom: 0px;
-}
-
-.info-page > .right-hand-chop {
-  padding-right: 0px;
-  padding-bottom: 10px;
 }
 
 .info-page > .btn {
@@ -141,50 +135,4 @@ header img {
 section.highlight {
   background: $dark-orange;
   color: white;
-}
-
-hr.bulb-light,
-hr.bulb-primary {
-  padding: 0;
-  border: none;
-  border-top: solid 5px;
-  text-align: center;
-  max-width: 250px;
-  margin: 25px auto 30px;
-}
-
-hr.bulb-light:after,
-hr.bulb-primary:after {
-  content: "\f0eb";
-  font-family: 'Font Awesome\ 5 Pro';;
-  display: inline-block;
-  position: relative;
-  top: -0.8em;
-  font-size: 2em;
-  padding: 0 0.25em;
-}
-
-hr.bulb-light {
-  border-color: white;
-}
-
-hr.bulb-light:after {
-  background-color: $dark-orange;
-  color: white;
-}
-
-.intro-text {
-  hr.bulb-light:after {
-    background-color: $light-blue;
-    color: white;
-  }
-}
-
-hr.bulb-primary {
-  border-color: $dark-blue;
-}
-
-hr.bulb-primary:after {
-  background-color: white;
-  color: $dark-blue;
 }

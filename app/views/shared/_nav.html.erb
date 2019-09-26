@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-custom fixed-top">
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
   <%= render 'shared/test_site_warning' if request.host.include?('test') %>
   <div class="container">
     <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
@@ -9,16 +9,19 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <%= render 'shared/common_nav_bar_menus' %>
-        <span class="nav-lozenge">
+        <% if user_signed_in? %>
           <li class="nav-item">
-            <% if user_signed_in? %>
-              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
-            <% else %>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
+          </li>
+        <% else %>
+          <span class="nav-lozenge nav-lozenge-little-padding">
+            <li class="nav-item">
               <%= link_to "Register your school", getting_started_path, class: 'nav-link' %>
               <%= link_to "Sign In", new_user_session_path, class: 'btn btn-sm' %>
-            <% end %>
-          </li>
-        </span>
+            </li>
+          </span>
+
+        <% end %>
       </ul>
     </div>
   </div>
