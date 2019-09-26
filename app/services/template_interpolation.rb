@@ -9,11 +9,12 @@ class TemplateInterpolation
   end
 
   def interpolate(*fields, with: {})
-    pre_defined = @proxy.inject(@with_objects) do |collection, field|
+    base_methods = { template_variables: with }.merge(@with_objects)
+    with_proxied_objects = @proxy.inject(base_methods) do |collection, field|
       collection[field] = @object.send(field)
       collection
     end
-    templated = fields.inject(pre_defined) do |collection, field|
+    templated = fields.inject(with_proxied_objects) do |collection, field|
       collection[field] = process(@object.send(field) || "", with)
       collection
     end

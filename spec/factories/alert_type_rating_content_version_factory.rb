@@ -5,6 +5,7 @@ FactoryBot.define do
     teacher_dashboard_title {'a thing has happened'}
     public_dashboard_title {'a thing has happened'}
     management_dashboard_title {'a thing has happened'}
+    management_priorities_title {'a thing has happened'}
     find_out_more_title {'A thing has happened' }
     find_out_more_content {'A thing has happened and you should do something about it' }
     sms_content {'A thing has happened' }

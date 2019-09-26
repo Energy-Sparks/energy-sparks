@@ -26,6 +26,7 @@ class Ability
       can :manage, :all
       can :analyse, :test
       can :analyse, :heating_model_fitting
+      cannot :read, :school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
         school_scope = { school_group_id: user.school_group_id }
@@ -45,8 +46,13 @@ class Ability
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user == user
         end
+        can :read, :school_menu
       end
-      can [:update, :manage_school_times, :suggest_activity, :manage_users, :show_teachers_dash, :show_pupils_dash, :read, :usage, :start_programme], School, school_scope
+      can [
+        :update, :manage_school_times, :suggest_activity, :manage_users,
+        :show_teachers_dash, :show_pupils_dash, :show_management_dash,
+        :read, :usage, :start_programme
+      ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
@@ -71,7 +77,13 @@ class Ability
         can :crud, Programme, school: { id: user.school_id, active: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
+        can :read, :school_menu
       end
+    elsif user.management?
+      can :show_management_dash, School, id: user.school_id, active: true
+      can :manage, Observation, school: { id: user.school_id, active: true }
+      can :enable_alerts, User, id: user.id
+      can [:create, :update, :destroy], Contact, user_id: user.id
     elsif user.guest?
       cannot :analyse, :cost
       can :manage, SchoolOnboarding, created_user_id: nil

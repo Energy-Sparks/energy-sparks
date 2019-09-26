@@ -119,6 +119,16 @@ RSpec.describe 'alert type management', type: :system do
           end
         end
 
+        check 'Management priorities'
+        fill_in 'Management priorities title', with: 'Your school is spending too much on gas'
+
+        within '.management_priorities_active' do
+          click_on 'Preview'
+          within '#management_priorities-preview .content' do
+            expect(page).to have_content('Your school is spending too much on gas')
+          end
+        end
+
         check 'Find out more'
 
         within '.find_out_more_active' do
@@ -178,6 +188,7 @@ RSpec.describe 'alert type management', type: :system do
         expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
         expect(first_content.public_dashboard_title).to eq('This school is using gas')
         expect(first_content.management_dashboard_title).to eq('Your school is using gas')
+        expect(first_content.management_priorities_title).to eq('Your school is spending too much on gas')
 
         click_on 'Edit'
 

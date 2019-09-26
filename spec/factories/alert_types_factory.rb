@@ -33,6 +33,9 @@ module Alerts
           },
           table_data: {
             table: 'variables'
+          },
+          priority_data: {
+            priority: 'variables'
           }
         )
       end
