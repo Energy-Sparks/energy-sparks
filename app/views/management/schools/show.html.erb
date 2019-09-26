@@ -21,7 +21,7 @@
 
 
 <% unless @management_priorities.empty? %>
-  <%= render 'priorities', management_priorities: @management_priorities, school: @school %>
+  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 
 <% if @school.configuration %>
