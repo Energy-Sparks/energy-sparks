@@ -3,11 +3,11 @@ require 'rails_helper'
 describe 'Management dashboard' do
 
   let!(:school){ create(:school) }
-  let(:management){ create(:management, school: school) }
+  let(:staff){ create(:staff, school: school, staff_role: create(:staff_role, :management)) }
   let!(:intervention){ create(:observation, school: school) }
 
   before(:each) do
-    sign_in(management)
+    sign_in(staff)
   end
 
   it 'allows login and access to management dashboard' do

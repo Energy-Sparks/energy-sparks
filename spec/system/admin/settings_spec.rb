@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'site-wide settings' do
 
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:admin)}
 
   before do
     sign_in(admin)

@@ -6,6 +6,7 @@ FactoryBot.define do
 
     factory :school_admin  do
       role { :school_admin }
+      association :staff_role, factory: [:staff_role, :management]
     end
 
     factory :pupil do
@@ -13,14 +14,16 @@ FactoryBot.define do
       pupil_password { 'test' }
     end
 
-    factory :management do
-      role { :management }
-      name { 'A Manager' }
-    end
-
     factory :staff do
       name { 'A Teacher' }
       role { :staff }
+      association :staff_role, factory: [:staff_role, :teacher]
+    end
+
+    factory :onboarding_user do
+      name { 'A Teacher' }
+      role { :school_onboarding }
+      association :staff_role, factory: [:staff_role, :teacher]
     end
 
     factory :admin do

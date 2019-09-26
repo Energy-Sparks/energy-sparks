@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "activity type", type: :system do
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:admin)}
   let!(:activity_category) { create(:activity_category)}
   let!(:ks1) { KeyStage.create(name: 'KS1') }
   let!(:ks2) { KeyStage.create(name: 'KS2') }

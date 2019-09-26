@@ -4,7 +4,7 @@ require 'dashboard'
 RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type: :system do
   include_context "low carbon hub data"
 
-  let!(:admin) { create(:user, role: :admin) }
+  let!(:admin) { create(:admin) }
 
   context 'as an admin' do
     before(:each) do

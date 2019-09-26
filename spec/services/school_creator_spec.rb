@@ -4,8 +4,8 @@ describe SchoolCreator, :schools, type: :service do
 
   describe '#onboard_school!' do
     let(:school)                    { build :school}
-    let(:onboarding_user)           { create :user, role: 'school_onboarding'}
-    let!(:template_calendar)          { create(:template_calendar, title: 'BANES calendar') }
+    let(:onboarding_user)           { create :onboarding_user }
+    let!(:template_calendar)        { create(:template_calendar, title: 'BANES calendar') }
     let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
     let!(:school_group)             { create(:school_group, name: 'BANES') }
@@ -91,7 +91,7 @@ describe SchoolCreator, :schools, type: :service do
     end
 
     context 'where the school has been created as part of the onboarding process' do
-      let(:onboarding_user){ create :user, role: 'school_onboarding'}
+      let(:onboarding_user){ create :onboarding_user }
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
       it 'sends an activation email if one has not been sent' do
         service = SchoolCreator.new(school)
