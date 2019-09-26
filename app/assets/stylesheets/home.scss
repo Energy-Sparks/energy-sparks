@@ -92,20 +92,33 @@ header img {
   }
 }
 
-.testimonial {
-  background: $new-light-blue;
-  quotes: "\201C""\201D""\2018""\2019";
+ .quotes:before, .quotes:after {
+  display: inline-block;
+  vertical-align: top;
+  height: 30px;
+  line-height: 28px;
+  font-size: 50px;
+}
 
-  p:before {
-    content: open-quote;
-    font-weight: bold;
-    font-size: $f3;
-  }
+.quotes:before {
+  content: '\201C';
+  margin-right: 4px;
+  margin-left: -8px;
+}
 
-   p:after {
-    content: close-quote;
-    font-weight: bold;
-    font-size: $f3;
+.quotes:after {
+  content: '\201D';
+  margin-left: 4px;
+  margin-right: -8px;
+}
+
+.quote-by {
+  display: block;
+  padding-right: 10px;
+  text-align: right;
+
+  .very-small {
+    margin: 0px;
   }
 }
 
