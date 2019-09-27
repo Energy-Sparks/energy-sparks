@@ -8,8 +8,6 @@
 
   <%= f.input :description %>
 
-  <%= f.input :analysis %>
-
   <%= f.input :frequency, as: :radio_buttons, collection: AlertType.frequencies.keys, label_method: :humanize %>
 
   <%= f.submit class: 'btn btn-success' %>
