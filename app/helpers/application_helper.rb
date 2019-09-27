@@ -1,4 +1,14 @@
 module ApplicationHelper
+  def navbar_link
+    link_text = "Energy Sparks#{' (Test)' if on_test?}"
+    title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
+    link_to link_text, root_path, class: 'navbar-brand', title: title
+  end
+
+  def on_test?
+    request.host.include?('test')
+  end
+
   def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "

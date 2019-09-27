@@ -1,8 +1,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-  <%= render 'shared/test_site_warning' if request.host.include?('test') %>
   <div class="container">
-    <%= link_to "Energy Sparks", root_path, class: "navbar-brand" %>
+    <%= navbar_link %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
