@@ -24,7 +24,7 @@ module Management
       management_priorities_limit = site_settings.management_priorities_limit
       all_priorities = @school.latest_management_priorities
       @show_more_management_priorities = all_priorities.count > management_priorities_limit
-      all_priorities.limit(management_priorities_limit).map do |priority|
+      all_priorities.by_priority.limit(management_priorities_limit).map do |priority|
         TemplateInterpolation.new(
           priority.content_version,
           with_objects: { find_out_more: priority.find_out_more },

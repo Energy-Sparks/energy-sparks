@@ -16,7 +16,7 @@ module Alerts
                         template_data: analysis_object.front_end_template_data,
                         chart_data:    analysis_object.front_end_template_chart_data,
                         table_data:    analysis_object.front_end_template_table_data,
-                        priority_data: analysis_object.priority_data
+                        priority_data: analysis_object.priority_template_data
                       }
                     else
                       {}
