@@ -10,9 +10,23 @@ class HomeController < ApplicationController
   end
 
   def for_teachers
+    @testimonial = [{
+      quote: 'The website is a great resource for adults and children with activities and data which allow children to apply their mathematical and scientific skills and knowledge. I would highly recommend to any other school.',
+      by: 'Jennie Nixon',
+      title: 'Head of School',
+      location: 'Whiteways Primary School, Sheffield'
+    }, {
+      quote: 'The Energy Sparks website is very easy to use, and the children have found it interesting to measure how energy is used differently in different parts of the school&hellip; The children are motivated by the competitive element as well as the desire to save money and energy&hellip;',
+      by: 'Warrick Barton',
+      title: 'Headteacher',
+      location: 'Pensford Primary School, Bath'
+    }].sample
   end
 
   def for_pupils
+  end
+
+  def for_management
   end
 
   def contact

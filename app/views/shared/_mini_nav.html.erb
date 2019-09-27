@@ -1,0 +1,20 @@
+<nav class="navbar py-0 navbar-mini navbar-expand-md py-md-0 fixed-top">
+  <div class="container">
+    <%= navbar_link %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <%= render 'shared/common_nav_bar_menus' %>
+        <li class="nav-item">
+          <% if user_signed_in? %>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
+          <% else %>
+            <%= link_to "Sign In", new_user_session_path, class: 'nav-link' %>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
