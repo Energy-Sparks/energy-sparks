@@ -95,11 +95,6 @@ module SchoolsHelper
     ).map(&precision)
   end
 
-  def last_full_week(supply)
-    last_full_week = @school.last_full_week(supply)
-    last_full_week.present? ? last_full_week : nil
-  end
-
   module BenchmarkMetrics
     ELECTRICITY_PRICE = 0.12
     GAS_PRICE = 0.03

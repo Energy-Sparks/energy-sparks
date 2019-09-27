@@ -203,16 +203,6 @@ class School < ApplicationRecord
     7 * number_of_active_meters
   end
 
-  def has_last_full_week_of_readings?
-    previous_friday = Time.zone.today.prev_occurring(:friday)
-
-    start_of_window = previous_friday - 1.week
-    end_of_window = previous_friday
-    actual_readings = amr_validated_readings.where('reading_date > ? and reading_date <= ?', start_of_window, end_of_window).count
-
-    actual_readings == expected_readings_for_a_week
-  end
-
   def school_admin
     users.where(role: :school_admin)
   end
