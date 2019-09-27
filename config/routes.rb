@@ -193,7 +193,9 @@ Rails.application.routes.draw do
   end
 
   namespace :management do
-    resources :schools, only: :show
+    resources :schools, only: :show do
+      resources :management_priorities, only: :index
+    end
   end
 
   namespace :pupils do
