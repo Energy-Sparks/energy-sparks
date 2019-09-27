@@ -30,11 +30,6 @@ class HomeController < ApplicationController
   def privacy_policy
   end
 
-  def help
-    # assign page, remove any non-alphanumeric characters, allow underscores
-    @help_page = params[:help_page].tr('^A-Za-z0-9_', '') if params[:help_page]
-  end
-
 private
 
   def redirect_if_logged_in
