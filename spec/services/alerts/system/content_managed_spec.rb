@@ -9,7 +9,7 @@ describe Alerts::System::ContentManaged do
   let(:report){ Alerts::System::ContentManaged.new(school: school, today: today).report }
 
   it 'has a rating of 5' do
-    expect(report.rating).to eq(10.0)
+    expect(report.rating).to eq(5.0)
   end
 
   it 'has a variable for the school name' do

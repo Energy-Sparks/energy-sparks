@@ -12,7 +12,7 @@ module Admin
   private
 
     def settings_params
-      params.require(:site_settings).permit(:message_for_no_contacts)
+      params.require(:site_settings).permit(:message_for_no_contacts, :management_priorities_limit)
     end
   end
 end

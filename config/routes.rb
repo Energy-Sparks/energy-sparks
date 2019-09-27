@@ -106,7 +106,6 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :destroy]
       resources :school_admins, only: [:new, :create, :edit, :update]
       resources :staff, only: [:new, :create, :edit, :update], controller: :staff
-      resources :management, only: [:new, :create, :edit, :update], controller: :management
       resources :pupils, only: [:new, :create, :edit, :update]
 
     end
@@ -193,7 +192,9 @@ Rails.application.routes.draw do
   end
 
   namespace :management do
-    resources :schools, only: :show
+    resources :schools, only: :show do
+      resources :management_priorities, only: :index
+    end
   end
 
   namespace :pupils do

@@ -5,7 +5,7 @@ module DataFeeds
   RSpec.describe "Carbon intensity readings report", type: :system do
 
     let!(:carbon_intensity_reading) { CarbonIntensityReading.create(reading_date: Date.parse('01/06/2019'), carbon_intensity_x48: Array.new(48, rand))}
-    let!(:admin)      { create(:user, role: 'admin')}
+    let!(:admin)      { create(:admin)}
 
     before(:each) do
       sign_in(admin)

@@ -6,7 +6,7 @@ describe 'programme', type: :system do
   let(:other_school_name) { 'Bash Street' }
   let!(:school)           { create_active_school(name: school_name) }
   let!(:other_school)     { create_active_school(name: other_school_name) }
-  let!(:user)             { create(:user, role: 'staff', school: school) }
+  let!(:user)             { create(:staff, school: school) }
   let!(:programme_type)   { create(:programme_type_with_activity_types) }
 
   let!(:inactive_programme_type) { create(:programme_type, active: false) }

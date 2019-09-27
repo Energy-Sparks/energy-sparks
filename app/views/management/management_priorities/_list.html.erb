@@ -23,4 +23,11 @@
       </tr>
     <% end %>
   </tbody>
+  <% if local_assigns[:show_more] %>
+    <tfoot>
+      <tr>
+        <td colspan="5" class="text-right"><%= link_to 'See more opportunities', management_school_management_priorities_path(school)  %></td>
+      </tr>
+    </tfoot>
+  <% end %>
 </table>

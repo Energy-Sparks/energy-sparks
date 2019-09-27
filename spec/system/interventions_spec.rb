@@ -4,7 +4,7 @@ require 'rails_helper'
 describe 'adding interventions' do
 
   let!(:school)     { create(:school, :with_calendar, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
-  let!(:user)       { create(:user, role: :school_admin, school: school)}
+  let!(:user)       { create(:school_admin, school: school)}
 
   let!(:boiler_intervention){ create :intervention_type, title: 'Changed boiler' }
 
