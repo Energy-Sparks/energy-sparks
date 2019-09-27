@@ -4,8 +4,8 @@ RSpec.describe "meter management", :meters, type: :system do
 
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create_active_school(name: school_name)}
-  let!(:admin)        { create(:user, role: 'admin')}
-  let!(:school_admin) { create(:user, role: 'school_admin', school_id: school.id) }
+  let!(:admin)        { create(:admin)}
+  let!(:school_admin) { create(:school_admin, school_id: school.id) }
 
   context 'as school admin' do
     before(:each) do

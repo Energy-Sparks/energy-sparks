@@ -1,13 +1,6 @@
 <%= content_for :page_title, @school.name %>
 
-<% if ! @school.active? %>
-  <div class="alert alert-warning">
-    <%= @school.name %> is currently <strong>INACTIVE</strong> and won't be accessible to non-admin users.
-    <% if can? :activate, @school %>
-      <%= link_to "Activate school", school_activation_path(@school), method: :post, class: 'btn btn-success ml-3' %>
-    <% end %>
-  </div>
-<% end %>
+<%= render 'schools/activate', school: @school %>
 
 <div class="d-flex justify-content-between align-items-center">
   <h1>Energy Usage&hellip;</h1>
@@ -20,14 +13,6 @@
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
-<% if site_settings.message_for_no_contacts && @school.contacts.empty? %>
-  <%= render 'schools/dashboard/info_bar',
-        colour: 'bg-neutral',
-        content: "Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.",
-        icon: 'exclamation-circle fa-3x',
-        buttons: { 'Add alert contacts' => school_contacts_path(@school)}
-  %>
-<% end %>
 
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :teacher_dashboard_title %>
 

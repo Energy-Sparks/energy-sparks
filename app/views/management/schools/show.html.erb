@@ -1,5 +1,7 @@
 <%= content_for :page_title, @school.name %>
 
+<%= render 'schools/activate', school: @school %>
+
 <div class="d-flex justify-content-between align-items-center">
   <h2>Energy Usage&hellip;</h2>
   <% if @school.configuration %>
@@ -11,6 +13,15 @@
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
+<% if site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact) %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-neutral',
+        content: "Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.",
+        icon: 'exclamation-circle fa-3x',
+        buttons: { 'Add alert contacts' => school_contacts_path(@school)}
+  %>
+<% end %>
+
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 
 <div class="row padded-row management-energy-saving-actions d-flex justify-content-center mb-3">
@@ -19,7 +30,7 @@
 
 
 <% unless @management_priorities.empty? %>
-  <%= render 'priorities', management_priorities: @management_priorities, school: @school %>
+  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 
 <% if @school.configuration %>

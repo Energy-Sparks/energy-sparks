@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'calendars', :calendar, type: :system do
 
-  let!(:admin) { create(:user, role: 'admin') }
+  let!(:admin) { create(:admin) }
 
   let(:events) do
     <<~CSV

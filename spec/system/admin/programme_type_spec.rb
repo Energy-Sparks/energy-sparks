@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'programme type management', type: :system do
 
-  let!(:admin)  { create(:user, role: 'admin') }
+  let!(:admin)  { create(:admin) }
 
   describe 'managing' do
 

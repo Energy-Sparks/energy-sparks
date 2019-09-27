@@ -44,6 +44,7 @@ describe Alerts::GenerateManagementPriorities do
         priority = content_generation_run.management_priorities.first
         expect(priority.alert).to eq(alert)
         expect(priority.content_version).to eq(content_version)
+        expect(priority.priority).to eq(0.15)
       end
 
       it 'assigns a find out more from the run, if it matches the content version' do

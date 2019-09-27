@@ -9,6 +9,7 @@
 #  dashboard                            :integer          not null
 #  find_out_more_id                     :bigint(8)
 #  id                                   :bigint(8)        not null, primary key
+#  priority                             :decimal(, )      default(0.0), not null
 #  updated_at                           :datetime         not null
 #
 # Indexes
@@ -33,4 +34,8 @@ class DashboardAlert < ApplicationRecord
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
   enum dashboard: [:teacher, :pupil, :public, :management], _suffix: :dashboard
+
+  validates :priority, numericality: true
+
+  scope :by_priority, -> { order(priority: :desc) }
 end
