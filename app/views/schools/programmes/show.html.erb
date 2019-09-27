@@ -5,7 +5,7 @@
 
     <div class="jumbotron">
       <h2><%= @programme.title %></h2>
-      <p class="lead mt-3"><%= @programme.description %></p>
+      <p class="lead mt-3"><%= simple_format @programme.description %></p>
       <hr class="my-4">
       <dl class="row">
         <dt class="col-sm-2">Started:</dt>

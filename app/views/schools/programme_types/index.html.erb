@@ -7,7 +7,7 @@
       <% @started_programmes.each do |programme| %>
         <div class="jumbotron">
           <h2><%= link_to programme.title, school_programme_path(@school, programme) %></h2>
-          <p class="lead mt-3"><%= programme.description %></p>
+          <p class="lead mt-3"><%= simple_format programme.description %></p>
           <p class="lead">
             <%= link_to 'Continue', school_programme_path(@school, programme), class: 'btn btn-primary btn-lg'%>
           </p>

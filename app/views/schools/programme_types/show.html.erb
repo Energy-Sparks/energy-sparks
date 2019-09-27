@@ -5,7 +5,7 @@
 
     <div class="jumbotron">
       <h1 class="display-4"><%= @programme_type.title %></h1>
-      <p class="lead mt-3"><%= @programme_type.description %></p>
+      <p class="lead mt-3"><%= simple_format @programme_type.description %></p>
       <hr class="my-4">
       <p class="lead"><%= button_to 'Start this programme', school_programmes_path(@school, programme_type_id: @programme_type), method: :post, class: 'btn btn-lg btn-primary' if can?(:start_programme, @school) %></p>
     </div>
