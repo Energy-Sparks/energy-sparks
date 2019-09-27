@@ -9,7 +9,7 @@ namespace :after_party do
       end
 
       Programme.all.each do |programme|
-        programme.update!(description: programme.description)
+        programme.update!(description: programme._old_description)
       end
 
     end
