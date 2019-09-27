@@ -47,10 +47,6 @@ gem 'bootstrap-email'
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
 gem 'simple_form'
-# Highcharts now included directly
-
-# For bulk record import in CSV etc
-gem 'activerecord-import'
 
 # JS Templating
 gem 'handlebars_assets'
@@ -72,7 +68,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
 # Run against master until full Rails6 release is complete
 gem 'friendly_id', git: 'https://github.com/norman/friendly_id.git', branch: 'master' # Pretties up URLs
-gem 'ruby-sun-times'
 
 # For SMS notifications
 gem 'twilio-ruby'

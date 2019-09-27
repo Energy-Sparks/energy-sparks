@@ -101,8 +101,6 @@ GEM
     activerecord (6.0.0)
       activemodel (= 6.0.0)
       activesupport (= 6.0.0)
-    activerecord-import (1.0.2)
-      activerecord (>= 3.2)
     activestorage (6.0.0)
       actionpack (= 6.0.0)
       activejob (= 6.0.0)
@@ -603,7 +601,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-import
   after_party
   annotate
   auto_strip_attributes (~> 2.5)
@@ -661,7 +658,6 @@ DEPENDENCIES
   rubocop-performance (= 1.4.0)
   rubocop-rails (= 2.2.1)
   rubocop-rspec
-  ruby-sun-times
   sass-rails
   selenium-webdriver
   simple_form
