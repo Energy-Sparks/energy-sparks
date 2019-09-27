@@ -1,7 +1,8 @@
 <%= simple_form_for([:admin, programme_type]) do |f| %>
   <%= f.input :title %>
-  <%= f.input :description %>
+  <%= f.input :description, as: :trix_editor %>
   <%= f.input :short_description %>
+  <%= f.input :document_link %>
   <%= f.input :active %>
   <%= f.submit 'Save', class: 'btn btn-success' %>
 <% end %>
