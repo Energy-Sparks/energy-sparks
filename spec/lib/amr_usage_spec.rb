@@ -91,71 +91,6 @@ describe 'AmrUsage' do
     end
   end
 
-  describe '#last_friday_with_readings' do
-    context 'no previous readings are found' do
-      it "returns nil" do
-        new_school = FactoryBot.create :school
-        expect(new_school.last_friday_with_readings(:electricity)).to be_nil
-      end
-    end
-    context "readings are found on a Friday" do
-      it "returns a date" do
-        expect(school.last_friday_with_readings(:electricity)).to be_a_kind_of Date
-      end
-      it "returns a Friday" do
-        expect(school.last_friday_with_readings(:electricity).friday?).to be_truthy
-      end
-      it "returns the last Friday" do
-        expect(school.last_friday_with_readings(:electricity)).to be_between(last_week.first, last_week.last)
-      end
-    end
-  end
-
-  describe "#day_most_usage" do
-
-    context 'no previous readings are found' do
-      it "returns nil" do
-        new_school = FactoryBot.create :school
-        expect(new_school.day_most_usage(:electricity)).to be_nil
-      end
-    end
-
-    context "readings are found" do
-      before(:each) do
-        # Update the last one, else sort doesn't work as they all have the same value
-        AmrValidatedReading.order(:reading_date).last.update(one_day_kwh: 400)
-      end
-
-      it "returns an array whose first element is the date" do
-        expect(school.day_most_usage(:electricity)[0]).to be_a_kind_of Date
-      end
-      it "returns an array whose second element is the value" do
-        expect(school.day_most_usage(:electricity)[1]).to be_a_kind_of Float
-      end
-      it "returns the expected value" do
-        expect(school.day_most_usage(:electricity)[0]).to eql(Date.yesterday)
-        expect(school.day_most_usage(:electricity)[1].to_i).to eql(750)
-      end
-    end
-  end
-
-  describe "#last_full_week" do
-    it "returns a date range" do
-      expect(school.last_full_week(:electricity)).to be_a_kind_of Range
-      expect(school.last_full_week(:electricity).first).to be_a_kind_of Date
-      expect(school.last_full_week(:electricity).last).to be_a_kind_of Date
-    end
-    it "returns a range of five dates" do
-      expect(school.last_full_week(:electricity).to_a.size).to eq 5
-    end
-    it "starts with a Monday" do
-      expect(school.last_full_week(:electricity).first.monday?).to be_truthy
-    end
-    it "ends with a Friday" do
-      expect(school.last_full_week(:electricity).last.friday?).to be_truthy
-    end
-  end
-
   describe "#hourly_usage" do
     context 'school has no meters for the supply' do
       it 'sets the usage value to zero for each day' do
@@ -177,17 +112,4 @@ describe 'AmrUsage' do
     end
   end
 
-  describe ".this_week" do
-    context 'no date is provided' do
-      it "defaults to the current date" do
-        expect(AmrUsage.this_week.to_a).to include Date.current
-      end
-      it "starts on a Saturday" do
-        expect(AmrUsage.this_week.first.saturday?).to be_truthy
-      end
-      it "ends on a Friday" do
-        expect(AmrUsage.this_week.last.friday?).to be_truthy
-      end
-    end
-  end
 end

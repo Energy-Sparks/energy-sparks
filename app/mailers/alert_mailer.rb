@@ -1,6 +1,4 @@
 class AlertMailer < ApplicationMailer
-  add_template_helper(AlertsChartsHelper)
-
   def alert_email
     @email_address = params[:email_address]
     @events = params[:events]
