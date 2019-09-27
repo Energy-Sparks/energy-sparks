@@ -44,6 +44,11 @@ a.nav-link.active {
   border-color: $dark;
 }
 
+.btn.bg-positive {
+  border-color: transparent;
+  border: none;
+}
+
 .btn-outline-dark:hover {
   color: $white;
 }
