@@ -42,6 +42,8 @@
 
   .dropdown-menu {
     background: $dark-blue;
+    right: 0;
+    left: auto;
   }
 
   .dropdown-item:hover {
