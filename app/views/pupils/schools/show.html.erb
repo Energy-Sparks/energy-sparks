@@ -10,7 +10,9 @@
   </div>
 </div>
 
-<%= render 'explore_old_charts', school: @school %>
+<% unless @school.meters.pseudo.any? %>
+  <%= render 'explore_old_charts', school: @school %>
+<% end %>
 
 <% if @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
