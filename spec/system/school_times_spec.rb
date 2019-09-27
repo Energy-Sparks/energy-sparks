@@ -4,7 +4,7 @@ describe 'managing school times' do
 
   let(:school_name) { 'Oldfield Park Infants'}
   let!(:school) { create_active_school(name: school_name)}
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:admin)}
 
   before(:each) do
     sign_in(admin)

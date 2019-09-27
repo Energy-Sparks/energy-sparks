@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'equivalence type management', type: :system do
 
-  let!(:admin)  { create(:user, role: 'admin')}
+  let!(:admin)  { create(:admin)}
 
   before do
     sign_in(admin)

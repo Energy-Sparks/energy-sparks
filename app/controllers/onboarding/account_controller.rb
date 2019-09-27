@@ -37,7 +37,7 @@ module Onboarding
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id)
     end
   end
 end

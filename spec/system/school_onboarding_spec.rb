@@ -18,7 +18,9 @@ RSpec.describe "school onboarding", :schools, type: :system do
     )
   end
 
-  let(:admin) { create(:user, role: 'admin')}
+  let(:admin) { create(:admin)}
+
+  let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher')}
 
   context 'as an admin' do
 
@@ -100,6 +102,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       expect(page).to have_field('Email', with: onboarding.contact_email)
       fill_in 'Your name', with: 'A Teacher'
+      select 'Headteacher', from: 'Role'
       fill_in 'Password', with: 'testtest1', match: :prefer_exact
       fill_in 'Password confirmation', with: 'testtest1'
       click_on 'Create my account'
@@ -145,7 +148,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     it 'lets the user edit inset days, meters and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
       academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
-      user = create(:user, role: 'school_onboarding')
+      user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
       SchoolCreator.new(school).onboard_school!(onboarding)
@@ -181,7 +184,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     end
 
     it 'adds the onboarding user as an alert contact and allows management' do
-      user = create(:user, role: 'school_onboarding')
+      user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
       SchoolCreator.new(school).onboard_school!(onboarding)
@@ -206,7 +209,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     end
 
     it 'lets the user edit and add contacts' do
-      user = create(:user, role: 'school_onboarding')
+      user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
       SchoolCreator.new(school).onboard_school!(onboarding)

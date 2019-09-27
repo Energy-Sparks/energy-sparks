@@ -4,7 +4,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
 
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create(:school,:with_school_group, name: school_name)}
-  let!(:admin)        { create(:user, role: 'admin')}
+  let!(:admin)        { create(:admin)}
   let!(:meter)        { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
   before(:each) do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
-  let!(:admin)                  { create(:user, role: 'admin') }
+  let!(:admin)                  { create(:admin) }
   let!(:regional_calendar)      { create(:regional_calendar, national_title: 'Scotland') }
 
   describe 'when logged in' do

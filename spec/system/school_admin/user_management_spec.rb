@@ -5,6 +5,7 @@ describe 'School admin user management' do
   let(:school){ create(:school) }
   let(:school_admin){ create(:school_admin, school: school) }
 
+
   before(:each) do
     sign_in(school_admin)
     visit teachers_school_path(school)
@@ -49,7 +50,7 @@ describe 'School admin user management' do
   end
 
   describe 'for staff' do
-    let!(:teacher_role){ create :staff_role, title: 'Teacher' }
+    let!(:teacher_role){ create :staff_role, :teacher, title: 'Teacher' }
 
     context 'it can create staff' do
 
@@ -109,6 +110,9 @@ describe 'School admin user management' do
   end
 
   describe 'for school admins' do
+
+    let!(:management_role){ create(:staff_role, :management, title: 'Management') }
+
     it 'can create school admins' do
 
       click_on 'Manage users'
@@ -116,6 +120,7 @@ describe 'School admin user management' do
 
       fill_in 'Name', with: 'Mrs Jones'
       fill_in 'Email', with: 'mrsjones@test.com'
+      select 'Management', from: 'Role'
       click_on 'Create account'
 
       school_admin = school.users.school_admin.last
@@ -133,6 +138,7 @@ describe 'School admin user management' do
 
         fill_in 'Name', with: 'Mrs Jones'
         fill_in 'Email', with: 'mrsjones@test.com'
+        select 'Management', from: 'Role'
       end
 
       it 'with an alert contact' do
@@ -170,67 +176,6 @@ describe 'School admin user management' do
       school_admin.reload
       expect(school_admin.name).to eq('Ms Jones')
 
-    end
-
-  end
-
-  describe 'for management' do
-    let!(:management_role){ create :staff_role, title: 'Management' }
-
-    context 'it can create staff' do
-
-      before(:each) do
-        click_on 'Manage users'
-        click_on 'New management account'
-
-        fill_in 'Name', with: 'Mrs Jones'
-        fill_in 'Email', with: 'mrsjones@test.com'
-        select 'Management', from: 'Role'
-      end
-
-      it 'can create management with an alert contact' do
-        expect { click_on 'Create account' }.to change { school.users.management.count }.by(1).and change { Contact.count }.by(1)
-
-        management = school.users.management.first
-        expect(management.email).to eq('mrsjones@test.com')
-        expect(management.staff_role).to eq(management_role)
-
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Energy Sparks: confirm your account')
-      end
-
-      it 'can create management  without generating an alert contact' do
-        uncheck 'Auto create alert contact'
-        expect { click_on 'Create account' }.to change { school.users.management.count }.by(1).and change { Contact.count }.by(0)
-
-        management = school.users.management.first
-        expect(management.email).to eq('mrsjones@test.com')
-        expect(management.staff_role).to eq(management_role)
-
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Energy Sparks: confirm your account')
-      end
-
-    end
-
-    it 'can edit and delete management' do
-      management = create(:management, school: school)
-
-      click_on 'Manage users'
-      within '.management' do
-        click_on 'Edit'
-      end
-
-      fill_in 'Name', with: 'Ms Jones'
-      click_on 'Update account'
-
-      management.reload
-      expect(management.name).to eq('Ms Jones')
-
-      within '.management' do
-        click_on 'Delete'
-      end
-      expect(school.users.management.count).to eq(0)
     end
 
   end
