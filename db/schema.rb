@@ -254,7 +254,6 @@ ActiveRecord::Schema.define(version: 2019_09_27_154344) do
     t.integer "frequency"
     t.text "title"
     t.text "description", null: false
-    t.text "analysis"
     t.text "class_name"
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true

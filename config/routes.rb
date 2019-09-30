@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
+  get 'for-management', to: 'home#for_management'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -16,8 +17,6 @@ Rails.application.routes.draw do
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
-
-  get 'help/(:help_page)', to: 'home#help', as: :help
 
   resources :activity_types
   resources :activity_categories

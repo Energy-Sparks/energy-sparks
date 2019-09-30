@@ -44,6 +44,11 @@ a.nav-link.active {
   border-color: $dark;
 }
 
+.btn.bg-positive {
+  border-color: transparent;
+  border: none;
+}
+
 .btn-outline-dark:hover {
   color: $white;
 }
@@ -68,8 +73,24 @@ a.nav-link.active {
   }
 }
 
-.sub-navbar .nav-item a:hover {
-  background-color: $light-orange;
+li.nav-item a.btn,
+li.nav-item a.btn:hover,
+li.nav-item a.btn:focus,
+li.nav-item a.btn:active {
+ // float: right;
+  margin-bottom: 3px;
+  color: $dark;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.sub-nav  {
+  li.nav-item a.btn,
+  li.nav-item a.btn:hover,
+  li.nav-item a.btn:focus,
+  li.nav-item a.btn:active {
+    margin-bottom: 0px;
+  }
 }
 
 .card-deck.activities {
@@ -131,20 +152,4 @@ section.highlight {
     color: $dark-blue;
     outline: none;
   }
-}
-
-.navbar-custom .navbar-nav li.active {
-  a
-  a:hover,
-  a:focus,
-  a:active {
-    background: $light-blue;
-  }
-}
-
-.sub-navbar li.nav-item a,
-.sub-navbar li.nav-item a:hover,
-.sub-navbar li.nav-item a:focus,
-.sub-navbar li.nav-item a:active {
-    color: black;
 }

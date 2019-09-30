@@ -5,10 +5,11 @@
   </head>
   <body>
     <%= render 'shared/nav' %>
-    <section class="home alerts">
-
-    <%= render 'shared/alerts' %>
-  </section>
+    <% if flash.any? %>
+      <section class="home alerts">
+        <%= render 'shared/alerts' %>
+      </section>
+    <% end %>
     <!-- don't render application container as you do for the other pages -->
     <%= yield %>
     <%= render 'shared/footer' %>

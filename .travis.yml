@@ -20,7 +20,7 @@ addons:
     - postgresql-client-10
 sudo: required
 before_script:
-- cp config/database.yml.travis config/database.yml
+- cp config/database.travis.yml config/database.yml
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./cc-test-reporter
 - chmod +x ./cc-test-reporter

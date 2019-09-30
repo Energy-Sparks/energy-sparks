@@ -1,4 +1,14 @@
 module ApplicationHelper
+  def navbar_link
+    link_text = "Energy Sparks#{' (Test)' if on_test?}"
+    title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
+    link_to link_text, root_path, class: 'navbar-brand', title: title
+  end
+
+  def on_test?
+    request.host.include?('test')
+  end
+
   def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
@@ -15,24 +25,6 @@ module ApplicationHelper
 
   def show_sub_nav?(school, hide_subnav)
     school.present? && school.id && hide_subnav.nil?
-  end
-
-  def html_from_markdown(folder, file)
-    folder_dir = Rails.root.join('markdown_pages').join(folder.to_s)
-    if File.exist? folder_dir
-      file_name = file.nil? ? 'default.md' : file + '.md'
-      full_path = folder_dir.join file_name
-      return "Sorry, we couldn't find that page. [File not found]" unless File.exist? full_path
-      render_markdown File.read(full_path)
-    else
-      "Sorry, we couldn't find that page. [Folder not found]"
-    end
-  end
-
-  def render_markdown(content)
-    renderer = Redcarpet::Render::HTML.new
-    markdown = Redcarpet::Markdown.new(renderer, autolink: true)
-    markdown.render(content).html_safe
   end
 
   def options_from_collection_for_select_with_data(collection, value_method, text_method, selected = nil, data = {})
@@ -180,10 +172,6 @@ module ApplicationHelper
 
   def label_is_energy_plus?(label)
     label.is_a?(String) && label.start_with?('Energy') && label.length > 6
-  end
-
-  def label_is_temperature_plus?(label)
-    label.start_with?('Temperature') && label.length > 11
   end
 
   def tidy_label(current_label)
