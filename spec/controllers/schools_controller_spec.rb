@@ -78,29 +78,13 @@ RSpec.describe SchoolsController, type: :controller do
           expect(response).to redirect_to(school_path(school.to_param))
         end
       end
-      context 'where the school only has an electricity meter with readings' do
-        it 'sets the supply to electricity' do
-          create(:electricity_meter_with_reading, school: school)
-          get :usage, params: {id: school.to_param}
-          expect(assigns(:supply)).to eq('electricity')
-        end
-      end
-      context 'where the school only has a gas meter with readings' do
-        it 'sets the supply to gas' do
-          create(:gas_meter_with_reading, school: school)
-          get :usage, params: {id: school.to_param}
-          expect(assigns(:supply)).to eq('gas')
-        end
-      end
-      context 'where the school has both' do
-        it 'sets the supply to electricity' do
-          create(:electricity_meter_with_reading, school: school)
-          create(:gas_meter_with_reading, school: school)
-          get :usage, params: {id: school.to_param}
-          expect(assigns(:supply)).to eq('electricity')
-        end
-      end
 
+      it 'sets the supply to from the school configuration' do
+        fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true)
+        school.configuration.update(fuel_configuration: fuel_configuration)
+        get :usage, params: {id: school.to_param}
+        expect(assigns(:supply)).to eq('electricity')
+      end
     end
   end
 
