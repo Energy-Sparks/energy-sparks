@@ -45,5 +45,21 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       expect(page).to have_content("There are no Low carbon hub installations at the moment for this school")
       expect(page).to have_content("Low carbon hub API is not available at the moment")
     end
+
+    it 'I delete a low carbon hub installation and meter readngs get removed' do
+
+      expect { create(:low_carbon_hub_installation_with_meters_and_validated_readings, school: school) }.to change { Meter.count }.by(3).and change { AmrValidatedReading.count }.by(3)
+
+      visit school_path(school)
+
+      low_carbon_hub_installation = LowCarbonHubInstallation.first
+
+      click_on 'Manage Low carbon hub installations'
+      expect(page).to have_content low_carbon_hub_installation.rbee_meter_id
+      expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { LowCarbonHubInstallation.count }.by(-1).and change { AmrValidatedReading.count }.by(-3)
+
+
+
+    end
   end
 end
