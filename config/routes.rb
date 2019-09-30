@@ -18,8 +18,6 @@ Rails.application.routes.draw do
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  get 'help/(:help_page)', to: 'home#help', as: :help
-
   resources :activity_types
   resources :activity_categories
 

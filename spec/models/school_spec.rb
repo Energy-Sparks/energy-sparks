@@ -29,24 +29,6 @@ describe School do
     end
   end
 
-  describe '#current_term' do
-
-    it 'returns the current term' do
-      current_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(3), end_date: today.tomorrow
-      expect(subject.current_term).to eq(current_term)
-    end
-  end
-
-  describe '#last_term' do
-
-    it 'returns the term preceeding #current_term' do
-      create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(3), end_date: today.tomorrow
-      last_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(6), end_date: today.yesterday.months_ago(3)
-
-      expect(subject.last_term).to eq(last_term)
-    end
-  end
-
   describe '#fuel_types' do
     it 'identifies dual fuel if it has both meters' do
       gas_meter = create(:gas_meter_with_reading, school: subject)

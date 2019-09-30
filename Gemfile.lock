@@ -93,8 +93,6 @@ GEM
     activerecord (6.0.0)
       activemodel (= 6.0.0)
       activesupport (= 6.0.0)
-    activerecord-import (1.0.2)
-      activerecord (>= 3.2)
     activestorage (6.0.0)
       actionpack (= 6.0.0)
       activejob (= 6.0.0)
@@ -426,7 +424,6 @@ GEM
     rb-inotify (0.10.0)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    redcarpet (3.4.0)
     regexp_parser (1.5.1)
     reportbuilder (1.4.2)
       clbustos-rtf (~> 0.4.0)
@@ -598,7 +595,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-import
   after_party
   annotate
   auto_strip_attributes (~> 2.5)
@@ -650,14 +646,12 @@ DEPENDENCIES
   rails (~> 6.0.0)
   rails-controller-testing
   rb-readline
-  redcarpet
   rollbar
   rspec-rails (~> 4.0.0.beta2)
   rubocop (= 0.73.0)
   rubocop-performance (= 1.4.0)
   rubocop-rails (= 2.2.1)
   rubocop-rspec
-  ruby-sun-times
   sass-rails
   selenium-webdriver
   simple_form

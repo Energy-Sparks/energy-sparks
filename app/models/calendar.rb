@@ -35,26 +35,12 @@ class Calendar < ApplicationRecord
 
   scope :template, -> { regional }
 
-  accepts_nested_attributes_for :calendar_events, reject_if: :reject_calendar_events, allow_destroy: true
-
   def academic_year_for(date)
     academic_years.for_date(date).first || based_on && based_on.academic_year_for(date)
   end
 
   def terms_and_holidays
     calendar_events.joins(:calendar_event_type).where('calendar_event_types.holiday IS TRUE OR calendar_event_types.term_time IS TRUE')
-  end
-
-  def self.default_calendar
-    Calendar.find_by(default: true)
-  end
-
-  def first_event_date
-    calendar_events.first.start_date
-  end
-
-  def last_event_date
-    calendar_events.last.end_date
   end
 
   def next_holiday(today: Time.zone.today)
@@ -64,13 +50,5 @@ class Calendar < ApplicationRecord
   def holiday_approaching?(today: Time.zone.today)
     next_after_today = next_holiday(today: today)
     next_after_today.present? && (next_after_today.start_date - today <= 7)
-  end
-
-  private
-
-  def reject_calendar_events(attributes)
-    end_date_date = Date.parse(attributes[:end_date])
-    end_date_default = end_date_date.month == 8 && end_date_date.day == 31
-    attributes[:title].blank? || attributes[:start_date].blank? || end_date_default
   end
 end
