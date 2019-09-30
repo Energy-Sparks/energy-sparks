@@ -7,10 +7,27 @@ RSpec.describe "calendar view", type: :system do
     let!(:admin)  { create(:admin) }
 
     it 'shows the calendar' do
+      create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Date.today.year}"))
+
       sign_in(admin)
       visit calendar_path(calendar)
       expect(page.has_content?(calendar.title)).to be true
       expect(page.has_content?('January')).to be true
+
+      find('div.month-container:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1)').click
+      expect(page).to have_content('New Calendar Event')
+
+      expect(page).to have_content('Event Type')
+      select 'Holiday - Holiday', from: 'calendar_event_calendar_event_type_id'
+
+      fill_in(:calendar_event_title, with: 'Exciting day off')
+      expect { click_on('Save') }.to change { calendar.calendar_events.count }.by(1)
+      find('div.month-container:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1)').click
+      expect(page).to have_content('Edit Calendar Event')
+      expect(page).to have_content('Delete')
+      click_on('Delete')
+
+      expect { click_on('Ok') }.to change { calendar.calendar_events.count }.by(-1)
     end
   end
 
