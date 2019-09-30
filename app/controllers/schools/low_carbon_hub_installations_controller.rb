@@ -28,6 +28,10 @@ module Schools
     end
 
     def destroy
+      @low_carbon_hub_installation.meters.each do |meter|
+        MeterManagement.new(meter).delete_meter!
+      end
+
       @low_carbon_hub_installation.destroy
       redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Low carbon hub deleted'
     end
