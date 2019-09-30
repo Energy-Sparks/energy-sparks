@@ -21,6 +21,21 @@ $(document).ready(function() {
       $('#event-modal input[name="calendar_event[start_date]"]').val(startDate.toLocaleDateString("en-GB"));
       $('#event-modal input[name="calendar_event[end_date]"]').val(endDate.toLocaleDateString("en-GB"));
 
+      $('#delete_button').show();
+
+      $('#delete_button').on('click', function(e) {
+        e.preventDefault();
+
+        var result = confirm("Are you sure?");
+        if (result) {
+          $('#event-modal input[name="_method"]').val('delete');
+          $('form#event_form').submit();
+        } else {
+          return false;
+        }
+
+      });
+
       $('#event-modal').modal();
     }
 
@@ -36,6 +51,8 @@ $(document).ready(function() {
 
       $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
       $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
+
+      $('#delete_button').hide();
 
       $('#event-modal').modal();
     }
