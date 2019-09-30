@@ -71,6 +71,11 @@ function commonChartOptions(clickListener){
         tooltip: {
           headerFormat: '<b>{point.key}</b><br>',
           pointFormat: orderedPointFormat('kW')
+        },
+        point: {
+          events: {
+            click: clickListener
+          }
         }
       },
       scatter: {
@@ -93,6 +98,11 @@ function commonChartOptions(clickListener){
         tooltip: {
           headerFormat: '<b>{series.name}</b><br>',
           pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
+        },
+        point: {
+          events: {
+            click: clickListener
+          }
         }
       }
     }
