@@ -1,14 +1,36 @@
+/* Font sizes */
+
+$f-super-big: 60px;
+$f0: 50px;
+$f1: 37.3px;
+$f2: 31.1px;
+$f3: 25.9px;
+$f4: 21.6px;
+$f5: 18px;
+$f6: 15px;
+$f7: 12.5px;
+
+$default-font-size: $f5;
+
 body {
   font-family: 'Quicksand', sans-serif;
   font-weight: 500;
-  font-size: 18px;
-  margin-top: 30px;
+  font-size: $default-font-size;
+  margin-top: 18px;
   overflow-x: hidden;
 }
 
 body.sub-nav {
   margin-top: 110px;
 }
+
+.f1 { font-size: $f1; }
+.f2 { font-size: $f2; }
+.f3 { font-size: $f3; }
+.f4 { font-size: $f4; }
+.f5 { font-size: $f5; }
+.f6 { font-size: $f6; }
+.f7 { font-size: $f7; }
 
 div.application.container {
   padding-bottom: 30px;
@@ -28,19 +50,19 @@ address {
 }
 
 p.small {
-  font-size: 16px;
+  font-size: $f6;
 }
 
-span.very-small {
-  font-size: 12px;
+.very-small {
+  font-size: $f7;
 }
 
 footer li {
-  font-size: 14px;
+  font-size: $f6;
 }
 
 nav li {
-  font-size: 14px;
+  font-size: $f6;
 }
 
 .bg-positive {
@@ -53,6 +75,10 @@ nav li {
 
 .bg-negative {
   background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
+}
+
+.bg-light-blue {
+  background-image: linear-gradient(to right, $light-blue 0%, $ligher-light-blue 100%);
 }
 
 section.padded-section {
@@ -100,4 +126,9 @@ div.meter-attributes {
 // OK for us as we don't render invalid feedback unless there is an error
 .invalid-feedback {
   display: block !important;
+}
+
+
+.funnel-image {
+  border-radius: 0.5rem 0.5rem;
 }

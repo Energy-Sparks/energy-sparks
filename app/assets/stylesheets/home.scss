@@ -1,7 +1,4 @@
 header {
-  text-align: center;
-  color: white;
-  background-image: image-url("home-background.jpg");
   background-size: contain;
   background-position: center;
 }
@@ -13,65 +10,215 @@ header .container {
 
 header img {
   display: block;
-  margin: 0 auto 20px;
+  margin: 0 auto 0px;
 }
 
-@media (min-width: 768px) {
+.masthead {
+  background-image: image-url('background-image.jpg');
+  padding: 0 10px 0 0;
+  color: white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 650px;
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  .carousel-item {
+    h2 {
+      font-size: $f5;
+    }
+
+    i {
+      font-size: $f2;
+    }
+
+    .col-1 {
+      line-height: 80px;
+      margin-right: 20px;
+    }
+  }
+
+  .masthead-content {
+    background-color: $dark-blue;
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .carousel-item {
+    h2 {
+      font-size: $f5;
+    }
+
+    i {
+      font-size: $f1;
+    }
+
+    .col-1 {
+      line-height: 80px;
+      margin-right: 20px;
+    }
+  }
+}
+
+// Medium devices (tablets, 768px and up) // max-width: 991.98px
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .headline-text {
+    font-size: $f2;
+  }
+
+  .headline-sub-text {
+    font-size: $f4;
+  }
+
+  .masthead .btn {
+    font-size: $f4;
+    padding: 10px;
+  }
+
+  .carousel-item {
+    h2 {
+      font-size: $f3;
+    }
+
+    i {
+      font-size: $f0;
+    }
+
+    .col-1 {
+      line-height: 100px;
+    }
+  }
+
   header .container {
     padding-top: 50px;
     padding-bottom: 50px;
   }
 }
 
+// Large devices (desktops, 992px and up)
+// @media (min-width: 992px) and (max-width: 1199.98px) { ... }
 
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1140px) {
+  .headline-text {
+    font-size: $f1;
+  }
+  .headline-sub-text {
+    font-size: $f3;
+  }
+  .masthead .btn {
+    font-size: $f3;
+    padding: 20px;
+  }
+
+  .carousel-item {
+    h2 {
+      font-size: $f1;
+    }
+
+    i {
+      font-size: $f-super-big;
+    }
+
+    .col-1 {
+      line-height: 140px;
+    }
+  }
+}
+
+.carousel-indicators li {
+  background:  #AAA;
+  border:2px solid #AAA;
+  border-radius: 6px;
+}
+
+.funnels {
+  background-image: linear-gradient(rgb(241,243,245), white);
+
+  .card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: $white;
+    border-top: 0;
+  }
+
+  .card {
+    border: 2px solid $grey;
+    border-radius: 0.7rem 0.7rem 0.3rem 0.3rem;
+  }
+
+  .card-image {
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .card-body {
+    padding-top: 0px;
+    margin-top: 0px;
+  }
+
+  img {
+    background-size: contain;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,0), rgba(0,0,0,0));
+  }
+}
+
+ .quotes:before, .quotes:after {
+  display: inline-block;
+  vertical-align: top;
+  height: 30px;
+  line-height: 28px;
+  font-size: 50px;
+}
+
+.quotes:before {
+  content: '\201C';
+  margin-right: 4px;
+  margin-left: -8px;
+}
+
+.quotes:after {
+  content: '\201D';
+  margin-left: 4px;
+  margin-right: -8px;
+}
+
+.quote-by {
+  display: block;
+  padding-right: 10px;
+  text-align: right;
+
+  .very-small {
+    margin: 0px;
+  }
+}
+
+.fa-li.fa-check {
+  color: $bg-positive;
+  padding-bottom: 100px;
+}
+
+.info-page > .row {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 0px;
+}
+
+.info-page > .btn {
+  background-image: none;
+}
+
+.btn.bg-positive {
+  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
+}
+
+.alternate-background {
+  background-image: linear-gradient(175deg, #FFFFFF 0%, rgba(196,204,212,0.60) 33%, rgba(211,217,223,0.70) 57%, #F6F8F9 85%);
+}
 
 section.highlight {
   background: $dark-orange;
   color: white;
-}
-
-hr.bulb-light,
-hr.bulb-primary {
-  padding: 0;
-  border: none;
-  border-top: solid 5px;
-  text-align: center;
-  max-width: 250px;
-  margin: 25px auto 30px;
-}
-
-hr.bulb-light:after,
-hr.bulb-primary:after {
-  content: "\f0eb";
-  font-family: 'Font Awesome\ 5 Pro';;
-  display: inline-block;
-  position: relative;
-  top: -0.8em;
-  font-size: 2em;
-  padding: 0 0.25em;
-}
-
-hr.bulb-light {
-  border-color: white;
-}
-
-hr.bulb-light:after {
-  background-color: $dark-orange;
-  color: white;
-}
-
-.intro-text {
-  hr.bulb-light:after {
-    background-color: $light-blue;
-    color: white;
-  }
-}
-
-hr.bulb-primary {
-  border-color: $dark-blue;
-}
-
-hr.bulb-primary:after {
-  background-color: white;
-  color: $dark-blue;
 }

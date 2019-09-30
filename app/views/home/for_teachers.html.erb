@@ -1,69 +1,81 @@
-<% content_for :page_title do %>
-For Teachers
-<% end %>
-<div class="application container">
+<% content_for :page_title, 'For Teachers' %>
 
+<div class="application info-page">
   <div class="row padded-row">
-    <div class="col-md-12">
-      <h1 id="intro">What is <%= t('application') %>?</h1>
-    </div>
-  </div>
+    <div class="col-md-7">
+      <h1 id="intro">Energy Sparks for&hellip;</h1>
+      <p class="display-1"><strong>Teachers</strong></p>
+      <p><strong>Energy Sparks provides extensive support to teachers and eco-teams in learning about energy and climate change within the context of your own school.</strong></p>
+      <ul class="fa-ul">
+        <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i>Eco-team and curriculum linked energy saving activities.</li>
+        <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i>Energy related lesson plans and downloadable resources.</li>
 
-  <div class="row">
-    <div class="col-md-12">
-      <p>
-        Energy Sparks is an exciting project teaching primary and secondary school pupils about energy, and empowering pupils, school staff, management and parents to take action to make their schools more energy efficient.
-      </p>
-      <p>
-        Energy Sparks is currently free to use for all participating schools through our funding from the Department of Business, Energy and Industrial Strategy.
-      </p>
-      <p>
-        Our innovative website takes data from schools’ Smart Meters and produces:
-      </p>
-      <ul class="">
-        <li><strong>Charting:</strong> Publicly accessible charts and reports of  gas and electricity usage data.</li>
-        <li><strong>Analysis:</strong> A school specific analysis tool which automatically analyses schools' smart meter data presenting both short and long-term energy saving opportunities, with supporting professional advice.</li>
-        <li><strong>Simulation:</strong> A simulator which calculates which appliances are contributing to electricity consumption within the school, and allows schools to calculate the energy saving benefits of investment decisions, such as upgrading lighting or IT equipment.</li>
-        <li><strong>Alerts:</strong> An email and text alert system to alert schools to problems with their energy consumption or efficiency.</li>
-        <li><strong>Activities:</strong> A recommended set of over 70 tailored energy related activities for different aged pupils from KS1 to KS5 with supporting online resources that guide pupils through an energy saving programme.</li>
-        <li><strong>Recording Activities:</strong> A means of recording interventions to help build up a permanent record of the pupils' energy saving activities, which can help contribute towards Eco-schools status.</li>
-        <li><strong>Gamification:</strong> A gamification element with points awarded for completed activities. This encourages competition amongst schools, and an incentive to maintain energy saving interventions.</li>
+        <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i>Support for pupils in designing and carrying out experiments to monitor energy related data and behaviour patterns at school.</li>
       </ul>
     </div>
+    <div class="col-md-5 d-flex align-items-center">
+      <%= image_tag("for-teachers/top-image.png", class: "img-fluid") %>
+    </div>
+  </div>
+
+  <div class="row padded-row alternate-background">
+    <div class="col-md-5 pb-3">
+      <%= image_tag("for-teachers/built-in-activities.jpg", class: "img-fluid") %>
+    </div >
+    <div class="col-md-7">
+      <h2>Built-in activities</h2>
+      <p><strong>Energy Sparks has an extensive list of built-in energy related activities and lesson plans from which you can choose. These are catagorised by:</strong></p>
+
+      <ul>
+        <li><strong>Education level</strong> (Key stages)</li>
+        <li><strong>Subject</strong> English, Maths, Science, Design &amp; Technology, etc.)</li>
+        <li><strong>Topic</strong> Climate change, Earth and atmosphere, Energy, etc.)</li>
+        <li><strong>Timescale</strong></li>
+      </ul>
+
+      <p>The majority of the activities and lesson plans are within the context of your school and make use of the extensive charting and analysis of your school’s smart meter data provided on the website.</p>
+      <p>Completed activities or lessons can be recorded on the website for which your school will gain points. These points contribute to a scoreboard where you can compare your progress against other schools locally and nationally.</p>
+    </div>
   </div>
 
   <div class="row padded-row">
-    <div class="col-md-12">
-      <h1 id="funding">How is the service funded?</h1>
+    <div class="col-md-7">
+      <h2>Teacher’s dashboards</h2>
+      <p><strong>The starting point for teachers using Energy Sparks is your 'Teacher's Dashboard' which is specific to your school.</strong></p>
+      <p>This provides a focal point for your energy related teaching, including:</p>
+      <ul>
+        <li><strong>Charts:</strong> showing your school’s recent gas and electricity use.</li>
+        <li><strong>Alerts:</strong>highlighting recent significant changes in your energy use, and hints an tips on how to reduce your energy consumption.</li>
+        <li><strong>Suggested lessons and activities:</strong> to make choosing a lesson plan or eco-team project easy the dashboard provides a list of suggested activities, these are contextual to the time of year or a recent change that Energy Sparks has noticed in your energy usage.</li>
+        <li><strong>A timeline</strong> of completed activities and actions.</li>
+      </ul>
+
+    </div>
+    <div class="col-md-5 d-flex align-items-center">
+      <%= image_tag("for-teachers/teachers-dashboard.png", class: "img-fluid float-right") %>
+    </div >
+  </div>
+
+  <div class="row padded-row alternate-background">
+    <div class="col-md-5  d-flex align-items-center">
+      <%= image_tag("for-teachers/pupil-dashboard.png", class: "img-fluid") %>
+    </div >
+    <div class="col-md-7">
+      <h2>Pupil's dashboard</h2>
+      <p><strong>Energy Sparks has a separate dashboard designed for school pupils, which presents energy information in a more pupil friendly manner.</strong></p>
+
+      <p>The content is focused on encouraging pupils to actively engage in promoting energy saving in the school and take part in energy saving activities. The dashboard aims to provide them with a greater understanding of energy and climate change.</p>
+
+      <p>Energy facts are introduced to help pupils understand the energy, monetary or climate impact of energy use within their school.</p>
+
+      <p>Support for pupils is provided in designing and carrying out experiments to monitor energy related data and behaviour patterns at school.</p>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <p>
-        September 2016 the Open Data Institute (ODI) awarded the project a £7,000 grant to develop the proof-of-concept application into a beta service that could be trialled by schools in Bath and North East Somerset.
-        Subsequent grant funding was obtained from Bath and West Community Energy, The Naturesave Trust and The OVO Foundation.
-      </p>
-      <p>
-        In 2018 we obtained significant funding from the Department for Business, Energy and Industrial Strategy through their Non-Domestic Smart Meter Innovation Competition for further development and to extend Energy Sparks to new areas of the country. This funding will support Energy Sparks to January 2020.
-      </p>
-    </div>
+  <div class="row padded-row justify-content-center m-4 pb-3">
+    <%= link_to 'Enrol your school', enrol_path, class: 'btn bg-positive' %>
   </div>
 
-  <div class="row padded-row">
-    <div class="col-md-12">
-      <h1 id="get-involved">How can I get involved?</h1>
-    </div>
-  </div>
+  <%= render 'testimonial', quote: @testimonial[:quote], by: @testimonial[:by], title: @testimonial[:title], location: @testimonial[:location] %>
 
-  <div class="row">
-    <div class="col-md-12">
-      <p>
-        We currently offer Energy Sparks to schools in Bath and North East Somerset, Somerset and Sheffield. If you are a teacher, governor or parent at a school in one of these areas and would like Energy Sparks at your school, please read our <%= link_to 'enrolment page', enrol_path %> and get in touch.
-      </p>
-      <p>
-        We are keen to extend Energy Sparks to new Local Authority areas and Multi-Academy Trust groups. If you are interested in setting up Energy Sparks for your area or group, please also <%= mail_to 'hello@energysparks.uk', 'contact us'%>.
-      </p>
-    </div>
-  </div>
 </div>

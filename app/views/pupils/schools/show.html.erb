@@ -1,4 +1,4 @@
-<% content_for :page_title do %><%= @school.name %><% end %>
+<%= content_for :page_title, "Pupil dashboard for #{@school.name}" %>
 
 <% if @equivalences_content.present? %>
   <%= render 'equivalence', equivalence_content: @equivalences_content.sample, school: @school %>
@@ -10,7 +10,9 @@
   </div>
 </div>
 
-<%= render 'explore_old_charts', school: @school %>
+<% unless @school.meters.pseudo.any? %>
+  <%= render 'explore_old_charts', school: @school %>
+<% end %>
 
 <% if @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
