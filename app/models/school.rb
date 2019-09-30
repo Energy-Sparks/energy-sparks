@@ -187,32 +187,6 @@ class School < ApplicationRecord
     meters.detect(&:storage_heaters?)
   end
 
-  def current_term
-    calendar.terms.find_by('NOW()::DATE BETWEEN start_date AND end_date')
-  end
-
-  def last_term
-    calendar.terms.find_by('end_date <= ?', current_term.start_date)
-  end
-
-  def number_of_active_meters
-    meters.where(active: true).count
-  end
-
-  def expected_readings_for_a_week
-    7 * number_of_active_meters
-  end
-
-  def has_last_full_week_of_readings?
-    previous_friday = Time.zone.today.prev_occurring(:friday)
-
-    start_of_window = previous_friday - 1.week
-    end_of_window = previous_friday
-    actual_readings = amr_validated_readings.where('reading_date > ? and reading_date <= ?', start_of_window, end_of_window).count
-
-    actual_readings == expected_readings_for_a_week
-  end
-
   def school_admin
     users.where(role: :school_admin)
   end

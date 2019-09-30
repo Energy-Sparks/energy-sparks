@@ -203,10 +203,6 @@ private
     label.is_a?(String) && label.start_with?('Energy') && label.length > 6
   end
 
-  def label_is_temperature_plus?(label)
-    label.start_with?('Temperature') && label.length > 11
-  end
-
   def tidy_label(current_label)
     if label_is_energy_plus?(current_label)
       current_label = sort_out_dates_when_tidying_labels(current_label)

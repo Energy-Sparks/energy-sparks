@@ -253,18 +253,15 @@ RSpec.describe 'alert type management', type: :system do
 
       new_title = 'New title'
       new_description = 'New description'
-      new_analysis = 'New analysis'
 
       fill_in 'Title', with: new_title
       fill_in 'Description', with: new_description
-      fill_in 'Analysis', with: new_analysis
       choose 'Weekly'
       click_on 'Update Alert type'
 
       expect(page).to have_content('Alert type updated')
       expect(page).to have_content(new_title)
       expect(page).to have_content(new_description)
-      expect(page).to have_content(new_analysis)
       expect(page).to have_content('Weekly')
     end
   end

@@ -2,7 +2,6 @@
 #
 # Table name: alert_types
 #
-#  analysis     :text
 #  class_name   :text
 #  description  :text             not null
 #  frequency    :integer
