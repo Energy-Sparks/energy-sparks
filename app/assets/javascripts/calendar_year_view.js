@@ -23,17 +23,11 @@ $(document).ready(function() {
 
       $('#delete_button').show();
 
-      $('#delete_button').on('click', function(e) {
-        e.preventDefault();
+      $('#delete_button').on('click', function(event) {
+        event.preventDefault();
 
-        var result = confirm("Are you sure?");
-        if (result) {
-          $('#event-modal input[name="_method"]').val('delete');
-          $('form#event_form').submit();
-        } else {
-          return false;
-        }
-
+        $('#event-modal input[name="_method"]').val('delete');
+        $('form#event_form').submit();
       });
 
       $('#event-modal').modal();
