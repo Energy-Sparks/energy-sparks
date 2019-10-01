@@ -6,7 +6,7 @@ RSpec.describe "calendar view", type: :system do
   describe 'does lots of good calendar work', js: true do
     let!(:admin)  { create(:admin) }
 
-    it 'shows the calendar' do
+    it 'shows the calendar, allows an event to be added and deleted' do
       create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Date.today.year}"))
 
       sign_in(admin)
@@ -25,9 +25,8 @@ RSpec.describe "calendar view", type: :system do
       find('div.month-container:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1)').click
       expect(page).to have_content('Edit Calendar Event')
       expect(page).to have_content('Delete')
-      click_on('Delete')
 
-      expect { click_on('Ok') }.to change { calendar.calendar_events.count }.by(-1)
+      expect { click_on('Delete') }.to change { calendar.calendar_events.count }.by(-1)
     end
   end
 
