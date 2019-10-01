@@ -11,10 +11,6 @@ class AggregateSchoolService
 
       AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
       # Pre-warm environment caches
-      meter_collection.holidays
-      meter_collection.temperatures
-      meter_collection.solar_irradiation
-      meter_collection.solar_pv
       meter_collection
     end
   end
