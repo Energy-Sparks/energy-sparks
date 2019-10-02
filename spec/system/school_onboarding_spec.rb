@@ -71,6 +71,40 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
+
+    it 'I can amend the email address if the user has not responded' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+
+      within '.navbar' do
+        click_on 'Automatic School Setup'
+      end
+
+      expect(onboarding.has_only_sent_email_or_reminder?).to be true
+
+      click_on 'Change'
+      expect(page).to have_content('Change email address')
+
+      fill_in(:school_onboarding_contact_email, with: '')
+      click_on 'Save'
+
+      expect(page).to have_content('Change email address')
+
+      new_email_address = 'oof@youareawful.com'
+      fill_in(:school_onboarding_contact_email, with: new_email_address)
+
+      click_on 'Save'
+
+      expect(page).to have_content(new_email_address)
+
+      email = ActionMailer::Base.deliveries.last
+      expect(email.to).to include(new_email_address)
+
+      onboarding.reload
+
+      expect(onboarding.has_only_sent_email_or_reminder?).to be true
+
+      expect(onboarding.contact_email).to eq new_email_address
+    end
   end
 
   context 'as school user signing up' do
