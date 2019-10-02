@@ -4,8 +4,7 @@
 #
 #  analysis_charts          :json             not null
 #  created_at               :datetime         not null
-#  electricity              :boolean          default(FALSE), not null
-#  gas                      :boolean          default(FALSE), not null
+#  fuel_configuration       :json
 #  gas_dashboard_chart_type :integer          default("no_chart"), not null
 #  id                       :bigint(8)        not null, primary key
 #  pupil_analysis_charts    :json             not null
@@ -33,6 +32,14 @@ module Schools
     TEACHERS_DASHBOARD_CHARTS = [TEACHERS_GAS_SIMPLE, TEACHERS_GAS, TEACHERS_ELECTRICITY].freeze
 
     enum gas_dashboard_chart_type: [NO_CHART, TEACHERS_GAS_SIMPLE, TEACHERS_GAS]
+
+
+    delegate :has_electricity, :has_gas, :has_storage_heaters, :has_solar_pv, :fuel_types_for_analysis, :dual_fuel,
+      to: :fuel_configuration
+
+    def fuel_configuration
+      FuelConfiguration.new(**super.symbolize_keys)
+    end
 
     def analysis_charts_as_symbols(charts_field = :analysis_charts)
       configuration = {}

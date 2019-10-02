@@ -152,11 +152,11 @@ class School < ApplicationRecord
   end
 
   def fuel_types
-    if both_supplies?
+    if configuration.dual_fuel
       :electric_and_gas
-    elsif meters_with_readings(:electricity).any?
+    elsif configuration.has_electricity
       :electric_only
-    elsif meters_with_readings(:gas).any?
+    elsif configuration.has_gas
       :gas_only
     else
       :none
@@ -164,11 +164,11 @@ class School < ApplicationRecord
   end
 
   def has_gas?
-    configuration.gas
+    configuration.has_gas
   end
 
   def has_electricity?
-    configuration.electricity
+    configuration.has_electricity
   end
 
   def analysis?
@@ -176,15 +176,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types_for_analysis
-    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
+    configuration.fuel_types_for_analysis
   end
 
   def has_solar_pv?
-    meters.detect(&:solar_pv?)
+    configuration.has_solar_pv
   end
 
   def has_storage_heaters?
-    meters.detect(&:storage_heaters?)
+    configuration.has_storage_heaters
   end
 
   def school_admin
