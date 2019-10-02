@@ -1,7 +1,7 @@
 <%= content_for :page_title, "Pupil dashboard for #{@school.name}" %>
 
 <% if @equivalences_content.present? %>
-  <%= render 'equivalence', equivalence_content: @equivalences_content.sample, school: @school %>
+  <%= render 'equivalences', equivalences_content: @equivalences_content, school: @school %>
 <% end %>
 
 <div class="row padded-row align-items-end">
