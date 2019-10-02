@@ -57,6 +57,10 @@ class SchoolOnboarding < ApplicationRecord
     events.where(event: event_name).any?
   end
 
+  def has_only_sent_email?
+    events.count == 1 && has_event?(:email_sent)
+  end
+
   def to_param
     uuid
   end
