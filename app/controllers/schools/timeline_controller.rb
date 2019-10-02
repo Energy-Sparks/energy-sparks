@@ -1,6 +1,9 @@
 module Schools
   class TimelineController < ApplicationController
     load_and_authorize_resource :school
+
+    skip_before_action :authenticate_user!
+
     def show
       @academic_year = if params[:academic_year]
                          AcademicYear.find(params[:academic_year])
