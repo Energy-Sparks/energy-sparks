@@ -5,6 +5,7 @@ module Schools
     skip_before_action :authenticate_user!
 
     def show
+      authorize! :index, Observation
       @academic_year = if params[:academic_year]
                          AcademicYear.find(params[:academic_year])
                        else
