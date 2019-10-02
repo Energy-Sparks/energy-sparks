@@ -1,4 +1,3 @@
-a,
 a:hover,
 a:focus,
 a:active,
@@ -51,6 +50,12 @@ a.nav-link.active {
 
 .btn-outline-dark:hover {
   color: $white;
+}
+
+.btn-dark-blue {
+  color: white;
+  background-color: $dark-blue;
+  background-image: none;
 }
 
 .btn-group {
