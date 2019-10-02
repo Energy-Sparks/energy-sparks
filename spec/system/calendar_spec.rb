@@ -14,16 +14,31 @@ RSpec.describe "calendar view", type: :system do
       expect(page.has_content?(calendar.title)).to be true
       expect(page.has_content?('January')).to be true
 
-      find('div.month-container:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1)').click
+      fifteenth_jan = find(".calendar .day", text: '15', match: :first)
+
+      fifteenth_jan.click
       expect(page).to have_content('New Calendar Event')
 
-      expect(page).to have_content('Event Type')
       select 'Holiday - Holiday', from: 'calendar_event_calendar_event_type_id'
-
       fill_in(:calendar_event_title, with: 'Exciting day off')
+
       expect { click_on('Save') }.to change { calendar.calendar_events.count }.by(1)
-      find('div.month-container:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1)').click
+
+      # Wait until ajax call is back
+      assert_selector('td[style]')
+
+      fifteenth_jan.click
       expect(page).to have_content('Edit Calendar Event')
+      expect(page).to have_field('Title', with: 'Exciting day off')
+
+      fill_in(:calendar_event_title, with: 'Boring day off')
+      click_on('Save')
+
+      # Wait until ajax call is back
+      assert_selector('td[style]')
+
+      fifteenth_jan.click
+      expect(page).to have_field('Title', with: 'Boring day off')
       expect(page).to have_content('Delete')
 
       expect { click_on('Delete') }.to change { calendar.calendar_events.count }.by(-1)
