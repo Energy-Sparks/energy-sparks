@@ -2,8 +2,6 @@
 
 <%= simple_form_for([:admin, @school_onboarding], url: admin_school_onboarding_email_path(@school_onboarding)) do |f| %>
 
-  <%= render 'shared/errors', subject: @school_onboarding, subject_name: 'form' %>
-
   <%= f.input :contact_email %>
   <%= f.input :notes %>
 
