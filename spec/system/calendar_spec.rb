@@ -24,12 +24,18 @@ RSpec.describe "calendar view", type: :system do
 
       expect { click_on('Save') }.to change { calendar.calendar_events.count }.by(1)
 
+      # Wait until ajax call is back
+      assert_selector('td[style]')
+
       fifteenth_jan.click
       expect(page).to have_content('Edit Calendar Event')
       expect(page).to have_field('Title', with: 'Exciting day off')
 
       fill_in(:calendar_event_title, with: 'Boring day off')
       click_on('Save')
+
+      # Wait until ajax call is back
+      assert_selector('td[style]')
 
       fifteenth_jan.click
       expect(page).to have_field('Title', with: 'Boring day off')
