@@ -152,11 +152,11 @@ class School < ApplicationRecord
   end
 
   def fuel_types
-    if both_supplies?
+    if configuration.dual_fuel
       :electric_and_gas
-    elsif meters_with_readings(:electricity).any?
+    elsif configuration.has_electricity
       :electric_only
-    elsif meters_with_readings(:gas).any?
+    elsif configuration.has_gas
       :gas_only
     else
       :none
@@ -164,11 +164,11 @@ class School < ApplicationRecord
   end
 
   def has_gas?
-    configuration.gas
+    configuration.has_gas
   end
 
   def has_electricity?
-    configuration.electricity
+    configuration.has_electricity
   end
 
   def analysis?
@@ -176,41 +176,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types_for_analysis
-    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
+    configuration.fuel_types_for_analysis
   end
 
   def has_solar_pv?
-    meters.detect(&:solar_pv?)
+    configuration.has_solar_pv
   end
 
   def has_storage_heaters?
-    meters.detect(&:storage_heaters?)
-  end
-
-  def current_term
-    calendar.terms.find_by('NOW()::DATE BETWEEN start_date AND end_date')
-  end
-
-  def last_term
-    calendar.terms.find_by('end_date <= ?', current_term.start_date)
-  end
-
-  def number_of_active_meters
-    meters.where(active: true).count
-  end
-
-  def expected_readings_for_a_week
-    7 * number_of_active_meters
-  end
-
-  def has_last_full_week_of_readings?
-    previous_friday = Time.zone.today.prev_occurring(:friday)
-
-    start_of_window = previous_friday - 1.week
-    end_of_window = previous_friday
-    actual_readings = amr_validated_readings.where('reading_date > ? and reading_date <= ?', start_of_window, end_of_window).count
-
-    actual_readings == expected_readings_for_a_week
+    configuration.has_storage_heaters
   end
 
   def school_admin

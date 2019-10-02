@@ -18,8 +18,6 @@ Rails.application.routes.draw do
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  get 'help/(:help_page)', to: 'home#help', as: :help
-
   resources :activity_types
   resources :activity_categories
 
@@ -178,7 +176,7 @@ Rails.application.routes.draw do
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
-        resource :email, only: [:new, :create], controller: 'email'
+        resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
       end
     end

@@ -57,34 +57,6 @@ module AmrUsage
     latest.nil? ? nil : latest - window.days..latest
   end
 
-  # last_friday_with_readings: get date of the last friday which has readings
-  def last_friday_with_readings(supply = nil)
-    readings_with_selected_meters(supply, nil).where("extract(dow from reading_date) = ?", 5).maximum(:reading_date)
-  end
-
-  # return the date range of the last full week with readings
-  def last_full_week(supply)
-    friday = self.last_friday_with_readings(supply)
-    friday.nil? ? nil : friday - 4.days..friday
-  end
-
-  # return day of the week with the most usage
-  # for the last seven days of readings
-  def day_most_usage(supply, window = 7)
-    usage = daily_usage(supply: supply, dates: last_n_days_with_readings(supply, window))
-    return nil unless usage
-
-    # rubocop:disable Style/UnneededSort
-    usage.sort { |a, b| a[1] <=> b[1] }.last
-    # rubocop:enable  Style/UnneededSort
-  end
-
-  # return date range for week in which this date falls
-  def self.this_week(date = Date.current)
-    previous_sat = date - ((date.wday - 6) % 7) # Sun = 0, Sat = 6
-    previous_sat..previous_sat + 6.days # week runs from Sat to Fri
-  end
-
 private
 
   def readings_with_selected_meters(supply, meter)

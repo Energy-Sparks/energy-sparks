@@ -29,65 +29,23 @@ describe School do
     end
   end
 
-  describe '#current_term' do
-
-    it 'returns the current term' do
-      current_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(3), end_date: today.tomorrow
-      expect(subject.current_term).to eq(current_term)
-    end
-  end
-
-  describe '#last_term' do
-
-    it 'returns the term preceeding #current_term' do
-      create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(3), end_date: today.tomorrow
-      last_term = create :term, calendar_id: subject.calendar_id, start_date: today.months_ago(6), end_date: today.yesterday.months_ago(3)
-
-      expect(subject.last_term).to eq(last_term)
-    end
-  end
-
   describe '#fuel_types' do
     it 'identifies dual fuel if it has both meters' do
-      gas_meter = create(:gas_meter_with_reading, school: subject)
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      fuel_configuration = Schools::FuelConfiguration.new(has_gas: true, has_electricity: true)
+      subject.configuration.update(fuel_configuration: fuel_configuration)
       expect(subject.fuel_types).to eq :electric_and_gas
     end
 
     it 'identifies electricity if it has electricity only' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true)
+      subject.configuration.update(fuel_configuration: fuel_configuration)
       expect(subject.fuel_types).to eq :electric_only
     end
 
     it 'identifies gas if it has gas only' do
-      gas_meter = create(:gas_meter_with_reading, school: subject)
+      fuel_configuration = Schools::FuelConfiguration.new(has_gas: true, has_electricity: false)
+      subject.configuration.update(fuel_configuration: fuel_configuration)
       expect(subject.fuel_types).to eq :gas_only
-    end
-
-    it 'identifies gas if it has gas only with no readings for electricity' do
-      electricity_meter = create(:electricity_meter, school: subject)
-      gas_meter = create(:gas_meter_with_reading, school: subject)
-      expect(subject.fuel_types).to eq :gas_only
-    end
-
-    it 'identifies gas if it has gas only with readings and one without and no readings for electricity' do
-      electricity_meter = create(:electricity_meter, school: subject)
-      gas_meter = create(:gas_meter_with_reading, school: subject)
-      gas_meter_no_readings = create(:gas_meter, school: subject)
-      expect(subject.fuel_types).to eq :gas_only
-    end
-
-    it 'identifies electricity if it has an electricity with readings and with no readings for gas' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
-      gas_meter = create(:gas_meter, school: subject)
-      expect(subject.fuel_types).to eq :electric_only
-    end
-
-    it 'identifies electricity if it has an electricity with readings and one without and with no readings for gas' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
-      electricity_meter_no_readings = create(:electricity_meter, school: subject)
-      gas_meter = create(:gas_meter, school: subject)
-      expect(subject.fuel_types).to eq :electric_only
     end
   end
 

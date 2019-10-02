@@ -23,7 +23,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.50.18'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.50.20'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -46,12 +46,7 @@ gem 'bootstrap-email'
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'chartkick' # Use chartkick for usage graphs
-gem 'redcarpet' # Use redcarpet to convert markdown
 gem 'simple_form'
-# Highcharts now included directly
-
-# For bulk record import in CSV etc
-gem 'activerecord-import'
 
 # JS Templating
 gem 'handlebars_assets'
@@ -71,9 +66,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 
 # Bundle update installs 0.7.0 for some weird reason!
 gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
-# Run against master until full Rails6 release is complete
-gem 'friendly_id', git: 'https://github.com/norman/friendly_id.git', branch: 'master' # Pretties up URLs
-gem 'ruby-sun-times'
+gem 'friendly_id'
+
 
 # For SMS notifications
 gem 'twilio-ruby'

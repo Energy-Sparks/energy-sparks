@@ -2,8 +2,9 @@
 #
 # Table name: programme_types
 #
+#  _old_description  :text
 #  active            :boolean          default(FALSE)
-#  description       :text
+#  document_link     :string
 #  id                :bigint(8)        not null, primary key
 #  short_description :text
 #  title             :text
@@ -20,6 +21,8 @@ class ProgrammeType < ApplicationRecord
   validates_presence_of :title
 
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
+
+  has_rich_text :description
 
   def update_activity_type_positions!(position_attributes)
     transaction do
