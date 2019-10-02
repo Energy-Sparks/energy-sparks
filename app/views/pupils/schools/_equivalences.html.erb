@@ -7,9 +7,7 @@
             <div class="trix-content">
               <%= sanitize equivalence_content.equivalence %>
             </div>
-            <% if defined?(school) %>
-              <p><%= link_to 'Find out how much energy has been used', pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
-            <% end %>
+            <p><%= link_to 'Find out how much energy has been used', pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
           </div>
           <div class="col-6 illustration-wrapper">
             <%= image_tag("equivalences/#{equivalence_content.equivalence_type.image_name}.svg") if equivalence_content.equivalence_type.show_image? %>
@@ -17,7 +15,6 @@
         </div>
       </div>
     <% end %>
-
   </div>
   <a class="carousel-control-prev" href="#pupil_carousel" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
