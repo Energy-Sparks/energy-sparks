@@ -18,7 +18,7 @@ describe 'programme type management', type: :system do
       new_title = 'Super programme number 2'
       click_on 'New Programme Type'
       fill_in 'Title', with: old_title
-      fill_in 'Description', with: description
+      fill_in_trix with: description
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
