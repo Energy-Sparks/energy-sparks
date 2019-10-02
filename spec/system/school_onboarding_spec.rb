@@ -79,7 +79,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
         click_on 'Automatic School Setup'
       end
 
-      expect(onboarding.has_only_sent_email?).to be true
+      expect(onboarding.has_only_sent_email_or_reminder?).to be true
 
       click_on 'Change'
       expect(page).to have_content('Change email address')
@@ -101,7 +101,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       onboarding.reload
 
-      expect(onboarding.has_only_sent_email?).to be true
+      expect(onboarding.has_only_sent_email_or_reminder?).to be true
 
       expect(onboarding.contact_email).to eq new_email_address
     end
