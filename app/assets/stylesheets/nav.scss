@@ -1,6 +1,6 @@
 .navbar {
   border-radius: 0;
-  background: $dark-blue;
+  background: $nav-bar-blue;
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
   font-weight: 400;
   border: none;
@@ -13,6 +13,8 @@
   .navbar-brand.active {
     color: white;
     font-size: 18px;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
   }
 
   .navbar-nav {
