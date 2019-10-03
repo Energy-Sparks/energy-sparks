@@ -53,6 +53,12 @@ a.nav-link.active {
   color: $white;
 }
 
+.btn-dark-blue {
+  color: white;
+  background-color: $dark-blue;
+  background-image: none;
+}
+
 .btn-group {
   .btn {
     margin-left: 5px;
