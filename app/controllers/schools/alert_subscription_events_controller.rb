@@ -8,4 +8,7 @@ class Schools::AlertSubscriptionEventsController < ApplicationController
     @sent_sms = @school.alert_subscription_events.sms.sent
     @pending_sms = @school.alert_subscription_events.sms.pending
   end
+
+  def show
+  end
 end

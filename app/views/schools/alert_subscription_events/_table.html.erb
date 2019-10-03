@@ -20,11 +20,12 @@
             <td><%= alert_subscription_event.message %></td>
             <% if alert_subscription_event.sent? %>
               <td><%= nice_date_times alert_subscription_event.sent_at %></td>
-              <td><%= link_to 'View', admin_emails_alert_mailer_path(alert_subscription_event.email), class: 'btn btn-primary btn-sm' if alert_subscription_event.email %></td>
+              <td><%= link_to 'View', admin_emails_alert_mailer_path(alert_subscription_event.email), class: 'btn btn-sm' if alert_subscription_event.email %></td>
             <% else %>
               <td></td><td></td>
             <% end %>
-              <td><%= alert_subscription_event.priority %></td>
+            <td><%= alert_subscription_event.priority %></td>
+            <td><%= link_to 'Details', school_alert_subscription_event_path(school, alert_subscription_event), class: 'btn btn-sm' %></td>
           </tr>
         <% end %>
       </tbody>
