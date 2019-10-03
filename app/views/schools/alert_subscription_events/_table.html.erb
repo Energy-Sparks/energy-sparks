@@ -8,6 +8,7 @@
           <th>Error Message</th>
           <th>Sent on</th>
           <th>Sent message</th>
+          <th>Priority</th>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +24,7 @@
             <% else %>
               <td></td><td></td>
             <% end %>
+              <td><%= alert_subscription_event.priority %></td>
           </tr>
         <% end %>
       </tbody>
