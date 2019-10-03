@@ -28,6 +28,8 @@ class ChartDataValues
   LIGHT_ELECTRICITY = '#59D0FF'.freeze
   DARK_GAS = '#FF8438'.freeze
   LIGHT_GAS = '#FFC73E'.freeze
+  DARK_STORAGE = '#7C3AFF'.freeze
+  LIGHT_STORAGE = '#E097FC'.freeze
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
@@ -124,6 +126,8 @@ private
   def teachers_chart_colour(index)
     if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
       index.zero? ? DARK_GAS : LIGHT_GAS
+    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type)
+      index.zero? ? DARK_STORAGE : LIGHT_STORAGE
     else
       index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
     end
