@@ -2,7 +2,7 @@ namespace :alerts do
   desc 'Run alert content job'
   task generate_content: [:environment] do
     puts Time.zone.now
-    schools = School.all
+    schools = School.with_config
 
     schools.each do |school|
       if Time.zone.today.wednesday?
