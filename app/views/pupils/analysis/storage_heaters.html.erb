@@ -1,0 +1,50 @@
+<% content_for :page_title, "Here's the storage heater data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>storage heater</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="card-deck">
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'kWh'} do %>
+    find out <strong>when</strong> the storage heaters used electricity
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Cost'} do %>
+    find out <strong>how much</strong> the storage heaters cost
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'CO2'} do %>
+    find out how much <strong>carbon dioxide</strong> was generated
+  <% end %>
+
+</div>
+
+<h2>I want to look at&hellip;</h2>
+
+<div class="card-deck">
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Pie'}, centre: true do %>
+    <div class="p-4">
+      <%= fa_icon "chart-pie-alt fa-3x" %>
+    </div>
+    Pie charts
+  <% end %>
+
+  <%= render 'category_link', school: @school, energy: :storage, category: :storage_heaters_bar, category_name: 'Bar charts', icon: 'chart-bar' %>
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Line'}, centre: true do %>
+    <div class="p-4">
+      <%= fa_icon "chart-line-down fa-3x" %>
+    </div>
+    Line graphs
+  <% end %>
+</div>

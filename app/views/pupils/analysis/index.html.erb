@@ -27,4 +27,16 @@
       </div>
     </div>
   <% end %>
+  <% if @school.has_storage_heaters? %>
+    <div class="col text-center pb-3">
+      <div class="card storage-dark gas-card m-3">
+        <div class="card-body">
+          <div class="p-4">
+            <%= fab_icon('intercom fa-3x') %>
+          </div>
+          <%= link_to 'Storage heaters', pupils_school_analysis_path(@school, category: :storage_heaters), class: 'h2 stretched-link text-decoration-none' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
