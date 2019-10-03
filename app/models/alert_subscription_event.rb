@@ -50,4 +50,8 @@ class AlertSubscriptionEvent < ApplicationRecord
   validates :priority, numericality: true
 
   scope :by_priority, -> { order(priority: :desc) }
+
+  def sent_at
+    email.sent_at if email
+  end
 end
