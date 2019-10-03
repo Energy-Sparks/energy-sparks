@@ -1,0 +1,27 @@
+<div class="card border-dark mb-3">
+  <div class="card-header d-flex justify-content-between">
+    <div>
+      <p>You can choose what the energy usage is measured in for some of the charts. </p><p>Currently your measurements are in <b><%= measurement_options[@measurement] %></b> <a href="https://blog.energysparks.uk/analysis/" target="_blank">(Find out more about units)</a></p>
+    </div>
+    <div>
+      <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right" href="#y-axis-selection-form" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
+        Change energy usage units
+      </a>
+    </div>
+  </div>
+  <div id="y-axis-selection-form" class="collapse" >
+    <div class="card-body text-dark">
+      <%= form_tag({}, method: :get) do |f| %>
+        <div class="form-group">
+          <% measurement_options.each do |key, description| %>
+            <div class="form-check">
+              <%= radio_button_tag :measurement, key, key == measurement.to_s, class: "form-check-input" %>
+              <%= label_tag "measurement_#{key}".to_sym, description.capitalize, value: key, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+        <%= submit_tag 'See updated charts', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>
