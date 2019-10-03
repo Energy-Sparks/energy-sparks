@@ -14,6 +14,9 @@ module Schools
       gas_dashboard_chart_type = GenerateGasDashboardChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
       configuration.update!(gas_dashboard_chart_type: gas_dashboard_chart_type)
 
+      storage_heater_dashboard_chart_type = GenerateStorageHeaterDashboardChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
+      configuration.update!(storage_heater_dashboard_chart_type: storage_heater_dashboard_chart_type)
+
       analysis_chart_configuration = GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration)
 
       analysis_charts = analysis_chart_configuration.generate
