@@ -94,6 +94,8 @@ class School < ApplicationRecord
   scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
+  scope :with_config, -> { joins(:configuration) }
+
   validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
