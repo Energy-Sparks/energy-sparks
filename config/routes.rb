@@ -161,6 +161,7 @@ Rails.application.routes.draw do
         namespace :ratings do
           resource :preview, only: :show, controller: 'preview'
         end
+        resources :reports, only: [:index, :show]
       end
     end
     resources :equivalence_types do
