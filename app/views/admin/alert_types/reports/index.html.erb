@@ -1,0 +1,13 @@
+
+<h1>Alert priorities report for:</h1>
+<h3><%= @alert_type.title %></h3>
+
+<p><%= link_to 'Back to Alert type', admin_alert_type_path(@alert_type), class: 'btn' %></p>
+
+<p>Download reports for each content type for this alert type. Note that if no associated content has been generated for the ratings given by the alerts, then these reports will be empty.</p>
+
+<p><%= link_to 'Dashboard content', admin_alert_type_report_path(@alert_type, :dashboard, format: :csv) %></p>
+
+<p><%= link_to 'Email and SMS content', admin_alert_type_report_path(@alert_type, :email_sms, format: :csv) %></p>
+
+<p><%= link_to 'Managment Priority (long term alert) content', admin_alert_type_report_path(@alert_type,  :management_priorities, format: :csv) %></p>
