@@ -22,7 +22,7 @@ module Admin
                    readings_to_csv(management_priorities_report, MANAGEMENT_HEADER)
                  end
 
-        send_data output, filename: "#{report_type.parameterize}-#{@alert_type.title.parameterize}-#{@alert_type.id}-alert-prioritisation-data.csv"
+        send_data output, filename: "#{report_type.to_s.parameterize}-#{@alert_type.title.parameterize}-#{@alert_type.id}-alert-prioritisation-data.csv"
       end
 
       private
