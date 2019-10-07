@@ -11,7 +11,7 @@
 
 <%= form.simple_fields_for :content, content do |content| %>
 
-  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards' %>
+  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards', input_html: { class: 'colours' }, label_method: :humanize %>
 
   <h3>Variables</h3>
 
