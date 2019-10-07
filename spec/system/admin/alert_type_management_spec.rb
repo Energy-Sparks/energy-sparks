@@ -70,7 +70,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'Rating to', with: '10'
         fill_in 'Description', with: 'For schools with bad heating management'
 
-        select 'red', from: 'Colour'
+        select 'Negative', from: 'Colour'
 
         check 'Teacher dashboard alert'
         fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
@@ -220,8 +220,7 @@ RSpec.describe 'alert type management', type: :system do
 
         fill_in 'Description', with: 'For schools with bad heating management'
 
-        select 'red', from: 'Colour'
-
+        select 'Negative', from: 'Colour'
 
         click_on 'Create content'
 
