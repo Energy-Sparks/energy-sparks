@@ -57,7 +57,7 @@ Rails.application.routes.draw do
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
-      resources :alert_subscription_events, only: :index
+      resources :alert_subscription_events, only: [:index, :show]
 
       resources :meters do
         member do
@@ -176,7 +176,7 @@ Rails.application.routes.draw do
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
-        resource :email, only: [:new, :create], controller: 'email'
+        resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
       end
     end

@@ -94,6 +94,8 @@ class School < ApplicationRecord
   scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
+  scope :with_config, -> { joins(:configuration) }
+
   validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
@@ -152,11 +154,11 @@ class School < ApplicationRecord
   end
 
   def fuel_types
-    if both_supplies?
+    if configuration.dual_fuel
       :electric_and_gas
-    elsif meters_with_readings(:electricity).any?
+    elsif configuration.has_electricity
       :electric_only
-    elsif meters_with_readings(:gas).any?
+    elsif configuration.has_gas
       :gas_only
     else
       :none
@@ -164,11 +166,11 @@ class School < ApplicationRecord
   end
 
   def has_gas?
-    configuration.gas
+    configuration.has_gas
   end
 
   def has_electricity?
-    configuration.electricity
+    configuration.has_electricity
   end
 
   def analysis?
@@ -176,15 +178,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types_for_analysis
-    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
+    configuration.fuel_types_for_analysis
   end
 
   def has_solar_pv?
-    meters.detect(&:solar_pv?)
+    configuration.has_solar_pv
   end
 
   def has_storage_heaters?
-    meters.detect(&:storage_heaters?)
+    configuration.has_storage_heaters
   end
 
   def school_admin

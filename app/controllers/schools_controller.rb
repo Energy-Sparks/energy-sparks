@@ -14,7 +14,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools
   def index
-    @scoreboards = Scoreboard.includes(:schools).where.not(schools: { id: nil }).order(:name)
+    @scoreboards = Scoreboard.includes(schools: :configuration).where.not(schools: { id: nil }).order(:name)
     @ungrouped_active_schools = School.active.without_group.order(:name)
     @schools_not_active = School.inactive.order(:name)
   end

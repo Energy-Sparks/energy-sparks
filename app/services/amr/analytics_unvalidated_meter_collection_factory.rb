@@ -96,7 +96,11 @@ module Amr
       begin
         Date.strptime(reading.reading_date, date_format)
       rescue ArgumentError
-        nil
+        begin
+          Date.parse(reading.reading_date)
+        rescue ArgumentError
+          nil
+        end
       end
     end
   end

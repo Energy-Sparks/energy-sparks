@@ -57,6 +57,10 @@ class SchoolOnboarding < ApplicationRecord
     events.where(event: event_name).any?
   end
 
+  def has_only_sent_email_or_reminder?
+    (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
+  end
+
   def to_param
     uuid
   end

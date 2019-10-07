@@ -5,7 +5,14 @@
 
     <div class="jumbotron">
       <h2><%= @programme.title %></h2>
-      <p class="lead mt-3"><%= @programme.description %></p>
+      <% if @programme.document_link %>
+        <p>
+          <%= link_to @programme.document_link do %>
+            <%= fa_icon('print') %> Printable programme
+          <% end %>
+        </p>
+      <% end %>
+      <div class="lead mt-3 trix-content"><%= @programme.description %></div>
       <hr class="my-4">
       <dl class="row">
         <dt class="col-sm-2">Started:</dt>

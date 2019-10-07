@@ -85,17 +85,6 @@ module ApplicationHelper
     end
   end
 
-  def class_for_alert_subscription(status)
-    case status
-    when 'sent'
-      'bg-success'
-    when 'pending'
-      'bg-warning'
-    else
-      'bg-danger'
-    end
-  end
-
   def class_for_boolean(boolean)
     boolean ? 'bg-success' : 'bg-danger'
   end
