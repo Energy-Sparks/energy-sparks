@@ -10,7 +10,7 @@ class AggregateSchoolService
       meter_collection = Amr::AnalyticsValidatedMeterCollectionFactory.new(@active_record_school).build
 
       AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-      # Pre-warm environment caches
+
       meter_collection
     end
   end
