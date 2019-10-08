@@ -52,11 +52,11 @@ module ApplicationHelper
 
   def temperature_cell_colour(temperature)
     if temperature >= 19
-      'table-danger'
+      'bg-negative'
     elsif temperature < 18
-      'table-primary'
+      'bg-neutral'
     else
-      'table-success'
+      'bg-positive'
     end
   end
 
