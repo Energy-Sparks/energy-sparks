@@ -130,7 +130,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Next'
 
       click_on 'I give permission'
-      expect(page).to have_content('Please confirm agreement with the Energy Sparks privacy policy')
+      expect(page).to have_content('Please confirm')
 
       check 'I confirm agreement with the Energy Sparks privacy policy'
       click_on 'I give permission'
