@@ -4,9 +4,10 @@ class HomeController < ApplicationController
   before_action :redirect_if_logged_in, only: :index
 
   def index
-    # This renders using rails magic, the home layout template which
-    # does not include the application container
-    @active_schools = School.active.count
+  end
+
+  def show
+    render :index
   end
 
   def for_teachers
