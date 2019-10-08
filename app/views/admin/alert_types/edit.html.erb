@@ -1,13 +1,8 @@
 <h1>Edit: <%= @alert_type.title %> alert type</h1>
 
 <%= simple_form_for(@alert_type, url: admin_alert_type_path(@alert_type)) do |f| %>
-
-  <%= render 'shared/errors', subject: @alert_type, subject_name: 'alert type' %>
-
   <%= f.input :title, as: :string %>
-
-  <%= f.input :description %>
-
+  <%= f.input :description, as: :trix_editor %>
   <%= f.input :frequency, as: :radio_buttons, collection: AlertType.frequencies.keys, label_method: :humanize %>
 
   <%= f.submit class: 'btn btn-success' %>

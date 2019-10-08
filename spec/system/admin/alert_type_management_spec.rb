@@ -248,13 +248,13 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Title', with: ''
       click_on 'Update Alert type'
 
-      expect(page).to have_content("Title can't be blank")
+      expect(page).to have_content("Title *\ncan't be blank")
 
       new_title = 'New title'
       new_description = 'New description'
 
       fill_in 'Title', with: new_title
-      fill_in 'Description', with: new_description
+      fill_in_trix with: new_description
       choose 'Weekly'
       click_on 'Update Alert type'
 
