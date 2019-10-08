@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_30_123006) do
-
+ActiveRecord::Schema.define(version: 2019_10_08_134240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -254,7 +253,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
     t.integer "sub_category"
     t.integer "frequency"
     t.text "title"
-    t.text "description", null: false
+    t.text "description"
     t.text "class_name"
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
@@ -629,7 +628,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
 
   create_table "programme_types", force: :cascade do |t|
     t.text "title"
-    t.text "_old_description"
     t.boolean "active", default: false
     t.text "short_description"
     t.string "document_link"
@@ -642,7 +640,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
     t.date "started_on", null: false
     t.date "ended_on"
     t.text "title"
-    t.text "_old_description"
     t.string "document_link"
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
