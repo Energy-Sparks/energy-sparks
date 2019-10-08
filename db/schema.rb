@@ -253,7 +253,7 @@ ActiveRecord::Schema.define(version: 2019_10_08_134240) do
     t.integer "sub_category"
     t.integer "frequency"
     t.text "title"
-    t.text "description"
+    t.text "_old_description"
     t.text "class_name"
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
