@@ -26,7 +26,7 @@
 
     <div class="card-deck">
       <%= render partial: 'supply', locals: {current_supply: @supply, configuration: @chart_config} %>
-      <%= render partial: 'comparison_type_card', locals: {current_supply: @supply, school: @school} %>
+      <%= render partial: 'comparison_type_card', locals: {current_supply: @supply, show_measurements: true} %>
       <%= render partial: 'whole_school_card',
         locals: { current_supply: @supply, school: @school, first_option: "First week (starts Sunday)", second_option: "Second week (starts Sunday)", week_picker: true } %>
       <%= render partial: 'within_school_card',
