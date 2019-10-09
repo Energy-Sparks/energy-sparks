@@ -87,21 +87,6 @@ class SchoolsController < ApplicationController
     end
   end
 
-  # GET /schools/:id/usage
-  def usage
-    set_measurement_options
-    @measurement = measurement_unit(params[:measurement])
-
-    set_supply
-    if @supply
-      set_first_date
-      set_to_date
-      render "#{period}_usage"
-    else
-      redirect_to school_path(@school), notice: 'No suitable supply could be found'
-    end
-  end
-
 private
 
   def set_key_stages
@@ -126,58 +111,6 @@ private
       :cooks_dinners_for_other_schools_count,
       key_stage_ids: []
     )
-  end
-
-  def set_supply
-    @supply = params[:supply].present? ? params[:supply] : supply_from_school
-  end
-
-  def supply_from_school
-    case @school.fuel_types
-    when :electric_and_gas, :electric_only then 'electricity'
-    when :gas_only then 'gas'
-    end
-  end
-
-  def period
-    params[:period].present? ? params[:period] : "hourly"
-  end
-
-  def set_first_date
-    if period == "hourly"
-      begin
-        @first_date = Date.parse params[:first_date]
-      rescue
-        @first_date = @school.last_reading_date(@supply)
-      end
-    else
-      begin
-        @first_date = Date.parse params[:first_date]
-      rescue
-        @first_date = @school.last_reading_date(@supply)
-      end
-      #ensure we're looking at beginning of the week
-      @first_date = @first_date.beginning_of_week(:sunday) if @first_date.present?
-    end
-  end
-
-  def set_to_date
-    if period == "hourly"
-      begin
-        @to_date = Date.parse params[:to_date]
-      rescue
-        @to_date = nil
-      end
-    else
-      begin
-        @to_date = Date.parse params[:to_date]
-      rescue
-        last_reading = @school.last_reading_date(@supply)
-        @to_date = last_reading - 7.days if last_reading.present?
-      end
-      #ensure we're looking at beginning of the week
-      @to_date = @to_date.beginning_of_week(:sunday) if @to_date.present?
-    end
   end
 
   def redirect_to_dashboard

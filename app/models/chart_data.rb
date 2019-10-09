@@ -56,6 +56,12 @@ private
     if @chart_config_overrides[:mpan_mprn].present?
       chart_config[:meter_definition] = @chart_config_overrides[:mpan_mprn].to_i
     end
+    if @chart_config_overrides[:series_breakdown].present?
+      chart_config[:series_breakdown] = @chart_config_overrides[:series_breakdown].to_sym
+    end
+    if @chart_config_overrides[:date_ranges].present?
+      chart_config[:timescale] = @chart_config_overrides[:date_ranges].map {|range| { daterange: range }}
+    end
     chart_config
   end
 

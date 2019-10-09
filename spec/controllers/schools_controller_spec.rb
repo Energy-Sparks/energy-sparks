@@ -34,60 +34,6 @@ RSpec.describe SchoolsController, type: :controller do
     end
   end
 
-  describe "GET #usage" do
-    let!(:school) { FactoryBot.create :school }
-    let(:period) { :daily }
-    let(:supply) { :electricity }
-    it "assigns the requested school as @school" do
-      get :usage, params: {id: school.to_param, period: period, supply: supply}
-      expect(assigns(:school)).to eq(school)
-    end
-    context "to_date is specified" do
-      let(:to_date) { Date.current - 1.days }
-      it "assigns to_date to @to_date" do
-        get :usage, params: {id: school.to_param, period: period, to_date: to_date, supply: supply}
-        expect(assigns(:to_date)).to eq to_date.beginning_of_week(:sunday)
-      end
-    end
-    context "period is 'daily'" do
-      let(:period) { :daily }
-      it "renders the daily_usage template" do
-        get :usage, params: {id: school.to_param, period: period, supply: supply}
-        expect(response).to render_template('daily_usage')
-      end
-    end
-    context "period is 'hourly'" do
-      let(:period) { :hourly }
-      it "renders the hourly_usage template" do
-        get :usage, params: {id: school.to_param, period: period, supply: supply}
-        expect(response).to render_template('hourly_usage')
-      end
-    end
-    context "period is not specified" do
-      let(:period) { nil }
-      it "renders the hourly_usage template" do
-        get :usage, params: {id: school.to_param, period: period, supply: supply}
-        expect(response).to render_template('hourly_usage')
-      end
-    end
-
-    context 'when supply is not provided' do
-      context 'where the school has no meters with readings' do
-        it 'redirects to the school page' do
-          get :usage, params: {id: school.to_param}
-          expect(response).to redirect_to(school_path(school.to_param))
-        end
-      end
-
-      it 'sets the supply to from the school configuration' do
-        fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true)
-        school.configuration.update(fuel_configuration: fuel_configuration)
-        get :usage, params: {id: school.to_param}
-        expect(assigns(:supply)).to eq('electricity')
-      end
-    end
-  end
-
   context "As an admin user" do
     before(:each) do
       sign_in_user(:admin)
