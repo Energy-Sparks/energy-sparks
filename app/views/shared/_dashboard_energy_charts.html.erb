@@ -8,15 +8,13 @@
         <span class="very-small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
       <% end %>
 
-      <% unless @school.meters.pseudo.any? %>
-        <div>
-          Explore
-          <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
-          /
-          <%= link_to 'daily', school_usage_path(school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
-          usage
-        </div>
-      <% end %>
+      <div>
+        Explore
+        <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
+        /
+        <%= link_to 'daily', school_usage_path(school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
+        usage
+      </div>
     </div>
 
     <%= chart_tag(@school, chart_type.to_s, index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>

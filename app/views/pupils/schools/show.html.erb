@@ -8,9 +8,7 @@
   </div>
 </div>
 
-<% unless @school.meters.pseudo.any? %>
-  <%= render 'explore_old_charts', school: @school %>
-<% end %>
+<%= render 'explore_old_charts', school: @school %>
 
 <% if @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
