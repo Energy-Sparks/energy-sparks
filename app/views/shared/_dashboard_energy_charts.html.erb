@@ -8,7 +8,7 @@
         <span class="very-small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
       <% end %>
 
-      <% if @school.meters.pseudo.empty? && chart_type_config[:explore] %>
+      <% if chart_type_config[:explore] %>
         <div>
           Explore
           <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: fuel_type), title: "See how the school's energy use varies over a week" %>

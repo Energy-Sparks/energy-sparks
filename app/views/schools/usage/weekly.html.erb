@@ -25,7 +25,7 @@
     <%= hidden_field_tag :configuration, nil, data: @chart_config %>
 
     <div class="card-deck">
-      <%= render partial: 'supply', locals: {current_supply: @supply, school: @school} %>
+      <%= render partial: 'supply', locals: {current_supply: @supply, configuration: @chart_config} %>
       <%= render partial: 'comparison_type_card', locals: {current_supply: @supply, school: @school} %>
       <%= render partial: 'whole_school_card',
         locals: { current_supply: @supply, school: @school, first_option: "First week (starts Sunday)", second_option: "Second week (starts Sunday)", week_picker: true } %>

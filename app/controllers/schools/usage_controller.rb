@@ -25,20 +25,24 @@ module Schools
     private
 
     def setup_chart_config(school)
-      {
-        gas: {
-          weekly: :calendar_picker_gas_week_chart,
-          daily: :calendar_picker_gas_day_chart,
-          earliest_reading:  school.earliest_reading_date("gas"),
-          last_reading: school.last_reading_date("gas")
-        },
-        electricity: {
+      config = {}
+      if school.has_electricity?
+        config[:electricity] = {
           weekly: :calendar_picker_electricity_week_example_comparison_chart,
-          daily: :calendar_picker_electricity_day_chart,
-          earliest_reading:  school.earliest_reading_date("electricity"),
-          last_reading: school.last_reading_date("electricity")
+          daily: :calendar_picker_electricity_day_example_comparison_chart,
+          earliest_reading:  aggregate_school.aggregate_meter(:electricity).amr_data.start_date,
+          last_reading:  aggregate_school.aggregate_meter(:electricity).amr_data.end_date,
         }
-      }
+      end
+      if school.has_gas?
+        config[:gas] = {
+          weekly: :calendar_picker_gas_week_example_comparison_chart,
+          daily: :calendar_picker_gas_day_example_comparison_chart,
+          earliest_reading:  aggregate_school.aggregate_meter(:gas).amr_data.start_date,
+          last_reading:  aggregate_school.aggregate_meter(:gas).amr_data.end_date,
+        }
+      end
+      config
     end
 
     def get_supply
