@@ -67,7 +67,7 @@ $(document).ready(function() {
       chartContainer.data('chart-series-breakdown', 'meter');
     }
 
-    chartContainer.data('y-axis-units', measurement);
+    chartContainer.data('chart-y-axis-units', measurement);
     chartContainer.data('chart-date-ranges', getDateRanges(compare));
 
     processAnalysisChart(chartContainer[0]);
