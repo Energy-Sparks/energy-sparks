@@ -136,7 +136,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'I give permission'
 
       onboarding.reload
-      expect(onboarding).to have_event('permission_given')
+      expect(onboarding).to have_event(:permission_given)
+      expect(onboarding).to have_event(:privacy_policy_agreed)
 
       expect(page).to have_field('Email', with: onboarding.contact_email)
       fill_in 'Your name', with: 'A Teacher'
