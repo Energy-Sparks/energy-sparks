@@ -45,7 +45,6 @@ gem 'bootstrap-email'
 
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
-gem 'chartkick' # Use chartkick for usage graphs
 gem 'simple_form'
 
 # JS Templating

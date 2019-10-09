@@ -1,0 +1,30 @@
+<div class="card <%= current_supply %>-card">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <h4 class="card-title">Select Energy Type
+    </h4>
+
+    <% Meter::CREATABLE_METER_TYPES.each_with_index do |type| %>
+      <% if school.send("has_#{type}?") %>
+
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= radio_button_tag 'supply', type, current_supply == type %>
+            <%= type.to_s.titleize %>
+          </label>
+        </div>
+
+      <% end %>
+    <% end %>
+
+  </div>
+  <div class="card-footer">
+    <% if school.has_gas? && school.has_electricity? %>
+        We have both gas and electricity data for this school
+      <% elsif school.has_gas? %>
+        We only have gas usage data for this school
+      <% else %>
+        We only have electricity usage data for this school
+    <% end %>
+  </div>
+</div>
