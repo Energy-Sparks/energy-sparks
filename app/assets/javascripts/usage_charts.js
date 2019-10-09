@@ -72,14 +72,6 @@ $(document).ready(function() {
 
     processAnalysisChart(chartContainer[0]);
 
-
-    //if (measurement) {
-      //var updatedURL = updateQueryStringParameter(location.href, 'measurement', measurement);
-      //var stateObj = { measurement: measurement };
-      //history.pushState(stateObj, measurement, updatedURL);
-    //}
-
-
   }
 
   function getDateRanges(compare){
@@ -109,18 +101,6 @@ $(document).ready(function() {
       }
     }
     return dateRanges;
-  }
-
-  // From https://stackoverflow.com/questions/5999118/how-can-i-add-or-update-a-query-string-parameter
-  function updateQueryStringParameter(uri, key, value) {
-    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-    if (uri.match(re)) {
-      return uri.replace(re, '$1' + key + "=" + value + '$2');
-    }
-    else {
-      return uri + separator + key + "=" + value;
-    }
   }
 
   //ensure that the user can only select those meters which are for the currently
