@@ -2,8 +2,8 @@
 #
 # Table name: equivalence_type_content_versions
 #
+#  _equivalence        :text
 #  created_at          :datetime         not null
-#  equivalence         :text             not null
 #  equivalence_type_id :bigint(8)        not null
 #  id                  :bigint(8)        not null, primary key
 #  replaced_by_id      :bigint(8)
@@ -23,6 +23,8 @@
 class EquivalenceTypeContentVersion < ApplicationRecord
   belongs_to :equivalence_type
   belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', foreign_key: :replaced_by_id, optional: true
+
+  has_rich_text :equivalence
 
   scope :latest, -> { where(replaced_by_id: nil) }
 end

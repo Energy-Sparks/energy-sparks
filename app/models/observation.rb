@@ -2,10 +2,10 @@
 #
 # Table name: observations
 #
+#  _description         :text
 #  activity_id          :bigint(8)
 #  at                   :datetime         not null
 #  created_at           :datetime         not null
-#  description          :text
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
 #  observation_type     :integer          not null
@@ -46,6 +46,8 @@ class Observation < ApplicationRecord
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings_and_locations
 
   scope :visible, -> { where(visible: true) }
+
+  has_rich_text :description
 
   def at_date_cannot_be_in_the_future
     errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day

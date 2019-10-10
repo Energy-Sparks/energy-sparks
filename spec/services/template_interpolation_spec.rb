@@ -20,6 +20,9 @@ describe TemplateInterpolation do
       def template_5
         nil
       end
+      def template_rich_text
+        ActionText::RichText.new(body: ActionText::Content.new("<div>Your school is {{position}} in the scoreboard</div>"))
+      end
     end
   end
 
@@ -93,6 +96,11 @@ describe TemplateInterpolation do
       instance = object.new
       view_object = TemplateInterpolation.new(instance).interpolate(:template_5, with: {})
       expect(view_object.template_5).to eq("")
+    end
+
+    it 'handles rich text' do
+      view_object = TemplateInterpolation.new(object.new).interpolate(:template_rich_text, with: { position: 3 })
+      expect(view_object.template_rich_text).to eq("<div class=\"trix-content\">\n  <div>Your school is 3 in the scoreboard</div>\n</div>\n")
     end
   end
 end

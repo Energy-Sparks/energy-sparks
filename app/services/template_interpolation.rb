@@ -31,12 +31,16 @@ class TemplateInterpolation
 private
 
   def process(template, variables)
-    Mustache.render(template, variables)
+    Mustache.render(template_as_string(template), variables)
   end
 
   def get_variables(template)
     mustache = Mustache.new
-    mustache.template = template
+    mustache.template = template_as_string(template)
     mustache.template.tags
+  end
+
+  def template_as_string(template)
+    template.is_a?(ActionText::RichText) ? template.body.to_s : template
   end
 end
