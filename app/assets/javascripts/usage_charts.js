@@ -83,24 +83,19 @@ $(document).ready(function() {
     }
 
     if(compare == 'whole-school'){
-      var firstDate = $('input#first-date-picker').val();
-      var comparisonDate = $('input#comparison-date-picker').val();
-      if (firstDate){
-        var date = moment(firstDate, 'dddd, D MMMM YYYY');
-        dateRanges.push({start: date.format('YYYY-MM-DD'), end: date.add(rangeExtension, 'days').format('YYYY-MM-DD')});
-      }
-      if (comparisonDate){
-        var date = moment(comparisonDate, 'dddd, D MMMM YYYY');
-        dateRanges.push({start: date.format('YYYY-MM-DD'), end: date.add(rangeExtension, 'days').format('YYYY-MM-DD')});
-      }
+      addRange($('input#first-date-picker').val(), dateRanges, rangeExtension);
+      addRange($('input#comparison-date-picker').val(), dateRanges, rangeExtension);
     } else {
-      var firstDate = $('input#week-picker').val();
-      if (firstDate){
-        var date = moment(firstDate, 'dddd, D MMMM YYYY');
-        dateRanges.push({start: date.format('YYYY-MM-DD'), end: date.add(rangeExtension, 'days').format('YYYY-MM-DD')});
-      }
+      addRange($('input#week-picker').val(), dateRanges, rangeExtension);
     }
     return dateRanges;
+  }
+
+  function addRange(dateString, ranges, rangeExtension){
+    if (dateString){
+      var date = moment(dateString, 'dddd, D MMMM YYYY');
+      ranges.push({start: date.format('YYYY-MM-DD'), end: date.add(rangeExtension, 'days').format('YYYY-MM-DD')});
+    }
   }
 
   //ensure that the user can only select those meters which are for the currently
