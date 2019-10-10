@@ -5,7 +5,7 @@
 
   <% if buttons %>
     <div class='<%= "col-xl-#{11 - buttons.size * 3}" %>'>
-      <%= sanitize content %>
+      <%= content %>
     </div>
     <% buttons.each do |title, path| %>
       <div class="col-xl-3">
@@ -14,7 +14,7 @@
     <% end %>
   <% else %>
     <div class="col-xl-11">
-      <h5><%= sanitize content %></h5>
+      <h5><%= content %></h5>
     </div>
   <% end %>
 </div>

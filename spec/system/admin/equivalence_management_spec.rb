@@ -31,7 +31,7 @@ RSpec.describe 'equivalence type management', type: :system do
     expect(equivalence_type.image_name).to eq :no_image.to_s
 
     first_content = equivalence_type.current_content
-    expect(first_content.equivalence).to include('Your school used')
+    expect(first_content.equivalence.to_plain_text).to include('Your school used')
 
     click_on 'Edit'
 
@@ -49,7 +49,7 @@ RSpec.describe 'equivalence type management', type: :system do
 
     expect(equivalence_type.content_versions.count).to eq(2)
     first_content = equivalence_type.current_content
-    expect(first_content.equivalence).to include('You used')
+    expect(first_content.equivalence.to_plain_text).to include('You used')
   end
 
   context 'allows the deletion equivalences with context types' do

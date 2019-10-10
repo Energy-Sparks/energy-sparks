@@ -22,7 +22,7 @@ describe 'adding interventions' do
 
     fill_in 'Start date', with: '01/07/2019'
     choose 'Changed boiler'
-    fill_in 'Describe what was done', with: 'We changed to a more efficient boiler'
+    fill_in_trix with: 'We changed to a more efficient boiler'
     click_on 'Confirm'
 
     intervention = school.observations.intervention.first
