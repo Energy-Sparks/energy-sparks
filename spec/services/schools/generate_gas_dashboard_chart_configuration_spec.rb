@@ -34,7 +34,7 @@ module Schools
       let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, has_electricity: true, has_gas: false) }
       it 'has a nil dashboard set' do
         chart_type = GenerateGasDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
-        expect(chart_type).to eq Schools::Configuration::NO_CHART
+        expect(chart_type).to eq Schools::Configuration::NO_GAS_CHART
       end
     end
   end
