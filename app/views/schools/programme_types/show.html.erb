@@ -12,7 +12,7 @@
           <% end %>
         </p>
       <% end %>
-      <div class="lead mt-3 trix-content"><%= @programme_type.description %></div>
+      <div class="lead mt-3"><%= @programme_type.description %></div>
       <hr class="my-4">
       <p><%= button_to 'Start this programme', school_programmes_path(@school, programme_type_id: @programme_type), method: :post, class: 'btn btn-lg btn-primary' if can?(:start_programme, @school) %></p>
     </div>

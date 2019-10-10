@@ -1,8 +1,6 @@
 <div class="row illustration-background">
   <div class="col-6">
-    <div class="trix-content">
-      <%= equivalence_content.equivalence %>
-    </div>
+    <%= equivalence_content.equivalence %>
   </div>
   <div class="col-6 illustration-wrapper">
     <%= image_tag("equivalences/#{equivalence_content.equivalence_type.image_name}.svg") if equivalence_content.equivalence_type.show_image? %>

@@ -5,9 +5,7 @@
 <div class="card bg-light m-2">
   <div class="card-body">
     <h5 class="card-title"><%= @content.email_title %></h5>
-    <div class="trix-content">
-      <%= sanitize @content.email_content %>
-    </div>
+    <%= @content.email_content %>
   </div>
 </div>
 

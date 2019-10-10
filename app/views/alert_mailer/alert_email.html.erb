@@ -6,7 +6,7 @@
 
 <% @alert_content.each do |alert_content| %>
   <h2 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h2>
-  <%= sanitize alert_content.email_content %>
+  <%= alert_content.email_content %>
   <% if alert_content.find_out_more %>
     <p>
       <%= link_to 'Find Out More', school_find_out_more_url(@school, alert_content.find_out_more), class: 'btn btn-primary mt-2 mb-2'%>

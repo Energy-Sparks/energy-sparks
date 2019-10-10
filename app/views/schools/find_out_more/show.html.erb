@@ -37,9 +37,7 @@
 </div>
 <div class="row">
   <div class="col-md-7">
-    <div class="trix-content">
-      <%= sanitize @content.find_out_more_content %>
-    </div>
+    <%= @content.find_out_more_content %>
   </div>
   <div class="col-md-5 activities">
     <% unless @activity_types.empty? %>
