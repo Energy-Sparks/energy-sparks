@@ -1,14 +1,16 @@
-<% charts.each_with_index do |(fuel_type, chart_type), index| %>
+<% charts.each_with_index do |(fuel_type, chart_type_config), index| %>
   <div id="chart_wrapper_<%= index %>" class="col-sm">
     <div class="d-flex justify-content-between align-items-center">
 
-      <div class="h4"><%= fuel_type.to_s.capitalize %></div>
+      <div class="h4"><%= fuel_type.to_s.titleize %></div>
 
-      <% if chart_type == Schools::Configuration::TEACHERS_GAS %>
-        <span class="very-small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
+      <% if [Schools::Configuration::TEACHERS_GAS, Schools::Configuration::TEACHERS_STORAGE_HEATERS].include?(chart_type_config[:chart_type]) %>
+        <span class="very-small" title="This chart automatically adjusts the school's consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
+      <% elsif [Schools::Configuration::TEACHERS_ELECTRICITY].include?(chart_type_config[:chart_type]) && school.has_storage_heaters? %>
+        <span class="very-small" title="This data excludes the electricity used by the school's storage heaters">(excluding storage heaters)</span>
       <% end %>
 
-      <% unless @school.meters.pseudo.any? %>
+      <% if @school.meters.pseudo.empty? && chart_type_config[:explore] %>
         <div>
           Explore
           <%= link_to 'weekly', usage_school_path(school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
@@ -19,7 +21,7 @@
       <% end %>
     </div>
 
-    <%= chart_tag(@school, chart_type.to_s, index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
+    <%= chart_tag(@school, chart_type_config[:chart_type], index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
 
   </div>
 <% end %>

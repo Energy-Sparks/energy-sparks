@@ -1,0 +1,30 @@
+<% content_for :page_title, "Here's the storage heater data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school, category: :storage_heaters), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>storage heater</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="card-deck">
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
+    find out how my school's storage heater use compares with other schools
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Week'} do %>
+    find out how much electricity was used by storage heaters last year
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Year'} do %>
+    find out how storage heater electricity use has changed long term
+  <% end %>
+
+</div>
