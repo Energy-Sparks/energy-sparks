@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
+  get 'home-page', to: 'home#show'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -11,7 +12,7 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
-  get 'privacy_policy', to: 'home#privacy_policy'
+  get 'privacy_policy', to: 'home#privacy_policy', as: :privacy_policy
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings

@@ -410,6 +410,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_125658) do
     t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.json "pupil_analysis_charts", default: {}, null: false
     t.json "fuel_configuration", default: {}
+    t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
