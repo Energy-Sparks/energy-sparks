@@ -1,24 +1,7 @@
 <fieldset>
   <div class="form-row">
-    <div class="col-md-6 form-group">
-      <%= temperature_form.input :centigrade, as: :number, required: false, label: "Temperature" do %>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><%= fa_icon('temperature-high') %></span>
-          </div>
-          <%= temperature_form.input_field :centigrade, hint: 18, class: "form-control form-control-lg temperature" %>
-          <div class="input-group-append">
-            <span class="input-group-text">&deg; C</span>
-          </div>
-        </div>
-      <% end %>
-      <% if temperature_form.index.zero? %>
-        <small class='form-text text-muted'>Enter the temperature in centigrade as a number</small>
-      <% end %>
-    </div>
-
     <%= temperature_form.simple_fields_for :location do |location_form| %>
-      <div class="col-md-6 form-group">
+      <div class="col-lg-9 form-group">
         <%= location_form.input :name, as: :string, required: false, label: "Place" do %>
           <div class="input-group">
             <%= location_form.hidden_field :school_id, value: @school.id %>
@@ -34,5 +17,22 @@
         <% end %>
       </div>
     <% end %>
+
+    <div class="col-lg-3 form-group">
+      <%= temperature_form.input :centigrade, as: :number, required: false, label: "Temperature" do %>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><%= fa_icon('temperature-high') %></span>
+          </div>
+          <%= temperature_form.input_field :centigrade, maxlength: 2, min: 0, max: 50, class: "form-control form-control-lg temperature" %>
+          <div class="input-group-append">
+            <span class="input-group-text">&deg; C</span>
+          </div>
+        </div>
+      <% end %>
+      <% if temperature_form.index.zero? %>
+        <small class='form-text text-muted'>Enter the temperature in centigrade as a single number between 0 and 50.</small>
+      <% end %>
+    </div>
   </div>
 </fieldset>
