@@ -1,3 +1,7 @@
+# puts "Loading #{__FILE__}. Backtrace:"
+# puts caller.join("\n")
+# puts
+
 require 'rails_helper'
 
 describe TemplateInterpolation do
@@ -100,7 +104,7 @@ describe TemplateInterpolation do
 
     it 'handles rich text' do
       view_object = TemplateInterpolation.new(object.new).interpolate(:template_rich_text, with: { position: 3 })
-      expect(view_object.template_rich_text).to eq("<div class=\"trix-content\">\n  <div>Your school is 3 in the scoreboard</div>\n</div>\n")
+      expect(view_object.template_rich_text.body).to eq(ActionText::Content.new("<div>Your school is 3 in the scoreboard</div>"))
     end
   end
 end
