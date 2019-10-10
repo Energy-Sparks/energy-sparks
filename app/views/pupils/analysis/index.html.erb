@@ -3,7 +3,17 @@
 <h1>Let's look at the energy use data for your school</h1>
 
 <div class="card-deck">
-  <% if @school.has_electricity? %>
+  <% if @school.has_solar_pv? %>
+    <div class="card solar-dark solar-card m-3 text-center pb-3">
+      <div class="card-body">
+        <div class="p-4">
+          <%= fa_icon "#{fuel_type_icon(:electricity)} fa-3x" %>
+          <%= fa_icon "sun fa-3x" %>
+        </div>
+        <%= link_to 'Electricity & Solar PV', pupils_school_analysis_path(@school, category: :solar), class: 'h2 stretched-link text-decoration-none' %>
+      </div>
+    </div>
+  <% elsif @school.has_electricity? %>
     <div class="card electricity-dark electricity-card m-3 text-center pb-3">
       <div class="card-body">
         <div class="p-4">
@@ -29,7 +39,7 @@
     </div>
   <% end %>
   <% if @school.has_storage_heaters? %>
-    <div class="card storage-dark gas-card m-3 text-center pb-3">
+    <div class="card storage-dark storage-card m-3 text-center pb-3">
       <div class="card-body">
         <div class="p-4">
           <%= fab_icon('intercom fa-3x') %>
