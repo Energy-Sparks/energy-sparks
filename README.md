@@ -169,6 +169,14 @@ has_rich_text :description
 fill_in_trix with: description
 ```
 
+6) Create after party task to migrate content to new field
+
+```ruby
+Model.all.each do |model|
+  model.update!(description: model._old_description)
+end
+```
+
 ## Browser testing provided by:
 
 [![Browserstack](https://raw.githubusercontent.com/BathHacked/energy-sparks/master/markdown_pages/browserstack-logo.png)](https://www.browserstack.com/)
