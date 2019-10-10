@@ -45,7 +45,6 @@
 #
 
 class School < ApplicationRecord
-  include AmrUsage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
@@ -147,10 +146,6 @@ class School < ApplicationRecord
 
   def meters_with_validated_readings(supply = Meter.meter_types.keys)
     meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
-  end
-
-  def both_supplies?
-    meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
   end
 
   def fuel_types
