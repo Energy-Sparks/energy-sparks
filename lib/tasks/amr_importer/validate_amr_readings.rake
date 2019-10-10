@@ -16,7 +16,7 @@ namespace :amr_importer do
         puts e.backtrace.join("\n")
         Rails.logger.error "Exception: running validation for #{each_school.name}: #{e.class} #{e.message}"
         Rails.logger.error e.backtrace.join("\n")
-        Rollbar.error(e)
+        Rollbar.error(e, school_id: each_school.id, school_name: each_school.name)
       end
     end
 

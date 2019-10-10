@@ -40,7 +40,7 @@ class ChartData
     false
   rescue => e
     Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@school.name} - #{e.message}"
-    Rollbar.error(e)
+    Rollbar.error(e, school_id: @school.id, school_name: @school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
     false
   end
 
