@@ -5,7 +5,9 @@
       <div class="h4"><%= fuel_type.to_s.titleize %></div>
 
       <% if [Schools::Configuration::TEACHERS_GAS, Schools::Configuration::TEACHERS_STORAGE_HEATERS].include?(chart_type_config[:chart_type]) %>
-        <span class="very-small" title="This chart automatically adjusts the school's gas consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
+        <span class="very-small" title="This chart automatically adjusts the school's consumption for outside temperature, removing the effect of changes in outside temperature">(Adjusted for outside temperature)</span>
+      <% elsif [Schools::Configuration::TEACHERS_ELECTRICITY].include?(chart_type_config[:chart_type]) && school.has_storage_heaters? %>
+        <span class="very-small" title="This data excludes the electricity used by the school's storage heaters">(excluding storage heaters)</span>
       <% end %>
 
       <% if chart_type_config[:explore] %>
