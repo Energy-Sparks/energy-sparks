@@ -1,14 +1,4 @@
 module ApplicationHelper
-  def navbar_link
-    link_text = "Energy Sparks#{' (Test)' if on_test?}"
-    title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
-    link_to link_text, root_path, class: 'navbar-brand', title: title
-  end
-
-  def on_test?
-    request.host.include?('test')
-  end
-
   def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
@@ -21,10 +11,6 @@ module ApplicationHelper
 
   def active(bool = true)
     bool ? '' : 'bg-warning'
-  end
-
-  def show_sub_nav?(school, hide_subnav)
-    school.present? && school.id && hide_subnav.nil?
   end
 
   def options_from_collection_for_select_with_data(collection, value_method, text_method, selected = nil, data = {})
@@ -57,9 +43,9 @@ module ApplicationHelper
   def class_for_alert_colour(colour)
     return class_for_alert_colour(:unknown) if colour.nil?
     case colour.to_sym
-    when :red then 'bg-negative'
-    when :yellow then 'bg-neutral'
-    when :green then 'bg-positive'
+    when :negative then 'bg-negative'
+    when :neutral then 'bg-neutral'
+    when :positive then 'bg-positive'
     else 'bg-secondary'
     end
   end
@@ -82,17 +68,6 @@ module ApplicationHelper
       class_for_alert_colour(:yellow)
     else
       class_for_alert_colour(:red)
-    end
-  end
-
-  def class_for_alert_subscription(status)
-    case status
-    when 'sent'
-      'bg-success'
-    when 'pending'
-      'bg-warning'
-    else
-      'bg-danger'
     end
   end
 
@@ -135,16 +110,6 @@ module ApplicationHelper
       'sun'
     when :exported_solar_pv
       'arrow-right'
-    end
-  end
-
-  def nav_link(link_text, link_path)
-    content_tag(:li) do
-      if current_page?(link_path)
-        link_to link_text, link_path, class: 'nav-link active'
-      else
-        link_to link_text, link_path, class: 'nav-link'
-      end
     end
   end
 

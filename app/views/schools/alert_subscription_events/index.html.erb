@@ -3,7 +3,7 @@
 <div class="row padded-row">
   <div class="col-md-12">
     <h1>Alert Subscription Events</h1>
-    <h2><%= link_to @school.name, @school %><h2>
+    <h2><%= link_to @school.name, @school %></h2>
     <p>These are all the actions taken by Energy Sparks for your alert subscriptions</p>
     <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
   </div>
@@ -17,44 +17,38 @@
 <% end %>
 
 <div class="row">
-  <% if @alert_subscription_events.any? %>
-  <div class="table-responsive">
-    <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th>Contact</th>
-          <th>Alert Type</th>
-          <th>Created At</th>
-          <th>Status</th>
-          <th>Updated At</th>
-          <th>Error Message</th>
-          <th>Communication Type</th>
-          <th>Email sent on</th>
-          <th>Sent message</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @alert_subscription_events.each do |alert_subscription_event| %>
-          <tr scope="row" class="<%=class_for_alert_subscription(alert_subscription_event.status) %>">
-            <td><%= alert_subscription_event.contact.name %></td>
-            <td><%= alert_subscription_event.alert.title %></td>
-            <td><%= nice_date_times alert_subscription_event.created_at %></td>
-            <td><%= alert_subscription_event.status.capitalize %></td>
-            <td><%= nice_date_times alert_subscription_event.updated_at %></td>
-            <td><%= alert_subscription_event.message %></td>
-            <td><%= alert_subscription_event.communication_type.capitalize %></td>
-            <% if alert_subscription_event.sent? %>
-              <td><%= nice_date_times alert_subscription_event.email.sent_at %></td>
-              <td><%= link_to 'View', admin_emails_alert_mailer_path(alert_subscription_event.email), class: 'btn btn-primary btn-sm' %></td>
-            <% else %>
-              <td></td><td></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+  <% if @pending_emails.any? %>
+    <h3>Pending emails</h3>
+    <%= render 'table', school: @school, alert_subscription_events: @pending_emails %>
   <% else %>
-    <p>There are no alert subscription events</p>
+    <p>There are no pending emails</p>
   <% end %>
 </div>
+
+<div class="row">
+  <% if @pending_sms.any? %>
+    <h3>Pending SMS</h3>
+    <%= render 'table', school: @school, alert_subscription_events: @pending_sms %>
+  <% else %>
+    <p>There are no pending SMS</p>
+  <% end %>
+</div>
+
+<div class="row">
+  <% if @sent_emails.any? %>
+    <h3>Sent emails</h3>
+    <%= render 'table', school: @school, alert_subscription_events: @sent_emails %>
+  <% else %>
+    <p>There are no sent emails</p>
+  <% end %>
+</div>
+
+<div class="row">
+  <% if @sent_sms.any? %>
+    <h3>Sent SMS</h3>
+    <%= render 'table', school: @school, alert_subscription_events: @sent_sms %>
+  <% else %>
+    <p>There are no sent SMS</p>
+  <% end %>
+</div>
+

@@ -1,11 +1,11 @@
-<% content_for :page_title, 'For Teachers' %>
+<% content_for :page_title, 'For Management' %>
 
 <div class="application info-page">
   <div class="row padded-row">
     <div class="col-md-7">
       <h1 id="intro">Energy Sparks for&hellip;</h1>
       <p class="display-3"><strong>School management</strong></p>
-      <p><strong>Energy Sparks is an online energy analysis tool and energy education programme  specifically designed to help schools manage their electricity and gas usage better through the analysis of smart meter data.</strong></p>
+      <p><strong>Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.</strong></p>
       <p>Energy Sparks has been developed by <a href="//transitionbath.org/">Transition Bath</a>, a registered  charity in England and Wales, whose aim is to build a sustainable future. Energy Sparks is currently provided free to schools through funding by the <a href="//www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy">Department of Business, Energy and Industrial Strategy</a>.</p>
     </div>
     <div class="col-md-5 d-flex align-items-center">
@@ -14,12 +14,12 @@
   </div>
 
   <div class="row padded-row alternate-background">
-    <div class="col-md-5 pb-1">
+    <div class="col-md-5 pb-1 d-none d-md-block">
       <%= image_tag("for-management/automatic-charting-and-analysis.png", class: "img-fluid") %>
     </div >
     <div class="col-md-7">
       <h2>Automatic charting and analysis</h2>
-      <p><strong>Energy Sparks analysis focuses on low cost measures which can help schools save energy. On average 50% of gas and electricity is consumed at schools when they are closed and the buildings are unoccupied.  Energy Sparks highlights opportunities for energy saving at at your own school through:</strong></p>
+      <p><strong>Energy Sparks analysis focuses on low cost measures which can help schools save energy and fight climate change. On average 50% of gas and electricity is consumed at schools when they are closed and the buildings are unoccupied.  Energy Sparks highlights opportunities for energy saving at at your own school through:</strong></p>
 
       <ul>
         <li>Reducing out of hours use</li>
@@ -35,18 +35,18 @@
       <h2>Notification of changes in energy consumption</h2>
       <p><strong>Energy Sparks provides online, email and text notification of changes in energy consumption with recommended energy saving actions tailored just for your school. Suggested energy saving interventions and capital investments are prioritised for each school to maximise cost and energy savings.</strong></p>
     </div>
-    <div class="col-md-7 ">
+    <div class="col-md-7 d-none d-md-block">
       <%= image_tag("for-management/notification-of-changes.png", class: "img-fluid float-right") %>
     </div >
   </div>
 
   <div class="row padded-row alternate-background">
-    <div class="col-md-5 d-flex align-items-center">
+    <div class="col-md-5 d-flex align-items-center ">
       <%= image_tag("for-management/energy-education-support.png", class: "img-fluid") %>
     </div >
     <div class="col-md-7">
       <h2>Energy Education Support</h2>
-      <p><strong>Energy Sparks aims to provide school pupils with life skills in understanding energy, as well as empowering them to support their own school to save energy.</strong></p>
+      <p><strong>Energy Sparks aims to provide school pupils with life skills in understanding energy, learning about the problems of energy generation and climate change, as well as empowering them to support their own school to save energy.</strong></p>
 
       <p>Energy Sparks has over 60 energy related <a href="/activity_categories">activities</a> which pupils can participate in through eco-teams or class based learning. The activities  include downloadable  lesson plans for teachers and worksheets for pupils.  Schools gain points for completing activities and these contribute to a scoreboard where pupils can compete with other schools providing extra motivation. </p>
     </div>
@@ -61,5 +61,7 @@
     title: 'Deputy Head',
     location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
   %>
+
+  <%= render 'case_studies' %>
 
 </div>
