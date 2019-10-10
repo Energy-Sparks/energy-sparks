@@ -34,7 +34,7 @@
 <div class="card-deck">
   <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Pie'}, centre: true do %>
     <div class="p-4">
-      <%= fa_icon "chart-pie-alt fa-3x" %>
+      <%= fa_icon "chart-pie fa-3x" %>
     </div>
     Pie charts
   <% end %>
@@ -43,7 +43,7 @@
 
   <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Line'}, centre: true do %>
     <div class="p-4">
-      <%= fa_icon "chart-line-down fa-3x" %>
+      <%= fa_icon "chart-line fa-3x" %>
     </div>
     Line graphs
   <% end %>
