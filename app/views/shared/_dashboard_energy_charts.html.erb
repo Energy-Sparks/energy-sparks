@@ -13,15 +13,12 @@
       <% if chart_type_config[:explore] %>
         <div>
           Explore
-          <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
-          /
-          <%= link_to 'daily', school_usage_path(school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
-          usage
+          <%= link_to "#{chart_type_config[:name]} usage", pupils_school_analysis_path(school, category: fuel_type) %>
         </div>
       <% end %>
     </div>
 
-    <%= chart_tag(@school, chart_type_config[:chart_type], index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
+    <%= chart_tag(school, chart_type_config[:chart_type], index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
 
   </div>
 <% end %>
