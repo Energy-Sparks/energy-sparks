@@ -2,10 +2,8 @@
   <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My school</a>
   <div class="dropdown-menu" aria-labelledby="my_school">
     <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
-    <%= link_to 'Gas usage by day', school_usage_path(current_user.school, period: :daily, supply: :gas) , class: 'dropdown-item' if current_user.school.has_gas? %>
-    <%= link_to 'Electricity usage by day', school_usage_path(current_user.school, period: :daily, supply: :electricity), class: 'dropdown-item' if current_user.school.has_electricity? %>
-    <%= link_to 'Gas usage by week', school_usage_path(current_user.school, period: :weekly, supply: :gas), class: 'dropdown-item'  if current_user.school.has_gas? %>
-    <%= link_to 'Electricity usage by week', school_usage_path(current_user.school, period: :weekly, supply: :electricity), class: 'dropdown-item' if current_user.school.has_electricity? %>
+    <%= link_to 'Gas usage', pupils_school_analysis_path(school, category: :gas), class: 'dropdown-item' if current_user.school.has_gas? %>
+    <%= link_to 'Electricity usage', pupils_school_analysis_path(school, category: :electricity), class: 'dropdown-item' if current_user.school.has_electricity? %>
     <%= link_to 'Analysis', school_analysis_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Simulations', school_simulations_path(current_user.school), class: 'dropdown-item' if can?(:manage, current_user.school) %>
     <% if current_user.contact %>

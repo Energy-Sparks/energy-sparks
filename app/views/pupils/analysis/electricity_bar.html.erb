@@ -27,4 +27,14 @@
     find out how electricity use has changed long term
   <% end %>
 
+  <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :weekly} do %>
+    compare the electricity used in two different weeks
+  <% end %>
+
+  <% if @school.filterable_meters.electricity.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :weekly, split_meters: true} do %>
+      compare the electricity use by different meters
+    <% end %>
+  <% end %>
+
 </div>
