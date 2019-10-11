@@ -44,7 +44,7 @@
     </p>
     <div class="form-group">
       <%= select_tag :meter,
-                     content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(school.active_meters.real,
+                     content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(school.filterable_meters,
                      :mpan_mprn, :display_name, nil, { "supply-type" => :meter_type }), class: "form-control custom-select meter-filter" %>
     </div>
   </div>
