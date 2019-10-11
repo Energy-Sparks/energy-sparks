@@ -9,10 +9,10 @@
 
   <dt class="col-md-2">Sub category</dt>
   <dd class="col-md-10"><%= @alert_type.sub_category ? @alert_type.sub_category.to_s.capitalize : 'Not set' %></dd>
-
-  <dt class="col-md-2">Description</dt>
-  <dd class="col-md-10"><%= simple_format(@alert_type.description)  %></dd>
 </dl>
+
+<h2>Description</h2>
+<%= @alert_type.description %>
 
 <p>
   <%= link_to 'Edit', edit_admin_alert_type_path(@alert_type), class: 'btn btn-small btn-primary' %>
