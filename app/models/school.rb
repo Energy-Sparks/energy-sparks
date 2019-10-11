@@ -208,6 +208,14 @@ class School < ApplicationRecord
     users.pupil.to_a.find {|user| user.pupil_password == pupil_password}
   end
 
+  def filterable_meters
+    if has_solar_pv? || has_storage_heaters?
+      Meter.none
+    else
+      active_meters.real
+    end
+  end
+
   def latest_management_priorities
     if latest_content
       latest_content.management_priorities
