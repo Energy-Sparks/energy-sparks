@@ -24,6 +24,19 @@ en:
   charts:
     hourly-usage-link: "View usage by day"
     weekly-usage-link: "View usage by week"
+    dashboard:
+      solar:
+        usage: 'electricity and solar usage'
+        title: 'Electricity'
+      electricity:
+        usage: 'electricity usage'
+        title: 'Electricity'
+      gas:
+        usage: 'gas usage'
+        title: 'Gas'
+      storage_heaters:
+        usage: 'storage heater usage'
+        title: 'Storage heaters'
     usage:
       titles:
         gas:
