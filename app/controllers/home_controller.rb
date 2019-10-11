@@ -42,7 +42,7 @@ class HomeController < ApplicationController
   def scoring
   end
 
-  def privacy_policy
+  def privacy_and_cookie_policy
   end
 
 private
