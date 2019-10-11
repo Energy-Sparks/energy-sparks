@@ -15,8 +15,19 @@ describe 'temperature recordings as school admin' do
       click_on 'Enter temperatures'
     end
 
-
     context 'adding recordings' do
+      it 'starts with a set number of fields', js: true do
+        expect(page.all('fieldset.expandable', visible: :visible).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE
+        expect(page.all('fieldset.expandable', visible: :hidden).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE
+      end
+
+      it 'allows extra fields to be added', js: true do
+        expect(page.all('fieldset.expandable', visible: :visible).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE
+        click_link 'Show more'
+
+        expect(page).to have_no_css('a#show_more_recording_fields', visible: :visible)
+        expect(page.all('fieldset.expandable', visible: :visible).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE * 2
+      end
 
       it 'allows an observation to be added' do
         fill_in 'Temperature', match: :first, with: 20

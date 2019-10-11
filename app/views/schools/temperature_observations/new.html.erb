@@ -31,5 +31,9 @@
   <%= f.fields_for :temperature_recordings do |temperature_form| %>
     <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
   <% end %>
+  <div class="d-flex form-row justify-content-md-center pb-3">
+    <a id="show_more_recording_fields" class='btn' href='#'>Show more</a>
+  </div>
+
   <%= f.submit 'Create temperature recordings', class: 'btn btn-success' %>
 <% end %>
