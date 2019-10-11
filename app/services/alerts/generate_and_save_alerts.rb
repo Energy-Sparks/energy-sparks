@@ -27,7 +27,7 @@ module Alerts
         rescue => e
           Rails.logger.error "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
           Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e)
+          Rollbar.error(e, school_id: @school.id, school_name: @school.name, alert_type: alert_type.class_name)
         end
       end
     end

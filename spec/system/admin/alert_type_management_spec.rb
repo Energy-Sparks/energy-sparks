@@ -73,7 +73,7 @@ RSpec.describe 'alert type management', type: :system do
         select 'Negative', from: 'Colour'
 
         check 'Teacher dashboard alert'
-        fill_in 'Teacher dashboard title', with: 'Your gas usage is too high'
+        fill_in_trix  with: 'Your gas usage is too high'
 
 
         within '.teacher_dashboard_alert_active' do
@@ -94,7 +94,7 @@ RSpec.describe 'alert type management', type: :system do
         end
 
         check 'Pupil dashboard alert'
-        fill_in 'Pupil dashboard title', with: gas_fuel_alert_type_title
+        fill_in_trix with: gas_fuel_alert_type_title
 
         within '.pupil_dashboard_alert_active' do
           click_on 'Preview'
@@ -104,27 +104,27 @@ RSpec.describe 'alert type management', type: :system do
         end
 
         check 'Public dashboard alert'
-        fill_in 'Public dashboard title', with: 'This school is using gas'
+        fill_in_trix with: 'PUBLIC - This school is using gas'
 
         within '.public_dashboard_alert_active' do
           click_on 'Preview'
           within '#public_dashboard_alert-preview .content' do
-            expect(page).to have_content('This school is using gas')
+            expect(page).to have_content('PUBLIC - This school is using gas')
           end
         end
 
         check 'Management dashboard alert'
-        fill_in 'Management dashboard title', with: 'Your school is using gas'
+        fill_in_trix with: 'MDASH - Your school is using gas'
 
         within '.management_dashboard_alert_active' do
           click_on 'Preview'
           within '#management_dashboard_alert-preview .content' do
-            expect(page).to have_content('Your school is using gas')
+            expect(page).to have_content('MDASH - Your school is using gas')
           end
         end
 
         check 'Management priorities'
-        fill_in 'Management priorities title', with: 'Your school is spending too much on gas'
+        fill_in_trix with: 'Your school is spending too much on gas'
 
         within '.management_priorities_active' do
           click_on 'Preview'
@@ -191,9 +191,9 @@ RSpec.describe 'alert type management', type: :system do
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
         expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
         expect(first_content.teacher_dashboard_alert_weighting).to eq(1.3)
-        expect(first_content.public_dashboard_title).to eq('This school is using gas')
-        expect(first_content.management_dashboard_title).to eq('Your school is using gas')
-        expect(first_content.management_priorities_title).to eq('Your school is spending too much on gas')
+        expect(first_content.public_dashboard_title.to_plain_text).to eq('PUBLIC - This school is using gas')
+        expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
+        expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')
 
         click_on 'Edit'
 
@@ -248,13 +248,13 @@ RSpec.describe 'alert type management', type: :system do
       fill_in 'Title', with: ''
       click_on 'Update Alert type'
 
-      expect(page).to have_content("Title can't be blank")
+      expect(page).to have_content("Title *\ncan't be blank")
 
       new_title = 'New title'
       new_description = 'New description'
 
       fill_in 'Title', with: new_title
-      fill_in 'Description', with: new_description
+      fill_in_trix with: new_description
       choose 'Weekly'
       click_on 'Update Alert type'
 

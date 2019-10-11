@@ -10,7 +10,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Equivalence</th>
+      <th>Equivalence content (without formatting)</th>
       <th>Meter type</th>
       <th>Time period</th>
       <th>Image</th>
@@ -20,7 +20,7 @@
   <tbody>
     <% @equivalence_types.each do |equivalence_type| %>
       <tr>
-        <td><%= strip_tags equivalence_type.current_content.equivalence %></td>
+        <td><%= strip_tags equivalence_type.current_content.equivalence.body.to_s %></td>
         <td><%= equivalence_type.meter_type.humanize %></td>
         <td><%= equivalence_type.time_period.humanize %></td>
         <td><%= equivalence_type.image_name.humanize %></td>
