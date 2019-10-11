@@ -5,11 +5,11 @@
 #  analysis_charts                     :json             not null
 #  created_at                          :datetime         not null
 #  fuel_configuration                  :json
-#  gas_dashboard_chart_type            :integer          default("no_chart"), not null
+#  gas_dashboard_chart_type            :integer          default("no_gas_chart"), not null
 #  id                                  :bigint(8)        not null, primary key
 #  pupil_analysis_charts               :json             not null
 #  school_id                           :bigint(8)        not null
-#  storage_heater_dashboard_chart_type :integer          default(0), not null
+#  storage_heater_dashboard_chart_type :integer          default("no_storaage_heater_chart"), not null
 #  updated_at                          :datetime         not null
 #
 # Indexes
