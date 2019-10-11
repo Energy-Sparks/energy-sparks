@@ -1,4 +1,4 @@
-<div class="card <%= supply %>-card">
+<div class="card <%= current_supply %>-card">
   <div class="card-header"></div>
   <div class="card-body">
     <h4 class="card-title">
@@ -22,7 +22,7 @@
     Compare usage across the whole school on different days, or compare usage within
     the school on a specific day
   </div>
-  <% if params[:period] == 'daily' %>
+  <% if show_measurements %>
     <div class="card-header"></div>
     <div class="card-body">
       <h4 class="card-title">

@@ -21,12 +21,19 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   if (! noAdvice) {
     var $chartWrapper = $chartDiv.parent();
     var titleH3 = $chartWrapper.find('h3');
+    var titleH5 = $chartWrapper.find('h5');
 
     if ($chartDiv.data('chart-index') === 0) {
       titleH3.text(chart_data.title);
     } else {
       titleH3.before('<hr class="analysis"/>');
       titleH3.text(chart_data.title);
+    }
+
+    if (chart_data.subtitle) {
+      titleH5.text(chart_data.subtitle);
+    } else {
+      titleH5.hide();
     }
 
     var adviceHeader = chart_data.advice_header;
@@ -123,6 +130,8 @@ function processAnalysisChart(chart_container){
   var chartType = $(chart_container).data('chart-type');
   var yAxisUnits = $(chart_container).data('chart-y-axis-units');
   var mpanMprn = $(chart_container).data('chart-mpan-mprn');
+  var seriesBreakdown = $(chart_container).data('chart-series-breakdown');
+  var dateRanges = $(chart_container).data('chart-date-ranges');
   var dataPath = $(chart_container).data('chart-json');
   var transformations = $(chart_container).data('chart-transformations');
   var noAdvice = $(chart_container).is("[data-no-advice]");
@@ -133,7 +142,9 @@ function processAnalysisChart(chart_container){
     chart_type: chartType,
     chart_y_axis_units: yAxisUnits,
     mpan_mprn: mpanMprn,
-    transformations: transformations
+    transformations: transformations,
+    series_breakdown: seriesBreakdown,
+    date_ranges: dateRanges
   };
 
   if (dataPath === undefined) {

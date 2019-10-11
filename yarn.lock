@@ -1028,24 +1028,24 @@
   dependencies:
     core-js "^2.5.7"
 
-"@rails/actiontext@^6.0.0-beta1":
-  version "6.0.0-rc1"
-  resolved "https://registry.yarnpkg.com/@rails/actiontext/-/actiontext-6.0.0-rc1.tgz#fe2e467076664b31479b6abc847695b310dcedac"
-  integrity sha512-1QoBeRmBTxBEO4BYYGDAin6yauh5S9SN5FKpZR+K0Hl0QZJodABJa51HoKn+odSHYpJxuEUPHtRWaU8j57ZB1w==
+"@rails/actiontext@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/actiontext/-/actiontext-6.0.0.tgz#ee7f70e916c6d7c4ff2e0832047b9c1c2dff0f62"
+  integrity sha512-0Koqw59xIMYMMri3ZIE1CaEEEkMQi16j+4FQwCRE5QG830Q1tnli0TrQrtJ0vE+D1vf1JuJfy7UHSGPbaspmRQ==
   dependencies:
     "@rails/activestorage" "^6.0.0-alpha"
+
+"@rails/activestorage@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-6.0.0.tgz#6d9cc98f3dcf195c38ca65e80acd2e759336dd7a"
+  integrity sha512-RZqTVlUYSWcI88pSJ7ImuTtDYQvqVc2PNuOo+5R3hcVupD+d2TO8xmluqQ5TvByjPqKX4acEK0mjEIK5ip9kCg==
+  dependencies:
+    spark-md5 "^3.0.0"
 
 "@rails/activestorage@^6.0.0-alpha":
   version "6.0.0-alpha"
   resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-6.0.0-alpha.tgz#6eb6c0f49bcaa4ad68fcd13a750b9a17f76f086f"
   integrity sha512-ZQneYyDWrazLFZgyfZ3G4h9Q+TxvSQE5BEenBhvusyAeYMVaYxrZU/PWFcbeyiQe5xz1SeN3g/UejU3ytCYJwQ==
-  dependencies:
-    spark-md5 "^3.0.0"
-
-"@rails/activestorage@^6.0.0-beta1":
-  version "6.0.0-rc1"
-  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-6.0.0-rc1.tgz#ed29fa14309c74352d5b68b6388c5899d46b009f"
-  integrity sha512-WPxMaYJkfWByIR1jeLxAe79dXocAz6+odoPS44t466+Pf+zh1/eckAsucP7egAgcRAczsrrHKtXWqCLEvzcAyA==
   dependencies:
     spark-md5 "^3.0.0"
 

@@ -18,7 +18,7 @@ module Equivalences
             Rails.logger.debug("#{e.message} for #{@school.name}")
           rescue => e
             Rails.logger.error("#{e.message} for #{@school.name}")
-            Rollbar.error(e)
+            Rollbar.error(e, school_id: @school.id, school_name: @school.name)
           end
         end
       end

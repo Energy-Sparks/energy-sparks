@@ -2,7 +2,6 @@
 #
 # Table name: programmes
 #
-#  _old_description  :text
 #  document_link     :string
 #  ended_on          :date
 #  id                :bigint(8)        not null, primary key

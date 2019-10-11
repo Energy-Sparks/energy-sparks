@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype,
+  attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
@@ -38,6 +38,7 @@ class ChartDataValues
       @chart_type         = chart_type
       @chart              = chart
       @title              = chart[:title]
+      @subtitle           = chart[:subtitle]
       @x_axis_categories  = chart[:x_axis]
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
       @chart1_type        = chart[:chart1_type]
