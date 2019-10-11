@@ -6,7 +6,7 @@ module DashboardEnergyCharts
 
     return charts if school_configuration.nil?
 
-    if school_configuration.has_electricity
+    if school_configuration.has_solar_pv
       charts[:solar] = { chart_type: :teachers_landing_page_electricity }
     elsif school_configuration.has_electricity
       charts[:electricity] = { chart_type: :teachers_landing_page_electricity }
