@@ -27,4 +27,14 @@
     find out how gas use has changed long term
   <% end %>
 
+  <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly} do %>
+    compare the gas used in two different weeks
+  <% end %>
+
+  <% if @school.filterable_meters.gas.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly, split_meters: true} do %>
+      compare the gas use by different meters
+    <% end %>
+  <% end %>
+
 </div>

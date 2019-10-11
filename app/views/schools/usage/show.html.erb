@@ -1,0 +1,101 @@
+<% content_for :page_title, t("charts.usage.titles.#{@supply}.#{@period}") %>
+
+<div class="container charts">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <%= link_to 'Back', request.referer.present? ? request.referer : pupils_school_analysis_path(@school), class: 'btn btn-rounded mr-5' %>
+    </div>
+    <div>
+      <h3><%= t("charts.usage.titles.#{@supply}.#{@period}")  %></h3>
+    </div>
+    <div></div>
+  </div>
+  <hr />
+
+  <div class="row">
+    <div class="col-md-12">
+      <%= chart_tag(@school, nil, show_advice: false, html_class: 'usage-chart') %>
+    </div>
+  </div>
+
+  <%= form_tag "", method: :get, id: "chart-filter" do %>
+    <%= hidden_field_tag :period, @period %>
+    <%= hidden_field_tag :supply, @supply %>
+    <%= hidden_field_tag :configuration, nil, data: {configuration: @chart_config} %>
+
+    <div class="row justify-content-md-center">
+
+      <div class="col-12 col-lg-3 col-md-4">
+        <div class="<%= @supply %>-dark p-2 mb-2">
+          <%= label_tag 'first-date-picker', t("charts.usage.date_picker.#{@period}.first")%>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group date <%= 'week-view' if @period == :weekly %>" id="datetimepicker1" data-target-input="nearest">
+                <%= text_field_tag("first-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "#datetimepicker1" }) %>
+
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% unless @split_meters %>
+        <div class="col-12 col-lg-3 col-md-4">
+          <div class="<%= @supply %>-dark p-2 mb-2">
+            <%= label_tag 'second-date-picker', t("charts.usage.date_picker.#{@period}.second")%>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group date <%= 'week-view' if @period == :weekly %>" id="datetimepicker2" data-target-input="nearest">
+                  <%= text_field_tag("second-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "#datetimepicker2" }) %>
+
+                  <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end  %>
+
+      <% unless @split_meters %>
+        <% if @meters.count > 1 %>
+          <div class="col-12 col-lg-3 col-md-4">
+            <div class="<%= @supply %>-dark p-2 mb-2">
+              <%= label_tag :meter, 'Which meter?'%>
+              <div class="form-group">
+                <%= select_tag :meter, content_tag(:option,'All Meters', value: "all") + options_from_collection_for_select(@meters, :mpan_mprn, :display_name, nil), class: "form-control" %>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <%= hidden_field_tag :meter, 'all' %>
+        <% end %>
+      <% end %>
+
+      <% if @show_measurements %>
+        <div class="col-12 col-lg-3 col-md-4">
+          <div class="<%= @supply %>-dark p-2 mb-2">
+            <%= label_tag :measurement, 'Choose measurement'%>
+            <div class="form-group">
+              <%= select_tag :measurement, options_for_select(@measurement_options.map(&:reverse), @measurement), class: "form-control" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+
+    </div>
+  <% end %>
+
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto mt-2">
+      <%= @supply.to_s.titleize %> data is available from <%= nice_dates(@chart_config[:earliest_reading]) %> to <%= nice_dates(@chart_config[:last_reading]) %>
+    </div>
+  </div>
+</div>

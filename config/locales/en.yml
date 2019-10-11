@@ -24,6 +24,21 @@ en:
   charts:
     hourly-usage-link: "View usage by day"
     weekly-usage-link: "View usage by week"
+    usage:
+      titles:
+        gas:
+          weekly: "Your school's daily gas use on your chosen weeks"
+          daily: "Your school's half hourly gas use on your chosen days"
+        electricity:
+          weekly: "Your school's daily electricity use on your chosen weeks"
+          daily: "Your school's half hourly electricity use on your chosen days"
+      date_picker:
+        weekly:
+          first: 'Select week (beginning)'
+          second: 'Compare to'
+        daily:
+          first: 'Select day'
+          second: 'Compare to'
   date:
     formats:
       default: "%d/%m/%Y"

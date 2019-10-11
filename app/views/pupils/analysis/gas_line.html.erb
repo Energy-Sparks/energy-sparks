@@ -1,0 +1,30 @@
+<% content_for :page_title, "Here's the gas data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school, category: :gas), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>gas</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="card-deck">
+  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Line'} do %>
+    find out how much gas was used in the last 7 days
+  <% end %>
+
+  <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :daily} do %>
+    compare the gas used on two different days
+  <% end %>
+
+  <% if @school.filterable_meters.gas.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :daily, split_meters: true} do %>
+      compare the gas use by different meters
+    <% end %>
+  <% end %>
+</div>
