@@ -108,17 +108,16 @@ Rails.application.routes.draw do
       resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
+      resource :usage, controller: :usage, only: :show
+
     end
 
     # Maintain old scoreboard URL
     get '/scoreboard', to: redirect('/schools')
 
+
     member do
       get 'suggest_activity'
-      get 'data_explorer'
-      get 'usage'
-      get 'compare_daily_usage', to: 'stats#compare_daily_usage'
-      get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
   end
 

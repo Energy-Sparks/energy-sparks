@@ -1,0 +1,54 @@
+<div class="card <%= current_supply %>-card" id="whole-school">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <h4 class="card-title">
+      Which dates do you want to compare?
+    </h4>
+
+    <p class="card-text">
+      <%= first_option %>
+    </p>
+
+    <div class="form-group">
+      <div class="indicator-dark <%= current_supply %>-dark">
+        <div class="input-group">
+           <div class="input-group date <%= 'week-view' if week_picker %>" id="datetimepicker1" data-target-input="nearest">
+                 <%= text_field_tag("first-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "#datetimepicker1" }) %>
+
+              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="card-text">
+      <%= second_option %>
+    </p>
+    <div class="form-group">
+      <div class="indicator-dark <%= current_supply %>-dark">
+        <div class="input-group">
+           <div class="input-group date <%= 'week-view' if week_picker %>" id="datetimepicker2" data-target-input="nearest">
+                 <%= text_field_tag("comparison-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "#datetimepicker2" }) %>
+
+              <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="card-text">
+      Which meter shall we show?
+    </p>
+    <div class="form-group">
+      <%= select_tag :meter,
+                     content_tag(:option,'All Meters',:value=>"all")+options_from_collection_for_select_with_data(school.filterable_meters,
+                     :mpan_mprn, :display_name, nil, { "supply-type" => :meter_type }), class: "form-control custom-select meter-filter" %>
+    </div>
+  </div>
+  <div class="card-footer">
+    <span class="data-availability"></span>
+  </div>
+</div>

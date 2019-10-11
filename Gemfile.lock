@@ -179,7 +179,6 @@ GEM
     capybara-email (3.0.1)
       capybara (>= 2.4, < 4.0)
       mail
-    chartkick (3.2.0)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chroma (0.2.0)
@@ -612,7 +611,6 @@ DEPENDENCIES
   cancancan (~> 3.0.1)
   capybara
   capybara-email
-  chartkick
   climate_control
   closed_struct
   database_cleaner

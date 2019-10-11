@@ -10,12 +10,12 @@
         <span class="very-small" title="This data excludes the electricity used by the school's storage heaters">(excluding storage heaters)</span>
       <% end %>
 
-      <% if @school.meters.pseudo.empty? && chart_type_config[:explore] %>
+      <% if chart_type_config[:explore] %>
         <div>
           Explore
-          <%= link_to 'weekly', usage_school_path(school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
+          <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: fuel_type), title: "See how the school's energy use varies over a week" %>
           /
-          <%= link_to 'daily', usage_school_path(school, period: :hourly, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
+          <%= link_to 'daily', school_usage_path(school, period: :daily, supply: fuel_type), title: "See how the school's energy use varies over a day" %>
           usage
         </div>
       <% end %>

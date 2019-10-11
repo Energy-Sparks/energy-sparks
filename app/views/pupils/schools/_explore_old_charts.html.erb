@@ -8,9 +8,9 @@
           </div>
           <div class="card-text">
               Explore
-          <%= link_to 'weekly', usage_school_path(school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a week" %>
+          <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: :electricity), title: "See how the school's energy use varies over a week" %>
           /
-          <%= link_to 'daily', usage_school_path(school, period: :hourly, supply: :electricity), title: "See how the school's energy use varies over a day" %>
+          <%= link_to 'daily', school_usage_path(school, period: :daily, supply: :electricity), title: "See how the school's energy use varies over a day" %>
           usage
           </div>
         </div>
@@ -26,9 +26,9 @@
           </div>
           <div class="card-text">
           Explore
-          <%= link_to 'weekly', usage_school_path(school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a week" %>
+          <%= link_to 'weekly', school_usage_path(school, period: :weekly, supply: :gas), title: "See how the school's energy use varies over a week" %>
           /
-          <%= link_to 'daily', usage_school_path(school, period: :hourly, supply: :gas), title: "See how the school's energy use varies over a day" %>
+          <%= link_to 'daily', school_usage_path(school, period: :daily, supply: :gas), title: "See how the school's energy use varies over a day" %>
           usage
           </div>
         </div>
