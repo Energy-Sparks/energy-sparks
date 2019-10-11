@@ -2,15 +2,15 @@
 #
 # Table name: alert_types
 #
-#  class_name   :text
-#  description  :text             not null
-#  frequency    :integer
-#  fuel_type    :integer
-#  has_ratings  :boolean          default(TRUE)
-#  id           :bigint(8)        not null, primary key
-#  source       :integer          default("analytics"), not null
-#  sub_category :integer
-#  title        :text
+#  _old_description :text
+#  class_name       :text
+#  frequency        :integer
+#  fuel_type        :integer
+#  has_ratings      :boolean          default(TRUE)
+#  id               :bigint(8)        not null, primary key
+#  source           :integer          default("analytics"), not null
+#  sub_category     :integer
+#  title            :text
 #
 
 class AlertType < ApplicationRecord
@@ -29,6 +29,8 @@ class AlertType < ApplicationRecord
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
   validates_presence_of :description, :frequency, :title
+
+  has_rich_text :description
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?

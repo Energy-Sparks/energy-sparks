@@ -22,6 +22,7 @@ class SchoolOnboardingEvent < ApplicationRecord
 
   enum event: {
     email_sent: 0,
+    privacy_policy_agreed: 9,
     permission_given: 10,
     onboarding_user_created: 20,
     onboarding_user_updated: 21,

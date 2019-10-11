@@ -2,7 +2,6 @@
 #
 # Table name: programme_types
 #
-#  _old_description  :text
 #  active            :boolean          default(FALSE)
 #  document_link     :string
 #  id                :bigint(8)        not null, primary key

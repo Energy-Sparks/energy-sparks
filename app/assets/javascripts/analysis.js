@@ -21,12 +21,19 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   if (! noAdvice) {
     var $chartWrapper = $chartDiv.parent();
     var titleH3 = $chartWrapper.find('h3');
+    var titleH5 = $chartWrapper.find('h5');
 
     if ($chartDiv.data('chart-index') === 0) {
       titleH3.text(chart_data.title);
     } else {
       titleH3.before('<hr class="analysis"/>');
       titleH3.text(chart_data.title);
+    }
+
+    if (chart_data.subtitle) {
+      titleH5.text(chart_data.subtitle);
+    } else {
+      titleH5.hide();
     }
 
     var adviceHeader = chart_data.advice_header;

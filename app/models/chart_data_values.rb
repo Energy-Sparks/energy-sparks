@@ -1,5 +1,5 @@
 class ChartDataValues
-  attr_reader :anaylsis_type, :title, :chart1_type, :chart1_subtype,
+  attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
@@ -28,6 +28,8 @@ class ChartDataValues
   LIGHT_ELECTRICITY = '#59D0FF'.freeze
   DARK_GAS = '#FF8438'.freeze
   LIGHT_GAS = '#FFC73E'.freeze
+  DARK_STORAGE = '#7C3AFF'.freeze
+  LIGHT_STORAGE = '#E097FC'.freeze
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
@@ -36,6 +38,7 @@ class ChartDataValues
       @chart_type         = chart_type
       @chart              = chart
       @title              = chart[:title]
+      @subtitle           = chart[:subtitle]
       @x_axis_categories  = chart[:x_axis]
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
       @chart1_type        = chart[:chart1_type]
@@ -124,6 +127,8 @@ private
   def teachers_chart_colour(index)
     if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
       index.zero? ? DARK_GAS : LIGHT_GAS
+    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type)
+      index.zero? ? DARK_STORAGE : LIGHT_STORAGE
     else
       index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
     end

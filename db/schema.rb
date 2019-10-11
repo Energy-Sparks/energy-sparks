@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_30_123006) do
-
+ActiveRecord::Schema.define(version: 2019_10_09_125658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -173,17 +172,17 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
 
   create_table "alert_type_rating_content_versions", force: :cascade do |t|
     t.bigint "alert_type_rating_id", null: false
-    t.string "teacher_dashboard_title"
+    t.string "_teacher_dashboard_title"
     t.string "find_out_more_title"
-    t.text "find_out_more_content"
+    t.text "_find_out_more_content"
     t.integer "replaced_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "colour", default: 0, null: false
-    t.string "pupil_dashboard_title"
+    t.string "_pupil_dashboard_title"
     t.string "sms_content"
     t.string "email_title"
-    t.text "email_content"
+    t.text "_email_content"
     t.text "find_out_more_chart_variable", default: "none"
     t.string "find_out_more_chart_title", default: ""
     t.date "find_out_more_start_date"
@@ -198,11 +197,11 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
     t.date "email_end_date"
     t.date "public_dashboard_alert_start_date"
     t.date "public_dashboard_alert_end_date"
-    t.string "public_dashboard_title"
+    t.string "_public_dashboard_title"
     t.date "management_dashboard_alert_start_date"
     t.date "management_dashboard_alert_end_date"
-    t.string "management_dashboard_title"
-    t.string "management_priorities_title"
+    t.string "_management_dashboard_title"
+    t.string "_management_priorities_title"
     t.date "management_priorities_start_date"
     t.date "management_priorities_end_date"
     t.decimal "email_weighting", default: "5.0"
@@ -254,7 +253,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
     t.integer "sub_category"
     t.integer "frequency"
     t.text "title"
-    t.text "description", null: false
+    t.text "_old_description"
     t.text "class_name"
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
@@ -411,6 +410,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
     t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.json "pupil_analysis_charts", default: {}, null: false
     t.json "fuel_configuration", default: {}
+    t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
@@ -468,7 +468,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
   end
 
   create_table "equivalence_type_content_versions", force: :cascade do |t|
-    t.text "equivalence", null: false
+    t.text "_equivalence"
     t.bigint "equivalence_type_id", null: false
     t.bigint "replaced_by_id"
     t.datetime "created_at", precision: 6, null: false
@@ -598,7 +598,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
   create_table "observations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.datetime "at", null: false
-    t.text "description"
+    t.text "_description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "observation_type", null: false
@@ -629,7 +629,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
 
   create_table "programme_types", force: :cascade do |t|
     t.text "title"
-    t.text "_old_description"
     t.boolean "active", default: false
     t.text "short_description"
     t.string "document_link"
@@ -642,7 +641,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_123006) do
     t.date "started_on", null: false
     t.date "ended_on"
     t.text "title"
-    t.text "_old_description"
     t.string "document_link"
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"

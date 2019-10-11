@@ -5,6 +5,6 @@
       <%= @observation.intervention_type.title %>
     </h3>
     <h4><%= nice_dates(@observation.at) %></h4>
-    <%= simple_format(@observation.description) %>
+    <%= @observation.description %>
   </div>
 </div>
