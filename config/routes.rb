@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
-  get 'privacy_policy', to: 'home#privacy_policy', as: :privacy_policy
+  get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
