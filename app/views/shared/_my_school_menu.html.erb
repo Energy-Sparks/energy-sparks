@@ -3,7 +3,12 @@
   <div class="dropdown-menu" aria-labelledby="my_school">
     <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Gas usage', pupils_school_analysis_path(current_user.school, category: :gas), class: 'dropdown-item' if current_user.school.has_gas? %>
-    <%= link_to 'Electricity usage', pupils_school_analysis_path(current_user.school, category: :electricity), class: 'dropdown-item' if current_user.school.has_electricity? %>
+    <% if current_user.school.has_solar_pv? %>
+      <%= link_to 'Electricity and solar usage', pupils_school_analysis_path(current_user.school, category: :solar), class: 'dropdown-item' %>
+    <% elsif current_user.school.has_electricity? %>
+      <%= link_to 'Electricity usage', pupils_school_analysis_path(current_user.school, category: :electricity), class: 'dropdown-item' %>
+    <% end %>
+    <%= link_to 'Storage heater usage', pupils_school_analysis_path(current_user.school, category: :storage_heaters), class: 'dropdown-item' if current_user.school.has_storage_heaters? %>
     <%= link_to 'Analysis', school_analysis_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Simulations', school_simulations_path(current_user.school), class: 'dropdown-item' if can?(:manage, current_user.school) %>
     <% if current_user.contact %>
