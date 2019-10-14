@@ -69,12 +69,12 @@ describe ChartDataValues do
 
   it 'sets the teacher-style colours for electricity line charts' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_electricity_day_example_comparison_chart).process
-    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY_LINE
+    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
   end
 
   it 'sets the teacher-style colours for gas line charts' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_gas_day_example_comparison_chart).process
-    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS_LINE
+    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
   end
 end
 
