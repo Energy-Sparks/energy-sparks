@@ -47,11 +47,12 @@ $(document).ready(function() {
       var rangeExtension = 0;
     }
 
-    addRange($('input#first-date-picker').val(), dateRanges, rangeExtension);
-
+    // maintain this order of range addition to match input order to chart order
     if($('input#second-date-picker').val()){
       addRange($('input#second-date-picker').val(), dateRanges, rangeExtension);
     }
+    addRange($('input#first-date-picker').val(), dateRanges, rangeExtension);
+
     return dateRanges;
   }
 
