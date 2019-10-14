@@ -11,7 +11,6 @@ class ActivityCategoriesController < ApplicationController
   end
 
   # GET /activity_categories/1
-  # GET /activity_categories/1.json
   def show
   end
 
@@ -24,43 +23,29 @@ class ActivityCategoriesController < ApplicationController
   end
 
   # POST /activity_categories
-  # POST /activity_categories.json
   def create
-    respond_to do |format|
-      if @activity_category.save
-        format.html { redirect_to @activity_category, notice: 'Activity category was successfully created.' }
-        format.json { render :show, status: :created, location: @activity_category }
-      else
-        format.html { render :new }
-        format.json { render json: @activity_category.errors, status: :unprocessable_entity }
-      end
+    if @activity_category.save
+      redirect_to @activity_category, notice: 'Activity category was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /activity_categories/1
-  # PATCH/PUT /activity_categories/1.json
   def update
-    respond_to do |format|
-      if @activity_category.update(activity_category_params)
-        format.html { redirect_to @activity_category, notice: 'Activity category was successfully updated.' }
-        format.json { render :show, status: :ok, location: @activity_category }
-      else
-        format.html { render :edit }
-        format.json { render json: @activity_category.errors, status: :unprocessable_entity }
-      end
+    if @activity_category.update(activity_category_params)
+      redirect_to @activity_category, notice: 'Activity category was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /activity_categories/1
-  # DELETE /activity_categories/1.json
   def destroy
     # activity categories should be marked inactive rather than deleted
     # this method does NOT delete the activity category
     # @activity_category.destroy
-    respond_to do |format|
-      format.html { redirect_to activity_categories_url, notice: 'Activity category not deleted' }
-      format.json { head :no_content }
-    end
+    redirect_to activity_categories_url, notice: 'Activity category not deleted'
   end
 
 private
