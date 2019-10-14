@@ -30,7 +30,7 @@ class ChartDataValues
   LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
   DARK_GAS = '#FF8438'.freeze
   LIGHT_GAS = '#FFC73E'.freeze
-  DARK_GAS_LINE = '#FF8438'.freeze
+  DARK_GAS_LINE = '#FF3A5B'.freeze
   LIGHT_GAS_LINE = '#FCB43A'.freeze
   DARK_STORAGE = '#7C3AFF'.freeze
   LIGHT_STORAGE = '#E097FC'.freeze
