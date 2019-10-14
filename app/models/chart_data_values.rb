@@ -78,12 +78,14 @@ class ChartDataValues
       else
         column_or_bar
       end
-
-
     elsif @chart1_type == :scatter
       scatter
     elsif @chart1_type == :line
-      line
+      if @chart_type.match?(/^calendar_picker/) && @chart[:series_breakdown] != :meter
+        usage_line
+      else
+        line
+      end
     elsif @chart1_type == :pie
       pie
     end
@@ -169,9 +171,16 @@ private
     end
   end
 
-  def line
-    colour_options = ['#5cb85c', '#ffac21']
+  def usage_line
+    colour_options = case @chart_type
+                     when /_gas_/ then [DARK_GAS, LIGHT_GAS]
+                     when /_storage_/ then [DARK_STORAGE, LIGHT_STORAGE]
+                     else [DARK_ELECTRICITY, LIGHT_ELECTRICITY]
+                     end
+    line(colour_options: colour_options)
+  end
 
+  def line(colour_options: ['#5cb85c', '#ffac21'])
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
       { name: data_type, color: colour_options[index], type: @chart1_type, data: data }
