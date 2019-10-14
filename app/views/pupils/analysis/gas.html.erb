@@ -13,7 +13,7 @@
 
 <h2>I want to&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'kWh'} do %>
     find out <strong>when</strong> the gas was used
@@ -31,7 +31,7 @@
 
 <h2>I want to look at&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Pie'}, centre: true do %>
     <div class="p-4">
       <%= fa_icon "chart-pie fa-3x" %>
