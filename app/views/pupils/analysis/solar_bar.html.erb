@@ -27,4 +27,8 @@
     find out how electricity use has changed long term
   <% end %>
 
+  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: {period: :weekly} do %>
+    compare the electricity used in two different weeks
+  <% end %>
+
 </div>
