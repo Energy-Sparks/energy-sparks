@@ -13,8 +13,7 @@ $(document).ready(function() {
     var chartType = config[period]
     var chartContainer = $('.usage-chart').first();
 
-    var measurementField = $('input[name=measurement]:checked');
-    var measurement = measurementField.val();
+    var measurement = $('#measurement').val();
 
     chartContainer.data('chart-type', chartType);
 
@@ -125,7 +124,7 @@ $(document).ready(function() {
     updateChart($('.charts').first());
   }
 
-  $(document).on('change', 'input[type=radio][name=measurement]', function() {
+  $(document).on('change', '#measurement', function() {
     updateChart(this);
   });
 
