@@ -37,4 +37,43 @@ RSpec.describe "home", type: :system do
     click_on('Open data')
     expect(page.has_content? "Data used in Energy Sparks")
   end
+
+  context 'school admin user' do
+    let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
+    let(:school_admin) { create(:school_admin, school: school)}
+
+    before(:each) do
+      sign_in(school_admin)
+      visit root_path
+    end
+
+    context 'with inactive school' do
+
+      before(:each) do
+        school.update(active: false)
+        visit root_path
+      end
+
+      it 'redirects to holding page' do
+        expect(page).to have_content('Your school is currently inactive while we are setting up your energy data')
+      end
+
+      it 'does not have navigation options' do
+        expect(page).to_not have_content('My school')
+        expect(page).to_not have_content('Dashboards')
+      end
+    end
+
+    context 'with active school' do
+      it 'does not redirect to holding page' do
+
+        expect(page).to_not have_content('Your school is currently inactive while we are setting up your energy data')
+      end
+
+      it 'does have navigation options' do
+        expect(page).to have_content('My school')
+        expect(page).to have_content('Dashboards')
+      end
+    end
+  end
 end

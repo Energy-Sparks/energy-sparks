@@ -54,6 +54,7 @@ class Ability
           onboarding.created_user == user
         end
         can :read, :school_menu
+        can :read, :dashboard_menu
       end
       can [
         :update, :manage_school_times, :suggest_activity, :manage_users,
