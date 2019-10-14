@@ -21,6 +21,7 @@ module Schools
       if @school.send("has_#{@supply}?")
         @meters = setup_meters(@school, @supply)
         @chart_config = setup_chart_config(@supply)
+        @title_key = title_key(@supply, @period, @split_meters)
         render :show
       else
         redirect_to school_path(@school), notice: 'No suitable supply could be found'
@@ -53,6 +54,10 @@ module Schools
       when :gas then school.filterable_meters.gas
       else Meter.none
       end
+    end
+
+    def title_key(supply, period, split_meters)
+      "charts.usage.titles.#{supply}.#{period}.#{split_meters ? 'split' : 'not_split'}"
     end
   end
 end

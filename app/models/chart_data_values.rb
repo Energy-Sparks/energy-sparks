@@ -71,8 +71,10 @@ class ChartDataValues
     @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
-      if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type) || @chart_type.match?(/^calendar_picker/)
+      if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
         teachers_column
+      elsif @chart_type.match?(/^calendar_picker/) && @chart[:series_breakdown] != :meter
+        usage_column
       else
         column_or_bar
       end
@@ -111,6 +113,13 @@ private
     end_date = start_date + 6.days
 
     "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
+  end
+
+  def usage_column
+    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
+      colour = teachers_chart_colour(index)
+      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+    end
   end
 
   def teachers_column
