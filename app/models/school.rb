@@ -205,7 +205,7 @@ class School < ApplicationRecord
   end
 
   def authenticate_pupil(pupil_password)
-    users.pupil.to_a.find {|user| user.pupil_password == pupil_password}
+    users.pupil.to_a.find {|user| user.pupil_password.casecmp(pupil_password).zero? }
   end
 
   def filterable_meters
