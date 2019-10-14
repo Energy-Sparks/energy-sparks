@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       resource :action, only: [:new]
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
+      resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts

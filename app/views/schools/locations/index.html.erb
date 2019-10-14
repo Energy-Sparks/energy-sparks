@@ -1,0 +1,41 @@
+<h1>Temperature Recording Locations</h1>
+<h2><%= @school.name %></h2>
+
+<p><%= link_to 'Temperature recordings', school_temperature_observations_path(@school) %></p>
+
+<p>These are locations or rooms where previously you have entered temperatures. You can delete or edit any of these locations or rooms if you have made a mistake.</p>
+<div class="alert alert-danger" role="alert">
+  <strong>Note:</strong> if you delete a location or room, you will also delete any temperatures you have recorded for that location
+</div>
+
+<% if @locations.any? %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Temperatures recorded</th>
+        <% if can? :manage, Location %>
+          <th>Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @locations.each do |location| %>
+        <tr scope="row">
+          <td><%= location.name %></td>
+          <td><%= location.temperature_recordings.count %></td>
+          <% if can? :manage, location %>
+            <td>
+              <%= link_to 'Delete', school_location_path(@school, location), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+              <%= link_to 'Edit', edit_school_location_path(@school, location), class: 'btn btn-sm' %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no Locations</p>
+<% end %>
+
+<p><%= link_to 'Add new room or location', new_school_location_path(@school), class: 'btn btn-success' %></p>

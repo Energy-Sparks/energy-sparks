@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset class='<%= "d-none" if temperature_form.options[:child_index] >= @locations_to_show_count %> expandable' >
   <div class="form-row">
     <%= temperature_form.simple_fields_for :location do |location_form| %>
       <div class="col-lg-9 form-group">

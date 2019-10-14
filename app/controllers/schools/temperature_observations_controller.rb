@@ -5,9 +5,12 @@ module Schools
 
     skip_before_action :authenticate_user!, only: [:index, :show]
     before_action :set_location_names, only: [:new, :create]
+    before_action :set_inital_recording_count, only: [:new, :create]
+
+    TEMPERATURE_RECORD_INCREASE = 10
 
     def new
-      10.times.each { @observation.temperature_recordings.build(location: Location.new) }
+      @total_location_fields.times.each { @observation.temperature_recordings.build(location: Location.new) }
     end
 
     def create
@@ -32,6 +35,12 @@ module Schools
     end
 
   private
+
+    def set_inital_recording_count
+      @existing_location_count = @school.locations.count
+      @locations_to_show_count = @existing_location_count + TEMPERATURE_RECORD_INCREASE
+      @total_location_fields = @locations_to_show_count + TEMPERATURE_RECORD_INCREASE
+    end
 
     def set_location_names
       @location_names = @school.locations.pluck(:name).push('').join(',')
