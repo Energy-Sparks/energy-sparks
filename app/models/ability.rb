@@ -86,6 +86,7 @@ class Ability
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :read, :school_menu
+        can :read, :dashboard_menu
       end
     elsif user.guest?
       cannot :analyse, :cost
