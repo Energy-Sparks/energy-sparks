@@ -13,13 +13,12 @@
 //= require highcharts-modules/exporting
 //= require highcharts-modules/offline-exporting
 //= require highcharts-modules/annotations
-//= require chartkick
 
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
 
 //= require activities
-//= require data_explorer
+//= require usage_charts
 //= require schools
 //= require users
 
@@ -41,3 +40,4 @@
 
 //= require observations
 //= require form_wizard
+//= require temperature_recordings

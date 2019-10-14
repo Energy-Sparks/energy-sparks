@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
-  get 'privacy_policy', to: 'home#privacy_policy', as: :privacy_policy
+  get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       resource :action, only: [:new]
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
+      resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
@@ -108,17 +109,16 @@ Rails.application.routes.draw do
       resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
+      resource :usage, controller: :usage, only: :show
+
     end
 
     # Maintain old scoreboard URL
     get '/scoreboard', to: redirect('/schools')
 
+
     member do
       get 'suggest_activity'
-      get 'data_explorer'
-      get 'usage'
-      get 'compare_daily_usage', to: 'stats#compare_daily_usage'
-      get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
   end
 

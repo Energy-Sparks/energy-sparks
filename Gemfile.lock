@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: d6f58a8317b6dcbb1313ae23c89aae88bfcd4b6f
-  tag: 0.51.3
+  revision: 382dfaa1960780691cdabb4aaadfddd4179d21d2
+  tag: 0.51.5
   specs:
-    energy-sparks_analytics (0.51.3)
+    energy-sparks_analytics (0.51.5)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -179,7 +179,6 @@ GEM
     capybara-email (3.0.1)
       capybara (>= 2.4, < 4.0)
       mail
-    chartkick (3.2.0)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chroma (0.2.0)
@@ -612,7 +611,6 @@ DEPENDENCIES
   cancancan (~> 3.0.1)
   capybara
   capybara-email
-  chartkick
   climate_control
   closed_struct
   database_cleaner

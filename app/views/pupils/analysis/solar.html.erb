@@ -1,0 +1,43 @@
+<% content_for :page_title, "Here's the electricity and solar data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>electricity and solar</strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="row">
+
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'kWh'} do %>
+    find out <strong>when</strong> the electricity was used
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Solar'} do %>
+    find out about <strong>solar</strong>
+  <% end %>
+
+</div>
+
+<h2>I want to look at&hellip;</h2>
+
+<div class="row">
+
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Pie'}, centre: true do %>
+    <div class="p-4">
+      <%= fa_icon "chart-pie fa-3x" %>
+    </div>
+    Pie charts
+  <% end %>
+
+  <%= render 'category_link', school: @school, energy: :solar, category: :solar_bar, category_name: 'Bar charts', icon: 'chart-bar' %>
+
+  <%= render 'category_link', school: @school, energy: :solar, category: :solar_line, category_name: 'Line graphs', icon: 'chart-line' %>
+
+</div>

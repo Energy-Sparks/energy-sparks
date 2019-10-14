@@ -26,8 +26,12 @@ class ChartDataValues
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   LIGHT_ELECTRICITY = '#59D0FF'.freeze
+  DARK_ELECTRICITY_LINE = '#232B49'.freeze
+  LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
   DARK_GAS = '#FF8438'.freeze
   LIGHT_GAS = '#FFC73E'.freeze
+  DARK_GAS_LINE = '#FF3A5B'.freeze
+  LIGHT_GAS_LINE = '#FCB43A'.freeze
   DARK_STORAGE = '#7C3AFF'.freeze
   LIGHT_STORAGE = '#E097FC'.freeze
 
@@ -73,15 +77,19 @@ class ChartDataValues
     if @chart1_type == :column || @chart1_type == :bar
       if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
         teachers_column
+      elsif @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
+        usage_column
       else
         column_or_bar
       end
-
-
     elsif @chart1_type == :scatter
       scatter
     elsif @chart1_type == :line
-      line
+      if @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
+        usage_line
+      else
+        line
+      end
     elsif @chart1_type == :pie
       pie
     end
@@ -113,6 +121,13 @@ private
     "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
   end
 
+  def usage_column
+    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
+      colour = teachers_chart_colour(index)
+      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+    end
+  end
+
   def teachers_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       colour = teachers_chart_colour(index)
@@ -125,9 +140,9 @@ private
   end
 
   def teachers_chart_colour(index)
-    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
+    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_gas_/)
       index.zero? ? DARK_GAS : LIGHT_GAS
-    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type)
+    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_storage_/)
       index.zero? ? DARK_STORAGE : LIGHT_STORAGE
     else
       index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
@@ -146,6 +161,7 @@ private
     if @y2_data != nil && @y2_chart_type == :line
       @y2_axis_label = @y2_data.keys[0]
       @y2_data.each do |data_type, data|
+        data_type = 'Solar irradiance (brightness of sunshine)' if data_type.start_with?('Solar')
         @series_data << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
       end
     end
@@ -160,9 +176,16 @@ private
     end
   end
 
-  def line
-    colour_options = ['#5cb85c', '#ffac21']
+  def usage_line
+    colour_options = case @chart_type
+                     when /_gas_/ then [DARK_GAS, LIGHT_GAS]
+                     when /_storage_/ then [DARK_STORAGE, LIGHT_STORAGE]
+                     else [DARK_ELECTRICITY, LIGHT_ELECTRICITY]
+                     end
+    line(colour_options: colour_options)
+  end
 
+  def line(colour_options: ['#5cb85c', '#ffac21'])
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
       { name: data_type, color: colour_options[index], type: @chart1_type, data: data }

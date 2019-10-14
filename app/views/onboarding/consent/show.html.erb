@@ -14,7 +14,7 @@
     </blockquote>
 
     <%= simple_form_for(@school_onboarding_consent, url: onboarding_consent_path(@school_onboarding), method: :post) do |f| %>
-      <%= f.input :privacy, as: :boolean, required: true, label: sanitize("I confirm agreement with the Energy Sparks #{link_to 'privacy policy', privacy_policy_path, target: '_blank' }") %>
+      <%= f.input :privacy, as: :boolean, required: true, label: sanitize("I confirm agreement with the Energy Sparks #{link_to 'privacy and cookie policy', privacy_and_cookie_policy_path, target: '_blank' }") %>
       <%= f.button :submit, 'I give permission', class: 'btn btn-primary' %>
     <% end %>
 

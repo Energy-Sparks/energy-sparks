@@ -45,7 +45,6 @@
 #
 
 class School < ApplicationRecord
-  include AmrUsage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
@@ -149,10 +148,6 @@ class School < ApplicationRecord
     meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
   end
 
-  def both_supplies?
-    meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
-  end
-
   def fuel_types
     if configuration.dual_fuel
       :electric_and_gas
@@ -211,6 +206,14 @@ class School < ApplicationRecord
 
   def authenticate_pupil(pupil_password)
     users.pupil.to_a.find {|user| user.pupil_password == pupil_password}
+  end
+
+  def filterable_meters
+    if has_solar_pv? || has_storage_heaters?
+      Meter.none
+    else
+      active_meters.real
+    end
   end
 
   def latest_management_priorities
