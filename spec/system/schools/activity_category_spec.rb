@@ -31,7 +31,10 @@ RSpec.describe "activity type", type: :system do
       end
 
       it 'completed activities' do
-        create(:activity, activity_type: activity_type, activity_category: activity_type.activity_category)
+        create(:activity, activity_type: activity_type, activity_category: activity_type.activity_category, school: school)
+
+        expect(school.activities.includes(:activity_type).where(activity_type: activity_type).any?).to be true
+
         refresh
 
 
