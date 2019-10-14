@@ -22,18 +22,11 @@ class Ability
     can :read, Observation
     can :read, ProgrammeType
 
-    can :manage, Location, school_id: user.school_id
-
-    if user.guest?
-      cannot :manage, Location
-      can :read, Location
-    end
-
     if user.admin?
       can :manage, :all
       can :analyse, :test
       can :analyse, :heating_model_fitting
-      cannot :read, :school_menu
+      cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
         school_scope = { school_group_id: user.school_group_id }
@@ -53,7 +46,7 @@ class Ability
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user == user
         end
-        can :read, :school_menu
+        can :read, :my_school_menu
         can :read, :dashboard_menu
       end
       can [
@@ -85,7 +78,7 @@ class Ability
         can :crud, Programme, school: { id: user.school_id, active: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
-        can :read, :school_menu
+        can :read, :my_school_menu
         can :read, :dashboard_menu
       end
     elsif user.guest?
