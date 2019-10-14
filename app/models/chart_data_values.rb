@@ -71,7 +71,7 @@ class ChartDataValues
     @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
-      if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
+      if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type) || @chart_type.match?(/^calendar_picker/)
         teachers_column
       else
         column_or_bar
@@ -125,9 +125,9 @@ private
   end
 
   def teachers_chart_colour(index)
-    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
+    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_gas_/)
       index.zero? ? DARK_GAS : LIGHT_GAS
-    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type)
+    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_storage_/)
       index.zero? ? DARK_STORAGE : LIGHT_STORAGE
     else
       index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
