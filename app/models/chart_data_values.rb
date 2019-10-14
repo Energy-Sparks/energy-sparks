@@ -26,8 +26,12 @@ class ChartDataValues
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   LIGHT_ELECTRICITY = '#59D0FF'.freeze
+  DARK_ELECTRICITY_LINE = '#232B49'.freeze
+  LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
   DARK_GAS = '#FF8438'.freeze
   LIGHT_GAS = '#FFC73E'.freeze
+  DARK_GAS_LINE = '#FF8438'.freeze
+  LIGHT_GAS_LINE = '#FCB43A'.freeze
   DARK_STORAGE = '#7C3AFF'.freeze
   LIGHT_STORAGE = '#E097FC'.freeze
 
@@ -173,9 +177,9 @@ private
 
   def usage_line
     colour_options = case @chart_type
-                     when /_gas_/ then [DARK_GAS, LIGHT_GAS]
+                     when /_gas_/ then [DARK_GAS_LINE, LIGHT_GAS_LINE]
                      when /_storage_/ then [DARK_STORAGE, LIGHT_STORAGE]
-                     else [DARK_ELECTRICITY, LIGHT_ELECTRICITY]
+                     else [DARK_ELECTRICITY_LINE, LIGHT_ELECTRICITY_LINE]
                      end
     line(colour_options: colour_options)
   end
