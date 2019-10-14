@@ -73,7 +73,7 @@ class ChartDataValues
     if @chart1_type == :column || @chart1_type == :bar
       if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
         teachers_column
-      elsif @chart_type.match?(/^calendar_picker/) && @chart[:series_breakdown] != :meter
+      elsif @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_column
       else
         column_or_bar
@@ -81,7 +81,7 @@ class ChartDataValues
     elsif @chart1_type == :scatter
       scatter
     elsif @chart1_type == :line
-      if @chart_type.match?(/^calendar_picker/) && @chart[:series_breakdown] != :meter
+      if @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_line
       else
         line
