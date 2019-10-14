@@ -13,8 +13,7 @@ $(document).ready(function() {
     var chartType = config[period]
     var chartContainer = $('.usage-chart').first();
 
-    var measurementField = $('input[name=measurement]:checked');
-    var measurement = measurementField.val();
+    var measurement = $('#measurement').val();
 
     chartContainer.data('chart-type', chartType);
 
@@ -48,11 +47,12 @@ $(document).ready(function() {
       var rangeExtension = 0;
     }
 
-    addRange($('input#first-date-picker').val(), dateRanges, rangeExtension);
-
+    // maintain this order of range addition to match input order to chart order
     if($('input#second-date-picker').val()){
       addRange($('input#second-date-picker').val(), dateRanges, rangeExtension);
     }
+    addRange($('input#first-date-picker').val(), dateRanges, rangeExtension);
+
     return dateRanges;
   }
 
@@ -125,7 +125,7 @@ $(document).ready(function() {
     updateChart($('.charts').first());
   }
 
-  $(document).on('change', 'input[type=radio][name=measurement]', function() {
+  $(document).on('change', '#measurement', function() {
     updateChart(this);
   });
 

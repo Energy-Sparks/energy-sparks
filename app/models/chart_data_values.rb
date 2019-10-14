@@ -73,6 +73,8 @@ class ChartDataValues
     if @chart1_type == :column || @chart1_type == :bar
       if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
         teachers_column
+      elsif @chart_type.match?(/^calendar_picker/) && @chart[:series_breakdown] != :meter
+        usage_column
       else
         column_or_bar
       end
@@ -113,6 +115,13 @@ private
     "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
   end
 
+  def usage_column
+    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
+      colour = teachers_chart_colour(index)
+      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+    end
+  end
+
   def teachers_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       colour = teachers_chart_colour(index)
@@ -125,9 +134,9 @@ private
   end
 
   def teachers_chart_colour(index)
-    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type)
+    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_gas_/)
       index.zero? ? DARK_GAS : LIGHT_GAS
-    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type)
+    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_storage_/)
       index.zero? ? DARK_STORAGE : LIGHT_STORAGE
     else
       index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
