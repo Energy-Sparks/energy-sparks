@@ -178,9 +178,9 @@ private
 
   def usage_line
     colour_options = case @chart_type
-                     when /_gas_/ then [DARK_GAS_LINE, LIGHT_GAS_LINE]
+                     when /_gas_/ then [DARK_GAS, LIGHT_GAS]
                      when /_storage_/ then [DARK_STORAGE, LIGHT_STORAGE]
-                     else [DARK_ELECTRICITY_LINE, LIGHT_ELECTRICITY_LINE]
+                     else [DARK_ELECTRICITY, LIGHT_ELECTRICITY]
                      end
     line(colour_options: colour_options)
   end
