@@ -1,7 +1,0 @@
-<h1>Observations for <%= nice_date_times @observation.at %></h1>
-
-<% @observation.temperature_recordings.each do |temperature_recording| %>
-  <%= temperature_recording.centigrade %> <%= temperature_recording.location.name %>
-<% end %>
-
-<p><%= link_to 'Observations', school_temperature_observations_path(@school), class: 'btn btn-success' %></p>

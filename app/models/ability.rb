@@ -54,6 +54,7 @@ class Ability
           onboarding.created_user == user
         end
         can :read, :school_menu
+        can :read, :dashboard_menu
       end
       can [
         :update, :manage_school_times, :suggest_activity, :manage_users,
@@ -85,6 +86,7 @@ class Ability
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :read, :school_menu
+        can :read, :dashboard_menu
       end
     elsif user.guest?
       cannot :analyse, :cost

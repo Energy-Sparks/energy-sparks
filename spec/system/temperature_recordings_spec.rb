@@ -95,8 +95,8 @@ describe 'temperature recordings as school admin' do
     context 'manage locations' do
       it "allows a user to create a location on it's own" do
         location_name = 'ABCDEF'
-        click_on 'Manage locations and rooms'
-        click_on 'Add new location'
+        click_on 'Change room names'
+        click_on 'Add new room or location'
         fill_in :location_name, with: location_name
         expect { click_on 'Create' }.to change { Location.count }.by(1)
       end
@@ -104,7 +104,7 @@ describe 'temperature recordings as school admin' do
       it "allows a user to delete a location on it's own" do
         location_name = 'ABCDEF'
         Location.create(school: school, name: location_name)
-        click_on 'Manage locations and rooms'
+        click_on 'Change room names'
         expect(page).to have_content(location_name)
         expect { click_on 'Delete' }.to change { Location.count }.by(-1)
       end
@@ -113,7 +113,7 @@ describe 'temperature recordings as school admin' do
         location_name = 'ABCDEF'
         new_location_name = 'GAGA'
         Location.create(school: school, name: location_name)
-        click_on 'Manage locations and rooms'
+        click_on 'Change room names'
         expect(page).to have_content(location_name)
         expect(page).to_not have_content(new_location_name)
         click_on 'Edit'
@@ -127,7 +127,7 @@ describe 'temperature recordings as school admin' do
 
       it 'deletes an assocated temperature recording if location is nobbled' do
         observation = create(:observation_with_temperature_recording_and_location, school: school)
-        click_on 'Manage locations and rooms'
+        click_on 'Change room names'
         expect(page).to have_content(observation.locations.first.name)
         expect { click_on 'Delete' }.to change { Location.count }.by(-1).and change { TemperatureRecording.count }.by(-1)
       end

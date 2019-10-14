@@ -6,9 +6,6 @@ module Schools
     def index
     end
 
-    def show
-    end
-
     def new
     end
 
@@ -27,7 +24,7 @@ module Schools
       if @location.update(location_params)
         redirect_to school_locations_path(@school), notice: 'Location updated'
       else
-        render :new
+        render :edit
       end
     end
 
