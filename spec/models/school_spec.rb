@@ -123,6 +123,24 @@ describe School do
         expect(school.latest_dashboard_alerts).to be_empty
       end
     end
+  end
+
+  describe 'authenticate_pupil' do
+
+    let(:school){ create :school }
+    let!(:pupil){ create :pupil, pupil_password: 'testTest', school: school }
+
+    it 'selects pupils with the correct password' do
+      expect(school.authenticate_pupil('testTest')).to eq(pupil)
+    end
+
+    it 'returns nothing if the password does not match' do
+      expect(school.authenticate_pupil('barp')).to eq(nil)
+    end
+
+    it 'is not case sensitive' do
+      expect(school.authenticate_pupil('testtest')).to eq(pupil)
+    end
 
   end
 end
