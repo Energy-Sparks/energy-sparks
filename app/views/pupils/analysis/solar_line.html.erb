@@ -23,4 +23,8 @@
     find out how much electricity was used by lights and appliances running all the time
   <% end %>
 
+  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: {period: :daily} do %>
+    compare the electricity used on two different days
+  <% end %>
+
 </div>
