@@ -38,7 +38,6 @@ class Ability
         can :manage, CalendarEvent do |calendar_event|
           user.school_group.calendars.include?(calendar_event.calendar)
         end
-        can :read, :my_school_menu, School, active: true
       else
         school_scope = { id: user.school_id }
         related_school_scope = { school_id: user.school_id }
@@ -47,7 +46,7 @@ class Ability
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user == user
         end
-        can :read, :my_school_menu, School, active: true
+        can :read, :my_school_menu
         can :read, :dashboard_menu
       end
       can [
@@ -79,7 +78,7 @@ class Ability
         can :crud, Programme, school: { id: user.school_id, active: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
-        can :read, :my_school_menu, School, active: true
+        can :read, :my_school_menu
         can :read, :dashboard_menu
       end
     elsif user.guest?
