@@ -22,8 +22,8 @@
 
 <p>You will earn 5 points for each day you measure and record your classroom temperatures.</p>
 
-<h4>Locations</h4>
-<p><%= link_to 'Manage locations and rooms', school_locations_path(@school) %></p>
+<h4>Locations or rooms</h4>
+<p><%= link_to 'Change room names', school_locations_path(@school) %></p>
 
 <h3>Enter temperatures</h3>
 <%= simple_form_for([@school, @observation], url: school_temperature_observations_path(@school)) do |f| %>

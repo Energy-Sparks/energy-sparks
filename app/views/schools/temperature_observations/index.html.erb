@@ -1,6 +1,11 @@
 <h1>Temperature recordings</h1>
 <h2><%= @school.name %></h2>
 
+<p>
+  <%= link_to 'Add new temperature recordings', new_school_temperature_observation_path(@school), class: 'btn' %>
+  <%= link_to 'Change room names', school_locations_path(@school), class: 'btn' %>
+</p>
+
 <% if @observations.any? %>
   <table class="table table-bordered">
     <thead>
@@ -27,7 +32,7 @@
 
           <% end %>
           <% if can? :delete, observation %>
-            <td><%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+            <td><%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm' %></td>
           <% end %>
         </tr>
       <% end %>
@@ -58,9 +63,3 @@
 <% else %>
   <p>There are no observations recorded at the moment</p>
 <% end %>
-
-<p>
-  <%= link_to 'Add new temperature recordings', new_school_temperature_observation_path(@school), class: 'btn btn-success' %>
-  <%= link_to 'Manage locations and rooms', school_locations_path(@school), class: 'btn btn-success' %>
-</p>
-
