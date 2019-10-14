@@ -1,4 +1,4 @@
-<%= render 'shared/my_school_menu' if can?(:read, :school_menu) %>
+<%= render 'shared/my_school_menu' if can?(:read, :school_menu) && current_user.school.active? %>
 
 <% if current_user && current_user.default_scoreboard %>
   <li class="nav-item"><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
