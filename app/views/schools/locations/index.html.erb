@@ -3,9 +3,9 @@
 
 <p><%= link_to 'Temperature recordings', school_temperature_observations_path(@school) %></p>
 
-<p>These are locations where previously you have entered temperatures. You can delete or edit any of these locations if you have made a mistake.</p>
+<p>These are locations or rooms where previously you have entered temperatures. You can delete or edit any of these locations or rooms if you have made a mistake.</p>
 <div class="alert alert-danger" role="alert">
-  <strong>Note:</strong> if you delete a location, you will also delete any temperatures you have recorded for that location
+  <strong>Note:</strong> if you delete a location or room, you will also delete any temperatures you have recorded for that location
 </div>
 
 <% if @locations.any? %>
@@ -38,4 +38,4 @@
   <p>There are no Locations</p>
 <% end %>
 
-<p><%= link_to 'Add new location', new_school_location_path(@school), class: 'btn btn-success' %></p>
+<p><%= link_to 'Add new room or location', new_school_location_path(@school), class: 'btn btn-success' %></p>
