@@ -40,11 +40,5 @@
   <% end %>
 
   <%= render 'category_link', school: @school, energy: :gas, category: :gas_bar, category_name: 'Bar charts', icon: 'chart-bar' %>
-
-  <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Line'}, centre: true do %>
-    <div class="p-4">
-      <%= fa_icon "chart-line fa-3x" %>
-    </div>
-    Line graphs
-  <% end %>
+  <%= render 'category_link', school: @school, energy: :gas, category: :gas_line, category_name: 'Line graphs', icon: 'chart-line' %>
 </div>

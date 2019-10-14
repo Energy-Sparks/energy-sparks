@@ -23,4 +23,14 @@
     find out how much electricity was used by lights and appliances running all the time
   <% end %>
 
+  <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :daily} do %>
+    compare the electricity used on two different days
+  <% end %>
+
+  <% if @school.filterable_meters.electricity.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :daily, split_meters: true} do %>
+      compare the electricity use by different meters
+    <% end %>
+  <% end %>
+
 </div>
