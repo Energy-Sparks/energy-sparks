@@ -13,10 +13,16 @@ module Schools
       set_measurement_options
       @measurement = measurement_unit(params[:measurement])
 
-      @supply = get_supply
-      if @supply
-        @chart_config = setup_chart_config(@school)
-        render period
+      @supply = params.require(:supply).to_sym
+      @period = params.require(:period).to_sym
+      @split_meters = params[:split_meters].present?
+      @show_measurements = @period == :weekly
+
+      if @school.send("has_#{@supply}?")
+        @meters = setup_meters(@school, @supply)
+        @chart_config = setup_chart_config(@supply)
+        @title_key = title_key(@supply, @period, @split_meters)
+        render :show
       else
         redirect_to school_path(@school), notice: 'No suitable supply could be found'
       end
@@ -24,40 +30,34 @@ module Schools
 
     private
 
-    def setup_chart_config(school)
-      config = {}
-      if school.has_electricity?
-        config[:electricity] = {
+    def setup_chart_config(supply)
+      if supply == :electricity
+        {
           weekly: :calendar_picker_electricity_week_example_comparison_chart,
           daily: :calendar_picker_electricity_day_example_comparison_chart,
           earliest_reading:  aggregate_school.aggregate_meter(:electricity).amr_data.start_date,
           last_reading:  aggregate_school.aggregate_meter(:electricity).amr_data.end_date,
         }
-      end
-      if school.has_gas?
-        config[:gas] = {
+      elsif supply == :gas
+        {
           weekly: :calendar_picker_gas_week_example_comparison_chart,
           daily: :calendar_picker_gas_day_example_comparison_chart,
           earliest_reading:  aggregate_school.aggregate_meter(:gas).amr_data.start_date,
           last_reading:  aggregate_school.aggregate_meter(:gas).amr_data.end_date,
         }
       end
-      config
     end
 
-    def get_supply
-      params[:supply].present? ? params[:supply].to_sym : supply_from_school
-    end
-
-    def supply_from_school
-      case @school.fuel_types
-      when :electric_and_gas, :electric_only then 'electricity'
-      when :gas_only then 'gas'
+    def setup_meters(school, supply)
+      case supply
+      when :electricity then school.filterable_meters.electricity
+      when :gas then school.filterable_meters.gas
+      else Meter.none
       end
     end
 
-    def period
-      params[:period].present? ? params[:period].to_sym : :daily
+    def title_key(supply, period, split_meters)
+      "charts.usage.titles.#{supply}.#{period}.#{split_meters ? 'split' : 'not_split'}"
     end
   end
 end

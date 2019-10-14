@@ -56,5 +56,25 @@ describe ChartDataValues do
     expect(chart_data_values.series_data.second[:name]).to eq "Sun 28/04/2019 - Sat 04/05/2019"
     expect(chart_data_values.x_axis_categories).to eq ["S", "M", "T", "W", "T", "F", "S"]
   end
+
+  it 'sets the teacher-style colours for gas dashboard and pupil analysis charts' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :calendar_picker_gas_day_example_comparison_chart).process
+    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
+  end
+
+  it 'sets the teacher-style colours for electricity dashboard and pupil analysis charts' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :calendar_picker_electricity_day_example_comparison_chart).process
+    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
+  end
+
+  it 'sets the teacher-style colours for electricity line charts' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_electricity_day_example_comparison_chart).process
+    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
+  end
+
+  it 'sets the teacher-style colours for gas line charts' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_gas_day_example_comparison_chart).process
+    expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
+  end
 end
 

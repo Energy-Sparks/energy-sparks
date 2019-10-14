@@ -24,6 +24,42 @@ en:
   charts:
     hourly-usage-link: "View usage by day"
     weekly-usage-link: "View usage by week"
+    dashboard:
+      solar:
+        usage: 'electricity and solar usage'
+        title: 'Electricity'
+      electricity:
+        usage: 'electricity usage'
+        title: 'Electricity'
+      gas:
+        usage: 'gas usage'
+        title: 'Gas'
+      storage_heaters:
+        usage: 'storage heater usage'
+        title: 'Storage heaters'
+    usage:
+      titles:
+        gas:
+          weekly:
+            split: "Your school's daily gas use in your chosen week recorded by meter"
+            not_split: "Your school's daily gas use in your chosen weeks"
+          daily:
+            split: "Your school's half hourly gas use on your chosen day recorded by meter"
+            not_split: "Your school's half hourly gas use on your chosen day"
+        electricity:
+          weekly:
+            split: "Your school's daily electricity use in your chosen week recorded by meter"
+            not_split: "Your school's daily electricity use in your chosen weeks"
+          daily:
+            split: "Your school's half hourly electricity use on your chosen day recorded by meter"
+            not_split: "Your school's half hourly electricity use on your chosen day"
+      date_picker:
+        weekly:
+          first: 'Select week (beginning)'
+          second: 'Compare to'
+        daily:
+          first: 'Select day'
+          second: 'Compare to'
   date:
     formats:
       default: "%d/%m/%Y"
