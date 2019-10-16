@@ -1,0 +1,9 @@
+<h1>Activity Category</h1>
+<p><strong>Name:</strong> <%= @activity_category.name %></p>
+
+<p><strong>Description:</strong><%= @activity_category.description %></p>
+
+<div class="other-actions">
+  <%= link_to 'Edit', edit_admin_activity_category_path(@activity_category), class: 'btn btn-primary' %>
+  <%= link_to 'Back', activity_categories_path, class: 'btn btn-secondary'  %>
+</div>

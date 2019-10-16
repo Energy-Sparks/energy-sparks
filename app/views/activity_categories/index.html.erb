@@ -16,11 +16,10 @@
       <% else %>
         <p>There are no activities for this category, using the filters you have set.</p>
       <% end %>
-      <p>
-        <% if can? :manage, ActivityCategory %>
-          <%= link_to 'Edit', edit_activity_category_path(activity_category), class: 'btn btn-primary' %>
-        <% end %>
-      </p>
     </div>
   <% end %>
+<% end %>
+
+<% if can? :manage, ActivityCategory %>
+  <%= link_to 'Manage activity categories', admin_activity_categories_path, class: 'btn' %>
 <% end %>

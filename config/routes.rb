@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   resources :activity_types
-  resources :activity_categories
+  resources :activity_categories, only: [:index]
 
   resources :calendars, only: [:show] do
     scope module: :calendars do
@@ -145,7 +145,7 @@ Rails.application.routes.draw do
   namespace :admin do
 
     resources :school_groups
-
+    resources :activity_categories
 
     namespace :emails do
       resources :alert_mailers, only: :show
