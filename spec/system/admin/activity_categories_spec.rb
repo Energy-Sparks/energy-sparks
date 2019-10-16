@@ -45,17 +45,6 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       expect(page).to have_content(activity_category.name)
       expect(page).to have_content(new_description)
     end
-
-    it 'can delete a scoreboard' do
-      scoreboard = create(:scoreboard, name: 'BANES and Frome')
-      visit scoreboards_path
-
-      expect {
-        click_on 'Delete'
-      }.to change{Scoreboard.count}.from(1).to(0)
-
-      expect(page).to have_content('There are no Scoreboards')
-    end
   end
 
   describe 'when not logged in' do
