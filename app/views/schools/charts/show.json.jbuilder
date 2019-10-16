@@ -1,5 +1,4 @@
 json.charts @output.each do |chart_data_values|
-  json.chart_index         1
   json.title               chart_data_values.title
   json.subtitle            chart_data_values.subtitle
   json.chart1_type         chart_data_values.chart1_type
