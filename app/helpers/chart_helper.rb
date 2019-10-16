@@ -1,22 +1,20 @@
 module ChartHelper
   def chart_tag(school, chart_type, show_advice: true, no_zoom: false, chart_config: {}, html_class: 'analysis-chart')
-    html_chart_data = chart_config.inject({}) do |collection, (data_item_key, data_item_value)|
-      collection["chart-#{data_item_key.to_s.parameterize}"] = data_item_value
-      collection
-    end
-    html_chart_data[:no_advice] = true unless show_advice
-    html_chart_data[:no_zoom] = true if no_zoom
+    chart_config[:no_advice] = !show_advice
+    chart_config[:no_zoom] = no_zoom
     content_tag(
       :div,
       '',
       id: "chart_#{chart_type}",
       class: html_class,
       data: {
-        "chart-type" => chart_type,
-        "chart-annotations" => school_annotations_path(school),
-        "chart-json" => school_chart_path(school, format: :json),
-        "chart-transformations" => []
-      }.merge(html_chart_data)
+        chart_config: chart_config.merge(
+          type: chart_type,
+          annotations: school_annotations_path(school),
+          json: school_chart_path(school, format: :json),
+          transformations: []
+        )
+      }
     )
   end
 end
