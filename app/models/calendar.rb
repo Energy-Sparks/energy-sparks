@@ -29,7 +29,7 @@ class Calendar < ApplicationRecord
 
   validates_presence_of :title
 
-  delegate :terms, :holidays, :bank_holidays, :inset_days, :not_term_time, to: :calendar_events
+  delegate :terms, :holidays, :bank_holidays, :inset_days, :outside_term_time, to: :calendar_events
 
   enum calendar_type: [:national, :regional, :school]
 
