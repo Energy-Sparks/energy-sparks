@@ -22,6 +22,13 @@ class Ability
     can :read, Observation
     can :read, ProgrammeType
 
+    can :manage, Location, school_id: user.school_id
+
+    if user.guest?
+      cannot :manage, Location
+      can :read, Location
+    end
+
     if user.admin?
       can :manage, :all
       can :analyse, :test
