@@ -12,7 +12,7 @@
             <% if @school.activities.includes(:activity_type).where(activity_type: activity_type).any? %>
               <div class="col-8">
                 <%= fa_icon("check-circle") %>
-                <%= link_to "#{activity_type.name}", school_activity_path(@school, @school.activities.includes(:activity_type).where(activity_type: activity_type).last) %>
+                <%= link_to "#{activity_type.name}", school_activity_type_path(@school, activity_type) %>
               </div>
             <% else %>
               <div class="col-8">

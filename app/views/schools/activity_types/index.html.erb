@@ -1,0 +1,32 @@
+<h1>Activity Types</h1>
+<h2>For <%= @school.name %></h2>
+
+<% ActivityCategory.all.each do |activity_category| %>
+  <div class="container">
+    <h2><%= activity_category.name %></h2>
+    <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Score</th>
+          <th scope="col">Key Stages</th>
+          <th scope="col">Completed</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @activity_types.where(activity_category: activity_category).each do |activity_type| %>
+          <tr class="<%= active(activity_type.active) %>" scope="row" >
+            <td><%= link_to activity_type.name, school_activity_type_path(@school, activity_type) %></td>
+            <td><%= activity_type.score %></td>
+            <td><%= activity_type.key_stage_list %></td>
+            <td><%= @school.activities.includes(:activity_type).where(activity_type: activity_type).any? ? 'Yes' : '' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+<% end %>
