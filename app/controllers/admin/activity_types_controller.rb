@@ -4,23 +4,19 @@ module Admin
 
     before_action :load_filters, only: [:new, :edit, :create, :update]
 
-    # GET /activity_types
     def index
       @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
     end
 
-    # GET /activity_types/1
     def show
       @recorded = Activity.where(activity_type: @activity_type).count
       @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
     end
 
-    # GET /activity_types/new
     def new
       add_activity_type_suggestions
     end
 
-    # GET /activity_types/1/edit
     def edit
       number_of_suggestions_so_far = @activity_type.activity_type_suggestions.count
       if number_of_suggestions_so_far > 8
@@ -31,7 +27,6 @@ module Admin
       end
     end
 
-    # POST /activity_types
     def create
       if @activity_type.save
         redirect_to @activity_type, notice: 'Activity type was successfully created.'
@@ -41,7 +36,6 @@ module Admin
       end
     end
 
-    # PATCH/PUT /activity_types/1
     def update
       if @activity_type.update(activity_type_params)
         redirect_to @activity_type, notice: 'Activity type was successfully updated.'
@@ -50,7 +44,6 @@ module Admin
       end
     end
 
-    # DELETE /activity_types/1
     def destroy
       # activity types should be marked inactive rather than deleted
       # this method does NOT delete the activity type
