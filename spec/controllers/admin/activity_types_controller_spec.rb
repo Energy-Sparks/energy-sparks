@@ -18,7 +18,7 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe ActivityTypesController, type: :controller do
+RSpec.describe Admin::ActivityTypesController, type: :controller do
   let(:activity_category) { FactoryBot.create :activity_category }
   # This should return the minimal set of attributes required to create a valid
   # ActivityType. As you add validations to ActivityType, be sure to
