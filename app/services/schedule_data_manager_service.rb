@@ -12,7 +12,7 @@ class ScheduleDataManagerService
     @holidays ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       hol_data = HolidayData.new
 
-      Calendar.find(@calendar_id).not_term_time.order(:start_date).includes(:academic_year).map do |holiday|
+      Calendar.find(@calendar_id).outside_term_time.order(:start_date).includes(:academic_year).map do |holiday|
         # Not really being used at the moment by the analytics code
         academic_year = nil
         analytics_holiday = Holiday.new(holiday.calendar_event_type.analytics_event_type.to_sym, holiday.title || 'No title', holiday.start_date, holiday.end_date, academic_year)
