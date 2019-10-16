@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  resources :activity_types
+  resources :activity_types, only: [:index, :show]
   resources :activity_categories, only: [:index]
 
   resources :calendars, only: [:show] do
@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     scope module: :schools do
 
       resources :activity_categories, only: [:index]
+      resources :activity_types, only: [:index, :show]
 
       resources :programme_types, only: [:index, :show]
       resources :programmes, only: [:show, :index, :create]
@@ -146,6 +147,7 @@ Rails.application.routes.draw do
 
     resources :school_groups
     resources :activity_categories
+    resources :activity_types
 
     namespace :emails do
       resources :alert_mailers, only: :show

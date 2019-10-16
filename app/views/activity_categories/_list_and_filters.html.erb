@@ -17,7 +17,7 @@
     <%= form_tag activity_categories_path, method: :get do %>
       <h3>Filters</h3>
       <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
-      <%= render 'activity_types/filters', filter: filter %>
+      <%= render 'filters', filter: filter %>
       <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
     <% end %>
   </div>

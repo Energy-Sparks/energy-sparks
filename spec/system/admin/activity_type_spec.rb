@@ -19,19 +19,23 @@ RSpec.describe "activity type", type: :system do
   let!(:pie_charts){ Topic.create(name: 'Pie charts') }
   let!(:energy){ Topic.create(name: 'Energy') }
 
-  it 'can not access it unless logged in' do
-    visit new_activity_type_path
-    expect(page.has_content?("Sign in")).to be true
+  describe 'when not logged in' do
+    it 'does not authorise viewing' do
+      visit admin_activity_types_path
+      expect(page).to have_content('You need to sign in or sign up before continuing.')
+    end
   end
 
   describe 'when logged in' do
     before(:each) do
       sign_in(admin)
-      visit new_activity_type_path
+      visit root_path
+      click_on 'Activity Types'
       expect(ActivityType.count).to be 0
     end
 
     it 'can add a new activity for KS1 with filters' do
+      click_on 'New Activity Type'
       fill_in('Name', with: 'New activity')
       fill_in_trix with: "the description"
       fill_in('Score', with: 20)
@@ -57,6 +61,7 @@ RSpec.describe "activity type", type: :system do
     end
 
     it 'can does not crash if you forget the score' do
+      click_on 'New Activity Type'
       fill_in('Name', with: 'New activity')
       fill_in_trix with: "the description"
 
@@ -72,7 +77,9 @@ RSpec.describe "activity type", type: :system do
 
     it 'can edit a new activity and add KS2 and KS3' do
       activity_type = create(:activity_type, activity_category: activity_category)
-      visit edit_activity_type_path(activity_type)
+      refresh
+
+      click_on 'Edit'
       expect(page.has_content?(activity_type.name)).to be true
 
       check('KS2')
