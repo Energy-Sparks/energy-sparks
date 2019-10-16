@@ -61,11 +61,10 @@
         <% end %>
       </div>
       <div class="card-footer text-center">
-        <%= link_to 'All activities', school_activity_categories_path(@school), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+        <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-lg btn-light rounded-pill font-weight-bold' %>
       </div>
     </div>
   </div>
-
 
   <div class="col card-deck actions">
     <% if current_school_podium %>
