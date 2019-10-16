@@ -13,7 +13,7 @@
 
 <h2>I want to&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
     find out how my school's gas use compares with other schools
@@ -25,6 +25,16 @@
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Year'} do %>
     find out how gas use has changed long term
+  <% end %>
+
+  <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly} do %>
+    compare the gas used in two different weeks
+  <% end %>
+
+  <% if @school.filterable_meters.gas.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly, split_meters: true} do %>
+      compare the gas use by different meters
+    <% end %>
   <% end %>
 
 </div>

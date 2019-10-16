@@ -8,7 +8,7 @@
       </button>
       <div class="collapse navbar-collapse" id="subnavbarNavDropdown">
         <ul class="navbar-nav">
-          <%= render 'shared/dashboards' if current_user %>
+          <%= render 'shared/dashboards' if can?(:read, :dashboard_menu) && school.active? %>
 
           <%= render 'shared/manage_school', school: @school if can? :update, school %>
 

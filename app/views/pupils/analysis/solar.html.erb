@@ -13,7 +13,7 @@
 
 <h2>I want to&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'kWh'} do %>
     find out <strong>when</strong> the electricity was used
@@ -27,7 +27,7 @@
 
 <h2>I want to look at&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Pie'}, centre: true do %>
     <div class="p-4">

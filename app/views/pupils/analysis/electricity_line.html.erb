@@ -13,7 +13,7 @@
 
 <h2>I want to&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :electricity, chart_config: {energy: 'Electricity', presentation: 'Line', secondary_presentation: '7days'} do %>
     find out how much electricity was used in the last 7 days
@@ -21,6 +21,16 @@
 
   <%= render 'chart_link', school: @school, energy: :electricity, chart_config: {energy: 'Electricity', presentation: 'Line', secondary_presentation: 'Base'} do %>
     find out how much electricity was used by lights and appliances running all the time
+  <% end %>
+
+  <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :daily} do %>
+    compare the electricity used on two different days
+  <% end %>
+
+  <% if @school.filterable_meters.electricity.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :daily, split_meters: true} do %>
+      compare the electricity use by different meters
+    <% end %>
   <% end %>
 
 </div>
