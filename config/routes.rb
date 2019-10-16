@@ -146,7 +146,7 @@ Rails.application.routes.draw do
   namespace :admin do
 
     resources :school_groups
-    resources :activity_categories
+    resources :activity_categories, except: [:destroy]
     resources :activity_types
 
     namespace :emails do

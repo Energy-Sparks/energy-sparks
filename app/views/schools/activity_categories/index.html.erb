@@ -17,7 +17,7 @@
             <% else %>
               <div class="col-8">
                 <%= far_icon("circle") %>
-                 <%= link_to "#{activity_type.name}", activity_type_path(activity_type) %>
+                 <%= link_to "#{activity_type.name}", school_activity_type_path(@school, activity_type) %>
                </div>
             <% end %>
             <div class="col-2">
