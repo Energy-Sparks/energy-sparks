@@ -25,7 +25,7 @@ RSpec.describe "activity type", type: :system do
       it 'activity types' do
         click_on activity_type_name
         expect(page).to have_content(school_name)
-        expect(page).to have_content(activity_type.description.to_plain_text)
+        expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
       end
 
       it 'completed activities' do
@@ -36,7 +36,7 @@ RSpec.describe "activity type", type: :system do
 
         click_on activity_type_name
         expect(page).to have_content(school_name)
-        expect(page).to have_content(activity_type.description.to_plain_text)
+        expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
         expect(page).to have_content('Completed at')
       end
 
