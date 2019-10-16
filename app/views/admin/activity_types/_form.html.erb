@@ -1,38 +1,26 @@
-<%= form_for([:admin, activity_type], html: { id: 'activity_type_form' }) do |f| %>
+<%= simple_form_for([:admin, activity_type], wrapper_mappings: {
+    boolean:       :custom_boolean,
+    check_boxes:   :custom_collection,
+  },
+  html: { id: 'activity_type_form' }) do |f| %>
 
-  <%= render 'shared/errors', subject: activity_type, subject_name: 'activity type' %>
+  <%= f.input :name, as: :string %>
+  <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
-  <div class="form-group">
-    <%= f.label :name %>
-    <%= f.text_field :name, class: 'form-control' %>
+  <div class="description-trix-editor">
+    <%= f.input :description, as: :trix_editor %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :activity_category_id %>
-    <%= f.select(
-            :activity_category_id,
-            options_from_collection_for_select(
-                ActivityCategory.all, 'id', 'name', @activity_type.activity_category_id),
-            {include_blank: false},
-            {class: 'form-control'}
-        )
-    %>
+  <div class="school-specific-description-trix-editor">
+    <%= f.input :school_specific_description, as: :trix_editor %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :description %>
-    <%= f.rich_text_area :description, required: true, autofocus: true %>
-  </div>
+  <%= f.input :score, as: :string %>
 
-  <div class="form-group">
-    <%= f.label :score %>
-    <%= f.text_field :score, class: 'form-control' %>
-  </div>
-
-  <%= render 'shared/custom_checkbox', f: f, field_name: :active %>
-  <%= render 'shared/custom_checkbox', f: f, field_name: :repeatable, label_text: 'Repeatable?' %>
-  <%= render 'shared/custom_checkbox', f: f, field_name: :data_driven, label_text: 'Uses data?' %>
-  <%= render 'shared/custom_checkbox', f: f, field_name: :custom, label_text: "Custom ('Other')" %>
+  <%= f.input :active %>
+  <%= f.input :repeatable, label: 'Repeatable?' %>
+  <%= f.input :data_driven, label: 'Uses data?' %>
+  <%= f.input :custom, label: "Custom ('Other')" %>
 
   <h2>Key Stages</h2>
   <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
