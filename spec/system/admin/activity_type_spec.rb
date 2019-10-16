@@ -1,6 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "activity type", type: :system do
+describe "activity type", type: :system do
+
   let!(:admin)  { create(:admin)}
   let!(:activity_category) { create(:activity_category)}
   let!(:ks1) { KeyStage.create(name: 'KS1') }
@@ -35,9 +36,20 @@ RSpec.describe "activity type", type: :system do
     end
 
     it 'can add a new activity for KS1 with filters' do
+      description = 'The description'
+      school_specific_description = description + ' for SCHOOOOOOLS'
+      activity_name = 'New activity'
+
       click_on 'New Activity Type'
-      fill_in('Name', with: 'New activity')
-      fill_in_trix with: "the description"
+      fill_in('Name', with: activity_name)
+      within('.description-trix-editor') do
+        fill_in_trix with: description
+      end
+
+      within('.school-specific-description-trix-editor') do
+        fill_in_trix with: school_specific_description
+      end
+
       fill_in('Score', with: 20)
 
       check('KS1')
@@ -58,6 +70,10 @@ RSpec.describe "activity type", type: :system do
 
       expect(page.has_content?("Activity type was successfully created.")).to be true
       expect(ActivityType.count).to be 1
+
+      click_on activity_name
+      expect(page).to have_content(description)
+      expect(page).to have_content(school_specific_description)
     end
 
     it 'can does not crash if you forget the score' do
