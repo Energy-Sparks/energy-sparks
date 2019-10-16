@@ -14,13 +14,20 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
     it 'I can view and edit the activity categories' do
       click_on 'Activity Categories'
       new_description = 'Now then'
+      new_name = "Alias the jester"
       expect(page).to have_content(activity_category.name)
       expect(page).to have_content(activity_category.description)
       click_on 'Edit'
       fill_in 'Description', with: new_description
+      fill_in 'Name', with: ''
       click_on 'Update Activity category'
+      expect(page).to have_content("can't be blank")
+      fill_in 'Name', with: new_name
+
+      click_on 'Update Activity category'
+
       expect(page).to have_content('Activity Categories')
-      expect(page).to have_content(activity_category.name)
+      expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
     end
 
