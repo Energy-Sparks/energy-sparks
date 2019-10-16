@@ -1,0 +1,39 @@
+<% content_for :page_title, "Activities for #{@school.name}" %>
+
+<%= render 'activity_categories/list_and_filters', filter: @filter, activity_categories: @activity_categories, title: "Energy Sparks Activities for #{@school.name}" do %>
+  <% @activity_categories.each_with_index do |activity_category, idx| %>
+    <div class="tab-pane fade show <%= idx == 0 ? 'active' : '' %>" id="v-pills-cat<%= activity_category.id %>" role="tabpanel" aria-labelledby="v-pills-cat<%= activity_category.id %>-tab">
+      <% if activity_category.description.present? %>
+        <h2><%= activity_category.description %></h2>
+      <% end %>
+      <% if @filter.for_category(activity_category).any? %>
+        <% @filter.for_category(activity_category).order(:score).each do |activity_type| %>
+          <div class="row">
+            <% if @school.activities.includes(:activity_type).where(activity_type: activity_type).any? %>
+              <div class="col-8">
+                <%= fa_icon("check-circle") %>
+                <%= link_to "#{activity_type.name}", school_activity_type_path(@school, activity_type) %>
+              </div>
+            <% else %>
+              <div class="col-8">
+                <%= far_icon("circle") %>
+                 <%= link_to "#{activity_type.name}", activity_type_path(activity_type) %>
+               </div>
+            <% end %>
+            <div class="col-2">
+              <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %> points</span>
+                 <% if @school.activities.includes(:activity_type).where(activity_type: activity_type).any? %>
+                <span class="badge badge-warning" data-toggle="tooltip" data-placement="bottom" title="Completed">Completed</span>
+              <% end %>
+            </div>
+              <div class="col-2">
+              <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= activity_type.key_stage_list %></span>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p>There are no activities for this category, using the filters you have set.</p>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,10 +1,9 @@
-<% content_for :page_title do %>
-    Activity Type: <%= @activity_type.name %>
-<% end %>
+<% content_for :page_title, "Activity Type: #{@activity_type.name}" %>
 
 <div class="row padded-row">
   <div class="col-md-12">
     <h1><%= @activity_type.name %></h1>
+    <h2><%= @school.name %></h2>
     <h3>
       <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score for this activity"><%= @activity_type.score %></span>
       <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Category of activity"><%= @activity_type.activity_category.name %></span>
@@ -12,6 +11,14 @@
     </h3>
   </div>
 </div>
+
+<% if @school.activities.includes(:activity_type).where(activity_type: @activity_type).any? %>
+  <h5>Previous times this school has completed this activity</h5>
+  <% @school.activities.includes(:activity_type).where(activity_type: @activity_type).order(:happened_on).each do |activity| %>
+    <p>Completed at: <%= nice_dates activity.happened_on %> <%= link_to "View completed activity", school_activity_path(@school, activity), class: 'btn btn-sm' %> </p>
+  <% end %>
+  <hr/>
+<% end %>
 
 <div class="row">
   <div class="col-md-12 activity_type">
@@ -45,3 +52,4 @@
 <% end %>
 
 <p><%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary' %></p>
+
