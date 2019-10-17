@@ -148,6 +148,7 @@ Rails.application.routes.draw do
     resources :school_groups
     resources :activity_categories, except: [:destroy]
     resources :activity_types
+    resource :activity_type_preview, only: :show
 
     namespace :emails do
       resources :alert_mailers, only: :show
