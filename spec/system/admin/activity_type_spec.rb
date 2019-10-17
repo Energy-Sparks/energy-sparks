@@ -90,7 +90,7 @@ describe "activity type", type: :system do
         expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
         click_on 'Preview'
         preview = page.find('#school-specific-description-preview')
-        expect(preview).to have_css('#chart_last_7_days_intraday_gas')
+        expect(preview).to have_selector('#chart_last_7_days_intraday_gas')
       end
     end
 
