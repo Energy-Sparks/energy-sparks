@@ -8,7 +8,9 @@
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
   <div class="description-trix-editor">
-    <%= f.input :description, as: :trix_editor %>
+    <%= f.label 'Description', for: :description %>
+    <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
+    <%= f.input :description, as: :trix_editor, label: false %>
   </div>
 
   <div class="school-specific-description-trix-editor">

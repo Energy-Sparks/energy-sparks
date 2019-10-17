@@ -37,10 +37,8 @@ RSpec.describe "activity type", type: :system do
 
         refresh
 
-
-        expect(page).to have_content('Completed')
+        expect(page).to have_css('i.fa-check-circle')
       end
-
     end
   end
 end
