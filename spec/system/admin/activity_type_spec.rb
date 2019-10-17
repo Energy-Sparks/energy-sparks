@@ -78,12 +78,19 @@ describe "activity type", type: :system do
     end
 
     it 'can embed a chart from the analytics', js: true do
+      school = create :school # for preview
+      allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
+      allow_any_instance_of(ChartData).to receive(:data).and_return([])
+
       click_on 'New Activity Type'
       within('.school-specific-description-trix-editor') do
         find('button[data-trix-action="chart"]').click
         select 'last_7_days_intraday_gas', from: 'chart-list-chart'
         click_on 'Insert'
         expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
+        click_on 'Preview'
+        preview = page.find('#school-specific-description-preview')
+        expect(preview).to have_css('#chart_last_7_days_intraday_gas')
       end
     end
 
