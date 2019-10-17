@@ -17,7 +17,7 @@
         If you've completed an activity then you can go ahead and record it now
       </p>
       <div class="card-footer text-right">
-        <%= link_to 'Record your activity', new_school_activity_path(@school), class: 'btn btn-success' %>
+        <%= link_to 'Record your activity', new_school_activity_path(@school), class: 'btn' %>
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@
       </p>
 
       <div class="card-footer text-right">
-        <%= link_to "View the full list of activities", activity_categories_path, class: 'btn btn-secondary' %>
+        <%= link_to "View the full list of activities", school_activity_categories_path(@school), class: 'btn' %>
       </div>
 
     </div>

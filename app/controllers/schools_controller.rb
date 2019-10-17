@@ -114,6 +114,14 @@ private
   end
 
   def redirect_to_dashboard
+    if @school.active? || current_user.admin?
+      redirect_for_active_school_or_admin
+    else
+      redirect_to school_inactive_path(@school)
+    end
+  end
+
+  def redirect_for_active_school_or_admin
     if current_user.pupil?
       redirect_to pupils_school_path(@school), status: :found
     elsif current_user.staff_role

@@ -45,16 +45,3 @@
 <% end %>
 
 <p><%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary' %></p>
-
-<% if can? :manage, ActivityType %>
-  <div class="row">
-    <div class="col-md-12">
-      <h5>Admin Tools</h5>
-      <p><strong>Currently active:</strong> <%= @activity_type.active %></p>
-      <div class="other-actions">
-        <%= link_to 'Edit', edit_activity_type_path(@activity_type), class: 'btn btn-primary' %>
-        <%= link_to 'All Types', activity_types_path, class: 'btn btn-secondary'  %>
-      </div>
-    </div>
-  </div>
-<% end %>

@@ -67,7 +67,7 @@
           <% else %>
             <%= f.input :school_id, as: :select, collection: @schools, label_method: :name, label: 'Select your school'%>
           <% end %>
-          <%= f.input :password, as: :string, label: 'Your pupil password'%>
+          <%= f.input :password, as: :string, label: 'Your pupil password', input_html: {autocapitalize: :none}%>
           <%= f.submit "Sign in", class: 'btn btn-primary' %>
         <% end %>
       </div>

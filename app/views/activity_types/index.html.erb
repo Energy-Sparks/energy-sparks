@@ -1,42 +1,29 @@
 <h1>Activity Types</h1>
-<div class="container">
-  <div class="row">
-    <p><%= link_to 'New Activity Type', new_activity_type_path, class: 'btn btn-primary' %></p>
-  </div>
-</div>
 
 <% ActivityCategory.all.each do |activity_category| %>
-<div class="container">
-  <h2><%= activity_category.name %></h2>
-  <div class="row">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Score</th>
-        <th scope="col">Key Stages</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @activity_types.where(activity_category: activity_category).each do |activity_type| %>
-        <tr class="<%= active(activity_type.active) %>" scope="row" >
-          <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
-          <td><%= activity_type.score %></td>
-          <td><%= activity_type.key_stage_list %></td>
-          <td><%= link_to 'Edit', edit_activity_type_path(activity_type), class: 'btn btn-primary btn-sm' %></td>
+  <div class="container">
+    <h2><%= activity_category.name %></h2>
+    <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Score</th>
+          <th scope="col">Key Stages</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        <% @activity_types.where(activity_category: activity_category).each do |activity_type| %>
+          <tr class="<%= active(activity_type.active) %>" scope="row" >
+            <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
+            <td><%= activity_type.score %></td>
+            <td><%= activity_type.key_stage_list %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
   </div>
-</div>
 
 <% end %>
-
-<div class="container">
-  <div class="row">
-    <%= link_to 'New Activity', new_activity_type_path, class: 'btn btn-primary' %>
-  </div>
-</div>

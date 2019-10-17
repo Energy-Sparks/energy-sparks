@@ -21,8 +21,4 @@ $(document).ready(function() {
 
     $('#activity_activity_type_id').select2({theme: 'bootstrap'});
   }
-
-  if ($("form#activity_type_form").length) {
-    $('select.form-control.select2').select2({theme: 'bootstrap'});
-  }
 });
