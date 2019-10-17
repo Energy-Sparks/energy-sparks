@@ -1,0 +1,36 @@
+<% content_for :page_title do %>
+    Activity Type: <%= @activity_type.name %>
+<% end %>
+
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1><%= @activity_type.name %></h1>
+    <h3>
+      <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score for this activity"><%= @activity_type.score %></span>
+      <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Category of activity"><%= @activity_type.activity_category.name %></span>
+      <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= @activity_type.key_stage_list %></span>
+    </h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 activity_type">
+    <% if @activity_type.description %>
+      <%= @activity_type.description %>
+    <% else %>
+      <p><em>No description given</em></p>
+    <% end %>
+  </div>
+</div>
+
+<p><%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary' %></p>
+
+<div class="row">
+  <div class="col-md-12">
+    <p><strong>Currently active:</strong> <%= @activity_type.active %></p>
+    <div class="other-actions">
+      <%= link_to 'Edit', edit_admin_activity_type_path(@activity_type), class: 'btn btn-primary' %>
+      <%= link_to 'All Types', admin_activity_types_path, class: 'btn btn-secondary'  %>
+    </div>
+  </div>
+</div>

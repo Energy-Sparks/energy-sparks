@@ -1,0 +1,24 @@
+<% content_for :page_title, "Activities" %>
+
+<h1>Activity Categories</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @activity_categories.each do |activity_category| %>
+      <tr>
+        <td><%= link_to activity_category.name, admin_activity_category_path(activity_category) %></td>
+        <td><%= activity_category.description %></td>
+        <td><%= link_to 'Edit', edit_admin_activity_category_path(activity_category), class: 'btn'%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to 'New activity category', new_admin_activity_category_path, class: 'btn' %></p>

@@ -1,4 +1,4 @@
-<%= form_for(activity_type, html: { id: 'activity_type_form' }) do |f| %>
+<%= form_for([:admin, activity_type], html: { id: 'activity_type_form' }) do |f| %>
 
   <%= render 'shared/errors', subject: activity_type, subject_name: 'activity type' %>
 
