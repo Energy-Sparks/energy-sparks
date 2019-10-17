@@ -13,12 +13,24 @@
   </div>
 </div>
 
+<h2>Description</h2>
 <div class="row">
   <div class="col-md-12 activity_type">
     <% if @activity_type.description %>
       <%= @activity_type.description %>
     <% else %>
       <p><em>No description given</em></p>
+    <% end %>
+  </div>
+</div>
+
+<h2>School specific description</h2>
+<div class="row">
+  <div class="col-md-12 activity_type">
+    <% if @activity_type.school_specific_description %>
+      <%= @activity_type.school_specific_description %>
+    <% else %>
+      <p><em>No school specific description given</em></p>
     <% end %>
   </div>
 </div>

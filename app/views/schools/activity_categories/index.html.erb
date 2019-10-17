@@ -8,25 +8,19 @@
       <% end %>
       <% if @filter.for_category(activity_category).any? %>
         <% @filter.for_category(activity_category).order(:score).each do |activity_type| %>
-          <div class="row">
-            <% if @school.activities.includes(:activity_type).where(activity_type: activity_type).any? %>
-              <div class="col-8">
-                <%= fa_icon("check-circle") %>
-                <%= link_to "#{activity_type.name}", school_activity_type_path(@school, activity_type) %>
-              </div>
-            <% else %>
-              <div class="col-8">
-                <%= far_icon("circle") %>
-                 <%= link_to "#{activity_type.name}", school_activity_type_path(@school, activity_type) %>
-               </div>
-            <% end %>
-            <div class="col-2">
-              <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %> points</span>
-                 <% if @school.activities.includes(:activity_type).where(activity_type: activity_type).any? %>
-                <span class="badge badge-warning" data-toggle="tooltip" data-placement="bottom" title="Completed">Completed</span>
+          <div class="row mb-3">
+            <div class="col-1">
+              <% if @school.activities.includes(:activity_type).where(activity_type: activity_type).any? %>
+                 <%= fa_icon("check-circle fa-lg") %>
+              <% else %>
+                <%= far_icon("circle fa-lg") %>
               <% end %>
             </div>
-              <div class="col-2">
+            <div class="col-9">
+              <%= link_to "#{activity_type.name}", school_activity_type_path(@school, activity_type) %>
+            </div>
+            <div class="col-2">
+              <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %> points</span>
               <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= activity_type.key_stage_list %></span>
             </div>
           </div>

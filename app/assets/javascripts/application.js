@@ -18,6 +18,7 @@
 //= require handlebars
 
 //= require activities
+//= require activity_types
 //= require usage_charts
 //= require schools
 //= require users

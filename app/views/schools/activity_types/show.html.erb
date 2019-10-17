@@ -22,7 +22,9 @@
 
 <div class="row">
   <div class="col-md-12 activity_type">
-    <% if @activity_type.description %>
+    <% if @activity_type.school_specific_description %>
+      <%= @activity_type.school_specific_description %>
+    <% elsif @activity_type.description %>
       <%= @activity_type.description %>
     <% else %>
       <p><em>No description given</em></p>
