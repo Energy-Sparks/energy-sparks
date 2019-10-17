@@ -18,7 +18,7 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe ActivityTypesController, type: :controller do
+RSpec.describe Admin::ActivityTypesController, type: :controller do
   let(:activity_category) { FactoryBot.create :activity_category }
   # This should return the minimal set of attributes required to create a valid
   # ActivityType. As you add validations to ActivityType, be sure to
@@ -86,7 +86,7 @@ RSpec.describe ActivityTypesController, type: :controller do
 
         it "redirects to the created activity_type" do
           post :create, params: { activity_type: valid_attributes }
-          expect(response).to redirect_to(ActivityType.last)
+          expect(response).to redirect_to admin_activity_types_path
         end
       end
 
@@ -127,7 +127,7 @@ RSpec.describe ActivityTypesController, type: :controller do
         it "redirects to the activity_type" do
           activity_type = ActivityType.create! valid_attributes
           put :update, params: { id: activity_type.to_param, activity_type: valid_attributes }
-          expect(response).to redirect_to(activity_type)
+          expect(response).to redirect_to admin_activity_types_path
         end
       end
 
@@ -157,7 +157,7 @@ RSpec.describe ActivityTypesController, type: :controller do
       it "redirects to the activity_types list" do
         activity_type = ActivityType.create! valid_attributes
         delete :destroy, params: { id: activity_type.to_param }
-        expect(response).to redirect_to(activity_types_url)
+        expect(response).to redirect_to admin_activity_types_path
       end
     end
   end

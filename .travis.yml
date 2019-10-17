@@ -3,6 +3,7 @@ cache:
   directories:
   - node_modules
   yarn: false
+  bundler: true
 env:
   global:
   - NODE_ENV=test
