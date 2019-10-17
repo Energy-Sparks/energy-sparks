@@ -12,7 +12,7 @@ function chartFailure(chart, title) {
   $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#' + $chartWrapper.attr('id') + '" class="alert-link">chart</a></div>');
 }
 
-function chartSuccess(chart_data, chart, noAdvice, noZoom) {
+function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
 
   var $chartDiv = $(chart.renderTo);
   var chartType = chart_data.chart1_type;
@@ -23,12 +23,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
     var titleH3 = $chartWrapper.find('h3');
     var titleH5 = $chartWrapper.find('h5');
 
-    if ($chartDiv.data('chart-index') === 0) {
-      titleH3.text(chart_data.title);
-    } else {
-      titleH3.before('<hr class="analysis"/>');
-      titleH3.text(chart_data.title);
-    }
+    titleH3.text(chart_data.title);
 
     if (chart_data.subtitle) {
       titleH5.text(chart_data.subtitle);
@@ -62,7 +57,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   }
 
   if(chart_data.allowed_operations){
-    processAnalysisOperations(chart, chart_data.allowed_operations, chart_data.drilldown_available, chart_data.parent_timescale_description)
+    processAnalysisOperations(chartConfig, chart, chart_data.allowed_operations, chart_data.drilldown_available, chart_data.parent_timescale_description)
   }
 
   if(chart_data.annotations){
@@ -85,7 +80,7 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
     $.ajax({
       type: 'GET',
       dataType: "json",
-      url: $chartDiv.data('chart-annotations'),
+      url: chartConfig.annotations,
       data: data,
       success: function (returnedData) {
         processAnnotations(returnedData, chart)
@@ -101,42 +96,28 @@ function chartSuccess(chart_data, chart, noAdvice, noZoom) {
   chart.hideLoading();
 }
 
-function teachersChartSuccess(chart_data, chart) {
-  var $chartDiv = $(chart.renderTo);
-  var chartType = chart_data.chart1_type;
-  var seriesData = chart_data.series_data;
-  teachersColumn(chart_data, chart, seriesData);
-
-  $chartDiv.attr( "maxYvalue", chart.yAxis[0].max );
-
-  // Activate any popovers
-  $('[data-toggle="popover"]').popover();
-
-  chart.hideLoading();
-}
-
 function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
-      processAnalysisChart(this);
-      setupAnalysisControls(this);
+      var chartConfig = $(this).data('chart-config');
+      processAnalysisChart(this, chartConfig);
+      setupAnalysisControls(this, chartConfig);
     });
   }
 }
 
-function processAnalysisChart(chart_container){
-  var thisId = chart_container.id;
-  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chart_container, event)}));
-  var chartType = $(chart_container).data('chart-type');
-  var yAxisUnits = $(chart_container).data('chart-y-axis-units');
-  var mpanMprn = $(chart_container).data('chart-mpan-mprn');
-  var seriesBreakdown = $(chart_container).data('chart-series-breakdown');
-  var dateRanges = $(chart_container).data('chart-date-ranges');
-  var dataPath = $(chart_container).data('chart-json');
-  var transformations = $(chart_container).data('chart-transformations');
-  var noAdvice = $(chart_container).is("[data-no-advice]");
-  var noZoom = $(chart_container).is("[data-no-zoom]");
-  var teachersDashboard = $(chart_container).is("[data-teachers-dashboard]");
+function processAnalysisChart(chartContainer, chartConfig){
+  var thisId = chartContainer.id;
+  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chartConfig, chartContainer, event)}));
+  var chartType = chartConfig.type;
+  var yAxisUnits = chartConfig.y_axis_units;
+  var mpanMprn = chartConfig.mpan_mprn;
+  var seriesBreakdown = chartConfig.series_breakdown;
+  var dateRanges = chartConfig.date_ranges;
+  var dataPath = chartConfig.json;
+  var transformations = chartConfig.transformations;
+  var noAdvice = chartConfig.no_advice;
+  var noZoom = chartConfig.no_zoom;
 
   var requestData = {
     chart_type: chartType,
@@ -167,11 +148,7 @@ function processAnalysisChart(chart_container){
       } else if (thisChartData.series_data == null) {
         chartFailure(thisChart, thisChartData.title);
       } else {
-        if (teachersDashboard) {
-          teachersChartSuccess(thisChartData, thisChart)
-        } else {
-          chartSuccess(thisChartData, thisChart, noAdvice, noZoom);
-        }
+        chartSuccess(chartConfig, thisChartData, thisChart, noAdvice, noZoom);
       }
     },
     error: function(broken) {
@@ -216,35 +193,35 @@ function processAnnotations(loaded_annotations, chart){
   $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
 }
 
-function setupAnalysisControls(chart_container){
-  var controls = $(chart_container).parent().find('.analysis_controls');
+function setupAnalysisControls(chartContainer, chartConfig){
+  var controls = $(chartContainer).parent().find('.analysis_controls');
   if(controls.length){
     controls.find('.move_back').hide().on('click', function(event){
       event.preventDefault();
-      pushTransformation(chart_container, 'move', -1);
+      pushTransformation(chartConfig, chartContainer, 'move', -1);
     });
     controls.find('.move_forward').hide().on('click', function(event){
       event.preventDefault();
-      pushTransformation(chart_container, 'move', 1);
+      pushTransformation(chartConfig, chartContainer, 'move', 1);
     });
 
     controls.find('.drillup').hide();
     controls.find('.drillup').on('click', function(event){
       event.preventDefault();
 
-      var transformations = $(chart_container).data('chart-transformations');
+      var transformations = chartConfig.transformations;
       var inDrilldown = transformations.some(isDrilldownTransformation);
       var lastDrilldownIndex = transformations.reverse().findIndex(isDrilldownTransformation);
       var sliceTo = transformations.length - lastDrilldownIndex - 1;
       var newTransformtions = transformations.reverse().slice(0, sliceTo);
 
-      $(chart_container).data('chart-transformations', newTransformtions);
-      processAnalysisChart(chart_container);
+      chartConfig.transformations = newTransformtions;
+      processAnalysisChart(chartContainer, chartConfig);
     });
   }
 }
 
-function processAnalysisOperations(chart, operations, drilldownAvailable, parentTimescaleDescription){
+function processAnalysisOperations(chartConfig, chart, operations, drilldownAvailable, parentTimescaleDescription){
   var chartContainer = $(chart.renderTo);
   var controls = $(chartContainer).parent().find('.analysis_controls');
   if(controls.length){
@@ -260,13 +237,13 @@ function processAnalysisOperations(chart, operations, drilldownAvailable, parent
       });
     });
 
-    $(chartContainer).data('chart-drilldown-available', drilldownAvailable);
+   chartConfig.drilldown_available =  drilldownAvailable;
 
     if(drilldownAvailable){
       chart.update({subtitle: {text: 'Click on the chart to explore the data'}});
     }
 
-    var transformations = $(chartContainer).data('chart-transformations');
+    var transformations = chartConfig.transformations;
     var inDrilldown = transformations.some(isDrilldownTransformation);
     var drillup = controls.find('.drillup');
     if(inDrilldown){
@@ -278,8 +255,8 @@ function processAnalysisOperations(chart, operations, drilldownAvailable, parent
   }
 }
 
-function pushTransformation(chart_container, transformation_type, transformation_value){
-  var transformations = $(chart_container).data('chart-transformations');
+function pushTransformation(chartConfig, chartContainer, transformation_type, transformation_value){
+  var transformations = chartConfig.transformations;
   var last_transformation = transformations[transformations.length -1];
 
   if(transformation_type != 'drilldown' && last_transformation && last_transformation[0] == transformation_type){
@@ -291,15 +268,15 @@ function pushTransformation(chart_container, transformation_type, transformation
   } else {
     transformations.push([transformation_type, transformation_value]);
   }
-  $(chart_container).data('chart-transformations', transformations);
-  processAnalysisChart(chart_container);
+  chartConfig.transformations = transformations;
+  processAnalysisChart(chartContainer, chartConfig);
 }
 
-function processChartClick(chartContainer, event){
+function processChartClick(chartConfig, chartContainer, event){
   var controls = $(chartContainer).parent().find('.analysis_controls');
   if(controls.length){
-    if($(chartContainer).data('chart-drilldown-available')){
-      pushTransformation(chartContainer, 'drilldown', event.point.index)
+    if(chartConfig.drilldown_available){
+      pushTransformation(chartConfig, chartContainer, 'drilldown', event.point.index)
     }
   }
 }

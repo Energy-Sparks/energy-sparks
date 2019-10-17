@@ -60,4 +60,8 @@ class ActivityType < ApplicationRecord
   def name_with_key_stages
     "#{name} (#{key_stage_list})"
   end
+
+  def school_specific_description_or_fallback
+    school_specific_description.blank? ? description : school_specific_description
+  end
 end

@@ -2,10 +2,11 @@ require 'mustache'
 require 'closed_struct'
 
 class TemplateInterpolation
-  def initialize(object, with_objects: {}, proxy: [])
+  def initialize(object, with_objects: {}, proxy: [], render_with: Mustache.new)
     @object = object
     @with_objects = with_objects
     @proxy = proxy
+    @render_with = render_with
   end
 
   def interpolate(*fields, with: {})
@@ -36,7 +37,7 @@ class TemplateInterpolation
 private
 
   def process_string_template(template, variables)
-    Mustache.render(template, variables)
+    @render_with.render(template, variables)
   end
 
   def process_rich_text_template(template, variables)
@@ -48,7 +49,7 @@ private
   end
 
   def get_variables(template)
-    mustache = Mustache.new
+    mustache = @render_with
     mustache.template = template_as_string(template)
     mustache.template.tags
   end
