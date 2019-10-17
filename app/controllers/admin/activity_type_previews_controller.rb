@@ -1,6 +1,6 @@
 module Admin
   class ActivityTypePreviewsController < AdminController
-    def show
+    def create
       school = School.active.first
       activity_type = ActivityType.new(school_specific_description: params[:activity_type][:school_specific_description])
       @content = TemplateInterpolation.new(
@@ -9,7 +9,7 @@ module Admin
       ).interpolate(
         :school_specific_description
       )
-      render layout: nil
+      render 'show', layout: nil
     end
   end
 end
