@@ -29,7 +29,7 @@ module Admin
 
     def create
       if @activity_type.save
-        redirect_to @activity_type, notice: 'Activity type was successfully created.'
+        redirect_to admin_activity_types_path, notice: 'Activity type was successfully created.'
       else
         add_activity_type_suggestions
         render :new
@@ -38,7 +38,7 @@ module Admin
 
     def update
       if @activity_type.update(activity_type_params)
-        redirect_to @activity_type, notice: 'Activity type was successfully updated.'
+        redirect_to admin_activity_types_path, notice: 'Activity type was successfully updated.'
       else
         render :edit
       end
@@ -48,7 +48,7 @@ module Admin
       # activity types should be marked inactive rather than deleted
       # this method does NOT delete the activity type
       # @activity_type.destroy
-      redirect_to activity_types_url, notice: 'Activity type not deleted, please mark as inactive'
+      redirect_to admin_activity_types_path, notice: 'Activity type not deleted, please mark as inactive'
     end
 
   private
@@ -61,6 +61,7 @@ module Admin
     def activity_type_params
       params.require(:activity_type).permit(:name,
           :description,
+          :school_specific_description,
           :active,
           :activity_category_id,
           :score,

@@ -1,11 +1,12 @@
 FactoryBot.define do
   factory :activity_type do
     activity_category
-    sequence(:name) {|n| "test activity_type name #{n}"}
-    score           { 25 }
-    active          { true }
-    repeatable      { true }
-    description     { 'test_activity_type description' }
+    sequence(:name)                         {|n| "test activity_type name #{n}"}
+    score                                   { 25 }
+    active                                  { true }
+    repeatable                              { true }
+    sequence(:description)                  {|n| "description #{n}"}
+    sequence(:school_specific_description)  {|n| "tschool specific description #{n}"}
 
     trait :as_initial_suggestions do
       after(:create) do |activity_type, evaluator|

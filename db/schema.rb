@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_125658) do
+ActiveRecord::Schema.define(version: 2019_10_16_150032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -253,7 +253,6 @@ ActiveRecord::Schema.define(version: 2019_10_09_125658) do
     t.integer "sub_category"
     t.integer "frequency"
     t.text "title"
-    t.text "_old_description"
     t.text "class_name"
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
