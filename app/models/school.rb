@@ -29,6 +29,7 @@
 #  template_calendar_id                  :integer
 #  updated_at                            :datetime         not null
 #  urn                                   :integer          not null
+#  validation_cache_key                  :string           default("initial")
 #  weather_underground_area_id           :bigint(8)
 #  website                               :string
 #
