@@ -108,8 +108,8 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  def latest_alerts_without_exception
-    alerts.without_exception.latest
+  def latest_alerts_without_exceptions
+    alerts.without_exceptions.latest
   end
 
   def should_generate_new_friendly_id?
