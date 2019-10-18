@@ -16,6 +16,9 @@
               <th>Variable</th>
               <th>Description</th>
               <th>Units</th>
+              <% if example_variables %>
+                <th>Example</th>
+              <% end %>
             </tr>
           </thead>
           <% variables.each do |key, details| %>
@@ -31,6 +34,9 @@
                   <%= details[units_field] %>
                 <% end %>
               </td>
+              <% if example_variables %>
+                <td><%= example_variables[key] %></td>
+              <% end %>
             </tr>
           <% end %>
         </table>
