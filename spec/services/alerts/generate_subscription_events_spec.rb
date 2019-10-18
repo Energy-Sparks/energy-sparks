@@ -8,7 +8,7 @@ describe Alerts::GenerateSubscriptionEvents do
   let!(:alert)                  { create(:alert, school: school, rating: rating, alert_type: alert_type) }
   let(:content_generation_run)  { create(:content_generation_run, school: school) }
   let(:service)                 { Alerts::GenerateSubscriptionEvents.new(school, content_generation_run: content_generation_run) }
-  let(:weekly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:weekly] }) }
+  let(:weekly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:weekly] }).without_exception }
 
   context 'no alerts' do
     it 'does nothing, no events created' do
@@ -34,8 +34,8 @@ describe Alerts::GenerateSubscriptionEvents do
     let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
     let!(:sms_and_email_contact)    { create(:contact_with_name_email_phone, school: school) }
 
-    let(:termly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:termly] }) }
-    let(:no_frequency_alerts)     { school.alerts.joins(:alert_type).where(alert_types: { frequency: [] }) }
+    let(:termly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:termly] }).without_exception }
+    let(:no_frequency_alerts)     { school.alerts.joins(:alert_type).where(alert_types: { frequency: [] }).without_exception }
 
     context 'contacts with email, sms and both' do
 
@@ -92,6 +92,12 @@ describe Alerts::GenerateSubscriptionEvents do
           expect(sms_contact.alert_subscription_events.count).to eq 1
           expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
           expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array ['email', 'sms']
+        end
+
+        it 'does not create any events for the scope if there is an alert type exception' do
+          SchoolAlertTypeException.create(school: school, alert_type: alert_type)
+
+          expect { service.perform(weekly_alerts)}.to change { content_generation_run.alert_subscription_events.count }.by(0)
         end
 
         it 'ignores if events already exist' do
