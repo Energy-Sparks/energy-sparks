@@ -45,6 +45,6 @@ class AggregateSchoolService
 private
 
   def cache_key
-    "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection"
+    "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection-#{@active_record_school.validation_cache_key}"
   end
 end
