@@ -1,4 +1,4 @@
-<%= form_tag create_multiple_admin_alert_type_school_alert_type_exceptions_path(@alert_type), method: :put do %>
+<%= form_tag admin_alert_type_school_alert_type_exceptions_path(@alert_type), method: :post do %>
   <% SchoolGroup.all.order(name: :asc).each do |school_group| %>
     <h2><%= school_group.name %></h2>
     <ul class="list-group">

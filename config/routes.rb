@@ -167,12 +167,7 @@ Rails.application.routes.draw do
         namespace :ratings do
           resource :preview, only: :show, controller: 'preview'
         end
-        resources :school_alert_type_exceptions, only: [:index, :destroy] do
-          collection do
-            get :new_multiple
-            put :create_multiple
-          end
-        end
+        resources :school_alert_type_exceptions, only: [:index, :destroy, :new, :create]
       end
     end
     resources :equivalence_types do

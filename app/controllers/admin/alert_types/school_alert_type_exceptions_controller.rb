@@ -8,11 +8,11 @@ module Admin
         @exceptions = SchoolAlertTypeException.where(alert_type: @alert_type)
       end
 
-      def new_multiple
+      def new
         @schools = School.all
       end
 
-      def create_multiple
+      def create
         school_ids = params[:school_ids]
         reasons = params[:school_reasons]
 
