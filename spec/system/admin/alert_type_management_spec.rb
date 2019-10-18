@@ -6,7 +6,7 @@ describe 'alert type management', type: :system do
 
   let(:gas_fuel_alert_type_title) { 'Your gas usage is too high' }
   let!(:gas_fuel_alert_type)      { create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: true) }
-  let!(:school)                    { create(:school) }
+  let!(:school)                   { create(:school, :with_school_group) }
 
   before do
     sign_in(admin)
@@ -17,16 +17,33 @@ describe 'alert type management', type: :system do
 
 
   describe 'schools' do
-    it 'can see a list of schools' do
+
+    before(:each) do
       expect(page).to have_content(gas_fuel_alert_type_title)
 
       within ('table') do
         click_on 'Manage'
       end
       within ('ul.alert-type') do
-        click_on 'Schools'
+        click_on 'School exceptions'
       end
+      expect(page).to have_content('No school exceptions for this alert')
+    end
+
+
+    it 'can see a list of schools' do
+      click_on 'Manage exceptions'
       expect(page).to have_content(school.name)
+    end
+
+    it 'can add and delete an exception' do
+      click_on 'Manage exceptions'
+      check school.name
+      click_on "Create exceptions"
+      expect(page).to_not have_content('No school exceptions for this alert')
+      expect(page).to have_content(school.name)
+
+
     end
   end
 

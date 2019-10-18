@@ -1,0 +1,17 @@
+<%= simple_form_for :school_alert_type_exceptions, url: update_multiple_admin_alert_type_school_alert_type_exceptions_path(@alert_type), method: :put do |f| %>
+  <ul class="list-group">
+    <% School.all.limit(10).each do |school| %>
+      <li class="list-group-item">
+        <%#= label_tag "school_ids[]", school.name %>
+        <%=  f.input :school_id %> <%= school.name %>
+      <%#= check_box_tag "school_ids[]", school.id, (SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id)) %> <%= school.name %>
+
+
+      </li>
+
+    <% end %>
+  </ul>
+  <div class="actions">
+    <%= submit_tag "Discontinued Checked", class: 'btn' %>
+  </div>
+<% end %>

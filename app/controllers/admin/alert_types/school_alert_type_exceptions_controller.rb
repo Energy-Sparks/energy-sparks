@@ -8,8 +8,24 @@ module Admin
         @exceptions = SchoolAlertTypeException.where(alert_type: @alert_type)
       end
 
-      def edit_multiple
+      def new_multiple
         @schools = School.all
+      end
+
+      def create_multiple
+        school_ids = params[:school_ids]
+
+        SchoolAlertTypeException.where(alert_type: @alert_type).delete_all
+
+        school_ids.each do |school_id|
+          SchoolAlertTypeException.create(alert_type: @alert_type, school_id: school_id)
+        end
+        redirect_to admin_alert_type_school_alert_type_exceptions_path(@alert_type)
+      end
+
+      def destroy
+        @school_alert_type_exception.delete
+        redirect_to admin_alert_type_school_alert_type_exceptions_path(@alert_type)
       end
     end
   end
