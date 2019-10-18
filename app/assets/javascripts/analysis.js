@@ -3,11 +3,9 @@
 function chartFailure(chart, title) {
   var $chartDiv = $(chart.renderTo);
   var $chartWrapper = $chartDiv.parent();
-  var $titleH3 = $chartWrapper.find('h3');
 
-  $titleH3.text(title + ' chart');
   $chartWrapper.addClass('alert alert-warning');
-  $chartDiv.remove();
+  $chartWrapper.html(`<h3>${title} chart</h3>`)
 
   $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#' + $chartWrapper.attr('id') + '" class="alert-link">chart</a></div>');
 }
