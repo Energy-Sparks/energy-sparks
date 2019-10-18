@@ -1,0 +1,29 @@
+<%= form_tag create_multiple_admin_alert_type_school_alert_type_exceptions_path(@alert_type), method: :put do %>
+  <% SchoolGroup.all.order(name: :asc).each do |school_group| %>
+    <h2><%= school_group.name %></h2>
+    <ul class="list-group">
+      <li class="list-group-item bg-light-blue">
+        <div class="custom-control custom-checkbox">
+          <%= check_box_tag "multi_select_#{school_group.id}", false, false, { id: "multi_select_#{school_group.id}", class: 'custom-control-input multi-select' } %>
+          <%= label_tag "multi_select_#{school_group.id}", "Select/Deselect all for #{school_group.name}", class: 'custom-control-label' %>
+        </div>
+      </li>
+      <% school_group.schools.order(name: :asc).each do |school| %>
+        <li class='list-group-item d-flex justify-content-between align-items-center'>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag "school_ids[]", school.id, (SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id)), { id: "school_ids_#{school.id}", class: "custom-control-input multi_select_#{school_group.id}_group" } %>
+            <%= label_tag "school_ids[#{school.id}]", school.name, class: 'custom-control-label' %>
+          </div>
+          <div>
+            <%= label_tag "school_reasons_#{school.id}", 'Reason' %> :
+            <%= text_field_tag 'school_reasons[]', (SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id).reason if SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <div class="actions mt-3">
+    <%= submit_tag "Create exceptions", class: 'btn' %>
+  </div>
+<% end %>
+

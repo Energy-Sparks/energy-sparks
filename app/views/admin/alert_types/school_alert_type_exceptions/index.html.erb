@@ -1,0 +1,31 @@
+<% content_for :page_title, "Alert Type - Schools" %>
+
+<h1>School exceptions for:</h1>
+<h2><%= @alert_type.title %></h2>
+
+<p>This shows the schools for which this alert type will not have it's content generated</p>
+<p><%= link_to 'Manage exceptions', new_multiple_admin_alert_type_school_alert_type_exceptions_path(@alert_type) %></p>
+
+<% if @alert_type.school_alert_type_exceptions.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>School</th>
+        <th>Reason</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @alert_type.school_alert_type_exceptions.each do |school_alert_type_exception| %>
+        <tr>
+          <td><%= school_alert_type_exception.school.name %></td>
+          <td><%= school_alert_type_exception.reason %></td>
+          <td><%= link_to 'Delete', admin_alert_type_school_alert_type_exception_path(@alert_type, school_alert_type_exception), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No school exceptions for this alert</p>
+<% end %>
+
