@@ -6,8 +6,6 @@ function chartFailure(chart, title) {
 
   $chartWrapper.addClass('alert alert-warning');
   $chartWrapper.html(`<h3>${title} chart</h3>`)
-
-  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#' + $chartWrapper.attr('id') + '" class="alert-link">chart</a></div>');
 }
 
 function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
