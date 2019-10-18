@@ -48,7 +48,7 @@ RSpec.describe 'alert type management', type: :system do
   describe 'creating alert content' do
 
     let!(:alert) do
-      create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%'}, school: create(:school))
+      create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%', chart_a: :example_chart_value}, school: create(:school))
     end
 
     before do
@@ -196,6 +196,9 @@ RSpec.describe 'alert type management', type: :system do
         expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')
 
         click_on 'Edit'
+
+        click_on 'Dummy alert'
+        expect(page).to have_content('chart description A chart example_chart_value')
 
         fill_in 'Page title', with: 'Stop using so much gas!'
         click_on 'Update content'
