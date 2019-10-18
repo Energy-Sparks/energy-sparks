@@ -4,6 +4,8 @@
   },
   html: { id: 'activity_type_form' }) do |f| %>
 
+  <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
+
   <%= f.input :name, as: :string %>
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
@@ -13,8 +15,12 @@
     <%= f.input :description, as: :trix_editor, label: false %>
   </div>
 
-  <div class="school-specific-description-trix-editor">
-    <%= f.input :school_specific_description, as: :trix_editor %>
+
+  <div class="school-specific-description-trix-editor chart-list">
+    <%= f.label 'School specific description', for: :school_specific_description %>
+    <%= render 'admin/shared/preview_section', scope: 'school-specific-description', preview_url: admin_activity_type_preview_path, no_timings: true, no_weightings: true do %>
+      <%= f.input :school_specific_description, as: :trix_editor, class: 'chart-list', label: false %>
+    <% end %>
   </div>
 
   <%= f.input :score, as: :string %>

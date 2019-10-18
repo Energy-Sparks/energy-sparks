@@ -7,12 +7,12 @@ $(document).ready(function() {
     var url = pane.data('content-url');
     var form = pane.parents('form');
 
+    var data = form.find("[name!='_method']").serialize();
+
     $.ajax({
-      dataType: 'html',
+      method: 'POST',
       url: url,
-      processData: false,
-      contentType: false,
-      data: form.serialize(),
+      data: data,
       error: function(jqXHR, textStatus, errorThrown){
         pane.find('.loading').hide();
         pane.find('.content').html('<div class="alert alert-danger">Preview failed</div>');
