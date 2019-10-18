@@ -1,5 +1,5 @@
 <% charts.each_with_index do |(fuel_type, chart_type_config), index| %>
-  <div id="chart_wrapper_<%= index %>" class="col-sm">
+  <div class="col-sm">
     <div class="d-flex justify-content-between align-items-center">
 
       <div class="h4"><%= t("charts.dashboard.#{fuel_type}.title") %></div>
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <%= chart_tag(school, chart_type_config[:chart_type], index: index, show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
+    <%= chart_tag(school, chart_type_config[:chart_type], show_advice: false, no_zoom: true, chart_config: {y_axis_units: 'gb_pounds'}) %>
 
   </div>
 <% end %>

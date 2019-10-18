@@ -31,6 +31,7 @@ describe "activity type", type: :system do
     before(:each) do
       sign_in(admin)
       visit root_path
+      click_on 'Manage'
       click_on 'Activity Types'
       expect(ActivityType.count).to be 0
     end
@@ -74,6 +75,26 @@ describe "activity type", type: :system do
       click_on activity_name
       expect(page).to have_content(description)
       expect(page).to have_content(school_specific_description)
+    end
+
+    it 'can embed a chart from the analytics', js: true do
+      school = create :school # for preview
+      allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
+      allow_any_instance_of(ChartData).to receive(:data).and_return([])
+
+      click_on 'New Activity Type'
+      within('.school-specific-description-trix-editor') do
+        fill_in_trix with: "Your chart"
+        find('button[data-trix-action="chart"]').click
+        select 'last_7_days_intraday_gas', from: 'chart-list-chart'
+        click_on 'Insert'
+        expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
+        click_on 'Preview'
+        within '#school-specific-description-preview' do
+          expect(page).to have_content('Your chart')
+          expect(page).to have_selector('#chart_wrapper_last_7_days_intraday_gas')
+        end
+      end
     end
 
     it 'can does not crash if you forget the score' do

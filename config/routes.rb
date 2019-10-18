@@ -148,6 +148,7 @@ Rails.application.routes.draw do
     resources :school_groups
     resources :activity_categories, except: [:destroy]
     resources :activity_types
+    resource :activity_type_preview, only: :create
 
     namespace :emails do
       resources :alert_mailers, only: :show
@@ -165,14 +166,14 @@ Rails.application.routes.draw do
           resource :activity_types, only: [:show, :update]
         end
         namespace :ratings do
-          resource :preview, only: :show, controller: 'preview'
+          resource :preview, only: :create, controller: 'preview'
         end
       end
     end
-    resources :equivalence_types do
-      resource :preview, only: :show, controller: 'preview'
-    end
-    resource :equivalences
+
+    resources :equivalence_types
+    resource :equivalence_type_preview, only: :create
+    resource :equivalences, only: :create
 
     resources :unsubscriptions, only: [:index]
 

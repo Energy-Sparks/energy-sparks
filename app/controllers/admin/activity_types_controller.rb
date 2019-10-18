@@ -3,6 +3,7 @@ module Admin
     load_and_authorize_resource
 
     before_action :load_filters, only: [:new, :edit, :create, :update]
+    before_action :load_chart_list, except: :index
 
     def index
       @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
@@ -85,6 +86,12 @@ module Admin
       @topics = Topic.order(:name)
       @impacts = Impact.order(:name)
       @activity_timings = ActivityTiming.order(:position)
+    end
+
+    def load_chart_list
+      @chart_list = DashboardConfiguration::DASHBOARD_PAGE_GROUPS.except(:simulator, :simulator_detail, :simulator_debug, :test, :pupil_analysis_page).map do |top_level_key, config|
+        ["#{config[:name]} (#{top_level_key})", config.fetch(:charts) {{}}]
+      end
     end
   end
 end
