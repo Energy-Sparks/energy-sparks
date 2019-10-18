@@ -20,7 +20,7 @@
         <tr>
           <td><%= school_alert_type_exception.school.name %></td>
           <td><%= school_alert_type_exception.reason %></td>
-          <td><%= link_to 'Delete', admin_alert_type_school_alert_type_exception_path(@alert_type, school_alert_type_exception), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          <td><%= link_to 'Delete', admin_alert_type_school_alert_type_exception_path(@alert_type, school_alert_type_exception), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %></td>
         </tr>
       <% end %>
     </tbody>
@@ -28,3 +28,4 @@
 <% else %>
   <p>No school exceptions for this alert</p>
 <% end %>
+

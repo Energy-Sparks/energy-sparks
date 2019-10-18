@@ -15,9 +15,7 @@ describe 'alert type management', type: :system do
     click_on 'Alert Types'
   end
 
-
   describe 'schools' do
-
     before(:each) do
       expect(page).to have_content(gas_fuel_alert_type_title)
 
@@ -42,8 +40,8 @@ describe 'alert type management', type: :system do
       click_on "Create exceptions"
       expect(page).to_not have_content('No school exceptions for this alert')
       expect(page).to have_content(school.name)
-
-
+      click_on 'Delete'
+      expect(page).to have_content('No school exceptions for this alert')
     end
   end
 
