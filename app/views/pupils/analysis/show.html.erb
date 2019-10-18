@@ -11,7 +11,8 @@
   </div>
   <hr />
 
-  <%= render 'shared/analysis_controls' %>
-
-  <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true ) %>
+  <div id="chart_wrapper_<%= @chart_type %>">
+    <%= render 'shared/analysis_controls' %>
+    <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false) %>
+  </div>
 </div>
