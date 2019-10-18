@@ -37,9 +37,12 @@ describe 'alert type management', type: :system do
     it 'can add and delete an exception' do
       click_on 'Manage exceptions'
       check school.name
+      reason = 'Super massive heating model'
+      fill_in 'Reason', with: reason
       click_on "Create exceptions"
       expect(page).to_not have_content('No school exceptions for this alert')
       expect(page).to have_content(school.name)
+      expect(page).to have_content(reason)
       click_on 'Delete'
       expect(page).to have_content('No school exceptions for this alert')
     end

@@ -15,7 +15,7 @@
             <%= label_tag "school_ids[#{school.id}]", school.name, class: 'custom-control-label' %>
           </div>
           <div>
-            <%= label_tag 'Reason : ' %>
+            <%= label_tag "school_reasons_#{school.id}", 'Reason' %> :
             <%= text_field_tag 'school_reasons[]', (SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id).reason if SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
           </div>
         </li>
