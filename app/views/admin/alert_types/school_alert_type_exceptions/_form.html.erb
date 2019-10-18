@@ -9,10 +9,14 @@
         </div>
       </li>
       <% school_group.schools.order(name: :asc).each do |school| %>
-        <li class='list-group-item'>
+        <li class='list-group-item d-flex justify-content-between align-items-center'>
           <div class="custom-control custom-checkbox">
             <%= check_box_tag "school_ids[]", school.id, (SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id)), { id: "school_ids_#{school.id}", class: "custom-control-input multi_select_#{school_group.id}_group" } %>
             <%= label_tag "school_ids[#{school.id}]", school.name, class: 'custom-control-label' %>
+          </div>
+          <div>
+            <%= label_tag 'Reason : ' %>
+            <%= text_field_tag 'school_reasons[]', (SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id).reason if SchoolAlertTypeException.find_by(alert_type: @alert_type, school_id: school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
           </div>
         </li>
       <% end %>
