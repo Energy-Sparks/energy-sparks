@@ -28,6 +28,7 @@ module Admin
       def edit
         @rating = @alert_type.ratings.find(params[:id])
         @content = @rating.current_content
+        @example_variables = load_example_variables(@rating)
       end
 
       def update
@@ -36,6 +37,7 @@ module Admin
         if @rating.update_with_content!(rating_params, @content)
           redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Content updated'
         else
+          @example_variables = load_example_variables(@rating)
           render :edit
         end
       end
@@ -65,6 +67,13 @@ module Admin
       def set_available_charts
         @available_charts = @alert_type.available_charts
         @available_charts << ["None", :none]
+      end
+
+      def load_example_variables(rating)
+        example_alert = rating.alert_type.alerts.where(displayable: true).rating_between(rating.rating_from, rating.rating_to).order(created_at: :desc).first
+        if example_alert
+          @example_variables = example_alert.template_variables
+        end
       end
     end
   end
