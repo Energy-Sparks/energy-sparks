@@ -8,7 +8,7 @@ describe Alerts::GenerateFindOutMores do
 
   context 'no alerts' do
     it 'does nothing, no find out mores created' do
-      service.perform(school.latest_alerts_without_exception)
+      service.perform(school.latest_alerts_without_exceptions)
       expect(FindOutMore.count).to be 0
     end
   end
@@ -16,7 +16,7 @@ describe Alerts::GenerateFindOutMores do
   context 'alerts, but find out mores' do
     it 'does nothing' do
       create(:alert, school: school)
-      service.perform(school.latest_alerts_without_exception)
+      service.perform(school.latest_alerts_without_exceptions)
       expect(FindOutMore.count).to be 0
     end
   end
@@ -31,7 +31,7 @@ describe Alerts::GenerateFindOutMores do
     context 'where the rating matches the range' do
 
       it 'creates a find out more pairing the alert and the content' do
-        service.perform(school.latest_alerts_without_exception)
+        service.perform(school.latest_alerts_without_exceptions)
         expect(FindOutMore.count).to be 1
         find_out_more = content_generation_run.find_out_mores.first
         expect(find_out_more.alert).to eq(alert)
@@ -40,13 +40,13 @@ describe Alerts::GenerateFindOutMores do
 
       it 'does not create if there is an exception' do
         SchoolAlertTypeException.create(school: school, alert_type: alert.alert_type)
-        expect { service.perform(school.latest_alerts_without_exception) }.to change { FindOutMore.count }.by(0)
+        expect { service.perform(school.latest_alerts_without_exceptions) }.to change { FindOutMore.count }.by(0)
       end
 
       context 'where the find out mores are not active' do
         let(:active){ false }
         it 'does not include the alert' do
-          service.perform(school.latest_alerts_without_exception)
+          service.perform(school.latest_alerts_without_exceptions)
           expect(content_generation_run.find_out_mores.count).to be 0
         end
       end

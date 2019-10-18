@@ -8,7 +8,7 @@ describe Alerts::GenerateSubscriptionEvents do
   let!(:alert)                  { create(:alert, school: school, rating: rating, alert_type: alert_type) }
   let(:content_generation_run)  { create(:content_generation_run, school: school) }
   let(:service)                 { Alerts::GenerateSubscriptionEvents.new(school, content_generation_run: content_generation_run) }
-  let(:weekly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:weekly] }).without_exception }
+  let(:weekly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:weekly] }).without_exceptions }
 
   context 'no alerts' do
     it 'does nothing, no events created' do
@@ -34,8 +34,8 @@ describe Alerts::GenerateSubscriptionEvents do
     let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
     let!(:sms_and_email_contact)    { create(:contact_with_name_email_phone, school: school) }
 
-    let(:termly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:termly] }).without_exception }
-    let(:no_frequency_alerts)     { school.alerts.joins(:alert_type).where(alert_types: { frequency: [] }).without_exception }
+    let(:termly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:termly] }).without_exceptions }
+    let(:no_frequency_alerts)     { school.alerts.joins(:alert_type).where(alert_types: { frequency: [] }).without_exceptions }
 
     context 'contacts with email, sms and both' do
 

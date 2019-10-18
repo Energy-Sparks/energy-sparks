@@ -169,12 +169,7 @@ Rails.application.routes.draw do
           resource :preview, only: :create, controller: 'preview'
         end
         resources :reports, only: [:index, :show]
-        resources :school_alert_type_exceptions, only: [:index, :destroy] do
-          collection do
-            get :new_multiple
-            put :create_multiple
-          end
-        end
+        resources :school_alert_type_exceptions, only: [:index, :destroy, :new, :create]
       end
     end
 

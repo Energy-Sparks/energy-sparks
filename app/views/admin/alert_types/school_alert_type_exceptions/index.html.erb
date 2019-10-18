@@ -4,7 +4,7 @@
 <h2><%= @alert_type.title %></h2>
 
 <p>This shows the schools for which this alert type will not have it's content generated</p>
-<p><%= link_to 'Manage exceptions', new_multiple_admin_alert_type_school_alert_type_exceptions_path(@alert_type) %></p>
+<p><%= link_to 'Manage exceptions', new_admin_alert_type_school_alert_type_exception_path(@alert_type) %></p>
 
 <% if @alert_type.school_alert_type_exceptions.any? %>
   <table class="table table-striped">
