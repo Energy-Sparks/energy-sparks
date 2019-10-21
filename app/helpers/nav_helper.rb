@@ -1,8 +1,10 @@
 module NavHelper
-  def navbar_brand_link
-    link_text = "Energy Sparks#{' (Test)' if on_test?}"
+  def navbar_image_link(transparent: false)
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
-    link_to link_text, '/home-page', class: 'navbar-brand', title: title
+    image = transparent ? 'nav-brand-transparent.png' : 'nav-brand.png'
+    link_to '/home-page', class: 'navbar-brand', title: title do
+      image_tag(image, class: "d-inline-block align-top")
+    end
   end
 
   def on_test?

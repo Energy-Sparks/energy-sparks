@@ -6,6 +6,10 @@
   border: none;
   padding: 1px;
 
+  img {
+    height: 45px;
+  }
+
   .navbar-brand,
   .navbar-brand:hover,
   .navbar-brand:focus,
@@ -70,6 +74,10 @@
 
   .nav-item {
     color: white;
+  }
+
+  img {
+    height: 40px;
   }
 }
 
