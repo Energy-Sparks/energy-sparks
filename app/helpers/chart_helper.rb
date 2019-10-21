@@ -17,7 +17,7 @@ module ChartHelper
       }
     )
     if wrap
-      content_tag :div, chart_container, id: "chart_wrapper_#{chart_type}"
+      content_tag :div, chart_container, id: "chart_wrapper_#{chart_type}", class: 'chart-wrapper'
     else
       chart_container
     end
