@@ -78,7 +78,7 @@ class School < ApplicationRecord
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
 
-  has_many :school_alert_type_exceptions
+  has_many :school_alert_type_exclusions
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
