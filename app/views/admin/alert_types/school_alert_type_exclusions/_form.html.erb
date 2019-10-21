@@ -1,4 +1,4 @@
-<%= form_tag admin_alert_type_school_alert_type_exceptions_path(alert_type), method: :post do %>
+<%= form_tag admin_alert_type_school_alert_type_exclusions_path(alert_type), method: :post do %>
   <% school_groups.each do |school_group| %>
     <h2><%= school_group.name %></h2>
     <ul class="list-group">
@@ -11,19 +11,19 @@
       <% school_group.schools.order(name: :asc).each do |school| %>
         <li class='list-group-item d-flex justify-content-between align-items-center'>
           <div class="custom-control custom-checkbox">
-            <%= check_box_tag "school_ids[]", school.id, existing_exceptions.key?(school.id), { id: "school_ids_#{school.id}", class: "custom-control-input multi_select_#{school_group.id}_group" } %>
+            <%= check_box_tag "school_ids[]", school.id, existing_exclusions.key?(school.id), { id: "school_ids_#{school.id}", class: "custom-control-input multi_select_#{school_group.id}_group" } %>
             <%= label_tag "school_ids[#{school.id}]", school.name, class: 'custom-control-label' %>
           </div>
           <div>
             <%= label_tag "school_reasons_#{school.id}", 'Reason' %> :
-            <%= text_field_tag "school_reasons[#{school.id}]", (existing_exceptions[school.id] if existing_exceptions.key?(school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
+            <%= text_field_tag "school_reasons[#{school.id}]", (existing_exclusions[school.id] if existing_exclusions.key?(school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
           </div>
         </li>
       <% end %>
     </ul>
   <% end %>
   <div class="actions mt-3">
-    <%= submit_tag "Create exceptions", class: 'btn' %>
+    <%= submit_tag "Create exclusions", class: 'btn' %>
   </div>
 <% end %>
 

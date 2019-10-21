@@ -23,19 +23,19 @@ describe 'alert type management', type: :system do
         click_on 'Manage'
       end
       within ('ul.alert-type') do
-        click_on 'School exceptions'
+        click_on 'School alert type exclusions'
       end
-      expect(page).to have_content('No school exceptions for this alert')
+      expect(page).to have_content('No school exclusions for this alert')
     end
 
     it 'can see a list of schools' do
-      click_on 'Manage exceptions'
+      click_on 'Manage exclusions'
       expect(page).to have_content(school.name)
     end
 
-    it 'can add and delete some exceptions with the right reasons' do
+    it 'can add and delete some exclusions with the right reasons' do
       school_2 = create(:school, :with_school_group)
-      click_on 'Manage exceptions'
+      click_on 'Manage exclusions'
       check school.name
       reason_1 = 'Super massive heating model'
       fill_in "school_reasons_#{school.id}", with: reason_1
@@ -44,11 +44,11 @@ describe 'alert type management', type: :system do
       reason_2 = 'Conditional editing'
       fill_in "school_reasons_#{school_2.id}", with: reason_2
 
-      expect { click_on "Create exceptions" }.to change { SchoolAlertTypeException.count }.by(2)
-      expect(page).to_not have_content('No school exceptions for this alert')
+      expect { click_on "Create exclusions" }.to change { SchoolAlertTypeExclusion.count }.by(2)
+      expect(page).to_not have_content('No school exclusions for this alert')
       expect(page).to have_content(school.name)
       expect(page).to have_content(reason_1)
-      expect { click_on 'Delete', match: :first }.to change { SchoolAlertTypeException.count }.by(-1)
+      expect { click_on 'Delete', match: :first }.to change { SchoolAlertTypeExclusion.count }.by(-1)
       expect(page).to have_content(school_2.name)
       expect(page).to have_content(reason_2)
     end
