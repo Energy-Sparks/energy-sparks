@@ -17,7 +17,7 @@ class AlertType < ApplicationRecord
   has_many :alert_subscription_events,  dependent: :destroy
 
   has_many :ratings, class_name: 'AlertTypeRating'
-  has_many :school_alert_type_exceptions
+  has_many :school_alert_type_exclusions
 
   enum source: [:analytics, :system]
   enum fuel_type: [:electricity, :gas]

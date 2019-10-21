@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_18_134920) do
+ActiveRecord::Schema.define(version: 2019_10_21_103716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -645,14 +645,14 @@ ActiveRecord::Schema.define(version: 2019_10_18_134920) do
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end
 
-  create_table "school_alert_type_exceptions", force: :cascade do |t|
+  create_table "school_alert_type_exclusions", force: :cascade do |t|
     t.bigint "alert_type_id"
     t.bigint "school_id"
     t.text "reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["alert_type_id"], name: "index_school_alert_type_exceptions_on_alert_type_id"
-    t.index ["school_id"], name: "index_school_alert_type_exceptions_on_school_id"
+    t.index ["alert_type_id"], name: "index_school_alert_type_exclusions_on_alert_type_id"
+    t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
   create_table "school_groups", force: :cascade do |t|
@@ -933,8 +933,8 @@ ActiveRecord::Schema.define(version: 2019_10_18_134920) do
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
-  add_foreign_key "school_alert_type_exceptions", "alert_types", on_delete: :cascade
-  add_foreign_key "school_alert_type_exceptions", "schools", on_delete: :cascade
+  add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
+  add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
