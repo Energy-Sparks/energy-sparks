@@ -19,8 +19,8 @@ module Admin
 
         SchoolAlertTypeException.where(alert_type: @alert_type).delete_all
 
-        school_ids.each_with_index do |school_id, index|
-          SchoolAlertTypeException.create(alert_type: @alert_type, school_id: school_id, reason: reasons[index])
+        school_ids.each do |school_id|
+          SchoolAlertTypeException.create(alert_type: @alert_type, school_id: school_id, reason: reasons[school_id])
         end
         redirect_to admin_alert_type_school_alert_type_exceptions_path(@alert_type)
       end

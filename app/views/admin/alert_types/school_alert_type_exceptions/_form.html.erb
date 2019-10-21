@@ -16,7 +16,7 @@
           </div>
           <div>
             <%= label_tag "school_reasons_#{school.id}", 'Reason' %> :
-            <%= text_field_tag 'school_reasons[]', (existing_exceptions[school.id] if existing_exceptions.key?(school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
+            <%= text_field_tag "school_reasons[#{school.id}]", (existing_exceptions[school.id] if existing_exceptions.key?(school.id)), { id: "school_reasons_#{school.id}", class: "width-400" } %>
           </div>
         </li>
       <% end %>
