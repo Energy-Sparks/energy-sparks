@@ -5,6 +5,9 @@ module NavHelper
     link_to link_text, '/home-page', class: 'navbar-brand', title: title
   end
 
+  def navbar_image_link
+  end
+
   def on_test?
     request.host.include?('test')
   end
