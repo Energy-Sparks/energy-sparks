@@ -168,6 +168,7 @@ Rails.application.routes.draw do
         namespace :ratings do
           resource :preview, only: :create, controller: 'preview'
         end
+        resources :school_alert_type_exceptions, only: [:index, :destroy, :new, :create]
       end
     end
 

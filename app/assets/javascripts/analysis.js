@@ -2,12 +2,10 @@
 
 function chartFailure(chart, title) {
   var $chartDiv = $(chart.renderTo);
-  var $chartWrapper = $chartDiv.parent();
+  var $chartWrapper = $chartDiv.parents('.chart-wrapper');
 
   $chartWrapper.addClass('alert alert-warning');
   $chartWrapper.html(`<h3>${title} chart</h3>`)
-
-  $('div#nav-row').before('<div class="alert alert-warning" role="alert">' + title + ' <a href="#' + $chartWrapper.attr('id') + '" class="alert-link">chart</a></div>');
 }
 
 function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
@@ -17,7 +15,7 @@ function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
   var seriesData = chart_data.series_data;
 
   if (! noAdvice) {
-    var $chartWrapper = $chartDiv.parent();
+    var $chartWrapper = $chartDiv.parents('.chart-wrapper');
     var titleH3 = $chartWrapper.find('h3');
     var titleH5 = $chartWrapper.find('h5');
 

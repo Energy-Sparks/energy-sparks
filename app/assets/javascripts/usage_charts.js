@@ -10,31 +10,28 @@ $(document).ready(function() {
     var period = $("#period").val();
     var config = $("#configuration").data('configuration');
 
-    var chartType = config[period]
     var chartContainer = $('.usage-chart').first();
+    var chartConfig = chartContainer.data('chart-config');
 
     var measurement = $('#measurement').val();
-
-    chartContainer.data('chart-type', chartType);
-
     var meter = $("#meter").val();
 
     if (meter) {
-      chartContainer.data('chart-series-breakdown', 'none');
+      chartConfig.series_breakdown = 'none';
       if (meter != 'all') {
-        chartContainer.data('chart-mpan-mprn', meter);
+        chartConfig.mpan_mprn = meter;
       } else {
-        chartContainer.data('chart-mpan-mprn', null);
+        chartConfig.mpan_mprn = null;
       }
     } else {
-      chartContainer.data('chart-mpan-mprn', null);
-      chartContainer.data('chart-series-breakdown', 'meter');
+      chartConfig.mpan_mprn = null;
+      chartConfig.series_breakdown = 'meter';
     }
 
-    chartContainer.data('chart-y-axis-units', measurement);
-    chartContainer.data('chart-date-ranges', getDateRanges());
+    chartConfig.y_axis_units = measurement;
+    chartConfig.date_ranges = getDateRanges();
 
-    processAnalysisChart(chartContainer[0]);
+    processAnalysisChart(chartContainer[0], chartConfig);
 
   }
 
