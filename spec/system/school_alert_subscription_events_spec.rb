@@ -7,7 +7,7 @@ RSpec.describe "school alert subscription events", type: :system do
   let!(:contact)            { create(:contact_with_name_email, school: school) }
   let!(:alert_type_rating)  { create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, email_active: true}
   let!(:content_version)    { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
-  let(:service) { Alerts::GenerateContent.new(school) }
+  let(:service)             { Alerts::GenerateContent.new(school) }
 
   before(:each) do
     sign_in(user)
@@ -24,6 +24,7 @@ RSpec.describe "school alert subscription events", type: :system do
   end
 
   it 'allows the user to send all pending emails' do
+
     service.perform(subscription_frequency: AlertType.frequencies.keys)
     click_on(school.name)
     click_on('Alert subscription events')
