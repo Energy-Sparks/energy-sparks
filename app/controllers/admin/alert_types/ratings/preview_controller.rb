@@ -2,9 +2,8 @@ module Admin
   module AlertTypes
     module Ratings
       class PreviewController < AdminController
-        load_and_authorize_resource :alert_type
-
-        def show
+        def create
+          @alert_type = AlertType.find(params[:alert_type_id])
           @alert = @alert_type.alerts.where(displayable: true).rating_between(from_parameter, to_parameter).order(created_at: :desc).first
           if @alert
             load_rating_requirements

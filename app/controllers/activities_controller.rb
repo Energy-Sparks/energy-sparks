@@ -13,6 +13,12 @@ class ActivitiesController < ApplicationController
   # GET /activities/1
   # GET /activities/1.json
   def show
+    @activity_type_content = TemplateInterpolation.new(
+      @activity.activity_type,
+      render_with: SchoolTemplate.new(@school)
+    ).interpolate(
+      :school_specific_description_or_fallback
+    )
   end
 
   # GET /activities/new

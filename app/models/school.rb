@@ -29,6 +29,7 @@
 #  template_calendar_id                  :integer
 #  updated_at                            :datetime         not null
 #  urn                                   :integer          not null
+#  validation_cache_key                  :string           default("initial")
 #  weather_underground_area_id           :bigint(8)
 #  website                               :string
 #
@@ -77,6 +78,8 @@ class School < ApplicationRecord
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
 
+  has_many :school_alert_type_exclusions
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
 
@@ -105,6 +108,10 @@ class School < ApplicationRecord
   accepts_nested_attributes_for :school_times
 
   auto_strip_attributes :name, :website, :postcode, squish: true
+
+  def latest_alerts_without_exclusions
+    alerts.without_exclusions.latest
+  end
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?

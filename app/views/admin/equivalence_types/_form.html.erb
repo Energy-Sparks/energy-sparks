@@ -1,7 +1,7 @@
-<%= render 'admin/shared/variables_accordion', template_variables: {"Conversion" => template_variables }, units_field: :converted_to %>
+<%= render 'admin/shared/variables_accordion', template_variables: {"Conversion" => template_variables }, units_field: :converted_to, example_variables: nil %>
 
 
-<%= render 'admin/shared/preview_section', scope: 'equivalence', preview_url: admin_equivalences_path, no_timings: true, no_weightings: true do %>
+<%= render 'admin/shared/preview_section', scope: 'equivalence', preview_url: admin_equivalence_type_preview_path, no_timings: true, no_weightings: true do %>
 
   <%= form.label :school_id, 'Preview with' %>
   <%= select_tag :school_id, options_from_collection_for_select(School.active.order(:name), :id, :name) %>

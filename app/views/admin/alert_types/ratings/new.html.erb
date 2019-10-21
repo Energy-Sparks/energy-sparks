@@ -3,7 +3,7 @@
 <h2>New content</h2>
 
 <%= simple_form_for @rating, url: admin_alert_type_ratings_path(@alert_type) do |form| %>
-  <%= render 'form', form: form, alert_type: @alert_type, content: @content, template_variables: @template_variables %>
+  <%= render 'form', form: form, alert_type: @alert_type, content: @content, template_variables: @template_variables, example_variables: @example_variables %>
   <%= form.button :submit, 'Create content' %>
 <% end %>
 

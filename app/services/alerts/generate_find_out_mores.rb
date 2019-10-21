@@ -1,12 +1,11 @@
 module Alerts
   class GenerateFindOutMores
-    def initialize(school, content_generation_run:)
-      @school = school
+    def initialize(content_generation_run:)
       @content_generation_run = content_generation_run
     end
 
-    def perform
-      @school.alerts.latest.each do |alert|
+    def perform(alerts)
+      alerts.each do |alert|
         FetchContent.new(alert).content_versions(scope: :find_out_more).each do |content_version|
           @content_generation_run.find_out_mores.create!(alert: alert, content_version: content_version)
         end

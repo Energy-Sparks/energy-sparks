@@ -14,8 +14,11 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <%= render 'nav' %>
 
 <% @charts.each_with_index do |chart, index| %>
-  <div id="chart_wrapper_<%= chart %>">
+  <% unless index == 0 %>
+    <hr class="analysis"/>
+  <% end %>
+  <div id="chart_wrapper_<%= chart %>" class="chart-wrapper">
     <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
-    <%= chart_tag(@school, chart.to_s, index: index, chart_config: @chart_config) %>
+    <%= chart_tag(@school, chart.to_s, chart_config: @chart_config, wrap: false) %>
   </div>
 <% end %>

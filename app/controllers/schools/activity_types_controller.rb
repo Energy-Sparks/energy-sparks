@@ -10,6 +10,12 @@ module Schools
     def show
       @recorded = Activity.where(activity_type: @activity_type).count
       @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
+      @content = TemplateInterpolation.new(
+        @activity_type,
+        render_with: SchoolTemplate.new(@school)
+      ).interpolate(
+        :school_specific_description_or_fallback
+      )
     end
   end
 end
