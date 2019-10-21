@@ -26,7 +26,7 @@ module Admin
       end
 
       def destroy
-        @school_alert_type_exception.delete
+        @school_alert_type_exclusion.delete
         redirect_to admin_alert_type_school_alert_type_exclusions_path(@alert_type)
       end
     end
