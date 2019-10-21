@@ -9,7 +9,7 @@ env:
   - NODE_ENV=test
 services:
 - postgresql
-dist: xenial
+dist: bionic
 addons:
   postgresql: '10'
   sources:
