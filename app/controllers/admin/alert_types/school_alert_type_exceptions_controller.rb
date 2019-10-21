@@ -9,7 +9,8 @@ module Admin
       end
 
       def new
-        @schools = School.all
+        @school_groups = SchoolGroup.all.order(name: :asc)
+        @existing_exceptions = @alert_type.school_alert_type_exceptions.pluck(:school_id, :reason).to_h
       end
 
       def create
