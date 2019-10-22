@@ -20,6 +20,18 @@ div.analysis-chart, div.simulator-chart, div.usage-chart{
   }
 }
 
+@media (max-width: 767.98px) {
+  div.analysis-chart {
+    height: 500px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  div.analysis-chart {
+    height: 500px;
+  }
+}
+
 div.popover {
   max-width: 750px;
   z-index: 1000;

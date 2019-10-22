@@ -3,9 +3,13 @@
     <%= render 'activity_types/card', activity_type: activity_type, based_on: 'previous activities'%>
   <% end %>
 
+  <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
+
   <% activities_from_alerts.each do |activity_type| %>
     <%= render 'activity_types/card', activity_type: activity_type, based_on: 'your alerts' %>
   <% end %>
+
+  <div class="w-100 d-none d-sm-block d-md-none"><h3 class="p-2 ml-2">Or, start a programme&hellip;</h3></div>
 
   <% if activities_from_programmes.empty? && @suggested_programme.present? %>
 
