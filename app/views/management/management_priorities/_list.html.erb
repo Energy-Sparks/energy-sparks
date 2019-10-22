@@ -1,33 +1,35 @@
-<table class="table table-borderless management-priorities">
-  <thead>
-    <tr>
-      <th class="h2">Energy saving opportunities</th>
-      <th>Potential saving</th>
-      <th>Cost</th>
-      <th>Payback</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% management_priorities.each do |priority| %>
+<div class="table-responsive-sm">
+  <table class="table table-borderless management-priorities">
+    <thead>
       <tr>
-        <td><%= priority.management_priorities_title  %></td>
-        <td><%= priority.template_variables[:average_one_year_saving_gbp] %> <small>/year</small></td>
-        <td><%= priority.template_variables[:average_capital_cost] %></td>
-        <td><%= priority.template_variables[:average_payback_years] %></td>
-        <td>
-          <% if priority.find_out_more %>
-            <%= link_to 'Find out more', school_find_out_more_path(school, priority.find_out_more), class: 'btn btn-rounded' %>
-          <% end %>
-        </td>
+        <th scope="col" class="h2"><b>Energy saving opportunities</b></th>
+        <th scope="col">Potential saving</th>
+        <th scope="col">Cost</th>
+        <th scope="col">Payback</th>
+        <th scope="col"></th>
       </tr>
+    </thead>
+    <tbody>
+      <% management_priorities.each do |priority| %>
+        <tr>
+          <td scope="row"><%= priority.management_priorities_title  %></td>
+          <td><%= priority.template_variables[:average_one_year_saving_gbp] %> <small>/year</small></td>
+          <td><%= priority.template_variables[:average_capital_cost] %></td>
+          <td><%= priority.template_variables[:average_payback_years] %></td>
+          <td>
+            <% if priority.find_out_more %>
+              <%= link_to 'Find out more', school_find_out_more_path(school, priority.find_out_more), class: 'btn btn-rounded btn-fixed-width-10' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    <% if local_assigns[:show_more] %>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="text-right"><%= link_to 'See more opportunities', management_school_management_priorities_path(school)  %></td>
+        </tr>
+      </tfoot>
     <% end %>
-  </tbody>
-  <% if local_assigns[:show_more] %>
-    <tfoot>
-      <tr>
-        <td colspan="5" class="text-right"><%= link_to 'See more opportunities', management_school_management_priorities_path(school)  %></td>
-      </tr>
-    </tfoot>
-  <% end %>
-</table>
+  </table>
+</div>
