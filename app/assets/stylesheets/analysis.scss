@@ -20,6 +20,10 @@ div.analysis-chart, div.simulator-chart, div.usage-chart{
   }
 }
 
+.analysis-chart.pupils {
+  height: 500px;
+}
+
 div.popover {
   max-width: 750px;
   z-index: 1000;
