@@ -11,5 +11,5 @@
   </div>
   <hr />
   <%= render 'shared/analysis_controls' %>
-  <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false, html_class: 'analysis-chart pupils') %>
+  <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false) %>
 </div>
