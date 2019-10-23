@@ -25,7 +25,7 @@ header img {
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
-  .carousel-item {
+  .home-page .carousel-item {
     h2 {
       font-size: $f5;
     }
@@ -43,11 +43,15 @@ header img {
   .masthead-content {
     background-color: $dark-blue;
   }
+
+   p.display-3 {
+    font-size: $f3;
+  }
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) and (max-width: 767.98px) {
-  .carousel-item {
+  .home-page .carousel-item {
     h2 {
       font-size: $f5;
     }
@@ -61,7 +65,16 @@ header img {
       margin-right: 20px;
     }
   }
+
+  .masthead-content {
+    background-color: $dark-blue;
+  }
+
+  p.display-3 {
+    font-size: $f2;
+  }
 }
+
 
 // Medium devices (tablets, 768px and up) // max-width: 991.98px
 @media (min-width: 768px) and (max-width: 1199.98px) {
@@ -70,7 +83,7 @@ header img {
   }
 
   .headline-sub-text {
-    font-size: $f4;
+    font-size: $f5;
   }
 
   .masthead .btn {
@@ -78,7 +91,7 @@ header img {
     padding: 10px;
   }
 
-  .carousel-item {
+  .home-page .carousel-item {
     h2 {
       font-size: $f3;
     }
@@ -114,7 +127,7 @@ header img {
     padding: 20px;
   }
 
-  .carousel-item {
+  .home-page .carousel-item {
     h2 {
       font-size: $f1;
     }

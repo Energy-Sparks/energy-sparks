@@ -2,7 +2,7 @@
 #
 # Table name: programmes
 #
-#  description       :text
+#  document_link     :string
 #  ended_on          :date
 #  id                :bigint(8)        not null, primary key
 #  programme_type_id :bigint(8)        not null
@@ -34,4 +34,6 @@ class Programme < ApplicationRecord
   enum status: [:started, :completed, :abandoned]
 
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
+
+  has_rich_text :description
 end

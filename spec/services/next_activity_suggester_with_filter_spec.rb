@@ -110,6 +110,16 @@ describe NextActivitySuggesterWithFilter do
     context 'where the school has completed the activity' do
       it 'does not use the activity type' do
         programme.programme_activities[0].update!(activity: create(:activity, activity_type: programme.programme_activities[0].activity_type, school: school))
+        if subject.suggest_from_programmes.to_a.size != 1
+          p "Activity Types"
+          pp ActivityType.all
+          p "Programme activities"
+          pp programme.programme_activities
+          p "Activities"
+          pp Activity.all
+          p "Suggest from programmes"
+          pp subject.suggest_from_programmes.to_a
+        end
         expect(subject.suggest_from_programmes.to_a.size).to eq(1)
       end
     end

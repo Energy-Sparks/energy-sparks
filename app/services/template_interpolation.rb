@@ -2,10 +2,11 @@ require 'mustache'
 require 'closed_struct'
 
 class TemplateInterpolation
-  def initialize(object, with_objects: {}, proxy: [])
+  def initialize(object, with_objects: {}, proxy: [], render_with: Mustache.new)
     @object = object
     @with_objects = with_objects
     @proxy = proxy
+    @render_with = render_with
   end
 
   def interpolate(*fields, with: {})
@@ -15,7 +16,12 @@ class TemplateInterpolation
       collection
     end
     templated = fields.inject(with_proxied_objects) do |collection, field|
-      collection[field] = process(@object.send(field) || "", with)
+      template = @object.send(field) || ""
+      collection[field] = if template.is_a?(ActionText::RichText)
+                            process_rich_text_template(template, with)
+                          else
+                            process_string_template(template, with)
+                          end
       collection
     end
     ClosedStruct.new(templated)
@@ -30,13 +36,25 @@ class TemplateInterpolation
 
 private
 
-  def process(template, variables)
-    Mustache.render(template, variables)
+  def process_string_template(template, variables)
+    @render_with.render(template, variables)
+  end
+
+  def process_rich_text_template(template, variables)
+    # ActionText content wraps up content in a wrapper div, usually <div class="trix-content"></div>
+    # fragment returns the content without the wrapper
+    template_string = template.body.fragment.to_s
+    template.body = ActionText::Content.new(process_string_template(template_string, variables))
+    template
   end
 
   def get_variables(template)
-    mustache = Mustache.new
-    mustache.template = template
+    mustache = @render_with
+    mustache.template = template_as_string(template)
     mustache.template.tags
+  end
+
+  def template_as_string(template)
+    template.is_a?(ActionText::RichText) ? template.body.fragment.to_s : template
   end
 end

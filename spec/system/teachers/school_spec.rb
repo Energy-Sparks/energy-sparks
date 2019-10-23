@@ -37,7 +37,7 @@ RSpec.describe "teachers school view", type: :system do
 
   describe 'when the school is gas only I can visit the teacher dashboard and it only shows me a ' do
     it 'gas chart' do
-      school.configuration.update!(gas: true, electricity: false, gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
+      school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_gas: true, has_electricity: false), gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
       visit teachers_school_path(school)
       expect(page).to have_content('Gas')
       expect(page).to_not have_content 'Electricity'
@@ -81,7 +81,7 @@ RSpec.describe "teachers school view", type: :system do
 
   describe 'when the school is electricity only I can visit the teacher dashboard and it only shows me a ' do
     it 'electricity chart' do
-      school.configuration.update(electricity: true)
+      school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_gas: false, has_electricity: true))
       visit teachers_school_path(school)
       expect(page).to have_content 'Electricity'
       expect(page).to_not have_content('Gas')

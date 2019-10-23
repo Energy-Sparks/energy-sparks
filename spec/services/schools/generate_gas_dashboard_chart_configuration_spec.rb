@@ -11,7 +11,7 @@ module Schools
     end
 
     context 'gas dashboard chart configuration' do
-      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, no_meters_with_validated_readings: false, has_gas: true) }
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, has_electricity: true, has_gas: true) }
 
       it 'returns the temperature compensated one if possible' do
         chart_data = instance_double(ChartData)
@@ -31,10 +31,10 @@ module Schools
     end
 
     context 'no gas dashboard chart configuration' do
-      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, no_meters_with_validated_readings: false, has_gas: false) }
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, has_electricity: true, has_gas: false) }
       it 'has a nil dashboard set' do
         chart_type = GenerateGasDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
-        expect(chart_type).to eq Schools::Configuration::NO_CHART
+        expect(chart_type).to eq Schools::Configuration::NO_GAS_CHART
       end
     end
   end

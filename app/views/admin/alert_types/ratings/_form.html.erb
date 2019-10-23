@@ -11,11 +11,11 @@
 
 <%= form.simple_fields_for :content, content do |content| %>
 
-  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards' %>
+  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards', input_html: { class: 'colours' }, label_method: :humanize %>
 
   <h3>Variables</h3>
 
-  <%= render 'admin/shared/variables_accordion', template_variables: template_variables, units_field: :units %>
+  <%= render 'admin/shared/variables_accordion', template_variables: template_variables, units_field: :units, example_variables: example_variables %>
 
   <h3>Content</h3>
 
@@ -34,31 +34,31 @@
 
   <%= render 'content_section', form: form, field: :teacher_dashboard_alert_active, field_name: 'Teacher dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'teacher_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :teacher_dashboard_title) do %>
-      <%= content.input :teacher_dashboard_title %>
+      <%= content.input :teacher_dashboard_title, as: :trix_editor %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
-      <%= content.input :pupil_dashboard_title %>
+      <%= content.input :pupil_dashboard_title, as: :trix_editor %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :public_dashboard_alert_active, field_name: 'Public dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'public_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :public_dashboard_title) do %>
-      <%= content.input :public_dashboard_title %>
+      <%= content.input :public_dashboard_title, as: :trix_editor %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Management dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :management_dashboard_title) do %>
-      <%= content.input :management_dashboard_title %>
+      <%= content.input :management_dashboard_title, as: :trix_editor %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :management_priorities_active, field_name: 'Management priorities' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'management_priorities', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :management_priorities) do %>
-      <%= content.input :management_priorities_title %>
+      <%= content.input :management_priorities_title, as: :trix_editor %>
     <% end %>
   <% end %>
 

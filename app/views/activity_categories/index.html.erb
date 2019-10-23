@@ -1,74 +1,25 @@
-<% content_for :page_title do %>
-    <%= t('application') %> Activities
-<% end %>
+<% content_for :page_title, "Activities" %>
 
-<div class="container">
-  <div class="row padded-row">
-    <div class="col-lg-12">
-      <h2><%= t('application') %> Activities</h2>
-      <p>Each school's energy-saving journey will evolve in a different way. But a well-designed energy-saving plan will involve a balance of activities from each of the following categories.</p>
-
-      <p>Choose a category below to explore the list of recommended activities. More detail is provided about each activity to help you complete it.</p>
-
-      <p>Completing activities will allow you to <%= link_to 'score points', scoring_path %>.</p>
-      <p>The figure in the green square is the number of points each activity is worth, 10 points for example: <span class="badge badge-success">10</span>
-
-      <p>Choose a category below to explore the list of recommended activities. More detail and resources are provided for each activity to help you complete it. Activities are currently filtered by the curriculum stage of your school. You can change this if you wish to explore the activities available for older and younger pupils.</p>
-    </div>
-  </div>
-
-
-  <div class="row padded-row">
-    <div class="col-md-3">
-      <%= form_tag activity_categories_path, method: :get do %>
-        <h3>Filters</h3>
-        <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
-        <%= render 'activity_types/filters', filter: @filter %>
-        <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
+<%= render 'list_and_filters', filter: @filter, activity_categories: @activity_categories, title: "Energy Sparks Activities" do %>
+  <% @activity_categories.each_with_index do |activity_category, idx| %>
+    <div class="tab-pane fade show <%= idx == 0 ? 'active' : '' %>" id="v-pills-cat<%= activity_category.id %>" role="tabpanel" aria-labelledby="v-pills-cat<%= activity_category.id %>-tab">
+      <% if activity_category.description.present? %>
+        <p><%= activity_category.description %></p>
+      <% end %>
+      <% if @filter.for_category(activity_category).any? %>
+        <% @filter.for_category(activity_category).order(:score).each do |activity_type| %>
+          <p>
+            <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %></span>
+            <%= link_to "#{activity_type.name} (#{activity_type.key_stage_list})", activity_type_path(activity_type) %>
+          </p>
+        <% end %>
+      <% else %>
+        <p>There are no activities for this category, using the filters you have set.</p>
       <% end %>
     </div>
-    <div class="col-md-9">
-      <div class="nav flex-column nav-pills card-header-pills mb-5" id="v-pills-tab" role="tablist">
-        <% @activity_categories.each_with_index do |activity_category, idx| %>
-          <a class="border nav-link <%= idx == 0 ? 'active' : '' %>"
-             id="v-pills-cat<%= activity_category.id %>-tab"
-             data-toggle="pill"
-             href="#v-pills-cat<%= activity_category.id %>"
-             role="tab"
-             aria-controls="v-pills-home"
-             aria-expanded="<%= idx == 0 ? 'true' : 'false' %>"><p><%= activity_category.name %></p></a>
-        <% end %>
-      </div>
-      <div class="tab-content" id="v-pills-tabContent">
-        <% @activity_categories.each_with_index do |activity_category, idx| %>
-          <div class="tab-pane fade show <%= idx == 0 ? 'active' : '' %>" id="v-pills-cat<%= activity_category.id %>" role="tabpanel" aria-labelledby="v-pills-cat<%= activity_category.id %>-tab">
-            <% if activity_category.description.present? %>
-              <p><%= activity_category.description %></p>
-            <% end %>
-            <% if @filter.for_category(activity_category).any? %>
-              <% @filter.for_category(activity_category).order(:score).each do |activity_type| %>
-                <p>
-                  <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %></span>
-                  <%= link_to "#{activity_type.name} (#{activity_type.key_stage_list})", activity_type_path(activity_type) %>
-                </p>
-              <% end %>
-            <% else %>
-              <p>There are no activities for this category, using the filters you have set.</p>
-            <% end %>
-            <p>
-              <% if can? :manage, ActivityCategory %>
-                <%= link_to 'Edit', edit_activity_category_path(activity_category), class: 'btn btn-primary' %>
-              <% end %>
-            </p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <% end %>
+<% end %>
 
-  <div class="row">
-    <% if can? :manage, ActivityCategory %>
-      <%= link_to 'New Activity Category', new_activity_category_path, class: 'btn btn-primary' %>
-    <% end %>
-  </div>
-</div>
+<% if can? :manage, ActivityCategory %>
+  <%= link_to 'Manage activity categories', admin_activity_categories_path, class: 'btn' %>
+<% end %>

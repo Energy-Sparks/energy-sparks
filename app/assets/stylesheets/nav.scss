@@ -6,6 +6,10 @@
   border: none;
   padding: 1px;
 
+  img {
+    height: 45px;
+  }
+
   .navbar-brand,
   .navbar-brand:hover,
   .navbar-brand:focus,
@@ -71,6 +75,10 @@
   .nav-item {
     color: white;
   }
+
+  img {
+    height: 40px;
+  }
 }
 
 .navbar {
@@ -87,6 +95,10 @@
     text-align: center;
     vertical-align: center;
     padding: 0;
+  }
+
+  a.navbar-brand {
+    margin-left: 38px;
   }
 }
 

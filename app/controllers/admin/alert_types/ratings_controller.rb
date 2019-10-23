@@ -11,12 +11,14 @@ module Admin
       end
 
       def new
-        @rating = @alert_type.has_ratings? ? AlertTypeRating.new : AlertTypeRating.new(rating_from: 0, rating_to: 10)
+        @rating = @alert_type.has_ratings? ? AlertTypeRating.new(alert_type: @alert_type) : AlertTypeRating.new(rating_from: 0, rating_to: 10, alert_type: @alert_type)
+        load_example_variables(@rating)
         @content = AlertTypeRatingContentVersion.new
       end
 
       def create
         @rating = @alert_type.ratings.new
+        load_example_variables(@rating)
         @content = @rating.content_versions.new(content_params[:content])
         if @rating.update_with_content!(rating_params, @content)
           redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Content created'
@@ -28,10 +30,12 @@ module Admin
       def edit
         @rating = @alert_type.ratings.find(params[:id])
         @content = @rating.current_content
+        load_example_variables(@rating)
       end
 
       def update
         @rating = @alert_type.ratings.find(params[:id])
+        load_example_variables(@rating)
         @content = @rating.content_versions.new(content_params[:content])
         if @rating.update_with_content!(rating_params, @content)
           redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Content updated'
@@ -65,6 +69,13 @@ module Admin
       def set_available_charts
         @available_charts = @alert_type.available_charts
         @available_charts << ["None", :none]
+      end
+
+      def load_example_variables(rating)
+        example_alert = rating.alert_type.alerts.where(displayable: true).rating_between(rating.rating_from || 0, rating.rating_to || 10).order(created_at: :desc).first
+        if example_alert
+          @example_variables = example_alert.template_variables
+        end
       end
     end
   end

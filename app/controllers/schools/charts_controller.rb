@@ -21,7 +21,9 @@ class Schools::ChartsController < ApplicationController
       format.json do
         chart_config = {
           mpan_mprn: params[:mpan_mprn],
-          y_axis_units: params.fetch(:chart_y_axis_units, :kwh).to_sym
+          y_axis_units: params.fetch(:chart_y_axis_units, :kwh).to_sym,
+          series_breakdown: params[:series_breakdown],
+          date_ranges: get_date_ranges
         }
         @output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
       end
@@ -41,6 +43,12 @@ private
   def get_transformations
     params.fetch(:transformations, {}).values.map do |(transformation_type, transformation_value)|
       [transformation_type.to_sym, transformation_value.to_i]
+    end
+  end
+
+  def get_date_ranges
+    params.fetch(:date_ranges) { {} }.values.map do |range|
+      Date.parse(range['start'])..Date.parse(range['end'])
     end
   end
 end

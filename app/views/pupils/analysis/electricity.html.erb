@@ -13,7 +13,7 @@
 
 <h2>I want to&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :electricity, chart_config: {energy: 'Electricity', presentation: 'kWh'} do %>
     find out <strong>when</strong> the electricity was used
@@ -31,17 +31,17 @@
 
 <h2>I want to look at&hellip;</h2>
 
-<div class="card-deck">
+<div class="row">
 
   <%= render 'chart_link', school: @school, energy: :electricity, chart_config: {energy: 'Electricity', presentation: 'Pie'}, centre: true do %>
     <div class="p-4">
-      <%= fa_icon "chart-pie-alt fa-3x" %>
+      <%= fa_icon "chart-pie fa-3x" %>
     </div>
     Pie charts
   <% end %>
 
   <%= render 'category_link', school: @school, energy: :electricity, category: :electricity_bar, category_name: 'Bar charts', icon: 'chart-bar' %>
 
-  <%= render 'category_link', school: @school, energy: :electricity, category: :electricity_line, category_name: 'Line graphs', icon: 'chart-line-down' %>
+  <%= render 'category_link', school: @school, energy: :electricity, category: :electricity_line, category_name: 'Line graphs', icon: 'chart-line' %>
 
 </div>

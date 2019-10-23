@@ -2,13 +2,14 @@ language: ruby
 cache:
   directories:
   - node_modules
-  yarn: true
+  yarn: false
+  bundler: true
 env:
   global:
   - NODE_ENV=test
 services:
 - postgresql
-dist: xenial
+dist: bionic
 addons:
   postgresql: '10'
   sources:
@@ -35,6 +36,3 @@ script:
 - bundle exec rspec
 after_success:
 - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
-before_install:
-- openssl aes-256-cbc -K $encrypted_e1f3d221cce1_key -iv $encrypted_e1f3d221cce1_iv
-  -in .npmrc.enc -out .npmrc -d

@@ -1,12 +1,11 @@
 module Alerts
   class GenerateDashboardAlerts
-    def initialize(school, content_generation_run:)
-      @school = school
+    def initialize(content_generation_run:)
       @content_generation_run = content_generation_run
     end
 
-    def perform
-      @school.alerts.latest.each do |alert|
+    def perform(alerts)
+      alerts.each do |alert|
         process_dashboard_alerts(alert, :teacher)
         process_dashboard_alerts(alert, :pupil)
         process_dashboard_alerts(alert, :public)

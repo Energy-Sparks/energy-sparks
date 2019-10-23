@@ -1,0 +1,30 @@
+<% content_for :page_title, "Here's the electricity and solar data for your school" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <%= link_to 'Back',  pupils_school_analysis_path(@school, category: :solar), class: 'btn btn-rounded' %>
+  </div>
+  <div>
+    <h1>Here's the <strong>electricity and solar </strong> data for your school</h1>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h2>I want to&hellip;</h2>
+
+<div class="row">
+
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Line', secondary_presentation: '7days'} do %>
+    find out how much electricity was used in the last 7 days
+  <% end %>
+
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Line', secondary_presentation: 'Base'} do %>
+    find out how much electricity was used by lights and appliances running all the time
+  <% end %>
+
+  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: {period: :daily} do %>
+    compare the electricity used on two different days
+  <% end %>
+
+</div>

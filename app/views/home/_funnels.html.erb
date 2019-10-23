@@ -1,0 +1,45 @@
+<div class="funnels mt-3">
+  <div class="application container">
+    <div class="card-deck pt-5">
+      <div class="card mb-4">
+        <div class="card-image">
+        <%= image_tag("funnel-manager.png", class: "img-fluid funnel-image") %>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">For school management&hellip;</h4>
+          <p class="card-text">Online analysis of your school's energy use using up to date smart meter data. Notifications of changes in consumption with energy saving tips.</p>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Energy Sparks for Managers', for_management_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+        </div>
+      </div>
+      <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
+      <div class="card mb-4">
+        <div class="card-image">
+          <%= image_tag("funnel-teachers.png", class: "img-fluid  funnel-image") %>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">For teachers &hellip;</h4>
+          <p class="card-text">Eco-team and curriculum linked energy education and saving activities. Energy related lesson plans and downloadable resources.</p>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Energy Sparks for Teachers', for_teachers_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+        </div>
+      </div>
+       <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
+      <div class="card mb-4">
+        <div class="card-image">
+          <%= image_tag("funnel-pupils.png", class: "img-fluid  funnel-image") %>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">For pupils &hellip;</h4>
+          <p class="card-text">Exciting activities for eco-teams to follow. Opportunities to compete with other local schools to see who can save the most energy.</p>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Energy Sparks for Pupils', for_pupils_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

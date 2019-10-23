@@ -71,6 +71,40 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
+
+    it 'I can amend the email address if the user has not responded' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+
+      within '.navbar' do
+        click_on 'Automatic School Setup'
+      end
+
+      expect(onboarding.has_only_sent_email_or_reminder?).to be true
+
+      click_on 'Change'
+      expect(page).to have_content('Change email address')
+
+      fill_in(:school_onboarding_contact_email, with: '')
+      click_on 'Save'
+
+      expect(page).to have_content('Change email address')
+
+      new_email_address = 'oof@youareawful.com'
+      fill_in(:school_onboarding_contact_email, with: new_email_address)
+
+      click_on 'Save'
+
+      expect(page).to have_content(new_email_address)
+
+      email = ActionMailer::Base.deliveries.last
+      expect(email.to).to include(new_email_address)
+
+      onboarding.reload
+
+      expect(onboarding.has_only_sent_email_or_reminder?).to be true
+
+      expect(onboarding.contact_email).to eq new_email_address
+    end
   end
 
   context 'as school user signing up' do
@@ -96,9 +130,14 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Next'
 
       click_on 'I give permission'
+      expect(page).to have_content('Please confirm')
+
+      check 'I confirm agreement with the Energy Sparks privacy and cookie policy'
+      click_on 'I give permission'
 
       onboarding.reload
-      expect(onboarding).to have_event('permission_given')
+      expect(onboarding).to have_event(:permission_given)
+      expect(onboarding).to have_event(:privacy_policy_agreed)
 
       expect(page).to have_field('Email', with: onboarding.contact_email)
       fill_in 'Your name', with: 'A Teacher'

@@ -27,5 +27,10 @@ module EnergySparks
     config.active_record.default_timezone = :utc
 
     config.middleware.use Rack::Attack
+
+    config.after_initialize do
+      ActionText::ContentHelper.allowed_attributes.add 'id'
+      ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
+    end
   end
 end

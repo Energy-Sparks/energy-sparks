@@ -38,8 +38,17 @@ module Amr
       expect(first_gas_meter.amr_data.values.first.kwh_data_x48).to eq g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
     end
 
+    it 'fallsback to date parse where the specified format does not work' do
+      e_meter.amr_data_feed_readings << AmrDataFeedReading.create!(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, rand), reading_date: Date.tomorrow.strftime('%d/%m/%Y'), mpan_mprn: e_meter.mpan_mprn, amr_data_feed_import_log: log)
+
+      expect(e_meter.amr_data_feed_readings.count).to be 3
+      meter_collection = AnalyticsUnvalidatedMeterCollectionFactory.new(school).build
+      expect(meter_collection.electricity_meters.first.amr_data.keys.size).to eq 3
+      expect(meter_collection.electricity_meters.first.amr_data.keys).to include Date.tomorrow
+    end
+
     it 'skips invalid date formats' do
-      e_meter.amr_data_feed_readings << AmrDataFeedReading.create!(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, rand), reading_date: Date.tomorrow.strftime('%b %e %Y'), mpan_mprn: e_meter.mpan_mprn, amr_data_feed_import_log: log)
+      e_meter.amr_data_feed_readings << AmrDataFeedReading.create!(meter: e_meter, amr_data_feed_config: config, readings: Array.new(48, rand), reading_date: 'baddate', mpan_mprn: e_meter.mpan_mprn, amr_data_feed_import_log: log)
 
       expect(e_meter.amr_data_feed_readings.count).to be 3
       meter_collection = AnalyticsUnvalidatedMeterCollectionFactory.new(school).build

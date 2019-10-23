@@ -53,11 +53,21 @@ a.nav-link.active {
   color: $white;
 }
 
+.btn-dark-blue {
+  color: white;
+  background-color: $dark-blue;
+  background-image: none;
+}
+
 .btn-group {
   .btn {
     margin-left: 5px;
     margin-right: 5px;
   }
+}
+
+.btn-fixed-width-100 {
+  width: 100px;
 }
 
 .navbar {
@@ -153,3 +163,27 @@ section.highlight {
     outline: none;
   }
 }
+
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  .btn,
+  .btn:hover,
+  .btn:focus,
+  .btn:active,
+  .btn.active {
+    font-size: $f7;
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .btn,
+  .btn:hover,
+  .btn:focus,
+  .btn:active,
+  .btn.active {
+    font-size: $f7;
+  }
+}
+

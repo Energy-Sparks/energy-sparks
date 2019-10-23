@@ -1,10 +1,9 @@
 @import '~awesomplete/awesomplete';
 @import '../src/stylesheets';
 
-$fa-font-path: '~@fortawesome/fontawesome-pro/webfonts';
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 
-@import '~@fortawesome/fontawesome-pro/scss/fontawesome';
-@import '~@fortawesome/fontawesome-pro/scss/regular';
-@import '~@fortawesome/fontawesome-pro/scss/solid';
-@import '~@fortawesome/fontawesome-pro/scss/light';
-@import '~@fortawesome/fontawesome-pro/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';

@@ -1,4 +1,3 @@
-<!-- the expand-xl sets the breakpoint as to when to collapse the menu -->
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top fixed-top-sub-nav sub-navbar">
   <div class="container">
     <%= link_to school.name, school_path(school), class: "navbar-brand" %>
@@ -8,7 +7,7 @@
       </button>
       <div class="collapse navbar-collapse" id="subnavbarNavDropdown">
         <ul class="navbar-nav">
-          <%= render 'shared/dashboards' if current_user %>
+          <%= render 'shared/dashboards' if can?(:read, :dashboard_menu) && school.active? %>
 
           <%= render 'shared/manage_school', school: @school if can? :update, school %>
 

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
+  get 'home-page', to: 'home#show'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -11,15 +12,15 @@ Rails.application.routes.draw do
   get 'team', to: 'home#team'
   get 'getting-started', to: 'home#getting_started'
   get 'scoring', to: 'home#scoring'
-  get 'privacy_policy', to: 'home#privacy_policy'
+  get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  resources :activity_types
-  resources :activity_categories
+  resources :activity_types, only: [:index, :show]
+  resources :activity_categories, only: [:index]
 
   resources :calendars, only: [:show] do
     scope module: :calendars do
@@ -48,16 +49,20 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
+      resources :activity_categories, only: [:index]
+      resources :activity_types, only: [:index, :show]
+
       resources :programme_types, only: [:index, :show]
       resources :programmes, only: [:show, :index, :create]
 
       resource :action, only: [:new]
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
+      resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :activation, only: [:create], controller: :activation
       resource :deactivation, only: [:create], controller: :deactivation
       resources :contacts
-      resources :alert_subscription_events, only: :index
+      resources :alert_subscription_events, only: [:index, :show]
 
       resources :meters do
         member do
@@ -99,6 +104,7 @@ Rails.application.routes.draw do
 
       get :timeline, to: 'timeline#show'
 
+      get :inactive, to: 'inactive#show'
       get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
@@ -107,17 +113,16 @@ Rails.application.routes.draw do
       resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
+      resource :usage, controller: :usage, only: :show
+
     end
 
     # Maintain old scoreboard URL
     get '/scoreboard', to: redirect('/schools')
 
+
     member do
       get 'suggest_activity'
-      get 'data_explorer'
-      get 'usage'
-      get 'compare_daily_usage', to: 'stats#compare_daily_usage'
-      get 'compare_hourly_usage', to: 'stats#compare_hourly_usage'
     end
   end
 
@@ -141,7 +146,9 @@ Rails.application.routes.draw do
   namespace :admin do
 
     resources :school_groups
-
+    resources :activity_categories, except: [:destroy]
+    resources :activity_types
+    resource :activity_type_preview, only: :create
 
     namespace :emails do
       resources :alert_mailers, only: :show
@@ -159,14 +166,15 @@ Rails.application.routes.draw do
           resource :activity_types, only: [:show, :update]
         end
         namespace :ratings do
-          resource :preview, only: :show, controller: 'preview'
+          resource :preview, only: :create, controller: 'preview'
         end
+        resources :school_alert_type_exclusions, only: [:index, :destroy, :new, :create]
       end
     end
-    resources :equivalence_types do
-      resource :preview, only: :show, controller: 'preview'
-    end
-    resource :equivalences
+
+    resources :equivalence_types
+    resource :equivalence_type_preview, only: :create
+    resource :equivalences, only: :create
 
     resources :unsubscriptions, only: [:index]
 
@@ -176,7 +184,7 @@ Rails.application.routes.draw do
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
-        resource :email, only: [:new, :create], controller: 'email'
+        resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
       end
     end

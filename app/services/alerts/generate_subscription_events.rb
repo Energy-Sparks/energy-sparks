@@ -7,8 +7,8 @@ module Alerts
       @content_generation_run = content_generation_run
     end
 
-    def perform(frequency: [])
-      @school.alerts.joins(:alert_type).where(alert_types: { frequency: frequency }).latest.each do |alert|
+    def perform(alerts)
+      alerts.each do |alert|
         content_and_contacts_for(alert, :email) do |content_version, find_out_more, contact, priority|
           first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, :email) if contact.email_address?
         end

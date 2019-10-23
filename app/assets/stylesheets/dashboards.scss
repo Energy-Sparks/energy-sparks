@@ -69,4 +69,47 @@ table.management-priorities {
       border-bottom-right-radius: 10px;
     }
   }
+
+  @media (min-width: 576px) and (max-width: 991.98px) {
+    td {
+      font-size: $f7;
+      .btn {
+        font-size: $f7;
+        width: 80px;
+      }
+      .trix-content div {
+        font-size: $f7;
+      }
+    }
+    th {
+      font-size: $f5;
+    }
+    .h2 {
+      font-size: $f5;
+    }
+  }
+
+  @media (min-width: 300px) and (max-width: 575.99px) {
+    td {
+      font-size: $f8;
+      .btn {
+        font-size: $f8;
+        width: 80px;
+      }
+    }
+    th {
+      font-size: $f8;
+    }
+    .h2 {
+      font-size: $f8;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    td {
+      .btn {
+        width: 135px;
+      }
+    }
+  }
 }

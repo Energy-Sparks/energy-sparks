@@ -8,7 +8,7 @@
     <div class="col-5 masthead-content">
       <div class="row pt-5">
         <div class="col">
-        <p class="headline-text">We help schools become more energy efficient</p>
+        <p class="headline-text">We help schools become more energy efficient and fight climate change.</p>
       </div>
       </div>
       <div class="row">
@@ -25,100 +25,9 @@
   </div>
 </header>
 
-<div id="main-carousel" class="carousel slide pt-2 pb-2" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#main-carousel" data-slide-to="0" class="active"></li>
-    <li data-target="#main-carousel" data-slide-to="1"></li>
-    <li data-target="#main-carousel" data-slide-to="2"></li>
-    <li data-target="#main-carousel" data-slide-to="3"></li>
-    <li data-target="#main-carousel" data-slide-to="4"></li>
-    <li data-target="#main-carousel" data-slide-to="5"></li>
-  </ol>
-  <div class="carousel-inner" role="listbox">
-    <div class="carousel-item active text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-1"><i class="fas fa-coins"></i></div>
-        <div class="col-8"><h2>Help your school save energy, money and prevent climate change.</h2></div>
-      </div>
-    </div>
-    <div class="carousel-item text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-1"><i class="fas fa-chart-line"></i></div>
-        <div class="col-8"><h2>Show your school how much and when you are using energy.</h2> </div>
-      </div>
-    </div>
-    <div class="carousel-item text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-1"><i class="fal fa-file-alt"></i></div>
-        <div class="col-8"><h2>Get tailored energy saving advice designed just for your school.</h2></div>
-      </div>
-    </div>
-    <div class="carousel-item text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-1"><i class="fas fa-bell-exclamation"></i></div>
-        <div class="col-8"><h2>Get automated alerts to let you know when your energy use changes.</h2></div>
-      </div>
-    </div>
-    <div class="carousel-item text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-1"><i class="fas fa-users-class"></i></div>
-        <div class="col-7"><h2>Explore eco-team and classroom activities for pupils.</h2></div>
-      </div>
-    </div>
-    <div class="carousel-item text-center p-4">
-      <div class="row justify-content-center">
-        <div class="col-1"><i class="fas fa-lightbulb-on"></i></div>
-        <div class="col-8"><h2>Share energy saving ideas and compete against other schools.</h2></div>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render 'carousel' %>
 
-<div class="funnels mt-3">
-  <div class="application container">
-    <div class="card-deck pt-5">
-      <div class="card mb-4">
-        <div class="card-image">
-        <%= image_tag("funnel-manager.png", class: "img-fluid funnel-image") %>
-        </div>
-        <div class="card-body">
-          <h4 class="card-title">For school management&hellip;</h4>
-          <p class="card-text">Online analysis of your school's energy use using up to date smart meter data. Notifications of changes in consumption with energy saving tips.</p>
-        </div>
-        <div class="card-footer text-center">
-          <%= link_to 'Energy Sparks for Managers', for_management_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
-        </div>
-      </div>
-      <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
-      <div class="card mb-4">
-        <div class="card-image">
-          <%= image_tag("funnel-teachers.png", class: "img-fluid  funnel-image") %>
-        </div>
-        <div class="card-body">
-          <h4 class="card-title">For teachers &hellip;</h4>
-          <p class="card-text">Eco-team and curriculum linked energy education and saving activities. Energy related lesson plans and downloadable resources.</p>
-        </div>
-        <div class="card-footer text-center">
-          <%= link_to 'Energy Sparks for Teachers', for_teachers_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
-        </div>
-      </div>
-       <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
-      <div class="card mb-4">
-        <div class="card-image">
-          <%= image_tag("funnel-pupils.png", class: "img-fluid  funnel-image") %>
-        </div>
-        <div class="card-body">
-          <h4 class="card-title">For pupils &hellip;</h4>
-          <p class="card-text">Exciting activities for eco-teams to follow. Opportunities to compete with other local schools to see who can save the most energy.</p>
-        </div>
-        <div class="card-footer text-center">
-          <%= link_to 'Energy Sparks for Pupils', for_pupils_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
+<%= render 'funnels' %>
 
 <%= render 'testimonial',
   quote: 'Engaging with Energy Sparks has been a really worthwhile experience. Not only has the school saved money, the children have become more aware of the ways that they can help to reduce energy use&hellip;',
@@ -126,3 +35,7 @@
   title: 'Head of School',
   location: 'Whiteways Primary School, Sheffield'
 %>
+
+<%= render 'case_studies' %>
+
+<%#= render 'mailchimp' %>

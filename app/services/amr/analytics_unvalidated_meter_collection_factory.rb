@@ -11,7 +11,16 @@ module Amr
     def build
       return unless any_meters_with_readings?
 
-      @meter_collection = @meter_collection_class.new(@dashboard_school, ScheduleDataManagerService.new(@active_record_school))
+      schedule_data_manager_service = ScheduleDataManagerService.new(@active_record_school)
+
+      @meter_collection = @meter_collection_class.new(@dashboard_school,
+        temperatures: schedule_data_manager_service.temperatures,
+        solar_pv: schedule_data_manager_service.solar_pv,
+        solar_irradiation: schedule_data_manager_service.solar_irradiation,
+        grid_carbon_intensity: schedule_data_manager_service.uk_grid_carbon_intensity,
+        holidays: schedule_data_manager_service.holidays
+      )
+
       add_meters_and_amr_data
     end
 
@@ -87,7 +96,11 @@ module Amr
       begin
         Date.strptime(reading.reading_date, date_format)
       rescue ArgumentError
-        nil
+        begin
+          Date.parse(reading.reading_date)
+        rescue ArgumentError
+          nil
+        end
       end
     end
   end

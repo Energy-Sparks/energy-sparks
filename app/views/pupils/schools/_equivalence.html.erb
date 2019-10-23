@@ -1,18 +1,8 @@
 <div class="row illustration-background">
   <div class="col-6">
-    <div class="trix-content">
-      <%= sanitize equivalence_content.equivalence %>
-    </div>
-    <% if defined?(school) %>
-      <p><%= link_to 'Find out how much energy has been used', pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
-    <% end %>
+    <%= equivalence_content.equivalence %>
   </div>
   <div class="col-6 illustration-wrapper">
-    <p class="small text-right">
-      <%= link_to request.url do %>
-        <%= fa_icon('redo') %> More energy facts
-      <% end %>
-    </p>
     <%= image_tag("equivalences/#{equivalence_content.equivalence_type.image_name}.svg") if equivalence_content.equivalence_type.show_image? %>
   </div>
 </div>

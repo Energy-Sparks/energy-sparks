@@ -71,6 +71,11 @@ function commonChartOptions(clickListener){
         tooltip: {
           headerFormat: '<b>{point.key}</b><br>',
           pointFormat: orderedPointFormat('kW')
+        },
+        point: {
+          events: {
+            click: clickListener
+          }
         }
       },
       scatter: {
@@ -93,6 +98,11 @@ function commonChartOptions(clickListener){
         tooltip: {
           headerFormat: '<b>{series.name}</b><br>',
           pointFormat: '{point.x:.2f} °C, {point.y:.2f} kWh'
+        },
+        point: {
+          events: {
+            click: clickListener
+          }
         }
       }
     }
@@ -180,7 +190,7 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
         axisTitle = 'kWh';
         pointFormat = '{point.y:.2f} kWh';
       } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-        axisTitle = 'W/m2';
+        axisTitle = 'Brightness of sunshine W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
       c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true});
@@ -222,7 +232,7 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
         pointFormat = '{point.y:.2f} kg/kWh';
         max = 0.5;
       } else if (y2AxisLabel == 'Solar Irradiance') {
-        axisTitle = 'W/m2';
+        axisTitle = 'Brightness of sunshine W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
       c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max});

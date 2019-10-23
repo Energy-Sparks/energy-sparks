@@ -10,11 +10,7 @@ class AggregateSchoolService
       meter_collection = Amr::AnalyticsValidatedMeterCollectionFactory.new(@active_record_school).build
 
       AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
-      # Pre-warm environment caches
-      meter_collection.holidays
-      meter_collection.temperatures
-      meter_collection.solar_irradiation
-      meter_collection.solar_pv
+
       meter_collection
     end
   end
@@ -49,6 +45,6 @@ class AggregateSchoolService
 private
 
   def cache_key
-    "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection"
+    "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection-#{@active_record_school.validation_cache_key}"
   end
 end

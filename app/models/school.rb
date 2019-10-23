@@ -29,6 +29,7 @@
 #  template_calendar_id                  :integer
 #  updated_at                            :datetime         not null
 #  urn                                   :integer          not null
+#  validation_cache_key                  :string           default("initial")
 #  weather_underground_area_id           :bigint(8)
 #  website                               :string
 #
@@ -45,7 +46,6 @@
 #
 
 class School < ApplicationRecord
-  include AmrUsage
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
@@ -78,6 +78,8 @@ class School < ApplicationRecord
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
 
+  has_many :school_alert_type_exclusions
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
 
@@ -94,6 +96,8 @@ class School < ApplicationRecord
   scope :inactive, -> { where(active: false) }
   scope :without_group, -> { where(school_group_id: nil) }
 
+  scope :with_config, -> { joins(:configuration) }
+
   validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
@@ -104,6 +108,10 @@ class School < ApplicationRecord
   accepts_nested_attributes_for :school_times
 
   auto_strip_attributes :name, :website, :postcode, squish: true
+
+  def latest_alerts_without_exclusions
+    alerts.without_exclusions.latest
+  end
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed? || postcode_changed?
@@ -147,16 +155,12 @@ class School < ApplicationRecord
     meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
   end
 
-  def both_supplies?
-    meters_with_readings(:electricity).any? && meters_with_readings(:gas).any?
-  end
-
   def fuel_types
-    if both_supplies?
+    if configuration.dual_fuel
       :electric_and_gas
-    elsif meters_with_readings(:electricity).any?
+    elsif configuration.has_electricity
       :electric_only
-    elsif meters_with_readings(:gas).any?
+    elsif configuration.has_gas
       :gas_only
     else
       :none
@@ -164,11 +168,11 @@ class School < ApplicationRecord
   end
 
   def has_gas?
-    configuration.gas
+    configuration.has_gas
   end
 
   def has_electricity?
-    configuration.electricity
+    configuration.has_electricity
   end
 
   def analysis?
@@ -176,15 +180,15 @@ class School < ApplicationRecord
   end
 
   def fuel_types_for_analysis
-    Schools::GenerateFuelConfiguration.new(self).generate.fuel_types_for_analysis
+    configuration.fuel_types_for_analysis
   end
 
   def has_solar_pv?
-    meters.detect(&:solar_pv?)
+    configuration.has_solar_pv
   end
 
   def has_storage_heaters?
-    meters.detect(&:storage_heaters?)
+    configuration.has_storage_heaters
   end
 
   def school_admin
@@ -208,7 +212,15 @@ class School < ApplicationRecord
   end
 
   def authenticate_pupil(pupil_password)
-    users.pupil.to_a.find {|user| user.pupil_password == pupil_password}
+    users.pupil.to_a.find {|user| user.pupil_password.casecmp?(pupil_password) }
+  end
+
+  def filterable_meters
+    if has_solar_pv? || has_storage_heaters?
+      Meter.none
+    else
+      active_meters.real
+    end
   end
 
   def latest_management_priorities

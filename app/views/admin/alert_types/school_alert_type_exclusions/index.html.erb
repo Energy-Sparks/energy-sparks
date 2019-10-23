@@ -1,0 +1,31 @@
+<% content_for :page_title, "Alert Type - Schools" %>
+
+<h1>School Alert Type exclusions for:</h1>
+<h2><%= @alert_type.title %></h2>
+
+<p>This shows the schools for which this alert type will <b>not</b> have it's content generated</p>
+<p><%= link_to 'Manage exclusions', new_admin_alert_type_school_alert_type_exclusion_path(@alert_type) %> <%= button_to 'Re-generate content', admin_content_generation_run_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %></p>
+<p><%= link_to 'Alert type management', admin_alert_types_path %></p>
+
+<% if @alert_type.school_alert_type_exclusions.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>School</th>
+        <th>Reason</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @alert_type.school_alert_type_exclusions.each do |school_alert_type_exclusion| %>
+        <tr>
+          <td><%= school_alert_type_exclusion.school.name %></td>
+          <td><%= school_alert_type_exclusion.reason %></td>
+          <td><%= link_to 'Delete', admin_alert_type_school_alert_type_exclusion_path(@alert_type, school_alert_type_exclusion), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No school exclusions for this alert</p>
+<% end %>

@@ -1,7 +1,8 @@
 <h1><%= alert_type.title %></h1>
 <div class="row mb-3" id="nav-row">
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs alert-type">
     <%= nav_link('Overview', admin_alert_type_path(alert_type)) %>
     <%= nav_link('Content management', admin_alert_type_ratings_path(alert_type)) %>
+    <%= nav_link('School alert type exclusions', admin_alert_type_school_alert_type_exclusions_path(alert_type)) %>
   </ul>
 </div>

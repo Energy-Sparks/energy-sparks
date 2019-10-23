@@ -49,6 +49,7 @@ private
 
     @title = title_and_chart_configuration[:name]
     @charts = title_and_chart_configuration[:charts]
+    @show_measurement_units = title_and_chart_configuration.fetch(:change_measurement_units, true)
 
     render :generic_chart_template
   end

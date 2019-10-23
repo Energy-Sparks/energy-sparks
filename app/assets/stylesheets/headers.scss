@@ -44,3 +44,70 @@ h6,
   padding-bottom: 11px;
   margin: 0px;
 }
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  h1, .trix-content h1 {
+    font-size: $f6;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .trix-content div {
+    font-size: $f7;
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+  h1, .trix-content h1 {
+    font-size: $f5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .trix-content div {
+    font-size: $f6;
+  }
+}
+
+// Medium devices (tablets, 768px and up) // max-width: 991.98px
+@media (min-width: 768px) and (max-width: 991.98px) {
+  h1, .trix-content h1 {
+    font-size: $f4;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .trix-content div {
+    font-size: $f5;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  h1, .trix-content h1 {
+    font-size: $f3;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .trix-content div {
+    font-size: $f5;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+// @media (min-width: 992px) and (max-width: 1199.98px) { ... }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  h1, .trix-content h1 {
+    font-size: $f1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .trix-content div {
+    font-size: $f5;
+  }
+}

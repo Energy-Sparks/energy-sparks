@@ -10,36 +10,10 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <% end %>
 </p>
 
-<div class="card border-dark mb-3">
-  <div class="card-header d-flex justify-content-between">
-    <div>
-      <p>You can choose what the energy usage is measured in for some of the charts. </p><p>Currently your measurements are in <b><%= @measurement_options[@measurement] %></b> <a href="https://blog.energysparks.uk/analysis/" target="_blank">(Find out more about units)</a></p>
-    </div>
-    <div>
-      <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right" href="#y-axis-selection-form" aria-label="Expand/Collapse y axis selector" aria-expanded="false" role="button">
-        <button class="btn btn-warning">Change energy usage units</button>
-      </a>
-    </div>
-  </div>
-  <div id="y-axis-selection-form" class="collapse" >
-    <div class="card-body text-dark">
-      <%= form_tag({}, method: :get) do |f| %>
-        <%= hidden_field_tag :chart_type, @chart_type %>
-        <div class="form-group">
-          <% @measurement_options.each do |key, description| %>
-            <div class="form-check">
-              <%= radio_button_tag :measurement, key, key == @measurement, class: "form-check-input" %>
-              <%= label_tag "measurement_#{key}".to_sym, description.capitalize, value: key, class: "form-check-label" %>
-            </div>
-          <% end %>
-        </div>
-        <%= submit_tag 'See updated charts', class: 'btn btn-primary' %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= render 'schools/analysis/measurement_picker', measurement_options: @measurement_options, measurement: @measurement %>
 
-<div id="chart_wrapper_1">
+<div id="chart_wrapper_<%= @chart_type %>" class="chart-wrapper">
   <h3 class="analysis">Loading: <%= @title %></h3>
-  <%= chart_tag(@school, @chart_type.to_s, index: 1, chart_config: {y_axis_units:  @measurement}) %>
+  <%= render 'shared/analysis_controls' if params[:control] %>
+  <%= chart_tag(@school, @chart_type.to_s, wrap: false, show_advice: !params[:control].present?, chart_config: {y_axis_units:  @measurement}) %>
 </div>

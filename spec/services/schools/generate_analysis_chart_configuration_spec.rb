@@ -118,7 +118,7 @@ module Schools
     end
 
     context 'electric only set up' do
-      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, no_meters_with_validated_readings: false) }
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, has_electricity: true) }
 
       it 'returns chart config' do
         allow(chart_data).to receive(:has_chart_data?).and_return(true)
@@ -134,7 +134,7 @@ module Schools
     end
 
     context 'dual fuel set up' do
-      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, no_meters_with_validated_readings: false) }
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, has_electricity: true, has_gas: true) }
 
       it 'returns a single fuel main dashboard if dual fuel fails' do
         allow(chart_data).to receive(:has_chart_data?).and_return(true, false, true, false, true, false, false, true, true)
@@ -144,7 +144,7 @@ module Schools
     end
 
     context 'a configuration with sub pages' do
-      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, no_meters_with_validated_readings: false) }
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, has_electricity: true, has_gas: true) }
 
       it 'filters out failing sub pages' do
         allow(chart_data).to receive(:has_chart_data?).and_return(true, false)

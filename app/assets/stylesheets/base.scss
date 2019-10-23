@@ -9,6 +9,7 @@ $f4: 21.6px;
 $f5: 18px;
 $f6: 15px;
 $f7: 12.5px;
+$f8: 10px;
 
 $default-font-size: $f5;
 
@@ -21,7 +22,7 @@ body {
 }
 
 body.sub-nav {
-  margin-top: 110px;
+  margin-top: 90px;
 }
 
 .f1 { font-size: $f1; }

@@ -1,0 +1,11 @@
+<h1>Change email address for <%= @school_onboarding.school_name %></h1>
+
+<%= simple_form_for([:admin, @school_onboarding], url: admin_school_onboarding_email_path(@school_onboarding)) do |f| %>
+
+  <%= f.input :contact_email %>
+  <%= f.input :notes %>
+
+  <div class="actions">
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+  </div>
+<% end %>

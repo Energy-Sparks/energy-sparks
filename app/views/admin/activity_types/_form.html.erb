@@ -1,0 +1,82 @@
+<%= simple_form_for([:admin, activity_type], wrapper_mappings: {
+    boolean:       :custom_boolean,
+    check_boxes:   :custom_collection,
+  },
+  html: { id: 'activity_type_form' }) do |f| %>
+
+  <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
+
+  <%= f.input :name, as: :string %>
+  <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
+
+  <div class="description-trix-editor">
+    <%= f.label 'Description', for: :description %>
+    <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
+    <%= f.input :description, as: :trix_editor, label: false %>
+  </div>
+
+
+  <div class="school-specific-description-trix-editor chart-list">
+    <%= f.label 'School specific description', for: :school_specific_description %>
+    <%= render 'admin/shared/preview_section', scope: 'school-specific-description', preview_url: admin_activity_type_preview_path, no_timings: true, no_weightings: true do %>
+      <%= f.input :school_specific_description, as: :trix_editor, class: 'chart-list', label: false %>
+    <% end %>
+  </div>
+
+  <%= f.input :score, as: :string %>
+
+  <%= f.input :active %>
+  <%= f.input :repeatable, label: 'Repeatable?' %>
+  <%= f.input :data_driven, label: 'Uses data?' %>
+  <%= f.input :custom, label: "Custom ('Other')" %>
+
+  <h2>Key Stages</h2>
+  <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
+
+  <h2>Impacts</h2>
+  <%= render 'crud_filter_checkboxes', field: :impact_ids, collection: @impacts, form: f %>
+
+  <h2>Subjects</h2>
+  <%= render 'crud_filter_checkboxes', field: :subject_ids, collection: @subjects, form: f %>
+
+  <h2>Topics</h2>
+  <%= render 'crud_filter_checkboxes', field: :topic_ids, collection: @topics, form: f %>
+
+  <h2>Timings</h2>
+  <%= render 'crud_filter_checkboxes', field: :activity_timing_ids, collection: @activity_timings, form: f %>
+
+  <h2>Suggested Next Activities</h2>
+
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <label for="firstName">Activity Type</label>
+    </div>
+    <div class="col-md-1 mb-3">
+      <label for="lastName">Delete?</label>
+    </div>
+  </div>
+
+  <%= f.fields_for :activity_type_suggestions do |suggestion| %>
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <%= suggestion.select(
+          :suggested_type_id,
+          grouped_options_for_select(
+            ActivityCategory.listed_with_activity_types.map{|category, types| [category.name, types.map {|type| [type.name_with_key_stages, type.id]}]},
+            suggestion.object.suggested_type_id.to_s
+          ),
+          { include_blank: true },
+          { class: 'form-control select2'}
+        )
+        %>
+      </div>
+      <div class="col-md-1 mb-3">
+        <%= suggestion.check_box :_destroy, class: 'form-control' %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

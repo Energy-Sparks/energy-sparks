@@ -3,7 +3,6 @@
 # Table name: alert_types
 #
 #  class_name   :text
-#  description  :text             not null
 #  frequency    :integer
 #  fuel_type    :integer
 #  has_ratings  :boolean          default(TRUE)
@@ -18,6 +17,7 @@ class AlertType < ApplicationRecord
   has_many :alert_subscription_events,  dependent: :destroy
 
   has_many :ratings, class_name: 'AlertTypeRating'
+  has_many :school_alert_type_exclusions
 
   enum source: [:analytics, :system]
   enum fuel_type: [:electricity, :gas]
@@ -29,6 +29,8 @@ class AlertType < ApplicationRecord
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
   validates_presence_of :description, :frequency, :title
+
+  has_rich_text :description
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?

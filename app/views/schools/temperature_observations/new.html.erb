@@ -5,11 +5,25 @@
 <p>Every day you record your classroom temperatures, you will earn 5 Energy Sparks points!</p>
 
 <h3>How to carry out this activity</h3>
-<p>This activity needs to be carried out when your school heating is running. For most schools this is from October to April. Record the classroom or area of the school where you are measuring the temperature. Now record the temperature in that room.</p>
+<ol>
+<li>This activity needs to be carried out when your school heating is running. For most schools this is from October to April.</li>
+<li>Record the classroom or area of the school where you are measuring the temperature.</li>
+<li>Now record the temperature in that room.</li>
+<li>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</li>
+</ol>
 
-<p>To get a good measurement of the overall temperature in the room, you should put the thermometer away from any radiators or heaters, spotlights, electrical equipment like whiteboards or computers, air conditioning vents, windows, outside walls and direct sunlight. You should be careful not to hold the thermometer while taking your measurement as your body heat will warm the thermometer. The best way to measure the temperature is to put the thermometer down on a table or shelf, and wait until the temperature reading stops changing.</p>
+<h3>Temperature recording tips</h3>
 
-<p>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</p>
+<ul>
+  <li>The best way to measure the temperature is to put the thermometer down on a table or shelf, and wait until the temperature reading stops changing.</li>
+  <li>To get a good measurement of the overall temperature in the room, you should put the thermometer away from any radiators or heaters, spotlights, electrical equipment like whiteboards or computers, air conditioning vents, windows, outside walls and direct sunlight.</li>
+  <li>You should be careful not to hold the thermometer while taking your measurement as your body heat will warm the thermometer.</li>
+</ul>
+
+<p>You will earn 5 points for each day you measure and record your classroom temperatures.</p>
+
+<h4>Locations or rooms</h4>
+<p><%= link_to 'Change room names', school_locations_path(@school) %></p>
 
 <h3>Enter temperatures</h3>
 <%= simple_form_for([@school, @observation], url: school_temperature_observations_path(@school)) do |f| %>
@@ -17,5 +31,9 @@
   <%= f.fields_for :temperature_recordings do |temperature_form| %>
     <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
   <% end %>
+  <div class="d-flex form-row justify-content-md-center pb-3">
+    <a id="show_more_recording_fields" class='btn' href='#'>Show more</a>
+  </div>
+
   <%= f.submit 'Create temperature recordings', class: 'btn btn-success' %>
 <% end %>

@@ -120,6 +120,19 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.school_times.count).to eq(5)
       expect(school.school_times.map(&:day)).to match_array(%w{monday tuesday wednesday thursday friday})
     end
+
+    it 'configures the school' do
+      service = SchoolCreator.new(school)
+      service.process_new_school!
+      expect(school.configuration).to_not be_nil
+    end
+
+    it 'does not create a new configuration if one exists' do
+      configuration = Schools::Configuration.create(school: school)
+      service = SchoolCreator.new(school)
+      service.process_new_school!
+      expect(school.configuration).to eq configuration
+    end
   end
 
   describe '#process_new_configuration!' do
@@ -139,17 +152,5 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.calendar).to be_nil
     end
 
-    it 'does not create a new configuration if one exists' do
-      configuration = Schools::Configuration.create(school: school)
-      service = SchoolCreator.new(school)
-      service.process_new_configuration!
-      expect(school.configuration).to eq configuration
-    end
-
-    it 'does create a new configuration if required' do
-      service = SchoolCreator.new(school)
-      service.process_new_configuration!
-      expect(school.configuration).to_not be_nil
-    end
   end
 end

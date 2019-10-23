@@ -14,6 +14,20 @@ describe 'Alert' do
     expect(Alert.latest).to eq([alert_1, alert_3])
   end
 
+  it 'retrieves the latest alerts for each alert type but ignores if there is an exception' do
+    school = create(:school)
+
+    alert_1 = create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: Date.today)
+    alert_2 = create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: Date.yesterday)
+    alert_3 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Date.today)
+    alert_4 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Date.yesterday)
+
+    expect(Alert.without_exclusions.latest).to eq([alert_1, alert_3])
+
+    SchoolAlertTypeExclusion.create(school: school, alert_type: gas_fuel_alert_type)
+    expect(Alert.without_exclusions.latest).to eq([alert_3])
+  end
+
   it 'has a rating of unrated if no rating is et' do
     no_rating_alert = create(:alert, rating: nil)
     expect(no_rating_alert.formatted_rating).to eq 'Unrated'

@@ -1,7 +1,7 @@
-<!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
   <div class="container">
-    <%= navbar_link %>
+    <%= navbar_image_link %>
+    <a class='nav-item pl-3' href="/"><%= "Test" if on_test? %></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,7 +19,6 @@
               <%= link_to "Sign In", new_user_session_path, class: 'btn btn-sm' %>
             </li>
           </span>
-
         <% end %>
       </ul>
     </div>

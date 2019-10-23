@@ -2,29 +2,4 @@
 
 <h1>Let's look at the energy use data for your school</h1>
 
-<div class="row">
-  <% if @school.has_electricity? %>
-    <div class="col text-center pb-3">
-      <div class="card electricity-dark electricity-card m-3">
-        <div class="card-body">
-          <div class="p-4">
-            <%= fa_icon "#{fuel_type_icon(:electricity)} fa-3x" %>
-          </div>
-          <%= link_to 'Electricity', pupils_school_analysis_path(@school, category: :electricity), class: 'h2 stretched-link text-decoration-none' %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-  <% if @school.has_gas? %>
-    <div class="col text-center pb-3">
-      <div class="card gas-dark gas-card m-3">
-        <div class="card-body">
-          <div class="p-4">
-            <%= fa_icon "#{fuel_type_icon(:gas)} fa-3x" %>
-          </div>
-          <%= link_to 'Gas', pupils_school_analysis_path(@school, category: :gas), class: 'h2 stretched-link text-decoration-none' %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
+<%= render 'top_level', school: @school %>

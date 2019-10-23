@@ -1,0 +1,26 @@
+<div id="pupil_carousel" class="carousel slide pupil-dashboard" data-wrap="true" data-interval="false">
+  <div class="carousel-inner">
+    <% equivalences_content.each_with_index do |equivalence_content, index| %>
+      <div class="carousel-item <%= 'active' if index == 0 %>">
+        <div class="row illustration-background">
+          <div class="col-lg-6">
+            <%= equivalence_content.equivalence %>
+            <p><%= link_to 'Find out how much energy has been used', pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
+          </div>
+          <div class="col-lg-6 illustration-wrapper">
+            <%= image_tag("equivalences/#{equivalence_content.equivalence_type.image_name}.svg") if equivalence_content.equivalence_type.show_image? %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <a class="carousel-control-prev" href="#pupil_carousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#pupil_carousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+

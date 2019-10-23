@@ -1,19 +1,11 @@
 <%= content_for :page_title, "Pupil dashboard for #{@school.name}" %>
 
-<% if @equivalences_content.present? %>
-  <%= render 'equivalence', equivalence_content: @equivalences_content.sample, school: @school %>
-<% end %>
+<%= render 'equivalences', equivalences_content: @equivalences_content, school: @school if @equivalences_content.present? %>
 
-<div class="row padded-row align-items-end">
-  <div class="col-md-9">
-    <h2>Things to do:</h2>
-  </div>
-</div>
+<h2 class="mt-2">Let's look at the energy use data for your school:</h2>
+<%= render 'pupils/analysis/top_level', school: @school %>
 
-<% unless @school.meters.pseudo.any? %>
-  <%= render 'explore_old_charts', school: @school %>
-<% end %>
-
+<h2 class="mt-2">Things to do</h2>
 <% if @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
     <%= render 'schools/dashboard/info_bar',
@@ -69,11 +61,10 @@
         <% end %>
       </div>
       <div class="card-footer text-center">
-        <%= link_to 'All activities', activity_categories_path, class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+        <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-lg btn-light rounded-pill font-weight-bold' %>
       </div>
     </div>
   </div>
-
 
   <div class="col card-deck actions">
     <% if current_school_podium %>

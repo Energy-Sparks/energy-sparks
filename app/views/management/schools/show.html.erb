@@ -38,11 +38,11 @@
   <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :group_by_week_electricity) %>
     <h2>Annual electricity overview</h2>
 
-    <%= chart_tag(@school, :group_by_week_electricity, index: 100, show_advice: false, no_zoom: true ) %>
+    <%= chart_tag(@school, :group_by_week_electricity, show_advice: false, no_zoom: true, chart_config: {y_axis_units: :£}) %>
   <% end %>
   <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :gas_detail, :group_by_week_gas) %>
     <h2>Annual gas overview</h2>
-    <%= chart_tag(@school, :group_by_week_gas, index: 101, show_advice: false, no_zoom: true ) %>
+    <%= chart_tag(@school, :group_by_week_gas, show_advice: false, no_zoom: true, chart_config: {y_axis_units: :£}) %>
   <% end %>
 <% end %>
 

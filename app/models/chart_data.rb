@@ -40,7 +40,7 @@ class ChartData
     false
   rescue => e
     Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@school.name} - #{e.message}"
-    Rollbar.error(e)
+    Rollbar.error(e, school_id: @school.id, school_name: @school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
     false
   end
 
@@ -48,15 +48,7 @@ private
 
   def customised_chart_config(chart_manager)
     chart_config = chart_manager.get_chart_config(@original_chart_type)
-    if chart_config.key?(:yaxis_units) && chart_config[:yaxis_units] == :kwh
-      chart_config[:yaxis_units] = @chart_config_overrides[:y_axis_units]
-      chart_config[:yaxis_units] = :£ if @chart_config_overrides[:y_axis_units] == :gb_pounds
-    end
-
-    if @chart_config_overrides[:mpan_mprn].present?
-      chart_config[:meter_definition] = @chart_config_overrides[:mpan_mprn].to_i
-    end
-    chart_config
+    CustomisedChartConfig.new(chart_config).customise(@chart_config_overrides)
   end
 
   def apply_transformations(transformations, original_chart_type, custom_chart_config, chart_manager)

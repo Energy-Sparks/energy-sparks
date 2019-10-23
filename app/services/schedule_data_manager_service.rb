@@ -7,12 +7,12 @@ class ScheduleDataManagerService
     @dark_sky_area_id = school.dark_sky_area_id
   end
 
-  def holidays(_area_name)
+  def holidays
     cache_key = "#{@calendar_id}-holidays"
     @holidays ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       hol_data = HolidayData.new
 
-      Calendar.find(@calendar_id).not_term_time.order(:start_date).includes(:academic_year).map do |holiday|
+      Calendar.find(@calendar_id).outside_term_time.order(:start_date).includes(:academic_year).map do |holiday|
         # Not really being used at the moment by the analytics code
         academic_year = nil
         analytics_holiday = Holiday.new(holiday.calendar_event_type.analytics_event_type.to_sym, holiday.title || 'No title', holiday.start_date, holiday.end_date, academic_year)
@@ -23,7 +23,7 @@ class ScheduleDataManagerService
     end
   end
 
-  def temperatures(_area_name)
+  def temperatures
     cache_key = "#{@dark_sky_area_id}-dark-sky-temperatures"
     @temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = Temperatures.new('temperatures')
@@ -35,7 +35,7 @@ class ScheduleDataManagerService
     end
   end
 
-  def solar_irradiation(_area_name)
+  def solar_irradiation
     cache_key = "#{@solar_pv_tuos_area_id}-solar-irradiation"
     @solar_irradiation ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarIrradianceFromPV.new('solar irradiance from pv')
@@ -43,7 +43,7 @@ class ScheduleDataManagerService
     end
   end
 
-  def solar_pv(_area_name)
+  def solar_pv
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
     @solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarPV.new('solar pv')

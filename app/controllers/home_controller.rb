@@ -4,9 +4,10 @@ class HomeController < ApplicationController
   before_action :redirect_if_logged_in, only: :index
 
   def index
-    # This renders using rails magic, the home layout template which
-    # does not include the application container
-    @active_schools = School.active.count
+  end
+
+  def show
+    render :index
   end
 
   def for_teachers
@@ -41,7 +42,7 @@ class HomeController < ApplicationController
   def scoring
   end
 
-  def privacy_policy
+  def privacy_and_cookie_policy
   end
 
 private
@@ -49,7 +50,7 @@ private
   def redirect_if_logged_in
     if user_signed_in?
       if current_user.school
-        redirect_to school_path(current_user.school)
+        redirect_to redirect_with_school_path
       elsif current_user.school_onboarding?
         redirect_to onboarding_path(current_user.school_onboardings.last)
       elsif current_user.school_group && can?(:show, current_user.school_group)
@@ -57,6 +58,14 @@ private
       else
         redirect_to schools_path
       end
+    end
+  end
+
+  def redirect_with_school_path
+    if current_user.school.active?
+      school_path(current_user.school)
+    else
+      school_inactive_path(current_user.school)
     end
   end
 end

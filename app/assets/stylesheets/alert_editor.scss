@@ -1,0 +1,16 @@
+
+select.colours option[value="negative"] {
+  background: $bg-negative;
+}
+
+select.colours option[value="neutral"] {
+  background: $bg-neutral;
+}
+
+select.colours option[value="positive"] {
+  background: $bg-positive;
+}
+
+.width-400 {
+  width: 400px;
+}
