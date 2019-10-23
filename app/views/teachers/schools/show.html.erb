@@ -13,7 +13,6 @@
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
-
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :teacher_dashboard_title %>
 
 <% if @activities_count < 1 %>
@@ -28,20 +27,19 @@
   </div>
   <div class="card border-0">
   </div>
-    <div class="card border-0 d-block d-sm-none d-md-block">
-      <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
-        <h3 class="p-2">Or, start a programme&hellip;</h3>
-      <% end %>
+  <div class="card border-0 d-block d-sm-none d-md-block">
+    <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+      <h3 class="p-2">Or, start a programme&hellip;</h3>
+    <% end %>
   </div>
 </div>
 
-
 <%= render 'teachers/schools/activities_and_actions',
-school: @school,
-activities: @activities,
-activities_from_programmes: @activities_from_programmes,
-activities_from_alerts: @activities_from_alerts,
-suggested_programme: @suggested_programme,
-activities_from_activity_history: @activities_from_activity_history %>
+      school: @school,
+      activities: @activities,
+      activities_from_programmes: @activities_from_programmes,
+      activities_from_alerts: @activities_from_alerts,
+      suggested_programme: @suggested_programme,
+      activities_from_activity_history: @activities_from_activity_history %>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
