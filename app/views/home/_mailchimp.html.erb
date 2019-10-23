@@ -7,9 +7,9 @@
           <% @newsletters.each do |newsletter| %>
             <div class="card mb-3">
               <% if newsletter.image.present? %>
-                <%= image_tag newsletter.image, class: "img-fluid" %>
+                <%= image_tag newsletter.image %>
               <% else %>
-                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: "img-fluid") %>
+                <%= image_tag("stay-up-to-date/newsletter-placeholder.png") %>
               <% end %>
               <div class="card-body">
                 <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
