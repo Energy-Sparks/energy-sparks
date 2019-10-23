@@ -1,28 +1,24 @@
 <div class="application container mailchimp">
   <div class="row pt-5">
-    <div class="col-7 pr-5">
-      <h2>Stay up to date&hellip;</h2>
-      <div class="card-deck">
-        <div class="card mb-3">
-          <%= image_tag("stay-up-to-date/field.png", class: "img-fluid") %>
-          <div class="card-body">
-            <h5 class="card-title"><a href="//us16.campaign-archive.com/?u=a132136ec1fca0e5b19fbe63d&id=9ac7c33816">Welcome Back to Energy Sparks!</a></h5>
-          </div>
-        </div>
-        <div class="card mb-3">
-          <%= image_tag("stay-up-to-date/leaves.png", class: "img-fluid") %>
-          <div class="card-body">
-            <h5 class="card-title"><a href="//us16.campaign-archive.com/?u=a132136ec1fca0e5b19fbe63d&id=b0e62a1b20">Like Autumn leaves</a></h5>
-          </div>
-        </div>
-        <div class="card mb-3">
-          <%= image_tag("stay-up-to-date/panels.png", class: "img-fluid") %>
-          <div class="card-body">
-            <h5 class="card-title"><a href="//us16.campaign-archive.com/?u=a132136ec1fca0e5b19fbe63d&id=79ff40ff71">Win! Win! Win! With Energy Sparks</a></h5>
-          </div>
+    <% if @newsletters %>
+      <div class="col-7 pr-5">
+        <h2>Stay up to date&hellip;</h2>
+        <div class="card-deck">
+          <% @newsletters.each do |newsletter| %>
+            <div class="card mb-3">
+              <% if newsletter.image.present? %>
+                <%= image_tag newsletter.image, class: "img-fluid" %>
+              <% else %>
+                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: "img-fluid") %>
+              <% end %>
+              <div class="card-body">
+                <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
-    </div>
+    <% end %>
 
     <div class="col-5 border-left ">
       <h4>Get the latest news from Energy Sparks in your inbox</h4>

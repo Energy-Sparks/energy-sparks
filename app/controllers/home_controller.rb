@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
+  before_action :set_newsletters, only: [:index, :show]
 
   def index
   end
@@ -46,6 +47,10 @@ class HomeController < ApplicationController
   end
 
 private
+
+  def set_newsletters
+    @newsletters = Newsletter.all.order(published_on: :desc).limit(3)
+  end
 
   def redirect_if_logged_in
     if user_signed_in?
