@@ -1,0 +1,21 @@
+<h1>Adult analysis for <%= @school.name %></h1>
+
+<div class="row">
+  <% if @heating_pages.any? %>
+    <div class="col-sm-6 col-lg-4 mb-4">
+      <h2>Heating</h2>
+      <% @heating_pages.each do |page| %>
+        <div class="card gas-dark gas-card">
+          <div class="card-body">
+            <h3 class="card-title pb-0">
+              <%= link_to school_new_analysis_path(@school, page.id), class: 'stretched-link' do %>
+                <%= page.analysis_title %> <span class="stars float-right"><%= stars(page.rating) %></span>
+              <% end %>
+            </h3>
+            <h6 class="card-subtitle text-muted"><%= page.analysis_subtitle %></h6>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
