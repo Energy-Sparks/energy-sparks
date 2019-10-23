@@ -5,14 +5,13 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Energy Usage&hellip;</h1>
   <% if @school.configuration %>
-    <div class="h5"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
+    <div class="h5 pt-2"><%= link_to "Learn more about your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
   <% end %>
 </div>
 <p></p>
 <div class="row dashboards">
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
-
 
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :teacher_dashboard_title %>
 
@@ -28,20 +27,19 @@
   </div>
   <div class="card border-0">
   </div>
-    <div class="card border-0 d-block d-sm-none d-md-block">
-      <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
-        <h3 class="p-2">Or, start a programme&hellip;</h3>
-      <% end %>
+  <div class="card border-0 d-block d-sm-none d-md-block">
+    <% if @activities_from_programmes.empty? && @suggested_programme.present? %>
+      <h3 class="p-2">Or, start a programme&hellip;</h3>
+    <% end %>
   </div>
 </div>
 
-
 <%= render 'teachers/schools/activities_and_actions',
-school: @school,
-activities: @activities,
-activities_from_programmes: @activities_from_programmes,
-activities_from_alerts: @activities_from_alerts,
-suggested_programme: @suggested_programme,
-activities_from_activity_history: @activities_from_activity_history %>
+      school: @school,
+      activities: @activities,
+      activities_from_programmes: @activities_from_programmes,
+      activities_from_alerts: @activities_from_alerts,
+      suggested_programme: @suggested_programme,
+      activities_from_activity_history: @activities_from_activity_history %>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

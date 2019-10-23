@@ -6,6 +6,18 @@ div.dashboards {
   }
 }
 
+
+@media (max-width: 1024px) {
+  div.dashboards {
+    div.analysis-chart, div.simulator-chart {
+      height: 300px;
+      padding-bottom: 20px;
+      padding-top: 20px;
+    }
+  }
+}
+
+
 .timeline-border-left {
   border-left: 3px solid $dark;
 }
