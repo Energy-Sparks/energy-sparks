@@ -3,7 +3,7 @@
     <% equivalences_content.each_with_index do |equivalence_content, index| %>
       <div class="carousel-item <%= 'active' if index == 0 %>">
         <div class="row illustration-background">
-          <div class="col-lg-6">
+          <div class="col-lg-6 equivalence-wrapper">
             <%= equivalence_content.equivalence %>
             <p><%= link_to 'Find out how much energy has been used', pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></p>
           </div>
