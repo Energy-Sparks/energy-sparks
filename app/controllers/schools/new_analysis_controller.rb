@@ -28,7 +28,7 @@ module Schools
   private
 
     def process_templates(pages)
-      pages.map do |page|
+      pages.by_priority.map do |page|
         TemplateInterpolation.new(
           page.content_version,
           with_objects: { rating: page.alert.rating, analysis_page: page }

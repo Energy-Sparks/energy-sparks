@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_23_094709) do
+ActiveRecord::Schema.define(version: 2019_10_24_143627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -363,6 +363,7 @@ ActiveRecord::Schema.define(version: 2019_10_23_094709) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "category"
+    t.decimal "priority", default: "0.0"
     t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "index_analysis_pages_on_alert_type_rating_content_version_id"
     t.index ["content_generation_run_id"], name: "index_analysis_pages_on_content_generation_run_id"
