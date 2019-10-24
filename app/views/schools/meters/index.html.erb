@@ -29,7 +29,7 @@
   </thead>
   <thead>
     <tr>
-      <th colspan="8">Active real meters</th>
+      <th colspan="9">Active meters</th>
     </tr>
   </thead>
   <tbody>
@@ -37,29 +37,25 @@
       <%= render 'active_meters', active_meters: @active_meters %>
     <% else %>
       <tr>
-        <td colspan="8">No active meters</td>
+        <td colspan="9">No active meters </td>
       </tr>
     <% end %>
   </tbody>
+  <% if @active_pseudo_meters.any? %>
   <thead>
     <tr>
-      <th colspan="8">Active pseudo (Low carbon hub) meters</th>
+      <th colspan="9">Active pseudo (Low carbon hub) meters</th>
     </tr>
   </thead>
   <tbody>
-    <% if @active_pseudo_meters.any? %>
-      <%= render 'active_meters', active_meters: @active_pseudo_meters %>
-    <% else %>
-      <tr>
-        <td colspan="8">No active pseudo meters</td>
-      </tr>
-    <% end %>
+    <%= render 'active_meters', active_meters: @active_pseudo_meters %>
   </tbody>
+  <% end %>
 
   <% if @inactive_meters.any? %>
     <thead>
       <tr>
-        <th colspan="8">Inactive meters</th>
+        <th colspan="9">Inactive meters</th>
       </tr>
     </thead>
     <tbody>
@@ -109,3 +105,4 @@
   <%= link_to 'Download AMR data for all meters', school_meters_path(@school, format: :csv), class: 'btn btn-secondary' %>
   <%= link_to 'Low carbon hub installations', school_low_carbon_hub_installations_path(@school), class: 'btn btn-secondary' if can? :manage, LowCarbonHubInstallation %>
   <%= link_to 'New carbon hub installation', new_school_low_carbon_hub_installation_path(@school), class: 'btn btn-secondary' if can? :manage, LowCarbonHubInstallation %>
+</div>
