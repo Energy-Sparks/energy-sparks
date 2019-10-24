@@ -10,7 +10,7 @@ module Alerts
         analysis_object = alert_class.new(@aggregate_school)
         analysis_object.analyse(@analysis_date)
         # TODO: error, data, validity handling
-        analysis_object.content
+        analysis_object.front_end_content
       end
 
     private
