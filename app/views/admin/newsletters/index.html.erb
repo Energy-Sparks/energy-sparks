@@ -19,7 +19,13 @@
         <td><%= link_to newsletter.title, admin_newsletter_path(newsletter) %></td>
         <td><%= link_to newsletter.url, newsletter.url %></td>
         <td><%= nice_dates newsletter.published_on %></td>
-        <td><%= image_tag newsletter.image.variant(resize_to_limit: [50, 50]) %></td>
+        <td>
+          <% if newsletter.image.attached? %>
+            <%= image_tag newsletter.image.variant(resize_to_limit: [50, 50]) %>
+          <% else %>
+            No image attached
+          <% end %>
+        </td>
         <td>
           <%= link_to 'Edit', edit_admin_newsletter_path(newsletter), class: 'btn' %>
           <%= link_to 'Delete', admin_newsletter_path(newsletter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
