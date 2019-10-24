@@ -53,7 +53,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
 
       resources :programme_types, only: [:index, :show]
-      resources :programmes, only: [:show, :index, :create]
+      resources :programmes, only: [:show, :create]
 
       resource :action, only: [:new]
 
