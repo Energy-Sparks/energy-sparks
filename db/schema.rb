@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_23_094709) do
+ActiveRecord::Schema.define(version: 2019_10_23_142518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -610,6 +610,14 @@ ActiveRecord::Schema.define(version: 2019_10_23_094709) do
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
+  end
+
+  create_table "newsletters", force: :cascade do |t|
+    t.text "title", null: false
+    t.text "url", null: false
+    t.date "published_on", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "observations", force: :cascade do |t|

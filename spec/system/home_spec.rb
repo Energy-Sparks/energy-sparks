@@ -38,6 +38,23 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "Data used in Energy Sparks")
   end
 
+  context 'with newsletters' do
+    let!(:newsletter_1) { create(:newsletter, published_on: Date.parse('01/01/2019')) }
+    let!(:newsletter_2) { create(:newsletter, published_on: Date.parse('02/01/2019')) }
+    let!(:newsletter_3) { create(:newsletter, published_on: Date.parse('03/01/2019')) }
+    let!(:newsletter_4) { create(:newsletter, published_on: Date.parse('04/01/2019')) }
+
+    it 'shows the latest newsletters only' do
+      visit root_path
+
+
+      expect(page).to_not have_content(newsletter_1.title)
+      expect(page).to have_content(newsletter_2.title)
+      expect(page).to have_content(newsletter_3.title)
+      expect(page).to have_content(newsletter_4.title)
+    end
+  end
+
   context 'school admin user' do
     let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
     let(:school_admin) { create(:school_admin, school: school)}
