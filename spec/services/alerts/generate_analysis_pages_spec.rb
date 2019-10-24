@@ -36,6 +36,7 @@ describe Alerts::GenerateAnalysisPages do
         page = content_generation_run.analysis_pages.first
         expect(page.alert).to eq(alert)
         expect(page.content_version).to eq(content_version)
+        expect(page.category).to eq(alert.alert_type.sub_category)
       end
 
       it 'does not create if there is an exception' do

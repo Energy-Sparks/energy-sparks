@@ -3,13 +3,13 @@ namespace :after_party do
   task first_adult_analysis_alert_type: :environment do
     puts "Running deploy task 'first_adult_analysis_alert_type'"
 
-    AlertType.create(
+    AlertType.create!(
       frequency: :weekly,
-      title: "Gas out of hours",
-      description: "Gas out of hours",
+      title: "Gas: out of hours",
       class_name: 'AdviceGasOutHours',
       source: 'analysis',
-      sub_category: :heating
+      sub_category: :heating,
+      fuel_type: :gas
     )
 
     # Update task as completed.  If you remove the line below, the task will

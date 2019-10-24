@@ -8,6 +8,14 @@ module Schools
 
     def index
       @heating_pages = process_templates(@school.latest_analysis_pages.heating)
+      @electricity_pages = process_templates(@school.latest_analysis_pages.electricity_use)
+      @overview_pages = process_templates(@school.latest_analysis_pages.overview)
+      @solar_pages = process_templates(@school.latest_analysis_pages.solar_pv)
+      @hot_water_pages = process_templates(@school.latest_analysis_pages.hot_water)
+      @tariff_pages = process_templates(@school.latest_analysis_pages.tariffs)
+      @co2_pages = process_templates(@school.latest_analysis_pages.co2)
+      @boiler_control_pages = process_templates(@school.latest_analysis_pages.boiler_control)
+      @storage_heater_pages = process_templates(@school.latest_analysis_pages.storage_heaters)
     end
 
     def show
@@ -23,7 +31,7 @@ module Schools
       pages.map do |page|
         TemplateInterpolation.new(
           page.content_version,
-          with_objects: { rating: page.alert.rating, id: page.id }
+          with_objects: { rating: page.alert.rating, analysis_page: page }
         ).interpolate(
           :analysis_title, :analysis_subtitle,
           with: page.alert.template_variables

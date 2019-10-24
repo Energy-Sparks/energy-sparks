@@ -22,10 +22,10 @@ describe 'Alert' do
     alert_3 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Date.today)
     alert_4 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Date.yesterday)
 
-    expect(Alert.without_exceptions.latest).to eq([alert_1, alert_3])
+    expect(Alert.without_exclusions.latest).to eq([alert_1, alert_3])
 
-    SchoolAlertTypeException.create(school: school, alert_type: gas_fuel_alert_type)
-    expect(Alert.without_exceptions.latest).to eq([alert_3])
+    SchoolAlertTypeExclusion.create(school: school, alert_type: gas_fuel_alert_type)
+    expect(Alert.without_exclusions.latest).to eq([alert_3])
   end
 
   it 'has a rating of unrated if no rating is et' do

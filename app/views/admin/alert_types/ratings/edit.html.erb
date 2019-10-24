@@ -4,7 +4,11 @@
 
 <%= simple_form_for @rating, url: admin_alert_type_rating_path(@alert_type, @rating) do |form| %>
   <%= hidden_field_tag :alert_type_rating_id, @rating.id %>
-  <%= render 'form', form: form, alert_type: @alert_type, content: @content, template_variables: @template_variables %>
+  <% if @alert_type.analysis? %>
+    <%= render 'form_analysis', form: form, alert_type: @alert_type, content: @content, template_variables: @template_variables, example_variables: @example_variables %>
+  <% else %>
+    <%= render 'form', form: form, alert_type: @alert_type, content: @content, template_variables: @template_variables, example_variables: @example_variables %>
+  <% end %>
   <%= form.button :submit, 'Update content' %>
 <% end %>
 

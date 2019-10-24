@@ -79,7 +79,7 @@ class School < ApplicationRecord
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
 
-  has_many :school_alert_type_exceptions
+  has_many :school_alert_type_exclusions
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
@@ -110,8 +110,8 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  def latest_alerts_without_exceptions
-    alerts.without_exceptions.latest
+  def latest_alerts_without_exclusions
+    alerts.without_exclusions.latest
   end
 
   def should_generate_new_friendly_id?
