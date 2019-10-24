@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     resources :activities
 
     scope module: :schools do
+      resources :new_analysis, controller: :new_analysis, only: [:index, :show]
 
       resources :activity_categories, only: [:index]
       resources :activity_types, only: [:index, :show]
