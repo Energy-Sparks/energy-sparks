@@ -6,6 +6,7 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       title: "Gas: out of hours",
+      description: "Gas: out of hours",
       class_name: 'AdviceGasOutHours',
       source: 'analysis',
       sub_category: :heating,
