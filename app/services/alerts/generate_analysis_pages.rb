@@ -7,7 +7,7 @@ module Alerts
     def perform(alerts)
       alerts.each do |alert|
         FetchContent.new(alert).content_versions(scope: :analysis).each do |content_version|
-          @content_generation_run.analysis_pages.create!(alert: alert, content_version: content_version, category: alert.alert_type.sub_category)
+          @content_generation_run.analysis_pages.create!(alert: alert, content_version: content_version, category: alert.alert_type.sub_category, priority: content_version.analysis_weighting)
         end
       end
       @content_generation_run.analysis_pages
