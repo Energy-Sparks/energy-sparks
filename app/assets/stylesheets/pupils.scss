@@ -13,8 +13,22 @@
   overflow: visible;
 
   img {
-    height: 594px;
-    background-size: 755px 594px;
+    height: 400px;
+    background-size: 755px 400px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  div.equivalence-wrapper {
+    height: 200px;
+  }
+
+  .illustration-wrapper {
+    img {
+      float: right;
+      height: 300px;
+      background-size: 566.25px 300px;
+    }
   }
 }
 
