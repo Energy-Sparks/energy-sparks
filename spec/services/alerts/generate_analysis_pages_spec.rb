@@ -8,7 +8,7 @@ describe Alerts::GenerateAnalysisPages do
 
   context 'no alerts' do
     it 'does nothing, no find out mores created' do
-      service.perform(school.latest_alerts_without_exceptions)
+      service.perform(school.latest_alerts_without_exclusions)
       expect(AnalysisPage.count).to eq 0
     end
   end
@@ -16,7 +16,7 @@ describe Alerts::GenerateAnalysisPages do
   context 'alerts, but no analysis page configuration' do
     it 'does nothing' do
       create(:alert, school: school)
-      service.perform(school.latest_alerts_without_exceptions)
+      service.perform(school.latest_alerts_without_exclusions)
       expect(AnalysisPage.count).to eq 0
     end
   end
@@ -31,7 +31,7 @@ describe Alerts::GenerateAnalysisPages do
     context 'where the rating matches the range' do
 
       it 'creates a page pairing the alert and the content' do
-        service.perform(school.latest_alerts_without_exceptions)
+        service.perform(school.latest_alerts_without_exclusions)
         expect(AnalysisPage.count).to be 1
         page = content_generation_run.analysis_pages.first
         expect(page.alert).to eq(alert)
@@ -40,14 +40,14 @@ describe Alerts::GenerateAnalysisPages do
       end
 
       it 'does not create if there is an exception' do
-        SchoolAlertTypeException.create(school: school, alert_type: alert.alert_type)
-        expect { service.perform(school.latest_alerts_without_exceptions) }.to change { AnalysisPage.count }.by(0)
+        SchoolAlertTypeExclusion.create(school: school, alert_type: alert.alert_type)
+        expect { service.perform(school.latest_alerts_without_exclusions) }.to change { AnalysisPage.count }.by(0)
       end
 
       context 'where the analysis pages are not active' do
         let(:active){ false }
         it 'does not include the alert' do
-          service.perform(school.latest_alerts_without_exceptions)
+          service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.analysis_pages.count).to be 0
         end
       end
