@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  get "/robots.txt" => "robots_txts#show"
+
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
