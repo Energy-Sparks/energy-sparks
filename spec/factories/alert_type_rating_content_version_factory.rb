@@ -11,5 +11,7 @@ FactoryBot.define do
     sms_content {'A thing has happened' }
     email_title {'A thing has happened and you should do something about it' }
     email_content {'A thing has happened and you should do something about it' }
+    analysis_title {'A thing has happened and you should do something about it' }
+    analysis_subtitle {'You could save £100' }
   end
 end

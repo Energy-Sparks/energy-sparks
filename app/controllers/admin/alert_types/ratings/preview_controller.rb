@@ -21,7 +21,7 @@ module Admin
           content_version = AlertTypeRatingContentVersion.new(content_params.fetch(:content))
           @content = TemplateInterpolation.new(
             content_version,
-            with_objects: { find_out_more: nil },
+            with_objects: { find_out_more: nil, rating: @alert.rating },
             proxy: [:colour]
           ).interpolate(
             *AlertTypeRatingContentVersion.template_fields,
@@ -50,7 +50,7 @@ module Admin
         def template_path(key)
           case key
           when 'find_out_more' then 'schools/find_out_more/show'
-          when 'email', 'sms', 'alert', 'management_priorities' then key
+          when 'email', 'sms', 'alert', 'management_priorities', 'analysis' then key
           else 'no_template'
           end
         end

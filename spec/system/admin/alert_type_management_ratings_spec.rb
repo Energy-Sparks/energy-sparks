@@ -8,6 +8,7 @@ RSpec.describe 'alert type management', type: :system do
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: has_ratings) }
   let(:has_ratings){ true }
 
+
   describe 'managing associated activities' do
 
     let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type)}
@@ -42,6 +43,59 @@ RSpec.describe 'alert type management', type: :system do
       expect(alert_type_rating.activity_types).to match_array([activity_type_2])
       expect(alert_type_rating.alert_type_rating_activity_types.first.position).to eq(1)
 
+    end
+  end
+
+
+  describe 'creating analysis content' do
+
+    let!(:analysis_alert_type) { create(:alert_type, source: :analysis, frequency: :termly, title: 'Carbon analysis') }
+    let!(:alert) do
+      create(:alert, alert_type: analysis_alert_type, template_data: {carbon: '100 tonnes', chart_a: :example_chart_value}, school: create(:school))
+    end
+
+    before do
+      sign_in(admin)
+      visit root_path
+      click_on 'Manage'
+      click_on 'Alert Types'
+    end
+
+    context 'with ratings' do
+
+      it 'allows creation and editing of content', js: true do
+        click_on analysis_alert_type.title
+        click_on 'Content management'
+
+        click_on 'New content rating range'
+
+        fill_in 'Rating from', with: '0'
+        fill_in 'Rating to', with: '10'
+        fill_in 'Description', with: 'For schools with bad carbon'
+
+        check 'Analysis'
+
+        within '.analysis_active' do
+
+          fill_in 'Analysis title', with: 'Carbon report'
+          fill_in 'Analysis subtitle', with: 'You are producing {{carbon}} of carbon'
+
+          click_on 'Preview'
+
+          within '#analysis-preview .content' do
+            expect(page).to have_content('Carbon report')
+            expect(page).to have_content('You are producing 100 tonnes of carbon')
+          end
+        end
+
+        click_on 'Create content'
+
+        expect(analysis_alert_type.ratings.size).to eq(1)
+        alert_type_rating = analysis_alert_type.ratings.first
+        expect(alert_type_rating.content_versions.size).to eq(1)
+        first_content = alert_type_rating.current_content
+        expect(first_content.analysis_title).to eq('Carbon report')
+      end
     end
   end
 

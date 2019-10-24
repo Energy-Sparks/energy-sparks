@@ -1,0 +1,3 @@
+<% @content.each do |content| %>
+  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<% end %>

@@ -10,6 +10,11 @@
 #  _pupil_dashboard_title                :string
 #  _teacher_dashboard_title              :string
 #  alert_type_rating_id                  :bigint(8)        not null
+#  analysis_end_date                     :date
+#  analysis_start_date                   :date
+#  analysis_subtitle                     :string
+#  analysis_title                        :string
+#  analysis_weighting                    :decimal(, )      default(5.0)
 #  colour                                :integer          default("negative"), not null
 #  created_at                            :datetime         not null
 #  email_end_date                        :date
@@ -72,7 +77,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     [
       :teacher_dashboard_alert, :pupil_dashboard_alert,
       :public_dashboard_alert, :management_dashboard_alert,
-      :management_priorities, :sms, :email
+      :management_priorities, :sms, :email, :analysis
     ]
   end
 
@@ -83,7 +88,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
       :find_out_more_chart_variable, :find_out_more_chart_title,
-      :management_priorities_title
+      :management_priorities_title,
+      :analysis_title, :analysis_subtitle
     ]
   end
 
@@ -124,6 +130,11 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   validates :management_priorities_title,
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active?},
+    on: :create
+
+  validates :analysis_title, :analysis_subtitle,
+    presence: true,
+    if: ->(content) { content.alert_type_rating && content.alert_type_rating.analysis_active?},
     on: :create
 
   functionality.each do |function|

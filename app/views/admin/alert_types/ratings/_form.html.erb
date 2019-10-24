@@ -19,6 +19,13 @@
 
   <h3>Content</h3>
 
+  <%= render 'content_section', form: form, field: :analysis_active, field_name: 'Adult analysis' do %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'analysis', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :analysis) do %>
+      <%= content.input :analysis_title, as: :string %>
+      <%= content.input :analysis_subtitle, as: :string %>
+    <% end %>
+  <% end %>
+
   <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms) do %>
       <%= content.input :sms_content, label: 'SMS content' %>
@@ -69,7 +76,6 @@
       <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>
       <%= content.input :find_out_more_content, as: :trix_editor, hint: 'Main body copy for Find Out More Page' %>
     <% end %>
-
   <% end %>
 
 <% end %>
