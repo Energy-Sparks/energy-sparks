@@ -132,11 +132,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active?},
     on: :create
 
-  validates :analysis_title, :analysis_subtitle,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.analysis_active?},
-    on: :create
-
   functionality.each do |function|
     validates :"#{function}_weighting",
       numericality: { greater_than_or_equal_to: 0 },
