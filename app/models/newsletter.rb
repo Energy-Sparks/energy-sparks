@@ -4,10 +4,10 @@
 #
 #  created_at   :datetime         not null
 #  id           :bigint(8)        not null, primary key
-#  published_on :date
-#  title        :text
+#  published_on :date             not null
+#  title        :text             not null
 #  updated_at   :datetime         not null
-#  url          :text
+#  url          :text             not null
 #
 
 class Newsletter < ApplicationRecord

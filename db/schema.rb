@@ -595,9 +595,9 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
   end
 
   create_table "newsletters", force: :cascade do |t|
-    t.text "title"
-    t.text "url"
-    t.date "published_on"
+    t.text "title", null: false
+    t.text "url", null: false
+    t.date "published_on", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
