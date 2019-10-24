@@ -9,12 +9,13 @@
               <% if newsletter.image.present? %>
                 <%= image_tag newsletter.image %>
               <% else %>
-                <%= image_tag("stay-up-to-date/newsletter-placeholder.png") %>
+                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'img-fluid') %>
               <% end %>
               <div class="card-body">
                 <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
               </div>
             </div>
+            <div class="w-100 d-none d-md-block d-sm-block d-lg-none"></div>
           <% end %>
         </div>
       </div>
@@ -22,16 +23,16 @@
 
     <div class="col-5 border-left ">
       <h4>Get the latest news from Energy Sparks in your inbox</h4>
-      <form>
+      <%= form_with(url: mailchimp_signup_path, method: :get, local: true) do %>
         <div class="form-group">
-          <label for="exampleInputEmail1">Your email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="example@example.com">
+          <%= label_tag(:email, "Your email address") %>
+          <%= text_field_tag(:email, nil, class: 'form-control', placeholder: 'example@example.com') %>
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="d-flex justify-content-center">
-          <button class="btn btn-dark-blue">Sign up</button>
+          <%= submit_tag("Continue", class: 'btn btn-dark-blue') %>
         </div>
-      </form>
+      <% end %>
     </div>
   </div>
 </div>

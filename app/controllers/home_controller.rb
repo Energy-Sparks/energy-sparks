@@ -11,7 +11,7 @@ class HomeController < ApplicationController
     render :index
   end
 
-  def sign_up_form
+  def mailchimp_signup
     @email = params[:email]
   end
 

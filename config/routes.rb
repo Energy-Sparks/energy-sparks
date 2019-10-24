@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
   get 'home-page', to: 'home#show'
+  get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
