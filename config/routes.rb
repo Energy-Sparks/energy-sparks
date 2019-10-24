@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
   get 'home-page', to: 'home#show'
+  get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -144,7 +145,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-
+    resources :newsletters
     resources :school_groups
     resources :activity_categories, except: [:destroy]
     resources :activity_types

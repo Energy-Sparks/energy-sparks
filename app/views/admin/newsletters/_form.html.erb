@@ -1,0 +1,7 @@
+<%= simple_form_for([:admin, @newsletter]) do |f| %>
+  <%= f.input :title, as: :string %>
+  <%= f.input :url, as: :string %>
+  <%= f.input :published_on, as: :tempus_dominus_date, default_date: Date.today, input_html: { class: "form-control form-control-lg" } %>
+  <%= f.input :image, hint: "Please use an image with a width of 300 pixels and a height of 200 pixels" %>
+  <%= f.button :submit %>
+<% end %>
