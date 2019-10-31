@@ -168,7 +168,7 @@ module ApplicationHelper
   end
 
   def stars(rating)
-    out_of_five = rating.round / 2.0
+    out_of_five = [(rating.round / 2.0), 0.5].max # enforce at least a half star
     full_stars = out_of_five.to_i
     half_stars = out_of_five.round != out_of_five ? 1 : 0
     empty_stars = 5 - full_stars - half_stars
