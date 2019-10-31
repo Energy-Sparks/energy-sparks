@@ -6,7 +6,9 @@ class SchoolsController < ApplicationController
   include DashboardAlerts
   include DashboardTimeline
 
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:show, :index]
+  load_resource only: [:show]
+
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
@@ -24,6 +26,7 @@ class SchoolsController < ApplicationController
     if current_user && (current_user.school_id == @school.id || current_user.admin?)
       redirect_to_dashboard
     else
+      authorize! :show, @school
       @charts = setup_charts(@school.configuration)
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
       @observations = setup_timeline(@school.observations)
