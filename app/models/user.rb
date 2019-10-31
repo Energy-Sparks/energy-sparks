@@ -69,9 +69,9 @@ class User < ApplicationRecord
   validates :pupil_password, presence: true, if: :pupil?
   validate :pupil_password_unique, if: :pupil?
 
-  validates :staff_role, presence: true, if: :staff?
-  validates :staff_role, presence: true, if: :school_admin?
-  validates :staff_role, presence: true, if: :school_onboarding?
+  validates :staff_role_id, presence: true, if: :staff?
+  validates :staff_role_id, presence: true, if: :school_admin?
+  validates :staff_role_id, presence: true, if: :school_onboarding?
 
   after_save :update_contact
 
