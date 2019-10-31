@@ -36,8 +36,8 @@ class Ability
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
-        school_scope = { school_group_id: user.school_group_id }
-        related_school_scope = { school: { school_group_id: user.school_group_id } }
+        school_scope = { school_group_id: user.school_group_id, active: true }
+        related_school_scope = { school: { school_group_id: user.school_group_id, active: true } }
         can :show, SchoolGroup, id: user.school_group_id
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
@@ -46,7 +46,7 @@ class Ability
           user.school_group.calendars.include?(calendar_event.calendar)
         end
       else
-        school_scope = { id: user.school_id }
+        school_scope = { id: user.school_id, active: true }
         related_school_scope = { school_id: user.school_id }
         can [:show, :update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
