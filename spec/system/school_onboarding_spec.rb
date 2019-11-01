@@ -169,6 +169,15 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
       click_on 'Update school details'
 
+      fill_in 'Name', with: 'The energy savers'
+      fill_in 'Pupil password', with: 'theenergysavers'
+      click_on 'Create pupil account'
+
+      onboarding.reload
+      pupil = onboarding.school.users.pupil.first
+      expect(pupil.email).to_not be_nil
+      expect(pupil.pupil_password).to eq('theenergysavers')
+
       click_on "I've finished"
       expect(onboarding).to have_event(:onboarding_complete)
       onboarding.reload
@@ -182,6 +191,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
       expect(email.to).to include(admin.email)
+
     end
 
     it 'lets the user edit inset days, meters and opening times but does not require them' do
