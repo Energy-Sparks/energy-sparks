@@ -50,7 +50,8 @@ RSpec.describe "analysis page", type: :system do
           {type: :chart_name, content: :benchmark}
         ]
       )
-      visit school_new_analysis_index_path(school)
+      visit school_path(school)
+      click_on "Learn more about your school's energy use"
 
       expect(page).to have_content('You might want to think about heating')
       expect(page).to have_content("This is what you need to do")

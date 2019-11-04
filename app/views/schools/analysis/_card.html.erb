@@ -1,7 +1,7 @@
 <div class="card <%= energy %>-dark <%= energy %>-card mb-3">
   <div class="card-body">
     <h3 class="card-title pb-0">
-      <%= link_to school_new_analysis_path(school, page_param), class: 'stretched-link' do %>
+      <%= link_to school_analysis_path(school, page_param), class: 'stretched-link' do %>
         <%= page.analysis_title %> <span class="stars float-right"><%= stars(page.rating) %></span>
       <% end %>
     </h3>
