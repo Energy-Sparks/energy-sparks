@@ -1,69 +1,52 @@
-require 'dashboard'
+module Schools
+  class AnalysisController < ApplicationController
+    load_and_authorize_resource :school
+    skip_before_action :authenticate_user!
 
-class Schools::AnalysisController < ApplicationController
-  before_action :set_school
+    include SchoolAggregation
 
-  include SchoolAggregation
-  include Measurements
+    before_action :check_aggregated_school_in_cache, only: :show
 
-  skip_before_action :authenticate_user!
-  before_action :check_aggregated_school_in_cache
-  before_action :build_aggregate_school, except: [:analysis]
-  before_action :set_nav
-  before_action :set_measurement_options
-
-  def analysis
-    if @school.analysis?
-      # Redirect to correct dashboard
-      redirect_to school_analysis_tab_path(school: @school, tab: pages.keys.first)
+    def index
+      @heating_pages = process_templates(@school.latest_analysis_pages.heating)
+      @electricity_pages = process_templates(@school.latest_analysis_pages.electricity_use)
+      @overview_pages = process_templates(@school.latest_analysis_pages.overview)
+      @solar_pages = process_templates(@school.latest_analysis_pages.solar_pv)
+      @hot_water_pages = process_templates(@school.latest_analysis_pages.hot_water)
+      @tariff_pages = process_templates(@school.latest_analysis_pages.tariffs)
+      @co2_pages = process_templates(@school.latest_analysis_pages.co2)
+      @boiler_control_pages = process_templates(@school.latest_analysis_pages.boiler_control)
+      @storage_heater_pages = process_templates(@school.latest_analysis_pages.storage_heaters)
     end
-  end
 
-  def show
-    render_generic_chart_template
-  end
-
-private
-
-  def build_aggregate_school
-    # use for heat model fitting tabs
-    @aggregate_school = aggregate_school
-  end
-
-  def set_nav
-    @nav_array = pages.map do |page, config|
-      { name: config[:name], page: page }
+    def show
+      @page = @school.analysis_pages.find(params[:id])
+      framework_adapter = Alerts::FrameworkAdapter.new(@page.alert.alert_type, @school, @page.alert.run_on, aggregate_school)
+      @content = framework_adapter.content
+      @title = page_title(@content, @school)
     end
-  end
 
-  def pages
-    @school.configuration.analysis_charts_as_symbols(:analysis_charts)
-  end
+  private
 
-  def render_generic_chart_template(extra_chart_config = {})
-    extra_chart_config[:mpan_mprn] = params[:mpan_mprn] if params[:mpan_mprn].present?
-
-    @measurement = measurement_unit(params[:measurement])
-
-    @chart_config = { y_axis_units: @measurement }.merge(extra_chart_config)
-
-    @title = title_and_chart_configuration[:name]
-    @charts = title_and_chart_configuration[:charts]
-    @show_measurement_units = title_and_chart_configuration.fetch(:change_measurement_units, true)
-
-    render :generic_chart_template
-  end
-
-  def title_and_chart_configuration
-    tab = params[:tab].to_sym
-    if [:test, :heating_model_fitting].include?(tab)
-      DashboardConfiguration::DASHBOARD_PAGE_GROUPS[tab]
-    else
-      @school.configuration.analysis_charts_as_symbols(:analysis_charts)[tab]
+    def page_title(content, school)
+      title = content.find { |element| element[:type] == :title }
+      if title
+        title[:content]
+      else
+        "#{school.name} analysis"
+      end
     end
-  end
 
-  def set_school
-    @school = School.friendly.find(params[:school_id])
+    def process_templates(pages)
+      pages.by_priority.map do |page|
+        TemplateInterpolation.new(
+          page.content_version,
+          with_objects: { rating: page.alert.rating, analysis_page: page }
+        ).interpolate(
+          :analysis_title, :analysis_subtitle,
+          with: page.alert.template_variables
+        )
+      end
+    end
   end
 end
