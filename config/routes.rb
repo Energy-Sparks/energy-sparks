@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
-  get "/robots.txt" => "robots_txts#show"
+  get "/robots.txt" => "robots_txts#show", as: :robots
 
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'

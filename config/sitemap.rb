@@ -22,7 +22,7 @@ if ENV.key?('GENERATE_SITEMAP')
     add schools_path
     add activity_types_path
 
-    ActivityType.find_each do |activity_type|
+    ActivityType.active.find_each do |activity_type|
       add activity_type_path(activity_type)
     end
 
@@ -32,7 +32,7 @@ if ENV.key?('GENERATE_SITEMAP')
       add scoreboard_path(scoreboard)
     end
 
-    School.find_each do |school|
+    School.active.find_each do |school|
       add school_path(school)
       add school_activities_path(school)
       add school_programme_types_path(school)
