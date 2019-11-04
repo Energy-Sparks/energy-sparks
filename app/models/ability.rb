@@ -5,11 +5,6 @@ class Ability
     user ||= User.new # guest user (not logged in)
     alias_action :create, :read, :update, :destroy, to: :crud
 
-    # enable all analysis, but disable known admin ones
-    can :analyse, :all
-    cannot :analyse, :test
-    cannot :analyse, :heating_model_fitting
-
     # all users can do these things
     can :read, Activity, school: { active: true }
     can :read, ActivityCategory
@@ -31,8 +26,6 @@ class Ability
 
     if user.admin?
       can :manage, :all
-      can :analyse, :test
-      can :analyse, :heating_model_fitting
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
@@ -87,10 +80,8 @@ class Ability
         can :read, :my_school_menu
       end
     elsif user.guest?
-      cannot :analyse, :cost
       can :manage, SchoolOnboarding, created_user_id: nil
     elsif user.school_onboarding?
-      cannot :analyse, :cost
       can :manage, SchoolOnboarding do |onboarding|
         onboarding.created_user == user
       end

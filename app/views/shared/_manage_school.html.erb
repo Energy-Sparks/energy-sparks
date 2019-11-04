@@ -13,5 +13,6 @@
     <%= link_to 'Alert reports', school_alert_reports_path(school), class: 'dropdown-item' if can? :index, Alert %>
     <%= link_to 'Alert subscription events', school_alert_subscription_events_path(school), class: 'dropdown-item' if can? :index, AlertSubscriptionEvent %>
     <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
+    <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
   </div>
 </li>

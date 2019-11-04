@@ -9,7 +9,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <% end %>
 </p>
 
-<%= render 'measurement_picker', measurement_options: @measurement_options, measurement: @measurement if @show_measurement_units %>
+<%= render 'shared/measurement_picker', measurement_options: @measurement_options, measurement: @measurement if @show_measurement_units %>
 
 <%= render 'nav' %>
 
