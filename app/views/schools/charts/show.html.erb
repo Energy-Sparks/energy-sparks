@@ -10,7 +10,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <% end %>
 </p>
 
-<%= render 'schools/analysis/measurement_picker', measurement_options: @measurement_options, measurement: @measurement %>
+<%= render 'shared/measurement_picker', measurement_options: @measurement_options, measurement: @measurement %>
 
 <div id="chart_wrapper_<%= @chart_type %>" class="chart-wrapper">
   <h3 class="analysis">Loading: <%= @title %></h3>
