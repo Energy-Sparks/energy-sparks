@@ -22,10 +22,19 @@ module Schools
       @page = @school.analysis_pages.find(params[:id])
       framework_adapter = Alerts::FrameworkAdapter.new(@page.alert.alert_type, @school, @page.alert.run_on, aggregate_school)
       @content = framework_adapter.content
-      @title = @content.detect(-> {{ content: "#{@school.name} analysis" }}) {|content| content[:type] == :title}[:content]
+      @title = page_title(@content, @school)
     end
 
   private
+
+    def page_title(content, school)
+      title = content.find { |element| element[:type] == :title }
+      if title
+        title[:content]
+      else
+        "#{school.name} analysis"
+      end
+    end
 
     def process_templates(pages)
       pages.by_priority.map do |page|
