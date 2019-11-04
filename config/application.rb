@@ -3,7 +3,7 @@ require_relative 'boot'
 require "rails"
 require "rails/all"
 require "active_storage/engine"
-require_relative "../lib/rack_x_robots_tag"
+require_relative "../lib/rack/x_robots_tag"
 
 
 # Require the gems listed in Gemfile, including any gems
