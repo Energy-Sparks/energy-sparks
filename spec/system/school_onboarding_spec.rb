@@ -170,6 +170,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Update school details'
 
       fill_in 'Name', with: 'The energy savers'
+      fill_in 'Pupil password', with: ''
+      click_on 'Create pupil account'
+      expect(page).to have_content("can't be blank")
+
       fill_in 'Pupil password', with: 'theenergysavers'
       click_on 'Create pupil account'
 
@@ -194,16 +198,23 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     end
 
-    it 'lets the user edit inset days, meters and opening times but does not require them' do
+    it 'lets the user edit inset days, meters, pupils and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
       academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
       user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
       SchoolCreator.new(school).onboard_school!(onboarding)
+      pupil = create(:pupil, school: school)
 
       sign_in(user)
       visit new_onboarding_completion_path(onboarding)
+
+      click_on 'Edit pupil account'
+      fill_in 'Pupil password', with: 'testtest2'
+      click_on 'Update pupil account'
+      pupil.reload
+      expect(pupil.pupil_password).to eq('testtest2')
 
       # Meters
       expect(page).to have_content('Meters: 0')
@@ -230,6 +241,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Date', with: '2019-01-09'
       click_on 'Add inset day'
       expect(page).to have_content('Inset days: 1')
+
     end
 
     it 'adds the onboarding user as an alert contact and allows management' do
