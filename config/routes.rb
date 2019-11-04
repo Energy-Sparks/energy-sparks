@@ -49,6 +49,13 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
+      [
+        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
+        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
+      ].each do |tab|
+        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
+      end
+
       resources :analysis, controller: :analysis, only: [:index, :show]
 
       resources :activity_categories, only: [:index]

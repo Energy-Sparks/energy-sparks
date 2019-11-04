@@ -24,6 +24,8 @@ module Schools
       framework_adapter = Alerts::FrameworkAdapter.new(@page.alert.alert_type, @school, @page.alert.run_on, aggregate_school)
       @content = framework_adapter.content
       @title = page_title(@content, @school)
+    rescue ActiveRecord::RecordNotFound
+      redirect_to school_analysis_path(@school), status: :moved_permanently
     end
 
   private
