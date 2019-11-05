@@ -42,7 +42,8 @@ module Alerts
         template_data:    analysis_report.template_data,
         chart_data:       analysis_report.chart_data,
         table_data:       analysis_report.table_data,
-        priority_data:    analysis_report.priority_data
+        priority_data:    analysis_report.priority_data,
+        benchmark_data:   analysis_report.benchmark_data
       )
     end
   end

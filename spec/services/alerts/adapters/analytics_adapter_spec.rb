@@ -27,6 +27,14 @@ module Alerts
         :relevant
       end
 
+      def make_available_to_users?
+        relevance == :relevant && enough_data == :enough && calculation_worked
+      end
+
+      def calculation_worked
+        true
+      end
+
       def front_end_template_data
         {template: 'variables'}
       end
@@ -41,6 +49,10 @@ module Alerts
 
       def priority_template_data
         {priority: 'variables'}
+      end
+
+      def self.benchmark_template_variables
+        {}
       end
 
       def self.alert_type

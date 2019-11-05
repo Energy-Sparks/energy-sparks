@@ -4,6 +4,7 @@
 #
 #  alert_type_id   :bigint(8)        not null
 #  analytics_valid :boolean          default(TRUE), not null
+#  benchmark_data  :json
 #  chart_data      :json
 #  created_at      :datetime         not null
 #  displayable     :boolean          default(TRUE), not null
