@@ -36,8 +36,8 @@ class Ability
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
-        school_scope = { school_group_id: user.school_group_id }
-        related_school_scope = { school: { school_group_id: user.school_group_id } }
+        school_scope = { school_group_id: user.school_group_id, active: true }
+        related_school_scope = { school: { school_group_id: user.school_group_id, active: true } }
         can :show, SchoolGroup, id: user.school_group_id
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
@@ -46,7 +46,7 @@ class Ability
           user.school_group.calendars.include?(calendar_event.calendar)
         end
       else
-        school_scope = { id: user.school_id }
+        school_scope = { id: user.school_id, active: true }
         related_school_scope = { school_id: user.school_id }
         can [:show, :update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
@@ -54,12 +54,11 @@ class Ability
           onboarding.created_user == user
         end
         can :read, :my_school_menu
-        can :read, :dashboard_menu
       end
       can [
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_teachers_dash, :show_pupils_dash, :show_management_dash,
-        :read, :usage, :start_programme
+        :read, :usage, :start_programme, :read_dashboard_menu
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
@@ -81,12 +80,11 @@ class Ability
       can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, active: true
       can :manage, Observation, school: { id: user.school_id, active: true }
       if user.staff?
-        can [:show_teachers_dash, :show_management_dash, :start_programme], School, id: user.school_id, active: true
+        can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, active: true
         can :crud, Programme, school: { id: user.school_id, active: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :read, :my_school_menu
-        can :read, :dashboard_menu
       end
     elsif user.guest?
       cannot :analyse, :cost

@@ -7,9 +7,9 @@
       </button>
       <div class="collapse navbar-collapse" id="subnavbarNavDropdown">
         <ul class="navbar-nav">
-          <%= render 'shared/dashboards' if can?(:read, :dashboard_menu) && school.active? %>
+          <%= render 'shared/dashboards' if can?(:read_dashboard_menu, school) %>
 
-          <%= render 'shared/manage_school', school: @school if can? :update, school %>
+          <%= render 'shared/manage_school', school: school if can? :update, school %>
 
           <% if podium && podium.includes_school? %>
             <span class="nav-lozenge mt-1">

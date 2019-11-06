@@ -6,6 +6,18 @@ div.dashboards {
   }
 }
 
+
+@media (max-width: 1024px) {
+  div.dashboards {
+    div.analysis-chart, div.simulator-chart {
+      height: 300px;
+      padding-bottom: 20px;
+      padding-top: 20px;
+    }
+  }
+}
+
+
 .timeline-border-left {
   border-left: 3px solid $dark;
 }
@@ -25,12 +37,53 @@ div.dashboards {
   padding: 1.1rem 1.25rem;
 }
 
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  .info-bar {
+    margin: 0.25rem 0.25rem;
+  }
+
+  .info-bar i {
+    font-size: $f4;
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .info-bar i {
+    font-size: $f3;
+  }
+}
+
+// Medium devices (tablets, 768px and up) // max-width: 991.98px
+// @media (min-width: 768px) and (max-width: 991.98px) {
+// }
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .info-bar div .btn {
+    height: 40px;
+    width: 200px;
+    line-height: 1.4;
+    font-size: $f6;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+// @media (min-width: 992px) and (max-width: 1199.98px) { ... }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .info-bar div .btn {
+    height: 60px;
+    width: 260px;
+    line-height: 2.3;
+    font-size: $f5;
+  }
+}
+
 .info-bar div .btn {
-  height: 60px;
-  width: 260px;
-  line-height: 2.1;
   border-width: 2px;
-  font-size: 20px;
 }
 
 .info-bar.bg-neutral div .btn {

@@ -33,6 +33,8 @@ class SchoolOnboardingEvent < ApplicationRecord
     school_calendar_created: 60,
     school_details_created: 70,
     school_details_updated: 71,
+    pupil_account_created: 75,
+    pupil_account_updated: 76,
     onboarding_complete: 80,
     reminder_sent: 90,
     activation_email_sent: 100

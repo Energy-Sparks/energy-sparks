@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  get "/robots.txt" => "robots_txts#show", as: :robots
+
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
   get 'home-page', to: 'home#show'
+  get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -36,6 +39,7 @@ Rails.application.routes.draw do
       resource :consent,        only: [:show, :create], controller: 'consent'
       resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
       resource :school_details, only: [:new, :create, :edit, :update]
+      resource :pupil_account,  only: [:new, :create, :edit, :update], controller: 'pupil_account'
       resource :completion,     only: [:new, :create, :show], controller: 'completion'
       resources :meters,        only: [:new, :create, :edit, :update]
       resource :school_times,   only: [:edit, :update]
@@ -53,7 +57,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
 
       resources :programme_types, only: [:index, :show]
-      resources :programmes, only: [:show, :index, :create]
+      resources :programmes, only: [:show, :create]
 
       resource :action, only: [:new]
 
@@ -144,7 +148,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-
+    resources :newsletters
     resources :school_groups
     resources :activity_categories, except: [:destroy]
     resources :activity_types

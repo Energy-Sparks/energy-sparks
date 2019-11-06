@@ -1,19 +1,19 @@
 <div class="row alert info-bar <%= colour == 'bg-negative' ? 'text-white' : 'text-dark' %> <%= colour %>" role="alert">
-  <div class="col-xl-1">
+  <div class="col-md-1">
     <%= fa_icon(icon) %>
   </div>
 
   <% if buttons %>
-    <div class='<%= "col-xl-#{11 - buttons.size * 3}" %>'>
+    <div class='<%= "col-md-#{11 - buttons.size * 3}" %>'>
       <%= content %>
     </div>
     <% buttons.each do |title, path| %>
-      <div class="col-xl-3">
+      <div class="col-md-3">
         <%= link_to (sanitize title), path, class: "btn btn-light btn rounded-pill font-weight-bold" %>
       </div>
     <% end %>
   <% else %>
-    <div class="col-xl-11">
+    <div class="col-md-11">
       <h5><%= content %></h5>
     </div>
   <% end %>
