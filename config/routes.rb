@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  get "/robots.txt" => "robots_txts#show", as: :robots
+
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
@@ -54,7 +56,7 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
 
       resources :programme_types, only: [:index, :show]
-      resources :programmes, only: [:show, :index, :create]
+      resources :programmes, only: [:show, :create]
 
       resource :action, only: [:new]
 
