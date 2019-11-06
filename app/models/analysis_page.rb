@@ -32,4 +32,8 @@ class AnalysisPage < ApplicationRecord
   enum category: AlertType::SUB_CATEGORIES
 
   scope :by_priority, -> { order(priority: :desc) }
+
+  def show_stars?
+    alert.alert_type.has_ratings?
+  end
 end

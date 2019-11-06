@@ -2,7 +2,10 @@
   <div class="card-body">
     <h3 class="card-title pb-0">
       <%= link_to school_analysis_path(school, page_param), class: 'stretched-link' do %>
-        <%= page.analysis_title %> <span class="stars float-right"><%= stars(page.rating) %></span>
+        <%= page.analysis_title %>
+        <% if show_stars %>
+          <span class="stars float-right"><%= stars(page.rating) %></span>
+        <% end %>
       <% end %>
     </h3>
     <h6 class="card-subtitle text-muted"><%= page.analysis_subtitle %></h6>

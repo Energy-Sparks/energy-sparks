@@ -2,8 +2,13 @@
 <h3>General</h3>
 <%= form.input :description, hint: 'Only used in the admin interface' %>
 
-<%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
-<%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+<% if alert_type.has_ratings?  %>
+  <%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+  <%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+<% else %>
+  <%= form.hidden_field :rating_from %>
+  <%= form.hidden_field :rating_to %>
+<% end %>
 
 <%= form.simple_fields_for :content, content do |content| %>
 
