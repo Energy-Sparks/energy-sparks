@@ -5,11 +5,18 @@
     <%= stylesheet_link_tag "application_mailer", media: "all" %>
   </head>
   <body class="bg-light">
-    <div class="application container">
-      <div class="card mt-4 mb-4">
-        <div class="card-body">
-          <%= yield %>
+    <div class="application container-fluid">
+      <%= image_tag 'bulb-icon.png', class: 'mx-auto', width: '150px', height: '150px' %>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div class="card mt-4 mb-4">
+            <div class="card-body">
+              <%= yield %>
+            </div>
+          </div>
         </div>
+        <div class="col-lg-1"></div>
       </div>
     </div>
   </body>
