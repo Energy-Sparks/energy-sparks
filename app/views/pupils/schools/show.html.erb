@@ -1,5 +1,7 @@
 <%= content_for :page_title, "Pupil dashboard for #{@school.name}" %>
 
+<%= render 'schools/activate', school: @school %>
+
 <%= render 'equivalences', equivalences_content: @equivalences_content, school: @school if @equivalences_content.present? %>
 
 <h2 class="mt-2">Let's look at the energy use data for your school:</h2>
