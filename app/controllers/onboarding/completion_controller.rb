@@ -4,6 +4,7 @@ module Onboarding
 
     def new
       @school = @school_onboarding.school
+      @pupil = @school_onboarding.school.users.pupil.first
       @meters = @school.meters
       @school_times = @school.school_times.sort_by {|time| SchoolTime.days[time.day]}
       if @school.calendar

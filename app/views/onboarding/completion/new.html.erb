@@ -68,6 +68,23 @@
       </div>
     </div>
 
+    <% if @pupil %>
+      <div class="card mb-3" id="pupil-password">
+        <div class="card-header">
+          <h4>Pupil account</h4>
+        </div>
+        <div class="card-body">
+          <dl>
+            <dt>Name:</dt>
+            <dd><%=@pupil.name%></dd>
+            <dt>Password:</dt>
+            <dd><%= @pupil.pupil_password %></dd>
+          </dl>
+          <%= link_to 'Edit pupil account', edit_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+
     <h2>Other things you might want to look at:</h2>
     <p>
     It's not necessary for you to fill in the following sections to complete the sign-up process,

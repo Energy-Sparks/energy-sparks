@@ -1,0 +1,11 @@
+<p>
+  Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required.
+  These accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils.
+</p>
+
+<p>
+  You can create more pupil accounts once your school is activated.
+</p>
+
+<%= f.input :name, required: :true, hint: 'This could be the name of a classroom or an eco-team', placeholder: "e.g. #{school.name} classroom password" %>
+<%= f.input :pupil_password, as: :string, required: true, placeholder: 'e.g. superenergysavers', hint: 'Make it memorable and easy for pupils to type'%>
