@@ -18,7 +18,7 @@ module Alerts
       def produce_report(analysis_object)
         analysis_object.analyse(@analysis_date)
 
-        variables = if pull_variable_data?(analysis_object)
+        variables = if analysis_object.make_available_to_users?
                       {
                         template_data: analysis_object.front_end_template_data,
                         chart_data:    analysis_object.front_end_template_chart_data,
@@ -35,10 +35,6 @@ module Alerts
           enough_data: analysis_object.enough_data,
           relevance:   analysis_object.relevance
         }.merge(variables))
-      end
-
-      def pull_variable_data?(analysis_object)
-        (analysis_object.enough_data == :enough) && (analysis_object.relevance == :relevant)
       end
 
       def invalid_alert_report(analysis_object)
