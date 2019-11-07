@@ -6,7 +6,7 @@ module EnergySparksDataHelpers
       school_creator = SchoolCreator.new(school)
       school_creator.process_new_school!
       school_creator.process_new_configuration!
-      school_creator.activate_school!
+      school_creator.make_visible!
     end
   end
 
