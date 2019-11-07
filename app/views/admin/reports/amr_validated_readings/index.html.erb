@@ -11,6 +11,11 @@
 <p>You can download all of the raw, unvalidated AMR data in CSV format. This contains the data just as it appeared in the original import file.</p>
 <p><%= link_to "Download raw AMR data", admin_reports_amr_data_feed_readings_path(format: :csv) %></p>
 
+<% unless @meter_scope.empty? %>
+  <h2>Meters</h2>
+  <p>This shows all active meters by default, if you would like deprecated meters to be included: <%= link_to 'Show all meters', admin_reports_amr_validated_readings_path(all_meters: true), class: 'btn' %></p>
+<% end %>
+
 <h3>Loader Legend</h3>
 <div class="row p-2">
   <div class="col-2 table-danger"></div>
@@ -25,7 +30,6 @@
   <div class="col-10">Recent reading</div>
 </div>
 
-
 <div class="row">
   <table class="table table-striped">
     <thead>
@@ -33,6 +37,9 @@
         <th>School</th>
         <th>Readings calendar</th>
         <th>Supply</th>
+        <% if @meter_scope.empty? %>
+          <th>Active</th>
+        <% end %>
         <th>First validated reading</th>
         <th>Last validated reading</th>
       </tr>
@@ -41,11 +48,14 @@
       <% @school_groups.each do |school_group| %>
         <tr class='table-active'><td colspan="5"><strong><%= school_group.name %></strong></td></tr>
         <% school_group.schools.order(name: :asc).each do |school| %>
-          <% school.meters.where(active: true).each_with_index do |meter, index| %>
+          <% school.meters.where(@meter_scope).each_with_index do |meter, index| %>
             <tr>
               <td><%= link_to(school.name, school_path(school)) %></td>
               <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
               <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
+              <% if @meter_scope.empty? %>
+                <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
+              <% end %>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
               <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
             </tr>
