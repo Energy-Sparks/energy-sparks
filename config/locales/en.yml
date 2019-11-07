@@ -71,6 +71,7 @@ en:
   simple_form:
     labels:
       defaults:
+        find_out_more_table_variable: 'Table variable'
         find_out_more_chart_variable: 'Chart variable'
         find_out_more_chart_title: 'Chart title'
         find_out_more_content: 'Page content'

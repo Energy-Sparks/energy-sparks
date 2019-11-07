@@ -3,35 +3,31 @@
 <h3 class="pt-4"><%= sanitize @content.find_out_more_title %></h3>
 
 <div class="row justify-content-md-center align-items-center">
-  <% if @tables.empty? %>
-    <div class="col col-lg-10">
-      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content if @chart %>
-    </div>
-  <% else %>
+  <% if @chart %>
     <div class="col col-lg-6">
-      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content if @chart %>
+      <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content %>
     </div>
-    <div class="col-md-auto">
-      <% @tables.each do |table| %>
-        <table class="table table-striped">
-          <thead class="thead-dark">
+  <% end %>
+  <% if @table %>
+    <div class="col col-md-auto justify-content-md-center">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <% table_headers_from_array(@table).each do |column, html_class| %>
+              <th class="<%= html_class %>"><%= column %></th>
+            <% end  %>
+          </tr>
+        </thead>
+        <tbody>
+          <% table_body_from_array(@table).each do |row| %>
             <tr>
-              <% table_headers_from_array(table).each do |column, html_class| %>
-                <th class="<%= html_class %>"><%= column %></th>
-              <% end  %>
+              <% table_row_from_array(row).each do |column, html_class| %>
+                <td class="<%= html_class %>"><%= column %></td>
+              <% end %>
             </tr>
-          </thead>
-          <tbody>
-            <% table_body_from_array(table).each do |row| %>
-              <tr>
-                <% table_row_from_array(row).each do |column, html_class| %>
-                  <td class="<%= html_class %>"><%= column %></td>
-                <% end %>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      <% end %>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   <% end %>
 </div>

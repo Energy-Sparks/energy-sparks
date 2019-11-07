@@ -25,6 +25,7 @@
 #  find_out_more_chart_variable          :text             default("none")
 #  find_out_more_end_date                :date
 #  find_out_more_start_date              :date
+#  find_out_more_table_variable          :text             default("none")
 #  find_out_more_title                   :string
 #  find_out_more_weighting               :decimal(, )      default(5.0)
 #  id                                    :bigint(8)        not null, primary key
@@ -88,6 +89,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
       :find_out_more_chart_variable, :find_out_more_chart_title,
+      :find_out_more_table_variable,
       :management_priorities_title,
       :analysis_title, :analysis_subtitle
     ]

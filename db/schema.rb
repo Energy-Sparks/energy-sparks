@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_07_140527) do
+ActiveRecord::Schema.define(version: 2019_11_07_151733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_140527) do
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
