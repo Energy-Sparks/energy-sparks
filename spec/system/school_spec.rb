@@ -103,23 +103,24 @@ RSpec.describe "school", type: :system do
         expect(page).to have_select('Group', :options => ['', 'BANES'])
       end
 
-      pending 'allows activation from school page' do
-        school.update(active: false)
+      it 'allows visibility management from school page' do
         click_on(school_name)
-        click_on('Activate school')
+        click_on('Visible')
         school.reload
-        expect(school).to be_active
+        expect(school).to_not be_visible
+        click_on('Not visible')
+        school.reload
+        expect(school).to be_visible
       end
 
-      pending 'allows activation and deactivation' do
+      it 'allows data process management' do
         click_on(school_name)
-        click_on('Edit')
-        click_on('Deactivate school')
+        click_on('Processing data')
         school.reload
-        expect(school).to_not be_active
-        click_on('Activate school')
+        expect(school.process_data).to eq(false)
+        click_on('Not processing data')
         school.reload
-        expect(school).to be_active
+        expect(school.process_data).to eq(true)
       end
     end
   end

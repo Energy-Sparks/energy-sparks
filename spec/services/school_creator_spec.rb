@@ -81,14 +81,13 @@ describe SchoolCreator, :schools, type: :service do
     end
   end
 
-  describe 'activate_school' do
-    let(:school){ create :school, visible: false, process_data: false}
+  describe 'make_visible!' do
+    let(:school){ create :school, visible: false}
 
     it 'updates the active flag on the school to be true' do
       service = SchoolCreator.new(school)
-      service.activate_school!
+      service.make_visible!
       expect(school.visible).to eq(true)
-      expect(school.process_data).to eq(true)
     end
 
     context 'where the school has been created as part of the onboarding process' do
@@ -96,7 +95,7 @@ describe SchoolCreator, :schools, type: :service do
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
       it 'sends an activation email if one has not been sent' do
         service = SchoolCreator.new(school)
-        service.activate_school!
+        service.make_visible!
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to include('is live on Energy Sparks')
         expect(school_onboarding).to have_event(:activation_email_sent)
@@ -105,7 +104,7 @@ describe SchoolCreator, :schools, type: :service do
       it 'does not send an email if one has already been sent' do
         school_onboarding.events.create!(event: :activation_email_sent)
         service = SchoolCreator.new(school)
-        service.activate_school!
+        service.make_visible!
         expect(ActionMailer::Base.deliveries.size).to eq(0)
       end
     end
