@@ -273,7 +273,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.integer "enough_data"
     t.integer "relevance", default: 0
     t.json "priority_data", default: {}
+    t.index ["alert_type_id", "created_at"], name: "index_alerts_on_alert_type_id_and_created_at"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
+    t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
@@ -903,6 +905,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
+  add_foreign_key "alerts", "alert_types", on_delete: :cascade
+  add_foreign_key "alerts", "schools", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
@@ -910,7 +914,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
-  add_foreign_key "contacts", "schools"
+  add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
@@ -957,7 +961,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
-  add_foreign_key "school_times", "schools"
+  add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
@@ -967,6 +971,6 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
-  add_foreign_key "users", "schools"
+  add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
 end
