@@ -109,7 +109,7 @@ Rails.application.routes.draw do
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
-      get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
+
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
       resources :users, only: [:index, :destroy]
@@ -201,6 +201,7 @@ Rails.application.routes.draw do
     resources :schools, only: [:show] do
       resource :unvalidated_meter_collection, only: :show
       resource :validated_meter_collection, only: :show
+      resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
     end
 
   end # Admin name space

@@ -3,30 +3,35 @@
 <h1>AMR Data report for active meters</h1>
 <p><%= link_to 'Reports index', admin_reports_path, class: 'btn btn-success' %></p>
 <h2>Downloads</h2>
+<p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
+<p><%= link_to "Download meter collections", admin_schools_meter_collections_path %>
+<p>You can download all of the validated AMR data in CSV format. Note: this includes substituted data where readings are missing.</p>
 <p><%= link_to "All Validated AMR data", admin_reports_amr_validated_readings_path(format: :csv) %></p>
-<p>Note: this includes substituted data where readings are missing.</p>
-<p><%= link_to "Download raw AMR data", admin_reports_amr_data_feed_readings_path(format: :csv) %></p>
-<p>Note: this is data in it's raw formats.</p>
 
-<p>You can now download the aggregated meter collection for a school in YAML format, this includes all of the AMR data, temperature data, holidays, Solar PV, irradiance and carbon grid data. This may take a long time to download, for schools with many meters, it is best to visit the school's page first so that the data is already in the cache.</p>
+<p>You can download all of the raw, unvalidated AMR data in CSV format. This contains the data just as it appeared in the original import file.</p>
+<p><%= link_to "Download raw AMR data", admin_reports_amr_data_feed_readings_path(format: :csv) %></p>
 
 <h3>Loader Legend</h3>
-<div class='calendar-legend row'>
-  <div class='legend-scale vertical'>
-    <ul class='legend-labels'>
-      <li><span style='background:rgb(244,183,191);'></span>No reading for 30 days</li>
-      <li><span style='background:rgb(255,237,169);'></span>No reading for 5 days</li>
-      <li><span style='background:#5cb85c;'></span>Recent reading</li>
-    </ul>
-  </div>
+<div class="row p-2">
+  <div class="col-2 table-danger"></div>
+  <div class="col-10">No reading for 30 days</div>
 </div>
+<div class="row p-2">
+  <div class="col-2 table-warning"></div>
+  <div class="col-10">No reading for 5 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-success"></div>
+  <div class="col-10">Recent reading</div>
+</div>
+
 
 <div class="row">
   <table class="table table-striped">
     <thead>
       <tr>
         <th>School</th>
-        <th>Amr Readings</th>
+        <th>Readings calendar</th>
         <th>Supply</th>
         <th>First validated reading</th>
         <th>Last validated reading</th>
@@ -40,7 +45,7 @@
             <tr>
               <td><%= link_to(school.name, school_path(school)) %></td>
               <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
-              <td><%= meter.meter_type.capitalize %></td>
+              <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
               <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
             </tr>
