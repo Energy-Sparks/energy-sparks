@@ -44,7 +44,11 @@ module Alerts
       end
 
       def self.front_end_template_charts
-        TEMPLATE_VARIABLES
+        TEMPLATE_VARIABLES.select{|key, value| value[:units] == :chart }
+      end
+
+      def self.front_end_template_tables
+        TEMPLATE_VARIABLES.select{|key, value| value[:units] == :table }
       end
 
       def self.front_end_template_variables
@@ -60,6 +64,14 @@ module Alerts
           description: 'chart description B',
           units: :chart
         },
+        table_a: {
+          description: 'table description A',
+          units: :table
+        },
+        table_b: {
+          description: 'table description B',
+          units: :table
+        }
       }.freeze
     end
   end
