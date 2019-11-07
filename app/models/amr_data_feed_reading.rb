@@ -22,11 +22,14 @@
 #
 # Indexes
 #
-#  index_amr_data_feed_readings_on_amr_data_feed_config_id      (amr_data_feed_config_id)
-#  index_amr_data_feed_readings_on_amr_data_feed_import_log_id  (amr_data_feed_import_log_id)
-#  index_amr_data_feed_readings_on_meter_id                     (meter_id)
-#  index_amr_data_feed_readings_on_mpan_mprn                    (mpan_mprn)
-#  unique_meter_readings                                        (mpan_mprn,reading_date) UNIQUE
+#  index_amr_data_feed_readings_on_amr_data_feed_config_id  (amr_data_feed_config_id)
+#  index_amr_data_feed_readings_on_meter_id                 (meter_id)
+#  index_amr_data_feed_readings_on_mpan_mprn                (mpan_mprn)
+#  unique_meter_readings                                    (mpan_mprn,reading_date) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (amr_data_feed_import_log_id => amr_data_feed_import_logs.id) ON DELETE => cascade
 #
 
 class AmrDataFeedReading < ApplicationRecord

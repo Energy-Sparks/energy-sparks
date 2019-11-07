@@ -2,7 +2,7 @@
 
 <h1>Report for <%= @data_feed.title %> </h1>
 <h2><small class="text-muted"><%= @feed_type.to_s.humanize %></small></h2>
-<p><%= link_to 'All reports', reports_path, class: 'btn btn-success' %></p>
+<p><%= link_to 'All reports', admin_reports_path, class: 'btn btn-success' %></p>
 <p><%= link_to "Download all data as CSV", data_feed_path(@data_feed, format: "csv",) %></p>
 
 <h2>Missing days summary</h2>

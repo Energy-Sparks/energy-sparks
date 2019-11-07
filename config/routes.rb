@@ -110,7 +110,7 @@ Rails.application.routes.draw do
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
-      get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
+
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
       resources :users, only: [:index, :destroy]
@@ -138,14 +138,6 @@ Rails.application.routes.draw do
   devise_for :users, skip: :sessions
   scope :admin do
     resources :users
-    get 'reports', to: 'reports#index'
-    get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-  end
-
-  namespace :reports do
-    get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
-    get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
-    get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
   end
 
   namespace :admin do
@@ -201,9 +193,25 @@ Rails.application.routes.draw do
     end
     namespace :reports do
       resources :alert_subscribers, only: :index
+      get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
+      get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
+      get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
     end
     resource :settings, only: [:show, :update]
-  end
+
+    resources :reports, only: [:index]
+
+    namespace :schools do
+      resources :meter_collections, only: :index
+    end
+
+    resources :schools, only: [:show] do
+      resource :unvalidated_meter_collection, only: :show
+      resource :validated_meter_collection, only: :show
+      resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
+    end
+
+  end # Admin name space
 
   namespace :teachers do
     resources :schools, only: :show
