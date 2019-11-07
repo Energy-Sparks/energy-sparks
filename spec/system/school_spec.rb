@@ -103,7 +103,7 @@ RSpec.describe "school", type: :system do
         expect(page).to have_select('Group', :options => ['', 'BANES'])
       end
 
-      it 'allows activation from school page' do
+      pending 'allows activation from school page' do
         school.update(active: false)
         click_on(school_name)
         click_on('Activate school')
@@ -111,7 +111,7 @@ RSpec.describe "school", type: :system do
         expect(school).to be_active
       end
 
-      it 'allows activation and deactivation' do
+      pending 'allows activation and deactivation' do
         click_on(school_name)
         click_on('Edit')
         click_on('Deactivate school')

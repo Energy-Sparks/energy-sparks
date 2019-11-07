@@ -82,12 +82,13 @@ describe SchoolCreator, :schools, type: :service do
   end
 
   describe 'activate_school' do
-    let(:school){ create :school, active: false }
+    let(:school){ create :school, visible: false, process_data: false}
 
     it 'updates the active flag on the school to be true' do
       service = SchoolCreator.new(school)
       service.activate_school!
-      expect(school.active).to eq(true)
+      expect(school.visible).to eq(true)
+      expect(school.process_data).to eq(true)
     end
 
     context 'where the school has been created as part of the onboarding process' do

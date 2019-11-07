@@ -30,7 +30,7 @@ class SchoolCreator
   end
 
   def activate_school!
-    @school.update!(active: true)
+    @school.update!(visible: true, process_data: true)
     if should_send_activation_email?
       OnboardingMailer.with(school_onboarding: @school.school_onboarding).activation_email.deliver_now
       record_event(@school.school_onboarding, :activation_email_sent)

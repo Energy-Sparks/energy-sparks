@@ -1,6 +1,6 @@
 module Pupils
   class AnalysisController < ApplicationController
-    before_action :set_school
+    load_and_authorize_resource :school
 
     include SchoolAggregation
     include Measurements
@@ -17,10 +17,6 @@ module Pupils
     end
 
     private
-
-    def set_school
-      @school = School.friendly.find(params[:school_id])
-    end
 
     def get_chart_config
       energy = params.require(:energy)

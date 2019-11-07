@@ -15,7 +15,7 @@
             <span class="nav-lozenge mt-1">
               <li class="nav-item">
                 <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>
-                  <% if school.active? && podium.includes_school? %>
+                  <% if school.visible? && podium.includes_school? %>
                     <%= podium.school_position.points %> points
                     <% if podium.school_position.recent_points > 0 %>
                       <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
