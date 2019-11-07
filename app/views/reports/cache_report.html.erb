@@ -1,8 +1,0 @@
-<h1>AMR rails cache report</h1>
-
-<% @cache_report.each do |entry| %>
-  <h2><%= entry[:key] %></h2>
-  <p>Created at: <%= nice_date_times(entry[:created_at]) %> Expiry time: <%= nice_date_times(entry[:expiry_time]) %> Minutes left: <%= entry[:minutes_left] %></p>
-<% end %>
-
-

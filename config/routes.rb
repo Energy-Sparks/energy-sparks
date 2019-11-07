@@ -137,14 +137,6 @@ Rails.application.routes.draw do
   devise_for :users, skip: :sessions
   scope :admin do
     resources :users
-    get 'reports', to: 'reports#index'
-    get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-  end
-
-  namespace :reports do
-    get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
-    get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
-    get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
   end
 
   namespace :admin do
@@ -194,9 +186,13 @@ Rails.application.routes.draw do
     end
     namespace :reports do
       resources :alert_subscribers, only: :index
+      get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
+      get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
+      get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
     end
     resource :settings, only: [:show, :update]
-  end
+    resources :reports, only: [:index]
+  end # Admin name space
 
   namespace :teachers do
     resources :schools, only: :show

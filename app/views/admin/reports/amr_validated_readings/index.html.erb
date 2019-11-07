@@ -1,11 +1,11 @@
 <% content_for :page_title, 'AMR report' %>
 
 <h1>AMR Data report for active meters</h1>
-<p><%= link_to 'Reports index', reports_path, class: 'btn btn-success' %></p>
+<p><%= link_to 'Reports index', admin_reports_path, class: 'btn btn-success' %></p>
 <h2>Downloads</h2>
-<p><%= link_to "All Validated AMR data", reports_amr_validated_readings_path(format: :csv) %></p>
+<p><%= link_to "All Validated AMR data", admin_reports_amr_validated_readings_path(format: :csv) %></p>
 <p>Note: this includes substituted data where readings are missing.</p>
-<p><%= link_to "Download raw AMR data", reports_amr_data_feed_readings_path(format: :csv) %></p>
+<p><%= link_to "Download raw AMR data", admin_reports_amr_data_feed_readings_path(format: :csv) %></p>
 <p>Note: this is data in it's raw formats.</p>
 
 <p>You can now download the aggregated meter collection for a school in YAML format, this includes all of the AMR data, temperature data, holidays, Solar PV, irradiance and carbon grid data. This may take a long time to download, for schools with many meters, it is best to visit the school's page first so that the data is already in the cache.</p>
@@ -40,7 +40,7 @@
           <% school.meters.where(active: true).each_with_index do |meter, index| %>
             <tr>
               <td><%= link_to(school.name, school_path(school)) %></td>
-              <td><%= link_to(meter.display_name, reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
+              <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
               <td><%= meter.meter_type.capitalize %></td>
               <td><%= link_to 'Aggregated meter collection', school_aggregated_meter_collection_path(school, format: :yaml), class: 'btn' if index == 0 %></td>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
