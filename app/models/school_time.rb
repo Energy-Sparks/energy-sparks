@@ -14,7 +14,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
 class SchoolTime < ApplicationRecord
