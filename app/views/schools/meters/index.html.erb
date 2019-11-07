@@ -7,10 +7,16 @@
 <% end %>
 
 <% if can?(:validate_meters, @school) && @school.meters_with_readings.any? %>
-  <div class="alert alert-secondary">
-    <%= link_to 'Validate meter readings', school_meter_readings_validation_path(@school), method: :post, class: 'btn btn-warning mr-3' %>
-    This may take some time!
-  </div>
+  <% if @school.process_data? %>
+    <div class="alert alert-secondary">
+      <%= link_to 'Validate meter readings', school_meter_readings_validation_path(@school), method: :post, class: 'btn btn-warning mr-3' %>
+      This may take some time!
+    </div>
+  <% else %>
+    <div class="alert alert-warning">
+      Data processing must be turned on for this school before meter readings can be validated
+    </div>
+  <% end %>
 <% end %>
 <div class="table-responsive">
 <table class="table table-sm">
