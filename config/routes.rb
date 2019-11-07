@@ -191,7 +191,18 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
     end
     resource :settings, only: [:show, :update]
+
     resources :reports, only: [:index]
+
+    namespace :schools do
+      resources :meter_collections, only: :index
+    end
+
+    resources :schools, only: [:show] do
+      resource :unvalidated_meter_collection, only: :show
+      resource :validated_meter_collection, only: :show
+    end
+
   end # Admin name space
 
   namespace :teachers do

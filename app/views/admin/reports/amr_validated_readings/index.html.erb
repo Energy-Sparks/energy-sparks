@@ -28,7 +28,6 @@
         <th>School</th>
         <th>Amr Readings</th>
         <th>Supply</th>
-        <th>Download</th>
         <th>First validated reading</th>
         <th>Last validated reading</th>
       </tr>
@@ -42,13 +41,10 @@
               <td><%= link_to(school.name, school_path(school)) %></td>
               <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
               <td><%= meter.meter_type.capitalize %></td>
-              <td><%= link_to 'Aggregated meter collection', school_aggregated_meter_collection_path(school, format: :yaml), class: 'btn' if index == 0 %></td>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
               <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
             </tr>
           <% end %>
-
-
         <% end %>
       <% end %>
     </tbody>
