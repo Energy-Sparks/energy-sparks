@@ -5,7 +5,7 @@
   <%= link_to "Download CSV of Validated Readings", school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
   <%= link_to 'Edit', edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
   <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
-    <%= link_to 'Report', reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
+    <%= link_to 'Report', admin_reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
   <% end %>
   <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
 </p>
