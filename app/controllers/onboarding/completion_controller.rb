@@ -19,7 +19,7 @@ module Onboarding
     end
 
     def show
-      if @school_onboarding.school.active?
+      if @school_onboarding.school.visible?
         redirect_to school_path(@school_onboarding.school), notice: 'Your school is now active!'
       else
         render :show

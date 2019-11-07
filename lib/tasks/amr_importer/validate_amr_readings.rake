@@ -5,7 +5,7 @@ namespace :amr_importer do
     total_amr_readings_before = AmrValidatedReading.count
     puts "Total AMR Readings before: #{total_amr_readings_before}"
 
-    School.all.each do |each_school|
+    School.process_data.each do |each_school|
       puts "Validate and persist for #{each_school.name}"
       begin
         Amr::ValidateAndPersistReadingsService.new(each_school).perform

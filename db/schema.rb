@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_24_150048) do
+ActiveRecord::Schema.define(version: 2019_11_06_151817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -755,7 +755,6 @@ ActiveRecord::Schema.define(version: 2019_10_24_150048) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "active", default: false
     t.integer "urn", null: false
     t.integer "level", default: 0
     t.bigint "calendar_id"
@@ -777,6 +776,8 @@ ActiveRecord::Schema.define(version: 2019_10_24_150048) do
     t.integer "cooks_dinners_for_other_schools_count"
     t.integer "template_calendar_id"
     t.string "validation_cache_key", default: "initial"
+    t.boolean "visible", default: false
+    t.boolean "process_data", default: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -923,10 +924,9 @@ ActiveRecord::Schema.define(version: 2019_10_24_150048) do
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
-  add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
-  add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
+  add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"

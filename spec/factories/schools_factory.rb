@@ -4,7 +4,8 @@ FactoryBot.define do
     sequence(:number_of_pupils)
     sequence(:name) { |n| "test #{n} school" }
     school_type     { :primary }
-    active          { true }
+    visible         { true }
+    process_data    { true }
     address         { '1 Station Road' }
     postcode        { 'ab1 2cd' }
     floor_area      { BigDecimal("1234.567")}

@@ -23,10 +23,6 @@
 #  index_alerts_on_alert_type_id  (alert_type_id)
 #  index_alerts_on_school_id      (school_id)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => cascade
-#
 
 class Alert < ApplicationRecord
   belongs_to :school,     inverse_of: :alerts
