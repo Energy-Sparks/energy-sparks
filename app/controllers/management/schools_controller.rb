@@ -15,6 +15,7 @@ module Management
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
       @observations = setup_timeline(@school.observations)
       @management_priorities = setup_priorities
+      @overview_charts = setup_energy_overview_charts
     end
 
 
@@ -34,6 +35,16 @@ module Management
           with: priority.alert.template_variables
         )
       end
+    end
+
+    def setup_energy_overview_charts
+      return {} unless @school.configuration
+      {
+        electricity: [:analysis_charts, :electricity_detail, :group_by_week_electricity],
+        gas: [:analysis_charts, :gas_detail, :group_by_week_gas],
+        storage_heater: [:analysis_charts, :storage_heaters, :storage_heater_group_by_week],
+        solar: [:analysis_charts, :solar_pv, :solar_pv_group_by_month]
+      }.select {|_energy, chart_config| @school.configuration.can_show_analysis_chart?(*chart_config)}
     end
   end
 end
