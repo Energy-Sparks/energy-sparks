@@ -75,22 +75,16 @@ RSpec.describe 'equivalence type management', type: :system do
 
     it 'and equivalences too' do
       school = create(:school)
-
       aggregate_school = double :aggregate_school
-
-     # allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-
       analytics = double :analytics
 
       expect(analytics).to receive(:new).and_return(analytics)
-
       expect(analytics).to receive(:front_end_convert).with(:kwh, {month: -1}, :electricity).and_return(
         {
           formatted_equivalence: '100 kwh',
           show_equivalence: true
         }
       )
-
       expect(analytics).to receive(:front_end_convert).with(:number_trees, {month: -1}, :electricity).and_return(
         {
           formatted_equivalence: '200,000',
