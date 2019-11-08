@@ -40,11 +40,11 @@ module Management
     def setup_energy_overview_charts
       return {} unless @school.configuration
       {
-        electricity: [:analysis_charts, :electricity_detail, :group_by_week_electricity],
-        gas: [:analysis_charts, :gas_detail, :group_by_week_gas],
-        storage_heater: [:analysis_charts, :storage_heaters, :storage_heater_group_by_week],
-        solar: [:analysis_charts, :solar_pv, :solar_pv_group_by_month]
-      }.select {|_energy, chart_config| @school.configuration.can_show_analysis_chart?(*chart_config)}
+        electricity: { chart: [:analysis_charts, :electricity_detail, :group_by_week_electricity], units: :£ },
+        gas: { chart: [:analysis_charts, :gas_detail, :group_by_week_gas], units: :£ },
+        storage_heater: { chart: [:analysis_charts, :storage_heaters, :storage_heater_group_by_week], units: :£ },
+        solar: { chart: [:analysis_charts, :solar_pv, :solar_pv_group_by_month], units: :kwh }
+      }.select {|_energy, chart_config| @school.configuration.can_show_analysis_chart?(*chart_config[:chart])}
     end
   end
 end
