@@ -10,4 +10,11 @@ div.invalid-tooltip.temperature-tooltip {
   top: -80px;
 }
 
+th.fixed-width-date {
+ min-width: 150px;
+}
 
+table.temperatures td {
+  padding: 0.25rem;
+  vertical-align: middle;
+}
