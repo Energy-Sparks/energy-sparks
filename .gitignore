@@ -84,3 +84,6 @@ yarn-debug.log*
 # Database dumps
 database-dump
 *.Z
+
+# Sitemap
+public/sitemap.xml

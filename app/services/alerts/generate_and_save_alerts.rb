@@ -15,6 +15,10 @@ module Alerts
       if @school.has_gas?
         generate(AlertType.gas)
       end
+
+      if @school.has_storage_heaters?
+        generate(AlertType.storage_heater)
+      end
     end
 
   private

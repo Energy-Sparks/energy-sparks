@@ -8,10 +8,11 @@
 
 <% if @observations.any? %>
   <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table table-bordered temperatures">
       <thead>
         <tr>
-          <th>Recording date</th>
+          <th class='fixed-width-date'>Date</th>
+          <th>Time</th>
           <% @locations.each do |location| %>
             <th><%= location.name %></th>
           <% end %>
@@ -23,10 +24,11 @@
       <tbody>
         <% @observations.order(at: :desc).each do |observation| %>
           <tr scope="row">
-            <td><%= nice_date_times observation.at %></td>
+            <td><%= nice_dates observation.at %></td>
+            <td><%= nice_times_only observation.at %></td>
             <% @locations.each do |location| %>
               <%  if observation.temperature_recordings.find_by(location: location) %>
-                <td class='<%= temperature_cell_colour(observation.temperature_recordings.find_by(location: location).centigrade) %> align-middle text-center f3'><%= observation.temperature_recordings.find_by(location: location).centigrade  %></td>
+                <td class='<%= temperature_cell_colour(observation.temperature_recordings.find_by(location: location).centigrade) %> align-middle text-center f5'><%= observation.temperature_recordings.find_by(location: location).centigrade  %></td>
               <% else %>
                 <td></td>
               <% end %>

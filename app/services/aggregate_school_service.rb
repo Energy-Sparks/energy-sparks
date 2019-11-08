@@ -9,7 +9,7 @@ class AggregateSchoolService
     Rails.cache.fetch(cache_key, expires_in: 1.day) do
       meter_collection = Amr::AnalyticsValidatedMeterCollectionFactory.new(@active_record_school).build
 
-      AggregateDataService.new(meter_collection).validate_and_aggregate_meter_data
+      AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
 
       meter_collection
     end

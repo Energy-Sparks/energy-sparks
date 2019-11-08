@@ -22,7 +22,7 @@ class AlertType < ApplicationRecord
   has_many :school_alert_type_exclusions
 
   enum source: [:analytics, :system, :analysis]
-  enum fuel_type: [:electricity, :gas]
+  enum fuel_type: [:electricity, :gas, :storage_heater]
   enum sub_category: SUB_CATEGORIES
   enum frequency: [:termly, :weekly, :before_each_holiday]
 
@@ -30,7 +30,7 @@ class AlertType < ApplicationRecord
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
 
-  validates_presence_of :description, :frequency, :title
+  validates_presence_of :frequency, :title, :class_name, :source
 
   has_rich_text :description
 
