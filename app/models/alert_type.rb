@@ -22,7 +22,7 @@ class AlertType < ApplicationRecord
   has_many :school_alert_type_exclusions
 
   enum source: [:analytics, :system, :analysis]
-  enum fuel_type: [:electricity, :gas, :storage_heater]
+  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
   enum sub_category: SUB_CATEGORIES
   enum frequency: [:termly, :weekly, :before_each_holiday]
 

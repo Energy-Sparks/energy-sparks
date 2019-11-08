@@ -19,6 +19,10 @@ module Alerts
       if @school.has_storage_heaters?
         generate(AlertType.storage_heater)
       end
+
+      if @school.has_solar_pv?
+        generate(AlertType.solar_pv)
+      end
     end
 
   private
