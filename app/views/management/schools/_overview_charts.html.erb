@@ -1,0 +1,15 @@
+<ul class="nav nav-tabs" id="management-energy-overview" role="tablist">
+  <% overview_charts.each_with_index do |(energy, chart_config), index| %>
+    <li class="nav-item">
+      <a class="nav-link <%='active' if index == 0 %>" id="<%= energy %>-tab" data-toggle="tab" href="#<%= energy  %>-overview" role="tab" aria-controls="<%= energy %>-overview" aria-selected="true">Annual <%= energy.to_s.humanize.downcase %> overview</a>
+    </li>
+  <% end %>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <% overview_charts.each_with_index do |(energy, chart_config), index| %>
+    <div class="tab-pane fade show <%= 'active' if index == 0 %>" id="<%= energy %>-overview" role="tabpanel" aria-labelledby="<%= energy %>-tab">
+      <%= chart_tag(@school, chart_config.last, show_advice: false, no_zoom: true, chart_config: {y_axis_units: :£}) %>
+    </div>
+  <% end %>
+</div>
+
