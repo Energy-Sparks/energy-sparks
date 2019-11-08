@@ -20,12 +20,6 @@
   %>
 <% end %>
 
-
-<div class="row padded-row management-energy-saving-actions d-flex justify-content-center mb-3">
-  <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-rounded' %>
-</div>
-
-
 <% unless @management_priorities.empty? %>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
@@ -37,3 +31,7 @@
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
+
+<div class="row padded-row management-energy-saving-actions d-flex justify-content-center mb-3">
+  <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-rounded' %>
+</div>
