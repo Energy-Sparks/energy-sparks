@@ -9,19 +9,19 @@ module Alerts
       generate(AlertType.no_fuel)
 
       if @school.has_electricity?
-        generate(AlertType.electricity)
+        generate(AlertType.electricity_fuel_type)
       end
 
       if @school.has_gas?
-        generate(AlertType.gas)
+        generate(AlertType.gas_fuel_type)
       end
 
       if @school.has_storage_heaters?
-        generate(AlertType.storage_heater)
+        generate(AlertType.storage_heater_fuel_type)
       end
 
       if @school.has_solar_pv?
-        generate(AlertType.solar_pv)
+        generate(AlertType.solar_pv_fuel_type)
       end
     end
 
