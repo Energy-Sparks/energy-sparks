@@ -31,11 +31,11 @@ function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
     var adviceFooter = chart_data.advice_footer;
 
     if (adviceHeader) {
-      $chartDiv.before('<div>' + adviceHeader + '</div>');
+      $chartWrapper.find('.advice-header').html(adviceHeader);
     }
 
     if (adviceFooter) {
-      $chartDiv.after('<div>' + adviceFooter + '</div>');
+      $chartWrapper.find('.advice-footer').html(adviceFooter);
     }
   }
 
