@@ -76,7 +76,9 @@ RSpec.describe 'equivalence type management', type: :system do
     it 'and equivalences too' do
       school = create(:school)
 
-      allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+      aggregate_school = double :aggregate_school
+
+     # allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
 
       analytics = double :analytics
 
@@ -96,7 +98,7 @@ RSpec.describe 'equivalence type management', type: :system do
         }
       )
 
-      expect { Equivalences::GenerateEquivalences.new(school, analytics).perform }.to change { Equivalence.count }.by(1)
+      expect { Equivalences::GenerateEquivalences.new(school: school, analytics_class: analytics, aggregate_school: aggregate_school).perform }.to change { Equivalence.count }.by(1)
       expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1).and change { Equivalence.count }.by(-1)
     end
   end
