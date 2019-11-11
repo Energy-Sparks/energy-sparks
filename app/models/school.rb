@@ -66,6 +66,7 @@ class School < ApplicationRecord
 
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
+  has_many :analysis_pages, through: :content_generation_runs
 
   has_many :low_carbon_hub_installations, inverse_of: :school
 
@@ -230,6 +231,14 @@ class School < ApplicationRecord
       latest_content.management_priorities
     else
       ManagementPriority.none
+    end
+  end
+
+  def latest_analysis_pages
+    if latest_content
+      latest_content.analysis_pages
+    else
+      AnalysisPage.none
     end
   end
 end

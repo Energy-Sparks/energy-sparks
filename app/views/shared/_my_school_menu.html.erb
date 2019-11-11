@@ -9,7 +9,7 @@
       <%= link_to 'Electricity usage', pupils_school_analysis_path(current_user.school, category: :electricity), class: 'dropdown-item' %>
     <% end %>
     <%= link_to 'Storage heater usage', pupils_school_analysis_path(current_user.school, category: :storage_heaters), class: 'dropdown-item' if current_user.school.has_storage_heaters? %>
-    <%= link_to 'Analysis', school_analysis_path(current_user.school), class: 'dropdown-item' %>
+    <%= link_to 'Analysis', school_analysis_index_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Simulations', school_simulations_path(current_user.school), class: 'dropdown-item' if can?(:manage, current_user.school) %>
     <% if current_user.contact %>
       <%= link_to 'My alerts', edit_school_contact_path(current_user.school, current_user.contact), class: 'dropdown-item' %>

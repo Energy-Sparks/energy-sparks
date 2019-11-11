@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-between align-items-center">
   <h2>Energy Usage&hellip;</h2>
   <% if @school.configuration %>
-    <div class="h5"><%= link_to "Review your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
+    <div class="h5"><%= link_to "Review your school's energy use", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
   <% end %>
 </div>
 
@@ -32,7 +32,7 @@
 <% end %>
 
 <% if @school.configuration %>
-  <div class="h5"><%= link_to "Review your school's energy use", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %></div>
+  <div class="h5"><%= link_to "Review your school's energy use", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %></div>
   <% if @school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :group_by_week_electricity) %>
     <h2>Annual electricity overview</h2>
 

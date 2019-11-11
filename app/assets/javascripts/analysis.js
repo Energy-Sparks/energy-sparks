@@ -14,28 +14,30 @@ function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
   var chartType = chart_data.chart1_type;
   var seriesData = chart_data.series_data;
 
+  var $chartWrapper = $chartDiv.parents('.chart-wrapper');
+
+  var titleH3 = $chartWrapper.find('h3');
+  var titleH5 = $chartWrapper.find('h5');
+
+  titleH3.text(chart_data.title);
+
+  if (chart_data.subtitle) {
+    titleH5.text(chart_data.subtitle);
+  } else {
+    titleH5.hide();
+  }
+
   if (! noAdvice) {
-    var $chartWrapper = $chartDiv.parents('.chart-wrapper');
-    var titleH3 = $chartWrapper.find('h3');
-    var titleH5 = $chartWrapper.find('h5');
-
-    titleH3.text(chart_data.title);
-
-    if (chart_data.subtitle) {
-      titleH5.text(chart_data.subtitle);
-    } else {
-      titleH5.hide();
-    }
 
     var adviceHeader = chart_data.advice_header;
     var adviceFooter = chart_data.advice_footer;
 
     if (adviceHeader) {
-      $chartDiv.before('<div>' + adviceHeader + '</div>');
+      $chartWrapper.find('.advice-header').html(adviceHeader);
     }
 
     if (adviceFooter) {
-      $chartDiv.after('<div>' + adviceFooter + '</div>');
+      $chartWrapper.find('.advice-footer').html(adviceFooter);
     }
   }
 

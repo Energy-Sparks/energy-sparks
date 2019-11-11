@@ -3,6 +3,7 @@
 # Table name: alert_type_ratings
 #
 #  alert_type_id                     :bigint(8)        not null
+#  analysis_active                   :boolean          default(FALSE)
 #  created_at                        :datetime         not null
 #  description                       :string           not null
 #  email_active                      :boolean          default(FALSE)
