@@ -1,4 +1,4 @@
-<h1>Adult analysis for <%= @school.name %></h1>
+<h1>Analysis for <%= @school.name %></h1>
 
 <% if @overview_pages.any? %>
   <div class="row">
@@ -11,60 +11,65 @@
 <% end %>
 
 <div class="row">
-  <div class="col-lg-6 mb-4">
-    <% if @electricity_pages.any? %>
-      <h2>Electricity</h2>
-      <% @electricity_pages.each do |page| %>
-        <%= render 'card', page: page, school: @school, energy: :electricity, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
-      <% end %>
-    <% end %>
-    <% if @solar_pages.any? %>
-      <div class="mt-5">
-        <% @solar_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :solar, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+  <% unless [@electricity_pages, @solar_pages, @tariff_pages, @co2_pages].all?(&:empty?) %>
+    <div class="col-lg-6 mb-4">
+      <% if @electricity_pages.any? %>
+        <h2>Electricity</h2>
+        <% @electricity_pages.each do |page| %>
+          <%= render 'card', page: page, school: @school, energy: :electricity, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
         <% end %>
-      </div>
-    <% end %>
-    <% if @tariff_pages.any? %>
-      <div class="mt-5">
-        <% @tariff_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
-        <% end %>
-      </div>
-    <% end %>
-    <% if @co2_pages.any? %>
-      <div class="mt-5">
-        <% @co2_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <div class="col-lg-6 mb-4">
-    <% if @heating_pages.any? %>
-      <h2>Gas</h2>
-      <% @heating_pages.each do |page| %>
-        <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
       <% end %>
-    <% end %>
-    <% if @storage_heater_pages.any? %>
-      <h2>Storage heaters</h2>
-      <% @storage_heater_pages.each do |page| %>
-        <%= render 'card', page: page, school: @school, energy: :storage, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+      <% if @solar_pages.any? %>
+        <div class="mt-5">
+          <% @solar_pages.each do |page| %>
+            <%= render 'card', page: page, school: @school, energy: :solar, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <% end %>
+        </div>
       <% end %>
-    <% end %>
-    <% if @hot_water_pages.any? %>
-      <div class="mt-5">
-        <% @hot_water_pages.each do |page| %>
+      <% if @tariff_pages.any? %>
+        <div class="mt-5">
+          <% @tariff_pages.each do |page| %>
+            <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if @co2_pages.any? %>
+        <div class="mt-5">
+          <% @co2_pages.each do |page| %>
+            <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% unless [@heating_pages, @storage_heater_pages, @hot_water_pages, @boiler_control_pages].all?(&:empty?) %>
+    <div class="col-lg-6 mb-4">
+      <% if @heating_pages.any? %>
+        <h2>Gas</h2>
+        <% @heating_pages.each do |page| %>
           <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
         <% end %>
-      </div>
-    <% end %>
-    <% if @boiler_control_pages.any? %>
-      <h2>Boiler control</h2>
-      <% @boiler_control_pages.each do |page| %>
-        <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
       <% end %>
-    <% end %>
-  </div>
+      <% if @storage_heater_pages.any? %>
+        <h2>Storage heaters</h2>
+        <% @storage_heater_pages.each do |page| %>
+          <%= render 'card', page: page, school: @school, energy: :storage, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+        <% end %>
+      <% end %>
+      <% if @hot_water_pages.any? %>
+        <div class="mt-5">
+          <% @hot_water_pages.each do |page| %>
+            <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if @boiler_control_pages.any? %>
+        <h2>Boiler control</h2>
+        <% @boiler_control_pages.each do |page| %>
+          <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
