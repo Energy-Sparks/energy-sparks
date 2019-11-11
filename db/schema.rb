@@ -212,6 +212,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -737,7 +738,6 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "active", default: false
     t.integer "urn", null: false
     t.integer "level", default: 0
     t.bigint "calendar_id"
@@ -759,6 +759,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.integer "cooks_dinners_for_other_schools_count"
     t.integer "template_calendar_id"
     t.string "validation_cache_key", default: "initial"
+    t.boolean "visible", default: false
+    t.boolean "process_data", default: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true

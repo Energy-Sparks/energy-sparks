@@ -2,7 +2,7 @@ require 'dashboard'
 
 module Alerts
   class FrameworkAdapter
-    def initialize(alert_type, school, analysis_date = nil, aggregate_school = AggregateSchoolService.new(school).aggregate_school)
+    def initialize(alert_type:, school:, analysis_date: nil, aggregate_school:)
       @alert_type = alert_type
       @school = school
       @aggregate_school = aggregate_school

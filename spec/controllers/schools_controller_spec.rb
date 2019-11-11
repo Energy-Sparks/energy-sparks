@@ -13,15 +13,15 @@ RSpec.describe SchoolsController, type: :controller do
   }
 
   describe "GET #index" do
-    it "assigns schools that are active but not grouped as @ungrouped_active_schools" do
-      school = FactoryBot.create :school, active: true
+    it "assigns schools that are visible but not grouped as @ungrouped_visible_schools" do
+      school = FactoryBot.create :school, visible: true
       get :index, params: {}
-      expect(assigns(:ungrouped_active_schools)).to eq([school])
+      expect(assigns(:ungrouped_visible_schools)).to eq([school])
     end
-    it "assigns inactive schools as @schools_not_active" do
-      school = FactoryBot.create :school, active: false
+    it "assigns not visible schools as @schools_not_visible" do
+      school = FactoryBot.create :school, visible: false
       get :index, params: {}
-      expect(assigns(:schools_not_active)).to eq([school])
+      expect(assigns(:schools_not_visible)).to eq([school])
     end
   end
 

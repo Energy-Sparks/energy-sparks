@@ -3,7 +3,7 @@
 <%= link_to 'New equivalence type', new_admin_equivalence_type_path(@alert_type), class: 'btn btn-primary mb-3' %>
 
 <%= form_tag admin_equivalences_path, class: 'float-right' do %>
-  <%= select_tag :school_id, options_from_collection_for_select(School.active.order(:name), :id, :name) %>
+  <%= select_tag :school_id, options_from_collection_for_select(School.process_data.order(:name), :id, :name) %>
   <%= submit_tag 'Update equivalences', class: 'btn btn-warning' %>
 <% end %>
 

@@ -47,4 +47,8 @@ class AlertType < ApplicationRecord
   def available_charts
     class_name.constantize.front_end_template_charts.map { |variable_name, values| [values[:description], variable_name] }
   end
+
+  def available_tables
+    class_name.constantize.front_end_template_tables.map { |variable_name, values| [values[:description], variable_name] }
+  end
 end

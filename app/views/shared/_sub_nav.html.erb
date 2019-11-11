@@ -1,6 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top fixed-top-sub-nav sub-navbar">
   <div class="container">
-    <%= link_to school.name, school_path(school), class: "navbar-brand" %>
+    <div>
+      <%= link_to school.name, school_path(school), class: "navbar-brand" %>
+      <% if can?(:change_visiblity, school) %>
+        <% if school.visible? %>
+          <%= link_to 'Visible', school_visibility_path(school), class: 'badge badge-pill badge-success', method: :delete %>
+        <% else %>
+          <%= link_to 'Not visible', school_visibility_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+        <% end %>
+      <% end %>
+      <% if can?(:change_data_processing, school) %>
+        <% if school.process_data? %>
+          <%= link_to 'Processing data', school_data_processing_path(school), class: 'badge badge-pill badge-success', method: :delete %>
+        <% else %>
+          <%= link_to 'Not processing data', school_data_processing_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+        <% end %>
+      <% end %>
+    </div>
     <div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -15,7 +31,7 @@
             <span class="nav-lozenge mt-1">
               <li class="nav-item">
                 <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>
-                  <% if school.active? && podium.includes_school? %>
+                  <% if school.visible? && podium.includes_school? %>
                     <%= podium.school_position.points %> points
                     <% if podium.school_position.recent_points > 0 %>
                       <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
