@@ -212,6 +212,11 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.string "analysis_title"
+    t.string "analysis_subtitle"
+    t.date "analysis_start_date"
+    t.date "analysis_end_date"
+    t.decimal "analysis_weighting", default: "5.0"
     t.text "find_out_more_table_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
@@ -246,6 +251,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false
     t.boolean "management_priorities_active", default: false
+    t.boolean "analysis_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
@@ -350,6 +356,19 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
+  end
+
+  create_table "analysis_pages", force: :cascade do |t|
+    t.bigint "content_generation_run_id"
+    t.bigint "alert_type_rating_content_version_id"
+    t.bigint "alert_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "category"
+    t.decimal "priority", default: "0.0"
+    t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "index_analysis_pages_on_alert_type_rating_content_version_id"
+    t.index ["content_generation_run_id"], name: "index_analysis_pages_on_content_generation_run_id"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -911,6 +930,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
   add_foreign_key "alerts", "schools", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
+  add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
+  add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
+  add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"

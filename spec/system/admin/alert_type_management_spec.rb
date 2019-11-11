@@ -17,11 +17,9 @@ describe 'alert type management', type: :system do
 
   describe 'schools' do
     before(:each) do
-      expect(page).to have_content(gas_fuel_alert_type_title)
 
-      within ('table') do
-        click_on 'Manage'
-      end
+      click_on gas_fuel_alert_type_title
+
       within ('ul.alert-type') do
         click_on 'School alert type exclusions'
       end
