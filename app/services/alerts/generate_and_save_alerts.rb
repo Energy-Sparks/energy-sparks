@@ -20,16 +20,16 @@ module Alerts
       AlertError.insert_all!(alert_errors_to_save) unless alert_errors_to_save.empty?
     end
 
-  private
-
     def relevant_alert_types
       alert_types = AlertType.no_fuel
-      alert_types.merge!(AlertType.electricity_fuel_type) if @school.has_electricity?
-      alert_types.merge!(AlertType.gas_fuel_type) if @school.has_gas?
-      alert_types.merge!(AlertType.storage_heater_fuel_type) if @school.has_storage_heaters?
-      alert_types.merge!(AlertType.solar_pv_fuel_type) if @school.has_solar_pv?
+      alert_types = alert_types | AlertType.electricity_fuel_type if @school.has_electricity?
+      alert_types = alert_types | AlertType.gas_fuel_type if @school.has_gas?
+      alert_types = alert_types | AlertType.storage_heater_fuel_type if @school.has_storage_heaters?
+      alert_types = alert_types | AlertType.solar_pv_fuel_type if @school.has_solar_pv?
       alert_types
     end
+
+    private
 
     def generate(alert_type, alerts_to_save, alert_errors_to_save)
       alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school)
@@ -38,7 +38,7 @@ module Alerts
       alert_report = alert_framework_adapter.analyse
 
       if alert_report.valid
-        alerts_to_save << build_alert(alert_report)
+        alerts_to_save << build_alert(alert_type, alert_report, asof_date)
       else
         alert_errors_to_save << build_alert_error(alert_type, asof_date, "Relevance: #{alert_report.relevance}")
       end
@@ -63,14 +63,14 @@ module Alerts
       }
     end
 
-    def build_alert(analysis_report)
+    def build_alert(alert_type, analysis_report, asof_date)
       now = Time.zone.now
 
       {
         school_id:                @school.id,
         alert_generation_run_id:  @alert_generation_run.id,
-        alert_type_id:            @alert_type.id,
-        run_on:                   @analysis_date,
+        alert_type_id:            alert_type.id,
+        run_on:                   asof_date,
         displayable:              analysis_report.displayable?,
         analytics_valid:          analysis_report.valid,
         rating:                   analysis_report.rating,
