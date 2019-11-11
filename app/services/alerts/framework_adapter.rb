@@ -12,10 +12,18 @@ module Alerts
     end
 
     def analyse
-      adapter_class(@alert_type).new(alert_type: @alert_type, school: @school, analysis_date: @analysis_date, aggregate_school: @aggregate_school).report
+      adapter_instance.report
+    end
+
+    def content
+      adapter_instance.content
     end
 
   private
+
+    def adapter_instance
+      adapter_class(@alert_type).new(alert_type: @alert_type, school: @school, analysis_date: @analysis_date, aggregate_school: @aggregate_school)
+    end
 
     def adapter_class(alert_type)
       if alert_type.system?
