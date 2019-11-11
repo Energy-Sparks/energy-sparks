@@ -16,6 +16,7 @@ module Management
       @observations = setup_timeline(@school.observations)
       @management_priorities = setup_priorities
       @overview_charts = setup_energy_overview_charts
+      @overview_table = setup_management_table
     end
 
 
@@ -45,6 +46,10 @@ module Management
         storage_heater: { chart: [:analysis_charts, :storage_heaters, :storage_heater_group_by_week], units: :£ },
         solar: { chart: [:analysis_charts, :solar_pv, :solar_pv_group_by_month], units: :kwh }
       }.select {|_energy, chart_config| @school.configuration.can_show_analysis_chart?(*chart_config[:chart])}
+    end
+
+    def setup_management_table
+      @school.latest_management_dashboard_tables.first
     end
   end
 end
