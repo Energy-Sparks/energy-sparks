@@ -30,7 +30,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
 
       # Then check the content
       meter.amr_validated_readings.each do |record|
-        expect(page.source).to have_content Reports::AmrValidatedReadingsController::CSV_HEADER
+        expect(page.source).to have_content Admin::Reports::AmrValidatedReadingsController::CSV_HEADER
         expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
       end
     end

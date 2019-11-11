@@ -11,12 +11,12 @@ class Ability
     cannot :analyse, :heating_model_fitting
 
     # all users can do these things
-    can :read, Activity, school: { active: true }
+    can :read, Activity, school: { visible: true }
     can :read, ActivityCategory
     can :show, ActivityType
     can :index, School
-    can :show, School, active: true
-    can :usage, School, active: true
+    can :show, School, visible: true
+    can :usage, School, visible: true
     can :show, Scoreboard
     can :read, FindOutMore
     can :read, Observation
@@ -36,8 +36,8 @@ class Ability
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
-        school_scope = { school_group_id: user.school_group_id, active: true }
-        related_school_scope = { school: { school_group_id: user.school_group_id, active: true } }
+        school_scope = { school_group_id: user.school_group_id, visible: true }
+        related_school_scope = { school: { school_group_id: user.school_group_id, visible: true } }
         can :show, SchoolGroup, id: user.school_group_id
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
@@ -46,7 +46,7 @@ class Ability
           user.school_group.calendars.include?(calendar_event.calendar)
         end
       else
-        school_scope = { id: user.school_id, active: true }
+        school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }
         can [:show, :update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
@@ -76,12 +76,12 @@ class Ability
         user.id == other_user.id
       end
     elsif user.staff? || user.pupil?
-      can :manage, Activity, school: { id: user.school_id, active: true }
-      can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, active: true
-      can :manage, Observation, school: { id: user.school_id, active: true }
+      can :manage, Activity, school: { id: user.school_id, visible: true }
+      can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, visible: true
+      can :manage, Observation, school: { id: user.school_id, visible: true }
       if user.staff?
-        can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, active: true
-        can :crud, Programme, school: { id: user.school_id, active: true }
+        can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, visible: true
+        can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :read, :my_school_menu

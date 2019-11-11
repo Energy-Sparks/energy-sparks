@@ -64,6 +64,7 @@
 
   <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'find_out_more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
+      <%= content.input :find_out_more_table_variable, as: :radio_buttons, collection: @available_tables %>
       <%= content.input :find_out_more_chart_variable, as: :radio_buttons, collection: @available_charts %>
       <%= content.input :find_out_more_chart_title %>
       <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>

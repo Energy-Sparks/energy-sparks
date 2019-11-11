@@ -1,13 +1,13 @@
 module Equivalences
   class GenerateEquivalences
-    def initialize(school, analytics_class)
+    def initialize(school:, analytics_class: EnergyConversions, aggregate_school: AggregateSchoolService.new(school).aggregate_school)
       @school = school
       @analytics_class = analytics_class
+      @aggregate_school = aggregate_school
     end
 
     def perform
-      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
-      analytics = @analytics_class.new(aggregate_school)
+      analytics = @analytics_class.new(@aggregate_school)
       @school.transaction do
         @school.equivalences.destroy_all
         EquivalenceType.all.map do |equivalence_type|

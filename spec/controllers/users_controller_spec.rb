@@ -29,17 +29,17 @@ RSpec.describe UsersController, type: :controller do
     end
 
     describe "GET #new" do
-      it "assigns active schools as @schools" do
-        school = FactoryBot.create :school, active: true
+      it "assigns schools as @schools" do
+        school = FactoryBot.create :school
         get :new, params: {}
         expect(assigns(:schools)).to include school
       end
     end
 
     describe "GET #edit" do
-      it "assigns active schools as @schools" do
+      it "assigns  schools as @schools" do
         user = create :staff
-        school = create :school, active: true
+        school = create :school
         get :edit, params: { id: user.to_param }
         expect(assigns(:schools)).to include school
       end
