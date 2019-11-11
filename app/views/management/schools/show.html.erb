@@ -1,11 +1,13 @@
 <%= content_for :page_title, "Management dashboard for #{@school.name}" %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h2>Energy Usage&hellip;</h2>
+  <h1>Energy Usage&hellip;</h1>
   <% if @school.configuration %>
     <div class="h5"><%= link_to "Review your school's energy analysis", school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
   <% end %>
 </div>
+
+<h2>Annual use</h2>
 
 <% unless @overview_charts.empty? %>
   <%= render 'overview_charts', overview_charts: @overview_charts %>
@@ -24,11 +26,13 @@
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 
+<h2>Recent use</h2>
+
 <div class="row dashboards">
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent energy use alerts'%>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 
