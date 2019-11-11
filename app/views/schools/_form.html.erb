@@ -1,25 +1,4 @@
 <%= simple_form_for(school) do |f| %>
-
-  <% if school.persisted? %>
-    <% if school.active? %>
-      <% if can? :deactivate, school %>
-        <div class="alert alert-warning">
-          <%= school.name %> is currently <strong>ACTIVE</strong>.
-          <% if can? :deactivate, @school %>
-            <%= link_to "Deactivate school", school_deactivation_path(school), method: :post, class: 'btn btn-danger ml-3' %>
-          <% end %>
-        </div>
-      <% end %>
-    <% else %>
-      <div class="alert alert-warning">
-        <%= school.name %> is currently <strong>INACTIVE</strong> and won't be accessible to non-admin users.
-        <% if can? :activate, school %>
-          <%= link_to "Activate school", school_activation_path(school), method: :post, class: 'btn btn-success ml-3' %>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
-
   <%= render 'details_form', f: f, key_stages: @key_stages %>
   <%= f.submit submit_text, class: 'btn btn-primary' %>
 <% end %>

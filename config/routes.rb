@@ -63,8 +63,8 @@ Rails.application.routes.draw do
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
-      resource :activation, only: [:create], controller: :activation
-      resource :deactivation, only: [:create], controller: :deactivation
+      resource :visibility, only: [:create, :destroy], controller: :visibility
+      resource :data_processing, only: [:create, :destroy], controller: :data_processing
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 

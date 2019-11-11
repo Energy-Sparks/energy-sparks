@@ -2,7 +2,7 @@ namespace :equivalences do
   desc 'Run equivalences job'
   task create: [:environment] do
     puts Time.zone.now
-    schools = School.with_config
+    schools = School.process_data.with_config
     schools.each do |school|
       begin
         puts "Running all equivalences for #{school.name}"

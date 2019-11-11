@@ -4,7 +4,7 @@
 <%= render 'admin/shared/preview_section', scope: 'equivalence', preview_url: admin_equivalence_type_preview_path, no_timings: true, no_weightings: true do %>
 
   <%= form.label :school_id, 'Preview with' %>
-  <%= select_tag :school_id, options_from_collection_for_select(School.active.order(:name), :id, :name) %>
+  <%= select_tag :school_id, options_from_collection_for_select(School.process_data.order(:name), :id, :name) %>
   <hr />
 
   <%= form.input :meter_type, collection: EquivalenceType.meter_types.keys, label_method: :humanize %>
