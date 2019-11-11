@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_151817) do
+ActiveRecord::Schema.define(version: 2019_11_07_154426) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -273,7 +274,9 @@ ActiveRecord::Schema.define(version: 2019_11_06_151817) do
     t.integer "enough_data"
     t.integer "relevance", default: 0
     t.json "priority_data", default: {}
+    t.index ["alert_type_id", "created_at"], name: "index_alerts_on_alert_type_id_and_created_at"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
+    t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
@@ -331,7 +334,6 @@ ActiveRecord::Schema.define(version: 2019_11_06_151817) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
-    t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -905,13 +907,16 @@ ActiveRecord::Schema.define(version: 2019_11_06_151817) do
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
+  add_foreign_key "alerts", "alert_types", on_delete: :cascade
+  add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
-  add_foreign_key "contacts", "schools"
+  add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
@@ -958,7 +963,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_151817) do
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
-  add_foreign_key "school_times", "schools"
+  add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
@@ -968,6 +973,6 @@ ActiveRecord::Schema.define(version: 2019_11_06_151817) do
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
-  add_foreign_key "users", "schools"
+  add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
 end
