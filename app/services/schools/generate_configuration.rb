@@ -1,8 +1,8 @@
 module Schools
   class GenerateConfiguration
-    def initialize(school)
+    def initialize(school, aggregate_school = AggregateSchoolService.new(school).aggregate_school)
       @school = school
-      @aggregated_meter_collection = AggregateSchoolService.new(school).aggregate_school
+      @aggregated_meter_collection = aggregate_school
     end
 
     def generate
