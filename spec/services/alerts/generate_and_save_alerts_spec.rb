@@ -12,11 +12,16 @@ describe Alerts::GenerateAndSaveAlerts do
     describe 'error handling' do
       it 'does not raise an error if the framework_adapter raises one' do
         expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
+        expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
         expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
 
         expect{
           Alerts::GenerateAndSaveAlerts.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school).perform
         }.to_not raise_error
+
+        expect(AlertError.count).to be 1
+        expect(AlertError.first.school).to eq school
+        expect(AlertError.first.alert_type).to eq alert_type
       end
     end
   end
