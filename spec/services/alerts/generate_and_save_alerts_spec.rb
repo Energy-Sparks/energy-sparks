@@ -20,10 +20,8 @@ describe Alerts::GenerateAndSaveAlerts do
         }.to_not raise_error
 
         expect(AlertError.count).to be 1
-        expect(AlertError.first.school).to eq school
         expect(AlertError.first.alert_type).to eq alert_type
       end
     end
   end
-
 end

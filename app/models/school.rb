@@ -66,6 +66,7 @@ class School < ApplicationRecord
 
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
+  has_many :alert_generation_runs,   inverse_of: :school
 
   has_many :low_carbon_hub_installations, inverse_of: :school
 

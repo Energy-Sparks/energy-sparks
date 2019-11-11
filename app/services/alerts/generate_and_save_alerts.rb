@@ -4,16 +4,20 @@ module Alerts
       @school = school
       @alert_framework_adapter_class = framework_adapter
       @aggregate_school = aggregate_school
-      @alert_generation_run = AlertGenerationRun.create(school: @school)
-      @alerts_to_save = []
-      @alert_errors_to_save = []
     end
 
     def perform
-      relevant_alert_types.each { |alert_type| generate(alert_type) }
+      @alert_generation_run = AlertGenerationRun.create!(school: @school)
 
-      Alert.insert_all(@alerts_to_save) unless @alerts_to_save.empty?
-      AlertError.insert_all(@alert_errors_to_save) unless @alert_errors_to_save.empty?
+      alerts_to_save = []
+      alert_errors_to_save = []
+
+      relevant_alert_types.each do |alert_type|
+        generate(alert_type, alerts_to_save, alert_errors_to_save)
+      end
+
+      Alert.insert_all!(alerts_to_save) unless alerts_to_save.empty?
+      AlertError.insert_all!(alert_errors_to_save) unless alert_errors_to_save.empty?
     end
 
   private
@@ -26,30 +30,29 @@ module Alerts
       alert_types
     end
 
-    def generate(alert_type)
+    def generate(alert_type, alerts_to_save, alert_errors_to_save)
       alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school)
       asof_date = alert_framework_adapter.analysis_date
 
       alert_report = alert_framework_adapter.analyse
 
       if alert_report.valid
-        @alerts_to_save << build_alert(alert_report)
+        alerts_to_save << build_alert(alert_report)
       else
-        build_alert_error_and_add_to_list(alert_type, asof_date, "Relevance: #{alert_report.relevance}")
+        alert_errors_to_save << build_alert_error(alert_type, asof_date, "Relevance: #{alert_report.relevance}")
       end
     rescue => e
       Rails.logger.error "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e, school_id: @school.id, school_name: @school.name, alert_type: alert_type.class_name)
 
-      build_alert_error_and_add_to_list(alert_type, asof_date, e.backtrace)
+      alert_errors_to_save << build_alert_error(alert_type, asof_date, e.backtrace)
     end
 
-    def build_alert_error_and_add_to_list(alert_type, asof_date, information)
+    def build_alert_error(alert_type, asof_date, information)
       now = Time.zone.now
 
-      @alert_errors_to_save << {
-        school_id: @school.id,
+      {
         alert_generation_run_id: @alert_generation_run.id,
         asof_date: asof_date,
         alert_type_id: alert_type.id,

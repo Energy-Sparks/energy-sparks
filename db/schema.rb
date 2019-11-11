@@ -142,7 +142,6 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   end
 
   create_table "alert_errors", force: :cascade do |t|
-    t.bigint "school_id"
     t.bigint "alert_generation_run_id"
     t.bigint "alert_type_id"
     t.date "asof_date"
@@ -151,7 +150,6 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["alert_generation_run_id"], name: "index_alert_errors_on_alert_generation_run_id"
     t.index ["alert_type_id"], name: "index_alert_errors_on_alert_type_id"
-    t.index ["school_id"], name: "index_alert_errors_on_school_id"
   end
 
   create_table "alert_generation_runs", force: :cascade do |t|
