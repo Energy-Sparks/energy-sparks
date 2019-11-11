@@ -5,7 +5,7 @@ namespace :alerts do
     schools = School.process_data.with_config
     schools.each do |school|
       puts "Running all alerts for #{school.name}"
-      Alerts::GenerateAndSaveAlerts.new(school).perform
+      Alerts::GenerateAndSaveAlerts.new(school: school).perform
     end
     puts Time.zone.now
   end
