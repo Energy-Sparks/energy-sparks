@@ -2,24 +2,26 @@
 #
 # Table name: alerts
 #
-#  alert_type_id   :bigint(8)        not null
-#  analytics_valid :boolean          default(TRUE), not null
-#  chart_data      :json
-#  created_at      :datetime         not null
-#  displayable     :boolean          default(TRUE), not null
-#  enough_data     :integer
-#  id              :bigint(8)        not null, primary key
-#  priority_data   :json
-#  rating          :decimal(, )
-#  relevance       :integer          default("relevant")
-#  run_on          :date
-#  school_id       :bigint(8)        not null
-#  table_data      :json
-#  template_data   :json
-#  updated_at      :datetime         not null
+#  alert_generation_run_id :bigint(8)
+#  alert_type_id           :bigint(8)        not null
+#  analytics_valid         :boolean          default(TRUE), not null
+#  chart_data              :json
+#  created_at              :datetime         not null
+#  displayable             :boolean          default(TRUE), not null
+#  enough_data             :integer
+#  id                      :bigint(8)        not null, primary key
+#  priority_data           :json
+#  rating                  :decimal(, )
+#  relevance               :integer          default("relevant")
+#  run_on                  :date
+#  school_id               :bigint(8)        not null
+#  table_data              :json
+#  template_data           :json
+#  updated_at              :datetime         not null
 #
 # Indexes
 #
+#  index_alerts_on_alert_generation_run_id       (alert_generation_run_id)
 #  index_alerts_on_alert_type_id                 (alert_type_id)
 #  index_alerts_on_alert_type_id_and_created_at  (alert_type_id,created_at)
 #  index_alerts_on_run_on                        (run_on)
@@ -27,15 +29,17 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (alert_generation_run_id => alert_generation_runs.id)
 #  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
 class Alert < ApplicationRecord
-  belongs_to :school,     inverse_of: :alerts
-  belongs_to :alert_type, inverse_of: :alerts
+  belongs_to :school,               inverse_of: :alerts
+  belongs_to :alert_type,           inverse_of: :alerts
+  belongs_to :alert_generation_run, optional: true
 
-  has_many :find_out_mores, inverse_of: :alert
+  has_many :find_out_mores,         inverse_of: :alert
   has_many :alert_subscription_events
 
   delegate :title, to: :alert_type
