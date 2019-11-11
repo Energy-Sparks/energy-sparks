@@ -21,7 +21,12 @@ module Schools
 
     def show
       @page = @school.analysis_pages.find(params[:id])
-      framework_adapter = Alerts::FrameworkAdapter.new(@page.alert.alert_type, @school, @page.alert.run_on, aggregate_school)
+      framework_adapter = Alerts::FrameworkAdapter.new(
+        alert_type: @page.alert.alert_type,
+        school: @school,
+        analysis_date: @page.alert.run_on,
+        aggregate_school: aggregate_school
+      )
       @content = framework_adapter.content
       @title = page_title(@content, @school)
     rescue ActiveRecord::RecordNotFound
