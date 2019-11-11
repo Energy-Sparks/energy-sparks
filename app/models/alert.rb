@@ -73,12 +73,4 @@ class Alert < ApplicationRecord
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
   end
-
-  def chart_variables_hash
-    chart_data
-  end
-
-  def tables
-    table_data.values
-  end
 end

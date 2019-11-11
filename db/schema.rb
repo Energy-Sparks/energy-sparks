@@ -12,7 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2019_11_07_154426) do
 
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -213,6 +212,7 @@ ActiveRecord::Schema.define(version: 2019_11_07_154426) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
