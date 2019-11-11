@@ -20,6 +20,6 @@ describe Alerts::FrameworkAdapter do
   end
 
   it 'uses the adapters to create an alert object from the returned reports' do
-    expect(Alerts::FrameworkAdapter.new(alert_type, school, gas_date, aggregate_school).analyse).to have_attributes alert.attributes
+    expect(Alerts::FrameworkAdapter.new(alert_type: alert_type, school: school, analysis_date: gas_date, aggregate_school: aggregate_school).analyse).to have_attributes alert.attributes
   end
 end
