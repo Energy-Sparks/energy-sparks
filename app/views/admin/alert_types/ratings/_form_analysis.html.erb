@@ -1,0 +1,28 @@
+
+<h3>General</h3>
+<%= form.input :description, hint: 'Only used in the admin interface' %>
+
+<% if alert_type.has_ratings?  %>
+  <%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+  <%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+<% else %>
+  <%= form.hidden_field :rating_from %>
+  <%= form.hidden_field :rating_to %>
+<% end %>
+
+<%= form.simple_fields_for :content, content do |content| %>
+
+  <h3>Variables</h3>
+
+  <%= render 'admin/shared/variables_accordion', template_variables: template_variables, units_field: :units, example_variables: example_variables %>
+
+  <h3>Content</h3>
+
+  <%= render 'content_section', form: form, field: :analysis_active, field_name: 'Analysis' do %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'analysis', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :analysis) do %>
+      <%= content.input :analysis_title, as: :string %>
+      <%= content.input :analysis_subtitle, as: :string %>
+    <% end %>
+  <% end %>
+
+<% end %>

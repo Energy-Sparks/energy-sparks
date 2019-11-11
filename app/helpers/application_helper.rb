@@ -171,4 +171,15 @@ module ApplicationHelper
   def y_n(boolean)
     boolean ? 'Yes' : 'No'
   end
+
+  def stars(rating)
+    out_of_five = [(rating.round / 2.0), 0.5].max # enforce at least a half star
+    full_stars = out_of_five.to_i
+    half_stars = out_of_five.round != out_of_five ? 1 : 0
+    empty_stars = 5 - full_stars - half_stars
+
+    (Array.new(full_stars) { fa_icon('star') } +
+     Array.new(half_stars) { fa_icon('star-half-alt') } +
+     Array.new(empty_stars) { far_icon('star') }).compact.inject(&:+)
+  end
 end

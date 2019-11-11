@@ -6,6 +6,13 @@ module Alerts
         analysis_object.valid_alert? ? produce_report(analysis_object) : invalid_alert_report(analysis_object)
       end
 
+      def content
+        analysis_object = alert_class.new(@aggregate_school)
+        analysis_object.analyse(@analysis_date)
+        # TODO: error, data, validity handling
+        analysis_object.front_end_content
+      end
+
     private
 
       def produce_report(analysis_object)

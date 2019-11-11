@@ -53,6 +53,15 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
+      [
+        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
+        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
+      ].each do |tab|
+        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
+      end
+
+      resources :analysis, controller: :analysis, only: [:index, :show]
+
       resources :activity_categories, only: [:index]
       resources :activity_types, only: [:index, :show]
 
@@ -97,14 +106,6 @@ Rails.application.routes.draw do
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 
-      get :analysis, to: 'analysis#analysis'
-      get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
-      [
-        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
-        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
-      ].each do |tab|
-        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis/#{tab}")
-      end
 
       get :timeline, to: 'timeline#show'
 
@@ -145,6 +146,11 @@ Rails.application.routes.draw do
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create
+
+    resources :schools, only: [] do
+      get :analysis, to: 'analysis#analysis'
+      get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
+    end
 
     namespace :emails do
       resources :alert_mailers, only: :show
