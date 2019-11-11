@@ -43,6 +43,14 @@ module Alerts
         {priority: 'variables'}
       end
 
+      def make_available_to_users?
+        relevance == :relevant && enough_data == :enough && calculation_worked
+      end
+
+      def calculation_worked
+        true
+      end
+
       def self.alert_type
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertClass',
