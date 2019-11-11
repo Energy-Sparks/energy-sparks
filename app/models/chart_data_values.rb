@@ -4,6 +4,17 @@ class ChartDataValues
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
 
+  DARK_ELECTRICITY = '#007EFF'.freeze
+  LIGHT_ELECTRICITY = '#59D0FF'.freeze
+  DARK_ELECTRICITY_LINE = '#232B49'.freeze
+  LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
+  DARK_GAS = '#FF8438'.freeze
+  LIGHT_GAS = '#FFC73E'.freeze
+  DARK_GAS_LINE = '#FF3A5B'.freeze
+  LIGHT_GAS_LINE = '#FCB43A'.freeze
+  DARK_STORAGE = '#7C3AFF'.freeze
+  LIGHT_STORAGE = '#E097FC'.freeze
+
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
     SeriesNames::TEMPERATURE => '#232b49',
@@ -24,16 +35,7 @@ class ChartDataValues
     'storage heaters' => "#501e74",
   }.freeze
 
-  DARK_ELECTRICITY = '#007EFF'.freeze
-  LIGHT_ELECTRICITY = '#59D0FF'.freeze
-  DARK_ELECTRICITY_LINE = '#232B49'.freeze
-  LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
-  DARK_GAS = '#FF8438'.freeze
-  LIGHT_GAS = '#FFC73E'.freeze
-  DARK_GAS_LINE = '#FF3A5B'.freeze
-  LIGHT_GAS_LINE = '#FCB43A'.freeze
-  DARK_STORAGE = '#7C3AFF'.freeze
-  LIGHT_STORAGE = '#E097FC'.freeze
+
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
@@ -150,9 +152,30 @@ private
   end
 
   def column_or_bar
-    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
+
+    puts @chart1_type
+    pp
+    pp @chart1_subtype
+
+    @series_data = @x_data_hash.reverse.each_with_index.map do |(data_type, data), index|
+
+      pp data_type
+      pp data
+
       data_type = tidy_label(data_type)
-      colour = colour_hash[data_type]
+
+
+      if @chart1_subtype == :stacked && @chart1_type == :bar
+        if data_type == 'electricity'
+          colour = LIGHT_ELECTRICITY
+        else
+          colour = LIGHT_GAS
+        end
+      else
+        colour = colour_hash[data_type]
+      end
+
+
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
