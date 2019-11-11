@@ -119,6 +119,8 @@ private
     end_date = start_date + 6.days
 
     "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
+  rescue ArgumentError
+    full_label
   end
 
   def usage_column

@@ -71,7 +71,7 @@ private
   end
 
   def redirect_with_school_path
-    if current_user.school.active?
+    if current_user.school.visible?
       school_path(current_user.school)
     else
       school_inactive_path(current_user.school)

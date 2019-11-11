@@ -46,7 +46,7 @@ class Scoreboard < ApplicationRecord
   end
 
   def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
-    scored = schools.active.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
+    scored = schools.visible.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
       self.class.sanitize_sql_array(
         ['SUM(observations.points) FILTER (WHERE observations.at > ?) AS recent_points', recent_boundary]
       )
