@@ -42,7 +42,7 @@ RSpec.describe "analysis page", type: :system do
       allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
 
       adapter = double(:adapter)
-      allow(Alerts::FrameworkAdapter).to receive(:new).with(gas_fuel_alert_type, school, alert.run_on, school).and_return(adapter)
+      allow(Alerts::FrameworkAdapter).to receive(:new).with(alert_type: gas_fuel_alert_type, school: school, analysis_date: alert.run_on, aggregate_school: school).and_return(adapter)
       allow(adapter).to receive(:content).and_return(
         [
           {type: :title, content: 'Heating advice'},

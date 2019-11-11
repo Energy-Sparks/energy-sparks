@@ -7,7 +7,7 @@ describe NextActivitySuggesterWithFilter do
   let!(:ks3) { KeyStage.create(name: 'KS3') }
 
   let!(:maths) { Subject.create(name: 'Maths') }
-  let!(:school) { create :school, active: true, key_stages: [ks1, ks3] }
+  let!(:school) { create :school, key_stages: [ks1, ks3] }
 
   let(:activity_type_filter){ ActivityTypeFilter.new(school: school)}
 

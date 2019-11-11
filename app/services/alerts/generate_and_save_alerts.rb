@@ -1,8 +1,9 @@
 module Alerts
   class GenerateAndSaveAlerts
-    def initialize(school, alert_framework_adapter = FrameworkAdapter)
+    def initialize(school:, framework_adapter: FrameworkAdapter, aggregate_school: AggregateSchoolService.new(school).aggregate_school)
       @school = school
-      @alert_framework_adapter = alert_framework_adapter
+      @alert_framework_adapter = framework_adapter
+      @aggregate_school = aggregate_school
     end
 
     def perform
@@ -30,7 +31,7 @@ module Alerts
     def generate(alert_types)
       alert_types.map do |alert_type|
         begin
-          alert = @alert_framework_adapter.new(alert_type, @school).analyse
+          alert = @alert_framework_adapter.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school).analyse
           alert.save!
         rescue => e
           Rails.logger.error "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"

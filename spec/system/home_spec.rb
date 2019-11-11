@@ -64,10 +64,10 @@ RSpec.describe "home", type: :system do
       visit root_path
     end
 
-    context 'with inactive school' do
+    context 'with not visible school' do
 
       before(:each) do
-        school.update(active: false)
+        school.update(visible: false)
         visit root_path
       end
 
@@ -81,7 +81,7 @@ RSpec.describe "home", type: :system do
       end
     end
 
-    context 'with active school' do
+    context 'with a visible school' do
       it 'does not redirect to holding page' do
 
         expect(page).to_not have_content('Your school is currently inactive while we are setting up your energy data')

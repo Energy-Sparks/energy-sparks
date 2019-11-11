@@ -32,7 +32,7 @@ if ENV.key?('GENERATE_SITEMAP')
       add scoreboard_path(scoreboard)
     end
 
-    School.active.find_each do |school|
+    School.visible.find_each do |school|
       add school_path(school)
       add school_activities_path(school)
       add school_programme_types_path(school)

@@ -15,7 +15,7 @@ module Alerts
           Alerts::GenerateManagementPriorities.new(content_generation_run: content_generation_run).perform(latest_alerts)
           Alerts::GenerateAnalysisPages.new(content_generation_run: content_generation_run).perform(latest_alerts)
 
-          Alerts::GenerateSubscriptionEvents.new(@school, content_generation_run: content_generation_run).perform(latest_alerts_with_frequency) if @school.active?
+          Alerts::GenerateSubscriptionEvents.new(@school, content_generation_run: content_generation_run).perform(latest_alerts_with_frequency) if @school.visible?
         end
       end
     end

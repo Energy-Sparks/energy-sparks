@@ -8,6 +8,6 @@ class SessionsController < Devise::SessionsController
     if params[:school].present?
       @school = School.find_by(slug: params[:school])
     end
-    @schools = School.active.order(:name)
+    @schools = School.visible.order(:name)
   end
 end

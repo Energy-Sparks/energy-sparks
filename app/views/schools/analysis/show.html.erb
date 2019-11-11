@@ -1,4 +1,5 @@
 <% content_for :page_title, @title %>
+<%= link_to 'Back', school_analysis_index_path(@school), class: 'btn btn-rounded mt-3' %>
 <% @content.each do |content| %>
   <%= render content[:type].to_s, content: content[:content], school: @school %>
 <% end %>

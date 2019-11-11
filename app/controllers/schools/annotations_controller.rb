@@ -3,7 +3,7 @@ module Schools
     skip_before_action :authenticate_user!
 
     def show
-      @school = School.find(params[:school_id])
+      @school = School.visible.find(params[:school_id])
       annotator = Charts::Annotate.new(interventions_scope: @school.observations.intervention)
       @annotations = case params[:date_grouping]
                      when 'weekly' then annotator.annotate_weekly(params[:x_axis_categories])

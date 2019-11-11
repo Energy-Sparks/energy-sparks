@@ -204,6 +204,14 @@ RSpec.describe 'alert type management', type: :system do
 
           fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
+          within '.alert_type_rating_content_find_out_more_table_variable' do
+            expect(page).to have_unchecked_field('table description A')
+            expect(page).to have_unchecked_field('table description B')
+            expect(page).to have_checked_field('None')
+          end
+
+          choose 'table description B'
+
           click_on 'Preview'
 
           within '#find_out_more-preview .content' do
@@ -262,6 +270,7 @@ RSpec.describe 'alert type management', type: :system do
         expect(second_content.find_out_more_title).to eq('Stop using so much gas!')
         expect(second_content.find_out_more_chart_variable).to eq('chart_b')
         expect(second_content.find_out_more_chart_title).to eq('This is a chart')
+        expect(second_content.find_out_more_table_variable).to eq('table_b')
       end
     end
 
