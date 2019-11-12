@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_23_142518) do
+ActiveRecord::Schema.define(version: 2019_11_07_154426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -212,6 +212,12 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.string "analysis_title"
+    t.string "analysis_subtitle"
+    t.date "analysis_start_date"
+    t.date "analysis_end_date"
+    t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -245,6 +251,7 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false
     t.boolean "management_priorities_active", default: false
+    t.boolean "analysis_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
@@ -273,7 +280,9 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.integer "enough_data"
     t.integer "relevance", default: 0
     t.json "priority_data", default: {}
+    t.index ["alert_type_id", "created_at"], name: "index_alerts_on_alert_type_id_and_created_at"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
+    t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
@@ -331,7 +340,6 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
-    t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -348,6 +356,19 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
+  end
+
+  create_table "analysis_pages", force: :cascade do |t|
+    t.bigint "content_generation_run_id"
+    t.bigint "alert_type_rating_content_version_id"
+    t.bigint "alert_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "category"
+    t.decimal "priority", default: "0.0"
+    t.index ["alert_id"], name: "index_analysis_pages_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "index_analysis_pages_on_alert_type_rating_content_version_id"
+    t.index ["content_generation_run_id"], name: "index_analysis_pages_on_content_generation_run_id"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -736,7 +757,6 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "active", default: false
     t.integer "urn", null: false
     t.integer "level", default: 0
     t.bigint "calendar_id"
@@ -758,6 +778,8 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
     t.integer "cooks_dinners_for_other_schools_count"
     t.integer "template_calendar_id"
     t.string "validation_cache_key", default: "initial"
+    t.boolean "visible", default: false
+    t.boolean "process_data", default: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -904,13 +926,19 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
   add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
+  add_foreign_key "alerts", "alert_types", on_delete: :cascade
+  add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
+  add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
+  add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
+  add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
-  add_foreign_key "contacts", "schools"
+  add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
@@ -957,7 +985,7 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
-  add_foreign_key "school_times", "schools"
+  add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars"
   add_foreign_key "schools", "school_groups"
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
@@ -967,6 +995,6 @@ ActiveRecord::Schema.define(version: 2019_10_23_142518) do
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
-  add_foreign_key "users", "schools"
+  add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
 end

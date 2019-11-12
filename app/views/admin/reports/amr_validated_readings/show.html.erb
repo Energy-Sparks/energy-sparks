@@ -1,0 +1,17 @@
+<h1>Report for meter <%= @meter.school.name %> <small class="text-muted"><%= @meter.display_name %></small></h1>
+<p><%= link_to 'All meters', admin_reports_amr_validated_readings_path, class: 'btn btn-success' %> <%= link_to 'All reports', admin_reports_path, class: 'btn btn-success' %></p>
+
+<h2>Validated AMR readings</h2>
+<p>Dates start at date of first recorded reading, <%= @first_reading %>, up until the present day.</p><p>There is usually a delay of a few days before receiving meter readings, hence the last few days will usually have no readings.</p>
+
+<div id="calendar" class="calendar"></div>
+
+<div class='calendar-legend row'>
+  <div class='legend-scale vertical'>
+    <ul class='legend-labels'>
+      <% @colour_hash.each do |type, colour| %>
+        <li><span style='background:<%= colour %>;'></span><%= "#{@amr_types[type][:name]} (#{type})" %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

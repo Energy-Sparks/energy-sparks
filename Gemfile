@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.6.3'
 
 # Rails/Core
-gem 'rails', '~> 6.0.0' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -23,7 +23,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.51.7'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.53.5'
 #gem 'energy-sparks_analytics', path: '../analytics-for-energy-sparks'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -67,6 +67,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id'
 
+# Sitemap
+gem 'sitemap_generator'
 
 # For SMS notifications
 gem 'twilio-ruby'
@@ -85,7 +87,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '~> 4.0.0.beta2'
+  gem 'rspec-rails', '~> 4.0.0.beta3'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails', '5.0.1'

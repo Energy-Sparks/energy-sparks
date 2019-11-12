@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  get "/robots.txt" => "robots_txts#show", as: :robots
+
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
@@ -37,6 +39,7 @@ Rails.application.routes.draw do
       resource :consent,        only: [:show, :create], controller: 'consent'
       resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
       resource :school_details, only: [:new, :create, :edit, :update]
+      resource :pupil_account,  only: [:new, :create, :edit, :update], controller: 'pupil_account'
       resource :completion,     only: [:new, :create, :show], controller: 'completion'
       resources :meters,        only: [:new, :create, :edit, :update]
       resource :school_times,   only: [:edit, :update]
@@ -50,18 +53,27 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
+      [
+        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
+        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
+      ].each do |tab|
+        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
+      end
+
+      resources :analysis, controller: :analysis, only: [:index, :show]
+
       resources :activity_categories, only: [:index]
       resources :activity_types, only: [:index, :show]
 
       resources :programme_types, only: [:index, :show]
-      resources :programmes, only: [:show, :index, :create]
+      resources :programmes, only: [:show, :create]
 
       resource :action, only: [:new]
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
-      resource :activation, only: [:create], controller: :activation
-      resource :deactivation, only: [:create], controller: :deactivation
+      resource :visibility, only: [:create, :destroy], controller: :visibility
+      resource :data_processing, only: [:create, :destroy], controller: :data_processing
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 
@@ -94,19 +106,11 @@ Rails.application.routes.draw do
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 
-      get :analysis, to: 'analysis#analysis'
-      get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
-      [
-        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
-        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
-      ].each do |tab|
-        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis/#{tab}")
-      end
 
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
-      get :aggregated_meter_collection, to: 'aggregated_meter_collections#show'
+
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
       resources :users, only: [:index, :destroy]
@@ -134,14 +138,6 @@ Rails.application.routes.draw do
   devise_for :users, skip: :sessions
   scope :admin do
     resources :users
-    get 'reports', to: 'reports#index'
-    get 'reports/cache_report', to: 'reports#cache_report', as: :cache_report
-  end
-
-  namespace :reports do
-    get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
-    get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
-    get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
   end
 
   namespace :admin do
@@ -150,6 +146,11 @@ Rails.application.routes.draw do
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create
+
+    resources :schools, only: [] do
+      get :analysis, to: 'analysis#analysis'
+      get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
+    end
 
     namespace :emails do
       resources :alert_mailers, only: :show
@@ -191,9 +192,25 @@ Rails.application.routes.draw do
     end
     namespace :reports do
       resources :alert_subscribers, only: :index
+      get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
+      get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
+      get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
     end
     resource :settings, only: [:show, :update]
-  end
+
+    resources :reports, only: [:index]
+
+    namespace :schools do
+      resources :meter_collections, only: :index
+    end
+
+    resources :schools, only: [:show] do
+      resource :unvalidated_meter_collection, only: :show
+      resource :validated_meter_collection, only: :show
+      resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
+    end
+
+  end # Admin name space
 
   namespace :teachers do
     resources :schools, only: :show

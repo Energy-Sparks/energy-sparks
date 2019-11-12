@@ -43,7 +43,7 @@ private
   def process_rich_text_template(template, variables)
     # ActionText content wraps up content in a wrapper div, usually <div class="trix-content"></div>
     # fragment returns the content without the wrapper
-    template_string = template.body.fragment.to_s
+    template_string = template.body ? template.body.fragment.to_s : ''
     template.body = ActionText::Content.new(process_string_template(template_string, variables))
     template
   end

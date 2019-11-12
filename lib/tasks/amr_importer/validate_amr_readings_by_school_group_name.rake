@@ -11,7 +11,7 @@ namespace :amr_importer do
     school_group = SchoolGroup.where('name LIKE ?', "%#{school_group_name}%").first
     raise ArgumentError, "Can't find school group for #{school_group_name}" if school_group.nil?
 
-    School.where(school_group: school_group).each do |each_school|
+    School.process_data.where(school_group: school_group).each do |each_school|
       puts "Validate and persist for #{each_school.name}"
       Amr::ValidateAndPersistReadingsService.new(each_school).perform if each_school.meters.any?
     end

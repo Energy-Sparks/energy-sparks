@@ -6,7 +6,9 @@ class SchoolsController < ApplicationController
   include DashboardAlerts
   include DashboardTimeline
 
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:show, :index]
+  load_resource only: [:show]
+
   skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
@@ -15,8 +17,8 @@ class SchoolsController < ApplicationController
   # GET /schools
   def index
     @scoreboards = Scoreboard.includes(schools: :configuration).where.not(schools: { id: nil }).order(:name)
-    @ungrouped_active_schools = School.active.without_group.order(:name)
-    @schools_not_active = School.inactive.order(:name)
+    @ungrouped_visible_schools = School.visible.without_group.order(:name)
+    @schools_not_visible = School.not_visible.order(:name)
   end
 
   # GET /schools/1
@@ -24,6 +26,7 @@ class SchoolsController < ApplicationController
     if current_user && (current_user.school_id == @school.id || current_user.admin?)
       redirect_to_dashboard
     else
+      authorize! :show, @school
       @charts = setup_charts(@school.configuration)
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
       @observations = setup_timeline(@school.observations)
@@ -114,7 +117,7 @@ private
   end
 
   def redirect_to_dashboard
-    if @school.active? || current_user.admin?
+    if @school.visible? || current_user.admin?
       redirect_for_active_school_or_admin
     else
       redirect_to school_inactive_path(@school)

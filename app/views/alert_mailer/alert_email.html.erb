@@ -5,17 +5,25 @@
 <% end %>
 
 <% @alert_content.each do |alert_content| %>
-  <h2 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h2>
-  <%= alert_content.email_content %>
-  <% if alert_content.find_out_more %>
-    <p>
-      <%= link_to 'Find Out More', school_find_out_more_url(@school, alert_content.find_out_more), class: 'btn btn-primary mt-2 mb-2'%>
-    </p>
-  <% end %>
-  <% if alert_content.unsubscription_uuid %>
-    <div class="text-right">
-      <%= link_to "[I don't want to see alerts like this]", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid), class: 'text-muted' %>
-    </div>
-  <% end %>
   <hr/>
- <% end %>
+  <h3 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h3>
+  <%= alert_content.email_content %>
+  <div class="row">
+    <div class="col col-lg-4">
+      <% if alert_content.find_out_more %>
+        <p>
+          <%= link_to 'Find Out More', school_find_out_more_url(@school, alert_content.find_out_more), class: 'btn btn-primary mt-2 mb-2'%>
+        </p>
+      <% end %>
+    </div>
+    <div class="col col-lg-8">
+      <% if alert_content.unsubscription_uuid %>
+        <div class="text-right mt-lg-3">
+          <%= link_to "[I don't want to see alerts like this]", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid), class: 'text-muted' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<hr/>
+<p>Please send any feedback to hello@energysparks.uk</p>

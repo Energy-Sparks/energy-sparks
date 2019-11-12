@@ -4,6 +4,7 @@ module Onboarding
 
     def new
       @school = @school_onboarding.school
+      @pupil = @school_onboarding.school.users.pupil.first
       @meters = @school.meters
       @school_times = @school.school_times.sort_by {|time| SchoolTime.days[time.day]}
       if @school.calendar
@@ -18,7 +19,7 @@ module Onboarding
     end
 
     def show
-      if @school_onboarding.school.active?
+      if @school_onboarding.school.visible?
         redirect_to school_path(@school_onboarding.school), notice: 'Your school is now active!'
       else
         render :show

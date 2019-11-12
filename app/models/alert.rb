@@ -20,8 +20,15 @@
 #
 # Indexes
 #
-#  index_alerts_on_alert_type_id  (alert_type_id)
-#  index_alerts_on_school_id      (school_id)
+#  index_alerts_on_alert_type_id                 (alert_type_id)
+#  index_alerts_on_alert_type_id_and_created_at  (alert_type_id,created_at)
+#  index_alerts_on_run_on                        (run_on)
+#  index_alerts_on_school_id                     (school_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => cascade
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
 class Alert < ApplicationRecord
@@ -65,13 +72,5 @@ class Alert < ApplicationRecord
     template_data.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
-  end
-
-  def chart_variables_hash
-    chart_data
-  end
-
-  def tables
-    table_data.values
   end
 end

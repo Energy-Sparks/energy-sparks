@@ -1,0 +1,20 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Fuel</th>
+      <th>Frequency</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% alert_types.each do |alert_type| %>
+      <tr>
+        <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
+        <td><%= alert_type.display_fuel_type %></td>
+        <td><%= alert_type.frequency %></td>
+        <td><%= link_to 'Manage', admin_alert_type_path(alert_type), class: 'btn btn-primary btn-sm'%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
