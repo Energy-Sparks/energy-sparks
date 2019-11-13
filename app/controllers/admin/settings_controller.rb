@@ -12,7 +12,10 @@ module Admin
   private
 
     def settings_params
-      params.require(:site_settings).permit(:message_for_no_contacts, :management_priorities_dashboard_limit, :management_priorities_page_limit)
+      params.require(:site_settings).permit(
+        :message_for_no_contacts, :message_for_no_pupil_accounts,
+        :management_priorities_dashboard_limit, :management_priorities_page_limit
+      )
     end
   end
 end
