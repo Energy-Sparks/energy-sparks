@@ -13,7 +13,7 @@ describe Alerts::GenerateEmailNotifications do
   let!(:content_version_2){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, email_title: 'You need to fix something!', email_content: 'You really do'}
 
   it 'sends email, only once and offers a way to unsubscribe' do
-    Alerts::GenerateContent.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
+    Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
     alert_subscription_event_1 = AlertSubscriptionEvent.find_by!(content_version: content_version_1)
     alert_subscription_event_2 = AlertSubscriptionEvent.find_by!(content_version: content_version_2)
 
@@ -51,7 +51,8 @@ describe Alerts::GenerateEmailNotifications do
   it 'links to a find out more if there is one associated with the content' do
     alert_type_rating_1.update!(find_out_more_active: true)
 
-    Alerts::GenerateContent.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
+    Alerts::GenerateContent.new(school).perform
+    Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
 
     Alerts::GenerateEmailNotifications.new.perform
     email = ActionMailer::Base.deliveries.last
