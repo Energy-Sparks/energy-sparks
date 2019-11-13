@@ -27,9 +27,10 @@ module Alerts
         {}
       end
 
-      def initialize(school:, today: Time.zone.today)
+      def initialize(school:, alert_type:, today: Time.zone.today)
         @school = school
         @today = today
+        @alert_type = alert_type
       end
 
       def report
@@ -38,6 +39,8 @@ module Alerts
           rating: 5.0,
           enough_data: :enough,
           relevance: :relevant,
+          asof_date: @today,
+          alert_type: @alert_type,
           template_data: {
             school_name: @school.name
           }

@@ -29,7 +29,9 @@ module Alerts
           valid:       true,
           rating:      analysis_object.rating,
           enough_data: analysis_object.enough_data,
-          relevance:   analysis_object.relevance
+          relevance:   analysis_object.relevance,
+          alert_type:  @alert_type,
+          asof_date:   @analysis_date
         }.merge(variables))
       end
 
@@ -56,7 +58,9 @@ module Alerts
           valid:       false,
           rating:      nil,
           enough_data: nil,
-          relevance:   analysis_object.relevance
+          relevance:   analysis_object.relevance,
+          alert_type:  @alert_type,
+          asof_date:   @analysis_date
         )
       end
     end

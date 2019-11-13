@@ -25,6 +25,8 @@ describe Alerts::FrameworkAdapter do
       rating: 5.0,
       enough_data: :enough,
       relevance: :relevant,
+      alert_type: nil,
+      asof_date: gas_date,
       template_data: {template: 'variables'},
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
