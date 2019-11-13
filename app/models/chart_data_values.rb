@@ -5,10 +5,12 @@ class ChartDataValues
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
 
   DARK_ELECTRICITY = '#007EFF'.freeze
+  MIDDLE_ELECTRICITY = '#02B8FF'.freeze
   LIGHT_ELECTRICITY = '#59D0FF'.freeze
   DARK_ELECTRICITY_LINE = '#232B49'.freeze
   LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
   DARK_GAS = '#FF8438'.freeze
+  MIDDLE_GAS = '#FFB138'.freeze
   LIGHT_GAS = '#FFC73E'.freeze
   DARK_GAS_LINE = '#FF3A5B'.freeze
   LIGHT_GAS_LINE = '#FCB43A'.freeze
@@ -28,9 +30,9 @@ class ChartDataValues
     SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
     SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
-    'electricity' => '#ff4500',
+    'electricity' => MIDDLE_ELECTRICITY,
     '' => '#ff4500',
-    'gas' => '#3bc0f0',
+    'gas' => MIDDLE_GAS,
     'solar pv (consumed onsite)' => '#ffac21',
     'storage heaters' => "#501e74",
   }.freeze
@@ -154,34 +156,12 @@ private
   end
 
   def column_or_bar
-
-    puts @chart1_type
-    pp
-    pp @chart1_subtype
-
-    @series_data = @x_data_hash.reverse.each_with_index.map do |(data_type, data), index|
-
-      pp data_type
-      pp data
-
+    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
-
-
-      if @chart1_subtype == :stacked && @chart1_type == :bar
-        if data_type == 'electricity'
-          colour = LIGHT_ELECTRICITY
-        else
-          colour = LIGHT_GAS
-        end
-      else
-        colour = colour_hash[data_type]
-      end
-
-
+      colour = colour_hash[data_type]
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
-
 
     if @y2_data != nil && @y2_chart_type == :line
       @y2_axis_label = @y2_data.keys[0]
