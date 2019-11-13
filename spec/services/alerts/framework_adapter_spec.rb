@@ -26,7 +26,7 @@ describe Alerts::FrameworkAdapter do
       enough_data: :enough,
       relevance: :relevant,
       alert_type: nil,
-      asof_date: gas_date,
+      asof_date: nil,
       template_data: {template: 'variables'},
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
