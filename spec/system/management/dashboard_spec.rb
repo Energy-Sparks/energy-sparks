@@ -38,6 +38,7 @@ describe 'Management dashboard' do
       )
     end
     let(:alert_summary){ 'Summary of the alert' }
+    let(:alert_generation_run) { create(:alert_generation_run, school: school) }
     let!(:alert) do
       Alert.create(
         alert_type: gas_fuel_alert_type,
@@ -45,7 +46,8 @@ describe 'Management dashboard' do
         rating: 9.0,
         template_data: {
           average_capital_cost: '£2,000'
-        }
+        },
+        alert_generation_run: alert_generation_run
       )
     end
 

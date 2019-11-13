@@ -4,7 +4,7 @@ module Admin
       class PreviewController < AdminController
         def create
           @alert_type = AlertType.find(params[:alert_type_id])
-          @alert = @alert_type.alerts.where(displayable: true).rating_between(from_parameter, to_parameter).order(created_at: :desc).first
+          @alert = @alert_type.alerts.displayable.rating_between(from_parameter, to_parameter).order(created_at: :desc).first
           if @alert
             load_rating_requirements
             render template_path(params[:template]), layout: nil
