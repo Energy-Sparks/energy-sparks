@@ -28,6 +28,6 @@ class ManagementDashboardTable < ApplicationRecord
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
   def table
-    alert.front_end_template_table_data['summary_table']
+    alert.table_data['summary_table']
   end
 end
