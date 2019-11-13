@@ -11,13 +11,15 @@ module Alerts
 
       alerts_to_save = []
       alert_errors_to_save = []
+      benchmark_results_to_save = []
 
       relevant_alert_types.each do |alert_type|
-        generate(alert_type, alerts_to_save, alert_errors_to_save)
+        generate(alert_type, alerts_to_save, alert_errors_to_save, benchmark_results_to_save)
       end
 
       Alert.insert_all!(alerts_to_save) unless alerts_to_save.empty?
       AlertError.insert_all!(alert_errors_to_save) unless alert_errors_to_save.empty?
+      BenchmarkResult.insert_all!(benchmark_results_to_save) unless benchmark_results_to_save.empty?
     end
 
     def relevant_alert_types
@@ -31,7 +33,7 @@ module Alerts
 
     private
 
-    def generate(alert_type, alerts_to_save, alert_errors_to_save)
+    def generate(alert_type, alerts_to_save, alert_errors_to_save, benchmark_results_to_save)
       alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school)
       asof_date = alert_framework_adapter.analysis_date
 
@@ -39,15 +41,22 @@ module Alerts
 
       if alert_report.valid
         alerts_to_save << build_alert(alert_type, alert_report, asof_date)
+
+        if alert_report.benchmark_data.present?
+          benchmark_results_to_save << build_benchmark_result(alert_type, alert_report, asof_date)
+        end
       else
         alert_errors_to_save << build_alert_error(alert_type, asof_date, "Relevance: #{alert_report.relevance}")
       end
     rescue => e
-      Rails.logger.error "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
+      error_message = "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
+      Rails.logger.error error_message
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e, school_id: @school.id, school_name: @school.name, alert_type: alert_type.class_name)
 
-      alert_errors_to_save << build_alert_error(alert_type, asof_date, e.backtrace)
+      error_message = "#{error_message}\n" + e.backtrace.join("\n")
+
+      alert_errors_to_save << build_alert_error(alert_type, asof_date, error_message)
     end
 
     def build_alert_error(alert_type, asof_date, information)
@@ -60,6 +69,19 @@ module Alerts
         information: information,
         created_at: now,
         updated_at: now
+      }
+    end
+
+    def build_benchmark_result(alert_type, analysis_report, asof_date)
+      now = Time.zone.now
+
+      {
+        alert_generation_run_id:  @alert_generation_run.id,
+        alert_type_id:            alert_type.id,
+        asof:                     asof_date,
+        data:                     analysis_report.benchmark_data,
+        created_at:               now,
+        updated_at:               now
       }
     end
 
