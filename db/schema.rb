@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_11_133811) do
+ActiveRecord::Schema.define(version: 2019_11_13_133337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -936,9 +936,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   add_foreign_key "activity_types", "activity_categories"
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
-  add_foreign_key "alert_subscription_events", "contacts"
+  add_foreign_key "alert_subscription_events", "contacts", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "content_generation_runs", on_delete: :cascade
-  add_foreign_key "alert_subscription_events", "emails"
+  add_foreign_key "alert_subscription_events", "emails", on_delete: :nullify
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
