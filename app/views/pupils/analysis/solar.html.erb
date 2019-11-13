@@ -23,6 +23,14 @@
     find out about <strong>solar</strong>
   <% end %>
 
+  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: {period: :weekly} do %>
+    compare the electricity used in two different weeks
+  <% end %>
+
+  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: {period: :daily} do %>
+    compare the electricity used on two different days
+  <% end %>
+
 </div>
 
 <h2>I want to look at&hellip;</h2>
