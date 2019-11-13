@@ -241,4 +241,12 @@ class School < ApplicationRecord
       AnalysisPage.none
     end
   end
+
+  def latest_management_dashboard_tables
+    if latest_content
+      latest_content.management_dashboard_tables
+    else
+      ManagementDashboardTable.none
+    end
+  end
 end

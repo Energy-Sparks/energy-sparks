@@ -2,6 +2,7 @@
 #
 # Table name: alert_types
 #
+#  background   :boolean          default(FALSE)
 #  class_name   :text
 #  frequency    :integer
 #  fuel_type    :integer
@@ -29,6 +30,8 @@ class AlertType < ApplicationRecord
   scope :electricity,   -> { where(fuel_type: :electricity) }
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
+
+  scope :editable, -> { where.not(background: true) }
 
   validates_presence_of :frequency, :title, :class_name, :source
 
