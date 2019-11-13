@@ -27,8 +27,7 @@ describe Alerts::GenerateDashboardAlerts do
     let(:pupil_active){ true }
     let(:public_active){ true }
     let(:management_active){ true }
-    let(:alert_generation_run) { create(:alert_generation_run, school: school) }
-    let!(:alert)               { create(:alert, school: school, rating: rating, alert_generation_run: alert_generation_run)}
+    let!(:alert)               { create(:alert, :with_run, school: school, rating: rating)}
     let!(:alert_type_rating) do
       create :alert_type_rating,
         alert_type: alert.alert_type,

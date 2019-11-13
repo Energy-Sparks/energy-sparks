@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe 'Unsubscribing from email alerts' do
   let(:school)               { create(:school) }
-  let(:alert_generation_run) { create(:alert_generation_run, school: school) }
-  let(:alert)                { create(:alert, school: school, alert_generation_run: alert_generation_run) }
+  let(:alert)                { create(:alert, :with_run, school: school) }
   let!(:email_contact)       { create(:contact_with_name_email, school: school) }
   let!(:alert_type_rating)   { create :alert_type_rating, alert_type: alert.alert_type, email_active: true }
   let!(:content_version)     { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating, email_title: 'You need to do something!', email_content: 'You really do'}

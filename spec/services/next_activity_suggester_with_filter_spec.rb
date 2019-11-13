@@ -127,12 +127,11 @@ describe NextActivitySuggesterWithFilter do
     let!(:alert_type_rating_content_version) do
       create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)
     end
-    let(:alert_generation_run) { create(:alert_generation_run, school: school) }
     let!(:alert) do
-      Alert.create(
+      create(:alert, :with_run,
         alert_type: alert_type_rating.alert_type,
         run_on: Time.zone.today, school: school,
-        rating: 9.0, alert_generation_run: alert_generation_run
+        rating: 9.0
       )
     end
 

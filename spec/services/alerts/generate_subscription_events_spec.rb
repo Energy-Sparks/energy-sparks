@@ -5,8 +5,7 @@ describe Alerts::GenerateSubscriptionEvents do
   let(:school)                  { create(:school) }
   let(:rating)                  { 5.0 }
   let(:alert_type)              { create(:alert_type, frequency: :weekly) }
-  let(:alert_generation_run)    { create(:alert_generation_run, school: school) }
-  let!(:alert)                  { create(:alert, alert_type: alert_type, school: school, rating: rating, alert_generation_run: alert_generation_run)}
+  let!(:alert)                  { create(:alert, :with_run, alert_type: alert_type, school: school, rating: rating)}
   let(:content_generation_run)  { create(:content_generation_run, school: school) }
   let(:service)                 { Alerts::GenerateSubscriptionEvents.new(school, content_generation_run: content_generation_run) }
   let(:weekly_alerts)           { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:weekly] }).without_exclusions }
