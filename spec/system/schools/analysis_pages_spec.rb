@@ -31,7 +31,7 @@ RSpec.describe "analysis page", type: :system do
       )
     end
     let!(:alert) do
-      Alert.create(alert_type: gas_fuel_alert_type, school: school, rating: 9.0)
+      create(:alert, :with_run, alert_type: gas_fuel_alert_type, school: school, rating: 9.0)
     end
 
     before do
