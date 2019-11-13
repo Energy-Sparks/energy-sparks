@@ -2,11 +2,13 @@ require 'rails_helper'
 
 describe Alerts::GenerateAndSaveAlerts do
 
+  let(:framework_adapter) { double :framework_adapter }
+  let(:adapter_instance)  { double :adapter_instance }
+  let(:aggregate_school)  { double :aggregate_school }
+  let(:school)            { create(:school) }
+
   describe '#perform' do
-    let(:framework_adapter) { double :framework_adapter }
-    let(:adapter_instance)  { double :adapter_instance }
-    let(:aggregate_school)  { double :aggregate_school }
-    let(:school)            { create(:school) }
+
     let(:alert_type)        { create(:alert_type, fuel_type: nil, frequency: :weekly) }
 
     describe 'error handling' do
@@ -15,16 +17,43 @@ describe Alerts::GenerateAndSaveAlerts do
         expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
         expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
 
-        expect{
-          Alerts::GenerateAndSaveAlerts.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school).perform
-        }.to_not raise_error
+        service = Alerts::GenerateAndSaveAlerts.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
+
+        expect { service.perform }.to_not raise_error
 
         expect(AlertError.count).to be 1
         expect(AlertError.first.alert_type).to eq alert_type
       end
     end
 
-    describe 'knows which alerts are relevant' do
+    describe 'working normally' do
+
+      let(:alert_report) do
+        Alerts::Adapters::Report.new(
+          valid: true,
+          rating: 5.0,
+          enough_data: :enough,
+          relevance: :relevant,
+          template_data: {template: 'variables'},
+          chart_data: {chart: 'variables'},
+          table_data: {table: 'variables'},
+          priority_data: {priority: 'variables'}
+        )
+      end
+
+      it 'saves alert' do
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
+        expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
+        expect(adapter_instance).to receive(:analyse).and_return alert_report
+
+        service = Alerts::GenerateAndSaveAlerts.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
+
+        expect { service.perform }.to change { Alert.count }.by(1)
+      end
+    end
+  end
+
+  describe '#relevant_alert_types' do
       let!(:no_fuel_alert_type)          { create(:alert_type, fuel_type: nil) }
       let!(:electricity_alert_type)      { create(:alert_type, fuel_type: :electricity) }
       let!(:gas_alert_type)              { create(:alert_type, fuel_type: :gas) }
@@ -69,5 +98,4 @@ describe Alerts::GenerateAndSaveAlerts do
         expect(service.relevant_alert_types).to_not include(electricity_alert_type, storage_heater_alert_type, solar_pv_alert_type)
       end
     end
-  end
 end
