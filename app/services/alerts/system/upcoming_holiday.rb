@@ -31,9 +31,14 @@ module Alerts
         {}
       end
 
-      def initialize(school:, today: Time.zone.today)
+      def self.benchmark_template_variables
+        {}
+      end
+
+      def initialize(school:, alert_type:, today: Time.zone.today)
         @school = school
         @today = today
+        @alert_type = alert_type
       end
 
       def report
@@ -44,6 +49,8 @@ module Alerts
             rating: [0.0, (next_holiday.start_date - @today).to_i.to_f].max,
             enough_data: :enough,
             relevance: :relevant,
+            asof_date: @today,
+            alert_type: @alert_type,
             template_data: {
               holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
               holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
@@ -58,7 +65,9 @@ module Alerts
             valid: true,
             rating: nil,
             relevance: :not_relevant,
-            enough_data: :enough
+            enough_data: :enough,
+            asof_date: @today,
+            alert_type: @alert_type
           )
         end
       end

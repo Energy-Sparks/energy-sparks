@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2019_11_11_140040) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -402,6 +402,17 @@ ActiveRecord::Schema.define(version: 2019_11_11_140040) do
     t.text "description"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+  end
+
+  create_table "benchmark_results", force: :cascade do |t|
+    t.bigint "alert_generation_run_id"
+    t.bigint "alert_type_id"
+    t.date "asof"
+    t.text "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_generation_run_id"], name: "index_benchmark_results_on_alert_generation_run_id"
+    t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|

@@ -25,10 +25,13 @@ describe Alerts::FrameworkAdapter do
       rating: 5.0,
       enough_data: :enough,
       relevance: :relevant,
+      alert_type: nil,
+      asof_date: nil,
       template_data: {template: 'variables'},
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
-      priority_data: {priority: 'variables'}
+      priority_data: {priority: 'variables'},
+      benchmark_data: {} # System alerts don't create benchmark data
     )
 
   end
