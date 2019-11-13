@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_13_133337) do
+ActiveRecord::Schema.define(version: 2019_11_13_140533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -850,6 +850,7 @@ ActiveRecord::Schema.define(version: 2019_11_13_133337) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "management_priorities_dashboard_limit", default: 5
     t.integer "management_priorities_page_limit", default: 10
+    t.boolean "message_for_no_pupil_accounts", default: true
   end
 
   create_table "solar_pv_tuos_readings", force: :cascade do |t|
