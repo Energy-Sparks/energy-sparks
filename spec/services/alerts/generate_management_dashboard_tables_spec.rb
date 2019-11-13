@@ -23,7 +23,7 @@ describe Alerts::GenerateManagementDashboardTables do
 
   context 'when there are management tables configured that match the alert type' do
     let(:rating){ 5.0 }
-    let!(:alert){ create(:alert, school: school, rating: rating)}
+    let!(:alert){ create(:alert, :with_run, school: school, rating: rating)}
     let!(:alert_type_rating) do
       create :alert_type_rating,
         alert_type: alert.alert_type,
