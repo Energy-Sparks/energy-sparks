@@ -12,12 +12,15 @@ describe Alerts::GenerateEmailNotifications do
   let!(:content_version_1){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, email_title: 'You need to do something!', email_content: 'You really do'}
   let!(:content_version_2){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, email_title: 'You need to fix something!', email_content: 'You really do'}
 
+  let!(:subscription_generation_run){ create(:subscription_generation_run, school: school) }
+
   it 'sends email, only once and offers a way to unsubscribe' do
-    Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
+    Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
+
     alert_subscription_event_1 = AlertSubscriptionEvent.find_by!(content_version: content_version_1)
     alert_subscription_event_2 = AlertSubscriptionEvent.find_by!(content_version: content_version_2)
 
-    Alerts::GenerateEmailNotifications.new.perform
+    Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
 
     alert_subscription_event_1.reload
     alert_subscription_event_2.reload
@@ -43,7 +46,7 @@ describe Alerts::GenerateEmailNotifications do
 
     ActionMailer::Base.deliveries.clear
 
-    Alerts::GenerateEmailNotifications.new.perform
+    Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
     expect(ActionMailer::Base.deliveries).to be_empty
     expect(Email.count).to be 1
   end
@@ -52,9 +55,9 @@ describe Alerts::GenerateEmailNotifications do
     alert_type_rating_1.update!(find_out_more_active: true)
 
     Alerts::GenerateContent.new(school).perform
-    Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
+    Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
 
-    Alerts::GenerateEmailNotifications.new.perform
+    Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
     email = ActionMailer::Base.deliveries.last
 
     expect(email.subject).to include('Energy Sparks alerts')

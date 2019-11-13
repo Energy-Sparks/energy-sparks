@@ -1,11 +1,12 @@
 module Alerts
   class GenerateSmsNotifications
-    def initialize(send_sms_service = SendSms)
+    def initialize(subscription_generation_run:, send_sms_service: SendSms)
       @send_sms_service = send_sms_service
+      @subscription_generation_run = subscription_generation_run
     end
 
     def perform
-      AlertSubscriptionEvent.where(status: :pending, communication_type: :sms).each do |event|
+      @subscription_generation_run.alert_subscription_events.where(status: :pending, communication_type: :sms).each do |event|
         next if event.content_version.nil?
         sms_content = TemplateInterpolation.new(
           event.content_version,

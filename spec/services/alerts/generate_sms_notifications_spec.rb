@@ -12,19 +12,22 @@ describe Alerts::GenerateSmsNotifications do
   let!(:content_version_1){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_1, sms_content: 'You need to do something!'}
   let!(:content_version_2){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating_2, sms_content: 'You need to fix something!'}
 
+  let!(:subscription_generation_run){ create(:subscription_generation_run, school: school) }
+
   it 'sends sms, one, per alert' do
+    send_sms_class = double('send_sms_service')
     send_sms_service = instance_double('send_sms_service')
 
-    expect(SendSms).to receive(:new).with("EnergySparks alert: You need to do something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
+    expect(send_sms_class).to receive(:new).with("EnergySparks alert: You need to do something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
     expect(send_sms_service).to receive(:send).ordered
-    expect(SendSms).to receive(:new).with("EnergySparks alert: You need to fix something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
+    expect(send_sms_class).to receive(:new).with("EnergySparks alert: You need to fix something!", sms_contact.mobile_phone_number).and_return(send_sms_service).ordered
     expect(send_sms_service).to receive(:send).ordered
 
-    Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
-    Alerts::GenerateSmsNotifications.new.perform
+    Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
+    Alerts::GenerateSmsNotifications.new(subscription_generation_run: subscription_generation_run, send_sms_service: send_sms_class).perform
 
     expect(AlertSubscriptionEvent.all.all?{|event| event.status == 'sent'}).to eq(true)
 
-    Alerts::GenerateSmsNotifications.new.perform
+    Alerts::GenerateSmsNotifications.new(subscription_generation_run: subscription_generation_run, send_sms_service: send_sms_class).perform
   end
 end
