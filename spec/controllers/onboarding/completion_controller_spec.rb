@@ -14,8 +14,8 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
   end
 
   describe '#show' do
-    it 'renders show if the school is not active' do
-      school.update!(active: false)
+    it 'renders show if the school is not visible' do
+      school.update!(visible: false)
       get :show, params: {onboarding_id: onboarding.to_param}
       expect(response).to render_template("show")
     end

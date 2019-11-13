@@ -2,7 +2,6 @@
 #
 # Table name: schools
 #
-#  active                                :boolean          default(FALSE)
 #  address                               :text
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
@@ -19,6 +18,7 @@
 #  name                                  :string
 #  number_of_pupils                      :integer
 #  postcode                              :string
+#  process_data                          :boolean          default(FALSE)
 #  school_group_id                       :bigint(8)
 #  school_type                           :integer
 #  serves_dinners                        :boolean          default(FALSE), not null
@@ -30,6 +30,7 @@
 #  updated_at                            :datetime         not null
 #  urn                                   :integer          not null
 #  validation_cache_key                  :string           default("initial")
+#  visible                               :boolean          default(FALSE)
 #  weather_underground_area_id           :bigint(8)
 #  website                               :string
 #
@@ -65,6 +66,8 @@ class School < ApplicationRecord
 
   has_many :alerts,                  inverse_of: :school, dependent: :destroy
   has_many :content_generation_runs, inverse_of: :school
+  has_many :alert_generation_runs,   inverse_of: :school
+  has_many :analysis_pages, through: :content_generation_runs
 
   has_many :low_carbon_hub_installations, inverse_of: :school
 
@@ -92,8 +95,9 @@ class School < ApplicationRecord
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
-  scope :active, -> { where(active: true) }
-  scope :inactive, -> { where(active: false) }
+  scope :visible,       -> { where(visible: true) }
+  scope :not_visible,   -> { where(visible: false) }
+  scope :process_data,  -> { where(process_data: true) }
   scope :without_group, -> { where(school_group_id: nil) }
 
   scope :with_config, -> { joins(:configuration) }
@@ -228,6 +232,14 @@ class School < ApplicationRecord
       latest_content.management_priorities
     else
       ManagementPriority.none
+    end
+  end
+
+  def latest_analysis_pages
+    if latest_content
+      latest_content.analysis_pages
+    else
+      AnalysisPage.none
     end
   end
 end

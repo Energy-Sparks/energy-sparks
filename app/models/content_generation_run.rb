@@ -21,6 +21,7 @@ class ContentGenerationRun < ApplicationRecord
   has_many :dashboard_alerts
   has_many :alert_subscription_events
   has_many :management_priorities
+  has_many :analysis_pages
 
   has_many :find_out_more_content_versions, through: :find_out_mores, source: :content_version
   has_many :find_out_more_alert_type_ratings, through: :find_out_more_content_versions, source: :alert_type_rating

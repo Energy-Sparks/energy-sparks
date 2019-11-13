@@ -13,15 +13,17 @@
 #
 
 class AlertType < ApplicationRecord
+  SUB_CATEGORIES = [:hot_water, :heating, :baseload, :electricity_use, :solar_pv, :tariffs, :co2, :boiler_control, :overview, :storage_heaters].freeze
+
   has_many :alerts,                     dependent: :destroy
   has_many :alert_subscription_events,  dependent: :destroy
 
   has_many :ratings, class_name: 'AlertTypeRating'
   has_many :school_alert_type_exclusions
 
-  enum source: [:analytics, :system]
-  enum fuel_type: [:electricity, :gas, :storage_heater]
-  enum sub_category: [:hot_water, :heating, :baseload]
+  enum source: [:analytics, :system, :analysis]
+  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv], _suffix: :fuel_type
+  enum sub_category: SUB_CATEGORIES
   enum frequency: [:termly, :weekly, :before_each_holiday]
 
   scope :electricity,   -> { where(fuel_type: :electricity) }
@@ -46,5 +48,9 @@ class AlertType < ApplicationRecord
 
   def available_charts
     class_name.constantize.front_end_template_charts.map { |variable_name, values| [values[:description], variable_name] }
+  end
+
+  def available_tables
+    class_name.constantize.front_end_template_tables.map { |variable_name, values| [values[:description], variable_name] }
   end
 end

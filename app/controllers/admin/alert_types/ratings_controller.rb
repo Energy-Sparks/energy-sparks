@@ -5,6 +5,7 @@ module Admin
 
       before_action :set_template_variables, except: [:index]
       before_action :set_available_charts, except: [:index]
+      before_action :set_available_tables, except: [:index]
 
       def index
         @ratings = @alert_type.ratings.order(rating_from: :asc, rating_to: :asc, description: :asc)
@@ -52,7 +53,7 @@ module Admin
           :sms_active, :email_active, :find_out_more_active,
           :teacher_dashboard_alert_active, :pupil_dashboard_alert_active,
           :public_dashboard_alert_active, :management_dashboard_alert_active,
-          :management_priorities_active
+          :management_priorities_active, :analysis_active
         )
       end
 
@@ -69,6 +70,11 @@ module Admin
       def set_available_charts
         @available_charts = @alert_type.available_charts
         @available_charts << ["None", :none]
+      end
+
+      def set_available_tables
+        @available_tables = @alert_type.available_tables
+        @available_tables << ["None", :none]
       end
 
       def load_example_variables(rating)

@@ -17,8 +17,8 @@ class SchoolsController < ApplicationController
   # GET /schools
   def index
     @scoreboards = Scoreboard.includes(schools: :configuration).where.not(schools: { id: nil }).order(:name)
-    @ungrouped_active_schools = School.active.without_group.order(:name)
-    @schools_not_active = School.inactive.order(:name)
+    @ungrouped_visible_schools = School.visible.without_group.order(:name)
+    @schools_not_visible = School.not_visible.order(:name)
   end
 
   # GET /schools/1
@@ -117,7 +117,7 @@ private
   end
 
   def redirect_to_dashboard
-    if @school.active? || current_user.admin?
+    if @school.visible? || current_user.admin?
       redirect_for_active_school_or_admin
     else
       redirect_to school_inactive_path(@school)
