@@ -41,6 +41,7 @@ RSpec.describe "school alerts", type: :system do
         )
       end
       let(:alert_summary){ 'Summary of the alert' }
+      let(:alert_generation_run) { create(:alert_generation_run, school: school) }
       let!(:alert) do
         Alert.create(
           alert_type: gas_fuel_alert_type,
@@ -48,7 +49,8 @@ RSpec.describe "school alerts", type: :system do
           rating: 9.0,
           table_data: {
             dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
-          }
+          },
+          alert_generation_run: alert_generation_run
         )
       end
 
