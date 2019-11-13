@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 describe Alerts::GenerateSmsNotifications do
-  let(:school)                      { create(:school) }
-  let!(:alert_1)                    { create(:alert, school: school) }
-  let!(:alert_2)                    { create(:alert, school: school) }
-  let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
+  let(:school)               { create(:school) }
+  let(:alert_generation_run) { create(:alert_generation_run, school: school) }
+  let(:alert_1)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
+  let(:alert_2)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
+  let!(:sms_contact)         { create(:contact_with_name_phone, school: school) }
 
   let!(:alert_type_rating_1){ create :alert_type_rating, alert_type: alert_1.alert_type, sms_active: true }
   let!(:alert_type_rating_2){ create :alert_type_rating, alert_type: alert_2.alert_type, sms_active: true }

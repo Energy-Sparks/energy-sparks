@@ -13,8 +13,9 @@ RSpec.describe "school alerts", type: :system do
   end
 
   it 'should show all alerts' do
-    alert_poor = Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0)
-    alert_good = Alert.create(alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0)
+    alert_run = create(:alert_generation_run, school: school)
+    alert_poor = create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)
+    alert_good = create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)
     click_on('Alert reports')
     click_on gas_fuel_alert_type.title, match: :first
     expect(page).to have_content('5.0')

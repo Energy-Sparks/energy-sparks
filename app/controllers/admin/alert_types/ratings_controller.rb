@@ -78,7 +78,7 @@ module Admin
       end
 
       def load_example_variables(rating)
-        example_alert = rating.alert_type.alerts.where(displayable: true).rating_between(rating.rating_from || 0, rating.rating_to || 10).order(created_at: :desc).first
+        example_alert = rating.alert_type.alerts.displayable.rating_between(rating.rating_from || 0, rating.rating_to || 10).order(created_at: :desc).first
         if example_alert
           @example_variables = example_alert.template_variables
         end

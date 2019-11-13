@@ -97,6 +97,31 @@ describe School do
     end
   end
 
+  describe '#latest_alerts_without_exclusions' do
+    let(:school){ create :school }
+    let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
+
+
+    context 'where there is an alert run' do
+
+      let(:alert_generation_run_1){ create(:alert_generation_run, school: school, created_at: 1.day.ago)}
+      let(:alert_generation_run_2){ create(:alert_generation_run, school: school, created_at: Date.today)}
+
+      let!(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type, school: school, alert_generation_run: alert_generation_run_1) }
+      let!(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type, school: school, alert_generation_run: alert_generation_run_2) }
+
+      it 'selects the dashboard alerts from the most recent run' do
+        expect(school.latest_alerts_without_exclusions).to match_array([alert_2])
+      end
+    end
+
+    context 'where there is no run' do
+      it 'returns an empty set' do
+        expect(school.latest_alerts_without_exclusions).to be_empty
+      end
+    end
+  end
+
   describe '#latest_dashboard_alerts' do
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
