@@ -59,6 +59,7 @@ class Alert < ApplicationRecord
   enum relevance: [:relevant, :not_relevant, :never_relevant], _prefix: :relevance
 
   scope :without_exclusions, -> { joins(:alert_type).joins('LEFT OUTER JOIN school_alert_type_exclusions ON school_alert_type_exclusions.school_id = alerts.school_id AND school_alert_type_exclusions.alert_type_id = alert_types.id').where(school_alert_type_exclusions: { school_id: nil }) }
+  scope :displayable, -> { where(displayable: true) }
 
   def frequency
     alert_type.frequency
