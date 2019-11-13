@@ -2,6 +2,8 @@ require 'dashboard'
 
 module Alerts
   class FrameworkAdapter
+    attr_reader :analysis_date
+
     def initialize(alert_type:, school:, analysis_date: nil, aggregate_school:)
       @alert_type = alert_type
       @school = school
@@ -10,7 +12,7 @@ module Alerts
     end
 
     def analyse
-      build_alert(adapter_instance.report)
+      adapter_instance.report
     end
 
     def content
@@ -34,23 +36,6 @@ module Alerts
     def calculate_analysis_date
       return Time.zone.today if @alert_type.fuel_type.nil?
       AggregateSchoolService.analysis_date(@aggregate_school, @alert_type.fuel_type)
-    end
-
-    def build_alert(analysis_report)
-      Alert.new(
-        school_id:        @school.id,
-        alert_type_id:    @alert_type.id,
-        run_on:           @analysis_date,
-        displayable:      analysis_report.displayable?,
-        analytics_valid:  analysis_report.valid,
-        rating:           analysis_report.rating,
-        enough_data:      analysis_report.enough_data,
-        relevance:        analysis_report.relevance,
-        template_data:    analysis_report.template_data,
-        chart_data:       analysis_report.chart_data,
-        table_data:       analysis_report.table_data,
-        priority_data:    analysis_report.priority_data
-      )
     end
   end
 end
