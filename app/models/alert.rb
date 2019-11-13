@@ -46,8 +46,8 @@ class Alert < ApplicationRecord
   delegate :description, to: :alert_type
   delegate :display_fuel_type, to: :alert_type
 
-  scope :electricity,         -> { joins(:alert_type).merge(AlertType.electricity) }
-  scope :gas,                 -> { joins(:alert_type).merge(AlertType.gas) }
+  scope :electricity,         -> { joins(:alert_type).merge(AlertType.electricity_fuel_type) }
+  scope :gas,                 -> { joins(:alert_type).merge(AlertType.gas_fuel_type) }
   scope :no_fuel,             -> { joins(:alert_type).merge(AlertType.no_fuel) }
   scope :termly,              -> { joins(:alert_type).merge(AlertType.termly) }
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
