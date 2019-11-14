@@ -22,11 +22,11 @@ describe Alerts::GenerateAnalysisPages do
   end
 
   context 'when there is analysis page configuration that matches the alert type' do
-    let(:rating)             { 5.0 }
-    let(:active)             { true }
-    let!(:alert)             { create(:alert, school: school, rating: rating)}
-    let!(:alert_type_rating) { create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, analysis_active: active}
-    let!(:content_version)   { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
+    let(:rating)               { 5.0 }
+    let(:active)               { true }
+    let!(:alert)               { create :alert, :with_run, school: school, rating: rating}
+    let!(:alert_type_rating)   { create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, analysis_active: active}
+    let!(:content_version)     { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
     context 'where the rating matches the range' do
 

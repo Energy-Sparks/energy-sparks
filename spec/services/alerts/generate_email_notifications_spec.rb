@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 describe Alerts::GenerateEmailNotifications do
-  let(:school)                      { create(:school) }
-  let(:alert_1)                    { create(:alert, school: school) }
-  let(:alert_2)                    { create(:alert, school: school) }
-  let!(:email_contact)              { create(:contact_with_name_email, school: school) }
+  let(:school)               { create(:school) }
+  let(:alert_generation_run) { create(:alert_generation_run, school: school) }
+  let(:alert_1)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
+  let(:alert_2)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
+  let!(:email_contact)       { create(:contact_with_name_email, school: school) }
 
   let(:alert_type_rating_1){ create :alert_type_rating, alert_type: alert_1.alert_type, email_active: true }
   let(:alert_type_rating_2){ create :alert_type_rating, alert_type: alert_2.alert_type, email_active: true }

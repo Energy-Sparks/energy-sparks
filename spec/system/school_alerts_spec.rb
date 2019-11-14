@@ -42,7 +42,7 @@ RSpec.describe "school alerts", type: :system do
       end
       let(:alert_summary){ 'Summary of the alert' }
       let!(:alert) do
-        Alert.create(
+        create(:alert, :with_run,
           alert_type: gas_fuel_alert_type,
           run_on: gas_date, school: school,
           rating: 9.0,
