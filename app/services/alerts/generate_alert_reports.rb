@@ -3,17 +3,21 @@ module Alerts
     def initialize(
         school:,
         framework_adapter: FrameworkAdapter,
-        aggregate_school: AggregateSchoolService.new(school).aggregate_school
+        aggregate_school: AggregateSchoolService.new(school).aggregate_school,
+        alert_types: AlertType.all,
+        asof_date: nil
       )
       @school = school
       @alert_framework_adapter_class = framework_adapter
       @aggregate_school = aggregate_school
+      @alert_types = alert_types
+      @asof_date = asof_date
     end
 
     def perform
       alert_type_run_results = []
 
-      relevant_alert_types.each do |alert_type|
+      @alert_types.each do |alert_type|
         alert_type_run_results << generate_alert_report(alert_type)
       end
 
@@ -22,12 +26,8 @@ module Alerts
 
     private
 
-    def relevant_alert_types
-      RelevantAlertTypes.new(@school).list
-    end
-
     def generate_alert_report(alert_type)
-      alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school)
+      alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school, analysis_date: @asof_date)
       asof_date = alert_framework_adapter.analysis_date
 
       alert_type_run_result = AlertTypeRunResult.new(alert_type: alert_type, asof_date: asof_date)

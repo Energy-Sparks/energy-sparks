@@ -28,7 +28,7 @@ module Alerts
 
       describe 'error handling' do
         it 'does not raise an error if the framework_adapter raises one' do
-          expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
+          expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
           expect(adapter_instance).to receive(:analysis_date).and_return(asof_date)
           expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
 
@@ -41,7 +41,7 @@ module Alerts
       end
 
       it 'working normally it returns alert report with benchmark' do
-        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
         expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
@@ -54,7 +54,7 @@ module Alerts
         alert_report_attributes[:benchmark_data] = {}
         alert_report = Adapters::Report.new(alert_report_attributes)
 
-        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
         expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
@@ -68,7 +68,7 @@ module Alerts
 
         alert_report = Adapters::Report.new(invalid_attributes)
 
-        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
         expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
