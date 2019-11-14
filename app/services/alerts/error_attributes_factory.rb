@@ -1,6 +1,6 @@
 module Alerts
   class ErrorAttributesFactory
-    def initialize(alert_type, asof_date, information, alert_generation_run: nil)
+    def initialize(alert_type, asof_date, information, alert_generation_run = nil)
       @alert_type = alert_type
       @asof_date = asof_date
       @information = information
