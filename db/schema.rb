@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_11_133812) do
+ActiveRecord::Schema.define(version: 2019_11_14_111741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_133812) do
   create_table "alert_errors", force: :cascade do |t|
     t.bigint "alert_generation_run_id"
     t.bigint "alert_type_id"
-    t.date "asof_date"
+    t.date "asof_date", null: false
     t.text "information"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -402,7 +402,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_133812) do
   create_table "benchmark_results", force: :cascade do |t|
     t.bigint "alert_generation_run_id"
     t.bigint "alert_type_id"
-    t.date "asof"
+    t.date "asof", null: false
     t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -945,6 +945,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_133812) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "alert_errors", "alert_generation_runs", on_delete: :cascade
+  add_foreign_key "alert_errors", "alert_types", on_delete: :cascade
+  add_foreign_key "alert_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
@@ -965,6 +968,8 @@ ActiveRecord::Schema.define(version: 2019_11_11_133812) do
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_results", "alert_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
