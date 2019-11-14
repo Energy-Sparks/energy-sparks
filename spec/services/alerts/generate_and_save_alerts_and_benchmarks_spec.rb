@@ -36,14 +36,14 @@ module Alerts
       Adapters::Report.new(invalid_alert_report_attributes)
     end
 
-    let(:error_attributes) { ErrorAttributesFactory.new(alert_type, asof_date, "Broken").generate }
+    let(:error_messages) { ["Broken"] }
 
     let(:alert_type_run_result) do
-      AlertTypeRunResult.new(alert_type: alert_type, reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report] )
+      AlertTypeRunResult.new(alert_type: alert_type, reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report], asof_date: asof_date )
     end
 
     let(:alert_type_run_result_just_errors) do
-      AlertTypeRunResult.new(alert_type: alert_type, reports: [], error_attributes: [error_attributes])
+      AlertTypeRunResult.new(alert_type: alert_type, reports: [], error_messages: error_messages, asof_date: asof_date)
     end
 
     before(:each) do

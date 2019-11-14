@@ -36,10 +36,11 @@ module Alerts
           service = GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
 
           result = service.perform.first
-          expect(result.error_attributes).to_not be_empty
+          expect(result.error_messages).to_not be_empty
           expect(result.reports).to be_empty
         end
       end
+
 
       it 'working normally it returns alert report with benchmark' do
         expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school).and_return(adapter_instance)
