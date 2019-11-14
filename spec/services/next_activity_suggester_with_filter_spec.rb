@@ -128,7 +128,7 @@ describe NextActivitySuggesterWithFilter do
       create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)
     end
     let!(:alert) do
-      Alert.create(
+      create(:alert, :with_run,
         alert_type: alert_type_rating.alert_type,
         run_on: Time.zone.today, school: school,
         rating: 9.0

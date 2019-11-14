@@ -6,7 +6,7 @@ module Alerts
 
     def content_versions(scope:, today: Time.zone.today)
       rating = @alert.rating
-      return [] if rating.blank? || !@alert.displayable?
+      return [] if rating.blank?
 
       alert_type_ratings = AlertTypeRating.
         for_rating(rating.to_f.round(1)).
