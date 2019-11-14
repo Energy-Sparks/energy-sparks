@@ -99,6 +99,7 @@ describe SchoolCreator, :schools, type: :service do
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to include('is live on Energy Sparks')
         expect(school_onboarding).to have_event(:activation_email_sent)
+        expect(school.observations.first.description.to_s).to include("joined Energy Sparks")
       end
 
       it 'does not send an email if one has already been sent' do

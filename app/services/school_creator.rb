@@ -34,6 +34,11 @@ class SchoolCreator
     if should_send_activation_email?
       OnboardingMailer.with(school_onboarding: @school.school_onboarding).activation_email.deliver_now
       record_event(@school.school_onboarding, :activation_email_sent)
+      @school.observations.create!(
+        observation_type: :event,
+        description: "#{@school.name} joined Energy Sparks!",
+        at: Time.zone.now
+      )
     end
   end
 
