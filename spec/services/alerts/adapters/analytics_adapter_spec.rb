@@ -43,6 +43,10 @@ module Alerts
         {priority: 'variables'}
       end
 
+      def benchmark_template_data
+        {benchmark: 'data'}
+      end
+
       def make_available_to_users?
         relevance == :relevant && enough_data == :enough && calculation_worked
       end
@@ -55,6 +59,10 @@ module Alerts
         FactoryBot.create :alert_type,
           class_name: 'Alerts::DummyAnalyticsAlertClass',
           source: :analytics
+      end
+
+      def self.benchmark_template_variables
+        { benchmark: true }
       end
 
     end
@@ -92,6 +100,14 @@ module Alerts
       end
     end
 
+    class DummyAdviceAlertClass < DummyAnalyticsAlertClass
+      def self.alert_type
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAdviceAlertClass',
+          source: :analysis
+      end
+    end
+
     class DummyAnalyticsAlertNotValidClass < DummyAnalyticsAlertClass
       def valid_alert?
         false
@@ -118,6 +134,19 @@ module Alerts
       expect(normalised_report.chart_data).to eq({chart: 'variables'})
       expect(normalised_report.table_data).to eq({table: 'variables'})
       expect(normalised_report.priority_data).to eq({priority: 'variables'})
+      expect(normalised_report.benchmark_data).to eq({benchmark: 'data'})
+    end
+
+    it 'should return an analysis report but no benchmark data as an advice class' do
+      normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAdviceAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+      expect(normalised_report.valid).to eq true
+      expect(normalised_report.enough_data).to eq :enough
+      expect(normalised_report.rating).to eq 5.0
+      expect(normalised_report.template_data).to eq({template: 'variables'})
+      expect(normalised_report.chart_data).to eq({chart: 'variables'})
+      expect(normalised_report.table_data).to eq({table: 'variables'})
+      expect(normalised_report.priority_data).to eq({priority: 'variables'})
+      expect(normalised_report.benchmark_data).to eq({})
     end
 
     context 'where the alert type does not have enough data' do
@@ -126,6 +155,7 @@ module Alerts
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
+        expect(normalised_report.benchmark_data).to eq({})
       end
     end
 
@@ -135,6 +165,7 @@ module Alerts
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
+        expect(normalised_report.benchmark_data).to eq({})
       end
     end
 
