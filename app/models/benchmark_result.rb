@@ -22,5 +22,8 @@
 #
 
 class BenchmarkResult < ApplicationRecord
+  belongs_to :alert_generation_run
+  belongs_to :alert_type
+
   store :data, coder: YAML
 end

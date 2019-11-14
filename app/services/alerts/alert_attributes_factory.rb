@@ -8,8 +8,6 @@ module Alerts
     end
 
     def generate
-      now = Time.zone.now
-
       {
         school_id:                @school.id,
         alert_generation_run_id:  @alert_generation_run.id,
@@ -24,8 +22,6 @@ module Alerts
         chart_data:               @alert_report.chart_data,
         table_data:               @alert_report.table_data,
         priority_data:            @alert_report.priority_data,
-        created_at:               now,
-        updated_at:               now
       }
     end
   end
