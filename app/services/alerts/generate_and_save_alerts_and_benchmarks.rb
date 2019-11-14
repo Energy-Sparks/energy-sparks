@@ -36,7 +36,7 @@ module Alerts
       if alert_report.valid
         Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type).generate)
         if alert_report.benchmark_data.present?
-          BenchmarkResult.create!(alert_generation_run: @alert_generation_run, asof: alert_report.asof_date, alert_type: alert_type, data: alert_report.benchmark_data)
+          BenchmarkResult.create!(alert_generation_run: @alert_generation_run, asof: asof_date, alert_type: alert_type, data: alert_report.benchmark_data)
         end
       else
         AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)

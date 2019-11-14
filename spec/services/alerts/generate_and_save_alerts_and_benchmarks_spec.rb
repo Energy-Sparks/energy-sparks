@@ -17,8 +17,7 @@ module Alerts
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
       priority_data: {priority: 'variables'},
-      benchmark_data: {benchmark: 'variables'},
-      asof_date: asof_date
+      benchmark_data: {benchmark: 'variables'}
     }}
 
     let(:alert_report)            { Adapters::Report.new(alert_report_attributes) }

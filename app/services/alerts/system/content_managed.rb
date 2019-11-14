@@ -39,7 +39,6 @@ module Alerts
           rating: 5.0,
           enough_data: :enough,
           relevance: :relevant,
-          asof_date: @today,
           template_data: {
             school_name: @school.name
           }
