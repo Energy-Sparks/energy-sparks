@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_111741) do
+ActiveRecord::Schema.define(version: 2019_11_14_145524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -142,8 +142,8 @@ ActiveRecord::Schema.define(version: 2019_11_14_111741) do
   end
 
   create_table "alert_errors", force: :cascade do |t|
-    t.bigint "alert_generation_run_id"
-    t.bigint "alert_type_id"
+    t.bigint "alert_generation_run_id", null: false
+    t.bigint "alert_type_id", null: false
     t.date "asof_date", null: false
     t.text "information"
     t.datetime "created_at", precision: 6, null: false
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_111741) do
   end
 
   create_table "alert_generation_runs", force: :cascade do |t|
-    t.bigint "school_id"
+    t.bigint "school_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_alert_generation_runs_on_school_id"
@@ -400,8 +400,8 @@ ActiveRecord::Schema.define(version: 2019_11_14_111741) do
   end
 
   create_table "benchmark_results", force: :cascade do |t|
-    t.bigint "alert_generation_run_id"
-    t.bigint "alert_type_id"
+    t.bigint "alert_generation_run_id", null: false
+    t.bigint "alert_type_id", null: false
     t.date "asof", null: false
     t.text "data"
     t.datetime "created_at", precision: 6, null: false
