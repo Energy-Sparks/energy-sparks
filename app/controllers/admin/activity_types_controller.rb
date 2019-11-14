@@ -89,9 +89,11 @@ module Admin
     end
 
     def load_chart_list
-      @chart_list = DashboardConfiguration::DASHBOARD_PAGE_GROUPS.except(:simulator, :simulator_detail, :simulator_debug, :test, :pupil_analysis_page).map do |top_level_key, config|
-        ["#{config[:name]} (#{top_level_key})", config.fetch(:charts) {{}}]
+      analysis_charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS.except(:simulator, :simulator_detail, :simulator_debug, :test, :pupil_analysis_page).map do |top_level_key, config|
+        ["#{config[:name]} (#{top_level_key})", config.fetch(:charts) {[]}]
       end
+      custom_activity_charts = [['Activity charts (custom)', ChartManager::STANDARD_CHART_CONFIGURATION.keys.grep(/^activities/)]]
+      @chart_list = custom_activity_charts + analysis_charts
     end
   end
 end
