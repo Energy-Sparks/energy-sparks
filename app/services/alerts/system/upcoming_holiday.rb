@@ -50,7 +50,6 @@ module Alerts
             enough_data: :enough,
             relevance: :relevant,
             asof_date: @today,
-            alert_type: @alert_type,
             template_data: {
               holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
               holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
@@ -66,8 +65,7 @@ module Alerts
             rating: nil,
             relevance: :not_relevant,
             enough_data: :enough,
-            asof_date: @today,
-            alert_type: @alert_type
+            asof_date: @today
           )
         end
       end

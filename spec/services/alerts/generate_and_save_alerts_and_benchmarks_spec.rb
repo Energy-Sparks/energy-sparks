@@ -17,7 +17,6 @@ describe Alerts::GenerateAndSaveAlertsAndBenchmarks do
     table_data: {table: 'variables'},
     priority_data: {priority: 'variables'},
     benchmark_data: {benchmark: 'variables'},
-    alert_type: alert_type,
     asof_date: asof_date
   }}
 
@@ -36,12 +35,13 @@ describe Alerts::GenerateAndSaveAlertsAndBenchmarks do
     Alerts::Adapters::Report.new(invalid_alert_report_attributes)
   end
 
-  let(:alert_reports)           { [example_alert_report, example_benchmark_alert_report, example_invalid_report] }
-
+  let(:alert_type_run_result) do
+    Alerts::AlertTypeRunResult.new(alert_type: alert_type, reports: [example_alert_report, example_benchmark_alert_report, example_invalid_report] )
+  end
 
   describe '#perform' do
     it '#perform' do
-      expect_any_instance_of(Alerts::GenerateAlertReports).to receive(:perform).and_return(alert_reports)
+      expect_any_instance_of(Alerts::GenerateAlertReports).to receive(:perform).and_return([alert_type_run_result])
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
 
       service = Alerts::GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)

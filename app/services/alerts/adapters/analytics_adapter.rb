@@ -5,7 +5,7 @@ module Alerts
     class AnalyticsAdapter < Adapter
       def report
         analysis_object = alert_class.new(@aggregate_school)
-        analysis_object.valid_alert? ? produce_report(analysis_object, benchmark_variables(alert_class)) : invalid_alert_report(analysis_object)
+        analysis_object.valid_alert? ? produce_report(analysis_object, benchmark_variables?(alert_class)) : invalid_alert_report(analysis_object)
       end
 
       def content
@@ -17,7 +17,7 @@ module Alerts
 
     private
 
-      def benchmark_variables(alert_class)
+      def benchmark_variables?(alert_class)
         alert_class.benchmark_template_variables.present? && @alert_type.analytics?
       end
 
@@ -30,7 +30,6 @@ module Alerts
           rating:      analysis_object.rating,
           enough_data: analysis_object.enough_data,
           relevance:   analysis_object.relevance,
-          alert_type:  @alert_type,
           asof_date:   @analysis_date
         }.merge(variables))
       end
@@ -59,7 +58,6 @@ module Alerts
           rating:      nil,
           enough_data: nil,
           relevance:   analysis_object.relevance,
-          alert_type:  @alert_type,
           asof_date:   @analysis_date
         )
       end

@@ -7,7 +7,7 @@ describe Alerts::GenerateAlertReports do
   let(:aggregate_school)        { double :aggregate_school }
   let!(:school)                 { create(:school) }
   let(:asof_date)               { Date.parse('01/01/2019') }
-  let(:alert_generation_run_id) { 1 }
+  let(:alert_generation_run)    { AlertGenerationRun.create(school: school) }
 
   describe '#perform' do
 
@@ -22,7 +22,6 @@ describe Alerts::GenerateAlertReports do
       table_data: {table: 'variables'},
       priority_data: {priority: 'variables'},
       benchmark_data: {benchmark: 'variables'},
-      alert_type: alert_type,
       asof_date: asof_date
     }}
     let(:alert_report) { Alerts::Adapters::Report.new(alert_report_attributes) }
@@ -33,12 +32,11 @@ describe Alerts::GenerateAlertReports do
         expect(adapter_instance).to receive(:analysis_date).and_return(asof_date)
         expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
 
-        service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_generation_run_id: alert_generation_run_id)
+        service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
 
-        expect { service.perform }.to_not raise_error
-
-        expect(AlertError.count).to be 1
-        expect(AlertError.first.alert_type).to eq alert_type
+        result = service.perform.first
+        expect(result.error_attributes).to_not be_empty
+        expect(result.reports).to be_empty
       end
     end
 
@@ -47,9 +45,9 @@ describe Alerts::GenerateAlertReports do
       expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
       expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-      service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_generation_run_id: alert_generation_run_id)
+      service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
 
-      expect(service.perform).to include(alert_report)
+      expect(service.perform.first.reports).to include(alert_report)
     end
 
     it 'working normally it returns alert report with out benchmark' do
@@ -60,8 +58,8 @@ describe Alerts::GenerateAlertReports do
       expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
       expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-      service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_generation_run_id: alert_generation_run_id)
-      expect(service.perform).to include(alert_report)
+      service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
+      expect(service.perform.first.reports).to include(alert_report)
     end
 
     it 'invalid alert' do
@@ -74,9 +72,9 @@ describe Alerts::GenerateAlertReports do
       expect(adapter_instance).to receive(:analysis_date).and_return(Date.parse('01/01/2019'))
       expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-      service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_generation_run_id: alert_generation_run_id)
+      service = Alerts::GenerateAlertReports.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school)
 
-      expect(service.perform).to include(alert_report)
+      expect(service.perform.first.reports).to include(alert_report)
     end
   end
 end

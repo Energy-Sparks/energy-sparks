@@ -40,7 +40,6 @@ module Alerts
           enough_data: :enough,
           relevance: :relevant,
           asof_date: @today,
-          alert_type: @alert_type,
           template_data: {
             school_name: @school.name
           }
