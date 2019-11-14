@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2019_11_13_140533) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
