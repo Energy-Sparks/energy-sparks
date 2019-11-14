@@ -86,7 +86,6 @@ Rails.application.routes.draw do
       resources :low_carbon_hub_installations, only: [:show, :index, :create, :new, :destroy]
 
       resource :meter_readings_validation, only: [:create]
-      resource :alert_emails, only: [:create]
 
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group
