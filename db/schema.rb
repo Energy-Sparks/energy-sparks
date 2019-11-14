@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2019_11_13_153456) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -972,7 +972,6 @@ ActiveRecord::Schema.define(version: 2019_11_13_153456) do
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts", on_delete: :cascade
-  add_foreign_key "alert_subscription_events", "content_generation_runs", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "emails", on_delete: :nullify
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_subscription_events", "subscription_generation_runs", on_delete: :cascade
