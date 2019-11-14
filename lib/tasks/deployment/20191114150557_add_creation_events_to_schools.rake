@@ -4,19 +4,9 @@ namespace :after_party do
     puts "Running deploy task 'add_creation_events_to_schools'"
 
     School.all.each do |school|
-      if school.school_onboarding
-        activation_event = school.school_onboarding.events.where(event: :activation_email_sent).first
-        if activation_event
-          date = activation_event.created_at
-        else
-          date = school.created_at
-        end
-      else
-        date = school.created_at
-      end
       school.observations.create!(
         description: "#{school.name} joined Energy Sparks!",
-        at: date,
+        at: school.created_at,
         observation_type: :event
       )
     end

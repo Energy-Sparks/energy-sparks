@@ -99,7 +99,6 @@ describe SchoolCreator, :schools, type: :service do
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to include('is live on Energy Sparks')
         expect(school_onboarding).to have_event(:activation_email_sent)
-        expect(school.observations.first.description.to_s).to include("joined Energy Sparks")
       end
 
       it 'does not send an email if one has already been sent' do
@@ -120,6 +119,12 @@ describe SchoolCreator, :schools, type: :service do
       service.process_new_school!
       expect(school.school_times.count).to eq(5)
       expect(school.school_times.map(&:day)).to match_array(%w{monday tuesday wednesday thursday friday})
+    end
+
+    it 'creates a joining observation' do
+      service = SchoolCreator.new(school)
+      service.process_new_school!
+      expect(school.observations.first.description.to_s).to include("joined Energy Sparks")
     end
 
     it 'configures the school' do
