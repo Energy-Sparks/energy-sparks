@@ -20,27 +20,26 @@ module Alerts
     private
 
     def process_alert_type_run_result(alert_type_run_result)
+      asof_date = alert_type_run_result.asof_date
       alert_type = alert_type_run_result.alert_type
-      error_attributes_list = alert_type_run_result.error_attributes
-      reports = alert_type_run_result.reports
 
-      error_attributes_list.each do |error_attributes|
-        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: error_attributes[:asof_date], information: error_attributes[:information], alert_type: alert_type)
+      alert_type_run_result.error_messages.each do |error_message|
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: error_message, alert_type: alert_type)
       end
 
-      reports.each do |alert_report|
-        process_alert_report(alert_type, alert_report)
+      alert_type_run_result.reports.each do |alert_report|
+        process_alert_report(alert_type, alert_report, asof_date)
       end
     end
 
-    def process_alert_report(alert_type, alert_report)
+    def process_alert_report(alert_type, alert_report, asof_date)
       if alert_report.valid
         Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type).generate)
         if alert_report.benchmark_data.present?
-          BenchmarkResult.create!(alert_generation_run: @alert_generation_run, asof: alert_report.asof_date, alert_type: alert_type, data: alert_report.benchmark_data)
+          BenchmarkResult.create!(alert_generation_run: @alert_generation_run, asof: asof_date, alert_type: alert_type, data: alert_report.benchmark_data)
         end
       else
-        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: alert_report.asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)
       end
     end
   end

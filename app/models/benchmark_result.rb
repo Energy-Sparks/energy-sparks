@@ -2,8 +2,8 @@
 #
 # Table name: benchmark_results
 #
-#  alert_generation_run_id :bigint(8)
-#  alert_type_id           :bigint(8)
+#  alert_generation_run_id :bigint(8)        not null
+#  alert_type_id           :bigint(8)        not null
 #  asof                    :date             not null
 #  created_at              :datetime         not null
 #  data                    :text

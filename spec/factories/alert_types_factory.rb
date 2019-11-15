@@ -25,7 +25,6 @@ module Alerts
           rating: 5.0,
           enough_data: :enough,
           relevance: :relevant,
-          asof_date: nil,
           template_data: {
             template: 'variables'
           },
