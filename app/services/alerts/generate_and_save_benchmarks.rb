@@ -32,7 +32,7 @@ module Alerts
     end
 
     def relevant_alert_types
-      RelevantAlertTypes.new(@school).list.select { |alert_type| alert_type.source.to_sym == :analytics }
+      RelevantAlertTypes.new(@school).list.select { |alert_type| alert_type.source.to_sym == :analytics && ! alert_type.background }
     end
 
     def process_alert_type_run_result(alert_type_run_result)
