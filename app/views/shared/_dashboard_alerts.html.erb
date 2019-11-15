@@ -1,7 +1,7 @@
 <% unless @dashboard_alerts.empty? %>
 
   <div class="act-on-energy-usage">
-    <h3>Act on energy usage</h3>
+    <h3><%= title %></h3>
     <% @dashboard_alerts.each do |alert_content|%>
       <%= render 'schools/dashboard/info_bar',
         colour: class_for_alert_colour(alert_content.colour),
