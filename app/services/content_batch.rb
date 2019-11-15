@@ -17,7 +17,7 @@ class ContentBatch
       Rails.logger.info "Generated configuration"
 
       # Generate alerts
-      suppress_output { Alerts::GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school).perform }
+      suppress_output { Alerts::GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school).perform }
 
       Rails.logger.info "Generated alerts"
 

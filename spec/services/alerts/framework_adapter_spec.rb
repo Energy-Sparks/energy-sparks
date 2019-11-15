@@ -28,7 +28,8 @@ describe Alerts::FrameworkAdapter do
       template_data: {template: 'variables'},
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
-      priority_data: {priority: 'variables'}
+      priority_data: {priority: 'variables'},
+      benchmark_data: {} # System alerts don't create benchmark data
     )
 
   end
