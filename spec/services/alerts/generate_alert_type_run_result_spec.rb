@@ -27,7 +27,7 @@ module Alerts
       let(:alert_report) { Adapters::Report.new(alert_report_attributes) }
 
       before(:each) do
-        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: Time.zone.today).and_return(adapter_instance)
         expect(adapter_instance).to receive(:analysis_date).and_return(asof_date)
       end
 
@@ -35,7 +35,7 @@ module Alerts
         it 'does not raise an error if the framework_adapter raises one' do
           expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
 
-          service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type, asof_date: nil)
+          service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
 
           result = service.perform
           expect(result.error_messages).to_not be_empty
@@ -46,7 +46,7 @@ module Alerts
       it 'working normally it returns alert report with benchmark' do
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type, asof_date: nil)
+        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
         expect(service.perform.reports).to include(alert_report)
       end
 
@@ -56,7 +56,7 @@ module Alerts
 
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type, asof_date: nil)
+        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
         expect(service.perform.reports).to include(alert_report)
       end
 
@@ -68,7 +68,7 @@ module Alerts
 
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
-        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type, asof_date: nil)
+        service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
 
         expect(service.perform.reports).to include(alert_report)
       end

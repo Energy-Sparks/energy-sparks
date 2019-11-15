@@ -3,7 +3,6 @@ module Alerts
     def initialize(
         school:,
         alert_type:,
-        asof_date: nil,
         framework_adapter: FrameworkAdapter,
         aggregate_school: AggregateSchoolService.new(school).aggregate_school
       )
@@ -11,22 +10,27 @@ module Alerts
       @alert_framework_adapter_class = framework_adapter
       @aggregate_school = aggregate_school
       @alert_type = alert_type
-      @asof_date = asof_date
     end
 
-    def perform
-      generate_alert_report
+    def perform(asof_date: Time.zone.today)
+      generate_alert_report(asof_date)
+    end
+
+    def benchmark_dates(asof_date)
+      alert_framework_adapter(asof_date).benchmark_dates
     end
 
     private
 
-    def generate_alert_report
-      alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: @alert_type, school: @school, aggregate_school: @aggregate_school, analysis_date: @asof_date)
-      @asof_date = alert_framework_adapter.analysis_date if @asof_date.nil?
+    def alert_framework_adapter(asof_date)
+      @alert_framework_adapter_class.new(alert_type: @alert_type, school: @school, aggregate_school: @aggregate_school, analysis_date: asof_date)
+    end
 
-      alert_type_run_result = AlertTypeRunResult.new(alert_type: @alert_type, asof_date: @asof_date)
+    def generate_alert_report(asof_date)
+      afa = alert_framework_adapter(asof_date)
+      alert_type_run_result = AlertTypeRunResult.new(alert_type: @alert_type, asof_date: afa.analysis_date)
 
-      report = alert_framework_adapter.analyse
+      report = afa.analyse
 
       alert_type_run_result.reports << report
       alert_type_run_result
