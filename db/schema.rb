@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_11_133811) do
+ActiveRecord::Schema.define(version: 2019_11_14_145524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -142,9 +142,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   end
 
   create_table "alert_errors", force: :cascade do |t|
-    t.bigint "alert_generation_run_id"
-    t.bigint "alert_type_id"
-    t.date "asof_date"
+    t.bigint "alert_generation_run_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.date "asof_date", null: false
     t.text "information"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   end
 
   create_table "alert_generation_runs", force: :cascade do |t|
-    t.bigint "school_id"
+    t.bigint "school_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_alert_generation_runs_on_school_id"
@@ -170,15 +170,15 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
     t.bigint "email_id"
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "find_out_more_id"
-    t.bigint "content_generation_run_id", null: false
     t.string "unsubscription_uuid"
     t.decimal "priority", default: "0.0", null: false
+    t.bigint "subscription_generation_run_id", null: false
     t.index ["alert_id"], name: "index_alert_subscription_events_on_alert_id"
     t.index ["alert_type_rating_content_version_id"], name: "alert_sub_content_v_id"
     t.index ["contact_id"], name: "index_alert_subscription_events_on_contact_id"
-    t.index ["content_generation_run_id"], name: "index_alert_subscription_events_on_content_generation_run_id"
     t.index ["email_id"], name: "index_alert_subscription_events_on_email_id"
     t.index ["find_out_more_id"], name: "index_alert_subscription_events_on_find_out_more_id"
+    t.index ["subscription_generation_run_id"], name: "ase_sgr_index"
   end
 
   create_table "alert_type_rating_activity_types", force: :cascade do |t|
@@ -397,6 +397,17 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
     t.text "description"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+  end
+
+  create_table "benchmark_results", force: :cascade do |t|
+    t.bigint "alert_generation_run_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.date "asof", null: false
+    t.text "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_generation_run_id"], name: "index_benchmark_results_on_alert_generation_run_id"
+    t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -864,6 +875,13 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "subscription_generation_runs", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_subscription_generation_runs_on_school_id"
+  end
+
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
   end
@@ -934,12 +952,15 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "alert_errors", "alert_generation_runs", on_delete: :cascade
+  add_foreign_key "alert_errors", "alert_types", on_delete: :cascade
+  add_foreign_key "alert_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
   add_foreign_key "alert_subscription_events", "contacts"
-  add_foreign_key "alert_subscription_events", "content_generation_runs", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "emails"
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
+  add_foreign_key "alert_subscription_events", "subscription_generation_runs", on_delete: :cascade
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_subscription_events", on_delete: :cascade
@@ -954,6 +975,8 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_results", "alert_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
@@ -1013,6 +1036,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_133811) do
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
+  add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict

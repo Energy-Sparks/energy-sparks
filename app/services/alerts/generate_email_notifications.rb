@@ -1,16 +1,16 @@
 module Alerts
   class GenerateEmailNotifications
-    def perform
-      Contact.all.each do |contact|
-        events = contact.alert_subscription_events.where(status: :pending, communication_type: :email).by_priority
-        if events.any?
-          email = Email.create(contact: contact)
-          events.update_all(email_id: email.id)
+    def initialize(subscription_generation_run:)
+      @subscription_generation_run = subscription_generation_run
+    end
 
-          AlertMailer.with(email_address: contact.email_address, events: events, school: contact.school).alert_email.deliver_now
-          events.update_all(status: :sent, email_id: email.id)
-          email.update(sent_at: Time.now.utc)
-        end
+    def perform
+      events = @subscription_generation_run.alert_subscription_events.where(status: :pending, communication_type: :email).by_priority
+      events.group_by(&:contact).each do |contact, contact_events|
+        email = Email.create!(contact: contact)
+        AlertMailer.with(email_address: contact.email_address, events: contact_events, school: contact.school).alert_email.deliver_now
+        contact_events.each {|event| event.update!(status: :sent, email: email) }
+        email.update(sent_at: Time.now.utc)
       end
     end
   end

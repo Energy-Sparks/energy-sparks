@@ -65,7 +65,7 @@ describe Alerts::GenerateManagementPriorities do
 
       it 'does not create any priorities if there is an alert type exception' do
         SchoolAlertTypeExclusion.create(school: school, alert_type: alert.alert_type)
-        expect { service.perform(school.latest_alerts_without_exclusions)}.to change { content_generation_run.alert_subscription_events.count }.by(0)
+        expect { service.perform(school.latest_alerts_without_exclusions)}.to change { content_generation_run.management_priorities.count }.by(0)
       end
 
       context 'where the management priorities are not active' do

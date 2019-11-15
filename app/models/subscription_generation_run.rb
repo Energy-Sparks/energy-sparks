@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: alert_generation_runs
+# Table name: subscription_generation_runs
 #
 #  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
@@ -9,14 +9,14 @@
 #
 # Indexes
 #
-#  index_alert_generation_runs_on_school_id  (school_id)
+#  index_subscription_generation_runs_on_school_id  (school_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
-class AlertGenerationRun < ApplicationRecord
+class SubscriptionGenerationRun < ApplicationRecord
   belongs_to :school
-  has_many :alerts
+  has_many :alert_subscription_events
 end

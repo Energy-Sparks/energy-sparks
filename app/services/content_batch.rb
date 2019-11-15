@@ -1,5 +1,5 @@
 class ContentBatch
-  def initialize(schools = School.all)
+  def initialize(schools = School.process_data)
     @schools = schools
   end
 
@@ -17,7 +17,7 @@ class ContentBatch
       Rails.logger.info "Generated configuration"
 
       # Generate alerts
-      suppress_output { Alerts::GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school).perform }
+      suppress_output { Alerts::GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school).perform }
 
       Rails.logger.info "Generated alerts"
 
@@ -27,28 +27,15 @@ class ContentBatch
       Rails.logger.info "Generated equivalences"
 
       # Generate content
-      generate_content(school)
+      Alerts::GenerateContent.new(school).perform
+
+      Rails.logger.info "Generated alert content"
 
       Rails.logger.info "Generated content"
     end
   end
 
   private
-
-  def generate_content(school)
-    if Time.zone.today.wednesday?
-      subscription_frequency = if school.holiday_approaching?
-                                 [:weekly, :termly, :before_each_holiday]
-                               else
-                                 [:weekly]
-                               end
-      Rails.logger.info "Generated alert content, including #{subscription_frequency.to_sentence} subscriptions"
-      Alerts::GenerateContent.new(school).perform(subscription_frequency: subscription_frequency)
-    else
-      Rails.logger.info "Generated alert content, without subscriptions"
-      Alerts::GenerateContent.new(school).perform(subscription_frequency: [])
-    end
-  end
 
   def suppress_output
     original_stdout = $stdout.clone
