@@ -23,9 +23,14 @@ module Alerts
         {}
       end
 
-      def initialize(school:, today: Time.zone.today)
+      def self.benchmark_template_variables
+        {}
+      end
+
+      def initialize(school:, alert_type:, today: Time.zone.today)
         @school = school
         @today = today
+        @alert_type = alert_type
       end
 
       def report
