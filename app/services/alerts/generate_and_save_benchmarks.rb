@@ -3,22 +3,21 @@ module Alerts
     def initialize(
         school:,
         aggregate_school: AggregateSchoolService.new(school).aggregate_school,
-        asof_date: Time.zone.today,
         framework_adapter: FrameworkAdapter
         )
       @school = school
       @aggregate_school = aggregate_school
-      @asof_date = asof_date
       @framework_adapter = framework_adapter
     end
 
-    def perform
+    def perform(asof_date = Time.zone.today)
       ActiveRecord::Base.transaction do
         @benchmark_result_generation_run = BenchmarkResultGenerationRun.create!(school: @school)
 
         relevant_alert_types.each do |alert_type|
-          benchmark_dates(alert_type).each do |benchmark_date|
-            alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, asof_date: benchmark_date).perform
+          service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type)
+          service.benchmark_dates(asof_date).each do |benchmark_date|
+            alert_type_run_result = service.perform(benchmark_date)
             process_alert_type_run_result(alert_type_run_result)
           end
         end
@@ -26,10 +25,6 @@ module Alerts
     end
 
     private
-
-    def benchmark_dates(alert_type)
-      @framework_adapter.new(alert_type: alert_type, school: @school, analysis_date: @asof_date, aggregate_school: @aggregate_school).benchmark_dates
-    end
 
     def relevant_alert_types
       RelevantAlertTypes.new(@school).list.select { |alert_type| alert_type.source.to_sym == :analytics && ! alert_type.background }
