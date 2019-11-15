@@ -12,7 +12,7 @@ module Alerts
       @alert_type = alert_type
     end
 
-    def perform(asof_date: Time.zone.today)
+    def perform(asof_date = Time.zone.today)
       generate_alert_report(asof_date)
     end
 
