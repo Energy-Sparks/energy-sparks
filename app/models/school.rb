@@ -253,6 +253,14 @@ class School < ApplicationRecord
     end
   end
 
+  def latest_management_dashboard_tables
+    if latest_content
+      latest_content.management_dashboard_tables
+    else
+      ManagementDashboardTable.none
+    end
+  end
+
   def latest_find_out_mores
     if latest_content
       latest_content.find_out_mores

@@ -21,7 +21,7 @@ describe Alerts::GenerateManagementPriorities do
     end
   end
 
-  context 'when there are find out mores that match the alert type' do
+  context 'when there are management priorities that match the alert type' do
     let(:rating){ 5.0 }
     let!(:alert){ create(:alert, :with_run, school: school, rating: rating)}
     let!(:alert_type_rating) do

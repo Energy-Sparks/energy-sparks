@@ -32,6 +32,9 @@
 #  management_dashboard_alert_end_date   :date
 #  management_dashboard_alert_start_date :date
 #  management_dashboard_alert_weighting  :decimal(, )      default(5.0)
+#  management_dashboard_table_end_date   :date
+#  management_dashboard_table_start_date :date
+#  management_dashboard_table_weighting  :decimal(, )      default(5.0)
 #  management_priorities_end_date        :date
 #  management_priorities_start_date      :date
 #  management_priorities_weighting       :decimal(, )      default(5.0)
