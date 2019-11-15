@@ -9,13 +9,6 @@
   </div>
 </div>
 
-<% if can?(:send_alert_emails, @school) && @alert_subscription_events.email.pending.any? %>
-  <div class="alert alert-secondary">
-    <%= link_to 'Send pending emails now', school_alert_emails_path(@school), method: :post, class: 'btn btn-warning mr-3' %>
-    This may take some time!
-  </div>
-<% end %>
-
 <div class="row">
   <% if @pending_emails.any? %>
     <h3>Pending emails</h3>
