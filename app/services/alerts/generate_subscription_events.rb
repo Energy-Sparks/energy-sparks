@@ -2,9 +2,9 @@ require 'securerandom'
 
 module Alerts
   class GenerateSubscriptionEvents
-    def initialize(school, content_generation_run:)
+    def initialize(school, subscription_generation_run:)
       @school = school
-      @content_generation_run = content_generation_run
+      @subscription_generation_run = subscription_generation_run
     end
 
     def perform(alerts)
@@ -22,7 +22,7 @@ module Alerts
 
     def content_and_contacts_for(alert, scope)
       FetchContent.new(alert).content_versions_with_priority(scope: scope).each do |content_version, priority|
-        find_out_more = @content_generation_run.find_out_mores.where(content_version: content_version).first
+        find_out_more = @school.latest_find_out_mores.where(content_version: content_version).first
         @school.contacts.each do |contact|
           yield content_version, find_out_more, contact, priority
         end
@@ -33,7 +33,7 @@ module Alerts
       if contact.alert_type_rating_unsubscriptions.active(Time.zone.today).where(alert_type_rating: content_version.alert_type_rating).empty?
         AlertSubscriptionEvent.create_with(
           content_version: content_version,
-          content_generation_run: @content_generation_run,
+          subscription_generation_run: @subscription_generation_run,
           find_out_more: find_out_more,
           unsubscription_uuid: SecureRandom.uuid,
           priority: priority

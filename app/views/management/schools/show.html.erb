@@ -36,13 +36,12 @@
   <%= render 'overview_charts', overview_charts: @overview_charts %>
 <% end %>
 
-<% if site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact) %>
-  <%= render 'schools/dashboard/info_bar',
-        colour: 'bg-neutral',
-        content: "Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.",
-        icon: 'exclamation-circle fa-3x',
-        buttons: { 'Add alert contacts' => school_contacts_path(@school)}
-  %>
+<% if @add_contacts %>
+  <%= render 'shared/add_contacts', school: @school %>
+<% end %>
+
+<% if @add_pupils %>
+  <%= render 'shared/add_pupils', school: @school %>
 <% end %>
 
 <% unless @management_priorities.empty? %>
