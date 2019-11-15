@@ -15,6 +15,11 @@ module Alerts
         analysis_object.front_end_content
       end
 
+      def benchmark_dates
+        analysis_object = alert_class.new(@aggregate_school)
+        analysis_object.benchmark_dates(@analysis_date)
+      end
+
     private
 
       def benchmark_variables?(alert_class)

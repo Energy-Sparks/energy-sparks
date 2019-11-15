@@ -19,6 +19,10 @@ module Alerts
       adapter_instance.content
     end
 
+    def benchmark_dates
+      adapter_instance.benchmark_dates
+    end
+
   private
 
     def adapter_instance
