@@ -43,6 +43,10 @@ module Alerts
       def front_end_template_chart_data
       end
 
+      def benchmark_dates(asof_date)
+        [asof_date, asof_date - 1.year]
+      end
+
       def self.front_end_template_charts
         TEMPLATE_VARIABLES.select{|key, value| value[:units] == :chart }
       end
