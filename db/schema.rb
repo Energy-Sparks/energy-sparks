@@ -958,8 +958,8 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
   add_foreign_key "alert_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alerts"
-  add_foreign_key "alert_subscription_events", "contacts"
-  add_foreign_key "alert_subscription_events", "emails"
+  add_foreign_key "alert_subscription_events", "contacts", on_delete: :cascade
+  add_foreign_key "alert_subscription_events", "emails", on_delete: :nullify
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
   add_foreign_key "alert_subscription_events", "subscription_generation_runs", on_delete: :cascade
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
