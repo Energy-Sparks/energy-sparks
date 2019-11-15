@@ -80,9 +80,9 @@ end
 FactoryBot.define do
   factory :alert_type do
     sequence(:title)  {|n| "Alert Type #{n}"}
-    fuel_type         { AlertType.fuel_types.keys.sample }
-    sub_category      { AlertType.sub_categories.keys.sample }
-    frequency         { AlertType.frequencies.keys.sample }
+    fuel_type         { :gas }
+    sub_category      { :heating }
+    frequency         { :weekly }
     class_name        { 'Alerts::System::DummyAlert' }
     description       { title }
   end

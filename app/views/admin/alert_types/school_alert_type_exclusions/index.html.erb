@@ -7,7 +7,7 @@
 <p><%= link_to 'Manage exclusions', new_admin_alert_type_school_alert_type_exclusion_path(@alert_type) %> <%= button_to 'Re-generate content', admin_content_generation_run_path, method: :post, class: 'btn btn-warning', form_class: 'float-right' %></p>
 <p><%= link_to 'Alert type management', admin_alert_types_path %></p>
 
-<% if @alert_type.school_alert_type_exclusions.any? %>
+<% if @exclusions.any? %>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @alert_type.school_alert_type_exclusions.each do |school_alert_type_exclusion| %>
+      <% @exclusions.each do |school_alert_type_exclusion| %>
         <tr>
           <td><%= school_alert_type_exclusion.school.name %></td>
           <td><%= school_alert_type_exclusion.reason %></td>
