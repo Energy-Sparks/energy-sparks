@@ -6,6 +6,8 @@ module Alerts
     let(:aggregate_school)        { double(:aggregate_school) }
     let(:asof_date)               { Date.parse('01/01/2019') }
     let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
+    let(:framework_adapter)       { double :framework_adapter }
+    let(:adapter_instance)        { double :adapter_instance }
 
     let(:alert_report_attributes) {{
       valid: true,
@@ -47,6 +49,8 @@ module Alerts
 
     before(:each) do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+      allow(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
+      allow(adapter_instance).to receive(:benchmark_dates).and_return([asof_date, asof_date - 1.year])
     end
 
     describe '#perform' do

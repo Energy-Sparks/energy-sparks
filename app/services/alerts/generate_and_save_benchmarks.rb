@@ -1,9 +1,15 @@
 module Alerts
   class GenerateAndSaveBenchmarks
-    def initialize(school:, aggregate_school: AggregateSchoolService.new(school).aggregate_school, asof_date: Time.zone.today)
+    def initialize(
+        school:,
+        aggregate_school: AggregateSchoolService.new(school).aggregate_school,
+        asof_date: Time.zone.today,
+        framework_adapter: FrameworkAdapter
+        )
       @school = school
       @aggregate_school = aggregate_school
       @asof_date = asof_date
+      @framework_adapter = framework_adapter
     end
 
     def perform
@@ -11,7 +17,7 @@ module Alerts
         @benchmark_result_generation_run = BenchmarkResultGenerationRun.create!(school: @school)
 
         relevant_alert_types.each do |alert_type|
-          benchmark_dates(alert_type, @asof_date).each do |benchmark_date|
+          benchmark_dates(alert_type).each do |benchmark_date|
             alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, asof_date: benchmark_date).perform
             process_alert_type_run_result(alert_type_run_result)
           end
@@ -21,9 +27,8 @@ module Alerts
 
     private
 
-    # TODO replace this with the *actual* class call via an adapter
-    def benchmark_dates(_alert_type, asof_date)
-      [asof_date, asof_date - 1.year]
+    def benchmark_dates(alert_type)
+      @framework_adapter.new(alert_type: alert_type, school: @school, analysis_date: @asof_date, aggregate_school: @aggregate_school).benchmark_dates
     end
 
     def relevant_alert_types
