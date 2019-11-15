@@ -3,6 +3,7 @@ module Alerts
     def initialize(school:, aggregate_school: AggregateSchoolService.new(school).aggregate_school)
       @school = school
       @aggregate_school = aggregate_school
+      @save_alerts = true
     end
 
     def perform
