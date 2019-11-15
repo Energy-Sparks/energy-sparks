@@ -10,6 +10,7 @@
 #  find_out_more_active              :boolean          default(FALSE)
 #  id                                :bigint(8)        not null, primary key
 #  management_dashboard_alert_active :boolean          default(FALSE)
+#  management_dashboard_table_active :boolean          default(FALSE)
 #  management_priorities_active      :boolean          default(FALSE)
 #  public_dashboard_alert_active     :boolean          default(FALSE)
 #  pupil_dashboard_alert_active      :boolean          default(FALSE)

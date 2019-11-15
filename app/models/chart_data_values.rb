@@ -4,6 +4,19 @@ class ChartDataValues
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
 
+  DARK_ELECTRICITY = '#007EFF'.freeze
+  MIDDLE_ELECTRICITY = '#02B8FF'.freeze
+  LIGHT_ELECTRICITY = '#59D0FF'.freeze
+  DARK_ELECTRICITY_LINE = '#232B49'.freeze
+  LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
+  DARK_GAS = '#FF8438'.freeze
+  MIDDLE_GAS = '#FFB138'.freeze
+  LIGHT_GAS = '#FFC73E'.freeze
+  DARK_GAS_LINE = '#FF3A5B'.freeze
+  LIGHT_GAS_LINE = '#FCB43A'.freeze
+  DARK_STORAGE = '#7C3AFF'.freeze
+  LIGHT_STORAGE = '#E097FC'.freeze
+
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
     SeriesNames::TEMPERATURE => '#232b49',
@@ -17,23 +30,14 @@ class ChartDataValues
     SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
     SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
-    'electricity' => '#ff4500',
+    'electricity' => MIDDLE_ELECTRICITY,
     '' => '#ff4500',
-    'gas' => '#3bc0f0',
+    'gas' => MIDDLE_GAS,
     'solar pv (consumed onsite)' => '#ffac21',
     'storage heaters' => "#501e74",
   }.freeze
 
-  DARK_ELECTRICITY = '#007EFF'.freeze
-  LIGHT_ELECTRICITY = '#59D0FF'.freeze
-  DARK_ELECTRICITY_LINE = '#232B49'.freeze
-  LIGHT_ELECTRICITY_LINE = '#007EFF'.freeze
-  DARK_GAS = '#FF8438'.freeze
-  LIGHT_GAS = '#FFC73E'.freeze
-  DARK_GAS_LINE = '#FF3A5B'.freeze
-  LIGHT_GAS_LINE = '#FCB43A'.freeze
-  DARK_STORAGE = '#7C3AFF'.freeze
-  LIGHT_STORAGE = '#E097FC'.freeze
+
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
@@ -158,7 +162,6 @@ private
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
-
 
     if @y2_data != nil && @y2_chart_type == :line
       @y2_axis_label = @y2_data.keys[0]

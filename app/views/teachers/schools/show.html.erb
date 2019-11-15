@@ -11,7 +11,7 @@
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :teacher_dashboard_title %>
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :teacher_dashboard_title, title: 'Act on energy usage'%>
 
 <% if @activities_count < 1 %>
   <h2 class="p-2">You’ve not completed any activities yet</h2>
