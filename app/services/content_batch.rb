@@ -6,6 +6,7 @@ class ContentBatch
   def generate
     @schools.each do |school|
       Rails.logger.info "Running for #{school.name}"
+      puts "Running for #{school.name}"
       # Aggregate school
       aggregate_school = AggregateSchoolService.new(school).aggregate_school
 
@@ -17,9 +18,14 @@ class ContentBatch
       Rails.logger.info "Generated configuration"
 
       # Generate alerts
-      suppress_output { Alerts::GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school).perform }
+      suppress_output { Alerts::GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school).perform }
 
       Rails.logger.info "Generated alerts"
+
+      # Generate benchmarks
+      suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school).perform }
+
+      Rails.logger.info "Generated benchmaks"
 
       # Generate equivalences
       suppress_output { Equivalences::GenerateEquivalences.new(school: school, aggregate_school: aggregate_school).perform }

@@ -8,6 +8,10 @@ module Alerts
       def content
         []
       end
+
+      def benchmark_dates
+        []
+      end
     end
   end
 end
