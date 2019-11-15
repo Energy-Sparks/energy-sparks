@@ -8,7 +8,7 @@ describe Alerts::System::UpcomingHoliday do
   let(:school)  { create :school, calendar: calendar}
 
   let(:today){ Date.new(2019, 4, 26) }
-  let(:report){ Alerts::System::UpcomingHoliday.new(school: school, today: today).report }
+  let(:report){ Alerts::System::UpcomingHoliday.new(school: school, today: today, alert_type: nil).report }
 
   context 'where the start date is in the next 7 days' do
     let(:start_date){ Date.new(2019, 4, 29) }

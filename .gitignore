@@ -70,6 +70,8 @@ yarn-debug.log*
 !storage.yml
 !cable.yml
 
+# YAML dumps
+benchmark_database.yaml
 
 # Keep node module directory
 /node_modules/*
