@@ -845,6 +845,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "management_priorities_dashboard_limit", default: 5
     t.integer "management_priorities_page_limit", default: 10
+    t.boolean "message_for_no_pupil_accounts", default: true
   end
 
   create_table "solar_pv_tuos_readings", force: :cascade do |t|
