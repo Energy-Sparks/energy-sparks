@@ -20,7 +20,6 @@ module Alerts
     end
 
     def benchmark_dates
-      adapter_class(@alert_type).new(alert_type: @alert_type, school: @school, analysis_date: @analysis_date, aggregate_school: @aggregate_school)
       adapter_instance.benchmark_dates
     end
 
