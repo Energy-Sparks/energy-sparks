@@ -44,8 +44,10 @@ module Alerts
     end
 
     def process_alert_report(alert_type, alert_report, asof_date)
-      if alert_report.valid && alert_report.benchmark_data.present?
-        BenchmarkResult.create!(benchmark_result_generation_run: @benchmark_result_generation_run, asof: asof_date, alert_type: alert_type, data: alert_report.benchmark_data)
+      if alert_report.valid
+        if alert_report.benchmark_data.present?
+          BenchmarkResult.create!(benchmark_result_generation_run: @benchmark_result_generation_run, asof: asof_date, alert_type: alert_type, data: alert_report.benchmark_data)
+        end
       else
         BenchmarkResultError.create!(benchmark_result_generation_run: @benchmark_result_generation_run, asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)
       end
