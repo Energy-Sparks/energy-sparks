@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_145524) do
+ActiveRecord::Schema.define(version: 2019_11_15_133313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -230,12 +230,15 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
+    t.date "management_dashboard_table_start_date"
+    t.date "management_dashboard_table_end_date"
+    t.decimal "management_dashboard_table_weighting", default: "5.0"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -270,6 +273,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
     t.boolean "management_dashboard_alert_active", default: false
     t.boolean "management_priorities_active", default: false
     t.boolean "analysis_active", default: false
+    t.boolean "management_dashboard_table_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 
@@ -281,6 +285,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
     t.text "class_name"
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
+    t.boolean "background", default: false
   end
 
   create_table "alerts", force: :cascade do |t|
@@ -399,15 +404,33 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
     t.decimal "longitude", precision: 10, scale: 6
   end
 
+  create_table "benchmark_result_errors", force: :cascade do |t|
+    t.bigint "benchmark_result_generation_run_id", null: false
+    t.bigint "alert_type_id", null: false
+    t.date "asof_date"
+    t.text "information"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_type_id"], name: "index_benchmark_result_errors_on_alert_type_id"
+    t.index ["benchmark_result_generation_run_id"], name: "ben_rgr_errors_index"
+  end
+
+  create_table "benchmark_result_generation_runs", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_benchmark_result_generation_runs_on_school_id"
+  end
+
   create_table "benchmark_results", force: :cascade do |t|
-    t.bigint "alert_generation_run_id", null: false
     t.bigint "alert_type_id", null: false
     t.date "asof", null: false
     t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["alert_generation_run_id"], name: "index_benchmark_results_on_alert_generation_run_id"
+    t.bigint "benchmark_result_generation_run_id"
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
+    t.index ["benchmark_result_generation_run_id"], name: "ben_rgr_index"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -613,6 +636,17 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
+  end
+
+  create_table "management_dashboard_tables", force: :cascade do |t|
+    t.bigint "content_generation_run_id"
+    t.bigint "alert_id"
+    t.bigint "alert_type_rating_content_version_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_management_dashboard_tables_on_alert_id"
+    t.index ["alert_type_rating_content_version_id"], name: "man_dash_alert_content_version_index"
+    t.index ["content_generation_run_id"], name: "index_management_dashboard_tables_on_content_generation_run_id"
   end
 
   create_table "management_priorities", force: :cascade do |t|
@@ -976,8 +1010,11 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
-  add_foreign_key "benchmark_results", "alert_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
+  add_foreign_key "benchmark_result_errors", "benchmark_result_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_result_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
+  add_foreign_key "benchmark_results", "benchmark_result_generation_runs", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
@@ -1003,6 +1040,9 @@ ActiveRecord::Schema.define(version: 2019_11_14_145524) do
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
+  add_foreign_key "management_dashboard_tables", "alert_type_rating_content_versions", on_delete: :restrict
+  add_foreign_key "management_dashboard_tables", "alerts", on_delete: :cascade
+  add_foreign_key "management_dashboard_tables", "content_generation_runs", on_delete: :cascade
   add_foreign_key "management_priorities", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "management_priorities", "alerts", on_delete: :cascade
   add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade

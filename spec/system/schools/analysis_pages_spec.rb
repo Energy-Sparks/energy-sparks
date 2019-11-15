@@ -4,7 +4,7 @@ RSpec.describe "analysis page", type: :system do
   let!(:school) { create(:school) }
   let!(:user)  { create(:staff, staff_role: create(:staff_role, :teacher), school: school)}
   let(:description) { 'all about this alert type' }
-  let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, fuel_type: :gas, description: description) }
+  let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
   let!(:gas_meter) { create :gas_meter_with_reading, school: school }
 
   before(:each) do
@@ -50,6 +50,7 @@ RSpec.describe "analysis page", type: :system do
           {type: :chart_name, content: :benchmark}
         ]
       )
+
       visit school_path(school)
       click_on "Learn more about your school's energy use"
 

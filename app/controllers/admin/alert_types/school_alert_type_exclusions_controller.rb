@@ -5,7 +5,7 @@ module Admin
       load_and_authorize_resource :alert_type
 
       def index
-        @exceptions = SchoolAlertTypeExclusion.where(alert_type: @alert_type)
+        @exclusions = @alert_type.school_alert_type_exclusions.includes(:school).order('schools.name')
       end
 
       def new

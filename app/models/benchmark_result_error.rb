@@ -1,19 +1,19 @@
 # == Schema Information
 #
-# Table name: benchmark_results
+# Table name: benchmark_result_errors
 #
 #  alert_type_id                      :bigint(8)        not null
-#  asof                               :date             not null
-#  benchmark_result_generation_run_id :bigint(8)
+#  asof_date                          :date
+#  benchmark_result_generation_run_id :bigint(8)        not null
 #  created_at                         :datetime         not null
-#  data                               :text
 #  id                                 :bigint(8)        not null, primary key
+#  information                        :text
 #  updated_at                         :datetime         not null
 #
 # Indexes
 #
-#  ben_rgr_index                             (benchmark_result_generation_run_id)
-#  index_benchmark_results_on_alert_type_id  (alert_type_id)
+#  ben_rgr_errors_index                            (benchmark_result_generation_run_id)
+#  index_benchmark_result_errors_on_alert_type_id  (alert_type_id)
 #
 # Foreign Keys
 #
@@ -21,9 +21,7 @@
 #  fk_rails_...  (benchmark_result_generation_run_id => benchmark_result_generation_runs.id) ON DELETE => cascade
 #
 
-class BenchmarkResult < ApplicationRecord
-  belongs_to :benchmark_result_generation_run
+class BenchmarkResultError < ApplicationRecord
   belongs_to :alert_type
-
-  store :data, coder: YAML
+  belongs_to :benchmark_result_generation_run
 end
