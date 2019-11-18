@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get 'home-page', to: 'home#show'
   get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
+  get 'tmp-table-sorting', to: 'home#tmp_table_sorting'
+
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
