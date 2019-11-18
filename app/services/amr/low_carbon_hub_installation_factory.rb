@@ -17,7 +17,7 @@ module Amr
 
     def perform
       installation = LowCarbonHubInstallation.where(school_id: @school.id, rbee_meter_id: @rbee_meter_id, amr_data_feed_config: @amr_data_feed_config).first_or_create!
-      installation.update(information: information.to_json)
+      installation.update(information: information)
 
       # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
       LowCarbonHubDownloadAndUpsert.new(
