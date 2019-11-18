@@ -54,18 +54,15 @@ class Scoreboard < ApplicationRecord
       order(Arel.sql('sum_points DESC NULLS LAST, MAX(observations.at) DESC, schools.name ASC')).
       group('schools.id')
     if academic_year
-      scored.joins(
+      with_academic_year = scored.joins(
         self.class.sanitize_sql_array(
           ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
         )
       )
+      ScoredSchoolsList.new(with_academic_year)
     else
-      scored.left_outer_joins(:observations)
+      ScoredSchoolsList.new(scored.left_outer_joins(:observations))
     end
-  end
-
-  def position(school)
-    scored_schools.index(school)
   end
 
   private

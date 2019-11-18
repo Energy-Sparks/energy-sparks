@@ -51,10 +51,5 @@ describe Scoreboard, :scoreboards, type: :model do
       end
     end
 
-    it 'returns the position of a school' do
-      (0..4).each do |n|
-        expect(subject.position(schools[n])).to eq n
-      end
-    end
   end
 end
