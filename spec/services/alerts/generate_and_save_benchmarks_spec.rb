@@ -5,7 +5,7 @@ module Alerts
     let!(:school)                 { create(:school) }
     let(:aggregate_school)        { double(:aggregate_school) }
     let(:asof_date)               { Date.parse('01/01/2019') }
-    let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
+    let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics, benchmark: true) }
     let(:framework_adapter)       { double :framework_adapter }
     let(:adapter_instance)        { double :adapter_instance }
 
