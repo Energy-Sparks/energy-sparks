@@ -37,7 +37,7 @@ namespace :after_party do
     )
 
     AlertAnalysisBase.all_available_alerts.each do |class_name|
-      AlertType.where(class_name: class_name).update(benchmark: true)
+      AlertType.where(class_name: class_name.name).update(benchmark: true)
     end
 
     # Update task as completed.  If you remove the line below, the task will
