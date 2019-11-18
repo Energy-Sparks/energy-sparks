@@ -44,6 +44,10 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def tmp_table_sorting
+    render layout: 'application'
+  end
+
 private
 
   def set_newsletters
