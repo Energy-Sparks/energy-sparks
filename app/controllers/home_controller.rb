@@ -41,12 +41,6 @@ class HomeController < ApplicationController
   def enrol
   end
 
-  def getting_started
-  end
-
-  def scoring
-  end
-
   def privacy_and_cookie_policy
   end
 
