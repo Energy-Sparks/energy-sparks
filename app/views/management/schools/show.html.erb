@@ -11,7 +11,7 @@
 
 <% if @overview_table %>
   <div class="table-responsive-sm">
-    <table class="table mb-5">
+    <table class="table mb-5 management-overview">
       <thead>
         <tr>
           <% table_headers_from_array(@overview_table.table).each do |column, html_class| %>
@@ -23,7 +23,7 @@
         <% table_body_from_array(@overview_table.table).each do |row| %>
           <tr>
             <% table_row_from_array(row).each do |column, html_class| %>
-              <td class="<%= html_class %>"><%= column %></td>
+              <td class="<%= html_class %>"><%= up_downify(column) %></td>
             <% end %>
           </tr>
         <% end %>
