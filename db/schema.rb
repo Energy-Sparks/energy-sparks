@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 2019_11_15_133313) do
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
     t.boolean "background", default: false
+    t.boolean "benchmark", default: false
   end
 
   create_table "alerts", force: :cascade do |t|
