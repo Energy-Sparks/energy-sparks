@@ -182,4 +182,15 @@ module ApplicationHelper
      Array.new(half_stars) { fa_icon('star-half-alt') } +
      Array.new(empty_stars) { far_icon('star') }).compact.inject(&:+)
   end
+
+  def up_downify(text)
+    icon = if text.match?(/^\+/)
+             fa_icon('arrow-circle-up')
+           elsif text.match?(/^\-/)
+             fa_icon('arrow-circle-down')
+           else
+             ''
+           end
+    (sanitize(text) + ' ' + icon).html_safe
+  end
 end

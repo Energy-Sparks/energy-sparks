@@ -166,3 +166,12 @@ table.management-priorities {
     }
   }
 }
+
+.management-overview {
+  .fa-arrow-circle-down {
+    color: $green;
+  }
+  .fa-arrow-circle-up {
+    color: $new-red;
+  }
+}
