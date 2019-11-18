@@ -15,8 +15,6 @@ if ENV.key?('GENERATE_SITEMAP')
     add enrol_path
     add datasets_path
     add team_path
-    add getting_started_path
-    add scoring_path
     add privacy_and_cookie_policy_path
 
     add schools_path
