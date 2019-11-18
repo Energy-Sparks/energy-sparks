@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_113651) do
+ActiveRecord::Schema.define(version: 2019_11_18_165229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -567,6 +567,8 @@ ActiveRecord::Schema.define(version: 2019_11_18_113651) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "relevant", default: true
+    t.date "from_date"
+    t.date "to_date"
     t.index ["equivalence_type_content_version_id"], name: "index_equivalences_on_equivalence_type_content_version_id"
     t.index ["school_id"], name: "index_equivalences_on_school_id"
   end
