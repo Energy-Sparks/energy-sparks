@@ -4,10 +4,12 @@ module Equivalences
     class CalculationError < StandardError; end
 
     TIME_PERIODS = {
-      last_week: { week: -1 },
-      last_school_week: { schoolweek: -1 },
+      last_week: { week: 0 },
+      last_school_week: { schoolweek: 0 },
+      last_work_week: { workweek: 0 },
       last_month: { month: -1 },
-      last_year: { year: -1 }
+      last_year: { year: 0 },
+      last_academic_year: { academicyear: 0 },
     }.freeze
 
     def initialize(school, analytics)
@@ -23,7 +25,9 @@ module Equivalences
         data_collection
       end
       relevant = data.values.all? {|values| values[:show_equivalence]}
-      Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant)
+      from_date = data.values.map {|values| values[:from_date]}.min
+      to_date = data.values.map {|values| values[:to_date]}.max
+      Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant, from_date: from_date, to_date: to_date)
     rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart => e
       raise CalculationError, e.message
     end

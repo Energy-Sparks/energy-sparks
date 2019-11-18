@@ -17,8 +17,10 @@ class EquivalenceType < ApplicationRecord
   enum time_period: {
     last_week: 10,
     last_school_week: 15,
+    last_work_week: 16,
     last_month: 20,
-    last_year: 30
+    last_year: 30,
+    last_academic_year: 31
   }
 
   enum image_name: [:no_image, :petrol_car, :electric_car, :meal, :solar_panel, :books, :electric_shower, :house, :kettle, :phone, :pizza, :roast_meal, :television, :tree, :video_game, :offshore_wind_turbine, :onshore_wind_turbine, :gas_shower, :solar_panel_bw, :electric_car_bw, :meal_bw]
