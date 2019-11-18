@@ -2,7 +2,7 @@
 <h2><%= @school.name %></h2>
 
 <p><%= link_to "All low carbon hub installations for #{@school.name}",  school_low_carbon_hub_installations_path(@school) %>
-<% JSON.parse(@low_carbon_hub_installation.information).each do |key, value| %>
+<% @low_carbon_hub_installation.information.each do |key, value| %>
   <dl>
     <dt><%= key %></dt>
     <dd><%= value %></dd>
