@@ -1,88 +1,46 @@
 module Alerts
   class GenerateAndSaveAlerts
-    def initialize(school:, framework_adapter: FrameworkAdapter, aggregate_school: AggregateSchoolService.new(school).aggregate_school)
+    def initialize(school:, aggregate_school: AggregateSchoolService.new(school).aggregate_school)
       @school = school
-      @alert_framework_adapter_class = framework_adapter
       @aggregate_school = aggregate_school
     end
 
     def perform
-      @alert_generation_run = AlertGenerationRun.create!(school: @school)
+      ActiveRecord::Base.transaction do
+        @alert_generation_run = AlertGenerationRun.create!(school: @school)
 
-      alerts_to_save = []
-      alert_errors_to_save = []
-
-      relevant_alert_types.each do |alert_type|
-        generate(alert_type, alerts_to_save, alert_errors_to_save)
+        relevant_alert_types.each do |alert_type|
+          alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
+          process_alert_type_run_result(alert_type_run_result)
+        end
       end
-
-      Alert.insert_all!(alerts_to_save) unless alerts_to_save.empty?
-      AlertError.insert_all!(alert_errors_to_save) unless alert_errors_to_save.empty?
-    end
-
-    def relevant_alert_types
-      alert_types = AlertType.no_fuel
-      alert_types = alert_types | AlertType.electricity_fuel_type if @school.has_electricity?
-      alert_types = alert_types | AlertType.gas_fuel_type if @school.has_gas?
-      alert_types = alert_types | AlertType.storage_heater_fuel_type if @school.has_storage_heaters?
-      alert_types = alert_types | AlertType.solar_pv_fuel_type if @school.has_solar_pv?
-      alert_types
     end
 
     private
 
-    def generate(alert_type, alerts_to_save, alert_errors_to_save)
-      alert_framework_adapter = @alert_framework_adapter_class.new(alert_type: alert_type, school: @school, aggregate_school: @aggregate_school)
-      asof_date = alert_framework_adapter.analysis_date
+    def relevant_alert_types
+      RelevantAlertTypes.new(@school).list
+    end
 
-      alert_report = alert_framework_adapter.analyse
+    def process_alert_type_run_result(alert_type_run_result)
+      asof_date = alert_type_run_result.asof_date
+      alert_type = alert_type_run_result.alert_type
 
-      if alert_report.valid
-        alerts_to_save << build_alert(alert_type, alert_report, asof_date)
-      else
-        alert_errors_to_save << build_alert_error(alert_type, asof_date, "Relevance: #{alert_report.relevance}")
+      alert_type_run_result.error_messages.each do |error_message|
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: error_message, alert_type: alert_type)
       end
-    rescue => e
-      Rails.logger.error "Exception: #{alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, school_id: @school.id, school_name: @school.name, alert_type: alert_type.class_name)
 
-      alert_errors_to_save << build_alert_error(alert_type, asof_date, e.backtrace)
+      alert_type_run_result.reports.each do |alert_report|
+        process_alert_report(alert_type, alert_report, asof_date)
+      end
     end
 
-    def build_alert_error(alert_type, asof_date, information)
-      now = Time.zone.now
-
-      {
-        alert_generation_run_id: @alert_generation_run.id,
-        asof_date: asof_date,
-        alert_type_id: alert_type.id,
-        information: information,
-        created_at: now,
-        updated_at: now
-      }
-    end
-
-    def build_alert(alert_type, analysis_report, asof_date)
-      now = Time.zone.now
-
-      {
-        school_id:                @school.id,
-        alert_generation_run_id:  @alert_generation_run.id,
-        alert_type_id:            alert_type.id,
-        run_on:                   asof_date,
-        displayable:              analysis_report.displayable?,
-        analytics_valid:          analysis_report.valid,
-        rating:                   analysis_report.rating,
-        enough_data:              analysis_report.enough_data,
-        relevance:                analysis_report.relevance,
-        template_data:            analysis_report.template_data,
-        chart_data:               analysis_report.chart_data,
-        table_data:               analysis_report.table_data,
-        priority_data:            analysis_report.priority_data,
-        created_at:               now,
-        updated_at:               now
-      }
+    def process_alert_report(alert_type, alert_report, asof_date)
+      if alert_report.valid
+        Alert.create(AlertAttributesFactory.new(@school, alert_report, @alert_generation_run, alert_type).generate)
+      else
+        AlertError.create!(alert_generation_run: @alert_generation_run, asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)
+      end
     end
   end
 end

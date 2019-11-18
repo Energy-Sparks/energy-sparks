@@ -3,9 +3,9 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @standard_alert_types = AlertType.analytics.order(:title)
-      @system_alert_types = AlertType.system.order(:title)
-      @analysis_alert_types = AlertType.analysis.order(:title)
+      @standard_alert_types = AlertType.analytics.editable.order(:title)
+      @system_alert_types = AlertType.system.editable.order(:title)
+      @analysis_alert_types = AlertType.analysis.editable.order(:title)
     end
 
     def show

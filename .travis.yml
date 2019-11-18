@@ -11,14 +11,12 @@ services:
 - postgresql
 dist: bionic
 addons:
-  postgresql: '10'
+  postgresql: 10
   sources:
   - google-chrome
   apt:
     packages:
     - google-chrome-stable
-    - postgresql-10
-    - postgresql-client-10
 sudo: required
 before_script:
 - cp config/database.travis.yml config/database.yml

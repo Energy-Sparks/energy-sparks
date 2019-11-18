@@ -6,7 +6,7 @@ describe Alerts::System::ContentManaged do
   let(:school)  { create :school, name: 'St. Egberts' }
 
   let(:today){ Date.new(2019, 4, 26) }
-  let(:report){ Alerts::System::ContentManaged.new(school: school, today: today).report }
+  let(:report){ Alerts::System::ContentManaged.new(school: school, today: today, alert_type: nil).report }
 
   it 'has a rating of 5' do
     expect(report.rating).to eq(5.0)

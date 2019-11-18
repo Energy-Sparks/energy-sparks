@@ -1,7 +1,8 @@
 <h1>Site settings</h1>
 
 <%= simple_form_for @settings, url: admin_settings_path, method: :put do |f| %>
-  <%= f.input :message_for_no_contacts, hint: 'Shows message on teacher dashboard for schools without contacts'%>
+  <%= f.input :message_for_no_contacts, hint: 'Shows message on management dashboard for schools without contacts'%>
+  <%= f.input :message_for_no_pupil_accounts, hint: 'Shows message on management dashboard for schools without pupil accounts'%>
   <%= f.input :management_priorities_dashboard_limit, hint: 'How many entries to show on the management dashboard priorities table before offering more'%>
   <%= f.input :management_priorities_page_limit, hint: 'How many entries to show on the management priorities page '%>
   <%= f.submit 'Update settings', class: 'btn btn-primary'%>

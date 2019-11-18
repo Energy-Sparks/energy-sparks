@@ -64,9 +64,10 @@ class School < ApplicationRecord
   has_many :programmes,               inverse_of: :school, dependent: :destroy
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
-  has_many :alerts,                  inverse_of: :school, dependent: :destroy
-  has_many :content_generation_runs, inverse_of: :school
-  has_many :alert_generation_runs,   inverse_of: :school
+  has_many :alerts,                       inverse_of: :school, dependent: :destroy
+  has_many :content_generation_runs,      inverse_of: :school
+  has_many :alert_generation_runs,        inverse_of: :school
+  has_many :subscription_generation_runs, inverse_of: :school
   has_many :analysis_pages, through: :content_generation_runs
 
   has_many :low_carbon_hub_installations, inverse_of: :school
@@ -249,6 +250,22 @@ class School < ApplicationRecord
       latest_content.analysis_pages
     else
       AnalysisPage.none
+    end
+  end
+
+  def latest_management_dashboard_tables
+    if latest_content
+      latest_content.management_dashboard_tables
+    else
+      ManagementDashboardTable.none
+    end
+  end
+
+  def latest_find_out_mores
+    if latest_content
+      latest_content.find_out_mores
+    else
+      FindOutMore.none
     end
   end
 end
