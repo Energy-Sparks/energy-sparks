@@ -13,8 +13,6 @@ Rails.application.routes.draw do
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
   get 'team', to: 'home#team'
-  get 'getting-started', to: 'home#getting_started'
-  get 'scoring', to: 'home#scoring'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
