@@ -34,7 +34,7 @@ class Observation < ApplicationRecord
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
 
-  enum observation_type: [:temperature, :intervention, :activity]
+  enum observation_type: [:temperature, :intervention, :activity, :event]
 
   validates_presence_of :at, :school
   validate :at_date_cannot_be_in_the_future
