@@ -1,0 +1,14 @@
+<div id="chart_wrapper_<%= content[:config_name] %>" class="pt-3 chart-wrapper">
+  <p>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Debug - show content returned from Benchmark Manager
+    </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body meter-attributes">
+      <%= sanitize ap(content, { index: false }) %>
+    </div>
+  </div>
+  <%= benchmark_chart_tag(content[:config_name], content) %>
+  <hr/>
+</div>

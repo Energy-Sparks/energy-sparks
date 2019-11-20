@@ -1,0 +1,8 @@
+<% content_for :page_title, @title %>
+
+<h1><%= @title %></h1>
+<p><%= link_to 'All benchmarks', benchmarks_path %></p>
+
+<% @content.each do |content| %>
+  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<% end %>
