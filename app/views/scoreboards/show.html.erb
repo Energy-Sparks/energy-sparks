@@ -19,19 +19,19 @@
   <div class="row">
     <table id='scoreboard' class='table'>
       <thead>
-      <tr>
-        <th><h4>Position</h4></th>
-        <th><h4>School</h4></th>
-        <th><h4>Score</h4></th>
-      </tr>
+        <tr>
+          <th><h4>Position</h4></th>
+          <th><h4>School</h4></th>
+          <th><h4>Score</h4></th>
+        </tr>
       </thead>
 
       <tbody>
-      <% @schools.each_with_index do |school, i| %>
-          <tr>
-            <% if school.sum_points %>
+        <% @schools.with_points.schools_with_positions.each do |position, schools| %>
+          <% schools.each do |school|%>
+            <tr>
               <td scope="row">
-                <h2><span class="badge badge-primary"><%= i+1 %></span></h2>
+                <h2><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h2>
               </td>
               <td>
                 <h2><%= link_to school.name, school_path(school) %></h2>
@@ -45,17 +45,19 @@
                   <% end %>
                 </h2>
               </td>
-            <% else %>
-              <td />
-              <td>
-                <h2><%= link_to school.name, school_path(school) %></h2>
-              </td>
-              <td />
-            <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+        <% @schools.without_points.each do |school| %>
+          <tr>
+            <td />
+            <td>
+              <h2><%= link_to school.name, school_path(school) %></h2>
+            </td>
+            <td />
           </tr>
-      <% end %>
+        <% end %>
       </tbody>
     </table>
-
   </div>
 </div>

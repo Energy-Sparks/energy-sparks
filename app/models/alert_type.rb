@@ -3,6 +3,7 @@
 # Table name: alert_types
 #
 #  background   :boolean          default(FALSE)
+#  benchmark    :boolean          default(FALSE)
 #  class_name   :text
 #  frequency    :integer
 #  fuel_type    :integer

@@ -34,7 +34,9 @@ module Alerts
 
       alert_type_run_result.reports << report
       alert_type_run_result
-    rescue => e
+      # rubocop:disable Lint/RescueException
+    rescue Exception => e
+      # rubocop:enable Lint/RescueException
       error_message = "Exception: #{@alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
       Rails.logger.error error_message
       Rails.logger.error e.backtrace.join("\n")

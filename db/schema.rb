@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_15_133313) do
+ActiveRecord::Schema.define(version: 2019_11_18_113651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2019_11_15_133313) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 2019_11_15_133313) do
     t.integer "source", default: 0, null: false
     t.boolean "has_ratings", default: true
     t.boolean "background", default: false
+    t.boolean "benchmark", default: false
   end
 
   create_table "alerts", force: :cascade do |t|

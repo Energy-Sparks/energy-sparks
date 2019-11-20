@@ -31,9 +31,10 @@ module Alerts
         expect(adapter_instance).to receive(:analysis_date).and_return(asof_date)
       end
 
+
       describe 'error handling' do
         it 'does not raise an error if the framework_adapter raises one' do
-          expect(adapter_instance).to receive(:analyse).and_raise(ArgumentError)
+          expect(adapter_instance).to receive(:analyse).and_raise(NotImplementedError)
 
           service = GenerateAlertTypeRunResult.new(school: school, framework_adapter: framework_adapter, aggregate_school: aggregate_school, alert_type: alert_type)
 

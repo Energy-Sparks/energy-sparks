@@ -121,6 +121,12 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.school_times.map(&:day)).to match_array(%w{monday tuesday wednesday thursday friday})
     end
 
+    it 'creates a joining observation' do
+      service = SchoolCreator.new(school)
+      service.process_new_school!
+      expect(school.observations.first.description.to_s).to include("joined Energy Sparks")
+    end
+
     it 'configures the school' do
       service = SchoolCreator.new(school)
       service.process_new_school!
