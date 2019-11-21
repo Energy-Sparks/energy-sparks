@@ -112,47 +112,47 @@ function processAnalysisChart(chartContainer, chartConfig){
   var mpanMprn = chartConfig.mpan_mprn;
   var seriesBreakdown = chartConfig.series_breakdown;
   var dateRanges = chartConfig.date_ranges;
-  var dataPath = chartConfig.json;
+  var dataPath = chartConfig.jsonUrl;
+  var chartData = chartConfig.jsonData;
   var transformations = chartConfig.transformations;
   var noAdvice = chartConfig.no_advice;
   var noZoom = chartConfig.no_zoom;
 
-  var requestData = {
-    chart_type: chartType,
-    chart_y_axis_units: yAxisUnits,
-    mpan_mprn: mpanMprn,
-    transformations: transformations,
-    series_breakdown: seriesBreakdown,
-    date_ranges: dateRanges
-  };
+  if (dataPath !== undefined && dataPath.length) {
+    var requestData = {
+      chart_type: chartType,
+      chart_y_axis_units: yAxisUnits,
+      mpan_mprn: mpanMprn,
+      transformations: transformations,
+      series_breakdown: seriesBreakdown,
+      date_ranges: dateRanges
+    };
 
-  if (dataPath === undefined) {
-    var currentPath = window.location.href;
-    dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
-  }
+    thisChart.showLoading();
 
-  thisChart.showLoading();
-
-  $.ajax({
-    type: 'GET',
-    async: true,
-    dataType: "json",
-    url: dataPath,
-    data: requestData,
-    success: function (returnedData) {
-      var thisChartData = returnedData.charts[0];
-      if (thisChartData == undefined) {
+    $.ajax({
+      type: 'GET',
+      async: true,
+      dataType: "json",
+      url: dataPath,
+      data: requestData,
+      success: function (returnedData) {
+        var thisChartData = returnedData.charts[0];
+        if (thisChartData == undefined) {
+          chartFailure(thisChart, "We do not have enough data at the moment to display this ");
+        } else if (thisChartData.series_data == null) {
+          chartFailure(thisChart, thisChartData.title);
+        } else {
+          chartSuccess(chartConfig, thisChartData, thisChart, noAdvice, noZoom);
+        }
+      },
+      error: function(broken) {
         chartFailure(thisChart, "We do not have enough data at the moment to display this ");
-      } else if (thisChartData.series_data == null) {
-        chartFailure(thisChart, thisChartData.title);
-      } else {
-        chartSuccess(chartConfig, thisChartData, thisChart, noAdvice, noZoom);
       }
-    },
-    error: function(broken) {
-      chartFailure(thisChart, "We do not have enough data at the moment to display this ");
-    }
-  });
+    });
+  } else {
+    chartSuccess(chartConfig, chartData, thisChart, noAdvice, noZoom);
+  }
 }
 
 function processAnnotations(loaded_annotations, chart){

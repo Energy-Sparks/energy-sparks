@@ -22,6 +22,10 @@ Rails.application.routes.draw do
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
+  get 'benchmarks', to: 'benchmarks#index'
+  get 'benchmark', to: 'benchmarks#show'
+  get 'all_benchmarks', to: 'benchmarks#show_all'
+
   resources :activity_types, only: [:index, :show]
   resources :activity_categories, only: [:index]
 
@@ -140,6 +144,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :benchmark_result_generation_runs, only: [:index, :show]
     resources :newsletters
     resources :school_groups
     resources :activity_categories, except: [:destroy]
