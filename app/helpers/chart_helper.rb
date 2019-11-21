@@ -31,6 +31,9 @@ module ChartHelper
     # ToDo handle this in the analytics
     json_data[:x_data].delete('School name')
 
+    number_of_records = json_data[:x_axis].size
+    chart_height = [30 * number_of_records, 700].max
+
     formatted_json_data = ChartDataValues.new(json_data, chart_type).process
 
     chart_container = content_tag(
@@ -38,6 +41,7 @@ module ChartHelper
       '',
       id: "chart_#{chart_type}",
       class: 'analysis-chart',
+      style: "height:#{chart_height}px;",
       data: {
         chart_config: chart_config.merge(
           type: chart_type,

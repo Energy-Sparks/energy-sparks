@@ -158,7 +158,7 @@ private
   def column_or_bar
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
-      colour = colour_hash[data_type]
+      colour = colour_hash[data_type.titleize.singularize]
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end

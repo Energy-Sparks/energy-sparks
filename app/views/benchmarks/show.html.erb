@@ -3,6 +3,8 @@
 <h1><%= @title %></h1>
 <p><%= link_to 'All benchmarks', benchmarks_path %></p>
 
+<p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
+
 <% @content.each do |content| %>
   <%= render content[:type].to_s, content: content[:content], school: @school %>
 <% end %>

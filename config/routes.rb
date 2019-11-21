@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
+  get 'all_benchmarks', to: 'benchmarks#show_all'
 
   resources :activity_types, only: [:index, :show]
   resources :activity_categories, only: [:index]
