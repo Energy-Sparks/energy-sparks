@@ -61,6 +61,7 @@ module Alerts
 
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(2).and change { AlertError.count }.by(1)
+        expect(Alert.first.run_on).to_not be_nil
       end
 
       it 'handles just errors' do
