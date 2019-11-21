@@ -27,7 +27,7 @@ module Alerts
       end
 
       def produce_report(analysis_object, benchmark)
-        analysis_object.analyse(@analysis_date, @use_max_meter_date_if_less_than_asof_date)
+        benchmark ? analysis_object.analyse(@analysis_date, @use_max_meter_date_if_less_than_asof_date) : analysis_object.analyse(@analysis_date)
         variables = variable_data(analysis_object, benchmark)
 
         Report.new({
