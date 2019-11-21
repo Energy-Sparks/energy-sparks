@@ -39,7 +39,7 @@ module Amr
           holidays: schedule_data_manager_service.holidays
         },
         amr_data: meter_data_class.new(heat_meters: heat_meters, electricity_meters: electricity_meters).build,
-        meter_attributes: Hash[(heat_meters + electricity_meters).map {|meter| [meter.mpan_mprn, meter.meter_attributes]}]
+        modifiers: {}
       }
     end
   end
