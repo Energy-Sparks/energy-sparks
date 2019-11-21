@@ -1,9 +1,28 @@
 <% content_for :page_title, @title %>
 
 <h1><%= @title %></h1>
-<p><%= link_to 'All benchmarks', benchmarks_path %></p>
+
+<p>For the benchmarks there are two different dates which are important. One is the asof_date used to run the actual alert, the front end calculates this using the latest reading it has for a gas or electricity meter. Consequently, the alert could be being run for a day well over a week ago. This would still be collated for benchmarking though as *the* latest benchmark data. If we ran it for today, then the alert would likely fail or have no data. You can see a breakdown of these dates below where we have provided a list of the keys in the benchmark YAML file you can download.</p>
+
+<p>The second date is the one which is passed to the benchmark content manager and is a single date across the board. By default we use today, however I've also provided some links for some previous days to see what the differnece might be (if any?)
+
+<p>These links provide all of the benchmarks on a single page, using a different date for the content manager - *not* re-generating the benchmark results (from the alerts) for those dates</p>
+<p><%= link_to 'All benchmarks (using todays date)', all_benchmarks_path %></p>
+<p><%= link_to "All benchmarks for #{Time.zone.today - 1.day} - yesterday", all_benchmarks_path(date: Time.zone.today - 1.day) %></p>
+<p><%= link_to "All benchmarks for #{Time.zone.today - 2.days} - 2 days ago", all_benchmarks_path(date: Time.zone.today - 2.days) %></p>
+<p><%= link_to "All benchmarks for #{Time.zone.today - 3.days} - 3 days ago", all_benchmarks_path(date: Time.zone.today - 3.days) %></p>
+
 
 <p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
+
+<p>These are the days which come back for the latest benchmark runs for each school, i.e. when we try and work out an asof date to run an alert, where, say a school hasn't had gas for a week, then we use the last date we had a reading for the gas alert asof date.</p>
+<ul>
+  <% @days_in_results.sort.each do |day| %>
+    <li><%= day %> <%= @results[day].keys.map { |school_id| @school_map[school_id] }.sort.join(', ') %></li>
+  <% end %>
+</ul>
+
+<h2>Generated content from here on, run for <%= @date %></h2>
 
 <% @content.each do |content| %>
   <%= render content[:type].to_s, content: content[:content], school: @school %>

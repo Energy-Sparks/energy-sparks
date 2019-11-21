@@ -6,32 +6,36 @@ class BenchmarksController < ApplicationController
   end
 
   def show
-    results = Alerts::CollateBenchmarkData.new.perform
+    @results = Alerts::CollateBenchmarkData.new.perform
+    @school_map = School.all.pluck(:id, :name).to_h
 
     respond_to do |format|
       format.html do
         @page = params[:benchmark_type].to_sym
-        all_content = content_manager.content(results, @page)
+        all_content = content_manager.content(@results, @page)
 
         @content = all_content.select { |content| [:chart, :html, :table_text, :analytics_html].include?(content[:type])}
 
         @title = page_title(@content)
+
+        @days_in_results = @results.keys
       end
-      format.yaml { send_data YAML.dump(results), filename: "benchmark_results_data.yaml" }
+      format.yaml { send_data YAML.dump(@results), filename: "benchmark_results_data.yaml" }
     end
   end
 
   def show_all
     @content_list = available_pages
-
-    results = Alerts::CollateBenchmarkData.new.perform
+    @school_map = School.all.pluck(:id, :name).to_h
+    @results = Alerts::CollateBenchmarkData.new.perform
+    @date = params[:date] || Time.zone.today
 
     all_content = []
     errors = []
 
     available_pages.each do |page, title|
       begin
-        all_content << content_manager.content(results, page)
+        all_content << content_manager(@date).content(@results, page)
         # rubocop:disable Lint/RescueException
       rescue Exception => e
         # rubocop:enable Lint/RescueException
@@ -41,6 +45,7 @@ class BenchmarksController < ApplicationController
 
     @content = all_content.flatten.select { |content| [:chart, :html, :table_text, :analytics_html].include?(content[:type])}
 
+    @days_in_results = @results.keys
     @title = 'All benchmark results'
 
     render :show
@@ -52,8 +57,8 @@ private
     content_manager.available_pages(filter: filter, school_ids: school_ids)
   end
 
-  def content_manager
-    Benchmarking::BenchmarkContentManager.new(Time.zone.today)
+  def content_manager(date = Time.zone.today)
+    Benchmarking::BenchmarkContentManager.new(date)
   end
 
   def page_title(content)
