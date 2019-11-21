@@ -17,24 +17,24 @@ describe "meter collections", type: :system do
   context 'when a meter has unvalidated readings' do
     let!(:meter)        { create(:electricity_meter_with_reading, name: 'Electricity meter', school: school) }
 
-    it 'allows a download of unvalidated meter collection' do
-      click_on 'Unvalidated meter collection'
+    it 'allows a download of unvalidated meter data' do
+      click_on 'Unvalidated AMR data'
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
-      expect(header).to match /unvalidated-meter-collection-#{school.name.parameterize}.yaml$/
+      expect(header).to match /unvalidated-data-#{school.name.parameterize}.yaml$/
     end
   end
 
   context 'when a meter has validated readings' do
     let!(:meter)        { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
-    it 'allows a download of validated meter collection' do
-      click_on 'Validated meter collection'
+    it 'allows a download of validated meter data' do
+      click_on 'Validated AMR data'
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
-      expect(header).to match /validated-meter-collection-#{school.name.parameterize}.yaml$/
+      expect(header).to match /validated-data-#{school.name.parameterize}.yaml$/
     end
   end
 

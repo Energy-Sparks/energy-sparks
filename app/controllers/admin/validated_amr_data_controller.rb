@@ -1,5 +1,5 @@
 module Admin
-  class ValidatedMeterCollectionsController < AdminController
+  class ValidatedAmrDataController < AdminController
     load_and_authorize_resource :school
 
     def show

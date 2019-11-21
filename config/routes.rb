@@ -202,8 +202,8 @@ Rails.application.routes.draw do
     end
 
     resources :schools, only: [:show] do
-      resource :unvalidated_meter_collection, only: :show
-      resource :validated_meter_collection, only: :show
+      resource :unvalidated_amr_data, only: :show
+      resource :validated_amr_data, only: :show
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
     end
 
