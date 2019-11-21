@@ -10,7 +10,7 @@ module Alerts
 
       def content
         analysis_object = alert_class.new(@aggregate_school)
-        analysis_object.analyse(@analysis_date, @use_max_meter_date_if_less_than_asof_date)
+        analysis_object.analyse(@analysis_date)
         # TODO: error, data, validity handling
         analysis_object.front_end_content
       end
