@@ -10,7 +10,7 @@
     <% content[:rows].each do |row| %>
     <tr>
       <% row.each_with_index do |cell, cell_index| %>
-        <td class="<%= cell_index.zero? ? '' : 'text-right' %>"><%= cell %></td>
+        <td class="<%= cell_index.zero? ? '' : 'text-right' %>"><%= up_downify(cell) %></td>
       <% end %>
     </tr>
     <% end %>
