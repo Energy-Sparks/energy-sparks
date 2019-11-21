@@ -12,7 +12,7 @@ module Alerts
         true
       end
 
-      def analyse(_analysis_date)
+      def analyse(_analysis_date, _max_as_of_date = nil)
       end
 
       def rating
