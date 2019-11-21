@@ -1,29 +1,4 @@
 GIT
-  remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 3acff7bc38a5ae8bae8a2e630367aa8494d2183d
-  tag: 0.54.2
-  specs:
-    energy-sparks_analytics (0.54.2)
-      activesupport (~> 6.0.0.rc1)
-      benchmark-memory (~> 0.1.2)
-      chroma (~> 0.2.0)
-      hashdiff (~> 1.0.0)
-      html-table (~> 1.5.1)
-      interpolate (~> 0.3.0)
-      mechanize (~> 2.7.6)
-      pry-byebug (~> 3.6.0)
-      require_all (~> 2.0.0)
-      roo (~> 2.7.1)
-      roo-xls (~> 1.2.0)
-      rspec (~> 3.8.0)
-      ruby-prof (~> 0.17.0)
-      ruby-sun-times (~> 0.1.5)
-      soda-ruby (~> 0.2.25)
-      statsample (~> 2.1.0)
-      structured_warnings (~> 0.3.0)
-      write_xlsx (~> 0.85.5)
-
-GIT
   remote: https://github.com/SciRuby/statsample
   revision: fd9a88d92196fc419e8080f0989faf6fe9563e80
   branch: master
@@ -45,6 +20,29 @@ GIT
   revision: b4a198be9253eefc3e25d88e10c21d9acb9ab6d4
   specs:
     upsert (3.0.0)
+
+PATH
+  remote: ../energy-sparks_analytics
+  specs:
+    energy-sparks_analytics (0.54.2)
+      activesupport (~> 6.0.0.rc1)
+      benchmark-memory (~> 0.1.2)
+      chroma (~> 0.2.0)
+      hashdiff (~> 1.0.0)
+      html-table (~> 1.5.1)
+      interpolate (~> 0.3.0)
+      mechanize (~> 2.7.6)
+      pry-byebug (~> 3.6.0)
+      require_all (~> 2.0.0)
+      roo (~> 2.7.1)
+      roo-xls (~> 1.2.0)
+      rspec (~> 3.8.0)
+      ruby-prof (~> 0.17.0)
+      ruby-sun-times (~> 0.1.5)
+      soda-ruby (~> 0.2.25)
+      statsample (~> 2.1.0)
+      structured_warnings (~> 0.3.0)
+      write_xlsx (~> 0.85.5)
 
 GEM
   remote: https://rubygems.org/

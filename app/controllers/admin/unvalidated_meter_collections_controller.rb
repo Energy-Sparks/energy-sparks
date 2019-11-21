@@ -3,10 +3,10 @@ module Admin
     load_and_authorize_resource :school
 
     def show
-      meter_collection = Amr::AnalyticsUnvalidatedMeterCollectionFactory.new(@school).build
+      data = Amr::AnalyticsMeterCollectionFactory.new(@school).unvalidated_data
 
       respond_to do |format|
-        format.yaml { send_data YAML.dump(meter_collection), filename: "unvalidated-meter-collection-#{@school.name.parameterize}.yaml" }
+        format.yaml { send_data YAML.dump(data), filename: "unvalidated-data-#{@school.name.parameterize}.yaml" }
       end
     end
   end
