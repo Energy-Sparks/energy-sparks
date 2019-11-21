@@ -10,7 +10,7 @@ module Alerts
       @framework_adapter = framework_adapter
     end
 
-    def perform(asof_date = Time.zone.today)
+    def perform(asof_date = nil)
       ActiveRecord::Base.transaction do
         @benchmark_result_generation_run = BenchmarkResultGenerationRun.create!(school: @school)
 
