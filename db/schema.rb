@@ -1002,14 +1002,14 @@ ActiveRecord::Schema.define(version: 2019_11_18_113651) do
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
-  add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
-  add_foreign_key "alerts", "alert_generation_runs"
+  add_foreign_key "alert_type_ratings", "alert_types", on_delete: :cascade
+  add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
-  add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
+  add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "benchmark_result_generation_runs", on_delete: :cascade
