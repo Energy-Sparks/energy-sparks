@@ -122,7 +122,7 @@ private
     from_hash = colour_hash[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = colour_hash.detect { |key, _colour| data_type.include?(key) }
+    using_name = colour_hash.detect { |key, _colour| data_type.to_s.include?(key) }
     return using_name.second unless using_name.nil?
   end
 
