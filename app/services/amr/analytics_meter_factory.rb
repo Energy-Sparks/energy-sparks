@@ -13,7 +13,7 @@ module Amr
         identifier:         @active_record_meter.mpan_mprn,
         name:               @active_record_meter.name,
         external_meter_id:  @active_record_meter.id,
-        modifiers:          @active_record_meter.meter_attributes
+        attributes:         @active_record_meter.meter_attributes
       }
     end
   end

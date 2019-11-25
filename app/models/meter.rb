@@ -79,8 +79,8 @@ class Meter < ApplicationRecord
     mpan_mprn.present? ? mpan_mprn : meter_type.to_s
   end
 
-  def meter_attributes(meter_attributes = MeterAttributes)
-    meter_attributes.for(mpan_mprn, area_name, meter_type.to_sym)
+  def meter_attributes
+    MeterAttribute.for(school.urn, mpan_mprn)
   end
 
   def attributes(attribute_type)
