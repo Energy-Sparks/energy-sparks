@@ -1,51 +1,31 @@
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action :benchmark_results, only: [:show, :show_all]
 
   def index
     @content_list = available_pages
   end
 
   def show
-    @results = Alerts::CollateBenchmarkData.new.perform
-    @school_map = School.all.pluck(:id, :name).to_h
-
     respond_to do |format|
       format.html do
         @page = params[:benchmark_type].to_sym
-        all_content = content_manager.content(@results, @page)
+        results_hash = get_content([@page])
 
-        @content = all_content.select { |content| [:chart, :html, :table_text, :analytics_html].include?(content[:type])}
-
+        @content = results_hash[:content]
+        @errors = results_hash[:errors]
         @title = page_title(@content)
-
-        @days_in_results = @results.keys
       end
-      format.yaml { send_data YAML.dump(@results), filename: "benchmark_results_data.yaml" }
+      format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
     end
   end
 
   def show_all
     @content_list = available_pages
-    @school_map = School.all.pluck(:id, :name).to_h
-    @results = Alerts::CollateBenchmarkData.new.perform
-    @date = params[:date] || Time.zone.today
+    results_hash = get_content(available_pages)
 
-    all_content = []
-    errors = []
-
-    available_pages.each do |page, title|
-      begin
-        all_content << content_manager(@date).content(@results, page)
-        # rubocop:disable Lint/RescueException
-      rescue Exception => e
-        # rubocop:enable Lint/RescueException
-        errors << "Exception: #{title}: #{e.class} #{e.message} #{e.backtrace.join("\n")}"
-      end
-    end
-
-    @content = all_content.flatten.select { |content| [:chart, :html, :table_text, :analytics_html].include?(content[:type])}
-
-    @days_in_results = @results.keys
+    @content = results_hash[:content]
+    @errors = results_hash[:errors]
     @title = 'All benchmark results'
 
     render :show
@@ -53,8 +33,33 @@ class BenchmarksController < ApplicationController
 
 private
 
+  def benchmark_results
+    @benchmark_results = Alerts::CollateBenchmarkData.new.perform
+  end
+
+  def get_content(pages)
+    all_content = []
+    errors = []
+
+    pages.each do |page, title|
+      begin
+        all_content << content_manager.content(@benchmark_results, page)
+        # rubocop:disable Lint/RescueException
+      rescue Exception => e
+        # rubocop:enable Lint/RescueException
+        errors << "Exception: #{title}: #{e.class} #{e.message} #{e.backtrace.join("\n")}"
+      end
+    end
+
+    { content: filter_content(all_content.flatten), errors: errors }
+  end
+
   def available_pages(filter: nil, school_ids: nil)
     content_manager.available_pages(filter: filter, school_ids: school_ids)
+  end
+
+  def filter_content(all_content)
+    all_content.select { |content| [:chart, :html, :table_text].include?(content[:type]) && content[:content].present? }
   end
 
   def content_manager(date = Time.zone.today)
