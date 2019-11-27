@@ -4,6 +4,6 @@
   </div>
 <% end %>
 <div class="alert alert-primary">
-  Dates: <%= @equivalence.from_date %> - <%= @equivalence.to_date %>
+  Dates: <%= @equivalence.from_date.try(:strftime, '%d/%m/%Y')%> - <%= @equivalence.to_date.try(:strftime, '%d/%m/%Y')%>
 </div>
 <%= render 'pupils/schools/preview_equivalence', equivalence_content: @equivalence_content %>
