@@ -28,9 +28,6 @@ module ChartHelper
     chart_config[:no_advice] = true
     chart_config[:no_zoom] = true
 
-    # ToDo handle this in the analytics
-    json_data[:x_data].delete('School name')
-
     number_of_records = json_data[:x_axis].size
     chart_height = [30 * number_of_records, 700].max
 
