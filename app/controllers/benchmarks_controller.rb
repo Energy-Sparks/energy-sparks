@@ -16,7 +16,6 @@ class BenchmarksController < ApplicationController
 
         @content = results_hash[:content]
         @errors = results_hash[:errors]
-        @title = page_title(@content)
       end
       format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
     end
@@ -61,19 +60,10 @@ private
   end
 
   def filter_content(all_content)
-    all_content.select { |content| [:chart, :html, :table_composite].include?(content[:type]) && content[:content].present? }
+    all_content.select { |content| [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present? }
   end
 
   def content_manager(date = Time.zone.today)
     Benchmarking::BenchmarkContentManager.new(date)
-  end
-
-  def page_title(content)
-    title = content.find { |element| element[:type] == :title }
-    if title
-      title[:content]
-    else
-      "Missing title"
-    end
   end
 end

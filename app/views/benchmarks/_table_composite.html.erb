@@ -10,7 +10,7 @@
     <% content[:rows].each do |row| %>
     <tr>
       <% row.each_with_index do |cell, cell_index| %>
-        <td class="<%= cell_index.zero? ? '' : 'text-right' %>" data-search=<%= cell[:raw] %>><%= up_downify(cell[:formatted]) %></td>
+        <td class="<%= cell_index.zero? ? '' : 'text-right' %>" data-sort=<%= cell[:raw] %>><%= up_downify(cell[:formatted]) %></td>
       <% end %>
     </tr>
     <% end %>
