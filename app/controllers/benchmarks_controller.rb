@@ -61,7 +61,7 @@ private
   end
 
   def filter_content(all_content)
-    all_content.select { |content| [:chart, :html, :table_text].include?(content[:type]) && content[:content].present? }
+    all_content.select { |content| [:chart, :html, :table_composite].include?(content[:type]) && content[:content].present? }
   end
 
   def content_manager(date = Time.zone.today)

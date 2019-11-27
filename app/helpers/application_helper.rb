@@ -184,6 +184,7 @@ module ApplicationHelper
   end
 
   def up_downify(text)
+    return if text.nil?
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/^\-/)
