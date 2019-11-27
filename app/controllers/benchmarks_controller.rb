@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :benchmark_results, only: [:show, :show_all]
