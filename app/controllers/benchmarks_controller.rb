@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :benchmark_results, only: [:show, :show_all]
@@ -59,7 +61,7 @@ private
   end
 
   def filter_content(all_content)
-    all_content.select { |content| [:chart, :html, :table_text].include?(content[:type]) && content[:content].present? }
+    all_content.select { |content| [:chart, :html, :table_composite].include?(content[:type]) && content[:content].present? }
   end
 
   def content_manager(date = Time.zone.today)
