@@ -112,19 +112,15 @@ class ChartDataValues
     end
   end
 
-private
-
-  def colour_hash
-    COLOUR_HASH
-  end
-
   def work_out_best_colour(data_type)
-    from_hash = colour_hash[data_type]
+    from_hash = COLOUR_HASH[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = colour_hash.detect { |key, _colour| data_type.to_s.include?(key) }
+    using_name = COLOUR_HASH.detect { |key, _colour| data_type.to_s.include?(key) }
     return using_name.second unless using_name.nil?
   end
+
+private
 
   def format_teachers_label(full_label)
     # Remove leading Energy:
