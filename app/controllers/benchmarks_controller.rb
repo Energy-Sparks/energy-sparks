@@ -6,6 +6,7 @@ class BenchmarksController < ApplicationController
 
   def index
     @content_list = available_pages
+    @school_groups = SchoolGroup.all
   end
 
   def show
@@ -16,6 +17,7 @@ class BenchmarksController < ApplicationController
 
         @content = results_hash[:content]
         @errors = results_hash[:errors]
+        @form_path = benchmark_path
       end
       format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
     end
@@ -28,6 +30,7 @@ class BenchmarksController < ApplicationController
     @content = results_hash[:content]
     @errors = results_hash[:errors]
     @title = 'All benchmark results'
+    @form_path = all_benchmarks_path
 
     render :show
   end
@@ -35,7 +38,17 @@ class BenchmarksController < ApplicationController
 private
 
   def benchmark_results
-    @benchmark_results = Alerts::CollateBenchmarkData.new.perform
+    @school_groups = SchoolGroup.all
+    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+
+    if @school_group_ids.empty?
+      schools = School.process_data
+    else
+      puts @school_group_ids
+      @school_group_ids.reject!(&:blank?)
+      schools = School.process_data.where(school_group_id: @school_group_ids)
+    end
+    @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
   def get_content(pages)

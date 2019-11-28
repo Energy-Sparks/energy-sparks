@@ -105,52 +105,56 @@ function processAnalysisCharts(){
   }
 }
 
-function processAnalysisChart(chartContainer, chartConfig){
-  var thisId = chartContainer.id;
-  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chartConfig, chartContainer, event)}));
+function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
   var chartType = chartConfig.type;
   var yAxisUnits = chartConfig.y_axis_units;
   var mpanMprn = chartConfig.mpan_mprn;
   var seriesBreakdown = chartConfig.series_breakdown;
   var dateRanges = chartConfig.date_ranges;
   var dataPath = chartConfig.jsonUrl;
-  var chartData = chartConfig.jsonData;
   var transformations = chartConfig.transformations;
+  var requestData = {
+    chart_type: chartType,
+    chart_y_axis_units: yAxisUnits,
+    mpan_mprn: mpanMprn,
+    transformations: transformations,
+    series_breakdown: seriesBreakdown,
+    date_ranges: dateRanges
+  };
 
-  if (dataPath !== undefined && dataPath.length) {
-    var requestData = {
-      chart_type: chartType,
-      chart_y_axis_units: yAxisUnits,
-      mpan_mprn: mpanMprn,
-      transformations: transformations,
-      series_breakdown: seriesBreakdown,
-      date_ranges: dateRanges
-    };
+  highchartsChart.showLoading();
 
-    thisChart.showLoading();
-
-    $.ajax({
-      type: 'GET',
-      async: true,
-      dataType: "json",
-      url: dataPath,
-      data: requestData,
-      success: function (returnedData) {
-        var thisChartData = returnedData.charts[0];
-        if (thisChartData == undefined) {
-          chartFailure(thisChart, "We do not have enough data at the moment to display this ");
-        } else if (thisChartData.series_data == null) {
-          chartFailure(thisChart, thisChartData.title);
-        } else {
-          chartSuccess(chartConfig, thisChartData, thisChart);
-        }
-      },
-      error: function(broken) {
-        chartFailure(thisChart, "We do not have enough data at the moment to display this ");
+  $.ajax({
+    type: 'GET',
+    async: true,
+    dataType: "json",
+    url: dataPath,
+    data: requestData,
+    success: function (returnedData) {
+      var thisChartData = returnedData.charts[0];
+      if (thisChartData == undefined) {
+        chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
+      } else if (thisChartData.series_data == null) {
+        chartFailure(highchartsChart, thisChartData.title);
+      } else {
+        chartSuccess(chartConfig, thisChartData, highchartsChart);
       }
-    });
-  } else {
+    },
+    error: function(broken) {
+      chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
+    }
+  });
+}
+
+function processAnalysisChart(chartContainer, chartConfig){
+  var thisId = chartContainer.id;
+  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chartConfig, chartContainer, event)}));
+  var chartData = chartConfig.jsonData;
+
+  if (chartData !== undefined) {
     chartSuccess(chartConfig, chartData, thisChart);
+  } else {
+    processAnalysisChartAjax(thisId, chartConfig, thisChart)
   }
 }
 
