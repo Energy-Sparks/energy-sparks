@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_113651) do
+ActiveRecord::Schema.define(version: 2019_11_22_155133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -567,6 +567,8 @@ ActiveRecord::Schema.define(version: 2019_11_18_113651) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "relevant", default: true
+    t.date "from_date"
+    t.date "to_date"
     t.index ["equivalence_type_content_version_id"], name: "index_equivalences_on_equivalence_type_content_version_id"
     t.index ["school_id"], name: "index_equivalences_on_school_id"
   end
@@ -1002,14 +1004,14 @@ ActiveRecord::Schema.define(version: 2019_11_18_113651) do
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade
-  add_foreign_key "alert_type_ratings", "alert_types", on_delete: :restrict
-  add_foreign_key "alerts", "alert_generation_runs"
+  add_foreign_key "alert_type_ratings", "alert_types", on_delete: :cascade
+  add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
-  add_foreign_key "analysis_pages", "alerts", on_delete: :restrict
+  add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "benchmark_result_generation_runs", on_delete: :cascade

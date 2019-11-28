@@ -8,29 +8,30 @@ function chartFailure(chart, title) {
   $chartWrapper.html(`<h3>${title} chart</h3>`)
 }
 
-function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
+function chartSuccess(chartConfig, chartData, chart) {
 
   var $chartDiv = $(chart.renderTo);
-  var chartType = chart_data.chart1_type;
-  var seriesData = chart_data.series_data;
+  var chartType = chartData.chart1_type;
+  var seriesData = chartData.series_data;
+  var noAdvice = chartConfig.no_advice;
 
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
 
   var titleH3 = $chartWrapper.find('h3');
   var titleH5 = $chartWrapper.find('h5');
 
-  titleH3.text(chart_data.title);
+  titleH3.text(chartData.title);
 
-  if (chart_data.subtitle) {
-    titleH5.text(chart_data.subtitle);
+  if (chartData.subtitle) {
+    titleH5.text(chartData.subtitle);
   } else {
     titleH5.hide();
   }
 
   if (! noAdvice) {
 
-    var adviceHeader = chart_data.advice_header;
-    var adviceFooter = chart_data.advice_footer;
+    var adviceHeader = chartData.advice_header;
+    var adviceFooter = chartData.advice_footer;
 
     if (adviceHeader) {
       $chartWrapper.find('.advice-header').html(adviceHeader);
@@ -43,33 +44,33 @@ function chartSuccess(chartConfig, chart_data, chart, noAdvice, noZoom) {
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
 
-    barColumnLine(chart_data, chart, seriesData, chartType, noZoom);
+    barColumnLine(chartData, chart, seriesData, chartConfig);
 
   // Scatter
   } else if (chartType == 'scatter') {
-    scatter(chart_data, chart, seriesData);
+    scatter(chartData, chart, seriesData);
 
   // Pie
   } else if (chartType == 'pie') {
-    pie(chart_data, chart, seriesData, $chartDiv);
+    pie(chartData, chart, seriesData, $chartDiv);
   }
 
-  if(chart_data.allowed_operations){
-    processAnalysisOperations(chartConfig, chart, chart_data.allowed_operations, chart_data.drilldown_available, chart_data.parent_timescale_description)
+  if(chartData.allowed_operations){
+    processAnalysisOperations(chartConfig, chart, chartData.allowed_operations, chartData.drilldown_available, chartData.parent_timescale_description)
   }
 
-  if(chart_data.annotations){
+  if(chartData.annotations){
     var xAxis = chart.xAxis[0];
 
     var xAxisCategories = xAxis.categories;
-    if(chart_data.annotations == 'weekly'){
+    if(chartData.annotations == 'weekly'){
       var data = {
-        date_grouping: chart_data.annotations,
+        date_grouping: chartData.annotations,
         x_axis_categories: xAxisCategories
       };
     } else {
       var data = {
-        date_grouping: chart_data.annotations,
+        date_grouping: chartData.annotations,
         x_axis_start: xAxisCategories[0],
         x_axis_end: xAxisCategories.slice(-1)[0]
       };
@@ -104,19 +105,14 @@ function processAnalysisCharts(){
   }
 }
 
-function processAnalysisChart(chartContainer, chartConfig){
-  var thisId = chartContainer.id;
-  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chartConfig, chartContainer, event)}));
+function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
   var chartType = chartConfig.type;
   var yAxisUnits = chartConfig.y_axis_units;
   var mpanMprn = chartConfig.mpan_mprn;
   var seriesBreakdown = chartConfig.series_breakdown;
   var dateRanges = chartConfig.date_ranges;
-  var dataPath = chartConfig.json;
+  var dataPath = chartConfig.jsonUrl;
   var transformations = chartConfig.transformations;
-  var noAdvice = chartConfig.no_advice;
-  var noZoom = chartConfig.no_zoom;
-
   var requestData = {
     chart_type: chartType,
     chart_y_axis_units: yAxisUnits,
@@ -126,12 +122,7 @@ function processAnalysisChart(chartContainer, chartConfig){
     date_ranges: dateRanges
   };
 
-  if (dataPath === undefined) {
-    var currentPath = window.location.href;
-    dataPath = currentPath.substr(0, currentPath.lastIndexOf("/")) + '/chart.json'
-  }
-
-  thisChart.showLoading();
+  highchartsChart.showLoading();
 
   $.ajax({
     type: 'GET',
@@ -142,17 +133,29 @@ function processAnalysisChart(chartContainer, chartConfig){
     success: function (returnedData) {
       var thisChartData = returnedData.charts[0];
       if (thisChartData == undefined) {
-        chartFailure(thisChart, "We do not have enough data at the moment to display this ");
+        chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
       } else if (thisChartData.series_data == null) {
-        chartFailure(thisChart, thisChartData.title);
+        chartFailure(highchartsChart, thisChartData.title);
       } else {
-        chartSuccess(chartConfig, thisChartData, thisChart, noAdvice, noZoom);
+        chartSuccess(chartConfig, thisChartData, highchartsChart);
       }
     },
     error: function(broken) {
-      chartFailure(thisChart, "We do not have enough data at the moment to display this ");
+      chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
     }
   });
+}
+
+function processAnalysisChart(chartContainer, chartConfig){
+  var thisId = chartContainer.id;
+  var thisChart = Highcharts.chart(thisId, commonChartOptions(function(event){processChartClick(chartConfig, chartContainer, event)}));
+  var chartData = chartConfig.jsonData;
+
+  if (chartData !== undefined) {
+    chartSuccess(chartConfig, chartData, thisChart);
+  } else {
+    processAnalysisChartAjax(thisId, chartConfig, thisChart)
+  }
 }
 
 function processAnnotations(loaded_annotations, chart){

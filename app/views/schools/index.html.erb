@@ -5,11 +5,10 @@ Schools
   <div class="row padded-row">
     <div class="col-lg-12">
       <h2>Participating Schools</h2>
-
-      <p>
-        These schools are using <%= t('application') %> to reduce their energy usage. See their usage data, compare
-        scores and learn about their energy saving activities
-      </p>
+      <p>These schools are using <%= t('application') %> to reduce their energy usage. See their usage data, compare scores and learn about their energy saving activities</p>
+      <% if can?(:read, BenchmarkResult) %>
+        <p>(Currently admin only) - You can also <%= link_to 'compare schools', benchmarks_path %></p>
+      <% end %>
 
     </div>
   </div>
