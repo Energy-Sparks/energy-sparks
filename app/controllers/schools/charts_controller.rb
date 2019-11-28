@@ -26,6 +26,8 @@ class Schools::ChartsController < ApplicationController
           date_ranges: get_date_ranges
         }
         @output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
+
+        render json: { charts: @output }
       end
     end
   end

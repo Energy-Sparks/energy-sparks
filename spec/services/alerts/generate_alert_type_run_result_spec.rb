@@ -27,7 +27,7 @@ module Alerts
       let(:alert_report) { Adapters::Report.new(alert_report_attributes) }
 
       before(:each) do
-        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil).and_return(adapter_instance)
+        expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil, use_max_meter_date_if_less_than_asof_date: false).and_return(adapter_instance)
         expect(adapter_instance).to receive(:analysis_date).and_return(asof_date)
       end
 

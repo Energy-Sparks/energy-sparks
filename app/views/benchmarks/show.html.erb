@@ -1,0 +1,9 @@
+<% content_for :page_title, @title %>
+
+<p class="pt-4"><%= link_to 'All benchmarks on a single page', all_benchmarks_path %></p>
+<p><%= link_to 'List of benchmarks', benchmarks_path %></p>
+<p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
+
+<% @content.each do |content| %>
+  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<% end %>
