@@ -6,7 +6,7 @@ class AggregateSchoolService
   end
 
   def aggregate_school
-    meter_data = Rails.cache.fetch(meter_data_cache_key, expires_in: 1.day) do
+    meter_data = Rails.cache.fetch(meter_data_cache_key, expires_in: 1.day, compress: false) do
       meter_collection = Amr::AnalyticsMeterCollectionFactory.new(@active_record_school).validated
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
 
@@ -45,6 +45,6 @@ class AggregateSchoolService
 private
 
   def meter_data_cache_key
-    "#{@active_record_school.id}-aggregated_meter_data-#{@active_record_school.validation_cache_key}"
+    "#{@active_record_school.id}-aggregated_meter_data-#{@active_record_school.validation_cache_key}.yaml"
   end
 end
