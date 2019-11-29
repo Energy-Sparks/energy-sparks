@@ -2,6 +2,7 @@ require 'dashboard'
 
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action :temporary_authorized?
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
@@ -33,6 +34,13 @@ class BenchmarksController < ApplicationController
   end
 
 private
+
+  def temporary_authorized?
+    unless current_user && current_user.admin?
+      flash[:error] = "You are not authorized to view that page."
+      redirect_to root_path
+    end
+  end
 
   def benchmark_results
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform
