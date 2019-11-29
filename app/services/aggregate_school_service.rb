@@ -6,21 +6,21 @@ class AggregateSchoolService
   end
 
   def aggregate_school
-    Rails.cache.fetch(cache_key, expires_in: 1.day) do
+    meter_data = Rails.cache.fetch(meter_data_cache_key, expires_in: 1.day) do
       meter_collection = Amr::AnalyticsMeterCollectionFactory.new(@active_record_school).validated
-
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
 
-      meter_collection
+      meter_collection.meter_data
     end
+    Amr::AnalyticsMeterCollectionFactory.new(@active_record_school).aggregated(meter_data)
   end
 
   def invalidate_cache
-    Rails.cache.delete(cache_key)
+    Rails.cache.delete(meter_data_cache_key)
   end
 
   def in_cache?
-    Rails.cache.exist?(cache_key)
+    Rails.cache.exist?(meter_data_cache_key)
   end
 
   def in_cache_or_cache_off?
@@ -44,7 +44,7 @@ class AggregateSchoolService
 
 private
 
-  def cache_key
-    "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection-#{@active_record_school.validation_cache_key}"
+  def meter_data_cache_key
+    "#{@active_record_school.id}-aggregated_meter_data-#{@active_record_school.validation_cache_key}"
   end
 end
