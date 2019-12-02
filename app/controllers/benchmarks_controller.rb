@@ -2,6 +2,7 @@ require 'dashboard'
 
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
@@ -38,17 +39,16 @@ class BenchmarksController < ApplicationController
 private
 
   def benchmark_results
-    @school_groups = SchoolGroup.all
     @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+    @fuel_type = params.dig(:benchmark, :fuel_type)
 
-    if @school_group_ids.empty?
-      schools = School.process_data
-    else
-      puts @school_group_ids
-      @school_group_ids.reject!(&:blank?)
-      schools = School.process_data.where(school_group_id: @school_group_ids)
-    end
+    schools = SchoolFilter.new(school_group_ids: @school_group_ids, fuel_type: @fuel_type).filter
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
+  end
+
+  def filter_lists
+    @school_groups = SchoolGroup.all
+    @fuel_types = [:gas, :electricity, :solar_pv, :storage_heaters]
   end
 
   def get_content(pages)
