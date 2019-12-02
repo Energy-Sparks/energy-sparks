@@ -23,59 +23,80 @@
   <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
 </dl>
 
-<div class="database-meter-attributes">
-  <h2>Meter-specific attributes</h2>
-  <%= form_tag new_school_meter_meter_attribute_path(@school, @meter), method: :get do %>
-    <%= select_tag :type, options_for_select(@available_meter_attributes.map{|id, attribute_type| [attribute_type.attribute_description, id]}.sort_by(&:last))%>
-    <%=  submit_tag 'New attribute', class: 'btn btn-rounded'%>
-  <% end %>
-  <% @meter.meter_attributes.each do |meter_attribute| %>
-    <h3>
-      <%= meter_attribute.description %>
-      <div class="btn-group">
-        <%= link_to 'Edit', edit_school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
-        <%= button_to 'Delete', school_meter_meter_attribute_path(@school, @meter, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
+<ul class="nav nav-tabs" id="meter-attribute-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">Meter-specific attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-meter-attributes-tab" data-toggle="tab" href="#all-meter-attributes-content" role="tab" aria-controls="all-meter-attributes-content" aria-selected="false">Final attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="old-meter-attributes-tab" data-toggle="tab" href="#old-meter-attributes-content" role="tab" aria-controls="old-meter-attributes-content" aria-selected="false">Old attributes</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="meter-attributes-tabs-content">
+  <div class="tab-pane fade show active" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
+    <h2>Meter-specific attributes</h2>
+    <%= form_tag new_school_meter_meter_attribute_path(@school, @meter), method: :get do %>
+      <%= select_tag :type, options_for_select(@available_meter_attributes.map{|id, attribute_type| [attribute_type.attribute_description, id]}.sort_by(&:last))%>
+      <%=  submit_tag 'New attribute', class: 'btn btn-rounded'%>
+    <% end %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Actions</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @meter.meter_attributes.each do |meter_attribute| %>
+          <tr>
+            <td><%= meter_attribute.description %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
+                <%= button_to 'Delete', school_meter_meter_attribute_path(@school, @meter, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
+              </div>
+            </td>
+            <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="all-meter-attributes-content" role="tabpanel" aria-labelledby="all-meter-attributes-tab">
+      <h2>Full attributes</h2>
+      <%= sanitize ap(@meter.meter_attributes_to_analytics, index: false, plain: true) %>
+    </div>
+    <div class="tab-pane fade" id="old-meter-attributes-content" role="tabpanel" aria-labelledby="old-meter-attributes-tab">
+      <div class="meter-attributes">
+        <h2>Old meter attributes</h2>
+        <% if @meter_corrections %>
+          <h3>Meter corrections</h3>
+          <%= sanitize ap(@meter_corrections, { index: false } ) %>
+        <% end %>
+
+        <% if @heating_model %>
+          <h3>Heating Model</h3>
+          <%= sanitize ap(@heating_model, { index: false } ) %>
+        <% end %>
+
+        <% if @aggregation %>
+          <h3>Aggregation</h3>
+          <%= sanitize ap(@aggregation, { index: false } ) %>
+        <% end %>
+
+        <% if @solar_pv %>
+          <h3>Solar Pv</h3>
+          <%= sanitize ap(@solar_pv, { index: false } ) %>
+        <% end %>
+
+        <% if @storage_heaters %>
+          <h3>Storage heaters</h3>
+          <%= sanitize ap(@storage_heaters, { index: false } ) %>
+        <% end %>
       </div>
-    </h3>
-    <%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %>
-  <% end %>
+    </div>
+  </div>
 </div>
-
-<div class="full-meter-attributes">
-  <h2>Full attributes</h2>
-  <%= sanitize ap(@meter.meter_attributes_to_analytics, index: false, plain: true) %>
-</div>
-
-<hr />
-<hr />
-<hr />
-<hr />
-
-<div class="meter-attributes">
-  <h2>Old meter attributes</h2>
-  <% if @meter_corrections %>
-    <h3>Meter corrections</h3>
-    <%= sanitize ap(@meter_corrections, { index: false } ) %>
-  <% end %>
-
-  <% if @heating_model %>
-    <h3>Heating Model</h3>
-    <%= sanitize ap(@heating_model, { index: false } ) %>
-  <% end %>
-
-  <% if @aggregation %>
-    <h3>Aggregation</h3>
-    <%= sanitize ap(@aggregation, { index: false } ) %>
-  <% end %>
-
-  <% if @solar_pv %>
-    <h3>Solar Pv</h3>
-    <%= sanitize ap(@solar_pv, { index: false } ) %>
-  <% end %>
-
-  <% if @storage_heaters %>
-    <h3>Storage heaters</h3>
-    <%= sanitize ap(@storage_heaters, { index: false } ) %>
-  <% end %>
-</div>
-
