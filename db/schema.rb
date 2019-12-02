@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_22_155133) do
+ActiveRecord::Schema.define(version: 2019_12_02_134427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 2019_11_22_155133) do
     t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "benchmark_result_generation_run_id"
+    t.bigint "benchmark_result_generation_run_id", null: false
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
     t.index ["benchmark_result_generation_run_id"], name: "ben_rgr_index"
   end
