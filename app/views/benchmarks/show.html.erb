@@ -37,6 +37,11 @@
   <%= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
 <% end %>
 
-<% @content.each do |content| %>
-  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<% @page_groups.each do |page_group| %>
+  <h2><%= page_group[:name] %></h2>
+  <% page_group[:benchmarks].each do |benchmark, _title| %>
+    <% @content_hash[benchmark].each do |content| %>
+      <%= render content[:type].to_s, content: content[:content], school: @school %>
+    <% end %>
+  <% end %>
 <% end %>
