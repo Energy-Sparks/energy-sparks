@@ -36,7 +36,8 @@ describe 'Benchmarks' do
   before(:each) do
     sign_in(user)
     expect(Benchmarking::BenchmarkContentManager).to receive(:new).at_least(:twice).and_return(benchmark_content_manager_instance)
-    expect(benchmark_content_manager_instance).to receive(:available_pages).at_least(:once).and_return([[:page_a, 'Page A']])
+   # expect(benchmark_content_manager_instance).to receive(:available_pages).at_least(:once).and_return([[:page_a, 'Page A']])
+    expect(benchmark_content_manager_instance).to receive(:structured_pages).at_least(:once).and_return( [ { name: 'cat1', benchmarks: { page_a: 'Page A'} } ] )
     expect(benchmark_content_manager_instance).to receive(:content).and_return(example_content)
   end
 
