@@ -34,8 +34,6 @@ module EnergySparks
     config.after_initialize do
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
-
-      MeterAttribute.analytics_meter_attributes = YAML.load_file('etc/meter_attributes.yml')
     end
   end
 end

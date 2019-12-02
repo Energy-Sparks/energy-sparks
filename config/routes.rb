@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       resources :alert_subscription_events, only: [:index, :show]
 
       resources :meters do
+        resources :meter_attributes
         member do
           put :activate
           put :deactivate

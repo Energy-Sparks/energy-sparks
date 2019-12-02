@@ -23,7 +23,36 @@
   <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
 </dl>
 
+<div class="database-meter-attributes">
+  <h2>Meter-specific attributes</h2>
+  <%= form_tag new_school_meter_meter_attribute_path(@school, @meter), method: :get do %>
+    <%= select_tag :type, options_for_select(@available_meter_attributes.map{|id, attribute_type| [attribute_type.attribute_description, id]}.sort_by(&:last))%>
+    <%=  submit_tag 'New attribute', class: 'btn btn-rounded'%>
+  <% end %>
+  <% @meter.meter_attributes.each do |meter_attribute| %>
+    <h3>
+      <%= meter_attribute.description %>
+      <div class="btn-group">
+        <%= link_to 'Edit', edit_school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
+        <%= button_to 'Delete', school_meter_meter_attribute_path(@school, @meter, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
+      </div>
+    </h3>
+    <%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %>
+  <% end %>
+</div>
+
+<div class="full-meter-attributes">
+  <h2>Full attributes</h2>
+  <%= sanitize ap(@meter.meter_attributes_to_analytics, index: false, plain: true) %>
+</div>
+
+<hr />
+<hr />
+<hr />
+<hr />
+
 <div class="meter-attributes">
+  <h2>Old meter attributes</h2>
   <% if @meter_corrections %>
     <h3>Meter corrections</h3>
     <%= sanitize ap(@meter_corrections, { index: false } ) %>
