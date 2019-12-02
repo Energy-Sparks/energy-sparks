@@ -38,12 +38,14 @@ describe 'Benchmarks' do
     expect(Benchmarking::BenchmarkContentManager).to receive(:new).at_least(:twice).and_return(benchmark_content_manager_instance)
     expect(benchmark_content_manager_instance).to receive(:structured_pages).at_least(:once).and_return( [ { name: 'cat1', benchmarks: { page_a: 'Page A'} } ] )
     expect(benchmark_content_manager_instance).to receive(:content).and_return(example_content)
-  end
 
-  it 'an admin user can view a single benchmarks' do
     visit root_path
     click_on 'Schools'
     click_on 'compare schools'
+  end
+
+  it 'an admin user can view a single benchmarks' do
+
     click_on 'Page A'
     expect(page).to have_content(example_content.detect { |a| a[:type] == :title }[:content])
     expect(page).to have_content(example_content.detect { |a| a[:type] == :html }[:content])
@@ -55,10 +57,6 @@ describe 'Benchmarks' do
   end
 
   it 'an admin user can view all the benchmarks' do
-    expect(benchmark_content_manager_instance).to receive(:available_pages).at_least(:once).and_return([[:page_a, 'Page A']])
-    visit root_path
-    click_on 'Schools'
-    click_on 'compare schools'
     click_on 'See all on one page'
     expect(page).to have_content(example_content.detect { |a| a[:type] == :title }[:content])
     expect(page).to have_content(example_content.detect { |a| a[:type] == :html }[:content])
