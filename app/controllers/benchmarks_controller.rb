@@ -5,7 +5,7 @@ class BenchmarksController < ApplicationController
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
-    @content_list = available_pages
+    @page_groups = content_manager.structured_pages
     @school_groups = SchoolGroup.all
   end
 
