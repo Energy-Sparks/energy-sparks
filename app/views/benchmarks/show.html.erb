@@ -4,9 +4,27 @@
 <p><%= link_to 'List of benchmarks', benchmarks_path %></p>
 <p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
 
+
+
+<p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#benchmarkErrors" role="button" aria-expanded="false" aria-controls="benchmarkErrors">
+    See errors from the benchmark content framework when generating content
+  </a>
+</p>
+<div class="collapse" id="benchmarkErrors">
+  <% if can?(:read, :benchmark_errors_messages) %>
+    <% @errors.each do |error| %>
+     <div class="card card-body">
+      <h4><%= error[:message] %></h4>
+      <p class="very-small"><%= sanitize error[:full_html_output] %></p>
+        </div>
+    <% end %>
+  <% end %>
+</div>
+
 <%= form_tag @form_path, method: :get do %>
   <h2>Filters</h2>
-  <%#= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
+
   <%= hidden_field_tag :benchmark_type, @page if @page %>
   <fieldset class="form-group">
     <legend>School Groups</legend>
@@ -37,6 +55,11 @@
   <%= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
 <% end %>
 
-<% @content.each do |content| %>
-  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<% @page_groups.each do |page_group| %>
+  <h2><%= page_group[:name] %></h2>
+  <% page_group[:benchmarks].each do |benchmark, _title| %>
+    <% @content_hash[benchmark].each do |content| %>
+      <%= render content[:type].to_s, content: content[:content], school: @school %>
+    <% end %>
+  <% end %>
 <% end %>
