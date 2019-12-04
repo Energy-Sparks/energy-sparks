@@ -3,7 +3,7 @@ GIT
   revision: e3338ef6871c28e21361522c3e7f99086b9895d0
   tag: meter-attributes-spike
   specs:
-    energy-sparks_analytics (0.54.2)
+    energy-sparks_analytics (0.54.6)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)

@@ -1,0 +1,11 @@
+<% content_for :page_title, 'Benchmarks' %>
+
+<h1>Benchmarks</h1>
+
+<p><%= link_to 'See all on one page', all_benchmarks_path %></p>
+
+<ul>
+  <% @content_list.each do |content| %>
+    <li><%= link_to content.second, benchmark_path(benchmark_type: content.first) %></li>
+  <% end %>
+</ul>

@@ -3,4 +3,7 @@
     This equivalence will not be shown as one or more of the values is not significant enough (e.g. less than 1.0)
   </div>
 <% end %>
+<div class="alert alert-primary">
+  Dates: <%= @equivalence.from_date.try(:strftime, '%d/%m/%Y')%> - <%= @equivalence.to_date.try(:strftime, '%d/%m/%Y')%>
+</div>
 <%= render 'pupils/schools/preview_equivalence', equivalence_content: @equivalence_content %>

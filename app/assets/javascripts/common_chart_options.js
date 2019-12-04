@@ -12,6 +12,7 @@ Highcharts.setOptions({
 
 function commonChartOptions(clickListener){
   return {
+    colors: ['#97E6FC', '#007EFF', '#FCB43A', '#FF3A3B', '#50E3C2', '#FF8438'],
     title: { text: null },
     xAxis: { showEmpty: false },
     yAxis: { showEmpty: false },
@@ -142,12 +143,12 @@ function teachersChartOptions(pointFormat) {
   }
 }
 
-function teachersColumn(chart_data, chart, seriesData) {
+function teachersColumn(chartData, chart, seriesData) {
 
   console.log('Teachers column chart');
 
-  var xAxisCategories = chart_data.x_axis_categories;
-  var yAxisLabel = chart_data.y_axis_label;
+  var xAxisCategories = chartData.x_axis_categories;
+  var yAxisLabel = chartData.y_axis_label;
 
   chart.xAxis[0].setCategories(xAxisCategories);
   chart.update(teachersChartOptions(orderedPointFormat(yAxisLabel)));
@@ -160,20 +161,28 @@ function teachersColumn(chart_data, chart, seriesData) {
   chart.redraw();
 }
 
-function barColumnLine(d, c, seriesData, chartType, noZoom) {
-  var subChartType = d.chart1_subtype;
-  console.log('bar or column or line ' + subChartType);
+function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
+  var subChartType = chartData.chart1_subtype;
+  var chartType = chartData.chart1_type;
 
-  var xAxisCategories = d.x_axis_categories;
-  var yAxisLabel = d.y_axis_label;
-  var y2AxisLabel = d.y2_axis_label;
+  console.log(chartType + ' ' + subChartType);
 
-  c.xAxis[0].setCategories(xAxisCategories);
+  var xAxisCategories = chartData.x_axis_categories;
+  var yAxisLabel = chartData.y_axis_label;
+  var y2AxisLabel = chartData.y2_axis_label;
+
+  var noAdvice = chartConfig.no_advice;
+  var noZoom = chartConfig.no_zoom;
+
+  highchartsChart.xAxis[0].setCategories(xAxisCategories);
 
   // BAR Charts
   if (chartType == 'bar') {
-    console.log('bar');
-    c.update({ chart: { inverted: true }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+    if (chartData.uses_time_of_day) {
+      console.log('time of day set');
+      highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
+    }
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 300, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
   }
 
   // LINE charts
@@ -193,10 +202,10 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
         axisTitle = 'Brightness of sunshine W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
-      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true});
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
+      highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true});
+      highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     } else {
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
+      highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
     }
   }
 
@@ -204,13 +213,13 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
   if (chartType == 'column') {
     console.log('column: ' + subChartType);
     if (! noZoom) {
-      c.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+      highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
     }
 
     if (subChartType == 'stacked') {
-      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     } else {
-      c.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
 
     if (y2AxisLabel) {
@@ -235,8 +244,8 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
         axisTitle = 'Brightness of sunshine W/m2';
         pointFormat = '{point.y:.2f} W/m2';
       }
-      c.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max});
-      c.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
+      highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max});
+      highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
     }
   }
 
@@ -244,7 +253,7 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
     console.log('Series data name: ' + seriesData[key].name);
 
     if (seriesData[key].name == 'CUSUM') {
-      c.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
+      highchartsChart.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
 
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
@@ -252,13 +261,13 @@ function barColumnLine(d, c, seriesData, chartType, noZoom) {
       seriesData[key].tooltip = { pointFormat: orderedPointFormat(yAxisLabel) }
     }
     // The false parameter stops it being redrawed after every addition of series data
-    c.addSeries(seriesData[key], false);
+    highchartsChart.addSeries(seriesData[key], false);
   });
 
-  updateChartLabels(d, c);
-  normaliseYAxis(c);
+  updateChartLabels(chartData, highchartsChart);
+  normaliseYAxis(highchartsChart);
 
-  c.redraw();
+  highchartsChart.redraw();
 }
 
 function updateChartLabels(data, chart){
@@ -291,29 +300,29 @@ function isAStringAndStartsWith(thing, startingWith) {
   return (typeof thing === 'string' || thing instanceof String) && thing.startsWith(startingWith);
 }
 
-function scatter(d, c, seriesData) {
+function scatter(chartData, highchartsChart, seriesData) {
   console.log('scatter');
 
 
-  updateChartLabels(d, c);
-  c.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+  updateChartLabels(chartData, c);
+  highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
 
   Object.keys(seriesData).forEach(function (key) {
     console.log(seriesData[key].name);
-    c.addSeries(seriesData[key], false);
+    highchartsChart.addSeries(seriesData[key], false);
   });
   normaliseYAxis(c);
-  c.redraw();
+  highchartsChart.redraw();
 }
 
-function pie(d, c, seriesData, $chartDiv) {
+function pie(chartData, highchartsChart, seriesData, $chartDiv) {
   $chartDiv.addClass('pie-chart');
   var chartHeight = $chartDiv.height();
-  var yAxisLabel = d.y_axis_label;
+  var yAxisLabel = chartData.y_axis_label;
 
-  c.addSeries(seriesData, false);
-  c.update({chart: {
+  highchartsChart.addSeries(seriesData, false);
+  highchartsChart.update({chart: {
     height: chartHeight,
     plotBackgroundColor: null,
     plotBorderWidth: null,
@@ -329,7 +338,7 @@ function pie(d, c, seriesData, $chartDiv) {
     }
   }
   });
-  c.redraw();
+  highchartsChart.redraw();
 }
 
 function orderedPointFormat(label){

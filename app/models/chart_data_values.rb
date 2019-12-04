@@ -2,7 +2,8 @@ class ChartDataValues
   attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
-              :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description
+              :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
+              :uses_time_of_day
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   MIDDLE_ELECTRICITY = '#02B8FF'.freeze
@@ -31,10 +32,10 @@ class ChartDataValues
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
     SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
     'electricity' => MIDDLE_ELECTRICITY,
-    '' => '#ff4500',
     'gas' => MIDDLE_GAS,
     'solar pv (consumed onsite)' => '#ffac21',
-    'storage heaters' => "#501e74",
+    'storage heater' => "#501e74",
+    '£' => '#232B49'
   }.freeze
 
 
@@ -65,6 +66,7 @@ class ChartDataValues
       @allowed_operations = allowed_operations
       @drilldown_available = drilldown_available
       @parent_timescale_description = parent_timescale_description
+      @uses_time_of_day = false
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
@@ -110,11 +112,15 @@ class ChartDataValues
     end
   end
 
-private
+  def work_out_best_colour(data_type)
+    from_hash = COLOUR_HASH[data_type]
+    return from_hash unless from_hash.nil?
 
-  def colour_hash
-    COLOUR_HASH
+    using_name = COLOUR_HASH.detect { |key, _colour| data_type.to_s.include?(key) }
+    return using_name.second unless using_name.nil?
   end
+
+private
 
   def format_teachers_label(full_label)
     # Remove leading Energy:
@@ -158,7 +164,13 @@ private
   def column_or_bar
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
-      colour = colour_hash[data_type]
+      colour = work_out_best_colour(data_type)
+
+      # ToDo is there a better way we can detect this reliably?
+      if data.detect { |record| record.is_a?(TimeOfDay) }
+        @uses_time_of_day = true
+        data = data.map { |record| record.present? ? convert_relative_time(record.relative_time) : nil }
+      end
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
@@ -167,7 +179,7 @@ private
       @y2_axis_label = @y2_data.keys[0]
       @y2_data.each do |data_type, data|
         data_type = 'Solar irradiance (brightness of sunshine)' if data_type.start_with?('Solar')
-        @series_data << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
+        @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
       end
     end
   end
@@ -177,7 +189,7 @@ private
       scatter_data = @x_axis_categories.each_with_index.collect do |one_x_axis_point, index|
         [one_x_axis_point, data[index]]
       end
-      @series_data << { name: data_type, color: colour_hash[data_type], data: scatter_data }
+      @series_data << { name: data_type, color: work_out_best_colour(data_type), data: scatter_data }
     end
   end
 
@@ -207,7 +219,7 @@ private
 
       @y2_data.each do |data_type, data|
         data_type = tidy_and_keep_label(data_type)
-        @series_data << { name: data_type, color: colour_hash[data_type], type: 'line', data: data, yAxis: 1 }
+        @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
       end
     else
       @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
@@ -219,7 +231,7 @@ private
 
   def pie
     data_points = @x_data_hash.map do |data_type, data|
-      { name: data_type, color: colour_hash[data_type], type: @chart1_type, y: data[0] }
+      { name: data_type, color: work_out_best_colour(data_type), type: @chart1_type, y: data[0] }
     end
     @series_data = { name: @title, colorByPoint: true, data: data_points }
   end
@@ -230,6 +242,10 @@ private
     else
       @x_data
     end
+  end
+
+  def convert_relative_time(relative_time, offset = 1.hour)
+    (relative_time + offset).to_i * 1000
   end
 
   def label_is_energy_plus?(label)

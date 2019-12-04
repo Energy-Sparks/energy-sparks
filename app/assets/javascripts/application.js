@@ -44,3 +44,5 @@
 //= require temperature_recordings
 //= require trix_customisations
 //= require multi_select
+
+//= require table_sorting
