@@ -99,6 +99,17 @@
 </table>
 </div>
 
+<% if can?(:read, :meter_collection_download) %>
+  <hr/>
+  <h4>Download YAML files</h4>
+  <div class="other-actions mb-3">
+    <%= link_to 'Unvalidated meter collection', admin_school_unvalidated_meter_collection_path(@school, format: :yaml), class: 'btn btn-sm' %>
+    <%= link_to 'Validated meter collection', admin_school_validated_meter_collection_path(@school, format: :yaml), class: 'btn btn-sm' %>
+    <%= link_to 'Aggregated meter collection', admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn btn-sm' %>
+  </div>
+  <hr/>
+<% end %>
+
 <div class="card bg-light mb-3">
   <div class="card-header"><h4>New meter</h4></div>
   <div class="card-body">
