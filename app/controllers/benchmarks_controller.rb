@@ -39,17 +39,13 @@ class BenchmarksController < ApplicationController
 private
 
   def page_groups
-    # Can't pass a hash as a parameter to the existing analytics method as it currently accepts normal parameters
-    # def self.structured_pages(_user_type_hash, filter_out = nil)
+    user_type_hash = if current_user
+                       { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
+                     else
+                       { user_role: :guest, staff_role: nil }
+                     end
 
-    # user_type_hash = if current_user
-    #                    { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
-    #                  else
-    #                    { user_role: :guest, staff_role: nil }
-    #                  end
-
-    # @page_groups = content_manager.structured_pages(user_type_hash)
-    @page_groups = content_manager.structured_pages
+    @page_groups = content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
   end
 
   def filter_lists
