@@ -13,16 +13,12 @@ class BenchmarksController < ApplicationController
     respond_to do |format|
       format.html do
         @page = params[:benchmark_type].to_sym
-        #results_hash = get_content([@page])
+        @page_groups = [{ name: '', benchmarks: { @page => @page } }]
 
-        @page_groups = [{
-          name: '', benchmarks: { @page => @page }
-        }]
-
+        @content_hash = {}
         @errors = []
         @form_path = benchmark_path
 
-        @content_hash = {}
         @content_hash[@page] = filter_content(content_for_page(@page, @errors))
       end
       format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
@@ -30,22 +26,16 @@ class BenchmarksController < ApplicationController
   end
 
   def show_all
-    # @content_list = available_pages
-    # results_hash = get_content(available_pages)
-
-    # @content = results_hash[:content]
-    # @errors = results_hash[:errors]
     @title = 'All benchmark results'
-    @form_path = all_benchmarks_path
-
     @page_groups = content_manager.structured_pages
 
     @content_hash = {}
-    errors = []
+    @errors = []
+    @form_path = all_benchmarks_path
 
     @page_groups.each do |heading_hash|
       heading_hash[:benchmarks].each do |page, _title|
-        @content_hash[page] = filter_content(content_for_page(page, errors))
+        @content_hash[page] = filter_content(content_for_page(page, @errors))
       end
     end
 
@@ -75,27 +65,6 @@ private
   def filter_lists
     @school_groups = SchoolGroup.all
     @fuel_types = [:gas, :electricity, :solar_pv, :storage_heaters]
-  end
-
-  def get_content(pages)
-    all_content = []
-    errors = []
-
-    pages.each do |page, title|
-      begin
-        all_content << content_manager.content(@benchmark_results, page)
-        # rubocop:disable Lint/RescueException
-      rescue Exception => e
-        # rubocop:enable Lint/RescueException
-        errors << "Exception: #{title}: #{e.class} #{e.message} #{e.backtrace.join("\n")}"
-      end
-    end
-
-    { content: filter_content(all_content.flatten), errors: errors }
-  end
-
-  def available_pages(filter: nil, school_ids: nil)
-    content_manager.available_pages(filter: filter, school_ids: school_ids)
   end
 
   def filter_content(all_content)
