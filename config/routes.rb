@@ -142,7 +142,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :benchmark_result_generation_runs, only: [:index, :show]
+    #resources :benchmark_result_generation_runs, only: [:index, :show]
     resources :newsletters
     resources :school_groups
     resources :activity_categories, except: [:destroy]
@@ -197,6 +197,7 @@ Rails.application.routes.draw do
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
+      resources :benchmark_result_generation_runs, only: [:index, :show]
     end
     resource :settings, only: [:show, :update]
 
