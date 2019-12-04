@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 3f481fa19823dc0d27881787af834d55f00d34c5
-  tag: 0.54.7-meter-attribute
+  revision: d235d87c9650df58b1e5a70bcc167607e9cb2b20
+  tag: 0.54.7-meter-attribute-a
   specs:
-    energy-sparks_analytics (0.54.7.pre.meter.pre.attributes)
+    energy-sparks_analytics (0.54.7.pre.meter.pre.attributes.pre.a)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
