@@ -1,0 +1,68 @@
+<h1>Benchmark Results</h1>
+<p>Run at <%= nice_date_times @benchmark_result_generation_run.created_at %></p>
+
+<%= link_to 'All benchmark generation runs', admin_reports_benchmark_result_generation_runs_path %>
+
+<h3>Benchmark results (<%= @benchmark_result_generation_run.benchmark_results.count %>)</h3>
+<p>These benchmark alerts all came back with valid and relevant data</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Alert Type</th>
+      <th>Asof date</th>
+      <th>Variable short name</th>
+      <th>Variable value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @benchmark_result_generation_run.benchmark_result_school_generation_runs.each do |benchmark_result_school_generation_run| %>
+      <tr>
+        <td colspan="4" class='bg-warning'><%= benchmark_result_school_generation_run.school.name %></td>
+      </tr>
+      <% benchmark_result_school_generation_run.benchmark_results.each do |benchmark_result| %>
+        <% benchmark_result.data.each_with_index do |(key, value), index| %>
+          <tr>
+            <% if index.zero? %>
+              <td><%= benchmark_result.alert_type.title %></td>
+              <td><%= nice_dates benchmark_result.asof %></td>
+            <% else %>
+              <td></td>
+              <td></td>
+            <% end %>
+            <td><%= key %></td>
+            <td><%= value %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Benchmark errors (<%= @benchmark_result_generation_run.benchmark_result_errors.count %>)</h3>
+<p>These benchmark alerts all came back with irrelevant, invalid or threw an exception</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Alert Type</th>
+      <th>Asof date</th>
+      <th>Information</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @benchmark_result_generation_run.benchmark_result_school_generation_runs.each do |benchmark_result_school_generation_run| %>
+      <tr>
+        <td colspan="4" class='bg-warning'><%= benchmark_result_school_generation_run.school.name %></td>
+      </tr>
+      <% benchmark_result_school_generation_run.benchmark_result_errors.each do |benchmark_result_error| %>
+        <tr>
+          <td><%= benchmark_result_error.alert_type.title %></td>
+          <td><%= nice_dates benchmark_result_error.asof_date %></td>
+          <td><%= benchmark_result_error.information %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'All benchmark generation runs', admin_reports_benchmark_result_generation_runs_path %>
