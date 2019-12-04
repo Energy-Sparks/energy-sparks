@@ -2,11 +2,11 @@ require 'dashboard'
 
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action :page_groups, only: [:index, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
-    @page_groups = content_manager.structured_pages
   end
 
   def show
@@ -14,6 +14,7 @@ class BenchmarksController < ApplicationController
       format.html do
         @page = params[:benchmark_type].to_sym
         @page_groups = [{ name: '', benchmarks: { @page => @page } }]
+        @form_path = benchmark_path
 
         sort_content_and_page_groups(@page_groups)
       end
@@ -24,8 +25,6 @@ class BenchmarksController < ApplicationController
   def show_all
     @title = 'All benchmark results'
     @form_path = all_benchmarks_path
-
-    @page_groups = content_manager.structured_pages
 
     sort_content_and_page_groups(@page_groups)
 
@@ -58,6 +57,21 @@ private
     {}
   end
 
+  def page_groups
+    user_type_hash = if current_user
+                       { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
+                     else
+                       { user_role: :guest, staff_role: nil }
+                     end
+
+    @page_groups = content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
+  end
+
+  def filter_lists
+    @school_groups = SchoolGroup.all
+    @fuel_types = [:gas, :electricity, :solar_pv, :storage_heaters]
+  end
+
   def benchmark_results
     @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
     @fuel_type = params.dig(:benchmark, :fuel_type)
@@ -66,37 +80,17 @@ private
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
-  def filter_lists
-    @school_groups = SchoolGroup.all
-    @fuel_types = [:gas, :electricity, :solar_pv, :storage_heaters]
-  end
-
-  def get_content(pages)
-    all_content = []
-    errors = []
-
-    pages.each do |page, title|
-      begin
-        all_content << content_manager.content(@benchmark_results, page)
-        # rubocop:disable Lint/RescueException
-      rescue Exception => e
-        # rubocop:enable Lint/RescueException
-        errors << "Exception: #{title}: #{e.class} #{e.message} #{e.backtrace.join("\n")}"
-      end
-    end
-
-    { content: filter_content(all_content.flatten), errors: errors }
-  end
-
-  def available_pages(filter: nil, school_ids: nil)
-    content_manager.available_pages(filter: filter, school_ids: school_ids)
+  def content_manager(date = Time.zone.today)
+    Benchmarking::BenchmarkContentManager.new(date)
   end
 
   def filter_content(all_content)
-    all_content.select { |content| content.present? && [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present? }
+    all_content.select { |content| content_select?(content) }
   end
 
-  def content_manager(date = Time.zone.today)
-    Benchmarking::BenchmarkContentManager.new(date)
+  def content_select?(content)
+    return false unless content.present?
+
+    [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
   end
 end
