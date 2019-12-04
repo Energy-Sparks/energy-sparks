@@ -12,7 +12,7 @@ Highcharts.setOptions({
 
 function commonChartOptions(clickListener){
   return {
-    colors: ['#97E6FC', '#007EFF', '#FCB43A', '#FF3A3B', '#50E3C2', '#FF8438'],
+    colors: ['#02B8FF', '#007EFF', '#FCB43A', '#FF3A3B', '#50E3C2', '#FF8438'],
     title: { text: null },
     xAxis: { showEmpty: false },
     yAxis: { showEmpty: false },

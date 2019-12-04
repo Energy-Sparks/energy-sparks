@@ -87,6 +87,11 @@ class User < ApplicationRecord
     name || email
   end
 
+  def staff_role_as_symbol
+    return nil unless staff_role
+    staff_role.as_symbol
+  end
+
   def self.new_pupil(school, attributes)
     new(
       attributes.merge(

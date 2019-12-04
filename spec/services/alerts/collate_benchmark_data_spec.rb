@@ -51,8 +51,19 @@ module Alerts
       }
     }
 
+    let!(:example_output_school_1) {
+      {
+        date_1 => { school_1.id => benchmark_result_1.data.merge(benchmark_result_3.data) },
+        date_2 => { school_1.id => benchmark_result_2.data.merge(benchmark_result_4.data) }
+      }
+    }
+
     it 'does the stuff' do
       expect(CollateBenchmarkData.new.perform).to eq example_output
+    end
+
+    it 'collates filtering by school' do
+      expect(CollateBenchmarkData.new.perform([school_1])).to eq example_output_school_1
     end
   end
 end

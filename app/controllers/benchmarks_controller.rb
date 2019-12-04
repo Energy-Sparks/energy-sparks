@@ -2,68 +2,104 @@ require 'dashboard'
 
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
+
+  before_action :temporary_authorized?
+  before_action :page_groups, only: [:index, :show_all]
+  before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
-    @content_list = available_pages
   end
 
   def show
     respond_to do |format|
       format.html do
         @page = params[:benchmark_type].to_sym
-        results_hash = get_content([@page])
+        @page_groups = [{ name: '', benchmarks: { @page => @page } }]
+        @form_path = benchmark_path
 
-        @content = results_hash[:content]
-        @errors = results_hash[:errors]
+        sort_content_and_page_groups(@page_groups)
       end
       format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
     end
   end
 
   def show_all
-    @content_list = available_pages
-    results_hash = get_content(available_pages)
-
-    @content = results_hash[:content]
-    @errors = results_hash[:errors]
     @title = 'All benchmark results'
+    @form_path = all_benchmarks_path
+
+    sort_content_and_page_groups(@page_groups)
 
     render :show
   end
 
 private
 
-  def benchmark_results
-    @benchmark_results = Alerts::CollateBenchmarkData.new.perform
-  end
+  def sort_content_and_page_groups(page_groups)
+    @content_hash = {}
+    @errors = []
 
-  def get_content(pages)
-    all_content = []
-    errors = []
-
-    pages.each do |page, title|
-      begin
-        all_content << content_manager.content(@benchmark_results, page)
-        # rubocop:disable Lint/RescueException
-      rescue Exception => e
-        # rubocop:enable Lint/RescueException
-        errors << "Exception: #{title}: #{e.class} #{e.message} #{e.backtrace.join("\n")}"
+    page_groups.each do |heading_hash|
+      heading_hash[:benchmarks].each do |page, _title|
+        @content_hash[page] = filter_content(content_for_page(page, @errors))
       end
     end
-
-    { content: filter_content(all_content.flatten), errors: errors }
   end
 
-  def available_pages(filter: nil, school_ids: nil)
-    content_manager.available_pages(filter: filter, school_ids: school_ids)
+  def content_for_page(page, errors = [])
+    content_manager.content(@benchmark_results, page)
+    # rubocop:disable Lint/RescueException
+  rescue Exception => e
+    # rubocop:enable Lint/RescueException
+    error_message = "Exception: #{page}: #{e.class} #{e.message}"
+
+    backtrace = e.backtrace.select { |b| b.include?('analytics')}.join("<br>")
+    full_html_output = "Exception: #{page}: #{e.class} #{e.message} #{backtrace}"
+    errors << { message: error_message, full_html_output: full_html_output }
+    {}
   end
 
-  def filter_content(all_content)
-    all_content.select { |content| [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present? }
+  def page_groups
+    user_type_hash = if current_user
+                       { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
+                     else
+                       { user_role: :guest, staff_role: nil }
+                     end
+
+    @page_groups = content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
+  end
+
+  def filter_lists
+    @school_groups = SchoolGroup.all
+    @fuel_types = [:gas, :electricity, :solar_pv, :storage_heaters]
+  end
+
+  def benchmark_results
+    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+    @fuel_type = params.dig(:benchmark, :fuel_type)
+
+    schools = SchoolFilter.new(school_group_ids: @school_group_ids, fuel_type: @fuel_type).filter
+    @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
   def content_manager(date = Time.zone.today)
     Benchmarking::BenchmarkContentManager.new(date)
+  end
+
+  def filter_content(all_content)
+    all_content.select { |content| content_select?(content) }
+  end
+
+  def content_select?(content)
+    return false unless content.present?
+
+    [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
+  end
+
+  def temporary_authorized?
+    unless current_user && current_user.admin?
+      flash[:error] = "You are not authorized to view that page."
+      redirect_to root_path
+    end
   end
 end
