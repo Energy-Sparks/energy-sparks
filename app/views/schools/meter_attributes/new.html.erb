@@ -1,0 +1,10 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>New attribute: <%= @meter_attribute_type.attribute_description %></h1>
+    <%= simple_form_for :attribute, url: school_meter_meter_attributes_path(@school, @meter), html: { novalidate: false } do |form| %>
+      <%= form.hidden_field :type, value: @meter_attribute_type.attribute_id %>
+      <%= render @meter_attribute_type.attribute_structure.type.to_s, field: @meter_attribute_type.attribute_structure, field_name: 'root', form: form, label: '', value: nil%>
+      <%= form.submit 'Create', class: 'btn btn-rounded'%>
+    <% end %>
+  </div>
+</div>
