@@ -9,7 +9,7 @@ module Schools
     end
 
     def create
-      @meter.meter_attributes.create!(attribute_type: params[:attribute][:type], input_data: params[:attribute][:root])
+      @meter.meter_attributes.create!(attribute_type: params[:attribute][:type], reason: params[:attribute][:reason], input_data: params[:attribute][:root])
       redirect_to school_meter_path(@school, @meter)
     end
 
@@ -23,7 +23,7 @@ module Schools
       @meter_attribute = @meter.meter_attributes.find(params[:id])
       authorize! :edit, @attribute
       @input_data = params[:attribute][:root]
-      if @meter_attribute.update(input_data: @input_data)
+      if @meter_attribute.update(input_data: @input_data, reason: params[:attribute][:reason])
         redirect_to school_meter_path(@school, @meter)
       else
         render :edit

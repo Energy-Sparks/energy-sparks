@@ -7,6 +7,7 @@
 #  id             :bigint(8)        not null, primary key
 #  input_data     :json
 #  meter_id       :bigint(8)        not null
+#  reason         :text
 #  updated_at     :datetime         not null
 #
 # Indexes

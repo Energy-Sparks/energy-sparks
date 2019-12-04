@@ -4,6 +4,8 @@
     <%= simple_form_for :attribute, url: school_meter_meter_attributes_path(@school, @meter), html: { novalidate: false } do |form| %>
       <%= form.hidden_field :type, value: @meter_attribute_type.attribute_id %>
       <%= render @meter_attribute_type.attribute_structure.type.to_s, field: @meter_attribute_type.attribute_structure, field_name: 'root', form: form, label: '', value: nil%>
+      <hr />
+      <%= form.input :reason, input_html: {value: params.dig(:attribute, :reason)}, required: false %>
       <%= form.submit 'Create', class: 'btn btn-rounded'%>
     <% end %>
   </div>

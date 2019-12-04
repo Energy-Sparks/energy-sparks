@@ -48,6 +48,7 @@
       <thead>
         <tr>
           <th>Type</th>
+          <th>Reason</th>
           <th>Actions</th>
           <th>Output</th>
         </tr>
@@ -56,6 +57,7 @@
         <% @meter.meter_attributes.each do |meter_attribute| %>
           <tr>
             <td><%= meter_attribute.description %></td>
+            <td><%= meter_attribute.reason %></td>
             <td>
               <div class="btn-group">
                 <%= link_to 'Edit', edit_school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
