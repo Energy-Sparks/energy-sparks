@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 2019_11_28_160023) do
     t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "benchmark_result_generation_run_id"
+    t.bigint "benchmark_result_generation_run_id", null: false
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
     t.index ["benchmark_result_generation_run_id"], name: "ben_rgr_index"
   end

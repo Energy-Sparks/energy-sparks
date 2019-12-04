@@ -4,6 +4,44 @@
 <p><%= link_to 'List of benchmarks', benchmarks_path %></p>
 <p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
 
-<% @content.each do |content| %>
-  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<%= form_tag @form_path, method: :get do %>
+  <h2>Filters</h2>
+  <%#= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
+  <%= hidden_field_tag :benchmark_type, @page if @page %>
+  <fieldset class="form-group">
+    <legend>School Groups</legend>
+    <%= collection_check_boxes :benchmark, :school_group_ids, @school_groups, :id, :name, { multiple: true } do |b| %>
+      <div class="custom-control custom-checkbox">
+
+        <%= b.check_box( checked: @school_group_ids.include?(b.object.id.to_s), class: "custom-control-input") %>
+        <%= b.label(class: "custom-control-label") do %>
+          <%= b.object.name %>
+        <% end %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <legend>Fuel Type</legend>
+    <div class="form-check form-check-inline">
+      <%= radio_button_tag 'benchmark[fuel_type]', "", @fuel_type.blank? , class: 'form-check-input' %>
+      <%= label_tag "benchmark[fuel_type][no_filter]", 'All fuel types', class: 'form-check-label' %>
+    </div>
+    <% @fuel_types.each do |fuel_type| %>
+      <div class="form-check form-check-inline">
+        <%= radio_button_tag 'benchmark[fuel_type]', fuel_type, @fuel_type ? (@fuel_type.to_sym == fuel_type.to_sym) : false , class: 'form-check-input' %>
+        <%= label_tag "benchmark[fuel_type][#{fuel_type}]", fuel_type.to_s.humanize.capitalize, class: 'form-check-label' %>
+      </div>
+    <% end %>
+  </fieldset>
+  <%= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
+<% end %>
+
+<% @page_groups.each do |page_group| %>
+  <h2><%= page_group[:name] %></h2>
+  <% page_group[:benchmarks].each do |benchmark, _title| %>
+    <% @content_hash[benchmark].each do |content| %>
+      <%= render content[:type].to_s, content: content[:content], school: @school %>
+    <% end %>
+  <% end %>
 <% end %>

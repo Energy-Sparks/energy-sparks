@@ -60,6 +60,19 @@ describe User do
 
     end
   end
+
+  describe 'staff roles as symbols' do
+
+    it 'returns nil if no staff role' do
+      expect(User.new().staff_role_as_symbol).to be nil
+    end
+
+    it 'returns symbol if staff role' do
+      staff_role_title = 'Awkward/Tricky and space'
+      staff = build(:user, staff_role: build(:staff_role, title: staff_role_title))
+      expect(staff.staff_role_as_symbol).to be :awkward_tricky_and_space
+    end
+  end
 end
 
 

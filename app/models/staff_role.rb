@@ -13,4 +13,8 @@ class StaffRole < ApplicationRecord
   has_many :users
 
   enum dashboard: [:management, :teachers]
+
+  def as_symbol
+    title.parameterize.underscore.to_sym
+  end
 end
