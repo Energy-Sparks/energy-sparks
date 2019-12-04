@@ -93,8 +93,8 @@ class Meter < ApplicationRecord
     end
   end
 
-  def _old_meter_attributes
-    MeterAttributeCache.for(school.urn, mpan_mprn)
+  def _old_meter_attributes(attributes_class = MeterAttributeCache)
+    attributes_class.for(school.urn, mpan_mprn)
   end
 
   def attributes(attribute_type)

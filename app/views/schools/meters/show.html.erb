@@ -38,9 +38,11 @@
 <div class="tab-content" id="meter-attributes-tabs-content">
   <div class="tab-pane fade show active" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
     <h2>Meter-specific attributes</h2>
-    <%= form_tag new_school_meter_meter_attribute_path(@school, @meter), method: :get do %>
-      <%= select_tag :type, options_for_select(@available_meter_attributes.map{|id, attribute_type| [attribute_type.attribute_description, id]}.sort_by(&:last))%>
-      <%=  submit_tag 'New attribute', class: 'btn btn-rounded'%>
+    <% if can?(:create, MeterAttribute) %>
+      <%= form_tag new_school_meter_meter_attribute_path(@school, @meter), method: :get do %>
+        <%= select_tag :type, options_for_select(@available_meter_attributes.map{|id, attribute_type| [attribute_type.attribute_description, id]}.sort_by(&:last))%>
+        <%=  submit_tag 'New attribute', class: 'btn btn-rounded'%>
+      <% end %>
     <% end %>
     <table class="table table-striped">
       <thead>

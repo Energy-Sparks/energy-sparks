@@ -31,7 +31,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       expect(gas_meter.meter_attributes.first.to_analytics.to_s).to include('800')
 
 
-      within '.database-meter-attributes' do
+      within '#database-meter-attributes-content' do
         click_on 'Edit'
       end
 
@@ -42,7 +42,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       gas_meter.reload
       expect(gas_meter.meter_attributes.first.to_analytics.to_s).to include('200')
 
-      within '.database-meter-attributes' do
+      within '#database-meter-attributes-content' do
         click_on 'Delete'
       end
       expect(gas_meter.meter_attributes.size).to eq(0)
