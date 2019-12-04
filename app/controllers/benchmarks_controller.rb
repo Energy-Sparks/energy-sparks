@@ -5,7 +5,6 @@ class BenchmarksController < ApplicationController
   before_action :page_groups, only: [:index, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
-  before_action :set_up_content_and_errors, only: [:show, :show_all]
 
   def index
   end
@@ -15,9 +14,9 @@ class BenchmarksController < ApplicationController
       format.html do
         @page = params[:benchmark_type].to_sym
         @page_groups = [{ name: '', benchmarks: { @page => @page } }]
-
         @form_path = benchmark_path
-        @content_hash[@page] = filter_content(content_for_page(@page, @errors))
+
+        sort_content_and_page_groups(@page_groups)
       end
       format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
     end
@@ -27,16 +26,36 @@ class BenchmarksController < ApplicationController
     @title = 'All benchmark results'
     @form_path = all_benchmarks_path
 
-    @page_groups.each do |heading_hash|
-      heading_hash[:benchmarks].each do |page, _title|
-        @content_hash[page] = filter_content(content_for_page(page, @errors))
-      end
-    end
+    sort_content_and_page_groups(@page_groups)
 
     render :show
   end
 
 private
+
+  def sort_content_and_page_groups(page_groups)
+    @content_hash = {}
+    @errors = []
+
+    page_groups.each do |heading_hash|
+      heading_hash[:benchmarks].each do |page, _title|
+        @content_hash[page] = filter_content(content_for_page(page, @errors))
+      end
+    end
+  end
+
+  def content_for_page(page, errors = [])
+    content_manager.content(@benchmark_results, page)
+    # rubocop:disable Lint/RescueException
+  rescue Exception => e
+    # rubocop:enable Lint/RescueException
+    error_message = "Exception: #{page}: #{e.class} #{e.message}"
+
+    backtrace = e.backtrace.select { |b| b.include?('analytics')}.join("<br>")
+    full_html_output = "Exception: #{page}: #{e.class} #{e.message} #{backtrace}"
+    errors << { message: error_message, full_html_output: full_html_output }
+    {}
+  end
 
   def page_groups
     user_type_hash = if current_user
@@ -61,23 +80,8 @@ private
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
-  def set_up_content_and_errors
-    @content_hash = {}
-    @errors = []
-  end
-
   def content_manager(date = Time.zone.today)
     Benchmarking::BenchmarkContentManager.new(date)
-  end
-
-  def content_for_page(page, errors = [])
-    content_manager.content(@benchmark_results, page)
-    # rubocop:disable Lint/RescueException
-  rescue Exception => e
-    # rubocop:enable Lint/RescueException
-    error_message = "Exception: #{page}: #{e.class} #{e.message} #{e.backtrace.join("\n")}"
-    errors << error_message
-    {}
   end
 
   def filter_content(all_content)
