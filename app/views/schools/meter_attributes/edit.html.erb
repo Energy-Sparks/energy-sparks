@@ -1,0 +1,9 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>edit attribute: <%= @meter_attribute.description %></h1>
+    <%= simple_form_for :attribute, url: school_meter_meter_attribute_path(@school, @meter, @meter_attribute), method: :put, html: { novalidate: false } do |form| %>
+      <%= render @meter_attribute.structure.type.to_s, value: @input_data, field: @meter_attribute.structure, field_name: 'root', form: form, label: '' %>
+      <%= form.submit 'Update', class: 'btn btn-rounded'%>
+    <% end %>
+  </div>
+</div>

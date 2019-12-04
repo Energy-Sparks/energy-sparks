@@ -24,7 +24,8 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value
-    value = @builder.object.send(attribute_name).try(:strftime, input_value_format)
+    object = @builder.object
+    value = object && object.send(attribute_name).try(:strftime, input_value_format)
     if value.nil? && options.key?(input_value_key)
       value = options[input_value_key].try(:strftime, input_value_format)
     end
@@ -52,6 +53,6 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def wrapper_id
-    "#{object_name.gsub(/[^_a-z]/, '_')}_#{attribute_name}_dominus"
+    "#{object_name.to_s.gsub(/[^_a-z]/, '_')}_#{attribute_name.to_s.gsub(/[^_a-z]/, '_')}_dominus"
   end
 end

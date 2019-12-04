@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_02_134427) do
+ActiveRecord::Schema.define(version: 2019_11_28_160023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -666,6 +666,15 @@ ActiveRecord::Schema.define(version: 2019_12_02_134427) do
     t.index ["find_out_more_id"], name: "index_management_priorities_on_find_out_more_id"
   end
 
+  create_table "meter_attributes", force: :cascade do |t|
+    t.bigint "meter_id", null: false
+    t.string "attribute_type", null: false
+    t.json "input_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["meter_id"], name: "index_meter_attributes_on_meter_id"
+  end
+
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "meter_type"
@@ -1050,6 +1059,7 @@ ActiveRecord::Schema.define(version: 2019_12_02_134427) do
   add_foreign_key "management_priorities", "alerts", on_delete: :cascade
   add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade
   add_foreign_key "management_priorities", "find_out_mores", on_delete: :nullify
+  add_foreign_key "meter_attributes", "meters", on_delete: :cascade
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify

@@ -22,8 +22,8 @@
       <% school_group.schools.order(name: :asc).each do |school| %>
         <tr>
           <td><%= school.name %></td>
-          <td><%= link_to 'Unvalidated meter collection', admin_school_unvalidated_meter_collection_path(school, format: :yaml), class: 'btn btn-sm' %></td>
-          <td><%= link_to 'Validated meter collection', admin_school_validated_meter_collection_path(school, format: :yaml), class: 'btn btn-sm' %></td>
+          <td><%= link_to 'Unvalidated AMR data', admin_school_unvalidated_amr_data_path(school, format: :yaml), class: 'btn btn-sm' %></td>
+          <td><%= link_to 'Validated AMR data', admin_school_validated_amr_data_path(school, format: :yaml), class: 'btn btn-sm' %></td>
           <td><%= link_to 'Aggregated meter collection', admin_school_aggregated_meter_collection_path(school, format: :yaml), class: 'btn btn-sm' %></td>
         </tr>
       <% end %>
