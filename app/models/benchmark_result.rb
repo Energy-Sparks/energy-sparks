@@ -4,7 +4,7 @@
 #
 #  alert_type_id                      :bigint(8)        not null
 #  asof                               :date             not null
-#  benchmark_result_generation_run_id :bigint(8)
+#  benchmark_result_generation_run_id :bigint(8)        not null
 #  created_at                         :datetime         not null
 #  data                               :text
 #  id                                 :bigint(8)        not null, primary key

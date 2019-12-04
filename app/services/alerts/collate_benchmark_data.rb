@@ -1,9 +1,9 @@
 module Alerts
   class CollateBenchmarkData
-    def perform
+    def perform(schools = School.process_data)
       benchmarks = {}
 
-      School.process_data.each do |school|
+      schools.each do |school|
         get_benchmarks_for(school, benchmarks)
       end
 
