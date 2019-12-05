@@ -185,6 +185,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :amr_data_feed_configs, only: [:index, :show]
+
     resources :equivalence_types
     resource :equivalence_type_preview, only: :create
     resource :equivalences, only: :create
