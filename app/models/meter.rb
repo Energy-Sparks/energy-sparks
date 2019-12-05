@@ -81,8 +81,16 @@ class Meter < ApplicationRecord
     mpan_mprn.present? ? mpan_mprn : meter_type.to_s
   end
 
+  def school_meter_attributes
+    school.meter_attributes_for(self)
+  end
+
+  def all_meter_attributes
+    school_meter_attributes + meter_attributes
+  end
+
   def meter_attributes_to_analytics
-    meter_attributes.inject({}) do |collection, attribute|
+    all_meter_attributes.inject({}) do |collection, attribute|
       if attribute.aggregation
         collection[attribute.aggregation] ||= []
         collection[attribute.aggregation] << attribute.to_analytics

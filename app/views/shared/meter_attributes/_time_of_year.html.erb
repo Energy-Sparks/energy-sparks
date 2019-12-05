@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-12">
     <%= form.label label.try(:to_s).try(:humanize), required: field.required? %>
+    <%= form.hint field.hint %>
   </div>
   <div class="col-6">
     <%= form.input field_name + '[month]', as: :integer, input_html: {value: value ? value[:month] : ''},  required: field.required?, min: 1, max: 12, label: 'month'%>

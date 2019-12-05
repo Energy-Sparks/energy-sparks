@@ -60,6 +60,7 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
   has_many :observations,         inverse_of: :school, dependent: :destroy
+  has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
 
   has_many :programmes,               inverse_of: :school, dependent: :destroy
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -268,5 +269,9 @@ class School < ApplicationRecord
     else
       FindOutMore.none
     end
+  end
+
+  def meter_attributes_for(meter)
+    meter_attributes.where(meter_type: meter.meter_type)
   end
 end
