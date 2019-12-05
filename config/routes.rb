@@ -79,8 +79,12 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 
+      resources :meter_attributes
+
       resources :meters do
-        resources :meter_attributes
+        scope module: :meters do
+          resources :meter_attributes
+        end
         member do
           put :activate
           put :deactivate

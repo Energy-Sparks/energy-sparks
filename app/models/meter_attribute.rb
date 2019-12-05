@@ -26,8 +26,8 @@ class MeterAttribute < ApplicationRecord
     meter_attribute_type.parse(input_data).to_analytics
   end
 
-  def description
-    meter_attribute_type.attribute_description
+  def name
+    meter_attribute_type.attribute_name
   end
 
   def aggregation
