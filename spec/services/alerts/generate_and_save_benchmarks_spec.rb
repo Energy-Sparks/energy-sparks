@@ -2,12 +2,13 @@ require 'rails_helper'
 
 module Alerts
   describe GenerateAndSaveBenchmarks do
-    let!(:school)                 { create(:school) }
-    let(:aggregate_school)        { double(:aggregate_school) }
-    let(:asof_date)               { Date.parse('01/01/2019') }
-    let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics, benchmark: true) }
-    let(:framework_adapter)       { double :framework_adapter }
-    let(:adapter_instance)        { double :adapter_instance }
+    let!(:school)                         { create(:school) }
+    let(:aggregate_school)                { double(:aggregate_school) }
+    let(:asof_date)                       { Date.parse('01/01/2019') }
+    let(:alert_type)                      { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics, benchmark: true) }
+    let(:framework_adapter)               { double :framework_adapter }
+    let(:adapter_instance)                { double :adapter_instance }
+    let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
 
     let(:alert_report_attributes) {{
       valid: true,
@@ -57,21 +58,21 @@ module Alerts
       it 'handles empty results' do
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(AlertTypeRunResult.new(alert_type: alert_type, asof_date: asof_date))
 
-        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school)
+        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
         expect { service.perform }.to change { BenchmarkResult.count }.by(0).and change { BenchmarkResultError.count }.by(0)
       end
 
       it 'handles just benchmark reports' do
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
 
-        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school)
+        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
         expect { service.perform }.to change { BenchmarkResult.count }.by(2).and change { BenchmarkResultError.count }.by(2)
       end
 
       it 'handles just errors' do
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
 
-        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school)
+        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
         expect { service.perform }.to change { BenchmarkResult.count }.by(0).and  change { BenchmarkResultError.count }.by(2)
       end
     end

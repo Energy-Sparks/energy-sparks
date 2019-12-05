@@ -65,11 +65,11 @@ class School < ApplicationRecord
   has_many :programmes,               inverse_of: :school, dependent: :destroy
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
-  has_many :alerts,                           inverse_of: :school, dependent: :destroy
-  has_many :content_generation_runs,          inverse_of: :school
-  has_many :alert_generation_runs,            inverse_of: :school
-  has_many :subscription_generation_runs,     inverse_of: :school
-  has_many :benchmark_result_generation_runs, inverse_of: :school
+  has_many :alerts,                                   inverse_of: :school, dependent: :destroy
+  has_many :content_generation_runs,                  inverse_of: :school
+  has_many :alert_generation_runs,                    inverse_of: :school
+  has_many :subscription_generation_runs,             inverse_of: :school
+  has_many :benchmark_result_school_generation_runs,  inverse_of: :school
   has_many :analysis_pages, through: :content_generation_runs
 
   has_many :low_carbon_hub_installations, inverse_of: :school
@@ -122,7 +122,7 @@ class School < ApplicationRecord
   end
 
   def latest_benchmark_run
-    benchmark_result_generation_runs.order(created_at: :desc).first
+    benchmark_result_school_generation_runs.order(created_at: :desc).first
   end
 
   def latest_benchmark_results
