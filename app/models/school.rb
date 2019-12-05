@@ -274,4 +274,23 @@ class School < ApplicationRecord
   def meter_attributes_for(meter)
     meter_attributes.where(meter_type: meter.meter_type)
   end
+
+  def pseudo_meter_attributes
+    meter_attributes.select(&:pseudo?)
+  end
+
+  def school_group_pseudo_meter_attributes
+    school_group ? school_group.pseudo_meter_attributes : SchoolGroupMeterAttribute.none
+  end
+
+  def all_pseudo_meter_attributes
+    school_group_pseudo_meter_attributes + pseudo_meter_attributes
+  end
+
+  def pseudo_meter_attributes_to_analytics
+    all_pseudo_meter_attributes.group_by(&:meter_type).inject({}) do |collection, (meter_type, attributes)|
+      collection[meter_type.to_sym] = MeterAttribute.to_analytics(attributes)
+      collection
+    end
+  end
 end

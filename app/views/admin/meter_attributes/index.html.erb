@@ -15,7 +15,7 @@
   <tbody>
     <% @meter_attributes.each do |meter_attribute| %>
       <tr>
-        <td><%= meter_attribute.name %></td>
+        <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
         <td><%= meter_attribute.meter_type %></td>
         <td><%= meter_attribute.reason %></td>
         <td>

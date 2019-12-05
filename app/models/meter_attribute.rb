@@ -26,23 +26,20 @@ class MeterAttribute < ApplicationRecord
     meter_attribute_type.parse(input_data).to_analytics
   end
 
-  def name
-    meter_attribute_type.attribute_name
-  end
-
-  def description
-    meter_attribute_type.attribute_description
-  end
-
-  def aggregation
-    meter_attribute_type.attribute_aggregation
-  end
-
-  def structure
-    meter_attribute_type.attribute_structure
-  end
-
   def meter_attribute_type
     MeterAttributes.all[attribute_type.to_sym]
+  end
+
+  def self.to_analytics(meter_attributes)
+    meter_attributes.inject({}) do |collection, attribute|
+      aggregation = attribute.meter_attribute_type.attribute_aggregation
+      if aggregation
+        collection[aggregation] ||= []
+        collection[aggregation] << attribute.to_analytics
+        collection
+      else
+        collection.deep_merge(attribute.to_analytics)
+      end
+    end
   end
 end

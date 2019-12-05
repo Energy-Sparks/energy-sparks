@@ -94,15 +94,7 @@ class Meter < ApplicationRecord
   end
 
   def meter_attributes_to_analytics
-    all_meter_attributes.inject({}) do |collection, attribute|
-      if attribute.aggregation
-        collection[attribute.aggregation] ||= []
-        collection[attribute.aggregation] << attribute.to_analytics
-        collection
-      else
-        collection.deep_merge(attribute.to_analytics)
-      end
-    end
+    MeterAttribute.to_analytics(all_meter_attributes)
   end
 
   def _old_meter_attributes(attributes_class = MeterAttributeCache)

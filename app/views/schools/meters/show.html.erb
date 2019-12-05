@@ -59,7 +59,7 @@
       <tbody>
         <% @meter.meter_attributes.each do |meter_attribute| %>
           <tr>
-            <td><%= meter_attribute.name %></td>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
             <td>
               <div class="btn-group">
@@ -87,7 +87,7 @@
       <tbody>
         <% @meter.school_meter_attributes.each do |meter_attribute| %>
           <tr>
-            <td><%= meter_attribute.name %></td>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
             <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
           <% end %>
@@ -97,7 +97,7 @@
   </div>
 
   <div class="tab-pane fade" id="school-group-meter-attributes-content" role="tabpanel" aria-labelledby="school-group-meter-attributes-tab">
-    <h2>School group inherited attributes <%= link_to 'Manage', admin_school_groups_path, class: 'btn btn-rounded' if can?(:manage, SchoolGroupMeterAttribute)%></h2>
+    <h2>School group inherited attributes <%= link_to 'Manage', admin_school_group_path(@school.school_group), class: 'btn btn-rounded' if can?(:manage, SchoolGroupMeterAttribute)%></h2>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -109,7 +109,7 @@
       <tbody>
         <% @meter.school_group_meter_attributes.each do |meter_attribute| %>
           <tr>
-            <td><%= meter_attribute.name %></td>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
             <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
           <% end %>
