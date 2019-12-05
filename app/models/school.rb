@@ -121,14 +121,6 @@ class School < ApplicationRecord
     alert_generation_runs.order(created_at: :desc).first
   end
 
-  def latest_benchmark_run
-    benchmark_result_school_generation_runs.order(created_at: :desc).first
-  end
-
-  def latest_benchmark_results
-    latest_benchmark_run.benchmark_results
-  end
-
   def latest_alerts_without_exclusions
     if latest_alert_run
       latest_alert_run.alerts.without_exclusions

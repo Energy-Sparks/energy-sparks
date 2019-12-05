@@ -53,6 +53,7 @@ describe ChartDataValues do
     label = "AB#{colour_key}C"
     colour = ChartDataValues::COLOUR_HASH[colour_key]
 
+
     expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to be colour
   end
 end
