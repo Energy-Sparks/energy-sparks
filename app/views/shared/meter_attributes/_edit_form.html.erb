@@ -1,4 +1,4 @@
-<%= render "shared/meter_attributes/#{meter_attribute.structure.type}", value: input_data, field: meter_attribute.structure, field_name: 'root', form: form, label: '' %>
+<%= render "shared/meter_attributes/#{meter_attribute_type.attribute_structure.type}", value: input_data, field: meter_attribute_type.attribute_structure, field_name: 'root', form: form, label: '' %>
 <hr />
 <%= form.input :reason, input_html: {value: meter_attribute.reason}, required: false %>
 <%= form.submit 'Update', class: 'btn btn-rounded'%>

@@ -4,7 +4,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
   let!(:school_group)  { create(:school_group, name: 'BANES') }
   let(:school_name)   { 'Oldfield Park Infants'}
-  let!(:school)       { create_active_school(name: school_name) }
+  let!(:school)       { create_active_school(name: school_name, school_group: school_group) }
   let!(:admin)        { create(:admin)}
   let!(:gas_meter)    { create :gas_meter, name: 'Gas meter', school: school }
 
@@ -12,9 +12,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
     before(:each) do
       sign_in(admin)
-      visit root_path
-      click_on('Schools')
-      click_on('Oldfield Park Infants')
+      visit school_path(school)
     end
 
     it 'allow the admin to manage the meter attributes' do

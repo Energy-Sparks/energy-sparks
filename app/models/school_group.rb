@@ -60,4 +60,8 @@ class SchoolGroup < ApplicationRecord
   def meter_attributes_for(meter)
     meter_attributes.where(meter_type: meter.meter_type)
   end
+
+  def pseudo_meter_attributes
+    meter_attributes.select(&:pseudo?)
+  end
 end
