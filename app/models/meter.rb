@@ -86,7 +86,7 @@ class Meter < ApplicationRecord
   end
 
   def all_meter_attributes
-    meter_attributes + school_meter_attributes
+    school_meter_attributes + meter_attributes
   end
 
   def meter_attributes_to_analytics
