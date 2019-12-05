@@ -149,7 +149,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :benchmark_result_generation_runs, only: [:index, :show]
     resources :newsletters
-    resources :school_groups
+    resources :school_groups do
+      resources :meter_attributes
+    end
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create

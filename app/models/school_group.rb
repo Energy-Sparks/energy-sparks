@@ -43,6 +43,8 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
 
+  has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
+
   validates :name, presence: true
 
   def safe_destroy
@@ -53,5 +55,9 @@ class SchoolGroup < ApplicationRecord
 
   def should_generate_new_friendly_id?
     name_changed? || super
+  end
+
+  def meter_attributes_for(meter)
+    meter_attributes.where(meter_type: meter.meter_type)
   end
 end
