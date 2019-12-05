@@ -21,6 +21,7 @@
             <div class='btn-group'>
               <%= link_to 'Edit', edit_admin_school_group_path(school_group), class: 'btn btn-info' %>
               <%= link_to 'Delete', admin_school_group_path(school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(school_group), class: 'btn' %>
             </div>
           </td>
         </tr>

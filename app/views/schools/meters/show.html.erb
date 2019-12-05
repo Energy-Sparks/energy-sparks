@@ -28,7 +28,10 @@
     <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">Meter-specific attributes</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="school-meter-attributes-tab" data-toggle="tab" href="#school-meter-attributes-content" role="tab" aria-controls="school-meter-attributes-content" aria-selected="true">School-inherited attributes</a>
+    <a class="nav-link" id="school-meter-attributes-tab" data-toggle="tab" href="#school-meter-attributes-content" role="tab" aria-controls="school-meter-attributes-content" aria-selected="true">School inherited attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="school-group-meter-attributes-tab" data-toggle="tab" href="#school-group-meter-attributes-content" role="tab" aria-controls="school-group-meter-attributes-content" aria-selected="true">School group inherited attributes</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="all-meter-attributes-tab" data-toggle="tab" href="#all-meter-attributes-content" role="tab" aria-controls="all-meter-attributes-content" aria-selected="false">Final attributes</a>
@@ -72,7 +75,7 @@
   </div>
 
   <div class="tab-pane fade" id="school-meter-attributes-content" role="tabpanel" aria-labelledby="school-meter-attributes-tab">
-    <h2>School-inherited attributes <%= link_to 'Manage', school_meter_attributes_path(@school), class: 'btn btn-rounded' %></h2>
+    <h2>School inherited attributes <%= link_to 'Manage', school_meter_attributes_path(@school), class: 'btn btn-rounded' if can?(:manage, SchoolMeterAttribute) %></h2>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -83,6 +86,28 @@
       </thead>
       <tbody>
         <% @meter.school_meter_attributes.each do |meter_attribute| %>
+          <tr>
+            <td><%= meter_attribute.name %></td>
+            <td><%= meter_attribute.reason %></td>
+            <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-pane fade" id="school-group-meter-attributes-content" role="tabpanel" aria-labelledby="school-group-meter-attributes-tab">
+    <h2>School group inherited attributes <%= link_to 'Manage', admin_school_groups_path, class: 'btn btn-rounded' if can?(:manage, SchoolGroupMeterAttribute)%></h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Reason</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @meter.school_group_meter_attributes.each do |meter_attribute| %>
           <tr>
             <td><%= meter_attribute.name %></td>
             <td><%= meter_attribute.reason %></td>

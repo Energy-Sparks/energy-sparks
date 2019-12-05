@@ -1,0 +1,31 @@
+<h1>Meter attributes: <%= @school_group.name %></h1>
+
+<%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_admin_school_group_meter_attribute_path(@school_group) %>
+
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Meter type</th>
+      <th>Reason</th>
+      <th>Actions</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @meter_attributes.each do |meter_attribute| %>
+      <tr>
+        <td><%= meter_attribute.name %></td>
+        <td><%= meter_attribute.meter_type %></td>
+        <td><%= meter_attribute.reason %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_school_group_meter_attribute_path(@school_group, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
+            <%= button_to 'Delete', admin_school_group_meter_attribute_path(@school_group, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
+          </div>
+        </td>
+        <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
