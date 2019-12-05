@@ -1,0 +1,22 @@
+<h1>AMR Data feed configurations</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Identifier</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @configurations.each do |config| %>
+      <tr>
+        <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
+        <td><%= config.identifier %></td>
+        <td><%= nice_date_times config.created_at %></td>
+        <td><%= nice_date_times config.updated_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
