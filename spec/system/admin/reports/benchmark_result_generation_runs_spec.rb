@@ -20,6 +20,14 @@ describe BenchmarkResultGenerationRun, type: :system, include_application_helper
                               })
                             }
 
+  let!(:benchmark_error)    { BenchmarkResultError.create!(
+                              alert_type: alert_type_1,
+                              asof_date: Date.parse('01/01/2018'),
+                              benchmark_result_school_generation_run: school_run,
+                              information: 'Something went terribly wrong'
+                              )
+                            }
+
   before(:each) do
     sign_in(admin)
     visit root_path
@@ -39,5 +47,7 @@ describe BenchmarkResultGenerationRun, type: :system, include_application_helper
     expect(page).to have_content(1.0)
     expect(page).to have_content('Asdfgh')
     expect(page).to have_content('00:10')
+
+    expect(page).to have_content(benchmark_error.information)
   end
 end

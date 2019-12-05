@@ -1,10 +1,13 @@
 <h1>Benchmark Results</h1>
 <p>Run at <%= nice_date_times @benchmark_result_generation_run.created_at %></p>
 
-<%= link_to 'All benchmark generation runs', admin_reports_benchmark_result_generation_runs_path %>
+<p><%= link_to 'All benchmark generation runs', admin_reports_benchmark_result_generation_runs_path %></p>
+<p><a href="#benchmark_results">Benchmark results (<%= @benchmark_result_generation_run.benchmark_results.count %>)</a></p>
+<p><a href="#benchmark_errors">Benchmark errors (<%= @benchmark_result_generation_run.benchmark_result_errors.count %>)</a></p>
 
-<h3>Benchmark results (<%= @benchmark_result_generation_run.benchmark_results.count %>)</h3>
-<p>These benchmark alerts all came back with valid and relevant data</p>
+<h3 id="benchmark_results">Benchmark results (<%= @benchmark_result_generation_run.benchmark_results.count %>)</h3>
+
+<p id="benchmark_results">These benchmark alerts all came back with valid and relevant data</p>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -38,7 +41,7 @@
   </tbody>
 </table>
 
-<h3>Benchmark errors (<%= @benchmark_result_generation_run.benchmark_result_errors.count %>)</h3>
+<h3 id="benchmark_errors">Benchmark errors (<%= @benchmark_result_generation_run.benchmark_result_errors.count %>)</h3>
 <p>These benchmark alerts all came back with irrelevant, invalid or threw an exception</p>
 
 <table class="table table-striped">
