@@ -41,7 +41,7 @@ describe BenchmarkResultGenerationRun, type: :system, include_application_helper
     expect(page).to have_content(nice_date_times(run.created_at))
     click_on 'Show details'
     expect(page).to have_content(nice_date_times(run.created_at).strip)
-    benchmark_result_1.data.keys.each do |variable_name|
+    benchmark_result_1.data.each_key do |variable_name|
       expect(page).to have_content(variable_name)
     end
     expect(page).to have_content(1.0)
