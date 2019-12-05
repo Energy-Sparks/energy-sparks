@@ -23,12 +23,14 @@ module Schools
 
     def edit
       @meter_attribute = @school.meter_attributes.find(params[:id])
+      @meter_attribute_type = @meter_attribute.meter_attribute_type
       authorize! :edit, @meter_attribute
       @input_data = @meter_attribute.input_data
     end
 
     def update
       @meter_attribute = @school.meter_attributes.find(params[:id])
+      @meter_attribute_type = @meter_attribute.meter_attribute_type
       authorize! :edit, @meter_attribute
       @input_data = params[:attribute][:root]
       if @meter_attribute.update(
