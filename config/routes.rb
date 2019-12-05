@@ -145,7 +145,6 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    #resources :benchmark_result_generation_runs, only: [:index, :show]
     resources :newsletters
     resources :school_groups
     resources :activity_categories, except: [:destroy]

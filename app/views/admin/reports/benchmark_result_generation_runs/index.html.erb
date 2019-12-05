@@ -6,6 +6,7 @@
       <th>Creation time</th>
       <th>Benchmark Result count</th>
       <th>Generation error count</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +15,7 @@
         <td><%= link_to (nice_date_times run.created_at), admin_reports_benchmark_result_generation_run_path(run) %></td>
         <td><%= run.benchmark_results.count %></td>
         <td><%= run.benchmark_result_errors.count %></td>
+        <td><%= link_to 'Show details', admin_reports_benchmark_result_generation_run_path(run), class: 'btn btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>
