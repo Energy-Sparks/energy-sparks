@@ -1,8 +1,0 @@
-<fieldset class='form-group'>
-  <%= form.label field_name, label: label.to_s.humanize, required: field.required?, class: 'col-form-label-lg' unless label.blank? %>
-  <div class="<%= 'ml-5' unless field_name == 'root' %>">
-    <% field.structure.each do |key, structure| %>
-      <%= render structure.type.to_s, value: value ? value[key.to_s] : '', field: structure, field_name: field_name + "[#{key}]", form: form, label: key %>
-    <% end %>
-  </div>
-</fieldset>

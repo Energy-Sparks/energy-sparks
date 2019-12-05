@@ -11,6 +11,10 @@ class SchoolMeterAttribute < ApplicationRecord
     meter_attribute_type.attribute_name
   end
 
+  def description
+    meter_attribute_type.attribute_description
+  end
+
   def aggregation
     meter_attribute_type.attribute_aggregation
   end
