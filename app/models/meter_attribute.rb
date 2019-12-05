@@ -7,6 +7,7 @@
 #  id             :bigint(8)        not null, primary key
 #  input_data     :json
 #  meter_id       :bigint(8)        not null
+#  reason         :text
 #  updated_at     :datetime         not null
 #
 # Indexes
@@ -23,6 +24,10 @@ class MeterAttribute < ApplicationRecord
 
   def to_analytics
     meter_attribute_type.parse(input_data).to_analytics
+  end
+
+  def name
+    meter_attribute_type.attribute_name
   end
 
   def description

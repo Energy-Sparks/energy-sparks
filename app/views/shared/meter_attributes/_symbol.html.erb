@@ -1,5 +1,5 @@
 <% if field.allowed_values.empty? %>
-  <%= form.input field_name, as: :string, input_html: {value: value}, required: field.required?, label: label.try(:to_s).try(:humanize) %>
+  <%= form.input field_name, as: :string, input_html: {value: value}, required: field.required?, label: label.try(:to_s).try(:humanize), hint: field.hint %>
 <% else %>
   <%= form.input field_name, as: :select, selected: value, collection: field.allowed_values, required: field.required?, label: label.try(:to_s).try(:humanize)%>
 <% end %>

@@ -14,10 +14,10 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       visit root_path
       click_on('Schools')
       click_on('Oldfield Park Infants')
-      click_on 'Manage meters'
     end
 
     it 'allow the admin to manage the meter attributes' do
+      click_on 'Manage meters'
       click_on 'Details'
       select 'Heating model', from: 'type'
       click_on 'New attribute'
@@ -46,6 +46,36 @@ RSpec.describe "meter attribute management", :meters, type: :system do
         click_on 'Delete'
       end
       expect(gas_meter.meter_attributes.size).to eq(0)
+
+    end
+
+    it 'allow the admin to manage the meter attributes' do
+      click_on 'Manage school'
+      click_on 'Meter attributes'
+      select 'Function > Switch', from: 'type'
+      click_on 'New attribute'
+
+      select 'gas', from: 'Meter type'
+      select 'hotwater_only', from: 'attribute_root'
+
+      click_on 'Create'
+
+      expect(school.meter_attributes.size).to eq(1)
+      expect{ school.meter_attributes.first.to_analytics }.to_not raise_error
+      expect(school.meter_attributes.first.to_analytics.to_s).to include('hotwater_only')
+
+
+      click_on 'Edit'
+
+      select 'kitchen_only', from: 'attribute_root'
+
+      click_on 'Update'
+
+      school.reload
+      expect(school.meter_attributes.first.to_analytics.to_s).to include('kitchen_only')
+
+      click_on 'Delete'
+      expect(school.meter_attributes.size).to eq(0)
 
     end
   end
