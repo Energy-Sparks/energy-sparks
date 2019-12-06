@@ -314,10 +314,7 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
     t.text "description", null: false
-    t.text "s3_folder", null: false
-    t.text "s3_archive_folder", null: false
-    t.text "local_bucket_path", null: false
-    t.text "access_type", null: false
+    t.text "identifier", null: false
     t.text "date_format", null: false
     t.text "mpan_mprn_field", null: false
     t.text "reading_date_field", null: false
@@ -336,6 +333,9 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
     t.boolean "row_per_reading", default: false, null: false
     t.integer "number_of_header_rows", default: 0, null: false
     t.integer "process_type", default: 0, null: false
+    t.integer "source_type", default: 0, null: false
+    t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
+    t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
