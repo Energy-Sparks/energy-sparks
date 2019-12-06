@@ -64,4 +64,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   #
   config.before { ActionMailer::Base.deliveries.clear }
+
+  config.include ApplicationHelper, include_application_helper: true
 end
