@@ -4,6 +4,8 @@ class GenerateBenchmarks
   end
 
   def generate
+    @benchmark_result_generation_run = BenchmarkResultGenerationRun.create!
+
     @schools.each do |school|
       Rails.logger.info "Running for #{school.name}"
       puts "Running for #{school.name}"
@@ -13,7 +15,7 @@ class GenerateBenchmarks
       Rails.logger.info "Aggregated school"
 
       # Generate benchmarks
-      suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school).perform }
+      suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: @benchmark_result_generation_run).perform }
 
       Rails.logger.info "Generated benchmaks"
     end

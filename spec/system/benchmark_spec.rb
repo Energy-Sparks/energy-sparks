@@ -7,12 +7,12 @@ describe 'Benchmarks' do
   #TODO Change this to be a normal user
   let!(:user)       { create(:admin, school: school_1)}
 
-  let!(:run_1)              { BenchmarkResultGenerationRun.create(school: school_1) }
+  let!(:run_1)              { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
   let!(:alert_type_1)       { create(:alert_type, benchmark: true, source: :analytics) }
   let!(:benchmark_result_1) { BenchmarkResult.create!(
                               alert_type: alert_type_1,
                               asof: Date.parse('01/01/2019'),
-                              benchmark_result_generation_run: run_1,
+                              benchmark_result_school_generation_run: run_1,
                               data: {
                                 "number_example"=>1.0,
                                 "string_example"=>"A",

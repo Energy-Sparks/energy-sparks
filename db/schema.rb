@@ -406,21 +406,28 @@ ActiveRecord::Schema.define(version: 2019_12_05_141526) do
   end
 
   create_table "benchmark_result_errors", force: :cascade do |t|
-    t.bigint "benchmark_result_generation_run_id", null: false
+    t.bigint "benchmark_result_school_generation_run_id", null: false
     t.bigint "alert_type_id", null: false
     t.date "asof_date"
     t.text "information"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["alert_type_id"], name: "index_benchmark_result_errors_on_alert_type_id"
-    t.index ["benchmark_result_generation_run_id"], name: "ben_rgr_errors_index"
+    t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_errors_index"
   end
 
   create_table "benchmark_result_generation_runs", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "benchmark_result_school_generation_runs", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["school_id"], name: "index_benchmark_result_generation_runs_on_school_id"
+    t.bigint "benchmark_result_generation_run_id"
+    t.index ["benchmark_result_generation_run_id"], name: "benchmark_result_school_generation_run_idx"
+    t.index ["school_id"], name: "index_benchmark_result_school_generation_runs_on_school_id"
   end
 
   create_table "benchmark_results", force: :cascade do |t|
@@ -429,9 +436,9 @@ ActiveRecord::Schema.define(version: 2019_12_05_141526) do
     t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "benchmark_result_generation_run_id", null: false
+    t.bigint "benchmark_result_school_generation_run_id", null: false
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
-    t.index ["benchmark_result_generation_run_id"], name: "ben_rgr_index"
+    t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -1014,10 +1021,11 @@ ActiveRecord::Schema.define(version: 2019_12_05_141526) do
   add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
-  add_foreign_key "benchmark_result_errors", "benchmark_result_generation_runs", on_delete: :cascade
-  add_foreign_key "benchmark_result_generation_runs", "schools", on_delete: :cascade
+  add_foreign_key "benchmark_result_errors", "benchmark_result_school_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_result_school_generation_runs", "benchmark_result_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_result_school_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
-  add_foreign_key "benchmark_results", "benchmark_result_generation_runs", on_delete: :cascade
+  add_foreign_key "benchmark_results", "benchmark_result_school_generation_runs", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years"
   add_foreign_key "calendar_events", "calendar_event_types"
   add_foreign_key "calendar_events", "calendars"
