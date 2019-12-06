@@ -67,7 +67,7 @@
                 <%= button_to 'Delete', school_meter_meter_attribute_path(@school, @meter, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
               </div>
             </td>
-            <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
           <% end %>
         </tr>
       </tbody>
@@ -89,7 +89,7 @@
           <tr>
             <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
-            <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
           <% end %>
         </tr>
       </tbody>
@@ -111,7 +111,7 @@
           <tr>
             <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
-            <td><%= sanitize ap(meter_attribute.to_analytics, index: false, plain: true) %></td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
           <% end %>
         </tr>
       </tbody>
