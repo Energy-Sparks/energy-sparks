@@ -3,9 +3,8 @@ require 'fileutils'
 
 describe Amr::Importer do
 
-  let(:local_bucket_path) { 'tmp/test' }
   let(:thing_prefix) { 'this-path'}
-  let(:config)      { AmrDataFeedConfig.new(s3_folder: thing_prefix, local_bucket_path: local_bucket_path ) }
+  let(:config)      { AmrDataFeedConfig.new(identifier: thing_prefix ) }
   let(:bucket)      { 'test-bucket' }
   let(:thing_name)  { 'test-thing.csv' }
   let(:key)         { "#{thing_prefix}/#{thing_name}" }
@@ -30,6 +29,6 @@ describe Amr::Importer do
 
     FileUtils.mkdir_p config.local_bucket_path
     subject.send(:get_file_from_s3, thing_name)
-    expect(File.read("#{local_bucket_path}/#{thing_name}")).to eq 'meter-readings!'
+    expect(File.read("#{config.local_bucket_path}/#{thing_name}")).to eq 'meter-readings!'
   end
 end

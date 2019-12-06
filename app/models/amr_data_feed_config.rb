@@ -2,7 +2,6 @@
 #
 # Table name: amr_data_feed_configs
 #
-#  access_type             :text             not null
 #  column_separator        :text             default(","), not null
 #  created_at              :datetime         not null
 #  date_format             :text             not null
@@ -10,7 +9,7 @@
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key
-#  local_bucket_path       :text             not null
+#  identifier              :text             not null
 #  meter_description_field :text
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
@@ -21,15 +20,22 @@
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
 #  row_per_reading         :boolean          default(FALSE), not null
-#  s3_archive_folder       :text             not null
-#  s3_folder               :text             not null
+#  source_type             :integer          default("email"), not null
 #  total_field             :text
 #  units_field             :text
 #  updated_at              :datetime         not null
 #
+# Indexes
+#
+#  index_amr_data_feed_configs_on_description  (description) UNIQUE
+#  index_amr_data_feed_configs_on_identifier   (identifier) UNIQUE
+#
 
 class AmrDataFeedConfig < ApplicationRecord
   enum process_type: [:s3_folder, :low_carbon_hub_api]
+  enum source_type: [:email, :manual, :api, :sftp]
+
+  validates :identifier, :description, uniqueness: true
 
   def map_of_fields_to_indexes(header = nil)
     this_header = header || header_example
@@ -58,5 +64,14 @@ class AmrDataFeedConfig < ApplicationRecord
 
   def mpan_mprn_index
     map_of_fields_to_indexes[:mpan_mprn_index]
+  end
+
+  def s3_archive_folder
+    "archive-#{identifier}"
+  end
+
+  def local_bucket_path
+    path = ENV['AMR_CONFIG_LOCAL_FILE_BUCKET_PATH'] || 'tmp/amr_files_bucket'
+    "#{path}/#{identifier}"
   end
 end
