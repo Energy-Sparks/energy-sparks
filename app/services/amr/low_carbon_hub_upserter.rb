@@ -34,9 +34,12 @@ module Amr
           }
         end
 
-        records_inserted_count = DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
-        @amr_data_feed_import_log.update(records_imported: records_inserted_count)
-        Rails.logger.info "Upserted #{records_inserted_count} for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
+        records_before = AmrDataFeedReading.count
+        records_upserted = DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
+        records_imported = AmrDataFeedReading.count - records_before
+
+        @amr_data_feed_import_log.update(records_imported: records_imported, records_upserted: records_upserted)
+        Rails.logger.info "Upserted #{records_upserted} inserted #{records_imported}for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
       end
     end
   end

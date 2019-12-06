@@ -2,8 +2,6 @@ require 'rails_helper'
 require 'fileutils'
 require 'fakefs/spec_helpers'
 
-
-
 module Amr
   describe CsvParserAndUpserter do
     include FakeFS::SpecHelpers
@@ -183,6 +181,7 @@ module Amr
       expect(AmrDataFeedReading.count).to be reading_count
       expect(record_count).to be reading_count
       expect(AmrDataFeedReading.first.readings.first).to eq first_reading
+
       expect(AmrDataFeedImportLog.count).to be 1
       log = AmrDataFeedImportLog.first
       expect(log.file_name).to eq file_name
@@ -215,14 +214,31 @@ module Amr
         expect(AmrDataFeedReading.count).to be 0
         importer = CsvParserAndUpserter.new(highlands_config, 'example.csv')
         importer.perform
-        # expect(AmrSingleReading.count).to_not be 480
-        # pp AmrDataFeedReading.all
-        expect(AmrDataFeedReading.count).to be 11
-        expect(importer.inserted_record_count).to be 11
+
+        AmrDataFeedReading.all.each do |reading_record|
+          expect(reading_record.readings.any?(&:blank?)).to be false
+        end
+
+        expect(AmrDataFeedReading.count).to be 10
+        expect(importer.inserted_record_count).to be 10
+        FakeFS.activate!
+      end
+
+      it 'imports a csv where the times are shifted by half an hour' do
+        FakeFS.deactivate!
+        expect(AmrDataFeedReading.count).to be 0
+        importer = CsvParserAndUpserter.new(highlands_config, 'example-offset.csv')
+        importer.perform
+
+        AmrDataFeedReading.all.each do |reading_record|
+          expect(reading_record.readings.count(&:blank?)).to be < SingleReadConverter::BLANK_THRESHOLD
+        end
+
+        expect(AmrDataFeedReading.count).to be 7
+        expect(importer.inserted_record_count).to be 7
         FakeFS.activate!
       end
     end
-
 
     context 'sheffield' do
       before(:each) do
@@ -231,7 +247,7 @@ module Amr
 
       it 'should not create records for empty rows (comma, comma)' do
         expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 1
-        expect(AmrDataFeedReading.first.readings).to eq Array.new(48, "")
+        expect(AmrDataFeedReading.first.readings).to eq Array.new(48, nil)
       end
     end
 

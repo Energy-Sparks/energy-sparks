@@ -1,5 +1,7 @@
 module Amr
   class SingleReadConverter
+    BLANK_THRESHOLD = 2
+
     def initialize(single_reading_array)
       @single_reading_array = single_reading_array
       @results_array = []
@@ -29,10 +31,14 @@ module Amr
         end
       end
 
-      @results_array
+      remove_any_low_reading_days
     end
 
     private
+
+    def remove_any_low_reading_days
+      @results_array.select { |result| result[:readings].count(&:blank?) < BLANK_THRESHOLD }
+    end
 
     def last_reading_of_day?(reading_index)
       reading_index == -1
