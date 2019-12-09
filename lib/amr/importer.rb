@@ -7,7 +7,7 @@ module Amr
     end
 
     def import_all
-      Rails.logger.info "Download all from S3 key pattern: #{@config.s3_folder}"
+      Rails.logger.info "Download all from S3 key pattern: #{@config.identifier}"
       get_array_of_files_in_bucket_with_prefix.each do |file_name|
         get_file_from_s3(file_name)
         import_file(file_name)
@@ -19,7 +19,7 @@ module Amr
   private
 
     def get_file_from_s3(file_name)
-      key = "#{@config.s3_folder}/#{file_name}"
+      key = "#{@config.identifier}/#{file_name}"
       file_name_and_path = "#{@config.local_bucket_path}/#{file_name}"
       Rails.logger.info "Downloading from S3 key: #{key}"
       @s3_client.get_object(bucket: @bucket, key: key, response_target: file_name_and_path)
@@ -27,7 +27,7 @@ module Amr
     end
 
     def get_array_of_files_in_bucket_with_prefix
-      contents = @s3_client.list_objects(bucket: @bucket, prefix: "#{@config.s3_folder}/").contents
+      contents = @s3_client.list_objects(bucket: @bucket, prefix: "#{@config.identifier}/").contents
       # Folders come back with size 0 and we don't need those
       contents.select { |record| !record.size.zero? }.map { |record| File.basename(record.key) }
     end
@@ -39,7 +39,7 @@ module Amr
     end
 
     def archive_file(file_name)
-      key = "#{@config.s3_folder}/#{file_name}"
+      key = "#{@config.identifier}/#{file_name}"
       archived_key = "#{@config.s3_archive_folder}/#{file_name}"
       pp "Archiving #{key} to #{archived_key}"
       @s3_client.copy_object(bucket: @bucket, copy_source: "#{@bucket}/#{key}", key: archived_key)

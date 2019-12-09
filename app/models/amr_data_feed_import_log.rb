@@ -8,6 +8,7 @@
 #  id                      :bigint(8)        not null, primary key
 #  import_time             :datetime
 #  records_imported        :integer
+#  records_upserted        :integer          default(0), not null
 #  updated_at              :datetime         not null
 #
 # Indexes

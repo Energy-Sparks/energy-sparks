@@ -8,10 +8,8 @@ describe AmrDataFeedReading do
   let(:amr_data_feed_config) {
     AmrDataFeedConfig.new(
       description: 'Banes',
-      s3_folder: 'banes',
-      s3_archive_folder: 'archive-banes',
-      local_bucket_path: 'tmp/amr_files_bucket/banes',
-      access_type: 'SFTP',
+      identifier: 'banes',
+      source_type: :sftp,
       date_format: "%b %e %Y %I:%M%p",
       mpan_mprn_field: 'M1_Code1',
       reading_date_field: 'Date',
