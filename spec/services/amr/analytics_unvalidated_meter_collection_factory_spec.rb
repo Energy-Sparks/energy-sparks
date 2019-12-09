@@ -1,4 +1,3 @@
-require 'dashboard'
 require 'rails_helper'
 
 module Amr
@@ -27,15 +26,35 @@ module Amr
 
       expect(first_electricity_meter.mpan_mprn).to eq e_meter.mpan_mprn
       expect(first_electricity_meter.amr_data.keys.size).to eq 2
-      expect(first_electricity_meter.amr_data.keys).to eq e_meter.amr_data_feed_readings.map {|reading| Date.parse(reading.reading_date) }.flatten
 
-      expect(first_electricity_meter.amr_data.values.first.kwh_data_x48).to eq e_meter.amr_data_feed_readings.first.readings.map(&:to_f)
+      expect(first_electricity_meter.amr_data.keys.sort.reverse).to match_array e_meter.amr_data_feed_readings.map {|reading| Date.parse(reading.reading_date) }.flatten
+
+      expect( first_electricity_meter.amr_data.values.map { |reading| reading.kwh_data_x48 }).to match_array e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) }
 
       first_gas_meter = meter_collection.heat_meters.first
 
       expect(first_gas_meter.mpan_mprn).to eq g_meter.mpan_mprn
       expect(first_gas_meter.amr_data.keys.first).to eq Date.parse(g_meter.amr_data_feed_readings.first.reading_date)
       expect(first_gas_meter.amr_data.values.first.kwh_data_x48).to eq g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
+    end
+
+    it 'ends up with the last created reading if there are two for the same data' do
+      existing_readings = []
+
+      e_meter.amr_data_feed_readings.each do |existing_reading|
+        existing_readings << existing_reading.readings.map(&:to_f)
+        create(:amr_data_feed_reading, meter: e_meter, reading_date: existing_reading.reading_date, amr_data_feed_config: existing_reading.amr_data_feed_config, created_at: Date.parse('01/01/2019'))
+      end
+
+      e_meter.reload
+      expect(e_meter.amr_data_feed_readings.count).to be 4
+
+      meter_collection = AnalyticsUnvalidatedMeterCollectionFactory.new(school).build
+
+      first_electricity_meter = meter_collection.electricity_meters.first
+
+      expect(first_electricity_meter.amr_data.keys.size).to eq 2
+      expect( first_electricity_meter.amr_data.values.map { |reading| reading.kwh_data_x48 }).to match_array existing_readings
     end
 
     it 'fallsback to date parse where the specified format does not work' do

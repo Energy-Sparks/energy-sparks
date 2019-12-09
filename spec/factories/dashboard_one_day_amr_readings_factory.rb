@@ -5,8 +5,8 @@ FactoryBot.define do
     transient do
       association :dashboard_meter, factory: :dashboard_gas_meter
       date          { Date.yesterday }
-      kwh_data_x48  { Array.new(48, rand) }
-      one_day_kwh   { kwh_data_x48.sum }
+      kwh_data_x48  { Array.new(48, rand.to_f) }
+      one_day_kwh   { kwh_data_x48.sum.to_f }
       status        { 'ORIG'}
     end
 

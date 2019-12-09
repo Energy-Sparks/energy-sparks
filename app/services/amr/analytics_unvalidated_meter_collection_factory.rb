@@ -73,7 +73,7 @@ module Amr
 
       hash_of_date_formats = AmrDataFeedConfig.pluck(:id, :date_format).to_h
 
-      AmrDataFeedReading.where(meter_id: active_record_meter.id).each do |reading|
+      AmrDataFeedReading.order(created_at: :asc).where(meter_id: active_record_meter.id).each do |reading|
         add_reading_if_valid(active_record_meter, dashboard_meter, reading, hash_of_date_formats)
       end
 
