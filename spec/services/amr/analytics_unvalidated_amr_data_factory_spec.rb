@@ -1,4 +1,3 @@
-require 'dashboard'
 require 'rails_helper'
 
 module Amr
@@ -20,9 +19,7 @@ module Amr
 
       expect(first_electricity_meter[:identifier]).to eq e_meter.mpan_mprn
       expect(first_electricity_meter[:readings].size).to eq 2
-      expect(first_electricity_meter[:readings].map{|reading| reading[:reading_date]}).to eq e_meter.amr_data_feed_readings.map {|reading| Date.parse(reading.reading_date) }.flatten
-
-      expect(first_electricity_meter[:readings].first[:kwh_data_x48]).to eq e_meter.amr_data_feed_readings.first.readings.map(&:to_f)
+      expect(first_electricity_meter[:readings].map { |reading| reading[:kwh_data_x48] }).to match_array e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) }
 
       first_gas_meter = amr_data[:heat_meters].first
 

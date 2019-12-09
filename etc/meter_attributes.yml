@@ -17,7 +17,17 @@
   :pseudo_meter_attributes: {}
 107047:
   :name: Ballifield Community Primary School
-  :meter_attributes: {}
+  :meter_attributes:
+    2335250725714:
+      :solar_pv:
+      - :start_date: 2015-10-04
+        :kwp: 12.0
+        :orientation: 0
+        :tilt: 30
+        :shading: 0
+        :fit_£_per_kwh: 0.05
+        :reason: 56 panels, unknown capacity on satellite, installed 2012, but set
+          to 2015 as 1st meter date
   :pseudo_meter_attributes: {}
 107066:
   :name: Bankwood Primary School
@@ -57,6 +67,15 @@
         :readings_end_date: 2016-09-30
       :function:
       - :heating_only
+    2200012833358:
+      :solar_pv:
+      - :start_date: 2016-04-14
+        :kwp: 4.0
+        :orientation: 0
+        :tilt: 0
+        :shading: 0
+        :fit_£_per_kwh: 0.3
+        :reason: '16 panels appear on satellite - appear to be flat on roof? '
   :pseudo_meter_attributes: {}
 107069:
   :name: Brunswick Community Primary School
@@ -64,7 +83,16 @@
   :pseudo_meter_attributes: {}
 123087:
   :name: Caldecott Primary School
-  :meter_attributes: {}
+  :meter_attributes:
+    2000053945332:
+      :solar_pv:
+      - :start_date: 2018-01-10
+        :kwp: 4.0
+        :orientation: 0
+        :tilt: 0
+        :shading: 0
+        :fit_£_per_kwh: 0.3
+        :reason: '46 panels on roof should be ~10kWp, but consumption suggests 3kWp '
   :pseudo_meter_attributes: {}
 109081:
   :name: Castle Primary School
@@ -143,10 +171,11 @@
           :end_date: 2019-02-22
           :reason: 'switched from gas to electric heating, validaiton was substituting
             holiday from previous gassy year: PH 16Nov2019'
-      - :auto_insert_missing_readings:
-          :type: :weekends
-    67095110:
-      :meter_corrections:
+      - :rescale_amr_data:
+          :start_date: 2019-04-07
+          :end_date: 2020-04-07
+          :scale: 11.1
+          :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 22Nov2019'
       - :auto_insert_missing_readings:
           :type: :weekends
   :pseudo_meter_attributes: {}
@@ -172,6 +201,10 @@
         :tilt: 30
         :shading: 0
         :fit_£_per_kwh: 0.05
+  :pseudo_meter_attributes: {}
+5115426:
+  :name: Inver Primary School
+  :meter_attributes: {}
   :pseudo_meter_attributes: {}
 5142636:
   :name: Inverness High School
@@ -233,7 +266,7 @@
           because of partial turn off
   :pseudo_meter_attributes: {}
 5101328:
-  :name: Miller academy
+  :name: Miller Academy Primary School
   :meter_attributes:
     1712485592509:
       :storage_heaters:
@@ -318,6 +351,7 @@
         :tilt: 30
         :shading: 0
         :fit_£_per_kwh: 0.3
+        :reason: appears to have 22 panels on bing satellite - for 2016 extension
   :pseudo_meter_attributes: {}
 5101026:
   :name: Pennyland Primary School
@@ -373,10 +407,6 @@
       :heating_model:
         :max_summer_daily_heating_kwh: 90
         :reason: Auto fitter slightly high at 105 PH(4Mar2019)
-    50974804:
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
     50974602:
       :function:
       - :kitchen_only
@@ -412,9 +442,6 @@
       :heating_model:
         :max_summer_daily_heating_kwh: 100
         :reason: 'heating only since 2018, cant set as not so in past: PH 4Mar2019'
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
   :pseudo_meter_attributes: {}
 145516:
   :name: St Andrew's Church School
@@ -527,18 +554,15 @@
 143108:
   :name: St Martin's Garden Primary School
   :meter_attributes:
-    9116469608:
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
-    11476701:
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
-    11476903:
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
+    2200030028094:
+      :solar_pv:
+      - :start_date: 2012-01-15
+        :kwp: 10.0
+        :orientation: 0
+        :tilt: 30
+        :shading: 0
+        :fit_£_per_kwh: 0.3
+        :reason: 10 kWp confirmed BWCE solar PV
   :pseudo_meter_attributes:
     :aggregated_gas:
       :heating_model:
@@ -582,9 +606,6 @@
     4234023603:
       :aggregation:
       - :ignore_start_date
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
     2200012408773:
       :aggregation:
       - :deprecated_include_but_ignore_end_date
@@ -625,6 +646,10 @@
   :pseudo_meter_attributes: {}
 123833:
   :name: St. Benedict's C of E Junior School
+  :meter_attributes: {}
+  :pseudo_meter_attributes: {}
+123166:
+  :name: St. Nicolas Primary School
   :meter_attributes: {}
   :pseudo_meter_attributes: {}
 109070:
@@ -711,9 +736,6 @@
       :heating_model:
         :max_summer_daily_heating_kwh: 250
         :reason: Automated process set too high at about 350
-      :meter_corrections:
-      - :auto_insert_missing_readings:
-          :type: :weekends
   :pseudo_meter_attributes: {}
 107094:
   :name: Walkley Primary School
