@@ -3,7 +3,8 @@ module Admin
     load_and_authorize_resource :school_group
 
     def index
-      @meter_attributes = @school_group.meter_attributes
+      @meter_attributes = @school_group.meter_attributes.active
+      @deleted_meter_attributes = @school_group.meter_attributes.deleted
       @available_meter_attributes = MeterAttributes.all
     end
 
@@ -16,7 +17,8 @@ module Admin
         attribute_type: params[:attribute][:type],
         reason: params[:attribute][:reason],
         input_data: params[:attribute][:root],
-        meter_type: params[:attribute][:meter_type]
+        meter_type: params[:attribute][:meter_type],
+        created_by: current_user
       )
       redirect_to admin_school_group_meter_attributes_path(@school_group)
     end
@@ -29,25 +31,23 @@ module Admin
     end
 
     def update
-      @meter_attribute = @school_group.meter_attributes.find(params[:id])
-      @meter_attribute_type = @meter_attribute.meter_attribute_type
+      meter_attribute = @school_group.meter_attributes.find(params[:id])
       authorize! :edit, @meter_attribute
-      @input_data = params[:attribute][:root]
-      if @meter_attribute.update(
-        input_data: @input_data,
+      new_attribute = @school_group.meter_attributes.create!(
+        attribute_type: meter_attribute.attribute_type,
         reason: params[:attribute][:reason],
-        meter_type: params[:attribute][:meter_type]
+        input_data: params[:attribute][:root],
+        meter_type: params[:attribute][:meter_type],
+        created_by: current_user
       )
-        redirect_to admin_school_group_meter_attributes_path(@school_group)
-      else
-        render :edit
-      end
+      meter_attribute.update!(replaced_by: new_attribute)
+      redirect_to admin_school_group_meter_attributes_path(@school_group)
     end
 
     def destroy
-      @meter_attribute = @school_group.meter_attributes.find(params[:id])
-      authorize! :delete, @meter_attribute
-      @meter_attribute.destroy
+      meter_attribute = @school_group.meter_attributes.find(params[:id])
+      authorize! :delete, meter_attribute
+      meter_attribute.update!(deleted_by: current_user)
       redirect_to admin_school_group_meter_attributes_path(@school_group)
     end
   end

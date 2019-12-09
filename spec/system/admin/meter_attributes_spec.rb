@@ -26,8 +26,9 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Create'
 
       expect(gas_meter.meter_attributes.size).to eq(1)
-      expect{ gas_meter.meter_attributes.first.to_analytics }.to_not raise_error
-      expect(gas_meter.meter_attributes.first.to_analytics.to_s).to include('800')
+      attribute = gas_meter.meter_attributes.first
+      expect{ attribute.to_analytics }.to_not raise_error
+      expect(attribute.to_analytics.to_s).to include('800')
 
 
       within '#database-meter-attributes-content' do
@@ -39,12 +40,17 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Update'
 
       gas_meter.reload
-      expect(gas_meter.meter_attributes.first.to_analytics.to_s).to include('200')
+      new_attribute = gas_meter.meter_attributes.active.first
+      expect(new_attribute.to_analytics.to_s).to include('200')
+      attribute.reload
+      expect(attribute.replaced_by).to eq(new_attribute)
 
       within '#database-meter-attributes-content' do
         click_on 'Delete'
       end
-      expect(gas_meter.meter_attributes.size).to eq(0)
+      expect(gas_meter.meter_attributes.active.size).to eq(0)
+      new_attribute.reload
+      expect(new_attribute.deleted_by).to eq(admin)
 
     end
 
@@ -60,8 +66,9 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Create'
 
       expect(school.meter_attributes.size).to eq(1)
-      expect{ school.meter_attributes.first.to_analytics }.to_not raise_error
-      expect(school.meter_attributes.first.to_analytics.to_s).to include('hotwater_only')
+      attribute = school.meter_attributes.first
+      expect{ attribute.to_analytics }.to_not raise_error
+      expect(attribute.to_analytics.to_s).to include('hotwater_only')
 
 
       click_on 'Edit'
@@ -71,10 +78,15 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Update'
 
       school.reload
-      expect(school.meter_attributes.first.to_analytics.to_s).to include('kitchen_only')
+      new_attribute = school.meter_attributes.active.first
+      expect(new_attribute.to_analytics.to_s).to include('kitchen_only')
+      attribute.reload
+      expect(attribute.replaced_by).to eq(new_attribute)
 
       click_on 'Delete'
-      expect(school.meter_attributes.size).to eq(0)
+      expect(school.meter_attributes.active.size).to eq(0)
+      new_attribute.reload
+      expect(new_attribute.deleted_by).to eq(admin)
 
     end
 
@@ -91,8 +103,9 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Create'
 
       expect(school_group.meter_attributes.size).to eq(1)
-      expect{ school_group.meter_attributes.first.to_analytics }.to_not raise_error
-      expect(school_group.meter_attributes.first.to_analytics.to_s).to include('economy_7')
+      attribute = school_group.meter_attributes.first
+      expect{ attribute.to_analytics }.to_not raise_error
+      expect(attribute.to_analytics.to_s).to include('economy_7')
 
 
       click_on 'Edit'
@@ -102,10 +115,15 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Update'
 
       school_group.reload
-      expect(school_group.meter_attributes.first.meter_type).to eq('gas')
+      new_attribute = school_group.meter_attributes.active.first
+      expect(new_attribute.meter_type).to eq('gas')
+      attribute.reload
+      expect(attribute.replaced_by).to eq(new_attribute)
 
       click_on 'Delete'
-      expect(school_group.meter_attributes.size).to eq(0)
+      expect(school_group.meter_attributes.active.size).to eq(0)
+      new_attribute.reload
+      expect(new_attribute.deleted_by).to eq(admin)
 
     end
   end
