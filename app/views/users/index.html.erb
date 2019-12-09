@@ -8,8 +8,11 @@
 <p>See users  <%= link_to 'without a school', "#no_school_users" %></p>
 
 <% SchoolGroup.all.order(:name).each do |school_group| %>
-  <span id="<%= school_group.name.parameterize %>"></span>
-  <h2><%= school_group.name %></h2>
+  <div class="nav-anchor">
+    <a name="<%= school_group.name.parameterize %>"> </a>
+    <h2><%= school_group.name %></h2>
+  </div>
+
   <table class="table table-condensed  table-sorted">
     <thead>
       <tr>
@@ -45,8 +48,11 @@
   </table>
 <% end %>
 
-<h2>Users without a school</h2>
-<span id="no_school_users"></span>
+<div class="nav-anchor">
+  <a name="no_school_users"> </a>
+  <h2>Users without a school</h2>
+</div>
+
 <table class="table table-condensed  table-sorted">
   <thead>
     <tr>
