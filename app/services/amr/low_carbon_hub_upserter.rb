@@ -24,22 +24,26 @@ module Amr
           pseudo: true
         ).first_or_create!
 
-        data_feed_reading_array = readings_hash.map do |reading_date, one_day_amr_reading|
-          {
-            amr_data_feed_config_id: @amr_data_feed_config.id,
-            meter_id: meter.id,
-            mpan_mprn: mpan_mprn,
-            reading_date: reading_date,
-            readings: one_day_amr_reading.kwh_data_x48
-          }
-        end
-
         records_before = AmrDataFeedReading.count
-        records_upserted = DataFeedUpserter.new(data_feed_reading_array, @amr_data_feed_import_log.id).perform
+        records_upserted = DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log.id).perform
         records_imported = AmrDataFeedReading.count - records_before
 
         @amr_data_feed_import_log.update(records_imported: records_imported, records_upserted: records_upserted)
         Rails.logger.info "Upserted #{records_upserted} inserted #{records_imported}for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
+      end
+    end
+
+    private
+
+    def data_feed_reading_array(readings_hash, meter_id, mpan_mprn)
+      readings_hash.map do |reading_date, one_day_amr_reading|
+        {
+          amr_data_feed_config_id: @amr_data_feed_config.id,
+          meter_id: meter_id,
+          mpan_mprn: mpan_mprn,
+          reading_date: reading_date,
+          readings: one_day_amr_reading.kwh_data_x48
+        }
       end
     end
   end

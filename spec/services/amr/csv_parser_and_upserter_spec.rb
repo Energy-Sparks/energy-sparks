@@ -228,16 +228,18 @@ module Amr
 
       it 'imports a csv where the times are shifted by half an hour' do
         FakeFS.deactivate!
-        expect(AmrDataFeedReading.count).to be 0
-        importer = CsvParserAndUpserter.new(highlands_config, 'example-offset.csv')
-        importer.perform
+          ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
+          expect(AmrDataFeedReading.count).to be 0
+          importer = CsvParserAndUpserter.new(highlands_config, 'example-offset.csv')
+          importer.perform
 
-        AmrDataFeedReading.all.each do |reading_record|
-          expect(reading_record.readings.count(&:blank?)).to be < SingleReadConverter::BLANK_THRESHOLD
+          AmrDataFeedReading.all.each do |reading_record|
+            expect(reading_record.readings.count(&:blank?)).to be <= SingleReadConverter::BLANK_THRESHOLD
+          end
+
+          expect(AmrDataFeedReading.count).to be 7
+          expect(importer.inserted_record_count).to be 7
         end
-
-        expect(AmrDataFeedReading.count).to be 7
-        expect(importer.inserted_record_count).to be 7
         FakeFS.activate!
       end
     end
