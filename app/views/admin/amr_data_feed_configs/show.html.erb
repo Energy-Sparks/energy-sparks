@@ -1,0 +1,19 @@
+<h1>AMR Data feed configuration</h1>
+<h2>for <%= @configuration.description %></h2>
+
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @configuration.attributes.except("id").each do |key, value| %>
+      <tr>
+        <td><%= key.humanize.capitalize %></td>
+        <td><%= value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

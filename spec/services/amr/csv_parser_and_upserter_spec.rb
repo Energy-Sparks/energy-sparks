@@ -2,8 +2,6 @@ require 'rails_helper'
 require 'fileutils'
 require 'fakefs/spec_helpers'
 
-
-
 module Amr
   describe CsvParserAndUpserter do
     include FakeFS::SpecHelpers
@@ -65,7 +63,7 @@ module Amr
         header_example: 'MPR,ReadDatetime,kWh,ReadType',
         row_per_reading: true,
         number_of_header_rows: 2,
-        local_bucket_path: Rails.root.join('spec', 'fixtures', 'amr_highlands')
+        identifier: 'amr_highlands'
       )
     }
 
@@ -183,6 +181,7 @@ module Amr
       expect(AmrDataFeedReading.count).to be reading_count
       expect(record_count).to be reading_count
       expect(AmrDataFeedReading.first.readings.first).to eq first_reading
+
       expect(AmrDataFeedImportLog.count).to be 1
       log = AmrDataFeedImportLog.first
       expect(log.file_name).to eq file_name
@@ -212,17 +211,38 @@ module Amr
     context 'highlands' do
       it 'imports a csv' do
         FakeFS.deactivate!
-        expect(AmrDataFeedReading.count).to be 0
-        importer = CsvParserAndUpserter.new(highlands_config, 'example.csv')
-        importer.perform
-        # expect(AmrSingleReading.count).to_not be 480
-        # pp AmrDataFeedReading.all
-        expect(AmrDataFeedReading.count).to be 11
-        expect(importer.inserted_record_count).to be 11
+        ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
+          expect(AmrDataFeedReading.count).to be 0
+          importer = CsvParserAndUpserter.new(highlands_config, 'example.csv')
+          importer.perform
+
+          AmrDataFeedReading.all.each do |reading_record|
+            expect(reading_record.readings.any?(&:blank?)).to be false
+          end
+
+          expect(AmrDataFeedReading.count).to be 10
+          expect(importer.inserted_record_count).to be 10
+        end
+        FakeFS.activate!
+      end
+
+      it 'imports a csv where the times are shifted by half an hour' do
+        FakeFS.deactivate!
+          ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
+          expect(AmrDataFeedReading.count).to be 0
+          importer = CsvParserAndUpserter.new(highlands_config, 'example-offset.csv')
+          importer.perform
+
+          AmrDataFeedReading.all.each do |reading_record|
+            expect(reading_record.readings.count(&:blank?)).to be <= SingleReadConverter::BLANK_THRESHOLD
+          end
+
+          expect(AmrDataFeedReading.count).to be 7
+          expect(importer.inserted_record_count).to be 7
+        end
         FakeFS.activate!
       end
     end
-
 
     context 'sheffield' do
       before(:each) do
@@ -231,7 +251,7 @@ module Amr
 
       it 'should not create records for empty rows (comma, comma)' do
         expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 1
-        expect(AmrDataFeedReading.first.readings).to eq Array.new(48, "")
+        expect(AmrDataFeedReading.first.readings).to eq Array.new(48, nil)
       end
     end
 
@@ -260,15 +280,14 @@ module Amr
     end
 
     context 'frome' do
-      before(:each) do
-        FileUtils.mkdir_p frome_config.local_bucket_path
-      end
 
       it 'should parse a simple file' do
+        FileUtils.mkdir_p frome_config.local_bucket_path
         write_file_and_expect_readings(example_frome, frome_config, "9.9")
       end
 
       it 'should parse a simple frome historic file with handle off by one' do
+        FileUtils.mkdir_p historical_frome_config.local_bucket_path
         write_file_and_expect_readings(example_frome_historic, historical_frome_config, "4.465528")
       end
     end
