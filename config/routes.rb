@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :school_groups, only: :show
+  resources :school_groups, only: [:show, :index]
   resources :scoreboards
 
   resources :onboarding, path: 'school_setup', only: [:show] do
