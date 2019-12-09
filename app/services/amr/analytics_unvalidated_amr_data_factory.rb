@@ -38,7 +38,7 @@ module Amr
     def build_meter_data(active_record_meter)
       hash_of_date_formats = AmrDataFeedConfig.pluck(:id, :date_format).to_h
 
-      readings = AmrDataFeedReading.where(meter_id: active_record_meter.id).map do |reading|
+      readings = AmrDataFeedReading.order(created_at: :asc).where(meter_id: active_record_meter.id).map do |reading|
         reading_if_valid(reading, hash_of_date_formats)
       end
 
