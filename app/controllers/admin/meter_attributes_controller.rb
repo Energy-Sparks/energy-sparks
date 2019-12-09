@@ -23,6 +23,11 @@ module Admin
       redirect_to admin_school_group_meter_attributes_path(@school_group)
     end
 
+    def show
+      @meter_attribute = @school_group.meter_attributes.find(params[:id])
+      authorize! :show, @meter_attribute
+    end
+
     def edit
       @meter_attribute = @school_group.meter_attributes.find(params[:id])
       @meter_attribute_type = @meter_attribute.meter_attribute_type

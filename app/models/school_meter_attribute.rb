@@ -32,6 +32,7 @@ class SchoolMeterAttribute < ApplicationRecord
   belongs_to :replaced_by, class_name: 'SchoolMeterAttribute', optional: true
   belongs_to :deleted_by, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
+  has_one :replaces, class_name: 'SchoolMeterAttribute', foreign_key: :replaced_by_id
 
   scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil) }
   scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil) }

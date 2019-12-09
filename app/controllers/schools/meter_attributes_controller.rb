@@ -23,6 +23,11 @@ module Schools
       redirect_to school_meter_attributes_path(@school)
     end
 
+    def show
+      @meter_attribute = @school.meter_attributes.find(params[:id])
+      authorize! :show, @meter_attribute
+    end
+
     def edit
       @meter_attribute = @school.meter_attributes.find(params[:id])
       @meter_attribute_type = @meter_attribute.meter_attribute_type
