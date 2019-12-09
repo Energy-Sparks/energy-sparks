@@ -6,12 +6,24 @@ module Schools
 
 
       def new
+        authorize! :create, MeterAttribute
         @meter_attribute_type = MeterAttributes.all[params[:type].to_sym]
       end
 
       def create
-        @meter.meter_attributes.create!(attribute_type: params[:attribute][:type], reason: params[:attribute][:reason], input_data: params[:attribute][:root])
+        authorize! :create, MeterAttribute
+        @meter.meter_attributes.create!(
+          attribute_type: params[:attribute][:type],
+          reason: params[:attribute][:reason],
+          input_data: params[:attribute][:root],
+          created_by: current_user
+        )
         redirect_to school_meter_path(@school, @meter)
+      end
+
+      def show
+        @meter_attribute = @meter.meter_attributes.find(params[:id])
+        authorize! :edit, @meter_attribute
       end
 
       def edit
@@ -22,21 +34,22 @@ module Schools
       end
 
       def update
-        @meter_attribute = @meter.meter_attributes.find(params[:id])
-        @meter_attribute_type = @meter_attribute.meter_attribute_type
-        authorize! :edit, @meter_attribute
-        @input_data = params[:attribute][:root]
-        if @meter_attribute.update(input_data: @input_data, reason: params[:attribute][:reason])
-          redirect_to school_meter_path(@school, @meter)
-        else
-          render :edit
-        end
+        meter_attribute = @meter.meter_attributes.find(params[:id])
+        authorize! :edit, meter_attribute
+        new_attribute = @meter.meter_attributes.create!(
+          attribute_type: meter_attribute.attribute_type,
+          reason: params[:attribute][:reason],
+          input_data: params[:attribute][:root],
+          created_by: current_user
+        )
+        meter_attribute.update!(replaced_by: new_attribute)
+        redirect_to school_meter_path(@school, @meter)
       end
 
       def destroy
-        @meter_attribute = @meter.meter_attributes.find(params[:id])
-        authorize! :delete, @meter_attribute
-        @meter_attribute.destroy
+        meter_attribute = @meter.meter_attributes.find(params[:id])
+        authorize! :delete, meter_attribute
+        meter_attribute.update!(deleted_by: current_user)
         redirect_to school_meter_path(@school, @meter)
       end
     end

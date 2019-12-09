@@ -58,10 +58,10 @@ class SchoolGroup < ApplicationRecord
   end
 
   def meter_attributes_for(meter)
-    meter_attributes.where(meter_type: meter.meter_type)
+    meter_attributes.where(meter_type: meter.meter_type).active
   end
 
   def pseudo_meter_attributes
-    meter_attributes.select(&:pseudo?)
+    meter_attributes.active.select(&:pseudo?)
   end
 end

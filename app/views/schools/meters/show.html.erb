@@ -28,6 +28,9 @@
     <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">Meter-specific attributes</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" id="deleted-meter-attributes-tab" data-toggle="tab" href="#deleted-meter-attributes-content" role="tab" aria-controls="deleted-meter-attributes-content" aria-selected="false">Deleted attributes</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" id="school-meter-attributes-tab" data-toggle="tab" href="#school-meter-attributes-content" role="tab" aria-controls="school-meter-attributes-content" aria-selected="true">School inherited attributes</a>
   </li>
   <li class="nav-item">
@@ -57,7 +60,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @meter.meter_attributes.each do |meter_attribute| %>
+        <% @meter.meter_attributes.active.each do |meter_attribute| %>
           <tr>
             <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
@@ -65,11 +68,12 @@
               <div class="btn-group">
                 <%= link_to 'Edit', edit_school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
                 <%= button_to 'Delete', school_meter_meter_attribute_path(@school, @meter, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
+                <%= link_to 'History', school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn btn-rounded' if can?(:show, meter_attribute) %>
               </div>
             </td>
             <td><%= print_meter_attribute(meter_attribute) %></td>
-          <% end %>
-        </tr>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
@@ -111,6 +115,34 @@
           <tr>
             <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
             <td><%= meter_attribute.reason %></td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-pane fade" id="deleted-meter-attributes-content" role="tabpanel" aria-labelledby="deleted-meter-attributes-tab">
+    <h2>Deleted attributes</h2>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Actions</th>
+          <th>Deleted by</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @meter.meter_attributes.deleted.each do |meter_attribute| %>
+          <tr>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'History', school_meter_meter_attribute_path(@school, @meter, meter_attribute), class: 'btn' if can?(:show, meter_attribute) %>
+              </div>
+            </td>
+            <td><%= meter_attribute.deleted_by.email if meter_attribute.deleted_by %></td>
             <td><%= print_meter_attribute(meter_attribute) %></td>
           <% end %>
         </tr>
