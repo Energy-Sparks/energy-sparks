@@ -40,12 +40,6 @@ GIT
       rubyvis (~> 0.6.1)
       spreadsheet (~> 1.1)
 
-GIT
-  remote: https://github.com/seamusabshere/upsert.git
-  revision: b4a198be9253eefc3e25d88e10c21d9acb9ab6d4
-  specs:
-    upsert (3.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -665,7 +659,6 @@ DEPENDENCIES
   twilio-ruby
   tzinfo-data
   uglifier
-  upsert!
   web-console
   webdrivers
   webmock
