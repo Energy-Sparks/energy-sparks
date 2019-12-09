@@ -4,7 +4,6 @@ describe Amr::UpsertValidatedReadingsForAMeter do
 
   let(:number_of_readings)    { 2 }
   let(:gas_dashboard_meter)   { build(:dashboard_gas_meter_with_validated_reading, reading_count: number_of_readings) }
-  #let(:elec_dashboard_meter)  { build(:dashboard_electricity_meter_with_validated_reading, reading_count: number_of_readings) }
   let(:upsert_gas_service)    { Amr::UpsertValidatedReadingsForAMeter.new(gas_dashboard_meter) }
 
   describe 'with a validated set of readings' do
@@ -30,7 +29,7 @@ describe Amr::UpsertValidatedReadingsForAMeter do
       Amr::UpsertValidatedReadingsForAMeter.new(gas_dashboard_meter).perform
 
       expect(AmrValidatedReading.count).to be number_of_readings
-      expect(AmrValidatedReading.find_by(reading_date: latest_reading.reading_date).one_day_kwh.to_f).to eq new_total
+      expect(AmrValidatedReading.find_by(reading_date: latest_reading.reading_date).one_day_kwh).to eq BigDecimal(new_total, 15)
     end
   end
 
