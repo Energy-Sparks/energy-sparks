@@ -16,5 +16,16 @@ describe SchoolOnboarding, type: :model do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent, :reminder_sent, :school_admin_created]
       expect(onboarding.has_only_sent_email_or_reminder?).to be false
     end
+
+    it 'knows when it is complete' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete]
+      expect(onboarding.incomplete?).to be false
+    end
+
+    it 'knows when it is incomplete' do
+      onboarding = create :school_onboarding
+      expect(onboarding.incomplete?).to be true
+    end
+
   end
 end

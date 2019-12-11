@@ -35,6 +35,7 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  has_many :school_onboardings
   has_many :calendars, through: :schools
   has_many :users
   belongs_to :scoreboard, optional: true
