@@ -61,6 +61,10 @@ class SchoolOnboarding < ApplicationRecord
     (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
   end
 
+  def incomplete?
+    events.where(event: :onboarding_complete).empty?
+  end
+
   def to_param
     uuid
   end
