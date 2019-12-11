@@ -14,7 +14,7 @@ describe SchoolFilter do
 
   it 'filters by school group' do
     expect(SchoolFilter.new(school_group_ids: [school_group_a.id]).filter).to eq [school_1]
-    expect(SchoolFilter.new(school_group_ids: [school_group_a.id, school_group_b.id]).filter).to eq [school_1, school_2]
+    expect(SchoolFilter.new(school_group_ids: [school_group_a.id, school_group_b.id]).filter).to match_array [school_1, school_2]
     expect(SchoolFilter.new(school_group_ids: [school_group_b.id]).filter).to eq [school_2]
   end
 
