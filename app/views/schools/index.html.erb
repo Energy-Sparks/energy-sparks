@@ -42,7 +42,7 @@ Schools
   <div class="container">
     <div class="row padded-row">
       <div class="col-lg-12">
-        <% if current_user.try(:admin?) %>
+        <% if can?(:read_invisible_schools, School) %>
           <h3>Not visible schools</h3>
           <p>The following schools are not visible.</p>
           <div class="card-columns">
