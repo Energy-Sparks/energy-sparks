@@ -30,7 +30,7 @@
             <td><%= user.name %></td>
             <td><%= user.email %></td>
             <td><%= user.role.titleize %></td>
-            <td><%= nice_date_times user.last_sign_in_at %></td>
+            <td><%= display_last_signed_in_as(user) %></td>
             <td><%= user.access_locked? ? 'Y' : '' %></td>
             <td>
               <div class="btn-group">
