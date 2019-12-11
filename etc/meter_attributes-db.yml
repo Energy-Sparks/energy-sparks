@@ -33,6 +33,13 @@
     scale: '11.1'
   :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 5Nov2019'
   :meter_id: 16
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 10Dec2019'
+  :meter_id: 175
 - :attribute_type: heating_model
   :input_data:
     max_summer_daily_heating_kwh: '50'
@@ -80,6 +87,16 @@
     fit_£_per_kwh: '0.3'
   :reason: 16 panels appear on satellite - appear to be flat on roof?
   :meter_id: 3
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 01/01/2012
+    end_date: ''
+    kwp: '45.0'
+    orientation: '0'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: '0.05'
+  :meter_id: 171
 - :attribute_type: solar_pv
   :input_data:
     start_date: 10/01/2018

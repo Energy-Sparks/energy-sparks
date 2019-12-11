@@ -381,6 +381,25 @@
   :name: Pensford Primary School
   :meter_attributes: {}
   :pseudo_meter_attributes: {}
+138522:
+  :name: Ralph Allen
+  :meter_attributes:
+    2200030352583:
+      :solar_pv:
+      - :start_date: 2012-01-01
+        :kwp: 45.0
+        :orientation: 0
+        :tilt: 30
+        :shading: 0
+        :fit_£_per_kwh: 0.05
+    9313345903:
+      :meter_corrections:
+      - :rescale_amr_data:
+          :start_date: 2019-04-07
+          :end_date: 2020-04-07
+          :scale: 11.1
+          :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 10Dec2019'
+  :pseudo_meter_attributes: {}
 109005:
   :name: Roundhill Primary School
   :meter_attributes:
