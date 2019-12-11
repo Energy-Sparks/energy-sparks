@@ -1,3 +1,7 @@
 <% content_for :page_title, @school_group.name %>
 
-<%= render 'schools/list', name: @school_group.name, scoreboard: @school_group.scoreboard, schools: @school_group.schools.order(:name) %>
+<%= render 'schools/list', name: @school_group.name, scoreboard: @school_group.scoreboard, schools: @school_group.schools.visible.order(:name) %>
+
+<% if can?(:read_invisible_schools, School) %>
+  <%= render 'schools/list', name: 'Not visible schools', scoreboard: nil, schools: @school_group.schools.not_visible.order(:name) %>
+<% end %>
