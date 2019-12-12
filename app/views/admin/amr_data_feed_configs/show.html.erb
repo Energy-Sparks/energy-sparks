@@ -1,24 +1,7 @@
 <h1>AMR Data feed configuration</h1>
 <h2>for <%= @configuration.description %></h2>
 
-<%= @configuration.id %>
-<%= simple_form_for :preview, url: admin_amr_data_feed_readings_path, method: :post, remote: true do |f| %>
-  <%= f.hidden_field :amr_data_feed_config_id, value: @configuration.id %>
-  <%= f.input :csv_file, as: :file %>
-  <%= f.submit 'Preview' %>
-<% end %>
-
-
-<!-- <form action="<%= admin_amr_data_feed_readings_path %>"
-      enctype="multipart/form-data"
-      method="post">
-<p>
-What is your name? <input type="text" name="submit-name"><br>
-What file are you sending? <input type="files" name="file"><br>
-</p>
-<input type="submit" value="Send"> <input type="reset">
-</form> -->
-
+<%= link_to 'Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@configuration) %>
 
 <table class="table table-striped">
   <thead>
