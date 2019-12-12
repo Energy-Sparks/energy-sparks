@@ -79,7 +79,12 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 
+      resources :meter_attributes
+
       resources :meters do
+        scope module: :meters do
+          resources :meter_attributes
+        end
         member do
           put :activate
           put :deactivate
@@ -143,7 +148,9 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :newsletters
-    resources :school_groups
+    resources :school_groups do
+      resources :meter_attributes
+    end
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create
@@ -209,8 +216,8 @@ Rails.application.routes.draw do
     end
 
     resources :schools, only: [:show] do
-      resource :unvalidated_meter_collection, only: :show
-      resource :validated_meter_collection, only: :show
+      resource :unvalidated_amr_data, only: :show
+      resource :validated_amr_data, only: :show
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
     end
 

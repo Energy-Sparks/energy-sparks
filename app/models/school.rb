@@ -60,6 +60,7 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school, dependent: :destroy
   has_many :contacts,             inverse_of: :school, dependent: :destroy
   has_many :observations,         inverse_of: :school, dependent: :destroy
+  has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
 
   has_many :programmes,               inverse_of: :school, dependent: :destroy
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -267,6 +268,29 @@ class School < ApplicationRecord
       latest_content.find_out_mores
     else
       FindOutMore.none
+    end
+  end
+
+  def meter_attributes_for(meter)
+    meter_attributes.where(meter_type: meter.meter_type).active
+  end
+
+  def pseudo_meter_attributes
+    meter_attributes.active.select(&:pseudo?)
+  end
+
+  def school_group_pseudo_meter_attributes
+    school_group ? school_group.pseudo_meter_attributes : SchoolGroupMeterAttribute.none
+  end
+
+  def all_pseudo_meter_attributes
+    school_group_pseudo_meter_attributes + pseudo_meter_attributes
+  end
+
+  def pseudo_meter_attributes_to_analytics
+    all_pseudo_meter_attributes.group_by(&:meter_type).inject({}) do |collection, (meter_type, attributes)|
+      collection[meter_type.to_sym] = MeterAttribute.to_analytics(attributes)
+      collection
     end
   end
 end

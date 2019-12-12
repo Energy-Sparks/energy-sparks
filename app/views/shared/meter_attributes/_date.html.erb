@@ -1,0 +1,1 @@
+<%= form.input field_name, as: :tempus_dominus_date, default_date: value.blank? ? '' : Date.parse(value), required: field.required?, label: label.try(:to_s).try(:humanize), hint: field.hint%>
