@@ -29,6 +29,10 @@ class MeterAttribute < ApplicationRecord
   include AnalyticsAttribute
   belongs_to :meter
 
+  def invalidate_school_cache_key
+    meter.school.invalidate_cache_key
+  end
+
   def self.to_analytics(meter_attributes)
     meter_attributes.inject({}) do |collection, attribute|
       aggregation = attribute.meter_attribute_type.attribute_aggregation
