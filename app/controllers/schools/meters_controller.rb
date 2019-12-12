@@ -20,7 +20,7 @@ module Schools
     def show
       @available_meter_attributes = MeterAttributes.all
       respond_to do |format|
-        format.html { set_meter_attributes(@meter) }
+        format.html { }
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter.id), SINGLE_METER_CSV_HEADER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
       end
     end
@@ -77,14 +77,6 @@ module Schools
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)
-    end
-
-    def set_meter_attributes(meter)
-      @meter_corrections = meter.meter_corrections
-      @aggregations = meter.aggregation
-      @heating_model = meter.heating_model
-      @solar_pv = meter.solar_pv
-      @storage_heaters = meter.storage_heaters
     end
   end
 end
