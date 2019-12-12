@@ -29,4 +29,8 @@
 class SchoolMeterAttribute < ApplicationRecord
   include AnalyticsAttribute
   belongs_to :school
+
+  def invalidate_school_cache_key
+    school.invalidate_cache_key
+  end
 end

@@ -9,6 +9,8 @@ module AnalyticsAttribute
 
     scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil) }
     scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil) }
+
+    after_save :invalidate_school_cache_key
   end
 
   def to_analytics

@@ -46,6 +46,8 @@
 #  fk_rails_...  (school_group_id => school_groups.id)
 #
 
+require 'securerandom'
+
 class School < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
@@ -292,5 +294,9 @@ class School < ApplicationRecord
       collection[meter_type.to_sym] = MeterAttribute.to_analytics(attributes)
       collection
     end
+  end
+
+  def invalidate_cache_key
+    update_attribute(:validation_cache_key, SecureRandom.uuid)
   end
 end
