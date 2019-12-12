@@ -26,22 +26,8 @@
 #
 
 class MeterAttribute < ApplicationRecord
+  include AnalyticsAttribute
   belongs_to :meter
-  belongs_to :replaced_by, class_name: 'MeterAttribute', optional: true
-  belongs_to :deleted_by, class_name: 'User', optional: true
-  belongs_to :created_by, class_name: 'User', optional: true
-  has_one :replaces, class_name: 'MeterAttribute', foreign_key: :replaced_by_id
-
-  scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil) }
-  scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil) }
-
-  def to_analytics
-    meter_attribute_type.parse(input_data).to_analytics
-  end
-
-  def meter_attribute_type
-    MeterAttributes.all[attribute_type.to_sym]
-  end
 
   def self.to_analytics(meter_attributes)
     meter_attributes.inject({}) do |collection, attribute|

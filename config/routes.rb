@@ -151,7 +151,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :newsletters
     resources :school_groups do
-      resources :meter_attributes
+      scope module: :school_groups do
+        resources :meter_attributes
+      end
     end
     resources :activity_categories, except: [:destroy]
     resources :activity_types
@@ -165,6 +167,8 @@ Rails.application.routes.draw do
     namespace :emails do
       resources :alert_mailers, only: :show
     end
+
+    resources :meter_attributes, only: :index
 
     resources :programme_types do
       scope module: :programme_types do
