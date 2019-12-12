@@ -34,6 +34,8 @@ class Meter < ApplicationRecord
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
+  has_many :meter_attributes
+
   CREATABLE_METER_TYPES = [:electricity, :gas].freeze
   SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
 
@@ -79,12 +81,28 @@ class Meter < ApplicationRecord
     mpan_mprn.present? ? mpan_mprn : meter_type.to_s
   end
 
-  def meter_attributes(meter_attributes = MeterAttributes)
-    meter_attributes.for(mpan_mprn, area_name, meter_type.to_sym)
+  def school_meter_attributes
+    school.meter_attributes_for(self)
+  end
+
+  def school_group_meter_attributes
+    school.school_group ? school.school_group.meter_attributes_for(self) : SchoolGroupMeterAttribute.none
+  end
+
+  def all_meter_attributes
+    school_group_meter_attributes + school_meter_attributes + meter_attributes.active
+  end
+
+  def meter_attributes_to_analytics
+    MeterAttribute.to_analytics(all_meter_attributes)
+  end
+
+  def _old_meter_attributes(attributes_class = MeterAttributeCache)
+    attributes_class.for(school.urn, mpan_mprn)
   end
 
   def attributes(attribute_type)
-    meter_attributes[attribute_type]
+    _old_meter_attributes[attribute_type]
   end
 
   def solar_pv?

@@ -8,7 +8,7 @@ class DummyMeterAttributes
       solar_pv: [ 'yay']
     }
 
-  def self.for(mpan_mprn = nil, area_name = nil, meter_type = nil)
+  def self.for(*args)
     ATTRIBUTES
   end
 end
@@ -23,7 +23,7 @@ describe 'Meter', :meters do
 
     it 'can get them all' do
       meter =  build(:electricity_meter)
-      expect(meter.meter_attributes(DummyMeterAttributes)).to eq DummyMeterAttributes::ATTRIBUTES
+      expect(meter._old_meter_attributes(DummyMeterAttributes)).to eq DummyMeterAttributes::ATTRIBUTES
     end
   end
 
