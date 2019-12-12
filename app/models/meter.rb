@@ -97,14 +97,6 @@ class Meter < ApplicationRecord
     MeterAttribute.to_analytics(all_meter_attributes)
   end
 
-  def _old_meter_attributes(attributes_class = MeterAttributeCache)
-    attributes_class.for(school.urn, mpan_mprn)
-  end
-
-  def attributes(attribute_type)
-    _old_meter_attributes[attribute_type]
-  end
-
   def solar_pv?
     ! solar_pv.nil?
   end

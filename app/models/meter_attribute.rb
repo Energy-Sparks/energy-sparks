@@ -51,7 +51,7 @@ class MeterAttribute < ApplicationRecord
         collection[aggregation] << attribute.to_analytics
         collection
       else
-        collection.deep_merge(attribute.to_analytics)
+        collection.merge(attribute.to_analytics)
       end
     end
   end
