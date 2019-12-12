@@ -1,0 +1,55 @@
+require 'rails_helper'
+
+describe AmrUploadedReading do
+
+  let(:amr_data_feed_config) { build(:amr_data_feed_config, date_format:  '%e %b %Y %H:%M:%S') }
+  let(:amr_uploaded_reading) { AmrUploadedReading.new(
+                                                    reading_data: [
+                                                      { 'mpan_mprn' => 123, 'reading_date' => '2019-01-01', readings: Array.new(48, '0.0')  },
+                                                      { 'mpan_mprn' => 123, 'reading_date' => '2019-01-02', readings: Array.new(48, '0.0')  },
+                                                    ],
+                                                    amr_data_feed_config: amr_data_feed_config
+                                                    )
+                                                  }
+
+  it 'knows when it is valid, even if the dates are not in the correct format' do
+    validate = amr_uploaded_reading.validate
+    expect(validate.key?(:success)).to be true
+    expect(validate.key?(:error)).to be false
+  end
+
+  describe 'knows when it is invalid' do
+    it 'with missing mpan_mprn' do
+      amr_uploaded_reading.reading_data.first.delete('mpan_mprn')
+      validate = amr_uploaded_reading.validate
+
+      expect(validate.key?(:success)).to be false
+      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_MPAN
+    end
+
+    it 'with missing reading date' do
+      amr_uploaded_reading.reading_data.second.delete('reading_date')
+      validate = amr_uploaded_reading.validate
+
+      expect(validate.key?(:success)).to be false
+      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READING_DATE
+    end
+
+    it 'with missing readings' do
+      amr_uploaded_reading.reading_data.first['readings'].shift
+
+      validate = amr_uploaded_reading.validate
+
+      expect(validate.key?(:success)).to be false
+      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READINGS
+    end
+
+    it 'when dates are not quite the right format' do
+      amr_uploaded_reading.reading_data.first['reading_date'] = 'AAAAAA'
+      validate = amr_uploaded_reading.validate
+
+      expect(validate.key?(:success)).to be false
+      expect(validate[:error]).to be AmrUploadedReading::ERROR_BAD_DATE_FORMAT
+    end
+  end
+end
