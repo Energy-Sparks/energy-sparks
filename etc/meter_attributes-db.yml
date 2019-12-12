@@ -1,0 +1,781 @@
+---
+:meter_attributes:
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '800'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 1500
+  :meter_id: 88
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 04/10/2015
+    end_date: ''
+    kwp: '12.0'
+    orientation: '0'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: '0.05'
+  :reason: 56 panels, unknown capacity on satellite, installed 2012, but set to 2015
+    as 1st meter date
+  :meter_id: 85
+- :attribute_type: function_switch
+  :input_data: heating_only
+  :reason: ''
+  :meter_id: 16
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 5Nov2019'
+  :meter_id: 16
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 10Dec2019'
+  :meter_id: 175
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '50'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 140
+  :meter_id: 16
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_start_date
+  :reason: ''
+  :meter_id: 4
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 4
+- :attribute_type: meter_corrections_no_heating_in_summer_set_missing_to_zero
+  :input_data:
+    start_toy:
+      month: '5'
+      day_of_month: '25'
+    end_toy:
+      month: '10'
+      day_of_month: '15'
+  :reason: ''
+  :meter_id: 4
+- :attribute_type: meter_corrections_readings_end_date
+  :input_data: 30/09/2016
+  :reason: ''
+  :meter_id: 4
+- :attribute_type: function_switch
+  :input_data: heating_only
+  :reason: ''
+  :meter_id: 4
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 14/04/2016
+    end_date: ''
+    kwp: '4.0'
+    orientation: '0'
+    tilt: '0'
+    shading: '0'
+    fit_£_per_kwh: '0.3'
+  :reason: 16 panels appear on satellite - appear to be flat on roof?
+  :meter_id: 3
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 01/01/2012
+    end_date: ''
+    kwp: '45.0'
+    orientation: '0'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: '0.05'
+  :meter_id: 171
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 10/01/2018
+    end_date: ''
+    kwp: '4.0'
+    orientation: '0'
+    tilt: '0'
+    shading: '0'
+    fit_£_per_kwh: '0.3'
+  :reason: 46 panels on roof should be ~10kWp, but consumption suggests 3kWp
+  :meter_id: 142
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 10
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '400'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 600
+  :meter_id: 13
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 03/11/2014
+    end_date: 19/11/2014
+    scale: '0.25'
+  :reason: ''
+  :meter_id: 13
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_start_date
+  :reason: ''
+  :meter_id: 12
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 12
+- :attribute_type: aggregation_switch
+  :input_data: ignore_start_date
+  :reason: ''
+  :meter_id: 29
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_start_date
+  :reason: ''
+  :meter_id: 11
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 11
+- :attribute_type: meter_corrections_switch
+  :input_data: correct_zero_partial_data
+  :reason: ''
+  :meter_id: 89
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '400'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 1000
+  :meter_id: 82
+- :attribute_type: function_switch
+  :input_data: kitchen_only
+  :reason: ''
+  :meter_id: 20
+- :attribute_type: meter_corrections_set_missing_data_to_zero
+  :input_data:
+    start_date: 18/02/2019
+    end_date: 22/02/2019
+  :reason: 'switched from gas to electric heating, validaiton was substituting holiday
+    from previous gassy year: PH 16Nov2019'
+  :meter_id: 20
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BANES gas feed sending m3 gas and not kWh: PH 22Nov2019'
+  :meter_id: 20
+- :attribute_type: meter_corrections_switch
+  :input_data: correct_zero_partial_data
+  :reason: ''
+  :meter_id: 67
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 07/11/2017
+    end_date: ''
+    kwp: '30.0'
+    orientation: '0'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: '0.05'
+  :reason: ''
+  :meter_id: 113
+- :attribute_type: meter_corrections_readings_start_date
+  :input_data: 15/02/2018
+  :reason: ''
+  :meter_id: 106
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '2000'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 6800
+  :meter_id: 106
+- :attribute_type: low_carbon_hub_meter_id
+  :input_data: '216057958'
+  :reason: ''
+  :meter_id: 145
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 01/11/2016
+    end_date: ''
+    kwp: '30.0'
+    orientation: '230'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: ''
+  :reason: ''
+  :meter_id: 143
+- :attribute_type: low_carbon_hub_meter_id
+  :input_data: '216057958'
+  :reason: ''
+  :meter_id: 143
+- :attribute_type: low_carbon_hub_meter_id
+  :input_data: '216057958'
+  :reason: ''
+  :meter_id: 144
+- :attribute_type: meter_corrections_readings_start_date
+  :input_data: 20/10/2011
+  :reason: For some reason all data was set as an attribute to zero historically,
+    changed 3Mar2019 PH
+  :meter_id: 6
+- :attribute_type: storage_heaters
+  :input_data:
+    start_date: 20/10/2011
+    end_date: 01/01/2025
+    power_kw: '22'
+    charge_start_time:
+      hour: '22'
+      minutes: '30'
+    charge_end_time:
+      hour: '6'
+      minutes: '30'
+  :reason: ''
+  :meter_id: 6
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '20'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Storage heater model assumptions on summer usage, wrong probably because
+    of partial turn off
+  :meter_id: 6
+- :attribute_type: storage_heaters
+  :input_data:
+    start_date: 01/01/2010
+    end_date: 13/12/2019
+    power_kw: '144'
+    charge_start_time:
+      hour: '22'
+      minutes: '0'
+    charge_end_time:
+      hour: '7'
+      minutes: '0'
+  :reason: ''
+  :meter_id: 167
+- :attribute_type: storage_heaters
+  :input_data:
+    start_date: 01/01/2010
+    end_date: 01/01/2025
+    power_kw: '34'
+    charge_start_time:
+      hour: '22'
+      minutes: '0'
+    charge_end_time:
+      hour: '22'
+      minutes: '0'
+  :reason: ''
+  :meter_id: 168
+- :attribute_type: meter_corrections_set_missing_data_to_zero
+  :input_data:
+    start_date: 12/07/2016
+    end_date: '09/12/2019'
+  :reason: ''
+  :meter_id: 136
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_start_date
+  :reason: ''
+  :meter_id: 136
+- :attribute_type: meter_corrections_set_bad_data_to_zero
+  :input_data:
+    start_date: 27/04/2016
+    end_date: 27/04/2016
+  :reason: ''
+  :meter_id: 15
+- :attribute_type: meter_corrections_readings_start_date
+  :input_data: 30/09/2014
+  :reason: ''
+  :meter_id: 15
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 31Oct2019'
+  :meter_id: 15
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '150'
+    fitting:
+      fit_model_start_date: 01/02/2017
+      fit_model_end_date: 31/08/2017
+      expiry_date_of_override: 01/05/2019
+      use_dates_for_model_validation: '0'
+  :reason: ''
+  :meter_id: 15
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 01/01/2014
+    end_date: ''
+    kwp: '6.0'
+    orientation: '0'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: '0.3'
+  :reason: appears to have 22 panels on bing satellite - for 2016 extension
+  :meter_id: 14
+- :attribute_type: storage_heaters
+  :input_data:
+    start_date: 01/01/2010
+    end_date: 01/01/2025
+    power_kw: '70'
+    charge_start_time:
+      hour: '0'
+      minutes: '0'
+    charge_end_time:
+      hour: '24'
+      minutes: '0'
+  :reason: Set to 24 hours as think might be only SH consumption, waiting confirmation
+    from CT 15Sep2019
+  :meter_id: 141
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 01/01/2009
+    end_date: 01/09/2013
+    scale: '0.0321543408360129'
+  :reason: ''
+  :meter_id: 38
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '80'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: There seems to be some occasional noise, which is unidentified but not
+    heating PH(4Mar2019)
+  :meter_id: 38
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 04/09/2010
+    end_date: 04/09/2011
+    scale: '0.0321543408360129'
+  :reason: ''
+  :meter_id: 39
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '90'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Auto fitter slightly high at 105 PH(4Mar2019)
+  :meter_id: 39
+- :attribute_type: function_switch
+  :input_data: kitchen_only
+  :reason: ''
+  :meter_id: 41
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 04/09/2010
+    end_date: 04/09/2011
+    scale: '0.0321543408360129'
+  :reason: may need to be set to heating model, as kitchen seems outside temperature  dependent,
+    2x reduction in usage post Jul 2018 PH(4Mar2019)
+  :meter_id: 41
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 01/01/2009
+    end_date: 25/07/2011
+    scale: '0.0321543408360129'
+  :reason: ''
+  :meter_id: 42
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '330'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Difficult to split heating and HW, auto split around 800 PH(4Mar2019)
+  :meter_id: 42
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '100'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: 'heating only since 2018, cant set as not so in past: PH 4Mar2019'
+  :meter_id: 24
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2014
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 31Oct2019'
+  :meter_id: 119
+- :attribute_type: meter_corrections_readings_start_date
+  :input_data: 21/02/2017
+  :reason: ''
+  :meter_id: 9
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 31Oct2019'
+  :meter_id: 9
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '250'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 450
+  :meter_id: 9
+- :attribute_type: function_switch
+  :input_data: heating_only
+  :reason: ''
+  :meter_id: 92
+- :attribute_type: meter_corrections_no_heating_in_summer_set_missing_to_zero
+  :input_data:
+    start_toy:
+      month: '4'
+      day_of_month: '1'
+    end_toy:
+      month: '9'
+      day_of_month: '30'
+  :reason: ''
+  :meter_id: 50
+- :attribute_type: meter_corrections_no_heating_in_summer_set_missing_to_zero
+  :input_data:
+    start_toy:
+      month: '4'
+      day_of_month: '1'
+    end_toy:
+      month: '9'
+      day_of_month: '30'
+  :reason: ''
+  :meter_id: 48
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 48
+- :attribute_type: function_switch
+  :input_data: heating_only
+  :reason: ''
+  :meter_id: 48
+- :attribute_type: meter_corrections_switch
+  :input_data: set_all_missing_to_zero
+  :reason: ''
+  :meter_id: 52
+- :attribute_type: function_switch
+  :input_data: kitchen_only
+  :reason: ''
+  :meter_id: 52
+- :attribute_type: meter_corrections_switch
+  :input_data: set_all_missing_to_zero
+  :reason: ''
+  :meter_id: 49
+- :attribute_type: function_switch
+  :input_data: hotwater_only
+  :reason: ''
+  :meter_id: 49
+- :attribute_type: meter_corrections_no_heating_in_summer_set_missing_to_zero
+  :input_data:
+    start_toy:
+      month: '4'
+      day_of_month: '1'
+    end_toy:
+      month: '9'
+      day_of_month: '30'
+  :reason: ''
+  :meter_id: 51
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 01/01/2009
+    end_date: 12/02/2102
+    scale: '0.0321543408360129'
+  :reason: ''
+  :meter_id: 51
+- :attribute_type: function_switch
+  :input_data: heating_only
+  :reason: ''
+  :meter_id: 51
+- :attribute_type: solar_pv
+  :input_data:
+    start_date: 15/01/2012
+    end_date: ''
+    kwp: '10.0'
+    orientation: '0'
+    tilt: '30'
+    shading: '0'
+    fit_£_per_kwh: '0.3'
+  :reason: 10 kWp confirmed BWCE solar PV
+  :meter_id: 103
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 31Oct2019'
+  :meter_id: 109
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 56
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 63
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: '08/09/2009'
+    end_date: 17/08/2015
+    scale: '0.353697749196141'
+  :reason: ''
+  :meter_id: 63
+- :attribute_type: meter_corrections_set_bad_data_to_zero
+  :input_data:
+    start_date: 31/07/2015
+    end_date: 17/08/2015
+  :reason: ''
+  :meter_id: 63
+- :attribute_type: aggregation_switch
+  :input_data: ignore_start_date
+  :reason: ''
+  :meter_id: 55
+- :attribute_type: aggregation_switch
+  :input_data: ignore_start_date
+  :reason: ''
+  :meter_id: 62
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_start_date
+  :reason: ''
+  :meter_id: 54
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 54
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_start_date
+  :reason: ''
+  :meter_id: 59
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 59
+- :attribute_type: aggregation_switch
+  :input_data: deprecated_include_but_ignore_end_date
+  :reason: ''
+  :meter_id: 61
+- :attribute_type: meter_corrections_readings_start_date
+  :input_data: 25/06/2010
+  :reason: Probably not needed, LGAP lost during testing of bulk upload PH 4Mar2019,
+    suggest remove on further review
+  :meter_id: 5
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '15'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Stanton Drew has strange bifurcation, suggesting half the storage heaters
+    are switched off much earlier in the year
+  :meter_id: 5
+- :attribute_type: tariff
+  :input_data:
+    type: economy_7
+  :reason: ''
+  :meter_id: 5
+- :attribute_type: storage_heaters
+  :input_data:
+    start_date: 01/01/2010
+    end_date: 01/01/2025
+    power_kw: '22.0'
+    charge_start_time:
+      hour: '0'
+      minutes: '30'
+    charge_end_time:
+      hour: '7'
+      minutes: '0'
+  :reason: ''
+  :meter_id: 5
+- :attribute_type: storage_heaters
+  :input_data:
+    start_date: 01/01/2010
+    end_date: 01/01/2025
+    power_kw: '40.0'
+    charge_start_time:
+      hour: '23'
+      minutes: '30'
+    charge_end_time:
+      hour: '5'
+      minutes: '30'
+  :reason: ''
+  :meter_id: 146
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '20'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: 'Aggregate Storage heater: model assumptions ~80 wrong as heating on all
+    year'
+  :meter_id: 146
+- :attribute_type: meter_corrections_switch
+  :input_data: correct_zero_partial_data
+  :reason: ''
+  :meter_id: 68
+- :attribute_type: meter_corrections_no_heating_in_summer_set_missing_to_zero
+  :input_data:
+    start_toy:
+      month: '4'
+      day_of_month: '1'
+    end_toy:
+      month: '9'
+      day_of_month: '30'
+  :reason: appears to be a storage heater meter
+  :meter_id: 2
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '250'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 350
+  :meter_id: 53
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '350'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 550
+  :meter_id: 84
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 5Nov2019'
+  :meter_id: 44
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '1000'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 1200
+  :meter_id: 80
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '500'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 750
+  :meter_id: 76
+:school_attributes:
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '160'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: 'Aggregate Storage heater: model assumptions wrong as heating on all year'
+  :school_id: 118
+  :meter_type: storage_heater_aggreated
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '40'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: 'Aggregate Storage heater: model assumptions ~160 wrong as heating on all
+    year'
+  :school_id: 107
+  :meter_type: storage_heater_aggreated
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '600'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Auto fitter high at 1400 PH(4Mar2019
+  :school_id: 41
+  :meter_type: aggregated_gas
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '850'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: Automated process set too high at about 1500
+  :school_id: 53
+  :meter_type: aggregated_gas
+- :attribute_type: heating_model
+  :input_data:
+    max_summer_daily_heating_kwh: '1400'
+    fitting:
+      fit_model_start_date: ''
+      fit_model_end_date: ''
+      expiry_date_of_override: ''
+      use_dates_for_model_validation: '0'
+  :reason: R2 control very unstable; 2nd attempt set to 1400; PH 29Oct2019
+  :school_id: 91
+  :meter_type: aggregated_gas
+- :attribute_type: meter_corrections_rescale_amr_data
+  :input_data:
+    start_date: 07/04/2019
+    end_date: 07/04/2020
+    scale: '11.1'
+  :reason: 'fix BNES gas feed sending m3 gas and not kWh: PH 4Nov2019'
+  :school_id: 115
+  :meter_type: gas
+:school_group_attributes:
+- :attribute_type: meter_corrections_auto_insert_missing_readings
+  :input_data:
+    type: weekends
+  :reason: ''
+  :school_group_id: 1
+  :meter_type: gas

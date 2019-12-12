@@ -303,8 +303,7 @@ function isAStringAndStartsWith(thing, startingWith) {
 function scatter(chartData, highchartsChart, seriesData) {
   console.log('scatter');
 
-
-  updateChartLabels(chartData, c);
+  updateChartLabels(chartData, highchartsChart);
   highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
 
@@ -312,7 +311,7 @@ function scatter(chartData, highchartsChart, seriesData) {
     console.log(seriesData[key].name);
     highchartsChart.addSeries(seriesData[key], false);
   });
-  normaliseYAxis(c);
+  normaliseYAxis(highchartsChart);
   highchartsChart.redraw();
 }
 

@@ -198,4 +198,8 @@ module ApplicationHelper
            end
     (sanitize(text) + ' ' + icon).html_safe
   end
+
+  def print_meter_attribute(meter_attribute)
+    sanitize(ap(MeterAttribute.to_analytics([meter_attribute]), index: false, plain: true))
+  end
 end

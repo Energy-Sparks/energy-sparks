@@ -9,7 +9,7 @@ module Amr
 
     def perform
       return unless @active_record_school.meters_with_readings.any?
-      @meter_collection = AnalyticsUnvalidatedMeterCollectionFactory.new(@active_record_school).build
+      @meter_collection = AnalyticsMeterCollectionFactory.new(@active_record_school).unvalidated
 
       p "Validate and persist readings for #{@active_record_school.name} #{@active_record_school.id}"
       AggregateDataService.new(@meter_collection).validate_meter_data

@@ -1,0 +1,106 @@
+<h1>Meter attributes: <%= @school.name %></h1>
+<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+
+
+<ul class="nav nav-tabs" id="meter-attribute-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">School-wide attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="deleted-meter-attributes-tab" data-toggle="tab" href="#deleted-meter-attributes-content" role="tab" aria-controls="deleted-meter-attributes-content" aria-selected="true">Deleted attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="group-pseudo-meter-attributes-tab" data-toggle="tab" href="#group-pseudo-meter-attributes-content" role="tab" aria-controls="group-meter-pseudo-attributes-content" aria-selected="false">School group pseudo attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="all-pseudo-meter-attributes-tab" data-toggle="tab" href="#all-pseudo-meter-attributes-content" role="tab" aria-controls="all-meter-pseudo-attributes-content" aria-selected="false">All pseudo attributes</a>
+  </li>
+</ul>
+<div class="tab-content" id="meter-attributes-tabs-content">
+  <div class="tab-pane fade show active pt-4" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
+    <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_school_meter_attribute_path(@school) %>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Meter type</th>
+          <th>Reason</th>
+          <th>Actions</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @meter_attributes.each do |meter_attribute| %>
+          <tr>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
+            <td><%= meter_attribute.meter_type %></td>
+            <td><%= meter_attribute.reason %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_school_meter_attribute_path(@school, meter_attribute), class: 'btn btn-rounded' if can?(:edit, meter_attribute) %>
+                <%= button_to 'Delete', school_meter_attribute_path(@school, meter_attribute), method: :delete, class: 'btn btn-rounded' if can?(:delete, meter_attribute) %>
+                <%= link_to 'History', school_meter_attribute_path(@school, meter_attribute), class: 'btn btn-rounded' if can?(:show, meter_attribute) %>
+              </div>
+            </td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="deleted-meter-attributes-content" role="tabpanel" aria-labelledby="deleted-database-meter-attributes-tab">
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Meter type</th>
+          <th>Actions</th>
+          <th>Deleted by</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @deleted_meter_attributes.each do |meter_attribute| %>
+          <tr>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
+            <td><%= meter_attribute.meter_type %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'History', school_meter_attribute_path(@school, meter_attribute), class: 'btn btn-rounded' if can?(:show, meter_attribute) %>
+              </div>
+            </td>
+            <td><%= meter_attribute.deleted_by.email if meter_attribute.deleted_by %></td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="group-pseudo-meter-attributes-content" role="tabpanel" aria-labelledby="group-pseudo-meter-attributes-tab">
+    <h2>School group inherited pseudo attributes <%= link_to 'Manage', admin_school_group_meter_attributes_path(@school.school_group), class: 'btn btn-rounded' if can?(:manage, SchoolGroupMeterAttribute)%></h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Meter type</th>
+          <th>Reason</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @school.school_group_pseudo_meter_attributes.each do |meter_attribute| %>
+          <tr>
+            <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
+            <td><%= meter_attribute.meter_type %></td>
+            <td><%= meter_attribute.reason %></td>
+            <td><%= print_meter_attribute(meter_attribute) %></td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="all-pseudo-meter-attributes-content" role="tabpanel" aria-labelledby="all-pseudo-meter-attributes-tab">
+    <h2>All pseudo attributes</h2>
+    <%= sanitize ap(@school.pseudo_meter_attributes_to_analytics, index: false, plain: true) %>
+  </div>
+</div>
