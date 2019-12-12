@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_06_144333) do
+ActiveRecord::Schema.define(version: 2019_12_09_132554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -674,6 +674,19 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
     t.index ["find_out_more_id"], name: "index_management_priorities_on_find_out_more_id"
   end
 
+  create_table "meter_attributes", force: :cascade do |t|
+    t.bigint "meter_id", null: false
+    t.string "attribute_type", null: false
+    t.json "input_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "reason"
+    t.bigint "replaced_by_id"
+    t.bigint "deleted_by_id"
+    t.bigint "created_by_id"
+    t.index ["meter_id"], name: "index_meter_attributes_on_meter_id"
+  end
+
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "meter_type"
@@ -760,6 +773,20 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
+  create_table "school_group_meter_attributes", force: :cascade do |t|
+    t.bigint "school_group_id", null: false
+    t.string "meter_type", null: false
+    t.string "attribute_type", null: false
+    t.json "input_data"
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "replaced_by_id"
+    t.bigint "deleted_by_id"
+    t.bigint "created_by_id"
+    t.index ["school_group_id"], name: "index_school_group_meter_attributes_on_school_group_id"
+  end
+
   create_table "school_groups", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -782,6 +809,20 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
     t.bigint "key_stage_id", null: false
     t.index ["key_stage_id"], name: "index_school_key_stages_on_key_stage_id"
     t.index ["school_id"], name: "index_school_key_stages_on_school_id"
+  end
+
+  create_table "school_meter_attributes", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.string "meter_type", null: false
+    t.string "attribute_type", null: false
+    t.json "input_data"
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "replaced_by_id"
+    t.bigint "deleted_by_id"
+    t.bigint "created_by_id"
+    t.index ["school_id"], name: "index_school_meter_attributes_on_school_id"
   end
 
   create_table "school_onboarding_events", force: :cascade do |t|
@@ -1059,6 +1100,10 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
   add_foreign_key "management_priorities", "alerts", on_delete: :cascade
   add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade
   add_foreign_key "management_priorities", "find_out_mores", on_delete: :nullify
+  add_foreign_key "meter_attributes", "meter_attributes", column: "replaced_by_id", on_delete: :nullify
+  add_foreign_key "meter_attributes", "meters", on_delete: :cascade
+  add_foreign_key "meter_attributes", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools"
   add_foreign_key "observations", "activities", on_delete: :nullify
@@ -1068,12 +1113,20 @@ ActiveRecord::Schema.define(version: 2019_12_06_144333) do
   add_foreign_key "programmes", "schools", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
+  add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify
+  add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
+  add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "school_group_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
+  add_foreign_key "school_meter_attributes", "school_meter_attributes", column: "replaced_by_id", on_delete: :nullify
+  add_foreign_key "school_meter_attributes", "schools", on_delete: :cascade
+  add_foreign_key "school_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "school_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
   add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
