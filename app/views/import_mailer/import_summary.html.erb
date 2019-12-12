@@ -1,9 +1,60 @@
-<h1 class="mb-3"><%= @logs.size %> imports processed</h1>
-
-<ul>
-  <% @logs.each do |import_log| %>
-    <li>
-      <%= import_log.amr_data_feed_config.description %>: imported <%= pluralize(import_log.records_imported, 'new reading') %> on <%= import_log.import_time %>
-    </li>
+<h3>Import runs</h3>
+<table class="table mt-3 mb-5">
+  <thead class="thead-light">
+    <tr>
+      <th>Date</th>
+      <th>Imported readings</th>
+      <th>Updated readings</th>
+    </tr>
+  </thead>
+  <% @data.each do |config, reports| %>
+    <% if reports[:import_logs].any? %>
+    <thead>
+      <tr>
+        <th colspan="3"><%= config.description %></th>
+      </tr>
+    </thead>
+      <tbody>
+        <% reports[:import_logs].each do |log| %>
+          <tr>
+            <td><%= nice_date_times(log.import_time) %></td>
+            <td><%= log.records_imported %></td>
+            <td><%= log.records_upserted %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
   <% end %>
-</ul>
+</table>
+
+<h2>Data issues</h2>
+
+<table class="table mt-3 mb-5">
+  <thead class="thead-light">
+    <tr>
+      <th>MPAN/MPRN</th>
+      <th>School</th>
+      <th>Area</th>
+      <th>Last validated reading date</th>
+    </tr>
+  </thead>
+  <thead class="thead-light">
+    <tr>
+      <th colspan="4">Meters with stale data</th>
+    </tr>
+  <thead>
+  <%= render 'meter_table', data: @data, report_key: :meters_running_behind %>
+  <thead class="thead-light">
+    <tr>
+      <th colspan="4">Meters with blank readings (whole day)</th>
+    </tr>
+  <thead>
+  <%= render 'meter_table', data: @data, report_key: :meters_with_blank_data %>
+  <thead class="thead-light">
+    <tr>
+      <th colspan="4">Zero data imports (whole day)</th>
+    </tr>
+  <thead>
+  <%= render 'meter_table', data: @data, report_key: :meters_with_zero_data %>
+</table>
+
