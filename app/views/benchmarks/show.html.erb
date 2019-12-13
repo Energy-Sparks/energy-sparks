@@ -6,7 +6,6 @@
 
 <%= form_tag @form_path, method: :get do %>
   <h2>Filters</h2>
-  <%#= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
   <%= hidden_field_tag :benchmark_type, @page if @page %>
   <fieldset class="form-group">
     <legend>School Groups</legend>
@@ -21,19 +20,6 @@
     <% end %>
   </fieldset>
 
-  <fieldset class="form-group">
-    <legend>Fuel Type</legend>
-    <div class="form-check form-check-inline">
-      <%= radio_button_tag 'benchmark[fuel_type]', "", @fuel_type.blank? , class: 'form-check-input' %>
-      <%= label_tag "benchmark[fuel_type][no_filter]", 'All fuel types', class: 'form-check-label' %>
-    </div>
-    <% @fuel_types.each do |fuel_type| %>
-      <div class="form-check form-check-inline">
-        <%= radio_button_tag 'benchmark[fuel_type]', fuel_type, @fuel_type ? (@fuel_type.to_sym == fuel_type.to_sym) : false , class: 'form-check-input' %>
-        <%= label_tag "benchmark[fuel_type][#{fuel_type}]", fuel_type.to_s.humanize.capitalize, class: 'form-check-label' %>
-      </div>
-    <% end %>
-  </fieldset>
   <%= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
 <% end %>
 
