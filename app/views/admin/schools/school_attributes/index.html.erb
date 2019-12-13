@@ -23,7 +23,7 @@
 <div class="tab-content" id="group-meter-attributes-tabs-content">
   <div class="tab-pane fade show active pt-4" id="database-group-meter-attributes-content" role="tabpanel" aria-labelledby="database-group-meter-attributes-tab">
     <p>Attributes created for meters in the database (e.g. gas meters, electricity meters, solar_pv meters etc.) will be assigned to <strong>ALL</strong> <%= @school.name %> meters of that type. If you only require the attributes on a single gas meter, for example, create the attribute directly on the meter.</p>
-    <p>Pseudo-attribute meter types (e.g. for aggregation) will be passed to the analytics to be picked up when those meters are created internally.</p>
+    <p>Attributes for pseudo-meter types (e.g. for aggregation) will be passed to the analytics to be picked up when those meters are created internally.</p>
     <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_admin_school_school_attribute_path(@school) %>
 
     <table class="table mt-3">
