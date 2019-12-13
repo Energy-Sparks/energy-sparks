@@ -16,8 +16,8 @@ RSpec.describe "meter attribute management", :meters, type: :system do
     end
 
     it 'allow the admin to manage the meter attributes' do
-      click_on 'Manage meters'
-      click_on 'Details'
+      click_on 'Manage school'
+      click_on 'Meter attributes'
       select 'Heating model', from: 'type'
       click_on 'New attribute'
 
@@ -57,6 +57,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
     it 'allow the admin to manage school meter attributes' do
       click_on 'Manage school'
       click_on 'Meter attributes'
+      click_on 'School-wide attributes'
       select 'Function > Switch', from: 'type'
       click_on 'New attribute'
 

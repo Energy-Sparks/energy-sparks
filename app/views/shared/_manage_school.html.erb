@@ -14,6 +14,6 @@
     <%= link_to 'Alert subscription events', school_alert_subscription_events_path(school), class: 'dropdown-item' if can? :index, AlertSubscriptionEvent %>
     <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
     <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
-    <%= link_to 'Meter attributes', school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
+    <%= link_to 'Meter attributes', admin_school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
   </div>
 </li>

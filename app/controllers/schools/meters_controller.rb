@@ -18,7 +18,6 @@ module Schools
     end
 
     def show
-      @available_meter_attributes = MeterAttributes.all
       respond_to do |format|
         format.html { }
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter.id), SINGLE_METER_CSV_HEADER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }

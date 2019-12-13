@@ -296,6 +296,13 @@ class School < ApplicationRecord
     end
   end
 
+  def meter_attributes_to_analytics
+    meters.order(:mpan_mprn).inject({}) do |collection, meter|
+      collection[meter.mpan_mprn] = meter.meter_attributes_to_analytics
+      collection
+    end
+  end
+
   def invalidate_cache_key
     update_attribute(:validation_cache_key, SecureRandom.uuid)
   end
