@@ -13,35 +13,32 @@ describe AmrUploadedReading do
                                                   }
 
   it 'knows when it is valid, even if the dates are not in the correct format' do
-    validate = amr_uploaded_reading.validate
-    expect(validate.key?(:success)).to be true
-    expect(validate.key?(:error)).to be false
+    amr_uploaded_reading.validate
+    expect(amr_uploaded_reading.valid?(:validate_reading_data)).to be true
+
   end
 
   describe 'knows when it is invalid' do
     it 'with missing mpan_mprn' do
       amr_uploaded_reading.reading_data.first.delete('mpan_mprn')
-      validate = amr_uploaded_reading.validate
 
-      expect(validate.key?(:success)).to be false
-      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_MPAN
+      expect(amr_uploaded_reading.valid?(:validate_reading_data)).to be false
+      expect(amr_uploaded_reading.errors.messages[:base]).to include(AmrUploadedReading::ERROR_MISSING_MPAN)
+
     end
 
     it 'with missing reading date' do
       amr_uploaded_reading.reading_data.second.delete('reading_date')
-      validate = amr_uploaded_reading.validate
 
-      expect(validate.key?(:success)).to be false
-      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READING_DATE
+      expect(amr_uploaded_reading.valid?(:validate_reading_data)).to be false
+      expect(amr_uploaded_reading.errors.messages[:base]).to include(AmrUploadedReading::ERROR_MISSING_READING_DATE)
     end
 
     it 'with missing readings' do
       amr_uploaded_reading.reading_data.first['readings'].shift
 
-      validate = amr_uploaded_reading.validate
-
-      expect(validate.key?(:success)).to be false
-      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READINGS
+      expect(amr_uploaded_reading.valid?(:validate_reading_data)).to be false
+      expect(amr_uploaded_reading.errors.messages[:base]).to include(AmrUploadedReading::ERROR_MISSING_READINGS)
     end
 
     it 'with missing readings (as nil)' do
@@ -50,19 +47,16 @@ describe AmrUploadedReading do
 
       amr_uploaded_reading.reading_data.first['readings'] = readings
 
-      validate = amr_uploaded_reading.validate
-
-      expect(validate.key?(:success)).to be false
-      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READINGS
+      expect(amr_uploaded_reading.valid?(:validate_reading_data)).to be false
+      expect(amr_uploaded_reading.errors.messages[:base]).to include(AmrUploadedReading::ERROR_MISSING_READINGS)
     end
 
     it 'when dates are not quite the right format' do
       bad_date = 'AAAAAA'
       amr_uploaded_reading.reading_data.first['reading_date'] = bad_date
-      validate = amr_uploaded_reading.validate
 
-      expect(validate.key?(:success)).to be false
-      expect(validate[:error]).to eq AmrUploadedReading::ERROR_BAD_DATE_FORMAT % { example: bad_date }
+      expect(amr_uploaded_reading.valid?(:validate_reading_data)).to be false
+      expect(amr_uploaded_reading.errors.messages[:base]).to include(AmrUploadedReading::ERROR_BAD_DATE_FORMAT % { example: bad_date })
     end
   end
 end

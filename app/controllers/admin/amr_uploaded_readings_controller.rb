@@ -4,8 +4,8 @@ module Admin
       @amr_data_feed_config = AmrDataFeedConfig.find(params[:amr_data_feed_config_id])
       @amr_uploaded_reading = AmrUploadedReading.find(params[:id])
 
-      results = @amr_uploaded_reading.validate
-      @error = results[:error]
+      @valid = @amr_uploaded_reading.valid?(:validate_reading_data)
+      @errors = @amr_uploaded_reading.errors.messages[:base].join(', ')
     end
 
     def new

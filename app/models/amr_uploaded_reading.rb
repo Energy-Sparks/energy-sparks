@@ -24,25 +24,26 @@ class AmrUploadedReading < ApplicationRecord
 
   validates_presence_of :file_name
 
+  validate :validate_reading_data, on: :validate_reading_data
+
   ERROR_MISSING_MPAN = 'Mpan or MPRN field is missing'.freeze
   ERROR_MISSING_READING_DATE = 'Reading date is missing'.freeze
   ERROR_MISSING_READINGS = 'Some days have missing readings'.freeze
   ERROR_BAD_DATE_FORMAT = 'Bad format for some reading dates - for example %{example}'.freeze
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
-  def validate
-    return { error: ERROR_UNABLE_TO_PARSE_FILE } if reading_data.empty?
-    return { error: ERROR_MISSING_MPAN } if check_whether_any_missing?('mpan_mprn')
-    return { error: ERROR_MISSING_READING_DATE } if check_whether_any_missing?('reading_date')
-    return { error: ERROR_MISSING_READINGS } if missing_readings?
+  def validate_reading_data
+    errors[:base] << ERROR_UNABLE_TO_PARSE_FILE if reading_data.empty?
+    errors[:base] << ERROR_MISSING_MPAN if check_whether_any_missing?('mpan_mprn')
+
+    errors[:base] << ERROR_MISSING_READING_DATE if check_whether_any_missing?('reading_date')
+    errors[:base] << ERROR_MISSING_READINGS if missing_readings?
 
     begin
       is_there_an_invalid_reading_date
     rescue ArgumentError => e
-      return { error: e.message }
+      errors[:base] << e.message
     end
-
-    { success: 'Valid' }
   end
 
   private
@@ -65,6 +66,7 @@ class AmrUploadedReading < ApplicationRecord
     date_record = nil
     reading_data.each do |reading|
       date_record = reading['reading_date']
+      next if date_record.nil?
       Date.parse(date_record)
     end
   rescue ArgumentError
