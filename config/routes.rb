@@ -186,8 +186,6 @@ Rails.application.routes.draw do
       resources :amr_uploaded_readings, only: [:index, :show, :new, :create]
     end
 
-    #post :amr_data_feed_readings, to: 'amr_data_feed_readings#preview'
-
     resources :equivalence_types
     resource :equivalence_type_preview, only: :create
     resource :equivalences, only: :create
