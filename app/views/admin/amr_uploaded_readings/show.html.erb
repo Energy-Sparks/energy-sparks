@@ -3,10 +3,8 @@
 
 <p>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></p>
 
-<%= @amr_uploaded_reading.reading_data %>
-
 <% if @valid %>
-  <h3>First ten rows</h3>
+  <h3>(Up to) First ten rows</h3>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -38,4 +36,3 @@
 
 <p><%= link_to 'Back', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></p>
 <p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>
-
