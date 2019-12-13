@@ -3,13 +3,14 @@
 
 <p>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></p>
 
-<h3>First ten rows</h3>
+<%= @amr_uploaded_reading.reading_data %>
 
 <% if @error %>
   <p>We have identified a problem processing the file you have uploaded, are you sure it is in the correct format?</p>
   <%= @error %>
 
 <% else %>
+  <h3>First ten rows</h3>
 
   <div class="table-responsive">
     <table class="table table-striped">
@@ -37,3 +38,7 @@
   </div>
 
 <% end %>
+
+<p><%= link_to 'Back', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></p>
+<p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>
+

@@ -44,12 +44,25 @@ describe AmrUploadedReading do
       expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READINGS
     end
 
-    it 'when dates are not quite the right format' do
-      amr_uploaded_reading.reading_data.first['reading_date'] = 'AAAAAA'
+    it 'with missing readings (as nil)' do
+      readings = amr_uploaded_reading.reading_data.first['readings']
+      readings[readings.size - 1] = nil
+
+      amr_uploaded_reading.reading_data.first['readings'] = readings
+
       validate = amr_uploaded_reading.validate
 
       expect(validate.key?(:success)).to be false
-      expect(validate[:error]).to be AmrUploadedReading::ERROR_BAD_DATE_FORMAT
+      expect(validate[:error]).to be AmrUploadedReading::ERROR_MISSING_READINGS
+    end
+
+    it 'when dates are not quite the right format' do
+      bad_date = 'AAAAAA'
+      amr_uploaded_reading.reading_data.first['reading_date'] = bad_date
+      validate = amr_uploaded_reading.validate
+
+      expect(validate.key?(:success)).to be false
+      expect(validate[:error]).to eq AmrUploadedReading::ERROR_BAD_DATE_FORMAT % { example: bad_date }
     end
   end
 end
