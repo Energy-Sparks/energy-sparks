@@ -79,12 +79,7 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 
-      resources :meter_attributes
-
       resources :meters do
-        scope module: :meters do
-          resources :meter_attributes
-        end
         member do
           put :activate
           put :deactivate
@@ -223,6 +218,10 @@ Rails.application.routes.draw do
       resource :unvalidated_amr_data, only: :show
       resource :validated_amr_data, only: :show
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
+      scope module: :schools do
+        resources :meter_attributes
+        resources :school_attributes
+      end
     end
 
   end # Admin name space
