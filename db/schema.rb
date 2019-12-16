@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_09_132554) do
+ActiveRecord::Schema.define(version: 2019_12_16_111642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -604,6 +604,21 @@ ActiveRecord::Schema.define(version: 2019_12_09_132554) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "global_meter_attributes", force: :cascade do |t|
+    t.string "meter_type", null: false
+    t.string "attribute_type", null: false
+    t.json "input_data"
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "replaced_by_id"
+    t.bigint "deleted_by_id"
+    t.bigint "created_by_id"
+    t.index ["created_by_id"], name: "index_global_meter_attributes_on_created_by_id"
+    t.index ["deleted_by_id"], name: "index_global_meter_attributes_on_deleted_by_id"
+    t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
+  end
+
   create_table "impacts", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -1089,6 +1104,9 @@ ActiveRecord::Schema.define(version: 2019_12_09_132554) do
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "global_meter_attributes", "global_meter_attributes", column: "replaced_by_id", on_delete: :nullify
+  add_foreign_key "global_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade

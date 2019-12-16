@@ -1,6 +1,6 @@
 module Admin
   module SchoolGroups
-    class MeterAttributesController < ApplicationController
+    class MeterAttributesController < AdminController
       load_and_authorize_resource :school_group
 
       def index

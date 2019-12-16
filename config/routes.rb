@@ -191,6 +191,8 @@ Rails.application.routes.draw do
 
     resources :calendars, only: [:new, :create, :index, :show]
 
+    resources :global_meter_attributes
+
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
