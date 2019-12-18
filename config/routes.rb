@@ -223,6 +223,8 @@ Rails.application.routes.draw do
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
     end
 
+    post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
+
   end # Admin name space
 
   namespace :teachers do

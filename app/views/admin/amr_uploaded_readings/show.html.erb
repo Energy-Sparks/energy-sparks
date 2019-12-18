@@ -29,5 +29,9 @@
   </table>
 </div>
 
+<%= form_with(url: admin_create_amr_data_feed_readings_path(@amr_uploaded_reading), method: :post, local: true) do %>
+  <%= submit_tag "I'm happy, insert this data", class: 'btn', data: { disable_with: false } %>
+<% end %>
+
 <p><%= link_to 'Back', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></p>
 <p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>
