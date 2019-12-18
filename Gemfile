@@ -12,7 +12,7 @@ gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.2' # Use Puma as the app server
-gem 'rack', '2.0.6'
+gem 'rack', '2.0.8'
 gem 'rack-attack'
 
 # Database/Data
