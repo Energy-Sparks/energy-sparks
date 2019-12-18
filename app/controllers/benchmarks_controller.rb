@@ -71,14 +71,12 @@ private
 
   def filter_lists
     @school_groups = SchoolGroup.all
-    @fuel_types = [:gas, :electricity, :solar_pv, :storage_heaters]
   end
 
   def benchmark_results
     @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
-    @fuel_type = params.dig(:benchmark, :fuel_type)
 
-    schools = SchoolFilter.new(school_group_ids: @school_group_ids, fuel_type: @fuel_type).filter
+    schools = SchoolFilter.new(school_group_ids: @school_group_ids).filter
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
