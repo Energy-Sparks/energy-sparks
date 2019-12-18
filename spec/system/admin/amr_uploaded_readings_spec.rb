@@ -33,7 +33,7 @@ describe AmrUploadedReading, type: :system do
   it 'is helpful if a dodgy date format file is loaded' do
     attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-date-file.csv')
     click_on 'Preview'
-    expect(page).to have_content(AmrUploadedReading::ERROR_BAD_DATE_FORMAT % { example: 'KABOOM' })
+    expect(page).to have_content(AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: 'KABOOM' })
   end
 
   it 'is helpful if a dodgy mpan format file is loaded' do
@@ -45,11 +45,6 @@ describe AmrUploadedReading, type: :system do
   it 'is helpful if a reading is missing' do
     attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-data-file.csv')
     click_on 'Preview'
-    expect(page).to have_content(AmrUploadedReading::ERROR_MISSING_READINGS)
+    expect(page).to have_content(AmrReadingData::ERROR_MISSING_READINGS)
   end
-
 end
-
-
-
-

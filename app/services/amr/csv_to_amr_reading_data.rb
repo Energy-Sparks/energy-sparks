@@ -1,5 +1,5 @@
 module Amr
-  class CsvToReadingsHash
+  class CsvToAmrReadingData
     def initialize(config_to_parse_file, path_and_file_name)
       @path_and_file_name = path_and_file_name
       @config = config_to_parse_file
@@ -12,6 +12,8 @@ module Amr
 
       array_of_data_feed_reading_hashes = SingleReadConverter.new(array_of_data_feed_reading_hashes).perform if @config.row_per_reading
       array_of_data_feed_reading_hashes.uniq
+
+      AmrReadingData.new(reading_data: array_of_data_feed_reading_hashes.uniq, date_format: @config.date_format)
     end
   end
 end

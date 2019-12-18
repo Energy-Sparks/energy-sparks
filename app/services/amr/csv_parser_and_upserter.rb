@@ -13,7 +13,9 @@ module Amr
 
       amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
 
-      unique_array_of_readings = CsvToReadingsHash.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
+      amr_reading_data = CsvToAmrReadingData.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
+
+      unique_array_of_readings = amr_reading_data.reading_data
 
       @upserted_record_count = DataFeedUpserter.new(unique_array_of_readings, amr_data_feed_import_log.id).perform
       @inserted_record_count = AmrDataFeedReading.count - records_before
