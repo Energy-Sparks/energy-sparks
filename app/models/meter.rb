@@ -31,7 +31,7 @@ class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
+  has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
   has_many :meter_attributes
