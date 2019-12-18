@@ -31,7 +31,10 @@
   </div>
 <% else %>
   <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
-  <%= @errors %>
+  <div class="alert alert-danger" role="alert">
+    <%= @errors %>
+  </div>
+
 <% end %>
 
 <p><%= link_to 'Back', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></p>
