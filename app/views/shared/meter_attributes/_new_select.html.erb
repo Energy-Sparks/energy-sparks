@@ -1,5 +1,6 @@
 
 <%= form_tag create_path, method: :get do %>
   <%= select_tag :type, options_for_select(available_meter_attributes.map{|id, attribute_type| [attribute_type.attribute_name, id]}.sort_by(&:last))%>
+  <%= hidden_field_tag(:meter_id, meter_id) if local_assigns[:meter_id] %>
   <%=  submit_tag 'New attribute', class: 'btn btn-sm'%>
 <% end %>
