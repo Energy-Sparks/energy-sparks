@@ -39,7 +39,7 @@ module Amr
           holidays: schedule_data_manager_service.holidays
         },
         amr_data: meter_data_class.new(heat_meters: heat_meters, electricity_meters: electricity_meters).build,
-        pseudo_meter_attributes: MeterAttributeCache.pseudo_for(@active_record_school.urn)
+        pseudo_meter_attributes: @active_record_school.pseudo_meter_attributes_to_analytics
       }
     end
   end

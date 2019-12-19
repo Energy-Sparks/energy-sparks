@@ -1,0 +1,58 @@
+<h1>Meter attributes: <%= @school.name %></h1>
+<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+
+<ul class="nav nav-tabs" id="top-level-meter-attribute-tabs">
+  <li class="nav-item">
+    <a class="nav-link" id="meter-attributes-tab" href="<%= admin_school_meter_attributes_path(@school) %>" role="tab" aria-selected="false">Meter-specific attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" id="group-meter-attributes-tab" href="<%= admin_school_school_attributes_path(@school) %>" role="tab" aria-selected="true">School-wide attributes</a>
+  </li>
+</ul>
+
+
+<ul class="nav nav-tabs mt-3" id="group-meter-attribute-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="database-group-meter-attributes-tab" data-toggle="tab" href="#database-group-meter-attributes-content" role="tab" aria-controls="database-group-meter-attributes-content" aria-selected="true">Attributes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="deleted-group-meter-attributes-tab" data-toggle="tab" href="#deleted-group-meter-attributes-content" role="tab" aria-controls="deleted-group-meter-attributes-content" aria-selected="false">Deleted</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="group-meter-attributes-tabs-content">
+  <div class="tab-pane fade show active pt-4" id="database-group-meter-attributes-content" role="tabpanel" aria-labelledby="database-group-meter-attributes-tab">
+    <p>Attributes created for meters in the database (e.g. gas meters, electricity meters, solar_pv meters etc.) will be assigned to <strong>ALL</strong> <%= @school.name %> meters of that type. If you only require the attributes on a single gas meter, for example, create the attribute directly on the meter.</p>
+    <p>Attributes for pseudo-meter types (e.g. for aggregation) will be passed to the analytics to be picked up when those meters are created internally.</p>
+    <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_admin_school_school_attribute_path(@school) %>
+
+    <table class="table mt-3">
+      <% @group_meter_attributes.each do |meter_attribute| %>
+        <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
+          <div class="alert alert-info">from <%= link_to "#{@school.school_group.name} attributes", admin_school_group_meter_attributes_path(@school.school_group)%></div>
+        <% end %>
+      <% end %>
+      <% @meter_attributes.each do |meter_attribute| %>
+        <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_school_school_attribute_path(@school, meter_attribute), class: 'btn btn-sm' %>
+            <%= button_to 'Delete', admin_school_school_attribute_path(@school, meter_attribute), method: :delete, class: 'btn btn-sm' %>
+            <%= link_to 'History', admin_school_school_attribute_path(@school, meter_attribute), class: 'btn btn-sm' %>
+          </div>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="tab-pane fade" id="deleted-group-meter-attributes-content" role="tabpanel" aria-labelledby="deleted-database-group-meter-attributes-tab">
+    <table class="table mt-3">
+      <% @deleted_meter_attributes.each do |meter_attribute| %>
+        <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
+          <div class="btn-group">
+            <%= link_to 'History', admin_school_school_attribute_path(@school, meter_attribute), class: 'btn btn-sm' %>
+          </div>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
