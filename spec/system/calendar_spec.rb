@@ -6,7 +6,7 @@ RSpec.describe "calendar view", type: :system do
   describe 'does lots of good calendar work', js: true do
     let!(:admin)  { create(:admin) }
 
-    it 'shows the calendar, allows an event to be added and deleted' do
+    xit 'shows the calendar, allows an event to be added and deleted - flickering' do
       create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Date.today.year}"))
 
       sign_in(admin)
