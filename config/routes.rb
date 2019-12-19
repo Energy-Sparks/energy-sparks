@@ -184,7 +184,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :amr_data_feed_configs, only: [:index, :show]
+    resources :amr_data_feed_configs, only: [:index, :show] do
+      resources :amr_uploaded_readings, only: [:index, :show, :new, :create]
+    end
 
     resources :equivalence_types
     resource :equivalence_type_preview, only: :create
@@ -226,6 +228,8 @@ Rails.application.routes.draw do
         resources :school_attributes
       end
     end
+
+    post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
 
   end # Admin name space
 

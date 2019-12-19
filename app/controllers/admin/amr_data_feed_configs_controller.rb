@@ -1,7 +1,7 @@
 module Admin
   class AmrDataFeedConfigsController < AdminController
     def index
-      @configurations = AmrDataFeedConfig.all
+      @configurations = AmrDataFeedConfig.all.order(:description)
     end
 
     def show

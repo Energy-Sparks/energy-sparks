@@ -372,6 +372,16 @@ ActiveRecord::Schema.define(version: 2019_12_13_112351) do
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
   end
 
+  create_table "amr_uploaded_readings", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id", null: false
+    t.boolean "imported", default: false, null: false
+    t.text "file_name", default: "f", null: false
+    t.json "reading_data", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_uploaded_readings_on_amr_data_feed_config_id"
+  end
+
   create_table "amr_validated_readings", force: :cascade do |t|
     t.bigint "meter_id", null: false
     t.decimal "kwh_data_x48", null: false, array: true
@@ -1060,6 +1070,7 @@ ActiveRecord::Schema.define(version: 2019_12_13_112351) do
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
+  add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
