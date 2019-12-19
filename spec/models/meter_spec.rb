@@ -1,18 +1,5 @@
 require 'rails_helper'
 
-class DummyMeterAttributes
-
-  ATTRIBUTES = {
-      meter_corrections: [{ readings_start_date: Date.new(2010, 6, 25), }],
-      storage_heaters: [{ start_date: Date.new(2010, 1, 1) }],
-      solar_pv: [ 'yay']
-    }
-
-  def self.for(*args)
-    ATTRIBUTES
-  end
-end
-
 describe 'Meter', :meters do
   describe 'meter attributes' do
     let(:meter) { build(:electricity_meter) }
@@ -21,10 +8,6 @@ describe 'Meter', :meters do
       expect(meter.pseudo).to be false
     end
 
-    it 'can get them all' do
-      meter =  build(:electricity_meter)
-      expect(meter._old_meter_attributes(DummyMeterAttributes)).to eq DummyMeterAttributes::ATTRIBUTES
-    end
   end
 
   describe 'valid?' do
