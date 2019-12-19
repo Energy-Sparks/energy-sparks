@@ -1,0 +1,14 @@
+<table class="table mt-3">
+  <tbody>
+    <tr><th scope="row">Type:</th><td><%= meter_attribute.meter_attribute_type.attribute_name %></td></tr>
+    <% unless meter_attribute.reason.blank? %>
+      <tr><th scope="row">Reason:</th><td><%= meter_attribute.reason %></td></tr>
+    <% end %>
+    <% unless meter_attribute.created_by.blank? %>
+      <tr><th scope="row">Last updated by:</th><td><%= meter_attribute.created_by.email %></td></tr>
+    <% end %>
+    <% unless meter_attribute.deleted_by.blank? %>
+      <tr><th scope="row">Deleted by:</th><td><%= meter_attribute.deleted_by.email %></td></tr>
+    <% end %>
+  </tbody>
+</table>

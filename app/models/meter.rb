@@ -31,7 +31,7 @@ class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :nullify
+  has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
   has_many :meter_attributes
@@ -95,14 +95,6 @@ class Meter < ApplicationRecord
 
   def meter_attributes_to_analytics
     MeterAttribute.to_analytics(all_meter_attributes)
-  end
-
-  def _old_meter_attributes(attributes_class = MeterAttributeCache)
-    attributes_class.for(school.urn, mpan_mprn)
-  end
-
-  def attributes(attribute_type)
-    _old_meter_attributes[attribute_type]
   end
 
   def solar_pv?

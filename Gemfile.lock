@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: c69fbdde04b145fe7acc4fdc6c3a475ba70a5dd7
-  tag: 0.55.0
+  revision: 3782f7b59c5d26ca87983fe60da4438e604de3f1
+  tag: 0.55.2
   specs:
-    energy-sparks_analytics (0.55.0)
+    energy-sparks_analytics (0.55.2)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -371,7 +371,7 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.1)
     puma (3.12.2)
-    rack (2.0.6)
+    rack (2.0.8)
     rack-attack (6.0.0)
       rack (>= 1.0, < 3)
     rack-canonical-host (0.2.3)
@@ -634,7 +634,7 @@ DEPENDENCIES
   pg (= 1.0.0)
   pry
   puma (= 3.12.2)
-  rack (= 2.0.6)
+  rack (= 2.0.8)
   rack-attack
   rack-canonical-host
   rails (~> 6.0.1)

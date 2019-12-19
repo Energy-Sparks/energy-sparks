@@ -79,12 +79,7 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 
-      resources :meter_attributes
-
       resources :meters do
-        scope module: :meters do
-          resources :meter_attributes
-        end
         member do
           put :activate
           put :deactivate
@@ -149,7 +144,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :newsletters
     resources :school_groups do
-      resources :meter_attributes
+      scope module: :school_groups do
+        resources :meter_attributes
+      end
     end
     resources :activity_categories, except: [:destroy]
     resources :activity_types
@@ -163,6 +160,8 @@ Rails.application.routes.draw do
     namespace :emails do
       resources :alert_mailers, only: :show
     end
+
+    resources :meter_attributes, only: :index
 
     resources :programme_types do
       scope module: :programme_types do
@@ -221,6 +220,10 @@ Rails.application.routes.draw do
       resource :unvalidated_amr_data, only: :show
       resource :validated_amr_data, only: :show
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
+      scope module: :schools do
+        resources :meter_attributes
+        resources :school_attributes
+      end
     end
 
     post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
