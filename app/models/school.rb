@@ -287,7 +287,7 @@ class School < ApplicationRecord
     [school_group_pseudo_meter_attributes, pseudo_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
-        collection[meter_type] << attributes
+        collection[meter_type] = collection[meter_type] + attributes
       end
       collection
     end

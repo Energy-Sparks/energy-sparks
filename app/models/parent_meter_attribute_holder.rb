@@ -7,7 +7,7 @@ module ParentMeterAttributeHolder
 
   def pseudo_meter_attributes
     meter_attributes.inject({}) do |collection, attribute|
-      attribute.selected_meter_types.select {|_type| attribute.pseudo?(meter_type)}.each do |meter_type|
+      attribute.selected_meter_types.select {|selected| attribute.pseudo?(selected)}.each do |meter_type|
         collection[meter_type] ||= []
         collection[meter_type] << attribute
       end
