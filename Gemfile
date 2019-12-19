@@ -12,7 +12,7 @@ gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
 gem 'puma', '3.12.2' # Use Puma as the app server
-gem 'rack', '2.0.6'
+gem 'rack', '2.0.8'
 gem 'rack-attack'
 
 # Database/Data
@@ -22,7 +22,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.55.0'
+gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '0.55.2'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
