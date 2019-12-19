@@ -12,6 +12,7 @@
   <%= form.input :image_name, collection: EquivalenceType.image_names.keys, include_blank: false, label_method: :humanize %>
 
   <%= form.simple_fields_for :content, content do |content| %>
-    <%= content.input :equivalence, as: :trix_editor %>
+    <%= content.label 'Equivalence', for: :description %>
+    <%= content.rich_text_area :equivalence %>
   <% end %>
 <% end %>
