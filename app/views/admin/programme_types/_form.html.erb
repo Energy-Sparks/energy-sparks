@@ -1,7 +1,7 @@
 <%= simple_form_for([:admin, programme_type]) do |f| %>
   <%= f.input :title %>
   <%= f.label 'Description', for: :description %>
-  <%= f.rich_text_area :description, required: true, autofocus: true %>
+  <%= f.rich_text_area :description %>
   <%= f.input :short_description %>
   <%= f.input :document_link %>
   <%= f.input :active %>

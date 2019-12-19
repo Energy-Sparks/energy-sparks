@@ -13,6 +13,6 @@
 
   <%= form.simple_fields_for :content, content do |content| %>
     <%= content.label 'Equivalence', for: :description %>
-    <%= content.rich_text_area :equivalence, required: true, autofocus: true %>
+    <%= content.rich_text_area :equivalence %>
   <% end %>
 <% end %>

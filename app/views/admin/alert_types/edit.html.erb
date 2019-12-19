@@ -3,7 +3,7 @@
 <%= simple_form_for(@alert_type, url: admin_alert_type_path(@alert_type)) do |f| %>
   <%= f.input :title, as: :string %>
   <%= f.label 'Description', for: :description %>
-  <%= f.rich_text_area :description, required: true, autofocus: true %>
+  <%= f.rich_text_area :description %>
   <%= f.input :frequency, as: :radio_buttons, collection: AlertType.frequencies.keys, label_method: :humanize %>
 
   <%= f.submit class: 'btn btn-success' %>

@@ -36,42 +36,42 @@
     <%= render 'admin/shared/preview_section', content: content, scope: 'email', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email) do %>
       <%= content.input :email_title, as: :string %>
       <%= content.label 'Email content', for: :email_content %>
-      <%= content.rich_text_area :email_content, required: true, autofocus: true %>
+      <%= content.rich_text_area :email_content %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :teacher_dashboard_alert_active, field_name: 'Teacher dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'teacher_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :teacher_dashboard_title) do %>
       <%= content.label 'Teacher dashboard title', for: :teacher_dashboard_title %>
-      <%= content.rich_text_area :teacher_dashboard_title, required: true, autofocus: true %>
+      <%= content.rich_text_area :teacher_dashboard_title %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
       <%= content.label 'Pupil dashboard title', for: :pupil_dashboard_title %>
-      <%= content.rich_text_area :pupil_dashboard_title, required: true, autofocus: true %>
+      <%= content.rich_text_area :pupil_dashboard_title %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :public_dashboard_alert_active, field_name: 'Public dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'public_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :public_dashboard_title) do %>
       <%= content.label 'Public dashboard title', for: :public_dashboard_title %>
-      <%= content.rich_text_area :public_dashboard_title, required: true, autofocus: true %>
+      <%= content.rich_text_area :public_dashboard_title %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Management dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :management_dashboard_title) do %>
       <%= content.label 'Management dashboard title', for: :management_dashboard_title %>
-      <%= content.rich_text_area :management_dashboard_title, required: true, autofocus: true %>
+      <%= content.rich_text_area :management_dashboard_title %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :management_priorities_active, field_name: 'Management priorities' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'management_priorities', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :management_priorities) do %>
       <%= content.label 'Management priorities title', for: :management_priorities_title %>
-      <%= content.rich_text_area :management_priorities_title, required: true, autofocus: true %>
+      <%= content.rich_text_area :management_priorities_title %>
     <% end %>
   <% end %>
 
@@ -83,7 +83,7 @@
       <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>
 
       <%= content.label 'Find out more content', for: :find_out_more_content %>
-      <%= content.rich_text_area :find_out_more_content, required: true, autofocus: true, hint: 'Main body copy for Find Out More Page' %>
+      <%= content.rich_text_area :find_out_more_content %>
       <p class="small text-muted">'Main body copy for Find Out More Page'</p>
     <% end %>
   <% end %>
