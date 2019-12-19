@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 966f0263db7a605888a0ab1348a818309c3000f4
-  tag: 0.55.4-tariff-refactor
+  revision: 291dd14acc35be276555a654449d7d717c7138d9
+  tag: 0.55.4-tariff-refactor-a
   specs:
-    energy-sparks_analytics (0.55.4.pre.tariff.pre.refactor)
+    energy-sparks_analytics (0.55.4.pre.tariff.pre.refactor.pre.a)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
