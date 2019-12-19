@@ -8,8 +8,9 @@ module Admin
         file_name: amr_upload_reading.file_name,
         import_time: DateTime.now.utc
                                                             )
-
       @upserted_record_count = Amr::DataFeedUpserter.new(amr_upload_reading.reading_data, amr_data_feed_import_log.id).perform
+
+      amr_upload_reading.update!(imported: true)
 
       redirect_to admin_amr_data_feed_config_path(amr_upload_reading.amr_data_feed_config_id), notice: "We have inserted #{@upserted_record_count} records"
     end
