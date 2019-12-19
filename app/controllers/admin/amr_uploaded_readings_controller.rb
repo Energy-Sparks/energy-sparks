@@ -1,17 +1,16 @@
 module Admin
   class AmrUploadedReadingsController < AdminController
+    before_action :set_amr_data_feed_config
+
     def show
-      @amr_data_feed_config = AmrDataFeedConfig.find(params[:amr_data_feed_config_id])
       @amr_uploaded_reading = AmrUploadedReading.find(params[:id])
     end
 
     def new
-      @amr_data_feed_config = AmrDataFeedConfig.find(params[:amr_data_feed_config_id])
       @amr_uploaded_reading = AmrUploadedReading.new(amr_data_feed_config: @amr_data_feed_config)
     end
 
     def create
-      @amr_data_feed_config = AmrDataFeedConfig.find(params[:amr_data_feed_config_id])
       @csv_file = params[:amr_uploaded_reading][:csv_file]
 
       @amr_reading_data = Amr::CsvToAmrReadingData.new(@amr_data_feed_config, @csv_file.tempfile).perform
@@ -29,6 +28,12 @@ module Admin
         @errors = @amr_reading_data.errors.messages[:reading_data].join(', ')
         render :new
       end
+    end
+
+    private
+
+    def set_amr_data_feed_config
+      @amr_data_feed_config = AmrDataFeedConfig.find(params[:amr_data_feed_config_id])
     end
   end
 end

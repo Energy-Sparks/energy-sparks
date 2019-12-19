@@ -9,7 +9,7 @@ class AmrReadingData
   ERROR_BAD_DATE_FORMAT = 'Bad format for some reading dates - for example here is one: %{example}'.freeze
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
-  validate :missing_readings? #, on: :validate_reading_data
+  validate :missing_readings?
   validate :missing_mpan_mprn?
   validate :missing_reading_date?
   validate :invalid_reading_date?
