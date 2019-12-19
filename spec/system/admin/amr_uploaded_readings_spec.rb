@@ -27,7 +27,7 @@ describe AmrUploadedReading, type: :system do
   it 'is helpful if a very different format file is loaded' do
     attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-sheffield-file.csv')
     click_on 'Preview'
-    expect(page).to have_content(AmrUploadedReading::ERROR_UNABLE_TO_PARSE_FILE)
+    expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
   end
 
   it 'is helpful if a dodgy date format file is loaded' do
@@ -39,7 +39,7 @@ describe AmrUploadedReading, type: :system do
   it 'is helpful if a dodgy mpan format file is loaded' do
     attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-mpan-file.csv')
     click_on 'Preview'
-    expect(page).to have_content(AmrUploadedReading::ERROR_UNABLE_TO_PARSE_FILE)
+    expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
   end
 
   it 'is helpful if a reading is missing' do
