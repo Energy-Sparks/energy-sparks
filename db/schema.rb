@@ -1073,7 +1073,9 @@ ActiveRecord::Schema.define(version: 2019_12_18_140633) do
   add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
+  add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
