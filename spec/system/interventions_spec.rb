@@ -12,17 +12,25 @@ describe 'adding interventions' do
     sign_in(user)
   end
 
-  it 'allows a user to add and edit interventions' do
-
+  it 'allows a user to add and edit interventions', js: true do
     visit teachers_school_path(school)
 
     click_on 'Record an energy saving action'
 
     click_on boiler_intervention.intervention_type_group.title
 
-    fill_in 'Start date', with: '01/07/2019'
     choose 'Changed boiler'
     fill_in_trix with: 'We changed to a more efficient boiler'
+
+    click_on 'Continue'
+
+    expect(page).to have_content('When did you do it?')
+    fill_in 'observation_at', with: '01/07/2019', visible: false
+
+    find('input#observation_at').native.send_keys(:tab)
+
+    click_on 'Continue'
+
     click_on 'Confirm'
 
     intervention = school.observations.intervention.first
@@ -33,15 +41,22 @@ describe 'adding interventions' do
       click_on 'Edit'
     end
 
-    fill_in 'Start date', with: '20/06/2019'
+    expect(page).to have_content('What did you do?')
+    click_on 'Continue'
+
+    fill_in 'observation_at', with: '20/06/2019', visible: false
+    find('input#observation_at').native.send_keys(:tab)
+
+    click_on 'Continue'
+
     click_on 'Confirm'
 
     intervention.reload
     expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
 
     click_on 'Changed boiler'
-    expect(page).to have_content('We changed to a more efficient boiler')
 
+    expect(page).to have_content('We changed to a more efficient boiler')
   end
 
   it 'destroys interventions' do

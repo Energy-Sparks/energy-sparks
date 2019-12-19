@@ -12,14 +12,14 @@
   <div class="description-trix-editor">
     <%= f.label 'Description', for: :description %>
     <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
-    <%= f.input :description, as: :trix_editor, label: false %>
+    <%= f.rich_text_area :description, required: true, autofocus: true %>
   </div>
 
 
   <div class="school-specific-description-trix-editor chart-list">
     <%= f.label 'School specific description', for: :school_specific_description %>
     <%= render 'admin/shared/preview_section', scope: 'school-specific-description', preview_url: admin_activity_type_preview_path, no_timings: true, no_weightings: true do %>
-      <%= f.input :school_specific_description, as: :trix_editor, class: 'chart-list', label: false %>
+      <%= f.rich_text_area :school_specific_description, required: true, autofocus: true, class: 'chart-list' %>
     <% end %>
   </div>
 

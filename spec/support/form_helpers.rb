@@ -4,6 +4,8 @@ module EnergySparksFormHelpers
       editor = first(identifier)
       editor.click.set(with)
     else
+      pp first(identifier)
+      pp with
       first(identifier).send(:parent).all('input', visible: false).first.set(with)
     end
   end
