@@ -7,8 +7,8 @@ module AnalyticsAttribute
     belongs_to :created_by, class_name: 'User', optional: true
     has_one :replaces, class_name: name, foreign_key: :replaced_by_id
 
-    scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil) }
-    scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil) }
+    scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil).order(created_at: :asc)}
+    scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil).order(created_at: :asc)}
 
     after_save :invalidate_school_cache_key
   end
@@ -21,7 +21,11 @@ module AnalyticsAttribute
     MeterAttributes.all[attribute_type.to_sym]
   end
 
-  def pseudo?
+  def selected_meter_types
+    (meter_types || []).reject(&:blank?).map(&:to_sym)
+  end
+
+  def pseudo?(meter_type)
     meter_attribute_type.applicable_attribute_pseudo_meter_types.include?(meter_type.to_sym)
   end
 end

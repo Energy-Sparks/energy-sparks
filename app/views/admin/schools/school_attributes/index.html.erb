@@ -27,6 +27,11 @@
     <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_admin_school_school_attribute_path(@school) %>
 
     <table class="table mt-3">
+      <% @global_meter_attributes.each do |meter_attribute| %>
+        <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
+          <div class="alert alert-info">from <%= link_to "Global attributes", admin_global_meter_attributes_path %></div>
+        <% end %>
+      <% end %>
       <% @group_meter_attributes.each do |meter_attribute| %>
         <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
           <div class="alert alert-info">from <%= link_to "#{@school.school_group.name} attributes", admin_school_group_meter_attributes_path(@school.school_group)%></div>

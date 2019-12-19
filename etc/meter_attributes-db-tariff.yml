@@ -1,0 +1,989 @@
+---
+:meter_attributes:
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - flat rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.1191'
+  :meter_id: 71
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - flat rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.1191'
+  :meter_id: 134
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 135
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 73
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 133
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 94
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 81
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 85
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.12696'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08975'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 85
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - flat rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.1191'
+  :meter_id: 129
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - flat rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.1191'
+  :meter_id: 93
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - flat rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.1191'
+  :meter_id: 87
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - flat rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '6.161'
+      renewable_energy_obligation:
+        per: kwh
+        rate: '0.00565'
+      rate:
+        per: kwh
+        rate: '0.1191'
+  :meter_id: 79
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.064'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.11684'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08826'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 75
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.064'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.11897'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '0'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08826'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 77
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.064'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.11763'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08824'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 83
+- :attribute_type: accounting_tariff_differential
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Npower YPO 5 year electricity plan - differential rate
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.064'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      daytime_rate:
+        per: kwh
+        rate: '0.11634'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08823'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_id: 105
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.81'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 104
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.81'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '2.92'
+  :meter_id: 136
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '5.6'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 74
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '2.92'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 136
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '2.92'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 136
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '1.94'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 137
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '2.16'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 138
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.99'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 95
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.21'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 96
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.4'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 76
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '8.54'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 78
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '7.03'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 80
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.24'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 82
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '3.75'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 84
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '7.4'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 88
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '7.15'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 86
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2020
+    name: Corona Sheffield YPO 5 year gas plan
+    rates:
+      standing_charge:
+        per: day
+        rate: '16.77'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.020422'
+  :meter_id: 106
+:school_group_attributes:
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2008
+    end_date: 01/03/2022
+    name: B&NES gas tariff
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.00'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.015'
+  :school_group_id: 1
+  :meter_types:
+  - ''
+  - gas
+  - aggregated_gas
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2008
+    end_date: 01/03/2022
+    name: B&NES standard electricity tariff
+    rates:
+      standing_charge:
+        per: quarter
+        rate: '38.35'
+      renewable_energy_obligation:
+        per: kwh
+        rate: '0.00565'
+      rate:
+        per: kwh
+        rate: '0.115'
+  :school_group_id: 1
+  :meter_types:
+  - ''
+  - electricity
+  - aggregated_electricity
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2000
+    end_date: 01/01/2050
+    name: Sheffield standard electricity tariff
+    rates:
+      standing_charge:
+        per: quarter
+        rate: '38.35'
+      renewable_energy_obligation:
+        per: kwh
+        rate: '0.00565'
+      rate:
+        per: kwh
+        rate: '0.115'
+  :school_group_id: 3
+  :meter_types:
+  - ''
+  - electricity
+  - aggregated_electricity
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2000
+    end_date: 01/01/2020
+    name: Sheffield gas tariff
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.0'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.025'
+  :school_group_id: 3
+  :meter_types:
+  - ''
+  - gas
+  - aggregated_gas
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2022
+    name: Somerset standard electricity tariff
+    rates:
+      standing_charge:
+        per: quarter
+        rate: '38.35'
+      renewable_energy_obligation:
+        per: kwh
+        rate: '0.00565'
+      rate:
+        per: kwh
+        rate: '0.115'
+  :school_group_id: 2
+  :meter_types:
+  - ''
+  - electricity
+  - aggregated_electricity
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2015
+    end_date: 01/03/2022
+    name: Somerset gas tariff
+    rates:
+      standing_charge:
+        per: day
+        rate: '4'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.015'
+  :school_group_id: 2
+  :meter_types:
+  - ''
+  - gas
+  - aggregated_gas
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2000
+    end_date: 01/01/2050
+    name: Highland gas tariff
+    rates:
+      standing_charge:
+        per: day
+        rate: '4'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.015'
+  :school_group_id: 5
+  :meter_types:
+  - ''
+  - gas
+  - aggregated_gas
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2000
+    end_date: 01/01/2050
+    name: Highland standard electricity tariff
+    rates:
+      standing_charge:
+        per: quarter
+        rate: '38.35'
+      renewable_energy_obligation:
+        per: kwh
+        rate: '0.00565'
+      rate:
+        per: kwh
+        rate: '0.115'
+  :school_group_id: 5
+  :meter_types:
+  - ''
+  - electricity
+  - aggregated_electricity
+:global_meter_attributes:
+- :attribute_type: economic_tariff
+  :input_data:
+    name: Economic gas tariff
+    rates:
+      rate:
+        per: kwh
+        rate: '0.03'
+      daytime_rate:
+        per: ''
+        rate: ''
+        from:
+          hour: ''
+          minutes: ''
+        to:
+          hour: ''
+          minutes: ''
+      nighttime_rate:
+        per: ''
+        rate: ''
+        from:
+          hour: ''
+          minutes: ''
+        to:
+          hour: ''
+          minutes: ''
+  :meter_types:
+  - ''
+  - gas
+  - aggregated_gas
+- :attribute_type: economic_tariff
+  :input_data:
+    name: Solar PV Default Tarif
+    rates:
+      rate:
+        per: kwh
+        rate: '0.12'
+      daytime_rate:
+        per: ''
+        rate: ''
+        from:
+          hour: ''
+          minutes: ''
+        to:
+          hour: ''
+          minutes: ''
+      nighttime_rate:
+        per: ''
+        rate: ''
+        from:
+          hour: ''
+          minutes: ''
+        to:
+          hour: ''
+          minutes: ''
+  :meter_types:
+  - ''
+  - solar_pv
+  - solar_pv_consumed_sub_meter
+- :attribute_type: economic_tariff
+  :input_data:
+    name: Exported Solar PV Default Tariff
+    rates:
+      rate:
+        per: kwh
+        rate: '0.05'
+      daytime_rate:
+        per: ''
+        rate: ''
+        from:
+          hour: ''
+          minutes: ''
+        to:
+          hour: ''
+          minutes: ''
+      nighttime_rate:
+        per: ''
+        rate: ''
+        from:
+          hour: ''
+          minutes: ''
+        to:
+          hour: ''
+          minutes: ''
+  :meter_types:
+  - ''
+  - exported_solar_pv
+  - solar_pv_exported_sub_meter
+- :attribute_type: economic_tariff
+  :input_data:
+    name: Economic standard electricity tariff (inc day-night)
+    rates:
+      rate:
+        per: kwh
+        rate: '0.12'
+      daytime_rate:
+        per: kwh
+        rate: '0.13'
+        from:
+          hour: '6'
+          minutes: '30'
+        to:
+          hour: '24'
+          minutes: '00'
+      nighttime_rate:
+        per: kwh
+        rate: '0.08'
+        from:
+          hour: '0'
+          minutes: '0'
+        to:
+          hour: '6'
+          minutes: '30'
+  :meter_types:
+  - ''
+  - electricity
+  - aggregated_electricity
