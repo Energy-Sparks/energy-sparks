@@ -4,9 +4,9 @@
     <%= form.hint field.hint %>
   </div>
   <div class="col-6">
-    <%= form.input field_name + '[hour]', as: :integer, input_html: {value: value ? value[:hour] : ''}, required: field.required?, min: 0, max: 23, label: 'hour'%>
+    <%= form.input field_name + '[hour]', as: :integer, input_html: {value: value ? value['hour'] : ''}, required: field.required?, min: 0, max: 23, label: 'hour'%>
   </div>
   <div class="col-6">
-    <%= form.input field_name + '[minutes]', as: :integer, input_html: {value: value ? value[:minutes] : ''},  required: field.required?, min: 0, max: 59, label: 'minutes' %>
+    <%= form.input field_name + '[minutes]', as: :integer, input_html: {value: value ? value['minutes'] : ''},  required: field.required?, min: 0, max: 59, label: 'minutes' %>
   </div>
 </div>
