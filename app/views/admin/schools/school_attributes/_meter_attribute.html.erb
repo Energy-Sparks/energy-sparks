@@ -1,7 +1,9 @@
 <thead class="thead-light">
   <tr scope="row">
     <th>
-      <%= fa_icon(fuel_type_icon(meter_attribute.meter_type)) %> <%= meter_attribute.meter_type %> <%= "(pseduo)" if meter_attribute.pseudo? %>
+      <% meter_attribute.selected_meter_types.each do |meter_type|%>
+        <span class="badge badge-secondary"><%= fa_icon(fuel_type_icon(meter_type)) %> <%= meter_type %> <%= "(pseudo)" if meter_attribute.pseudo?(meter_type) %></span>
+      <% end %>
     </th>
     <th></th>
   </tr>

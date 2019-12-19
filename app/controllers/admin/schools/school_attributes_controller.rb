@@ -7,6 +7,7 @@ module Admin
         @meter_attributes = @school.meter_attributes.active
         @deleted_meter_attributes = @school.meter_attributes.deleted
         @group_meter_attributes = @school.school_group.meter_attributes.active
+        @global_meter_attributes = GlobalMeterAttribute.active
         @available_meter_attributes = MeterAttributes.all
       end
 
@@ -19,7 +20,7 @@ module Admin
           attribute_type: params[:attribute][:type],
           reason: params[:attribute][:reason],
           input_data: params[:attribute][:root],
-          meter_type: params[:attribute][:meter_type],
+          meter_types: params[:attribute][:meter_types],
           created_by: current_user
         )
         redirect_to admin_school_school_attributes_path(@school)
@@ -42,7 +43,7 @@ module Admin
           attribute_type: meter_attribute.attribute_type,
           reason: params[:attribute][:reason],
           input_data: params[:attribute][:root],
-          meter_type: params[:attribute][:meter_type],
+          meter_types: params[:attribute][:meter_types],
           created_by: current_user
         )
         meter_attribute.update!(replaced_by: new_attribute)
