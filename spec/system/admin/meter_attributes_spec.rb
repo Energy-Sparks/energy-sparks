@@ -62,7 +62,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       select 'Function > Switch', from: 'type'
       click_on 'New attribute'
 
-      select 'gas', from: 'Meter type'
+      check 'gas'
       select 'hotwater_only', from: 'attribute_root'
 
       click_on 'Create'
@@ -100,7 +100,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       select 'Tariff', from: 'type'
       click_on 'New attribute'
 
-      select 'electricity', from: 'Meter type'
+      check 'electricity'
       select 'economy_7', from: 'Type'
 
       click_on 'Create'
@@ -113,13 +113,14 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       click_on 'Edit'
 
-      select 'gas', from: 'type'
+      check 'gas'
+      uncheck 'electricity'
 
       click_on 'Update'
 
       school_group.reload
       new_attribute = school_group.meter_attributes.active.first
-      expect(new_attribute.meter_type).to eq('gas')
+      expect(new_attribute.selected_meter_types).to eq([:gas])
       attribute.reload
       expect(attribute.replaced_by).to eq(new_attribute)
 
@@ -150,7 +151,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       select 'Tariff', from: 'type'
       click_on 'New attribute'
 
-      select 'electricity', from: 'Meter type'
+      check 'electricity'
       select 'economy_7', from: 'Type'
 
       click_on 'Create'
@@ -163,12 +164,13 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       click_on 'Edit'
 
-      select 'gas', from: 'type'
+      check 'gas'
+      uncheck 'electricity'
 
       click_on 'Update'
 
       new_attribute = GlobalMeterAttribute.active.first
-      expect(new_attribute.meter_type).to eq('gas')
+      expect(new_attribute.selected_meter_types).to eq([:gas])
       attribute.reload
       expect(attribute.replaced_by).to eq(new_attribute)
 

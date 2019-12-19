@@ -21,7 +21,11 @@ module AnalyticsAttribute
     MeterAttributes.all[attribute_type.to_sym]
   end
 
-  def pseudo?
+  def selected_meter_types
+    (meter_types || []).reject(&:blank?).map(&:to_sym)
+  end
+
+  def pseudo?(meter_type)
     meter_attribute_type.applicable_attribute_pseudo_meter_types.include?(meter_type.to_sym)
   end
 end

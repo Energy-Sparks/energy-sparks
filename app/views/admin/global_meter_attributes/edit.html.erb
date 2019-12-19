@@ -3,7 +3,7 @@
     <h1>Edit attribute: <%= @meter_attribute_type.attribute_name %></h1>
     <p><%= @meter_attribute_type.attribute_description %></p>
     <%= simple_form_for :attribute, url: admin_global_meter_attribute_path(@meter_attribute), method: :put, html: { novalidate: false } do |form| %>
-      <%= form.input :meter_type, as: :select, collection: @meter_attribute_type.applicable_meter_types, selected: @meter_attribute.meter_type.to_sym %>
+      <%= form.input :meter_types, as: :check_boxes, collection: @meter_attribute_type.applicable_meter_types, checked: @meter_attribute.selected_meter_types %>
       <%= render 'shared/meter_attributes/edit_form', meter_attribute_type: @meter_attribute_type, meter_attribute: @meter_attribute, input_data: @input_data, form: form %>
     <% end %>
   </div>

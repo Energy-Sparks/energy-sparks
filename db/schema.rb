@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_16_111642) do
+ActiveRecord::Schema.define(version: 2019_12_18_140633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
     t.integer "number_of_header_rows", default: 0, null: false
     t.integer "process_type", default: 0, null: false
     t.integer "source_type", default: 0, null: false
+    t.integer "import_warning_days", default: 7, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -605,7 +606,6 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|
-    t.string "meter_type", null: false
     t.string "attribute_type", null: false
     t.json "input_data"
     t.text "reason"
@@ -614,6 +614,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
+    t.jsonb "meter_types", default: []
     t.index ["created_by_id"], name: "index_global_meter_attributes_on_created_by_id"
     t.index ["deleted_by_id"], name: "index_global_meter_attributes_on_deleted_by_id"
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
@@ -790,7 +791,6 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
 
   create_table "school_group_meter_attributes", force: :cascade do |t|
     t.bigint "school_group_id", null: false
-    t.string "meter_type", null: false
     t.string "attribute_type", null: false
     t.json "input_data"
     t.text "reason"
@@ -799,6 +799,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
+    t.jsonb "meter_types", default: []
     t.index ["school_group_id"], name: "index_school_group_meter_attributes_on_school_group_id"
   end
 
@@ -828,7 +829,6 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
 
   create_table "school_meter_attributes", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.string "meter_type", null: false
     t.string "attribute_type", null: false
     t.json "input_data"
     t.text "reason"
@@ -837,6 +837,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_111642) do
     t.bigint "replaced_by_id"
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
+    t.jsonb "meter_types", default: []
     t.index ["school_id"], name: "index_school_meter_attributes_on_school_id"
   end
 

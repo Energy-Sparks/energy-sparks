@@ -8,7 +8,7 @@
 #  deleted_by_id  :bigint(8)
 #  id             :bigint(8)        not null, primary key
 #  input_data     :json
-#  meter_type     :string           not null
+#  meter_types    :jsonb
 #  reason         :text
 #  replaced_by_id :bigint(8)
 #  updated_at     :datetime         not null
@@ -31,5 +31,19 @@ class GlobalMeterAttribute < ApplicationRecord
 
   def invalidate_school_cache_key
     School.all.map(&:invalidate_cache_key)
+  end
+
+  def self.for(meter)
+    where('meter_types ? :meter_type', meter_type: meter.meter_type).active
+  end
+
+  def self.pseudo
+    all.inject({}) do |collection, attribute|
+      attribute.selected_meter_types.select {|_type| attribute.pseudo?(meter_type)}.each do |meter_type|
+        collection[meter_type] ||= []
+        collection[meter_type] << attribute
+      end
+      collection
+    end
   end
 end

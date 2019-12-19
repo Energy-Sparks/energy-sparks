@@ -41,6 +41,11 @@
           </tr>
         </thead>
         <tbody>
+          <% meter.global_meter_attributes.each do |meter_attribute| %>
+            <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
+              <div class="alert alert-info">from <%= link_to "Global attributes", admin_global_meter_attributes_path %></div>
+            <% end %>
+          <% end %>
           <% meter.school_group_meter_attributes.each do |meter_attribute| %>
             <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
               <div class="alert alert-info">from <%= link_to "#{@school.school_group.name} attributes", admin_school_group_meter_attributes_path(@school.school_group)%></div>

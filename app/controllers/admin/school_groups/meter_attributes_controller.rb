@@ -18,7 +18,7 @@ module Admin
           attribute_type: params[:attribute][:type],
           reason: params[:attribute][:reason],
           input_data: params[:attribute][:root],
-          meter_type: params[:attribute][:meter_type],
+          meter_types: params[:attribute][:meter_types],
           created_by: current_user
         )
         redirect_to admin_school_group_meter_attributes_path(@school_group)
@@ -43,7 +43,7 @@ module Admin
           attribute_type: meter_attribute.attribute_type,
           reason: params[:attribute][:reason],
           input_data: params[:attribute][:root],
-          meter_type: params[:attribute][:meter_type],
+          meter_types: params[:attribute][:meter_types],
           created_by: current_user
         )
         meter_attribute.update!(replaced_by: new_attribute)

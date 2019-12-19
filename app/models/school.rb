@@ -50,6 +50,8 @@ require 'securerandom'
 
 class School < ApplicationRecord
   extend FriendlyId
+  include ParentMeterAttributeHolder
+
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
@@ -273,24 +275,26 @@ class School < ApplicationRecord
     end
   end
 
-  def meter_attributes_for(meter)
-    meter_attributes.where(meter_type: meter.meter_type).active
-  end
-
-  def pseudo_meter_attributes
-    meter_attributes.active.select(&:pseudo?)
-  end
-
   def school_group_pseudo_meter_attributes
-    school_group ? school_group.pseudo_meter_attributes : SchoolGroupMeterAttribute.none
+    school_group ? school_group.pseudo_meter_attributes : {}
+  end
+
+  def global_pseudo_meter_attributes
+    GlobalMeterAttribute.pseudo
   end
 
   def all_pseudo_meter_attributes
-    school_group_pseudo_meter_attributes + pseudo_meter_attributes
+    [school_group_pseudo_meter_attributes, pseudo_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+      pseudo_attributes.each do |meter_type, attributes|
+        collection[meter_type] ||= []
+        collection[meter_type] << attributes
+      end
+      collection
+    end
   end
 
   def pseudo_meter_attributes_to_analytics
-    all_pseudo_meter_attributes.group_by(&:meter_type).inject({}) do |collection, (meter_type, attributes)|
+    all_pseudo_meter_attributes.inject({}) do |collection, (meter_type, attributes)|
       collection[meter_type.to_sym] = MeterAttribute.to_analytics(attributes)
       collection
     end

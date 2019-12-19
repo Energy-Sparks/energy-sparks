@@ -89,8 +89,12 @@ class Meter < ApplicationRecord
     school.school_group ? school.school_group.meter_attributes_for(self) : SchoolGroupMeterAttribute.none
   end
 
+  def global_meter_attributes
+    GlobalMeterAttribute.for(self)
+  end
+
   def all_meter_attributes
-    school_group_meter_attributes + school_meter_attributes + meter_attributes.active
+    global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active
   end
 
   def meter_attributes_to_analytics
