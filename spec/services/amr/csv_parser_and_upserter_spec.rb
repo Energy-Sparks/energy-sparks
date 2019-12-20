@@ -250,8 +250,8 @@ module Amr
       end
 
       it 'should not create records for empty rows (comma, comma)' do
-        expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 1
-        expect(AmrDataFeedReading.first.readings).to eq Array.new(48, nil)
+        expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 0
+        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_MISSING_READINGS
       end
     end
 
@@ -289,6 +289,13 @@ module Amr
       it 'should parse a simple frome historic file with handle off by one' do
         FileUtils.mkdir_p historical_frome_config.local_bucket_path
         write_file_and_expect_readings(example_frome_historic, historical_frome_config, "4.465528")
+      end
+
+      it 'handles a wrong file and creates an error message' do
+        FileUtils.mkdir_p frome_config.local_bucket_path
+        expect(write_file_and_parse(example_sheffield_gas, frome_config)).to be 0
+
+        expect(AmrDataFeedImportLog.first.error_messages).to eq [AmrReadingData::ERROR_MISSING_READINGS, AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: 'hr0030' }].join(', ')
       end
     end
 

@@ -13,7 +13,9 @@ module Amr
       array_of_data_feed_reading_hashes = SingleReadConverter.new(array_of_data_feed_reading_hashes).perform if @config.row_per_reading
       array_of_data_feed_reading_hashes.uniq
 
-      AmrReadingData.new(reading_data: array_of_data_feed_reading_hashes.uniq, date_format: @config.date_format)
+      missing_reading_threshold = @config.row_per_reading? ? SingleReadConverter::BLANK_THRESHOLD : 0
+
+      AmrReadingData.new(reading_data: array_of_data_feed_reading_hashes.uniq, date_format: @config.date_format, missing_reading_threshold: missing_reading_threshold)
     end
   end
 end
