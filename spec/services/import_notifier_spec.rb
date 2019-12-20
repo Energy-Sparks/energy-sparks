@@ -32,6 +32,16 @@ describe ImportNotifier do
       expect(data[sheffield_config][:meters_running_behind]).to match_array([meter_1])
     end
 
+    it 'does not return any late meters if there is no day set' do
+      sheffield_config.update!(import_warning_days: nil)
+      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
+      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
+      expect(data[sheffield_config][:import_logs]).to eq([sheffield_import_log])
+      expect(data[sheffield_config][:meters_running_behind]).to match_array([])
+    end
+
     it 'gets all the meters from the imports where there is missing data' do
       sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
