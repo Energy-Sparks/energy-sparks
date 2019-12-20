@@ -7,7 +7,10 @@ module Admin
         amr_data_feed_config_id: amr_upload_reading.amr_data_feed_config_id,
         file_name: amr_upload_reading.file_name,
         import_time: DateTime.now.utc
-                                                            )
+        )
+
+      records_before = AmrDataFeedReading.count
+
       @upserted_record_count = Amr::DataFeedUpserter.new(amr_upload_reading.reading_data, amr_data_feed_import_log.id).perform
       @inserted_record_count = AmrDataFeedReading.count - records_before
 
