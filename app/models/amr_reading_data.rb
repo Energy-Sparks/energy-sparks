@@ -12,7 +12,7 @@ class AmrReadingData
   validate :missing_readings?
   validate :missing_mpan_mprn?
   validate :missing_reading_date?
-  validate :invalid_reading_date?
+  validate :invalid_reading_date?, unless: [:all_the_reading_dates_are_dates?, :there_are_any_missing_reading_dates?]
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
 
   def initialize(reading_data:, date_format:)
@@ -35,13 +35,16 @@ class AmrReadingData
   end
 
   def missing_reading_date?
-    if @reading_data.detect { |reading| reading[:reading_date].blank? }
+    if there_are_any_missing_reading_dates?
       errors.add(:reading_data, ERROR_MISSING_READING_DATE)
     end
   end
 
+  def there_are_any_missing_reading_dates?
+    @reading_data.detect { |reading| reading[:reading_date].blank? }
+  end
+
   def invalid_reading_date?
-    return false if all_the_reading_dates_are_dates?
     is_there_an_invalid_reading_date?
   rescue ArgumentError => e
     errors.add(:reading_data, e.message)

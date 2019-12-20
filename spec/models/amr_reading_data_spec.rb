@@ -2,10 +2,6 @@ require 'rails_helper'
 
 describe AmrReadingData do
 
-
-
-
-
   describe 'handles when reading date is a date' do
     let(:date_format) { '%Y-%m-%d' }
     let(:amr_reading) { AmrReadingData.new(reading_data: [
@@ -16,6 +12,19 @@ describe AmrReadingData do
 
     it 'knows when it is valid' do
       expect(amr_reading.valid?).to be true
+    end
+  end
+
+  describe 'handles when reading date is actually missing date' do
+    let(:date_format) { '%Y-%m-%d' }
+    let(:amr_reading) { AmrReadingData.new(reading_data: [
+                                                      { :mpan_mprn => 123, :reading_date => nil, readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                                                      ],
+                                            date_format: date_format) }
+
+    it 'knows when it is valid' do
+      expect(amr_reading.valid?).to be false
     end
   end
 
