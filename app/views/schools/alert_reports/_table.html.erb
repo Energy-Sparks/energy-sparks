@@ -3,7 +3,6 @@
     <tr>
       <th>Fuel Type</th>
       <th>Alert Type</th>
-      <th>Find out mores</th>
       <th>Displayable?</th>
       <th>Rating</th>
       <th>Valid?</th>
@@ -11,8 +10,6 @@
       <th>Relevant?</th>
       <th>Alert Date</th>
       <th>Created At</th>
-      <th>Emails sent</th>
-      <th>SMS sent</th>
     </tr>
   </thead>
   <tbody>
@@ -20,11 +17,6 @@
       <tr scope="row">
         <td><%= fa_icon(alert_icon(alert)) %> <%= alert.display_fuel_type %></td>
         <td><%= link_to alert.title, school_alert_path(school, alert) %></td>
-        <td>
-          <% alert.find_out_mores.each_with_index do |find_out_more, index| %>
-            <%= link_to index + 1, school_find_out_more_path(school, find_out_more)  %>
-          <% end %>
-        </td>
         <td class="text-white <%= class_for_boolean(alert.displayable) %>"><%= y_n alert.displayable %></td>
         <td><%= alert.formatted_rating %></td>
         <td><%= y_n alert.analytics_valid %></td>
@@ -32,8 +24,6 @@
         <td><%= alert.relevance %></td>
         <td><%= nice_dates alert.run_on %></td>
         <td><%= nice_date_times alert.created_at %></td>
-        <td><%= link_to(alert.alert_subscription_events.sent.email.count, school_alert_subscription_events_path(@school)) %></td>
-        <td><%= link_to(alert.alert_subscription_events.sent.sms.count, school_alert_subscription_events_path(@school)) %></td>
       </tr>
     <% end %>
   </tbody>

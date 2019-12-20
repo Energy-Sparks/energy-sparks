@@ -1,0 +1,8 @@
+<h1><%= @school.name %> content run: <%= nice_date_times(@run.created_at) %></h1>
+
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @teacher_dashboard_alerts, school: @school, content_field: :teacher_dashboard_title, title: 'Teacher dashboard alerts', show_all: true %>
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @pupil_dashboard_alerts, school: @school, content_field: :pupil_dashboard_title, title: 'Pupil dashboard alerts', show_all: true %>
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @management_dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Management dashboard alerts', show_all: true %>
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @public_dashboard_alerts, school: @school, content_field: :public_dashboard_title, title: 'Public dashboard alerts', show_all: true %>
+
+<%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: false  %>
