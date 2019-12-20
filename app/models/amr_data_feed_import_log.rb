@@ -4,6 +4,7 @@
 #
 #  amr_data_feed_config_id :bigint(8)        not null
 #  created_at              :datetime         not null
+#  error_messages          :text
 #  file_name               :text
 #  id                      :bigint(8)        not null, primary key
 #  import_time             :datetime

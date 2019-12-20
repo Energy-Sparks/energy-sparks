@@ -46,21 +46,28 @@ describe AmrReadingData do
         amr_reading.reading_data.first.delete(:mpan_mprn)
 
         expect(amr_reading.valid?).to be false
-        expect(amr_reading.errors.messages[:reading_data]).to include(AmrReadingData::ERROR_MISSING_MPAN)
+        expect(amr_reading.error_messages_joined).to include(AmrReadingData::ERROR_MISSING_MPAN)
       end
 
       it 'with missing reading date' do
         amr_reading.reading_data.second.delete(:reading_date)
 
         expect(amr_reading.valid?).to be false
-        expect(amr_reading.errors.messages[:reading_data]).to include(AmrReadingData::ERROR_MISSING_READING_DATE)
+        expect(amr_reading.error_messages_joined).to include(AmrReadingData::ERROR_MISSING_READING_DATE)
       end
 
       it 'with missing readings' do
         amr_reading.reading_data.first[:readings].shift
 
         expect(amr_reading.valid?).to be false
-        expect(amr_reading.errors.messages[:reading_data]).to include(AmrReadingData::ERROR_MISSING_READINGS)
+        expect(amr_reading.error_messages_joined).to include(AmrReadingData::ERROR_MISSING_READINGS)
+      end
+
+      it 'with missing readings but with tolerance for 1 missing' do
+        amr_reading.missing_reading_threshold = 1
+        amr_reading.reading_data.first[:readings].shift
+
+        expect(amr_reading.valid?).to be true
       end
 
       it 'with missing readings (as nil)' do
@@ -70,7 +77,7 @@ describe AmrReadingData do
         amr_reading.reading_data.first[:readings] = readings
 
         expect(amr_reading.valid?).to be false
-        expect(amr_reading.errors.messages[:reading_data]).to include(AmrReadingData::ERROR_MISSING_READINGS)
+        expect(amr_reading.error_messages_joined).to include(AmrReadingData::ERROR_MISSING_READINGS)
       end
 
       it 'when dates are not quite the right format' do
@@ -78,7 +85,7 @@ describe AmrReadingData do
         amr_reading.reading_data.first[:reading_date] = bad_date
 
         expect(amr_reading.valid?).to be false
-        expect(amr_reading.errors.messages[:reading_data]).to include(AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: bad_date })
+        expect(amr_reading.error_messages_joined).to include(AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: bad_date })
       end
     end
   end

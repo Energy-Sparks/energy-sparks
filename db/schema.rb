@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_13_112351) do
+ActiveRecord::Schema.define(version: 2019_12_20_131730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -346,6 +346,7 @@ ActiveRecord::Schema.define(version: 2019_12_13_112351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "records_upserted", default: 0, null: false
+    t.text "error_messages"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
   end
 

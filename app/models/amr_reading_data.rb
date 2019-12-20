@@ -1,7 +1,7 @@
 class AmrReadingData
   include ActiveModel::Validations
 
-  attr_accessor :reading_data, :date_format
+  attr_accessor :reading_data, :date_format, :missing_reading_threshold
 
   ERROR_MISSING_MPAN = 'Mpan or MPRN field is missing'.freeze
   ERROR_MISSING_READING_DATE = 'Reading date is missing'.freeze
@@ -15,17 +15,30 @@ class AmrReadingData
   validate :invalid_reading_date?, unless: [:all_the_reading_dates_are_dates?, :there_are_any_missing_reading_dates?]
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
 
-  def initialize(reading_data:, date_format:)
+  def initialize(reading_data:, date_format:, missing_reading_threshold: 0)
     @reading_data = reading_data
     @date_format = date_format
+    @missing_reading_threshold = missing_reading_threshold
+  end
+
+  def error_messages_joined
+    errors.messages[:reading_data].join(', ')
   end
 
   private
 
   def missing_readings?
-    if @reading_data.detect { |reading| reading[:readings].compact.size != 48 }
+    if less_than_48_readings? || blank_readings?
       errors.add(:reading_data, ERROR_MISSING_READINGS)
     end
+  end
+
+  def less_than_48_readings?
+    @reading_data.detect { |reading| reading[:readings].compact.size < (48 - @missing_reading_threshold) }
+  end
+
+  def blank_readings?
+    @reading_data.detect { |reading| reading[:readings].count(&:blank?) > @missing_reading_threshold }
   end
 
   def missing_mpan_mprn?
