@@ -61,7 +61,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     end
 
     it 'sends reminder emails when requested' do
-      onboarding = create :school_onboarding
+      onboarding = create :school_onboarding, :with_events
       within '.navbar' do
         click_on 'Automatic School Setup'
       end
