@@ -57,7 +57,7 @@ describe 'alert type management', type: :system do
   end
 
   describe 'general editing' do
-    it 'allows fields to be edited and validates title' do
+    it 'allows fields to be edited and validates title', js: true do
       click_on gas_fuel_alert_type_title
       click_on 'Edit'
 

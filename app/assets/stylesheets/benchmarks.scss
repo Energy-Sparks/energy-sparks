@@ -1,0 +1,17 @@
+.positive_is_bad {
+  .fa-arrow-circle-up {
+    color: $new-red;
+  }
+  .fa-arrow-circle-down {
+    color: $green;
+  }
+}
+
+.positive_is_good {
+  .fa-arrow-circle-up {
+    color: $green;
+  }
+  .fa-arrow-circle-down {
+    color: $new-red;
+  }
+}

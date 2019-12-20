@@ -1,7 +1,8 @@
 <fieldset class="wizard-stage" id="what_did_you_do">
   <h2>What did you do?</h2>
   <%= f.input :intervention_type_id, label: intervention_type_group.title, required: true, collection: intervention_types, as: :radio_buttons, label_method: :display_with_points %>
-  <%= f.input :description, as: :trix_editor, label: 'Describe what was done', wrapper_html: {class: 'border-left pl-3 ml-2'}%>
+  <%= f.label 'Describe what was done', for: :description %>
+  <%= f.rich_text_area :description, wrapper_html: {class: 'border-left pl-3 ml-2'}%>
   <%= link_to 'Back', previous_page, class: 'wizard-button btn btn-secondary d-none' %>
   <%= link_to 'Continue', '#', class: 'wizard-button btn btn-primary d-none', data: {to_stage: 'when_did_you_do_it'} %>
 </fieldset>

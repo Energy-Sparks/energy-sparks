@@ -1,0 +1,6 @@
+<h1><%= @configuration.description %></h1>
+
+<%= simple_form_for [:admin, @configuration] do |f| %>
+  <%= f.input :import_warning_days %>
+  <%= f.submit 'Update', class: 'btn'%>
+<% end %>
