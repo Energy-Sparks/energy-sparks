@@ -10,8 +10,6 @@
       <th>Relevant?</th>
       <th>Alert Date</th>
       <th>Created At</th>
-      <th>Emails sent</th>
-      <th>SMS sent</th>
     </tr>
   </thead>
   <tbody>
@@ -26,8 +24,6 @@
         <td><%= alert.relevance %></td>
         <td><%= nice_dates alert.run_on %></td>
         <td><%= nice_date_times alert.created_at %></td>
-        <td><%= link_to(alert.alert_subscription_events.sent.email.count, school_alert_subscription_events_path(@school)) %></td>
-        <td><%= link_to(alert.alert_subscription_events.sent.sms.count, school_alert_subscription_events_path(@school)) %></td>
       </tr>
     <% end %>
   </tbody>
