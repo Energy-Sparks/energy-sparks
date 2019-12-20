@@ -24,6 +24,7 @@ class ImportNotifier
   private
 
   def meters_running_behind(config)
+    return [] if config.import_warning_days.blank?
     config.meters.select {|meter| meter.last_validated_reading && meter.last_validated_reading < config.import_warning_days.days.ago}
   end
 
