@@ -41,9 +41,14 @@ class AmrReadingData
   end
 
   def invalid_reading_date?
+    return false if all_the_reading_dates_are_dates?
     is_there_an_invalid_reading_date?
   rescue ArgumentError => e
     errors.add(:reading_data, e.message)
+  end
+
+  def all_the_reading_dates_are_dates?
+    @reading_data.reject { |reading| reading[:reading_date].instance_of? Date }.blank?
   end
 
   def is_there_an_invalid_reading_date?
