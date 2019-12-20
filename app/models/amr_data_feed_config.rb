@@ -10,6 +10,7 @@
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key
 #  identifier              :text             not null
+#  import_warning_days     :integer          default(7), not null
 #  meter_description_field :text
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
@@ -34,6 +35,9 @@
 class AmrDataFeedConfig < ApplicationRecord
   enum process_type: [:s3_folder, :low_carbon_hub_api]
   enum source_type: [:email, :manual, :api, :sftp]
+
+  has_many :amr_data_feed_import_logs
+  has_many :meters, -> { distinct }, through: :amr_data_feed_import_logs
 
   validates :identifier, :description, uniqueness: true
 

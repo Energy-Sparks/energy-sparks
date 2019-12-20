@@ -17,7 +17,10 @@
         <td><%= config.identifier %></td>
         <td><%= nice_date_times config.created_at %></td>
         <td><%= nice_date_times config.updated_at %></td>
-        <td><%= link_to 'Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(config), class: 'btn btn-sm' %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_amr_data_feed_config_path(config), class: 'btn btn-sm' %>
+          <%= link_to 'Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(config), class: 'btn btn-sm' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
