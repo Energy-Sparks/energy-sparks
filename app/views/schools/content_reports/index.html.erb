@@ -1,0 +1,20 @@
+<% content_for :page_title do %>Content reports for <%= @school.name %><% end %>
+
+<h1>Content runs</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @content_generation_runs.each do |run| %>
+      <tr>
+        <td><%= nice_date_times(run.created_at) %></td>
+        <td><%= link_to 'View', school_content_report_path(@school, run), class: 'btn' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
