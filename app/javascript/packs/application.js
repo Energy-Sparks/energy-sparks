@@ -12,3 +12,7 @@ console.log('Hello World from Webpacker')
 require("trix")
 require("@rails/actiontext")
 require('awesomplete')
+
+import Trix from 'trix'
+
+Trix.config.attachments.preview.caption = { name: false, size: false }
