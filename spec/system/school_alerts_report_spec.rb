@@ -17,12 +17,8 @@ RSpec.describe "school alerts", type: :system do
     alert_poor = create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)
     alert_good = create(:alert, alert_type: gas_fuel_alert_type, run_on: gas_date, school: school, rating: 5.0, alert_generation_run: alert_run)
     click_on('Alert reports')
-    click_on gas_fuel_alert_type.title, match: :first
+    click_on 'View'
     expect(page).to have_content('5.0')
   end
 
-  it 'should give a message if no alerts' do
-    click_on('Alert reports')
-    expect(page.has_content?("No alerts")).to be true
-  end
 end

@@ -19,4 +19,5 @@
 class AlertGenerationRun < ApplicationRecord
   belongs_to :school
   has_many :alerts
+  has_many :alert_errors
 end

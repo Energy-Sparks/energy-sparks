@@ -1,0 +1,13 @@
+<% if @run.alerts.any? %>
+  <h2>Alerts</h2>
+  <%= render 'table', alerts: @run.alerts, school: @school %>
+<% else %>
+  <p>No alerts</p>
+<% end %>
+
+<% if @run.alert_errors.any? %>
+  <h2>Errors</h2>
+  <%= render 'errors', errors: @run.alert_errors, school: @school %>
+<% else %>
+  <p>No alerts</p>
+<% end %>
