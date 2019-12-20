@@ -57,6 +57,10 @@ class Meter < ApplicationRecord
   validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo_mpan?, message: 'for electricity meters should be a 13 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
+  def school_name
+    school.name
+  end
+
   def fuel_type
     meter_type.to_sym
   end

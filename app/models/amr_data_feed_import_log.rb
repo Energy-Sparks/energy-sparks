@@ -20,4 +20,6 @@
 class AmrDataFeedImportLog < ApplicationRecord
   has_many :amr_data_feed_readings
   belongs_to :amr_data_feed_config
+
+  has_many :meters, -> { distinct }, through: :amr_data_feed_readings
 end

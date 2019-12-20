@@ -181,7 +181,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :amr_data_feed_configs, only: [:index, :show] do
+    resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
       resources :amr_uploaded_readings, only: [:index, :show, :new, :create]
     end
 
