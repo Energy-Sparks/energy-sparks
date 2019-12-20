@@ -65,6 +65,10 @@ class SchoolOnboarding < ApplicationRecord
     events.where(event: :onboarding_complete).empty?
   end
 
+  def complete?
+    events.where(event: :onboarding_complete).any?
+  end
+
   def to_param
     uuid
   end
