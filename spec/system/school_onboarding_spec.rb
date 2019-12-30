@@ -72,6 +72,24 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
 
+    it 'I can download a CSV of onboarding schools' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+
+      within '.navbar' do
+        click_on 'Automatic School Setup'
+      end
+
+      click_on 'Download as CSV'
+
+      header = page.response_headers['Content-Disposition']
+      expect(header).to match /^attachment/
+      expect(header).to match /filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/
+
+      expect(page.source).to have_content 'Email sent'
+      expect(page.source).to have_content onboarding.school_name
+      expect(page.source).to have_content onboarding.contact_email
+    end
+
     it 'I can amend the email address if the user has not responded' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
 
