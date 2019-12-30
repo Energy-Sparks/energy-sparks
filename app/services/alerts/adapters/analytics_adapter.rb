@@ -39,7 +39,7 @@ module Alerts
       end
 
       def variable_data(analysis_object, benchmark)
-        return {} unless pull_variable_data?(analysis_object)
+        return {} unless analysis_object.make_available_to_users?
 
         variable_data = {
           template_data: analysis_object.front_end_template_data,
@@ -50,10 +50,6 @@ module Alerts
 
         variable_data[:benchmark_data] = analysis_object.benchmark_template_data if benchmark
         variable_data
-      end
-
-      def pull_variable_data?(analysis_object)
-        (analysis_object.enough_data == :enough) && (analysis_object.relevance == :relevant)
       end
 
       def invalid_alert_report(analysis_object)
