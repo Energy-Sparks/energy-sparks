@@ -1,7 +1,9 @@
-module Admin::Reports
-  class AlertSubscribersController < AdminController
-    def index
-      @contacts = Contact.includes(:school).all.order(:school_id)
+module Admin
+  module Reports
+    class AlertSubscribersController < AdminController
+      def index
+        @school_groups = SchoolGroup.order(name: :asc)
+      end
     end
   end
 end
