@@ -27,7 +27,6 @@ class Ability
 
     if user.admin?
       can :manage, :all
-      can :show, :all_schools
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
