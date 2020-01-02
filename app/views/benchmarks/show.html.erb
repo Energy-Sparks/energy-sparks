@@ -1,8 +1,11 @@
 <% content_for :page_title, @title %>
 
-<p class="pt-4"><%= link_to 'All benchmarks on a single page', all_benchmarks_path %></p>
-<p><%= link_to 'List of benchmarks', benchmarks_path %></p>
-<p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
+<h1>School Comparison Tool</h1>
+<p>This tool allows you to compare the energy performance of a number of schools within a Local Authority group or across the whole of Energy Sparks. The aim is to allow you to identify the best and worst performing schools to provide examples of best practice and to identify the schools needing the most support to improve their energy management.</p>
+
+<p><%= link_to 'Benchmark list', benchmarks_path(benchmark: { school_group_ids: @school_group_ids }) %>, <%= link_to 'All benchmarks on a single page', all_benchmarks_path(benchmark: { school_group_ids: @school_group_ids }) %></p>
+
+<p><%= link_to 'Download benchmark results YAML file (admin only)', benchmark_path({format: :yaml}) if can? :download, BenchmarkResult %></p>
 
 
 
@@ -23,10 +26,8 @@
 </div>
 
 <%= form_tag @form_path, method: :get do %>
-  <h2>Filters</h2>
   <%= hidden_field_tag :benchmark_type, @page if @page %>
   <fieldset class="form-group">
-    <legend>School Groups</legend>
     <%= collection_check_boxes :benchmark, :school_group_ids, @school_groups, :id, :name, { multiple: true } do |b| %>
       <div class="custom-control custom-checkbox">
 
@@ -38,7 +39,7 @@
     <% end %>
   </fieldset>
 
-  <%= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
+  <%= submit_tag "Filter by school groups", class: 'btn' %>
 <% end %>
 
 <% @page_groups.each do |page_group| %>
