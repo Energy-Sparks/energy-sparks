@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 291dd14acc35be276555a654449d7d717c7138d9
-  tag: 0.55.4-tariff-refactor-a
+  revision: f28743c91ec98d68829a0abf957e43b3b7e897a8
+  tag: 0.55.5-tariff-refactor-a-patch-for-date-equivalence-bug
   specs:
-    energy-sparks_analytics (0.55.4.pre.tariff.pre.refactor.pre.a)
+    energy-sparks_analytics (0.55.5.pre.tariff.pre.refactor.pre.a.pre.patch.pre.for.pre.eqiuvalence.pre.date.pre.bug)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
