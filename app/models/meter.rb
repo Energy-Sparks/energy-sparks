@@ -105,34 +105,6 @@ class Meter < ApplicationRecord
     MeterAttribute.to_analytics(all_meter_attributes)
   end
 
-  def solar_pv?
-    ! solar_pv.nil?
-  end
-
-  def storage_heaters?
-    ! storage_heaters.nil?
-  end
-
-  def meter_corrections
-    attributes(:meter_corrections)
-  end
-
-  def aggregation
-    attributes(:aggregation)
-  end
-
-  def heating_model
-    attributes(:heating_model)
-  end
-
-  def storage_heaters
-    attributes(:storage_heaters)
-  end
-
-  def solar_pv
-    attributes(:solar_pv)
-  end
-
   def correct_mpan_check_digit?
     return true if gas? || pseudo
     mpan = mpan_mprn.to_s
