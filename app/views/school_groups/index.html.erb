@@ -10,7 +10,7 @@
           <p class="card-text">Onboarding schools: <%= SchoolOnboarding.all.select(&:incomplete?).count %></p>
           <p class="card-text">Invisible schools: <%= School.not_visible.count %></p>
           <p class="card-text">Alert contacts: <%=Contact.count %></p>
-          <p class="card-text">Active number of pupils: <%= School.visible.sum(&:number_of_pupils) %></p>
+          <p class="card-text">Number of pupils in active schools: <%= number_with_delimiter School.visible.sum(&:number_of_pupils) %></p>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
               <p class="card-text">Invisible schools: <%= school_group.schools.not_visible.count %></p>
               <p class="card-text">Onboarding schools: <%= school_group.school_onboardings.select(&:incomplete?).count %></p>
               <p class="card-text">Alert contacts: <%= school_group.schools.sum { |school| school.contacts.count } %></p>
-              <p class="card-text">Number of pupils: <%= school_group.schools.sum(&:number_of_pupils) %></p>
+              <p class="card-text">Number of pupils in active schools: <%= number_with_delimiter school_group.schools.visible.sum(&:number_of_pupils) %></p>
             </div>
           </div>
         <% end %>
