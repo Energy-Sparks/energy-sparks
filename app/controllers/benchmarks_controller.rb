@@ -9,7 +9,9 @@ class BenchmarksController < ApplicationController
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
-    @school_group_ids = params.dig(:benchmark, :school_group_ids).reject(&:empty?) || []
+    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+    @school_group_ids = @school_group_ids.reject(&:empty?)
+
     @school_group_names = SchoolGroup.find(@school_group_ids).pluck(:name).join(', ')
   end
 
