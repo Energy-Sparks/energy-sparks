@@ -1,14 +1,15 @@
 require 'dashboard'
 
 class BenchmarksController < ApplicationController
-  skip_before_action :authenticate_user!
-
+  before_action :authorized?
   before_action :page_groups, only: [:index, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
-    @school_group_ids = params.dig(:benchmark, :school_group_ids).reject(&:empty?) || []
+    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+    @school_group_ids = @school_group_ids.reject(&:empty?)
+
     @school_group_names = SchoolGroup.find(@school_group_ids).pluck(:name).join(', ')
   end
 
@@ -95,5 +96,9 @@ private
     return false unless content.present?
 
     [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
+  end
+
+  def authorized?
+    authorize! :read, BenchmarkResult
   end
 end

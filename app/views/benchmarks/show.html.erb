@@ -7,23 +7,21 @@
 
 <p><%= link_to 'Download benchmark results YAML file (admin only)', benchmark_path({format: :yaml}) if can? :download, BenchmarkResult %></p>
 
-
-
-<p>
-  <a class="btn btn-primary" data-toggle="collapse" href="#benchmarkErrors" role="button" aria-expanded="false" aria-controls="benchmarkErrors">
-    See errors from the benchmark content framework when generating content
-  </a>
-</p>
-<div class="collapse" id="benchmarkErrors">
-  <% if can?(:read, :benchmark_errors_messages) %>
+<% if can?(:read, :benchmark_errors_messages) %>
+  <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#benchmarkErrors" role="button" aria-expanded="false" aria-controls="benchmarkErrors">
+      See errors from the benchmark content framework when generating content
+    </a>
+  </p>
+  <div class="collapse" id="benchmarkErrors">
     <% @errors.each do |error| %>
      <div class="card card-body">
       <h4><%= error[:message] %></h4>
       <p class="very-small"><%= sanitize error[:full_html_output] %></p>
         </div>
     <% end %>
-  <% end %>
-</div>
+  </div>
+ <% end %>
 
 <%= form_tag @form_path, method: :get do %>
   <%= hidden_field_tag :benchmark_type, @page if @page %>
