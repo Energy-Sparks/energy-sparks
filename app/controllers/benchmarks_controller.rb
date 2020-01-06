@@ -1,9 +1,7 @@
 require 'dashboard'
 
 class BenchmarksController < ApplicationController
-  skip_before_action :authenticate_user!
-
-  before_action :temporary_authorized?
+  before_action :authorized?
   before_action :page_groups, only: [:index, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
@@ -100,10 +98,7 @@ private
     [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
   end
 
-  def temporary_authorized?
-    unless current_user && current_user.admin?
-      flash[:error] = "You are not authorized to view that page."
-      redirect_to root_path
-    end
+  def authorized?
+    authorize! :read, BenchmarkResult
   end
 end
