@@ -208,7 +208,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'lets the user edit inset days, meters, pupils and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
-      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
+      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
       user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
@@ -247,7 +247,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
       select 'Teacher training', from: 'Type'
       # Grr, actual input hidden for JS datepicker
       fill_in 'Date', with: '2019-01-09'
-      click_on 'Add inset day'
+
+      expect(page).to have_field('Date', with: '2019-01-09')
+
+      expect { click_on 'Add inset day' }.to change { CalendarEvent.count }.by(1)
       expect(page).to have_content('Inset days: 1')
 
     end
