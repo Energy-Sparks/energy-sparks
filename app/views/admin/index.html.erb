@@ -1,0 +1,38 @@
+<% content_for :page_title, 'Administration' %>
+
+<h1>Administration</h1>
+
+<h2>School set up</h2>
+<ul>
+  <li><%= link_to "Manual School Setup", new_school_path %></li>
+  <li><%= link_to "Automatic School Setup", admin_school_onboardings_path %></li>
+</ul>
+
+<h2>Management</h2>
+
+<h3>Schools, Scoreboards and groups</h3>
+<ul>
+  <li><%= link_to "Edit School Groups", admin_school_groups_path %></li>
+  <li><%= link_to "View School groups", school_groups_path %></li>
+  <li><%= link_to "View Scoreboards", scoreboards_path %></li>
+</ul>
+
+<h3>Everything else</h3>
+<ul>
+  <li><%= link_to "Activity Categories", admin_activity_categories_path %></li>
+  <li><%= link_to "Activity Types", admin_activity_types_path %></li>
+  <li><%= link_to "Programme Types", admin_programme_types_path %></li>
+  <li><%= link_to "Alert Types", admin_alert_types_path %></li>
+  <li><%= link_to "Calendars", admin_calendars_path %></li>
+  <li><%= link_to "Equivalence Types", admin_equivalence_types_path %></li>
+  <li><%= link_to "Site Settings", admin_settings_path %></li>
+  <li><%= link_to "Newsletters", admin_newsletters_path %></li>
+  <li><%= link_to "Users", users_path %></li>
+  <li><%= link_to "Benchmarks", benchmarks_path %></li>
+  <li><%= link_to "AMR Data feed configuration", admin_amr_data_feed_configs_path %></li>
+</ul>
+
+<h2>Reports</h2>
+
+<%= link_to "Reports", admin_reports_path %>
+
