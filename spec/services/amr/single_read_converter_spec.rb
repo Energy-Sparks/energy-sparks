@@ -267,5 +267,13 @@ module Amr
         expect(SingleReadConverter.new(offset_readings).perform).to eq offset_output
       end
     end
+
+    context 'dodgy data' do
+      let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>"Primary school", :reading_date=>"123456789012", :readings=>["01/01/2019"]}] }
+
+      it 'kind of handles dodgy data' do
+        expect{ SingleReadConverter.new(readings).perform }.to raise_error(ArgumentError)
+      end
+    end
   end
 end
