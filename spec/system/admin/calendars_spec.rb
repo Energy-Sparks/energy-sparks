@@ -22,10 +22,13 @@ RSpec.describe 'calendars', :calendar, type: :system do
   describe 'when logged in' do
     before(:each) do
       sign_in(admin)
+      visit root_path
     end
 
     it 'create a regional calendar with the events for the calendar added via a text field' do
-      visit admin_calendars_path
+      click_on 'Manage'
+      click_on 'Admin'
+      click_on 'Calendars'
       click_on 'New regional calendar'
       click_on 'Create Calendar'
       expect(page).to have_content("can't be blank")
