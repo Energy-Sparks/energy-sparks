@@ -144,6 +144,8 @@ Rails.application.routes.draw do
     resources :users
   end
 
+  get '/admin', to: 'admin#index'
+
   namespace :admin do
     resources :newsletters
     resources :school_groups do
