@@ -20,6 +20,6 @@ describe SchoolFilter do
   end
 
   it 'filters by visible' do
-    expect(SchoolFilter.new(include_invisible: true).filter).to eq [school_1, school_2, school_3_invisible]
+    expect(SchoolFilter.new(include_invisible: true).filter).to match_array [school_1, school_2, school_3_invisible]
   end
 end
