@@ -1,5 +1,6 @@
 <h1>Dark Sky Areas</h1>
 
+<% if @dark_sky_areas.any? %>
 <table class="table table-sorted">
   <thead>
     <tr>
@@ -27,3 +28,6 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+  <p>There are no Dark Sky Areas</p>
+<% end %>
