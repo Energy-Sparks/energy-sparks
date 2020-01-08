@@ -23,5 +23,5 @@
 
 class BenchmarkResultError < ApplicationRecord
   belongs_to :alert_type
-  belongs_to :benchmark_result_school_generation_run
+  belongs_to :benchmark_result_school_generation_run, counter_cache: :benchmark_result_error_count
 end

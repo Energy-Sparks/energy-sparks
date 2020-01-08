@@ -59,21 +59,28 @@ module Alerts
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(AlertTypeRunResult.new(alert_type: alert_type, asof_date: asof_date))
 
         service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
-        expect { service.perform }.to change { BenchmarkResult.count }.by(0).and change { BenchmarkResultError.count }.by(0)
+        expect { service.perform }.to change { BenchmarkResult.count }.by(0).and change { BenchmarkResultError.count }.by(0).and change { BenchmarkResultSchoolGenerationRun.count }.by(1)
+        expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 0
+        expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0
       end
 
       it 'handles just benchmark reports' do
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
 
         service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
-        expect { service.perform }.to change { BenchmarkResult.count }.by(2).and change { BenchmarkResultError.count }.by(2)
+        expect { service.perform }.to change { BenchmarkResult.count }.by(2).and change { BenchmarkResultError.count }.by(2).and change { BenchmarkResultSchoolGenerationRun.count }.by(1)
+        expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 2
+        expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 2
       end
 
       it 'handles just errors' do
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
 
         service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
-        expect { service.perform }.to change { BenchmarkResult.count }.by(0).and  change { BenchmarkResultError.count }.by(2)
+        expect { service.perform }.to change { BenchmarkResult.count }.by(0).and  change { BenchmarkResultError.count }.by(2).and change { BenchmarkResultSchoolGenerationRun.count }.by(1)
+
+        expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 2
+        expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0
       end
     end
   end
