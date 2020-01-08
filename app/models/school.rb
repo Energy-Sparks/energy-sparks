@@ -31,7 +31,6 @@
 #  urn                                   :integer          not null
 #  validation_cache_key                  :string           default("initial")
 #  visible                               :boolean          default(FALSE)
-#  weather_underground_area_id           :bigint(8)
 #  website                               :string
 #
 # Indexes
