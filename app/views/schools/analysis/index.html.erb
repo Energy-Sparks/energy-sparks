@@ -4,7 +4,7 @@
   <div class="row">
     <% @overview_pages.each do |page| %>
       <div class="col-lg-6 mb-4">
-        <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+        <%= render 'schools/analysis/card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
       </div>
     <% end %>
   </div>
@@ -16,27 +16,27 @@
       <% if @electricity_pages.any? %>
         <h2>Electricity</h2>
         <% @electricity_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :electricity, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <%= render 'schools/analysis/card', page: page, school: @school, energy: :electricity, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
         <% end %>
       <% end %>
       <% if @solar_pages.any? %>
         <div class="mt-5">
           <% @solar_pages.each do |page| %>
-            <%= render 'card', page: page, school: @school, energy: :solar, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+            <%= render 'schools/analysis/card', page: page, school: @school, energy: :solar, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
           <% end %>
         </div>
       <% end %>
       <% if @tariff_pages.any? %>
         <div class="mt-5">
           <% @tariff_pages.each do |page| %>
-            <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+            <%= render 'schools/analysis/card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
           <% end %>
         </div>
       <% end %>
       <% if @co2_pages.any? %>
         <div class="mt-5">
           <% @co2_pages.each do |page| %>
-            <%= render 'card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+            <%= render 'schools/analysis/card', page: page, school: @school, energy: :all, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
           <% end %>
         </div>
       <% end %>
@@ -48,26 +48,26 @@
       <% if @heating_pages.any? %>
         <h2>Gas</h2>
         <% @heating_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <%= render 'schools/analysis/card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
         <% end %>
       <% end %>
       <% if @storage_heater_pages.any? %>
         <h2>Storage heaters</h2>
         <% @storage_heater_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :storage, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <%= render 'schools/analysis/card', page: page, school: @school, energy: :storage, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
         <% end %>
       <% end %>
       <% if @hot_water_pages.any? %>
         <div class="mt-5">
           <% @hot_water_pages.each do |page| %>
-            <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+            <%= render 'schools/analysis/card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
           <% end %>
         </div>
       <% end %>
       <% if @boiler_control_pages.any? %>
         <h2>Boiler control</h2>
         <% @boiler_control_pages.each do |page| %>
-          <%= render 'card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars? %>
+          <%= render 'schools/analysis/card', page: page, school: @school, energy: :gas, page_param: page.analysis_page, show_stars: page.analysis_page.show_stars?, show_debug: local_assigns[:show_debug] %>
         <% end %>
       <% end %>
     </div>
