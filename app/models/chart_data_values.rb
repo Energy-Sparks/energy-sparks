@@ -31,14 +31,16 @@ class ChartDataValues
     SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
     SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
+    SeriesNames::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
     'electricity' => MIDDLE_ELECTRICITY,
     'gas' => MIDDLE_GAS,
-    'solar pv (consumed onsite)' => '#ffac21',
     'storage heater' => "#501e74",
-    '£' => '#232B49'
+    '£' => '#232B49',
+    'Electricity consumed from solar pv' => '#5cb85c',
+    'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
+    'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
+    'Exported solar electricity (not consumed onsite)' => '#50E3C2'
   }.freeze
-
-
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
