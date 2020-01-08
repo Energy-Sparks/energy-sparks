@@ -28,12 +28,12 @@ RSpec.describe "school onboarding", :schools, type: :system do
     before(:each) do
       sign_in(admin)
       visit root_path
+      click_on 'Manage'
+      click_on 'Admin'
     end
 
     it 'records basic details and sends an email to the school' do
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
+      click_on 'Automatic School Setup'
       click_on 'New Automatic School Setup'
 
       fill_in 'School name', with: school_name
@@ -62,9 +62,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'sends reminder emails when requested' do
       onboarding = create :school_onboarding, :with_events
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
+      click_on 'Automatic School Setup'
       click_on 'Send reminder'
 
       email = ActionMailer::Base.deliveries.last
@@ -74,11 +72,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'I can download a CSV of onboarding schools' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
-
+      click_on 'Automatic School Setup'
       click_on 'Download as CSV'
 
       header = page.response_headers['Content-Disposition']
@@ -92,11 +86,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'I can amend the email address if the user has not responded' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
-
+      click_on 'Automatic School Setup'
       expect(onboarding.has_only_sent_email_or_reminder?).to be true
 
       click_on 'Change'

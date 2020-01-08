@@ -9,6 +9,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
     before(:each) do
       sign_in(admin)
       visit root_path
+      click_on 'Admin'
     end
 
     it 'I can view and edit the activity categories' do
