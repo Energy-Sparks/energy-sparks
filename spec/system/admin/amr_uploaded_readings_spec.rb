@@ -8,6 +8,7 @@ describe AmrUploadedReading, type: :system do
     sign_in(admin)
     visit root_path
     click_on 'Manage'
+    click_on 'Admin'
     click_on 'AMR Data feed configuration'
   end
 
@@ -19,6 +20,7 @@ describe AmrUploadedReading, type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'AMR Data feed configuration'
       click_on config.description
       click_on 'Upload file'
@@ -83,6 +85,7 @@ describe AmrUploadedReading, type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'AMR Data feed configuration'
       click_on config.description
       click_on 'Upload file'
@@ -117,6 +120,7 @@ describe AmrUploadedReading, type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'AMR Data feed configuration'
       click_on config.description
       click_on 'Upload file'

@@ -93,6 +93,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
     it 'allow the admin to manage school group meter attributes' do
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'School Groups'
       click_on 'Meter attributes'
       select 'Tariff', from: 'type'

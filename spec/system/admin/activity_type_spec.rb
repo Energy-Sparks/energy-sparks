@@ -32,6 +32,7 @@ describe "activity type", type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'Activity Types'
       expect(ActivityType.count).to be 0
     end
