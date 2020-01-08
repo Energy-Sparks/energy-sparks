@@ -25,12 +25,11 @@ RSpec.describe "school creation", :schools, type: :system do
   before(:each) do
     sign_in(admin)
     visit root_path
+    click_on 'Admin'
   end
 
   it 'splits the journey up in to basic details and configuration' do
-    within '.navbar' do
-      click_on 'Manual School Setup'
-    end
+    click_on 'Manual School Setup'
 
     fill_in 'School name', with: "St Mary's School"
     fill_in 'Unique Reference Number', with: '4444244'
@@ -63,6 +62,4 @@ RSpec.describe "school creation", :schools, type: :system do
     expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
     expect(school.dark_sky_area).to eq(dark_sky_area)
   end
-
 end
-

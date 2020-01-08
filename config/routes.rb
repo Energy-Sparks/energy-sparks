@@ -103,7 +103,8 @@ Rails.application.routes.draw do
 
       resources :interventions
 
-      get :alert_reports, to: 'alert_reports#index', as: :alert_reports
+      resources :alert_reports, only: [:index, :show]
+      resources :content_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 
@@ -140,6 +141,8 @@ Rails.application.routes.draw do
   scope :admin do
     resources :users
   end
+
+  get '/admin', to: 'admin#index'
 
   namespace :admin do
     resources :newsletters

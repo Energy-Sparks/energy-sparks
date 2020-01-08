@@ -6,14 +6,25 @@
   </div>
 </div>
 
-<% if @latest_alerts.any? %>
-  <h2>Latest alerts by type</h2>
-  <%= render 'table', alerts: @latest_alerts, school: @school %>
-<% else %>
-  <p>No alerts</p>
-<% end %>
+<h1>Alert runs</h1>
 
-<h2>Historic alerts</h2>
-<p> ## Pending update ## </p>
-
-
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Successful alerts</th>
+      <th>Errors</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @alert_generation_runs.each do |run| %>
+      <tr>
+        <td><%= nice_date_times(run.created_at) %></td>
+        <td><%= run.alerts.count %></td>
+        <td><%= run.alert_errors.count %></td>
+        <td><%= link_to 'View', school_alert_report_path(@school, run), class: 'btn' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

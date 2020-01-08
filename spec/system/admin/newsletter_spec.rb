@@ -9,6 +9,7 @@ describe 'Newsletter managment', type: :system do
     before do
       sign_in(admin)
       visit root_path
+      click_on 'Admin'
       click_on 'Newsletters'
     end
 

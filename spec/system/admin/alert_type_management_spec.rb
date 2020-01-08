@@ -12,6 +12,7 @@ describe 'alert type management', type: :system do
     sign_in(admin)
     visit root_path
     click_on 'Manage'
+    click_on 'Admin'
     click_on 'Alert Types'
   end
 

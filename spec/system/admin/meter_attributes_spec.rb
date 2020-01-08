@@ -95,6 +95,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
     it 'allow the admin to manage school group meter attributes' do
       visit root_path
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'School Groups'
       click_on 'Meter attributes'
       select 'Tariff', from: 'type'
@@ -147,6 +148,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
     it 'allow the admin to manage global meter attributes' do
       visit root_path
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'Global Meter Attributes'
       select 'Tariff', from: 'type'
       click_on 'New attribute'

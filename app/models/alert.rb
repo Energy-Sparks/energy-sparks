@@ -53,6 +53,12 @@ class Alert < ApplicationRecord
   scope :weekly,              -> { joins(:alert_type).merge(AlertType.weekly) }
   scope :before_each_holiday, -> { joins(:alert_type).merge(AlertType.before_each_holiday) }
 
+  scope :analytics, -> { joins(:alert_type).merge(AlertType.analytics) }
+  scope :system,    -> { joins(:alert_type).merge(AlertType.system) }
+  scope :analysis,  -> { joins(:alert_type).merge(AlertType.analysis) }
+
+  scope :by_type, -> { joins(:alert_type).order('alert_types.title') }
+
   scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
 
   enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate], _prefix: :data
