@@ -13,4 +13,6 @@
 # TUOS is The University of Sheffield
 class SolarPvTuosArea < Area
   has_many :solar_pv_tuos_readings
+
+  validates_presence_of :latitude, :longitude, :title
 end

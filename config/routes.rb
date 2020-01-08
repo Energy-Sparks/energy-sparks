@@ -156,7 +156,7 @@ Rails.application.routes.draw do
     resource :activity_type_preview, only: :create
 
     resources :dark_sky_areas
-    resources :solar_pv_areas
+    resources :solar_pv_tuos_areas
 
     resources :schools, only: [] do
       get :analysis, to: 'analysis#analysis'
