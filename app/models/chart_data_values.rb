@@ -17,16 +17,19 @@ class ChartDataValues
   LIGHT_GAS_LINE = '#FCB43A'.freeze
   DARK_STORAGE = '#7C3AFF'.freeze
   LIGHT_STORAGE = '#E097FC'.freeze
+  GREEN = '#5cb85c'.freeze
+  STORAGE_HEATER = "#501e74".freeze
+  MONEY = '#232B49'.freeze
 
   COLOUR_HASH = {
     SeriesNames::DEGREEDAYS => '#232b49',
     SeriesNames::TEMPERATURE => '#232b49',
     SeriesNames::SCHOOLDAYCLOSED => '#3bc0f0',
-    SeriesNames::SCHOOLDAYOPEN => '#5cb85c',
+    SeriesNames::SCHOOLDAYOPEN => GREEN,
     SeriesNames::HOLIDAY => '#ff4500',
     SeriesNames::WEEKEND => '#ffac21',
     SeriesNames::HEATINGDAY => '#3bc0f0',
-    SeriesNames::NONHEATINGDAY => '#5cb85c',
+    SeriesNames::NONHEATINGDAY => GREEN,
     SeriesNames::HEATINGDAYMODEL => '#ff4500',
     SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
     SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
@@ -34,12 +37,12 @@ class ChartDataValues
     SeriesNames::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
     'electricity' => MIDDLE_ELECTRICITY,
     'gas' => MIDDLE_GAS,
-    'storage heater' => "#501e74",
-    '£' => '#232B49',
-    'Electricity consumed from solar pv' => '#5cb85c',
+    'storage heater' => STORAGE_HEATER,
+    '£' => MONEY,
+    'Electricity consumed from solar pv' => GREEN,
     'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
     'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
-    'Exported solar electricity (not consumed onsite)' => '#50E3C2'
+    'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE
   }.freeze
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
