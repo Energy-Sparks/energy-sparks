@@ -16,15 +16,15 @@ RSpec.describe 'Dark sky areas', type: :system do
       click_on 'Dark Sky Areas'
     end
 
-    xit 'can create a new dark sky area' do
-      expect(page).to have_content("There are no Dark Sky Areas.")
+    it 'can create a new dark sky area' do
+      expect(page).to have_content("There are no Dark Sky Areas")
 
       click_on 'New'
 
       fill_in 'Title', with: title
       fill_in 'Description', with: description
       fill_in 'Latitude', with: latitude
-      fill_in 'longitude', with: longitude
+      fill_in 'Longitude', with: longitude
 
       expect { click_on 'Create' }.to change { DarkSkyArea.count }.by(1)
 
@@ -38,9 +38,14 @@ RSpec.describe 'Dark sky areas', type: :system do
 
     context 'with an existing dark sky area' do
 
-      let!(:area) { DarkSkyArea.create(title: title, description: description, latitude: latitude, longitude: longitude) }
+      let!(:area) { DarkSkyArea.create!(title: title, description: description, latitude: latitude, longitude: longitude) }
 
       before(:each) do
+        click_on 'Manage'
+        click_on 'Admin'
+        click_on 'Dark Sky Areas'
+
+        expect(DarkSkyArea.count).to be 1
         expect(page).to have_content('Dark Sky Areas')
         expect(page).to have_content title
         expect(page).to have_content description
@@ -48,7 +53,8 @@ RSpec.describe 'Dark sky areas', type: :system do
         expect(page).to have_content longitude
       end
 
-      xit 'can be edited' do
+      it 'can be edited' do
+        expect(DarkSkyArea.count).to be 1
         click_on 'Edit'
 
         new_latitude = 111.111
@@ -58,7 +64,7 @@ RSpec.describe 'Dark sky areas', type: :system do
 
         click_on 'Update'
 
-        expect(page).to have_content("Dark Sky Area updated")
+        expect(page).to have_content("Dark Sky Area was updated")
 
         expect(page).to have_content('Dark Sky Areas')
         expect(page).to have_content title
@@ -67,9 +73,9 @@ RSpec.describe 'Dark sky areas', type: :system do
         expect(page).to have_content new_longitude
       end
 
-      xit 'can be deleted' do
+      it 'can be deleted' do
         expect { click_on 'Delete' }.to change{ DarkSkyArea.count }.from(1).to(0)
-        expect(page).to have_content("There are no Dark Sky Areas.")
+        expect(page).to have_content("There are no Dark Sky Areas")
       end
     end
   end

@@ -1,7 +1,8 @@
 module Admin
   class DarkSkyAreasController < AdminController
+    load_and_authorize_resource
+
     def index
-      @dark_sky_areas = DarkSkyArea.all
     end
 
     def show
@@ -10,13 +11,34 @@ module Admin
     def new
     end
 
+    def create
+      if @dark_sky_area.save
+        redirect_to admin_dark_sky_areas_path, notice: 'New Dark Sky Area created.'
+      else
+        render :new
+      end
+    end
+
     def edit
     end
 
     def update
+      if @dark_sky_area.update(dark_sky_area_params)
+        redirect_to admin_dark_sky_areas_path, notice: 'Dark Sky Area was updated.'
+      else
+        render :edit
+      end
     end
 
-    def create
+    def destroy
+      @dark_sky_area.destroy
+      redirect_to admin_dark_sky_areas_path, notice: 'Dark Sky Area deleted'
+    end
+
+    private
+
+    def dark_sky_area_params
+      params.require(:dark_sky_area).permit(:title, :description, :latitude, :longitude)
     end
   end
 end
