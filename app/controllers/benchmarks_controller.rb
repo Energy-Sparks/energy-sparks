@@ -76,7 +76,9 @@ private
   def benchmark_results
     @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
 
-    schools = SchoolFilter.new(school_group_ids: @school_group_ids).filter
+    include_invisible = can? :show, :all_schools
+
+    schools = SchoolFilter.new(school_group_ids: @school_group_ids, include_invisible: include_invisible).filter
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 

@@ -6,7 +6,11 @@ module DashboardPriorities
     priorities.by_priority.limit(limit).map do |priority|
       TemplateInterpolation.new(
         priority.content_version,
-        with_objects: { find_out_more: priority.find_out_more },
+        with_objects: {
+          find_out_more: priority.find_out_more,
+          priority: priority.priority,
+          alert: priority.alert
+        },
         proxy: [:colour]
       ).interpolate(
         :management_priorities_title,
