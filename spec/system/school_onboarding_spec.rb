@@ -61,7 +61,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
     end
 
     it 'sends reminder emails when requested' do
-      onboarding = create :school_onboarding
+      onboarding = create :school_onboarding, :with_events
       within '.navbar' do
         click_on 'Automatic School Setup'
       end
@@ -70,6 +70,24 @@ RSpec.describe "school onboarding", :schools, type: :system do
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
+    end
+
+    it 'I can download a CSV of onboarding schools' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+
+      within '.navbar' do
+        click_on 'Automatic School Setup'
+      end
+
+      click_on 'Download as CSV'
+
+      header = page.response_headers['Content-Disposition']
+      expect(header).to match /^attachment/
+      expect(header).to match /filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/
+
+      expect(page.source).to have_content 'Email sent'
+      expect(page.source).to have_content onboarding.school_name
+      expect(page.source).to have_content onboarding.contact_email
     end
 
     it 'I can amend the email address if the user has not responded' do
@@ -200,7 +218,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'lets the user edit inset days, meters, pupils and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
-      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
+      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
       user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
@@ -239,7 +257,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
       select 'Teacher training', from: 'Type'
       # Grr, actual input hidden for JS datepicker
       fill_in 'Date', with: '2019-01-09'
-      click_on 'Add inset day'
+
+      expect(page).to have_field('Date', with: '2019-01-09')
+
+      expect { click_on 'Add inset day' }.to change { CalendarEvent.count }.by(1)
       expect(page).to have_content('Inset days: 1')
 
     end

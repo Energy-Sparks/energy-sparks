@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_18_140633) do
+ActiveRecord::Schema.define(version: 2020_01_06_161453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_140633) do
     t.integer "number_of_header_rows", default: 0, null: false
     t.integer "process_type", default: 0, null: false
     t.integer "source_type", default: 0, null: false
+    t.integer "import_warning_days", default: 7
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -346,6 +347,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_140633) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "records_upserted", default: 0, null: false
+    t.text "error_messages"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
   end
 
@@ -370,6 +372,16 @@ ActiveRecord::Schema.define(version: 2019_12_18_140633) do
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
+  end
+
+  create_table "amr_uploaded_readings", force: :cascade do |t|
+    t.bigint "amr_data_feed_config_id", null: false
+    t.boolean "imported", default: false, null: false
+    t.text "file_name", default: "f", null: false
+    t.json "reading_data", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_config_id"], name: "index_amr_uploaded_readings_on_amr_data_feed_config_id"
   end
 
   create_table "amr_validated_readings", force: :cascade do |t|
@@ -427,6 +439,8 @@ ActiveRecord::Schema.define(version: 2019_12_18_140633) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "benchmark_result_generation_run_id"
+    t.integer "benchmark_result_error_count", default: 0
+    t.integer "benchmark_result_count", default: 0
     t.index ["benchmark_result_generation_run_id"], name: "benchmark_result_school_generation_run_idx"
     t.index ["school_id"], name: "index_benchmark_result_school_generation_runs_on_school_id"
   end
@@ -1075,6 +1089,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_140633) do
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
+  add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :cascade

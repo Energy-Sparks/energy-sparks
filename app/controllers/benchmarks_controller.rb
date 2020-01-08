@@ -1,14 +1,16 @@
 require 'dashboard'
 
 class BenchmarksController < ApplicationController
-  skip_before_action :authenticate_user!
-
-  before_action :temporary_authorized?
+  before_action :authorized?
   before_action :page_groups, only: [:index, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
+    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+    @school_group_ids = @school_group_ids.reject(&:empty?)
+
+    @school_group_names = SchoolGroup.find(@school_group_ids).pluck(:name).join(', ')
   end
 
   def show
@@ -76,7 +78,9 @@ private
   def benchmark_results
     @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
 
-    schools = SchoolFilter.new(school_group_ids: @school_group_ids).filter
+    include_invisible = can? :show, :all_schools
+
+    schools = SchoolFilter.new(school_group_ids: @school_group_ids, include_invisible: include_invisible).filter
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
@@ -94,10 +98,7 @@ private
     [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
   end
 
-  def temporary_authorized?
-    unless current_user && current_user.admin?
-      flash[:error] = "You are not authorized to view that page."
-      redirect_to root_path
-    end
+  def authorized?
+    authorize! :read, BenchmarkResult
   end
 end

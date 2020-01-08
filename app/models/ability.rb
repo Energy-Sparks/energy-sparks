@@ -39,6 +39,7 @@ class Ability
         can :manage, CalendarEvent do |calendar_event|
           user.school_group.calendars.include?(calendar_event.calendar)
         end
+        can :read, BenchmarkResult
       else
         school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }

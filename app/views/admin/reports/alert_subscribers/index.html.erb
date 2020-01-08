@@ -3,27 +3,32 @@
 <h1>Alert subscribers</h1>
 <p>These are all the users who have subscribed to recieve alert notifications.</p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>School</th>
-      <th>Group</th>
-      <th>Email</th>
-      <th>SMS</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @contacts.each do |contact| %>
+<% @school_groups.each do |school_group| %>
+  <h3><%= school_group.name %></h3>
+  <table class="table table-sorted">
+    <thead>
       <tr>
-        <td><%= link_to contact.name, school_contacts_path(contact.school) %></td>
-        <td><%= link_to contact.school.name, school_path(contact.school) %></td>
-        <td><%= contact.school.area_name %>
-        <td><%= contact.email_address %></td>
-        <td><%= contact.mobile_phone_number %></td>
-        <td><%= link_to "Edit", edit_school_contact_path(contact.school, contact) , class: 'btn btn-success btn-sm' %></td>
+        <th>Name</th>
+        <th>School</th>
+        <th>Email</th>
+        <th>Phone number for SMS</th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% school_group.schools.order(:name).each do |school| %>
+        <% if school.contacts.any? %>
+          <% school.contacts.each do |contact| %>
+            <tr>
+              <td><%= link_to contact.name, school_contacts_path(contact.school) %></td>
+              <td><%= link_to school.name, school_path(school) %></td>
+              <td><%= contact.email_address %></td>
+              <td><%= contact.mobile_phone_number %></td>
+              <td><%= link_to "Edit", edit_school_contact_path(contact.school, contact) , class: 'btn btn-success btn-sm' %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

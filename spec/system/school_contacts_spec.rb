@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "school", type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school) { create(:school, name: school_name)}
+  let!(:school)   { create(:school, :with_school_group, name: school_name)}
   let!(:teacher)  { create(:staff, school: school)}
 
 
