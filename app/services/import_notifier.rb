@@ -39,6 +39,8 @@ class ImportNotifier
     all_log_meters = import_logs.map do |log|
       log.amr_data_feed_readings.select {|reading| reading.readings.present? && reading.readings.all? {|x48| x48.to_f == 0.0 rescue true}}.map(&:meter).compact
     end
-    all_log_meters.flatten.uniq
+    uniq_log_meters = all_log_meters.flatten.uniq
+    # exported solar PV is legitimately zero on some days
+    uniq_log_meters.reject(&:exported_solar_pv?)
   end
 end
