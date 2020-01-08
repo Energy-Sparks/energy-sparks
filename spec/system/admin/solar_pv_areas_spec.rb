@@ -118,11 +118,6 @@ RSpec.describe 'Solar pv areas', type: :system do
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
       end
-
-      it 'can be deleted' do
-        expect { click_on 'Delete' }.to change{ SolarPvTuosArea.count }.from(1).to(0)
-        expect(page).to have_content("There are no Solar PV Areas")
-      end
     end
   end
 end
