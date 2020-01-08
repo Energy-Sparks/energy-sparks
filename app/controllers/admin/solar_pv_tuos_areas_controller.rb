@@ -30,11 +30,6 @@ module Admin
       end
     end
 
-    def destroy
-      @solar_pv_tuos_area.destroy
-      redirect_to admin_solar_pv_tuos_areas_path, notice: 'Solar PV Area deleted'
-    end
-
     private
 
     def solar_pv_tuos_area_params

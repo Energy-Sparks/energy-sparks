@@ -19,11 +19,10 @@
         <td><%= solar_pv_tuos_area.description %></td>
         <td><%= solar_pv_tuos_area.latitude %></td>
         <td><%= solar_pv_tuos_area.longitude %></td>
-        <td><%#= solar_pv_tuos_area.solar_pv_tuos_readings.count %></td>
+        <td><%= solar_pv_tuos_area.solar_pv_tuos_readings.count %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_solar_pv_tuos_area_path(solar_pv_tuos_area), class: 'btn' %>
-            <%= link_to 'Delete', admin_solar_pv_tuos_area_path(solar_pv_tuos_area), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
           </div>
         </td>
       </tr>

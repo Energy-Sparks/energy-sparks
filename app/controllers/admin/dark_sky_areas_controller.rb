@@ -30,11 +30,6 @@ module Admin
       end
     end
 
-    def destroy
-      @dark_sky_area.destroy
-      redirect_to admin_dark_sky_areas_path, notice: 'Dark Sky Area deleted'
-    end
-
     private
 
     def dark_sky_area_params
