@@ -1,0 +1,37 @@
+<h1>Dark Sky Areas</h1>
+
+<% if @dark_sky_areas.any? %>
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Readings</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @dark_sky_areas.each do |dark_sky_area| %>
+      <tr>
+        <td><%= link_to dark_sky_area.title, admin_dark_sky_area_path(dark_sky_area) %></td>
+        <td><%= dark_sky_area.description %></td>
+        <td><%= dark_sky_area.latitude %></td>
+        <td><%= dark_sky_area.longitude %></td>
+        <td><%= dark_sky_area.dark_sky_temperature_readings.count %></td>
+        <td>
+          <div class='btn-group'>
+            <%= link_to 'Edit', edit_admin_dark_sky_area_path(dark_sky_area), class: 'btn' %>
+            <%= link_to 'Delete', admin_dark_sky_area_path(dark_sky_area), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+  <p>There are no Dark Sky Areas</p>
+<% end %>
+
+<%= link_to 'New Dark Sky Area', new_admin_dark_sky_area_path, class: 'btn' %>
