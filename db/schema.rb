@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_06_161453) do
+ActiveRecord::Schema.define(version: 2020_01_08_120143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -809,12 +809,10 @@ ActiveRecord::Schema.define(version: 2020_01_06_161453) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "default_solar_pv_tuos_area_id"
-    t.bigint "default_weather_underground_area_id"
     t.bigint "default_dark_sky_area_id"
     t.bigint "default_template_calendar_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
-    t.index ["default_weather_underground_area_id"], name: "index_school_groups_on_default_weather_underground_area_id"
     t.index ["scoreboard_id"], name: "index_school_groups_on_scoreboard_id"
   end
 
@@ -856,7 +854,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_161453) do
     t.bigint "created_user_id"
     t.bigint "created_by_id"
     t.bigint "school_group_id"
-    t.bigint "weather_underground_area_id"
     t.bigint "solar_pv_tuos_area_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -869,7 +866,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_161453) do
     t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
     t.index ["template_calendar_id"], name: "index_school_onboardings_on_template_calendar_id"
     t.index ["uuid"], name: "index_school_onboardings_on_uuid", unique: true
-    t.index ["weather_underground_area_id"], name: "index_school_onboardings_on_weather_underground_area_id"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -897,7 +893,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_161453) do
     t.bigint "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"
-    t.bigint "weather_underground_area_id"
     t.bigint "solar_pv_tuos_area_id"
     t.bigint "school_group_id"
     t.bigint "dark_sky_area_id"
@@ -1135,7 +1130,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_161453) do
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
-  add_foreign_key "school_groups", "areas", column: "default_weather_underground_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards"
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
@@ -1146,7 +1140,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_161453) do
   add_foreign_key "school_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
   add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
-  add_foreign_key "school_onboardings", "areas", column: "weather_underground_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade

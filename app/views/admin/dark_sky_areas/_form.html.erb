@@ -1,5 +1,5 @@
 <%= simple_form_for([:admin, dark_sky_area]) do |f| %>
-  <%= f.input :title %>
+  <%= f.input :title, as: :string %>
   <%= f.input :description %>
   <%= f.input :latitude %>
   <%= f.input :longitude %>

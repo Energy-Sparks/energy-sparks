@@ -36,6 +36,27 @@ RSpec.describe 'Dark sky areas', type: :system do
       expect(page).to have_content longitude
     end
 
+    it 'checks for valid fields' do
+      click_on 'New'
+
+      fill_in 'Title', with: title
+      fill_in 'Description', with: description
+      fill_in 'Latitude', with: latitude
+
+      expect { click_on 'Create' }.to change { DarkSkyArea.count }.by(0)
+
+      expect(page).to have_content("can't be blank")
+
+      fill_in 'Longitude', with: longitude
+      expect { click_on 'Create' }.to change { DarkSkyArea.count }.by(1)
+
+      expect(page).to have_content('Dark Sky Areas')
+      expect(page).to have_content title
+      expect(page).to have_content description
+      expect(page).to have_content latitude
+      expect(page).to have_content longitude
+    end
+
     context 'with an existing dark sky area' do
 
       let!(:area) { DarkSkyArea.create!(title: title, description: description, latitude: latitude, longitude: longitude) }
@@ -64,6 +85,31 @@ RSpec.describe 'Dark sky areas', type: :system do
 
         click_on 'Update'
 
+        expect(page).to have_content("Dark Sky Area was updated")
+
+        expect(page).to have_content('Dark Sky Areas')
+        expect(page).to have_content title
+        expect(page).to have_content description
+        expect(page).to have_content new_latitude
+        expect(page).to have_content new_longitude
+      end
+
+      it 'checks for valid fields on update' do
+        click_on 'Edit'
+
+        new_latitude = 111.111
+        new_longitude = 999.999
+
+        fill_in 'Latitude', with: ''
+        fill_in 'Longitude', with: new_longitude
+
+        click_on 'Update'
+
+        expect(page).to have_content("can't be blank")
+
+        fill_in 'Latitude', with: new_latitude
+
+        click_on 'Update'
         expect(page).to have_content("Dark Sky Area was updated")
 
         expect(page).to have_content('Dark Sky Areas')
