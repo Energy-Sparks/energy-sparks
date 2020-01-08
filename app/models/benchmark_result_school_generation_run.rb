@@ -2,6 +2,8 @@
 #
 # Table name: benchmark_result_school_generation_runs
 #
+#  benchmark_result_count             :integer          default(0)
+#  benchmark_result_error_count       :integer          default(0)
 #  benchmark_result_generation_run_id :bigint(8)
 #  created_at                         :datetime         not null
 #  id                                 :bigint(8)        not null, primary key
