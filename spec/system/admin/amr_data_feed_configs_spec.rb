@@ -12,6 +12,7 @@ describe AmrDataFeedConfig, type: :system do
 
   it 'can view amr data feed configuration' do
     click_on 'Manage'
+    click_on 'Admin'
     click_on 'AMR Data feed configuration'
     expect(page).to have_content(config.description)
     click_on config.description
@@ -20,6 +21,7 @@ describe AmrDataFeedConfig, type: :system do
 
   it 'can edit amr data feed configuration' do
     click_on 'Manage'
+    click_on 'Admin'
     click_on 'AMR Data feed configuration'
     expect(page).to have_content(config.description)
     click_on 'Edit'

@@ -14,6 +14,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
 
   context 'when a meter has readings' do
     before(:each) do
+      click_on 'Admin'
       click_on('Reports')
       click_on('AMR Report')
       expect(page.has_content?(school.name)).to be true
