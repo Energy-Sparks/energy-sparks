@@ -9,6 +9,7 @@ describe 'programme type management', type: :system do
     before do
       sign_in(admin)
       visit root_path
+      click_on 'Admin'
       click_on 'Programme Types'
     end
 

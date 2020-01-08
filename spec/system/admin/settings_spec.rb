@@ -7,6 +7,7 @@ describe 'site-wide settings' do
   before do
     sign_in(admin)
     visit root_path
+    click_on 'Admin'
   end
 
   it 'allows admmins to update site settings' do

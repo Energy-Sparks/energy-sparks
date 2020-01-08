@@ -11,6 +11,7 @@ RSpec.describe 'equivalence type management', type: :system do
 
   it 'allows the creation and editing of equivalences' do
     click_on 'Manage'
+    click_on 'Admin'
     click_on 'Equivalence Types'
     click_on 'New equivalence type'
 
@@ -64,6 +65,7 @@ RSpec.describe 'equivalence type management', type: :system do
       )
 
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'Equivalence Types'
 
       expect(page).to have_content equivalence_text
