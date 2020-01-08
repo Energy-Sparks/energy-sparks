@@ -1,18 +1,12 @@
-<table class="table table-sm">
-  <thead>
+<thead>
+  <tr><th colspan="9"><%= title %></th></tr>
+</thead>
+<tbody>
+  <% if alerts.empty? %>
     <tr>
-      <th>Fuel Type</th>
-      <th>Alert Type</th>
-      <th>Displayable?</th>
-      <th>Rating</th>
-      <th>Valid?</th>
-      <th>Enough data?</th>
-      <th>Relevant?</th>
-      <th>Alert Date</th>
-      <th>Created At</th>
+      <td colspan="9">No alerts</td>
     </tr>
-  </thead>
-  <tbody>
+  <% else %>
     <% alerts.each do |alert| %>
       <tr scope="row">
         <td><%= fa_icon(alert_icon(alert)) %> <%= alert.display_fuel_type %></td>
@@ -26,5 +20,5 @@
         <td><%= nice_date_times alert.created_at %></td>
       </tr>
     <% end %>
-  </tbody>
-</table>
+  <% end %>
+</tbody>

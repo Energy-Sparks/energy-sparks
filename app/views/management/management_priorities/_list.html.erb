@@ -12,7 +12,13 @@
     <tbody>
       <% management_priorities.each do |priority| %>
         <tr>
-          <td scope="row"><%= priority.management_priorities_title  %></td>
+          <td scope="row">
+            <%= priority.management_priorities_title  %>
+            <% if local_assigns[:show_debug] %>
+              <%= link_to 'Alert', school_alert_path(school, priority.alert) %>
+              Priority: <%= priority.priority %>
+            <% end %>
+          </td>
           <td><%= priority.template_variables[:average_one_year_saving_gbp] %> <small>/year</small></td>
           <td><%= priority.template_variables[:average_capital_cost] %></td>
           <td><%= priority.template_variables[:average_payback_years] %></td>

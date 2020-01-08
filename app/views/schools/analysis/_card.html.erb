@@ -1,3 +1,7 @@
+<% if local_assigns[:show_debug] %>
+  <%= link_to 'Alert', school_alert_path(school, page.alert) %>
+  Priority: <%= page.priority %>
+<% end %>
 <div class="card <%= energy %>-dark <%= energy %>-card mb-3">
   <div class="card-body">
     <h3 class="card-title pb-0">
