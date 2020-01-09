@@ -155,6 +155,9 @@ Rails.application.routes.draw do
     resources :activity_types
     resource :activity_type_preview, only: :create
 
+    resources :dark_sky_areas, except: [:destroy]
+    resources :solar_pv_tuos_areas, except: [:destroy]
+
     resources :schools, only: [] do
       get :analysis, to: 'analysis#analysis'
       get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
@@ -195,6 +198,8 @@ Rails.application.routes.draw do
     resources :unsubscriptions, only: [:index]
 
     resources :calendars, only: [:new, :create, :index, :show]
+
+    resources :global_meter_attributes
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do

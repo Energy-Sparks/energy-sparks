@@ -1,6 +1,6 @@
 module Admin
   module Schools
-    class MeterAttributesController < ApplicationController
+    class MeterAttributesController < AdminController
       load_and_authorize_resource :school
 
       def index

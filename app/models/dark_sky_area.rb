@@ -12,4 +12,6 @@
 
 class DarkSkyArea < Area
   has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id
+
+  validates_presence_of :latitude, :longitude, :title
 end

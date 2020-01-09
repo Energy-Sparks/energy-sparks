@@ -1,11 +1,15 @@
 <tr>
   <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
-  <td><%= meter_attribute.meter_type %></td>
+  <td>
+    <% meter_attribute.selected_meter_types.each do |meter_type|%>
+      <span class="badge badge-secondary"><%= fa_icon(fuel_type_icon(meter_type)) %> <%= meter_type %> <%= "(pseudo)" if meter_attribute.pseudo?(meter_type) %></span>
+    <% end %>
+  </td>
   <td><%= meter_attribute.reason %></td>
   <td><%= meter_attribute.created_by.email if meter_attribute.created_by %></td>
   <td><%= nice_date_times(meter_attribute.created_at) %></td>
   <td><%= print_meter_attribute(meter_attribute) %></td>
 </tr>
 <% if meter_attribute.replaces %>
-  <%= render 'single', meter_attribute: meter_attribute.replaces %>
+  <%= render 'admin/schools/school_attributes/single', meter_attribute: meter_attribute.replaces %>
 <% end %>

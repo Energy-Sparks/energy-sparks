@@ -8,7 +8,7 @@
 #  deleted_by_id   :bigint(8)
 #  id              :bigint(8)        not null, primary key
 #  input_data      :json
-#  meter_type      :string           not null
+#  meter_types     :jsonb
 #  reason          :text
 #  replaced_by_id  :bigint(8)
 #  school_group_id :bigint(8)        not null

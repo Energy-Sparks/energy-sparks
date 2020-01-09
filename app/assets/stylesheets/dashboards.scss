@@ -6,6 +6,12 @@ div.dashboards {
   }
 }
 
+div#management-energy-overview-tabs {
+  div.analysis-chart{
+    padding-top: 20px;
+  }
+}
+
 
 @media (max-width: 1024px) {
   div.dashboards {
