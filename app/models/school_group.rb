@@ -28,6 +28,7 @@
 
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
+  include ParentMeterAttributeHolder
 
   friendly_id :name, use: [:finders, :slugged, :history]
 
@@ -53,13 +54,5 @@ class SchoolGroup < ApplicationRecord
 
   def should_generate_new_friendly_id?
     name_changed? || super
-  end
-
-  def meter_attributes_for(meter)
-    meter_attributes.where(meter_type: meter.meter_type).active
-  end
-
-  def pseudo_meter_attributes
-    meter_attributes.active.select(&:pseudo?)
   end
 end
