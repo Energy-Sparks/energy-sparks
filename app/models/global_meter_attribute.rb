@@ -38,7 +38,7 @@ class GlobalMeterAttribute < ApplicationRecord
   end
 
   def self.pseudo
-    all.inject({}) do |collection, attribute|
+    active.inject({}) do |collection, attribute|
       attribute.selected_meter_types.select {|selected| attribute.pseudo?(selected)}.each do |meter_type|
         collection[meter_type] ||= []
         collection[meter_type] << attribute
