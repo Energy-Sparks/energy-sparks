@@ -1,0 +1,48 @@
+<h1>Amr Data Feed Import Logs</h1>
+
+<h2>Errored</h2>
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Feed</th>
+      <th>Error messages</th>
+      <th>File name</th>
+      <th>Import Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @errored_logs.each do |log| %>
+      <tr>
+        <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
+        <td><%= log.error_messages %></td>
+        <td><%= log.file_name %></td>
+        <td><%= nice_date_times log.import_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Successful</h2>
+<%== pagy_bootstrap_nav(@pagy) %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Feed</th>
+      <th>File name</th>
+      <th>Import Time</th>
+      <th>Records imported</th>
+      <th>Records updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @successful_logs.each do |log| %>
+      <tr>
+        <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
+        <td><%= log.file_name %></td>
+        <td><%= nice_date_times log.import_time %></td>
+        <td><%= log.records_imported %></td>
+        <td><%= log.records_upserted %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
