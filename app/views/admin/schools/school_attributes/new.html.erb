@@ -3,7 +3,7 @@
     <h1>New attribute: <%= @meter_attribute_type.attribute_name %></h1>
     <p><%= @meter_attribute_type.attribute_description %></p>
     <%= simple_form_for :attribute, url: admin_school_school_attributes_path(@school, @meter), html: { novalidate: false } do |form| %>
-      <%= form.input :meter_type, as: :select, collection: @meter_attribute_type.applicable_meter_types %>
+      <%= form.input :meter_types, as: :check_boxes, collection: @meter_attribute_type.applicable_meter_types %>
       <%= render 'shared/meter_attributes/new_form', form: form, meter_attribute_type: @meter_attribute_type %>
     <% end %>
   </div>

@@ -23,7 +23,13 @@ module Schools
       @content = framework_adapter.content
       @title = page_title(@content, @school)
     rescue ActiveRecord::RecordNotFound
-      redirect_to school_analysis_path(@school), status: :moved_permanently
+      if /\d/.match?(params[:id])
+        # new-style numeric analysis page that doesn't exist, re-raise to 404
+        raise
+      else
+        # old-style analysis tab name, redirect back to main page
+        redirect_to school_analysis_index_path(@school), status: :moved_permanently
+      end
     end
 
   private
