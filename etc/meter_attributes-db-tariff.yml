@@ -773,7 +773,7 @@
 - :attribute_type: accounting_tariff
   :input_data:
     start_date: 01/01/2000
-    end_date: 01/01/2020
+    end_date: 01/01/2050
     name: Sheffield gas tariff
     rates:
       standing_charge:
