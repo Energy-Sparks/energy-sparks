@@ -987,3 +987,44 @@
   - ''
   - electricity
   - aggregated_electricity
+:school_group_attributes:
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2008
+    end_date: 01/03/2022
+    name: Oxfordshire gas tariff
+    rates:
+      standing_charge:
+        per: day
+        rate: '4.00'
+      renewable_energy_obligation:
+        per: ''
+        rate: ''
+      rate:
+        per: kwh
+        rate: '0.015'
+  :school_group_id: 4
+  :meter_types:
+  - ''
+  - gas
+  - aggregated_gas
+- :attribute_type: accounting_tariff
+  :input_data:
+    start_date: 01/01/2008
+    end_date: 01/03/2022
+    name: Oxfordshire standard electricity tariff
+    rates:
+      standing_charge:
+        per: quarter
+        rate: '38.35'
+      renewable_energy_obligation:
+        per: kwh
+        rate: '0.00565'
+      rate:
+        per: kwh
+        rate: '0.115'
+  :school_group_id: 4
+  :meter_types:
+  - ''
+  - electricity
+  - aggregated_electricity
