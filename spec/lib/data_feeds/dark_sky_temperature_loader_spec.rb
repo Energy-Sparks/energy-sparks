@@ -8,7 +8,7 @@ module DataFeeds
     let(:good_warmer_temperature_readings)  { Array.new(48, 15.0) }
     let(:bad_temperature_readings)          { [10.0] }
     let(:start_date)                        { Date.parse('2019-05-01') }
-    let!(:dark_sky_area)                    { DarkSkyArea.create(title: "Can't see anything") }
+    let!(:dark_sky_area)                    { create(:dark_sky_area, title: "Can't see anything") }
 
     describe 'with good data' do
       it 'creates a record per day and updates if a record exists' do

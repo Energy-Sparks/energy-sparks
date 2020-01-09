@@ -155,6 +155,9 @@ Rails.application.routes.draw do
     resources :activity_types
     resource :activity_type_preview, only: :create
 
+    resources :dark_sky_areas, except: [:destroy]
+    resources :solar_pv_tuos_areas, except: [:destroy]
+
     resources :schools, only: [] do
       get :analysis, to: 'analysis#analysis'
       get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
