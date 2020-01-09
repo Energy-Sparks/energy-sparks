@@ -1,3 +1,28 @@
+<% if @import_logs_with_errors.any? %>
+  <h2>Import Issues</h2>
+  <p>Some files experienced problems being processed:</p>
+  <table class="table table-sorted">
+    <thead>
+      <tr>
+        <th>Feed</th>
+        <th>Error messages</th>
+        <th>File name</th>
+        <th>Import Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @import_logs_with_errors.each do |log| %>
+        <tr>
+          <td><%= log.amr_data_feed_config.description %></td>
+          <td><%= log.error_messages %></td>
+          <td><%= log.file_name %></td>
+          <td><%= nice_date_times log.import_time %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 <h3>Import runs</h3>
 <table class="table mt-3 mb-5">
   <thead class="thead-light">
