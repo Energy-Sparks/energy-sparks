@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: c6614d53c83f84d7e22f5d484450eb8f0b3b2f6f
-  tag: 0.55.5-tariff-refactor-b-patch-for-eqiuvalence-date-bug
+  revision: bd6ffd6883d580028f51bd07154990d8c57e6187
+  tag: 0.55.5-tariff-refactor-c-patch-for-eqiuvalence-date-bug
   specs:
-    energy-sparks_analytics (0.55.5.pre.tariff.pre.refactor.pre.b.pre.patch.pre.for.pre.eqiuvalence.pre.date.pre.bug)
+    energy-sparks_analytics (0.55.5.pre.tariff.pre.refactor.pre.c.pre.patch.pre.for.pre.eqiuvalence.pre.date.pre.bug)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
