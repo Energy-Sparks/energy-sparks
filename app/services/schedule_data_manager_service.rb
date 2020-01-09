@@ -45,7 +45,10 @@ class ScheduleDataManagerService
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
     @solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarPV.new('solar pv')
-      populate_data_from_solar_pv_readings(data)
+      DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
+        data.add(date, values.map(&:to_f))
+      end
+      data
     end
   end
 
