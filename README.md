@@ -54,6 +54,11 @@ GRANT ALL ON SCHEMA public TO public;
 ```
 bundle exec rake utility:prepare_test_server
 ```
+6) Reset active storage buckets on test adn copy production bucket contents
+```
+bundle exec rake utility:clear_active_storage_bucket
+bundle exec rake utility:copy_active_storage_bucket[*INSERT PRODUCTION ACTIVE STORAGE BUCKET-NAME*]
+```
 
 # Creating a new environment on Elastic Beanstalk
 
