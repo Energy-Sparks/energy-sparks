@@ -2,7 +2,8 @@ class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
-  before_action :set_newsletters, :set_case_studies, only: [:index, :show]
+  before_action :set_newsletters, only: [:index, :show]
+  before_action :set_case_studies, only: [:index, :show, :for_management, :for_teachers]
 
   def index
   end
@@ -51,6 +52,7 @@ private
   end
 
   def set_case_studies
+    @all_case_studies_count = CaseStudy.count
     @case_studies = CaseStudy.order(position: :asc).limit(3)
   end
 

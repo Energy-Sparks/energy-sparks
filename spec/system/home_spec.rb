@@ -61,13 +61,20 @@ RSpec.describe "home", type: :system do
     let!(:case_study_3) { create(:case_study, position: 3) }
     let!(:case_study_4) { create(:case_study, position: 4) }
 
-    it 'shows the latest case studies only' do
+    it 'shows the latest case studies only and all on a separate page' do
       visit root_path
 
       expect(page).to have_content(case_study_1.title)
       expect(page).to have_content(case_study_2.title)
       expect(page).to have_content(case_study_3.title)
       expect(page).to_not have_content(case_study_4.title)
+
+      click_on 'More case studies'
+
+      expect(page).to have_content(case_study_1.title)
+      expect(page).to have_content(case_study_2.title)
+      expect(page).to have_content(case_study_3.title)
+      expect(page).to have_content(case_study_4.title)
     end
   end
 

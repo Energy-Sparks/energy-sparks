@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
+  get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'home-page', to: 'home#show'
   get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
