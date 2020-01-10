@@ -28,9 +28,12 @@
             <td><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
             <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
             <td>
-              <% unless onboarding.has_event?(:onboarding_complete) %>
+              <div class="btn-group">
                 <%= button_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm' %>
-              <% end %>
+                <% if onboarding.school %>
+                  <%= button_to 'Mark as complete', admin_school_onboarding_events_path(onboarding, event: :onboarding_complete), class: 'btn btn-sm' %>
+                <% end %>
+              </div>
             </td>
           </tr>
         <% end %>

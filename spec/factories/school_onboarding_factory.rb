@@ -15,5 +15,13 @@ FactoryBot.define do
         onboarding.events = evaluator.event_names.map{|event_name| onboarding.events.build(event: event_name) }
       end
     end
+
+    trait :with_school do
+      after(:build) do |onboarding, evaluator|
+        school = create(:school, name: onboarding.school_name)
+        onboarding.created_user = create(:school_admin, school: school)
+        onboarding.school = school
+      end
+    end
   end
 end

@@ -62,6 +62,13 @@ describe ImportNotifier do
       expect(data[sheffield_config][:meters_with_zero_data]).to match_array([meter_1])
     end
 
+    it 'gets all the import logs which have an error message' do
+      error_messages = 'Something went wrong'
+      import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, error_messages: error_messages, import_time: 1.day.ago)
+      data = ImportNotifier.new.import_logs_with_errors(from: 2.days.ago, to: Time.now)
+      expect(data).to match_array([import_log])
+    end
+
     it 'does not include solar export with zero data' do
       sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:exported_solar_pv_meter, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
@@ -69,13 +76,6 @@ describe ImportNotifier do
       meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
       data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
       expect(data[sheffield_config][:meters_with_zero_data]).to be_empty
-    end
-
-    it 'gets all the import logs which have an error message' do
-      error_messages = 'Something went wrong'
-      import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, error_messages: error_messages, import_time: 1.day.ago)
-      data = ImportNotifier.new.import_logs_with_errors(from: 2.days.ago, to: Time.now)
-      expect(data).to match_array([import_log])
     end
   end
 
