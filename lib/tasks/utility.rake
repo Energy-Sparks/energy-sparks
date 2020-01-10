@@ -19,4 +19,31 @@ namespace :utility do
       end
     end
   end
+
+  desc 'Clear active storage bucket'
+  task clear_active_storage_bucket: :environment do
+    target_bucket = ENV['AWS_S3_ACTIVE_STORAGE_BUCKET']
+    abort("No S3 bucket configure") if target_bucket.blank?
+    abort("Cannot be run against production buckets") if target_bucket.include?('prod')
+    s3_client = Aws::S3::Client.new
+    s3_client.list_objects_v2(bucket: target_bucket).contents.each do |object|
+      puts "Deleting #{object.key} from #{target_bucket}"
+      s3_client.delete_object(bucket: target_bucket, key: object.key)
+    end
+  end
+
+  desc 'copy active storage bucket'
+  task :copy_active_storage_bucket, [:source_bucket] => [:environment] do |t, args|
+    target_bucket = ENV['AWS_S3_ACTIVE_STORAGE_BUCKET']
+    source_bucket = args[:source_bucket]
+    abort("No S3 target bucket configured") if target_bucket.blank?
+    abort("Pass in a source bucket to copy_from") if source_bucket.blank?
+    s3_client = Aws::S3::Client.new
+    s3_client.list_objects_v2(bucket: source_bucket).contents.each do |object|
+      puts "Copying #{object.key} from #{source_bucket} to #{target_bucket}"
+      s3_client.copy_object(bucket: target_bucket, copy_source: source_bucket + '/' + object.key, key: object.key)
+    end
+  end
+
+
 end
