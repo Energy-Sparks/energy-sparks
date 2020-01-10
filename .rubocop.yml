@@ -92,7 +92,7 @@ Style/RedundantReturn:
   Enabled: false
 Layout/SpaceInsideBlockBraces:
   Enabled: false
-EmptyLineAfterGuardClause:
+Layout/EmptyLineAfterGuardClause:
   Enabled: false
 Metrics/LineLength:
   Enabled: false

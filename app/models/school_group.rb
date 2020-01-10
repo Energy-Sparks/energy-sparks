@@ -2,35 +2,33 @@
 #
 # Table name: school_groups
 #
-#  created_at                          :datetime         not null
-#  default_dark_sky_area_id            :bigint(8)
-#  default_solar_pv_tuos_area_id       :bigint(8)
-#  default_template_calendar_id        :bigint(8)
-#  default_weather_underground_area_id :bigint(8)
-#  description                         :string
-#  id                                  :bigint(8)        not null, primary key
-#  name                                :string           not null
-#  scoreboard_id                       :bigint(8)
-#  slug                                :string           not null
-#  updated_at                          :datetime         not null
+#  created_at                    :datetime         not null
+#  default_dark_sky_area_id      :bigint(8)
+#  default_solar_pv_tuos_area_id :bigint(8)
+#  default_template_calendar_id  :bigint(8)
+#  description                   :string
+#  id                            :bigint(8)        not null, primary key
+#  name                          :string           not null
+#  scoreboard_id                 :bigint(8)
+#  slug                          :string           not null
+#  updated_at                    :datetime         not null
 #
 # Indexes
 #
-#  index_school_groups_on_default_solar_pv_tuos_area_id        (default_solar_pv_tuos_area_id)
-#  index_school_groups_on_default_template_calendar_id         (default_template_calendar_id)
-#  index_school_groups_on_default_weather_underground_area_id  (default_weather_underground_area_id)
-#  index_school_groups_on_scoreboard_id                        (scoreboard_id)
+#  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
+#  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
+#  index_school_groups_on_scoreboard_id                  (scoreboard_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
-#  fk_rails_...  (default_weather_underground_area_id => areas.id)
 #  fk_rails_...  (scoreboard_id => scoreboards.id)
 #
 
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
+  include ParentMeterAttributeHolder
 
   friendly_id :name, use: [:finders, :slugged, :history]
 
@@ -56,13 +54,5 @@ class SchoolGroup < ApplicationRecord
 
   def should_generate_new_friendly_id?
     name_changed? || super
-  end
-
-  def meter_attributes_for(meter)
-    meter_attributes.where(meter_type: meter.meter_type).active
-  end
-
-  def pseudo_meter_attributes
-    meter_attributes.active.select(&:pseudo?)
   end
 end

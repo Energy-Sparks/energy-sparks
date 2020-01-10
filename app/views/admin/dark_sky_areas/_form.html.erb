@@ -1,0 +1,7 @@
+<%= simple_form_for([:admin, dark_sky_area]) do |f| %>
+  <%= f.input :title, as: :string %>
+  <%= f.input :description %>
+  <%= f.input :latitude %>
+  <%= f.input :longitude %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>
