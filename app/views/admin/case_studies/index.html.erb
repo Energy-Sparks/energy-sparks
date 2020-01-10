@@ -1,0 +1,44 @@
+<h1>Case Studies</h1>
+
+<% if @case_studies %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th>File</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @case_studies.each do |case_study| %>
+      <tr>
+        <td><%= link_to case_study.title, admin_case_study_path(case_study) %></td>
+        <td><%= case_study.description %></td>
+        <td><%= case_study.description %></td>
+        <td>
+          <% if case_study.file.attached? %>
+            <%= link_to 'File', url_for(case_study.file) %>
+          <% else %>
+            No file attached
+          <% end %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn' %>
+            <%= link_to 'Delete', admin_case_study_path(case_study), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+  <p>There are no case study</p>
+<% end %>
+
+<p><%= link_to 'New Case study', new_admin_case_study_path, class: 'btn'%></p>

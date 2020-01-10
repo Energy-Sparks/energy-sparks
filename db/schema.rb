@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_08_120143) do
+ActiveRecord::Schema.define(version: 2020_01_10_110328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -497,6 +497,13 @@ ActiveRecord::Schema.define(version: 2020_01_08_120143) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reading_date"], name: "index_carbon_intensity_readings_on_reading_date", unique: true
+  end
+
+  create_table "case_studies", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "configurations", force: :cascade do |t|

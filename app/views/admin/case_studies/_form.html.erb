@@ -1,0 +1,8 @@
+<%= simple_form_for([:admin, @case_study]) do |f| %>
+  <%= f.input :title %>
+  <%= f.label 'Description', for: :description %>
+  <%= f.rich_text_area :description %>
+  <%= f.input :position %>
+  <%= f.input :file %>
+  <%= f.button :submit %>
+<% end %>

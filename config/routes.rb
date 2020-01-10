@@ -145,6 +145,7 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#index'
 
   namespace :admin do
+    resources :case_studies
     resources :newsletters
     resources :school_groups do
       scope module: :school_groups do
