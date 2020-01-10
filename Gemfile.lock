@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 906ef5b409ca12c74d0c13699725cbe7d9ed5eca
-  tag: 0.55.5-tariff-refactor-d-patch-for-eqiuvalence-date-bug
+  revision: 452cc7673ade4e78e02bcef107edb7e375839557
+  tag: 0.60.2
   specs:
-    energy-sparks_analytics (0.55.5.pre.tariff.pre.refactor.pre.d.pre.patch.pre.for.pre.eqiuvalence.pre.date.pre.bug)
+    energy-sparks_analytics (0.60.2)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -342,6 +342,7 @@ GEM
     overcommit (0.48.1)
       childprocess (~> 0.6, >= 0.6.3)
       iniparse (~> 1.4)
+    pagy (3.7.1)
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
@@ -631,6 +632,7 @@ DEPENDENCIES
   mustache (~> 1.0)
   oj
   overcommit
+  pagy
   pg (= 1.0.0)
   pry
   puma (= 3.12.2)
