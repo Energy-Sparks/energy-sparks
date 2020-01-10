@@ -18,7 +18,7 @@
       <tr>
         <td><%= link_to case_study.title, admin_case_study_path(case_study) %></td>
         <td><%= case_study.description %></td>
-        <td><%= case_study.description %></td>
+        <td><%= case_study.position %></td>
         <td>
           <% if case_study.file.attached? %>
             <%= link_to 'File', url_for(case_study.file) %>
