@@ -78,6 +78,6 @@
 
   <%= render 'testimonial', quote: @testimonial[:quote], by: @testimonial[:by], title: @testimonial[:title], location: @testimonial[:location] %>
 
-  <%= render 'case_studies' %>
+  <%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
 
 </div>
