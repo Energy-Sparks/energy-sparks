@@ -70,6 +70,20 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
 
+    it 'completes onboardings with schools' do
+
+      school_onboarding = create :school_onboarding, :with_school
+
+      expect(school_onboarding).to be_incomplete
+
+      click_on 'Automatic School Setup'
+      click_on 'Mark as complete'
+
+      school_onboarding.reload
+      expect(school_onboarding).to be_complete
+
+    end
+
     it 'I can download a CSV of onboarding schools' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
       click_on 'Automatic School Setup'
