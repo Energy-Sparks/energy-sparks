@@ -13,7 +13,7 @@ namespace :utility do
       Contact.where.not(email_address: "hello@energysparks.uk").update_all(email_address: '', mobile_phone_number: '')
 
       puts "Resetting pupil passwords"
-      User.pupil.update_all(pupil_password: nil)
+      User.pupil.update_all(pupil_password: '')
       User.pupil.all.each_with_index do |pupil, index|
         pupil.update!(pupil_password: "pupil#{index}")
       end
