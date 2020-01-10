@@ -321,7 +321,7 @@ module Amr
         FileUtils.mkdir_p frome_config.local_bucket_path
         expect(write_file_and_parse(example_sheffield_gas, frome_config)).to be 0
 
-        expect(AmrDataFeedImportLog.first.error_messages).to eq [AmrReadingData::ERROR_MISSING_READINGS, AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: 'hr0030' }].join(', ')
+        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE
       end
     end
 

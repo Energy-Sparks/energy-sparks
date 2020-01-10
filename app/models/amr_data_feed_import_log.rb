@@ -25,4 +25,5 @@ class AmrDataFeedImportLog < ApplicationRecord
   scope :successful, -> { where(error_messages: nil) }
 
   has_many :meters, -> { distinct }, through: :amr_data_feed_readings
+  has_many :amr_reading_warnings
 end

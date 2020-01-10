@@ -34,6 +34,21 @@ describe AmrReadingData do
     end
   end
 
+  describe 'handles when each row is invalid' do
+    let(:amr_reading) { AmrReadingData.new(reading_data: [
+                                                      { :mpan_mprn => nil, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => nil, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                                                      ],
+                                            date_format: date_format) }
+
+    it 'whole file is invalid' do
+      expect(amr_reading.valid?).to be false
+      expect(amr_reading.valid_reading_count).to be 0
+      expect(amr_reading.warnings?).to be true
+      expect(amr_reading.warnings.count).to be 2
+    end
+  end
+
   describe 'handles when reading date is a string' do
     let(:date_format) { '%e %b %Y %H:%M:%S' }
     let(:amr_reading_data) {{

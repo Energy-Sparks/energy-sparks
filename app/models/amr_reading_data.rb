@@ -3,17 +3,19 @@ class AmrReadingData
 
   attr_accessor :reading_data, :date_format, :missing_reading_threshold
 
-  ERROR_MISSING_MPAN = 'Mpan or MPRN field is missing'.freeze
-  ERROR_MISSING_READING_DATE = 'Reading date is missing'.freeze
-  ERROR_MISSING_READINGS = 'Some days have missing readings'.freeze
-  ERROR_BAD_DATE_FORMAT = 'Bad format for some reading dates - for example here is one: %{example}'.freeze
+  # ERROR_BAD_DATE_FORMAT = 'Bad format for some reading dates - for example here is one: %{example}'.freeze
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
-  #validate :missing_readings?
-  # validate :missing_mpan_mprn?
-  # validate :missing_reading_date?
-  # validate :invalid_reading_date?, unless: [:all_the_reading_dates_are_dates?, :there_are_any_missing_reading_dates?]
+  WARNINGS = {
+    blank_readings: 'Some days have blank readings',
+    missing_readings: 'Some days have missing readings',
+    missing_mpan_mprn: 'Mpan or MPRN field is missing',
+    missing_reading_date: 'Reading date is missing',
+    invalid_reading_date: 'Bad format for a reading data'
+  }.freeze
+
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
+  validate :any_valid_readings?
 
   def initialize(reading_data:, date_format:, missing_reading_threshold: 0)
     @reading_data = reading_data
@@ -23,12 +25,20 @@ class AmrReadingData
     invalid_row_check
   end
 
+  def error_messages_joined
+    errors.messages[:reading_data].uniq.join(', ')
+  end
+
   def warnings?
     @reading_data.any? { |reading| reading.key?(:warning) }
   end
 
   def warnings
     @reading_data.select { |reading| reading.key?(:warning) }
+  end
+
+  def valid_records
+    @reading_data.reject { |reading| reading.key?(:warning) }
   end
 
   def valid_reading_count
@@ -41,20 +51,10 @@ class AmrReadingData
 
   private
 
-  def count_rows_with_missing_half_hours
-    @reading_data.count { |reading| reading[:readings].compact.size < (48 - @missing_reading_threshold) }
-  end
-
-  def count_rows_with_blank_readings
-    @reading_data.count { |reading| reading[:readings].count(&:blank?) > @missing_reading_threshold }
-  end
-
-  def blank_readings?(readings)
-    readings.count(&:blank?) > @missing_reading_threshold
-  end
-
-  def missing_readings?(readings)
-    readings.compact.size < (48 - @missing_reading_threshold)
+  def any_valid_readings?
+    if valid_reading_count == 0
+      errors.add(:reading_data, ERROR_UNABLE_TO_PARSE_FILE)
+    end
   end
 
   def invalid_row_check
@@ -75,6 +75,14 @@ class AmrReadingData
         reading[:warning] = :invalid_reading_date
       end
     end
+  end
+
+  def blank_readings?(readings)
+    readings.count(&:blank?) > @missing_reading_threshold
+  end
+
+  def missing_readings?(readings)
+    readings.compact.size < (48 - @missing_reading_threshold)
   end
 
   def valid_reading_date?(reading_date)
