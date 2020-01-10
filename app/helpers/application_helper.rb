@@ -1,4 +1,8 @@
+require 'pagy/extras/bootstrap'
+
 module ApplicationHelper
+  include Pagy::Frontend
+
   def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "

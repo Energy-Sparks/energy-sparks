@@ -36,6 +36,8 @@ gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
 
+# Pagination
+gem 'pagy'
 
 gem 'aws-sdk-s3'
 

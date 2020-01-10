@@ -215,6 +215,7 @@ Rails.application.routes.draw do
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
       resources :benchmark_result_generation_runs, only: [:index, :show]
+      resources :amr_data_feed_import_logs, only: [:index]
     end
     resource :settings, only: [:show, :update]
 
