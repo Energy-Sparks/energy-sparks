@@ -93,6 +93,14 @@ describe SchoolCreator, :schools, type: :service do
     context 'where the school has been created as part of the onboarding process' do
       let(:onboarding_user){ create :onboarding_user }
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+
+      it 'completes the onboarding process' do
+        expect(school_onboarding).to be_incomplete
+        service = SchoolCreator.new(school)
+        service.make_visible!
+        expect(school_onboarding).to be_complete
+      end
+
       it 'sends an activation email if one has not been sent' do
         service = SchoolCreator.new(school)
         service.make_visible!
