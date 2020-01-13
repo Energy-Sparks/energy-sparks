@@ -1,0 +1,17 @@
+<h1>Resources</h1>
+
+<table class="table">
+  <tbody>
+    <% @resource_files.each do |resource_file| %>
+      <tr>
+        <th scope="row"><%= link_to resource_file.title, url_for(resource_file.file)%></th>
+        <td><%= resource_file.description %></td>
+        <td>
+          <%= link_to url_for(resource_file.file), class: 'btn' do %>
+            Download <i class="fas fa-file-download"></i>
+          <% end%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

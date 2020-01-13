@@ -78,6 +78,18 @@ RSpec.describe "home", type: :system do
     end
   end
 
+  context 'with resources' do
+    let!(:resource_file) { create(:resource_file) }
+
+    it 'shows all resources on a separate page' do
+      visit root_path
+
+      click_on 'Resources'
+
+      expect(page).to have_content(resource_file.title)
+    end
+  end
+
   context 'school admin user' do
     let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
     let(:school_admin) { create(:school_admin, school: school)}
