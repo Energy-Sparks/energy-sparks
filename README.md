@@ -54,6 +54,11 @@ GRANT ALL ON SCHEMA public TO public;
 ```
 bundle exec rake utility:prepare_test_server
 ```
+6) Reset active storage buckets on test adn copy production bucket contents
+```
+bundle exec rake utility:clear_active_storage_bucket
+bundle exec rake utility:copy_active_storage_bucket[*INSERT PRODUCTION ACTIVE STORAGE BUCKET-NAME*]
+```
 
 # Creating a new environment on Elastic Beanstalk
 
@@ -149,49 +154,6 @@ Get the RDS launch wizard group and add access INBOUND for the AWSEBSecurityGrou
 2) Use pg_dump to get dump of current production database
 3) Use psql to get data into new database
 
-## Migrate field to Rich Text field
-
-1) Create migration to rename field, you might need to remove null constraint if present
-
-```ruby
-class AddRichTextToAlertType < ActiveRecord::Migration[6.0]
-  def change
-    rename_column :table_name, :description, :_old_description
-    change_column_null :table_name, :_old_description, true
-  end
-end
-```
-
-2) Add to model
-
-```ruby
-has_rich_text :description
-```
-
-3) Update form
-
-```ruby
-  <%= f.input :description, as: :trix_editor %>
-```
-4) Update wherever displayed
-
-```ruby
-<div class="trix-content"><%= model_name.description %></div>
-```
-
-5) In tests, change to use helper, note, selector defaults to 'trix-editor'
-
-```ruby
-fill_in_trix with: description
-```
-
-6) Create after party task to migrate content to new field
-
-```ruby
-Model.all.each do |model|
-  model.update!(description: model._old_description)
-end
-```
 
 ## Browser testing provided by:
 
