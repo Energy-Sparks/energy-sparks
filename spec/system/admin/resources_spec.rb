@@ -10,7 +10,9 @@ describe 'Resources', type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
-      click_on 'Resources'
+      within '.application' do
+        click_on 'Resources'
+      end
     end
 
     it 'allows the user to create, edit and delete a resource' do
