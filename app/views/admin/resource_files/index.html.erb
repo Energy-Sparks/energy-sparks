@@ -1,0 +1,42 @@
+<h1>Resources</h1>
+
+<% if @resource_files %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>File</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @resource_files.each do |resource_file| %>
+      <tr>
+        <td><%= resource_file.title %></td>
+        <td><%= resource_file.description %></td>
+        <td>
+          <% if resource_file.file.attached? %>
+            <%= link_to 'File', url_for(resource_file.file) %>
+          <% else %>
+            No file attached
+          <% end %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_resource_file_path(resource_file), class: 'btn' %>
+            <%= link_to 'Delete', admin_resource_file_path(resource_file), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+  <p>There are no resources</p>
+<% end %>
+
+<p><%= link_to 'New Resource', new_admin_resource_file_path, class: 'btn'%></p>

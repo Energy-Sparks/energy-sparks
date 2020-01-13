@@ -16,5 +16,7 @@
     <% elsif can? :create, Contact %>
       <%= link_to 'My alerts', new_school_contact_path(current_user.school, user_id: current_user.id), class: 'dropdown-item' %>
     <% end %>
+    <%= link_to 'Activities', suggest_activity_school_path(current_user.school), class: 'dropdown-item' %>
+    <%= link_to 'Resources', resources_path, class: 'dropdown-item' %>
   </div>
 </li>
