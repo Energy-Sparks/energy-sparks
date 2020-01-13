@@ -102,6 +102,8 @@
   <div class="tab-pane fade" id="all-meter-attributes-content" role="tabpanel" aria-labelledby="all-meter-attributes-tab">
     <h2>Full attributes</h2>
     <%= sanitize ap(@school.meter_attributes_to_analytics, index: false, plain: true) %>
+    <h2>Pseudo attributes</h2>
+    <%= sanitize ap(@school.pseudo_meter_attributes_to_analytics, index: false, plain: true) %>
   </div>
 </div>
 
