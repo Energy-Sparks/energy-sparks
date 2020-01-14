@@ -143,10 +143,6 @@ module Amr
         write_file_and_expect_readings(csv: banes_no_header, config:config)
       end
 
-      xit 'should handle header if config set' do
-        write_file_and_expect_readings(csv: banes_no_header, config: config)
-      end
-
       it 'should give warnings if there are problems' do
         write_file_and_expect_readings(csv: banes, config: config)
         write_file_and_expect_updated_readings(upsert_file_2, config)

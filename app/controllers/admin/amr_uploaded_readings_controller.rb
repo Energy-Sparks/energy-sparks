@@ -4,6 +4,9 @@ module Admin
 
     def show
       @amr_uploaded_reading = AmrUploadedReading.find(params[:id])
+
+      @valid_reading_data = @amr_uploaded_reading.reading_data.reject { |reading| reading.key?('warning') }
+      @warnings = @amr_uploaded_reading.reading_data.select { |reading| reading.key?('warning') }
     end
 
     def new

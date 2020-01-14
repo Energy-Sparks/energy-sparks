@@ -3,15 +3,20 @@ class AmrReadingData
 
   attr_accessor :reading_data, :date_format, :missing_reading_threshold
 
-  # ERROR_BAD_DATE_FORMAT = 'Bad format for some reading dates - for example here is one: %{example}'.freeze
+  WARNING_BAD_DATE_FORMAT = 'Bad format for a reading date'.freeze
+  WARNING_READING_DATE_MISSING = 'Reading date is missing'.freeze
+  WARNING_MISSING_MPAN_MPRN = 'Mpan or MPRN field is missing'.freeze
+  WARNING_MISSING_READINGS = 'Missing readings (should be 48)'.freeze
+  WARNING_MISSING_BLANK_READINGS = 'Blank readings'.freeze
+
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
   WARNINGS = {
-    blank_readings: 'Some days have blank readings',
-    missing_readings: 'Some days have missing readings',
-    missing_mpan_mprn: 'Mpan or MPRN field is missing',
-    missing_reading_date: 'Reading date is missing',
-    invalid_reading_date: 'Bad format for a reading data'
+    blank_readings: WARNING_MISSING_BLANK_READINGS,
+    missing_readings: WARNING_MISSING_READINGS,
+    missing_mpan_mprn: WARNING_MISSING_MPAN_MPRN,
+    missing_reading_date: WARNING_READING_DATE_MISSING,
+    invalid_reading_date: WARNING_BAD_DATE_FORMAT
   }.freeze
 
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
