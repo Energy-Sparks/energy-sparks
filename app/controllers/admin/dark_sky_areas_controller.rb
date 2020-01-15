@@ -5,15 +5,12 @@ module Admin
     def index
     end
 
-    def show
-    end
-
     def new
     end
 
     def create
       if @dark_sky_area.save
-        redirect_to admin_dark_sky_areas_path, notice: 'New Dark Sky Area created.'
+        redirect_to admin_dark_sky_areas_path, notice: 'New Dark Sky Area created. Overnight the 4 years of data for this new area will be back filled.'
       else
         render :new
       end

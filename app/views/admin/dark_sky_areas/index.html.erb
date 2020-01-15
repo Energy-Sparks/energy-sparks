@@ -15,7 +15,7 @@
   <tbody>
     <% @dark_sky_areas.each do |dark_sky_area| %>
       <tr>
-        <td><%= link_to dark_sky_area.title, admin_dark_sky_area_path(dark_sky_area) %></td>
+        <td><%= dark_sky_area.title %></td>
         <td><%= dark_sky_area.description %></td>
         <td><%= dark_sky_area.latitude %></td>
         <td><%= dark_sky_area.longitude %></td>

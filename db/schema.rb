@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2020_01_13_211419) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -797,6 +798,12 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
     t.string "document_link"
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
+  end
+
+  create_table "resource_files", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "school_alert_type_exclusions", force: :cascade do |t|
