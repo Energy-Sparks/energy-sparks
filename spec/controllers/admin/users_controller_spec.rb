@@ -97,7 +97,7 @@ RSpec.describe Admin::UsersController, type: :controller do
           expect(assigns(:user)).to eq(user)
         end
 
-        it "redirects tusers" do
+        it "redirects to the users" do
           user = create :staff
           put :update, params: { id: user.to_param, user: new_attributes }
           expect(response).to redirect_to(admin_users_path)
