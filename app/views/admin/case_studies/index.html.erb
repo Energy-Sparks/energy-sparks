@@ -16,7 +16,7 @@
   <tbody>
     <% @case_studies.each do |case_study| %>
       <tr>
-        <td><%= link_to case_study.title, admin_case_study_path(case_study) %></td>
+        <td><%= case_study.title %></td>
         <td><%= case_study.description %></td>
         <td><%= case_study.position %></td>
         <td>
@@ -38,7 +38,7 @@
 </table>
 
 <% else %>
-  <p>There are no case study</p>
+  <p>There are no case studies</p>
 <% end %>
 
 <p><%= link_to 'New Case study', new_admin_case_study_path, class: 'btn'%></p>
