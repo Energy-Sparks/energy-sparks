@@ -19,6 +19,11 @@ module DataFeeds
       p "Imported #{@insert_count} records, Updated #{@update_count} records"
     end
 
+    def import_area(area)
+      process_area(area)
+      p "Imported #{@insert_count} records, Updated #{@update_count} records"
+    end
+
   private
 
     def process_area(area)
@@ -39,6 +44,7 @@ module DataFeeds
     end
 
     def process_day(reading_date, temperature_celsius_x48, area)
+      pp "Processing #{reading_date}"
       record = DarkSkyTemperatureReading.find_by(reading_date: reading_date, area_id: area.id)
       if record
         record.update(temperature_celsius_x48: temperature_celsius_x48)
