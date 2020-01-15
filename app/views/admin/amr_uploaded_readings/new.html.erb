@@ -11,31 +11,13 @@
     <%= @errors %>
   </div>
 
-  <p>Uploaded data (first 2 rows) - this is what we have worked out best on the CSV format</p>
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Meter ID</th>
-          <th>Mpan Mprn</th>
-          <th>Reading Date</th>
-          <th colspan="48">Readings</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @amr_reading_data.reading_data.first(2).each do |row| %>
-          <tr>
-            <td><%= row[:meter_id] %></td>
-            <td><%= row[:mpan_mprn] %></td>
-            <td><%= row[:reading_date] %></td>
-            <% row[:readings].each do |reading| %>
-              <td><%= reading %></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+  <% if @warnings.any? %>
+    <%= render 'warnings', warnings: @warnings %>
+  <% else %>
+    <p>Note: There were no warnings for this file</p>
+  <% end %>
+
+  <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.any? %>
 <% end %>
 
 <h2>File details</h2>

@@ -34,8 +34,8 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(2).and change { AmrReadingWarning.count }.by(1)
 
         first_warning = AmrReadingWarning.first
-        expect(first_warning.warning.to_sym).to be :blank_readings
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:blank_readings]
+        expect(first_warning.warning.to_sym).to be :missing_readings
+        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_readings]
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to eq reading_data_second[:reading_date].to_s
       end

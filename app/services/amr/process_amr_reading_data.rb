@@ -6,6 +6,7 @@ module Amr
     end
 
     def perform
+      pp @amr_reading_data
       if @amr_reading_data.valid?
         insert_valid_data(@amr_reading_data.valid_records, @amr_data_feed_import_log)
       else

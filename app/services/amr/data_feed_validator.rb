@@ -41,10 +41,7 @@ module Amr
     end
 
     def invalid_row?(row)
-      return true if row.empty?
-      return true if row[@config.mpan_mprn_index].blank?
-
-      readings_as_array(row).compact.empty?
+      row.empty? || readings_as_array(row).compact.empty?
     end
 
     def readings_as_array(amr_data_feed_row)

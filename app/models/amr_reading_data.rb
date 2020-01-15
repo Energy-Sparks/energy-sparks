@@ -7,12 +7,10 @@ class AmrReadingData
   WARNING_READING_DATE_MISSING = 'Reading date is missing'.freeze
   WARNING_MISSING_MPAN_MPRN = 'Mpan or MPRN field is missing'.freeze
   WARNING_MISSING_READINGS = 'Missing readings (should be 48)'.freeze
-  WARNING_MISSING_BLANK_READINGS = 'Blank readings'.freeze
 
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
   WARNINGS = {
-    blank_readings: WARNING_MISSING_BLANK_READINGS,
     missing_readings: WARNING_MISSING_READINGS,
     missing_mpan_mprn: WARNING_MISSING_MPAN_MPRN,
     missing_reading_date: WARNING_READING_DATE_MISSING,
@@ -26,7 +24,6 @@ class AmrReadingData
     @reading_data = reading_data
     @date_format = date_format
     @missing_reading_threshold = missing_reading_threshold
-
     invalid_row_check
   end
 
@@ -68,9 +65,7 @@ class AmrReadingData
       reading_date = reading[:reading_date]
       readings = reading[:readings]
 
-      if blank_readings?(readings)
-        reading[:warning] = :blank_readings
-      elsif missing_readings?(readings)
+      if missing_readings?(readings)
         reading[:warning] = :missing_readings
       elsif mpan_mprn.blank?
         reading[:warning] = :missing_mpan_mprn
@@ -80,10 +75,6 @@ class AmrReadingData
         reading[:warning] = :invalid_reading_date
       end
     end
-  end
-
-  def blank_readings?(readings)
-    readings.count(&:blank?) > @missing_reading_threshold
   end
 
   def missing_readings?(readings)
