@@ -3,14 +3,11 @@ require 'dashboard'
 class BenchmarksController < ApplicationController
   before_action :authorized?
   before_action :page_groups, only: [:index, :show_all]
+  before_action :load_filter, only: [:index, :show, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
-    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
-    @school_group_ids = @school_group_ids.reject(&:empty?)
-
-    @school_group_names = SchoolGroup.find(@school_group_ids).pluck(:name).join(', ')
   end
 
   def show
@@ -73,16 +70,25 @@ private
     end
   end
 
+  def load_filter
+    @benchmark_filter = {
+      school_group_ids: (params.dig(:benchmark, :school_group_ids) || []).reject(&:empty?),
+      scoreboard_ids:   (params.dig(:benchmark, :scoreboard_ids) || []).reject(&:empty?)
+    }
+    school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
+    scoreboard_names = Scoreboard.find(@benchmark_filter[:scoreboard_ids]).pluck(:name).join(', ')
+    @filter_names = school_group_names + scoreboard_names
+  end
+
   def filter_lists
-    @school_groups = SchoolGroup.all
+    @school_groups = SchoolGroup.order(:name)
+    @scoreboards = Scoreboard.order(:name)
   end
 
   def benchmark_results
-    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
-
     include_invisible = can? :show, :all_schools
 
-    schools = SchoolFilter.new(school_group_ids: @school_group_ids, include_invisible: include_invisible).filter
+    schools = SchoolFilter.new(**{ include_invisible: include_invisible }.merge(@benchmark_filter)).filter
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 

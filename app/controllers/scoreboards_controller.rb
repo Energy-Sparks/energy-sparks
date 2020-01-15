@@ -23,7 +23,7 @@ class ScoreboardsController < ApplicationController
 
   # GET /scoreboards/1/edit
   def edit
-    @school_groups = @scoreboard.school_groups.order(:name)
+    @schools = @scoreboard.schools.order(:name)
   end
 
   # POST /scoreboards
@@ -40,7 +40,7 @@ class ScoreboardsController < ApplicationController
     if @scoreboard.update(scoreboard_params)
       redirect_to scoreboards_path, notice: 'Scoreboard was successfully updated.'
     else
-      @school_groups = @scoreboard.school_groups.order(:name)
+      @schools = @scoreboard.schools.order(:name)
       render :edit
     end
   end

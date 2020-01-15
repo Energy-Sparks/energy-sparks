@@ -3,8 +3,7 @@
   <div class="dropdown-menu">
     <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
     <%= link_to 'Calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
-    <%= link_to 'Data feed configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
-    <%= link_to 'Manage groups', edit_school_school_group_path(school), class: 'dropdown-item' if can? :group, school %>
+    <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
     <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
     <%= link_to 'Manage Low carbon hub installations', school_low_carbon_hub_installations_path(school), class: 'dropdown-item' if can? :manage, LowCarbonHubInstallation %>
     <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>

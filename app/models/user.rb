@@ -76,8 +76,8 @@ class User < ApplicationRecord
   after_save :update_contact
 
   def default_scoreboard
-    if group_admin? && school_group.scoreboard
-      school_group.scoreboard
+    if group_admin? && school_group.default_scoreboard
+      school_group.default_scoreboard
     elsif school
       school.scoreboard
     end
