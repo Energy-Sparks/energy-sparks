@@ -44,7 +44,6 @@ module DataFeeds
     end
 
     def process_day(reading_date, temperature_celsius_x48, area)
-      pp "Processing #{reading_date}"
       record = DarkSkyTemperatureReading.find_by(reading_date: reading_date, area_id: area.id)
       if record
         record.update(temperature_celsius_x48: temperature_celsius_x48)
