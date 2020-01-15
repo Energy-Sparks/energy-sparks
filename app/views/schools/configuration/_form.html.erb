@@ -1,8 +1,13 @@
 <h1>Configuration: <%= school.name %> </h1>
 
 <%= form_for(school, url: school_configuration_path, method: method) do |f| %>
-  <h2>Calendar and Data Feed configuration</h2>
   <p>Energy sparks uses a variety of data feeds to analyse energy usage for your school. The data is more accurate if the correct areas are used for gathering the data.</p>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :school_group_id, 'School group' %>
+      <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (@school.school_group.id if @school.school_group)),{}, { class: 'form-control' }%>
+    </div>
+  </div>
   <div class="form-group">
     <%= f.label :template_calendar_id, 'Template calendar' %>
     <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school.template_calendar_id if @school.template_calendar)),{},{ disabled: !edit_template_calendar, class: 'form-control' }%>
@@ -18,6 +23,12 @@
     <div class="form-group col-md-6">
       <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>
       <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.all, 'id', 'title', (@school.dark_sky_area.id if @school.dark_sky_area)),{}, { class: 'form-control' }%>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :scoreboard_id, 'Scoreboard' %>
+      <%= f.select :scoreboard_id, options_from_collection_for_select(@scoreboards, 'id', 'name', (@school.scoreboard.id if @school.scoreboard)),{}, { class: 'form-control' }%>
     </div>
   </div>
   <div class="actions">

@@ -9,15 +9,15 @@
     </div>
   </div>
   <div class="col-sm-4">
-    <h2>Groups in this scoreboard</h2>
-    <% if @school_groups.any? %>
+    <h2>Schools in this scoreboard</h2>
+    <% if @schools.any? %>
       <ol>
-        <% @school_groups.each do |group| %>
-          <li><%= link_to group.name, edit_admin_school_group_path(group) %></li>
+        <% @schools.each do |school| %>
+          <li><%= link_to school.name, edit_school_configuration_controller(school) %></li>
         <% end %>
       </ol>
     <% else %>
-      <p>No school groups are assigned to this scoreboard</p>
+      <p>No schools are assigned to this scoreboard</p>
     <% end %>
   </div>
 </div>

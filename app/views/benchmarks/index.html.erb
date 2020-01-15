@@ -1,20 +1,20 @@
 <% content_for :page_title, 'School Comparison Tool' %>
 
-<% if @school_group_names.present? %>
-  <h1>School Comparison Tool for <%= @school_group_names %></h1>
+<% if @filter_names.present? %>
+  <h1>School Comparison Tool for <%= @filter_names %></h1>
 <% else %>
   <h1>School Comparison Tool</h1>
 <% end %>
 
 <p>This tool allows you to compare the energy performance of a number of schools within a Local Authority group or across the whole of Energy Sparks. The aim is to allow you to identify the best and worst performing schools to provide examples of best practice and to identify the schools needing the most support to improve their energy management. You can compare schools against a range of different benchmarks, choosing from the list below:</p>
 
-<p><%= link_to 'See all on one page', all_benchmarks_path, benchmark: { school_group_ids: @school_group_ids }  %></p>
+<p><%= link_to 'See all on one page', all_benchmarks_path(benchmark: @benchmark_filter) %></p>
 
 <% @page_groups.each do |page_group| %>
   <h2><%= page_group[:name] %></h2>
   <ul>
     <% page_group[:benchmarks].each do |benchmark, title| %>
-      <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: { school_group_ids: @school_group_ids } ) %></li>
+      <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
     <% end %>
   </ul>
 <% end %>

@@ -12,6 +12,7 @@
 #  school_group_id       :bigint(8)
 #  school_id             :bigint(8)
 #  school_name           :string           not null
+#  scoreboard_id         :bigint(8)
 #  solar_pv_tuos_area_id :bigint(8)
 #  template_calendar_id  :bigint(8)
 #  updated_at            :datetime         not null
@@ -23,6 +24,7 @@
 #  index_school_onboardings_on_created_user_id        (created_user_id)
 #  index_school_onboardings_on_school_group_id        (school_group_id)
 #  index_school_onboardings_on_school_id              (school_id)
+#  index_school_onboardings_on_scoreboard_id          (scoreboard_id)
 #  index_school_onboardings_on_solar_pv_tuos_area_id  (solar_pv_tuos_area_id)
 #  index_school_onboardings_on_template_calendar_id   (template_calendar_id)
 #  index_school_onboardings_on_uuid                   (uuid) UNIQUE
@@ -33,6 +35,7 @@
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
+#  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #  fk_rails_...  (solar_pv_tuos_area_id => areas.id) ON DELETE => restrict
 #  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => nullify
 #
@@ -45,6 +48,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
+  belongs_to :scoreboard, optional: true
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
 
