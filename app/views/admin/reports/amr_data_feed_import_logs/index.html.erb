@@ -1,5 +1,9 @@
 <h1>Amr Data Feed Import Logs</h1>
 
+<% if @any_warnings %>
+  <p><%= link_to 'Warnings list', admin_reports_amr_reading_warnings_path %></p>
+<% end %>
+
 <h2>Errored</h2>
 <table class="table table-sorted">
   <thead>

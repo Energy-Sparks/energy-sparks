@@ -4,6 +4,8 @@ module Admin
 
     def show
       @amr_uploaded_reading = AmrUploadedReading.find(params[:id])
+
+      set_valid_readings_and_warnings
     end
 
     def new
@@ -26,11 +28,17 @@ module Admin
         redirect_to admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config, @amr_uploaded_reading)
       else
         @errors = @amr_reading_data.errors.messages[:reading_data].join(', ')
+        set_valid_readings_and_warnings
         render :new
       end
     end
 
     private
+
+    def set_valid_readings_and_warnings
+      @valid_reading_data = @amr_uploaded_reading.reading_data.reject { |reading| reading.key?('warning') || reading.key?(:warning) }
+      @warnings = @amr_uploaded_reading.reading_data.select { |reading| reading.key?('warning') || reading.key?(:warning) }
+    end
 
     def set_amr_data_feed_config
       @amr_data_feed_config = AmrDataFeedConfig.find(params[:amr_data_feed_config_id])

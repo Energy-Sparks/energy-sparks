@@ -125,6 +125,13 @@ module Amr
       HEREDOC
     end
 
+    def example_frome_with_header
+      <<~HEREDOC
+      Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
+      10545307,K0229111D6,12/11/18,9.9,4.465528,0.0,3.349146,0.0,4.465528,3.349146,0.0,3.349146,0.0,24.560404,75.913976,41.306134,30.142314,42.422516,37.956988,40.189752,34.607842,41.306134,35.724224,37.956988,34.607842,32.375078,34.607842,39.07337,43.538898,34.607842,42.422516,31.258696,34.607842,26.793168,26.793168,18.978494,1.116382,5.58191,0.0,3.349146,1.116382,0.0,4.465528,0.0,3.349146,0.0,3.349146,4.465528,0.0,3.349146,1.116382
+      HEREDOC
+    end
+
     def example_frome_historic
       <<~HEREDOC
       Site Id,Meter Number,Reading Date,00:00,00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30
@@ -159,6 +166,15 @@ module Amr
       <<~HEREDOC
         siteRef,MPAN,ConsumptionDate,kWh_1,kWh_2,kWh_3,kWh_4,kWh_5,kWh_6,kWh_7,kWh_8,kWh_9,kWh_10,kWh_11,kWh_12,kWh_13,kWh_14,kWh_15,kWh_16,kWh_17,kWh_18,kWh_19,kWh_20,kWh_21,kWh_22,kWh_23,kWh_24,kWh_25,kWh_26,kWh_27,kWh_28,kWh_29,kWh_30,kWh_31,kWh_32,kWh_33,kWh_34,kWh_35,kWh_36,kWh_37,kWh_38,kWh_39,kWh_40,kWh_41,kWh_42,kWh_43,kWh_44,kWh_45,kWh_46,kWh_47,kWh_48,kVArh_1,kVArh_2,kVArh_3,kVArh_4,kVArh_5,kVArh_6,kVArh_7,kVArh_8,kVArh_9,kVArh_10,kVArh_11,kVArh_12,kVArh_13,kVArh_14,kVArh_15,kVArh_16,kVArh_17,kVArh_18,kVArh_19,kVArh_20,kVArh_21,kVArh_22,kVArh_23,kVArh_24,kVArh_25,kVArh_26,kVArh_27,kVArh_28,kVArh_29,kVArh_30,kVArh_31,kVArh_32,kVArh_33,kVArh_34,kVArh_35,kVArh_36,kVArh_37,kVArh_38,kVArh_39,kVArh_40,kVArh_41,kVArh_42,kVArh_43,kVArh_44,kVArh_45,kVArh_46,kVArh_47,kVArh_48
         HIGH STORRS ROAD,2331031705716,01/10/2015,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+      HEREDOC
+    end
+
+    def example_sheffield_csv_with_a_empty_reading
+      <<~HEREDOC
+        siteRef,MPAN,ConsumptionDate,kWh_1,kWh_2,kWh_3,kWh_4,kWh_5,kWh_6,kWh_7,kWh_8,kWh_9,kWh_10,kWh_11,kWh_12,kWh_13,kWh_14,kWh_15,kWh_16,kWh_17,kWh_18,kWh_19,kWh_20,kWh_21,kWh_22,kWh_23,kWh_24,kWh_25,kWh_26,kWh_27,kWh_28,kWh_29,kWh_30,kWh_31,kWh_32,kWh_33,kWh_34,kWh_35,kWh_36,kWh_37,kWh_38,kWh_39,kWh_40,kWh_41,kWh_42,kWh_43,kWh_44,kWh_45,kWh_46,kWh_47,kWh_48,kVArh_1,kVArh_2,kVArh_3,kVArh_4,kVArh_5,kVArh_6,kVArh_7,kVArh_8,kVArh_9,kVArh_10,kVArh_11,kVArh_12,kVArh_13,kVArh_14,kVArh_15,kVArh_16,kVArh_17,kVArh_18,kVArh_19,kVArh_20,kVArh_21,kVArh_22,kVArh_23,kVArh_24,kVArh_25,kVArh_26,kVArh_27,kVArh_28,kVArh_29,kVArh_30,kVArh_31,kVArh_32,kVArh_33,kVArh_34,kVArh_35,kVArh_36,kVArh_37,kVArh_38,kVArh_39,kVArh_40,kVArh_41,kVArh_42,kVArh_43,kVArh_44,kVArh_45,kVArh_46,kVArh_47,kVArh_48
+        ABBEY LANE PRIMARY EXTENSION,2380001730739,01/01/2020,5.95500000,2.83220000,2.94080000,2.72960000,1.84320000,0.45760000,1.14880000,1.71200000,1.75680000,1.64160000,2.04480000,3.68640000,4.24640000,0.80960000,0.74560000,1.44320000,1.53280000,1.69600000,1.93920000,2.06720000,2.30080000,2.02240000,3.62240000,4.26240000,1.73120000,1.01760000,0.84800000,1.70880000,0.85120000,0.91520000,2.86080000,2.59200000,2.85120000,2.88640000,2.96640000,6.07000000,1.02440000,2.26880000,3.24800000,3.24800000,3.36640000,3.36960000,2.96960000,2.83200000,2.88320000,4.31040000,5.32450000,2.97950000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+        ABBEY LANE PRIMARY EXTENSION,2380001730739,02/01/2020,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+        MEERSBROOK PRIMARY - M1,2333300681718,31/12/2019,1.20800000,1.16100000,1.19500000,1.21000000,1.16600000,1.20100000,1.17800000,1.30000000,1.30100000,1.26600000,1.27300000,1.28000000,2.10900000,2.03700000,1.29100000,1.24600000,1.67800000,1.24500000,1.12800000,1.11300000,1.35000000,1.11700000,1.14200000,1.40600000,1.10100000,1.12300000,1.16400000,1.42700000,1.12900000,1.10400000,1.11900000,1.46600000,1.18400000,1.14600000,1.22600000,1.20800000,1.25500000,1.20000000,1.23600000,1.16300000,1.12400000,1.19800000,1.12800000,1.15500000,1.13000000,1.18200000,1.14500000,1.17700000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
       HEREDOC
     end
 
@@ -251,7 +267,13 @@ module Amr
 
       it 'should not create records for empty rows (comma, comma)' do
         expect(write_file_and_parse(example_csv_with_empty_readings, sheffield_config)).to eq 0
-        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_MISSING_READINGS
+        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE
+      end
+
+      it 'should not create records for empty rows (comma, comma) but still process file' do
+        expect(write_file_and_parse(example_sheffield_csv_with_a_empty_reading, sheffield_config)).to eq 2
+        expect(AmrDataFeedImportLog.first.records_imported).to eq 2
+        expect(AmrReadingWarning.count).to eq 1
       end
     end
 
@@ -281,9 +303,14 @@ module Amr
 
     context 'frome' do
 
-      it 'should parse a simple file' do
+      it 'should parse a simple file without a header' do
         FileUtils.mkdir_p frome_config.local_bucket_path
         write_file_and_expect_readings(example_frome, frome_config, "9.9")
+      end
+
+      it 'should parse a simple file with a header' do
+        FileUtils.mkdir_p frome_config.local_bucket_path
+        write_file_and_expect_readings(example_frome_with_header, frome_config, "9.9")
       end
 
       it 'should parse a simple frome historic file with handle off by one' do
@@ -295,7 +322,7 @@ module Amr
         FileUtils.mkdir_p frome_config.local_bucket_path
         expect(write_file_and_parse(example_sheffield_gas, frome_config)).to be 0
 
-        expect(AmrDataFeedImportLog.first.error_messages).to eq [AmrReadingData::ERROR_MISSING_READINGS, AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: 'hr0030' }].join(', ')
+        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE
       end
     end
 

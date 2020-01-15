@@ -374,6 +374,18 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
   end
 
+  create_table "amr_reading_warnings", force: :cascade do |t|
+    t.bigint "amr_data_feed_import_log_id", null: false
+    t.integer "warning"
+    t.text "warning_message"
+    t.text "reading_date"
+    t.text "mpan_mprn"
+    t.text "readings", array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_import_log_id"], name: "index_amr_reading_warnings_on_amr_data_feed_import_log_id"
+  end
+
   create_table "amr_uploaded_readings", force: :cascade do |t|
     t.bigint "amr_data_feed_config_id", null: false
     t.boolean "imported", default: false, null: false
@@ -1101,6 +1113,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
+  add_foreign_key "amr_reading_warnings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict

@@ -7,12 +7,20 @@ module Amr
 
     def perform
       @array_of_rows = sort_out_off_by_one_array(@array_of_rows) if @config.handle_off_by_one
-      @array_of_rows.shift(@config.number_of_header_rows)
+      handle_header
       @array_of_rows.delete_if { |row| invalid_row?(row) }
       @array_of_rows
     end
 
   private
+
+    def handle_header
+      if @array_of_rows.first.join(',') == @config.header_example
+        @array_of_rows.shift
+      elsif @config.number_of_header_rows
+        @array_of_rows.shift(@config.number_of_header_rows)
+      end
+    end
 
     def sort_out_off_by_one_array(array_of_rows)
       array_of_rows.each_cons(2) do |row, next_row|
@@ -33,7 +41,7 @@ module Amr
     end
 
     def invalid_row?(row)
-      row.empty? || row[@config.mpan_mprn_index].blank?
+      row.empty?
     end
   end
 end

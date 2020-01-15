@@ -3,31 +3,13 @@
 
 <p>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></p>
 
-<h3>(Up to) First ten rows</h3>
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Meter ID</th>
-        <th>Mpan Mprn</th>
-        <th>Reading Date</th>
-        <th colspan="48">Readings</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @amr_uploaded_reading.reading_data.first(10).each do |row| %>
-        <tr>
-          <td><%= row["meter_id"] %></td>
-          <td><%= row["mpan_mprn"] %></td>
-          <td><%= nice_dates Date.parse(row["reading_date"]) %></td>
-          <% row["readings"].each do |reading| %>
-            <td><%= reading %></td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<% if @warnings.any? %>
+  <%= render 'warnings', warnings: @warnings %>
+<% else %>
+  <p>Note: There were no warnings for this file</p>
+<% end %>
+
+<%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data %>
 
 <%= form_with(url: admin_create_amr_data_feed_readings_path(@amr_uploaded_reading), method: :post, local: true) do %>
   <%= submit_tag "I'm happy, insert this data", class: 'btn', data: { disable_with: false } %>
