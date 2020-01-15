@@ -15,7 +15,7 @@
   <tbody>
     <% @solar_pv_tuos_areas.each do |solar_pv_tuos_area| %>
       <tr>
-        <td><%= link_to solar_pv_tuos_area.title, admin_solar_pv_tuos_area_path(solar_pv_tuos_area) %></td>
+        <td><%= solar_pv_tuos_area.title %></td>
         <td><%= solar_pv_tuos_area.description %></td>
         <td><%= solar_pv_tuos_area.latitude %></td>
         <td><%= solar_pv_tuos_area.longitude %></td>
