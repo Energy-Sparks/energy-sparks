@@ -23,7 +23,6 @@
 
 class AmrReadingWarning < ApplicationRecord
   belongs_to :amr_data_feed_import_log
-  belongs_to :amr_data_feed_config
 
   enum warning: [:blank_readings, :missing_readings, :missing_mpan_mprn, :missing_reading_date, :invalid_reading_date]
 end
