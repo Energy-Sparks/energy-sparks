@@ -8,16 +8,16 @@ describe Scoreboard, :scoreboards, type: :model do
 
   describe '#safe_destroy' do
 
-    it 'does not let you delete if there is an associated group' do
-      create(:school_group, scoreboard: subject)
+    it 'does not let you delete if there is an associated school' do
+      create(:school, scoreboard: subject)
       expect{
         subject.safe_destroy
       }.to raise_error(
-        EnergySparks::SafeDestroyError, 'Scoreboard has associated groups'
+        EnergySparks::SafeDestroyError, 'Scoreboard has associated schools'
       ).and(not_change{ Scoreboard.count })
     end
 
-    it 'lets you delete if there are no groups' do
+    it 'lets you delete if there are no schools' do
       expect{
         subject.safe_destroy
       }.to change{Scoreboard.count}.from(1).to(0)
@@ -26,9 +26,8 @@ describe Scoreboard, :scoreboards, type: :model do
 
   describe '#scored_schools' do
 
-    let!(:group)    { create(:school_group, scoreboard: subject) }
     let!(:template_calendar) { create(:template_calendar)}
-    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, school_group: group, activities_happened_on: 6.months.ago, template_calendar: template_calendar}}
+    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, scoreboard: subject, activities_happened_on: 6.months.ago, template_calendar: template_calendar}}
 
     it 'returns schools in points order' do
       expect(subject.scored_schools.map(&:id)).to eq(schools.map(&:id))
@@ -44,7 +43,7 @@ describe Scoreboard, :scoreboards, type: :model do
       end
 
       it 'also defaults to the current academic year' do
-        create :school, :with_points, score_points: 6, school_group: group, activities_happened_on: 18.months.ago
+        create :school, :with_points, score_points: 6, scoreboard: scoreboard, activities_happened_on: 18.months.ago
         expect(subject.scored_schools(academic_year: last_academic_year).to_a.size).to be 6
         expect(subject.scored_schools(academic_year: this_academic_year).to_a.size).to be 6
         expect(subject.scored_schools.to_a.size).to be 6

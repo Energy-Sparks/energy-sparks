@@ -55,6 +55,41 @@ RSpec.describe "home", type: :system do
     end
   end
 
+  context 'with case studies' do
+    let!(:case_study_1) { create(:case_study, position: 1) }
+    let!(:case_study_2) { create(:case_study, position: 2) }
+    let!(:case_study_3) { create(:case_study, position: 3) }
+    let!(:case_study_4) { create(:case_study, position: 4) }
+
+    it 'shows the latest case studies only and all on a separate page' do
+      visit root_path
+
+      expect(page).to have_content(case_study_1.title)
+      expect(page).to have_content(case_study_2.title)
+      expect(page).to have_content(case_study_3.title)
+      expect(page).to_not have_content(case_study_4.title)
+
+      click_on 'More case studies'
+
+      expect(page).to have_content(case_study_1.title)
+      expect(page).to have_content(case_study_2.title)
+      expect(page).to have_content(case_study_3.title)
+      expect(page).to have_content(case_study_4.title)
+    end
+  end
+
+  context 'with resources' do
+    let!(:resource_file) { create(:resource_file) }
+
+    it 'shows all resources on a separate page' do
+      visit root_path
+
+      click_on 'Resources'
+
+      expect(page).to have_content(resource_file.title)
+    end
+  end
+
   context 'school admin user' do
     let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
     let(:school_admin) { create(:school_admin, school: school)}

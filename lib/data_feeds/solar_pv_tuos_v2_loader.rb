@@ -17,6 +17,11 @@ module DataFeeds
       p "Imported #{@insert_count} records, Updated #{@update_count} records"
     end
 
+    def import_area(area)
+      process_area(area)
+      p "Imported #{@insert_count} records, Updated #{@update_count} records"
+    end
+
   private
 
     def nearest_gsp_area(area)

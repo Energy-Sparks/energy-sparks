@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
+  get 'case-studies', to: 'case_studies#index', as: :case_studies
+  get 'resources', to: 'resource_files#index', as: :resources
   get 'home-page', to: 'home#show'
   get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
@@ -145,7 +147,9 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#index'
 
   namespace :admin do
+    resources :case_studies
     resources :newsletters
+    resources :resource_files
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
@@ -155,8 +159,8 @@ Rails.application.routes.draw do
     resources :activity_types
     resource :activity_type_preview, only: :create
 
-    resources :dark_sky_areas, except: [:destroy]
-    resources :solar_pv_tuos_areas, except: [:destroy]
+    resources :dark_sky_areas, except: [:destroy, :show]
+    resources :solar_pv_tuos_areas, except: [:destroy, :show]
 
     resources :schools, only: [] do
       get :analysis, to: 'analysis#analysis'
@@ -207,6 +211,7 @@ Rails.application.routes.draw do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
         resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
+        resources :events, only: [:create]
       end
     end
     namespace :reports do

@@ -14,7 +14,7 @@ Schools
   </div>
 
   <% @scoreboards.each do |scoreboard| %>
-    <%= render 'schools/list', name: scoreboard.name, scoreboard: scoreboard, schools: scoreboard.schools.visible.order(:name) %>
+    <%= render 'schools/list', name: scoreboard.name, scoreboard: scoreboard, schools: scoreboard.schools.visible.order(:name), benchmark_filter: {scoreboard_ids: [scoreboard.id]}%>
   <% end %>
 
   <% if @ungrouped_visible_schools.any? %>

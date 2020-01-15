@@ -32,6 +32,7 @@ class SchoolCreator
 
   def make_visible!
     @school.update!(visible: true)
+    record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
     if should_send_activation_email?
       OnboardingMailer.with(school_onboarding: @school.school_onboarding).activation_email.deliver_now
       record_event(@school.school_onboarding, :activation_email_sent)
@@ -55,7 +56,8 @@ private
         school_group: onboarding.school_group,
         template_calendar: onboarding.template_calendar,
         solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
-        dark_sky_area: onboarding.dark_sky_area
+        dark_sky_area: onboarding.dark_sky_area,
+        scoreboard: onboarding.scoreboard
       )
   end
 
@@ -71,6 +73,10 @@ private
 
   def should_send_activation_email?
     @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
+  end
+
+  def should_complete_onboarding?
+    @school.school_onboarding && @school.school_onboarding.incomplete?
   end
 
   def generate_calendar

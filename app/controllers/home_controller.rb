@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
   before_action :set_newsletters, only: [:index, :show]
+  before_action :set_case_studies, only: [:index, :show, :for_management, :for_teachers]
 
   def index
   end
@@ -47,7 +48,12 @@ class HomeController < ApplicationController
 private
 
   def set_newsletters
-    @newsletters = Newsletter.all.order(published_on: :desc).limit(3)
+    @newsletters = Newsletter.order(published_on: :desc).limit(3)
+  end
+
+  def set_case_studies
+    @all_case_studies_count = CaseStudy.count
+    @case_studies = CaseStudy.order(position: :asc).limit(3)
   end
 
   def redirect_if_logged_in

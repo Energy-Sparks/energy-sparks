@@ -9,6 +9,7 @@ describe SchoolCreator, :schools, type: :service do
     let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
     let!(:school_group)             { create(:school_group, name: 'BANES') }
+    let!(:scoreboard)               { create(:scoreboard, name: 'BANES scoreboard') }
 
     let(:school_onboarding) do
       create :school_onboarding,
@@ -16,7 +17,8 @@ describe SchoolCreator, :schools, type: :service do
         template_calendar: template_calendar,
         solar_pv_tuos_area: solar_pv_area,
         dark_sky_area: dark_sky_area,
-        school_group: school_group
+        school_group: school_group,
+        scoreboard: scoreboard
     end
 
     it 'saves the school' do
@@ -33,6 +35,7 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.calendar.based_on).to eq(template_calendar)
       expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
       expect(school.dark_sky_area).to eq(dark_sky_area)
+      expect(school.scoreboard).to eq(scoreboard)
       expect(school.configuration).to_not be_nil
     end
 
@@ -93,6 +96,14 @@ describe SchoolCreator, :schools, type: :service do
     context 'where the school has been created as part of the onboarding process' do
       let(:onboarding_user){ create :onboarding_user }
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+
+      it 'completes the onboarding process' do
+        expect(school_onboarding).to be_incomplete
+        service = SchoolCreator.new(school)
+        service.make_visible!
+        expect(school_onboarding).to be_complete
+      end
+
       it 'sends an activation email if one has not been sent' do
         service = SchoolCreator.new(school)
         service.make_visible!
