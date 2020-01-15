@@ -22,7 +22,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
       fill_in 'Name', with: 'BANES'
       fill_in 'Description', with: 'Bath & North East Somerset'
-      select 'BANES and Frome', from: 'Scoreboard'
+      select 'BANES and Frome', from: 'Default scoreboard'
       select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
 
       click_on 'Create School group'
