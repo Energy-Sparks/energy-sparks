@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe Admin::UsersController, type: :controller do
   let(:valid_attributes) {
     {
       email: 'school@test.com',
@@ -61,7 +61,7 @@ RSpec.describe UsersController, type: :controller do
 
         it "redirects to the created user" do
           post :create, params: { user: valid_attributes }
-          expect(response).to redirect_to(users_path)
+          expect(response).to redirect_to(admin_users_path)
         end
       end
 
@@ -97,10 +97,10 @@ RSpec.describe UsersController, type: :controller do
           expect(assigns(:user)).to eq(user)
         end
 
-        it "redirects to the users" do
+        it "redirects tusers" do
           user = create :staff
           put :update, params: { id: user.to_param, user: new_attributes }
-          expect(response).to redirect_to(users_path)
+          expect(response).to redirect_to(admin_users_path)
         end
       end
 
@@ -130,7 +130,7 @@ RSpec.describe UsersController, type: :controller do
       it "redirects to the users list" do
         user = create :staff
         delete :destroy, params: { id: user.to_param }
-        expect(response).to redirect_to(users_url)
+        expect(response).to redirect_to(admin_users_path)
       end
     end
   end
