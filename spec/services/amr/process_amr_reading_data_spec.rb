@@ -104,11 +104,3 @@ module Amr
     end
   end
 end
-
-  # WARNINGS = {
-  #   blank_readings: 'Some days have blank readings',
-  #   missing_readings: 'Some days have missing readings',
-  #   missing_mpan_mprn: 'Mpan or MPRN field is missing',
-  #   missing_reading_date: 'Reading date is missing',
-  #   invalid_reading_date: 'Bad format for a reading data'
-  # }.freeze

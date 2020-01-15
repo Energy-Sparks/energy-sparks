@@ -273,6 +273,7 @@ module Amr
       it 'should not create records for empty rows (comma, comma) but still process file' do
         expect(write_file_and_parse(example_sheffield_csv_with_a_empty_reading, sheffield_config)).to eq 2
         expect(AmrDataFeedImportLog.first.records_imported).to eq 2
+        expect(AmrReadingWarning.count).to eq 1
       end
     end
 

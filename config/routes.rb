@@ -221,6 +221,7 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
       resources :benchmark_result_generation_runs, only: [:index, :show]
       resources :amr_data_feed_import_logs, only: [:index]
+      resources :amr_reading_warnings, only: [:index]
     end
     resource :settings, only: [:show, :update]
 

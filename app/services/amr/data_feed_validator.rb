@@ -41,11 +41,7 @@ module Amr
     end
 
     def invalid_row?(row)
-      row.empty? || readings_as_array(row).compact.empty?
-    end
-
-    def readings_as_array(amr_data_feed_row)
-      @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+      row.empty?
     end
   end
 end
