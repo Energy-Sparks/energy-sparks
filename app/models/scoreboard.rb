@@ -26,14 +26,13 @@ class Scoreboard < ApplicationRecord
 
   friendly_id :name, use: [:finders, :slugged, :history]
 
-  has_many :school_groups
-  has_many :schools, through: :school_groups
+  has_many :schools
   belongs_to :academic_year_calendar, class_name: 'Calendar', optional: true
 
   validates :name, :academic_year_calendar_id, presence: true
 
   def safe_destroy
-    raise EnergySparks::SafeDestroyError, 'Scoreboard has associated groups' if school_groups.any?
+    raise EnergySparks::SafeDestroyError, 'Scoreboard has associated schools' if schools.any?
     destroy
   end
 

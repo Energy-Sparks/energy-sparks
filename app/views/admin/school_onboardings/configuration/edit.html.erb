@@ -19,6 +19,12 @@
       <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.all, 'id', 'title', (@school_onboarding.dark_sky_area.id if @school_onboarding.dark_sky_area)),{}, { class: 'form-control' }%>
     </div>
   </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :scoreboard_id, 'Scoreboard' %>
+      <%= f.select :scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_onboarding.scoreboard.id if @school_onboarding.scoreboard)),{}, { class: 'form-control' }%>
+    </div>
+  </div>
   <div class="actions">
     <%= f.submit 'Next', class: 'btn btn-primary' %>
   </div>

@@ -4,14 +4,13 @@ require 'rails_helper'
 describe Podium do
 
   let!(:scoreboard) { create :scoreboard }
-  let(:group)    { create(:school_group, scoreboard: scoreboard) }
 
-  let!(:school_0){ create :school, school_group: group }
-  let!(:school_1){ create :school, :with_points, score_points: 1, school_group: group }
-  let!(:school_2){ create :school, :with_points, score_points: 2, school_group: group }
-  let!(:school_3){ create :school, :with_points, score_points: 3, school_group: group }
-  let!(:school_4){ create :school, :with_points, score_points: 4, school_group: group }
-  let!(:school_5){ create :school, :with_points, score_points: 5, school_group: group }
+  let!(:school_0){ create :school, scoreboard: scoreboard }
+  let!(:school_1){ create :school, :with_points, score_points: 1, scoreboard: scoreboard }
+  let!(:school_2){ create :school, :with_points, score_points: 2, scoreboard: scoreboard }
+  let!(:school_3){ create :school, :with_points, score_points: 3, scoreboard: scoreboard }
+  let!(:school_4){ create :school, :with_points, score_points: 4, scoreboard: scoreboard }
+  let!(:school_5){ create :school, :with_points, score_points: 5, scoreboard: scoreboard }
 
   it 'includes the calculated points' do
     podium = Podium.create(scoreboard: scoreboard, school: school_3)
@@ -79,12 +78,11 @@ describe Podium do
 
   context 'when there are only two schools' do
     it 'returns both schools' do
-      new_group = create(:school_group, scoreboard: scoreboard)
-      school_1.update!(school_group: new_group)
-      school_2.update!(school_group: new_group)
-      group.update!(scoreboard: nil)
+      new_scoreboard = create(:scoreboard)
+      school_1.update!(scoreboard: new_scoreboard)
+      school_2.update!(scoreboard: new_scoreboard)
 
-      podium = Podium.create(scoreboard: scoreboard, school: school_1)
+      podium = Podium.create(scoreboard: new_scoreboard, school: school_1)
       expect(podium.high_to_low[0].school).to eq(school_2)
       expect(podium.high_to_low[1].school).to eq(school_1)
       expect(podium.high_to_low.size).to eq(2)
@@ -93,11 +91,10 @@ describe Podium do
 
   context 'when there is only one school' do
     it 'returns only the current school' do
-      new_group = create(:school_group, scoreboard: scoreboard)
-      school_1.update!(school_group: new_group)
-      group.update!(scoreboard: nil)
+      new_scoreboard = create(:scoreboard)
+      school_1.update!(scoreboard: new_scoreboard)
 
-      podium = Podium.create(scoreboard: scoreboard, school: school_1)
+      podium = Podium.create(scoreboard: new_scoreboard, school: school_1)
       expect(podium.high_to_low[0].school).to eq(school_1)
       expect(podium.high_to_low.size).to eq(1)
     end

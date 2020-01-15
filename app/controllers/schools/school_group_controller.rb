@@ -10,14 +10,6 @@ module Schools
       redirect_to new_school_configuration_path(@school)
     end
 
-    def edit
-    end
-
-    def update
-      @school.update!(school_group_id: params[:school_group_id])
-      redirect_to school_path(@school), notice: "School groups updated"
-    end
-
   private
 
     def set_school
@@ -26,11 +18,7 @@ module Schools
     end
 
     def set_groups
-      @school_groups = if @school.template_calendar
-                         SchoolGroup.includes(:scoreboard).where(scoreboards: { academic_year_calendar_id: @school.template_calendar.based_on_id }).order(:name)
-                       else
-                         SchoolGroup.order(:name)
-                       end
+      @school_groups = SchoolGroup.order(:name)
     end
   end
 end

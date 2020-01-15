@@ -21,6 +21,7 @@
 #  process_data                          :boolean          default(FALSE)
 #  school_group_id                       :bigint(8)
 #  school_type                           :integer
+#  scoreboard_id                         :bigint(8)
 #  serves_dinners                        :boolean          default(FALSE), not null
 #  slug                                  :string
 #  solar_irradiance_area_id              :bigint(8)
@@ -37,12 +38,14 @@
 #
 #  index_schools_on_calendar_id      (calendar_id)
 #  index_schools_on_school_group_id  (school_group_id)
+#  index_schools_on_scoreboard_id    (scoreboard_id)
 #  index_schools_on_urn              (urn) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id)
 #  fk_rails_...  (school_group_id => school_groups.id)
+#  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #
 
 require 'securerandom'
@@ -95,16 +98,18 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :school_group, optional: true
+  belongs_to :scoreboard, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
 
-  scope :visible,       -> { where(visible: true) }
-  scope :not_visible,   -> { where(visible: false) }
-  scope :process_data,  -> { where(process_data: true) }
-  scope :without_group, -> { where(school_group_id: nil) }
+  scope :visible,            -> { where(visible: true) }
+  scope :not_visible,        -> { where(visible: false) }
+  scope :process_data,       -> { where(process_data: true) }
+  scope :without_group,      -> { where(school_group_id: nil) }
+  scope :without_scoreboard, -> { where(scoreboard_id: nil) }
 
   scope :with_config, -> { joins(:configuration) }
 
@@ -212,10 +217,6 @@ class School < ApplicationRecord
 
   def school_admin
     users.where(role: :school_admin)
-  end
-
-  def scoreboard
-    school_group.scoreboard if school_group
   end
 
   def latest_content
