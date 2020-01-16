@@ -127,6 +127,21 @@ describe AmrReadingData do
         expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
       end
 
+      it "with missing readings (as \"\")" do
+        readings = amr_reading_data[:reading_data].first[:readings]
+        readings[readings.size - 1] = ""
+
+        amr_reading_data[:reading_data].first[:readings] = readings
+
+        amr_reading = AmrReadingData.new(amr_reading_data)
+
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:blank_readings)
+      end
+
       it 'when dates are not quite the right format' do
         bad_date = 'AAAAAA'
         amr_reading_data[:reading_data].first[:reading_date] = bad_date

@@ -62,10 +62,12 @@ class AmrReadingData
   def invalid_row_check
     @reading_data.each do |reading|
       reading_date = reading[:reading_date]
+      readings = reading[:readings]
 
       warnings = []
 
-      warnings << :missing_readings if missing_readings?(reading[:readings])
+      warnings << :blank_readings if blank_readings?(readings)
+      warnings << :missing_readings if missing_readings?(readings)
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
       warnings << :missing_reading_date if reading_date.blank?
       warnings << :invalid_reading_date unless reading_date.present? && valid_reading_date?(reading_date)
@@ -76,6 +78,10 @@ class AmrReadingData
 
   def missing_readings?(readings)
     readings.compact.size < (48 - @missing_reading_threshold)
+  end
+
+  def blank_readings?(readings)
+    readings.count(&:blank?) > @missing_reading_threshold
   end
 
   def valid_reading_date?(reading_date)
