@@ -39,7 +39,13 @@ class ContentBatch
 
       Rails.logger.info "Generated alert content"
 
-      Rails.logger.info "Generated content"
+      #Rails.logger.info "Generated content"
+
+      begin
+        AggregateSchoolService.save_to_s3(aggregate_school, bucket: ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']) if ENV['AGGREGATE_SCHOOL_CACHE_BUCKET'].present?
+      rescue => e
+        Rails.logger.error "Cannot save aggregate school #{school.name}: #{e.message}"
+      end
     end
   end
 
