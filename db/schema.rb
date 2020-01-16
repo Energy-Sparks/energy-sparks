@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_211419) do
+ActiveRecord::Schema.define(version: 2020_01_16_133038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -987,6 +987,14 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
     t.boolean "message_for_no_pupil_accounts", default: true
   end
 
+  create_table "sms_records", force: :cascade do |t|
+    t.bigint "alert_subscription_event_id"
+    t.text "mobile_phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_subscription_event_id"], name: "index_sms_records_on_alert_subscription_event_id"
+  end
+
   create_table "solar_pv_tuos_readings", force: :cascade do |t|
     t.bigint "area_id", null: false
     t.text "gsp_name"
@@ -1201,6 +1209,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
+  add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade

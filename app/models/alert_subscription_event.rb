@@ -45,7 +45,7 @@ class AlertSubscriptionEvent < ApplicationRecord
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
   belongs_to :subscription_generation_run
 
-  enum status: [:pending, :sent]
+  enum status: [:pending, :sent, :archived]
   enum communication_type: [:email, :sms]
 
   validates :priority, numericality: true
