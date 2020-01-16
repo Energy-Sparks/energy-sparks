@@ -76,7 +76,7 @@ describe AmrReadingData do
         expect(amr_reading.warnings?).to be true
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warning]).to eq :missing_mpan_mprn
+        expect(amr_reading.warnings.first[:warnings]).to include(:missing_mpan_mprn)
       end
 
       it 'with missing reading date' do
@@ -87,7 +87,7 @@ describe AmrReadingData do
         expect(amr_reading.warnings?).to be true
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warning]).to eq :missing_reading_date
+        expect(amr_reading.warnings.first[:warnings]).to include(:missing_reading_date)
       end
 
       it 'with missing readings' do
@@ -99,7 +99,7 @@ describe AmrReadingData do
         expect(amr_reading.warnings?).to be true
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warning]).to eq :missing_readings
+        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
       end
 
       it 'with missing readings but with tolerance for 1 missing' do
@@ -124,7 +124,7 @@ describe AmrReadingData do
         expect(amr_reading.warnings?).to be true
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warning]).to eq :missing_readings
+        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
       end
 
       it 'when dates are not quite the right format' do
@@ -137,43 +137,8 @@ describe AmrReadingData do
         expect(amr_reading.warnings?).to be true
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warning]).to eq :invalid_reading_date
+        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_reading_date)
       end
     end
   end
 end
-
-
-
-  # describe 'handles when a row of readings is missing' do
-  #   let(:amr_reading) { AmrReadingData.new(reading_data: [
-  #                                                     { :mpan_mprn => 123, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-  #                                                     { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, nil)  },
-  #                                                     { :mpan_mprn => 123, :reading_date => '2019-01-03', readings: Array.new(48, '0.0')  },
-  #                                                     ],
-  #                                           date_format: date_format) }
-
-  #   it 'knows when it is valid' do
-  #     expect(amr_reading.valid?).to be true
-  #     expect(amr_reading.warnings?).to be true
-  #     expect(amr_reading.reading_count).to be 3
-  #     expect(amr_reading.valid_reading_count).to be 2
-  #     expect(amr_reading.warnings.count).to be 1
-  #   end
-  # end
-
-  # describe 'handles when a row of readings is truncated' do
-  #   let(:amr_reading) { AmrReadingData.new(reading_data: [
-  #                                                     { :mpan_mprn => 123, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-  #                                                     { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
-  #                                                     { :mpan_mprn => 123, :reading_date => '2019-01-03', readings: Array.new(2, '0.0')  },
-  #                                                     ],
-  #                                           date_format: date_format) }
-
-  #   it 'knows when it is valid' do
-  #     expect(amr_reading.valid?).to be true
-  #     expect(amr_reading.warnings?).to be true
-  #     expect(amr_reading.valid_reading_count).to be 2
-  #     expect(amr_reading.warnings.count).to be 1
-  #   end
-  # end

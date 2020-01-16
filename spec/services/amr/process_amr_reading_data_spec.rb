@@ -23,8 +23,7 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(2).and change { AmrReadingWarning.count }.by(1)
 
         first_warning = AmrReadingWarning.first
-        expect(first_warning.warning.to_sym).to be :missing_mpan_mprn
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_mpan_mprn]
+        expect(first_warning.warning_symbols).to include :missing_mpan_mprn
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to eq reading_data_second[:reading_date].to_s
       end
@@ -34,8 +33,7 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(2).and change { AmrReadingWarning.count }.by(1)
 
         first_warning = AmrReadingWarning.first
-        expect(first_warning.warning.to_sym).to be :missing_readings
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_readings]
+        expect(first_warning.warning_symbols).to match_array [:missing_readings]
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to eq reading_data_second[:reading_date].to_s
       end
@@ -45,8 +43,7 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(2).and change { AmrReadingWarning.count }.by(1)
 
         first_warning = AmrReadingWarning.first
-        expect(first_warning.warning.to_sym).to be :missing_readings
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_readings]
+        expect(first_warning.warning_symbols).to match_array [:missing_readings]
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to eq reading_data_second[:reading_date].to_s
       end
@@ -56,8 +53,7 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(2).and change { AmrReadingWarning.count }.by(1)
 
         first_warning = AmrReadingWarning.first
-        expect(first_warning.warning.to_sym).to be :missing_reading_date
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_reading_date]
+        expect(first_warning.warning_symbols).to match_array [:missing_reading_date, :invalid_reading_date]
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to be_nil
       end
@@ -67,8 +63,7 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(2).and change { AmrReadingWarning.count }.by(1)
 
         first_warning = AmrReadingWarning.first
-        expect(first_warning.warning.to_sym).to be :invalid_reading_date
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:invalid_reading_date]
+        expect(first_warning.warning_symbols).to match_array [:invalid_reading_date]
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to eq reading_data_second[:reading_date].to_s
       end
@@ -90,14 +85,12 @@ module Amr
         expect { ProcessAmrReadingData.new(amr_reading, amr_data_feed_import_log).perform }.to change { AmrDataFeedReading.count }.by(1).and change { AmrReadingWarning.count }.by(2)
 
         first_warning = AmrReadingWarning.find_by(reading_date: reading_data_second[:reading_date].to_s)
-        expect(first_warning.warning.to_sym).to be :missing_mpan_mprn
-        expect(first_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_mpan_mprn]
+        expect(first_warning.warning_symbols).to match_array [:missing_mpan_mprn]
         expect(first_warning.readings).to match_array reading_data_second[:readings]
         expect(first_warning.reading_date).to eq reading_data_second[:reading_date].to_s
 
         second_warning = AmrReadingWarning.find_by(reading_date: reading_data_third[:reading_date].to_s)
-        expect(second_warning.warning.to_sym).to be :missing_mpan_mprn
-        expect(second_warning.warning_message).to eq AmrReadingData::WARNINGS[:missing_mpan_mprn]
+        expect(second_warning.warning_symbols).to match_array [:missing_mpan_mprn]
         expect(second_warning.readings).to match_array reading_data_third[:readings]
         expect(second_warning.reading_date).to eq reading_data_third[:reading_date].to_s
       end

@@ -10,9 +10,9 @@
       </tr>
     </thead>
     <tbody>
-      <% warnings.first(10).each do |row| %>
+      <% warnings.each do |row| %>
         <tr>
-          <td><%= AmrReadingData::WARNINGS[row["warning"].to_sym] %></td>
+          <td><%= row["warnings"].map { |w| AmrReadingData::WARNINGS[w.to_sym] }.join(', ') %></td>
           <td><%= row["mpan_mprn"] %></td>
           <td><%= row["reading_date"] %></td>
           <% row["readings"].each do |reading| %>
