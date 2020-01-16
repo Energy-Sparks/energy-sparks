@@ -1,6 +1,9 @@
 <div class="row padded-row">
   <div class="col-lg-7">
-    <h3><%= name %></h3>
+    <div class="nav-anchor">
+      <a name="<%= name.parameterize %>"> </a>
+      <h3><%= name %></h3>
+    </div>
   </div>
   <% if scoreboard  || benchmark_filter %>
     <div class="col-lg-5">
