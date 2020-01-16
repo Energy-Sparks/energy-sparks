@@ -10,26 +10,7 @@
 <h2>Annual use</h2>
 
 <% if @overview_table %>
-  <div class="table-responsive-sm">
-    <table class="table mb-5 management-overview">
-      <thead>
-        <tr>
-          <% table_headers_from_array(@overview_table.table).each do |column, html_class| %>
-            <th class="<%= html_class %>"><%= column %></th>
-          <% end  %>
-        </tr>
-      </thead>
-      <tbody>
-        <% table_body_from_array(@overview_table.table).each do |row| %>
-          <tr>
-            <% table_row_from_array(row).each do |column, html_class| %>
-              <td class="<%= html_class %>"><%= up_downify(column) %></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+  <%= render 'overview_table', overview_table: @overview_table %>
 <% end %>
 
 <% unless @overview_charts.empty? %>
