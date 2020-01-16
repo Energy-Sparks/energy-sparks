@@ -10,11 +10,11 @@
       </tr>
     </thead>
     <tbody>
-      <% valid_reading_data.first(10).each do |row| %>
+      <% valid_reading_data.each do |row| %>
         <tr>
           <td><%= row["meter_id"] %></td>
           <td><%= row["mpan_mprn"] %></td>
-          <td><%= nice_dates Date.parse(row["reading_date"]) %></td>
+          <td><%= row["reading_date"] %></td>
           <% row["readings"].each do |reading| %>
             <td><%= reading %></td>
           <% end %>

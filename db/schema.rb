@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_211419) do
+ActiveRecord::Schema.define(version: 2020_01_16_112112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -383,6 +383,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
     t.text "readings", array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "warning_types", array: true
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_reading_warnings_on_amr_data_feed_import_log_id"
   end
 

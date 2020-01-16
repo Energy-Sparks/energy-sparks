@@ -7,18 +7,20 @@ module Amr
 
     def perform
       @array_of_rows = sort_out_off_by_one_array(@array_of_rows) if @config.handle_off_by_one
-      handle_header
-      @array_of_rows.delete_if { |row| invalid_row?(row) }
+      @array_of_rows = handle_header(@array_of_rows)
+      @array_of_rows = @array_of_rows.reject { |row| invalid_row?(row) }
       @array_of_rows
     end
 
   private
 
-    def handle_header
-      if @array_of_rows.first.join(',') == @config.header_example
-        @array_of_rows.shift
+    def handle_header(array_of_rows)
+      if array_of_rows.first.join(',') == @config.header_example
+        array_of_rows[1, array_of_rows.length]
       elsif @config.number_of_header_rows
-        @array_of_rows.shift(@config.number_of_header_rows)
+        array_of_rows[@config.number_of_header_rows, array_of_rows.length]
+      else
+        array_of_rows
       end
     end
 
