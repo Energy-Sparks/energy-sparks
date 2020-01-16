@@ -31,8 +31,7 @@ module Amr
       updated_warnings = @amr_reading_data.warnings.map do |warning|
         {
           amr_data_feed_import_log_id: @amr_data_feed_import_log.id,
-          warning_message: AmrReadingData::WARNINGS[warning[:warning]],
-          warning: AmrReadingWarning.warnings[warning[:warning]],
+          warning_types: warning[:warnings].map { |warning_symbol| AmrReadingWarning::WARNINGS.key(warning_symbol) },
           created_at: DateTime.now.utc,
           updated_at: DateTime.now.utc,
           mpan_mprn: warning[:mpan_mprn],

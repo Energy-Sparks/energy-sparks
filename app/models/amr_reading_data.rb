@@ -32,15 +32,15 @@ class AmrReadingData
   end
 
   def warnings?
-    @reading_data.any? { |reading| reading.key?(:warning) }
+    @reading_data.any? { |reading| reading.key?(:warnings) }
   end
 
   def warnings
-    @reading_data.select { |reading| reading.key?(:warning) }
+    @reading_data.select { |reading| reading.key?(:warnings) }
   end
 
   def valid_records
-    @reading_data.reject { |reading| reading.key?(:warning) }
+    @reading_data.reject { |reading| reading.key?(:warnings) }
   end
 
   def valid_reading_count
@@ -61,19 +61,16 @@ class AmrReadingData
 
   def invalid_row_check
     @reading_data.each do |reading|
-      mpan_mprn = reading[:mpan_mprn]
       reading_date = reading[:reading_date]
-      readings = reading[:readings]
 
-      if missing_readings?(readings)
-        reading[:warning] = :missing_readings
-      elsif mpan_mprn.blank?
-        reading[:warning] = :missing_mpan_mprn
-      elsif reading_date.blank?
-        reading[:warning] = :missing_reading_date
-      elsif ! valid_reading_date?(reading_date)
-        reading[:warning] = :invalid_reading_date
-      end
+      warnings = []
+
+      warnings << :missing_readings if missing_readings?(reading[:readings])
+      warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
+      warnings << :missing_reading_date if reading_date.blank?
+      warnings << :invalid_reading_date unless reading_date.present? && valid_reading_date?(reading_date)
+
+      reading[:warnings] = warnings if warnings.any?
     end
   end
 

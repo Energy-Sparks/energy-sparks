@@ -11,6 +11,7 @@
 #  updated_at                  :datetime         not null
 #  warning                     :integer
 #  warning_message             :text
+#  warning_types               :integer          is an Array
 #
 # Indexes
 #
@@ -24,5 +25,21 @@
 class AmrReadingWarning < ApplicationRecord
   belongs_to :amr_data_feed_import_log
 
+  WARNINGS = {
+    0 => :blank_readings,
+    1 => :missing_readings,
+    2 => :missing_mpan_mprn,
+    3 => :missing_reading_date,
+    4 => :invalid_reading_date
+  }.freeze
+
   enum warning: [:blank_readings, :missing_readings, :missing_mpan_mprn, :missing_reading_date, :invalid_reading_date]
+
+  def messages
+    warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }.join(', ') + 'HELLO'
+  end
+
+  def warning_symbols
+    warning_types.map { |warning_type| WARNINGS[warning_type] }
+  end
 end

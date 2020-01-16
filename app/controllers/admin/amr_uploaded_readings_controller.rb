@@ -36,8 +36,8 @@ module Admin
     private
 
     def set_valid_readings_and_warnings
-      @valid_reading_data = @amr_uploaded_reading.reading_data.reject { |reading| reading.key?('warning') || reading.key?(:warning) }
-      @warnings = @amr_uploaded_reading.reading_data.select { |reading| reading.key?('warning') || reading.key?(:warning) }
+      @valid_reading_data = @amr_uploaded_reading.valid_readings.first(10)
+      @warnings = @amr_uploaded_reading.warnings.first(10)
     end
 
     def set_amr_data_feed_config
