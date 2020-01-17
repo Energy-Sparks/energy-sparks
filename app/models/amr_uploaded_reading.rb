@@ -23,4 +23,12 @@ class AmrUploadedReading < ApplicationRecord
   belongs_to :amr_data_feed_config
 
   validates_presence_of :file_name
+
+  def warnings
+    reading_data.select { |reading| reading.with_indifferent_access[:warnings]  }
+  end
+
+  def valid_readings
+    reading_data.reject { |reading| reading.with_indifferent_access[:warnings]  }
+  end
 end

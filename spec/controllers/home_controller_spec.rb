@@ -24,14 +24,6 @@ RSpec.describe HomeController, type: :controller do
         end
       end
 
-      context 'and does not have a school' do
-        it 'redirects to the schools listing page' do
-          sign_in_user(:school_admin)
-          get :index
-          expect(response).to redirect_to(schools_path)
-        end
-      end
-
     end
 
   end

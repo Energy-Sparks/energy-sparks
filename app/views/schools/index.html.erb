@@ -1,10 +1,18 @@
 <% content_for :page_title do %>
 Schools
 <% end %>
+
 <section id="enrolled">
   <div class="row padded-row">
-    <div class="col-lg-12">
-      <h2>Participating Schools</h2>
+    <div class="col-md-8">
+      <h1>Participating Schools</h1>
+    </div>
+    <div class="col-md-4">
+      <div class='btn-group float-right'>
+        <%= link_to 'Scoreboards', scoreboards_path, class: 'btn' %>
+      </div>
+    </div>
+    <div class="col-md-12">
       <p>These schools are using <%= t('application') %> to reduce their energy usage. See their usage data, compare scores and learn about their energy saving activities</p>
       <% if can?(:read, BenchmarkResult) %>
         <p>(Currently admin only) - You can also <%= link_to 'compare schools', benchmarks_path %></p>
@@ -13,8 +21,19 @@ Schools
     </div>
   </div>
 
-  <% @scoreboards.each do |scoreboard| %>
-    <%= render 'schools/list', name: scoreboard.name, scoreboard: scoreboard, schools: scoreboard.schools.visible.order(:name), benchmark_filter: {scoreboard_ids: [scoreboard.id]}%>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Jump to</a>
+    </li>
+    <% @school_groups.each do |school_group| %>
+      <li class="nav-item">
+        <%= link_to "#{school_group.name}", "##{school_group.name.parameterize}", class: 'nav-link' %>
+      </li>
+    <% end %>
+  </ul>
+
+  <% @school_groups.each do |school_group| %>
+    <%= render 'schools/list', name: school_group.name, scoreboard: nil, schools: school_group.schools.visible.order(:name), benchmark_filter: {school_group_ids: [school_group.id]}%>
   <% end %>
 
   <% if @ungrouped_visible_schools.any? %>
