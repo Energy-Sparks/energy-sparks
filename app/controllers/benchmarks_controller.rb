@@ -92,7 +92,7 @@ private
     @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
   end
 
-  def content_manager(date = Time.zone.today)
+  def content_manager(date = BenchmarkResultGenerationRun.latest_run_date)
     Benchmarking::BenchmarkContentManager.new(date)
   end
 
