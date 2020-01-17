@@ -13,8 +13,10 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
     it 'can add a new scoreboard with validation' do
       visit schools_path
-      click_on 'View scoreboard'
+      click_on 'Scoreboards'
+      click_on 'Super scoreboard'
       expect(page).to have_content('Super scoreboard')
+      expect(page).to have_content(school.name)
     end
   end
 end

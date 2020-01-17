@@ -140,13 +140,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
-  scope :admin do
-    resources :users
-  end
 
   get '/admin', to: 'admin#index'
 
   namespace :admin do
+    resources :users
     resources :case_studies
     resources :newsletters
     resources :resource_files
