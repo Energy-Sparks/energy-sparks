@@ -117,6 +117,17 @@ module Schools
       allow(ChartData).to receive(:new).and_return(chart_data)
     end
 
+    context 'meter but no readings' do
+
+      let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, has_electricity: false) }
+
+      it 'returns something sensible rather than nil' do
+        allow(chart_data).to receive(:has_chart_data?).and_return(true)
+        chart_config = GenerateAnalysisChartConfiguration.new(school, nil, fuel_configuration, dashboard_config, page_config).generate
+        expect(chart_config).to eq Hash.new
+      end
+    end
+
     context 'electric only set up' do
       let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_only, has_electricity: true) }
 
