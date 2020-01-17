@@ -13,7 +13,7 @@ class Ability
     can :read, SchoolGroup
     can :show, School, visible: true
     can :usage, School, visible: true
-    can :show, Scoreboard
+    can :read, Scoreboard
     can :read, FindOutMore
     can :read, Observation
     can :read, ProgrammeType
