@@ -66,7 +66,6 @@ class AmrReadingData
 
       warnings = []
 
-      warnings << :blank_readings if blank_readings?(readings)
       warnings << :missing_readings if missing_readings?(readings)
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
       warnings << :missing_reading_date if reading_date.blank?
@@ -77,11 +76,7 @@ class AmrReadingData
   end
 
   def missing_readings?(readings)
-    readings.compact.size < (48 - @missing_reading_threshold)
-  end
-
-  def blank_readings?(readings)
-    readings.count(&:blank?) > @missing_reading_threshold
+    readings.compact.count(&:present?) < (48 - @missing_reading_threshold)
   end
 
   def valid_reading_date?(reading_date)

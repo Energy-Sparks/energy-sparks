@@ -36,7 +36,7 @@ class AmrReadingWarning < ApplicationRecord
   enum warning: [:blank_readings, :missing_readings, :missing_mpan_mprn, :missing_reading_date, :invalid_reading_date]
 
   def messages
-    warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }.join(', ') + 'HELLO'
+    warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }.join(', ')
   end
 
   def warning_symbols

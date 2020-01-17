@@ -139,7 +139,7 @@ describe AmrReadingData do
         expect(amr_reading.warnings?).to be true
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:blank_readings)
+        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
       end
 
       it 'when dates are not quite the right format' do
