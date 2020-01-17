@@ -6,7 +6,8 @@ RSpec.describe Admin::UsersController, type: :controller do
       email: 'school@test.com',
       password: 'testpassword',
       role: :staff,
-      staff_role_id: create(:staff_role, :teacher).id
+      staff_role_id: create(:staff_role, :teacher).id,
+      school_id: create(:school).id
     }
   }
   let(:invalid_attributes) {
@@ -39,9 +40,8 @@ RSpec.describe Admin::UsersController, type: :controller do
     describe "GET #edit" do
       it "assigns  schools as @schools" do
         user = create :staff
-        school = create :school
         get :edit, params: { id: user.to_param }
-        expect(assigns(:schools)).to include school
+        expect(assigns(:schools)).to include user.school
       end
     end
 
