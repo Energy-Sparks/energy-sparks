@@ -15,4 +15,8 @@ class BenchmarkResultGenerationRun < ApplicationRecord
   def self.latest_run_date
     order(created_at: :desc).first.created_at.to_date
   end
+
+  def run_date
+    created_at.to_date
+  end
 end

@@ -2,9 +2,12 @@ require 'dashboard'
 
 class BenchmarksController < ApplicationController
   before_action :authorized?
+  before_action :latest_benchmark_run
+  before_action :content_manager
   before_action :page_groups, only: [:index, :show_all]
   before_action :load_filter, only: [:index, :show, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
+
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
@@ -34,6 +37,10 @@ class BenchmarksController < ApplicationController
 
 private
 
+  def latest_benchmark_run
+    @latest_benchmark_run = BenchmarkResultGenerationRun.order(created_at: :desc).first
+  end
+
   def sort_content_and_page_groups(page_groups)
     @content_hash = {}
     @errors = []
@@ -46,7 +53,7 @@ private
   end
 
   def content_for_page(page, errors = [])
-    content_manager.content(@benchmark_results, page, user_type: user_type_hash)
+    @content_manager.content(@benchmark_results, page, user_type: user_type_hash)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
     # rubocop:enable Lint/RescueException
@@ -59,7 +66,7 @@ private
   end
 
   def page_groups
-    @page_groups = content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
+    @page_groups = @content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
   end
 
   def user_type_hash
@@ -89,11 +96,11 @@ private
     include_invisible = can? :show, :all_schools
 
     schools = SchoolFilter.new(**{ include_invisible: include_invisible }.merge(@benchmark_filter)).filter
-    @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
+    @benchmark_results = Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(schools)
   end
 
-  def content_manager(date = BenchmarkResultGenerationRun.latest_run_date)
-    Benchmarking::BenchmarkContentManager.new(date)
+  def content_manager
+    @content_manager = Benchmarking::BenchmarkContentManager.new(@latest_benchmark_run.run_date)
   end
 
   def filter_content(all_content)
