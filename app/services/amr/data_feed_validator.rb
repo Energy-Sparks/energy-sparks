@@ -43,7 +43,8 @@ module Amr
     end
 
     def invalid_row?(row)
-      row.empty?
+      # Reject if row is empty or there are no commas to create fields
+      row.empty? || row.count == 1
     end
   end
 end
