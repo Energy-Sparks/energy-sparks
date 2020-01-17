@@ -40,6 +40,10 @@ class ContentBatch
       Rails.logger.info "Generated alert content"
 
       Rails.logger.info "Generated content"
+
+    rescue StandardError => e
+      Rails.logger.error "There was an error for #{school.name} - #{e.message}"
+      Rollbar.error(e, school_id: school.id, school_name: school.name)
     end
   end
 

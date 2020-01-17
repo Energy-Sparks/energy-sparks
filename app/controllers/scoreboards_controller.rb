@@ -1,6 +1,6 @@
 class ScoreboardsController < ApplicationController
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:show]
+  skip_before_action :authenticate_user!, only: [:show, :index]
 
   # GET /scoreboards
   def index
