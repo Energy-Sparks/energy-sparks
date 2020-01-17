@@ -273,9 +273,9 @@ module Amr
         write_file_and_expect_readings(frome_with_header, frome_config, "9.9")
       end
 
-      it 'should parse a simple frome historic file with handle off by one' do
+      it 'should parse a simple frome historic file with handle off by one (and not move it a long if it is a single row' do
         FileUtils.mkdir_p historical_frome_config.local_bucket_path
-        write_file_and_expect_readings(frome_historic, historical_frome_config, "4.465528")
+        write_file_and_expect_readings(frome_historic, historical_frome_config, "11.11")
       end
     end
 
