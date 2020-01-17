@@ -88,7 +88,7 @@ FactoryBot.define do
       end
 
       after(:create) do |meter, evaluator|
-        (evaluator.start_date..evaluator.end_date).each do |this_date|
+        (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
           create(:amr_validated_reading, meter: meter, reading_date: this_date)
         end
       end
