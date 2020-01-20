@@ -43,7 +43,7 @@ class Observation < ApplicationRecord
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
 
-  accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings_and_locations
+  accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
   scope :visible, -> { where(visible: true) }
 
@@ -55,7 +55,7 @@ class Observation < ApplicationRecord
 
 private
 
-  def reject_temperature_recordings_and_locations(attributes)
-    (attributes['centigrade'].blank? && attributes.dig('location_attributes', 'name').blank?)
+  def reject_temperature_recordings(attributes)
+    attributes['centigrade'].blank?
   end
 end

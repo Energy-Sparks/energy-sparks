@@ -22,14 +22,14 @@
         colour: 'bg-positive',
         icon: 'temperature-high fa-3x',
         content: 'Measure classroom temperatures to find out whether you should turn down the heating to save energy',
-        buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school) }
+        buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school, introduction: true) }
   %>
 <% else %>
   <%= render 'schools/dashboard/info_bar',
         colour: 'bg-positive',
         icon: 'temperature-high fa-3x',
         content: 'Update your classroom temperatures to see if you are saving energy',
-        buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Update temperatures' => new_school_temperature_observation_path(@school) }
+        buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Update temperatures' => new_school_temperature_observation_path(@school, introduction: true) }
   %>
 <% end %>
 
