@@ -14,6 +14,7 @@ module Schools
     end
 
     def create
+      @location.school = @school
       if @location.save
         redirect_to new_school_temperature_observation_path(@school, introduction: true), notice: 'Location created'
       else
@@ -37,7 +38,7 @@ module Schools
   private
 
     def location_params
-      params.require(:location).permit(:description, :name, :school_id)
+      params.require(:location).permit(:description, :name)
     end
   end
 end
