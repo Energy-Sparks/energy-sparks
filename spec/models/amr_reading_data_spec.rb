@@ -90,6 +90,16 @@ describe AmrReadingData do
         expect(amr_reading.warnings.first[:warnings]).to include(:missing_reading_date)
       end
 
+      it 'with reading date in the future' do
+        amr_reading = AmrReadingData.new(amr_reading_data.merge(today: Date.new(2018, 1, 1)))
+
+        expect(amr_reading.valid?).to be false
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 0
+        expect(amr_reading.warnings.count).to be 2
+        expect(amr_reading.warnings.first[:warnings]).to include(:future_reading_date)
+      end
+
       it 'with missing readings' do
         amr_reading_data[:reading_data].first[:readings].shift
         amr_reading = AmrReadingData.new(amr_reading_data)
