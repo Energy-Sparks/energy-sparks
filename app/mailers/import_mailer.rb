@@ -3,6 +3,7 @@ class ImportMailer < ApplicationMailer
   def import_summary
     @data = params[:data]
     @import_logs_with_errors = params[:import_logs_with_errors]
+    @import_warnings = params[:import_warnings]
     subject_description = params[:description] || 'import report'
     environment_identifier = ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
     make_bootstrap_mail(to: 'services@energysparks.uk', subject: "[energy-sparks-#{environment_identifier}] Energy Sparks #{subject_description}: #{Time.zone.today.strftime('%d/%m/%Y')}")

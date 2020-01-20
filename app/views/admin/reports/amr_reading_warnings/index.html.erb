@@ -25,7 +25,7 @@
           <td><%= nice_date_times warning.amr_data_feed_import_log.import_time %></td>
           <td><%= warning.mpan_mprn %></td>
           <td><%= warning.reading_date %></td>
-          <td><%= warning.warning_message %></td>
+          <td><%= warnings_from_warning_types(warning.warning_types) %></td>
         </tr>
       <% end %>
     </tbody>
