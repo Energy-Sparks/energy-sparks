@@ -19,7 +19,7 @@ module Schools
     def generate(pages = pages_from_fuel_types)
       if @fuel_configuration.no_meters_with_validated_readings
         Rails.logger.info "No readings for #{@school.name}, so no configuration"
-        return
+        return {}
       end
 
       Rails.logger.info "Generating chart configuration for #{@school.name} - using default values"
