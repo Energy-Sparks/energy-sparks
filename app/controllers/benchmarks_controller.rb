@@ -1,7 +1,8 @@
 require 'dashboard'
 
 class BenchmarksController < ApplicationController
-  before_action :authorized?
+  skip_before_action :authenticate_user!
+
   before_action :latest_benchmark_run
   before_action :content_manager
   before_action :page_groups, only: [:index, :show_all]
@@ -111,9 +112,5 @@ private
     return false unless content.present?
 
     [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
-  end
-
-  def authorized?
-    authorize! :read, BenchmarkResult
   end
 end
