@@ -103,7 +103,7 @@ class School < ApplicationRecord
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
+  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
   scope :visible,            -> { where(visible: true) }
   scope :not_visible,        -> { where(visible: false) }

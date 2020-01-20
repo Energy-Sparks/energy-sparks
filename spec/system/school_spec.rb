@@ -90,13 +90,25 @@ RSpec.describe "school", type: :system do
       end
 
       it 'allows data process management' do
+        create(:gas_meter, :with_unvalidated_readings, school: school)
+        school.update(process_data: false)
         click_on(school_name)
+        click_on('Not processing data')
+        expect(page).to have_content "#{school.name} will now process data"
+        school.reload
+        expect(school.process_data).to eq(true)
         click_on('Processing data')
         school.reload
         expect(school.process_data).to eq(false)
+      end
+
+      it 'disallows data process management if the school has no meter readings' do
+        school.update(process_data: false)
+        click_on(school_name)
         click_on('Not processing data')
+        expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
         school.reload
-        expect(school.process_data).to eq(true)
+        expect(school.process_data).to eq(false)
       end
     end
   end

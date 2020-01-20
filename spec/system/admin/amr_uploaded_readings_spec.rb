@@ -54,19 +54,25 @@ describe AmrUploadedReading, type: :system do
     it 'is helpful if a dodgy date format file is loaded' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-date-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_BAD_DATE_FORMAT % { example: 'KABOOM' })
+      expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
+    end
+
+    it 'is helpful if a single dodgy date format is in the file loaded' do
+      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-file.csv')
+      click_on 'Preview'
+      expect(page).to have_content(AmrReadingData::WARNING_BAD_DATE_FORMAT)
     end
 
     it 'is helpful if a dodgy mpan format file is loaded' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-mpan-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
+      expect(page).to have_content(AmrReadingData::WARNING_MISSING_MPAN_MPRN)
     end
 
     it 'is helpful if a reading is missing' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-data-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_MISSING_READINGS)
+      expect(page).to have_content(AmrReadingData::WARNING_MISSING_READINGS)
     end
 
   end
@@ -94,13 +100,13 @@ describe AmrUploadedReading, type: :system do
     it 'handles a wrong file format' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-bad-sheffield-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_MISSING_READINGS)
+      expect(page).to have_content(AmrReadingData::WARNING_MISSING_READINGS)
     end
 
     it 'handles a wrong file format' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-bad-sheffield-proper-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_MISSING_READING_DATE)
+      expect(page).to have_content(AmrReadingData::WARNING_READING_DATE_MISSING)
     end
   end
 

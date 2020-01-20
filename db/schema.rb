@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_211419) do
+ActiveRecord::Schema.define(version: 2020_01_16_133038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -372,6 +372,19 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
+  end
+
+  create_table "amr_reading_warnings", force: :cascade do |t|
+    t.bigint "amr_data_feed_import_log_id", null: false
+    t.integer "warning"
+    t.text "warning_message"
+    t.text "reading_date"
+    t.text "mpan_mprn"
+    t.text "readings", array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "warning_types", array: true
+    t.index ["amr_data_feed_import_log_id"], name: "index_amr_reading_warnings_on_amr_data_feed_import_log_id"
   end
 
   create_table "amr_uploaded_readings", force: :cascade do |t|
@@ -975,6 +988,14 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
     t.boolean "message_for_no_pupil_accounts", default: true
   end
 
+  create_table "sms_records", force: :cascade do |t|
+    t.bigint "alert_subscription_event_id"
+    t.text "mobile_phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_subscription_event_id"], name: "index_sms_records_on_alert_subscription_event_id"
+  end
+
   create_table "solar_pv_tuos_readings", force: :cascade do |t|
     t.bigint "area_id", null: false
     t.text "gsp_name"
@@ -1101,6 +1122,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
+  add_foreign_key "amr_reading_warnings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_validated_readings", "meters"
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
@@ -1188,6 +1210,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_211419) do
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "simulations", "schools"
   add_foreign_key "simulations", "users"
+  add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade

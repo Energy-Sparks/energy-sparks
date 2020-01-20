@@ -7,10 +7,10 @@ module Alerts
     let(:date_2)              { Date.parse('01/01/2018') }
     let(:school_1)            { create(:school) }
     let(:school_2)            { create(:school) }
-    let(:run_1)               { BenchmarkResultGenerationRun.create! }
-    let(:run_2)               { BenchmarkResultGenerationRun.create! }
-    let(:school_run_1)        { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: run_1 ) }
-    let(:school_run_2)        { BenchmarkResultSchoolGenerationRun.create(school: school_2, benchmark_result_generation_run: run_1 ) }
+    let(:run)                 { BenchmarkResultGenerationRun.create! }
+
+    let(:school_run_1)        { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: run ) }
+    let(:school_run_2)        { BenchmarkResultSchoolGenerationRun.create(school: school_2, benchmark_result_generation_run: run ) }
     let(:alert_type_1)        { create(:alert_type, benchmark: true, source: :analytics) }
     let(:alert_type_2)        { create(:alert_type, benchmark: true, source: :analytics) }
 
@@ -61,11 +61,11 @@ module Alerts
     }
 
     it 'does the stuff' do
-      expect(CollateBenchmarkData.new.perform).to eq example_output
+      expect(CollateBenchmarkData.new(run).perform).to eq example_output
     end
 
     it 'collates filtering by school' do
-      expect(CollateBenchmarkData.new.perform([school_1])).to eq example_output_school_1
+      expect(CollateBenchmarkData.new(run).perform([school_1])).to eq example_output_school_1
     end
   end
 end
