@@ -2,7 +2,7 @@
 <h2><%= @school.name %></h2>
 
 <p>
-  <%= link_to 'Add new temperature recordings', new_school_temperature_observation_path(@school), class: 'btn' %>
+  <%= link_to 'Add new temperature recordings', new_school_temperature_observation_path(@school, introduction: true), class: 'btn' %>
   <%= link_to 'Change room names', school_locations_path(@school), class: 'btn' %>
 </p>
 

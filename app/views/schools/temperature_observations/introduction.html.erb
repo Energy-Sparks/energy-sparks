@@ -1,0 +1,61 @@
+<h1>Record your school's temperatures</h1>
+
+<h3>Why are we doing this?</h3>
+<p>Getting the temperature right at your school is important. A hot classroom is expensive as more heating is needed, and heating costs money. The best temperature for schools is 18&deg;C, but corridors and sports halls can be 15&deg;C. If some areas of your school are hotter than this, you are wasting energy and money. For every 1&deg;C you reduce the temperature, you save the school about 10% of its heating costs.</p>
+<p>Every day you record your classroom temperatures, you will earn 5 Energy Sparks points!</p>
+
+<h3>How to carry out this activity</h3>
+<ol>
+<li>This activity needs to be carried out when your school heating is running. For most schools this is from October to April.</li>
+<li>Record the classroom or area of the school where you are measuring the temperature.</li>
+<li>Now record the temperature in that room.</li>
+<li>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</li>
+</ol>
+
+<h3>Temperature recording tips</h3>
+
+<ul>
+  <li>The best way to measure the temperature is to put the thermometer down on a table or shelf, and wait until the temperature reading stops changing.</li>
+  <li>To get a good measurement of the overall temperature in the room, you should put the thermometer away from any radiators or heaters, spotlights, electrical equipment like whiteboards or computers, air conditioning vents, windows, outside walls and direct sunlight.</li>
+  <li>You should be careful not to hold the thermometer while taking your measurement as your body heat will warm the thermometer.</li>
+</ul>
+
+<p>You will earn 5 points for each day you measure and record your classroom temperatures.</p>
+
+<h2>Locations or rooms you can add temperatures to</h2>
+<% if @locations.any? %>
+  <p><%= link_to 'Change room names', school_locations_path(@school) %></p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Temperatures recorded</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @locations.each do |location| %>
+        <tr scope="row">
+          <td><%= location.name %></td>
+          <td><%= location.temperature_recordings.count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You haven't created any locations yet. Add some more below.</p>
+<% end %>
+
+<div class="card">
+  <div class="card-body">
+    <h3>Recording temperatures for a new location or room?</h3>
+
+    <%= simple_form_for [@school, Location.new] do |f| %>
+      <%= f.input :name, as: :string %>
+      <%= f.submit class: 'btn' %>
+    <% end %>
+  </div>
+</div>
+
+<h2 class="mt-3">Ready to record your temperatures?</h2>
+
+<%= link_to 'Next', new_school_temperature_observation_path(@school), class: 'btn' %>

@@ -10,7 +10,13 @@ module Schools
     TEMPERATURE_RECORD_INCREASE = 10
 
     def new
-      @total_location_fields.times.each { @observation.temperature_recordings.build(location: Location.new) }
+      @locations = @school.locations.order(name: :asc)
+      @locations.each { |location| @observation.temperature_recordings.build(location: location) }
+      if params[:introduction]
+        render :introduction
+      else
+        render :new
+      end
     end
 
     def create
@@ -47,7 +53,7 @@ module Schools
     end
 
     def observation_params
-      params.require(:observation).permit(:description, :at, temperature_recordings_attributes: [:id, :centigrade, location_attributes: [:name, :school_id]])
+      params.require(:observation).permit(:description, :at, temperature_recordings_attributes: [:id, :centigrade, :location_id])
     end
   end
 end

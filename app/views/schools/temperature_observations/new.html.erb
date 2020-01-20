@@ -1,39 +1,12 @@
 <h1>Record your school's temperatures</h1>
 
-<h3>Why are we doing this?</h3>
-<p>Getting the temperature right at your school is important. A hot classroom is expensive as more heating is needed, and heating costs money. The best temperature for schools is 18&deg;C, but corridors and sports halls can be 15&deg;C. If some areas of your school are hotter than this, you are wasting energy and money. For every 1&deg;C you reduce the temperature, you save the school about 10% of its heating costs.</p>
-<p>Every day you record your classroom temperatures, you will earn 5 Energy Sparks points!</p>
-
-<h3>How to carry out this activity</h3>
-<ol>
-<li>This activity needs to be carried out when your school heating is running. For most schools this is from October to April.</li>
-<li>Record the classroom or area of the school where you are measuring the temperature.</li>
-<li>Now record the temperature in that room.</li>
-<li>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</li>
-</ol>
-
-<h3>Temperature recording tips</h3>
-
-<ul>
-  <li>The best way to measure the temperature is to put the thermometer down on a table or shelf, and wait until the temperature reading stops changing.</li>
-  <li>To get a good measurement of the overall temperature in the room, you should put the thermometer away from any radiators or heaters, spotlights, electrical equipment like whiteboards or computers, air conditioning vents, windows, outside walls and direct sunlight.</li>
-  <li>You should be careful not to hold the thermometer while taking your measurement as your body heat will warm the thermometer.</li>
-</ul>
-
-<p>You will earn 5 points for each day you measure and record your classroom temperatures.</p>
-
-<h4>Locations or rooms</h4>
-<p><%= link_to 'Change room names', school_locations_path(@school) %></p>
-
 <h3>Enter temperatures</h3>
+<p>Leave any rooms or locations that you don't have readings for blank</p>
 <%= simple_form_for([@school, @observation], url: school_temperature_observations_path(@school)) do |f| %>
   <%= f.input :at, as: :tempus_dominus_date_time, default_date_time: Time.now, input_html: { class: "form-control form-control-lg", data: { max_date_time: h(Time.now.httpdate) }} %>
   <%= f.fields_for :temperature_recordings do |temperature_form| %>
     <%= render 'temperature_recording_fields', temperature_form: temperature_form %>
   <% end %>
-  <div class="d-flex form-row justify-content-md-center pb-3">
-    <a id="show_more_recording_fields" class='btn' href='#'>Show more</a>
-  </div>
 
   <%= f.submit 'Create temperature recordings', class: 'btn btn-success' %>
 <% end %>

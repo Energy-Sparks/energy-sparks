@@ -5,6 +5,8 @@ describe 'temperature recordings as school admin' do
   let(:school_name) { 'Active school'}
   let!(:school)     { create(:school, name: school_name) }
 
+  let!(:the_hall){ create(:location, school: school, name: 'The Hall') }
+
   context 'as a pupil' do
 
     let!(:user)       { create(:pupil, school: school)}
@@ -16,117 +18,66 @@ describe 'temperature recordings as school admin' do
     end
 
     context 'adding recordings' do
-      it 'starts with a set number of fields', js: true do
-        expect(page.all('fieldset.expandable', visible: :visible).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE
-        expect(page.all('fieldset.expandable', visible: :hidden).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE
-      end
+      it 'displays the locations and allows the user to add a new one and then enter temperatures for the current locations' do
+        expect(page).to have_content('The Hall')
 
-      it 'allows extra fields to be added', js: true do
-        expect(page.all('fieldset.expandable', visible: :visible).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE
-        click_link 'Show more'
+        fill_in 'Name', with: 'Blue classroom'
+        click_on 'Create Location'
 
-        expect(page).to have_no_css('a#show_more_recording_fields', visible: :visible)
-        expect(page.all('fieldset.expandable', visible: :visible).count).to eq Schools::TemperatureObservationsController::TEMPERATURE_RECORD_INCREASE * 2
-      end
+        expect(page).to have_content('The Hall')
+        expect(page).to have_content('Blue classroom')
 
-      it 'allows an observation to be added' do
-        fill_in 'Temperature', match: :first, with: 20
-        fill_in 'Place', match: :first, with: 'Hall'
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1).and change { Location.count }.by(1)
-        expect(page).to have_content('Temperature recordings')
-      end
+        click_on 'Next'
 
-      it 're-uses existing locations' do
-        fill_in 'Temperature', match: :first, with: 20
-        fill_in 'Place', match: :first, with: 'Hall'
-        click_on('Create temperature recordings')
-        expect(Location.count).to be 1
-        click_on('Add new temperature recordings')
-        fill_in 'Temperature', match: :first, with: 20
-        fill_in 'Place', match: :first, with: 'Hall'
-        click_on('Create temperature recordings')
-        expect(Observation.count).to be 2
-        expect(TemperatureRecording.count).to be 2
-        expect(Location.count).to be 1
-      end
+        fill_in 'The Hall', with: 20
+        fill_in 'Blue classroom', with: 13
 
-      it 'shows auto complete location suggestions', js: true do
-        Location.create(school: school, name: 'ABCDEF')
-        Location.create(school: school, name: 'GHIJKL')
-
-        expect(school.locations.count).to be 2
-
-        refresh
-
-        fill_in 'Temperature', match: :first, with: 20
-        fill_in 'Place', match: :first, with: 'AB'
-        expect(page).to have_content('ABCDEF')
+        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(2)
       end
 
       it 'validates at and takes you back without losing data' do
-        fill_in 'Temperature', match: :first, with: 20
-        fill_in 'Place', match: :first, with: 'Hall'
+        click_on 'Next'
+
+        fill_in 'The Hall', with: 20
         fill_in 'At', with: ''
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
 
         fill_in 'At', with: Date.tomorrow
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
         fill_in 'At', with: Date.yesterday
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1).and change { Location.count }.by(1)
-      end
-
-      it 'keeps hold of any partially entered data which fails validation as this was failing under certain circumstances' do
-        fill_in 'observation_temperature_recordings_attributes_0_location_attributes_name', with: 'The Hall'
-        fill_in 'observation_temperature_recordings_attributes_0_centigrade', with: 150
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
+        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1)
       end
 
       it 'keeps hold of any partially entered data which fails validation' do
-        fill_in 'observation_temperature_recordings_attributes_1_location_attributes_name', with: 'Hall'
-        fill_in 'observation_temperature_recordings_attributes_0_centigrade', with: 20
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0).and change { Location.count }.by(0)
-        fill_in 'observation_temperature_recordings_attributes_0_location_attributes_name', with: 'Kitchen'
-        fill_in 'observation_temperature_recordings_attributes_1_centigrade', with: 18
-        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(2).and change { Location.count }.by(2)
+        click_on 'Next'
+        fill_in 'The Hall', match: :first, with: 2000
+        expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
+        expect(page).to have_field('The Hall', with: 2000)
       end
+
     end
 
     context 'manage locations' do
-      it "allows a user to create a location on it's own" do
-        location_name = 'ABCDEF'
-        click_on 'Change room names'
-        click_on 'Add new room or location'
-        fill_in :location_name, with: location_name
-        expect { click_on 'Create' }.to change { Location.count }.by(1)
-      end
-
       it "allows a user to delete a location on it's own" do
-        location_name = 'ABCDEF'
-        Location.create(school: school, name: location_name)
         click_on 'Change room names'
-        expect(page).to have_content(location_name)
         expect { click_on 'Delete' }.to change { Location.count }.by(-1)
       end
 
       it "allows a user to edit a location on it's own" do
-        location_name = 'ABCDEF'
-        new_location_name = 'GAGA'
-        Location.create(school: school, name: location_name)
         click_on 'Change room names'
-        expect(page).to have_content(location_name)
-        expect(page).to_not have_content(new_location_name)
         click_on 'Edit'
-        fill_in :location_name, with: new_location_name
+        fill_in :location_name, with: 'The Great Hall'
         click_on 'Update Location'
 
-        expect(page).to_not have_content(location_name)
-        expect(page).to have_content(new_location_name)
+        expect(page).to_not have_content('The Hall')
+        expect(page).to have_content('The Great Hall')
         expect(page).to have_content('Location updated')
       end
 
       it 'deletes an assocated temperature recording if location is nobbled' do
-        observation = create(:observation_with_temperature_recording_and_location, school: school)
+        observation = create(:observation).tap do |obs|
+          create(:temperature_recording, observation: obs, location: the_hall)
+        end
         click_on 'Change room names'
         expect(page).to have_content(observation.locations.first.name)
         expect { click_on 'Delete' }.to change { Location.count }.by(-1).and change { TemperatureRecording.count }.by(-1)
@@ -137,7 +88,11 @@ describe 'temperature recordings as school admin' do
   context 'deleting a temperature recording as admin' do
 
     let!(:user)       { create(:school_admin, school: school)}
-    let!(:observation)  { create(:observation_with_temperature_recording_and_location, school: school) }
+    let!(:observation) do
+      create(:observation, school: school).tap do |obs|
+        create(:temperature_recording, observation: obs, location: the_hall)
+      end
+    end
 
     before(:each) do
       sign_in(user)
