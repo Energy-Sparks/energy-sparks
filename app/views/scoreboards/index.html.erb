@@ -1,8 +1,14 @@
 <h1>Scoreboards</h1>
 
-<p>
-  See how well each of our Energy Sparks schools are recording their energy saving activities! Scoreboard points are earned from recording activities investigating energy use, learning about energy and taking energy saving action around their school. Schools choose a scoreboard to join, normally competing against other schools in their local area. Click on a scoreboard to see how the schools are doing!
-</p>
+<div class="row padded-row">
+  <div class="col-lg-8">
+    <p>See how well each of our Energy Sparks schools are recording their energy saving activities! Scoreboard points are earned from recording activities investigating energy use, learning about energy and taking energy saving action around their school. Schools choose a scoreboard to join, normally competing against other schools in their local area.</p>
+    <p>Click on a scoreboard to see how the schools are doing!</p>
+  </div>
+  <div class="col-lg-4">
+    <%= image_tag("actions/podium.svg", class: "img-fluid static-images small") %>
+  </div>
+</div>
 
 <% if @scoreboards.any? %>
   <table class="table table-condensed">
