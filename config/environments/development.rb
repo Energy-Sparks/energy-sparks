@@ -60,6 +60,14 @@ Rails.application.configure do
 
   config.active_record.logger = nil
 
+  # For when you need severity etc in log file
+  # logger           = ActiveSupport::Logger.new(STDOUT)
+  # logger.formatter = proc do | severity, time, progname, msg |
+  #   "#{severity}: #{msg}\n"
+  # end
+
+  # config.logger = ActiveSupport::TaggedLogging.new(logger)
+
   config.log_level = :info
 
   # Raises error for missing translations
@@ -76,4 +84,14 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
+end
+
+class MyAppFormatter < Logger::Formatter
+
+    def call(severity, time, programName, message)
+
+        "#{datetime}, #{severity}: #{message} from #{programName}\n"
+
+    end
+
 end

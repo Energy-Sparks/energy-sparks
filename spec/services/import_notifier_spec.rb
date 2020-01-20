@@ -113,6 +113,23 @@ describe ImportNotifier do
       expect(email_body).to include(error_messages)
     end
 
+    it 'sends an email with the import warnings if appropriate' do
+      mpan = 123
+      create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, import_time: 1.day.ago)
+      warning = AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning: :missing_readings, warning_message: AmrReadingData::WARNINGS[:missing_readings])
+
+      ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
+
+      email = ActionMailer::Base.deliveries.last
+
+      expect(email.subject).to include('Energy Sparks import')
+
+      email_body = email.html_part.body.to_s
+      expect(email_body).to include('Sheffield')
+      expect(email_body).to include('Import Warnings')
+      expect(email_body).to include(error_messages)
+    end
+
     it 'can override the emails subject' do
       ImportNotifier.new(description: 'early morning import').notify(from: 2.days.ago, to: Time.now)
       email = ActionMailer::Base.deliveries.last
