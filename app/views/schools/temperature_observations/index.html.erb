@@ -7,41 +7,39 @@
 </p>
 
 <% if @observations.any? %>
-  <div class="table-responsive">
-    <table class="table table-bordered temperatures">
-      <thead>
-        <tr>
-          <th class='fixed-width-date'>Date</th>
-          <th>Time</th>
+  <table class="table table-bordered temperatures table-large">
+    <thead>
+      <tr>
+        <th class='fixed-width-date'>Date</th>
+        <th>Time</th>
+        <% @locations.each do |location| %>
+          <th><%= location.name %></th>
+        <% end %>
+        <% if can? :delete, Observation %>
+          <th>Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @observations.order(at: :desc).each do |observation| %>
+        <tr scope="row">
+          <td><%= nice_dates observation.at %></td>
+          <td><%= nice_times_only observation.at %></td>
           <% @locations.each do |location| %>
-            <th><%= location.name %></th>
+            <%  if observation.temperature_recordings.find_by(location: location) %>
+              <td class='<%= temperature_cell_colour(observation.temperature_recordings.find_by(location: location).centigrade) %> align-middle text-center f5'><%= observation.temperature_recordings.find_by(location: location).centigrade  %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+
           <% end %>
-          <% if can? :delete, Observation %>
-            <th>Actions</th>
+          <% if can? :delete, observation %>
+            <td><%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm' %></td>
           <% end %>
         </tr>
-      </thead>
-      <tbody>
-        <% @observations.order(at: :desc).each do |observation| %>
-          <tr scope="row">
-            <td><%= nice_dates observation.at %></td>
-            <td><%= nice_times_only observation.at %></td>
-            <% @locations.each do |location| %>
-              <%  if observation.temperature_recordings.find_by(location: location) %>
-                <td class='<%= temperature_cell_colour(observation.temperature_recordings.find_by(location: location).centigrade) %> align-middle text-center f5'><%= observation.temperature_recordings.find_by(location: location).centigrade  %></td>
-              <% else %>
-                <td></td>
-              <% end %>
-
-            <% end %>
-            <% if can? :delete, observation %>
-              <td><%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm' %></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+      <% end %>
+    </tbody>
+  </table>
 
   <hr/>
 
