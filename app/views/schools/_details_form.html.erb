@@ -6,7 +6,7 @@
   <% School.school_types.keys.each do |school_type| %>
     <div class="form-check form-check-inline">
       <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
-      <%= f.label "school_type_#{school_type.to_sym}", school_type.capitalize,  class: "form-check-label" %>
+      <%= f.label "school_type_#{school_type.to_sym}", t("school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
     </div>
   <% end %>
 </div>
