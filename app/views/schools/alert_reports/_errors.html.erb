@@ -1,0 +1,22 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Fuel Type</th>
+      <th>Alert Type</th>
+      <th>Using data up to</th>
+      <th>Run on</th>
+      <th>Information</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% errors.each do |error| %>
+      <tr scope="row">
+        <td><%= fa_icon(alert_icon(error)) %> <%= error.alert_type.display_fuel_type %></td>
+        <td><%= error.alert_type.title %></td>
+        <td><%= nice_dates error.asof_date %></td>
+        <td><%= nice_date_times error.created_at %></td>
+        <td><%= error.information %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

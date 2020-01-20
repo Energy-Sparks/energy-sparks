@@ -1,64 +1,54 @@
 <% content_for :page_title do %>Admin Reports<% end %>
 
-<h1>Admin Reports</h1>
+<h1>Reports</h1>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Report</th>
-      <th>Latest reading date</th>
-      <th>Download all data</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><%= link_to "AMR Report", admin_reports_amr_validated_readings_path %></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= link_to "AMR Report with deprecated meters included", admin_reports_amr_validated_readings_path(all_meters: true) %></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= link_to "Download meter collections", admin_schools_meter_collections_path %></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= link_to "Benchmark Result Generation Runs", admin_reports_benchmark_result_generation_runs_path %></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= link_to 'Alert subscribers', admin_reports_alert_subscribers_path %></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= link_to 'Unsubscriptions', admin_unsubscriptions_path  %></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path  %></td>
-      <td></td>
-      <td><%= link_to "Carbon intensity data CSV", data_feeds_carbon_intensity_readings_path(format: "csv") %></td>
-    </tr>
-    <% DarkSkyArea.all.each do |area| %>
-       <tr>
-        <td><%= link_to "Dark Sky Weather data for #{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id) %></td>
-        <td></td>
-        <td><%= link_to "CSV", data_feeds_dark_sky_temperature_readings_path(area.id, format: "csv") %></td>
-      </tr>
-    <% end %>
-    <% SolarPvTuosArea.all.each do |area| %>
-       <tr>
-        <td><%= link_to "Solar Pv 2 tuos data for #{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id) %></td>
-        <td></td>
-        <td><%= link_to "CSV", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv") %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<h2>Amr Data</h2>
+<ul>
+  <li><%= link_to "AMR File imports report", admin_reports_amr_data_feed_import_logs_path %></li>
+  <li><%= link_to "AMR Report", admin_reports_amr_validated_readings_path %></li>
+  <li><%= link_to "AMR Report with deprecated meters included", admin_reports_amr_validated_readings_path(all_meters: true) %></li>
+</ul>
+
+<h2>Benchmarks</h2>
+<ul>
+  <li><%= link_to "Benchmark Result Generation Runs", admin_reports_benchmark_result_generation_runs_path %></li>
+</ul>
+
+<h2>Alert communications</h2>
+<ul>
+  <li><%= link_to 'Alert subscribers', admin_reports_alert_subscribers_path %></li>
+  <li><%= link_to 'Email unsubscriptions', admin_unsubscriptions_path %></li>
+</ul>
+
+<h2>Carbon Intensity</h2>
+<ul>
+  <li><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path %></li>
+</ul>
+
+<h2>Dark Sky Feed</h2>
+<ul>
+  <% DarkSkyArea.all.each do |area| %>
+    <li><%= link_to "#{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id) %></li>
+  <% end %>
+</ul>
+
+<h2>Solar PV Feed</h2>
+<ul>
+  <% SolarPvTuosArea.all.each do |area| %>
+    <li><%= link_to "#{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id) %></li>
+  <% end %>
+</ul>
+
+<h1>Downloads</h1>
+
+<ul>
+  <li><%= link_to "Download meter collections", admin_schools_meter_collections_path %></li>
+  <li><%= link_to "Download meter attributes", admin_meter_attributes_path(format: :yaml) %></li>
+  <% DarkSkyArea.all.each do |area| %>
+    <li><%= link_to "Dark Sky Weather CSV for #{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id, format: "csv") %></li>
+  <% end %>
+  <% SolarPvTuosArea.all.each do |area| %>
+    <li><%= link_to "Solar Pv 2 tuos CSV for #{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv") %></li>
+  <% end %>
+  <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></li>
+</ul>

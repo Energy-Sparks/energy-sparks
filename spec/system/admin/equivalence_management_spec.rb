@@ -11,6 +11,7 @@ RSpec.describe 'equivalence type management', type: :system do
 
   it 'allows the creation and editing of equivalences' do
     click_on 'Manage'
+    click_on 'Admin'
     click_on 'Equivalence Types'
     click_on 'New equivalence type'
 
@@ -64,6 +65,7 @@ RSpec.describe 'equivalence type management', type: :system do
       )
 
       click_on 'Manage'
+      click_on 'Admin'
       click_on 'Equivalence Types'
 
       expect(page).to have_content equivalence_text
@@ -75,6 +77,10 @@ RSpec.describe 'equivalence type management', type: :system do
 
     it 'and equivalences too' do
       school = create(:school)
+
+      fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true)
+      school.configuration.update(fuel_configuration: fuel_configuration)
+
       aggregate_school = double :aggregate_school
       analytics = double :analytics
 

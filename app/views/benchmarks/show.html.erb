@@ -1,26 +1,60 @@
 <% content_for :page_title, @title %>
 
-<p class="pt-4"><%= link_to 'All benchmarks on a single page', all_benchmarks_path %></p>
-<p><%= link_to 'List of benchmarks', benchmarks_path %></p>
-<p><%= link_to 'Download benchmark results YAML file', benchmark_path({format: :yaml}) %></p>
+<h1>School Comparison Tool</h1>
+<p>This tool allows you to compare the energy performance of a number of schools within a Local Authority group or across the whole of Energy Sparks. The aim is to allow you to identify the best and worst performing schools to provide examples of best practice and to identify the schools needing the most support to improve their energy management.</p>
+
+<p><%= link_to 'Benchmark list', benchmarks_path(benchmark: @benchmark_filter) %>, <%= link_to 'All benchmarks on a single page', all_benchmarks_path(benchmark: @benchmark_filter) %></p>
+
+<p><%= link_to 'Download benchmark results YAML file (admin only)', benchmark_path({format: :yaml}) if can? :download, BenchmarkResult %></p>
+
+<% if can?(:read, :benchmark_errors_messages) %>
+  <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#benchmarkErrors" role="button" aria-expanded="false" aria-controls="benchmarkErrors">
+      See errors from the benchmark content framework when generating content
+    </a>
+  </p>
+  <div class="collapse" id="benchmarkErrors">
+    <% @errors.each do |error| %>
+     <div class="card card-body">
+      <h4><%= error[:message] %></h4>
+      <p class="very-small"><%= sanitize error[:full_html_output] %></p>
+        </div>
+    <% end %>
+  </div>
+ <% end %>
 
 <%= form_tag @form_path, method: :get do %>
-  <h2>Filters</h2>
   <%= hidden_field_tag :benchmark_type, @page if @page %>
-  <fieldset class="form-group">
-    <legend>School Groups</legend>
-    <%= collection_check_boxes :benchmark, :school_group_ids, @school_groups, :id, :name, { multiple: true } do |b| %>
-      <div class="custom-control custom-checkbox">
-
-        <%= b.check_box( checked: @school_group_ids.include?(b.object.id.to_s), class: "custom-control-input") %>
-        <%= b.label(class: "custom-control-label") do %>
-          <%= b.object.name %>
+  <div class="row">
+    <div class="col">
+      <h4>School groups</h4>
+      <fieldset class="form-group col">
+        <%= collection_check_boxes :benchmark, :school_group_ids, @school_groups, :id, :name, { multiple: true } do |b| %>
+          <div class="custom-control custom-checkbox">
+            <%= b.check_box( checked: @benchmark_filter[:school_group_ids].include?(b.object.id.to_s), class: "custom-control-input") %>
+            <%= b.label(class: "custom-control-label") do %>
+              <%= b.object.name %>
+            <% end %>
+          </div>
         <% end %>
-      </div>
-    <% end %>
-  </fieldset>
+      </fieldset>
+    </div>
+    <div class="col">
+      <h4>Scoreboards</h4>
+      <fieldset class="form-group col">
+        <%= collection_check_boxes :benchmark, :scoreboard_ids, @scoreboards, :id, :name, { multiple: true } do |b| %>
+          <div class="custom-control custom-checkbox">
+            <%= b.check_box(checked: @benchmark_filter[:scoreboard_ids].include?(b.object.id.to_s), class: "custom-control-input") %>
+            <%= b.label(class: "custom-control-label") do %>
+              <%= b.object.name %>
+            <% end %>
+          </div>
+        <% end %>
+      </fieldset>
+    </div>
+  </div>
 
-  <%= submit_tag "Filter Benchmarks", class: 'btn btn-info' %>
+  <%= submit_tag "Filter", class: 'btn' %>
 <% end %>
 
 <% @page_groups.each do |page_group| %>

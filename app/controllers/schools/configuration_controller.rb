@@ -1,12 +1,13 @@
 module Schools
   class ConfigurationController < ApplicationController
-    before_action :set_school
+    before_action :set_school, :load_scoreboards
 
     def new
       if @school.school_group
         @school.template_calendar = @school.school_group.default_template_calendar
         @school.solar_pv_tuos_area = @school.school_group.default_solar_pv_tuos_area
         @school.dark_sky_area = @school.school_group.default_dark_sky_area
+        @school.scoreboard = @school.school_group.default_scoreboard
       end
     end
 
@@ -35,8 +36,18 @@ module Schools
       params.require(:school).permit(
         :template_calendar_id,
         :solar_pv_tuos_area_id,
-        :dark_sky_area_id
+        :dark_sky_area_id,
+        :scoreboard_id,
+        :school_group_id
       )
+    end
+
+    def load_scoreboards
+      @scoreboards = if @school.template_calendar
+                       Scoreboard.where(academic_year_calendar_id: @school.template_calendar.based_on_id).order(:name)
+                     else
+                       Scoreboard.order(:name)
+                     end
     end
   end
 end

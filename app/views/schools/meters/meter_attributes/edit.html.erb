@@ -1,9 +1,0 @@
-<div class="row justify-content-md-center">
-  <div class="col col-md-10 col-lg-8">
-    <h1>Edit attribute: <%= @meter_attribute_type.attribute_name %></h1>
-    <p><%= @meter_attribute_type.attribute_description %></p>
-    <%= simple_form_for :attribute, url: school_meter_meter_attribute_path(@school, @meter, @meter_attribute), method: :put, html: { novalidate: false } do |form| %>
-      <%= render 'shared/meter_attributes/edit_form', meter_attribute_type: @meter_attribute_type, meter_attribute: @meter_attribute, input_data: @input_data, form: form %>
-    <% end %>
-  </div>
-</div>

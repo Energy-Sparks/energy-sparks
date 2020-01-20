@@ -1,10 +1,13 @@
 module Alerts
   class CollateBenchmarkData
+    def initialize(benchmark_run)
+      @benchmark_run = benchmark_run
+    end
+
     def perform(schools = School.process_data)
       benchmarks = {}
 
-      latest_run = BenchmarkResultGenerationRun.order(created_at: :desc).first
-      latest_school_runs = latest_run.benchmark_result_school_generation_runs.where(school: schools)
+      latest_school_runs = @benchmark_run.benchmark_result_school_generation_runs.where(school: schools)
       get_benchmarks_for_latest_run(latest_school_runs, benchmarks)
 
       benchmarks

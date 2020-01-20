@@ -3,17 +3,17 @@
   <div class="dropdown-menu">
     <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
     <%= link_to 'Calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
-    <%= link_to 'Data feed configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
-    <%= link_to 'Manage groups', edit_school_school_group_path(school), class: 'dropdown-item' if can? :group, school %>
+    <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
     <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
     <%= link_to 'Manage Low carbon hub installations', school_low_carbon_hub_installations_path(school), class: 'dropdown-item' if can? :manage, LowCarbonHubInstallation %>
     <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
     <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
     <%= link_to 'Alert reports', school_alert_reports_path(school), class: 'dropdown-item' if can? :index, Alert %>
+    <%= link_to 'Content reports', school_content_reports_path(school), class: 'dropdown-item' if can? :index, ContentGenerationRun %>
     <%= link_to 'Alert subscription events', school_alert_subscription_events_path(school), class: 'dropdown-item' if can? :index, AlertSubscriptionEvent %>
     <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
     <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
-    <%= link_to 'Meter attributes', school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
+    <%= link_to 'Meter attributes', admin_school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
   </div>
 </li>

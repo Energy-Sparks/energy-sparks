@@ -1,0 +1,36 @@
+<h1>Solar PV Areas</h1>
+
+<% if @solar_pv_tuos_areas.any? %>
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Readings</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @solar_pv_tuos_areas.each do |solar_pv_tuos_area| %>
+      <tr>
+        <td><%= solar_pv_tuos_area.title %></td>
+        <td><%= solar_pv_tuos_area.description %></td>
+        <td><%= solar_pv_tuos_area.latitude %></td>
+        <td><%= solar_pv_tuos_area.longitude %></td>
+        <td><%= solar_pv_tuos_area.solar_pv_tuos_readings.count %></td>
+        <td>
+          <div class='btn-group'>
+            <%= link_to 'Edit', edit_admin_solar_pv_tuos_area_path(solar_pv_tuos_area), class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+  <p>There are no Solar PV Areas</p>
+<% end %>
+
+<%= link_to 'New Solar PV Area', new_admin_solar_pv_tuos_area_path, class: 'btn' %>

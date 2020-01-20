@@ -1,0 +1,19 @@
+<thead class="thead-light">
+  <tr scope="row">
+    <th>
+      <% meter_attribute.selected_meter_types.each do |meter_type|%>
+        <span class="badge badge-secondary"><%= fa_icon(fuel_type_icon(meter_type)) %> <%= meter_type %> <%= "(pseudo)" if meter_attribute.pseudo?(meter_type) %></span>
+      <% end %>
+    </th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><%= print_meter_attribute(meter_attribute) %></td>
+    <td>
+      <%= yield %>
+      <%= render 'shared/meter_attributes/details_table', meter_attribute: meter_attribute %>
+    </td>
+  </tr>
+  <tbody>

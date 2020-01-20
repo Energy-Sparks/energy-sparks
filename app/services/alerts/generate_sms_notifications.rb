@@ -15,6 +15,7 @@ module Alerts
           with: event.alert.template_variables
         ).sms_content
         @send_sms_service.new("EnergySparks alert: " + sms_content, event.contact.mobile_phone_number).send
+        SmsRecord.create!(mobile_phone_number: event.contact.mobile_phone_number, alert_subscription_event: event)
         event.update(status: :sent)
       end
     end

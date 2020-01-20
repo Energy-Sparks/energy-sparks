@@ -21,6 +21,7 @@
 #  process_data                          :boolean          default(FALSE)
 #  school_group_id                       :bigint(8)
 #  school_type                           :integer
+#  scoreboard_id                         :bigint(8)
 #  serves_dinners                        :boolean          default(FALSE), not null
 #  slug                                  :string
 #  solar_irradiance_area_id              :bigint(8)
@@ -31,23 +32,28 @@
 #  urn                                   :integer          not null
 #  validation_cache_key                  :string           default("initial")
 #  visible                               :boolean          default(FALSE)
-#  weather_underground_area_id           :bigint(8)
 #  website                               :string
 #
 # Indexes
 #
 #  index_schools_on_calendar_id      (calendar_id)
 #  index_schools_on_school_group_id  (school_group_id)
+#  index_schools_on_scoreboard_id    (scoreboard_id)
 #  index_schools_on_urn              (urn) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id)
 #  fk_rails_...  (school_group_id => school_groups.id)
+#  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #
+
+require 'securerandom'
 
 class School < ApplicationRecord
   extend FriendlyId
+  include ParentMeterAttributeHolder
+
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
@@ -92,16 +98,18 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :school_group, optional: true
+  belongs_to :scoreboard, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
 
-  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle]
+  enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
-  scope :visible,       -> { where(visible: true) }
-  scope :not_visible,   -> { where(visible: false) }
-  scope :process_data,  -> { where(process_data: true) }
-  scope :without_group, -> { where(school_group_id: nil) }
+  scope :visible,            -> { where(visible: true) }
+  scope :not_visible,        -> { where(visible: false) }
+  scope :process_data,       -> { where(process_data: true) }
+  scope :without_group,      -> { where(school_group_id: nil) }
+  scope :without_scoreboard, -> { where(scoreboard_id: nil) }
 
   scope :with_config, -> { joins(:configuration) }
 
@@ -211,10 +219,6 @@ class School < ApplicationRecord
     users.where(role: :school_admin)
   end
 
-  def scoreboard
-    school_group.scoreboard if school_group
-  end
-
   def latest_content
     content_generation_runs.order(created_at: :desc).first
   end
@@ -271,26 +275,39 @@ class School < ApplicationRecord
     end
   end
 
-  def meter_attributes_for(meter)
-    meter_attributes.where(meter_type: meter.meter_type).active
-  end
-
-  def pseudo_meter_attributes
-    meter_attributes.active.select(&:pseudo?)
-  end
-
   def school_group_pseudo_meter_attributes
-    school_group ? school_group.pseudo_meter_attributes : SchoolGroupMeterAttribute.none
+    school_group ? school_group.pseudo_meter_attributes : {}
+  end
+
+  def global_pseudo_meter_attributes
+    GlobalMeterAttribute.pseudo
   end
 
   def all_pseudo_meter_attributes
-    school_group_pseudo_meter_attributes + pseudo_meter_attributes
+    [school_group_pseudo_meter_attributes, pseudo_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+      pseudo_attributes.each do |meter_type, attributes|
+        collection[meter_type] ||= []
+        collection[meter_type] = collection[meter_type] + attributes
+      end
+      collection
+    end
   end
 
   def pseudo_meter_attributes_to_analytics
-    all_pseudo_meter_attributes.group_by(&:meter_type).inject({}) do |collection, (meter_type, attributes)|
+    all_pseudo_meter_attributes.inject({}) do |collection, (meter_type, attributes)|
       collection[meter_type.to_sym] = MeterAttribute.to_analytics(attributes)
       collection
     end
+  end
+
+  def meter_attributes_to_analytics
+    meters.order(:mpan_mprn).inject({}) do |collection, meter|
+      collection[meter.mpan_mprn] = meter.meter_attributes_to_analytics
+      collection
+    end
+  end
+
+  def invalidate_cache_key
+    update_attribute(:validation_cache_key, SecureRandom.uuid)
   end
 end

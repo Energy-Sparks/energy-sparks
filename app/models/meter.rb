@@ -57,6 +57,10 @@ class Meter < ApplicationRecord
   validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo_mpan?, message: 'for electricity meters should be a 13 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
+  def school_name
+    school.name
+  end
+
   def fuel_type
     meter_type.to_sym
   end
@@ -89,48 +93,16 @@ class Meter < ApplicationRecord
     school.school_group ? school.school_group.meter_attributes_for(self) : SchoolGroupMeterAttribute.none
   end
 
+  def global_meter_attributes
+    GlobalMeterAttribute.for(self)
+  end
+
   def all_meter_attributes
-    school_group_meter_attributes + school_meter_attributes + meter_attributes.active
+    global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active
   end
 
   def meter_attributes_to_analytics
     MeterAttribute.to_analytics(all_meter_attributes)
-  end
-
-  def _old_meter_attributes(attributes_class = MeterAttributeCache)
-    attributes_class.for(school.urn, mpan_mprn)
-  end
-
-  def attributes(attribute_type)
-    _old_meter_attributes[attribute_type]
-  end
-
-  def solar_pv?
-    ! solar_pv.nil?
-  end
-
-  def storage_heaters?
-    ! storage_heaters.nil?
-  end
-
-  def meter_corrections
-    attributes(:meter_corrections)
-  end
-
-  def aggregation
-    attributes(:aggregation)
-  end
-
-  def heating_model
-    attributes(:heating_model)
-  end
-
-  def storage_heaters
-    attributes(:storage_heaters)
-  end
-
-  def solar_pv
-    attributes(:solar_pv)
   end
 
   def correct_mpan_check_digit?

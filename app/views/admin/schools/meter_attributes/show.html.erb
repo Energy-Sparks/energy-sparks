@@ -1,0 +1,16 @@
+<h1>Meter: <%= @meter_attribute.meter.mpan_mprn %></h1>
+
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Reason</th>
+      <th>By</th>
+      <th>On</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render 'single', meter_attribute: @meter_attribute %>
+  </tbody>
+</table>

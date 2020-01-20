@@ -1,10 +1,16 @@
 <div class="row padded-row">
-  <div class="col-lg-10">
-    <h3><%= name %></h3>
+  <div class="col-lg-7">
+    <div class="nav-anchor">
+      <a name="<%= name.parameterize %>"> </a>
+      <h3><%= name %></h3>
+    </div>
   </div>
-  <% if scoreboard %>
-    <div class="col-lg-2">
-      <%= link_to 'View scoreboard', scoreboard_path(scoreboard), class: 'btn btn-primary float-right'  %>
+  <% if scoreboard  || benchmark_filter %>
+    <div class="col-lg-5">
+      <div class='btn-group float-right'>
+        <%= link_to 'Compare schools', benchmarks_path(benchmark: benchmark_filter ), class: 'btn' if benchmark_filter && can?(:read, BenchmarkResult) %>
+        <%= link_to "View #{local_assigns[:scoreboard_name] || 'scoreboard'}", scoreboard_path(scoreboard), class: 'btn btn-primary float-right' if scoreboard %>
+      </div>
     </div>
   <% end %>
 </div>

@@ -54,6 +54,11 @@ GRANT ALL ON SCHEMA public TO public;
 ```
 bundle exec rake utility:prepare_test_server
 ```
+6) Reset active storage buckets on test adn copy production bucket contents
+```
+bundle exec rake utility:clear_active_storage_bucket
+bundle exec rake utility:copy_active_storage_bucket[*INSERT PRODUCTION ACTIVE STORAGE BUCKET-NAME*]
+```
 
 # Creating a new environment on Elastic Beanstalk
 
@@ -62,31 +67,46 @@ bundle exec rake utility:prepare_test_server
 * Choose an environment name, normally we are using the AWS linux platform version, along with test or prod, i.e. prod-2-10-1 or test-2-8-7
 * Choose preconfigured platform of Ruby
 * Leave the application code setting as the Sample Application
-* Click 'Configure More Options' and set up:
-
-### Capacity:
-
-* Change environment to load balanced (1-1)
-
-### Load Balancer:
-
-* Choose a Classic load balancer
-
-### Instances:
-
-* Set instance to t2.small - make sure there is at least 20Gb disk space available.
-
-### Security:
-
-* Add previously created key in security [IAM DevOps](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#KeyPairs:sort=keyName) (i.e. EnergySparksProductionEC2Machine or EnergySparksTestEC2)
+* Click 'Configure More Options'
+* From configuration presets, select 'Custom configuration'
 
 ### Software
 
 Leave this for now, we will add the environment variables once the environment has been created with the sample app
 
+### Instances:
+
+* Set to use General Purpose SSD
+* Size 20Gb
+* EC2 security groups, just add the default security group for now
+
+* Set instance to t2.small - make sure there is at least 20Gb disk space available.
+
+### Capacity:
+
+* Change environment to load balanced
+* Set instances Min 1 and Max 1
+* Set instance type to t3.small
+
+### Load Balancer:
+
+* Choose a Classic load balancer and leave settings as they are for now
+
+### Security:
+
+* Add previously created key in security [IAM DevOps](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#KeyPairs:sort=keyName) (i.e. EnergySparksProductionEC2Machine or EnergySparksTestEC2)
+
 ## Create environment
 
 Click the Create environment button
+
+### Set up temporary certificate
+
+* Go to the certificate manager
+* Use a name like test-2-11-1.energysparks.uk
+* Choose DNS validation
+* Setp 5 validation will allow you to automatically set up the certificate in Route 53 - make sure you click the little triangle next to the domain name to open the information panel, this includes a button 'Create record in Route 53' - click this button!
+* Click continue - it will take a few minutes to validate
 
 ### Once environment has been created
 
@@ -98,8 +118,9 @@ Click the Create environment button
      * split the output from printenv in two and
      * remove the spaces which surround the = signs
      * take out AWS_ACCESS_KEY_ID as it will not process correctly
+     * take out the mailchimp URL as it will not process either
 
-  * Check environment variables through web console and add AWS_ACCESS_KEY_ID back in again
+  * Check environment variables through web console and add AWS_ACCESS_KEY_ID and the Mailchimp URL back in again
   * Click apply
 
   * Check SSH works to new environment with ```eb ssh```
@@ -133,49 +154,6 @@ Get the RDS launch wizard group and add access INBOUND for the AWSEBSecurityGrou
 2) Use pg_dump to get dump of current production database
 3) Use psql to get data into new database
 
-## Migrate field to Rich Text field
-
-1) Create migration to rename field, you might need to remove null constraint if present
-
-```ruby
-class AddRichTextToAlertType < ActiveRecord::Migration[6.0]
-  def change
-    rename_column :table_name, :description, :_old_description
-    change_column_null :table_name, :_old_description, true
-  end
-end
-```
-
-2) Add to model
-
-```ruby
-has_rich_text :description
-```
-
-3) Update form
-
-```ruby
-  <%= f.input :description, as: :trix_editor %>
-```
-4) Update wherever displayed
-
-```ruby
-<div class="trix-content"><%= model_name.description %></div>
-```
-
-5) In tests, change to use helper, note, selector defaults to 'trix-editor'
-
-```ruby
-fill_in_trix with: description
-```
-
-6) Create after party task to migrate content to new field
-
-```ruby
-Model.all.each do |model|
-  model.update!(description: model._old_description)
-end
-```
 
 ## Browser testing provided by:
 

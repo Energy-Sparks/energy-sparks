@@ -1,0 +1,33 @@
+<h1>Amr Reading Warnings</h1>
+
+<p><%= link_to "AMR File imports report", admin_reports_amr_data_feed_import_logs_path %></p>
+<p><%= link_to 'Reports', admin_reports_path %></p>
+
+<% if @warnings.any? %>
+  <h2>Warnings</h2>
+  <%== pagy_bootstrap_nav(@pagy_warnings) if @warnings.count > @maximum_rows_before_pagination %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Feed</th>
+        <th>File name</th>
+        <th>Import Time</th>
+        <th>Mpan</th>
+        <th>Reading date</th>
+        <th>Warning message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @warnings.each do |warning| %>
+        <tr>
+          <td><%= link_to warning.amr_data_feed_import_log.amr_data_feed_config.description, admin_amr_data_feed_config_path(warning.amr_data_feed_import_log.amr_data_feed_config) %></td>
+          <td><%= warning.amr_data_feed_import_log.file_name %></td>
+          <td><%= nice_date_times warning.amr_data_feed_import_log.import_time %></td>
+          <td><%= warning.mpan_mprn %></td>
+          <td><%= warning.reading_date %></td>
+          <td><%= warning.warning_message %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

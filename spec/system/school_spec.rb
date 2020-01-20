@@ -79,30 +79,6 @@ RSpec.describe "school", type: :system do
         expect(school.key_stages).to_not include(ks3)
       end
 
-      it 'allows me to set a school group for the school' do
-        group = create(:school_group, name: 'BANES', scoreboard: create(:scoreboard))
-        click_on(school_name)
-        click_on('Manage groups')
-        select 'BANES', from: 'Group'
-        click_on 'Update groups'
-        school.reload
-        expect(school.school_group).to eq(group)
-      end
-
-      it 'only allows selection on groups with the same academic years' do
-        regional_calendar = create(:regional_calendar)
-        school_calendar = create(:school_calendar, based_on: regional_calendar)
-        school.update!(calendar: school_calendar, template_calendar: regional_calendar)
-
-        create(:school_group, name: 'BANES', scoreboard: create(:scoreboard, academic_year_calendar: regional_calendar.based_on))
-        create(:school_group, name: 'Oxford', scoreboard: create(:scoreboard))
-
-        click_on(school_name)
-        click_on('Manage groups')
-
-        expect(page).to have_select('Group', :options => ['', 'BANES'])
-      end
-
       it 'allows visibility management from school page' do
         click_on(school_name)
         click_on('Visible')
@@ -114,13 +90,25 @@ RSpec.describe "school", type: :system do
       end
 
       it 'allows data process management' do
+        create(:gas_meter, :with_unvalidated_readings, school: school)
+        school.update(process_data: false)
         click_on(school_name)
+        click_on('Not processing data')
+        expect(page).to have_content "#{school.name} will now process data"
+        school.reload
+        expect(school.process_data).to eq(true)
         click_on('Processing data')
         school.reload
         expect(school.process_data).to eq(false)
+      end
+
+      it 'disallows data process management if the school has no meter readings' do
+        school.update(process_data: false)
+        click_on(school_name)
         click_on('Not processing data')
+        expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
         school.reload
-        expect(school.process_data).to eq(true)
+        expect(school.process_data).to eq(false)
       end
     end
   end

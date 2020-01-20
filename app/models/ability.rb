@@ -13,7 +13,7 @@ class Ability
     can :read, SchoolGroup
     can :show, School, visible: true
     can :usage, School, visible: true
-    can :show, Scoreboard
+    can :read, Scoreboard
     can :read, FindOutMore
     can :read, Observation
     can :read, ProgrammeType
@@ -39,6 +39,7 @@ class Ability
         can :manage, CalendarEvent do |calendar_event|
           user.school_group.calendars.include?(calendar_event.calendar)
         end
+        can :read, BenchmarkResult
       else
         school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }
@@ -73,12 +74,12 @@ class Ability
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, visible: true
       can :manage, Observation, school: { id: user.school_id, visible: true }
+      can :read, :my_school_menu
       if user.staff?
         can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
-        can :read, :my_school_menu
       end
     elsif user.guest?
       can :manage, SchoolOnboarding, created_user_id: nil

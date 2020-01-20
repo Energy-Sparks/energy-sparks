@@ -19,8 +19,13 @@ require:
   - rubocop-performance
 # Disable specs for now
 # - rubocop-rspec
+#
+
 
 # Rails cops
+Rails/ReflectionClassName:
+  Exclude:
+    - 'app/models/concerns/analytics_attribute.rb'
 Rails/DynamicFindBy:
   Enabled: false
 Rails/Output:
@@ -87,7 +92,7 @@ Style/RedundantReturn:
   Enabled: false
 Layout/SpaceInsideBlockBraces:
   Enabled: false
-EmptyLineAfterGuardClause:
+Layout/EmptyLineAfterGuardClause:
   Enabled: false
 Metrics/LineLength:
   Enabled: false

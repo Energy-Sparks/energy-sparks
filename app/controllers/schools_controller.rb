@@ -5,6 +5,7 @@ class SchoolsController < ApplicationController
   include DashboardEnergyCharts
   include DashboardAlerts
   include DashboardTimeline
+  include DashboardPriorities
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -16,7 +17,7 @@ class SchoolsController < ApplicationController
 
   # GET /schools
   def index
-    @scoreboards = Scoreboard.includes(schools: :configuration).where.not(schools: { id: nil }).order(:name)
+    @school_groups = SchoolGroup.order(:name)
     @ungrouped_visible_schools = School.visible.without_group.order(:name)
     @schools_not_visible = School.not_visible.order(:name)
   end
@@ -30,6 +31,9 @@ class SchoolsController < ApplicationController
       @charts = setup_charts(@school.configuration)
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
       @observations = setup_timeline(@school.observations)
+      @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
+      @overview_charts = setup_energy_overview_charts(@school.configuration)
+      @overview_table = setup_management_table
     end
   end
 
@@ -132,5 +136,9 @@ private
     else
       redirect_to management_school_path(@school), status: :found
     end
+  end
+
+  def setup_management_table
+    @school.latest_management_dashboard_tables.first
   end
 end

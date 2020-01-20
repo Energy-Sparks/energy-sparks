@@ -4,19 +4,12 @@ module Schools
     skip_before_action :authenticate_user!
 
     include SchoolAggregation
+    include AnalysisPages
 
     before_action :check_aggregated_school_in_cache, only: :show
 
     def index
-      @heating_pages = process_templates(@school.latest_analysis_pages.heating)
-      @electricity_pages = process_templates(@school.latest_analysis_pages.electricity_use)
-      @overview_pages = process_templates(@school.latest_analysis_pages.overview)
-      @solar_pages = process_templates(@school.latest_analysis_pages.solar_pv)
-      @hot_water_pages = process_templates(@school.latest_analysis_pages.hot_water)
-      @tariff_pages = process_templates(@school.latest_analysis_pages.tariffs)
-      @co2_pages = process_templates(@school.latest_analysis_pages.co2)
-      @boiler_control_pages = process_templates(@school.latest_analysis_pages.boiler_control)
-      @storage_heater_pages = process_templates(@school.latest_analysis_pages.storage_heaters)
+      setup_analysis_pages(@school.latest_analysis_pages)
     end
 
     def show
@@ -30,7 +23,13 @@ module Schools
       @content = framework_adapter.content
       @title = page_title(@content, @school)
     rescue ActiveRecord::RecordNotFound
-      redirect_to school_analysis_path(@school), status: :moved_permanently
+      if /\d/.match?(params[:id])
+        # new-style numeric analysis page that doesn't exist, re-raise to 404
+        raise
+      else
+        # old-style analysis tab name, redirect back to main page
+        redirect_to school_analysis_index_path(@school), status: :moved_permanently
+      end
     end
 
   private
@@ -41,18 +40,6 @@ module Schools
         title[:content]
       else
         "#{school.name} analysis"
-      end
-    end
-
-    def process_templates(pages)
-      pages.by_priority.map do |page|
-        TemplateInterpolation.new(
-          page.content_version,
-          with_objects: { rating: page.alert.rating, analysis_page: page }
-        ).interpolate(
-          :analysis_title, :analysis_subtitle,
-          with: page.alert.template_variables
-        )
       end
     end
   end

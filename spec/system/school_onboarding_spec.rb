@@ -8,13 +8,16 @@ RSpec.describe "school onboarding", :schools, type: :system do
   let!(:template_calendar)        { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
   let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
+  let(:scoreboard)                { create(:scoreboard, name: 'BANES scoreboard') }
+
   let!(:school_group) do
     create(
       :school_group,
       name: 'BANES',
       default_template_calendar: template_calendar,
       default_solar_pv_tuos_area: solar_pv_area,
-      default_dark_sky_area: dark_sky_weather_area
+      default_dark_sky_area: dark_sky_weather_area,
+      default_scoreboard: scoreboard
     )
   end
 
@@ -28,12 +31,12 @@ RSpec.describe "school onboarding", :schools, type: :system do
     before(:each) do
       sign_in(admin)
       visit root_path
+      click_on 'Manage'
+      click_on 'Admin'
     end
 
     it 'records basic details and sends an email to the school' do
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
+      click_on 'Automatic School Setup'
       click_on 'New Automatic School Setup'
 
       fill_in 'School name', with: school_name
@@ -45,6 +48,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_select('Template calendar', selected: 'BANES calendar')
       expect(page).to have_select('Solar PV from The University of Sheffield Data Feed Area', selected: 'BANES solar')
       expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
+      expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
 
       click_on 'Next'
 
@@ -61,10 +65,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
     end
 
     it 'sends reminder emails when requested' do
-      onboarding = create :school_onboarding
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
+      onboarding = create :school_onboarding, :with_events
+      click_on 'Automatic School Setup'
       click_on 'Send reminder'
 
       email = ActionMailer::Base.deliveries.last
@@ -72,13 +74,37 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(email.html_part.body.to_s).to include(onboarding_path(onboarding))
     end
 
+    it 'completes onboardings with schools' do
+
+      school_onboarding = create :school_onboarding, :with_school
+
+      expect(school_onboarding).to be_incomplete
+
+      click_on 'Automatic School Setup'
+      click_on 'Mark as complete'
+
+      school_onboarding.reload
+      expect(school_onboarding).to be_complete
+
+    end
+
+    it 'I can download a CSV of onboarding schools' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+      click_on 'Automatic School Setup'
+      click_on 'Download as CSV'
+
+      header = page.response_headers['Content-Disposition']
+      expect(header).to match /^attachment/
+      expect(header).to match /filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/
+
+      expect(page.source).to have_content 'Email sent'
+      expect(page.source).to have_content onboarding.school_name
+      expect(page.source).to have_content onboarding.contact_email
+    end
+
     it 'I can amend the email address if the user has not responded' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-
-      within '.navbar' do
-        click_on 'Automatic School Setup'
-      end
-
+      click_on 'Automatic School Setup'
       expect(onboarding.has_only_sent_email_or_reminder?).to be true
 
       click_on 'Change'
@@ -200,7 +226,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
     it 'lets the user edit inset days, meters, pupils and opening times but does not require them' do
       create :calendar_event_type, title: 'Teacher training', inset_day: true
-      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31)
+      academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
       user = create(:onboarding_user)
       onboarding.update!(created_user: user)
       school = build(:school)
@@ -239,7 +265,10 @@ RSpec.describe "school onboarding", :schools, type: :system do
       select 'Teacher training', from: 'Type'
       # Grr, actual input hidden for JS datepicker
       fill_in 'Date', with: '2019-01-09'
-      click_on 'Add inset day'
+
+      expect(page).to have_field('Date', with: '2019-01-09')
+
+      expect { click_on 'Add inset day' }.to change { CalendarEvent.count }.by(1)
       expect(page).to have_content('Inset days: 1')
 
     end

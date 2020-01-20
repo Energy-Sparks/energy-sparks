@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'
+  get 'case-studies', to: 'case_studies#index', as: :case_studies
+  get 'resources', to: 'resource_files#index', as: :resources
   get 'home-page', to: 'home#show'
   get 'mailchimp-signup', to: 'home#mailchimp_signup'
 
@@ -79,12 +81,7 @@ Rails.application.routes.draw do
       resources :contacts
       resources :alert_subscription_events, only: [:index, :show]
 
-      resources :meter_attributes
-
       resources :meters do
-        scope module: :meters do
-          resources :meter_attributes
-        end
         member do
           put :activate
           put :deactivate
@@ -108,7 +105,8 @@ Rails.application.routes.draw do
 
       resources :interventions
 
-      get :alert_reports, to: 'alert_reports#index', as: :alert_reports
+      resources :alert_reports, only: [:index, :show]
+      resources :content_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 
@@ -142,18 +140,25 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
-  scope :admin do
-    resources :users
-  end
+
+  get '/admin', to: 'admin#index'
 
   namespace :admin do
+    resources :users
+    resources :case_studies
     resources :newsletters
+    resources :resource_files
     resources :school_groups do
-      resources :meter_attributes
+      scope module: :school_groups do
+        resources :meter_attributes
+      end
     end
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create
+
+    resources :dark_sky_areas, except: [:destroy, :show]
+    resources :solar_pv_tuos_areas, except: [:destroy, :show]
 
     resources :schools, only: [] do
       get :analysis, to: 'analysis#analysis'
@@ -163,6 +168,8 @@ Rails.application.routes.draw do
     namespace :emails do
       resources :alert_mailers, only: :show
     end
+
+    resources :meter_attributes, only: :index
 
     resources :programme_types do
       scope module: :programme_types do
@@ -182,7 +189,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :amr_data_feed_configs, only: [:index, :show]
+    resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
+      resources :amr_uploaded_readings, only: [:index, :show, :new, :create]
+    end
 
     resources :equivalence_types
     resource :equivalence_type_preview, only: :create
@@ -192,12 +201,15 @@ Rails.application.routes.draw do
 
     resources :calendars, only: [:new, :create, :index, :show]
 
+    resources :global_meter_attributes
+
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
         resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
+        resources :events, only: [:create]
       end
     end
     namespace :reports do
@@ -206,6 +218,8 @@ Rails.application.routes.draw do
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings
       resources :benchmark_result_generation_runs, only: [:index, :show]
+      resources :amr_data_feed_import_logs, only: [:index]
+      resources :amr_reading_warnings, only: [:index]
     end
     resource :settings, only: [:show, :update]
 
@@ -219,7 +233,13 @@ Rails.application.routes.draw do
       resource :unvalidated_amr_data, only: :show
       resource :validated_amr_data, only: :show
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
+      scope module: :schools do
+        resources :meter_attributes
+        resources :school_attributes
+      end
     end
+
+    post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
 
   end # Admin name space
 

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
-  let!(:school)       { create(:school, :with_school_group) }
+  let!(:scoreboard)   { create(:scoreboard, name: 'Super scoreboard')}
+  let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
   let!(:user)         { create(:staff, school: school)}
-  let!(:scoreboard)   { create(:scoreboard, name: 'Super scoreboard', school_groups: [school.school_group])}
 
   describe 'when logged in' do
     before(:each) do
@@ -13,8 +13,10 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
     it 'can add a new scoreboard with validation' do
       visit schools_path
-      click_on 'View scoreboard'
+      click_on 'Scoreboards'
+      click_on 'Super scoreboard'
       expect(page).to have_content('Super scoreboard')
+      expect(page).to have_content(school.name)
     end
   end
 end

@@ -1,0 +1,19 @@
+<h1>Preview uploaded data</h1>
+<h2>From file: <%= @amr_uploaded_reading.file_name %></h2>
+
+<p>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></p>
+
+<% if @warnings.any? %>
+  <%= render 'warnings', warnings: @warnings %>
+<% else %>
+  <p>Note: There were no warnings for this file</p>
+<% end %>
+
+<%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data %>
+
+<%= form_with(url: admin_create_amr_data_feed_readings_path(@amr_uploaded_reading), method: :post, local: true) do %>
+  <%= submit_tag "I'm happy, insert this data", class: 'btn', data: { disable_with: false } %>
+<% end %>
+
+<p><%= link_to 'Back', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></p>
+<p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>

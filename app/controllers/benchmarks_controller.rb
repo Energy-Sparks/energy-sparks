@@ -3,8 +3,12 @@ require 'dashboard'
 class BenchmarksController < ApplicationController
   skip_before_action :authenticate_user!
 
+  before_action :latest_benchmark_run
+  before_action :content_manager
   before_action :page_groups, only: [:index, :show_all]
+  before_action :load_filter, only: [:index, :show, :show_all]
   before_action :filter_lists, only: [:show, :show_all]
+
   before_action :benchmark_results, only: [:show, :show_all]
 
   def index
@@ -34,6 +38,10 @@ class BenchmarksController < ApplicationController
 
 private
 
+  def latest_benchmark_run
+    @latest_benchmark_run = BenchmarkResultGenerationRun.order(created_at: :desc).first
+  end
+
   def sort_content_and_page_groups(page_groups)
     @content_hash = {}
     @errors = []
@@ -46,7 +54,7 @@ private
   end
 
   def content_for_page(page, errors = [])
-    content_manager.content(@benchmark_results, page)
+    @content_manager.content(@benchmark_results, page, user_type: user_type_hash)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
     # rubocop:enable Lint/RescueException
@@ -59,28 +67,41 @@ private
   end
 
   def page_groups
-    user_type_hash = if current_user
-                       { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
-                     else
-                       { user_role: :guest, staff_role: nil }
-                     end
+    @page_groups = @content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
+  end
 
-    @page_groups = content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
+  def user_type_hash
+    if current_user
+      { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
+    else
+      { user_role: :guest, staff_role: nil }
+    end
+  end
+
+  def load_filter
+    @benchmark_filter = {
+      school_group_ids: (params.dig(:benchmark, :school_group_ids) || []).reject(&:empty?),
+      scoreboard_ids:   (params.dig(:benchmark, :scoreboard_ids) || []).reject(&:empty?)
+    }
+    school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
+    scoreboard_names = Scoreboard.find(@benchmark_filter[:scoreboard_ids]).pluck(:name).join(', ')
+    @filter_names = school_group_names + scoreboard_names
   end
 
   def filter_lists
-    @school_groups = SchoolGroup.all
+    @school_groups = SchoolGroup.order(:name)
+    @scoreboards = Scoreboard.order(:name)
   end
 
   def benchmark_results
-    @school_group_ids = params.dig(:benchmark, :school_group_ids) || []
+    include_invisible = can? :show, :all_schools
 
-    schools = SchoolFilter.new(school_group_ids: @school_group_ids).filter
-    @benchmark_results = Alerts::CollateBenchmarkData.new.perform(schools)
+    schools = SchoolFilter.new(**{ include_invisible: include_invisible }.merge(@benchmark_filter)).filter
+    @benchmark_results = Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(schools)
   end
 
-  def content_manager(date = Time.zone.today)
-    Benchmarking::BenchmarkContentManager.new(date)
+  def content_manager
+    @content_manager = Benchmarking::BenchmarkContentManager.new(@latest_benchmark_run.run_date)
   end
 
   def filter_content(all_content)

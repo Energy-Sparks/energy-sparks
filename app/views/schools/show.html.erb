@@ -3,16 +3,35 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Energy Usage&hellip;</h1>
   <% if @school.configuration %>
-    <div class="h5"><%= link_to "Learn more about this school's energy use", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
+    <div class="h5"><%= link_to "Review this school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
   <% end %>
 </div>
-<p></p>
+
+<h2>Annual use</h2>
+
+<% if @overview_table %>
+  <%= render 'management/schools/overview_table', overview_table: @overview_table %>
+<% end %>
+
+<% unless @overview_charts.empty? %>
+  <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
+<% end %>
+
+<% unless @management_priorities.empty? %>
+  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
+<% end %>
+
+<h2>Recent use</h2>
+
 <div class="row dashboards">
   <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
 </div>
 
+<%= render 'shared/dashboard_alerts', school: @school, dashboard_alerts: @dashboard_alerts, content_field: :public_dashboard_title, title: 'Act on energy usage'%>
+<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
+
 <% unless user_signed_in? %>
-  <div class="row dashboards mb-4">
+  <div class="row dashboards mt-4 mb-4">
     <div class="col-md-6 text-center">
       <div class="card">
         <div class="card-body">
@@ -40,8 +59,3 @@
   </div>
 <% end %>
 
-
-
-<%= render 'shared/dashboard_alerts', school: @school, dashboard_alert_content: @dashboard_alert_content, dashboard_alert: @dashboard_alert, content_field: :public_dashboard_title, title: 'Act on energy usage'%>
-
-<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

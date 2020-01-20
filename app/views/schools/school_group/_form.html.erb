@@ -1,8 +1,8 @@
-<h1>School groups: <%= school.name %> </h1>
+<h1>School group: <%= school.name %> </h1>
 
 <%= form_tag school_school_group_path(school), method: method do %>
-  <h2>Scoreboard Groups</h2>
-  <p>Scoreboard Groups are used to collect associated schools together, usually by area. Schools within a Group are ranked against each other on a Scoreboard.</p>
+  <h2>School group</h2>
+  <p>School groups are used to collect associated schools together, usually by area.</p>
   <div class="form-group">
     <%= label_tag :school_group_id, 'Group' %>
     <%= select_tag :school_group_id, options_from_collection_for_select(@school_groups, 'id', 'name', @school.school_group_id), include_blank: true, class: 'form-control' %>
