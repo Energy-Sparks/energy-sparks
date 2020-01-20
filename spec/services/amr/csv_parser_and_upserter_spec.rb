@@ -84,20 +84,27 @@ module Amr
     end
 
     def write_file_and_expect_updated_readings(csv, config, updated_reading = "0.166")
-      write_file_and_parse(csv, config)
+      update_file_name = "updated-example.csv"
+      write_file_and_parse(csv, config, update_file_name)
       expect(AmrDataFeedReading.count).to be 1
       expect(AmrDataFeedReading.first.readings.first).to eq updated_reading
       expect(AmrDataFeedImportLog.count).to be 2
-      log = AmrDataFeedImportLog.first
-      expect(log.file_name).to eq file_name
-      expect(log.amr_data_feed_config_id).to be config.id
-      expect(log.records_imported).to be 1
+      first_import_log = AmrDataFeedImportLog.find_by(file_name: file_name)
+
+      expect(first_import_log.amr_data_feed_config_id).to be config.id
+      expect(first_import_log.records_imported).to be 1
+      expect(first_import_log.records_updated).to be 0
+      second_import_log = AmrDataFeedImportLog.find_by(file_name: update_file_name)
+
+      expect(second_import_log.amr_data_feed_config_id).to be config.id
+      expect(second_import_log.records_imported).to be 0
+      expect(second_import_log.records_updated).to be 1
     end
 
-    def write_file_and_parse(csv, config)
-      file = File.write("#{config.local_bucket_path}/#{file_name}", csv)
+    def write_file_and_parse(csv, config, import_file_name = file_name)
+      file = File.write("#{config.local_bucket_path}/#{import_file_name}", csv)
 
-      importer = CsvParserAndUpserter.new(config, file_name)
+      importer = CsvParserAndUpserter.new(config, import_file_name)
       importer.perform
       importer.inserted_record_count
     end
