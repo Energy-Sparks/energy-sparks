@@ -143,3 +143,13 @@ div.meter-attributes {
 .nav-anchor {
   position: relative;
 }
+
+.static-images {
+  height: 300px;
+  width: 400px;
+}
+
+.static-images.small {
+    height: 200px;
+    width: 300px;
+}
