@@ -10,7 +10,7 @@ module Equivalences
       analytics = @analytics_class.new(@aggregate_school)
       @school.transaction do
         @school.equivalences.destroy_all
-        EquivalenceType.all.map do |equivalence_type|
+        school_equivalence_types.map do |equivalence_type|
           begin
             equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
             equivalence.save!
@@ -22,6 +22,15 @@ module Equivalences
           end
         end
       end
+    end
+
+    private
+
+    def school_equivalence_types
+      equivalence_types = []
+      equivalence_types << EquivalenceType.gas if @school.has_gas?
+      equivalence_types << EquivalenceType.electricity if @school.has_electricity?
+      equivalence_types.flatten
     end
   end
 end
