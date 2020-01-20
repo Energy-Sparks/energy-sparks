@@ -12,6 +12,7 @@ module Alerts
         Alerts::GenerateSubscriptionEvents.new(@school, subscription_generation_run: subscription_generation_run).perform(latest_alerts_with_frequency)
       end
       Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
+      Alerts::GenerateSmsNotifications.new(subscription_generation_run: subscription_generation_run).perform
     end
   end
 end

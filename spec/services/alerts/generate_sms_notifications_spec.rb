@@ -30,4 +30,20 @@ describe Alerts::GenerateSmsNotifications do
 
     Alerts::GenerateSmsNotifications.new(subscription_generation_run: subscription_generation_run, send_sms_service: send_sms_class).perform
   end
+
+  it 'creates an SMS record' do
+    send_sms_class = double('send_sms_service')
+    send_sms_service = instance_double('send_sms_service')
+
+    expect(send_sms_class).to receive(:new).with("EnergySparks alert: You need to do something!", sms_contact.mobile_phone_number).and_return(send_sms_service)
+    expect(send_sms_service).to receive(:send)
+
+    Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1])
+    Alerts::GenerateSmsNotifications.new(subscription_generation_run: subscription_generation_run, send_sms_service: send_sms_class).perform
+
+    sms_record = SmsRecord.first
+    expect(sms_record.alert_subscription_event).to eq(AlertSubscriptionEvent.first)
+    expect(sms_record.mobile_phone_number).to eq(sms_contact.mobile_phone_number)
+
+  end
 end
