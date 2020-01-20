@@ -23,6 +23,35 @@
   </table>
 <% end %>
 
+<% if @import_warnings.any? %>
+  <h2>Import Warnings</h2>
+  <p>Some rows were not able to be processed:</p>
+  <table class="table table-sorted">
+    <thead>
+      <tr>
+        <th>Feed</th>
+        <th>File name</th>
+        <th>Import Time</th>
+        <th>Mpan</th>
+        <th>Reading date</th>
+        <th>Warning message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @import_warnings.each do |warning| %>
+        <tr>
+          <td><%= warning.amr_data_feed_import_log.amr_data_feed_config.description %></td>
+          <td><%= warning.amr_data_feed_import_log.file_name %></td>
+          <td><%= nice_date_times warning.amr_data_feed_import_log.import_time %></td>
+          <td><%= warning.mpan_mprn %></td>
+          <td><%= warning.reading_date %></td>
+          <td><%= warnings_from_warning_types(warning.warning_types) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 <h3>Import runs</h3>
 <table class="table mt-3 mb-5">
   <thead class="thead-light">

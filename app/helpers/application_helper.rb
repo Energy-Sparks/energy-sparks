@@ -208,6 +208,6 @@ module ApplicationHelper
   end
 
   def warnings_from_warning_types(warning_types)
-    warning_types.map { |w| AmrReadingData::WARNINGS[w.to_sym] }.join(', ')
+    warning_types.map { |w| AmrReadingData::WARNINGS[AmrReadingWarning::WARNINGS[w]] }.join(', ')
   end
 end
