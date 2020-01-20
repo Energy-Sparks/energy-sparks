@@ -7,9 +7,9 @@ module Amr
 
     def perform
       if @amr_reading_data.valid?
-        insert_valid_data(@amr_reading_data.valid_records, @amr_data_feed_import_log)
+        DataFeedUpserter.new(@amr_reading_data.valid_records, @amr_data_feed_import_log).perform
       else
-        @amr_data_feed_import_log.update(error_messages: @amr_reading_data.error_messages_joined, records_imported: 0, records_upserted: 0)
+        @amr_data_feed_import_log.update(error_messages: @amr_reading_data.error_messages_joined, records_imported: 0, records_updated: 0)
       end
 
       create_warnings if @amr_reading_data.warnings?
@@ -18,14 +18,6 @@ module Amr
     end
 
     private
-
-    def insert_valid_data(reading_data, amr_data_feed_import_log)
-      records_before = AmrDataFeedReading.count
-      upserted_record_count = DataFeedUpserter.new(reading_data, amr_data_feed_import_log.id).perform
-      inserted_record_count = AmrDataFeedReading.count - records_before
-
-      amr_data_feed_import_log.update(records_imported: inserted_record_count, records_upserted: upserted_record_count)
-    end
 
     def create_warnings
       updated_warnings = @amr_reading_data.warnings.map do |warning|
