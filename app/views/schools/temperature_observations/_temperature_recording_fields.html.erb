@@ -1,7 +1,7 @@
 <fieldset>
-  <div class="form-row">
-    <div class="col-lg-6 form-group">
-      <%= temperature_form.label :centigrade, temperature_form.object.location.name, required: false, class: 'h2 mt-4'%>
+  <div class="form-row justify-content-center">
+    <div class="col-lg-4 form-group">
+      <%= temperature_form.label :centigrade, temperature_form.object.location.name, required: false, class: 'h4 mt-4'%>
       <%= temperature_form.hidden_field :location_id, value: temperature_form.object.location.id %>
     </div>
 
@@ -23,3 +23,4 @@
     </div>
   </div>
 </fieldset>
+<hr />
