@@ -6,9 +6,13 @@ describe 'Benchmarks' do
   let!(:user)               { create(:user)}
 
   let!(:run_1)              { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
-  let!(:alert_type_1)       { create(:alert_type, benchmark: true, source: :analytics) }
+
+
+#  let!(:alert_type_1)       { create(:alert_type, benchmark: true, source: :analytics) }
+  let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
+
   let!(:benchmark_result_1) { BenchmarkResult.create!(
-                              alert_type: alert_type_1,
+                              alert_type: gas_fuel_alert_type,
                               asof: Date.parse('01/01/2019'),
                               benchmark_result_school_generation_run: run_1,
                               data: {
@@ -21,7 +25,6 @@ describe 'Benchmarks' do
   let(:benchmark_content_manager_instance) { double(:benchmark_content_manager_instance) }
 
   let(:description) { 'all about this alert type' }
-  let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
 
   let(:example_content) {
     [
@@ -31,7 +34,7 @@ describe 'Benchmarks' do
       {:type=>:analytics_html, :content=>'analytics html'},
       {:type=>:chart_data, :content=>'chart data'},
       {:type=>:table_composite, :content=> { header: ['column 1'], rows: [[{ formatted: 'row 1', raw: 'row 1'}]] }},
-      {:type=>:drilldown, :content=> {:drilldown=>{:type=>:adult_dashboard, :content_class=>gas_fuel_alert_type.class_name}, :school_map=>[{:name=>"School name", :urn=>"URN"}, {:name=>school_1.name, :urn=>145716}]}}
+      {:type=>:drilldown, :content=> {:drilldown=>{:type=>:adult_dashboard, :content_class=>gas_fuel_alert_type.class_name}, :school_map=>[{:name=>"School name", :urn=>"URN"}, {:name=>school_1.name, :urn=>school_1.urn}]}}
     ]
   }
 
@@ -74,15 +77,7 @@ describe 'Benchmarks' do
     expect(page).to have_content('sorry')
   end
 
-  it 'a user can drilldown to an analysis page' do
-    click_on 'Page A'
-    click_on(school_1.name)
-    expect(page).to have_content('sorry')
-  end
-
   context 'with analysis page content' do
-
-
     let!(:gas_meter) { create :gas_meter_with_reading, school: school_1 }
     let!(:alert_type_rating) do
       create(
@@ -109,7 +104,9 @@ describe 'Benchmarks' do
       Alerts::GenerateContent.new(school_1).perform
     end
 
-    it 'shows the box on the page with the relevant template data' do
+
+    it 'a user can drilldown to an analysis page' do
+      expect(AlertType.count).to be 1
       allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school_1)
 
       adapter = double(:adapter)
