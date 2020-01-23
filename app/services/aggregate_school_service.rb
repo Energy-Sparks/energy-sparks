@@ -6,7 +6,7 @@ class AggregateSchoolService
   end
 
   def aggregate_school
-    Rails.cache.fetch(cache_key, expires_in: 1.day) do
+    Rails.cache.fetch(cache_key) do
       meter_collection = Amr::AnalyticsMeterCollectionFactory.new(@active_record_school).validated
 
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
@@ -46,7 +46,6 @@ class AggregateSchoolService
     client = Aws::S3::Client.new
     key = "aggregated-meter-collection-#{aggregate_school.school.name.parameterize}.yaml"
     yaml = YAML.dump(aggregate_school)
-    puts yaml.size.to_s
     client.put_object(
       bucket: bucket,
       key: key,
