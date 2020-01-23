@@ -183,28 +183,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
     highchartsChart.update({ chart: { inverted: true, marginLeft: 300, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+
+
+
   }
 
   // LINE charts
   if (chartType == 'line') {
-    if (y2AxisLabel) {
-
-      var axisTitle;
-      var pointFormat;
-
-      if (y2AxisLabel == 'Temperature') {
-        axisTitle = '°C';
-        pointFormat = '{point.y:.2f} °C';
-      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon')) {
-        axisTitle = 'kWh';
-        pointFormat = '{point.y:.2f} kWh';
-      } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-        axisTitle = 'Brightness of sunshine W/m2';
-        pointFormat = '{point.y:.2f} W/m2';
-      }
-      highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' }}, opposite: true});
-      highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
-    } else {
+    if (! y2AxisLabel) {
       highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
     }
   }
@@ -221,32 +207,38 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     } else {
       highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
+  }
 
-    if (y2AxisLabel) {
+  // Handle Y2 axis
+  if (y2AxisLabel) {
+    var axisTitle;
+    var pointFormat;
+    var max;
+    var colour = '#232b49';
 
-      var axisTitle;
-      var pointFormat;
-      var max;
+    console.log('Y2 axis label' + y2AxisLabel);
 
-      console.log('Y2 axis label' + y2AxisLabel);
-      colour = '#232b49';
-      if (y2AxisLabel == 'Temperature') {
-        axisTitle = '°C';
-        pointFormat = '{point.y:.2f} °C';
-      } else if (y2AxisLabel == 'Degree Days') {
-        axisTitle = 'Degree days';
-        pointFormat = '{point.y:.2f} Degree days';
-      } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
-        axisTitle = 'kg/kWh';
-        pointFormat = '{point.y:.2f} kg/kWh';
-        max = 0.5;
-      } else if (y2AxisLabel == 'Solar Irradiance') {
-        axisTitle = 'Brightness of sunshine W/m2';
-        pointFormat = '{point.y:.2f} W/m2';
-      }
-      highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max});
-      highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
+    if (y2AxisLabel == 'Temperature') {
+      axisTitle = '°C';
+      pointFormat = '{point.y:.2f} °C';
+    } else if (y2AxisLabel == 'Degree Days') {
+      axisTitle = 'Degree days';
+      pointFormat = '{point.y:.2f} Degree days';
+    } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
+      axisTitle = 'kg/kWh';
+      pointFormat = '{point.y:.2f} kg/kWh';
+      max = 0.5;
+    } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon')) {
+      axisTitle = 'kWh';
+      pointFormat = '{point.y:.2f} kWh';
+    } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
+      axisTitle = 'Brightness of sunshine W/m2';
+      pointFormat = '{point.y:.2f} W/m2';
+    } else if (y2AxisLabel == 'rating') {
+      axisTitle = 'Rating';
     }
+    highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
   }
 
   Object.keys(seriesData).forEach(function (key) {
