@@ -2,7 +2,7 @@
 <%= link_to 'Back', school_analysis_index_path(@school), class: 'btn btn-rounded mt-3 mb-2' %>
 
 <% if @structured_content %>
-  <div class="accordion" id="accordionExample">
+  <div class="accordion" id="accordion">
     <% @structured_content.each_with_index do |part_content, index| %>
       <div class="card">
         <div class="card-header" id="heading<%= index %>">
