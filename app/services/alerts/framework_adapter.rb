@@ -20,6 +20,14 @@ module Alerts
       adapter_instance.content
     end
 
+    def has_structured_content?
+      adapter_instance.has_structured_content?
+    end
+
+    def structured_content
+      adapter_instance.structured_content
+    end
+
     def benchmark_dates
       adapter_instance.benchmark_dates
     end

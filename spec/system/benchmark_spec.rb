@@ -4,13 +4,8 @@ describe 'Benchmarks' do
 
   let!(:school_1)           { create(:school) }
   let!(:user)               { create(:user)}
-
   let!(:run_1)              { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
-
-
-#  let!(:alert_type_1)       { create(:alert_type, benchmark: true, source: :analytics) }
   let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
-
   let!(:benchmark_result_1) { BenchmarkResult.create!(
                               alert_type: gas_fuel_alert_type,
                               asof: Date.parse('01/01/2019'),
@@ -111,9 +106,10 @@ describe 'Benchmarks' do
 
       adapter = double(:adapter)
       allow(Alerts::FrameworkAdapter).to receive(:new).with(alert_type: gas_fuel_alert_type, school: school_1, analysis_date: alert.run_on, aggregate_school: school_1).and_return(adapter)
+      allow(adapter).to receive(:has_structured_content?).and_return(false)
       allow(adapter).to receive(:content).and_return(
         [
-          {type: :title, content: 'Heating advice'},
+          {type: :enhanced_title, content: { title: 'Heating advice', rating: 10.0 }},
           {type: :html, content: '<h2>Turn your heating down</h2>'},
           {type: :chart_name, content: :benchmark}
         ]

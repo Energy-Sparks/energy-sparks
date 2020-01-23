@@ -4,23 +4,32 @@ module Alerts
   module Adapters
     class AnalyticsAdapter < Adapter
       def report
-        analysis_object = alert_class.new(@aggregate_school)
         analysis_object.valid_alert? ? produce_report(analysis_object, benchmark_variables?(alert_class)) : invalid_alert_report(analysis_object)
       end
 
       def content
-        analysis_object = alert_class.new(@aggregate_school)
         analysis_object.analyse(@analysis_date)
         # TODO: error, data, validity handling
         analysis_object.front_end_content
       end
 
       def benchmark_dates
-        analysis_object = alert_class.new(@aggregate_school)
         analysis_object.benchmark_dates(@analysis_date)
       end
 
+      def has_structured_content?
+        analysis_object.has_structured_content?
+      end
+
+      def structured_content
+        has_structured_content? ? analysis_object.structured_content : []
+      end
+
     private
+
+      def analysis_object
+        alert_class.new(@aggregate_school)
+      end
 
       def benchmark_variables?(alert_class)
         alert_class.benchmark_template_variables.present? && @alert_type.analytics?
