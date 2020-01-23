@@ -1,44 +1,44 @@
-<h1>Case Studies</h1>
+<h1>Team members</h1>
 
-<% if @case_studies %>
+<% if @team_members %>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Position</th>
-      <th>File</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @case_studies.each do |case_study| %>
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= case_study.title %></td>
-        <td><%= case_study.description %></td>
-        <td><%= case_study.position %></td>
-        <td>
-          <% if case_study.file.attached? %>
-            <%= link_to 'File', url_for(case_study.file) %>
-          <% else %>
-            No file attached
-          <% end %>
-        </td>
-        <td>
-          <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn' %>
-            <%= link_to 'Delete', admin_case_study_path(case_study), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
-          </div>
-        </td>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Position</th>
+        <th>Image</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @team_members.each do |team_member| %>
+        <tr>
+          <td><%= team_member.title %></td>
+          <td><%= team_member.description %></td>
+          <td><%= team_member.position %></td>
+          <td>
+            <% if team_member.image.attached? %>
+              <%= image_tag team_member.image.variant(resize_to_limit: [50, 50]) %>
+            <% else %>
+              No file attached
+            <% end %>
+          </td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_admin_team_member_path(team_member), class: 'btn' %>
+              <%= link_to 'Delete', admin_team_member_path(team_member), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
 <% else %>
-  <p>There are no case studies</p>
+  <p>There are no team members</p>
 <% end %>
 
-<p><%= link_to 'New Case study', new_admin_case_study_path, class: 'btn'%></p>
+<p><%= link_to 'New team member', new_admin_team_member_path, class: 'btn'%></p>

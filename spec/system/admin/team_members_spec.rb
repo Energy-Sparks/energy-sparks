@@ -31,12 +31,12 @@ describe 'Team members', type: :system do
 
       click_on 'Edit'
       fill_in 'Title', with: new_title
-      click_on 'Update Case study'
+      click_on 'Update Team member'
 
       expect(page).to have_content new_title
 
       click_on 'Delete'
-      expect(page).to have_content('Case study was successfully destroyed.')
+      expect(page).to have_content('Team member was successfully destroyed.')
     end
   end
 end

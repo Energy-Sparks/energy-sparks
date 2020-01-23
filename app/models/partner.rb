@@ -11,5 +11,6 @@
 class Partner < ApplicationRecord
   has_one_attached :image
 
+  validates :image, presence: true
   validates :position, numericality: true, presence: true
 end

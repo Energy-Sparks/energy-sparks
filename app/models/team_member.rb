@@ -13,6 +13,6 @@
 class TeamMember < ApplicationRecord
   has_one_attached :image
 
-  validates :title, :file, presence: true
+  validates :title, :image, presence: true
   validates :position, numericality: true, presence: true
 end

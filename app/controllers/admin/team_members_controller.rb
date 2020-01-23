@@ -16,7 +16,7 @@ module Admin
     end
 
     def create
-      if @team_members.save
+      if @team_member.save
         redirect_to admin_team_members_path, notice: 'Team member was successfully created.'
       else
         render :new
@@ -24,7 +24,7 @@ module Admin
     end
 
     def update
-      if @team_member.update(team_members_params)
+      if @team_member.update(team_member_params)
         redirect_to admin_team_members_path, notice: 'Team member was successfully updated.'
       else
         render :edit
@@ -38,7 +38,7 @@ module Admin
 
     private
 
-    def team_members_params
+    def team_member_params
       params.require(:team_member).permit(:title, :description, :position, :image)
     end
   end
