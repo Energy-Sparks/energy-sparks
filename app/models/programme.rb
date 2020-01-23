@@ -29,8 +29,6 @@ class Programme < ApplicationRecord
   has_many :activities, through: :programme_activities
   has_many :activity_types, through: :programme_activities
 
-  delegate :description, to: :programme_type
-
   enum status: [:started, :completed, :abandoned]
 
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
