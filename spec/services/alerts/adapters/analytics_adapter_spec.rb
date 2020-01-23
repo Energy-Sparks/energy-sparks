@@ -52,7 +52,6 @@ module Alerts
       end
 
       def has_structured_content?
-        pp "WOOF"
         false
       end
 
