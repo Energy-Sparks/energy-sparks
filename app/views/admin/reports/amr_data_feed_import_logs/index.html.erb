@@ -4,6 +4,7 @@
   <p><%= link_to 'Warnings list', admin_reports_amr_reading_warnings_path %></p>
 <% end %>
 
+<% if @errored_logs.any? %>
 <h2>Errored</h2>
 <table class="table table-sorted">
   <thead>
@@ -25,6 +26,9 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+  <p>There are no import logs with errors</p>
+<% end %>
 
 <h2>Successful</h2>
 <%== pagy_bootstrap_nav(@pagy) %>
@@ -45,7 +49,7 @@
         <td><%= log.file_name %></td>
         <td><%= nice_date_times log.import_time %></td>
         <td><%= log.records_imported %></td>
-        <td><%= log.records_upserted %></td>
+        <td><%= log.records_updated %></td>
       </tr>
     <% end %>
   </tbody>

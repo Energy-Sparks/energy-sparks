@@ -206,4 +206,8 @@ module ApplicationHelper
   def print_meter_attribute(meter_attribute)
     sanitize(ap(MeterAttribute.to_analytics([meter_attribute]), index: false, plain: true))
   end
+
+  def warnings_from_warning_types(warning_types)
+    warning_types.map { |w| AmrReadingData::WARNINGS[AmrReadingWarning::WARNINGS[w]] }.join(', ')
+  end
 end

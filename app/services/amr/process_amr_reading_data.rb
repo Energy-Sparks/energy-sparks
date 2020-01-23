@@ -5,20 +5,13 @@ module Amr
     end
 
     def perform(valid_readings, warning_readings)
-      insert_valid_data(valid_readings, @amr_data_feed_import_log)
+      DataFeedUpserter.new(valid_readings, @amr_data_feed_import_log).perform
       create_warnings(warning_readings) unless warning_readings.empty?
       @amr_data_feed_import_log
     end
 
     private
 
-    def insert_valid_data(reading_data, amr_data_feed_import_log)
-      records_before = AmrDataFeedReading.count
-      upserted_record_count = DataFeedUpserter.new(reading_data, amr_data_feed_import_log.id).perform
-      inserted_record_count = AmrDataFeedReading.count - records_before
-
-      amr_data_feed_import_log.update(records_imported: inserted_record_count, records_upserted: upserted_record_count)
-    end
 
     def create_warnings(warnings)
       updated_warnings = warnings.map do |warning|

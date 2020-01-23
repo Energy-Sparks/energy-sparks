@@ -12,7 +12,7 @@ module Admin
       Amr::ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_upload_reading.valid_readings, amr_upload_reading.warnings)
       amr_upload_reading.update!(imported: true)
 
-      redirect_to admin_amr_data_feed_config_path(amr_upload_reading.amr_data_feed_config_id), notice: "We have inserted #{amr_data_feed_import_log.records_imported} records and updated #{amr_data_feed_import_log.records_upserted} records"
+      redirect_to admin_amr_data_feed_config_path(amr_upload_reading.amr_data_feed_config_id), notice: "We have inserted #{amr_data_feed_import_log.records_imported} records and updated #{amr_data_feed_import_log.records_updated} records"
     end
   end
 end

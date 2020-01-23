@@ -18,13 +18,13 @@ module Amr
       if amr_reading_data.valid?
         ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_reading_data.valid_records, amr_reading_data.warnings)
       else
-        amr_data_feed_import_log.update(error_messages: amr_reading_data.error_messages_joined, records_imported: 0, records_upserted: 0)
+        amr_data_feed_import_log.update(error_messages: amr_reading_data.error_messages_joined, records_imported: 0, records_updated: 0)
       end
 
       @inserted_record_count = amr_data_feed_import_log.records_imported
-      @upserted_record_count = amr_data_feed_import_log.records_upserted
+      @updated_record_count = amr_data_feed_import_log.records_updated
 
-      Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count} records upserted: #{@upserted_record_count}"
+      Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count} records updated: #{@updated_record_count}"
 
       amr_data_feed_import_log
     end
