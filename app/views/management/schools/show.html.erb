@@ -2,9 +2,15 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <h1>Energy Usage&hellip;</h1>
-  <% if @school.configuration %>
-    <div class="h5"><%= link_to "Review your school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
-  <% end %>
+  <div class="h5">
+    <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
+      <%= fa_icon('file-alt') %>
+      Report view
+    <% end %>
+    <% if @school.configuration %>
+      <%= link_to "Review your school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+    <% end %>
+  </div>
 </div>
 
 <h2>Annual use</h2>
