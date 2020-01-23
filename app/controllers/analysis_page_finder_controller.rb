@@ -6,15 +6,15 @@ class AnalysisPageFinderController < ApplicationController
     urn = params[:urn]
     analysis_class = params[:analysis_class]
 
-    school = School.find_by(urn: urn)
-    alert_type = AlertType.find_by(class_name: analysis_class)
+    school = School.find_by!(urn: urn)
+    alert_type = AlertType.find_by!(class_name: analysis_class)
 
-    if school && school.latest_analysis_pages.any?
+    if school.latest_analysis_pages.any?
       analysis_page = school.latest_analysis_pages.includes(:alert).detect { |page| page.alert.alert_type_id == alert_type.id }
     end
 
     if analysis_page
-      redirect_to school_analysis_path(school_id: school.slug, id: analysis_page.id)
+      redirect_to school_analysis_path(school.slug, analysis_page.id)
     else
       redirect_back fallback_location: benchmarks_path, notice: "We couldn't take you to the correct location, sorry."
     end
