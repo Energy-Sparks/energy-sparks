@@ -34,6 +34,16 @@ Read the CONTRIBUTING.md guidelines for how to get started.
 
 Development mode uses mail catcher for sending mails - you need to install the [mailcatcher gem](https://github.com/sj26/mailcatcher) for this to work correctly.
 
+## Running tasks on the servers
+
+To run tasks on the server as the appropriate user with the right
+environment, all tasks must be run with the bin/run_as_webapp wrapper.
+e.g.:
+
+```
+bin/run_as_webapp bundle exec rake ...
+```
+
 ## Refreshing test db
 
 1) Get DB dump from production
@@ -52,12 +62,12 @@ GRANT ALL ON SCHEMA public TO public;
 ```
 5) Nobble email users on test
 ```
-bundle exec rake utility:prepare_test_server
+bin/run_as_webapp bundle exec rake utility:prepare_test_server
 ```
 6) Reset active storage buckets on test adn copy production bucket contents
 ```
-bundle exec rake utility:clear_active_storage_bucket
-bundle exec rake utility:copy_active_storage_bucket[*INSERT PRODUCTION ACTIVE STORAGE BUCKET-NAME*]
+bin/run_as_webapp bundle exec rake utility:clear_active_storage_bucket
+bin/run_as_webapp bundle exec rake utility:copy_active_storage_bucket[*INSERT PRODUCTION ACTIVE STORAGE BUCKET-NAME*]
 ```
 
 # Creating a new environment on Elastic Beanstalk
