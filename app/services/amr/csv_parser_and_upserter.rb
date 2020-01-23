@@ -18,9 +18,9 @@ module Amr
       ProcessAmrReadingData.new(amr_reading_data, amr_data_feed_import_log).perform
 
       @inserted_record_count = amr_data_feed_import_log.records_imported
-      @upserted_record_count = amr_data_feed_import_log.records_upserted
+      @updated_record_count = amr_data_feed_import_log.records_updated
 
-      Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count} records upserted: #{@upserted_record_count}"
+      Rails.logger.info "Loaded: #{@config.local_bucket_path}/#{@file_name} records inserted: #{@inserted_record_count} records updated: #{@updated_record_count}"
 
       amr_data_feed_import_log
     end
