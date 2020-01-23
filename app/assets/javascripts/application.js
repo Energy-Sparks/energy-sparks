@@ -41,7 +41,6 @@
 
 //= require observations
 //= require form_wizard
-//= require temperature_recordings
 //= require trix_customisations
 //= require multi_select
 
