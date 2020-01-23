@@ -106,6 +106,7 @@ describe 'Benchmarks' do
 
       adapter = double(:adapter)
       allow(Alerts::FrameworkAdapter).to receive(:new).with(alert_type: gas_fuel_alert_type, school: school_1, analysis_date: alert.run_on, aggregate_school: school_1).and_return(adapter)
+      allow(adapter).to receive(:has_structured_content?).and_return(false)
       allow(adapter).to receive(:content).and_return(
         [
           {type: :enhanced_title, content: { title: 'Heating advice', rating: 10.0 }},
