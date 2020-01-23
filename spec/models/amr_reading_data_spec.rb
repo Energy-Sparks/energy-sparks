@@ -164,6 +164,18 @@ describe AmrReadingData do
         expect(amr_reading.warnings.count).to be 1
         expect(amr_reading.warnings.first[:warnings]).to include(:invalid_reading_date)
       end
+
+      it 'when there are duplicate rows' do
+        amr_reading_data[:reading_data].first[:reading_date] = amr_reading_data[:reading_data].last[:reading_date]
+
+        amr_reading = AmrReadingData.new(amr_reading_data)
+
+        expect(amr_reading.valid?).to be true
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 1
+        expect(amr_reading.warnings.count).to be 1
+        expect(amr_reading.warnings.first[:warnings]).to include(:duplicate_reading)
+      end
     end
   end
 end
