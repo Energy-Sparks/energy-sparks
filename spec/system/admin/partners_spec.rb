@@ -10,7 +10,7 @@ describe 'Partners', type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
-      click_on 'Partners'
+      click_on 'Partners', match: :first
     end
 
     it 'allows the user to create, edit and delete a partner' do
