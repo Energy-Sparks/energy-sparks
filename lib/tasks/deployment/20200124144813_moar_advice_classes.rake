@@ -7,7 +7,7 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :gas,
-      sub_category: :gas,
+      sub_category: :heating,
       title: "Gas costs advice",
       class_name: 'AdviceGasCosts',
       source: :analysis,
