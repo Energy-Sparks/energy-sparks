@@ -1,0 +1,4 @@
+<%= form_tag admin_content_generation_run_path, class: 'float-right' do %>
+  <%= select_tag :school_id, options_from_collection_for_select(School.process_data.order(:name), :id, :name) %>
+  <%= submit_tag 'Apply changes', class: 'btn' %>
+<% end %>
