@@ -15,7 +15,7 @@
 
     <div class="card mb-2 programme">
       <div class="card-body">
-        <%= link_to school_programme_types_path(school, @suggested_programme) do %>
+        <%= link_to school_programme_type_path(school, @suggested_programme) do %>
           <h4 class="card-title"><%= suggested_programme.title %></h4>
           <p class="card-text">
             <%= suggested_programme.short_description %>
