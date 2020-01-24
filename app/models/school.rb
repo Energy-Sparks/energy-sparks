@@ -84,8 +84,6 @@ class School < ApplicationRecord
 
   has_many :locations
 
-  has_many :simulations, inverse_of: :school, dependent: :destroy
-
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts

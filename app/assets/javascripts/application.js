@@ -29,7 +29,6 @@
 
 //= require common_chart_options
 //= require analysis
-//= require simulator
 
 //= require moment
 //= require tempusdominus-bootstrap-4.js
