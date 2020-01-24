@@ -1,9 +1,6 @@
 <%= render 'admin/alert_types/nav', alert_type: @alert_type %>
 
-<%= form_tag admin_content_generation_run_path, class: 'float-right' do %>
-  <%= select_tag :school_id, options_from_collection_for_select(School.process_data.order(:name), :id, :name) %>
-  <%= submit_tag 'Apply changes', class: 'btn' %>
-<% end %>
+<%= render 'admin/alert_types/apply_changes' %>
 
 <%= link_to "New content#{ ' rating range' if @alert_type.has_ratings?}", new_admin_alert_type_rating_path(@alert_type), class: 'btn btn-primary mb-3' %>
 
