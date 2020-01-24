@@ -16,16 +16,23 @@ describe 'Partners', type: :system do
     it 'allows the user to create, edit and delete a partner' do
       click_on 'New partner'
       fill_in 'Position', with: '1'
+      fill_in 'Url', with: 'https://example.com'
 
       attach_file("Image", Rails.root + "spec/fixtures/images/sheffield.png")
       expect { click_on 'Create Partner' }.to change { Partner.count }.by(1)
 
       expect(page).to have_xpath("//img[contains(@src,'sheffield.png')]")
+      expect(page).to have_link(href: 'https://example.com')
 
       click_on 'Edit'
-      attach_file("Image", Rails.root + "spec/fixtures/images/banes.png")
+      fill_in 'Position', with: ''
 
       click_on 'Update Partner'
+      expect(page).to have_content('blank')
+      fill_in 'Position', with: '1'
+      attach_file("Image", Rails.root + "spec/fixtures/images/banes.png")
+      click_on 'Update Partner'
+
       expect(page).to have_xpath("//img[contains(@src,'banes.png')]")
 
       expect { click_on 'Delete' }.to change { Partner.count }.by(-1)

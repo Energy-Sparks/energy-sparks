@@ -39,7 +39,7 @@ module Admin
     private
 
     def partner_params
-      params.require(:partner).permit(:position, :image)
+      params.require(:partner).permit(:position, :image, :url)
     end
   end
 end

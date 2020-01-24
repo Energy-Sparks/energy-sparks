@@ -46,8 +46,8 @@ class HomeController < ApplicationController
   end
 
   def team
-    @team_members = TeamMember.all
-    @partners = Partner.all
+    @team_members = TeamMember.order(:position)
+    @partners = Partner.order(:position)
   end
 
 private

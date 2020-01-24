@@ -779,6 +779,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_191253) do
 
   create_table "partners", force: :cascade do |t|
     t.integer "position", default: 0, null: false
+    t.text "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
