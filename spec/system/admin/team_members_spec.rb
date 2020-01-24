@@ -41,12 +41,3 @@ describe 'Team members', type: :system do
   end
 end
 
-
-#
-#  created_at  :datetime         not null
-#  description :text
-#  id          :bigint(8)        not null, primary key
-#  position    :integer          default(0), not null
-#  title       :string           not null
-#  updated_at  :datetime         not null
-#
