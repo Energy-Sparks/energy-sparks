@@ -12,6 +12,14 @@ module Alerts
       def benchmark_dates
         []
       end
+
+      def has_structured_content?
+        false
+      end
+
+      def structured_content
+        []
+      end
     end
   end
 end
