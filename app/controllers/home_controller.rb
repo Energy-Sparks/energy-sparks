@@ -49,6 +49,11 @@ class HomeController < ApplicationController
     render layout: 'application'
   end
 
+  def team
+    @team_members = TeamMember.order(:position)
+    @partners = Partner.order(:position)
+  end
+
 private
 
   def set_newsletters

@@ -1,0 +1,42 @@
+<% content_for :page_title, 'Partners' %>
+
+<h1>Partners</h1>
+
+<% if @partners %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @partners.each do |partner| %>
+        <tr>
+          <td><%= partner.position %></td>
+          <td>
+            <%= link_to partner.url do %>
+              <% if partner.image.attached? %>
+                <%= image_tag partner.image.variant(resize_to_limit: [50, 50]) %>
+              <% else %>
+                No image attached
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_admin_partner_path(partner), class: 'btn' %>
+              <%= link_to 'Delete', admin_partner_path(partner), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no partners</p>
+<% end %>
+
+<p><%= link_to 'New partner', new_admin_partner_path, class: 'btn'%></p>
