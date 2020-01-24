@@ -1,10 +1,9 @@
 module Admin
   class ContentGenerationRunController < AdminController
     def create
-      School.process_data.each do |school|
-        Alerts::GenerateContent.new(school).perform
-      end
-      redirect_back fallback_location: admin_alert_types_path, notice: 'Content regenerated'
+      school = School.find(params[:school_id])
+      Alerts::GenerateContent.new(school).perform
+      redirect_back fallback_location: admin_alert_types_path, notice: "Content regenerated for #{school.name}"
     end
   end
 end
