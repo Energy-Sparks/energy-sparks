@@ -9,9 +9,6 @@ module Programmes
       programme = Programme.create(
         school: @school,
         programme_type: @programme_type,
-        title: @programme_type.title,
-        description: @programme_type.description,
-        document_link: @programme_type.document_link,
         started_on: Time.zone.today
       )
 

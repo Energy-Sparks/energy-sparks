@@ -45,15 +45,22 @@ describe 'alert type management', type: :system do
 
       expect { click_on "Create exclusions" }.to change { SchoolAlertTypeExclusion.count }.by(2)
       expect(page).to_not have_content('No school exclusions for this alert')
-      expect(page).to have_content(school.name)
-      expect(page).to have_content(reason_1)
+
+      within 'table' do
+        expect(page).to have_content(school.name)
+        expect(page).to have_content(reason_1)
+      end
+
       within('tr', text: school.name) do
         expect { click_on 'Delete', match: :first }.to change { SchoolAlertTypeExclusion.count }.by(-1)
       end
-      expect(page).to_not have_content(school.name)
-      expect(page).to_not have_content(reason_1)
-      expect(page).to have_content(school_2.name)
-      expect(page).to have_content(reason_2)
+
+      within 'table' do
+        expect(page).to_not have_content(school.name)
+        expect(page).to_not have_content(reason_1)
+        expect(page).to have_content(school_2.name)
+        expect(page).to have_content(reason_2)
+      end
     end
   end
 
