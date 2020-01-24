@@ -1,5 +1,29 @@
 <% content_for :page_title, @title %>
-<%= link_to 'Back', school_analysis_index_path(@school), class: 'btn btn-rounded mt-3' %>
-<% @content.each do |content| %>
-  <%= render content[:type].to_s, content: content[:content], school: @school %>
+<%= link_to 'Back', school_analysis_index_path(@school), class: 'btn btn-rounded mt-3 mb-2' %>
+
+<% if @structured_content %>
+  <div class="accordion" id="accordion-structured-content">
+    <% @structured_content.each_with_index do |part_content, index| %>
+      <div class="card">
+        <div class="card-header" id="heading<%= index %>">
+          <h2 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<%= index %>" aria-expanded="true" aria-controls="collapse<%= index %>">
+              <%= part_content[:title] %>
+            </button>
+          </h2>
+        </div>
+
+        <div id="collapse<%= index %>" class="collapse <%= 'show' if index.zero? %>" aria-labelledby="heading<%= index %>" data-parent="#accordion-structured-content">
+          <div class="card-body">
+            <% part_content[:content].each do |content| %>
+              <%= render content[:type].to_s, content: content[:content], school: @school unless content[:type] == :chart %>
+            <% end %>
+          </div>
+        </div>
+    <% end %>
+  </div>
+<% else %>
+  <% @content.each do |content| %>
+    <%= render content[:type].to_s, content: content[:content], school: @school %>
+  <% end %>
 <% end %>
