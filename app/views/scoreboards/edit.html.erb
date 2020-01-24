@@ -13,7 +13,7 @@
     <% if @schools.any? %>
       <ol>
         <% @schools.each do |school| %>
-          <li><%= link_to school.name, edit_school_configuration_controller(school) %></li>
+          <li><%= link_to school.name, edit_school_configuration_path(school) %></li>
         <% end %>
       </ol>
     <% else %>

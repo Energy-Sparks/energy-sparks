@@ -1,0 +1,30 @@
+<%= content_for :page_title, "Energy Management information for #{@school.name}" %>
+
+<h1>Energy Sparks</h1>
+<h2>Energy Management information for <%= @school.name %></h2>
+
+<h2>Annual use</h2>
+
+<% if @overview_table %>
+  <%= render 'overview_table', overview_table: @overview_table %>
+<% end %>
+
+<% @overview_charts.each_with_index do |(energy, chart_config), index| %>
+  <h2>Annual <%= energy.to_s.humanize.downcase %> overview</h2>
+  <%= chart_tag(@school, chart_config[:chart].last, show_advice: false, no_zoom: true, chart_config: {y_axis_units: chart_config[:units]}) %>
+<% end %>
+
+
+<% unless @management_priorities.empty? %>
+  <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: false %>
+<% end %>
+
+<h2>Recent use</h2>
+
+<div class="row dashboards">
+  <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
+</div>
+
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent energy use alerts'%>
+
+<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

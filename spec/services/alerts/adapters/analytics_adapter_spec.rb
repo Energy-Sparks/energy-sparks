@@ -51,6 +51,14 @@ module Alerts
         relevance == :relevant && enough_data == :enough && calculation_worked
       end
 
+      def has_structured_content?
+        false
+      end
+
+      def structured_content
+        []
+      end
+
       def calculation_worked
         true
       end
@@ -120,6 +128,24 @@ module Alerts
       end
     end
 
+    class DummyAdviceWithStructuredClass < DummyAnalyticsAlertClass
+      STRUCTURED_CONTENT = [{ title: 'Bit A', content: [{ type: :html, content: '<h1>Bit A</h1>' }]}].freeze
+
+      def self.alert_type
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAdviceWithStructuredClass',
+          source: :analytics
+      end
+
+      def has_structured_content?
+        true
+      end
+
+      def structured_content
+        STRUCTURED_CONTENT
+      end
+    end
+
     let(:school) { build(:school) }
     let(:aggregate_school) { double :aggregate_school  }
 
@@ -135,6 +161,12 @@ module Alerts
       expect(normalised_report.table_data).to eq({table: 'variables'})
       expect(normalised_report.priority_data).to eq({priority: 'variables'})
       expect(normalised_report.benchmark_data).to eq({benchmark: 'data'})
+    end
+
+    it 'should return structured data' do
+      adapter = Adapters::AnalyticsAdapter.new(alert_type: DummyAdviceWithStructuredClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school)
+      expect(adapter.has_structured_content?).to be true
+      expect(adapter.structured_content).to eq DummyAdviceWithStructuredClass::STRUCTURED_CONTENT
     end
 
     it 'should return an analysis report but no benchmark data as an advice class' do

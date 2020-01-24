@@ -20,6 +20,16 @@ module Alerts
         analysis_object.benchmark_dates(@analysis_date)
       end
 
+      def has_structured_content?
+        analysis_object = alert_class.new(@aggregate_school)
+        analysis_object.has_structured_content?
+      end
+
+      def structured_content
+        analysis_object = alert_class.new(@aggregate_school)
+        has_structured_content? ? analysis_object.structured_content : []
+      end
+
     private
 
       def benchmark_variables?(alert_class)

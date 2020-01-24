@@ -21,6 +21,8 @@ module Schools
         aggregate_school: aggregate_school
       )
       @content = framework_adapter.content
+      @structured_content = framework_adapter.structured_content if framework_adapter.has_structured_content?
+
       @title = page_title(@content, @school)
     rescue ActiveRecord::RecordNotFound
       if /\d/.match?(params[:id])

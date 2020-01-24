@@ -34,7 +34,7 @@ module Amr
         schedule_data: {
           temperatures: schedule_data_manager_service.temperatures,
           solar_pv: schedule_data_manager_service.solar_pv,
-          solar_irradiation: schedule_data_manager_service.solar_irradiation,
+          solar_irradiation: nil,
           grid_carbon_intensity: schedule_data_manager_service.uk_grid_carbon_intensity,
           holidays: schedule_data_manager_service.holidays
         },

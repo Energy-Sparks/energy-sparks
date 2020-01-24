@@ -42,7 +42,8 @@ class ChartDataValues
     'Electricity consumed from solar pv' => GREEN,
     'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
     'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
-    'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE
+    'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
+    'rating' => '#232b49'
   }.freeze
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
