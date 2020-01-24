@@ -27,7 +27,7 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :electricity,
-      sub_category: :baseload,
+      sub_category: :electricity_use,
       title: "Baseload advice",
       class_name: 'AdviceBaseload',
       source: :analysis,
