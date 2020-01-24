@@ -25,10 +25,10 @@ class AmrUploadedReading < ApplicationRecord
   validates_presence_of :file_name
 
   def warnings
-    reading_data.select { |reading| reading.with_indifferent_access[:warnings]  }
+    reading_data.map(&:with_indifferent_access).select { |reading| reading[:warnings]  }
   end
 
   def valid_readings
-    reading_data.reject { |reading| reading.with_indifferent_access[:warnings]  }
+    reading_data.map(&:with_indifferent_access).reject { |reading| reading[:warnings]  }
   end
 end

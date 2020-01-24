@@ -4,6 +4,7 @@ module Schools
     load_and_authorize_resource :location, through: :school, parent: false
 
     def index
+      @locations = @locations.order(:name)
     end
 
     def new
@@ -13,8 +14,9 @@ module Schools
     end
 
     def create
+      @location.school = @school
       if @location.save
-        redirect_to school_locations_path(@school), notice: 'Location created'
+        redirect_to new_school_temperature_observation_path(@school, introduction: true), notice: 'Location created'
       else
         render :new
       end
@@ -36,7 +38,7 @@ module Schools
   private
 
     def location_params
-      params.require(:location).permit(:description, :name, :school_id)
+      params.require(:location).permit(:description, :name)
     end
   end
 end

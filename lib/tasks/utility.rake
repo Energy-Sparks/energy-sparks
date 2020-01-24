@@ -45,5 +45,19 @@ namespace :utility do
     end
   end
 
+  desc 'Save aggregate schools to S3'
+  task save_aggregate_schools_to_s3: :environment do
+    target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
+    abort("No S3 bucket configured") if target_bucket.blank?
+
+    School.process_data.order(:name).each do |school|
+      Rails.logger.info "Uploading #{school.name} to S3"
+      aggregate_school = AggregateSchoolService.new(school).aggregate_school
+      AggregateSchoolService.save_to_s3(aggregate_school, bucket: target_bucket)
+    rescue StandardError => e
+      Rails.logger.error "There was an error for #{school.name} - #{e.message}"
+      Rollbar.error(e, school_id: school.id, school_name: school.name)
+    end
+  end
 
 end
