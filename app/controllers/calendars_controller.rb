@@ -5,5 +5,8 @@ class CalendarsController < ApplicationController
 
   # GET /calendars/1
   def show
+    if @calendar.schools.count == 1
+      @school = @calendar.schools.first
+    end
   end
 end
