@@ -15,7 +15,7 @@ namespace :after_party do
         { name: "beis.png", content_type: 'png', url: "https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy" },
         { name: "banes.png", content_type: 'png', url: "http://www.bathnes.gov.uk/" },
         { name: "sheffield.png", content_type: 'png', url: "https://www.sheffield.gov.uk" },
-        { name: "somersetcc.jpg",  content_type: 'png', url: "http://www.somerset.gov.uk/" },
+        { name: "somersetcc.png",  content_type: 'png', url: "http://www.somerset.gov.uk/" },
         { name: "oxfordshire.jpg",  content_type: 'jpeg', url: "https://www.oxfordshire.gov.uk/" },
         { name: "highland.jpg", content_type: 'jpeg', url: "https://www.highland.gov.uk/" },
       ]
