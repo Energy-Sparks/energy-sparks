@@ -2,14 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "analysis page", type: :system do
   let!(:school) { create(:school) }
-  let!(:user)  { create(:staff, staff_role: create(:staff_role, :teacher), school: school)}
+
   let(:description) { 'all about this alert type' }
   let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
   let!(:gas_meter) { create :gas_meter_with_reading, school: school }
-
-  before(:each) do
-    sign_in(user)
-  end
 
   context 'with generated alert' do
 
@@ -22,6 +18,7 @@ RSpec.describe "analysis page", type: :system do
         analysis_active: true
       )
     end
+
     let!(:alert_type_rating_content_version) do
       create(
         :alert_type_rating_content_version,
@@ -30,15 +27,12 @@ RSpec.describe "analysis page", type: :system do
         analysis_subtitle: 'This is what you need to do'
       )
     end
-    let!(:alert) do
-      create(:alert, :with_run, alert_type: gas_fuel_alert_type, school: school, rating: 9.0)
-    end
+
+    let!(:alert) { create(:alert, :with_run, alert_type: gas_fuel_alert_type, school: school, rating: 9.0) }
 
     before do
       Alerts::GenerateContent.new(school).perform
-    end
 
-    it 'shows the box on the page with the relevant template data' do
       allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
 
       adapter = double(:adapter)
@@ -52,24 +46,100 @@ RSpec.describe "analysis page", type: :system do
           {type: :chart_name, content: :benchmark}
         ]
       )
+    end
 
-      visit school_path(school)
-      click_on "Learn more about your school's energy use"
+    context 'as normal user, no restrictions' do
 
-      expect(page).to have_content('You might want to think about heating')
-      expect(page).to have_content("This is what you need to do")
+      let!(:user)  { create(:staff, staff_role: create(:staff_role, :teacher), school: school)}
 
-      expect(page.all('.fas.fa-star').size).to eq(4)
-      expect(page.all('.fas.fa-star-half-alt').size).to eq(1)
+      before(:each) do
+        sign_in(user)
 
-      click_on alert_type_rating_content_version.analysis_title
-      within 'h1' do
-        expect(page).to have_content('Heating advice')
+        visit school_path(school)
+        click_on "Learn more about your school's energy use"
+
+        expect(page).to have_content('You might want to think about heating')
+        expect(page).to have_content("This is what you need to do")
+
+        expect(page.all('.fas.fa-star').size).to eq(4)
+        expect(page.all('.fas.fa-star-half-alt').size).to eq(1)
       end
-      within 'h2' do
-        expect(page).to have_content('Turn your heating down')
+
+      it 'shows the box on the page with the relevant template data' do
+        click_on alert_type_rating_content_version.analysis_title
+        within 'h1' do
+          expect(page).to have_content('Heating advice')
+        end
+        within 'h2' do
+          expect(page).to have_content('Turn your heating down')
+        end
       end
 
+      it 'allows a school related user to access a restricted alert' do
+        gas_fuel_alert_type.update!(user_restricted: true)
+        click_on alert_type_rating_content_version.analysis_title
+        within 'h1' do
+          expect(page).to have_content('Heating advice')
+        end
+        within 'h2' do
+          expect(page).to have_content('Turn your heating down')
+        end
+      end
+    end
+
+    context 'as non school related user, restricted' do
+      before do
+        visit school_path(school)
+        click_on "Review this school's energy analysis"
+
+        expect(page).to have_content('You might want to think about heating')
+        expect(page).to have_content("This is what you need to do")
+
+        expect(page.all('.fas.fa-star').size).to eq(4)
+        expect(page.all('.fas.fa-star-half-alt').size).to eq(1)
+
+        gas_fuel_alert_type.update!(user_restricted: true)
+      end
+
+      it 'redirects the user with a message if it is user restricted and the user is not the right type' do
+        click_on alert_type_rating_content_version.analysis_title
+        expect(page).to have_content('Only a user for this school can access this content')
+        within 'h1' do
+          expect(page).to_not have_content('Heating advice')
+        end
+      end
+    end
+
+    context 'as school group user, restricted' do
+
+      let(:school_group) { create(:school_group) }
+      let(:group_admin)  { create(:group_admin, school_group: school_group) }
+
+      before do
+        school.update(school_group: school_group)
+
+        sign_in(group_admin)
+        visit school_path(school)
+        click_on "Review this school's energy analysis"
+
+        expect(page).to have_content('You might want to think about heating')
+        expect(page).to have_content("This is what you need to do")
+
+        expect(page.all('.fas.fa-star').size).to eq(4)
+        expect(page.all('.fas.fa-star-half-alt').size).to eq(1)
+
+        gas_fuel_alert_type.update!(user_restricted: true)
+      end
+
+      it 'it allows the content to be viewed' do
+        click_on alert_type_rating_content_version.analysis_title
+        within 'h1' do
+          expect(page).to have_content('Heating advice')
+        end
+        within 'h2' do
+          expect(page).to have_content('Turn your heating down')
+        end
+      end
     end
 
   end
