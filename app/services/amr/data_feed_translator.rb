@@ -8,7 +8,8 @@ module Amr
     def perform
       @map_of_fields_to_indexes = @config.map_of_fields_to_indexes
       @meter_id_hash = Meter.all.map { |m| [m.mpan_mprn.to_s, m.id]}.to_h
-      @array_of_rows.map { |row| translate_row_to_hash(row) }
+      hash_rows = @array_of_rows.map { |row| translate_row_to_hash(row) }
+      check_units(hash_rows)
     end
 
   private
@@ -41,6 +42,11 @@ module Amr
 
     def readings_as_array(amr_data_feed_row)
       @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+    end
+
+    def check_units(rows)
+      return rows if @config.expected_units.blank?
+      rows.select {|row| row[:units] == @config.expected_units}
     end
   end
 end

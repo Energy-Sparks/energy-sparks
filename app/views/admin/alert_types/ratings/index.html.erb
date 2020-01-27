@@ -32,7 +32,8 @@
           <span title="Management priorities" class="<%='text-success' if rating.management_priorities_active? %>"><%= fa_icon('table fa-2x') %></span> &nbsp;
           <span title="Find out more" class="<%='text-success' if rating.find_out_more_active? %>"><%= fa_icon('search fa-2x') %></span> &nbsp;
           <span title="SMS" class="<%='text-success' if rating.sms_active? %>"><%= fa_icon('sms fa-2x') %></span> &nbsp;
-          <span title="Email" class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span>
+          <span title="Email" class="<%='text-success' if rating.email_active? %>"><%= fa_icon('envelope fa-2x') %></span> &nbsp;
+          <span title="Analysis" class="<%='text-success' if rating.analysis_active? %>"><%= fa_icon('chart-line fa-2x') %></span> &nbsp;
         </td>
         <td><%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn' %></td>
         <td><%= link_to "Activity types (#{rating.activity_types.count})", admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn' %></td>
