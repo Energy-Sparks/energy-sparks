@@ -6,6 +6,7 @@
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  description             :text             not null
+#  expected_units          :string
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key
