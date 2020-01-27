@@ -7,10 +7,6 @@ RSpec.describe "analysis page", type: :system do
   let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
   let!(:gas_meter) { create :gas_meter_with_reading, school: school }
 
-  # before(:each) do
-
-  # end
-
   context 'with generated alert' do
 
     let!(:alert_type_rating) do
