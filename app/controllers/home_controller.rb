@@ -45,6 +45,11 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def team
+    @team_members = TeamMember.order(:position)
+    @partners = Partner.order(:position)
+  end
+
 private
 
   def set_newsletters
