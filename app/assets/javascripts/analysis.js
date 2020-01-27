@@ -199,16 +199,20 @@ function setupAnalysisControls(chartContainer, chartConfig){
   if(controls.length){
     controls.find('.move_back').hide().on('click', function(event){
       event.preventDefault();
+      $(this).prop( "disabled", true );
       pushTransformation(chartConfig, chartContainer, 'move', -1);
     });
     controls.find('.move_forward').hide().on('click', function(event){
       event.preventDefault();
+      $(this).prop( "disabled", true );
       pushTransformation(chartConfig, chartContainer, 'move', 1);
     });
 
     controls.find('.drillup').hide();
     controls.find('.drillup').on('click', function(event){
       event.preventDefault();
+
+      $(this).prop( "disabled", true );
 
       var transformations = chartConfig.transformations;
       var inDrilldown = transformations.some(isDrilldownTransformation);
@@ -230,8 +234,10 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
         if(enabled){
+          control.prop("disabled", false);
           control.show();
         } else {
+          control.prop("disabled", true);
           control.hide();
         }
         control.find('span.period').html(config.timescale_description);
@@ -249,9 +255,11 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
     var drillup = controls.find('.drillup');
     if(inDrilldown){
       drillup.find('span.period').html(parentTimescaleDescription);
+      drillup.prop( "disabled", false );
       drillup.show();
     } else {
       drillup.hide();
+      drillup.prop( "disabled", true );
     }
   }
 }
