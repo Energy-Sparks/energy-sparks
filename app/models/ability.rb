@@ -52,7 +52,7 @@ class Ability
       can [
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_teachers_dash, :show_pupils_dash, :show_management_dash,
-        :read, :usage, :start_programme, :read_dashboard_menu
+        :read, :usage, :start_programme, :read_dashboard_menu, :read_restricted_analysis
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
@@ -73,6 +73,7 @@ class Ability
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, visible: true
       can :manage, Observation, school: { id: user.school_id, visible: true }
+      can :read_restricted_analysis, School, school_scope
       can :read, :my_school_menu
       if user.staff?
         can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, visible: true
