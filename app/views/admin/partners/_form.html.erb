@@ -1,0 +1,6 @@
+<%= simple_form_for([:admin, partner]) do |f| %>
+  <%= f.input :position %>
+  <%= f.input :url, as: :string %>
+  <%= f.input :image %>
+  <%= f.button :submit %>
+<% end %>

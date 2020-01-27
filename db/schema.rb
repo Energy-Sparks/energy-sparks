@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_27_130057) do
+ActiveRecord::Schema.define(version: 2020_01_27_135858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -336,6 +336,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_130057) do
     t.integer "process_type", default: 0, null: false
     t.integer "source_type", default: 0, null: false
     t.integer "import_warning_days", default: 7
+    t.string "expected_units"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -778,6 +779,13 @@ ActiveRecord::Schema.define(version: 2020_01_27_130057) do
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
+  create_table "partners", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.text "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "programme_activities", force: :cascade do |t|
     t.bigint "programme_id", null: false
     t.bigint "activity_type_id", null: false
@@ -1032,6 +1040,14 @@ ActiveRecord::Schema.define(version: 2020_01_27_130057) do
 
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
+  end
+
+  create_table "team_members", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "temperature_recordings", force: :cascade do |t|

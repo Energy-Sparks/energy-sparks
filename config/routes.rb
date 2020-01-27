@@ -148,6 +148,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :case_studies
+    resources :partners
+    resources :team_members
     resources :newsletters
     resources :resource_files
     resources :school_groups do
