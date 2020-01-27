@@ -14,7 +14,7 @@ module Schools
       @measurement = measurement_unit(params[:measurement])
 
       @supply = params.require(:supply).to_sym
-      @period = params.require(:period).to_sym
+      @period = get_period
       @split_meters = params[:split_meters].present?
       @show_measurements = @period == :weekly
 
@@ -58,6 +58,12 @@ module Schools
 
     def title_key(supply, period, split_meters)
       "charts.usage.titles.#{supply}.#{period}.#{split_meters ? 'split' : 'not_split'}"
+    end
+
+    def get_period
+      period = params.require(:period).to_sym
+      raise ActionController::RoutingError, "Period #{period} not valid" unless [:weekly, :daily].include?(period)
+      period
     end
   end
 end
