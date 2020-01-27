@@ -13,9 +13,15 @@ class ScheduleDataManagerService
       hol_data = HolidayData.new
 
       Calendar.find(@calendar_id).outside_term_time.order(:start_date).includes(:academic_year).map do |holiday|
-        # Not really being used at the moment by the analytics code
-        academic_year = nil
-        analytics_holiday = Holiday.new(holiday.calendar_event_type.analytics_event_type.to_sym, holiday.title || 'No title', holiday.start_date, holiday.end_date, academic_year)
+        academic_year = nil # Not really being used at the moment by the analytics code
+
+        analytics_holiday = Holiday.new(
+          holiday.calendar_event_type.analytics_event_type.to_sym,
+          holiday.title || 'No title',
+          holiday.start_date,
+          holiday.end_date,
+          academic_year
+        )
 
         hol_data.add(analytics_holiday)
       end
@@ -35,19 +41,14 @@ class ScheduleDataManagerService
     end
   end
 
-  def solar_irradiation
-    cache_key = "#{@solar_pv_tuos_area_id}-solar-irradiation"
-    @solar_irradiation ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      data = SolarIrradianceFromPV.new('solar irradiance from pv')
-      populate_data_from_solar_pv_readings(data)
-    end
-  end
-
   def solar_pv
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
     @solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = SolarPV.new('solar pv')
-      populate_data_from_solar_pv_readings(data)
+      DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
+        data.add(date, values.map(&:to_f))
+      end
+      data
     end
   end
 
@@ -58,17 +59,7 @@ class ScheduleDataManagerService
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
         uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
       end
-      CO2Parameterised.fill_in_missing_uk_grid_carbon_intensity_data_with_parameterised(uk_grid_carbon_intensity_data)
       uk_grid_carbon_intensity_data
     end
-  end
-
-private
-
-  def populate_data_from_solar_pv_readings(data)
-    DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
-      data.add(date, values.map(&:to_f))
-    end
-    data
   end
 end

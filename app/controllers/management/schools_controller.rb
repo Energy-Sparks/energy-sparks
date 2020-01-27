@@ -20,6 +20,11 @@ module Management
       @overview_table = setup_management_table
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
+      if params[:report]
+        render :report, layout: 'report'
+      else
+        render :show
+      end
     end
 
 

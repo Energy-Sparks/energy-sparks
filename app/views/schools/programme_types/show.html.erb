@@ -5,7 +5,7 @@
 
     <div class="jumbotron">
       <h1 class="display-4"><%= @programme_type.title %></h1>
-      <% if @programme_type.document_link %>
+      <% unless @programme_type.document_link.blank? %>
         <p>
           <%= link_to @programme_type.document_link do %>
             <%= fa_icon('print') %> Printable programme

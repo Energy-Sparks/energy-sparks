@@ -8,6 +8,7 @@ class AmrReadingData
   WARNING_READING_FUTURE_DATE = 'Reading date is in the future'.freeze
   WARNING_MISSING_MPAN_MPRN = 'Mpan or MPRN field is missing'.freeze
   WARNING_MISSING_READINGS = 'Missing readings (should be 48)'.freeze
+  WARNING_DUPLICATE_READING = 'Another reading exists for the same Mpan or MPRN for the same date'.freeze
 
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
@@ -16,7 +17,8 @@ class AmrReadingData
     missing_mpan_mprn: WARNING_MISSING_MPAN_MPRN,
     missing_reading_date: WARNING_READING_DATE_MISSING,
     invalid_reading_date: WARNING_BAD_DATE_FORMAT,
-    future_reading_date: WARNING_READING_FUTURE_DATE
+    future_reading_date: WARNING_READING_FUTURE_DATE,
+    duplicate_reading: WARNING_DUPLICATE_READING
   }.freeze
 
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
@@ -63,7 +65,7 @@ class AmrReadingData
   end
 
   def invalid_row_check
-    @reading_data.each do |reading|
+    @reading_data.each_with_index do |reading, index|
       reading_date = reading[:reading_date]
       readings = reading[:readings]
 
@@ -72,6 +74,7 @@ class AmrReadingData
       warnings << :missing_readings if missing_readings?(readings)
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
       warnings << :missing_reading_date if reading_date.blank?
+      warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
       if reading_date.present? && valid_reading_date?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
       else
@@ -102,6 +105,13 @@ class AmrReadingData
       Date.parse(reading_date)
     rescue ArgumentError
       nil
+    end
+  end
+
+  def duplicate_reading?(reading, remainder)
+    remainder.any? do |other_reading|
+      other_reading[:mpan_mprn] == reading[:mpan_mprn] &&
+        other_reading[:reading_date] == reading[:reading_date]
     end
   end
 end

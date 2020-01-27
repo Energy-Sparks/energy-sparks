@@ -43,9 +43,11 @@ RSpec.describe "analysis page", type: :system do
 
       adapter = double(:adapter)
       allow(Alerts::FrameworkAdapter).to receive(:new).with(alert_type: gas_fuel_alert_type, school: school, analysis_date: alert.run_on, aggregate_school: school).and_return(adapter)
+      allow(adapter).to receive(:has_structured_content?).and_return(false)
+
       allow(adapter).to receive(:content).and_return(
         [
-          {type: :title, content: 'Heating advice'},
+          {type: :enhanced_title, content: { title: 'Heating advice', rating: 10.0 }},
           {type: :html, content: '<h2>Turn your heating down</h2>'},
           {type: :chart_name, content: :benchmark}
         ]

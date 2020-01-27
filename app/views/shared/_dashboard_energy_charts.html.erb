@@ -10,7 +10,7 @@
         <span class="very-small" title="This data excludes the electricity used by the school's storage heaters">(excluding storage heaters)</span>
       <% end %>
 
-      <div>
+      <div class="hide-reports">
         Explore
         <%= link_to t("charts.dashboard.#{fuel_type}.usage"), pupils_school_analysis_path(school, category: fuel_type) %>
       </div>

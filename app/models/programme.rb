@@ -2,14 +2,12 @@
 #
 # Table name: programmes
 #
-#  document_link     :string
 #  ended_on          :date
 #  id                :bigint(8)        not null, primary key
 #  programme_type_id :bigint(8)        not null
 #  school_id         :bigint(8)        not null
 #  started_on        :date             not null
 #  status            :integer          default("started"), not null
-#  title             :text
 #
 # Indexes
 #
@@ -29,11 +27,9 @@ class Programme < ApplicationRecord
   has_many :activities, through: :programme_activities
   has_many :activity_types, through: :programme_activities
 
-  delegate :description, to: :programme_type
-
   enum status: [:started, :completed, :abandoned]
 
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
 
-  has_rich_text :description
+  delegate :title, :description, :document_link, to: :programme_type
 end
