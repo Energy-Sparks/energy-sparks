@@ -7,15 +7,16 @@ module Schools
     include AnalysisPages
 
     before_action :check_aggregated_school_in_cache, only: :show
+    before_action :load_page_and_alert_type, only: :show
+    before_action :check_authorisation, only: :show
 
     def index
       setup_analysis_pages(@school.latest_analysis_pages)
     end
 
     def show
-      @page = @school.analysis_pages.find(params[:id])
       framework_adapter = Alerts::FrameworkAdapter.new(
-        alert_type: @page.alert.alert_type,
+        alert_type: @alert_type,
         school: @school,
         analysis_date: @page.alert.run_on,
         aggregate_school: aggregate_school
@@ -35,6 +36,17 @@ module Schools
     end
 
   private
+
+    def load_page_and_alert_type
+      @page = @school.analysis_pages.find(params[:id])
+      @alert_type = @page.alert.alert_type
+    end
+
+    def check_authorisation
+      if @alert_type.user_restricted && cannot?(:read_restricted_analysis, @school)
+        redirect_to school_analysis_index_path(@school), notice: 'Only a user for this school can access this content'
+      end
+    end
 
     def page_title(content, school)
       title = content.find { |element| element[:type] == :title }
