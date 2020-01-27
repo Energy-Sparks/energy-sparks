@@ -777,6 +777,13 @@ ActiveRecord::Schema.define(version: 2020_01_24_135722) do
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
 
+  create_table "partners", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.text "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "programme_activities", force: :cascade do |t|
     t.bigint "programme_id", null: false
     t.bigint "activity_type_id", null: false
@@ -1031,6 +1038,14 @@ ActiveRecord::Schema.define(version: 2020_01_24_135722) do
 
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
+  end
+
+  create_table "team_members", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "temperature_recordings", force: :cascade do |t|

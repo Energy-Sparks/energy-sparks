@@ -8,51 +8,21 @@
   <h1 id="team">Our Team</h1>
   <div class="col-md-10">
     <div class="row">
-      <div class="col col-md-6 col-sm-12 col-lg-3">
-        <div class="card bio">
-          <div class="card-body">
-            <%= image_tag("team/ph.jpg", class: "card-img-top") %>
-            <h4 class="card-title">Philip Haile</h4>
-            <p class="card-text">Project Lead, Energy Expert</p>
+      <% @team_members.each do |team_member| %>
+        <div class="col col-md-6 col-sm-12 col-lg-3">
+          <div class="card bio">
+            <div class="card-body">
+              <% if team_member.image.present? %>
+                <%= image_tag team_member.image %>
+              <% else %>
+                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'card-img-top') %>
+              <% end %>
+              <h4 class="card-title"><%= team_member.title %></h4>
+              <p class="card-text"><%= team_member.description %></p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col col-md-6 col-sm-12 col-lg-3">
-        <div class="card bio">
-          <div class="card-body">
-            <%= image_tag("team/ct.jpg", class: "card-img-top") %>
-            <h4 class="card-title">Claudia Towner</h4>
-            <p class="card-text">Project Manager and School Liaison</p>
-          </div>
-        </div>
-      </div>
-      <div class="col col-md-6 col-sm-12 col-lg-3">
-        <div class="card bio">
-          <div class="card-body">
-            <%= image_tag("team/jj.jpg", class: "card-img-top") %>
-            <h4 class="card-title">James Jefferies</h4>
-            <p class="card-text">Technologist</p>
-          </div>
-        </div>
-      </div>
-      <div class="col col-md-6 col-sm-12 col-lg-3">
-        <div class="card bio">
-          <div class="card-body">
-            <%= image_tag("team/ja.jpg", class: "card-img-top") %>
-            <h4 class="card-title">James Almond</h4>
-            <p class="card-text">Technologist</p>
-          </div>
-        </div>
-      </div>
-      <div class="col col-md-6 col-sm-12 col-lg-3">
-        <div class="card bio">
-          <div class="card-body">
-            <%= image_tag("team/pm.jpg", class: "card-img-top") %>
-            <h4 class="card-title">Paula Malone</h4>
-            <p class="card-text">Project Administrator and School Support</p>
-          </div>
-        </div>
-      </div>
+      <% end %>
     </div>
     <div class="row">
       <p>In-school support for Sheffield schools provided by School Energy Efficiency.</p>
@@ -82,104 +52,16 @@
   </div>
 
   <div class="row align-items-center">
-    <div class="col-md-4 col-lg-3">
-      <div class="card bio">
-        <div class="card-body">
-          <a href="http://bathhacked.org/">
-            <%= image_tag("logos/bath-hacked.png", class: "card-img-top", style: "width: 200px;") %>
-          </a>
+    <% @partners.each do |partner| %>
+      <div class="col-md-4 col-lg-3">
+        <div class="card bio">
+          <div class="card-body">
+            <a href="<%= partner.url || '#' %>">
+              <%= image_tag partner.image, class: "card-img-top" %>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="card bio">
-        <div class="card-body">
-          <a href="http://theodi.org/">
-            <%= image_tag("logos/theodi.png", class: "card-img-top", style: "width: 200px;") %>
-          </a>
-        </div>
-      </div>
-    </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="https://www.ovoenergy.com/">
-           <%= image_tag("logos/ovo.jpg", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="http://www.bwce.coop/">
-           <%= image_tag("logos/bwce.jpg", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="http://www.naturesave.co.uk/the-naturesave-trust/">
-           <%= image_tag("logos/nature-save.jpg", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy">
-           <%= image_tag("logos/beis.png", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="http://www.bathnes.gov.uk/">
-           <%= image_tag("logos/banes.png", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="https://www.sheffield.gov.uk">
-           <%= image_tag("logos/sheffield.png", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="http://www.somerset.gov.uk/">
-           <%= image_tag("logos/somersetcc.jpg", class: "card-img-top", style: "width: 100px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="https://www.oxfordshire.gov.uk/">
-           <%= image_tag("logos/oxfordshire.jpg", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
-   <div class="col-md-4 col-lg-3">
-     <div class="card bio">
-       <div class="card-body">
-         <a href="https://www.highland.gov.uk/">
-           <%= image_tag("logos/highland.jpg", class: "card-img-top", style: "width: 200px;") %>
-         </a>
-       </div>
-     </div>
-   </div>
- </div>
+    <% end %>
+  </div>
 </div>
