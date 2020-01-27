@@ -10,7 +10,13 @@
     <% content[:rows].each do |row| %>
     <tr>
       <% row.each_with_index do |cell, cell_index| %>
-        <td class="<%= cell_index.zero? ? '' : 'text-right' %> <%= cell[:sense] %>" data-sort=<%= cell[:raw] %>><%= up_downify(cell[:formatted]) %></td>
+        <td class="<%= cell_index.zero? ? '' : 'text-right' %> <%= cell[:sense] %>" data-sort=<%= cell[:raw] %>>
+          <% if cell[:urn] %>
+            <%= link_to cell[:formatted], analysis_page_finder_path(cell[:urn], cell[:drilldown_content_class]) %></td>
+          <% else %>
+            <%= up_downify(cell[:formatted]) %>
+          <% end %>
+        </td>
       <% end %>
     </tr>
     <% end %>
