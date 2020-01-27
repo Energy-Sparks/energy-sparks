@@ -11,6 +11,7 @@ namespace :after_party do
       title: "Gas costs advice",
       class_name: 'AdviceGasCosts',
       source: :analysis,
+      has_ratings: false,
       benchmark: false
     )
 
@@ -21,6 +22,7 @@ namespace :after_party do
       title: "Electricity costs advice",
       class_name: 'AdviceElectricityCosts',
       source: :analysis,
+      has_ratings: false,
       benchmark: false
     )
 
