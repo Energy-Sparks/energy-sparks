@@ -56,5 +56,16 @@ describe ChartDataValues do
 
     expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to be colour
   end
+
+  it 'does not re-use included colours' do
+    colour_key = ChartDataValues::COLOUR_HASH.keys.first
+    label = "AB#{colour_key}C"
+    colour = ChartDataValues::COLOUR_HASH[colour_key]
+
+
+    cdv = ChartDataValues.new({}, :a)
+    expect(cdv.work_out_best_colour(label)).to be colour
+    expect(cdv.work_out_best_colour(label)).to be nil
+  end
 end
 

@@ -125,7 +125,17 @@ class ChartDataValues
     using_name = COLOUR_HASH.detect do |key, _colour|
       data_type.to_s.downcase.include?(key.downcase)
     end
-    return using_name.second unless using_name.nil?
+
+    unless using_name.nil?
+      colour = using_name.second
+      @used_name_colours ||= []
+      if @used_name_colours.include?(colour)
+        nil
+      else
+        @used_name_colours << colour
+        colour
+      end
+    end
   end
 
 private

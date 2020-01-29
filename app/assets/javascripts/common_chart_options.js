@@ -12,7 +12,7 @@ Highcharts.setOptions({
 
 function commonChartOptions(clickListener){
   return {
-    colors: ['#02B8FF', '#007EFF', '#FCB43A', '#FF3A3B', '#50E3C2', '#FF8438'],
+    colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
     title: { text: null },
     xAxis: { showEmpty: false },
     yAxis: { showEmpty: false },
@@ -56,7 +56,6 @@ function commonChartOptions(clickListener){
       },
       pie: {
         allowPointSelect: true,
-        colors: ["#9c3367", "#67347f", "#501e74", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
         cursor: 'pointer',
         dataLabels: { enabled: false },
         showInLegend: true,
