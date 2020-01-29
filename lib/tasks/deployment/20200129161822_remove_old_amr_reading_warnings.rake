@@ -1,10 +1,10 @@
 namespace :after_party do
-  desc 'Deployment task: remove_weather_underground_areas'
-  task remove_weather_underground_areas: :environment do
-    puts "Running deploy task 'remove_weather_underground_areas'"
+  desc 'Deployment task: remove_old_amr_reading_warnings'
+  task remove_old_amr_reading_warnings: :environment do
+    puts "Running deploy task 'remove_old_amr_reading_warnings'"
 
     # Put your task implementation HERE.
-    Area.where(type: 'WeatherUndergroundArea').delete_all
+    AmrReadingWarning.where.not(warning: nil).delete_all
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

@@ -1,15 +1,15 @@
 namespace :after_party do
-  desc 'Deployment task: moar_advice_classes'
-  task moar_advice_classes: :environment do
-    puts "Running deploy task 'moar_advice_classes'"
+  desc 'Deployment task: add_even_more_advice_classes'
+  task add_even_more_advice_classes: :environment do
+    puts "Running deploy task 'add_even_more_advice_classes'"
 
     # Put your task implementation HERE.
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :gas,
       sub_category: :heating,
-      title: "Gas costs advice",
-      class_name: 'AdviceGasCosts',
+      title: "Gas meter breakdown advice",
+      class_name: 'AdviceGasMeterBreakdownBase',
       source: :analysis,
       has_ratings: false,
       benchmark: false
@@ -19,20 +19,10 @@ namespace :after_party do
       frequency: :weekly,
       fuel_type: :electricity,
       sub_category: :electricity_use,
-      title: "Electricity costs advice",
-      class_name: 'AdviceElectricityCosts',
+      title: "Electricity meter breakdown advice",
+      class_name: 'AdviceElectricityMeterBreakdownBase',
       source: :analysis,
       has_ratings: false,
-      benchmark: false
-    )
-
-    AlertType.create!(
-      frequency: :weekly,
-      fuel_type: :electricity,
-      sub_category: :electricity_use,
-      title: "Baseload advice",
-      class_name: 'AdviceBaseload',
-      source: :analysis,
       benchmark: false
     )
 

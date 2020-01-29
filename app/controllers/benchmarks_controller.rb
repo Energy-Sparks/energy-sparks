@@ -111,6 +111,6 @@ private
   def content_select?(content)
     return false unless content.present?
 
-    [:chart, :html, :table_composite, :title, :drilldown].include?(content[:type]) && content[:content].present?
+    [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
   end
 end
