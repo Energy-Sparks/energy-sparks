@@ -10,7 +10,7 @@ class Schools::ChartsController < ApplicationController
   before_action :check_aggregated_school_in_cache
 
   def show
-    @chart_type = params[:chart_type].to_sym
+    @chart_type = params.require(:chart_type).to_sym
 
     respond_to do |format|
       format.html do
