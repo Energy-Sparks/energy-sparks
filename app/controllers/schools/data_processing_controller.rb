@@ -4,12 +4,10 @@ module Schools
 
     def create
       authorize! :change_data_processing, @school
-      if @school.meters_with_readings.any?
-        @school.update!(process_data: true)
-        redirect_back fallback_location: school_path(@school), notice: "#{@school.name} will now process data"
-      else
-        redirect_back fallback_location: school_path(@school), notice: "#{@school.name} cannot process data as it has no meter readings"
-      end
+      @school.process_data!
+      redirect_back fallback_location: school_path(@school), notice: "#{@school.name} will now process data"
+    rescue School::ProcessDataError => e
+      redirect_back fallback_location: school_path(@school), notice: e.message
     end
 
     def destroy
