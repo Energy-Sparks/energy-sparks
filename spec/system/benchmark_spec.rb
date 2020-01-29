@@ -29,7 +29,6 @@ describe 'Benchmarks' do
       {:type=>:analytics_html, :content=>'analytics html'},
       {:type=>:chart_data, :content=>'chart data'},
       {:type=>:table_composite, :content=> { header: ['column 1'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school_1.name, urn: school_1.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
-#      {:type=>:drilldown, :content=> {:drilldown=>{:type=>:adult_dashboard, :content_class=>gas_fuel_alert_type.class_name}, :school_map=>[{:name=>"School name", :urn=>"URN"}, {:name=>school_1.name, :urn=>school_1.urn}]}}
     ]
   }
 
