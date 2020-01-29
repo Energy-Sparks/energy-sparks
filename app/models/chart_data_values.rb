@@ -76,6 +76,7 @@ class ChartDataValues
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
+    @used_name_colours = []
   end
 
   def process
@@ -122,10 +123,13 @@ class ChartDataValues
     from_hash = COLOUR_HASH[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = COLOUR_HASH.detect do |key, _colour|
-      data_type.to_s.downcase.include?(key.downcase)
+    using_name = COLOUR_HASH.detect do |key, colour|
+      data_type.to_s.downcase.include?(key.downcase) && !@used_name_colours.include?(colour)
     end
-    return using_name.second unless using_name.nil?
+    unless using_name.nil?
+      @used_name_colours << using_name.second
+      using_name.second
+    end
   end
 
 private
