@@ -29,7 +29,9 @@
           <dt>Website:</dt>
           <dd><%=@school.website %></dd>
           <dt>Has solar panels?</dt>
-          <dd><%= @school.has_solar_panels ? 'Yes' : 'No' %></dd>
+          <dd><%= @school.indicated_has_solar_panels ? 'Yes' : 'No' %></dd>
+          <dt>Has night storage heaters?</dt>
+          <dd><%= @school.indicated_has_storage_heaters ? 'Yes' : 'No' %></dd>
           <dt>Has swimming pool?</dt>
           <dd><%= @school.has_swimming_pool ? 'Yes' : 'No' %></dd>
           <dt>Serves school dinners?</dt>
