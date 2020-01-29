@@ -47,8 +47,14 @@ RSpec.describe "home", type: :system do
     it 'shows the latest newsletters only' do
       visit root_path
 
-
       expect(page).to_not have_content(newsletter_1.title)
+      expect(page).to have_content(newsletter_2.title)
+      expect(page).to have_content(newsletter_3.title)
+      expect(page).to have_content(newsletter_4.title)
+
+      click_on 'More newsletters'
+
+      expect(page).to have_content(newsletter_1.title)
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
