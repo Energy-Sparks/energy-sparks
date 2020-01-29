@@ -17,7 +17,7 @@ class BenchmarksController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        @page = params[:benchmark_type].to_sym
+        @page = params.require(:benchmark_type).to_sym
         @page_groups = [{ name: '', benchmarks: { @page => @page } }]
         @form_path = benchmark_path
 
