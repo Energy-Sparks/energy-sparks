@@ -46,27 +46,8 @@
   <% end %>
 </ul>
 
-<p>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#headerExample" aria-expanded="false" aria-controls="headerExample">
-    See all the header example
-  </button>
-</p>
-<div class="collapse" id="headerExample">
-  <div class="card card-body">
-    <%= @amr_data_feed_config.header_example %>
-  </div>
-</div>
-
-<p class='mt-2'>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#readingHeaderExample" aria-expanded="false" aria-controls="readingHeaderExample">
-    See all the readings example
-  </button>
-</p>
-<div class="collapse" id="readingHeaderExample">
-  <div class="card card-body">
-    <%= @amr_data_feed_config.reading_fields.join(',') %>
-  </div>
-</div>
+<h3>Header example</h3>
+<%= @amr_data_feed_config.header_example %>
 
 <h2>Upload form</h2>
 <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
