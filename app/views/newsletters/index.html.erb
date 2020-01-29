@@ -1,0 +1,36 @@
+
+<% unless @newsletters.empty? %>
+  <div class=" mt-3">
+    <div class="application container">
+      <div class="row">
+        <div class="col-md-8">
+          <h2>Newsletters</h2>
+        </div>
+      </div>
+      <% @newsletters.in_groups_of(4, nil).each do |group| %>
+        <div class="card-deck mb-4">
+          <% group.each do |newsletter| %>
+            <% if newsletter.nil? %>
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                </div>
+              </div>
+            <% else %>
+              <div class="card mb-3">
+                <% if newsletter.image.present? %>
+                  <%= image_tag newsletter.image %>
+                <% else %>
+                  <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'img-fluid') %>
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
