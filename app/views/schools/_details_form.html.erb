@@ -32,7 +32,8 @@
   <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
 </div>
 
-<%= f.input :has_solar_panels, label: 'Our school has solar PV panels' %>
+<%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
+<%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
 <%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
 <%= f.input :serves_dinners, label: 'Our school serves school dinners on site', input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
 <%= f.input :cooks_dinners_onsite, label: 'Dinners are cooked on site', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
