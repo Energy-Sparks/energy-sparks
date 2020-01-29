@@ -24,8 +24,8 @@ class SchoolsController < ApplicationController
 
   # GET /schools/1
   def show
-    if current_user && (current_user.school_id == @school.id || current_user.admin?)
-      redirect_to_dashboard
+    if go_to_specific_dashboard?
+      redirect_to_specific_dashboard
     else
       authorize! :show, @school
       @charts = setup_charts(@school.configuration)
@@ -96,6 +96,10 @@ class SchoolsController < ApplicationController
 
 private
 
+  def go_to_specific_dashboard?
+    current_user && (current_user.school_id == @school.id || can?(:manage, :admin_functions))
+  end
+
   def set_key_stages
     @key_stages = KeyStage.order(:name)
   end
@@ -110,7 +114,8 @@ private
       :urn,
       :number_of_pupils,
       :floor_area,
-      :has_solar_panels,
+      :indicated_has_solar_panels,
+      :indicated_has_storage_heaters,
       :has_swimming_pool,
       :serves_dinners,
       :cooks_dinners_onsite,
@@ -120,8 +125,8 @@ private
     )
   end
 
-  def redirect_to_dashboard
-    if @school.visible? || current_user.admin?
+  def redirect_to_specific_dashboard
+    if @school.visible? || can?(:manage, :admin_functions)
       redirect_for_active_school_or_admin
     else
       redirect_to school_inactive_path(@school)

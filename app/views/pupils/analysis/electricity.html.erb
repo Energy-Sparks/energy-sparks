@@ -35,6 +35,12 @@
     compare the electricity used on two different days
   <% end %>
 
+  <% if @school.filterable_meters.electricity.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :electricity, usage_config: {period: :weekly, split_meters: true} do %>
+      compare the electricity use by different meters
+    <% end %>
+  <% end %>
+
 </div>
 
 <h2>I want to look at&hellip;</h2>
