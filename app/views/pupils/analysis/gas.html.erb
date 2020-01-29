@@ -35,6 +35,12 @@
     compare the gas used on two different days
   <% end %>
 
+  <% if @school.filterable_meters.gas.count > 1 %>
+    <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly, split_meters: true} do %>
+      compare the gas use by different meters
+    <% end %>
+  <% end %>
+
 </div>
 
 <h2>I want to look at&hellip;</h2>

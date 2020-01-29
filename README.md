@@ -87,7 +87,7 @@ Leave this for now, we will add the environment variables once the environment h
 ### Instances:
 
 * Set to use General Purpose SSD
-* Size 20Gb
+* Size 30Gb
 * EC2 security groups, just add the default security group for now
 
 * Set instance to t2.small - make sure there is at least 20Gb disk space available.

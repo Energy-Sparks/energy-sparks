@@ -184,6 +184,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Website', with: 'http://oldfield.sch.uk'
 
       check 'Our school has solar PV panels'
+      check 'Our school has night storage heaters'
       uncheck 'Our school has its own swimming pool'
       check 'Our school serves school dinners on site'
       check 'Dinners are cooked on site'
@@ -212,7 +213,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(onboarding).to have_event(:onboarding_complete)
       onboarding.reload
 
-      expect(onboarding.school.has_solar_panels?).to eq(true)
+      expect(onboarding.school.indicated_has_solar_panels?).to eq(true)
+      expect(onboarding.school.indicated_has_storage_heaters?).to eq(true)
       expect(onboarding.school.has_swimming_pool?).to eq(false)
       expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
 
