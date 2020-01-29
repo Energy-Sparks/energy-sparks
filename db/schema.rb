@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_27_135858) do
+ActiveRecord::Schema.define(version: 2020_01_29_114844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -946,7 +946,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_135858) do
     t.bigint "solar_pv_tuos_area_id"
     t.bigint "school_group_id"
     t.bigint "dark_sky_area_id"
-    t.boolean "has_solar_panels", default: false, null: false
+    t.boolean "indicated_has_solar_panels", default: false, null: false
     t.boolean "has_swimming_pool", default: false, null: false
     t.boolean "serves_dinners", default: false, null: false
     t.boolean "cooks_dinners_onsite", default: false, null: false
@@ -957,6 +957,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_135858) do
     t.boolean "visible", default: false
     t.boolean "process_data", default: false
     t.bigint "scoreboard_id"
+    t.boolean "indicated_has_storage_heaters", default: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"

@@ -10,9 +10,10 @@
 #  created_at                            :datetime         not null
 #  dark_sky_area_id                      :bigint(8)
 #  floor_area                            :decimal(, )
-#  has_solar_panels                      :boolean          default(FALSE), not null
 #  has_swimming_pool                     :boolean          default(FALSE), not null
 #  id                                    :bigint(8)        not null, primary key
+#  indicated_has_solar_panels            :boolean          default(FALSE), not null
+#  indicated_has_storage_heaters         :boolean          default(FALSE)
 #  level                                 :integer          default(0)
 #  met_office_area_id                    :bigint(8)
 #  name                                  :string
