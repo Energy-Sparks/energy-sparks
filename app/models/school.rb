@@ -55,6 +55,8 @@ class School < ApplicationRecord
   extend FriendlyId
   include ParentMeterAttributeHolder
 
+  class ProcessDataError < StandardError; end
+
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
@@ -310,5 +312,12 @@ class School < ApplicationRecord
 
   def invalidate_cache_key
     update_attribute(:validation_cache_key, SecureRandom.uuid)
+  end
+
+  def process_data!
+    raise ProcessDataError, "#{name} cannot process data as it has no meter readings" if meters_with_readings.empty?
+    raise ProcessDataError, "#{name} cannot process data as it has no floor area" if floor_area.blank?
+    raise ProcessDataError, "#{name} cannot process data as it has no pupil numbers" if number_of_pupils.blank?
+    update!(process_data: true)
   end
 end

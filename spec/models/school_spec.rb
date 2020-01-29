@@ -166,6 +166,44 @@ describe School do
     it 'is not case sensitive' do
       expect(school.authenticate_pupil('testtest')).to eq(pupil)
     end
-
   end
+
+  describe 'process_data!' do
+
+    it 'errors when the school has no meters with readings' do
+      school = create(:school, process_data: false)
+      expect{
+        school.process_data!
+      }.to raise_error(School::ProcessDataError, /has no meter readings/)
+      expect(school.process_data).to eq(false)
+    end
+
+    it 'errors when the school has no floor area' do
+      school = create(:school, process_data: false, floor_area: nil)
+      electricity_meter = create(:electricity_meter_with_reading, school: school)
+      expect{
+        school.process_data!
+      }.to raise_error(School::ProcessDataError, /has no floor area/)
+      expect(school.process_data).to eq(false)
+    end
+
+    it 'errors when the school has no pupil numbers' do
+      school = create(:school, process_data: false, number_of_pupils: nil)
+      electricity_meter = create(:electricity_meter_with_reading, school: school)
+      expect{
+        school.process_data!
+      }.to raise_error(School::ProcessDataError, /has no pupil numbers/)
+      expect(school.process_data).to eq(false)
+    end
+
+    it 'does not error when the school has floor area, pupil numbers and a meter' do
+      school = create(:school, process_data: false)
+      electricity_meter = create(:electricity_meter_with_reading, school: school)
+      expect{
+        school.process_data!
+      }.to_not raise_error
+      expect(school.process_data).to eq(true)
+    end
+  end
+
 end
