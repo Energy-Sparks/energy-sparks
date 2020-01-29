@@ -24,4 +24,4 @@
   <%= link_to "Contact", contact_path, class: 'nav-link' %>
 </li>
 
-<%= render 'shared/manage_menu' if user_signed_in? && current_user.admin? %>
+<%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>
