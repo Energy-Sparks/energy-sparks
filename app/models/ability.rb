@@ -25,7 +25,7 @@ class Ability
       can :read, Location
     end
 
-    if user.admin?
+    if user.admin? || user.analytics?
       can :manage, :all
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?

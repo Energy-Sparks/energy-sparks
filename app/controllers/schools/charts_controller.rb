@@ -35,7 +35,7 @@ class Schools::ChartsController < ApplicationController
 private
 
   def show_benchmark_figures?
-    current_user.try(:admin?)
+    can?(:read, :show_benchmark_figures)
   end
 
   def set_school
