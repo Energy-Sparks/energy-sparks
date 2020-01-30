@@ -397,7 +397,7 @@ module Amr
       end
 
       it 'should handle graceful failure' do
-        expect { write_file_and_parse(banes_duff, config) }.to raise_error(CSV::MalformedCSVError)
+        expect { write_file_and_parse(banes_duff, config) }.to raise_error(Amr::CsvParser::Error)
 
         expect(AmrDataFeedReading.count).to be 0
         expect(AmrDataFeedImportLog.count).to be 1
