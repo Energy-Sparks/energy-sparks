@@ -8,11 +8,11 @@ module Alerts
         analysis_object.valid_alert? ? produce_report(analysis_object, benchmark_variables?(alert_class)) : invalid_alert_report(analysis_object)
       end
 
-      def content
+      def content(user_type = nil)
         analysis_object = alert_class.new(@aggregate_school)
         analysis_object.analyse(@analysis_date)
         # TODO: error, data, validity handling
-        analysis_object.front_end_content
+        analysis_object.front_end_content(user_type: user_type)
       end
 
       def benchmark_dates
