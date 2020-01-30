@@ -1,12 +1,14 @@
-<% content_for :page_title, "Alert Type - Schools" %>
+<% content_for :page_title, "Alert Type Exclusions - Schools" %>
 
 <h1>School Alert Type exclusions for:</h1>
 <h2><%= @alert_type.title %></h2>
 
+<p><%= link_to 'Admin page', admin_path %>, <%= link_to 'All alert types', admin_alert_types_path %></p>
+<p><%= link_to "#{@alert_type.title} admin page", admin_alert_type_path(@alert_type) %>
+
 <p>This shows the schools for which this alert type will <b>not</b> have it's content generated</p>
 <p><%= link_to 'Manage exclusions', new_admin_alert_type_school_alert_type_exclusion_path(@alert_type) %>
 <%= render 'admin/alert_types/apply_changes' %>
-<p><%= link_to 'Alert type management', admin_alert_types_path %></p>
 
 <% if @exclusions.any? %>
   <table class="table table-striped">
