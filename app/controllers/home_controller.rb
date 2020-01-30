@@ -45,6 +45,10 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def school_statistics
+    @school_groups = SchoolGroup.order(:name)
+  end
+
   def team
     @team_members = TeamMember.order(:position)
     @partners = Partner.order(:position)
