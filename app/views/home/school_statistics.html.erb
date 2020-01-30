@@ -1,0 +1,71 @@
+<% content_for :page_title, 'Report' %>
+
+<div class="application container">
+  <div class="row padded-row">
+    <div class="col">
+      <h1>School Statistics</h1>
+      <p>Here is a summary of all of the Energy Sparks schools</p>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Jump to</a>
+        </li>
+        <% @school_groups.each do |school_group| %>
+          <li class="nav-item">
+            <%= link_to "#{school_group.name}", "##{school_group.name.parameterize}", class: 'nav-link' %>
+          </li>
+        <% end %>
+      </ul>
+
+      <% @school_groups.each do |school_group| %>
+        <div class="nav-anchor">
+          <a name="<%= school_group.name.parameterize %>"> </a>
+          <h3><%= school_group.name %></h3>
+        </div>
+
+        <table class="table table-sorted table-bordered table-responsive">
+          <thead>
+            <tr>
+              <th colspan="3" class="text-center">School</th>
+              <th colspan="4" class="text-center">Meter count on site</th>
+              <th colspan="4"></th>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th>URN/ SEED</th>
+              <th>Postcode</th>
+              <th>Gas</th>
+              <th>Electricity</th>
+              <th>Solar</th>
+              <th>Solar export</th>
+              <th>Floor area</th>
+              <th>Pupil numbers</th>
+              <th>Activities completed</th>
+              <th>Interventions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% school_group.schools.visible.each do |school| %>
+              <tr>
+                <td><%= link_to school.name, school %></td>
+                <td><%= school.urn %></td>
+                <td><%= school.postcode %></td>
+                <td><%= school.meters.gas.count %></td>
+                <td><%= school.meters.electricity.count %></td>
+                <td><%= school.meters.solar_pv.count %></td>
+                <td><%= school.meters.exported_solar_pv.count %></td>
+                <td><%= school.floor_area %></td>
+                <td><%= school.number_of_pupils %></td>
+                <td><%= link_to school.activities.count, school_activities_path(school) %></td>
+                <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+

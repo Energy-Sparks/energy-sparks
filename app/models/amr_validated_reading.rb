@@ -27,7 +27,16 @@ class AmrValidatedReading < ApplicationRecord
 
   def self.download_all_data
     <<~QUERY
-      SELECT s.urn, m.mpan_mprn, amr.reading_date, amr.one_day_kwh, amr.status, amr.substitute_date, amr.kwh_data_x48
+      SELECT s.urn,
+             s.name,
+             s.postcode,
+             CASE m.meter_type WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Gas' WHEN 2 THEN 'Solar PV' WHEN 3 THEN 'Exported Solar PV' END,
+             m.mpan_mprn,
+             amr.reading_date,
+             amr.one_day_kwh,
+             amr.status,
+             amr.substitute_date,
+             amr.kwh_data_x48
       FROM  amr_validated_readings amr, meters m, schools s
       WHERE amr.meter_id = m.id
       AND   m.school_id  = s.id
