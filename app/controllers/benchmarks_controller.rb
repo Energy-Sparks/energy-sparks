@@ -1,6 +1,8 @@
 require 'dashboard'
 
 class BenchmarksController < ApplicationController
+  include UserTypeSpecific
+
   skip_before_action :authenticate_user!
 
   before_action :latest_benchmark_run
@@ -68,14 +70,6 @@ private
 
   def page_groups
     @page_groups = @content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
-  end
-
-  def user_type_hash
-    if current_user
-      { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
-    else
-      { user_role: :guest, staff_role: nil }
-    end
   end
 
   def load_filter

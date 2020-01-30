@@ -5,7 +5,7 @@ module Alerts
         alert_class.new(school: @school, alert_type: @alert_type, today: Time.zone.today).report
       end
 
-      def content
+      def content(_user_type = nil)
         []
       end
 

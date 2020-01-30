@@ -5,6 +5,7 @@ module Schools
 
     include SchoolAggregation
     include AnalysisPages
+    include UserTypeSpecific
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :load_page_and_alert_type, only: :show
@@ -21,7 +22,7 @@ module Schools
         analysis_date: @page.alert.run_on,
         aggregate_school: aggregate_school
       )
-      @content = framework_adapter.content
+      @content = framework_adapter.content(user_type_hash)
       @structured_content = framework_adapter.structured_content if framework_adapter.has_structured_content?
 
       @title = page_title(@content, @school)
