@@ -1,11 +1,14 @@
 <h1>Resources</h1>
 
+<%= link_to 'Manage resource types', admin_resource_file_types_path %>
+
 <% if @resource_files %>
 
-<table class="table">
+<table class="table mt-2">
   <thead>
     <tr>
       <th>Title</th>
+      <th>Type</th>
       <th>Description</th>
       <th>File</th>
       <th>Actions</th>
@@ -16,6 +19,7 @@
     <% @resource_files.each do |resource_file| %>
       <tr>
         <td><%= resource_file.title %></td>
+        <td><%= resource_file.resource_file_type.try(:title) %></td>
         <td><%= resource_file.description %></td>
         <td>
           <% if resource_file.file.attached? %>
