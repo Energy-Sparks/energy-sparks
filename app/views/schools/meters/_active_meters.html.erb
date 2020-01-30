@@ -6,7 +6,6 @@
     <td><%= meter.amr_data_feed_readings.count %></td>
     <td><%= meter.amr_validated_readings.count %></td>
     <td><%= nice_dates meter.last_validated_reading %></td>
-    <td><%= link_to "CSV", school_meter_path(@school, meter, format: "csv") if meter.amr_validated_readings.any? %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
       <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm btn-success' %>

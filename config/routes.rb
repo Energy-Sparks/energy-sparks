@@ -127,7 +127,7 @@ Rails.application.routes.draw do
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resource :usage, controller: :usage, only: :show
-
+      resources :downloads, only: [:index]
     end
 
     # Maintain old scoreboard URL

@@ -111,53 +111,6 @@ RSpec.describe "meter management", :meters, type: :system do
         click_on 'Delete'
         expect(school.meters.count).to eq(0)
       end
-
-      it 'does show the CSV download button if there are readings' do
-        expect(meter.amr_validated_readings.empty?).to be false
-        expect(page).to have_content('CSV')
-      end
-    end
-
-    context 'when a meter has readings, they can be downloaded' do
-      let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
-
-      it 'allows a download of CSV for a meter' do
-        click_on 'Manage meters'
-        click_on 'CSV'
-        # Make sure the page is a CSV
-        header = page.response_headers['Content-Disposition']
-        expect(header).to match /^attachment/
-        expect(header).to match /filename=\"meter-amr-readings-#{meter.mpan_mprn}.csv\"/
-
-        # Then check the content
-        meter.amr_validated_readings.each do |record|
-          expect(page.source).to have_content Schools::MetersController::SINGLE_METER_CSV_HEADER
-          expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
-        end
-      end
-
-      it 'allows a download of CSV for the school meter' do
-        click_on 'Manage meters'
-        click_on 'Download AMR data for all meters'
-        # Make sure the page is a CSV
-        header = page.response_headers['Content-Disposition']
-        expect(header).to match /^attachment/
-        expect(header).to match /school-amr-readings-#{school.name.parameterize}.csv$/
-
-        # Then check the content
-        meter.amr_validated_readings.each do |record|
-          expect(page.source).to have_content Schools::MetersController::SCHOOL_CSV_HEADER
-          expect(page).to have_content amr_validated_reading_for_school_to_s(meter, meter.amr_validated_readings.first)
-        end
-      end
-
-      def amr_validated_reading_for_school_to_s(meter, amr)
-        "#{meter.mpan_mprn},#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
-      end
-
-      def amr_validated_reading_to_s(amr)
-        "#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
-      end
     end
   end
 end
