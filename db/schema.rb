@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2020_01_30_144801) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -819,10 +820,19 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end
 
+  create_table "resource_file_types", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "position", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "resource_files", force: :cascade do |t|
     t.string "title", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "resource_file_type_id"
+    t.index ["resource_file_type_id"], name: "index_resource_files_on_resource_file_type_id"
   end
 
   create_table "school_alert_type_exclusions", force: :cascade do |t|
@@ -1197,6 +1207,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
+  add_foreign_key "resource_files", "resource_file_types", on_delete: :restrict
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify

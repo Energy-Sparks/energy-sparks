@@ -39,7 +39,7 @@ module Admin
     private
 
     def resource_file_params
-      params.require(:resource_file).permit(:title, :description, :file)
+      params.require(:resource_file).permit(:title, :description, :file, :resource_file_type_id)
     end
   end
 end
