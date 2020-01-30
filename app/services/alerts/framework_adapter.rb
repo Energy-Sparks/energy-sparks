@@ -16,8 +16,8 @@ module Alerts
       adapter_instance.report
     end
 
-    def content
-      adapter_instance.content
+    def content(user_type = nil)
+      adapter_instance.content(user_type)
     end
 
     def has_structured_content?
