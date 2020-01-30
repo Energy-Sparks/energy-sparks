@@ -13,6 +13,7 @@ module Pupils
       equivalence_setup(@school)
 
       @temperature_observations = @school.observations.temperature
+      @show_temperature_observations = show_temperature_observations?
     end
 
   private
@@ -34,6 +35,10 @@ module Pupils
           with: equivalence.formatted_variables
         )
       end
+    end
+
+    def show_temperature_observations?
+      site_settings.temperature_recording_month_numbers.include?(Time.zone.today.month)
     end
   end
 end

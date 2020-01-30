@@ -4,6 +4,7 @@ module Schools
     load_and_authorize_resource :observation, through: :school, parent: false
 
     skip_before_action :authenticate_user!, only: [:index, :show]
+    before_action :check_recording_enabled, only: [:new, :create]
     before_action :set_location_names, only: [:new, :create]
     before_action :set_inital_recording_count, only: [:new, :create]
 
@@ -54,6 +55,12 @@ module Schools
 
     def observation_params
       params.require(:observation).permit(:description, :at, temperature_recordings_attributes: [:id, :centigrade, :location_id])
+    end
+
+    def check_recording_enabled
+      unless site_settings.temperature_recording_month_numbers.include?(Time.zone.today.month)
+        redirect_back fallback_location: school_path(@school), notice: 'Temperature recording is not enabled at this time of year'
+      end
     end
   end
 end
