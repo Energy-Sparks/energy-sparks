@@ -1,3 +1,6 @@
+<h1><%= @alert_type.title %></h1>
+<p><%= link_to 'Admin page', admin_path %>, <%= link_to 'All alert types', admin_alert_types_path %></p>
+
 <%= render 'admin/alert_types/nav', alert_type: @alert_type %>
 
 <%= render 'admin/alert_types/apply_changes' %>
