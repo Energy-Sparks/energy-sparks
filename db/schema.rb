@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_29_114844) do
+ActiveRecord::Schema.define(version: 2020_01_30_144801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -994,6 +994,7 @@ ActiveRecord::Schema.define(version: 2020_01_29_114844) do
     t.integer "management_priorities_dashboard_limit", default: 5
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
+    t.jsonb "temperature_recording_months", default: []
   end
 
   create_table "sms_records", force: :cascade do |t|
