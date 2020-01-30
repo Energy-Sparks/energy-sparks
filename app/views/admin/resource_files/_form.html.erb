@@ -1,4 +1,5 @@
 <%= simple_form_for([:admin, resource_file]) do |f| %>
+  <%= f.input :resource_file_type_id, label: 'Type', collection: ResourceFileType.order(:position) %>
   <%= f.input :title %>
   <%= f.label 'Description', for: :description %>
   <%= f.rich_text_area :description %>
