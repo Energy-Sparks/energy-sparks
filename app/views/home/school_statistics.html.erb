@@ -23,16 +23,16 @@
           <h3><%= school_group.name %></h3>
         </div>
 
-        <table class="table table-sorted table-bordered">
+        <table class="table table-sorted table-bordered table-responsive">
           <thead>
             <tr>
               <th colspan="3" class="text-center">School</th>
               <th colspan="4" class="text-center">Meter count on site</th>
-              <th colspan="3"></th>
+              <th colspan="4"></th>
             </tr>
             <tr>
               <th>Name</th>
-              <th>URN/SEED</th>
+              <th>URN/ SEED</th>
               <th>Postcode</th>
               <th>Gas</th>
               <th>Electricity</th>
@@ -40,6 +40,7 @@
               <th>Solar export</th>
               <th>Floor area</th>
               <th>Pupil numbers</th>
+              <th>Activities completed</th>
               <th>Interventions</th>
             </tr>
           </thead>
@@ -55,6 +56,7 @@
                 <td><%= school.meters.exported_solar_pv.count %></td>
                 <td><%= school.floor_area %></td>
                 <td><%= school.number_of_pupils %></td>
+                <td><%= link_to school.activities.count, school_activities_path(school) %></td>
                 <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
               </tr>
             <% end %>
