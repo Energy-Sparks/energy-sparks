@@ -5,6 +5,7 @@ RSpec.describe "meter management", :meters, type: :system do
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create_active_school(name: school_name)}
   let!(:admin)        { create(:admin)}
+  let!(:teacher)      { create(:staff)}
   let!(:school_admin) { create(:school_admin, school_id: school.id) }
 
   context 'as school admin' do
@@ -33,6 +34,21 @@ RSpec.describe "meter management", :meters, type: :system do
         expect(meter.amr_data_feed_readings.count).to eq(1)
         expect(page).to have_button('Delete', disabled: true)
       end
+    end
+  end
+
+  context 'as teacher' do
+    before(:each) do
+      sign_in(teacher)
+      visit school_meters_path(school)
+
+    end
+
+    it 'does not see things it should not' do
+      expect(page).to_not have_content('Delete')
+      expect(page).to_not have_content('Create Meter')
+      expect(page).to_not have_content('Activate')
+      expect(page).to_not have_content('Deactivate')
     end
   end
 

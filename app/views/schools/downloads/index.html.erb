@@ -2,7 +2,7 @@
 
 <p><%= link_to 'Back to school dashboard', @school %></p>
 
-<p><%= link_to 'Download AMR data for all meters combined', school_downloads_path(@school, format: :csv), class: 'btn' %></p>
+<p><%= link_to 'Download AMR data for all meters combined', school_downloads_path(@school, format: :csv) %></p>
 
 <h2>Meters</h2>
 <p>Download the AMR data for each active meter</p>
@@ -21,7 +21,8 @@
 </ul>
 <% end %>
 
-<p>Temperature and solar pv data might be available on request depending on the end use. Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information.</p>
+<p>Temperature, Carbon intensity and solar pv data might be available on request depending on the end use.</p>
+<p>Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information.</p>
 
 <% if can?(:read, :meter_collection_download) %>
   <hr/>

@@ -75,6 +75,7 @@ class Ability
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read_restricted_analysis, School, school_scope
       can :read, [:my_school_menu, :school_downloads]
+      can :read, Meter
       if user.staff?
         can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }

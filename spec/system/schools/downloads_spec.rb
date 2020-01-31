@@ -26,12 +26,12 @@ describe "downloads", type: :system do
 
     # Then check the content
     meter.amr_validated_readings.each do |record|
-      expect(page.source).to have_content School::DownloadsController::CSV_HEADER
+      expect(page.source).to have_content School::MetersController::CSV_HEADER
       expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
     end
   end
 
-  xit 'allows a download of CSV for a meter' do
+  it 'allows a download of CSV for a meter' do
     click_on mpan.to_s
 
     # Make sure the page is a CSV
