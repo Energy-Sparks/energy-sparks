@@ -24,7 +24,7 @@
         </div>
 
         <div class="table-responsive">
-          <table class="table table-sorted table-bordered">
+          <table class="table table-bordered table-sorted">
             <thead>
               <tr>
                 <th colspan="3" class="text-center">School</th>
@@ -32,7 +32,7 @@
                 <th colspan="4"></th>
               </tr>
               <tr>
-                <th>Name</th>
+                <th class='fixed-width-150'>Name</th>
                 <th>URN/ SEED</th>
                 <th>Postcode</th>
                 <th>Gas</th>
@@ -47,8 +47,8 @@
             </thead>
             <tbody>
               <% school_group.schools.visible.each do |school| %>
-                <tr>
-                  <td><%= link_to school.name, school %></td>
+                <tr scope="row">
+                  <td class='fixed-width-150'><%= link_to school.name, school %></td>
                   <td><%= school.urn %></td>
                   <td><%= school.postcode %></td>
                   <td><%= school.meters.gas.count %></td>
