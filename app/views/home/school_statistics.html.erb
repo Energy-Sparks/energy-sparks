@@ -23,45 +23,47 @@
           <h3><%= school_group.name %></h3>
         </div>
 
-        <table class="table table-sorted table-bordered table-responsive">
-          <thead>
-            <tr>
-              <th colspan="3" class="text-center">School</th>
-              <th colspan="4" class="text-center">Meter count on site</th>
-              <th colspan="4"></th>
-            </tr>
-            <tr>
-              <th>Name</th>
-              <th>URN/ SEED</th>
-              <th>Postcode</th>
-              <th>Gas</th>
-              <th>Electricity</th>
-              <th>Solar</th>
-              <th>Solar export</th>
-              <th>Floor area</th>
-              <th>Pupil numbers</th>
-              <th>Activities completed</th>
-              <th>Interventions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% school_group.schools.visible.each do |school| %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-sorted">
+            <thead>
               <tr>
-                <td><%= link_to school.name, school %></td>
-                <td><%= school.urn %></td>
-                <td><%= school.postcode %></td>
-                <td><%= school.meters.gas.count %></td>
-                <td><%= school.meters.electricity.count %></td>
-                <td><%= school.meters.solar_pv.count %></td>
-                <td><%= school.meters.exported_solar_pv.count %></td>
-                <td><%= school.floor_area %></td>
-                <td><%= school.number_of_pupils %></td>
-                <td><%= link_to school.activities.count, school_activities_path(school) %></td>
-                <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
+                <th colspan="3" class="text-center">School</th>
+                <th colspan="4" class="text-center">Meter count on site</th>
+                <th colspan="4"></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+              <tr>
+                <th class='fixed-width-150'>Name</th>
+                <th>URN/ SEED</th>
+                <th>Postcode</th>
+                <th>Gas</th>
+                <th>Electricity</th>
+                <th>Solar</th>
+                <th>Solar export</th>
+                <th>Floor area</th>
+                <th>Pupil numbers</th>
+                <th>Activities completed</th>
+                <th>Interventions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% school_group.schools.visible.each do |school| %>
+                <tr scope="row">
+                  <td class='fixed-width-150'><%= link_to school.name, school %></td>
+                  <td><%= school.urn %></td>
+                  <td><%= school.postcode %></td>
+                  <td><%= school.meters.gas.count %></td>
+                  <td><%= school.meters.electricity.count %></td>
+                  <td><%= school.meters.solar_pv.count %></td>
+                  <td><%= school.meters.exported_solar_pv.count %></td>
+                  <td><%= school.floor_area %></td>
+                  <td><%= school.number_of_pupils %></td>
+                  <td><%= link_to school.activities.count, school_activities_path(school) %></td>
+                  <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% end %>
     </div>
   </div>
