@@ -1,13 +1,13 @@
 Geocoder.configure(
   # Geocoding options
   # timeout: 3,                 # geocoding service timeout (secs)
-  lookup: :postcodes_io,         # name of geocoding service (symbol)
+  lookup: :pickpoint,         # name of geocoding service (symbol)
   # ip_lookup: :ipinfo_io,      # name of IP address geocoding service (symbol)
   # language: :en,              # ISO-639 language code
   # use_https: false,           # use HTTPS for lookup requests? (if supported)
   # http_proxy: nil,            # HTTP proxy server (user:pass@host:port)
   # https_proxy: nil,           # HTTPS proxy server (user:pass@host:port)
-  # api_key: nil,               # API key for geocoding service
+  api_key: ENV['PICKPOINT_API_KEY'],               # API key for geocoding service
   # cache: nil,                 # cache object (must respond to #[], #[]=, and #del)
   # cache_prefix: 'geocoder:',  # prefix (string) to use for all cache keys
 
