@@ -45,6 +45,16 @@ describe AmrUploadedReading, type: :system do
       expect(AmrUploadedReading.first.imported).to be true
     end
 
+    it 'produces an error message when an invalid CSV file is uploaded' do
+      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
+      expect { click_on 'Preview' }.to_not change { AmrUploadedReading.count }
+
+      expect(AmrUploadedReading.count).to be 0
+
+      expect(page).to have_content('CSV error:')
+    end
+
+
     it 'is helpful if a very different format file is loaded' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-sheffield-file.csv')
       click_on 'Preview'

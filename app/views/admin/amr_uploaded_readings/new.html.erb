@@ -51,7 +51,7 @@
 
 <h2>Upload form</h2>
 <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
-  <%= f.input :csv_file, as: :file %>
+  <%= f.input :csv_file, as: :file, input_html: {accept: '.csv'} %>
   <%= f.submit 'Preview', class: 'btn' %>
 <% end %>
 
