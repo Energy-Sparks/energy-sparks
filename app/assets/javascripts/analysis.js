@@ -131,8 +131,8 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
     url: dataPath,
     data: requestData,
     success: function (returnedData) {
-      var thisChartData = returnedData.charts[0];
-      if (thisChartData == undefined) {
+      var thisChartData = returnedData;
+      if (thisChartData == undefined || thisChartData.length == 0) {
         chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
       } else if (thisChartData.series_data == null) {
         chartFailure(highchartsChart, thisChartData.title);
