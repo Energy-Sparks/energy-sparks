@@ -5,5 +5,6 @@
   <%= f.input :message_for_no_pupil_accounts, hint: 'Shows message on management dashboard for schools without pupil accounts'%>
   <%= f.input :management_priorities_dashboard_limit, hint: 'How many entries to show on the management dashboard priorities table before offering more'%>
   <%= f.input :management_priorities_page_limit, hint: 'How many entries to show on the management priorities page '%>
+  <%= f.input :temperature_recording_months, as: :check_boxes, collection: @temperature_setting_months, checked: f.object.temperature_recording_months %>
   <%= f.submit 'Update settings', class: 'btn btn-primary'%>
 <% end %>

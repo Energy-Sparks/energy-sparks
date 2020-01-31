@@ -116,6 +116,10 @@ table th.actions {
   width: 20%;
 }
 
+th.fixed-width-150 {
+  min-width: 150px;
+}
+
 div.meter-attributes {
   kbd {
     color: black;

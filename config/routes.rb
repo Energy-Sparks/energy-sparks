@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'resources', to: 'resource_files#index', as: :resources
   get 'home-page', to: 'home#show'
   get 'mailchimp-signup', to: 'home#mailchimp_signup'
+  get 'school_statistics', to: 'home#school_statistics'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -126,7 +127,7 @@ Rails.application.routes.draw do
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resource :usage, controller: :usage, only: :show
-
+      resources :downloads, only: [:index]
     end
 
     # Maintain old scoreboard URL
@@ -152,6 +153,7 @@ Rails.application.routes.draw do
     resources :partners
     resources :team_members
     resources :newsletters
+    resources :resource_file_types
     resources :resource_files
     resources :school_groups do
       scope module: :school_groups do
