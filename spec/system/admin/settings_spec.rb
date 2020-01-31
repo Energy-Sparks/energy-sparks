@@ -14,14 +14,13 @@ describe 'site-wide settings' do
     click_on 'Site Settings'
     uncheck 'Message for no contacts'
 
-    check 'October'
-    check 'November'
-    check 'December'
+    uncheck 'October'
+    check 'May'
 
     click_on 'Update settings'
 
     expect(SiteSettings.current.message_for_no_contacts).to eq(false)
-    expect(SiteSettings.current.temperature_recording_month_numbers).to match_array([10, 11, 12])
+    expect(SiteSettings.current.temperature_recording_month_numbers).to match_array([11, 12, 1, 2, 3, 4, 5])
 
   end
 

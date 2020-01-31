@@ -12,6 +12,9 @@ describe 'temperature recordings as school admin' do
     let!(:user)       { create(:pupil, school: school)}
 
     context 'when the site settings are turned off' do
+      before(:each) do
+        SiteSettings.create!(temperature_recording_months: [])
+      end
       it 'does not show temperature recording links' do
         sign_in(user)
         visit root_path

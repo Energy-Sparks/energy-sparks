@@ -6,20 +6,19 @@
     <td><%= meter.amr_data_feed_readings.count %></td>
     <td><%= meter.amr_validated_readings.count %></td>
     <td><%= nice_dates meter.last_validated_reading %></td>
-    <td><%= link_to "CSV", school_meter_path(@school, meter, format: "csv") if meter.amr_validated_readings.any? %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
-      <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm btn-success' %>
+      <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm' %>
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to 'Report', admin_reports_amr_validated_reading_path(meter), class: 'btn btn-info btn-sm' %>
+          <%= link_to 'Report', admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
         <% end %>
       </div>
     </td>
     <td>
       <% if ! meter.pseudo %>
         <div class="btn-group btn-group-sm" role="group">
-          <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm btn-warning' %>
-          <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+          <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm' if can?(:edit, meter) %>
+          <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:deactivate, meter) %>
         </div>
       <% end %>
     </td>
