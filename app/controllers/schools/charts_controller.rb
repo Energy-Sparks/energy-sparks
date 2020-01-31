@@ -25,9 +25,12 @@ class Schools::ChartsController < ApplicationController
           series_breakdown: params[:series_breakdown],
           date_ranges: get_date_ranges
         }
-        @output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
-
-        render json: { charts: @output }
+        output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
+        if output
+          render json: ChartDataValues.to_builder(output).target!
+        else
+          render json: {}
+        end
       end
     end
   end

@@ -48,7 +48,7 @@ RSpec.describe "teachers school view", type: :system do
     before(:each) do
       allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-      allow_any_instance_of(ChartData).to receive(:data).and_return([])
+      allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
     end
 
     context 'with a successful load' do
