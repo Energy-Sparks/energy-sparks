@@ -18,7 +18,6 @@ function fireRequestForJson() {
 
   function onEachFeature(feature, layer) {
     console.log(feature.properties.key);
-    // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.schoolName) {
       layer.bindPopup(feature.properties.schoolName);
     }
