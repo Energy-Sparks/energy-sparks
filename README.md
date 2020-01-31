@@ -46,10 +46,22 @@ bin/run_as_webapp bundle exec rake ...
 
 ## Refreshing test db
 
-1) Get DB dump from production
+1) Get DB dump from production locally
+
+```
+pg_dump -h host-name-goes-here -p 5432 -U user-name-goes-here -d db-name-goes-here > file-name-goes-here.sql
+```
+
 2) Search and replace the production user with the test user in the sql file
-3) On test, drop all tables, schema
-4) Run psql against test database and import database
+
+3) Zip up the file (use zip or gzip) - notice than unzipping can be time consuming on the test server!
+
+3) Secure copy the file up to the test server (note this can take 10 minutes)
+
+```
+ scp -i /path/to/local/key.pem file-name-goes-here.sql.gz ec2-user@public-dns-name-of-server-found-in-aws-console:/home/ec2-user
+```
+4) On test, drop all tables, schema
 
 ```
 DROP SCHEMA public CASCADE;
@@ -60,11 +72,16 @@ You may also need to restore the default grants.
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
 ```
-5) Nobble email users on test
+
+5) Run psql against test database and import database
+
+
+
+6) Nobble email users on test
 ```
 bin/run_as_webapp bundle exec rake utility:prepare_test_server
 ```
-6) Reset active storage buckets on test adn copy production bucket contents
+7) Reset active storage buckets on test adn copy production bucket contents
 ```
 bin/run_as_webapp bundle exec rake utility:clear_active_storage_bucket
 bin/run_as_webapp bundle exec rake utility:copy_active_storage_bucket[*INSERT PRODUCTION ACTIVE STORAGE BUCKET-NAME*]
