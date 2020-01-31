@@ -131,9 +131,7 @@ class School < ApplicationRecord
 
   geocoded_by :postcode
 
-  def geocode_address
-    [name, address, postcode].join(', ')
-  end
+  after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   def latest_alert_run
     alert_generation_runs.order(created_at: :desc).first
