@@ -9,7 +9,7 @@
 <% if can?(:validate_meters, @school) && @school.meters_with_readings.any? %>
   <% if @school.process_data? %>
     <div class="alert alert-secondary">
-      <%= link_to 'Validate meter readings', school_meter_readings_validation_path(@school), method: :post, class: 'btn btn-warning mr-3' %>
+      <%= link_to 'Validate meter readings', school_meter_readings_validation_path(@school), method: :post, class: 'btn mr-3' %>
       This may take some time!
     </div>
   <% else %>
@@ -18,17 +18,20 @@
     </div>
   <% end %>
 <% end %>
+
+<p><%= link_to 'School home', school_path(@school) %>, <%= link_to 'School downloads', school_downloads_path(@school) %></p>
+
+<h3>Meters</h3>
 <div class="table-responsive">
 <table class="table table-sm">
   <thead>
     <tr>
-      <th scope="col">Meter Type</th>
+      <th scope="col">Type</th>
       <th scope="col">Meter Point Number</th>
       <th scope="col">Meter Description</th>
       <th scope="col">Imported Readings</th>
       <th scope="col">Validated readings</th>
       <th scope="col">Latest validated reading</th>
-      <th scope="col">Download</th>
       <th scope="col">Details</th>
       <th scope="col">Actions</th>
     </tr>
@@ -67,29 +70,28 @@
     <tbody>
       <% @inactive_meters.each do |meter| %>
         <tr scope="row">
+          <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
           <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
-          <td><%= meter.meter_type.humanize %></td>
           <td><%= meter.amr_data_feed_readings.count %></td>
           <td><%= meter.amr_validated_readings.count %></td>
           <td><%= nice_dates meter.last_validated_reading %></td>
-          <td><%= link_to "CSV", school_meter_path(@school, meter, format: "csv") if meter.amr_validated_readings.any? %></td>
           <td>
             <div class="btn-group btn-group-sm" role="group">
-            <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm btn-success' %>
+            <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm' %>
               <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-                <%= link_to 'Report', admin_reports_amr_validated_reading_path(meter), class: 'btn btn-info btn-sm' %>
+                <%= link_to 'Report', admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
               <% end %>
             </div>
           </td>
           <td>
             <div class="btn-group btn-group-sm" role="group">
               <% if can? :delete, meter %>
-                <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+                <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm' %>
               <% else %>
-                <button class="btn btn-sm btn-danger" disabled title="Only admins can delete meters with meter readings">Delete</button>
+                <button class="btn btn-sm" disabled title="Only admins can delete meters with meter readings">Delete</button>
               <% end %>
-              <%= link_to 'Activate', activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm btn-success' %>
+              <%= link_to 'Activate', activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:activate, meter) %>
             </div>
           </td>
         </tr>
@@ -99,27 +101,19 @@
 </table>
 </div>
 
-<% if can?(:read, :meter_collection_download) %>
+<% if can? :manage, LowCarbonHubInstallation %>
   <hr/>
-  <h4>Download YAML files</h4>
-  <div class="other-actions mb-3">
-    <%= link_to 'Unvalidated AMR data', admin_school_unvalidated_amr_data_path(@school, format: :yaml), class: 'btn btn-sm' %>
-    <%= link_to 'Validated AMR data', admin_school_validated_amr_data_path(@school, format: :yaml), class: 'btn btn-sm' %>
-    <%= link_to 'Aggregated meter collection', admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn btn-sm' %>
-  </div>
+  <h3>Low carbon hub installations</h3>
+  <p><%= link_to 'List low carbon hub installations', school_low_carbon_hub_installations_path(@school) %></p>
+  <p><%= link_to 'New carbon hub installation', new_school_low_carbon_hub_installation_path(@school), class: 'btn' %></p>
   <hr/>
 <% end %>
 
-<div class="card bg-light mb-3">
-  <div class="card-header"><h4>New meter</h4></div>
-  <div class="card-body">
-    <%= render 'form', school: @school, meter: @meter %>
+<% if can? :create, Meter %>
+  <div class="card bg-light mb-3">
+    <div class="card-header"><h4>New meter</h4></div>
+    <div class="card-body">
+      <%= render 'form', school: @school, meter: @meter %>
+    </div>
   </div>
-</div>
-
-<div class="other-actions">
-  <%= link_to 'School home', school_path(@school), class: 'btn btn-secondary' %>
-  <%= link_to 'Download AMR data for all meters', school_meters_path(@school, format: :csv), class: 'btn btn-secondary' %>
-  <%= link_to 'Low carbon hub installations', school_low_carbon_hub_installations_path(@school), class: 'btn btn-secondary' if can? :manage, LowCarbonHubInstallation %>
-  <%= link_to 'New carbon hub installation', new_school_low_carbon_hub_installation_path(@school), class: 'btn btn-secondary' if can? :manage, LowCarbonHubInstallation %>
-</div>
+<% end %>

@@ -18,5 +18,6 @@
     <% end %>
     <%= link_to 'Activities', suggest_activity_school_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Resources', resources_path, class: 'dropdown-item' %>
+    <%= link_to "Download your data", school_downloads_path(current_user.school), class: 'dropdown-item' %>
   </div>
 </li>

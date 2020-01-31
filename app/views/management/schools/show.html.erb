@@ -10,6 +10,8 @@
     <% if @school.configuration %>
       <%= link_to "Review your school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% end %>
+    <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+
   </div>
 </div>
 
