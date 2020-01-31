@@ -14,7 +14,9 @@
 #  id                                    :bigint(8)        not null, primary key
 #  indicated_has_solar_panels            :boolean          default(FALSE), not null
 #  indicated_has_storage_heaters         :boolean          default(FALSE)
+#  latitude                              :decimal(10, 6)
 #  level                                 :integer          default(0)
+#  longitude                             :decimal(10, 6)
 #  met_office_area_id                    :bigint(8)
 #  name                                  :string
 #  number_of_pupils                      :integer
