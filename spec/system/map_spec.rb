@@ -12,7 +12,7 @@ describe "map", type: :system do
           "type"=>"Feature",
           "geometry"=> {
             "type"=>"Point",
-            "coordinates"=> [school.longitude, school.latitude] # From test stub in geocoder configuration
+            "coordinates"=> [school.longitude, school.latitude]
           },
           "properties"=>{
             "schoolName"=>school.name
