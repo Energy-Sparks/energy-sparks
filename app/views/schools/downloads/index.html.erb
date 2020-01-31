@@ -8,7 +8,7 @@
 <p>Download the AMR data for each active meter</p>
 <ul>
   <% @school.meters.active.each do |meter| %>
-    <li><%= link_to "#{meter.mpan_mprn} - #{meter.meter_type.to_s.humanize} - #{meter.name}", school_meter_path(@school, meter, format: "csv")  %></li>
+    <li><%= link_to "#{meter.display_name}", school_meter_path(@school, meter, format: "csv")  %></li>
   <% end %>
 </ul>
 
@@ -16,7 +16,7 @@
 <p>Download the AMR data for each inactive meter</p>
 <ul>
   <% @school.meters.inactive.each do |meter| %>
-    <li><%= link_to "#{meter.mpan_mprn} - #{meter.meter_type.to_s.humanize} - #{meter.name}", school_meter_path(@school, meter, format: "csv")  %></li>
+    <li><%= link_to "#{meter.display_name}", school_meter_path(@school, meter, format: "csv")  %></li>
   <% end %>
 </ul>
 <% end %>
