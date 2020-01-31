@@ -152,7 +152,7 @@ function processAnalysisChart(chartContainer, chartConfig){
   var chartData = chartConfig.jsonData;
 
   if (chartData !== undefined) {
-    chartSuccess(chartConfig, JSON.parse(chartData), thisChart);
+    chartSuccess(chartConfig, chartData, thisChart);
   } else {
     processAnalysisChartAjax(thisId, chartConfig, thisChart)
   }

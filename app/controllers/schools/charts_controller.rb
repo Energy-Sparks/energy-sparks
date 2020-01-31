@@ -27,7 +27,7 @@ class Schools::ChartsController < ApplicationController
         }
         output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
         if output
-          render json: ChartDataValues.to_builder(output).target!
+          render json: ChartDataValues.as_chart_json(output)
         else
           render json: {}
         end

@@ -132,28 +132,28 @@ class ChartDataValues
     end
   end
 
-  def self.to_builder(output)
-    Jbuilder.new do |json|
-      json.call(
-        output,
-        :title,
-        :subtitle,
-        :chart1_type,
-        :chart1_subtype,
-        :y_axis_label,
-        :x_axis_label,
-        :x_axis_categories,
-        :advice_header,
-        :advice_footer,
-        :y2_axis_label,
-        :series_data,
-        :annotations,
-        :allowed_operations,
-        :drilldown_available,
-        :transformations,
-        :parent_timescale_description,
-        :uses_time_of_day
-      )
+  def self.as_chart_json(output)
+    [
+      :title,
+      :subtitle,
+      :chart1_type,
+      :chart1_subtype,
+      :y_axis_label,
+      :x_axis_label,
+      :x_axis_categories,
+      :advice_header,
+      :advice_footer,
+      :y2_axis_label,
+      :series_data,
+      :annotations,
+      :allowed_operations,
+      :drilldown_available,
+      :transformations,
+      :parent_timescale_description,
+      :uses_time_of_day
+    ].inject({}) do |json, field|
+      json[field] = output.public_send(field)
+      json
     end
   end
 

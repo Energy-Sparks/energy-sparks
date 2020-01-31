@@ -32,7 +32,7 @@ module ChartHelper
     chart_height = [30 * number_of_records, 700].max
 
     output = ChartDataValues.new(json_data, chart_type).process
-    formatted_json_data = ChartDataValues.to_builder(output).target!
+    formatted_json_data = ChartDataValues.as_chart_json(output)
 
     chart_container = content_tag(
       :div,
