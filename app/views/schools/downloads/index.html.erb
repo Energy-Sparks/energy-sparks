@@ -1,0 +1,48 @@
+<h1>Downloads for <%= @school.name %></h1>
+
+<p><%= link_to 'Back to school dashboard', @school %></p>
+
+<p><%= link_to 'Download AMR data for all meters combined', school_meters_path(@school, format: :csv) %></p>
+
+<h2>Meters</h2>
+<p>Download the AMR data for each active meter</p>
+<ul>
+  <% @school.meters.active.each do |meter| %>
+    <li><%= link_to "#{meter.mpan_mprn} - #{meter.name}", school_meter_path(@school, meter, format: "csv")  %></li>
+  <% end %>
+</ul>
+
+<% if @school.meters.inactive.any? %>
+<p>Download the AMR data for each inactive meter</p>
+<ul>
+  <% @school.meters.inactive.each do |meter| %>
+    <li><%= link_to "#{meter.mpan_mprn} - #{meter.name}", school_meter_path(@school, meter, format: "csv")  %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<p>Temperature, Carbon intensity and solar pv data might be available on request depending on the end use.</p>
+<p>Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information.</p>
+
+<% if can?(:read, :meter_collection_download) %>
+  <hr/>
+  <h4>Download YAML files</h4>
+  <div class="other-actions mb-3">
+    <%= link_to 'Unvalidated AMR data', admin_school_unvalidated_amr_data_path(@school, format: :yaml), class: 'btn' %>
+    <%= link_to 'Validated AMR data', admin_school_validated_amr_data_path(@school, format: :yaml), class: 'btn' %>
+    <%= link_to 'Aggregated meter collection', admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn' %>
+  </div>
+  <hr/>
+
+  <h3> Dark Sky Data</h3>
+  <p>We use the <a href="https://darksky.net/">Dark Sky</a> product for temperature data, you can download the temperature data we have for your school here</p>
+  <p><%= link_to "Dark Sky Weather data CSV for your area, #{ @school.dark_sky_area.title}", data_feeds_dark_sky_temperature_readings_path(@school.dark_sky_area, format: "csv") %></p>
+
+  <h3>Solar PV Data</h3>
+  <p>We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here</p>
+  <p><%= link_to "Solar PV data CSV for your area, #{ @school.solar_pv_tuos_area.title}", data_feeds_solar_pv_tuos_readings_path(@school.solar_pv_tuos_area, format: "csv") %></p>
+
+  <h3>Carbon intensity data</h3>
+  <p><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></p>
+
+<% end %>
