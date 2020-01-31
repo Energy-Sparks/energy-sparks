@@ -435,6 +435,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rgeo (2.1.1)
+    rgeo-geojson (2.1.1)
+      rgeo (>= 1.0.0)
     rollbar (2.20.2)
       multi_json
     roo (2.7.1)
@@ -644,6 +647,7 @@ DEPENDENCIES
   rails (~> 6.0.2.1)
   rails-controller-testing
   rb-readline
+  rgeo-geojson
   rollbar
   rspec-rails (~> 4.0.0.beta3)
   rubocop (= 0.73.0)

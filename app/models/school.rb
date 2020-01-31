@@ -129,9 +129,7 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  geocoded_by :geocode_address
-
-  after_validation :geocode, if: ->(school) { school.geocode_address.present? && school.geocode_address_changed? }
+  geocoded_by :postcode
 
   def geocode_address
     [name, address, postcode].join(', ')

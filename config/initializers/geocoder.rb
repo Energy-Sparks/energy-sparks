@@ -16,6 +16,9 @@ Geocoder.configure(
   # supports SocketError and Timeout::Error
   # always_raise: [],
 
+  pickpoint: { api_key: ENV['PICKPOINT_API_KEY'] },
+  bing: { api_key: ENV['BING_API_KEY'] }
+
   # Calculation options
   # units: :mi,                 # :km for kilometers or :mi for miles
   # distances: :linear          # :spherical or :linear

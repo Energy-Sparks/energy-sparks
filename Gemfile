@@ -41,6 +41,7 @@ gem 'pagy'
 
 # Geocoding
 gem 'geocoder'
+gem 'rgeo-geojson'
 
 gem 'aws-sdk-s3'
 

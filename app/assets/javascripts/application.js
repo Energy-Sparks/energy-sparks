@@ -45,3 +45,4 @@
 //= require multi_select
 
 //= require table_sorting
+//= require map
