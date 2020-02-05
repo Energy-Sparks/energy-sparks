@@ -85,7 +85,8 @@ Rails.application.routes.draw do
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :data_processing, only: [:create, :destroy], controller: :data_processing
       resources :contacts
-      resources :alert_subscription_events, only: [:index, :show]
+      resources :subscription_generation_runs, only: [:index, :show]
+      resources :alert_subscription_events, only: [:show]
 
       resources :meters do
         member do
