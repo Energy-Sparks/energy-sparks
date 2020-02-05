@@ -81,7 +81,7 @@ describe "activity type", type: :system do
     it 'can embed a chart from the analytics', js: true do
       school = create :school # for preview
       allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
-      allow_any_instance_of(ChartData).to receive(:data).and_return([])
+      allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
       click_on 'New Activity Type'
       within('.school-specific-description-trix-editor') do
