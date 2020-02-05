@@ -1,4 +1,4 @@
-<% content_for :page_title, "Alert subscription events for #{@school.name}" %>
+<% content_for :page_title, "Email and SMS for #{@school.name}" %>
 
 <div class="row padded-row">
   <div class="col-md-12">
@@ -11,7 +11,7 @@
 
 <div class="row">
   <% if @pending_emails.any? %>
-    <h3>Pending emails</h3>
+    <h3>Pending email alerts</h3>
     <%= render 'table', school: @school, alert_subscription_events: @pending_emails %>
   <% else %>
     <p>There are no pending emails</p>
@@ -29,7 +29,7 @@
 
 <div class="row">
   <% if @sent_emails.any? %>
-    <h3>Sent emails</h3>
+    <h3>Sent email alerts</h3>
     <%= render 'table', school: @school, alert_subscription_events: @sent_emails %>
   <% else %>
     <p>There are no sent emails</p>

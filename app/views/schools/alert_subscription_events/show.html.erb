@@ -1,5 +1,5 @@
 <h1>Alert subscription event - <%= @school.name %></h1>
-<p><%= link_to "All alert subscription events for #{@school.name}", school_alert_subscription_events_path(@school) %>
+<p><%= link_to "Back", school_subscription_generation_run_path(@school, @alert_subscription_event.subscription_generation_run) %>
 
 <h2><%= @alert_subscription_event.communication_type.humanize.titleize %> - <%= @alert_subscription_event.status.humanize.titleize %></h2>
 
