@@ -63,18 +63,18 @@ class School < ApplicationRecord
 
   has_and_belongs_to_many :key_stages, join_table: :school_key_stages
 
-  has_many :users,                dependent: :destroy
-  has_many :meters,               inverse_of: :school, dependent: :destroy
-  has_many :school_times,         inverse_of: :school, dependent: :destroy
-  has_many :activities,           inverse_of: :school, dependent: :destroy
-  has_many :contacts,             inverse_of: :school, dependent: :destroy
-  has_many :observations,         inverse_of: :school, dependent: :destroy
+  has_many :users
+  has_many :meters,               inverse_of: :school
+  has_many :school_times,         inverse_of: :school
+  has_many :activities,           inverse_of: :school
+  has_many :contacts,             inverse_of: :school
+  has_many :observations,         inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
 
-  has_many :programmes,               inverse_of: :school, dependent: :destroy
+  has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
 
-  has_many :alerts,                                   inverse_of: :school, dependent: :destroy
+  has_many :alerts,                                   inverse_of: :school
   has_many :content_generation_runs,                  inverse_of: :school
   has_many :alert_generation_runs,                    inverse_of: :school
   has_many :subscription_generation_runs,             inverse_of: :school
@@ -87,7 +87,7 @@ class School < ApplicationRecord
 
   has_many :locations
 
-  has_many :simulations, inverse_of: :school, dependent: :destroy
+  has_many :simulations, inverse_of: :school
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters

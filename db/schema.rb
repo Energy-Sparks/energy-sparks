@@ -1201,7 +1201,7 @@ ActiveRecord::Schema.define(version: 2020_02_06_152544) do
   add_foreign_key "meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
-  add_foreign_key "meters", "schools"
+  add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade

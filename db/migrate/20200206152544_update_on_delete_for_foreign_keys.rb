@@ -10,6 +10,7 @@ class UpdateOnDeleteForForeignKeys < ActiveRecord::Migration[6.0]
     [:calendar_events, :academic_years] => :restrict,
     [:calendar_events, :calendar_event_types] => :restrict,
     [:calendar_events, :calendars] => :cascade,
+    [:meters, :schools] => :cascade,
     [:schools, :calendars] => :restrict,
     [:schools, :school_groups] => :restrict,
     [:simulations, :schools] => :cascade,
