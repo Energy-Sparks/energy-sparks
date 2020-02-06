@@ -1,10 +1,4 @@
 <% content_for :page_title do %>Alert reports for <%= @school.name %><% end %>
-<div class="row padded-row">
-  <div class="col-md-12">
-    <h1 property="name"><%= link_to @school.name, @school %> Alert notifications</h1>
-    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
-  </div>
-</div>
 
 <h1>Alert runs</h1>
 
