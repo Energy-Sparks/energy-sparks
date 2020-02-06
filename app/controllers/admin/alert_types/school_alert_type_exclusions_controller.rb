@@ -17,7 +17,7 @@ module Admin
         school_ids = params[:school_ids]
         reasons = params[:school_reasons]
 
-        SchoolAlertTypeExclusion.where(alert_type: @alert_type).delete_all(:delete_all)
+        SchoolAlertTypeExclusion.where(alert_type: @alert_type).delete_all
 
         school_ids.each do |school_id|
           SchoolAlertTypeExclusion.create(alert_type: @alert_type, school_id: school_id, reason: reasons[school_id])
