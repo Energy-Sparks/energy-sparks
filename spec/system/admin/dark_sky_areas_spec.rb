@@ -19,7 +19,7 @@ RSpec.describe 'Dark sky areas', type: :system do
     it 'can create a new dark sky area' do
       expect(page).to have_content("There are no Dark Sky Areas")
 
-      click_on 'New'
+      click_on 'New Dark Sky Area'
 
       fill_in 'Title', with: title
       fill_in 'Description', with: description
@@ -37,7 +37,7 @@ RSpec.describe 'Dark sky areas', type: :system do
     end
 
     it 'checks for valid fields' do
-      click_on 'New'
+      click_on 'New Dark Sky Area'
 
       fill_in 'Title', with: title
       fill_in 'Description', with: description

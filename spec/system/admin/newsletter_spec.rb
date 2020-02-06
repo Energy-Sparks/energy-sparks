@@ -10,7 +10,9 @@ describe 'Newsletter managment', type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
-      click_on 'Newsletters'
+      within '.application' do
+        click_on 'Newsletters'
+      end
     end
 
     it 'allows the user to create, edit and delete a newsletter type' do
