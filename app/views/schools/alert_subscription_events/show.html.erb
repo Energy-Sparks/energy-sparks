@@ -1,4 +1,4 @@
-<h1>Alert subscription event - <%= @school.name %></h1>
+<h1>Messages sent - <%= @school.name %></h1>
 <p><%= link_to "Back", school_subscription_generation_run_path(@school, @alert_subscription_event.subscription_generation_run) %>
 
 <h2><%= @alert_subscription_event.communication_type.humanize.titleize %> - <%= @alert_subscription_event.status.humanize.titleize %></h2>
@@ -8,11 +8,6 @@
   <dt>Alert Type</dt><dd><%= @alert_subscription_event.alert.title %></dd>
   <dt>Created At</dt><dd><%= nice_date_times @alert_subscription_event.created_at %></dd>
   <dt>Error Message</dt><dd><%= @alert_subscription_event.message %></dd>
-
-  <% if @alert_subscription_event.sent? %>
-    <dt>Sent on</dt><dd><%= nice_date_times @alert_subscription_event.sent_at %></dd>
-    <dt>Sent message</dt><dd><%= link_to 'View', admin_emails_alert_mailer_path(@alert_subscription_event.email), class: 'btn btn-primary btn-sm' if @alert_subscription_event.email %></dd>
-  <% end %>
 
   <% @alert_subscription_event.alert.priority_data.each do |key, value| %>
     <dt><%= key %>:</dt><dd><%= value %></dd>

@@ -41,6 +41,7 @@ class AlertSubscriptionEvent < ApplicationRecord
   belongs_to :contact, inverse_of: :alert_subscription_events
   belongs_to :alert
   belongs_to :email, optional: true
+  has_one    :sms_record
   belongs_to :find_out_more, optional: true
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
   belongs_to :subscription_generation_run
@@ -54,5 +55,14 @@ class AlertSubscriptionEvent < ApplicationRecord
 
   def sent_at
     email.sent_at if email
+  end
+
+  def sms_content
+    TemplateInterpolation.new(
+      content_version,
+    ).interpolate(
+      :sms_content,
+      with: alert.template_variables
+    ).sms_content
   end
 end
