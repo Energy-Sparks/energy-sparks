@@ -21,7 +21,8 @@ module Pupils
     def activity_setup(school)
       @activities_count = school.activities.count
       @first = school.activities.empty?
-      @suggestion = NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest_from_activity_history.first
+      activity_suggester = NextActivitySuggesterWithFilter.new(school, activity_type_filter)
+      @suggestion = (activity_suggester.suggest_from_programmes + activity_suggester.suggest_from_activity_history + activity_suggester.suggest_from_find_out_mores).first
     end
 
     def equivalence_setup(school)
