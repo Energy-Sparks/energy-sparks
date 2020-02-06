@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_144801) do
+ActiveRecord::Schema.define(version: 2020_02_06_152102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1169,6 +1169,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
+  add_foreign_key "dark_sky_temperature_readings", "areas", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
