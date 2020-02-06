@@ -18,7 +18,7 @@
 class AlertType < ApplicationRecord
   SUB_CATEGORIES = [:hot_water, :heating, :baseload, :electricity_use, :solar_pv, :tariffs, :co2, :boiler_control, :overview, :storage_heaters].freeze
 
-  has_many :alerts, dependent: :destroy
+  has_many :alerts
 
   has_many :ratings, class_name: 'AlertTypeRating'
   has_many :school_alert_type_exclusions
