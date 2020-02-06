@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_144801) do
+ActiveRecord::Schema.define(version: 2020_02_06_152544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1112,16 +1112,16 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
 
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "activities", "activity_categories"
-  add_foreign_key "activities", "activity_types"
-  add_foreign_key "activities", "schools"
+  add_foreign_key "activities", "activity_categories", on_delete: :restrict
+  add_foreign_key "activities", "activity_types", on_delete: :restrict
+  add_foreign_key "activities", "schools", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "activity_type_subjects", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_subjects", "subjects", on_delete: :restrict
-  add_foreign_key "activity_type_suggestions", "activity_types"
+  add_foreign_key "activity_type_suggestions", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_timings", "activity_timings", on_delete: :restrict
   add_foreign_key "activity_type_timings", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
@@ -1131,7 +1131,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "alert_errors", "alert_types", on_delete: :cascade
   add_foreign_key "alert_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "alert_type_rating_content_versions", on_delete: :cascade
-  add_foreign_key "alert_subscription_events", "alerts"
+  add_foreign_key "alert_subscription_events", "alerts", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "contacts", on_delete: :cascade
   add_foreign_key "alert_subscription_events", "emails", on_delete: :nullify
   add_foreign_key "alert_subscription_events", "find_out_mores", on_delete: :nullify
@@ -1150,7 +1150,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
   add_foreign_key "amr_reading_warnings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_uploaded_readings", "amr_data_feed_configs", on_delete: :cascade
-  add_foreign_key "amr_validated_readings", "meters"
+  add_foreign_key "amr_validated_readings", "meters", on_delete: :cascade
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
@@ -1160,15 +1160,16 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "benchmark_result_school_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_results", "benchmark_result_school_generation_runs", on_delete: :cascade
-  add_foreign_key "calendar_events", "academic_years"
-  add_foreign_key "calendar_events", "calendar_event_types"
-  add_foreign_key "calendar_events", "calendars"
+  add_foreign_key "calendar_events", "academic_years", on_delete: :restrict
+  add_foreign_key "calendar_events", "calendar_event_types", on_delete: :restrict
+  add_foreign_key "calendar_events", "calendars", on_delete: :cascade
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
   add_foreign_key "content_generation_runs", "schools", on_delete: :cascade
+  add_foreign_key "dark_sky_temperature_readings", "areas", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
@@ -1200,7 +1201,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
-  add_foreign_key "meters", "schools"
+  add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
@@ -1231,12 +1232,12 @@ ActiveRecord::Schema.define(version: 2020_01_30_144801) do
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
   add_foreign_key "school_times", "schools", on_delete: :cascade
-  add_foreign_key "schools", "calendars"
-  add_foreign_key "schools", "school_groups"
+  add_foreign_key "schools", "calendars", on_delete: :restrict
+  add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
-  add_foreign_key "simulations", "schools"
-  add_foreign_key "simulations", "users"
+  add_foreign_key "simulations", "schools", on_delete: :cascade
+  add_foreign_key "simulations", "users", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade

@@ -14,6 +14,10 @@
 #  index_dark_sky_temperature_readings_on_area_id                   (area_id)
 #  index_dark_sky_temperature_readings_on_area_id_and_reading_date  (area_id,reading_date) UNIQUE
 #
+# Foreign Keys
+#
+#  fk_rails_...  (area_id => areas.id) ON DELETE => cascade
+#
 
 module DataFeeds
   class DarkSkyTemperatureReading < ApplicationRecord

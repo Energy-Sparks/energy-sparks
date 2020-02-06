@@ -1,0 +1,38 @@
+<% if alert_subscription_events.empty? %>
+  <thead>
+    <tr>
+      <th colspan="8">
+        There are no <%= name %>
+      </th>
+    </tr>
+  </thead>
+<% else %>
+  <thead>
+    <tr>
+      <th colspan="8">
+        <%= name %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% alert_subscription_events.each do |alert_subscription_event| %>
+      <tr scope="row">
+        <td><%= link_to alert_subscription_event.contact.name, school_contact_path(school, alert_subscription_event.contact) %></td>
+        <td><%= alert_subscription_event.alert.title %></td>
+        <td><%= nice_date_times alert_subscription_event.created_at %></td>
+        <td><%= alert_subscription_event.message %></td>
+        <% if alert_subscription_event.email %>
+          <td><%= nice_date_times alert_subscription_event.email.sent_at %></td>
+          <td><%= link_to 'View', admin_emails_alert_mailer_path(alert_subscription_event.email), class: 'btn btn-sm' %></td>
+        <% elsif alert_subscription_event.sms_record %>
+          <td><%= nice_date_times alert_subscription_event.sms_record.created_at %></td>
+          <td><%= alert_subscription_event.sms_content %></td>
+        <% else %>
+          <td></td><td></td>
+        <% end %>
+        <td><%= alert_subscription_event.priority %></td>
+        <td><%= link_to 'Details', school_alert_subscription_event_path(school, alert_subscription_event), class: 'btn btn-sm' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<% end %>

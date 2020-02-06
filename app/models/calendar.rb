@@ -19,7 +19,7 @@
 #
 
 class Calendar < ApplicationRecord
-  has_many    :calendar_events, dependent: :destroy
+  has_many    :calendar_events
 
   belongs_to  :based_on, class_name: 'Calendar', optional: true
   has_many    :calendars, class_name: 'Calendar', foreign_key: :based_on_id

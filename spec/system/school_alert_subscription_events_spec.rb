@@ -14,23 +14,12 @@ RSpec.describe "school alert subscription events", type: :system do
     visit root_path
   end
 
-  it 'should show a helpful message if no events' do
-    click_on(school.name)
-    click_on('Alert subscription events')
-    expect(page.has_content?('There are no pending emails')).to be true
-    expect(page.has_content?('There are no sent emails')).to be true
-    expect(page.has_content?('There are no pending SMS')).to be true
-    expect(page.has_content?('There are no sent SMS')).to be true
-  end
-
   it 'allows the user to view details of emails' do
 
     service.perform(subscription_frequency: AlertType.frequencies.keys)
     click_on(school.name)
-    click_on('Alert subscription events')
-    click_on('Details', match: :first)
-
-    expect(page.has_content?('Alert subscription event'))
+    click_on('Email and SMS reports')
+    click_on 'View'
 
     alert_subscription_event = AlertSubscriptionEvent.find_by(content_version: content_version)
     # Weighting
@@ -38,10 +27,5 @@ RSpec.describe "school alert subscription events", type: :system do
 
     # Priority
     expect(page.has_content?(alert_subscription_event.priority))
-
-    click_on("All alert subscription events for #{school.name}")
-
-    click_on('View', match: :first)
-    expect(page).to have_content(content_version.email_title)
   end
 end

@@ -31,11 +31,11 @@ class ChartData
       parent_timescale_description: parent_timescale_description
     ).process
 
-    [values]
+    values
   end
 
   def has_chart_data?
-    ! data.first.series_data.nil?
+    ! data.series_data.nil?
   rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false
   rescue => e
