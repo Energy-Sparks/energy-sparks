@@ -9,39 +9,23 @@
   </div>
 </div>
 
-<div class="row">
-  <% if @pending_emails.any? %>
-    <h3>Pending email alerts</h3>
-    <%= render 'table', school: @school, alert_subscription_events: @pending_emails %>
-  <% else %>
-    <p>There are no pending emails</p>
-  <% end %>
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Contact</th>
+        <th>Alert Type</th>
+        <th>Created At</th>
+        <th>Error Message</th>
+        <th>Sent on</th>
+        <th>Sent message</th>
+        <th>Priority</th>
+        <th></th>
+      </tr>
+    </thead>
+    <%= render 'table', school: @school, alert_subscription_events: @sent_emails, name: 'Sent emails'%>
+    <%= render 'table', school: @school, alert_subscription_events: @sent_sms, name: 'Sent SMS' %>
+    <%= render 'table', school: @school, alert_subscription_events: @pending_emails, name: 'Pending emails' %>
+    <%= render 'table', school: @school, alert_subscription_events: @pending_sms, name: 'Pending SMS'%>
+  </table>
 </div>
-
-<div class="row">
-  <% if @pending_sms.any? %>
-    <h3>Pending SMS</h3>
-    <%= render 'table', school: @school, alert_subscription_events: @pending_sms %>
-  <% else %>
-    <p>There are no pending SMS</p>
-  <% end %>
-</div>
-
-<div class="row">
-  <% if @sent_emails.any? %>
-    <h3>Sent email alerts</h3>
-    <%= render 'table', school: @school, alert_subscription_events: @sent_emails %>
-  <% else %>
-    <p>There are no sent emails</p>
-  <% end %>
-</div>
-
-<div class="row">
-  <% if @sent_sms.any? %>
-    <h3>Sent SMS</h3>
-    <%= render 'table', school: @school, alert_subscription_events: @sent_sms %>
-  <% else %>
-    <p>There are no sent SMS</p>
-  <% end %>
-</div>
-
