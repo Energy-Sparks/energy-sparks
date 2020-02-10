@@ -11,7 +11,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
     end
 
     it 'can add a new scoreboard with validation' do
-      visit scoreboards_path
+      visit admin_scoreboards_path
       click_on 'New Scoreboard'
       click_on 'Create Scoreboard'
       expect(page).to have_content("can't be blank")
@@ -27,7 +27,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
     it 'can edit a scoreboard' do
       scoreboard = create(:scoreboard, name: 'BANES and Frome')
-      visit scoreboards_path
+      visit admin_scoreboards_path
       click_on 'Edit'
       fill_in 'Name', with: 'BANES Only'
       click_on 'Update Scoreboard'
@@ -38,7 +38,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
     it 'can delete a scoreboard' do
       scoreboard = create(:scoreboard, name: 'BANES and Frome')
-      visit scoreboards_path
+      visit admin_scoreboards_path
 
       expect {
         click_on 'Delete'
