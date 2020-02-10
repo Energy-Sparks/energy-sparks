@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   end
 
   resources :school_groups, only: [:show, :index]
-  resources :scoreboards
+  resources :scoreboards, only: [:show, :index]
 
   resources :onboarding, path: 'school_setup', only: [:show] do
     scope module: :onboarding do
@@ -163,6 +163,7 @@ Rails.application.routes.draw do
         resources :meter_attributes
       end
     end
+    resources :scoreboards
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create
