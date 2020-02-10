@@ -34,9 +34,9 @@ module Admin
     # DELETE /scoreboards/1
     def destroy
       @scoreboard.safe_destroy
-      redirect_to scoreboards_url, notice: 'Scoreboard deleted'
+      redirect_to admin_scoreboards_path, notice: 'Scoreboard deleted'
     rescue EnergySparks::SafeDestroyError => error
-      redirect_to scoreboards_url, alert: "Delete failed: #{error.message}"
+      redirect_to admin_scoreboards_path, alert: "Delete failed: #{error.message}"
     end
 
   private
