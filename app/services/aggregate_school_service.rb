@@ -42,18 +42,6 @@ class AggregateSchoolService
     end
   end
 
-  def self.save_to_s3(aggregate_school, bucket:)
-    client = Aws::S3::Client.new
-    key = "aggregated-meter-collection-#{aggregate_school.school.name.parameterize}.yaml"
-    yaml = YAML.dump(aggregate_school)
-    client.put_object(
-      bucket: bucket,
-      key: key,
-      content_type: 'application/x-yaml',
-      body: yaml
-    )
-  end
-
 private
 
   def cache_key
