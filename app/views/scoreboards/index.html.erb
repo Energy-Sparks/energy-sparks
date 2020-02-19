@@ -18,12 +18,6 @@
         <tr>
           <td><%= link_to scoreboard.name, scoreboard_path(scoreboard) %></td>
           <td><%= scoreboard.description %></td>
-          <td>
-            <div class='btn-group'>
-              <%= link_to 'Edit', edit_scoreboard_path(scoreboard), class: 'btn btn-info' if can? :edit, scoreboard %>
-              <%= link_to 'Delete', scoreboard, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' if can? :delete, scoreboard %>
-            </div>
-          </td>
         </tr>
       <% end %>
     </tbody>
@@ -31,5 +25,3 @@
 <% else %>
   <h2>There are no Scoreboards</h2>
 <% end %>
-
-<%= link_to 'New Scoreboard', new_scoreboard_path, class: 'btn btn-primary' if can? :create, Scoreboard%>
