@@ -47,15 +47,32 @@ namespace :utility do
 
   desc 'Save aggregate schools to S3'
   task save_aggregate_schools_to_s3: :environment do
+    require 'energy_sparks/s3_yaml'
     target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
     abort("No S3 bucket configured") if target_bucket.blank?
 
     School.process_data.order(:name).each do |school|
-      Rails.logger.info "Uploading #{school.name} to S3"
+      Rails.logger.info "Uploading aggregated #{school.name} to S3"
       aggregate_school = AggregateSchoolService.new(school).aggregate_school
-      AggregateSchoolService.save_to_s3(aggregate_school, bucket: target_bucket)
+      EnergySparks::S3Yaml.save(aggregate_school, school.name, data_type: 'aggregated-meter-collection', bucket: target_bucket)
     rescue StandardError => e
-      Rails.logger.error "There was an error for #{school.name} - #{e.message}"
+      Rails.logger.error "There was an error for aggregated #{school.name} - #{e.message}"
+      Rollbar.error(e, school_id: school.id, school_name: school.name)
+    end
+  end
+
+  desc 'Save unvalidated  schools to S3'
+  task save_unvalidated_schools_to_s3: :environment do
+    require 'energy_sparks/s3_yaml'
+    target_bucket = ENV['UNVALIDATED_SCHOOL_CACHE_BUCKET']
+    abort("No S3 bucket configured") if target_bucket.blank?
+    School.process_data.order(:name).each do |school|
+
+      Rails.logger.info "Uploading unvalidated #{school.name} to S3"
+      data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
+      EnergySparks::S3Yaml.save(data, school.name, data_type: 'unvalidated-data', bucket: target_bucket)
+    rescue StandardError => e
+      Rails.logger.error "There was an error for unvalidated #{school.name} - #{e.message}"
       Rollbar.error(e, school_id: school.id, school_name: school.name)
     end
   end
