@@ -33,7 +33,7 @@
                 <% if onboarding.school %>
                   <%= button_to 'Mark as complete', admin_school_onboarding_events_path(onboarding, event: :onboarding_complete), class: 'btn btn-sm' %>
                 <% else %>
-                  <%= link_to 'Edit configuration', edit_admin_school_onboarding_configuration_path(onboarding), class: 'btn btn-sm' %>
+                  <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
                 <% end %>
               </div>
             </td>

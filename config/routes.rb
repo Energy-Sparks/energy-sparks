@@ -216,7 +216,7 @@ Rails.application.routes.draw do
     resources :global_meter_attributes
 
     resource :content_generation_run, controller: :content_generation_run
-    resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index] do
+    resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update] do
       scope module: :school_onboardings do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
         resource :email, only: [:new, :create, :edit, :update], controller: 'email'

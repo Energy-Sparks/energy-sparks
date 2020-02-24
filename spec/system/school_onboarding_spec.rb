@@ -80,9 +80,13 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Automatic School Setup'
       click_on 'Edit'
 
+      fill_in 'School name', with: 'A new name'
+      click_on 'Next'
+
       select 'Oxford calendar', from: 'Template calendar'
       click_on 'Next'
       onboarding.reload
+      expect(onboarding.school_name).to eq('A new name')
       expect(onboarding.template_calendar).to eq(other_template_calendar)
     end
 
