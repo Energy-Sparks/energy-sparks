@@ -1,7 +1,7 @@
 require 'securerandom'
 module Admin
   class SchoolOnboardingsController < AdminController
-    load_and_authorize_resource
+    load_and_authorize_resource find_by: :uuid
 
     INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = "incomplete-onboarding-schools.csv".freeze
 
@@ -28,6 +28,16 @@ module Admin
       end
     end
 
+    def edit
+    end
+
+    def update
+      if @school_onboarding.update(school_onboarding_params)
+        redirect_to edit_admin_school_onboarding_configuration_path(@school_onboarding)
+      else
+        render :edit
+      end
+    end
 
   private
 
