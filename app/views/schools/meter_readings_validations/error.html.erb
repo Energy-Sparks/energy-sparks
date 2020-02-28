@@ -1,0 +1,9 @@
+<h1>There was an error validating the meter data:</h1>
+
+<%= link_to 'Back', :back, class: 'btn' %>
+
+<h2><%= @error.message %></h2>
+
+<pre><%= @error.backtrace.join("\n")%></pre>
+
+
