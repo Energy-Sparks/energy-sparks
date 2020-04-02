@@ -17,12 +17,7 @@ class ImportNotifier
   end
 
   def notify(from:, to:)
-    ImportMailer.with(
-      data: data(from: from, to: to),
-      description: @description,
-      import_logs_with_errors: import_logs_with_errors(from: from, to: to),
-      import_warnings: import_warnings(from: from, to: to)
-    ).import_summary.deliver_now
+    ImportMailer.with(data: data(from: from, to: to), description: @description, import_logs_with_errors: import_logs_with_errors(from: from, to: to), import_warnings: import_warnings(from: from, to: to)).import_summary.deliver_now
   end
 
   def import_logs_with_errors(from: 2.days.ago, to: Time.zone.today)
