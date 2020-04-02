@@ -58,6 +58,11 @@ class Meter < ApplicationRecord
   validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo_mpan?, message: 'for electricity meters should be a 13 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
+  def self.hash_of_meter_data
+    meter_data_array = Meter.includes(:school).pluck(:mpan_mprn, :meter_type, 'schools.name')
+    meter_data_array.to_h { |record| [record[0].to_s, { fuel_type: record[1], school_name: record[2] }]}
+  end
+
   def school_name
     school.name
   end

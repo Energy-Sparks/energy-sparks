@@ -32,7 +32,9 @@
         <th>Feed</th>
         <th>File name</th>
         <th>Import Time</th>
-        <th>Mpan</th>
+        <th>Mpan/Mprn</th>
+        <th>Fuel Type</th>
+        <th>School</th>
         <th>Reading date</th>
         <th>Warning message</th>
       </tr>
@@ -44,6 +46,8 @@
           <td><%= warning.amr_data_feed_import_log.file_name %></td>
           <td><%= nice_date_times warning.amr_data_feed_import_log.import_time %></td>
           <td><%= warning.mpan_mprn %></td>
+          <td><%= @meter_data[warning.mpan_mprn][:fuel_type] if @meter_data.key?(warning.mpan_mprn) %>
+          <td><%= @meter_data[warning.mpan_mprn][:school_name] if @meter_data.key?(warning.mpan_mprn) %>
           <td><%= warning.reading_date %></td>
           <td><%= warnings_from_warning_types(warning.warning_types) %></td>
         </tr>
