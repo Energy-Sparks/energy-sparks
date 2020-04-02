@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '~> 2.6.5'
 
 # Rails/Core
-gem 'rails', '~> 6.0.2.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.2.2' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -11,7 +11,7 @@ gem 'webpacker', '~> 4.0'
 gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
-gem 'puma', '3.12.2' # Use Puma as the app server
+gem 'puma', '3.12.4' # Use Puma as the app server
 gem 'rack', '2.0.8'
 gem 'rack-attack'
 
