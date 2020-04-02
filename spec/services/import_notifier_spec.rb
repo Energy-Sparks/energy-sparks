@@ -119,7 +119,7 @@ describe ImportNotifier do
       meter = create(:electricity_meter, mpan_mprn: mpan, school: school)
 
       log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, import_time: 1.day.ago)
-      warning = AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)])
+      warning = AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)], school: school, fuel_type: meter.meter_type)
 
       ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
 

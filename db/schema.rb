@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_152544) do
+ActiveRecord::Schema.define(version: 2020_04_02_144929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -386,6 +386,8 @@ ActiveRecord::Schema.define(version: 2020_02_06_152544) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "warning_types", array: true
+    t.integer "school_id"
+    t.string "fuel_type"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_reading_warnings_on_amr_data_feed_import_log_id"
   end
 

@@ -21,8 +21,7 @@ class ImportNotifier
       data: data(from: from, to: to),
       description: @description,
       import_logs_with_errors: import_logs_with_errors(from: from, to: to),
-      import_warnings: import_warnings(from: from, to: to),
-      meter_data: Meter.hash_of_meter_data
+      import_warnings: import_warnings(from: from, to: to)
     ).import_summary.deliver_now
   end
 
