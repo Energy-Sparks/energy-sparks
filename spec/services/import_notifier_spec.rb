@@ -113,10 +113,13 @@ describe ImportNotifier do
       expect(email_body).to include(error_messages)
     end
 
-    it 'sends an email with the import warnings if appropriate' do
-      mpan = 123
+    it 'sends an email with import warnings, fuel type and school name looked up' do
+      mpan = 1230000000000
+      school = create(:school)
+      meter = create(:electricity_meter, mpan_mprn: mpan, school: school)
+
       log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, import_time: 1.day.ago)
-      warning = AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)])
+      warning = AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)], school: school, fuel_type: meter.meter_type)
 
       ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
 
@@ -127,6 +130,8 @@ describe ImportNotifier do
       email_body = email.html_part.body.to_s
       expect(email_body).to include('Sheffield')
       expect(email_body).to include('Import Warnings')
+      expect(email_body).to include(school.name)
+      expect(email_body).to include(meter.meter_type)
 
       expect(email_body).to include(AmrReadingData::WARNINGS[:missing_readings])
     end
