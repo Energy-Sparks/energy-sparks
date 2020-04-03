@@ -60,7 +60,7 @@ class Meter < ApplicationRecord
 
   def self.hash_of_meter_data
     meter_data_array = Meter.pluck(:mpan_mprn, :meter_type, :school_id)
-    meter_data_array.to_h { |record| [record[0], { fuel_type: record[1], school_id: record[2] }]}
+    meter_data_array.to_h { |record| [record[0].to_s, { fuel_type: record[1], school_id: record[2] }]}
   end
 
   def school_name

@@ -4,10 +4,10 @@ module Amr
   describe ProcessAmrReadingData do
 
     let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log) }
-    let(:reading_data_first)        { { :mpan_mprn => 123, :reading_date => Date.parse('2019-01-01'), readings: Array.new(48, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id } }
-    let(:reading_data_second)       { { :mpan_mprn => 123, :reading_date => Date.parse('2019-01-02'), readings: Array.new(48, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id } }
-    let(:reading_data_third)        { { :mpan_mprn => 123, :reading_date => Date.parse('2019-01-03'), readings: Array.new(48, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id } }
-    let(:reading_data_warning)      { { :mpan_mprn => 1234567890123, :reading_date => Date.parse('2019-01-03'), readings: Array.new(40, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id, warnings: [:missing_readings]} }
+    let(:reading_data_first)        { { :mpan_mprn => "123", :reading_date => Date.parse('2019-01-01'), readings: Array.new(48, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id } }
+    let(:reading_data_second)       { { :mpan_mprn => "123", :reading_date => Date.parse('2019-01-02'), readings: Array.new(48, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id } }
+    let(:reading_data_third)        { { :mpan_mprn => "123", :reading_date => Date.parse('2019-01-03'), readings: Array.new(48, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id } }
+    let(:reading_data_warning)      { { :mpan_mprn => "1234567890123", :reading_date => Date.parse('2019-01-03'), readings: Array.new(40, '0.0'), amr_data_feed_config_id: amr_data_feed_import_log.amr_data_feed_config_id, warnings: [:missing_readings]} }
     let(:valid_reading_data)        { [ reading_data_first, reading_data_second, reading_data_third ] }
 
     it 'processes a valid amr reading data' do
