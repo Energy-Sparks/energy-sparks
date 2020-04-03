@@ -6,25 +6,21 @@
   <p>Energy Sparks is a project of <a href="http://transitionbath.org/"><%= image_tag("logos/transition-bath.png", class: "card-img-top", style: "width: 200px;", alt: 'Transition Bath') %></a>, a registered charity in England and Wales, registration 1139853 and a company limited by guarantee, registration 6898132.</p>
 
   <h1 id="team">Our Team</h1>
-  <div class="col-md-10">
-    <div class="row">
-      <% @team_members.each do |team_member| %>
-        <div class="col col-md-6 col-sm-12 col-lg-3">
-          <div class="card bio">
-            <div class="card-body">
-              <% if team_member.image.present? %>
-                <%= image_tag team_member.image %>
-              <% else %>
-                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'card-img-top') %>
-              <% end %>
-              <h4 class="card-title"><%= team_member.title %></h4>
-              <p class="card-text"><%= team_member.description %></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <h2>Staff</h2>
+
+  <% @staff.each do |team_member| %>
+    <%= render 'team_member', team_member: team_member %>
+  <% end %>
+
+  <h2>Consultants</h2>
+  <% @consultants.each do |team_member| %>
+    <%= render 'team_member', team_member: team_member %>
+  <% end %>
+
+  <h2>Trustees</h2>
+  <% @trustees.each do |team_member| %>
+    <%= render 'team_member', team_member: team_member %>
+  <% end %>
 
   <div class="row padded-row">
     <div class="col-md-9">
