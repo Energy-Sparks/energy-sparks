@@ -39,7 +39,7 @@ module Admin
     private
 
     def team_member_params
-      params.require(:team_member).permit(:title, :description, :position, :image)
+      params.require(:team_member).permit(:title, :description, :position, :image, :role, :profile)
     end
   end
 end

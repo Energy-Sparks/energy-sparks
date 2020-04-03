@@ -13,9 +13,10 @@
 
 class TeamMember < ApplicationRecord
   has_one_attached :image
+  has_rich_text :profile
 
   enum role: [:staff, :consultant, :trustee]
 
-  validates :title, :image, presence: true
+  validates :title, :image, :role, presence: true
   validates :position, numericality: true, presence: true
 end
