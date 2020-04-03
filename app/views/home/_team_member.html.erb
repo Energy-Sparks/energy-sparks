@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-4">
+    <% if team_member.image.present? %>
+      <p class="text-center">
+        <%= image_tag team_member.image, class: 'circular' %>
+      </p>
+    <% else %>
+      <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'card-img-top') %>
+    <% end %>
+      <h4 class="text-center"><%= team_member.title %></h4>
+      <p class="text-center"><i><%= team_member.description %></i></p>
+  </div>
+  <div class="col-8">
+    <%= team_member.profile %>
+  </div>
+</div>
+<hr/>

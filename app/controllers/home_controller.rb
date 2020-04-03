@@ -54,7 +54,9 @@ class HomeController < ApplicationController
   end
 
   def team
-    @team_members = TeamMember.order(:position)
+    @staff = TeamMember.staff.order(:position)
+    @consultants = TeamMember.consultant.order(:position)
+    @trustees = TeamMember.trustee.order(:position)
     @partners = Partner.order(:position)
   end
 
