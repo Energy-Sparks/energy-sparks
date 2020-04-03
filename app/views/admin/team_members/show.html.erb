@@ -1,0 +1,14 @@
+<h1><%= @team_member.title %></h1>
+
+<h2><%= @team_member.description %></h2>
+
+<%= @team_member.profile %>
+
+<%= image_tag @team_member.image.variant(resize_to_limit: [50, 50]) if @team_member.image.attached? %>
+
+<p>
+  <div class="btn-group">
+    <%= link_to 'Edit', edit_admin_team_member_path(@team_member), class: 'btn' %>
+    <%= link_to 'Delete', admin_team_member_path(@team_member), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+  </div>
+</p>

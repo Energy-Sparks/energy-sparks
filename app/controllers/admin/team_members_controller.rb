@@ -3,7 +3,9 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @team_members = TeamMember.order(:position)
+      @staff = TeamMember.staff.order(:position)
+      @consultants = TeamMember.consultant.order(:position)
+      @trustees = TeamMember.trustee.order(:position)
     end
 
     def show
