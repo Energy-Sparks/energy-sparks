@@ -1,44 +1,20 @@
 <h1>Team members</h1>
 
-<% if @team_members %>
+<p><%= link_to 'Public team page', team_path %></p>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Position</th>
-        <th>Image</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+<% if @staff.any? %>
+  <h1>Staff</h1>
+  <%= render 'team_members', team_members: @staff %>
+<% end %>
 
-    <tbody>
-      <% @team_members.each do |team_member| %>
-        <tr>
-          <td><%= team_member.title %></td>
-          <td><%= team_member.description %></td>
-          <td><%= team_member.position %></td>
-          <td>
-            <% if team_member.image.attached? %>
-              <%= image_tag team_member.image.variant(resize_to_limit: [50, 50]) %>
-            <% else %>
-              No file attached
-            <% end %>
-          </td>
-          <td>
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_admin_team_member_path(team_member), class: 'btn' %>
-              <%= link_to 'Delete', admin_team_member_path(team_member), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<% if @consultants.any? %>
+  <h1>Consultants</h1>
+  <%= render 'team_members', team_members: @consultants %>
+<% end %>
 
-<% else %>
-  <p>There are no team members</p>
+<% if @trustees.any? %>
+  <h1>Trustees</h1>
+  <%= render 'team_members', team_members: @trustees %>
 <% end %>
 
 <p><%= link_to 'New team member', new_admin_team_member_path, class: 'btn'%></p>
