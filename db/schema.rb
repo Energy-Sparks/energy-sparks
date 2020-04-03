@@ -1059,7 +1059,7 @@ ActiveRecord::Schema.define(version: 2020_04_03_093925) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "role"
+    t.integer "role", default: 0, null: false
   end
 
   create_table "temperature_recordings", force: :cascade do |t|
