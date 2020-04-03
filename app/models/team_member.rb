@@ -6,6 +6,7 @@
 #  description :text
 #  id          :bigint(8)        not null, primary key
 #  position    :integer          default(0), not null
+#  role        :integer
 #  title       :string           not null
 #  updated_at  :datetime         not null
 #
