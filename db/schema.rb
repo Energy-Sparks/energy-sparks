@@ -386,6 +386,8 @@ ActiveRecord::Schema.define(version: 2020_04_03_093925) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "warning_types", array: true
+    t.integer "school_id"
+    t.string "fuel_type"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_reading_warnings_on_amr_data_feed_import_log_id"
   end
 
