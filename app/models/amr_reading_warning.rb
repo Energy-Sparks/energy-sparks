@@ -4,10 +4,12 @@
 #
 #  amr_data_feed_import_log_id :bigint(8)        not null
 #  created_at                  :datetime         not null
+#  fuel_type                   :string
 #  id                          :bigint(8)        not null, primary key
 #  mpan_mprn                   :text
 #  reading_date                :text
 #  readings                    :text             is an Array
+#  school_id                   :integer
 #  updated_at                  :datetime         not null
 #  warning                     :integer
 #  warning_message             :text
@@ -24,6 +26,7 @@
 
 class AmrReadingWarning < ApplicationRecord
   belongs_to :amr_data_feed_import_log
+  belongs_to :school, optional: true
 
   WARNINGS = {
     0 => :blank_readings,
