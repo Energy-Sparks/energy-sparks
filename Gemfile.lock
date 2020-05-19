@@ -372,7 +372,7 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.1)
     puma (3.12.4)
-    rack (2.0.8)
+    rack (2.2.2)
     rack-attack (6.0.0)
       rack (>= 1.0, < 3)
     rack-canonical-host (0.2.3)
@@ -636,7 +636,7 @@ DEPENDENCIES
   pg (= 1.0.0)
   pry
   puma (= 3.12.4)
-  rack (= 2.0.8)
+  rack
   rack-attack
   rack-canonical-host
   rails (~> 6.0.3.1)
