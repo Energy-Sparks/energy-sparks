@@ -1,3 +1,5 @@
+<% content_for :page_title, "#{@school.name} Downloads" %>
+
 <h1>Downloads for <%= @school.name %></h1>
 
 <p><%= link_to 'Back to school dashboard', @school %></p>
@@ -31,6 +33,12 @@
     <%= link_to 'Unvalidated AMR data', admin_school_unvalidated_amr_data_path(@school, format: :yaml), class: 'btn' %>
     <%= link_to 'Validated AMR data', admin_school_validated_amr_data_path(@school, format: :yaml), class: 'btn' %>
     <%= link_to 'Aggregated meter collection', admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn' %>
+  </div>
+  <hr/>
+
+  <h4>Download CSV file</h4>
+  <div class="other-actions mb-3">
+    <%= link_to 'Unvalidated AMR data as CSV', admin_reports_amr_data_feed_readings_path(school_id: @school.id, format: :csv), class: 'btn' %>
   </div>
   <hr/>
 

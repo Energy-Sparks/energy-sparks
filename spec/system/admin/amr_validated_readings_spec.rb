@@ -36,29 +36,24 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
       end
     end
 
-    it 'allows a download of all Raw AMR data data' do
-      meter_with_raw_data = create(:electricity_meter_with_reading, name: 'Electricity meter 2', school: school)
+    context 'raw data downloads' do
+      it 'allows a download of all' do
+        meter_with_raw_data = create(:electricity_meter_with_reading, name: 'Electricity meter 2', school: school)
 
-      click_on 'Download raw AMR data'
+        click_on 'Download raw AMR data'
 
-      # Make sure the page is a CSV
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /all-amr-raw-readings.csv$/
+        # Make sure the page is a CSV
+        header = page.response_headers['Content-Disposition']
+        expect(header).to match /^attachment/
+        expect(header).to match /all-amr-raw-readings.csv$/
 
-      # Then check the content
-      meter_with_raw_data.amr_validated_readings.each do |record|
-        expect(page.source).to have_content Reports::AmrDataFeedReadingsController::CSV_HEADER
-        expect(page).to have_content amr_data_feed_reading_to_s(meter_with_raw_data.amr_data_feed_readings.first)
+        expect(page.source).to have_content Admin::Reports::AmrDataFeedReadingsController::CSV_HEADER
+
+        # Then check the content
+        meter_with_raw_data.amr_data_feed_readings.each do |record|
+          expect(page.source).to have_content amr_data_feed_reading_to_s(meter_with_raw_data, meter_with_raw_data.amr_data_feed_readings.first)
+        end
       end
-    end
-
-    def amr_validated_reading_to_s(amr)
-      "#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
-    end
-
-    def amr_data_feed_reading_to_s(amr)
-      "#{amr.reading_date},#{amr.readings.join(',')}"
     end
   end
 
