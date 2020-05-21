@@ -8,7 +8,6 @@ describe "downloads", type: :system do
   let(:mpan)                      { 1234567890123 }
   let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan ) }
 
-
   context 'as teacher' do
     before(:each) do
       sign_in(teacher)
@@ -26,9 +25,10 @@ describe "downloads", type: :system do
       expect(header).to match /school-amr-readings-#{school.name.parameterize}.csv$/
 
       # Then check the content
-      meter.amr_validated_readings.each do |record|
-        expect(page.source).to have_content Schools::MetersController::SCHOOL_CSV_HEADER
-        expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
+      meter.amr_validated_readings.each do |amr|
+        expect(page.source).to have_content AmrValidatedReading::CSV_HEADER_FOR_SCHOOL
+        reading_row = "#{amr.meter.mpan_mprn},#{amr.meter.meter_type.titleize},#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
+        expect(page).to have_content reading_row
       end
     end
 
@@ -41,9 +41,9 @@ describe "downloads", type: :system do
       expect(header).to match /filename=\"meter-amr-readings-#{meter.mpan_mprn}.csv\"/
 
       # Then check the content
-      meter.amr_validated_readings.each do |record|
-        expect(page.source).to have_content Schools::MetersController::SINGLE_METER_CSV_HEADER
-        expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
+      meter.amr_validated_readings.each do |amr|
+        expect(page.source).to have_content AmrValidatedReading::CSV_HEADER_FOR_METER
+        expect(page).to have_content amr_validated_reading_to_s(amr)
       end
     end
   end
@@ -52,7 +52,6 @@ describe "downloads", type: :system do
 
     let!(:admin)                  { create(:admin) }
     let!(:filtered_school)        { create(:school, :with_feed_areas, name: "Filter school") }
-
 
     before(:each) do
       sign_in(admin)
@@ -75,13 +74,12 @@ describe "downloads", type: :system do
 
       # Then check the content
       meter.amr_data_feed_readings.each do |record|
-        expect(page.source).to_not have_content amr_data_feed_reading_to_s(meter, meter.amr_data_feed_readings.first)
+        expect(page.source).to_not have_content amr_data_feed_reading_to_s(meter, record)
       end
 
       filtered_meter_with_raw_data.amr_data_feed_readings.each do |record|
-        expect(page.source).to have_content amr_data_feed_reading_to_s(filtered_meter_with_raw_data, filtered_meter_with_raw_data.amr_data_feed_readings.first)
+        expect(page.source).to have_content amr_data_feed_reading_to_s(filtered_meter_with_raw_data, record)
       end
     end
   end
-
 end
