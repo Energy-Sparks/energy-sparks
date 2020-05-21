@@ -32,7 +32,7 @@ module EnergySparksDataHelpers
   end
 
   def amr_data_feed_reading_to_s(meter, amr)
-    "#{meter.school.urn},#{meter.school.name},#{meter.mpan_mprn},#{amr.reading_date},#{amr.amr_data_feed_import_log.amr_data_feed_config.date_format},#{amr.updated_at.strftime("%Y-%m-%d %H:%M:%S.%6N")},#{amr.readings.join(',')}"
+    "#{meter.school.urn},#{meter.school.name},#{meter.mpan_mprn},#{meter.meter_type.titleize},#{amr.reading_date},#{amr.amr_data_feed_import_log.amr_data_feed_config.date_format},#{amr.updated_at.strftime("%Y-%m-%d %H:%M:%S.%6N")},#{amr.readings.join(',')}"
   end
 end
 

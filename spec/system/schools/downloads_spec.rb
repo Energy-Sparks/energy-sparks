@@ -71,7 +71,7 @@ describe "downloads", type: :system do
       expect(header).to match /^attachment/
       expect(header).to match /#{filtered_school.name.parameterize}-amr-raw-readings.csv$/
 
-      expect(page.source).to have_content Admin::Reports::AmrDataFeedReadingsController::CSV_HEADER
+      expect(page.source).to have_content AmrDataFeedReading::CSV_HEADER_DATA_FEED_READING
 
       # Then check the content
       meter.amr_data_feed_readings.each do |record|
