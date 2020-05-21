@@ -2,6 +2,9 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <h1>Energy Usage&hellip;</h1>
+</div>
+
+<div class="d-flex justify-content-between align-items-center">
   <div class="h5">
     <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
       <%= fa_icon('file-alt') %>
@@ -10,8 +13,12 @@
     <% if @school.configuration %>
       <%= link_to "Review your school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% end %>
+    <% if @co2_pages.any? %>
+      <% @co2_pages.each do |page| %>
+        <%= link_to page.analysis_title , school_analysis_path(@school, page.analysis_page), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      <% end %>
+    <% end %>
     <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
-
   </div>
 </div>
 

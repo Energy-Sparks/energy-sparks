@@ -7,6 +7,7 @@ module Management
     include DashboardAlerts
     include DashboardTimeline
     include DashboardPriorities
+    include AnalysisPages
 
     before_action :check_aggregated_school_in_cache
 
@@ -20,6 +21,9 @@ module Management
       @overview_table = setup_management_table
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
+
+      setup_analysis_pages(@school.latest_analysis_pages)
+
       if params[:report]
         render :report, layout: 'report'
       else
