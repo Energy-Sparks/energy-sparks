@@ -47,7 +47,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
         expect(header).to match /^attachment/
         expect(header).to match /all-amr-raw-readings.csv$/
 
-        expect(page.source).to have_content Admin::Reports::AmrDataFeedReadingsController::CSV_HEADER
+        expect(page.source).to have_content AmrDataFeedReading::CSV_HEADER_DATA_FEED_READING
 
         # Then check the content
         meter_with_raw_data.amr_data_feed_readings.each do |record|
