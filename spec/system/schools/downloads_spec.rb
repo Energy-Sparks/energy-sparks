@@ -6,7 +6,7 @@ describe "downloads", type: :system do
   let!(:school)                   { create_active_school(name: school_name)}
   let!(:teacher)                  { create(:staff, school: school)}
   let(:mpan)                      { 1234567890123 }
-  let!(:meter)                    { create(:electricity_meter_with_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan ) }
+  let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan ) }
 
 
   context 'as teacher' do
@@ -27,7 +27,7 @@ describe "downloads", type: :system do
 
       # Then check the content
       meter.amr_validated_readings.each do |record|
-        expect(page.source).to have_content School::MetersController::CSV_HEADER
+        expect(page.source).to have_content Schools::MetersController::SCHOOL_CSV_HEADER
         expect(page).to have_content amr_validated_reading_to_s(meter.amr_validated_readings.first)
       end
     end
