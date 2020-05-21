@@ -47,4 +47,16 @@ class AmrDataFeedReading < ApplicationRecord
       ORDER BY s.id, m.mpan_mprn ASC
     QUERY
   end
+
+  def self.download_query_for_school(school_id)
+    <<~QUERY
+      SELECT s.urn, s.name, m.mpan_mprn, amr.reading_date, c.date_format, amr.updated_at,  amr.readings
+      FROM  amr_data_feed_readings amr, meters m, schools s, amr_data_feed_configs c
+      WHERE amr.meter_id = m.id
+      AND   m.school_id  = s.id
+      AND   s.id         = #{school_id}
+      AND   amr.amr_data_feed_config_id = c.id
+      ORDER BY s.id, m.mpan_mprn ASC
+    QUERY
+  end
 end

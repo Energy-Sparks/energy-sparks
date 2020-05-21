@@ -26,6 +26,14 @@ module EnergySparksDataHelpers
 
     CalendarEventType.all
   end
+
+  def amr_validated_reading_to_s(amr)
+    "#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
+  end
+
+  def amr_data_feed_reading_to_s(meter, amr)
+    "#{meter.school.urn},#{meter.school.name},#{meter.mpan_mprn},#{amr.reading_date},#{amr.amr_data_feed_import_log.amr_data_feed_config.date_format},#{amr.updated_at.strftime("%Y-%m-%d %H:%M:%S.%6N")},#{amr.readings.join(',')}"
+  end
 end
 
 RSpec.configure do |config|
