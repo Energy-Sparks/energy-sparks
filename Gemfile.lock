@@ -371,7 +371,7 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     public_suffix (3.1.1)
-    puma (3.12.4)
+    puma (3.12.6)
     rack (2.2.2)
     rack-attack (6.0.0)
       rack (>= 1.0, < 3)
@@ -635,7 +635,7 @@ DEPENDENCIES
   pagy
   pg (= 1.0.0)
   pry
-  puma (= 3.12.4)
+  puma (= 3.12.6)
   rack
   rack-attack
   rack-canonical-host
