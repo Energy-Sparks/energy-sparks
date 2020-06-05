@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: 0256bf160075063c8c5f6e83cc977bb16bfa4978
-  tag: 1.1.1
+  revision: bad7e22c4635f952e1a012e0ba82da3d71cb1226
+  tag: 1.1.2
   specs:
-    energy-sparks_analytics (1.1.1)
+    energy-sparks_analytics (1.1.2)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -182,7 +182,7 @@ GEM
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.6)
-    connection_pool (2.2.2)
+    connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
