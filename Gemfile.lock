@@ -577,7 +577,7 @@ GEM
     webrobots (0.1.2)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     write_xlsx (0.85.7)
       rubyzip (>= 1.0.0)
       zip-zip
