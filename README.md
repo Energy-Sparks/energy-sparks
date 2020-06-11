@@ -22,7 +22,7 @@ For now you may wish to read the evolving documentation in [the project wiki](ht
 
 # For Developers
 
-The application is a Rails 6, Ruby 2.6.5 project, using both sprockets and webpacker for asset management.
+The application uses Ruby on Rails.
 
 Read the [developer guide](https://github.com/BathHacked/energy-sparks/wiki/Setting-up-a-developer-environmen) in the wiki for how to get started and the CONTRIBUTING.md guidelines.
 
