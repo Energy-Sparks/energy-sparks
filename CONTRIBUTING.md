@@ -9,7 +9,7 @@
 ## Code ##
 
 - Must be readable with meaningful naming, eg no short hand single character variable names
-- Follow the data.gov.uk [Ruby style guide](https://github.com/alphagov/styleguides/blob/master/ruby.md)
+- Rubocop is used for style checking, with various customisations [rubocop.yml](https://github.com/BathHacked/.rubocop.yml)
 
 ## Testing ##
 
