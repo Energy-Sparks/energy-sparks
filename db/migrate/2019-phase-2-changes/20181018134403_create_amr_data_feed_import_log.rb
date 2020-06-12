@@ -1,4 +1,4 @@
-class AmrDataFeedImportLog < ActiveRecord::Migration[5.2]
+class CreateAmrDataFeedImportLog < ActiveRecord::Migration[5.2]
   def change
     create_table :amr_data_feed_import_logs do |t|
       t.references :amr_data_feed_config
