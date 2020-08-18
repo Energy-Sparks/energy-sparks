@@ -1,8 +1,6 @@
-[![Build Status](https://travis-ci.org/BathHacked/energy-sparks.svg?branch=master)](https://travis-ci.org/BathHacked/energy-sparks)
+[![Build Status](https://travis-ci.org/Energy-Sparks/energy-sparks.svg?branch=master)](https://travis-ci.org/BathHacked/energy-sparks)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/maintainability)](https://codeclimate.com/github/BathHacked/energy-sparks/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/test_coverage)](https://codeclimate.com/github/BathHacked/energy-sparks/test_coverage)
-
-
 
 # Energy Sparks
 
@@ -24,10 +22,10 @@ For now you may wish to read the evolving documentation in [the project wiki](ht
 
 The application uses Ruby on Rails.
 
-Read the [developer guide](https://github.com/BathHacked/energy-sparks/wiki/Setting-up-a-developer-environmen) in the wiki for how to get started and the CONTRIBUTING.md guidelines.
+Read the [developer guide](https://github.com/Energy-Sparks/energy-sparks/wiki/Setting-up-a-developer-environmen) in the wiki for how to get started and the CONTRIBUTING.md guidelines.
 
 
 
 ## Browser testing provided by:
 
-[![Browserstack](https://raw.githubusercontent.com/BathHacked/energy-sparks/master/markdown_pages/browserstack-logo.png)](https://www.browserstack.com/)
+[![Browserstack](https://raw.githubusercontent.com/Energy-Sparks/energy-sparks/master/markdown_pages/browserstack-logo.png)](https://www.browserstack.com/)
