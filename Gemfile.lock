@@ -346,7 +346,7 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
-    pg (1.0.0)
+    pg (1.2.3)
     popper_js (1.14.5)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
@@ -635,7 +635,7 @@ DEPENDENCIES
   oj
   overcommit
   pagy
-  pg (= 1.0.0)
+  pg
   pry
   puma (= 3.12.6)
   rack
