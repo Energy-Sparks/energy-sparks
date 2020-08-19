@@ -32,6 +32,11 @@
   <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
 </div>
 
+<div class="form-row">
+  <%= f.input :percentage_free_school_meals, label: 'Percentage of pupils eligible for free school meals at any time during the past 6 years', hint: "If you don't know, plese leave this field blank." %>
+</div>
+
+
 <%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
 <%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
 <%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
