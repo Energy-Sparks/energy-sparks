@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.6.5'
+ruby '~> 2.7.1'
 
 # Rails/Core
 gem 'rails', '~> 6.0.3.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -22,7 +22,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/PhilipTB/energy-sparks_analytics.git', tag: '1.1.2'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.1.3b'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -113,6 +113,7 @@ group :development do
   gem "binding_of_caller"
   gem 'annotate'
   gem 'pry'
+  gem 'pry-byebug', '~>3.9.0'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
