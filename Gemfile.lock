@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/PhilipTB/energy-sparks_analytics.git
+  remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
   revision: bad7e22c4635f952e1a012e0ba82da3d71cb1226
   tag: 1.1.2
   specs:
