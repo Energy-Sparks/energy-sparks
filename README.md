@@ -22,7 +22,7 @@ For now you may wish to read the evolving documentation in [the project wiki](ht
 
 The application uses Ruby on Rails.
 
-Read the [developer guide](https://github.com/Energy-Sparks/energy-sparks/wiki/Setting-up-a-developer-environmen) in the wiki for how to get started and the CONTRIBUTING.md guidelines.
+Read the [developer guide](https://github.com/Energy-Sparks/energy-sparks/wiki/Setting-up-a-developer-environment) in the wiki for how to get started and the CONTRIBUTING.md guidelines.
 
 
 
