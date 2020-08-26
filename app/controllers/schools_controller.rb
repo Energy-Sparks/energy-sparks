@@ -107,6 +107,7 @@ private
   def school_params
     params.require(:school).permit(
       :name,
+      :activation_date,
       :school_type,
       :address,
       :postcode,

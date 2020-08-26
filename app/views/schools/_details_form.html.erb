@@ -1,5 +1,9 @@
+<p><%= school.name %> was created on <%= nice_dates(school.created_at) %></p>
+
 <%= f.input :name, label: 'School name'%>
 <%= f.input :urn, label: 'Unique Reference Number', hint: 'This is your URN in England, SEED in Scotland' %>
+
+<%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, label: 'Activation date', hint: 'This is the date when the school becomes active on Energy Sparks' %>
 
 <h2>School Type</h2>
 <div class="form-group">
