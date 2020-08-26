@@ -1,3 +1,5 @@
+source 'https://rubygems.org'
+
 gem 'overcommit'
 gem 'bundler-audit'
 gem 'rubocop', '0.73.0'
