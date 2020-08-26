@@ -7,7 +7,7 @@ gem 'rails', '~> 6.0.3.1' # Bundle edge Rails instead: gem 'rails', github: 'rai
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
-gem 'webpacker', '~> 4.0'
+gem 'webpacker'
 gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
@@ -16,7 +16,7 @@ gem 'rack'
 gem 'rack-attack'
 
 # Database/Data
-gem 'pg', '1.0.0' # Use postgresql as the database for Active Record
+gem 'pg'
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
