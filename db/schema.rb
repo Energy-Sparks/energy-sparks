@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_105034) do
+ActiveRecord::Schema.define(version: 2020_08_26_110745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -969,6 +969,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_105034) do
     t.boolean "process_data", default: false
     t.bigint "scoreboard_id"
     t.boolean "indicated_has_storage_heaters", default: false
+    t.date "activation_date"
     t.integer "percentage_free_school_meals"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

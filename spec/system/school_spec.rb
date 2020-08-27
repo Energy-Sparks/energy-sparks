@@ -50,7 +50,7 @@ RSpec.describe "school", type: :system do
 
       it 'I can set up a school for KS1' do
         click_on(school_name)
-        click_on('Edit school')
+        click_on('Edit school details')
         expect(school.key_stages).to_not include(ks1)
         expect(school.key_stages).to_not include(ks2)
         expect(school.key_stages).to_not include(ks3)
@@ -109,6 +109,38 @@ RSpec.describe "school", type: :system do
         expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
         school.reload
         expect(school.process_data).to eq(false)
+      end
+
+      it 'can see when the school was created on Energy Sparks' do
+        click_on(school_name)
+        click_on('Edit school details')
+        date = school.created_at
+        expect(page).to have_content "#{school.name} was created on #{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')}"
+      end
+
+      it 'can create an active date' do
+        click_on(school_name)
+        click_on('Edit school details')
+
+        expect(school.observations).to be_empty
+
+        expect(page).to have_field('Activation date')
+        activation_date = Date.parse('01/01/2020')
+
+        fill_in 'Activation date', with: activation_date.strftime("%d/%m/%Y")
+        click_on('Update School')
+
+        expect(school.observations.first.description.to_s).to include("joined Energy Sparks")
+
+        school.reload
+        expect(school.activation_date).to eq activation_date
+
+        click_on('Edit school details')
+        fill_in 'Activation date', with: ''
+        click_on('Update School')
+
+        school.reload
+        expect(school.activation_date).to eq nil
       end
     end
   end
