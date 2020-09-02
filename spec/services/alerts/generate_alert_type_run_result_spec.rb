@@ -24,7 +24,7 @@ module Alerts
         benchmark_data: {benchmark: 'variables'}
       }}
 
-      let(:alert_report) { Adapters::Report.new(alert_report_attributes) }
+      let(:alert_report) { Adapters::Report.new(**alert_report_attributes) }
 
       before(:each) do
         expect(framework_adapter).to receive(:new).with(alert_type: alert_type, school: school, aggregate_school: aggregate_school, analysis_date: nil, use_max_meter_date_if_less_than_asof_date: false).and_return(adapter_instance)
@@ -53,7 +53,7 @@ module Alerts
 
       it 'working normally it returns alert report with out benchmark' do
         alert_report_attributes[:benchmark_data] = {}
-        alert_report = Adapters::Report.new(alert_report_attributes)
+        alert_report = Adapters::Report.new(**alert_report_attributes)
 
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 
@@ -65,7 +65,7 @@ module Alerts
         invalid_attributes = alert_report_attributes
         invalid_attributes[:valid] = false
 
-        alert_report = Adapters::Report.new(invalid_attributes)
+        alert_report = Adapters::Report.new(**invalid_attributes)
 
         expect(adapter_instance).to receive(:analyse).and_return alert_report
 

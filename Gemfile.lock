@@ -1,7 +1,22 @@
 GIT
-  remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 2195f9dbdc33a51e9325b32fcdccbeb502f22c30
-  tag: 1.1.3b
+  remote: https://github.com/SciRuby/statsample
+  revision: fd9a88d92196fc419e8080f0989faf6fe9563e80
+  branch: master
+  specs:
+    statsample (2.1.0)
+      awesome_print (~> 1.6)
+      daru (~> 0.1.6)
+      dirty-memoize (~> 0.0.4)
+      distribution (~> 0.7)
+      extendmatrix (~> 0.4)
+      minimization (~> 0.2)
+      reportbuilder (~> 1.4)
+      rserve-client (~> 0.3)
+      rubyvis (~> 0.6.1)
+      spreadsheet (~> 1.1)
+
+PATH
+  remote: ../energy-sparks_analytics
   specs:
     energy-sparks_analytics (1.1.3)
       activesupport (~> 6.0.0)
@@ -22,23 +37,6 @@ GIT
       statsample (~> 2.1.0)
       structured_warnings (~> 0.3.0)
       write_xlsx (~> 0.85.5)
-
-GIT
-  remote: https://github.com/SciRuby/statsample
-  revision: fd9a88d92196fc419e8080f0989faf6fe9563e80
-  branch: master
-  specs:
-    statsample (2.1.0)
-      awesome_print (~> 1.6)
-      daru (~> 0.1.6)
-      dirty-memoize (~> 0.0.4)
-      distribution (~> 0.7)
-      extendmatrix (~> 0.4)
-      minimization (~> 0.2)
-      reportbuilder (~> 1.4)
-      rserve-client (~> 0.3)
-      rubyvis (~> 0.6.1)
-      spreadsheet (~> 1.1)
 
 GEM
   remote: https://rubygems.org/

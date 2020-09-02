@@ -40,13 +40,4 @@ describe EnergySparks::CsvLoader do
     results = EnergySparks::CsvLoader.from_text(csv)
     expect(results.first.fields).to eq(["1", "2"])
   end
-
-  describe '.from_file' do
-    it 'loads from a known file' do
-      sample_file = 'spec/fixtures/schools-sample.csv'
-      results = EnergySparks::CsvLoader.from_file(sample_file)
-      expect(results.size).to eq(2)
-    end
-  end
-
 end
