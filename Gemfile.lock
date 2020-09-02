@@ -1,9 +1,9 @@
 GIT
-  remote: https://github.com/PhilipTB/energy-sparks_analytics.git
-  revision: bad7e22c4635f952e1a012e0ba82da3d71cb1226
-  tag: 1.1.2
+  remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
+  revision: ffdbc72a5dfc71dcabb4b038356f9a47fd27db51
+  tag: 1.1.3
   specs:
-    energy-sparks_analytics (1.1.2)
+    energy-sparks_analytics (1.1.3)
       activesupport (~> 6.0.0.rc1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
@@ -110,22 +110,22 @@ GEM
     autoprefixer-rails (9.6.0)
       execjs
     awesome_print (1.8.0)
-    aws-eventstream (1.0.3)
-    aws-partitions (1.181.0)
-    aws-sdk-core (3.56.0)
-      aws-eventstream (~> 1.0, >= 1.0.2)
-      aws-partitions (~> 1.0)
+    aws-eventstream (1.1.0)
+    aws-partitions (1.357.0)
+    aws-sdk-core (3.104.3)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.22.0)
-      aws-sdk-core (~> 3, >= 3.56.0)
+    aws-sdk-kms (1.36.0)
+      aws-sdk-core (~> 3, >= 3.99.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.43.0)
-      aws-sdk-core (~> 3, >= 3.56.0)
+    aws-sdk-s3 (1.78.0)
+      aws-sdk-core (~> 3, >= 3.104.3)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.1.0)
-      aws-eventstream (~> 1.0, >= 1.0.2)
+    aws-sigv4 (1.2.2)
+      aws-eventstream (~> 1, >= 1.0.2)
     backports (3.15.0)
     bcrypt (3.1.13)
     benchmark-memory (0.1.2)
@@ -181,7 +181,7 @@ GEM
     closed_struct (1.0.0)
     coderay (1.1.2)
     colorize (0.8.1)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -259,7 +259,7 @@ GEM
     htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (1.8.4)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     image_processing (1.9.0)
       mini_magick (>= 4.9.3, < 5)
@@ -346,7 +346,7 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
-    pg (1.0.0)
+    pg (1.2.3)
     popper_js (1.14.5)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
@@ -504,6 +504,7 @@ GEM
     selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
+    semantic_range (2.3.0)
     sexp_processor (4.12.1)
     shellany (0.0.1)
     simple_form (5.0.0)
@@ -570,10 +571,11 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (4.0.7)
-      activesupport (>= 4.2)
+    webpacker (5.2.1)
+      activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
-      railties (>= 4.2)
+      railties (>= 5.2)
+      semantic_range (>= 2.3.0)
     webrobots (0.1.2)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
@@ -633,7 +635,7 @@ DEPENDENCIES
   oj
   overcommit
   pagy
-  pg (= 1.0.0)
+  pg
   pry
   puma (= 3.12.6)
   rack
@@ -664,7 +666,7 @@ DEPENDENCIES
   web-console
   webdrivers
   webmock
-  webpacker (~> 4.0)
+  webpacker
 
 RUBY VERSION
    ruby 2.6.5p114
