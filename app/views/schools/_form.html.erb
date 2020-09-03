@@ -1,4 +1,4 @@
 <%= simple_form_for(school) do |f| %>
-  <%= render 'details_form', f: f, key_stages: @key_stages %>
+  <%= render 'details_form', f: f, key_stages: @key_stages, school: school %>
   <%= f.submit submit_text, class: 'btn btn-primary' %>
 <% end %>
