@@ -27,7 +27,6 @@ class SchoolCreator
   def process_new_school!
     add_school_times
     generate_configuration
-    add_joining_observation
   end
 
   def make_visible!
@@ -91,14 +90,6 @@ private
   def generate_configuration
     return if @school.configuration
     Schools::Configuration.create!(school: @school)
-  end
-
-  def add_joining_observation
-    @school.observations.create!(
-      observation_type: :event,
-      description: "#{@school.name} joined Energy Sparks!",
-      at: Time.zone.now
-    )
   end
 
   def record_event(onboarding, *events)

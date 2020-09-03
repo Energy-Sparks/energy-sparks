@@ -2,6 +2,7 @@
 #
 # Table name: schools
 #
+#  activation_date                       :date
 #  address                               :text
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
@@ -128,6 +129,9 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
+  # Note that saved_change_to_activation_date? is a magic ActiveRecord method
+  # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
+  after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
   def latest_alert_run
     alert_generation_runs.order(created_at: :desc).first
@@ -320,5 +324,15 @@ class School < ApplicationRecord
     raise ProcessDataError, "#{name} cannot process data as it has no floor area" if floor_area.blank?
     raise ProcessDataError, "#{name} cannot process data as it has no pupil numbers" if number_of_pupils.blank?
     update!(process_data: true)
+  end
+
+  private
+
+  def add_joining_observation
+    observations.create!(
+      observation_type: :event,
+      description: "#{name} became an active user of Energy Sparks!",
+      at: Time.zone.now
+    )
   end
 end

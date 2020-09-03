@@ -1,6 +1,6 @@
 <h1>Your school details</h1>
 
 <%= simple_form_for(school, url: onboarding_school_details_path(school_onboarding)) do |f| %>
-  <%= render 'schools/details_form', f: f, key_stages: @key_stages %>
+  <%= render 'schools/details_form', f: f, key_stages: @key_stages, school: school %>
   <%= f.button :submit, 'Update school details' %>
 <% end %>
