@@ -26,7 +26,7 @@ describe 'programme', type: :system do
   it 'allows the user see details of a programme' do
     click_on programme_type.title
     expect(page).to have_content(programme_type.title)
-    expect(page).to have_content(programme_type.description)
+    expect(page).to have_link(programme_type.description.to_s)
     expect(programme_type.activity_types.count).to be > 0
     programme_type.activity_types.each do |activity_type|
       expect(page).to have_content(activity_type.name)
