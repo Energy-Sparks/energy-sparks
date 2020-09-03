@@ -130,7 +130,7 @@ RSpec.describe "school", type: :system do
         fill_in 'Activation date', with: activation_date.strftime("%d/%m/%Y")
         click_on('Update School')
 
-        expect(school.observations.first.description.to_s).to include("joined Energy Sparks")
+        expect(school.observations.first.description.to_s).to include("became an active user of Energy Sparks!")
 
         school.reload
         expect(school.activation_date).to eq activation_date
