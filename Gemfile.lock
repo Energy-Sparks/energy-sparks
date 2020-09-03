@@ -1,21 +1,21 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: ffdbc72a5dfc71dcabb4b038356f9a47fd27db51
-  tag: 1.1.3
+  revision: e58dd8e0ca82f3d3302e51373a68aa506e675eab
+  tag: 1.2.1
   specs:
-    energy-sparks_analytics (1.1.3)
-      activesupport (~> 6.0.0.rc1)
+    energy-sparks_analytics (1.2.1)
+      activesupport (~> 6.0.0)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
       hashdiff (~> 1.0.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
       mechanize (~> 2.7.6)
-      pry-byebug (~> 3.6.0)
+      pry-byebug
       require_all (~> 2.0.0)
       roo (~> 2.7.1)
       roo-xls (~> 1.2.0)
-      rspec (~> 3.8.0)
+      rspec
       ruby-prof (~> 0.17.0)
       ruby-sun-times (~> 0.1.5)
       soda-ruby (~> 0.2.25)
@@ -24,13 +24,14 @@ GIT
       write_xlsx (~> 0.85.5)
 
 GIT
-  remote: https://github.com/SciRuby/statsample
-  revision: fd9a88d92196fc419e8080f0989faf6fe9563e80
-  branch: master
+  remote: https://github.com/Energy-Sparks/statsample
+  revision: e3de8a332546ca0506938f49f8a9f92762aee737
+  branch: update-gems-and-awesome-print
+  tag: 2.1.1-energy-sparks
   specs:
     statsample (2.1.0)
-      awesome_print (~> 1.6)
-      daru (~> 0.1.6)
+      amazing_print (~> 1.2.1)
+      daru (~> 0.2.2)
       dirty-memoize (~> 0.0.4)
       distribution (~> 0.7)
       extendmatrix (~> 0.4)
@@ -101,6 +102,7 @@ GEM
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     after_party (1.11.2)
+    amazing_print (1.2.1)
     annotate (2.7.5)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 13.0)
@@ -109,7 +111,6 @@ GEM
       activerecord (>= 4.0)
     autoprefixer-rails (9.6.0)
       execjs
-    awesome_print (1.8.0)
     aws-eventstream (1.1.0)
     aws-partitions (1.357.0)
     aws-sdk-core (3.104.3)
@@ -126,7 +127,7 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
-    backports (3.15.0)
+    backports (3.18.2)
     bcrypt (3.1.13)
     benchmark-memory (0.1.2)
       memory_profiler (~> 0.9)
@@ -188,8 +189,9 @@ GEM
     crass (1.0.6)
     css_parser (1.7.0)
       addressable
-    daru (0.1.6)
+    daru (0.2.2)
       backports
+      packable (~> 1.3.9)
     database_cleaner (1.7.0)
     debug_inspector (0.0.3)
     devise (4.7.1)
@@ -200,7 +202,7 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.3)
     dirty-memoize (0.0.4)
-    distribution (0.7.3)
+    distribution (0.8.0)
     docile (1.3.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -342,6 +344,8 @@ GEM
     overcommit (0.48.1)
       childprocess (~> 0.6, >= 0.6.3)
       iniparse (~> 1.4)
+    packable (1.3.14)
+      backports
     pagy (3.7.1)
     parallel (1.17.0)
     parser (2.6.3.0)
@@ -521,7 +525,7 @@ GEM
       hashie (~> 3.5)
       multipart-post (~> 2.0.0)
       sys-uname (~> 1.0.2)
-    spreadsheet (1.2.5)
+    spreadsheet (1.2.6)
       ruby-ole (>= 1.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
