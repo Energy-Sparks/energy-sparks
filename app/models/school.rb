@@ -331,7 +331,7 @@ class School < ApplicationRecord
   def add_joining_observation
     observations.create!(
       observation_type: :event,
-      description: "#{name} joined Energy Sparks!",
+      description: "#{name} became an active user of Energy Sparks!",
       at: Time.zone.now
     )
   end
