@@ -27,7 +27,6 @@ gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-spa
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-# gem 'statsample', git: 'https://github.com/SciRuby/statsample', branch: 'master'
 gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.1-energy-sparks', branch: 'update-gems-and-awesome-print'
 
 # Assets
