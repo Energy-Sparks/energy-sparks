@@ -15,7 +15,9 @@ module Amr
         school_type: @active_record_school.school_type,
         area_name: @active_record_school.area_name,
         urn: @active_record_school.urn,
-        postcode: @active_record_school.postcode
+        postcode: @active_record_school.postcode,
+        activation_date: @active_record_school.activation_date,
+        created_at: @active_record_school.created_at
       }
     end
 
