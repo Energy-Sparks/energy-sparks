@@ -18,6 +18,7 @@
 #  met_office_area_id                    :bigint(8)
 #  name                                  :string
 #  number_of_pupils                      :integer
+#  percentage_free_school_meals          :integer
 #  postcode                              :string
 #  process_data                          :boolean          default(FALSE)
 #  school_group_id                       :bigint(8)
@@ -44,8 +45,8 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (calendar_id => calendars.id)
-#  fk_rails_...  (school_group_id => school_groups.id)
+#  fk_rails_...  (calendar_id => calendars.id) ON DELETE => restrict
+#  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #
 

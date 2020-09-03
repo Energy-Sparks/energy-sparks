@@ -195,6 +195,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       fill_in 'Unique Reference Number', with: '4444244'
       fill_in 'Number of pupils', with: 300
       fill_in 'Floor area in square metres', with: 400
+      fill_in 'Percentage of pupils eligible for free school meals at any time during the past 6 years', with: 16
       fill_in 'Address', with: '1 Station Road'
       fill_in 'Postcode', with: 'A1 2BC'
       fill_in 'Website', with: 'http://oldfield.sch.uk'
@@ -233,13 +234,13 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(onboarding.school.indicated_has_storage_heaters?).to eq(true)
       expect(onboarding.school.has_swimming_pool?).to eq(false)
       expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
+      expect(onboarding.school.percentage_free_school_meals).to eq(16)
 
       expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
       expect(email.to).to include(admin.email)
-
     end
 
     it 'lets the user edit inset days, meters, pupils and opening times but does not require them' do

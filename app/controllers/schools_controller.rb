@@ -114,6 +114,7 @@ private
       :urn,
       :number_of_pupils,
       :floor_area,
+      :percentage_free_school_meals,
       :indicated_has_solar_panels,
       :indicated_has_storage_heaters,
       :has_swimming_pool,
