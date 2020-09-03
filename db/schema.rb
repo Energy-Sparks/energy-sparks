@@ -969,6 +969,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_110745) do
     t.boolean "process_data", default: false
     t.bigint "scoreboard_id"
     t.boolean "indicated_has_storage_heaters", default: false
+    t.integer "percentage_free_school_meals"
     t.date "activation_date"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

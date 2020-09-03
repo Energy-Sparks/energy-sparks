@@ -19,6 +19,7 @@
 #  met_office_area_id                    :bigint(8)
 #  name                                  :string
 #  number_of_pupils                      :integer
+#  percentage_free_school_meals          :integer
 #  postcode                              :string
 #  process_data                          :boolean          default(FALSE)
 #  school_group_id                       :bigint(8)
@@ -128,6 +129,8 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
+  # Note that saved_change_to_activation_date? is a magic ActiveRecord method
+  # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
   def latest_alert_run
