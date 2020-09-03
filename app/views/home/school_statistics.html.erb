@@ -41,6 +41,7 @@
                 <th>Solar export</th>
                 <th>Floor area</th>
                 <th>Pupil numbers</th>
+                <th>% free school meals</th>
                 <th>Activities completed</th>
                 <th>Interventions</th>
               </tr>
@@ -57,6 +58,7 @@
                   <td><%= school.meters.exported_solar_pv.count %></td>
                   <td><%= school.floor_area %></td>
                   <td><%= school.number_of_pupils %></td>
+                  <td><%= school.percentage_free_school_meals %></td>
                   <td><%= link_to school.activities.count, school_activities_path(school) %></td>
                   <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
                 </tr>
