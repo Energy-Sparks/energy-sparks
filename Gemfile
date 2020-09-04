@@ -88,10 +88,10 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '~> 4.0.0.beta3'
+  gem 'rspec-rails', '~> 4.0.1'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
-  gem 'factory_bot_rails', '5.0.1'
+  gem 'factory_bot_rails'
   gem 'climate_control'
   gem 'webmock'
   gem 'foreman'
@@ -99,9 +99,9 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.73.0'
-  gem 'rubocop-rails', '2.2.1'
-  gem 'rubocop-performance', '1.4.0'
+  gem 'rubocop', '0.90.0'
+  gem 'rubocop-rails', '2.8.0'
+  gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
 end
 
@@ -113,6 +113,7 @@ group :development do
   gem "binding_of_caller"
   gem 'annotate'
   gem 'pry'
+  gem 'pry-byebug', '~>3.9.0'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
