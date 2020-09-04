@@ -60,7 +60,7 @@ describe AmrReadingData do
                             }}
 
     it 'knows when it is valid, even if the dates are not in the correct format' do
-      amr_reading = AmrReadingData.new(amr_reading_data)
+      amr_reading = AmrReadingData.new(**amr_reading_data)
       expect(amr_reading.valid?).to be true
       expect(amr_reading.valid_reading_count).to be 2
       expect(amr_reading.warnings?).to be false
@@ -70,7 +70,7 @@ describe AmrReadingData do
       it 'with missing mpan_mprn' do
         amr_reading_data[:reading_data].first.delete(:mpan_mprn)
 
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be true
@@ -81,7 +81,7 @@ describe AmrReadingData do
 
       it 'with missing reading date' do
         amr_reading_data[:reading_data].second.delete(:reading_date)
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be true
@@ -91,7 +91,7 @@ describe AmrReadingData do
       end
 
       it 'with reading date in the future' do
-        amr_reading = AmrReadingData.new(amr_reading_data.merge(today: Date.new(2018, 1, 1)))
+        amr_reading = AmrReadingData.new(**amr_reading_data.merge(today: Date.new(2018, 1, 1)))
 
         expect(amr_reading.valid?).to be false
         expect(amr_reading.warnings?).to be true
@@ -102,7 +102,7 @@ describe AmrReadingData do
 
       it 'with missing readings' do
         amr_reading_data[:reading_data].first[:readings].shift
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
 
         expect(amr_reading.valid?).to be true
@@ -116,7 +116,7 @@ describe AmrReadingData do
 
         amr_reading_data[:reading_data].first[:readings].shift
         amr_reading_data[:missing_reading_threshold] = 1
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be false
@@ -128,7 +128,7 @@ describe AmrReadingData do
 
         amr_reading_data[:reading_data].first[:readings] = readings
 
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be true
@@ -143,7 +143,7 @@ describe AmrReadingData do
 
         amr_reading_data[:reading_data].first[:readings] = readings
 
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be true
@@ -156,7 +156,7 @@ describe AmrReadingData do
         bad_date = 'AAAAAA'
         amr_reading_data[:reading_data].first[:reading_date] = bad_date
 
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be true
@@ -168,7 +168,7 @@ describe AmrReadingData do
       it 'when there are duplicate rows' do
         amr_reading_data[:reading_data].first[:reading_date] = amr_reading_data[:reading_data].last[:reading_date]
 
-        amr_reading = AmrReadingData.new(amr_reading_data)
+        amr_reading = AmrReadingData.new(**amr_reading_data)
 
         expect(amr_reading.valid?).to be true
         expect(amr_reading.warnings?).to be true
