@@ -25,6 +25,7 @@
 #  school_id              :bigint(8)
 #  sign_in_count          :integer          default(0), not null
 #  staff_role_id          :bigint(8)
+#  unlock_token           :string
 #  updated_at             :datetime         not null
 #
 # Indexes
@@ -40,7 +41,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
-#  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
 #
 
