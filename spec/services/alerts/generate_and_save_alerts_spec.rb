@@ -19,19 +19,19 @@ module Alerts
       benchmark_data: {benchmark: 'variables'}
     }}
 
-    let(:alert_report)            { Adapters::Report.new(alert_report_attributes) }
+    let(:alert_report)            { Adapters::Report.new(**alert_report_attributes) }
 
-    let(:example_alert_report)    {Adapters::Report.new(alert_report_attributes) }
+    let(:example_alert_report)    { Adapters::Report.new(**alert_report_attributes) }
     let(:example_benchmark_alert_report) do
       benchmark_alert_report_attributes = alert_report_attributes.clone
       benchmark_alert_report_attributes[:benchmark_data] = {}
-      Adapters::Report.new(benchmark_alert_report_attributes)
+      Adapters::Report.new(**benchmark_alert_report_attributes)
     end
 
     let(:example_invalid_report) do
       invalid_alert_report_attributes = alert_report_attributes.clone
       invalid_alert_report_attributes[:valid] = false
-      Adapters::Report.new(invalid_alert_report_attributes)
+      Adapters::Report.new(**invalid_alert_report_attributes)
     end
 
     let(:error_messages) { ["Broken"] }
