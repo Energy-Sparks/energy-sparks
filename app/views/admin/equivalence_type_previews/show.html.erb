@@ -1,4 +1,4 @@
-<% if !@equivalence.relevant? %>
+<% if @equivalence.hide_preview? %>
   <div class="alert alert-warning">
     This equivalence will not be shown as one or more of the values is not significant enough (e.g. less than 1.0)
   </div>
