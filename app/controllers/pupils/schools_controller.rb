@@ -26,8 +26,9 @@ module Pupils
     end
 
     def equivalence_setup(school)
-      @equivalences = school.equivalences.relevant
-      @equivalences_content = @equivalences.includes(:content_version).map do |equivalence|
+      @equivalences = Equivalences::RelevantAndTimely.new(school).equivalences
+
+      @equivalences_content = @equivalences.map do |equivalence|
         TemplateInterpolation.new(
           equivalence.content_version,
           with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
