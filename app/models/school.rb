@@ -108,6 +108,8 @@ class School < ApplicationRecord
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
 
+  has_and_belongs_to_many :cluster_users, class_name: "User", join_table: :cluster_schools_users
+
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
   scope :visible,            -> { where(visible: true) }

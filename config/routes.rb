@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :school_switcher, only: [:create], controller: :school_switcher
+
   resources :school_groups, only: [:show, :index]
   resources :scoreboards, only: [:show, :index]
 

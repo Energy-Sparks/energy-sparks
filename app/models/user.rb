@@ -57,6 +57,8 @@ class User < ApplicationRecord
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
+  has_and_belongs_to_many :cluster_schools, class_name: "School", join_table: :cluster_schools_users
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
