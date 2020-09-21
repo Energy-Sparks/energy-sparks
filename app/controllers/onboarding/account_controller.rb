@@ -1,6 +1,7 @@
 module Onboarding
   class AccountController < BaseController
     skip_before_action :authenticate_user!, only: [:new, :create]
+    before_action :redirect_if_logged_in, only: [:new]
     before_action only: [:new, :create] do
       redirect_if_event(:onboarding_user_created, new_onboarding_school_details_path(@school_onboarding))
     end
@@ -35,6 +36,12 @@ module Onboarding
     end
 
   private
+
+    def redirect_if_logged_in
+      if user_signed_in? && @school_onboarding.created_user.blank?
+        redirect_to new_onboarding_clustering_path(@school_onboarding)
+      end
+    end
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id)

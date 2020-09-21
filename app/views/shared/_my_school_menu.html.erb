@@ -20,15 +20,5 @@
     <%= link_to 'Activities', suggest_activity_school_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Resources', resources_path, class: 'dropdown-item' %>
     <%= link_to "Download your data", school_downloads_path(current_user.school), class: 'dropdown-item' %>
-    <% if current_user && current_user.cluster_schools.exists? %>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Switch
-        Schools</a>
-      <div class="dropdown-menu" aria-labelledby="school_switcher">
-        <% current_user.cluster_schools.each do |school| %>
-          <%= link_to school.name, school_switcher_path(school_id: school.id), method: :post, class: 'dropdown-item' %>
-        <% end %>
-      </div>
-    <% end %>
   </div>
 </li>
