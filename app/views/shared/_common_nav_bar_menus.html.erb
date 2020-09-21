@@ -1,9 +1,3 @@
-<li class="nav-item">
-  <% if current_user && current_user.cluster_schools.exists? %>
-    <%= render 'shared/switch_schools' %>
-  <% end %>
-</li>
-
 <%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
 
 <% if current_user && current_user.default_scoreboard %>
