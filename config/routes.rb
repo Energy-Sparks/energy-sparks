@@ -46,7 +46,7 @@ Rails.application.routes.draw do
     scope module: :onboarding do
       resource :consent,        only: [:show, :create], controller: 'consent'
       resource :account,        only: [:new, :create, :edit, :update], controller: 'account'
-      resource :sessions,       only: [:destroy], controller: 'sessions'
+      resource :sessions,       only: [:new, :destroy], controller: 'sessions'
       resource :clustering,     only: [:new, :create], controller: 'clustering'
       resource :school_details, only: [:new, :create, :edit, :update]
       resource :pupil_account,  only: [:new, :create, :edit, :update], controller: 'pupil_account'
