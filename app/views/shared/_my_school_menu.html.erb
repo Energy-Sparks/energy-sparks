@@ -20,7 +20,7 @@
     <%= link_to 'Activities', suggest_activity_school_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Resources', resources_path, class: 'dropdown-item' %>
     <%= link_to "Download your data", school_downloads_path(current_user.school), class: 'dropdown-item' %>
-    <% if current_user && current_user.cluster_schools.exists? %>
+    <% if current_user && current_user.cluster_schools.visible.exists? %>
       <%= render 'shared/switch_schools' %>
     <% end %>
 </div>

@@ -95,7 +95,7 @@
       <% @pupils.each do |user| %>
         <tr>
             <td><%= user.name %></td>
-            <td><%= user.pupil_password %></td>
+            <td><%= user.pupil_password rescue '(could not decrypt)' %></td>
             <td>
               <div class="btn-group">
                 <%= link_to('Edit', edit_school_pupil_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
