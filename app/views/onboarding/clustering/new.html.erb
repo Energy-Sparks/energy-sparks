@@ -5,7 +5,6 @@
     <p><%= @school_onboarding.school_name %> will have an administrator login to manage your school on Energy Sparks.</p>
     <p>You are currently logged in as <strong><%= current_user.email %></strong></p>
     <p>Do you want to use this user to manage the new school?</p>
-    <br/>
 
     <%= simple_form_for(current_user, url: onboarding_clustering_path(@school_onboarding), method: :post) do |f| %>
       <%= f.button :submit, 'Yes, use this account' %>
