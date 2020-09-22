@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_04_124427) do
+ActiveRecord::Schema.define(version: 2020_09_17_134139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2020_09_04_124427) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -521,6 +521,16 @@ ActiveRecord::Schema.define(version: 2020_09_04_124427) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "cluster_schools_users", id: false, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "school_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_cluster_schools_users_on_school_id"
+    t.index ["user_id", "school_id"], name: "index_cluster_schools_users_on_user_id_and_school_id"
+    t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
   end
 
   create_table "configurations", force: :cascade do |t|
@@ -945,8 +955,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_124427) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "urn", null: false
     t.integer "level", default: 0
+    t.integer "urn", null: false
     t.bigint "calendar_id"
     t.string "slug"
     t.bigint "temperature_area_id"
@@ -1170,6 +1180,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_124427) do
   add_foreign_key "calendar_events", "calendar_event_types", on_delete: :restrict
   add_foreign_key "calendar_events", "calendars", on_delete: :cascade
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
+  add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
+  add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
   add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict

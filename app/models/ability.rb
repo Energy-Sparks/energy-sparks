@@ -45,7 +45,7 @@ class Ability
         can [:show, :update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
         can :manage, SchoolOnboarding do |onboarding|
-          onboarding.created_user == user
+          onboarding.created_user.blank? || (onboarding.created_user == user)
         end
         can :read, [:my_school_menu, :school_downloads]
       end

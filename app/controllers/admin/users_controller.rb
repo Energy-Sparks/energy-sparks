@@ -44,7 +44,7 @@ module Admin
 
     def user_params
       params[:user].delete(:password) if params[:user][:password].blank?
-      params.require(:user).permit(:name, :email, :password, :role, :school_id, :school_group_id, :staff_role_id)
+      params.require(:user).permit(:name, :email, :password, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
     end
 
     def set_schools_options

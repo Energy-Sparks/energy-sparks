@@ -1,5 +1,6 @@
 <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My school</a>
+  <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My
+    school</a>
   <div class="dropdown-menu" aria-labelledby="my_school">
     <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Gas usage', pupils_school_analysis_path(current_user.school, category: :gas), class: 'dropdown-item' if current_user.school.has_gas? %>
@@ -19,5 +20,8 @@
     <%= link_to 'Activities', suggest_activity_school_path(current_user.school), class: 'dropdown-item' %>
     <%= link_to 'Resources', resources_path, class: 'dropdown-item' %>
     <%= link_to "Download your data", school_downloads_path(current_user.school), class: 'dropdown-item' %>
-  </div>
+    <% if current_user && current_user.cluster_schools.exists? %>
+      <%= render 'shared/switch_schools' %>
+    <% end %>
+</div>
 </li>

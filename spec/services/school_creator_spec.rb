@@ -53,6 +53,16 @@ describe SchoolCreator, :schools, type: :service do
       expect(onboarding_user.school).to eq(school)
     end
 
+    it 'adds the school to the onboarding user cluster, if user already has school' do
+      pre_existing_school = create(:school)
+      onboarding_user.update!(school: pre_existing_school)
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      onboarding_user.reload
+      expect(onboarding_user.school).to eq(pre_existing_school)
+      expect(onboarding_user.cluster_schools).to include(school)
+    end
+
     it 'assigns the school to the onboarding' do
       service = SchoolCreator.new(school)
       service.onboard_school!(school_onboarding)

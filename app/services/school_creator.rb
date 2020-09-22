@@ -8,7 +8,7 @@ class SchoolCreator
       @school.transaction do
         copy_onboarding_details_to_school(onboarding)
         record_event(onboarding, :school_admin_created) do
-          onboarding.created_user.update!(school: @school, role: :school_admin)
+          add_school(onboarding.created_user, @school)
         end
         record_events(onboarding, :default_school_times_added) do
           process_new_school!
@@ -49,6 +49,14 @@ class SchoolCreator
   end
 
 private
+
+  def add_school(user, school)
+    if user.school
+      user.cluster_schools << school
+    else
+      user.update!(school: school, role: :school_admin)
+    end
+  end
 
   def copy_onboarding_details_to_school(onboarding)
       @school.update!(

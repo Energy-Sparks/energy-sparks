@@ -3,7 +3,10 @@
     <h1>Your account details</h1>
 
     <p><%= @school_onboarding.school_name %> will have an administrator login to manage your school on Energy Sparks.</p>
-    <p>Enter the Name, email and password you want to use for this account below:</p>
+
+    <p>You can <%= link_to "use an existing account", new_onboarding_sessions_path(@school_onboarding)%> if you have one.</p>
+
+    <p>To set up a new account, enter the name, email and password you want to use below:</p>
 
     <%= simple_form_for(@user, url: onboarding_account_path(@school_onboarding)) do |f| %>
       <%= f.input :name, label: 'Your name'%>
