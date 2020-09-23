@@ -51,11 +51,8 @@ class SchoolCreator
 private
 
   def add_school(user, school)
-    if user.school
-      user.cluster_schools << school
-    else
-      user.update!(school: school, role: :school_admin)
-    end
+    user.cluster_schools << school
+    user.update!(school: school, role: :school_admin) unless user.school
   end
 
   def copy_onboarding_details_to_school(onboarding)
