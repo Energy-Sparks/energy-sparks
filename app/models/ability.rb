@@ -69,14 +69,14 @@ class Ability
       cannot :delete, User do |other_user|
         user.id == other_user.id
       end
-    elsif user.staff? || user.pupil?
+    elsif user.staff? || user.volunteer? || user.pupil?
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, visible: true
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read_restricted_analysis, School, school_scope
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
-      if user.staff?
+      if user.staff? || user.volunteer?
         can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
