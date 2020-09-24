@@ -51,7 +51,7 @@ class SchoolCreator
 private
 
   def add_school(user, school)
-    user.cluster_schools << school
+    user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
   end
 
