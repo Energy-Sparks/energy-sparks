@@ -1,7 +1,7 @@
 <div class="dropdown-divider"></div>
-<a class="dropdown-item dropdown-toggle" href="#" id="switchSchoolsDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Switch Schools</a>
+<a class="dropdown-item dropdown-toggle" href="#" id="switchSchoolsDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Switch schools</a>
 <div class="dropdown-menu" aria-labelledby="switchSchoolsDropDown">
-  <% current_user.cluster_schools.visible.each do |school| %>
+  <% current_user.cluster_schools_for_switching.each do |school| %>
     <%= link_to school.name, school_switcher_path(school_id: school.id), method: :post, class: 'dropdown-item' %>
   <% end %>
 </div>

@@ -99,6 +99,14 @@ class User < ApplicationRecord
     staff_role.as_symbol
   end
 
+  def cluster_schools_for_switching
+    cluster_schools.visible.except(school)
+  end
+
+  def add_cluster_school(school)
+    cluster_schools << school unless cluster_schools.include?(school)
+  end
+
   def self.new_pupil(school, attributes)
     new(
       attributes.merge(

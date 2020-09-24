@@ -48,6 +48,7 @@ class Ability
           onboarding.created_user.blank? || (onboarding.created_user == user)
         end
         can :read, [:my_school_menu, :school_downloads]
+        can :switch, School
       end
       can [
         :update, :manage_school_times, :suggest_activity, :manage_users,
