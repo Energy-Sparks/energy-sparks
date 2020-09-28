@@ -19,7 +19,7 @@
     <% Meter::CREATABLE_METER_TYPES.each do |meter_type| %>
       <div class="form-check">
         <%= form.radio_button :meter_type, meter_type, class: "form-check-input" %>
-        <%= form.label "meter_type_#{meter_type.to_sym}", meter_type.to_sym.capitalize,  class: "form-check-label col-form-label-sm" %>
+        <%= form.label "meter_type_#{meter_type.to_sym}", meter_type.to_s.humanize,  class: "form-check-label col-form-label-sm" %>
       </div>
     <% end %>
   </div>
