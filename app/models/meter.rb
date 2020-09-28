@@ -36,7 +36,7 @@ class Meter < ApplicationRecord
 
   has_many :meter_attributes
 
-  CREATABLE_METER_TYPES = [:electricity, :gas].freeze
+  CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
 
   scope :active,   -> { where(active: true) }
