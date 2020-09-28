@@ -1,0 +1,14 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>Your account details</h1>
+
+    <p><%= @school_onboarding.school_name %> will have an administrator login to manage your school on Energy Sparks.</p>
+    <p>You are currently logged in as <strong><%= current_user.email %></strong></p>
+    <p>Do you want to use this user to manage the new school?</p>
+
+    <%= simple_form_for(current_user, url: onboarding_clustering_path(@school_onboarding), method: :post) do |f| %>
+      <%= f.button :submit, 'Yes, use this account' %>
+      <%= link_to "No, I'll use a different account", onboarding_sessions_path(@school_onboarding), method: :delete, class: 'btn' %>
+    <% end %>
+  </div>
+</div>

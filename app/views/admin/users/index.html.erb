@@ -2,13 +2,13 @@
 
 <%= link_to 'New User', new_admin_user_path, class: 'btn btn-primary' %>
 
-<% @school_users.each do |school_group, _users| %>
+<% @school_users.keys.each do |school_group| %>
   <p>See users for <%= link_to school_group.name, "##{school_group.name.parameterize}" %></p>
 <% end %>
 <p>See <%= link_to 'school group users', "#school_group_users" %></p>
 <p>See users  <%= link_to 'without a school', "#no_school_users" %></p>
 
-<% @school_users.each do |school_group, users| %>
+<% @school_users.each do |school_group, schools| %>
   <div class="nav-anchor">
     <a name="<%= school_group.name.parameterize %>"> </a>
     <h2><%= school_group.name %></h2>
@@ -27,21 +27,23 @@
       </tr>
     </thead>
     <tbody>
-      <% users.each do |user| %>
-        <tr>
-          <td><%= link_to user.school.name, school_path(user.school) %></td>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.role.titleize %></td>
-          <td><%= display_last_signed_in_as(user) %></td>
-          <td><%= user.access_locked? ? 'Y' : '' %></td>
-          <td>
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
-              <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-            </div>
-          </td>
-        </tr>
+      <% schools.each do |school, users| %>
+        <% users.each do |user| %>
+          <tr>
+            <td><%= link_to school.name, school_path(school) %></td>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.role.titleize %></td>
+            <td><%= display_last_signed_in_as(user) %></td>
+            <td><%= user.access_locked? ? 'Y' : '' %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
+                <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>

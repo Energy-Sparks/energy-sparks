@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @school_users = @users.joins(school: :school_group).order('school_groups.name', 'schools.name', :email).group_by {|user| user.school.school_group}
+      @school_users = school_users
       @school_group_users = @users.where.not(school_group_id: nil).order('school_groups.name', :email).includes(:school_group)
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
     end
@@ -44,12 +44,23 @@ module Admin
 
     def user_params
       params[:user].delete(:password) if params[:user][:password].blank?
-      params.require(:user).permit(:name, :email, :password, :role, :school_id, :school_group_id, :staff_role_id)
+      params.require(:user).permit(:name, :email, :password, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
     end
 
     def set_schools_options
       @schools = School.order(:name)
       @school_groups = SchoolGroup.order(:name)
+    end
+
+    def school_users
+      users = {}
+      SchoolGroup.all.order(:name).each do |school_group|
+        users[school_group] = {}
+        school_group.schools.order(:name).each do |school|
+          users[school_group][school] = (school.users + school.cluster_users).uniq.sort_by(&:email)
+        end
+      end
+      users
     end
   end
 end

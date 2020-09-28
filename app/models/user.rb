@@ -57,11 +57,13 @@ class User < ApplicationRecord
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
+  has_and_belongs_to_many :cluster_schools, class_name: "School", join_table: :cluster_schools_users
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
-  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin, :analytics]
+  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer]
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
@@ -95,6 +97,14 @@ class User < ApplicationRecord
   def staff_role_as_symbol
     return nil unless staff_role
     staff_role.as_symbol
+  end
+
+  def cluster_schools_for_switching
+    cluster_schools.visible.excluding(school)
+  end
+
+  def add_cluster_school(school)
+    cluster_schools << school unless cluster_schools.include?(school)
   end
 
   def self.new_pupil(school, attributes)
