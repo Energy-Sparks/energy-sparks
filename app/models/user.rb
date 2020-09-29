@@ -65,7 +65,7 @@ class User < ApplicationRecord
 
   enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer]
 
-  scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
+  scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
   validates :email, presence: true
 
