@@ -154,7 +154,7 @@ protected
 
   def update_contact
     if contact
-      contact.popualate_from_user(self)
+      contact.populate_from_user(self)
       contact.save
     end
   end
