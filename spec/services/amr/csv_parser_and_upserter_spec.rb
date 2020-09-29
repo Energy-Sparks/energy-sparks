@@ -67,6 +67,19 @@ module Amr
       )
     }
 
+    let!(:solar_for_schools_config) { create(:amr_data_feed_config,
+        description: 'Solar for Schools',
+        date_format: '%-d %m %Y',
+        mpan_mprn_field: 'MPAN',
+        reading_date_field: 'date',
+        reading_fields: '12:00 AM,12:30 AM,1:00 AM,1:30 AM,2:00 AM,2:30 AM,3:00 AM,3:30 AM,4:00 AM,4:30 AM,5:00 AM,5:30 AM,6:00 AM,6:30 AM,7:00 AM,7:30 AM,8:00 AM,8:30 AM,9:00 AM,9:30 AM,10:00 AM,10:30 AM,11:00 AM,11:30 AM,12:00 PM,12:30 PM,1:00 PM,1:30 PM,2:00 PM,2:30 PM,3:00 PM,3:30 PM,4:00 PM,4:30 PM,5:00 PM,5:30 PM,6:00 PM,6:30 PM,7:00 PM,7:30 PM,8:00 PM,8:30 PM,9:00 PM,9:30 PM,10:00 PM,10:30 PM,11:00 PM,11:30 PM'.split(','),
+        header_example: 'id,name,date,type,MPAN,12:00 AM,12:30 AM,1:00 AM,1:30 AM,2:00 AM,2:30 AM,3:00 AM,3:30 AM,4:00 AM,4:30 AM,5:00 AM,5:30 AM,6:00 AM,6:30 AM,7:00 AM,7:30 AM,8:00 AM,8:30 AM,9:00 AM,9:30 AM,10:00 AM,10:30 AM,11:00 AM,11:30 AM,12:00 PM,12:30 PM,1:00 PM,1:30 PM,2:00 PM,2:30 PM,3:00 PM,3:30 PM,4:00 PM,4:30 PM,5:00 PM,5:30 PM,6:00 PM,6:30 PM,7:00 PM,7:30 PM,8:00 PM,8:30 PM,9:00 PM,9:30 PM,10:00 PM,10:30 PM,11:00 PM,11:30 PM',
+        number_of_header_rows: 1,
+        meter_description_field: 'name',
+        identifier: 'solar_for_schools'
+      )
+    }
+
 
 
 
@@ -103,7 +116,6 @@ module Amr
 
     def write_file_and_parse(csv, config, import_file_name = file_name)
       file = File.write("#{config.local_bucket_path}/#{import_file_name}", csv)
-
       importer = CsvParserAndUpserter.new(config, import_file_name)
       importer.perform
       importer.inserted_record_count
@@ -416,6 +428,21 @@ module Amr
         expect(AmrDataFeedReading.count).to be 2
         expect(AmrDataFeedImportLog.count).to be 1
         expect(AmrReadingWarning.count).to be 1
+      end
+    end
+
+    context 'solar for schools' do
+
+      def solar_for_schools_with_header
+        <<~HEREDOC
+          id,name,date,type,MPAN,12:00 AM,12:30 AM,1:00 AM,1:30 AM,2:00 AM,2:30 AM,3:00 AM,3:30 AM,4:00 AM,4:30 AM,5:00 AM,5:30 AM,6:00 AM,6:30 AM,7:00 AM,7:30 AM,8:00 AM,8:30 AM,9:00 AM,9:30 AM,10:00 AM,10:30 AM,11:00 AM,11:30 AM,12:00 PM,12:30 PM,1:00 PM,1:30 PM,2:00 PM,2:30 PM,3:00 PM,3:30 PM,4:00 PM,4:30 PM,5:00 PM,5:30 PM,6:00 PM,6:30 PM,7:00 PM,7:30 PM,8:00 PM,8:30 PM,9:00 PM,9:30 PM,10:00 PM,10:30 PM,11:00 PM,11:30 PM
+          225,Kingfisher Hall Primary Academy,12 11 2016,C,91030083649169,5.616,6.696,6.66,6.276,6.408,6.732,6.444,6.048,6.24,5.952,6.132,6.384,5.568,6.564,6.876,6.816,7.008,9.144,17.16,16.596,17.916,17.172,13.296,14.28,13.704,10.14,6.348,5.412,6.408,6.768,6.588,6.132,6.864,5.952,5.964,6.132,5.94,6.048,6.66,6.36,6.852,6.696,6.576,5.904,6.444,6.804,6.168,6.264
+        HEREDOC
+      end
+
+      it 'should parse a simple file with a header' do
+        FileUtils.mkdir_p solar_for_schools_config.local_bucket_path
+        write_file_and_expect_readings(solar_for_schools_with_header, solar_for_schools_config, "5.616")
       end
     end
   end
