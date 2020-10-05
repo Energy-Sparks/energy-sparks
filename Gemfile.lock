@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: a11404e4248afa67e185a8e003e3effb27969ce9
-  ref: a11404e4248afa67e185a8e003e3effb27969ce9
+  revision: 0cfab84aa03199d0c8eb1c20a2e433ab4f01acf2
+  ref: 0cfab84aa03199d0c8eb1c20a2e433ab4f01acf2
   branch: solar-for-schools-short-term-fix
   specs:
     energy-sparks_analytics (1.2.1)

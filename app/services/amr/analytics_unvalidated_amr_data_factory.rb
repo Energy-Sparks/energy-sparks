@@ -14,26 +14,12 @@ module Amr
       end
 
       meters[:electricity_meters] = @electricity_meters.map do |active_record_meter|
-        meter_data = build_meter_data(active_record_meter)
-
-        # does meter have related sub meters?
-        if active_record_meter.low_carbon_hub_installation.present?
-          meter_data[:sub_meters] = build_sub_meters(active_record_meter)
-        end
-
-        meter_data
+        build_meter_data(active_record_meter)
       end
       meters
     end
 
   private
-
-    def build_sub_meters(active_record_meter)
-      active_record_sub_meters = active_record_meter.low_carbon_hub_installation.meters.sub_meter
-      active_record_sub_meters.map do |active_record_sub_meter|
-        build_meter_data(active_record_sub_meter)
-      end
-    end
 
     def build_meter_data(active_record_meter)
       hash_of_date_formats = AmrDataFeedConfig.pluck(:id, :date_format).to_h
