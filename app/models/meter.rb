@@ -36,7 +36,7 @@ class Meter < ApplicationRecord
 
   has_many :meter_attributes
 
-  CREATABLE_METER_TYPES = [:electricity, :gas].freeze
+  CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
 
   scope :active,   -> { where(active: true) }
@@ -54,8 +54,8 @@ class Meter < ApplicationRecord
   validates_presence_of :school, :mpan_mprn, :meter_type
   validates_uniqueness_of :mpan_mprn
 
-  validates_format_of :mpan_mprn, with: /\A[1-3]\d{12}\Z/, if: :traditional_mpan?, message: 'for electricity meters should be a 13 digit number'
-  validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo_mpan?, message: 'for electricity meters should be a 13 digit number'
+  validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo?, message: 'for pseudo electricity meters should be a 14 digit number starting with 6, 7 or 9'
+  validates_format_of :mpan_mprn, with: /\A[6,7,9]?[1-3]\d{12}\Z/, if: :real_electric?, message: 'for electricity meters should be a 13 or 14 digit number starting with 1-3, 6, 7 or 9'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
   def self.hash_of_meter_data
@@ -113,7 +113,7 @@ class Meter < ApplicationRecord
 
   def correct_mpan_check_digit?
     return true if gas? || pseudo
-    mpan = mpan_mprn.to_s
+    mpan = mpan_mprn.to_s.last(13)
     primes = [3, 5, 7, 13, 17, 19, 23, 29, 31, 37, 41, 43]
     expected_check = (0..11).inject(0) { |sum, n| sum + (mpan[n, 1].to_i * primes[n]) } % 11 % 10
     expected_check.to_s == mpan.last
@@ -121,11 +121,7 @@ class Meter < ApplicationRecord
 
   private
 
-  def traditional_mpan?
-    electricity? && ! pseudo
-  end
-
-  def pseudo_mpan?
-    electricity? && pseudo
+  def real_electric?
+    !gas? && !pseudo?
   end
 end

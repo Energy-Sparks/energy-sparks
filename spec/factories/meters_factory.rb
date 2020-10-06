@@ -97,7 +97,7 @@ FactoryBot.define do
 
   factory :exported_solar_pv_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| "60#{sprintf('%011d', n)}" }
+    sequence(:mpan_mprn)  { |n| "61#{sprintf('%012d', n)}" }
     meter_type            { :exported_solar_pv }
     active                { true }
 
@@ -115,8 +115,29 @@ FactoryBot.define do
           create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
         end
       end
-
     end
+  end
 
+  factory :solar_pv_meter, class: 'Meter' do
+    school
+    sequence(:mpan_mprn)  { |n| "61#{sprintf('%012d', n)}" }
+    meter_type            { :solar_pv }
+    active                { true }
+
+    trait :with_unvalidated_readings do
+      transient do
+        reading_count { 1 }
+        config        { create(:amr_data_feed_config) }
+        end_date      { Date.parse('01/06/2019') }
+        start_date    { end_date - (reading_count - 1).days }
+        log           { create(:amr_data_feed_import_log, amr_data_feed_config: config) }
+      end
+
+      after(:create) do |meter, evaluator|
+        (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
+          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
+        end
+      end
+    end
   end
 end
