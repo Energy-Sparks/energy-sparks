@@ -22,8 +22,10 @@ $(document).ready(function() {
   $("body").on("change", ".user-update", function(ev) {
     $(this.form).submit();
   });
-  $("body").on("change", "#user_role", function(ev) {
+  if ($("#user_role").length) {
+    $("body").on("change", "#user_role", function(ev) {
+      setupSchoolGroupAndClusterControls();
+    });
     setupSchoolGroupAndClusterControls();
-  });
-  setupSchoolGroupAndClusterControls();
+  }
 });
