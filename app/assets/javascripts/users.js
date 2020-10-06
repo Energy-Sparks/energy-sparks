@@ -3,18 +3,21 @@
 function setupSchoolGroupAndClusterControls() {
   $(".user_school_group_id").hide();
   $(".user_cluster_schools").hide();
-  $(".user_staff_role_id").hide();
-  switch($("#user_role option:selected").val()) {
-    case 'staff':
-      $(".user_staff_role_id").show();
-      break;
-    case 'school_admin':
-      $(".user_staff_role_id").show();
-      $(".user_cluster_schools").show();
-      break;
-    case 'group_admin':
-      $(".user_school_group_id").show();
-      break;
+  var role = $("#user_role option:selected").val();
+  if (role) {
+    $(".user_staff_role_id").hide();
+    switch(role) {
+      case 'staff':
+        $(".user_staff_role_id").show();
+        break;
+      case 'school_admin':
+        $(".user_staff_role_id").show();
+        $(".user_cluster_schools").show();
+        break;
+      case 'group_admin':
+        $(".user_school_group_id").show();
+        break;
+    }
   }
 }
 
