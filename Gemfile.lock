@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e58dd8e0ca82f3d3302e51373a68aa506e675eab
-  tag: 1.2.1
+  revision: e93e804891a5f6673182a10f461ae63542e44f46
+  tag: 1.2.2
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -586,7 +586,7 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    write_xlsx (0.85.7)
+    write_xlsx (0.85.9)
       rubyzip (>= 1.0.0)
       zip-zip
     xpath (3.2.0)

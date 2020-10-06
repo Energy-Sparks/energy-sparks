@@ -39,7 +39,7 @@ class Contact < ApplicationRecord
     "#{name} #{description}"
   end
 
-  def popualate_from_user(user)
+  def populate_from_user(user)
     self.user = user
     self.name = user.display_name
     self.email_address = user.email

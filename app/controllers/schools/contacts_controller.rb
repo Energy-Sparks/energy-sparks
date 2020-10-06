@@ -12,7 +12,7 @@ class Schools::ContactsController < ApplicationController
     if params[:user_id]
       user = @school.users.alertable.find(params[:user_id])
       authorize! :enable_alerts, user
-      @contact.popualate_from_user(user)
+      @contact.populate_from_user(user)
     end
   end
 
