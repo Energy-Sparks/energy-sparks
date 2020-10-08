@@ -13,7 +13,7 @@ module Pupils
     end
 
     def show
-      @chart_type = get_chart_config
+      @charts = get_chart_config
     end
 
     private
@@ -26,9 +26,8 @@ module Pupils
       sub_pages = [energy, presentation, secondary_presentation].compact
 
       charts = @school.configuration.get_charts(:pupil_analysis_charts, :pupil_analysis_page, *sub_pages)
-      chart = charts.first
-      raise ActionController::RoutingError.new("Chart for :pupil_analysis_page #{sub_pages.join(' ')} not found") unless chart
-      chart
+      raise ActionController::RoutingError.new("Charts for :pupil_analysis_page #{sub_pages.join(' ')} not found") if charts.empty?
+      charts
     end
   end
 end

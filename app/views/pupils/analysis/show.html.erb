@@ -1,4 +1,5 @@
-<div id="chart_wrapper_<%= @chart_type %>" class="pt-3 chart-wrapper">
+<div>
+
   <div class="d-flex justify-content-between align-items-center">
     <div>
       <%= link_to 'Back', request.referer.present? ? request.referer : pupils_school_analysis_path(@school), class: 'btn btn-rounded mr-5' %>
@@ -9,7 +10,22 @@
     </div>
     <div></div>
   </div>
+
   <hr />
-  <%= render 'shared/analysis_controls' %>
-  <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false) %>
+
+  <% @charts.each_with_index do |chart, index| %>
+    <% unless index == 0 %>
+      <hr class="analysis"/>
+    <% end %>
+    <div id="chart_wrapper_<%= chart %>" class="chart-wrapper">
+      <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
+      <div class="advice-header"></div>
+
+      <%= render 'shared/analysis_controls' %>
+      <%= chart_tag(@school, chart.to_s, show_advice: true, no_zoom: true, wrap: false) %>
+
+      <div class="advice-footer"></div>
+    </div>
+  <% end %>
+
 </div>

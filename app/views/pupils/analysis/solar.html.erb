@@ -31,6 +31,10 @@
     compare the electricity used on two different days
   <% end %>
 
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'SolarComparison'} do %>
+    compare the solar power on two different weeks
+  <% end %>
+
 </div>
 
 <h2>I want to look at&hellip;</h2>
