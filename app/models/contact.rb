@@ -32,11 +32,10 @@ class Contact < ApplicationRecord
 
   validates :mobile_phone_number, presence: true, unless: ->(contact) { contact.email_address.present? }
   validates :email_address,       presence: true, unless: ->(contact) { contact.mobile_phone_number.present? }
-  validates :description,         presence: true, unless: ->(contact) { contact.name.present? }
-  validates :name,                presence: true, unless: ->(contact) { contact.description.present? }
+  validates :name,                presence: true
 
   def display_name
-    "#{name} #{description}"
+    name
   end
 
   def populate_from_user(user)
