@@ -8,11 +8,11 @@ FactoryBot.define do
     end
 
     trait :with_email_address do
-      email_address { "#{SecureRandom.hex(10)}@liverpool.uk" }
+      email_address { "#{SecureRandom.alphanumeric}@liverpool.uk" }
     end
 
     trait :with_mobile_phone do
-      mobile_phone_number { SecureRandom.random_number }
+      mobile_phone_number { SecureRandom.random_number(999999999) }
     end
 
     factory :contact_with_name_email,         traits: [:with_name, :with_email_address]
