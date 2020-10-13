@@ -2,12 +2,12 @@
 
 <% if @contact.user == current_user %>
   <h2>
-    Sign up for email or text alerts
+    Update contact details for email or text alerts
   </h2>
   <%= render 'shared/contact_explainer' %>
 <% else %>
   <h2>
-    Enable alerts <%= "for #{@contact.user.name}" if @contact.user %>
+    Update contact details <%= "for #{@contact.user.name}" if @contact.user %>
   </h2>
 <% end %>
 
