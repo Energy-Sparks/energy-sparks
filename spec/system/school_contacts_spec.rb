@@ -77,7 +77,7 @@ RSpec.describe "school", type: :system do
 
     it 'lets me sign up for alerts' do
 
-      expect(teacher.contact).to be_nil
+      expect(teacher.contact_for_school).to be_nil
       visit school_path(school)
 
       click_on('My alerts')
@@ -86,14 +86,14 @@ RSpec.describe "school", type: :system do
       click_button 'Enable alerts'
 
       teacher.reload
-      expect(teacher.contact).to_not be_nil
+      expect(teacher.contact_for_school).to_not be_nil
 
       click_on 'My alerts'
 
       click_on 'Disable alerts'
 
       teacher.reload
-      expect(teacher.contact).to be_nil
+      expect(teacher.contact_for_school).to be_nil
 
     end
   end

@@ -5,7 +5,7 @@ class Schools::ContactsController < ApplicationController
   def index
     @standalone_contacts = @contacts.where(user_id: nil)
     @account_contacts = @contacts.where.not(user_id: nil)
-    @accounts_without_contacts = @school.users.alertable.left_outer_joins(:contact).where('contacts.id IS NULL')
+    @accounts_without_contacts = @school.users.alertable.left_outer_joins(:contacts).where('contacts.id IS NULL')
   end
 
   def new

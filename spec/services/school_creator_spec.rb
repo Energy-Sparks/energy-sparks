@@ -75,6 +75,7 @@ describe SchoolCreator, :schools, type: :service do
       service.onboard_school!(school_onboarding)
       contact = school.contacts.first
       expect(contact.email_address).to eq(onboarding_user.email)
+      expect(contact.user).to eq(onboarding_user)
       expect(contact.name).to eq(onboarding_user.name)
     end
 

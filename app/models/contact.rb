@@ -30,6 +30,8 @@ class Contact < ApplicationRecord
   has_many   :alert_subscription_events
   has_many   :alert_type_rating_unsubscriptions
 
+  scope :for_school, ->(school) { where(school: school) }
+
   validates :mobile_phone_number, presence: true, unless: ->(contact) { contact.email_address.present? }
   validates :email_address,       presence: true, unless: ->(contact) { contact.mobile_phone_number.present? }
   validates :name,                presence: true
