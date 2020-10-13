@@ -68,6 +68,7 @@ private
   def create_default_contact(onboarding)
     record_events(onboarding, :alert_contact_created) do
       @school.contacts.create!(
+        user: onboarding.created_user,
         name: onboarding.created_user.name,
         email_address: onboarding.created_user.email,
         description: 'School Energy Sparks contact'
