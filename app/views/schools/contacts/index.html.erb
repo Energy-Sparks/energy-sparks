@@ -4,19 +4,10 @@
 
 <h1 property="name"><%= link_to @school.name, @school %> Alert Contacts</h1>
 
-<p>
-  Energy Sparks alerts:
-</p>
-
-<ul>
-  <li>give you warning of changes in your school's energy use</li>
-  <li>highlight long term problems with your energy consumption with focused recommendations to save energy</li>
-  <li>let you know if you are doing well compared to other schools and your past performance</li>
-</ul>
+<%= render 'shared/contact_explainer' %>
 
 <p>
-  The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone. Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
-  Use this page to manage your existing alert contacts or add new contacts.
+  The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone.
 </p>
 
 <h2>Account contacts </h2>
@@ -65,7 +56,6 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Description</th>
         <th>Role</th>
         <th>Mobile Phone Number</th>
         <th>Email Address</th>
@@ -76,7 +66,6 @@
       <% @standalone_contacts.each do |contact| %>
         <tr scope="row">
           <td><%= contact.name %></td>
-          <td><%= contact.description %></td>
           <td><%= contact.staff_role.try(:title) %></td>
           <td><%= contact.mobile_phone_number %></td>
           <td><%= contact.email_address %></td>

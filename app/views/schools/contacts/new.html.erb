@@ -1,7 +1,15 @@
 <h1><%= @school.name %></h1>
-<h2>
-  Enable alerts <%= "for #{@contact.user.name}" if @contact.user %>
-</h2>
+
+<% if @contact.user == current_user %>
+  <h2>
+    Sign up for email or text alerts
+  </h2>
+  <%= render 'shared/contact_explainer' %>
+<% else %>
+  <h2>
+    Enable alerts <%= "for #{@contact.user.name}" if @contact.user %>
+  </h2>
+<% end %>
 
 <div class="row col-md-12">
   <%= simple_form_for([@school, @contact]) do |f| %>
