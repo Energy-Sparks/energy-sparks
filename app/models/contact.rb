@@ -30,13 +30,17 @@ class Contact < ApplicationRecord
   has_many   :alert_subscription_events
   has_many   :alert_type_rating_unsubscriptions
 
+  scope :for_school, ->(school) { where(school: school) }
+
   validates :mobile_phone_number, presence: true, unless: ->(contact) { contact.email_address.present? }
   validates :email_address,       presence: true, unless: ->(contact) { contact.mobile_phone_number.present? }
-  validates :description,         presence: true, unless: ->(contact) { contact.name.present? }
-  validates :name,                presence: true, unless: ->(contact) { contact.description.present? }
+  validates :name,                presence: true
+
+  validates_uniqueness_of :email_address, scope: :school_id, unless: ->(contact) { contact.email_address.blank? }
+  validates_uniqueness_of :mobile_phone_number, scope: :school_id, unless: ->(contact) { contact.mobile_phone_number.blank? }
 
   def display_name
-    "#{name} #{description}"
+    name
   end
 
   def populate_from_user(user)

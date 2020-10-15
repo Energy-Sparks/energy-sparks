@@ -1,10 +1,6 @@
-<% if f.object.user.nil? %>
-  <p>Please enter either a name, e.g. Joe Bloggs or a description, e.g. Caretaker</p>
-<% end %>
 
 <%= f.input :user_id, as: :hidden %>
 <%= f.input :name, as: :string, readonly: f.object.user.present? %>
-<%= f.input :description %>
 
 
 <% if f.object.user.nil? %>

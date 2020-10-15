@@ -19,7 +19,7 @@ RSpec.describe "school", type: :system do
 
     describe 'no contacts' do
 
-       it 'allows me to add a new one' do
+      it 'allows me to add a new one' do
         visit school_contacts_path(school)
 
         click_on('Enable alerts for an email or phone number')
@@ -30,7 +30,7 @@ RSpec.describe "school", type: :system do
         expect(page).to have_content 'Alerts enabled for Arthur Boggitt'
       end
 
-       it 'allows me to add a contact for an existing user' do
+      it 'allows me to add a contact for an existing user' do
         visit school_contacts_path(school)
 
         select teacher.name, from: 'Enable alerts for:'
@@ -44,6 +44,41 @@ RSpec.describe "school", type: :system do
         expect(contact.email_address).to eq(teacher.email)
         expect(contact.name).to eq(teacher.name)
       end
+    end
+
+    describe 'multiple contacts' do
+
+      let!(:contact) { create(:contact_with_name_email, user: school_admin, school: school) }
+      let!(:other_school)   { create(:school, :with_school_group, name: 'School Two')}
+
+      it 'lets me sign up for alerts for correct school' do
+
+        expect(school_admin.contact_for_school).to eq(contact)
+
+        school_admin.update(school: other_school)
+        expect(school_admin.contact_for_school).to be_nil
+
+        visit school_path(other_school)
+
+        click_on('My alerts')
+
+        expect(find_field('Email address').value).to eq school_admin.email
+        click_button 'Enable alerts'
+
+        school_admin.reload
+        expect(school_admin.contact_for_school).to_not be_nil
+
+        click_on 'My alerts'
+
+        click_on 'Disable alerts'
+
+        school_admin.reload
+        expect(school_admin.contact_for_school).to be_nil
+
+        expect(school_admin.contacts.for_school(school).first).to eq(contact)
+
+      end
+
     end
   end
 
@@ -77,7 +112,7 @@ RSpec.describe "school", type: :system do
 
     it 'lets me sign up for alerts' do
 
-      expect(teacher.contact).to be_nil
+      expect(teacher.contact_for_school).to be_nil
       visit school_path(school)
 
       click_on('My alerts')
@@ -86,14 +121,14 @@ RSpec.describe "school", type: :system do
       click_button 'Enable alerts'
 
       teacher.reload
-      expect(teacher.contact).to_not be_nil
+      expect(teacher.contact_for_school).to_not be_nil
 
       click_on 'My alerts'
 
       click_on 'Disable alerts'
 
       teacher.reload
-      expect(teacher.contact).to be_nil
+      expect(teacher.contact_for_school).to be_nil
 
     end
   end
