@@ -53,7 +53,7 @@ class User < ApplicationRecord
   belongs_to :school, optional: true
   belongs_to :staff_role, optional: true
   belongs_to :school_group, optional: true
-  has_one :contact
+  has_many :contacts
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
@@ -146,6 +146,10 @@ class User < ApplicationRecord
     )
   end
 
+  def contact_for_school
+    contacts.for_school(school).first
+  end
+
 protected
 
   def password_required?
@@ -153,7 +157,7 @@ protected
   end
 
   def update_contact
-    if contact
+    if (contact = contact_for_school)
       contact.populate_from_user(self)
       contact.save
     end
