@@ -6,7 +6,7 @@
       <div class="card-deck">
         <% group.each do |activity_type| %>
           <% if activity_type %>
-            <%= render 'activity_types/card', activity_type: activity_type %>
+            <%= render 'activity_types/card', activity_type: activity_type, school: @school %>
           <% end %>
         <% end %>
       </div>
