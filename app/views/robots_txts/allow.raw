@@ -7,3 +7,6 @@
 Sitemap: https://energysparks.uk/sitemap.xml.gz
 
 Disallow: /admin/
+
+User-agent: SemrushBot
+Disallow: /
