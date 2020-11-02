@@ -2,16 +2,16 @@
 
   <% if local_assigns[:based_on] %>
     <div class="card-header">
-      <span class="small">Based on <%= local_assigns[:based_on] %></span>
+      <span class="small">Based on <%= based_on %></span>
     </div>
   <% end %>
 
   <div class="card-body">
-    <%= link_to activity_type_path(activity_type) do %>
-    <%= "#{activity_type.name} (#{activity_type.key_stage_list})" %>
+    <%= link_to school_activity_type_path(school, activity_type) do %>
+      <%= "#{activity_type.name} (#{activity_type.key_stage_list})" %>
     <% end %>
-
   </div>
+
   <div class="card-footer">
     <span class="btn rounded-pill">
       <strong class="text-uppercase">

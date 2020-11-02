@@ -39,7 +39,7 @@
     <% unless @activity_types.empty? %>
       <h2>Activities which will help</h2>
       <% @activity_types.each do |activity_type| %>
-        <%= render 'activity_types/card', activity_type: activity_type %>
+        <%= render 'activity_types/card', activity_type: activity_type, school: @school %>
       <% end %>
     <% end %>
   </div>
