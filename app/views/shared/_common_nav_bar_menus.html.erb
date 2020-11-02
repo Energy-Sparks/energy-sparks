@@ -17,7 +17,11 @@
 <% end %>
 
 <li class="nav-item">
-  <%= link_to "Activities", activity_categories_path, class: 'nav-link' %>
+  <% if current_user && current_user.school %>
+    <%= link_to "Activities", school_activity_categories_path(current_user.school), class: 'nav-link' %>
+  <% else %>
+    <%= link_to "Activities", activity_categories_path, class: 'nav-link' %>
+  <% end %>
 </li>
 
 <%= render 'shared/about_menu' %>
