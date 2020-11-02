@@ -11,7 +11,10 @@
       </div>
     </div>
     <div class="col-md-12">
-      <p>See how well each of our <%= @scoreboard.name%> Energy Sparks schools are recording their energy saving <%= link_to 'activities', activity_categories_path %>! Scoreboard points are earned from recording <%= link_to 'activities', activity_categories_path %> investigating energy use, learning about energy and taking energy saving action around their school.</p>
+      <p>
+        See how well each of our <%= @scoreboard.name%> Energy Sparks schools are recording their energy saving <%= link_to 'activities', activity_categories_path_url(current_user&.school) %>!
+        Scoreboard points are earned from recording <%= link_to 'activities', activity_categories_path_url(current_user&.school) %> investigating energy use, learning about energy and taking energy saving action around their school.
+      </p>
     </div>
   </div>
 
