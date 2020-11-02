@@ -17,9 +17,15 @@
 <% end %>
 
 <li class="nav-item">
-  <a href="http://blog.energysparks.uk" class="nav-link" target="_blank">Blog</a>
+  <% if current_user && current_user.school %>
+    <%= link_to "Activities", school_activity_categories_path(current_user.school), class: 'nav-link' %>
+  <% else %>
+    <%= link_to "Activities", activity_categories_path, class: 'nav-link' %>
+  <% end %>
 </li>
+
 <%= render 'shared/about_menu' %>
+
 <li class="nav-item">
   <%= link_to "Contact", contact_path, class: 'nav-link' %>
 </li>
