@@ -3,5 +3,5 @@
   <%= f.input :description %>
   <%= f.input :latitude %>
   <%= f.input :longitude %>
-  <%= f.submit class: 'btn btn-primary' %>
+  <%= f.submit class: 'btn btn-primary', data: {confirm: 'Modifying latitude or longitude will reset data for this area - are you sure?'} %>
 <% end %>

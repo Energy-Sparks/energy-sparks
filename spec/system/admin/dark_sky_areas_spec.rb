@@ -118,6 +118,44 @@ RSpec.describe 'Dark sky areas', type: :system do
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
       end
+
+      it 'deletes old temperature readings if lat/long changed' do
+
+        DataFeeds::DarkSkyTemperatureReading.create!(
+          reading_date: '2020-03-25',
+          temperature_celsius_x48: 48.times.map{rand(40.0)},
+          area_id: area.id
+        )
+
+        expect(area.dark_sky_temperature_readings.count).to eq(1)
+
+        click_on 'Edit'
+
+        new_title = 'New title for this area'
+        new_latitude = 111.111
+        new_longitude = 999.999
+
+        fill_in 'Title', with: new_title
+
+        click_on 'Update'
+
+        expect(page).to have_content("Dark Sky Area was updated")
+        expect(page).to have_content new_title
+        expect(area.dark_sky_temperature_readings.count).to eq(1)
+
+        click_on 'Edit'
+
+        fill_in 'Latitude', with: new_latitude
+        fill_in 'Longitude', with: new_longitude
+
+        click_on 'Update'
+
+        expect(page).to have_content("Dark Sky Area was updated")
+        expect(page).to have_content new_latitude
+        expect(page).to have_content new_longitude
+        expect(area.dark_sky_temperature_readings.count).to eq(0)
+
+      end
     end
   end
 end

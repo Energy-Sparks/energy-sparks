@@ -5,10 +5,11 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Description</th>
       <th>Latitude</th>
       <th>Longitude</th>
       <th>Readings</th>
+      <th>Earliest date</th>
+      <th>Latest date</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -16,10 +17,11 @@
     <% @dark_sky_areas.each do |dark_sky_area| %>
       <tr>
         <td><%= dark_sky_area.title %></td>
-        <td><%= dark_sky_area.description %></td>
         <td><%= dark_sky_area.latitude %></td>
         <td><%= dark_sky_area.longitude %></td>
-        <td><%= dark_sky_area.dark_sky_temperature_readings.count %></td>
+        <td><%= dark_sky_area.reading_count %></td>
+        <td><%= dark_sky_area.first_reading_date %></td>
+        <td><%= dark_sky_area.last_reading_date %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_dark_sky_area_path(dark_sky_area), class: 'btn' %>
