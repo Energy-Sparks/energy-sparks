@@ -3,6 +3,7 @@
 <% if current_user && current_user.default_scoreboard %>
   <li class="nav-item"><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
 <% end %>
+
 <% if current_user && current_user.school_group %>
   <li class="nav-item">
     <%= link_to "#{current_user.school_group.name} Schools", school_group_path(current_user.school_group), class: 'nav-link' %>
