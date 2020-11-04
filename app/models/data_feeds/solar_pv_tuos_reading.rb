@@ -23,10 +23,11 @@
 #
 #  fk_rails_...  (area_id => areas.id) ON DELETE => cascade
 #
-
 module DataFeeds
   class SolarPvTuosReading < ApplicationRecord
     belongs_to :solar_pv_tuos_area, foreign_key: :area_id
+
+    scope :by_date, -> { order(:reading_date) }
 
     def self.download_all_data
       <<~QUERY
