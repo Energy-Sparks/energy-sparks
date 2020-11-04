@@ -10,9 +10,9 @@
 #  type        :text             not null
 #
 class DarkSkyArea < Area
-  has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id
+  has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id, dependent: :destroy
 
-  validates_presence_of :latitude, :longitude, :title
+  validates_presence_of :latitude, :longitude, :title, :back_fill_years
 
   def reading_count
     dark_sky_temperature_readings.count

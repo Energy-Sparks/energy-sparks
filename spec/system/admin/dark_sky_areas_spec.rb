@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe 'Dark sky areas', type: :system do
   let!(:admin)                  { create(:admin) }
   let(:title)                   { 'Lights out for darker skies' }
-  let(:description)             { 'Better for badgers' }
   let(:latitude)                { 123.456 }
   let(:longitude)               { -789.012 }
+  let(:back_fill_years)         { 5 }
 
   describe 'when logged in' do
     before(:each) do
@@ -22,25 +22,24 @@ RSpec.describe 'Dark sky areas', type: :system do
       click_on 'New Dark Sky Area'
 
       fill_in 'Title', with: title
-      fill_in 'Description', with: description
       fill_in 'Latitude', with: latitude
       fill_in 'Longitude', with: longitude
+      fill_in 'Back fill years', with: back_fill_years
 
       expect { click_on 'Create' }.to change { DarkSkyArea.count }.by(1)
 
       expect(page).to have_content("New Dark Sky Area created")
       expect(page).to have_content('Dark Sky Areas')
       expect(page).to have_content title
-      expect(page).to have_content description
       expect(page).to have_content latitude
       expect(page).to have_content longitude
+      expect(page).to have_content back_fill_years
     end
 
     it 'checks for valid fields' do
       click_on 'New Dark Sky Area'
 
       fill_in 'Title', with: title
-      fill_in 'Description', with: description
       fill_in 'Latitude', with: latitude
 
       expect { click_on 'Create' }.to change { DarkSkyArea.count }.by(0)
@@ -52,14 +51,13 @@ RSpec.describe 'Dark sky areas', type: :system do
 
       expect(page).to have_content('Dark Sky Areas')
       expect(page).to have_content title
-      expect(page).to have_content description
       expect(page).to have_content latitude
       expect(page).to have_content longitude
     end
 
     context 'with an existing dark sky area' do
 
-      let!(:area) { DarkSkyArea.create!(title: title, description: description, latitude: latitude, longitude: longitude) }
+      let!(:area) { DarkSkyArea.create!(title: title, latitude: latitude, longitude: longitude) }
 
       before(:each) do
         click_on 'Manage'
@@ -69,7 +67,6 @@ RSpec.describe 'Dark sky areas', type: :system do
         expect(DarkSkyArea.count).to be 1
         expect(page).to have_content('Dark Sky Areas')
         expect(page).to have_content title
-        expect(page).to have_content description
         expect(page).to have_content latitude
         expect(page).to have_content longitude
       end
@@ -80,8 +77,10 @@ RSpec.describe 'Dark sky areas', type: :system do
 
         new_latitude = 111.111
         new_longitude = 999.999
+        new_back_fill_years = 5
         fill_in 'Latitude', with: new_latitude
         fill_in 'Longitude', with: new_longitude
+        fill_in 'Back fill years', with: new_back_fill_years
 
         click_on 'Update'
 
@@ -89,9 +88,9 @@ RSpec.describe 'Dark sky areas', type: :system do
 
         expect(page).to have_content('Dark Sky Areas')
         expect(page).to have_content title
-        expect(page).to have_content description
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
+        expect(page).to have_content new_back_fill_years
       end
 
       it 'checks for valid fields on update' do
@@ -114,7 +113,6 @@ RSpec.describe 'Dark sky areas', type: :system do
 
         expect(page).to have_content('Dark Sky Areas')
         expect(page).to have_content title
-        expect(page).to have_content description
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
       end

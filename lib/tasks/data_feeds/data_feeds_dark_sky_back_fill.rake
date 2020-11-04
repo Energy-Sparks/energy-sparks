@@ -3,12 +3,14 @@ namespace :data_feeds do
   task dark_sky_back_fill: :environment do
 
     MINIMUM_READINGS_PER_YEAR = 365
-    BACK_FILL_YEARS = 4
 
     DarkSkyArea.all.each do |dark_sky_area|
-      next if dark_sky_area.dark_sky_temperature_readings.count > MINIMUM_READINGS_PER_YEAR * BACK_FILL_YEARS
 
-      BACK_FILL_YEARS.times.each do |year_number|
+      back_fill_years = dark_sky_area.back_fill_years
+
+      next if dark_sky_area.dark_sky_temperature_readings.count > MINIMUM_READINGS_PER_YEAR * back_fill_years
+
+      back_fill_years.times.each do |year_number|
         # End date
         # Year 0 - Date Today
         # Year 1 - Date Today - 1 year

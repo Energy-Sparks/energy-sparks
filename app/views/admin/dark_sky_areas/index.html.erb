@@ -10,6 +10,7 @@
       <th>Readings</th>
       <th>Earliest date</th>
       <th>Latest date</th>
+      <th>Back fill years</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         <td><%= dark_sky_area.reading_count %></td>
         <td><%= dark_sky_area.first_reading_date %></td>
         <td><%= dark_sky_area.last_reading_date %></td>
+        <td><%= dark_sky_area.back_fill_years %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_dark_sky_area_path(dark_sky_area), class: 'btn' %>

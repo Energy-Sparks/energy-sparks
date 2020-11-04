@@ -10,7 +10,7 @@ module Admin
 
     def create
       if @dark_sky_area.save
-        redirect_to admin_dark_sky_areas_path, notice: 'New Dark Sky Area created. Overnight the 4 years of data for this new area will be back filled.'
+        redirect_to admin_dark_sky_areas_path, notice: 'New Dark Sky Area created. Data will be back filled overnight.'
       else
         render :new
       end
@@ -36,7 +36,7 @@ module Admin
     end
 
     def dark_sky_area_params
-      params.require(:dark_sky_area).permit(:title, :description, :latitude, :longitude)
+      params.require(:dark_sky_area).permit(:title, :latitude, :longitude, :back_fill_years)
     end
   end
 end
