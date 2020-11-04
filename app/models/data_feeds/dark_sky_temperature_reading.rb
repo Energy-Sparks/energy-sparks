@@ -18,9 +18,12 @@
 #
 #  fk_rails_...  (area_id => areas.id) ON DELETE => cascade
 #
-
 module DataFeeds
   class DarkSkyTemperatureReading < ApplicationRecord
+    belongs_to :dark_sky_area, foreign_key: :area_id
+
+    scope :by_date, -> { order(:reading_date) }
+
     def self.download_all_data
       <<~QUERY
         SELECT a.title, dstr.reading_date, dstr.temperature_celsius_x48

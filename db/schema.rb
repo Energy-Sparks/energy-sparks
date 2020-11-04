@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_134139) do
+ActiveRecord::Schema.define(version: 2020_11_04_152506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2020_09_17_134139) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -433,6 +433,7 @@ ActiveRecord::Schema.define(version: 2020_09_17_134139) do
     t.text "description"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+    t.integer "back_fill_years", default: 4
   end
 
   create_table "benchmark_result_errors", force: :cascade do |t|
@@ -566,7 +567,7 @@ ActiveRecord::Schema.define(version: 2020_09_17_134139) do
   end
 
   create_table "dark_sky_temperature_readings", force: :cascade do |t|
-    t.bigint "area_id"
+    t.bigint "area_id", null: false
     t.date "reading_date", null: false
     t.decimal "temperature_celsius_x48", null: false, array: true
     t.datetime "created_at", null: false
@@ -955,8 +956,8 @@ ActiveRecord::Schema.define(version: 2020_09_17_134139) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "level", default: 0
     t.integer "urn", null: false
+    t.integer "level", default: 0
     t.bigint "calendar_id"
     t.string "slug"
     t.bigint "temperature_area_id"
