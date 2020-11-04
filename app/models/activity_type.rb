@@ -52,6 +52,7 @@ class ActivityType < ApplicationRecord
 
   has_rich_text :description
   has_rich_text :school_specific_description
+  has_rich_text :download_links
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')

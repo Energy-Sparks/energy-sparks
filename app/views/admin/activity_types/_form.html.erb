@@ -23,6 +23,13 @@
     <% end %>
   </div>
 
+  <div class="description-trix-editor">
+    <%= f.label 'Download links', for: :download_links %>
+    <p class="small">These download links will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
+    <%= f.rich_text_area :download_links %>
+  </div>
+
+
   <%= f.input :score, as: :string %>
 
   <%= f.input :active %>

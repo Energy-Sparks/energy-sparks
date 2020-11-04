@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="row padded-row">
-  <div class="col-md-12">
+  <div class="col-md-9">
     <h1><%= @activity_type.name %></h1>
     <h3>
       <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score for this activity"><%= @activity_type.score %></span>
@@ -11,15 +11,23 @@
       <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= @activity_type.key_stage_list %></span>
     </h3>
   </div>
+  <div class="col-md-3">
+    <img width="300" height="200" src="https://energysparks.uk/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBUQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--32ef04834a4937e3f5e562e47bc670f24a877705/ES%20illos_colour-SET%203-03.png">
+  </div>
 </div>
 
 <div class="row">
-  <div class="col-md-12 activity_type">
+  <div class="col-md-9 activity_type">
     <% if @activity_type.description %>
       <%= @activity_type.description %>
     <% else %>
       <p><em>No description given</em></p>
     <% end %>
+  </div>
+  <div class="col-md-3 activity_type">
+    <a href="https://drive.google.com/file/d/1nzpr1BmW6U7bvwCqzTgk7L94N-P_8yuA/view?usp=sharing">Download activity guide here</a>
+    <br><br>
+    <a href="https://drive.google.com/open?id=12ukxu3M0EIQTAF1ffiswlJHkWDMi0XNp">Download monitoring sheet here</a>
   </div>
 </div>
 
