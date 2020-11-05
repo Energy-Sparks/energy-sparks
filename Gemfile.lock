@@ -1,8 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: b0791c334a9cc770e4cf442c2b3048c57cfb74e3
-  ref: b0791c334a9cc770e4cf442c2b3048c57cfb74e3
-  branch: floor-area-pupil-numbers
+  revision: 9944c87094e6668f963667025b0241eaf1aae5be
+  tag: 1.4.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
