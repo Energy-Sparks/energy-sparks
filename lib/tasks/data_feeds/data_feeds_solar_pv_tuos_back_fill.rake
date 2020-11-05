@@ -3,14 +3,14 @@ namespace :data_feeds do
   task solar_pv_tuos_back_fill: :environment do
 
     MINIMUM_READINGS_PER_YEAR = 365
-    BACK_FILL_YEARS = 4
-
-    abort("API Key has not been set") unless ENV['ENERGYSPARKSDARKSKYHISTORICAPIKEY']
 
     SolarPvTuosArea.all.each do |solar_pv_tuos_area|
-      next if solar_pv_tuos_area.solar_pv_tuos_readings.count > MINIMUM_READINGS_PER_YEAR * BACK_FILL_YEARS
 
-      BACK_FILL_YEARS.times.each do |year_number|
+      back_fill_years = solar_pv_tuos_area.back_fill_years
+
+      next if solar_pv_tuos_area.solar_pv_tuos_readings.count > MINIMUM_READINGS_PER_YEAR * back_fill_years
+
+      back_fill_years.times.each do |year_number|
         # End date
         # Year 0 - Date Today
         # Year 1 - Date Today - 1 year

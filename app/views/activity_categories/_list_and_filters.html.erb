@@ -2,26 +2,24 @@
   <div class="col-lg-6">
     <h2><%= title %></h2>
     <p>Each school's energy-saving journey will evolve in a different way. But a well-designed energy-saving plan will involve a balance of activities from each of the following categories.</p>
-
     <p>Choose a category below to explore the list of recommended activities. More detail is provided about each activity to help you complete it.</p>
   </div>
   <div class="col-lg-6">
     <%= image_tag("actions/socket-plug.svg", class: "img-fluid static-images") %>
   </div>
 </div>
+
 <div class="row">
   <div class="col-lg-12">
-
     <p>Completing activities will allow you to score points.</p>
     <p>The figure in the green square is the number of points each activity is worth, 10 points for example: <span class="badge badge-success">10</span>
-
     <p>Choose a category below to explore the list of recommended activities. More detail and resources are provided for each activity to help you complete it. Activities are currently filtered by the curriculum stage of your school. You can change this if you wish to explore the activities available for older and younger pupils.</p>
   </div>
 </div>
 
 <div class="row padded-row">
   <div class="col-md-3">
-    <%= form_tag activity_categories_path, method: :get do %>
+    <%= form_tag activity_categories_path_url(@school), method: :get do %>
       <h3>Filters</h3>
       <%= submit_tag "Filter Activity Types", class: 'btn btn-info' %>
       <%= render 'activity_types/filters', filter: filter %>

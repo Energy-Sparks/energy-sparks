@@ -3,6 +3,7 @@
 <% if current_user && current_user.default_scoreboard %>
   <li class="nav-item"><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
 <% end %>
+
 <% if current_user && current_user.school_group %>
   <li class="nav-item">
     <%= link_to "#{current_user.school_group.name} Schools", school_group_path(current_user.school_group), class: 'nav-link' %>
@@ -17,9 +18,11 @@
 <% end %>
 
 <li class="nav-item">
-  <a href="http://blog.energysparks.uk" class="nav-link" target="_blank">Blog</a>
+  <%= link_to "Activities", activity_categories_path_url(current_user&.school), class: 'nav-link' %>
 </li>
+
 <%= render 'shared/about_menu' %>
+
 <li class="nav-item">
   <%= link_to "Contact", contact_path, class: 'nav-link' %>
 </li>

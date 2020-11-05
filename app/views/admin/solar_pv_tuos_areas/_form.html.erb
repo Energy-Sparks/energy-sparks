@@ -1,7 +1,7 @@
 <%= simple_form_for([:admin, solar_pv_area]) do |f| %>
   <%= f.input :title, as: :string %>
-  <%= f.input :description %>
   <%= f.input :latitude %>
   <%= f.input :longitude %>
-  <%= f.submit class: 'btn btn-primary' %>
+  <%= f.input :back_fill_years %>
+  <%= f.submit class: 'btn btn-primary', data: {confirm: 'Modifying latitude or longitude will reset data for this area - are you sure?'} %>
 <% end %>
