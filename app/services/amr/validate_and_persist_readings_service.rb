@@ -15,7 +15,6 @@ module Amr
       UpsertValidatedReadings.new(@meter_collection).perform
       @active_record_school.invalidate_cache_key
       p "ValidateAndPersistReadingsService Report for #{@active_record_school.name}"
-      @meter_collection
     end
   end
 end
