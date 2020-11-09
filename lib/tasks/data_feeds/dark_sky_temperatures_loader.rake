@@ -4,8 +4,6 @@ namespace :data_feeds do
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 1
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday
 
-    abort("API Key has not been set") unless ENV['ENERGYSPARKSDARKSKYHISTORICAPIKEY']
-
     DataFeeds::DarkSkyTemperatureLoader.new(start_date, end_date).import
   end
 end

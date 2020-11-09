@@ -11,4 +11,5 @@
 #
 
 class Area < ApplicationRecord
+  scope :by_title, -> { order(title: :asc) }
 end
