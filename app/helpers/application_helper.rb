@@ -195,7 +195,11 @@ module ApplicationHelper
     return if text.nil?
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
+           elsif text.match?(/increased/)
+             fa_icon('arrow-circle-up')
            elsif text.match?(/^\-/)
+             fa_icon('arrow-circle-down')
+           elsif text.match?(/decreased/)
              fa_icon('arrow-circle-down')
            else
              ''

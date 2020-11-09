@@ -4,14 +4,24 @@ describe ApplicationHelper do
 
   describe '.up_downify' do
 
-    it 'adds a down arrow icon for negative starts' do
+    it 'adds an up arrow icon for positive starts' do
       expect(helper.up_downify('+10%')).to include('<i')
       expect(helper.up_downify('+10%')).to include('up')
     end
 
-    it 'adds an up arrow icon for positive starts' do
+    it 'adds an up arrow icon for increased' do
+      expect(helper.up_downify('increased')).to include('<i')
+      expect(helper.up_downify('increased')).to include('up')
+    end
+
+    it 'adds a down arrow icon for negative starts' do
       expect(helper.up_downify('-10%')).to include('<i')
       expect(helper.up_downify('-10%')).to include('down')
+    end
+
+    it 'adds a down arrow icon for decreased' do
+      expect(helper.up_downify('decreased')).to include('<i')
+      expect(helper.up_downify('decreased')).to include('down')
     end
 
     it 'does not add other strings' do
