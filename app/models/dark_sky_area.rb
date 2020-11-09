@@ -18,6 +18,10 @@ class DarkSkyArea < Area
     dark_sky_temperature_readings.count
   end
 
+  def has_sufficient_readings?(latest_date, minimum_readings_per_year)
+    dark_sky_temperature_readings.since(latest_date - back_fill_years.years).count >= minimum_readings_per_year * back_fill_years
+  end
+
   def first_reading_date
     if reading_count > 0
       dark_sky_temperature_readings.by_date.first.reading_date.strftime('%d %b %Y')
