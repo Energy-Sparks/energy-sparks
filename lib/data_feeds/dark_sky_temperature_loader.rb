@@ -27,20 +27,20 @@ module DataFeeds
   private
 
     def process_area(area)
-      data = @dark_sky_api_interface.historic_temperatures(
+      distance_to_weather_station, temperature_data, percent_bad, bad_data = @dark_sky_api_interface.historic_temperatures(
         area.latitude,
         area.longitude,
         @start_date,
         @end_date
       )
-
-      # Data is returned as an array [[distance_to_weather_station, temperature_data, percent_bad, bad_data]
-      temperature_data = data[1]
-
       temperature_data.each do |reading_date, temperature_celsius_x48|
         next if temperature_celsius_x48.size != 48
         process_day(reading_date, temperature_celsius_x48, area)
       end
+    rescue => e
+      Rails.logger.error "Exception: running dark sky area import for #{area.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      Rollbar.error(e)
     end
 
     def process_day(reading_date, temperature_celsius_x48, area)
