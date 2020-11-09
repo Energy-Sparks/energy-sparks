@@ -8,7 +8,7 @@ namespace :data_feeds do
 
       back_fill_years = dark_sky_area.back_fill_years
 
-      next if dark_sky_area.dark_sky_temperature_readings.count > MINIMUM_READINGS_PER_YEAR * back_fill_years
+      next if dark_sky_area.dark_sky_temperature_readings.since(back_fill_years.years.ago).count > MINIMUM_READINGS_PER_YEAR * back_fill_years
 
       back_fill_years.times.each do |year_number|
         # End date

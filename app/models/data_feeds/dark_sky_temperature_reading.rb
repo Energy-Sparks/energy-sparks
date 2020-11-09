@@ -23,6 +23,7 @@ module DataFeeds
     belongs_to :dark_sky_area, foreign_key: :area_id
 
     scope :by_date, -> { order(:reading_date) }
+    scope :since, ->(date) { where('reading_date >= ?', date) }
 
     def self.download_all_data
       <<~QUERY
