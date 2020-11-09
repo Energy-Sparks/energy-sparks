@@ -41,7 +41,7 @@ module DataFeeds
 
     it 'handles error from api' do
       allow(dark_sky_api_interface).to receive(:historic_temperatures) do
-        raise NoMethodError, "undefined method '[]' for nil:NilClass."
+        raise NoMethodError, "raised a test error"
       end
 
       dstl = DarkSkyTemperatureLoader.new(start_date, start_date + 1.day, dark_sky_api_interface)

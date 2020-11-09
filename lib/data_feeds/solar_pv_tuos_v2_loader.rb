@@ -30,28 +30,22 @@ module DataFeeds
 
     def process_area(area)
       gsp_area = nearest_gsp_area(area)
-
-      begin
-        solar_pv_data, _missing_date_times, _whole_day_substitutes = @solar_pv_tuos_interface.historic_solar_pv_data(
-          gsp_area[:gsp_id],
-          gsp_area[:latitude],
-          gsp_area[:longitude],
-          @start_date,
-          @end_date
-        )
-      rescue => e
-        puts "Exception: running solar pv: #{e.class} #{e.message}"
-        puts e.backtrace.join("\n")
-        Rails.logger.error "Exception: running solar pv: #{e.class} #{e.message}"
-        Rails.logger.error e.backtrace.join("\n")
-        Rollbar.error(e)
-      end
-
+      solar_pv_data, _missing_date_times, _whole_day_substitutes = @solar_pv_tuos_interface.historic_solar_pv_data(
+        gsp_area[:gsp_id],
+        gsp_area[:latitude],
+        gsp_area[:longitude],
+        @start_date,
+        @end_date
+      )
       solar_pv_data.each do |reading_date, generation_mw_x48|
         next if generation_mw_x48.size != 48
         next if reading_date.nil?
         process_day(reading_date, generation_mw_x48, area, gsp_area)
       end
+    rescue => e
+      Rails.logger.error "Exception: running solar pv for #{area.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      Rollbar.error(e)
     end
 
     def process_day(reading_date, generation_mw_x48, area, gsp_area)
