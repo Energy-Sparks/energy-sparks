@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 9944c87094e6668f963667025b0241eaf1aae5be
-  tag: 1.4.0
+  revision: 253aa9b1ec104bda7214f55fd31a16fc1e1a2b98
+  tag: 1.5.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -102,7 +102,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     after_party (1.11.2)
-    amazing_print (1.2.1)
+    amazing_print (1.2.2)
     annotate (3.1.1)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)

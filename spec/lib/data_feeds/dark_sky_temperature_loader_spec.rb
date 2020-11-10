@@ -38,5 +38,14 @@ module DataFeeds
       dstl = DarkSkyTemperatureLoader.new(start_date, start_date + 1.day, dark_sky_api_interface)
       expect { dstl.import }.to_not change { DarkSkyTemperatureReading.count }
     end
+
+    it 'handles error from api' do
+      allow(dark_sky_api_interface).to receive(:historic_temperatures) do
+        raise NoMethodError, "raised a test error"
+      end
+
+      dstl = DarkSkyTemperatureLoader.new(start_date, start_date + 1.day, dark_sky_api_interface)
+      expect { dstl.import }.to_not raise_error
+    end
   end
 end
