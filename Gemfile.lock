@@ -1,12 +1,14 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 9f3de9c6962529177592e3794663307a7e4e05b6
-  tag: 1.5.1
+  revision: 10428d171a9763b14a5398c7a3fb55f0a7171565
+  tag: 1.6.1
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
+      faraday (~> 1.0.1)
+      faraday_middleware (~> 1.0.0)
       hashdiff (~> 1.0.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
@@ -221,6 +223,8 @@ GEM
     fakefs (1.2.2)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (1.0.0)
+      faraday (~> 1.0)
     fasterer (0.8.3)
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
