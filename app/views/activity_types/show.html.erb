@@ -10,27 +10,29 @@
       <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Category of activity"><%= @activity_type.activity_category.name %></span>
       <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= @activity_type.key_stage_list %></span>
     </h3>
+    <div class="activity_type">
+      <h3>Activity summary</h3>
+      <% if @activity_type.description %>
+        <%= @activity_type.description %>
+      <% else %>
+        <p><em>No description given</em></p>
+      <% end %>
+    </div>
   </div>
-  <div class="col-md-3 pt-4">
+  <div class="col-md-3 pt-2">
     <% if !@activity_type.image.blank? %>
       <p><%= image_tag @activity_type.image, width: 300, height: 200 %></p>
     <% end %>
+    <div class="activity_type">
+      <h3>Resource links</h3>
+      <% if !@activity_type.download_links.blank? %>
+        <%= @activity_type.download_links %>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-9 activity_type">
-    <% if @activity_type.description %>
-      <%= @activity_type.description %>
-    <% else %>
-      <p><em>No description given</em></p>
-    <% end %>
-  </div>
-  <div class="col-md-3 activity_type">
-    <% if !@activity_type.download_links.blank? %>
-      <%= @activity_type.download_links %>
-    <% end %>
-  </div>
 </div>
 
 <% if @activity_type.active? && current_user && current_user.school %>
