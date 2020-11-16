@@ -39,11 +39,19 @@ describe "activity type", type: :system do
 
     it 'can add a new activity for KS1 with filters' do
       description = 'The description'
+      download_links = 'Some download links'
       school_specific_description = description + ' for SCHOOOOOOLS'
       activity_name = 'New activity'
 
       click_on 'New Activity Type'
       fill_in('Name', with: activity_name)
+
+      attach_file("activity_type_image", Rails.root + "spec/fixtures/images/activity-type-placeholder.png")
+
+      within('.download-links-trix-editor') do
+        fill_in_trix with: download_links
+      end
+
       within('.description-trix-editor') do
         fill_in_trix with: description
       end
@@ -70,10 +78,14 @@ describe "activity type", type: :system do
       expect(activity_type.topics).to     match_array([energy])
       expect(activity_type.impacts).to    match_array([reducing_electricity])
 
+      expect(activity_type.image.filename).to eq('activity-type-placeholder.png')
+
       expect(page.has_content?("Activity type was successfully created.")).to be true
       expect(ActivityType.count).to be 1
 
       click_on activity_name
+      expect(page).to have_css("img[src*='activity-type-placeholder.png']")
+      expect(page).to have_content(download_links)
       expect(page).to have_content(description)
       expect(page).to have_content(school_specific_description)
     end
