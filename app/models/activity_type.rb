@@ -27,6 +27,7 @@
 class ActivityType < ApplicationRecord
   belongs_to :activity_category
 
+  has_one_attached :image
   has_and_belongs_to_many :key_stages, join_table: :activity_type_key_stages
   has_and_belongs_to_many :impacts, join_table: :activity_type_impacts
   has_and_belongs_to_many :subjects, join_table: :activity_type_subjects
