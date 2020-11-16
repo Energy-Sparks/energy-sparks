@@ -3,24 +3,36 @@
 <% end %>
 
 <div class="row padded-row">
-  <div class="col-md-12">
+  <div class="col-md-9">
     <h1><%= @activity_type.name %></h1>
     <h3>
       <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score for this activity"><%= @activity_type.score %></span>
       <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Category of activity"><%= @activity_type.activity_category.name %></span>
       <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= @activity_type.key_stage_list %></span>
     </h3>
+    <div class="activity_type">
+      <h3>Activity summary</h3>
+      <% if @activity_type.description %>
+        <%= @activity_type.description %>
+      <% else %>
+        <p><em>No description given</em></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-3 pt-2">
+    <% if !@activity_type.image.blank? %>
+      <p><%= image_tag @activity_type.image, width: 300, height: 200 %></p>
+    <% end %>
+    <div class="activity_type">
+      <% if !@activity_type.download_links.blank? %>
+        <h3>Resource links</h3>
+        <%= @activity_type.download_links %>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-12 activity_type">
-    <% if @activity_type.description %>
-      <%= @activity_type.description %>
-    <% else %>
-      <p><em>No description given</em></p>
-    <% end %>
-  </div>
 </div>
 
 <% if @activity_type.active? && current_user && current_user.school %>

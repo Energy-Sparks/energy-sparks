@@ -9,12 +9,28 @@
   <%= f.input :name, as: :string %>
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
+
+  <%= f.label 'Image' %>
+  <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
+  <% if !f.object.image.blank? %>
+    <div class="upload-preview">
+      <p><%= image_tag f.object.image, width: 300, height: 200 %></p>
+    </div>
+  <% end %>
+
+  <%= f.input :image, label: false, hint: "Please use an image with a width of 300 pixels and a height of 200 pixels" %>
+
+  <div class="download-links-trix-editor">
+    <%= f.label 'Download links', for: :download_links %>
+    <p class="small">These download links will appear in the right-hand panel under the image.</p>
+    <%= f.rich_text_area :download_links %>
+  </div>
+
   <div class="description-trix-editor">
     <%= f.label 'Description', for: :description %>
     <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
     <%= f.rich_text_area :description %>
   </div>
-
 
   <div class="school-specific-description-trix-editor chart-list">
     <%= f.label 'School specific description', for: :school_specific_description %>

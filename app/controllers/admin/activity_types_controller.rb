@@ -63,6 +63,8 @@ module Admin
       params.require(:activity_type).permit(:name,
           :description,
           :school_specific_description,
+          :download_links,
+          :image,
           :active,
           :activity_category_id,
           :score,
