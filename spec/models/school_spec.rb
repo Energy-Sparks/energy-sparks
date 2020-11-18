@@ -71,6 +71,12 @@ describe School do
       electricity_meter = create(:electricity_meter_with_reading, school: subject)
       expect(subject.meters_with_readings.first).to eq electricity_meter
     end
+
+    it 'ignores deactivated meters' do
+      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      electricity_meter_inactive = create(:electricity_meter_with_reading, school: subject, active: false)
+      expect(subject.meters_with_readings(:electricity)).to match_array([electricity_meter])
+    end
   end
 
   describe '#meters_with_validated_readings' do
@@ -94,6 +100,12 @@ describe School do
     it 'works without a supply type for an electricity' do
       electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
       expect(subject.meters_with_validated_readings.first).to eq electricity_meter
+    end
+
+    it 'ignores deactivated meters' do
+      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter_inactive = create(:electricity_meter_with_validated_reading, school: subject, active: false)
+      expect(subject.meters_with_validated_readings(:electricity)).to match_array([electricity_meter])
     end
   end
 
