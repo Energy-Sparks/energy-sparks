@@ -1,0 +1,13 @@
+<% content_for :page_title, "#{@school.name} Batch Run" %>
+
+<h1>Run batch for <%= @school.name %></h1>
+
+<p>
+  Status: <%= @school_batch_run.status  %>
+</p>
+
+<% @school_batch_run.school_batch_run_log_entries.each do |log_entry| %>
+  <p>
+    <%= log_entry.created_at  %> : <%= log_entry.message  %>
+  </p>
+<% end %>
