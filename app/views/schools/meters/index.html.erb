@@ -31,6 +31,7 @@
       <th scope="col">Meter Description</th>
       <th scope="col">Imported Readings</th>
       <th scope="col">Validated readings</th>
+      <th scope="col">First validated reading</th>
       <th scope="col">Latest validated reading</th>
       <th scope="col">Details</th>
       <th scope="col">Actions</th>
@@ -75,6 +76,7 @@
           <td><%= meter.name %></td>
           <td><%= meter.amr_data_feed_readings.count %></td>
           <td><%= meter.amr_validated_readings.count %></td>
+          <td><%= nice_dates meter.first_validated_reading %></td>
           <td><%= nice_dates meter.last_validated_reading %></td>
           <td>
             <div class="btn-group btn-group-sm" role="group">

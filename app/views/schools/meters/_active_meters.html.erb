@@ -5,6 +5,7 @@
     <td><%= meter.name %></td>
     <td><%= meter.amr_data_feed_readings.count %></td>
     <td><%= meter.amr_validated_readings.count %></td>
+    <td><%= nice_dates meter.first_validated_reading %></td>
     <td><%= nice_dates meter.last_validated_reading %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
