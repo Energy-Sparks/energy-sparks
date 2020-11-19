@@ -19,6 +19,7 @@
       <% end %>
     <% end %>
     <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+    <%= link_to "Regenerate...", school_batch_runs_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:manage, :admin_functions) %>
   </div>
 </div>
 

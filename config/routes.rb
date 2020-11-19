@@ -133,6 +133,7 @@ Rails.application.routes.draw do
 
       resource :usage, controller: :usage, only: :show
       resources :downloads, only: [:index]
+      resources :batch_runs, only: [:index, :create, :show]
     end
 
     # Maintain old scoreboard URL
