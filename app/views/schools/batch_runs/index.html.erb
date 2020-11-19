@@ -1,6 +1,6 @@
 <% content_for :page_title, "#{@school.name} Batch Run" %>
 
-<h1>Regenerate content for <%= @school.name %></h1>
+<h1>Regenerate data for <%= @school.name %></h1>
 
 <%= simple_form_for [@school, School.new], url: school_batch_runs_path(@school) do |f| %>
   <%= f.submit 'Regenerate', class: 'btn' %>
