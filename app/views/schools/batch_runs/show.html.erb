@@ -3,11 +3,23 @@
 <h1>Run batch for <%= @school.name %></h1>
 
 <p>
-  Status: <%= @school_batch_run.status  %>
+  Status: <strong><%= @school_batch_run.status  %></strong>
 </p>
 
-<% @school_batch_run.school_batch_run_log_entries.each do |log_entry| %>
-  <p>
-    <%= log_entry.created_at  %> : <%= log_entry.message  %>
-  </p>
-<% end %>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Time</th>
+    <th>Message</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @school_batch_run.school_batch_run_log_entries.each do |entry| %>
+    <tr>
+      <td><%= nice_date_times(entry.created_at) %></td>
+      <td><%= entry.message %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+

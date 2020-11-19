@@ -96,6 +96,7 @@ class School < ApplicationRecord
   has_many :alert_subscription_events,    through: :contacts
 
   has_many :school_alert_type_exclusions
+  has_many :school_batch_runs
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
