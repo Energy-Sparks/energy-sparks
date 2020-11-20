@@ -6,7 +6,11 @@ class SchoolBatchRun < ApplicationRecord
 
   scope :by_date, -> { order(created_at: :desc) }
 
-  def log(msg)
+  def info(msg)
+    school_batch_run_log_entries.create(message: msg)
+  end
+
+  def error(msg)
     school_batch_run_log_entries.create(message: msg)
   end
 end

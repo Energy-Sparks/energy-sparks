@@ -10,5 +10,11 @@ describe ContentBatch do
     ContentBatch.new.generate
   end
 
+  it 'should regenerate using latest benchmark' do
+    benchmark_result_generation_run_1 = BenchmarkResultGenerationRun.create!
+    benchmark_result_generation_run_2 = BenchmarkResultGenerationRun.create!
+    ContentBatch.new.regenerate
+    expect(BenchmarkResultSchoolGenerationRun.last.benchmark_result_generation_run).to eq(benchmark_result_generation_run_2)
+  end
 
 end

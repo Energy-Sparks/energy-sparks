@@ -1,8 +1,9 @@
 module Schools
-  class BatchRunsController < ApplicationController
+  class BatchRunsController < AdminController
     load_and_authorize_resource :school
 
     def index
+      @school_batch_runs = @school.school_batch_runs.order(created_at: :desc)
     end
 
     def show
