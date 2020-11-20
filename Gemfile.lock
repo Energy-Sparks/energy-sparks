@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 5c31a2389845bf5fde07e53c0c5094d346d29559
-  ref: 5c31a2389845bf5fde07e53c0c5094d346d29559
+  revision: de26883e97d090f1e1612e2c174eef8e738b9de3
+  ref: de26883e97d090f1e1612e2c174eef8e738b9de3
   branch: solar-pv-rework-nov-2020
   specs:
     energy-sparks_analytics (1.2.1)
