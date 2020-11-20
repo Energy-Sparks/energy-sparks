@@ -3,7 +3,7 @@
 <h1>Regenerate data for <%= @school.name %></h1>
 
 <%= simple_form_for [@school, School.new], url: school_batch_runs_path(@school) do |f| %>
-  <%= f.submit 'Regenerate', class: 'btn' %>
+  <%= f.submit 'Start regeneration', class: 'btn' %>
 <% end %>
 
 <br/>
@@ -19,7 +19,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @school.school_batch_runs.each do |run| %>
+  <% @school_batch_runs.each do |run| %>
     <tr>
       <td><%= nice_date_times(run.created_at) %></td>
       <td><%= run.status %></td>
