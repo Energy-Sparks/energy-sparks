@@ -23,7 +23,7 @@ class SchoolBatchRunJob < ApplicationJob
     school_batch_run.log(msg)
     school_batch_run.log('Generating...')
 
-    ContentBatch.new([school]).generate
+    ContentBatch.new([school]).regenerate
 
     school_batch_run.log('Finished')
     school_batch_run.update(status: :done)

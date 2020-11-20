@@ -5,8 +5,18 @@ class ContentBatch
 
   def generate
     @benchmark_result_generation_run = BenchmarkResultGenerationRun.create!
+    generate_content(@schools, @benchmark_result_generation_run)
+  end
 
-    @schools.each do |school|
+  def regenerate
+    @benchmark_result_generation_run = BenchmarkResultGenerationRun.latest
+    generate_content(@schools, @benchmark_result_generation_run)
+  end
+
+  private
+
+  def generate_content(schools, benchmark_result_generation_run)
+    schools.each do |school|
       Rails.logger.info "Running for #{school.name}"
       puts "Running for #{school.name}"
       # Aggregate school
@@ -25,7 +35,7 @@ class ContentBatch
       Rails.logger.info "Generated alerts"
 
       # Generate benchmarks
-      suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: @benchmark_result_generation_run).perform }
+      suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run).perform }
 
       Rails.logger.info "Generated benchmaks"
 
@@ -44,8 +54,6 @@ class ContentBatch
       Rollbar.error(e, school_id: school.id, school_name: school.name)
     end
   end
-
-  private
 
   def suppress_output
     original_stdout = $stdout.clone
