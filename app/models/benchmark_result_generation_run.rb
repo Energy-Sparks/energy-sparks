@@ -12,8 +12,8 @@ class BenchmarkResultGenerationRun < ApplicationRecord
   has_many :benchmark_result_errors, through: :benchmark_result_school_generation_runs
   has_many :benchmark_results, through: :benchmark_result_school_generation_runs
 
-  def self.latest_run_date
-    order(created_at: :desc).first.created_at.to_date
+  def self.latest
+    order(created_at: :desc).first
   end
 
   def run_date

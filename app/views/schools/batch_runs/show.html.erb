@@ -1,0 +1,35 @@
+<% if !@school_batch_run.done? %>
+  <% content_for :head do %>
+    <meta http-equiv="refresh" content="5" />
+  <% end %>
+<% end %>
+
+<% content_for :page_title, "#{@school.name} regeneration" %>
+
+<h1>Regeneration for <%= @school.name %></h1>
+
+<p>
+  <%= link_to "Back to school", school_path(@school) %>
+</p>
+
+<h2>
+  Status: <strong><%= @school_batch_run.status  %></strong>
+</h2>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Time</th>
+    <th>Message</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @school_batch_run.school_batch_run_log_entries.each do |entry| %>
+    <tr>
+      <td><%= nice_date_times(entry.created_at) %></td>
+      <td><%= entry.message %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+

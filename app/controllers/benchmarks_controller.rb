@@ -41,7 +41,7 @@ class BenchmarksController < ApplicationController
 private
 
   def latest_benchmark_run
-    @latest_benchmark_run = BenchmarkResultGenerationRun.order(created_at: :desc).first
+    @latest_benchmark_run = BenchmarkResultGenerationRun.latest
   end
 
   def sort_content_and_page_groups(page_groups)
