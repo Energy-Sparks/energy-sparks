@@ -10,6 +10,7 @@ module Alerts
     let(:run)                 { BenchmarkResultGenerationRun.create! }
 
     let(:school_run_1)        { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: run ) }
+    let(:school_run_2_old)    { BenchmarkResultSchoolGenerationRun.create(school: school_2, benchmark_result_generation_run: run ) }
     let(:school_run_2)        { BenchmarkResultSchoolGenerationRun.create(school: school_2, benchmark_result_generation_run: run ) }
     let(:alert_type_1)        { create(:alert_type, benchmark: true, source: :analytics) }
     let(:alert_type_2)        { create(:alert_type, benchmark: true, source: :analytics) }
@@ -38,6 +39,11 @@ module Alerts
     } )}
     let(:benchmark_result_8)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_2, data: {
        "number_example_2"=>8.0, "string_example_2"=>"H", "time_of_day_2"=> TimeOfDay.new(1,45)
+    } )}
+
+    # this older run for school_2 should be overridden in the results by the later one
+    let!(:benchmark_result_9)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_2_old, data: {
+      "number_example_2"=>9.0, "string_example_2"=>"H", "time_of_day_2"=> TimeOfDay.new(1,45)
     } )}
 
     let!(:example_output) {

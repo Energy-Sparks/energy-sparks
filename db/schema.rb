@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_04_152506) do
+ActiveRecord::Schema.define(version: 2020_11_19_155011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -857,6 +857,22 @@ ActiveRecord::Schema.define(version: 2020_11_04_152506) do
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
+  create_table "school_batch_run_log_entries", force: :cascade do |t|
+    t.bigint "school_batch_run_id"
+    t.string "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_batch_run_id"], name: "index_school_batch_run_log_entries_on_school_batch_run_id"
+  end
+
+  create_table "school_batch_runs", force: :cascade do |t|
+    t.bigint "school_id"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_school_batch_runs_on_school_id"
+  end
+
   create_table "school_group_meter_attributes", force: :cascade do |t|
     t.bigint "school_group_id", null: false
     t.string "attribute_type", null: false
@@ -1229,6 +1245,8 @@ ActiveRecord::Schema.define(version: 2020_11_04_152506) do
   add_foreign_key "resource_files", "resource_file_types", on_delete: :restrict
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
+  add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
+  add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify

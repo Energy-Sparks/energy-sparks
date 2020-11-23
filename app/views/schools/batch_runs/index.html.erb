@@ -1,0 +1,30 @@
+<% content_for :page_title, "#{@school.name} Batch Run" %>
+
+<h1>Regenerate data for <%= @school.name %></h1>
+
+<%= simple_form_for [@school, School.new], url: school_batch_runs_path(@school) do |f| %>
+  <%= f.submit 'Start regeneration', class: 'btn' %>
+<% end %>
+
+<br/>
+
+<h2>Previous runs</h2>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @school_batch_runs.each do |run| %>
+    <tr>
+      <td><%= nice_date_times(run.created_at) %></td>
+      <td><%= run.status %></td>
+      <td><%= link_to 'View', school_batch_run_path(@school, run), class: 'btn' %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
