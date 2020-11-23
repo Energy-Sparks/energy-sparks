@@ -23,7 +23,7 @@ gem 'closed_struct'
 
 # Dashboard analytics
 # gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.6.1'
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'solar-pv-rework-nov-2020', ref: 'de26883e97d090f1e1612e2c174eef8e738b9de3'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'solar-pv-rework-nov-2020', ref: '873637c63b5315ac063d06a37ae6e95b757731a7'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
