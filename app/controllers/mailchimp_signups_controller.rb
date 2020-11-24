@@ -2,9 +2,11 @@ class MailchimpSignupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def new
-    @user_name = '123'
-    @school_name = '4356'
-    @email_address = '567'
+    @user_name = params[:user_name]
+    @school_name = params[:school_name]
+    @email_address = params[:email_address]
+
+    @onboarding_complete = params[:onboarding_complete]
 
     @list = mailchimp_api.list
 
@@ -20,17 +22,17 @@ class MailchimpSignupsController < ApplicationController
     mailchimp = params[:mailchimp]
 
     @list_id = mailchimp[:list_id]
+    @user_name = mailchimp[:user_name]
     @email_address = mailchimp[:email_address]
+    @school_name = mailchimp[:school_name]
     @interests = mailchimp[:interests].values.index_with { true }
 
     @body = {
       "email_address": @email_address,
       "status": "subscribed",
       "merge_fields": {
-        "FNAME": "Jules",
-        "LNAME": "Higgers",
-        "MMERGE7": "Higler",
-        "MMERGE8": "HigComp School"
+        "MMERGE7": @user_name,
+        "MMERGE8": @school_name
       },
       "interests": @interests,
     }
@@ -41,7 +43,6 @@ class MailchimpSignupsController < ApplicationController
       flash[:info] = 'Subscribed'
       redirect_to new_mailchimp_signup_path
     rescue MailchimpMarketing::ApiError => error
-      pp error.response_body
       flash[:error] = error.inspect
       redirect_to new_mailchimp_signup_path
     end

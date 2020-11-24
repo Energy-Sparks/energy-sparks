@@ -1,6 +1,6 @@
 <div>
 
-  <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+  <div class="indicates-required"><span class="asterisk">*</span> indicates required field</div>
 
   <br/>
 
@@ -13,7 +13,7 @@
         <%= f.label :name %>
       </div>
       <div class="col-sm-9">
-        <%= f.input :name, label: false %>
+        <%= f.input :name, label: false, input_html: {value: @user_name} %>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
         <%= f.label 'School name (if appropriate)', for: :school_name, required: false %>
       </div>
       <div class="col-sm-9">
-        <%= f.input :school_name, label: false %>
+        <%= f.input :school_name, label: false, input_html: {value: @school_name}  %>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
         <%= f.label :email_address %>
       </div>
       <div class="col-sm-9">
-        <%= f.input :email_address, label: false %>
+        <%= f.input :email_address, label: false, input_html: {value: @email_address}  %>
       </div>
     </div>
 

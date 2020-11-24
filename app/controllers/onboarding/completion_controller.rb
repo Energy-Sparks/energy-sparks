@@ -22,7 +22,13 @@ module Onboarding
       if @school_onboarding.school.visible?
         redirect_to school_path(@school_onboarding.school), notice: 'Your school is now active!'
       else
-        render :show
+        signup_details = {
+          onboarding_complete: true,
+          user_name: @school_onboarding.created_user.name,
+          school_name: @school_onboarding.school.name,
+          email_address: @school_onboarding.created_user.email
+        }
+        redirect_to new_mailchimp_signup_path(signup_details), notice: 'Your school is now active!'
       end
     end
   end
