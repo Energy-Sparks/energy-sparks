@@ -1,0 +1,53 @@
+<div>
+
+  <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+
+  <br/>
+
+  <%= simple_form_for :mailchimp, url: mailchimp_signups_path do |f| %>
+
+    <%= f.hidden_field :list_id, value: @list[:id] %>
+
+    <div class="mc-field-group form-group row">
+      <div class="col-sm-3">
+        <%= f.label :name %>
+      </div>
+      <div class="col-sm-9">
+        <%= f.input :name, label: false %>
+      </div>
+    </div>
+
+    <div class="mc-field-group form-group row">
+      <div class="col-sm-3">
+        <%= f.label 'School name (if appropriate)', for: :school_name, required: false %>
+      </div>
+      <div class="col-sm-9">
+        <%= f.input :school_name, label: false %>
+      </div>
+    </div>
+
+    <div class="mc-field-group form-group row">
+      <div class="col-sm-3">
+        <%= f.label :email_address %>
+      </div>
+      <div class="col-sm-9">
+        <%= f.input :email_address, label: false %>
+      </div>
+    </div>
+
+    <% @categories.each do |category| %>
+      <div class="mc-field-group form-group row">
+        <div class="col-sm-3">
+          <%= f.label category[:title], for: "mailchimp[interests[#{category[:id]}]]" %>
+        </div>
+        <div class="col-sm-9">
+          <%= f.input "interests[#{category[:id]}]", as: :radio_buttons, collection: category[:interests], label: '', required: false %>
+        </div>
+      </div>
+    <% end %>
+
+      <%= f.submit "Subscribe", class: 'btn btn-success' %>
+
+  <% end %>
+
+</div>
