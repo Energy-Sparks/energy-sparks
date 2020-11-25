@@ -14,10 +14,16 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
   end
 
   describe '#show' do
-    it 'renders show if the school is not visible' do
+    it 'redirects to mailchimp signup if the school is not visible' do
       school.update!(visible: false)
       get :show, params: {onboarding_id: onboarding.to_param}
-      expect(response).to render_template("show")
+      signup_details = {
+        onboarding_complete: true,
+        user_name: user.name,
+        school_name: school.name,
+        email_address: user.email
+      }
+      expect(response).to redirect_to(new_mailchimp_signup_path(signup_details))
     end
     it 'redirects to the school if it is active' do
       get :show, params: {onboarding_id: onboarding.to_param}

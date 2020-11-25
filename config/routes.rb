@@ -10,8 +10,6 @@ Rails.application.routes.draw do
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
   get 'home-page', to: 'home#show'
-  get 'mailchimp-signup', to: 'home#mailchimp_signup'
-  resources :mailchimp_signups, only: [:new, :create, :index]
   get 'school_statistics', to: 'home#school_statistics'
 
   get 'contact', to: 'home#contact'
@@ -28,6 +26,8 @@ Rails.application.routes.draw do
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
   get 'all_benchmarks', to: 'benchmarks#show_all'
+
+  resources :mailchimp_signups, only: [:new, :create, :index]
 
   resources :activity_types, only: [:index, :show]
   resources :activity_categories, only: [:index]
