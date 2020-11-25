@@ -13,28 +13,35 @@ class MailchimpSignupsController < ApplicationController
   end
 
   def create
-    mailchimp = params[:mailchimp]
-    list_id = mailchimp[:list_id]
+    list_id = params[:list_id]
 
-    @user_name = mailchimp[:user_name]
-    @school_name = mailchimp[:school_name]
-    @email_address = mailchimp[:email_address]
-    @interests = mailchimp[:interests].values.reject(&:empty?)
+    @user_name = params[:user_name]
+    @school_name = params[:school_name]
+    @email_address = params[:email_address]
+    @interests = params[:interests] ? params[:interests].values : []
 
-    begin
-      mailchimp_api.subscribe(list_id, @email_address, @user_name, @school_name, @interests)
-      flash[:info] = 'Subscribed'
-      redirect_to mailchimp_signups_path
-    rescue MailchimpApi::Error => error
-      @list = mailchimp_api.list_with_interests
-      flash[:error] = error.message
-      render :new
+    if inputs_valid(@email_address, @user_name, @interests)
+      begin
+        mailchimp_api.subscribe(list_id, @email_address, @user_name, @school_name, @interests)
+        redirect_to mailchimp_signups_path and return
+      rescue MailchimpApi::Error => error
+        flash[:error] = error.message
+      end
+    else
+      flash[:error] = 'Please fill in all the required fields'
     end
+
+    @list = mailchimp_api.list_with_interests
+    render :new
   end
 
   private
 
   def mailchimp_api
     @mailchimp_api ||= MailchimpApi.new
+  end
+
+  def inputs_valid(email_address, user_name, interests)
+    email_address.present? && user_name.present? && interests.none?(&:empty?)
   end
 end
