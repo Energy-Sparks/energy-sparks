@@ -1,6 +1,8 @@
 require 'MailchimpMarketing'
 
 class MailchimpApi
+  class Error < StandardError; end
+
   def initialize(client = nil)
     @client = client
   end
@@ -30,24 +32,47 @@ class MailchimpApi
     list
   end
 
-  def subscribe(list_id, user_name, school_name, email_address, interests_list)
-    interests = interests_list.keys.index_with { true }
-    body = {
-      "email_address": email_address,
-      "status": "subscribed",
-      "merge_fields": {
-        "MMERGE7": user_name,
-        "MMERGE8": school_name
-      },
-      "interests": interests,
-    }
-    opts = { skip_merge_validation: true }
+  def subscribe(list_id, email_address, user_name = '', school_name = '', interests_list = [])
+    interests = interests_list.index_with { true }
+    body = format_body(email_address, user_name, school_name, interests)
+    opts = format_opts
     client.lists.add_list_member(list_id, body, opts)
+  rescue ArgumentError => error
+    raise MailchimpApi::Error.new(error.message)
+  rescue MailchimpMarketing::ApiError => error
+    raise MailchimpApi::Error.new(error_message(error))
   end
 
   private
 
   def client
     @client ||= Rails.configuration.mailchimp_client
+  end
+
+  def format_body(email_address, user_name, school_name, interests, status = "subscribed")
+    {
+      "email_address": email_address,
+      "status": status,
+      "merge_fields": {
+        "MMERGE7": user_name,
+        "MMERGE8": school_name
+      },
+      "interests": interests,
+    }
+  end
+
+  def format_opts
+    {
+      skip_merge_validation: true
+    }
+  end
+
+  def error_message(error)
+    # hey Mailchimp, this is surely not right..
+    message = eval(error.message)
+    response_body = JSON.parse(message[:response_body])
+    response_body['detail']
+  rescue => e
+    e.message
   end
 end

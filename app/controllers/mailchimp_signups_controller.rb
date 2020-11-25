@@ -9,6 +9,9 @@ class MailchimpSignupsController < ApplicationController
     @list = mailchimp_api.list_with_interests
   end
 
+  def index
+  end
+
   def create
     mailchimp = params[:mailchimp]
     list_id = mailchimp[:list_id]
@@ -16,14 +19,15 @@ class MailchimpSignupsController < ApplicationController
     @user_name = mailchimp[:user_name]
     @school_name = mailchimp[:school_name]
     @email_address = mailchimp[:email_address]
+    @interests = mailchimp[:interests].values.reject(&:empty?)
 
     begin
-      mailchimp_api.subscribe(list_id, @user_name, @school_name, @email_address, mailchimp[:interests])
+      mailchimp_api.subscribe(list_id, @email_address, @user_name, @school_name, @interests)
       flash[:info] = 'Subscribed'
-      redirect_to new_mailchimp_signup_path
-    rescue MailchimpMarketing::ApiError => error
+      redirect_to mailchimp_signups_path
+    rescue MailchimpApi::Error => error
       @list = mailchimp_api.list_with_interests
-      flash[:error] = error.inspect
+      flash[:error] = error.message
       render :new
     end
   end

@@ -23,6 +23,9 @@ require:
 
 
 # Rails cops
+Security/Eval:
+  Exclude:
+    - 'app/services/mailchimp_api.rb'
 Rails/ReflectionClassName:
   Exclude:
     - 'app/models/concerns/analytics_attribute.rb'
