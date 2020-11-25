@@ -20,7 +20,28 @@ class MailchimpApi
     interests['interests'].map { |interest| OpenStruct.new(interest) }
   end
 
-  def subscribe(list_id, body, opts)
+  def list_with_interests
+    list = lists.first
+    list_categories = categories(list.id)
+    list_categories.each do |category|
+      category.interests = interests(list.id, category.id)
+    end
+    list.categories = list_categories
+    list
+  end
+
+  def subscribe(list_id, user_name, school_name, email_address, interests_list)
+    interests = interests_list.keys.index_with { true }
+    body = {
+      "email_address": email_address,
+      "status": "subscribed",
+      "merge_fields": {
+        "MMERGE7": user_name,
+        "MMERGE8": school_name
+      },
+      "interests": interests,
+    }
+    opts = { skip_merge_validation: true }
     client.lists.add_list_member(list_id, body, opts)
   end
 

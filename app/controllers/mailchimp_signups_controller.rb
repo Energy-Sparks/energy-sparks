@@ -5,46 +5,26 @@ class MailchimpSignupsController < ApplicationController
     @user_name = params[:user_name]
     @school_name = params[:school_name]
     @email_address = params[:email_address]
-
     @onboarding_complete = params[:onboarding_complete]
-
-    @list = mailchimp_api.lists.first
-
-    @categories = mailchimp_api.categories(@list.id)
-
-    @categories.each do |category|
-      interests = mailchimp_api.interests(@list.id, category.id)
-      category.interests = interests.map {|interest| [interest.name, interest.id]}
-    end
+    @list = mailchimp_api.list_with_interests
   end
 
   def create
     mailchimp = params[:mailchimp]
+    list_id = mailchimp[:list_id]
 
-    @list_id = mailchimp[:list_id]
     @user_name = mailchimp[:user_name]
-    @email_address = mailchimp[:email_address]
     @school_name = mailchimp[:school_name]
-    @interests = mailchimp[:interests].values.index_with { true }
-
-    @body = {
-      "email_address": @email_address,
-      "status": "subscribed",
-      "merge_fields": {
-        "MMERGE7": @user_name,
-        "MMERGE8": @school_name
-      },
-      "interests": @interests,
-    }
-    @opts = { skip_merge_validation: true }
+    @email_address = mailchimp[:email_address]
 
     begin
-      mailchimp_api.subscribe(@list_id, @body, @opts)
+      mailchimp_api.subscribe(list_id, @user_name, @school_name, @email_address, mailchimp[:interests])
       flash[:info] = 'Subscribed'
       redirect_to new_mailchimp_signup_path
     rescue MailchimpMarketing::ApiError => error
+      @list = mailchimp_api.list_with_interests
       flash[:error] = error.inspect
-      redirect_to new_mailchimp_signup_path
+      render :new
     end
   end
 
