@@ -8,7 +8,7 @@ class MailchimpSignupsController < ApplicationController
 
     @onboarding_complete = params[:onboarding_complete]
 
-    @list = mailchimp_api.list
+    @list = mailchimp_api.lists.first
 
     @categories = mailchimp_api.categories(@list.id)
 
