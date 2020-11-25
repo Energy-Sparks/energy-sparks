@@ -8,9 +8,10 @@
       </p>
     <% end %>
 
-    <h1>Sign up to the Energy Sparks newsletter</h1>
-
-    <%= render 'mailchimp_form', user_name: @user_name, school_name: @school_name, email_address: @email_address %>
+    <% if @list %>
+      <h1>Sign up to the Energy Sparks newsletter</h1>
+      <%= render 'mailchimp_form', user_name: @user_name, school_name: @school_name, email_address: @email_address %>
+    <% end %>
 
   </div>
 </div>

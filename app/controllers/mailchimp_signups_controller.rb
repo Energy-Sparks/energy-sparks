@@ -7,6 +7,10 @@ class MailchimpSignupsController < ApplicationController
     @email_address = params[:email_address]
     @onboarding_complete = params[:onboarding_complete]
     @list = mailchimp_api.list_with_interests
+  rescue => e
+    flash[:error] = 'Mailchimp API is not configured'
+    Rails.logger.error "Mailchimp API is not configured - #{e.message}"
+    Rollbar.error(e)
   end
 
   def index
@@ -24,8 +28,8 @@ class MailchimpSignupsController < ApplicationController
       begin
         mailchimp_api.subscribe(list_id, @email_address, @user_name, @school_name, @interests)
         redirect_to mailchimp_signups_path and return
-      rescue MailchimpApi::Error => error
-        flash[:error] = error.message
+      rescue MailchimpApi::Error => e
+        flash[:error] = e.message
       end
     else
       flash[:error] = 'Please fill in all the required fields'

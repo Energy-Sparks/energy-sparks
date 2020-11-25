@@ -28,7 +28,7 @@ module Onboarding
           school_name: @school_onboarding.school.name,
           email_address: @school_onboarding.created_user.email
         }
-        redirect_to new_mailchimp_signup_path(signup_details), notice: 'Your school is now active!'
+        redirect_to new_mailchimp_signup_path(signup_details)
       end
     end
   end
