@@ -58,7 +58,8 @@ module Amr
     end
 
     def partial_row?(row)
-      # Reject if row has too few readings
+      # Reject if row has more than the allowed number of missing readings
+      return true unless row.count > index_of_last_reading_field
       row[index_of_first_reading_field..index_of_last_reading_field].count(&:blank?) > @config.missing_readings_limit
     end
   end
