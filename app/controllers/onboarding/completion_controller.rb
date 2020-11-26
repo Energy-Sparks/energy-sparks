@@ -26,7 +26,8 @@ module Onboarding
           onboarding_complete: true,
           user_name: @school_onboarding.created_user.name,
           school_name: @school_onboarding.school.name,
-          email_address: @school_onboarding.created_user.email
+          email_address: @school_onboarding.created_user.email,
+          tags: MailchimpTags.new(@school_onboarding.school).tags
         }
         redirect_to new_mailchimp_signup_path(signup_details)
       end
