@@ -47,9 +47,15 @@ class MailchimpSignupsController < ApplicationController
 
   def validate_config(config)
     errors = []
-    errors << 'Email address must be specified' unless config[:email_address].present?
-    errors << 'User name must be specified' unless config[:user_name].present?
-    errors << 'Groups must be specified' unless config[:interests].present? && config[:interests].values.none?(&:blank?)
+    if config[:email_address].blank?
+      errors << 'Email address must be specified'
+    end
+    if config[:user_name].blank?
+      errors << 'User name must be specified'
+    end
+    if config[:interests].blank? || config[:interests].values.any?(&:blank?)
+      errors << 'Groups must be specified'
+    end
     errors
   end
 end
