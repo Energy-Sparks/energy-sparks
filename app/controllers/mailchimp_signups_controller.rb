@@ -5,6 +5,7 @@ class MailchimpSignupsController < ApplicationController
     @user_name = params[:user_name]
     @school_name = params[:school_name]
     @email_address = params[:email_address]
+    @tags = params[:tags]
     @onboarding_complete = params[:onboarding_complete]
     @list = mailchimp_api.list_with_interests
   rescue => e
@@ -22,11 +23,12 @@ class MailchimpSignupsController < ApplicationController
     @user_name = params[:user_name]
     @school_name = params[:school_name]
     @email_address = params[:email_address]
+    @tags = params[:tags]
     @interests = params[:interests] ? params[:interests].values : []
 
     if inputs_valid(@email_address, @user_name, @interests)
       begin
-        mailchimp_api.subscribe(list_id, @email_address, @user_name, @school_name, @interests)
+        mailchimp_api.subscribe(list_id, @email_address, @user_name, @school_name, @interests, @tags)
         redirect_to mailchimp_signups_path and return
       rescue MailchimpApi::Error => e
         flash[:error] = e.message

@@ -62,6 +62,7 @@ describe MailchimpApi do
 
     let(:expected_opts) { { skip_merge_validation: true } }
     let(:expected_interests) { {abc: true, def: true} }
+    let(:expected_tags) { ['one','two'] }
 
     let(:expected_body) do
       {
@@ -70,13 +71,14 @@ describe MailchimpApi do
         "merge_fields":
           { "MMERGE7": user_name,
             "MMERGE8": school_name },
-        "interests": expected_interests
+        "interests": expected_interests,
+        "tags": expected_tags
       }
     end
 
     it 'subscribes a user with email address and interests' do
       expect(lists_api).to receive(:add_list_member).with(list_id, expected_body, expected_opts).and_return(true)
-      api.subscribe(list_id, email_address, user_name, school_name, [:abc, :def])
+      api.subscribe(list_id, email_address, user_name, school_name, [:abc, :def], '  one,  two  ')
     end
 
     it 'handles errors' do

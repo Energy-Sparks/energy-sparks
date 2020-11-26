@@ -7,6 +7,7 @@
   <%= form_tag mailchimp_signups_path do %>
 
     <%= hidden_field_tag :list_id, @list.id %>
+    <%= hidden_field_tag :tags, @tags %>
 
     <div class="mc-field-group form-group row">
       <div class="col-sm-3">
