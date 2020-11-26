@@ -87,6 +87,8 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+  config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
 end
 
 class MyAppFormatter < Logger::Formatter
