@@ -6,7 +6,11 @@ class MailchimpTags
   end
 
   def tags
-    @school.percentage_free_school_meals > high_fsm_limit ? 'High FSM' : ''
+    ret = []
+    if @school.percentage_free_school_meals && (@school.percentage_free_school_meals > high_fsm_limit)
+      ret << 'High FSM'
+    end
+    ret.join(',')
   end
 
   private

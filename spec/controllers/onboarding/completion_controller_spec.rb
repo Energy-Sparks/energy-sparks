@@ -21,7 +21,8 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
         onboarding_complete: true,
         user_name: user.name,
         school_name: school.name,
-        email_address: user.email
+        email_address: user.email,
+        tags: ''
       }
       expect(response).to redirect_to(new_mailchimp_signup_path(signup_details))
     end
