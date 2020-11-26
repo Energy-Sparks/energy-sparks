@@ -16,6 +16,9 @@
           <%= link_to 'Not processing data', school_data_processing_path(school), class: 'badge badge-pill badge-danger', method: :post %>
         <% end %>
       <% end %>
+      <% if can?(:regenerate_school_data, school) %>
+        <%= link_to "Regenerate", school_batch_runs_path(@school), class: 'badge badge-pill badge-success' %>
+      <% end %>
     </div>
     <div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
