@@ -28,7 +28,7 @@ class MailchimpSignupsController < ApplicationController
         flash[:error] = e.message
       end
     else
-      flash[:error] = errors.join('<br/>')
+      flash[:error] = errors.join(',')
     end
 
     @list = mailchimp_api.list_with_interests
