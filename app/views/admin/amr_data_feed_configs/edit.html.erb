@@ -2,5 +2,6 @@
 
 <%= simple_form_for [:admin, @configuration] do |f| %>
   <%= f.input :import_warning_days %>
+  <%= f.input :missing_readings_limit %>
   <%= f.submit 'Update', class: 'btn'%>
 <% end %>
