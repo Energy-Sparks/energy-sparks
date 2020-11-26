@@ -10,7 +10,7 @@
 
     <% if @list %>
       <h1>Sign up to the Energy Sparks newsletter</h1>
-      <%= render 'mailchimp_form', user_name: @user_name, school_name: @school_name, email_address: @email_address %>
+      <%= render 'mailchimp_form', list: @list, config: @config %>
     <% end %>
 
   </div>

@@ -59,10 +59,14 @@ describe MailchimpApi do
     let(:email_address) { 'john@comp.school' }
     let(:user_name) { 'john' }
     let(:school_name) { 'Comp' }
+    let(:interests) { { "123" => "abc", "456" => "def"} }
+    let(:tags) { '  one,  two  ' }
 
     let(:expected_opts) { { skip_merge_validation: true } }
-    let(:expected_interests) { {abc: true, def: true} }
+    let(:expected_interests) { {"abc" => true, "def" => true} }
     let(:expected_tags) { ['one','two'] }
+
+    let(:params) { {email_address: email_address, user_name: user_name, school_name: school_name, interests: interests, tags: tags} }
 
     let(:expected_body) do
       {
@@ -78,7 +82,7 @@ describe MailchimpApi do
 
     it 'subscribes a user with email address and interests' do
       expect(lists_api).to receive(:add_list_member).with(list_id, expected_body, expected_opts).and_return(true)
-      api.subscribe(list_id, email_address, user_name, school_name, [:abc, :def], '  one,  two  ')
+      api.subscribe(list_id, params)
     end
 
     it 'handles errors' do
@@ -86,7 +90,7 @@ describe MailchimpApi do
       mailchimp_marketing_api_error = MailchimpMarketing::ApiError.new(:status => 400, :response_body => response_body)
       expect(lists_api).to receive(:add_list_member).and_raise(mailchimp_marketing_api_error)
       expect{
-        api.subscribe(list_id, email_address)
+        api.subscribe(list_id, params)
       }.to raise_error(MailchimpApi::Error, /jules@example.com looks fake or invalid/)
     end
 
