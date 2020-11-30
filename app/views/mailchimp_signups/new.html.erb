@@ -1,0 +1,17 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+
+    <% if @onboarding_complete %>
+      <h1>Thanks!</h1>
+      <p>
+        We'll have a look at school details you've sent us and let you know when your school goes live.
+      </p>
+    <% end %>
+
+    <% if @list %>
+      <h1>Sign up to the Energy Sparks newsletter</h1>
+      <%= render 'mailchimp_form', list: @list, config: @config %>
+    <% end %>
+
+  </div>
+</div>

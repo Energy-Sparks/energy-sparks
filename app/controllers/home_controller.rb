@@ -12,10 +12,6 @@ class HomeController < ApplicationController
     render :index
   end
 
-  def mailchimp_signup
-    @email = params[:email]
-  end
-
   def for_teachers
     @testimonial = [{
       quote: 'The website is a great resource for adults and children with activities and data which allow children to apply their mathematical and scientific skills and knowledge. I would highly recommend to any other school.',
