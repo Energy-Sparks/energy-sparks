@@ -14,11 +14,17 @@ module Admin
 
     def update
       @configuration = AmrDataFeedConfig.find(params[:id])
-      if @configuration.update!(import_warning_days: params[:amr_data_feed_config][:import_warning_days])
+      if @configuration.update!(amr_data_feed_config_params)
         redirect_to admin_amr_data_feed_config_path(@configuration)
       else
         render :edit
       end
+    end
+
+    private
+
+    def amr_data_feed_config_params
+      params.require(:amr_data_feed_config).permit(:import_warning_days, :missing_readings_limit)
     end
   end
 end

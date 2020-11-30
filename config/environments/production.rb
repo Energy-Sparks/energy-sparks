@@ -118,4 +118,6 @@ Rails.application.configure do
       api_key: ENV['MG_API_KEY'],
       domain: ENV['MG_DOMAIN']
   }
+
+  config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
 end

@@ -39,7 +39,7 @@ class ContentBatch
       # Generate benchmarks
       suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run).perform }
 
-      @logger.info "Generated benchmaks"
+      @logger.info "Generated benchmarks"
 
       # Generate equivalences
       suppress_output { Equivalences::GenerateEquivalences.new(school: school, aggregate_school: aggregate_school).perform }

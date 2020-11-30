@@ -22,7 +22,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.7.0'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.7.1'
 # gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'solar-for-schools-short-term-fix', ref: 'ce215603cdd198067b2927132e3a4711767f369c'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -84,6 +84,7 @@ gem 'oj'
 
 # Email service
 gem 'mailgun_rails'
+gem 'MailchimpMarketing'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

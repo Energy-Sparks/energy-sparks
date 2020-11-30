@@ -17,7 +17,7 @@ class GenerateBenchmarks
       # Generate benchmarks
       suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: @benchmark_result_generation_run).perform }
 
-      Rails.logger.info "Generated benchmaks"
+      Rails.logger.info "Generated benchmarks"
     end
   end
 

@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 7a2d9daf4d8d6d6ba8f25a15280fa82b4ead4c7c
-  tag: 1.7.0
+  revision: 99356f939aadfd630206909eb5aaadbbc177d9d0
+  tag: 1.7.1
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -46,6 +46,9 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    MailchimpMarketing (3.0.23)
+      excon (~> 0.76.0)
+      json (~> 2.1, >= 2.1.0)
     actioncable (6.0.3.4)
       actionpack (= 6.0.3.4)
       nio4r (~> 2.0)
@@ -213,6 +216,7 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     erubi (1.9.0)
+    excon (0.76.0)
     execjs (2.7.0)
     extendmatrix (0.4)
     factory_bot (6.1.0)
@@ -603,6 +607,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  MailchimpMarketing
   after_party
   annotate
   auto_strip_attributes (~> 2.5)
