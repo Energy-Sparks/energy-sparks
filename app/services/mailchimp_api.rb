@@ -3,6 +3,8 @@ require 'MailchimpMarketing'
 class MailchimpApi
   class Error < StandardError; end
 
+  MAX_RESULTS = 50
+
   def initialize(client = nil)
     @client = client
   end
@@ -13,12 +15,12 @@ class MailchimpApi
   end
 
   def categories(list_id)
-    categories = client.lists.get_list_interest_categories(list_id)
+    categories = client.lists.get_list_interest_categories(list_id, count: MAX_RESULTS)
     categories['categories'].map { |category| OpenStruct.new(category) }
   end
 
   def interests(list_id, category_id)
-    interests = client.lists.list_interest_category_interests(list_id, category_id)
+    interests = client.lists.list_interest_category_interests(list_id, category_id, count: MAX_RESULTS)
     interests['interests'].map { |interest| OpenStruct.new(interest) }
   end
 
