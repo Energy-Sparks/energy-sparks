@@ -1,5 +1,5 @@
 class MailchimpTags
-  DEFAULT_HIGH_FSM_LIMIT = 13
+  DEFAULT_HIGH_FSM_LIMIT = 30
 
   def initialize(school)
     @school = school
@@ -7,7 +7,7 @@ class MailchimpTags
 
   def tags
     ret = []
-    if @school.percentage_free_school_meals && (@school.percentage_free_school_meals > high_fsm_limit)
+    if @school.percentage_free_school_meals && (@school.percentage_free_school_meals >= high_fsm_limit)
       ret << 'High FSM'
     end
     ret.join(',')
