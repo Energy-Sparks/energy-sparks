@@ -7,6 +7,7 @@
 Sitemap: https://energysparks.uk/sitemap.xml.gz
 
 Disallow: /admin/
+Disallow: /schools/*/analysis/*
 
 User-agent: SemrushBot
 Disallow: /
