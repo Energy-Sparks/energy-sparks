@@ -26,20 +26,20 @@ module Amr
       expect {
         SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings).perform
       }.to change { Meter.count }.by(3)
-      expect(Meter.solar_pv.last.mpan_mprn).to eq(expected_solar_pv_mpan)
-      expect(Meter.electricity.last.mpan_mprn).to eq(expected_electricity_mpan)
-      expect(Meter.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
+      expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
+      expect(solar_edge_installation.meters.electricity.last.mpan_mprn).to eq(expected_electricity_mpan)
+      expect(solar_edge_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
     end
 
     it 'creates amr readings' do
       expect {
         SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings).perform
       }.to change { AmrDataFeedReading.count }.by(6)
-      amr_reading = Meter.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
+      amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
       expect(amr_reading.readings[0]).to eq('2.0')
-      amr_reading = Meter.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
+      amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
       expect(amr_reading.readings[0]).to eq('4.0')
-      amr_reading = Meter.find_by_mpan_mprn(expected_exported_solar_pv_mpan).amr_data_feed_readings.last
+      amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_exported_solar_pv_mpan).amr_data_feed_readings.last
       expect(amr_reading.readings[0]).to eq('6.0')
     end
 
