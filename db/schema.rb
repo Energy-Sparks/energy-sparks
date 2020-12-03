@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_26_172723) do
+ActiveRecord::Schema.define(version: 2020_12_01_145927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -763,10 +763,12 @@ ActiveRecord::Schema.define(version: 2020_11_26_172723) do
     t.text "meter_serial_number"
     t.bigint "low_carbon_hub_installation_id"
     t.boolean "pseudo", default: false
+    t.bigint "solar_edge_installation_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
+    t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
   end
 
   create_table "newsletters", force: :cascade do |t|
@@ -1046,6 +1048,19 @@ ActiveRecord::Schema.define(version: 2020_11_26_172723) do
     t.index ["alert_subscription_event_id"], name: "index_sms_records_on_alert_subscription_event_id"
   end
 
+  create_table "solar_edge_installations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.text "site_id"
+    t.text "api_key"
+    t.text "mpan"
+    t.json "information", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_config_id"], name: "index_solar_edge_installations_on_amr_data_feed_config_id"
+    t.index ["school_id"], name: "index_solar_edge_installations_on_school_id"
+  end
+
   create_table "solar_pv_tuos_readings", force: :cascade do |t|
     t.bigint "area_id", null: false
     t.text "gsp_name"
@@ -1238,6 +1253,7 @@ ActiveRecord::Schema.define(version: 2020_11_26_172723) do
   add_foreign_key "meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "schools", on_delete: :cascade
+  add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
@@ -1277,6 +1293,8 @@ ActiveRecord::Schema.define(version: 2020_11_26_172723) do
   add_foreign_key "simulations", "schools", on_delete: :cascade
   add_foreign_key "simulations", "users", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
+  add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
+  add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
