@@ -9,7 +9,7 @@
 #  id                                  :bigint(8)        not null, primary key
 #  pupil_analysis_charts               :json             not null
 #  school_id                           :bigint(8)        not null
-#  storage_heater_dashboard_chart_type :integer          default("no_storaage_heater_chart"), not null
+#  storage_heater_dashboard_chart_type :integer          default("no_storage_heater_chart"), not null
 #  updated_at                          :datetime         not null
 #
 # Indexes
@@ -26,7 +26,8 @@ module Schools
     belongs_to :school
 
     NO_GAS_CHART = :no_gas_chart
-    NO_STORAGE_HEATER_CHART = :no_storaage_heater_chart
+    NO_ELECTRICITY_CHART = :no_electricity_chart
+    NO_STORAGE_HEATER_CHART = :no_storage_heater_chart
     TEACHERS_GAS_SIMPLE = :teachers_landing_page_gas_simple
     TEACHERS_GAS = :teachers_landing_page_gas
     TEACHERS_ELECTRICITY = :teachers_landing_page_electricity
@@ -36,6 +37,7 @@ module Schools
     TEACHERS_DASHBOARD_CHARTS = [TEACHERS_GAS_SIMPLE, TEACHERS_GAS, TEACHERS_ELECTRICITY, TEACHERS_STORAGE_HEATERS, TEACHERS_STORAGE_HEATERS_SIMPLE].freeze
 
     enum gas_dashboard_chart_type: [NO_GAS_CHART, TEACHERS_GAS_SIMPLE, TEACHERS_GAS]
+    enum electricity_dashboard_chart_type: [NO_ELECTRICITY_CHART, TEACHERS_ELECTRICITY]
     enum storage_heater_dashboard_chart_type: [NO_STORAGE_HEATER_CHART, TEACHERS_STORAGE_HEATERS_SIMPLE, TEACHERS_STORAGE_HEATERS]
 
 
