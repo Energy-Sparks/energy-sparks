@@ -3,14 +3,14 @@
     <h2>Have your energy saving actions made a difference?</h2>
     <ul class="nav nav-pills nav-fill mt-3">
       <% if school.configuration %>
-        <% if school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :group_by_week_electricity) %>
+        <% if school.configuration.can_show_analysis_chart?(:analysis_charts, :electricity_detail, :management_dashboard_group_by_week_electricity) %>
           <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Look at your electricity data', school_electricity_detail_path(school, anchor: 'chart_wrapper_group_by_week_electricity'), class: 'nav-link btn btn-info' %>
+            <%= link_to 'Look at your electricity data', school_electricity_detail_path(school, anchor: 'chart_wrapper_management_dashboard_group_by_week_electricity'), class: 'nav-link btn btn-info' %>
           </li>
         <% end %>
-        <% if school.configuration.can_show_analysis_chart?(:analysis_charts, :gas_detail, :group_by_week_gas) %>
+        <% if school.configuration.can_show_analysis_chart?(:analysis_charts, :gas_detail, :management_dashboard_group_by_week_gas) %>
           <li class="nav-item mr-2 ml-2 mb-2">
-            <%= link_to 'Look at your gas data', school_gas_detail_path(school, anchor: 'chart_wrapper_group_by_week_gas'), class: 'nav-link btn btn-info' %>
+            <%= link_to 'Look at your gas data', school_gas_detail_path(school, anchor: 'chart_wrapper_management_dashboard_group_by_week_gas'), class: 'nav-link btn btn-info' %>
           </li>
         <% end %>
       <% end %>
