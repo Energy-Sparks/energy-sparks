@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs" id="management-energy-overview" role="tablist">
   <% overview_charts.each_with_index do |(energy, chart_config), index| %>
     <li class="nav-item">
-      <a class="nav-link <%='active' if index == 0 %>" id="<%= energy %>-tab" data-toggle="tab" href="#<%= energy  %>-overview" role="tab" aria-controls="<%= energy %>-overview" aria-selected="true">Annual <%= energy.to_s.humanize.downcase %> overview</a>
+      <a class="nav-link <%='active' if index == 0 %>" id="<%= energy %>-tab" data-toggle="tab" href="#<%= energy  %>-overview" role="tab" aria-controls="<%= energy %>-overview" aria-selected="true"><%= energy.to_s.humanize %> overview</a>
     </li>
   <% end %>
 </ul>
