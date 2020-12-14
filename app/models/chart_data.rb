@@ -39,8 +39,8 @@ class ChartData
   rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false
   rescue => e
-    Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@school.name} - #{e.message}"
-    Rollbar.error(e, school_id: @school.id, school_name: @school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
+    Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@aggregated_school.name} - #{e.message}"
+    Rollbar.error(e, school_name: @aggregated_school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
     false
   end
 
