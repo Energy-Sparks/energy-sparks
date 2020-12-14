@@ -24,7 +24,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @school_batch_run.school_batch_run_log_entries.each do |entry| %>
+  <% @school_batch_run.school_batch_run_log_entries.by_date.each do |entry| %>
     <tr>
       <td><%= nice_date_times(entry.created_at) %></td>
       <td><%= entry.message %></td>
