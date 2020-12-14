@@ -84,6 +84,7 @@ class School < ApplicationRecord
   has_many :analysis_pages, through: :content_generation_runs
 
   has_many :low_carbon_hub_installations, inverse_of: :school
+  has_many :solar_edge_installations, inverse_of: :school
 
   has_many :equivalences
 
