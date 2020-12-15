@@ -42,6 +42,18 @@ module Schools
       end
     end
 
+    describe 'displayable charts' do
+      it 'returns suitable electricity chart symbols in order' do
+        expect(Configuration.displayable_electricity_dashboard_chart_types).to eq([:teachers_landing_page_electricity])
+      end
+      it 'returns suitable gas chart symbols in order' do
+        expect(Configuration.displayable_gas_dashboard_chart_types).to eq([:teachers_landing_page_gas, :teachers_landing_page_gas_simple])
+      end
+      it 'returns suitable storage heater chart symbols in order' do
+        expect(Configuration.displayable_storage_heater_dashboard_chart_types).to eq([:teachers_landing_page_storage_heaters, :teachers_landing_page_storage_heaters_simple])
+      end
+    end
+
     describe '#can_show_analysis_chart?' do
       it 'returns true if the chart is configured' do
         configuration = Configuration.create(school: school, analysis_charts: page_config)
