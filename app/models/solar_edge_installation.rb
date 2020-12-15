@@ -1,5 +1,5 @@
 class SolarEdgeInstallation < ApplicationRecord
-  belongs_to :school, inverse_of: :low_carbon_hub_installations
+  belongs_to :school, inverse_of: :solar_edge_installations
   belongs_to :amr_data_feed_config
 
   has_many :meters

@@ -6,10 +6,6 @@ module Schools
     let!(:school)     { create(:school, :with_school_group) }
     let(:chart_data) { instance_double(ChartData) }
 
-    before(:each) do
-      allow(ChartData).to receive(:new).and_return(chart_data)
-    end
-
     context 'electricity dashboard chart configuration' do
       let(:fuel_configuration) { FuelConfiguration.new(fuel_types_for_analysis: :electric_and_gas, has_electricity: true, has_gas: true) }
 
@@ -19,6 +15,14 @@ module Schools
         allow(chart_data).to receive(:has_chart_data?).and_return(true)
         chart_type = GenerateElectricityDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
         expect(chart_type).to eq Schools::Configuration::TEACHERS_ELECTRICITY
+      end
+
+      it 'returns no_electricity_chart if teachers chart not possible' do
+        chart_data = instance_double(ChartData)
+        expect(ChartData).to receive(:new).once.and_return(chart_data)
+        allow(chart_data).to receive(:has_chart_data?).and_return(false)
+        chart_type = GenerateElectricityDashboardChartConfiguration.new(school, nil, fuel_configuration).generate
+        expect(chart_type).to eq Schools::Configuration::NO_ELECTRICITY_CHART
       end
     end
 
