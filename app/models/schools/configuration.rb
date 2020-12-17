@@ -44,6 +44,18 @@ module Schools
     delegate :has_electricity, :has_gas, :has_storage_heaters, :has_solar_pv, :fuel_types_for_analysis, :dual_fuel,
       to: :fuel_configuration
 
+    def self.displayable_electricity_dashboard_chart_types
+      electricity_dashboard_chart_types.keys.reverse.map(&:to_sym).excluding(NO_ELECTRICITY_CHART)
+    end
+
+    def self.displayable_gas_dashboard_chart_types
+      gas_dashboard_chart_types.keys.reverse.map(&:to_sym).excluding(NO_GAS_CHART)
+    end
+
+    def self.displayable_storage_heater_dashboard_chart_types
+      storage_heater_dashboard_chart_types.keys.reverse.map(&:to_sym).excluding(NO_STORAGE_HEATER_CHART)
+    end
+
     def fuel_configuration
       FuelConfiguration.new(**super.symbolize_keys)
     end
