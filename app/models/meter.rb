@@ -55,7 +55,7 @@ class Meter < ApplicationRecord
   validates_uniqueness_of :mpan_mprn
 
   validates_format_of :mpan_mprn, with: /\A[6,7,9]\d{13}\Z/, if: :pseudo?, message: 'for pseudo electricity meters should be a 14 digit number starting with 6, 7 or 9'
-  validates_format_of :mpan_mprn, with: /\A[6,7,9]?[1-3]\d{12}\Z/, if: :real_electric?, message: 'for electricity meters should be a 13 or 14 digit number starting with 1-3, 6, 7 or 9'
+  validates_format_of :mpan_mprn, with: /\A[1-9]{1,3}\d{12}\Z/, if: :real_electric?, message: 'for electricity meters should be a 13 to 14 digit number'
   validates_format_of :mpan_mprn, with: /\A\d{1,10}\Z/, if: :gas?, message: 'for gas meters should be a 1-10 digit number'
 
   def self.hash_of_meter_data
