@@ -41,4 +41,13 @@ describe ApplicationHelper do
       expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq nice_date_times(last_sign_in_at)
     end
   end
+
+  describe 'other_field_name' do
+    it 'makes a name from wordy category title' do
+      expect(helper.other_field_name('Local authority')).to eq('OTHER_LA')
+    end
+    it 'makes a name from abbreviated category title' do
+      expect(helper.other_field_name('MAT')).to eq('OTHER_MAT')
+    end
+  end
 end

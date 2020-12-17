@@ -59,26 +59,28 @@ describe MailchimpApi do
     let(:email_address) { 'john@comp.school' }
     let(:user_name) { 'john' }
     let(:school_name) { 'Comp' }
-    let(:interests) { { "123" => "abc", "456" => "def"} }
+    let(:interests) { { '123' => 'abc', '456' => 'def'} }
     let(:tags) { '  one,  two  ' }
 
     let(:expected_opts) { { skip_merge_validation: true } }
-    let(:expected_interests) { {"abc" => true, "def" => true} }
+    let(:expected_interests) { {'abc' => true, 'def' => true} }
     let(:expected_tags) { ['one','two'] }
 
-    let(:params) { {email_address: email_address, user_name: user_name, school_name: school_name, interests: interests, tags: tags} }
+    let(:merge_fields) { {'FULLNAME' => user_name, 'SCHOOL' => school_name} }
 
     let(:expected_body) do
       {
-        "email_address": email_address,
-        "status": "subscribed",
-        "merge_fields":
-          { "MMERGE7": user_name,
-            "MMERGE8": school_name },
-        "interests": expected_interests,
-        "tags": expected_tags
+        'email_address': email_address,
+        'status': 'subscribed',
+        'merge_fields':
+          { 'FULLNAME' => user_name,
+            'SCHOOL' => school_name },
+        'interests': expected_interests,
+        'tags': expected_tags
       }
     end
+
+    let(:params) { MailchimpSignupParams.new(email_address: email_address, tags: tags, interests: interests, merge_fields: merge_fields) }
 
     it 'subscribes a user with email address and interests' do
       expect(lists_api).to receive(:add_list_member).with(list_id, expected_body, expected_opts).and_return(true)
