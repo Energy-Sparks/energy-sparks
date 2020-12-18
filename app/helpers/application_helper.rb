@@ -214,4 +214,13 @@ module ApplicationHelper
   def warnings_from_warning_types(warning_types)
     warning_types.map { |w| AmrReadingData::WARNINGS[AmrReadingWarning::WARNINGS[w]] }.join(', ')
   end
+
+  def other_field_name(category_title)
+    words = category_title.upcase.split
+    if words.size > 1
+      'OTHER_' + words.map(&:first).join
+    else
+      'OTHER_' + words.first
+    end
+  end
 end

@@ -142,5 +142,21 @@ RSpec.describe "analysis page", type: :system do
       end
     end
 
+    context 'when viewing page with error' do
+
+      before(:each) do
+        # content will raise error
+        adapter = double(:adapter)
+        allow(Alerts::FrameworkAdapter).to receive(:new).and_return(adapter)
+        allow(adapter).to receive(:content).and_raise(EnergySparksNoMeterDataAvailableForFuelType.new('broken alert'))
+      end
+
+      it 'shows message' do
+        visit school_analysis_path(school, school.latest_analysis_pages.last)
+        expect(page).to have_content('Analysis page raised error: broken alert')
+        expect(page).to have_link('Back')
+      end
+    end
+
   end
 end

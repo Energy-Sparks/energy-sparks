@@ -35,7 +35,7 @@ class MailchimpApi
   end
 
   def subscribe(list_id, params)
-    body = format_body(params)
+    body = format_body(params.email_address, params.tags, params.interests, params.merge_fields)
     opts = format_opts
     client.lists.add_list_member(list_id, body, opts)
   rescue ArgumentError => error
@@ -50,16 +50,13 @@ class MailchimpApi
     @client ||= Rails.configuration.mailchimp_client
   end
 
-  def format_body(params, status = "subscribed")
+  def format_body(email, tags, interests, merge_fields, status = "subscribed")
     {
-      "email_address": params[:email_address],
+      "email_address": email,
       "status": status,
-      "merge_fields": {
-        "MMERGE7": params[:user_name],
-        "MMERGE8": params[:school_name]
-      },
-      "interests": format_interests(params[:interests]),
-      "tags": format_tags(params[:tags])
+      "merge_fields": merge_fields,
+      "interests": format_interests(interests),
+      "tags": format_tags(tags)
     }
   end
 

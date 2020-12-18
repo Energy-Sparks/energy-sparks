@@ -4,17 +4,17 @@
 
   <br/>
 
-  <%= form_tag mailchimp_signups_path do %>
+  <%= form_tag mailchimp_signups_path, class: 'mailchimp-form' do %>
 
     <%= hidden_field_tag :list_id, list.id %>
-    <%= hidden_field_tag :tags, config[:tags] %>
+    <%= hidden_field_tag :tags, config.tags %>
 
     <div class="mc-field-group form-group row">
       <div class="col-sm-3">
         <%= label_tag :user_name, 'User name *' %>
       </div>
       <div class="col-sm-9">
-        <%= text_field_tag :user_name, config[:user_name], class: 'form-control', required: true %>
+        <%= text_field_tag "merge_fields[FULLNAME]", config.user_name, class: 'form-control', required: true %>
       </div>
     </div>
 
@@ -23,7 +23,7 @@
         <%= label_tag 'School name (if appropriate)' %>
       </div>
       <div class="col-sm-9">
-        <%= text_field_tag :school_name, config[:school_name], class: 'form-control'  %>
+        <%= text_field_tag "merge_fields[SCHOOL]", config.school_name, class: 'form-control'  %>
       </div>
     </div>
 
@@ -32,7 +32,7 @@
         <%= label_tag :email_address, 'Email address *' %>
       </div>
       <div class="col-sm-9">
-        <%= text_field_tag :email_address, config[:email_address], class: 'form-control', required: true %>
+        <%= text_field_tag :email_address, config.email_address, class: 'form-control', required: true %>
       </div>
     </div>
 
@@ -42,17 +42,20 @@
           <%= label_tag "interests[#{category.id}]", "#{category.title} *" %>
         </div>
         <div class="col-sm-9">
-            <% category.interests.each do |interest| %>
-              <div class="form-check">
-                <%= radio_button_tag "interests[#{category.id}]", interest.id, false, class: "form-check-input", required: true %>
-                <%= label_tag "interests_#{category.id}_#{interest.id}", interest.name, value: interest.name, class: "form-check-label" %>
-              </div>
+          <% category.interests.each do |interest| %>
+            <div class="form-check">
+              <%= radio_button_tag "interests[#{category.id}]", interest.id, false, class: "form-check-input", required: true %>
+              <%= label_tag "interests_#{category.id}_#{interest.id}", interest.name, value: interest.name, class: "form-check-label" %>
+            </div>
+            <% if interest.name == 'Other' %>
+              <%= text_field_tag "merge_fields[#{other_field_name(category.title)}]", '', class: 'form-control', placeholder: 'Please specify', class: 'hidden' %>
             <% end %>
+          <% end %>
         </div>
       </div>
     <% end %>
 
-      <%= submit_tag "Subscribe", class: 'btn btn-success' %>
+    <%= submit_tag "Subscribe", class: 'btn btn-success' %>
 
   <% end %>
 
