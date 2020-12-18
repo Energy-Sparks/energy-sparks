@@ -11,6 +11,10 @@
     <% if @list %>
       <h1>Sign up to the Energy Sparks newsletter</h1>
       <%= render 'mailchimp_form', list: @list, config: @config %>
+    <% else %>
+      <p>
+        <%= link_to 'Home', root_path, class: 'btn btn-small btn-primary' %>
+      </p>
     <% end %>
 
   </div>
