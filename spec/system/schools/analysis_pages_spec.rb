@@ -142,5 +142,32 @@ RSpec.describe "analysis page", type: :system do
       end
     end
 
+    context 'when viewing page with error' do
+
+      before(:each) do
+        # store page from previous content
+        @old_page = school.latest_analysis_pages.last
+        # generate new content
+        Alerts::GenerateContent.new(school).perform
+        # content will raise error
+        adapter = double(:adapter)
+        allow(Alerts::FrameworkAdapter).to receive(:new).and_return(adapter)
+        allow(adapter).to receive(:content).and_raise(EnergySparksNoMeterDataAvailableForFuelType.new('broken alert'))
+      end
+
+      it 'handles old analysis page with redirect to index and error message' do
+        expect(school.latest_analysis_pages.include?(@old_page)).to be false
+        visit school_analysis_path(school, @old_page)
+        expect(page).to have_content("Analysis for #{school.name}")
+        expect(page).to have_content('Old analysis page raised error: broken alert')
+      end
+
+      it 'handles current analysis page by reraising error so that it gets logged' do
+        expect {
+          visit school_analysis_path(school, school.latest_analysis_pages.last)
+        }.to raise_error(EnergySparksNoMeterDataAvailableForFuelType)
+      end
+    end
+
   end
 end

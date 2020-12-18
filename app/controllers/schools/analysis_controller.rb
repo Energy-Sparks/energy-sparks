@@ -34,6 +34,14 @@ module Schools
         # old-style analysis tab name, redirect back to main page
         redirect_to school_analysis_index_path(@school), status: :moved_permanently
       end
+    rescue => e
+      if @school.latest_analysis_pages.include?(@page)
+        # analysis is in current set, so error is unexpected
+        raise
+      else
+        # analysis is old, so handle error and continue
+        redirect_to school_analysis_index_path(@school), notice: "Old analysis page raised error: #{e.message}"
+      end
     end
 
   private
