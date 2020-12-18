@@ -2,9 +2,9 @@ class MailchimpSignupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def new
-    @list = mailchimp_api.list_with_interests
     @config = mailchimp_signup_params(params)
     @onboarding_complete = params[:onboarding_complete]
+    @list = mailchimp_api.list_with_interests
   rescue => e
     flash[:error] = 'Mailchimp API is not configured'
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
