@@ -34,17 +34,19 @@ module Schools
         # old-style analysis tab name, redirect back to main page
         redirect_to school_analysis_index_path(@school), status: :moved_permanently
       end
-    rescue => e
-      if @school.latest_analysis_pages.include?(@page)
-        # analysis is in current set, so error is unexpected
-        raise
-      else
-        # analysis is old, so handle error and continue
-        redirect_to school_analysis_index_path(@school), notice: "Old analysis page raised error: #{e.message}"
-      end
+    rescue => error
+      log_error_if_current_page(error, @school, @page)
+      flash[:error] = "Analysis page raised error: #{error.message}"
     end
 
   private
+
+    def log_error_if_current_page(error, school, page)
+      if school.latest_analysis_pages.include?(page)
+        Rails.logger.error("#{error.message} for #{school.name}")
+        Rollbar.error(error, school_id: school.id, school_name: school.name)
+      end
+    end
 
     def load_page_and_alert_type
       @page = @school.analysis_pages.find(params[:id])
