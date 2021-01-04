@@ -16,7 +16,7 @@
   <div class="upload-preview">
     <div class="col-md-3">
       <% if !f.object.image.blank? %>
-        <%= image_tag f.object.image %>
+        <%= image_tag f.object.image, width: '300px' %>
       <% else %>
         <%= image_tag '1x1.png' %>
       <% end %>
