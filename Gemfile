@@ -22,8 +22,8 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.8.10'
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'Xmas-2020', ref: 'f59f3a454ea738e4b9a4a1a11c26ddba5d110957'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.9.0'
+# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'Xmas-2020', ref: 'f59f3a454ea738e4b9a4a1a11c26ddba5d110957'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
