@@ -14,16 +14,18 @@
   <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
 
   <div class="upload-preview">
-    <p>
-      <% if !f.object.image.blank? %>
-        <%= image_tag f.object.image, width: 300 %>
+    <div class="col-md-3">
+      <% if f.object.image.blank? %>
+        <%= image_tag f.object.image %>
       <% else %>
         <%= image_tag '1x1.png' %>
       <% end %>
-    </p>
+    </div>
   </div>
 
-  <%= f.input :image, label: false %>
+  <p>
+    <%= f.input :image, label: false %>
+  </p>
 
   <div class="download-links-trix-editor">
     <%= f.label 'Download links', for: :download_links %>
