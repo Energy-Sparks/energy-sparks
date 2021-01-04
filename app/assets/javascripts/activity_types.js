@@ -10,7 +10,6 @@ $(document).ready(function() {
     if (this.files) {
       var reader = new FileReader();
       reader.onload = function(e){
-        $(".upload-preview img").attr("width", '300px');
         $(".upload-preview img").attr("src", e.target.result);
       };
       reader.readAsDataURL(this.files[0]);
