@@ -31,7 +31,7 @@
   </div>
   <div class="col-md-3 pt-2">
     <% if !@activity_type.image.blank? %>
-      <p><%= image_tag @activity_type.image, width: 300, height: 200 %></p>
+      <p><%= image_tag @activity_type.image %></p>
     <% end %>
     <div class="activity_type">
       <% if !@activity_type.download_links.blank? %>

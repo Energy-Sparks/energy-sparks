@@ -31,6 +31,10 @@ module EnergySparks
     config.middleware.use Rack::Attack
     config.middleware.use Rack::XRobotsTag
 
+    # uploaded SVG files are served as octet stream by default for security
+    # this will remove them from the list of binary file types, but is a slight risk
+    config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
+
     config.after_initialize do
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
