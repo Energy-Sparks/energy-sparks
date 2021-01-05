@@ -12,13 +12,20 @@
 
   <%= f.label 'Image' %>
   <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
-  <% if !f.object.image.blank? %>
-    <div class="upload-preview">
-      <p><%= image_tag f.object.image, width: 300, height: 200 %></p>
-    </div>
-  <% end %>
 
-  <%= f.input :image, label: false, hint: "Please use an image with a width of 300 pixels and a height of 200 pixels" %>
+  <div class="upload-preview">
+    <div class="col-md-3">
+      <% if !f.object.image.blank? %>
+        <%= image_tag f.object.image, width: '300px' %>
+      <% else %>
+        <%= image_tag '1x1.png' %>
+      <% end %>
+    </div>
+  </div>
+
+  <p>
+    <%= f.input :image, label: false %>
+  </p>
 
   <div class="download-links-trix-editor">
     <%= f.label 'Download links', for: :download_links %>
