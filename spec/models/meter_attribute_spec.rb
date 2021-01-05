@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 describe MeterAttribute do
+
+  describe 'validation' do
+
+    let(:meter) { build(:electricity_meter) }
+
+    it 'validates input data' do
+      expect {
+        MeterAttribute.create!(attribute_type: :function_switch, input_data: 'not_a_value', meter: meter)
+      }.to raise_error(ActiveRecord::RecordInvalid, /Invalid value/)
+    end
+  end
+
   describe '.to_analytics' do
 
     it 'aggregates attributes that have an aggregation key' do
