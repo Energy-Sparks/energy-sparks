@@ -31,7 +31,7 @@ module Equivalences
       equivalence_types << EquivalenceType.gas if @school.has_gas?
       equivalence_types << EquivalenceType.electricity if @school.has_electricity?
       equivalence_types << EquivalenceType.solar_pv if @school.has_solar_pv?
-      equivalence_types << EquivalenceType.storage_heater if @school.has_storage_heaters?
+      equivalence_types << EquivalenceType.storage_heaters if @school.has_storage_heaters?
       equivalence_types.flatten
     end
   end
