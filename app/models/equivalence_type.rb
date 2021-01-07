@@ -13,7 +13,7 @@
 class EquivalenceType < ApplicationRecord
   has_many :content_versions, class_name: 'EquivalenceTypeContentVersion'
 
-  enum meter_type: [:electricity, :gas]
+  enum meter_type: [:electricity, :gas, :solar_pv, :storage_heaters]
   enum time_period: {
     last_week: 10,
     last_school_week: 15,
