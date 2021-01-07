@@ -11,7 +11,11 @@ class MailchimpApi
 
   def lists
     lists = client.lists.get_all_lists
-    lists['lists'].map { |list| OpenStruct.new(list) }
+    if lists.empty?
+      []
+    else
+      lists['lists'].map { |list| OpenStruct.new(list) }
+    end
   end
 
   def categories(list_id)
@@ -26,11 +30,13 @@ class MailchimpApi
 
   def list_with_interests
     list = lists.first
-    list_categories = categories(list.id)
-    list_categories.each do |category|
-      category.interests = interests(list.id, category.id)
+    if list
+      list_categories = categories(list.id)
+      list_categories.each do |category|
+        category.interests = interests(list.id, category.id)
+      end
+      list.categories = list_categories
     end
-    list.categories = list_categories
     list
   end
 

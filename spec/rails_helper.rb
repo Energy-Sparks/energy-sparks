@@ -1,4 +1,6 @@
 require 'simplecov'
+require 'support/mailchimp_marketing/mock_client'
+
 SimpleCov.start 'rails'
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

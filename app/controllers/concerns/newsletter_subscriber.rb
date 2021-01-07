@@ -6,7 +6,7 @@ module NewsletterSubscriber
   def subscribe_newsletter(school, user)
     @list = mailchimp_api.list_with_interests
     @config = mailchimp_signup_params(school, user)
-    if @config.valid?
+    if @list && @config.valid?
       begin
         mailchimp_api.subscribe(@list.id, @config)
       rescue MailchimpApi::Error => e

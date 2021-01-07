@@ -15,7 +15,7 @@ module Schools
       @staff = User.new_staff(@school, staff_params)
       if @staff.save
         create_alert_contact(@school, @staff) if auto_create_alert_contact?
-        subscribe_newsletter(@school, @school_admin) if auto_subscribe_newsletter?
+        subscribe_newsletter(@school, @staff) if auto_subscribe_newsletter?
         redirect_to school_users_path(@school)
       else
         render :new
