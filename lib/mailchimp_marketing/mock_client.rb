@@ -10,4 +10,3 @@ module MailchimpMarketing
     end
   end
 end
-
