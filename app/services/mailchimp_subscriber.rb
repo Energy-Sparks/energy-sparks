@@ -21,7 +21,7 @@ class MailchimpSubscriber
     MailchimpSignupParams.new(
       email_address: user.email,
       tags: MailchimpTags.new(school).tags,
-      interests: find_interests(school, list),
+      interests: find_interests(school, user, list),
       merge_fields: {
         'FULLNAME' => user.name,
         'SCHOOL' => school.name,
@@ -29,12 +29,15 @@ class MailchimpSubscriber
     )
   end
 
-  def find_interests(school, list)
+  def find_interests(school, user, list)
     ret = {}
-    if school.school_group
+    items = []
+    items << school.school_group.name if school.school_group
+    items << user.staff_role.title if user.staff_role
+    unless items.empty?
       list.categories.each do |category|
         category.interests.each do |interest|
-          if interest.name == school.school_group.name
+          if items.include?(interest.name)
             ret[interest.id] = interest.id
           end
         end
