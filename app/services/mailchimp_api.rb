@@ -38,6 +38,8 @@ class MailchimpApi
       list.categories = list_categories
     end
     list
+  rescue => e
+    raise MailchimpApi::Error.new(e.message)
   end
 
   def subscribe(list_id, params)

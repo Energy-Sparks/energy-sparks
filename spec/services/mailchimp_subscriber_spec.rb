@@ -26,7 +26,7 @@ describe MailchimpSubscriber do
       params = MailchimpSubscriber.new(api).mailchimp_signup_params(school, user, list_with_interests)
       expect(params.email_address).to eq(user.email)
       expect(params.tags).to eq('FSM25')
-      expect(params.interests).to eq({'abc444' => true})
+      expect(params.interests).to eq({'abc444' => 'abc444'})
       expect(params.merge_fields['SCHOOL']).to eq(school.name)
       expect(params.merge_fields['FULLNAME']).to eq(user.name)
     end
