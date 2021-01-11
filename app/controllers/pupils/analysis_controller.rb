@@ -1,11 +1,8 @@
 module Pupils
-  class AnalysisController < ApplicationController
-    load_and_authorize_resource :school
-
+  class AnalysisController < BaseController
     include SchoolAggregation
     include Measurements
 
-    skip_before_action :authenticate_user!
     before_action :check_aggregated_school_in_cache
 
     def index
