@@ -1,10 +1,8 @@
 module Pupils
-  class SchoolsController < ApplicationController
+  class SchoolsController < BaseController
     include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
     include DashboardAlerts
-
-    load_and_authorize_resource
 
     def show
       authorize! :show_pupils_dash, @school

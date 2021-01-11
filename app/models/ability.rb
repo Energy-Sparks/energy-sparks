@@ -10,9 +10,11 @@ class Ability
     can :read, ActivityCategory
     can :show, ActivityType
     can :index, School
-    can :read, SchoolGroup
     can :show, School, visible: true
     can :usage, School, visible: true
+    can :show_pupils_dash, School, visible: true
+    can :suggest_activity, School, visible: true
+    can :read, SchoolGroup
     can :read, Scoreboard
     can :read, FindOutMore
     can :read, Observation
@@ -72,7 +74,6 @@ class Ability
       end
     elsif user.staff? || user.volunteer? || user.pupil?
       can :manage, Activity, school: { id: user.school_id, visible: true }
-      can [:show_pupils_dash, :suggest_activity], School, id: user.school_id, visible: true
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read_restricted_analysis, School, school_scope
       can :read, [:my_school_menu, :school_downloads]
