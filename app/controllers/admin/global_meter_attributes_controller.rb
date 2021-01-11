@@ -21,6 +21,8 @@ module Admin
         created_by: current_user
       )
       redirect_to admin_global_meter_attributes_path
+    rescue => e
+      redirect_back fallback_location: admin_global_meter_attributes_path, notice: e.message
     end
 
     def show
@@ -47,6 +49,8 @@ module Admin
       )
       meter_attribute.update!(replaced_by: new_attribute)
       redirect_to admin_global_meter_attributes_path
+    rescue => e
+      redirect_back fallback_location: admin_global_meter_attributes_path, notice: e.message
     end
 
     def destroy

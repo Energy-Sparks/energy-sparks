@@ -10,6 +10,8 @@ module AnalyticsAttribute
     scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil).order(created_at: :asc)}
     scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil).order(created_at: :asc)}
 
+    validate :input_data_valid
+
     after_save :invalidate_school_cache_key
   end
 
@@ -27,5 +29,12 @@ module AnalyticsAttribute
 
   def pseudo?(meter_type)
     meter_attribute_type.applicable_attribute_pseudo_meter_types.include?(meter_type.to_sym)
+  end
+
+  def input_data_valid
+    return if input_data.blank?
+    meter_attribute_type.parse(input_data)
+  rescue => e
+    errors.add(:input_data, e.message)
   end
 end
