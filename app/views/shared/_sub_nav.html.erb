@@ -19,6 +19,13 @@
       <% if can?(:regenerate_school_data, school) %>
         <%= link_to "Regenerate", school_batch_runs_path(@school), class: 'badge badge-pill badge-success' %>
       <% end %>
+      <% unless user_signed_in? %>
+        <% if @show_adult_link %>
+          <%= link_to "For Adults", school_path(@school), class: 'badge badge-pill badge-success' %>
+        <% else %>
+          <%= link_to "For Pupils", pupils_school_path(@school), class: 'badge badge-pill badge-success' %>
+        <% end %>
+      <% end %>
     </div>
     <div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavDropdown" aria-controls="subnavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
