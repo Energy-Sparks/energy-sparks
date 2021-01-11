@@ -7,11 +7,15 @@ class MailchimpSubscriber
 
   def subscribe(school, user)
     list = @mailchimp_api.list_with_interests
-    config = mailchimp_signup_params(school, user, list)
-    if list && config.valid?
-      @mailchimp_api.subscribe(list.id, config)
+    if list
+      config = mailchimp_signup_params(school, user, list)
+      if config.valid?
+        @mailchimp_api.subscribe(list.id, config)
+      else
+        raise MailchimpSubscriber::Error.new('Invalid newsletter subscription parameters')
+      end
     else
-      raise Error.new('Mailchimp subscribe failed')
+      raise MailchimpSubscriber::Error.new('Mailchimp API failed')
     end
   rescue MailchimpApi::Error => e
     raise MailchimpSubscriber::Error.new(e)
