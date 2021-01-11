@@ -11,7 +11,18 @@ describe MailchimpApi do
   let!(:categories_data) { YAML.load(File.read('spec/fixtures/mailchimp/categories.yml')) }
   let!(:interests_data) { YAML.load(File.read('spec/fixtures/mailchimp/interests.yml')) }
 
-  context 'when fetching list details' do
+  context 'when no lists' do
+    before do
+      allow(lists_api).to receive(:get_all_lists).and_return([])
+    end
+
+    it 'returns empty' do
+      list = api.list_with_interests
+      expect(list).to be_nil
+    end
+  end
+
+  context 'when lists exist' do
 
     before do
       allow(lists_api).to receive(:get_all_lists).and_return(lists_data)
