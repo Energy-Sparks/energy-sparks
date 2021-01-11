@@ -34,9 +34,9 @@ module Schools
         # old-style analysis tab name, redirect back to main page
         redirect_to school_analysis_index_path(@school), status: :moved_permanently
       end
-    rescue => error
-      log_error_if_current_page(error, @school, @page)
-      flash[:error] = "Analysis page raised error: #{error.message}"
+    rescue => e
+      log_error_if_current_page(e, @school, @page)
+      flash[:error] = "Analysis page raised error: #{e.message}"
     end
 
   private

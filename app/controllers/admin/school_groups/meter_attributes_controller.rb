@@ -22,6 +22,8 @@ module Admin
           created_by: current_user
         )
         redirect_to admin_school_group_meter_attributes_path(@school_group)
+      rescue => e
+        redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
 
       def show
@@ -48,6 +50,8 @@ module Admin
         )
         meter_attribute.update!(replaced_by: new_attribute)
         redirect_to admin_school_group_meter_attributes_path(@school_group)
+      rescue => e
+        redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
 
       def destroy
