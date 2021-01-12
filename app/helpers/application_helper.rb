@@ -223,16 +223,4 @@ module ApplicationHelper
       'OTHER_' + words.first
     end
   end
-
-  def is_pupils_dashboard(school)
-    current_page?(pupils_school_path(school))
-  end
-
-  def is_teachers_dashboard(school)
-    current_page?(teachers_school_path(school))
-  end
-
-  def is_management_dashboard(school)
-    current_page?(management_school_path(school))
-  end
 end
