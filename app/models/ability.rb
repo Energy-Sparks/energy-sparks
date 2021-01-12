@@ -19,6 +19,7 @@ class Ability
     can :read, FindOutMore
     can :read, Observation
     can :read, ProgrammeType
+    can :read_dashboard_menu, School
 
     can :manage, Location, school_id: user.school_id
 
