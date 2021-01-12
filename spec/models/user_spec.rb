@@ -53,7 +53,7 @@ describe User do
         it { is_expected.to be_able_to(action, school) }
       end
 
-      it { is_expected.not_to be_able_to(:suggest_activity, school) }
+      it { is_expected.to be_able_to(:suggest_activity, school) }
       it { is_expected.to be_able_to(:show, school) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
       it { is_expected.to be_able_to(:show, ActivityType.new) }
