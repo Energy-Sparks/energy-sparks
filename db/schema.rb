@@ -1005,6 +1005,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
