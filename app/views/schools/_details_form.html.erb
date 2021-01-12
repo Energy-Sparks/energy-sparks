@@ -54,14 +54,16 @@
 <%= f.input :postcode %>
 <%= f.input :website %>
 
-<h2>Geographic location</h2>
-<p>Leave these blank to have them set from the postcode</p>
-<%= f.input :latitude %>
-<%= f.input :longitude %>
+<% if can?(:manage, :geocoding) %>
+  <h2>Geographic location</h2>
+  <p>Leave these blank to have them set from the postcode</p>
+  <%= f.input :latitude %>
+  <%= f.input :longitude %>
 
-<% if f.object.latitude && f.object.longitude %>
-  <p>
-    <%= link_to 'View on map', "https://www.openstreetmap.org/?mlat=#{f.object.latitude}&mlon=#{f.object.longitude}", target: '_blank' %>
-  </p>
+  <% if f.object.latitude && f.object.longitude %>
+    <p>
+      <%= link_to 'View on map', "https://www.openstreetmap.org/?mlat=#{f.object.latitude}&mlon=#{f.object.longitude}", target: '_blank' %>
+    </p>
+  <% end %>
 <% end %>
 
