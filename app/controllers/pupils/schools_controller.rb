@@ -6,6 +6,8 @@ module Pupils
 
     load_and_authorize_resource
 
+    skip_before_action :authenticate_user!
+
     def show
       authorize! :show_pupils_dash, @school
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.pupil_dashboard, :pupil_dashboard_title, limit: 2)

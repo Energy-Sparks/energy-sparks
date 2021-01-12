@@ -1,6 +1,7 @@
 module Schools
   class SchoolAdminsController < ApplicationController
     include AlertContactCreator
+    include NewsletterSubscriber
 
     load_and_authorize_resource :school
 
@@ -15,6 +16,7 @@ module Schools
       @school_admin = User.new_school_admin(@school, school_admin_params)
       if @school_admin.save
         create_alert_contact(@school, @school_admin) if auto_create_alert_contact?
+        subscribe_newsletter(@school, @school_admin) if auto_subscribe_newsletter?
         redirect_to school_users_path(@school)
       else
         render :new
