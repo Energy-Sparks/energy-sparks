@@ -27,8 +27,8 @@ RSpec.describe "school", type: :system do
     end
 
     expect(page.has_title? 'Pupil dashboard').to be true
-    expect(page.has_content? school_name).to be true
     expect(page.has_link? "Adult dashboard").to be true
+    expect(page.has_content? school_name).to be true
   end
 
   describe 'when logged in' do

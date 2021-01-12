@@ -10,11 +10,11 @@ class Ability
     can :read, ActivityCategory
     can :show, ActivityType
     can :index, School
+    can :read, SchoolGroup
     can :show, School, visible: true
     can :usage, School, visible: true
     can :show_pupils_dash, School, visible: true
     can :suggest_activity, School, visible: true
-    can :read, SchoolGroup
     can :read, Scoreboard
     can :read, FindOutMore
     can :read, Observation
