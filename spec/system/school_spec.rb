@@ -140,6 +140,19 @@ RSpec.describe "school", type: :system do
         expect(page).to have_content "#{school.name} was created on #{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')}"
       end
 
+      it 'can edit lat/lng' do
+        click_on(school_name)
+        click_on('Edit school details')
+
+        fill_in 'Latitude', with: '52.123'
+        fill_in 'Longitude', with: '-1.123'
+        click_on('Update School')
+
+        school.reload
+        expect(school.latitude.to_s).to eq('52.123')
+        expect(school.longitude.to_s).to eq('-1.123')
+      end
+
       it 'can create an active date' do
         click_on(school_name)
         click_on('Edit school details')

@@ -218,4 +218,27 @@ describe School do
     end
   end
 
+  describe 'geolocation' do
+    it 'the school is geolocated on creation' do
+      school = create(:school, latitude: nil, longitude: nil)
+      expect(school.latitude).to_not be nil
+      expect(school.longitude).to_not be nil
+    end
+
+    it 'the school is geolocated if the postcode is changed' do
+      school = create(:school)
+      school.update(latitude: nil, longitude: nil)
+      school.reload
+
+      expect(school.latitude).to be nil
+      expect(school.longitude).to be nil
+
+      school.update(postcode: 'B')
+      school.reload
+
+      expect(school.latitude).to_not be nil
+      expect(school.longitude).to_not be nil
+    end
+
+  end
 end
