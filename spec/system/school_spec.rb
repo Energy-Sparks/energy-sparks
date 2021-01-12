@@ -14,7 +14,7 @@ RSpec.describe "school", type: :system do
     click_on('Schools')
     expect(page.has_content? "Participating Schools").to be true
     click_on(school_name)
-    expect(page.has_link? "For Pupils").to be true
+    expect(page.has_link? "Pupil dashboard").to be true
     expect(page.has_content? school_name).to be true
     expect(page.has_no_content? "Gas").to be true
   end
@@ -23,12 +23,12 @@ RSpec.describe "school", type: :system do
     visit school_path(school)
 
     within('.sub-navbar') do
-      click_on('For Pupils')
+      click_on('Pupil dashboard')
     end
 
     expect(page.has_title? 'Pupil dashboard').to be true
     expect(page.has_content? school_name).to be true
-    expect(page.has_link? "For Adults").to be true
+    expect(page.has_link? "Adult dashboard").to be true
   end
 
   describe 'when logged in' do

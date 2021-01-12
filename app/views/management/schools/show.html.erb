@@ -2,23 +2,15 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <h1>Energy Usage&hellip;</h1>
-</div>
-
-<div class="d-flex justify-content-between align-items-center">
   <div class="h5">
-    <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
-      <%= fa_icon('file-alt') %>
-      Report view
-    <% end %>
-    <% if @school.configuration %>
-      <%= link_to "Review your school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-    <% end %>
     <% if @co2_pages.any? %>
       <% @co2_pages.each do |page| %>
         <%= link_to page.analysis_title , school_analysis_path(@school, page.analysis_page), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       <% end %>
     <% end %>
-    <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+    <% if @school.configuration %>
+      <%= link_to "Review your school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+    <% end %>
   </div>
 </div>
 
@@ -56,4 +48,17 @@
 
 <div class="row padded-row management-energy-saving-actions d-flex justify-content-center mb-3">
   <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-rounded' %>
+</div>
+
+<h2>Data export</h2>
+
+<div class="d-flex justify-content-between align-items-center">
+  <p>The data for your school can be displayed in a simple format for printing, or downloaded in CSV format</p>
+  <div class="h5">
+    <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
+      <%= fa_icon('file-alt') %>
+      Report view
+    <% end %>
+    <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+  </div>
 </div>

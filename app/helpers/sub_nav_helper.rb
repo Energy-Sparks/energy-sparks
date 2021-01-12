@@ -13,4 +13,9 @@ module SubNavHelper
     return false if current_page?(management_school_path(@school))
     can?(:show_management_dash, @school)
   end
+
+  def show_adult_dashboard_button?
+    return false if current_page?(school_path(@school))
+    can?(:show, @school)
+  end
 end
