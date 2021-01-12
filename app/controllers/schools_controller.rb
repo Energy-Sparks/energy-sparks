@@ -111,6 +111,8 @@ private
       :school_type,
       :address,
       :postcode,
+      :latitude,
+      :longitude,
       :website,
       :urn,
       :number_of_pupils,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_10_165357) do
+ActiveRecord::Schema.define(version: 2021_01_12_142347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1002,7 +1002,10 @@ ActiveRecord::Schema.define(version: 2020_12_10_165357) do
     t.boolean "indicated_has_storage_heaters", default: false
     t.integer "percentage_free_school_meals"
     t.date "activation_date"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
