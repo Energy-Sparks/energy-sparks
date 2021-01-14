@@ -52,7 +52,7 @@ class HomeController < ApplicationController
     @partners = Partner.order(:position)
   end
 
-private
+  private
 
   def set_newsletters
     @newsletters = Newsletter.order(published_on: :desc).limit(3)
