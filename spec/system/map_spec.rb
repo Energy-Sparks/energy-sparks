@@ -24,7 +24,7 @@ describe "map", type: :system do
   }
 
   it 'gets the locations in GeoJSON format' do
-    get '/map.json'
+    get '/maps.json'
     parsed_body = JSON.parse(response.body)
     expect(parsed_body).to eq expected_geojson
   end

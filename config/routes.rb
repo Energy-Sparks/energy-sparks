@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
   get 'home-page', to: 'home#show'
-  get 'map', to: 'home#map'
+  get 'maps', to: 'maps#index', as: :maps
   get 'school_statistics', to: 'home#school_statistics'
 
   get 'contact', to: 'home#contact'

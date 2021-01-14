@@ -52,13 +52,6 @@ class HomeController < ApplicationController
     @partners = Partner.order(:position)
   end
 
-  def map
-    respond_to do |format|
-      format.json { render json: encoded_geojson, status: :ok }
-      format.html
-    end
-  end
-
   private
 
   def set_newsletters
@@ -90,23 +83,5 @@ class HomeController < ApplicationController
     else
       school_inactive_path(current_user.school)
     end
-  end
-
-  def point_features
-    geo_factory = RGeo::Cartesian.simple_factory
-    entity_factory = RGeo::GeoJSON::EntityFactory.instance
-
-    School.visible.map do |school|
-      entity_factory.feature(geo_factory.point(school.longitude, school.latitude), 1, schoolName: school.name) if school.longitude
-    end
-  end
-
-  def geojson
-    entity_factory = RGeo::GeoJSON::EntityFactory.instance
-    entity_factory.feature_collection(point_features)
-  end
-
-  def encoded_geojson
-    RGeo::GeoJSON.encode(geojson)
   end
 end
