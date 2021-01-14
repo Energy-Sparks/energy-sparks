@@ -40,6 +40,10 @@ gem 'momentjs-rails'
 # Pagination
 gem 'pagy'
 
+# Geocoding
+gem 'geocoder'
+
+# AWS S3 api
 gem 'aws-sdk-s3'
 
 # Assets for Emails
