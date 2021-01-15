@@ -19,6 +19,8 @@ function fireRequestForJson() {
   function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.schoolName) {
       layer.bindPopup(popupHtml(feature.properties));
+      // show tooltip on hover
+      // layer.bindTooltip(popupHtml(feature.properties)).openTooltip();
     }
   }
 
@@ -43,7 +45,7 @@ function fireRequestForJson() {
   }
 
   $.when(features).done(function() {
-    var map = L.map('geo-json-map').setView([54.9, -2.194200], 6);
+    var map = L.map('geo-json-map').setView([54.9, -2.194200], 5);
 
     // L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -51,14 +53,20 @@ function fireRequestForJson() {
     //   maxZoom: 19
     // }).addTo(map);
 
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
     // L.tileLayer('https://{s}.tile.openstreetmap.fr/{z}/{x}/{y}.png', {
     //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     // }).addTo(map);
 
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
-      maxZoom: 20,
-      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    // L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
+    //   maxZoom: 20,
+    //   attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    // }).addTo(map);
 
     // Add requested external GeoJSON to map
     L.geoJSON(features.responseJSON, {
@@ -67,5 +75,9 @@ function fireRequestForJson() {
         return L.marker(latlng);
       }
     }).addTo(map);
+
+    // geolocate to current location
+    // map.locate({setView: true, maxZoom: 12});
+
   });
 }
