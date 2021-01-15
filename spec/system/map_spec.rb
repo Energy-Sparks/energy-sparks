@@ -22,7 +22,7 @@ describe "map", type: :system do
   # }
 
   it 'gets the locations in GeoJSON format' do
-    get '/maps.json'
+    get '/map.json'
     json = JSON.parse(response.body)
     expect(json['type']).to eq('FeatureCollection')
     expect(json['features'][0]['type']).to eq('Feature')

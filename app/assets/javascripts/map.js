@@ -6,9 +6,12 @@ $(function () {
 
 function fireRequestForJson() {
 
+  var currentPath = window.location.pathname;
+  var dataUrl = window.location.pathname + '.json';
+
   // Add AJAX request for data
   var features = $.ajax({
-    url: '/map.json',
+    url: dataUrl,
     dataType: "json",
     success: console.log("Locations loaded."),
     error: function(xhr) {
