@@ -72,12 +72,14 @@ function fireRequestForJson() {
     // }).addTo(map);
 
     // Add requested external GeoJSON to map
-    L.geoJSON(features.responseJSON, {
+    var markers = L.geoJSON(features.responseJSON, {
       onEachFeature: onEachFeature,
       pointToLayer: function (feature, latlng) {
         return L.marker(latlng);
       }
     }).addTo(map);
+
+    map.fitBounds(markers.getBounds(), {padding: [20,20]});
 
     // geolocate to current location
     // map.locate({setView: true, maxZoom: 12});
