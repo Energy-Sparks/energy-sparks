@@ -44,6 +44,8 @@ class SchoolGroup < ApplicationRecord
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
+  enum school_group_type: [:local_authority, :multi_academy_trust]
+
   validates :name, presence: true
 
   def safe_destroy
