@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
   get 'home-page', to: 'home#show'
-  get 'maps', to: 'maps#index', as: :maps
+  get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
 
   get 'contact', to: 'home#contact'
@@ -42,7 +42,12 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show, :index]
+  resources :school_groups, only: [:show, :index] do
+    member do
+      get :map
+    end
+  end
+
   resources :scoreboards, only: [:show, :index]
 
   resources :onboarding, path: 'school_setup', only: [:show] do

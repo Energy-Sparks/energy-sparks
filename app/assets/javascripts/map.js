@@ -8,7 +8,7 @@ function fireRequestForJson() {
 
   // Add AJAX request for data
   var features = $.ajax({
-    url: '/maps.json',
+    url: '/map.json',
     dataType: "json",
     success: console.log("Locations loaded."),
     error: function(xhr) {
