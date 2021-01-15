@@ -21,9 +21,9 @@ module Maps
       geo_factory = RGeo::Cartesian.simple_factory
       entity_factory = RGeo::GeoJSON::EntityFactory.instance
 
-      @schools.map do |school|
+      @schools.each_with_index.map do |school, idx|
         if school.latitude && school.longitude
-          entity_factory.feature(geo_factory.point(school.longitude, school.latitude), 1, school_details(school))
+          entity_factory.feature(geo_factory.point(school.longitude, school.latitude), idx, school_details(school))
         end
       end
     end
