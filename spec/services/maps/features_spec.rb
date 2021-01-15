@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "map", type: :system do
+describe Maps::Features do
 
   let!(:school)  { create(:school, latitude: 51.34062, longitude: -2.30142) }
 
@@ -22,8 +22,7 @@ describe "map", type: :system do
   # }
 
   it 'gets the locations in GeoJSON format' do
-    get '/map.json'
-    json = JSON.parse(response.body)
+    json = Maps::Features.new([school]).as_json
     expect(json['type']).to eq('FeatureCollection')
     expect(json['features'][0]['type']).to eq('Feature')
     expect(json['features'][0]['geometry']['type']).to eq('Point')

@@ -1,0 +1,42 @@
+<% content_for :page_title, 'Map' %>
+
+<div class="application container">
+
+  <div class="row padded-row">
+    <div class="col-md-8">
+      <h1>Welcome to Energy Sparks schools in  <%= @school_group.name %></h1>
+    </div>
+    <div class="col-md-4">
+      <div class='btn-group float-right'>
+        <%= link_to 'See all schools', map_path, class: 'btn' %>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <p>Energy Sparks currently works with <%= @schools.count %> schools from Bath and NE Somerset. If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <%= link_to 'here', enrol_path %>.</p>
+    </div>
+    <div class="col-md-12">
+      <div class="map" id="geo-json-map"></div>
+    </div>
+  </div>
+
+  <div class="row padded-row">
+    <div class="col-lg-12">
+      <h3>Energy Sparks schools in <%= @school_group.name %></h3>
+    </div>
+  </div>
+  <% @schools.each_slice(3) do |row| %>
+    <div class="row school-card-row">
+      <div class="col-lg-12">
+        <div class="card-deck">
+          <% row.each do |school| %>
+            <%= render partial: 'schools/school_card', locals: {school: school} %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+
+
+
