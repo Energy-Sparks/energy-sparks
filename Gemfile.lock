@@ -1,7 +1,8 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 7e4b0e32d6347de658517c4b746f0eac0f974172
-  tag: 1.9.1
+  revision: 8d9886a993df53c3100eca32944901ca64fe83c3
+  ref: 8d9886a993df53c3100eca32944901ca64fe83c3
+  branch: new-targeting-and-tracking-charts
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -335,7 +336,7 @@ GEM
     mustache (1.1.1)
     nenv (0.3.0)
     net-http-digest_auth (1.4.1)
-    net-http-persistent (4.0.0)
+    net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     netrc (0.11.0)
     nio4r (2.5.4)
