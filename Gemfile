@@ -74,6 +74,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows doe
 gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
 gem 'friendly_id'
 
+# allow env vars to be used in JS
+gem 'gon'
+
 # Sitemap
 gem 'sitemap_generator'
 

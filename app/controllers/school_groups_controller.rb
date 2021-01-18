@@ -11,6 +11,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def map
+    gon.OSDATAHUB_API_KEY = ENV['OSDATAHUB_API_KEY']
+    gon.MAPBOX_API_KEY = ENV['MAPBOX_API_KEY']
+
     @schools = @school_group.schools.visible.order(name: :asc)
     respond_to do |format|
       format.html
