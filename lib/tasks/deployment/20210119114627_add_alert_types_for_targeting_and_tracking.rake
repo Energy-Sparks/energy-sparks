@@ -9,9 +9,9 @@ namespace :after_party do
       fuel_type: :electricity,
       title: "Alert Electricity Target Annual",
       class_name: 'AlertElectricityTargetAnnual',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
-      benchmark: false
+      benchmark: true
     )
 
     AlertType.create!(
@@ -19,9 +19,9 @@ namespace :after_party do
       fuel_type: :gas,
       title: "Alert Gas Target Annual",
       class_name: 'AlertGasTargetAnnual',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
-      benchmark: false
+      benchmark: true
     )
 
     AlertType.create!(
@@ -29,7 +29,7 @@ namespace :after_party do
       fuel_type: :electricity,
       title: "Alert Electricity Target 4 Week",
       class_name: 'AlertElectricityTarget4Week',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
       benchmark: false
     )
@@ -39,7 +39,7 @@ namespace :after_party do
       fuel_type: :gas,
       title: "Alert Gas Target 4 Week",
       class_name: 'AlertGasTarget4Week',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
       benchmark: false
     )
@@ -49,7 +49,7 @@ namespace :after_party do
       fuel_type: :electricity,
       title: "Alert Electricity Target 1 Week",
       class_name: 'AlertElectricityTarget1Week',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
       benchmark: false
     )
@@ -59,7 +59,7 @@ namespace :after_party do
       fuel_type: :gas,
       title: "Alert Gas Target 1 Week",
       class_name: 'AlertGasTarget1Week',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
       benchmark: false
     )
@@ -69,9 +69,9 @@ namespace :after_party do
       fuel_type: :storage_heater,
       title: "Alert Storage Heater Target Annual",
       class_name: 'AlertStorageHeaterTargetAnnual',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
-      benchmark: false
+      benchmark: true
     )
 
     AlertType.create!(
@@ -79,7 +79,7 @@ namespace :after_party do
       fuel_type: :storage_heater,
       title: "Alert Storage Heater Target 4 Week",
       class_name: 'AlertStorageHeaterTarget4Week',
-      source: :analysis,
+      source: :analytics,
       has_ratings: true,
       benchmark: false
     )
@@ -89,15 +89,30 @@ namespace :after_party do
       fuel_type: :storage_heater,
       title: "Alert Storage Heater Target 1 Week",
       class_name: 'AlertStorageHeaterTarget1Week',
+      source: :analytics,
+      has_ratings: true,
+      benchmark: false
+    )
+
+    AlertType.create!(
+      frequency: :weekly,
+      fuel_type: :electricity,
+      title: "Advice Targets Electricity",
+      class_name: 'AdviceTargetsElectricity',
       source: :analysis,
       has_ratings: true,
       benchmark: false
     )
 
-    # Advice
-    # AlertGasTargetAnnual or gas_target
-    # AlertElectricityTargetAnnual or electric_target
-
+    AlertType.create!(
+      frequency: :weekly,
+      fuel_type: :gas,
+      title: "Advice Targets Gas",
+      class_name: 'AdviceTargetsGas',
+      source: :analysis,
+      has_ratings: true,
+      benchmark: false
+    )
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
