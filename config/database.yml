@@ -14,6 +14,9 @@ test: &test
   <<: *default
   host: localhost
   database: energy_sparks_test
+  username: <%= ENV['DEV_DB_USERNAME'] %>
+  password: <%= ENV['DEV_DB_PASSWORD'] %>
+
 
 staging:
   <<: *default
