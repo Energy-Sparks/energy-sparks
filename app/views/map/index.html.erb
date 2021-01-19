@@ -16,17 +16,48 @@
     <p>Explore their electricity and gas consumption data, find out how much energy they generate from their solar panels and learn about their energy saving activities.</p>
     <p>We’re proud to have a great network of schools all working hard to save energy and help fight climate change.</p>
 
-    <h2>View Energy Sparks schools by group</h2>
+    <h2>View Energy Sparks schools</h2>
 
-    <% @school_groups.each do |school_group| %>
-      <%= link_to "#{school_group.name}", map_school_group_path(school_group), class: 'nav-link' %>
-    <% end %>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a href="#schoolGroups" class="nav-link active" data-toggle="tab">Energy Sparks schools by group</a>
+      </li>
+      <li class="nav-item">
+        <a href="#schools" class="nav-link" data-toggle="tab">All Energy Sparks schools</a>
+      </li>
+    </ul>
 
-    <h2>View all Energy Sparks schools</h2>
-    <% @schools.each do |school| %>
-      <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
-    <% end %>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="schoolGroups">
+        <p></p>
+        <div class="allSchoolGroups">
+          <% @school_groups.each_slice(3) do |threeschoolgroups| %>
+            <div class="row">
+              <% threeschoolgroups.each do |school_group| %>
+                <div class="col-lg-4">
+                  <%= link_to "#{school_group.name}", map_school_group_path(school_group), class: 'nav-link' %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="schools">
+        <p></p>
+        <div class="allSchools">
+          <% @schools.each_slice(3) do |threeschools| %>
+            <div class="row">
+              <% threeschools.each do |school| %>
+                <div class="col-lg-4">
+                  <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
   </div>
-</div>
 
+</div>
