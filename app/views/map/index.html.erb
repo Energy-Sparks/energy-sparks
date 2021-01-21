@@ -24,22 +24,7 @@
       <% @school_groups.each_slice(@school_groups.count / 2) do |school_groups| %>
         <div class="col-lg-6">
           <% school_groups.each do |school_group| %>
-            <div id="accordionSchoolGroup<%= school_group.id %>" class="accordion-block">
-              <div class="card">
-                <div class="card-header" id="headingSchoolGroup<%= school_group.id %>">
-                  <h5 class="mb-0">
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseSchoolGroup<%= school_group.id %>" href="#collapseSchoolGroup<%= school_group.id %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><%= school_group.name %></a>
-                  </h5>
-                </div>
-                <div id="collapseSchoolGroup<%= school_group.id %>" class="collapse" aria-labelledby="headingSchoolGroup<%= school_group.id %>" data-parent="#accordionSchoolGroup<%= school_group.id %>">
-                  <div class="card-body">
-                    <% school_group.schools.by_name.each do |school| %>
-                      <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <%= render 'school_group', school_group: school_group %>
           <% end %>
         </div>
       <% end %>
@@ -52,28 +37,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div id="accordionSchools" class="accordion-block">
-              <div class="card">
-                <div class="card-header" id="headingSchools">
-                  <h5 class="mb-0">
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseSchools" href="#collapseSchools" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">A to Z of all Energy Sparks schools</a>
-                  </h5>
-                </div>
-                <div id="collapseSchools" class="collapse" aria-labelledby="headingSchools" data-parent="#accordionSchools">
-                  <div class="card-body">
-                    <% @schools.each_slice(3) do |threeschools| %>
-                      <div class="row">
-                        <% threeschools.each do |school| %>
-                          <div class="col-lg-4">
-                            <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
-                          </div>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <%= render 'schools', schools: @schools %>
         </div>
     </div>
 
