@@ -6,7 +6,7 @@
       <h1>Energy Sparks schools across the UK</h1>
     </div>
     <div class="col-md-12">
-      <div class="map" id="geo-json-map"></div>
+      <%= render 'shared/map' %>
     </div>
   </div>
   <div class="col-md-12">
@@ -42,5 +42,10 @@
     </div>
 
   </div>
+
+  <% if can? :manage, School -%>
+    <%= link_to 'Manual School Setup', new_school_path, class: 'btn btn-primary' %>
+    <%= link_to "Automatic School Setup", admin_school_onboardings_path, class: 'btn btn-primary' %>
+  <% end %>
 
 </div>
