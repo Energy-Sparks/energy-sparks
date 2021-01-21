@@ -1,7 +1,7 @@
 class SchoolGroupsController < ApplicationController
-  load_resource
+  load_and_authorize_resource
 
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, except: :index
 
   def index
     @school_groups = SchoolGroup.by_name
