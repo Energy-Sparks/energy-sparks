@@ -118,13 +118,26 @@ function fireRequestForJson() {
 
     L.tileLayer(serviceUrl, tileOptions).addTo(map);
 
+    // // Add requested external GeoJSON to map
+    // var markers = L.geoJSON(features.responseJSON, {
+    //   onEachFeature: onEachFeature,
+    //   pointToLayer: function (feature, latlng) {
+    //     return L.marker(latlng);
+    //   }
+    // }).addTo(map);
+
     // Add requested external GeoJSON to map
     var markers = L.geoJSON(features.responseJSON, {
       onEachFeature: onEachFeature,
       pointToLayer: function (feature, latlng) {
         return L.marker(latlng);
       }
-    }).addTo(map);
+    });
+
+    var clusters = L.markerClusterGroup();
+    // clusters.addLayer(L.marker(getRandomLatLng(map)));
+    clusters.addLayers(markers);
+    map.addLayer(clusters);
 
     if (markers.getBounds().isValid()) {
       map.fitBounds(markers.getBounds(), {padding: [20,20]});
