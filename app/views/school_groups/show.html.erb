@@ -2,7 +2,7 @@
 
 <%= render 'schools/list_header', name: @school_group.name, scoreboard: @school_group.default_scoreboard, scoreboard_name: 'default scoreboard for group', benchmark_filter: {school_group_ids: [@school_group.id]}%>
 
-<div class="map" id="geo-json-map"></div>
+<%= render 'shared/map' %>
 
 <%= render 'schools/list_cards', schools: @school_group.schools.visible.by_name %>
 

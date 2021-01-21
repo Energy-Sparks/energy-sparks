@@ -68,7 +68,6 @@ function fireRequestForJson() {
       // attributionControl: false
     };
 
-    // var map = L.map('geo-json-map').setView([54.9, -2.194200], 7);
     var map = L.map('geo-json-map', mapOptions);
 
     // OS
@@ -127,7 +126,9 @@ function fireRequestForJson() {
       }
     }).addTo(map);
 
-    map.fitBounds(markers.getBounds(), {padding: [20,20]});
+    if (markers.getBounds().isValid()) {
+      map.fitBounds(markers.getBounds(), {padding: [20,20]});
+    }
     map.setMaxBounds(maxBounds);
   });
 }

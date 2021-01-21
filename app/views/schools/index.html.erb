@@ -20,12 +20,14 @@
 
   <h2>View Energy Sparks schools by group</h2>
   <div class="row">
-    <% @school_groups.each_slice(@school_groups.count / 2) do |school_groups| %>
-      <div class="col-lg-6">
-        <% school_groups.each do |school_group| %>
-          <%= render 'school_group', school_group: school_group %>
-        <% end %>
-      </div>
+    <% if @school_groups.any? %>
+      <% @school_groups.each_slice(slice_size(2, @school_groups)) do |school_groups| %>
+        <div class="col-lg-6">
+          <% school_groups.each do |school_group| %>
+            <%= render 'school_group', school_group: school_group %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 
