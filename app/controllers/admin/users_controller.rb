@@ -56,7 +56,7 @@ module Admin
       users = {}
       SchoolGroup.all.order(:name).each do |school_group|
         users[school_group] = {}
-        school_group.schools.order(:name).each do |school|
+        school_group.schools.by_name.each do |school|
           users[school_group][school] = (school.users + school.cluster_users).uniq.sort_by(&:email)
         end
       end
