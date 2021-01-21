@@ -2,3 +2,11 @@ div#geo-json-map {
   height: 800px;
   width: 100%;
 }
+
+.leaflet-popup-content-wrapper {
+  font-family : $default-font-family;
+}
+
+.leaflet-popup-content p {
+  margin: 5px 0 !important;
+}

@@ -11,10 +11,11 @@ $f6: 15px;
 $f7: 12.5px;
 $f8: 10px;
 
+$default-font-family: 'Quicksand', sans-serif;
 $default-font-size: $f5;
 
 body {
-  font-family: 'Quicksand', sans-serif;
+  font-family: $default-font-family;
   font-weight: 500;
   font-size: $default-font-size;
   margin-top: 18px;

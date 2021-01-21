@@ -30,7 +30,7 @@ function fireRequestForJson() {
   function popupHtml(props) {
     var str = "";
     str += "<a href='" + props.schoolPath + "'>" + props.schoolName + "</a>";
-    str += "<hr/>";
+    str += "<br/>";
     str += "<p>School type: " + props.schoolType + "</p>";
     str += "<p>Fuel types: ";
     if (props.has_electricity) {
