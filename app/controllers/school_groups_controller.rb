@@ -1,10 +1,10 @@
 class SchoolGroupsController < ApplicationController
-  load_and_authorize_resource
+  load_resource
 
-  skip_before_action :authenticate_user!, only: [:map]
+  skip_before_action :authenticate_user!
 
   def index
-    @school_groups = SchoolGroup.order(:name)
+    @school_groups = SchoolGroup.by_name
   end
 
   def show
