@@ -1,0 +1,22 @@
+<div id="accordionSchools" class="accordion-block">
+  <div class="card">
+    <div class="card-header" id="headingSchools">
+      <h5 class="mb-0">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseSchools" href="#collapseSchools" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">A to Z of all Energy Sparks schools</a>
+      </h5>
+    </div>
+    <div id="collapseSchools" class="collapse" aria-labelledby="headingSchools" data-parent="#accordionSchools">
+      <div class="card-body">
+        <% schools.each_slice(3) do |threeschools| %>
+          <div class="row">
+            <% threeschools.each do |school| %>
+              <div class="col-lg-4">
+                <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

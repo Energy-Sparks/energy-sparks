@@ -31,6 +31,10 @@
 <%= javascript_include_tag "//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" %>
 <%= javascript_include_tag "//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" %>
 
+<!--allow env vars to be set in JS-->
+<%= Gon::Base.render_data %>
+
+<!--js and css for leaflet -->
 <%= render 'shared/leaflet' %>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

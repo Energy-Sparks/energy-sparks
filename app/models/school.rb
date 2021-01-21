@@ -114,6 +114,7 @@ class School < ApplicationRecord
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
+  scope :by_name,            -> { order(name: :asc) }
   scope :visible,            -> { where(visible: true) }
   scope :not_visible,        -> { where(visible: false) }
   scope :process_data,       -> { where(process_data: true) }

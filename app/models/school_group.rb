@@ -44,6 +44,8 @@ class SchoolGroup < ApplicationRecord
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
+  scope :by_name, -> { order(name: :asc) }
+
   validates :name, presence: true
 
   def safe_destroy
