@@ -19,7 +19,6 @@
   <br/>
 
   <h2>View Energy Sparks schools by group</h2>
-
   <div class="row">
     <% @school_groups.each_slice(@school_groups.count / 2) do |school_groups| %>
       <div class="col-lg-6">
@@ -34,11 +33,21 @@
   <br/>
 
   <h2>View all Energy Sparks schools</h2>
-
   <div class="row">
-      <div class="col-lg-12">
-        <%= render 'schools', schools: @schools %>
-      </div>
+    <div class="col-lg-12">
+      <%= render 'schools', schools: @schools, title: 'A to Z of all Energy Sparks schools', label: 'allSchools' %>
+    </div>
   </div>
+
+  <% if @schools_not_visible.any? && can?(:read_invisible_schools, School)%>
+    <br/>
+    <br/>
+    <h2>Not visible schools</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <%= render 'schools', schools: @schools_not_visible, title: 'Not visible schools', label: 'invisibleSchools' %>
+      </div>
+    </div>
+  <% end %>
 
 </div>

@@ -1,11 +1,11 @@
-<div id="accordionSchools" class="accordion-block">
+<div id="accordion<%= label %>" class="accordion-block">
   <div class="card">
-    <div class="card-header" id="headingSchools">
+    <div class="card-header" id="heading<%= label %>">
       <h5 class="mb-0">
-        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseSchools" href="#collapseSchools" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">A to Z of all Energy Sparks schools</a>
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse<%= label %>" href="#collapse<%= label %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><%= title %></a>
       </h5>
     </div>
-    <div id="collapseSchools" class="collapse" aria-labelledby="headingSchools" data-parent="#accordionSchools">
+    <div id="collapse<%= label %>" class="collapse" aria-labelledby="heading<%= label %>" data-parent="#accordion<%= label %>">
       <div class="card-body">
         <% schools.each_slice(3) do |threeschools| %>
           <div class="row">
