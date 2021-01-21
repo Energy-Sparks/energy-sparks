@@ -12,7 +12,7 @@ RSpec.describe "school", type: :system do
   it 'shows me a school page' do
     visit root_path
     click_on('Schools')
-    expect(page.has_content? "Participating Schools").to be true
+    expect(page.has_content? "Energy Sparks schools across the UK").to be true
     click_on(school_name)
     expect(page.has_link? "Pupil dashboard").to be true
     expect(page.has_content? school_name).to be true
@@ -37,7 +37,7 @@ RSpec.describe "school", type: :system do
       visit root_path
       expect(page.has_content? 'Sign Out').to be true
       click_on('Schools')
-      expect(page.has_content? "Participating Schools").to be true
+      expect(page.has_content? "Energy Sparks schools across the UK").to be true
     end
 
     describe 'school with gas meter' do

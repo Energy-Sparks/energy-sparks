@@ -1,20 +1,22 @@
 class SchoolGroupsController < ApplicationController
-  load_resource
+  load_and_authorize_resource
 
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:show, :map]
 
   def index
     @school_groups = SchoolGroup.by_name
   end
 
   def show
+    @schools = @school_group.schools.visible.by_name
+    respond_to do |format|
+      format.html
+      format.json { render json: Maps::Features.new(@schools).as_json, status: :ok }
+    end
   end
 
   def map
-    gon.OSDATAHUB_API_KEY = ENV['OSDATAHUB_API_KEY']
-    gon.MAPBOX_API_KEY = ENV['MAPBOX_API_KEY']
-
-    @schools = @school_group.schools.visible.order(name: :asc)
+    @schools = @school_group.schools.visible.by_name
     respond_to do |format|
       format.html
       format.json { render json: Maps::Features.new(@schools).as_json, status: :ok }

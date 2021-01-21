@@ -1,7 +1,12 @@
 <% content_for :page_title, @school_group.name %>
 
-<%= render 'schools/list', name: @school_group.name, scoreboard: @school_group.default_scoreboard, scoreboard_name: 'default scoreboard for group', schools: @school_group.schools.visible.order(:name), benchmark_filter: {school_group_ids: [@school_group.id]}%>
+<%= render 'schools/list_header', name: @school_group.name, scoreboard: @school_group.default_scoreboard, scoreboard_name: 'default scoreboard for group', benchmark_filter: {school_group_ids: [@school_group.id]}%>
 
-<% if can?(:read_invisible_schools, School) %>
-  <%= render 'schools/list', name: 'Not visible schools', scoreboard: nil, schools: @school_group.schools.not_visible.order(:name), benchmark_filter: nil %>
+<%= render 'shared/map' %>
+
+<%= render 'schools/list_cards', schools: @school_group.schools.visible.by_name %>
+
+<% if @school_group.schools.not_visible.any? && can?(:read_invisible_schools, School) %>
+  <%= render 'schools/list_header', name: 'Not visible schools', scoreboard: nil, benchmark_filter: nil %>
+  <%= render 'schools/list_cards', schools: @school_group.schools.not_visible.by_name %>
 <% end %>

@@ -17,9 +17,21 @@ class SchoolsController < ApplicationController
 
   # GET /schools
   def index
-    @school_groups = SchoolGroup.order(:name)
-    @ungrouped_visible_schools = School.visible.without_group.order(:name)
-    @schools_not_visible = School.not_visible.order(:name)
+    @schools = School.visible.by_name
+    @school_groups = SchoolGroup.all.by_name
+    @ungrouped_visible_schools = School.visible.without_group.by_name
+    @schools_not_visible = School.not_visible.by_name
+    respond_to do |format|
+      format.html
+      format.json { render json: Maps::Features.new(@schools).as_json, status: :ok }
+    end
+  end
+
+  # retain the original index page
+  def list
+    @school_groups = SchoolGroup.by_name
+    @ungrouped_visible_schools = School.visible.without_group.by_name
+    @schools_not_visible = School.not_visible.by_name
   end
 
   # GET /schools/1

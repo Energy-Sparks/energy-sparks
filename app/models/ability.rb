@@ -11,7 +11,7 @@ class Ability
     can :show, ActivityType
     can :index, School
     can :read, SchoolGroup
-    can :show, SchoolGroup
+    can :map, SchoolGroup
     can :show, School, visible: true
     can :usage, School, visible: true
     can :show_pupils_dash, School, visible: true
@@ -36,6 +36,7 @@ class Ability
       if user.group_admin?
         school_scope = { school_group_id: user.school_group_id, visible: true }
         related_school_scope = { school: { school_group_id: user.school_group_id, visible: true } }
+        can :show, SchoolGroup, id: user.school_group_id
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
         end

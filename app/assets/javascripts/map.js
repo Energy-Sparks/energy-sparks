@@ -68,12 +68,11 @@ function fireRequestForJson() {
       // attributionControl: false
     };
 
-    // var map = L.map('geo-json-map').setView([54.9, -2.194200], 7);
     var map = L.map('geo-json-map', mapOptions);
 
     // OS
     // var center = [54.9, -4.5];
-    // var api_key = gon.OSDATAHUB_API_KEY;
+    // var api_key = gon.global.OSDATAHUB_API_KEY;
     // var serviceUrl = 'https://api.os.uk/maps/raster/v1/zxy/Light_3857/{z}/{x}/{y}.png?key=' + api_key;
     // var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
     // var subdomains = '';
@@ -84,9 +83,9 @@ function fireRequestForJson() {
     var subdomains = ['mt0','mt1','mt2','mt3'];
 
     // Mapbox
-    // var api_key = gon.MAPBOX_API_KEY;
-    // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + api_key;
-    // // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + api_key;
+    // var api_key = gon.global.MAPBOX_API_KEY;
+    // // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + api_key;
+    // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + api_key;
     // var attribution = '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
     // var subdomains = '';
 
@@ -127,7 +126,9 @@ function fireRequestForJson() {
       }
     }).addTo(map);
 
-    map.fitBounds(markers.getBounds(), {padding: [20,20]});
+    if (markers.getBounds().isValid()) {
+      map.fitBounds(markers.getBounds(), {padding: [20,20]});
+    }
     map.setMaxBounds(maxBounds);
   });
 }
