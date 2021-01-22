@@ -31,16 +31,6 @@ RSpec.describe "school", type: :system do
     expect(page.has_no_content? "Gas").to be true
   end
 
-  it 'provides JSON for maps' do
-    get schools_path(format: :json)
-    json = JSON.parse(response.body)
-    expect(json['type']).to eq('FeatureCollection')
-    expect(json['features'][0]['type']).to eq('Feature')
-    expect(json['features'][0]['geometry']['type']).to eq('Point')
-    expect(json['features'][0]['geometry']['coordinates']).to eq([school.longitude, school.latitude])
-    expect(json['features'][0]['properties']['schoolName']).to eq(school.name)
-  end
-
   it 'links to the pupil dashboard' do
     visit school_path(school)
 
