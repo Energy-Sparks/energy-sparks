@@ -19,15 +19,17 @@
 
   <h2>View Energy Sparks schools by group</h2>
   <div class="row">
-    <% if @school_groups.any? %>
-      <% @school_groups.each_slice(slice_size(2, @school_groups)) do |school_groups| %>
-        <div class="col-lg-6">
-          <% school_groups.each do |school_group| %>
-            <%= render 'school_group', school_group: school_group %>
-          <% end %>
-        </div>
+    <% school_groups_left, school_groups_right = @school_groups.partition.with_index{|_,v| v.even?} %>
+    <div class="col-lg-6">
+      <% school_groups_left.each do |school_group| %>
+        <%= render 'school_group', school_group: school_group %>
       <% end %>
-    <% end %>
+    </div>
+    <div class="col-lg-6">
+      <% school_groups_right.each do |school_group|  %>
+        <%= render 'school_group', school_group: school_group %>
+      <% end %>
+    </div>
   </div>
 
   <br/>

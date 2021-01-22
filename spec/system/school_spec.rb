@@ -2,12 +2,24 @@ require 'rails_helper'
 
 RSpec.describe "school", type: :system do
 
-  let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school)     { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
-  let!(:admin)      { create(:admin)}
-  let!(:ks1)        { KeyStage.create(name: 'KS1') }
-  let!(:ks2)        { KeyStage.create(name: 'KS2') }
-  let!(:ks3)        { KeyStage.create(name: 'KS3') }
+  let(:school_name)               { 'Oldfield Park Infants' }
+  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+
+  let!(:school_group_invisible) { create(:school_group, name: 'Invisible Group')}
+  let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group_invisible)}
+
+  let!(:admin)              { create(:admin)}
+  let!(:ks1)                { KeyStage.create(name: 'KS1') }
+  let!(:ks2)                { KeyStage.create(name: 'KS2') }
+  let!(:ks3)                { KeyStage.create(name: 'KS3') }
+
+  it 'does not show invisible school or group' do
+    visit root_path
+    click_on('Schools')
+    expect(page.has_content? school_name).to be true
+    expect(page.has_content? 'Invisible School').to_not be true
+    expect(page.has_content? 'Invisible Group').to_not be true
+  end
 
   it 'shows me a school page' do
     visit root_path
@@ -17,16 +29,6 @@ RSpec.describe "school", type: :system do
     expect(page.has_link? "Pupil dashboard").to be true
     expect(page.has_content? school_name).to be true
     expect(page.has_no_content? "Gas").to be true
-  end
-
-  it 'provides JSON for maps' do
-    get schools_path(format: :json)
-    json = JSON.parse(response.body)
-    expect(json['type']).to eq('FeatureCollection')
-    expect(json['features'][0]['type']).to eq('Feature')
-    expect(json['features'][0]['geometry']['type']).to eq('Point')
-    expect(json['features'][0]['geometry']['coordinates']).to eq([school.longitude, school.latitude])
-    expect(json['features'][0]['properties']['schoolName']).to eq(school.name)
   end
 
   it 'links to the pupil dashboard' do
@@ -48,6 +50,13 @@ RSpec.describe "school", type: :system do
       expect(page.has_content? 'Sign Out').to be true
       click_on('Schools')
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
+    end
+
+    it 'does show invisible school, but not group' do
+      expect(page.has_content? school_name).to be true
+      expect(page.has_content? 'Not visible schools').to be true
+      expect(page.has_content? 'Invisible School').to be true
+      expect(page.has_content? 'Invisible Group').to_not be true
     end
 
     describe 'school with gas meter' do

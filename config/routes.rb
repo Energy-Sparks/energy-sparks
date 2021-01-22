@@ -43,12 +43,7 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show, :index] do
-    member do
-      get :map
-    end
-  end
-
+  resources :school_groups, only: [:show, :index]
   resources :scoreboards, only: [:show, :index]
 
   resources :onboarding, path: 'school_setup', only: [:show] do
