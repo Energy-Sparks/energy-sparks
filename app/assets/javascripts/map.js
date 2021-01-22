@@ -118,14 +118,6 @@ function fireRequestForJson() {
 
     L.tileLayer(serviceUrl, tileOptions).addTo(map);
 
-    // // Add requested external GeoJSON to map
-    // var markers = L.geoJSON(features.responseJSON, {
-    //   onEachFeature: onEachFeature,
-    //   pointToLayer: function (feature, latlng) {
-    //     return L.marker(latlng);
-    //   }
-    // }).addTo(map);
-
     // Add requested external GeoJSON to map
     var markers = L.geoJSON(features.responseJSON, {
       onEachFeature: onEachFeature,
@@ -134,14 +126,27 @@ function fireRequestForJson() {
       }
     });
 
-    var clusters = L.markerClusterGroup();
-    // clusters.addLayer(L.marker(getRandomLatLng(map)));
+    // apply clustering
+    var clusters = L.markerClusterGroup({
+      maxClusterRadius: function(zoom) {
+        console.log('zoom: ' + zoom);
+        if (zoom > 7) {
+          return 0;
+        } else {
+          return 20;
+        }
+      }
+    });
+
     clusters.addLayers(markers);
     map.addLayer(clusters);
 
+    // bound the map to the markers, if present
     if (markers.getBounds().isValid()) {
       map.fitBounds(markers.getBounds(), {padding: [20,20]});
     }
+
+    // bound the map from scrolling away from UK
     map.setMaxBounds(maxBounds);
   });
 }

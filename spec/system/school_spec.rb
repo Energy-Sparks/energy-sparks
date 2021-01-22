@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "school", type: :system do
 
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:school)     { create(:school, name: school_name)}
+  let!(:school)     { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
   let!(:admin)      { create(:admin)}
   let!(:ks1)        { KeyStage.create(name: 'KS1') }
   let!(:ks2)        { KeyStage.create(name: 'KS2') }
@@ -17,6 +17,16 @@ RSpec.describe "school", type: :system do
     expect(page.has_link? "Pupil dashboard").to be true
     expect(page.has_content? school_name).to be true
     expect(page.has_no_content? "Gas").to be true
+  end
+
+  it 'provides JSON for maps' do
+    get schools_path(format: :json)
+    json = JSON.parse(response.body)
+    expect(json['type']).to eq('FeatureCollection')
+    expect(json['features'][0]['type']).to eq('Feature')
+    expect(json['features'][0]['geometry']['type']).to eq('Point')
+    expect(json['features'][0]['geometry']['coordinates']).to eq([school.longitude, school.latitude])
+    expect(json['features'][0]['properties']['schoolName']).to eq(school.name)
   end
 
   it 'links to the pupil dashboard' do
