@@ -78,14 +78,14 @@ function fireRequestForJson() {
     // var subdomains = '';
 
     // Google
-    var serviceUrl = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&language=en-GB';
-    var attribution = '&copy; <a href="https://www.google.com">Google Maps</a> &copy; 2021</a>';
-    var subdomains = ['mt0','mt1','mt2','mt3'];
+    // var serviceUrl = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&language=en-GB';
+    // var attribution = '&copy; <a href="https://www.google.com">Google Maps</a> &copy; 2021</a>';
+    // var subdomains = ['mt0','mt1','mt2','mt3'];
 
     // Mapbox
     // var api_key = gon.global.MAPBOX_API_KEY;
-    // // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + api_key;
-    // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + api_key;
+    // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + api_key;
+    // // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + api_key;
     // var attribution = '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
     // var subdomains = '';
 
@@ -105,9 +105,10 @@ function fireRequestForJson() {
     // var subdomains = '';
 
     // Stadia Outdoors
-    // var serviceUrl = 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png';
-    // var attribution = '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    // var subdomains = '';
+    var serviceUrl = 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png';
+    // var serviceUrl = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
+    var attribution = '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    var subdomains = '';
 
 
     // Initialize the map.
