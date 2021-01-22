@@ -6,12 +6,19 @@ $(function () {
 
 function fireRequestForJson() {
 
-  var currentPath = window.location.pathname;
-  var dataUrl = window.location.pathname + '.json';
+  var dataUrl = '/map.json';
+
+  var dataParams = {};
+  if (gon.school_group_id) {
+    dataParams.school_group_id = gon.school_group_id;
+  } else {
+    // dataParams.school_group_id = 2;
+  }
 
   // Add AJAX request for data
   var features = $.ajax({
     url: dataUrl,
+    data: dataParams,
     dataType: "json",
     success: console.log("Locations loaded."),
     error: function(xhr) {
