@@ -223,8 +223,4 @@ module ApplicationHelper
       'OTHER_' + words.first
     end
   end
-
-  def slice_size(size, collection)
-    (collection.count / [size, collection.count].min)
-  end
 end
