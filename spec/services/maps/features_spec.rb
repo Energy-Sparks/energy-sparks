@@ -2,8 +2,9 @@ require 'rails_helper'
 
 describe Maps::Features do
 
-  let!(:school)  { create(:school, latitude: 51.34062, longitude: -2.30142) }
-
+  #
+  # Format of JSON for features looks like this:
+  #
   # {
   #   "type"=>"FeatureCollection",
   #   "features"=> [
@@ -21,12 +22,50 @@ describe Maps::Features do
   #   ]
   # }
 
-  it 'gets the locations in GeoJSON format' do
-    json = Maps::Features.new([school]).as_json
+
+  let!(:school_1)             { create(:school, name: 'My School 1', number_of_pupils: 100)}
+  let!(:school_2)             { create(:school, name: 'My School 2', number_of_pupils: 200)}
+  let!(:school_3)             { create(:school, name: 'My School 3', number_of_pupils: 300)}
+
+  let!(:fuel_electricity)     { Schools::FuelConfiguration.new(has_electricity: true) }
+  let!(:school_1_config)      { create(:configuration, school: school_1, fuel_configuration: fuel_electricity) }
+
+  let!(:fuel_gas)             { Schools::FuelConfiguration.new(has_gas: true) }
+  let!(:school_2_config)      { create(:configuration, school: school_2, fuel_configuration: fuel_gas) }
+
+
+  it 'provides JSON for all schools' do
+    json = Maps::Features.new([school_1, school_2, school_3]).as_json
+
     expect(json['type']).to eq('FeatureCollection')
-    expect(json['features'][0]['type']).to eq('Feature')
-    expect(json['features'][0]['geometry']['type']).to eq('Point')
-    expect(json['features'][0]['geometry']['coordinates']).to eq([school.longitude, school.latitude])
-    expect(json['features'][0]['properties']['schoolName']).to eq(school.name)
+    expect(json['features'].count).to eq(3)
+
+    feature = json['features'][0]
+    expect(feature['type']).to eq('Feature')
+    expect(feature['geometry']['type']).to eq('Point')
+    expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
+    expect(feature['properties']['schoolName']).to eq('My School 1')
+    expect(feature['properties']['number_of_pupils']).to eq(100)
+    expect(feature['properties']['has_electricity']).to eq(true)
+    expect(feature['properties']['has_gas']).to eq(false)
+
+    feature = json['features'][1]
+    expect(feature['type']).to eq('Feature')
+    expect(feature['geometry']['type']).to eq('Point')
+    expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
+    expect(feature['properties']['schoolName']).to eq('My School 2')
+    expect(feature['properties']['number_of_pupils']).to eq(200)
+    expect(feature['properties']['has_electricity']).to eq(false)
+    expect(feature['properties']['has_gas']).to eq(true)
+
+    feature = json['features'][2]
+    expect(feature['type']).to eq('Feature')
+    expect(feature['geometry']['type']).to eq('Point')
+    expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
+    expect(feature['properties']['schoolName']).to eq('My School 3')
+    expect(feature['properties']['number_of_pupils']).to eq(300)
+    expect(feature['properties']['has_electricity']).to eq(false)
+    expect(feature['properties']['has_gas']).to eq(false)
   end
+
 end
