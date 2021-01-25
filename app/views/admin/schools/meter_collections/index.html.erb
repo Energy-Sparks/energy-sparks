@@ -19,7 +19,7 @@
       <tr class='table-active'>
         <td colspan="4"><strong><%= school_group.name %></strong></td>
       </tr>
-      <% school_group.schools.order(name: :asc).each do |school| %>
+      <% school_group.schools.by_name.each do |school| %>
         <tr>
           <td><%= school.name %></td>
           <td><%= link_to 'Unvalidated AMR data', admin_school_unvalidated_amr_data_path(school, format: :yaml), class: 'btn btn-sm' %></td>

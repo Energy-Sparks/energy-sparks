@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'Benchmarks' do
 
-  let!(:school_1)           { create(:school) }
+  let!(:school_group)       { create(:school_group) }
+  let!(:school_1)           { create(:school, school_group: school_group) }
   let!(:user)               { create(:user)}
   let!(:run_1)              { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
   let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
@@ -40,7 +41,7 @@ describe 'Benchmarks' do
 
     visit root_path
     click_on 'Schools'
-    click_on 'compare schools'
+    click_on 'Compare schools'
   end
 
   it 'a user can view a single benchmarks' do

@@ -48,7 +48,7 @@ RSpec.configure do |config|
   config.after(:each, type: :system, js: true) do |example|
     errors = page.driver.browser.manage.logs.get(:browser)
     if errors.present? && !example.metadata.has_key?(:errors_expected)
-      aggregate_failures 'javascript errrors' do
+      aggregate_failures 'javascript errors' do
         errors.each do |error|
           expect(error.level).not_to eq('SEVERE'), error.message
           next unless error.level == 'WARNING'

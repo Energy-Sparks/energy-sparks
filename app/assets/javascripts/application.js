@@ -46,3 +46,4 @@
 
 //= require table_sorting
 //= require mailchimp
+//= require map
