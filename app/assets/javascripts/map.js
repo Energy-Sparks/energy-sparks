@@ -1,15 +1,14 @@
 $(function () {
-  if ($('div#geo-json-map').length) {
-    fireRequestForJson();
+  var mapDiv = $('div#geo-json-map');
+  if (mapDiv.length) {
+    fireRequestForJson(mapDiv);
   }
 });
 
-function fireRequestForJson() {
+function fireRequestForJson(mapDiv) {
 
   var dataUrl = '/map.json';
-
-  var mapDiv = document.querySelector('div#geo-json-map');
-  var schoolGroupId = mapDiv.dataset.schoolGroupId;
+  var schoolGroupId = mapDiv.data('schoolGroupId');
 
   var dataParams = {};
   if (schoolGroupId) {
