@@ -45,27 +45,27 @@ describe Maps::SchoolFeatures do
     expect(feature['geometry']['type']).to eq('Point')
     expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
     expect(feature['properties']['schoolName']).to eq('My School 1')
-    expect(feature['properties']['number_of_pupils']).to eq(100)
-    expect(feature['properties']['has_electricity']).to eq(true)
-    expect(feature['properties']['has_gas']).to eq(false)
+    expect(feature['properties']['numberOfPupils']).to eq(100)
+    expect(feature['properties']['hasElectricity']).to eq(true)
+    expect(feature['properties']['hasGas']).to eq(false)
 
     feature = json['features'][1]
     expect(feature['type']).to eq('Feature')
     expect(feature['geometry']['type']).to eq('Point')
     expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
     expect(feature['properties']['schoolName']).to eq('My School 2')
-    expect(feature['properties']['number_of_pupils']).to eq(200)
-    expect(feature['properties']['has_electricity']).to eq(false)
-    expect(feature['properties']['has_gas']).to eq(true)
+    expect(feature['properties']['numberOfPupils']).to eq(200)
+    expect(feature['properties']['hasElectricity']).to eq(false)
+    expect(feature['properties']['hasGas']).to eq(true)
 
     feature = json['features'][2]
     expect(feature['type']).to eq('Feature')
     expect(feature['geometry']['type']).to eq('Point')
     expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
     expect(feature['properties']['schoolName']).to eq('My School 3')
-    expect(feature['properties']['number_of_pupils']).to eq(300)
-    expect(feature['properties']['has_electricity']).to eq(false)
-    expect(feature['properties']['has_gas']).to eq(false)
+    expect(feature['properties']['numberOfPupils']).to eq(300)
+    expect(feature['properties']['hasElectricity']).to eq(false)
+    expect(feature['properties']['hasGas']).to eq(false)
   end
 
 end

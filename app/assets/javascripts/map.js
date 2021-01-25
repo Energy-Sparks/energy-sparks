@@ -28,9 +28,7 @@ function fireRequestForJson() {
   });
 
   function onEachFeature(feature, layer) {
-    if (feature.properties && feature.properties.schoolName) {
-      layer.bindPopup(popupHtml(feature.properties));
-    }
+    layer.bindPopup(popupHtml(feature.properties));
   }
 
   function popupHtml(props) {
@@ -39,17 +37,17 @@ function fireRequestForJson() {
     str += "<br/>";
     str += "<p>School type: " + props.schoolType + "</p>";
     str += "<p>Fuel types: ";
-    if (props.has_electricity) {
+    if (props.hasElectricity) {
       str += "&nbsp;<i class='fas fa-bolt'></i>";
     }
-    if (props.has_gas) {
+    if (props.hasGas) {
       str += "&nbsp;<i class='fas fa-fire'></i>";
     }
-    if (props.has_solar_pv) {
+    if (props.hasSolarPv) {
       str += "&nbsp;<i class='fas fa-sun'></i>";
     }
     str += "</p>";
-    str += "<p>Pupils: " + props.number_of_pupils + "</p>";
+    str += "<p>Pupils: " + props.numberOfPupils + "</p>";
     return str;
   }
 
