@@ -15,7 +15,7 @@ RSpec.describe "resources", type: :system do
     expect(page.has_content? "Resources").to be true
     expect(page.has_content? "Resource Collection").to be true
     expect(page.has_link? "A resource", href: "/resources/#{@resource.id}/inline").to be true
-    expect(page.has_link? "", href: "/resources/1/download").to be true
+    expect(page.has_link? "", href: "/resources/#{@resource.id}/download").to be true
     expect(page.has_link? "Other resource", href: "/resources/#{@other_resource.id}/inline").to be true
   end
 
