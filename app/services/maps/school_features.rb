@@ -1,5 +1,5 @@
 module Maps
-  class Features
+  class SchoolFeatures
     include Rails.application.routes.url_helpers
 
     def initialize(schools)
@@ -33,11 +33,11 @@ module Maps
         schoolName: school.name,
         schoolType: school.school_type.humanize,
         schoolPath: school_path(school),
-        number_of_pupils: school.number_of_pupils,
-        fuel_types: school.fuel_types,
-        has_electricity: school.has_electricity?,
-        has_gas: school.has_gas?,
-        has_solar_pv: school.has_solar_pv?
+        numberOfPupils: school.number_of_pupils,
+        fuelTypes: school.fuel_types,
+        hasElectricity: school.has_electricity?,
+        hasGas: school.has_gas?,
+        hasSolarPv: school.has_solar_pv?
       }
     end
   end

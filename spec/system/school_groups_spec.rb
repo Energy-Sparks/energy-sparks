@@ -21,6 +21,16 @@ describe 'school groups', :school_groups, type: :system do
       expect(page).to have_content(school_1.name)
       expect(page).to have_content(school_2.name)
     end
+
+    it 'includes data attribute' do
+      visit school_group_path(school_group)
+
+      # el = page.find('div[id="runtime"]')['data-value']
+      # p usage
+
+      # expect(page).to have_selector('div[data-school-group-id="' + school_group.id.to_s + '"]')
+      expect(page).to have_selector("div[data-school-group-id='#{school_group.id}']")
+    end
   end
 
   describe 'when logged in' do

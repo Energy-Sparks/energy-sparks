@@ -11,7 +11,6 @@ class Ability
     can :show, ActivityType
     can :index, School
     can :read, SchoolGroup
-    can :map, SchoolGroup
     can :show, School, visible: true
     can :usage, School, visible: true
     can :show_pupils_dash, School, visible: true
