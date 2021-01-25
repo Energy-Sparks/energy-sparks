@@ -18,7 +18,7 @@
         </th>
         <td><%= resource_file.description %></td>
         <td>
-          <%= link_to url_for( controller: :resource_files, action: :download, serve: :attachment, id: resource_file.id ), class: 'btn' do %>
+          <%= link_to url_for( controller: :resource_files, action: :download, serve: :download, id: resource_file.id ), class: 'btn' do %>
             Download <i class="fas fa-file-download"></i>
           <% end %>
         </td>
@@ -39,7 +39,7 @@
       </th>
       <td><%= resource_file.description %></td>
       <td>
-        <%= link_to url_for( controller: :resource_files, action: :download, serve: :attachment, id: resource_file.id ), class: 'btn' do %>
+        <%= link_to url_for( controller: :resource_files, action: :download, serve: :download, id: resource_file.id ), class: 'btn' do %>
           Download <i class="fas fa-file-download"></i>
         <% end %>
 

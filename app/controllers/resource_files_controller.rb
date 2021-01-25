@@ -6,11 +6,16 @@ class ResourceFilesController < ApplicationController
   end
 
   def download
-    resource = ResourceFile.find(params[:id])
-    response.headers["Content-Disposition"] = "#{params[:serve]}; filename=\"#{resource.file.filename}\""
-    response.headers["Content-Type"] = resource.file.content_type
-    resource.file.download do |chunk|
-      response.stream.write(chunk)
+    resource = ResourceFile.find_by(id: params[:id])
+    if resource.present?
+      serve = params[:serve] == "attachment" ? "attachment" : "inline"
+      response.headers["Content-Disposition"] = "#{serve}; filename=\"#{resource.file.filename}\""
+      response.headers["Content-Type"] = resource.file.content_type
+      resource.file.download do |chunk|
+        response.stream.write(chunk)
+      end
+    else
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
     end
   end
 end

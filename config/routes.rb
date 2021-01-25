@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
-  get 'resources/:serve/:id', to: 'resource_files#download'
+  get 'resources/:id/:serve', to: 'resource_files#download'
   get 'home-page', to: 'home#show'
   get 'school_statistics', to: 'home#school_statistics'
 
