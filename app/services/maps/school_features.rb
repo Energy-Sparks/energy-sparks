@@ -1,5 +1,5 @@
 module Maps
-  class Features
+  class SchoolFeatures
     include Rails.application.routes.url_helpers
 
     def initialize(schools)

@@ -8,9 +8,12 @@ function fireRequestForJson() {
 
   var dataUrl = '/map.json';
 
+  var mapDiv = document.querySelector('div#geo-json-map');
+  var schoolGroupId = mapDiv.dataset.schoolGroupId;
+
   var dataParams = {};
-  if (gon.school_group_id) {
-    dataParams.school_group_id = gon.school_group_id;
+  if (schoolGroupId) {
+    dataParams.school_group_id = schoolGroupId;
   }
 
   // Add AJAX request for data
@@ -118,47 +121,3 @@ function fireRequestForJson() {
     }
   });
 }
-
-
-//
-// OTHER MAP SERVICES
-//
-
-// OS
-// var center = [54.9, -4.5];
-// var api_key = gon.global.OSDATAHUB_API_KEY;
-// var serviceUrl = 'https://api.os.uk/maps/raster/v1/zxy/Light_3857/{z}/{x}/{y}.png?key=' + api_key;
-// var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
-// var subdomains = '';
-
-// Google
-// var serviceUrl = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&language=en-GB';
-// var attribution = '&copy; <a href="https://www.google.com">Google Maps</a> &copy; 2021</a>';
-// var subdomains = ['mt0','mt1','mt2','mt3'];
-
-// Mapbox
-// var api_key = gon.global.MAPBOX_API_KEY;
-// var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + api_key;
-// // var serviceUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=' + api_key;
-// var attribution = '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-// var subdomains = '';
-
-// Carto Light All
-// var serviceUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-// var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
-// var subdomains = 'abcd';
-
-// Carto Voyager
-// var serviceUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-// var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
-// var subdomains = 'abcd';
-
-// OpenStreetMap
-// var serviceUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-// var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-// var subdomains = '';
-
-// other Stadia
-// var serviceUrl = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
-
-

@@ -4,7 +4,7 @@
 
 <p>Energy Sparks currently works with <%= @schools.count %> schools from <%= @school_group.name %>. If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <%= link_to 'here', enrol_path %>.</p>
 
-<%= render 'shared/map' %>
+<div class="map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
 
 <%= render 'schools/list_cards', schools: @school_group.schools.visible.by_name %>
 

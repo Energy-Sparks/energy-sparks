@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Maps::Features do
+describe Maps::SchoolFeatures do
 
   #
   # Format of JSON for features looks like this:
@@ -35,7 +35,7 @@ describe Maps::Features do
 
 
   it 'provides JSON for all schools' do
-    json = Maps::Features.new([school_1, school_2, school_3]).as_json
+    json = Maps::SchoolFeatures.new([school_1, school_2, school_3]).as_json
 
     expect(json['type']).to eq('FeatureCollection')
     expect(json['features'].count).to eq(3)
