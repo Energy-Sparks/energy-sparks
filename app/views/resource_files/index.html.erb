@@ -13,12 +13,14 @@
     <% end %>
     <% type.resource_files.order(:title).each do |resource_file| %>
       <tr>
-        <th scope="row"><%= link_to resource_file.title, url_for(resource_file.file)%></th>
+        <th scope="row">
+          <%= link_to resource_file.title, controller: :resource_files, action: :download, serve: :inline, id: resource_file.id %>
+        </th>
         <td><%= resource_file.description %></td>
         <td>
-          <%= link_to url_for(resource_file.file), class: 'btn' do %>
+          <%= link_to url_for( controller: :resource_files, action: :download, serve: :download, id: resource_file.id ), class: 'btn' do %>
             Download <i class="fas fa-file-download"></i>
-          <% end%>
+          <% end %>
         </td>
       </tr>
     <% end %>
@@ -32,12 +34,15 @@
   <% end %>
   <% @other_resource_files.order(:title).each do |resource_file| %>
     <tr>
-      <th scope="row"><%= link_to resource_file.title, url_for(resource_file.file)%></th>
+      <th scope="row">
+        <%= link_to resource_file.title, controller: :resource_files, action: :download, serve: :inline, id: resource_file.id %>
+      </th>
       <td><%= resource_file.description %></td>
       <td>
-        <%= link_to url_for(resource_file.file), class: 'btn' do %>
+        <%= link_to url_for( controller: :resource_files, action: :download, serve: :download, id: resource_file.id ), class: 'btn' do %>
           Download <i class="fas fa-file-download"></i>
-        <% end%>
+        <% end %>
+
       </td>
     </tr>
   <% end %>
