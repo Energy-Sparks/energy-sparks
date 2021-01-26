@@ -1,4 +1,5 @@
 class CaseStudiesController < ApplicationController
+  include StorageHelper
   skip_before_action :authenticate_user!
   def index
     @case_studies = CaseStudy.order(position: :asc)

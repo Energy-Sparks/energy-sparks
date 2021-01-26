@@ -11,8 +11,14 @@ RSpec.describe "case_studies", type: :system do
     expect(page.has_content? "First Case Study").to be true
   end
 
-  it 'uses an internal download link' do
+  it 'shows the expexted link' do
     visit case_studies_path
     expect(page.has_link? "", href: "/case_studies/#{case_study.id}/download").to be true
+  end
+
+  it 'serves the file' do
+    visit case_studies_path
+    find("a[href='/case_studies/#{case_study.id}/download']").click
+    expect(page.status_code).to eql 200
   end
 end

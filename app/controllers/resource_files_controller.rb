@@ -1,4 +1,5 @@
 class ResourceFilesController < ApplicationController
+  include StorageHelper
   skip_before_action :authenticate_user!
   def index
     @resource_file_types = ResourceFileType.order(:position)
