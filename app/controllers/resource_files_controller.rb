@@ -8,12 +8,7 @@ class ResourceFilesController < ApplicationController
   def download
     resource = ResourceFile.find_by(id: params[:id])
     if resource.present?
-      serve = params[:serve] == "attachment" ? "attachment" : "inline"
-      response.headers["Content-Disposition"] = "#{serve}; filename=\"#{resource.file.filename}\""
-      response.headers["Content-Type"] = resource.file.content_type
-      resource.file.download do |chunk|
-        response.stream.write(chunk)
-      end
+      serve_from_storage(resource.file, params[:serve])
     else
       render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
     end
