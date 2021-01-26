@@ -23,9 +23,9 @@
                 </div>
               </div>
               <div class="card-footer">
-                <%= link_to url_for(case_study.file), class: 'btn btn-primary' do %>
+                <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id ), class: 'btn' do %>
                   Download <i class="fas fa-file-download"></i>
-                <% end%>
+                <% end %>
               </div>
             </div>
           <% end %>
