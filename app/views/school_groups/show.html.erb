@@ -1,7 +1,14 @@
 <% content_for :page_title, @school_group.name %>
 
-<%= render 'schools/list', name: @school_group.name, scoreboard: @school_group.default_scoreboard, scoreboard_name: 'default scoreboard for group', schools: @school_group.schools.visible.order(:name), benchmark_filter: {school_group_ids: [@school_group.id]}%>
+<%= render 'header', name: @school_group.name, scoreboard: @school_group.default_scoreboard, benchmark_filter: {school_group_ids: [@school_group.id]}%>
 
-<% if can?(:read_invisible_schools, School) %>
-  <%= render 'schools/list', name: 'Not visible schools', scoreboard: nil, schools: @school_group.schools.not_visible.order(:name), benchmark_filter: nil %>
+<p>Energy Sparks currently works with <%= @schools.count %> schools from <%= @school_group.name %>. If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <%= link_to 'here', enrol_path %>.</p>
+
+<div class="map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
+
+<%= render 'schools/list_cards', schools: @school_group.schools.visible.by_name %>
+
+<% if @school_group.schools.not_visible.any? && can?(:read_invisible_schools, School) %>
+  <%= render 'header', name: 'Not visible schools', scoreboard: nil, benchmark_filter: nil %>
+  <%= render 'schools/list_cards', schools: @school_group.schools.not_visible.by_name %>
 <% end %>

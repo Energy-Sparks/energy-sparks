@@ -9,6 +9,30 @@ describe 'school groups', :school_groups, type: :system do
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10) }
   let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20) }
 
+  describe 'when not logged in' do
+    it 'does not show a summary of groups' do
+      visit school_groups_path
+      expect(page).not_to have_content(school_group.name)
+      expect(page).to have_content('You need to sign in or sign up before continuing')
+    end
+
+    it 'does show a specific group' do
+      visit school_group_path(school_group)
+      expect(page).to have_content(school_1.name)
+      expect(page).to have_content(school_2.name)
+    end
+
+    it 'includes data attribute' do
+      visit school_group_path(school_group)
+
+      # el = page.find('div[id="runtime"]')['data-value']
+      # p usage
+
+      # expect(page).to have_selector('div[data-school-group-id="' + school_group.id.to_s + '"]')
+      expect(page).to have_selector("div[data-school-group-id='#{school_group.id}']")
+    end
+  end
+
   describe 'when logged in' do
     before(:each) do
       sign_in(user)
@@ -22,7 +46,7 @@ describe 'school groups', :school_groups, type: :system do
 
     it 'shows a summary of the schools in the group' do
       visit school_groups_path
-      click_on(school_group.name)
+      click_on school_group.name
       expect(page).to have_content(school_1.name)
       expect(page).to have_content(school_2.name)
     end

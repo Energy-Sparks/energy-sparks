@@ -1,80 +1,56 @@
-<% content_for :page_title do %>
-Schools
-<% end %>
+<% content_for :page_title, 'Map' %>
 
-<section id="enrolled">
-  <div class="row padded-row">
-    <div class="col-md-8">
-      <h1>Participating Schools</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h1>Energy Sparks schools across the UK</h1>
+  </div>
+</div>
+
+<div class="map" id="geo-json-map"></div>
+
+<div class="col-md-12">
+
+  <p>Discover which schools are using Energy Sparks to reduce their energy usage.</p>
+  <p>We have <%= @schools.count %> schools across England, Wales, and Scotland including state primary and secondary schools, independent schools, special schools and nursery schools.</p>
+  <p>Explore their electricity and gas consumption data, find out how much energy they generate from their solar panels and learn about their energy saving activities.</p>
+  <p>We’re proud to have a great network of schools all working hard to save energy and help fight climate change.</p>
+
+  <br/>
+
+  <h2>View Energy Sparks schools by group</h2>
+  <div class="row">
+    <% school_groups_left, school_groups_right = @school_groups.partition.with_index{|_,v| v.even?} %>
+    <div class="col-lg-6">
+      <% school_groups_left.each do |school_group| %>
+        <%= render 'school_group', school_group: school_group %>
+      <% end %>
     </div>
-    <div class="col-md-4">
-      <div class='btn-group float-right'>
-        <%= link_to 'Scoreboards', scoreboards_path, class: 'btn' %>
-      </div>
-    </div>
-    <div class="col-md-12">
-      <p>These schools are using <%= t('application') %> to reduce their energy usage. See their usage data, compare scores and learn about their energy saving activities</p>
-      <p>You can also <%= link_to 'compare schools', benchmarks_path %></p>
+    <div class="col-lg-6">
+      <% school_groups_right.each do |school_group|  %>
+        <%= render 'school_group', school_group: school_group %>
+      <% end %>
     </div>
   </div>
 
-  <ul class="nav nav-pills">
-    <li class="nav-item">
-      <a class="nav-link disabled" href="#">Jump to</a>
-    </li>
-    <% @school_groups.each do |school_group| %>
-      <li class="nav-item">
-        <%= link_to "#{school_group.name}", "##{school_group.name.parameterize}", class: 'nav-link' %>
-      </li>
-    <% end %>
-  </ul>
+  <br/>
+  <br/>
 
-  <% @school_groups.each do |school_group| %>
-    <%= render 'schools/list', name: school_group.name, scoreboard: nil, schools: school_group.schools.visible.order(:name), benchmark_filter: {school_group_ids: [school_group.id]}%>
-  <% end %>
-
-  <% if @ungrouped_visible_schools.any? %>
-    <div class="row padded-row">
-      <div class="col-lg-12">
-        <h3>Other schools</h3>
-      </div>
-    </div>
-    <% @ungrouped_visible_schools.each_slice(3) do |row| %>
-      <div class="row school-card-row">
-        <div class="col-lg-12">
-          <div class="card-deck">
-            <% row.each do |school| %>
-              <%= render partial: 'schools/school_card', locals: {school: school} %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-
-</section>
-
-<section id="eligible">
-  <div class="container">
-    <div class="row padded-row">
-      <div class="col-lg-12">
-        <% if can?(:read_invisible_schools, School) %>
-          <h3>Not visible schools</h3>
-          <p>The following schools are not visible.</p>
-          <div class="card-columns">
-            <% @schools_not_visible.each do |school| %>
-              <%= render partial: 'schools/school_card', locals: {school: school} %>
-            <% end %>
-        <% else %>
-          <p>If your school has not been enrolled, but you would like to find out more, you can find out <%= link_to "how to get involved", enrol_path %>.</p>
-        <% end %>
-      </div>
+  <h2>View all Energy Sparks schools</h2>
+  <div class="row">
+    <div class="col-lg-12">
+      <%= render 'schools', schools: @schools, title: 'A to Z of all Energy Sparks schools', label: 'allSchools' %>
     </div>
   </div>
-</section>
 
-<% if can? :manage, School -%>
-  <%= link_to 'Manual School Setup', new_school_path, class: 'btn btn-primary' %>
-  <%= link_to "Automatic School Setup", admin_school_onboardings_path, class: 'btn btn-primary' %>
-<% end %>
+  <% if @schools_not_visible.any? && can?(:read_invisible_schools, School)%>
+    <br/>
+    <br/>
+    <h2>Not visible schools</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <%= render 'schools', schools: @schools_not_visible, title: 'Not visible schools', label: 'invisibleSchools' %>
+      </div>
+    </div>
+  <% end %>
 
+</div>

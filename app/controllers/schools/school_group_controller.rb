@@ -10,7 +10,7 @@ module Schools
       redirect_to new_school_configuration_path(@school)
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])

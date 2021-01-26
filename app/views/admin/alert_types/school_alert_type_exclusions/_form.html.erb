@@ -8,7 +8,7 @@
           <%= label_tag "multi_select_#{school_group.id}", "Select/Deselect all for #{school_group.name}", class: 'custom-control-label' %>
         </div>
       </li>
-      <% school_group.schools.order(name: :asc).each do |school| %>
+      <% school_group.schools.by_name.each do |school| %>
         <li class='list-group-item d-flex justify-content-between align-items-center'>
           <div class="custom-control custom-checkbox">
             <%= check_box_tag "school_ids[]", school.id, existing_exclusions.key?(school.id), { id: "school_ids_#{school.id}", class: "custom-control-input multi_select_#{school_group.id}_group" } %>

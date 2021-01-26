@@ -1,0 +1,85 @@
+.map {
+  margin-bottom: 30px;
+}
+
+div#geo-json-map {
+  height: 800px;
+  width: 100%;
+}
+
+
+// Leaflet popup styles
+
+.leaflet-popup-content-wrapper {
+  font-family : $default-font-family;
+}
+
+.leaflet-popup-content p {
+  margin: 5px 0 !important;
+}
+
+
+// Leaflet cluster styles
+
+.marker-cluster-small {
+  background-color: #FF9B9C;
+}
+
+.marker-cluster-small div {
+  background-color: #FF3A5B;
+}
+
+.marker-cluster-medium {
+  background-color: #FF9B9C;
+}
+
+.marker-cluster-medium div {
+  background-color: #FF3A5B;
+}
+
+.marker-cluster-large {
+  background-color: #FF9B9C;
+}
+.marker-cluster-large div {
+  background-color: #FF3A5B;
+}
+
+/* IE 6-8 fallback colors */
+.leaflet-oldie .marker-cluster-small {
+  background-color: #FF9B9C;
+}
+.leaflet-oldie .marker-cluster-small div {
+  background-color: #FF3A5B;
+}
+
+.leaflet-oldie .marker-cluster-medium {
+  background-color: #FF9B9C;
+}
+.leaflet-oldie .marker-cluster-medium div {
+  background-color: #FF3A5B;
+}
+
+.leaflet-oldie .marker-cluster-large {
+  background-color: #FF9B9C;
+}
+.leaflet-oldie .marker-cluster-large div {
+  background-color: #FF3A5B;
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+}
+.marker-cluster div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+.marker-cluster span {
+  line-height: 30px;
+}

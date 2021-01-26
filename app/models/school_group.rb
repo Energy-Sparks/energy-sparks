@@ -44,7 +44,13 @@ class SchoolGroup < ApplicationRecord
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
+  scope :by_name, -> { order(name: :asc) }
+
   validates :name, presence: true
+
+  def has_visible_schools?
+    schools.visible.any?
+  end
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?

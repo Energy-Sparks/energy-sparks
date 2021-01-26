@@ -11,7 +11,7 @@ module Admin
     end
 
     def edit
-      @schools = @scoreboard.schools.order(:name)
+      @schools = @scoreboard.schools.by_name
     end
 
     def create
@@ -26,7 +26,7 @@ module Admin
       if @scoreboard.update(scoreboard_params)
         redirect_to admin_scoreboards_path, notice: 'Scoreboard was successfully updated.'
       else
-        @schools = @scoreboard.schools.order(:name)
+        @schools = @scoreboard.schools.by_name
         render :edit
       end
     end

@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      <% school_group.schools.order(:name).each do |school| %>
+      <% school_group.schools.by_name.each do |school| %>
         <% if school.contacts.any? %>
           <% school.contacts.each do |contact| %>
             <tr>
