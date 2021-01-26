@@ -68,6 +68,7 @@ function fireRequestForJson(mapDiv) {
       zoom: zoom,
       minZoom: minZoom,
       maxZoom: maxZoom,
+      tap: false
     };
 
     // Stadia Outdoors
