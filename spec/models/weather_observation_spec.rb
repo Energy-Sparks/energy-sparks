@@ -7,7 +7,7 @@ RSpec.describe WeatherObservation, type: :model do
   let!(:reading_2) { create(:weather_observation, weather_station: station, reading_date: '2021-01-01') }
 
   it 'applies date scope' do
-    expect(station.weather_observations.since(Date.new(2019,01,01))).to eq([reading_1, reading_2])
+    expect(station.weather_observations.by_date).to eq([reading_1, reading_2])
     expect(station.weather_observations.since(Date.new(2020,02,01))).to eq([reading_2])
     expect(station.weather_observations.since(Date.new(2021,02,01))).to eq([])
   end
