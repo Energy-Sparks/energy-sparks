@@ -28,11 +28,10 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (alert_id => alerts.id)
+#  fk_rails_...  (alert_id => alerts.id) ON DELETE => cascade
 #  fk_rails_...  (alert_type_rating_content_version_id => alert_type_rating_content_versions.id) ON DELETE => cascade
-#  fk_rails_...  (contact_id => contacts.id)
-#  fk_rails_...  (content_generation_run_id => content_generation_runs.id) ON DELETE => cascade
-#  fk_rails_...  (email_id => emails.id)
+#  fk_rails_...  (contact_id => contacts.id) ON DELETE => cascade
+#  fk_rails_...  (email_id => emails.id) ON DELETE => nullify
 #  fk_rails_...  (find_out_more_id => find_out_mores.id) ON DELETE => nullify
 #  fk_rails_...  (subscription_generation_run_id => subscription_generation_runs.id) ON DELETE => cascade
 #
