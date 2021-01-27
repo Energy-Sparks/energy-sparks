@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_142347) do
+ActiveRecord::Schema.define(version: 2021_01_27_101121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1163,6 +1163,27 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
 
+  create_table "weather_observations", force: :cascade do |t|
+    t.bigint "weather_station_id", null: false
+    t.date "reading_date", null: false
+    t.decimal "temperature_celsius_x48", null: false, array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["weather_station_id", "reading_date"], name: "index_weather_obs_on_weather_station_id_and_reading_date", unique: true
+    t.index ["weather_station_id"], name: "index_weather_observations_on_weather_station_id"
+  end
+
+  create_table "weather_stations", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.string "type", null: false
+    t.boolean "active", default: true
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
@@ -1306,4 +1327,5 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
   add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
+  add_foreign_key "weather_observations", "weather_stations", on_delete: :cascade
 end
