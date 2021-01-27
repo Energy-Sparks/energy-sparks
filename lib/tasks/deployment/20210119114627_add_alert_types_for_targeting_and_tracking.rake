@@ -7,7 +7,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :electricity,
-      sub_category: :electricity_use,
       title: "Alert Electricity Target Annual",
       class_name: 'AlertElectricityTargetAnnual',
       source: :analytics,
@@ -18,7 +17,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :gas,
-      sub_category: :heating,
       title: "Alert Gas Target Annual",
       class_name: 'AlertGasTargetAnnual',
       source: :analytics,
@@ -29,7 +27,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :electricity,
-      sub_category: :electricity_use,
       title: "Alert Electricity Target 4 Week",
       class_name: 'AlertElectricityTarget4Week',
       source: :analytics,
@@ -40,7 +37,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :gas,
-      sub_category: :heating,
       title: "Alert Gas Target 4 Week",
       class_name: 'AlertGasTarget4Week',
       source: :analytics,
@@ -51,7 +47,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :electricity,
-      sub_category: :electricity_use,
       title: "Alert Electricity Target 1 Week",
       class_name: 'AlertElectricityTarget1Week',
       source: :analytics,
@@ -62,7 +57,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :gas,
-      sub_category: :heating,
       title: "Alert Gas Target 1 Week",
       class_name: 'AlertGasTarget1Week',
       source: :analytics,
@@ -73,7 +67,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :storage_heater,
-      sub_category: :storage_heaters,
       title: "Alert Storage Heater Target Annual",
       class_name: 'AlertStorageHeaterTargetAnnual',
       source: :analytics,
@@ -84,7 +77,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :storage_heater,
-      sub_category: :storage_heaters,
       title: "Alert Storage Heater Target 4 Week",
       class_name: 'AlertStorageHeaterTarget4Week',
       source: :analytics,
@@ -95,7 +87,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :storage_heater,
-      sub_category: :storage_heaters,
       title: "Alert Storage Heater Target 1 Week",
       class_name: 'AlertStorageHeaterTarget1Week',
       source: :analytics,
@@ -106,7 +97,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :electricity,
-      sub_category: :electricity_use,
       title: "Advice Targets Electricity",
       class_name: 'AdviceTargetsElectricity',
       source: :analysis,
@@ -117,7 +107,6 @@ namespace :after_party do
     AlertType.create!(
       frequency: :weekly,
       fuel_type: :gas,
-      sub_category: :heating,
       title: "Advice Targets Gas",
       class_name: 'AdviceTargetsGas',
       source: :analysis,
