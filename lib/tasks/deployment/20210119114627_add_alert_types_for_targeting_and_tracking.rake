@@ -13,7 +13,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: true
-    )
+    ) unless AlertType.find_by_class_name('AlertElectricityTargetAnnual')
 
     AlertType.create!(
       frequency: :weekly,
@@ -24,7 +24,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: true
-    )
+    ) unless AlertType.find_by_class_name('AlertGasTargetAnnual')
 
     AlertType.create!(
       frequency: :weekly,
@@ -35,7 +35,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AlertElectricityTarget4Week')
 
     AlertType.create!(
       frequency: :weekly,
@@ -46,7 +46,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AlertGasTarget4Week')
 
     AlertType.create!(
       frequency: :weekly,
@@ -57,7 +57,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AlertElectricityTarget1Week')
 
     AlertType.create!(
       frequency: :weekly,
@@ -68,7 +68,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AlertGasTarget1Week')
 
     AlertType.create!(
       frequency: :weekly,
@@ -79,7 +79,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: true
-    )
+    ) unless AlertType.find_by_class_name('AlertStorageHeaterTargetAnnual')
 
     AlertType.create!(
       frequency: :weekly,
@@ -90,7 +90,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AlertStorageHeaterTarget4Week')
 
     AlertType.create!(
       frequency: :weekly,
@@ -101,7 +101,7 @@ namespace :after_party do
       source: :analytics,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AlertStorageHeaterTarget1Week')
 
     AlertType.create!(
       frequency: :weekly,
@@ -112,7 +112,7 @@ namespace :after_party do
       source: :analysis,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AdviceTargetsElectricity')
 
     AlertType.create!(
       frequency: :weekly,
@@ -123,7 +123,7 @@ namespace :after_party do
       source: :analysis,
       has_ratings: true,
       benchmark: false
-    )
+    ) unless AlertType.find_by_class_name('AdviceTargetsGas')
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
