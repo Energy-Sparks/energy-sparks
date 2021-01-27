@@ -1,0 +1,42 @@
+<h1>Weather Stations</h1>
+
+<% if @weather_stations.any? %>
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Readings</th>
+      <th>Earliest date</th>
+      <th>Latest date</th>
+      <th>Active?</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @weather_stations.each do |station| %>
+      <tr>
+        <td><%= station.title %></td>
+        <td><%= station.description %></td>
+        <td><%= station.latitude %></td>
+        <td><%= station.longitude %></td>
+        <td><%= station.observation_count %></td>
+        <td><%= station.first_observation_date %></td>
+        <td><%= station.last_observation_date %></td>
+        <td><%= station.active? %></td>
+        <td>
+          <div class='btn-group'>
+            <%= link_to 'Edit', edit_admin_weather_station_path(station), class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+  <p>There are no Weather Stations</p>
+<% end %>
+
+<%= link_to 'New Weather Station', new_admin_weather_station_path, class: 'btn' %>

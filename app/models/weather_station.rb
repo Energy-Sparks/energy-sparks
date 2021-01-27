@@ -20,4 +20,20 @@ class WeatherStation < ApplicationRecord
   scope :by_title, -> { order(title: :asc) }
   scope :active_by_provider, ->(provider) { where(active: true, provider: provider) }
   scope :by_provider, ->(provider) { where(provider: provider) }
+
+  def observation_count
+    weather_observations.count
+  end
+
+  def first_observation_date
+    if observation_count > 0
+      weather_observations.by_date.first.reading_date.strftime('%d %b %Y')
+    end
+  end
+
+  def last_observation_date
+    if observation_count > 0
+      weather_observations.by_date.last.reading_date.strftime('%d %b %Y')
+    end
+  end
 end

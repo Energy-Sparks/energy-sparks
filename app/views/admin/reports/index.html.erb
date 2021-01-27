@@ -50,5 +50,8 @@
   <% SolarPvTuosArea.all.each do |area| %>
     <li><%= link_to "Solar Pv 2 tuos CSV for #{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv") %></li>
   <% end %>
+  <% WeatherStation.all.each do |area| %>
+    <li><%= link_to "#{area.provider.capitalize} Weather Station CSV for #{area.title}", data_feeds_weather_observations_path(area.id, format: "csv") %></li>
+  <% end %>
   <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></li>
 </ul>
