@@ -6,6 +6,6 @@ namespace :data_feeds do
 
     loader = DataFeeds::MeteostatLoader.new(start_date, end_date)
     loader.import
-    p "Imported #{loader.insert_count} records, Updated #{loader.update_count} records from #{loader.stations} stations"
+    p "Imported #{loader.insert_count} records, Updated #{loader.update_count} records from #{loader.stations_processed} stations"
   end
 end
