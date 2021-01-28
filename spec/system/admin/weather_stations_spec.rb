@@ -27,7 +27,7 @@ RSpec.describe 'Weather stations', type: :system do
       fill_in 'Latitude', with: latitude
       fill_in 'Longitude', with: longitude
       select 'Meteostat', from: 'Provider'
-      check 'Active'
+      check 'Load data?'
 
       expect { click_on 'Create' }.to change { WeatherStation.count }.by(1)
 
@@ -51,7 +51,7 @@ RSpec.describe 'Weather stations', type: :system do
 
       fill_in 'Longitude', with: longitude
       select 'Meteostat', from: 'Provider'
-      check 'Active'
+      check 'Load data?'
       expect { click_on 'Create' }.to change { WeatherStation.count }.by(1)
 
       expect(page).to have_content('Weather Stations')
@@ -107,7 +107,7 @@ RSpec.describe 'Weather stations', type: :system do
         new_title = "New title"
 
         fill_in 'Title', with: ''
-        check('Active')
+        check('Load data?')
 
         click_on 'Update'
 
