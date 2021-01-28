@@ -14,6 +14,7 @@ class Ability
     can :show, School, visible: true
     can :usage, School, visible: true
     can :show_pupils_dash, School, visible: true
+    can :show_teachers_dash, School, visible: true
     can :suggest_activity, School, visible: true
     can :read, Scoreboard
     can :read, FindOutMore
@@ -55,8 +56,8 @@ class Ability
       end
       can [
         :update, :manage_school_times, :suggest_activity, :manage_users,
-        :show_teachers_dash, :show_pupils_dash, :show_management_dash,
-        :read, :usage, :start_programme, :read_dashboard_menu, :read_restricted_analysis
+        :show_management_dash,
+        :read, :usage, :start_programme, :read_restricted_analysis
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
@@ -80,7 +81,7 @@ class Ability
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
       if user.staff? || user.volunteer?
-        can [:show_teachers_dash, :show_management_dash, :start_programme, :read_dashboard_menu], School, id: user.school_id, visible: true
+        can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id

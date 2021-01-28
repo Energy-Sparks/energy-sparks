@@ -1,7 +1,7 @@
 <%= content_for :page_title, "Teacher dashboard for #{@school.name}" %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Energy Usage&hellip;</h1>
+  <h1>Teacher Dashboard</h1>
   <% if @school.configuration %>
     <div class="h5 pt-2"><%= link_to "Learn more about your school's energy use", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %></div>
   <% end %>
