@@ -43,7 +43,8 @@ module Admin
         :name, :description, :default_scoreboard_id,
         :default_template_calendar_id,
         :default_dark_sky_area_id,
-        :default_solar_pv_tuos_area_id
+        :default_solar_pv_tuos_area_id,
+        :default_weather_station_id
       )
     end
   end

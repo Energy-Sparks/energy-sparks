@@ -17,6 +17,7 @@
 #  template_calendar_id  :bigint(8)
 #  updated_at            :datetime         not null
 #  uuid                  :string           not null
+#  weather_station_id    :bigint(8)
 #
 # Indexes
 #
@@ -48,6 +49,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
+  belongs_to :weather_station, optional: true
   belongs_to :scoreboard, optional: true
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true

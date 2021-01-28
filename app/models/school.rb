@@ -37,6 +37,7 @@
 #  urn                                   :integer          not null
 #  validation_cache_key                  :string           default("initial")
 #  visible                               :boolean          default(FALSE)
+#  weather_station_id                    :bigint(8)
 #  website                               :string
 #
 # Indexes
@@ -107,6 +108,7 @@ class School < ApplicationRecord
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
+  belongs_to :weather_station, optional: true
   belongs_to :school_group, optional: true
   belongs_to :scoreboard, optional: true
 
