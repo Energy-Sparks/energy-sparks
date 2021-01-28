@@ -4,7 +4,7 @@ module DataFeeds
   class MeteostatLoader
     attr_reader :insert_count, :update_count, :stations_processed
 
-    def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday, meteostat_interface = MeteoStat.new)
+    def initialize(start_date = Date.yesterday - 8.days, end_date = Date.yesterday, meteostat_interface = MeteoStat.new)
       @start_date = start_date
       @end_date = end_date
       @meteostat_interface = meteostat_interface

@@ -24,6 +24,7 @@ module DataFeeds
   private
 
     def get_missing_array(first_reading, reading_summary)
+      return [] if first_reading.nil?
       missing_array = (first_reading.reading_date.to_date..Time.zone.today).collect do |day|
         if ! reading_summary.key?(day)
           [day, 'No readings']
