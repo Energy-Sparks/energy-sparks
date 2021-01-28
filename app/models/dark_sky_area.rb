@@ -2,12 +2,13 @@
 #
 # Table name: areas
 #
-#  description :text
-#  id          :bigint(8)        not null, primary key
-#  latitude    :decimal(10, 6)
-#  longitude   :decimal(10, 6)
-#  title       :text
-#  type        :text             not null
+#  back_fill_years :integer          default(4)
+#  description     :text
+#  id              :bigint(8)        not null, primary key
+#  latitude        :decimal(10, 6)
+#  longitude       :decimal(10, 6)
+#  title           :text
+#  type            :text             not null
 #
 class DarkSkyArea < Area
   has_many :dark_sky_temperature_readings, class_name: 'DataFeeds::DarkSkyTemperatureReading', foreign_key: :area_id, dependent: :destroy

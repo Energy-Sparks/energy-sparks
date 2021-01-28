@@ -15,7 +15,9 @@
 #  id                                    :bigint(8)        not null, primary key
 #  indicated_has_solar_panels            :boolean          default(FALSE), not null
 #  indicated_has_storage_heaters         :boolean          default(FALSE)
+#  latitude                              :decimal(10, 6)
 #  level                                 :integer          default(0)
+#  longitude                             :decimal(10, 6)
 #  met_office_area_id                    :bigint(8)
 #  name                                  :string
 #  number_of_pupils                      :integer
@@ -39,10 +41,11 @@
 #
 # Indexes
 #
-#  index_schools_on_calendar_id      (calendar_id)
-#  index_schools_on_school_group_id  (school_group_id)
-#  index_schools_on_scoreboard_id    (scoreboard_id)
-#  index_schools_on_urn              (urn) UNIQUE
+#  index_schools_on_calendar_id             (calendar_id)
+#  index_schools_on_latitude_and_longitude  (latitude,longitude)
+#  index_schools_on_school_group_id         (school_group_id)
+#  index_schools_on_scoreboard_id           (scoreboard_id)
+#  index_schools_on_urn                     (urn) UNIQUE
 #
 # Foreign Keys
 #

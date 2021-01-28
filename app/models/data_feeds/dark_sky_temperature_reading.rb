@@ -2,7 +2,7 @@
 #
 # Table name: dark_sky_temperature_readings
 #
-#  area_id                 :bigint(8)
+#  area_id                 :bigint(8)        not null
 #  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
 #  reading_date            :date             not null

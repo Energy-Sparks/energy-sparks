@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
   get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
+  get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   get 'benchmarks', to: 'benchmarks#index'
@@ -178,6 +179,7 @@ Rails.application.routes.draw do
     resource :activity_type_preview, only: :create
 
     resources :dark_sky_areas, except: [:destroy, :show]
+    resources :weather_stations, except: [:destroy, :show]
     resources :solar_pv_tuos_areas, except: [:destroy, :show]
 
     resources :schools, only: [] do

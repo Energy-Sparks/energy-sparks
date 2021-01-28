@@ -15,7 +15,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (activity_type_id => activity_types.id)
+#  fk_rails_...  (activity_type_id => activity_types.id) ON DELETE => cascade
 #
 
 class ActivityTypeSuggestion < ApplicationRecord

@@ -1,0 +1,10 @@
+<%= simple_form_for([:admin, weather_station]) do |f| %>
+  <%= f.input :title, as: :string %>
+  <%= f.input :description, as: :string %>
+  <%= f.input :latitude, readonly: f.object.persisted? %>
+  <%= f.input :longitude, readonly: f.object.persisted? %>
+  <%= f.input :back_fill_years %>
+  <%= f.input :provider, collection: [["Meteostat", "meteostat"]], selected: "meteostat" %>
+  <%= f.input :active, as: :boolean %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>
