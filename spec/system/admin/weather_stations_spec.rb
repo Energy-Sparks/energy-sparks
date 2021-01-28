@@ -80,15 +80,15 @@ RSpec.describe 'Weather stations', type: :system do
         expect(WeatherStation.count).to be 1
         click_on 'Edit'
 
-        #new_latitude = 111.111
-        #new_longitude = 999.999
+        new_latitude = 111.111
+        new_longitude = 999.999
         new_title = "New title"
         new_description = "New description"
 
         fill_in 'Title', with: new_title
         fill_in 'Description', with: new_description
-        #fill_in 'Latitude', with: new_latitude
-        #fill_in 'Longitude', with: new_longitude
+        fill_in 'Latitude', with: new_latitude
+        fill_in 'Longitude', with: new_longitude
 
         click_on 'Update'
 
@@ -97,8 +97,8 @@ RSpec.describe 'Weather stations', type: :system do
         expect(page).to have_content('Weather Stations')
         expect(page).to have_content new_title
         expect(page).to have_content new_description
-        #expect(page).to have_content new_latitude
-        #expect(page).to have_content new_longitude
+        expect(page).to have_content new_latitude
+        expect(page).to have_content new_longitude
       end
 
       it 'checks for valid fields on update' do
