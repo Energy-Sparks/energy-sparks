@@ -13,7 +13,7 @@ describe 'Management dashboard' do
   it 'allows login and access to management dashboard' do
     visit root_path
     expect(page).to have_content("#{school.name}")
-    expect(page).to have_content("Energy Usage")
+    expect(page).to have_content("Management Dashboard")
 
     expect(page).to have_content("Recorded temperatures")
   end
