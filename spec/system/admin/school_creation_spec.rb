@@ -12,6 +12,7 @@ RSpec.describe "school creation", :schools, type: :system do
   let!(:solar_pv_area)  { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let!(:dark_sky_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:scoreboard)     { create(:scoreboard, name: 'BANES scoreboard') }
+  let!(:weather_station) { create(:weather_station, title: 'BANES weather')}
 
   let!(:school_group) do
     create(
@@ -20,6 +21,7 @@ RSpec.describe "school creation", :schools, type: :system do
       default_template_calendar: calendar,
       default_solar_pv_tuos_area: solar_pv_area,
       default_dark_sky_area: dark_sky_area,
+      default_weather_station: weather_station,
       default_scoreboard: scoreboard
     )
   end
@@ -51,6 +53,7 @@ RSpec.describe "school creation", :schools, type: :system do
 
     expect(page).to have_select('Template calendar', selected: 'BANES calendar')
     expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
+    expect(page).to have_select('Weather Station', selected: 'BANES weather')
     expect(page).to have_select('Solar PV from The University of Sheffield Data Feed Area', selected: 'BANES solar')
     expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
 

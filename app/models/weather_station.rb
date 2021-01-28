@@ -37,4 +37,8 @@ class WeatherStation < ApplicationRecord
       weather_observations.by_date.last.reading_date.strftime('%d %b %Y')
     end
   end
+
+  def has_sufficient_readings?(latest_date, minimum_readings_per_year)
+    weather_observations.since(latest_date - back_fill_years.years).count >= minimum_readings_per_year * back_fill_years
+  end
 end

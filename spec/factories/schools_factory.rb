@@ -34,7 +34,7 @@ FactoryBot.define do
 
     trait :with_feed_areas do
       after(:create) do |school, evaluator|
-        school.update(dark_sky_area: create(:dark_sky_area), solar_pv_tuos_area: create(:solar_pv_tuos_area))
+        school.update(dark_sky_area: create(:dark_sky_area), solar_pv_tuos_area: create(:solar_pv_tuos_area), weather_station: create(:weather_station))
       end
     end
 

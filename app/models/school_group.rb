@@ -7,6 +7,7 @@
 #  default_scoreboard_id         :bigint(8)
 #  default_solar_pv_tuos_area_id :bigint(8)
 #  default_template_calendar_id  :bigint(8)
+#  default_weather_station_id    :bigint(8)
 #  description                   :string
 #  id                            :bigint(8)        not null, primary key
 #  name                          :string           not null
@@ -40,6 +41,7 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
+  belongs_to :default_weather_station, class_name: 'WeatherStation', foreign_key: 'default_weather_station_id', optional: true
   belongs_to :default_scoreboard, class_name: 'Scoreboard', optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'

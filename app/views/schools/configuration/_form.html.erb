@@ -27,6 +27,12 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
+      <%= f.label :weather_station_id, 'Weather Station' %>
+      <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.all, 'id', 'title', (@school.weather_station_id if @school.weather_station)),{:include_blank => true }, { class: 'form-control' }%>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id, options_from_collection_for_select(@scoreboards, 'id', 'name', (@school.scoreboard.id if @school.scoreboard)),{}, { class: 'form-control' }%>
     </div>
