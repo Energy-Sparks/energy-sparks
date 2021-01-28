@@ -31,7 +31,7 @@ module Admin
     private
 
     def weather_station_params
-      params.require(:weather_station).permit(:title, :description, :type, :latitude, :longitude, :active, :provider)
+      params.require(:weather_station).permit(:title, :description, :type, :latitude, :longitude, :active, :provider, :back_fill_years)
     end
   end
 end

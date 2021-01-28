@@ -6,11 +6,11 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
+      <th>Location</th>
       <th>Readings</th>
       <th>Earliest date</th>
       <th>Latest date</th>
+      <th>Backfill Years</th>
       <th>Active?</th>
       <th>Actions</th>
     </tr>
@@ -20,11 +20,11 @@
       <tr>
         <td><%= station.title %></td>
         <td><%= station.description %></td>
-        <td><%= station.latitude %></td>
-        <td><%= station.longitude %></td>
+        <td><%= station.latitude %>, <%= station.longitude %></td>
         <td><%= station.observation_count %></td>
         <td><%= station.first_observation_date %></td>
         <td><%= station.last_observation_date %></td>
+        <td><%= station.back_fill_years %></td>
         <td><%= station.active? %></td>
         <td>
           <div class='btn-group'>

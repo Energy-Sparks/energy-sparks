@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_101121) do
+ActiveRecord::Schema.define(version: 2021_01_28_120519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1182,6 +1182,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_101121) do
     t.decimal "longitude", precision: 10, scale: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "back_fill_years", default: 4
   end
 
   add_foreign_key "academic_years", "calendars", on_delete: :restrict

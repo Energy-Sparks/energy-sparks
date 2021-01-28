@@ -11,13 +11,12 @@
 #
 # Indexes
 #
-#  index_weather_obs_on_weather_station_id                   (weather_station_id)
 #  index_weather_obs_on_weather_station_id_and_reading_date  (weather_station_id,reading_date) UNIQUE
 #  index_weather_observations_on_weather_station_id          (weather_station_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (weather_station_id => weather_stations.id)
+#  fk_rails_...  (weather_station_id => weather_stations.id) ON DELETE => cascade
 #
 class WeatherObservation < ApplicationRecord
   belongs_to :weather_station
