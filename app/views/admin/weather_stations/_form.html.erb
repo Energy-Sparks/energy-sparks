@@ -5,6 +5,6 @@
   <%= f.input :longitude, readonly: (f.object.persisted? && f.object.observation_count > 0) %>
   <%= f.input :back_fill_years %>
   <%= f.input :provider, collection: [["Meteostat", "meteostat"]], selected: "meteostat" %>
-  <%= f.input :active, as: :boolean %>
+  <%= f.input :active, label: "Load data?", as: :boolean %>
   <%= f.submit class: 'btn btn-primary' %>
 <% end %>
