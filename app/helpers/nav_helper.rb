@@ -23,4 +23,14 @@ module NavHelper
       end
     end
   end
+
+  def group_for_nav(user)
+    if user
+      if user.school_group
+        user.school_group
+      elsif user.school && user.school.school_group
+        user.school.school_group
+      end
+    end
+  end
 end
