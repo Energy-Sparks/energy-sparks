@@ -39,6 +39,14 @@
   <% end %>
 </ul>
 
+<h2>Weather Stations</h2>
+<ul>
+  <% WeatherStation.by_title.each do |area| %>
+    <li><%= link_to "#{area.title}", data_feeds_weather_observations_path(area.id) %></li>
+  <% end %>
+</ul>
+
+
 <h1>Downloads</h1>
 
 <ul>
