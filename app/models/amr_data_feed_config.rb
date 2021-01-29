@@ -13,6 +13,7 @@
 #  identifier              :text             not null
 #  import_warning_days     :integer          default(7)
 #  meter_description_field :text
+#  missing_readings_limit  :integer
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null

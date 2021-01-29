@@ -7,6 +7,7 @@ module Schools
         @school.template_calendar = @school.school_group.default_template_calendar
         @school.solar_pv_tuos_area = @school.school_group.default_solar_pv_tuos_area
         @school.dark_sky_area = @school.school_group.default_dark_sky_area
+        @school.weather_station = @school.school_group.default_weather_station
         @school.scoreboard = @school.school_group.default_scoreboard
       end
     end
@@ -38,7 +39,8 @@ module Schools
         :solar_pv_tuos_area_id,
         :dark_sky_area_id,
         :scoreboard_id,
-        :school_group_id
+        :school_group_id,
+        :weather_station_id
       )
     end
 

@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
 #  fk_rails_...  (user_id => users.id) ON DELETE => cascade
 #

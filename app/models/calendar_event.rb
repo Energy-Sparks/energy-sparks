@@ -19,9 +19,9 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (academic_year_id => academic_years.id)
-#  fk_rails_...  (calendar_event_type_id => calendar_event_types.id)
-#  fk_rails_...  (calendar_id => calendars.id)
+#  fk_rails_...  (academic_year_id => academic_years.id) ON DELETE => restrict
+#  fk_rails_...  (calendar_event_type_id => calendar_event_types.id) ON DELETE => restrict
+#  fk_rails_...  (calendar_id => calendars.id) ON DELETE => cascade
 #
 
 class CalendarEvent < ApplicationRecord

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_142347) do
+ActiveRecord::Schema.define(version: 2021_01_28_151747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -901,6 +901,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
     t.bigint "default_solar_pv_tuos_area_id"
     t.bigint "default_dark_sky_area_id"
     t.bigint "default_template_calendar_id"
+    t.bigint "default_weather_station_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -950,6 +951,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
     t.bigint "dark_sky_area_id"
     t.bigint "template_calendar_id"
     t.bigint "scoreboard_id"
+    t.bigint "weather_station_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -1004,6 +1006,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
     t.date "activation_date"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+    t.bigint "weather_station_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1163,6 +1166,28 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
   end
 
+  create_table "weather_observations", force: :cascade do |t|
+    t.bigint "weather_station_id", null: false
+    t.date "reading_date", null: false
+    t.decimal "temperature_celsius_x48", null: false, array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["weather_station_id", "reading_date"], name: "index_weather_obs_on_weather_station_id_and_reading_date", unique: true
+    t.index ["weather_station_id"], name: "index_weather_observations_on_weather_station_id"
+  end
+
+  create_table "weather_stations", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.string "provider", null: false
+    t.boolean "active", default: true
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "back_fill_years", default: 4
+  end
+
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
@@ -1306,4 +1331,5 @@ ActiveRecord::Schema.define(version: 2021_01_12_142347) do
   add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
+  add_foreign_key "weather_observations", "weather_stations", on_delete: :cascade
 end
