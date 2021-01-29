@@ -22,7 +22,7 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>
-      <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.all, 'id', 'title', (@school.dark_sky_area.id if @school.dark_sky_area)),{}, { class: 'form-control' }%>
+      <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.all, 'id', 'title', (@school.dark_sky_area.id if @school.dark_sky_area)),{include_blank: true}, { class: 'form-control' }%>
     </div>
   </div>
   <div class="form-row">
