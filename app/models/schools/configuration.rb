@@ -4,6 +4,7 @@
 #
 #  analysis_charts                     :json             not null
 #  created_at                          :datetime         not null
+#  electricity_dashboard_chart_type    :integer          default("no_electricity_chart"), not null
 #  fuel_configuration                  :json
 #  gas_dashboard_chart_type            :integer          default("no_gas_chart"), not null
 #  id                                  :bigint(8)        not null, primary key

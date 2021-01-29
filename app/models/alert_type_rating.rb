@@ -26,7 +26,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => restrict
+#  fk_rails_...  (alert_type_id => alert_types.id) ON DELETE => cascade
 #
 
 class AlertTypeRating < ApplicationRecord

@@ -19,8 +19,8 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (school_id => schools.id)
-#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
+#  fk_rails_...  (user_id => users.id) ON DELETE => nullify
 #
 
 class Simulation < ApplicationRecord

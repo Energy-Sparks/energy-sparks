@@ -35,6 +35,11 @@
       </div>
 
       <div class="form-group">
+        <%= f.label :default_weather_station_id, 'Default Weather Station' %>
+        <%= f.select :default_weather_station_id, options_from_collection_for_select(WeatherStation.order(:title), 'id', 'title', @school_group.default_weather_station_id), {include_blank: true}, { class: 'form-control' } %>
+      </div>
+
+      <div class="form-group">
         <%= f.label :default_scoreboard_id, 'Default scoreboard' %>
         <%= f.select :default_scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_group.default_scoreboard_id)), {include_blank: true}, { class: 'form-control' } %>
       </div>

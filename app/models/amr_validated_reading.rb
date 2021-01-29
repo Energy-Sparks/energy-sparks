@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (meter_id => meters.id)
+#  fk_rails_...  (meter_id => meters.id) ON DELETE => cascade
 #
 
 class AmrValidatedReading < ApplicationRecord

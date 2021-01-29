@@ -29,7 +29,9 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (amr_data_feed_config_id => amr_data_feed_configs.id) ON DELETE => cascade
 #  fk_rails_...  (amr_data_feed_import_log_id => amr_data_feed_import_logs.id) ON DELETE => cascade
+#  fk_rails_...  (meter_id => meters.id) ON DELETE => nullify
 #
 
 class AmrDataFeedReading < ApplicationRecord

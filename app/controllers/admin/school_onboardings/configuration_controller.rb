@@ -8,6 +8,7 @@ module Admin
           @school_onboarding.template_calendar = @school_onboarding.school_group.default_template_calendar
           @school_onboarding.solar_pv_tuos_area = @school_onboarding.school_group.default_solar_pv_tuos_area
           @school_onboarding.dark_sky_area = @school_onboarding.school_group.default_dark_sky_area
+          @school_onboarding.weather_station = @school_onboarding.school_group.default_weather_station
           @school_onboarding.scoreboard = @school_onboarding.school_group.default_scoreboard
         end
       end
@@ -28,7 +29,8 @@ module Admin
           :template_calendar_id,
           :solar_pv_tuos_area_id,
           :dark_sky_area_id,
-          :scoreboard_id
+          :scoreboard_id,
+          :weather_station_id
         )
       end
     end

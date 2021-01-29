@@ -3,7 +3,12 @@
 <p><%= link_to 'All reports', admin_reports_path, class: 'btn btn-success' %></p>
 
 <h2>Missing days summary</h2>
-<p>Dates start at date of first recorded reading, <%= nice_dates @first_read.reading_date %>, up until the present day.</p>
+
+<% if @first_read.nil? %>
+  <strong>There are currently no readings for this location</strong>
+<% else %>
+  <p>Dates start at date of first recorded reading, <%= nice_dates @first_read.reading_date %>, up until the present day.</p>
+<% end %>
 
 <div id="calendar" class="calendar"></div>
 

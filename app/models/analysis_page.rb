@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (alert_id => alerts.id) ON DELETE => restrict
+#  fk_rails_...  (alert_id => alerts.id) ON DELETE => cascade
 #  fk_rails_...  (alert_type_rating_content_version_id => alert_type_rating_content_versions.id) ON DELETE => restrict
 #  fk_rails_...  (content_generation_run_id => content_generation_runs.id) ON DELETE => cascade
 #

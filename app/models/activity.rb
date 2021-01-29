@@ -19,9 +19,9 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (activity_category_id => activity_categories.id)
-#  fk_rails_...  (activity_type_id => activity_types.id)
-#  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (activity_category_id => activity_categories.id) ON DELETE => restrict
+#  fk_rails_...  (activity_type_id => activity_types.id) ON DELETE => restrict
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
 class Activity < ApplicationRecord
