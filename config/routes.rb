@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
+  get 'attribution', to: 'home#attribution'
   get 'team', to: 'home#team'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
 
