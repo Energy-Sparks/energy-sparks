@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 8d9886a993df53c3100eca32944901ca64fe83c3
-  ref: 8d9886a993df53c3100eca32944901ca64fe83c3
+  revision: 8252d47ca5c295320c8fe98c2af6fc4848e6dd64
+  ref: 8252d47ca5c295320c8fe98c2af6fc4848e6dd64
   branch: new-targeting-and-tracking-charts
   specs:
     energy-sparks_analytics (1.2.1)
