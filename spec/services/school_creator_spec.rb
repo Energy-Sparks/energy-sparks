@@ -10,6 +10,7 @@ describe SchoolCreator, :schools, type: :service do
     let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
     let!(:school_group)             { create(:school_group, name: 'BANES') }
     let!(:scoreboard)               { create(:scoreboard, name: 'BANES scoreboard') }
+    let!(:weather_station)          { create(:weather_station, title: 'BANES weather') }
 
     let(:school_onboarding) do
       create :school_onboarding,
@@ -18,7 +19,8 @@ describe SchoolCreator, :schools, type: :service do
         solar_pv_tuos_area: solar_pv_area,
         dark_sky_area: dark_sky_area,
         school_group: school_group,
-        scoreboard: scoreboard
+        scoreboard: scoreboard,
+        weather_station: weather_station
     end
 
     it 'saves the school' do
@@ -37,6 +39,7 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.dark_sky_area).to eq(dark_sky_area)
       expect(school.scoreboard).to eq(scoreboard)
       expect(school.configuration).to_not be_nil
+      expect(school.weather_station).to_not be_nil
     end
 
     it 'converts the onboarding user to a school admin' do
