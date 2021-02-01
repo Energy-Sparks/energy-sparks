@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 8252d47ca5c295320c8fe98c2af6fc4848e6dd64
-  ref: 8252d47ca5c295320c8fe98c2af6fc4848e6dd64
+  revision: 76d200f57afcea210fce1fa7383b0f4723af1b21
+  ref: 76d200f57afcea210fce1fa7383b0f4723af1b21
   branch: new-targeting-and-tracking-charts
   specs:
     energy-sparks_analytics (1.2.1)
@@ -19,6 +19,7 @@ GIT
       roo (~> 2.7.1)
       roo-xls (~> 1.2.0)
       rspec
+      ruby-limiter (~> 1.1.0)
       ruby-prof (~> 0.17.0)
       ruby-sun-times (~> 0.1.5)
       soda-ruby (~> 0.2.25)
@@ -502,6 +503,7 @@ GEM
       rubocop (>= 0.87.0)
     rubocop-rspec (1.41.0)
       rubocop (>= 0.68.1)
+    ruby-limiter (1.1.0)
     ruby-ole (1.2.12.2)
     ruby-prof (0.17.0)
     ruby-progressbar (1.10.1)
