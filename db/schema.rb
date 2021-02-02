@@ -767,7 +767,10 @@ ActiveRecord::Schema.define(version: 2021_02_08_102622) do
     t.bigint "solar_edge_installation_id"
     t.boolean "dcc_meter", default: false
     t.boolean "consent_granted", default: false
+<<<<<<< HEAD
     t.date "earliest_available_data"
+=======
+>>>>>>> Initial changes for N3rgy loader
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true

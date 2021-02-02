@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 00ce001d5f3a2a25f0b31589afaa415eb32c3c8b
-  tag: 1.11.1
+  revision: 788a0d478355cf47e1476c963e7163dfb993be99
+  branch: 1191-beis4-n3rgy-json-interface
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
