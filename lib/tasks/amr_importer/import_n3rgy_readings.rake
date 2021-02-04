@@ -8,11 +8,10 @@ namespace :amr do
     start_date = Date.parse(args[:start_date]) if args[:start_date].present?
     end_date = Date.parse(args[:end_date]) if args[:end_date].present?
 
+    puts "#{DateTime.now.utc} #{config.description} start"
     Meter.where(dcc_meter: true, consent_granted: true).each do |meter|
-      puts "#{DateTime.now.utc} #{config.description} start"
       Amr::N3rgyDownloadAndUpsert.new(meter: meter, config: config, start_date: start_date, end_date: end_date).perform
-      puts "#{DateTime.now.utc} #{config.description} end"
     end
-
+    puts "#{DateTime.now.utc} #{config.description} end"
   end
 end
