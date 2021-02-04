@@ -52,7 +52,5 @@ module Amr
       expect(amr_data_feed_import_log.amr_reading_warnings).to be_empty
     end
 
-    it "does something with missing readings"
-
   end
 end
