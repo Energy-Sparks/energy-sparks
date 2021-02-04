@@ -1,8 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 76d200f57afcea210fce1fa7383b0f4723af1b21
-  ref: 76d200f57afcea210fce1fa7383b0f4723af1b21
-  branch: new-targeting-and-tracking-charts
+  revision: b3398fed71e2732e4ebd719a4caff309f05d1437
+  tag: 1.11.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -307,7 +306,7 @@ GEM
       rest-client (>= 1.6.7)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
-    mechanize (2.7.6)
+    mechanize (2.7.7)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0)
       mime-types (>= 1.17.2)
@@ -315,6 +314,7 @@ GEM
       net-http-persistent (>= 2.5.2)
       nokogiri (~> 1.6)
       ntlm-http (~> 0.1, >= 0.1.1)
+      webrick (~> 1.7)
       webrobots (>= 0.0.9, < 0.2)
     memory_profiler (0.9.14)
     method_source (1.0.0)
@@ -599,6 +599,7 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
+    webrick (1.7.0)
     webrobots (0.1.2)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
