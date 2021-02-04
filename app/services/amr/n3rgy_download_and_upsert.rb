@@ -11,7 +11,7 @@ module Amr
       @config = config
       @n3rgy_api = n3rgy_api
       @start_date = read_start_date(start_date)
-      @end_date = end_date
+      @end_date = read_end_date(end_date)
     end
 
     def perform
@@ -25,7 +25,7 @@ module Amr
 
     private
 
-    def read_start_date(start_date = nil)
+    def read_start_date(start_date)
       #override if specified
       return start_date if start_date.present?
       if @meter.amr_data_feed_readings.any?
@@ -45,6 +45,10 @@ module Amr
       else
         return @meter.earliest_available_data || Time.zone.today - 12.months
       end
+    end
+
+    def read_end_date(end_date)
+      return end_date.present? ? end_date : Time.zone.today
     end
   end
 end
