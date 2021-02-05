@@ -61,7 +61,8 @@ private
         template_calendar: onboarding.template_calendar,
         solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
         dark_sky_area: onboarding.dark_sky_area,
-        scoreboard: onboarding.scoreboard
+        scoreboard: onboarding.scoreboard,
+        weather_station: onboarding.weather_station
       )
   end
 

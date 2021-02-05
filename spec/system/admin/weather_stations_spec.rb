@@ -122,6 +122,44 @@ RSpec.describe 'Weather stations', type: :system do
         expect(page).to have_content new_title
       end
 
+      it 'deletes old temperature readings if lat/long changed' do
+
+        WeatherObservation.create!(
+          reading_date: '2020-03-25',
+          temperature_celsius_x48: 48.times.map{rand(40.0)},
+          weather_station_id: station.id
+        )
+
+        expect(station.weather_observations.count).to eq(1)
+
+        click_on 'Edit'
+
+        new_title = 'New title for this station'
+        new_latitude = 111.111
+        new_longitude = 999.999
+
+        fill_in 'Title', with: new_title
+
+        click_on 'Update'
+
+        expect(page).to have_content("Weather Station was updated")
+        expect(page).to have_content new_title
+        expect(station.weather_observations.count).to eq(1)
+
+        click_on 'Edit'
+
+        fill_in 'Latitude', with: new_latitude
+        fill_in 'Longitude', with: new_longitude
+
+        click_on 'Update'
+
+        expect(page).to have_content("Weather Station was updated")
+        expect(page).to have_content new_latitude
+        expect(page).to have_content new_longitude
+        expect(station.weather_observations.count).to eq(0)
+
+      end
+
     end
   end
 end
