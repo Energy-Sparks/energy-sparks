@@ -6,7 +6,7 @@ module Amr
         meter:,
         start_date:,
         end_date:,
-        n3rgy_api: MeterReadingsFeeds::N3rgy.new(production: Rails.env.production?)
+        n3rgy_api: MeterReadingsFeeds::N3rgyData.new
       )
       @meter = meter
       @n3rgy_api = n3rgy_api
