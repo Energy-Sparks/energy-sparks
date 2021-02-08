@@ -3,7 +3,10 @@
 # Table name: meters
 #
 #  active                         :boolean          default(TRUE)
+#  consent_granted                :boolean          default(FALSE)
 #  created_at                     :datetime         not null
+#  dcc_meter                      :boolean          default(FALSE)
+#  earliest_available_data        :date
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_serial_number            :text
