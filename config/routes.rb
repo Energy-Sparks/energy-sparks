@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
   get 'attribution', to: 'home#attribution'
+  get 'user-guide-videos', to: 'home#user_guide_videos'
   get 'team', to: 'home#team'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
 
@@ -169,6 +170,7 @@ Rails.application.routes.draw do
     resources :newsletters
     resources :resource_file_types
     resources :resource_files
+    resources :videos
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes

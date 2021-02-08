@@ -1,0 +1,8 @@
+<%= simple_form_for([:admin, video]) do |f| %>
+  <%= f.input :youtube_id %>
+  <%= f.input :title %>
+  <%= f.input :description %>
+  <%= f.input :position %>
+  <%= f.input :featured, label: "Featured?", as: :boolean %>
+  <%= f.button :submit %>
+<% end %>

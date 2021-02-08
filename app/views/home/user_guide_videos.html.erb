@@ -1,0 +1,25 @@
+<% content_for :page_title, 'User guide videos' %>
+<div class="application container">
+  <div class="row padded-row">
+    <div class="col">
+      <h1 id="intro">User guide videos</h1>
+
+      <% @videos.each_slice(2) do |videos| %>
+        <div class="card-deck">
+          <% videos.each do |video| %>
+          <div class="card border-light">
+            <div class="card-body">
+              <h5 class="card-title"><strong><%= video.title %></strong></h5>
+
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="<%= video.embed_url %>" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <p class="card-text"><%= video.description %></p>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+</div>

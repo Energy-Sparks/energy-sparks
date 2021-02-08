@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_151747) do
+ActiveRecord::Schema.define(version: 2021_02_08_102622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -765,6 +765,9 @@ ActiveRecord::Schema.define(version: 2021_01_28_151747) do
     t.bigint "low_carbon_hub_installation_id"
     t.boolean "pseudo", default: false
     t.bigint "solar_edge_installation_id"
+    t.boolean "dcc_meter", default: false
+    t.boolean "consent_granted", default: false
+    t.date "earliest_available_data"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
@@ -1164,6 +1167,16 @@ ActiveRecord::Schema.define(version: 2021_01_28_151747) do
     t.index ["school_id", "pupil_password"], name: "index_users_on_school_id_and_pupil_password", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["staff_role_id"], name: "index_users_on_staff_role_id"
+  end
+
+  create_table "videos", force: :cascade do |t|
+    t.text "youtube_id", null: false
+    t.text "title", null: false
+    t.text "description"
+    t.boolean "featured", default: true, null: false
+    t.integer "position", default: 1, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "weather_observations", force: :cascade do |t|
