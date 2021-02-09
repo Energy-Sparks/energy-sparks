@@ -5,7 +5,7 @@ module Amr
         config:,
         start_date:,
         end_date:,
-        n3rgy_api: MeterReadingsFeeds::N3rgy.new(production: Rails.env.production?)
+        n3rgy_api: MeterReadingsFeeds::N3rgyData.new
       )
       @meter = meter
       @config = config

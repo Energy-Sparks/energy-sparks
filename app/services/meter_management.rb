@@ -1,6 +1,23 @@
+require 'dashboard'
+
 class MeterManagement
-  def initialize(meter)
+  def initialize(meter, n3rgy_api: MeterReadingsFeeds::N3rgyData.new)
+    @n3rgy_api = n3rgy_api
     @meter = meter
+  end
+
+  def valid_dcc_meter?
+    #currently only doing validation on those potentially registered in DCC
+    return false unless @meter.dcc_meter?
+    status = check_n3rgy_status
+    if [:available, :consent_required].include? status
+      return true
+    end
+    return false
+  end
+
+  def check_n3rgy_status
+    return @n3rgy_api.status(@meter.mpan_mprn)
   end
 
   def process_creation!
