@@ -5,12 +5,12 @@ module Amr
 
     let(:n3rgy_api)         { double("n3rgy_api") }
     let(:earliest)          { Date.parse("2019-01-01") }
-    let(:twelve_months_ago) { Date.today - 12.months }
+    let(:thirteen_months_ago) { Date.today - 13.months }
     let(:meter)             { create(:electricity_meter, earliest_available_data: earliest ) }
     let(:config)            { create(:amr_data_feed_config)}
-    let(:end_date)          { Date.today }
-    let(:start_date)        { end_date - 1 }
-    let(:today)             { Date.today }
+    let(:end_date)          { Date.today - 7 }
+    let(:start_date)        { end_date - 8 }
+    let(:yesterday)             { Date.today - 1 }
 
     let(:readings)        {
       {
@@ -40,7 +40,7 @@ module Amr
       end
 
       it "should use earliest available data if no date window" do
-        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, today) do
+        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, yesterday) do
           readings
         end
         upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api: n3rgy_api, config: config, meter: meter, start_date: nil, end_date: nil )
@@ -48,7 +48,7 @@ module Amr
       end
 
       it "should request 12 months if no earliest data is unknown and no readings" do
-        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, twelve_months_ago, today) do
+        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, thirteen_months_ago, yesterday) do
           readings
         end
 
@@ -73,7 +73,7 @@ module Amr
 
         #most recent reading is for earliest available date, so start reading new data from there
         #which is 5 days ago
-        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week+2, today) do
+        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week+2, yesterday) do
           readings
         end
 
@@ -85,7 +85,7 @@ module Amr
         #reading date is yesterday
         amr_data_feed_reading = create(:amr_data_feed_reading, meter: meter, reading_date: Date.yesterday)
         #gap between most recent reading and earliest available data, so try re-reading
-        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, today) do
+        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, yesterday) do
           readings
         end
 

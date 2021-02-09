@@ -43,12 +43,12 @@ module Amr
         latest_reading_date = @meter.amr_data_feed_readings.maximum(:reading_date)
         return Date.parse(latest_reading_date) if latest_reading_date.present?
       else
-        return @meter.earliest_available_data || Time.zone.today - 12.months
+        return @meter.earliest_available_data || Time.zone.today - 13.months
       end
     end
 
     def read_end_date(end_date)
-      return end_date.present? ? end_date : Time.zone.today
+      return end_date.present? ? end_date : Time.zone.today - 1
     end
   end
 end
