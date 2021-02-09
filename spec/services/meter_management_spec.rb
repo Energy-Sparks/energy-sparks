@@ -107,6 +107,15 @@ describe MeterManagement do
       meter = create(:gas_meter)
       expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql false
     end
+
+    it "handles API errors" do
+      meter = create(:electricity_meter, dcc_meter: true, consent_granted: true)
+      allow(n3rgy_api).to receive(:status).with(meter.mpan_mprn) do
+        raise
+      end
+      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).check_n3rgy_status ).to eql(:api_error)
+      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql(false)
+    end
   end
 
 end
