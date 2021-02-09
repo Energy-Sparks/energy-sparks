@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  include VideoHelper
+
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
@@ -42,6 +44,10 @@ class HomeController < ApplicationController
   end
 
   def attribution
+  end
+
+  def user_guide_videos
+    @videos = Video.order(:position)
   end
 
   def school_statistics

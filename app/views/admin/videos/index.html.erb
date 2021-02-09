@@ -1,0 +1,42 @@
+<h1>Videos</h1>
+
+<% if @videos %>
+
+<table class="table mt-2">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th>Featured?</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @videos.each do |video| %>
+      <tr>
+        <td>
+          <%= link_to video.youtube_id, "https://www.youtube.com/watch?v=#{video.youtube_id}" %>
+        </td>
+        <td><%= video.title %></td>
+        <td><%= video.description %></td>
+        <td><%= video.position %></td>
+        <td><%= video.featured %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_video_path(video), class: 'btn' %>
+            <%= link_to 'Delete', admin_video_path(video), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+  <p>There are no videos</p>
+<% end %>
+
+<p><%= link_to 'New Video', new_admin_video_path, class: 'btn'%></p>
