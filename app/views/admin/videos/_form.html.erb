@@ -1,3 +1,13 @@
+<div class="alert alert-info">
+  <p>In the form below you need to provide the unique id of the Youtube video to be added to the site.</p>
+  <p>The easiest way to find this is to click the "Share" option when viewing the video on Youtube. Then
+    in the share box that opens up, copy just the last part of the URL</p>
+  <p>For example, for <a href="https://www.youtube.com/watch?v=PqoKZjwgmoY">this video</a> the
+    "Share" box provides a URL of: <code>https://youtu.be/PqoKZjwgmoY</code> The id in this case
+    is <code>PqoKZjwgmoY</code>
+  </p>
+</div>
+
 <%= simple_form_for([:admin, video]) do |f| %>
   <%= f.input :youtube_id %>
   <%= f.input :title %>
