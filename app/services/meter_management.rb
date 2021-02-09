@@ -17,14 +17,12 @@ class MeterManagement
   end
 
   def check_n3rgy_status
-    begin
-      return @n3rgy_api.status(@meter.mpan_mprn)
-    rescue => e
-      Rails.logger.error "Exception: checking status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e)
-      return :api_error
-    end
+    return @n3rgy_api.status(@meter.mpan_mprn)
+  rescue => e
+    Rails.logger.error "Exception: checking status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    Rollbar.error(e)
+    return :api_error
   end
 
   def process_creation!
