@@ -1,0 +1,30 @@
+<% content_for :page_title, 'Training' %>
+<div class="application container">
+  <div class="row padded-row">
+    <div class="col">
+      <h1 id="intro">Training</h1>
+    </div>
+  </div>
+
+  <div id="eventbrite-widget-container-124062681821"></div>
+
+  <script src="https://www.eventbrite.co.uk/static/widgets/eb_widgets.js"></script>
+
+  <script type="text/javascript">
+      var exampleCallback = function() {
+          console.log('Order complete!');
+      };
+
+      window.EBWidgets.createWidget({
+          // Required
+          widgetType: 'checkout',
+          eventId: '124062681821',
+          iframeContainerId: 'eventbrite-widget-container-124062681821',
+
+          // Optional
+          iframeContainerHeight: 425,  // Widget height in pixels. Defaults to a minimum of 425px if not provided
+          onOrderComplete: exampleCallback  // Method called when an order has successfully completed
+      });
+  </script>
+
+</div>

@@ -46,6 +46,9 @@ class HomeController < ApplicationController
   def attribution
   end
 
+  def training
+  end
+
   def user_guide_videos
     @videos = Video.order(:position)
   end
