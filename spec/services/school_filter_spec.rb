@@ -12,7 +12,7 @@ describe SchoolFilter do
   let!(:school_no_data)     { create(:school, school_group: school_group_a, process_data: false) }
 
   it 'returns all process data schools by default' do
-    expect(SchoolFilter.new.filter).to eq [school_1, school_2]
+    expect(SchoolFilter.new.filter).to match_array [school_1, school_2]
   end
 
   it 'filters by school group' do
