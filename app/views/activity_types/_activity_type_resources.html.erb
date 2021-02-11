@@ -1,5 +1,5 @@
 <% if !activity_type.image.blank? %>
-  <p><%= image_tag activity_type.image, width: '300px' %></p>
+  <p><%= image_tag activity_type.image, width: '300px', class: "activity_type_image" %></p>
 <% end %>
 <div class="activity_type">
   <% if !activity_type.download_links.blank? %>

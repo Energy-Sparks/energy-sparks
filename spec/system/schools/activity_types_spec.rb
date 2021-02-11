@@ -10,7 +10,8 @@ RSpec.describe "activity type", type: :system do
 
   let!(:school)                   { create_active_school(name: school_name)}
   let!(:teacher)                  { create(:staff, school: school)}
-  let!(:activity_type)            { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
+  let!(:activity_type)            { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}",
+                                    image: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png")) }
   let!(:other_activity_type)      { create(:activity_type, name: other_activity_type_name, description: "It's An #{activity_type_name}", activity_category: activity_type.activity_category) }
 
   context 'as a logged in school user' do
@@ -26,6 +27,7 @@ RSpec.describe "activity type", type: :system do
         click_on activity_type_name
         expect(page).to have_content(school_name)
         expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+        expect(page).to have_css("img.activity_type_image")
       end
 
       it 'completed activities' do
@@ -43,4 +45,3 @@ RSpec.describe "activity type", type: :system do
     end
   end
 end
-
