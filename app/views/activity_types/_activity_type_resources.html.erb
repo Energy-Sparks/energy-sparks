@@ -1,0 +1,9 @@
+<% if !activity_type.image.blank? %>
+  <p><%= image_tag activity_type.image, width: '300px' %></p>
+<% end %>
+<div class="activity_type">
+  <% if !activity_type.download_links.blank? %>
+    <h3>Resource links</h3>
+    <%= activity_type.download_links %>
+  <% end %>
+</div>
