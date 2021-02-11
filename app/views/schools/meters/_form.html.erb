@@ -23,6 +23,16 @@
       </div>
     <% end %>
   </div>
+  <div class="form-group">
+    <p class="alert alert-warning">Experimental features for N3RGY integration</p>
+    <%= form.check_box :dcc_meter %>
+    <%= form.label :dcc_meter, 'DCC Smart Meter' %>
+    <%= form.check_box :consent_granted %>
+    <%= form.label :consent_granted, 'Consent granted' %>
+    <br>
+    <%= form.label :earliest_available_data %>
+    <%= date_field(:meter, :earliest_available_data, max: Time.zone.today, min: Date.parse("2012-01-01")) %>
+  </div>
   <div class="actions">
     <%= form.submit class: 'btn btn-primary'%>
   </div>

@@ -21,4 +21,12 @@
   <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
   <dt class="col-sm-3">Status</dt>
   <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
+  <dt class="col-sm-3">DCC Meter?</dt>
+  <dd class="col-sm-9"><%= @meter.dcc_meter? %></dd>
+  <dt class="col-sm-3">Consent Granted?</dt>
+  <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
+  <dt class="col-sm-3">Earliest Available Data</dt>
+  <dd class="col-sm-9"><%= @meter.earliest_available_data %></dd>
+  <dt class="col-sm-3">N3RGY API Status</dt>
+  <dd class="col-sm-9"><%= @n3rgy_status %></dt>
 </dl>
