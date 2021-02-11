@@ -5,9 +5,9 @@ RSpec.describe "resources", type: :system do
   before(:each) do
     @resource_type = ResourceFileType.create!(title: "Resource Collection", position: 1)
     @resource = ResourceFile.create!( title: "A resource", resource_file_type: @resource_type,
-      file: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png") )
+      file: fixture_file_upload_fix(Rails.root + "spec/fixtures/images/newsletter-placeholder.png") )
     @other_resource = ResourceFile.create!( title: "Other resource",
-     file: fixture_file_upload(Rails.root + "spec/fixtures/images/banes.png") )
+     file: fixture_file_upload_fix(Rails.root + "spec/fixtures/images/banes.png") )
   end
 
   it 'shows me the resources page' do

@@ -101,3 +101,10 @@ RSpec.configure do |config|
 end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
+
+
+# The fixture_file_upload helper method seems to be broken in Rails 6.1
+# but it's just a wrapper on the UploadedFile method from Rack
+def fixture_file_upload_fix(path)
+  Rack::Test::UploadedFile.new(path)
+end

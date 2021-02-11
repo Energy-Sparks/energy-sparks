@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_102622) do
+ActiveRecord::Schema.define(version: 2021_02_11_150626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -50,7 +50,14 @@ ActiveRecord::Schema.define(version: 2021_02_08_102622) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "activities", force: :cascade do |t|
@@ -230,12 +237,12 @@ ActiveRecord::Schema.define(version: 2021_02_08_102622) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -981,8 +988,8 @@ ActiveRecord::Schema.define(version: 2021_02_08_102622) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "urn", null: false
     t.integer "level", default: 0
+    t.integer "urn", null: false
     t.bigint "calendar_id"
     t.string "slug"
     t.bigint "temperature_area_id"
@@ -1203,6 +1210,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_102622) do
 
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
   add_foreign_key "activities", "activity_types", on_delete: :restrict
   add_foreign_key "activities", "schools", on_delete: :cascade
