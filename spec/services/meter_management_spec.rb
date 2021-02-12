@@ -1,4 +1,3 @@
-require 'dashboard'
 require 'rails_helper'
 
 describe MeterManagement do
