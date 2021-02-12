@@ -97,6 +97,14 @@ RSpec.describe 'alert type management', type: :system do
         expect(alert_type_rating.content_versions.size).to eq(1)
         first_content = alert_type_rating.current_content
         expect(first_content.analysis_title).to eq('Carbon report')
+
+        accept_confirm do
+          click_on 'Delete'
+        end
+
+        expect(page).to have_content('Content deleted')
+        analysis_alert_type.reload
+        expect(analysis_alert_type.ratings.size).to eq(0)
       end
     end
   end
