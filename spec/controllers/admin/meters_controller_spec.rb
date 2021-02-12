@@ -8,8 +8,8 @@ RSpec.describe Schools::MetersController, type: :controller do
       name: "Test meter",
       meter_serial_number: "123",
       meter_type: :electricity,
-      dcc_meter: false,
-      consent_granted: false
+      dcc_meter: "0",
+      consent_granted: "0"
     }
   }
   let(:invalid_attributes) {
@@ -52,8 +52,8 @@ RSpec.describe Schools::MetersController, type: :controller do
             name: "Test meter",
             meter_serial_number: "123",
             meter_type: :electricity,
-            dcc_meter: true,
-            consent_granted: true
+            dcc_meter: "1",
+            consent_granted: "1"
           }
         }
         it "allows registered DCC meters to be added" do
@@ -80,8 +80,8 @@ RSpec.describe Schools::MetersController, type: :controller do
             name: "Test meter",
             meter_serial_number: "123",
             meter_type: :electricity,
-            dcc_meter: false,
-            consent_granted: false
+            dcc_meter: "0",
+            consent_granted: "0"
           }
         }
         it "updates meter" do
@@ -99,14 +99,14 @@ RSpec.describe Schools::MetersController, type: :controller do
             name: "New name",
             meter_serial_number: "123",
             meter_type: :electricity,
-            dcc_meter: true,
-            consent_granted: true
+            dcc_meter: "1",
+            consent_granted: "1"
           }
         }
+        let(:meter)  { create :electricity_meter, name: "Original name", school: school, dcc_meter: false }
+
         it "allows DCC registered meters to be activated" do
           expect_any_instance_of(MeterManagement).to receive(:valid_dcc_meter?).and_return(true)
-
-          meter = create :electricity_meter, school: school, dcc_meter: false
           put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes }
           meter.reload
           expect(meter.dcc_meter?).to eq true
@@ -114,12 +114,18 @@ RSpec.describe Schools::MetersController, type: :controller do
 
         it "does not allow unregistered DCC meters to be activated" do
           expect_any_instance_of(MeterManagement).to receive(:valid_dcc_meter?).and_return(false)
-
-          meter = create :electricity_meter, name: "Original name", school: school, dcc_meter: false
-          name = meter.name
+          original_name = meter.name
           put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes }
           meter.reload
-          expect(meter.name).to eq name
+          expect(meter.name).to eq original_name
+          expect(meter.dcc_meter?).to eq false
+        end
+
+        it "validates new meter mpan, not the old one, and does not update meter" do
+          non_dcc_mpan = 1234561234561
+          expect_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:status).with(non_dcc_mpan).and_return(false)
+          put :update, params: { school_id: school.id, id: meter.id, meter: new_attributes.merge(mpan_mprn: non_dcc_mpan) }
+          meter.reload
           expect(meter.dcc_meter?).to eq false
         end
       end
