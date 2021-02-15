@@ -21,4 +21,10 @@ class OnboardingMailer < ApplicationMailer
     @school = @school_onboarding.school
     make_bootstrap_mail(to: @school_onboarding.created_user.email, subject: "#{@school.name} is live on Energy Sparks")
   end
+
+  def welcome_email
+    @user = params[:user]
+    @school = @user.school
+    make_bootstrap_mail(to: @user.email, subject: "Welcome to Energy Sparks")
+  end
 end

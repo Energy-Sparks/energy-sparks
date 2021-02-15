@@ -151,6 +151,10 @@ class User < ApplicationRecord
     contacts.for_school(school).first
   end
 
+  def after_confirmation
+    OnboardingMailer.with(user: self).welcome_email.deliver_now if self.school.present?
+  end
+
 protected
 
   def password_required?
