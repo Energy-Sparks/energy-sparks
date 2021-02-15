@@ -43,13 +43,14 @@ module Schools
     end
 
     def update
+      @meter.attributes = meter_params
       manager = MeterManagement.new(@meter)
-      if meter_params["dcc_meter"] == "true" && !manager.valid_dcc_meter?
+      if @meter.dcc_meter? && !manager.valid_dcc_meter?
         @meter.errors.add :base, "This meter is not registered with DCC"
         render :edit
         return
       end
-      if @meter.update(meter_params)
+      if @meter.save
         if @meter.mpan_mprn_previously_changed?
           manager.process_mpan_mpnr_change!
         end
