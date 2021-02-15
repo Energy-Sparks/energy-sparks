@@ -91,6 +91,9 @@ gem 'oj'
 gem 'mailgun_rails'
 gem 'MailchimpMarketing'
 
+# Eventbrite for training page
+gem 'eventbrite_sdk'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

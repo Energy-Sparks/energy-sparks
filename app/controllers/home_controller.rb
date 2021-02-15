@@ -47,6 +47,7 @@ class HomeController < ApplicationController
   end
 
   def training
+    @events = Events::ListEvents.new.perform
   end
 
   def user_guide_videos

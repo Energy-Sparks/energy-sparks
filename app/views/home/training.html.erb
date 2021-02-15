@@ -3,28 +3,51 @@
   <div class="row padded-row">
     <div class="col">
       <h1 id="intro">Training</h1>
+      <p>This page lists all of our upcoming training sessions. Follow the links to our
+      Eventbrite page to book your tickets.</p>
     </div>
   </div>
 
-  <div id="eventbrite-widget-container-124062681821"></div>
-
-  <script src="https://www.eventbrite.co.uk/static/widgets/eb_widgets.js"></script>
-
-  <script type="text/javascript">
-      var exampleCallback = function() {
-          console.log('Order complete!');
-      };
-
-      window.EBWidgets.createWidget({
-          // Required
-          widgetType: 'checkout',
-          eventId: '124062681821',
-          iframeContainerId: 'eventbrite-widget-container-124062681821',
-
-          // Optional
-          iframeContainerHeight: 425,  // Widget height in pixels. Defaults to a minimum of 425px if not provided
-          onOrderComplete: exampleCallback  // Method called when an order has successfully completed
-      });
-  </script>
+  <div class="row justify-content-md-center">
+    <div class="col col-md-10">
+      <table class="table timeline">
+        <% @events.group_by{|evt| [evt.date.strftime("%Y"), evt.date.strftime("%B")]}.each do |(year, month), grouped_events|%>
+        <thead>
+          <tr>
+            <th colspan="4">
+              <% if month == Date.current.strftime("%B") && year == Date.current.strftime("%Y") %>
+                <h5><strong>THIS MONTH</strong></h5>
+              <% else %>
+                <h5><strong><%= month %></strong><span class="text-muted"> <%= year %></span></h5>
+              <% end %>
+              <span class="text-muted"><%= pluralize(grouped_events.size, 'event') %></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% grouped_events.each do |event| %>
+            <tr scope="row">
+              <td></td>
+              <td class="timeline-border-left"></td>
+              <td class="p-3 text-center">
+                <% if event.sold_out? %>
+                  <%= fa_icon("calendar-times fa-2x") %>
+                <% else %>
+                  <%= fa_icon("calendar-check fa-2x") %>
+                <% end %>
+              </td>
+              <td>
+                <h3 class="pt-1"><strong><%= link_to event.name, event.url, target: "_new" %></strong></h3>
+                <span class="text-muted"><%= nice_dates(event.date) %></span>
+              </td>
+              <td class="text-right">
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
 
 </div>
