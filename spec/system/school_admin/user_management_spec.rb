@@ -72,6 +72,7 @@ describe 'School admin user management' do
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
 
       it 'can create staff without generating an alert contact' do
@@ -84,6 +85,7 @@ describe 'School admin user management' do
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
 
     end
@@ -128,6 +130,7 @@ describe 'School admin user management' do
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Energy Sparks: confirm your account')
+      expect(email.encoded).to match(school.name)
     end
 
     context 'it can create school admins' do
@@ -149,6 +152,7 @@ describe 'School admin user management' do
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
 
       it 'without generating an alert contact' do
@@ -160,6 +164,7 @@ describe 'School admin user management' do
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
     end
 
