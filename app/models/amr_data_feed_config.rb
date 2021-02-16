@@ -11,7 +11,7 @@
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key
 #  identifier              :text             not null
-#  import_warning_days     :integer          default(7)
+#  import_warning_days     :integer          default(10), not null
 #  meter_description_field :text
 #  missing_readings_limit  :integer
 #  mpan_mprn_field         :text             not null
