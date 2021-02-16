@@ -53,6 +53,12 @@ RSpec.describe Admin::UsersController, type: :controller do
           }.to change(User, :count).by(1)
         end
 
+        it "creates uses as already confirmed" do
+          post :create, params: { user: valid_attributes }
+          expect(User.last.confirmed?).to eq true
+          expect(ActionMailer::Base.deliveries.last ).to be_nil
+        end
+
         it "assigns a newly created user as @user" do
           post :create, params: { user: valid_attributes }
           expect(assigns(:user)).to be_a(User)

@@ -25,6 +25,8 @@ describe 'School admin user management' do
       pupil = school.users.pupil.first
       expect(pupil.email).to_not be_nil
       expect(pupil.pupil_password).to eq('the elektrons')
+
+      expect( ActionMailer::Base.deliveries.last ).to be_nil
     end
 
     it 'can edit and delete pupils' do
@@ -69,9 +71,11 @@ describe 'School admin user management' do
         staff = school.users.staff.first
         expect(staff.email).to eq('mrsjones@test.com')
         expect(staff.staff_role).to eq(teacher_role)
+        expect(staff.confirmed?).to be false
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
 
       it 'can create staff without generating an alert contact' do
@@ -81,9 +85,11 @@ describe 'School admin user management' do
         staff = school.users.staff.first
         expect(staff.email).to eq('mrsjones@test.com')
         expect(staff.staff_role).to eq(teacher_role)
+        expect(staff.confirmed?).to be false
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
 
     end
@@ -125,9 +131,11 @@ describe 'School admin user management' do
 
       school_admin = school.users.school_admin.last
       expect(school_admin.email).to eq('mrsjones@test.com')
+      expect(school_admin.confirmed?).to be false
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Energy Sparks: confirm your account')
+      expect(email.encoded).to match(school.name)
     end
 
     context 'it can create school admins' do
@@ -146,9 +154,11 @@ describe 'School admin user management' do
 
         school_admin = school.users.school_admin.last
         expect(school_admin.email).to eq('mrsjones@test.com')
+        expect(school_admin.confirmed?).to be false
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
 
       it 'without generating an alert contact' do
@@ -157,9 +167,11 @@ describe 'School admin user management' do
 
         school_admin = school.users.school_admin.last
         expect(school_admin.email).to eq('mrsjones@test.com')
+        expect(school_admin.confirmed?).to be false
 
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq('Energy Sparks: confirm your account')
+        expect(email.encoded).to match(school.name)
       end
     end
 

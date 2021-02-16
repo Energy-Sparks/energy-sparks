@@ -217,6 +217,8 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     erubi (1.10.0)
+    eventbrite_sdk (3.6.0)
+      rest-client (~> 2.0)
     excon (0.76.0)
     execjs (2.7.0)
     extendmatrix (0.4)
@@ -641,6 +643,7 @@ DEPENDENCIES
   devise
   dotenv-rails (~> 2.7.4)
   energy-sparks_analytics!
+  eventbrite_sdk
   factory_bot_rails
   fakefs
   fasterer
