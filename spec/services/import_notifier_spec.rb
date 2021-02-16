@@ -2,143 +2,113 @@ require 'rails_helper'
 
 describe ImportNotifier do
 
+  let(:sheffield_school) { create(:school, :with_school_group, name: "Sheffield School")}
+  let(:bath_school) { create(:school, :with_school_group, name: "Bath School")}
   let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield', import_warning_days: 5) }
-  let(:bath_config) { create(:amr_data_feed_config, description: 'Bath') }
+  let(:bath_config) { create(:amr_data_feed_config, description: 'Bath', import_warning_days: 2) }
 
-  describe '#data' do
+  let(:sheffield_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago) }
 
-    it 'gets collects all the import logs from the configs' do
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
-      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 1, import_time: 1.day.ago)
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:import_logs]).to eq([sheffield_import_log])
-      expect(data[bath_config][:import_logs]).to eq([bath_import_log])
-    end
-
-    it 'restricts logs on the date' do
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
-      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 1, import_time: 1.year.ago)
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:import_logs]).to eq([sheffield_import_log])
-      expect(data[bath_config][:import_logs]).to eq([])
-    end
-
+  describe '#meters_running_behind' do
     it 'gets all the meters that have not had validated data for X days' do
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:import_logs]).to eq([sheffield_import_log])
-      expect(data[sheffield_config][:meters_running_behind]).to match_array([meter_1])
+      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      expect(meters_running_behind).to match_array([meter_1])
     end
 
-    it 'does not return any late meters if there is no day set' do
+    it 'ignores inactive meters when warning about meters running behind' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
+      inactive_meter = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, active: false, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
+      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      expect(meters_running_behind).to match_array([meter_1])
+    end
+
+    it 'ignores meters when config doesnt have warning days' do
       sheffield_config.update!(import_warning_days: nil)
       sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:import_logs]).to eq([sheffield_import_log])
-      expect(data[sheffield_config][:meters_running_behind]).to match_array([])
+      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      expect(meters_running_behind).to match_array([])
     end
+  end
 
+  describe '#meters_with_blank_data' do
     it 'gets all the meters from the imports where there is missing data' do
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
 
       meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, ''))
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:meters_with_blank_data]).to match_array([meter_1])
+      meters_with_blank_data = ImportNotifier.new.meters_with_blank_data(from: 2.days.ago, to: Time.now)
+      expect(meters_with_blank_data).to match_array([meter_1])
     end
+  end
 
+  describe '#meters_with_zero_data' do
     it 'gets all the meters from the imports where there is zero data' do
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
 
       meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:meters_with_zero_data]).to match_array([meter_1])
-    end
-
-    it 'gets all the import logs which have an error message' do
-      error_messages = 'Something went wrong'
-      import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, error_messages: error_messages, import_time: 1.day.ago)
-      data = ImportNotifier.new.import_logs_with_errors(from: 2.days.ago, to: Time.now)
-      expect(data).to match_array([import_log])
+      meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: 2.days.ago, to: Time.now)
+      expect(meters_with_zero_data).to match_array([meter_1])
     end
 
     it 'does not include solar export with zero data' do
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       meter_1 = create(:exported_solar_pv_meter, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
 
       meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
-      data = ImportNotifier.new.data(from: 2.days.ago, to: Time.now)
-      expect(data[sheffield_config][:meters_with_zero_data]).to be_empty
+      meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: 2.days.ago, to: Time.now)
+      expect(meters_with_zero_data).to be_empty
     end
   end
 
-  #NOTE: currentl changing format of emails, so while code to generate email
-  #is still being tested above, we're not including the content in emails for
-  #the moment.
+  describe '#meters_running_behind' do
+    it 'removes duplicates, when meters are loaded via multiple configs' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
+      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 200, import_time: 1.day.ago)
+      readings = create(:amr_data_feed_reading, meter: meter_1, reading_date: 9.days.ago, amr_data_feed_config: bath_config, amr_data_feed_import_log: bath_import_log)
+      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      expect(meters_running_behind).to match_array([meter_1])
+    end
+
+    it 'sorts meters' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
+      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 200, import_time: 1.day.ago)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: bath_config, log: bath_import_log)
+      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      expect(meters_running_behind).to match_array([meter_2, meter_1])
+    end
+  end
+
   describe '#notify' do
-    it 'sends an email with the import count for each logged import with its config details' do
+    it 'formats the email properly' do
       create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
       create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 1, import_time: 1.day.ago)
-
       ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
 
       email = ActionMailer::Base.deliveries.last
-
       expect(email.subject).to include('Energy Sparks import')
-
       email_body = email.html_part.body.to_s
-      #TEMPORARY REMOVAL?
-      expect(email_body).to_not include('Sheffield')
-      expect(email_body).to_not include('200')
-      expect(email_body).to_not include('Import Issues')
-      expect(email_body).to_not include('Bath')
+      expect(email_body).to include("Data issues")
     end
 
-    it 'sends an email with the import issues if appropriate' do
-      error_messages = 'Something went wrong'
-      create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, error_messages: error_messages, import_time: 1.day.ago)
-
+    it 'contains the meter information' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log, school: sheffield_school)
+      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 200, import_time: 1.day.ago)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: bath_config, log: bath_import_log, school: bath_school)
       ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
 
       email = ActionMailer::Base.deliveries.last
 
       expect(email.subject).to include('Energy Sparks import')
-
       email_body = email.html_part.body.to_s
-      #TEMPORARY REMOVAL?
-      expect(email_body).to_not include('Sheffield')
-      expect(email_body).to_not include('Import Issues')
-      expect(email_body).to_not include(error_messages)
-    end
-
-    it 'sends an email with import warnings, fuel type and school name looked up' do
-      mpan = 1230000000000
-      school = create(:school)
-      meter = create(:electricity_meter, mpan_mprn: mpan, school: school)
-
-      log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, import_time: 1.day.ago)
-      warning = AmrReadingWarning.create(amr_data_feed_import_log: log, mpan_mprn: mpan, warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)], school: school, fuel_type: meter.meter_type)
-
-      ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
-
-      email = ActionMailer::Base.deliveries.last
-
-      expect(email.subject).to include('Energy Sparks import')
-
-      email_body = email.html_part.body.to_s
-      #TEMPORARY REMOVAL?
-      expect(email_body).to_not include('Sheffield')
-      expect(email_body).to_not include('Import Warnings')
-      expect(email_body).to_not include(school.name)
-      expect(email_body).to_not include(meter.meter_type)
-      expect(email_body).to_not include(AmrReadingData::WARNINGS[:missing_readings])
+      expect(email_body).to include(meter_1.mpan_mprn.to_s)
+      expect(email_body).to include(meter_1.school_name)
+      expect(email_body).to include(meter_2.mpan_mprn.to_s)
+      expect(email_body).to include(meter_2.school_name)
     end
 
     it 'can override the emails subject' do

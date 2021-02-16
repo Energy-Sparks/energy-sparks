@@ -15,17 +15,17 @@
       <th colspan="4">Meters with stale data</th>
     </tr>
   <thead>
-  <%= render 'meter_table', data: @data, report_key: :meters_running_behind %>
+  <%= render 'meter_table', meters: @meters_running_behind %>
   <thead class="thead-light">
     <tr>
       <th colspan="4">Meters with blank readings (whole day)</th>
     </tr>
   <thead>
-  <%= render 'meter_table', data: @data, report_key: :meters_with_blank_data %>
+  <%= render 'meter_table', meters: @meters_with_blank_data %>
   <thead class="thead-light">
     <tr>
       <th colspan="4">Zero data imports (whole day)</th>
     </tr>
   <thead>
-  <%= render 'meter_table', data: @data, report_key: :meters_with_zero_data %>
+  <%= render 'meter_table', meters: @meters_with_zero_data %>
 </table>
