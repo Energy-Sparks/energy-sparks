@@ -15,11 +15,7 @@
         <thead>
           <tr>
             <th colspan="4">
-              <% if month == Date.current.strftime("%B") && year == Date.current.strftime("%Y") %>
-                <h5><strong>THIS MONTH</strong></h5>
-              <% else %>
-                <h5><strong><%= month %></strong><span class="text-muted"> <%= year %></span></h5>
-              <% end %>
+              <h5><%= title_for_month(month, year) %></h5>
               <span class="text-muted"><%= pluralize(grouped_events.size, 'event') %></span>
             </th>
           </tr>
