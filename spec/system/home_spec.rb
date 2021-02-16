@@ -32,6 +32,15 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "How do I enroll my school?")
   end
 
+  it "has a training page" do
+      visit root_path
+      click_on('About')
+      within('.navbar-nav') do
+        click_on('Training')
+      end
+    expect(page.has_content? 'Training')
+  end
+
   it 'has a datasets page' do
     visit root_path
     click_on('Open data')
