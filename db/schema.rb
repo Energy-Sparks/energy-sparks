@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_102622) do
+ActiveRecord::Schema.define(version: 2021_02_16_144256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -335,7 +335,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_102622) do
     t.integer "number_of_header_rows", default: 0, null: false
     t.integer "process_type", default: 0, null: false
     t.integer "source_type", default: 0, null: false
-    t.integer "import_warning_days", default: 7
+    t.integer "import_warning_days", default: 10
     t.string "expected_units"
     t.integer "missing_readings_limit"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
