@@ -79,6 +79,9 @@ describe ImportNotifier do
     end
   end
 
+  #NOTE: currentl changing format of emails, so while code to generate email
+  #is still being tested above, we're not including the content in emails for
+  #the moment.
   describe '#notify' do
     it 'sends an email with the import count for each logged import with its config details' do
       create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
@@ -91,10 +94,11 @@ describe ImportNotifier do
       expect(email.subject).to include('Energy Sparks import')
 
       email_body = email.html_part.body.to_s
-      expect(email_body).to include('Sheffield')
-      expect(email_body).to include('200')
-      expect(email_body).to include('Bath')
+      #TEMPORARY REMOVAL?
+      expect(email_body).to_not include('Sheffield')
+      expect(email_body).to_not include('200')
       expect(email_body).to_not include('Import Issues')
+      expect(email_body).to_not include('Bath')
     end
 
     it 'sends an email with the import issues if appropriate' do
@@ -108,9 +112,10 @@ describe ImportNotifier do
       expect(email.subject).to include('Energy Sparks import')
 
       email_body = email.html_part.body.to_s
-      expect(email_body).to include('Sheffield')
-      expect(email_body).to include('Import Issues')
-      expect(email_body).to include(error_messages)
+      #TEMPORARY REMOVAL?
+      expect(email_body).to_not include('Sheffield')
+      expect(email_body).to_not include('Import Issues')
+      expect(email_body).to_not include(error_messages)
     end
 
     it 'sends an email with import warnings, fuel type and school name looked up' do
@@ -128,12 +133,12 @@ describe ImportNotifier do
       expect(email.subject).to include('Energy Sparks import')
 
       email_body = email.html_part.body.to_s
-      expect(email_body).to include('Sheffield')
-      expect(email_body).to include('Import Warnings')
-      expect(email_body).to include(school.name)
-      expect(email_body).to include(meter.meter_type)
-
-      expect(email_body).to include(AmrReadingData::WARNINGS[:missing_readings])
+      #TEMPORARY REMOVAL?
+      expect(email_body).to_not include('Sheffield')
+      expect(email_body).to_not include('Import Warnings')
+      expect(email_body).to_not include(school.name)
+      expect(email_body).to_not include(meter.meter_type)
+      expect(email_body).to_not include(AmrReadingData::WARNINGS[:missing_readings])
     end
 
     it 'can override the emails subject' do
