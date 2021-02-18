@@ -71,4 +71,9 @@ namespace :utility do
     end
   end
 
+  desc 'Send custom rollbar reports'
+  task custom_rollbar_reports: :environment do
+    RollbarNotifierService.new.perform
+  end
+
 end

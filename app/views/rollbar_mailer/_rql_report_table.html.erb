@@ -1,0 +1,29 @@
+<h2><%= report_result[:title] %></h2>
+
+<% if report_result[:results][:error].present? %>
+ <p>Report failed to run</p>
+<% else %>
+  <table class="table mt-3 mb-5">
+    <thead class="thead-light">
+      <tr>
+        <% report_result[:results][:columns][0..-3].each do |col| %>
+          <th><%= col %></th>
+        <% end %>
+        <th>View</th>
+      </tr>
+
+    </thead>
+    <tbody>
+      <% report_result[:results][:rows].each do |row| %>
+      <tr>
+        <% row[0..-3].each do |val| %>
+          <td><%= val %></td>
+        <% end %>
+        <td>
+          <a href="https://rollbar.com/energysparks/<%= @rollbar_environment %>/items/<%= row[-2] %>/occurrences/<%= row[-1] %>/">View</a>
+        </td>
+      <tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
