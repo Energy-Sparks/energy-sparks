@@ -5,17 +5,18 @@ module Amr
         config:,
         start_date:,
         end_date:,
-        n3rgy_api: MeterReadingsFeeds::N3rgyData.new
+        n3rgy_api_factory: Amr::N3rgyApiFactory.new
       )
       @meter = meter
       @config = config
-      @n3rgy_api = n3rgy_api
+      @n3rgy_api_factory = n3rgy_api_factory
       @start_date = read_start_date(start_date)
       @end_date = read_end_date(end_date)
     end
 
     def perform
-      readings = N3rgyDownloader.new(meter: @meter, start_date: @start_date, end_date: @end_date, n3rgy_api: @n3rgy_api).readings
+      n3rgy_api = @n3rgy_api_factory.data_api(@meter)
+      readings = N3rgyDownloader.new(meter: @meter, start_date: @start_date, end_date: @end_date, n3rgy_api: n3rgy_api).readings
       N3rgyUpserter.new(meter: @meter, config: @config, readings: readings).perform
     rescue => e
       Rails.logger.error "Exception: downloading N3rgy data for #{@meter.mpan_mprn} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
