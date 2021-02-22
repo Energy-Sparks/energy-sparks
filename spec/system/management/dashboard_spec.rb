@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'Management dashboard' do
 
-  let!(:school){ create(:school) }
+  let!(:school_group){ create(:school_group) }
+  let!(:school){ create(:school, school_group: school_group) }
   let(:staff){ create(:staff, school: school, staff_role: create(:staff_role, :management)) }
   let!(:intervention){ create(:observation, school: school) }
 
@@ -14,8 +15,8 @@ describe 'Management dashboard' do
     visit root_path
     expect(page).to have_content("#{school.name}")
     expect(page).to have_content("Management Dashboard")
-
     expect(page).to have_content("Recorded temperatures")
+    expect(page).to have_link("Compare schools")
   end
 
   describe 'with management priorities' do

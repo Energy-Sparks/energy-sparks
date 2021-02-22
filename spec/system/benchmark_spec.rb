@@ -41,7 +41,9 @@ describe 'Benchmarks' do
 
     visit root_path
     click_on 'Schools'
-    click_on 'Compare schools'
+    within ".all-schools" do
+      click_on 'Compare schools'
+    end
   end
 
   it 'a user can view a single benchmarks' do

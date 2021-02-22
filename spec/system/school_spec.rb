@@ -43,6 +43,12 @@ RSpec.describe "school", type: :system do
     expect(page.has_content? school_name).to be true
   end
 
+  it 'links to compare schools if in group' do
+    school.update(school_group: create(:school_group))
+    visit school_path(school)
+    expect(page).to have_link("Compare schools")
+  end
+
   describe 'when logged in' do
     before(:each) do
       sign_in(admin)
