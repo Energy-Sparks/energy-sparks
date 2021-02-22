@@ -51,7 +51,7 @@ namespace :utility do
       EnergySparks::S3Yaml.save(aggregate_school, school.name, data_type: 'aggregated-meter-collection', bucket: target_bucket)
     rescue StandardError => e
       Rails.logger.error "There was an error for aggregated #{school.name} - #{e.message}"
-      Rollbar.error(e, school_id: school.id, school_name: school.name)
+      Rollbar.error(e, job: :save_aggregate_schools_to_s3, school_id: school.id, school: school.name)
     end
   end
 
@@ -67,7 +67,7 @@ namespace :utility do
       EnergySparks::S3Yaml.save(data, school.name, data_type: 'unvalidated-data', bucket: target_bucket)
     rescue StandardError => e
       Rails.logger.error "There was an error for unvalidated #{school.name} - #{e.message}"
-      Rollbar.error(e, school_id: school.id, school_name: school.name)
+      Rollbar.error(e, job: :save_unvalidated_schools_to_s3, school_id: school.id, school: school.name)
     end
   end
 

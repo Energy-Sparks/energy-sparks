@@ -53,7 +53,7 @@ class ContentBatch
 
     rescue StandardError => e
       @logger.error "There was an error for #{school.name} - #{e.message}"
-      Rollbar.error(e, school_id: school.id, school_name: school.name)
+      Rollbar.error(e, job: :content_batch, school_id: school.id, school: school.name)
     end
   end
 
