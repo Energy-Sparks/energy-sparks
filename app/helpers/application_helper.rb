@@ -21,7 +21,7 @@ module ApplicationHelper
   def nice_dates_from_timestamp(timestamp)
     return "" if timestamp.nil?
     datetime = DateTime.strptime(timestamp.to_s, '%s')
-    nice_date_times(datetime)
+    nice_dates(datetime)
   end
 
   def active(bool = true)

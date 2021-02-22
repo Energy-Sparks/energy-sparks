@@ -1,5 +1,7 @@
 <h2><%= report_result[:title] %></h2>
 
+<p><%= report_result[:description] %></p>
+
 <% if report_result[:results][:error].present? %>
  <p>Report failed to run</p>
 <% else %>
@@ -7,21 +9,24 @@
     <thead class="thead-light">
       <tr>
         <% report_result[:results][:columns][0..-3].each do |col| %>
-          <th><%= col %></th>
+          <th><%= nice_column_title(col) %></th>
         <% end %>
-        <th>View</th>
       </tr>
-
     </thead>
     <tbody>
       <% report_result[:results][:rows].each do |row| %>
       <tr>
-        <% row[0..-3].each do |val| %>
-          <td><%= val %></td>
+        <% row[0..-3].each_with_index do |val, index| %>
+          <% if index == 0 %>
+            <td>
+              <a href="<%= rollbar_item_url(@rollbar_environment, row[-2], row[-1]) %>">
+                <%= nice_dates_from_timestamp(val) %>
+              </a>
+            </td>
+          <% else %>
+            <td><%= val %></td>
+          <% end %>
         <% end %>
-        <td>
-          <a href="https://rollbar.com/energysparks/<%= @rollbar_environment %>/items/<%= row[-2] %>/occurrences/<%= row[-1] %>/">View</a>
-        </td>
       <tr>
       <% end %>
     </tbody>

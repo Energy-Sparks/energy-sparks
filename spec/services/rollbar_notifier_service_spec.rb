@@ -75,9 +75,9 @@ describe RollbarNotifierService do
       results = RollbarNotifierService.new(rql_jobs).perform
 
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to include('Rollbar custom report')
+      expect(email.subject).to include('Custom Error Reports')
       email_body = email.html_part.body.to_s
-      expect(email_body).to include("Rollbar Custom Errors")
+      expect(email_body).to include("Custom Error Reports")
     end
 
     it "the email includes all the reports" do
@@ -91,7 +91,20 @@ describe RollbarNotifierService do
       end
     end
 
-    it "formats timestamps correctly"
-    it "builds links to Rollbar"
+    it "formats timestamps correctly" do
+      allow(rql_jobs).to receive(:run_query).and_return(job_result)
+      results = RollbarNotifierService.new(rql_jobs).perform
+      email = ActionMailer::Base.deliveries.last
+      email_body = email.html_part.body.to_s
+      expect(email_body).to include("Thu 10th Dec 2020")
+    end
+
+    it "builds links to Rollbar" do
+      allow(rql_jobs).to receive(:run_query).and_return(job_result)
+      results = RollbarNotifierService.new(rql_jobs).perform
+      email = ActionMailer::Base.deliveries.last
+      email_body = email.html_part.body.to_s
+      expect(email_body).to match(/href="https:\/\/rollbar.com\/energysparks\/EnergySparksTestEnvironment\/items\/564\/occurrences\/145051707090"/)
+    end
   end
 end

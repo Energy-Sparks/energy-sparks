@@ -8,27 +8,15 @@ class RollbarNotifierService
 
   REPORTS = {
     validation_errors: {
-      title: "Validation, content and related errors",
-      description: "Lists problems encountered with validating readings, generating content batches, equivalences, etc",
+      title: "Meter validation problems",
+      description: "Meter validation failed for the following schools on the specified day",
       rql_query: <<-QUERY
-        SELECT timestamp, body.trace.exception.message, body.trace.extra.alert_type, body.trace.extra.school_id, body.trace.extra.school_name
-        from item_occurrence
-        where request.url is null
-        AND body.trace.extra.school_id != NULL
-        AND body.trace.extra.alert_type = NULL
-        ORDER by timestamp desc
-      QUERY
-    },
-    chart_errors: {
-      title: "Chart errors",
-      description: "Lists errors reported when generating charts",
-      rql_query: <<-QUERY
-        SELECT timestamp, request.url, context, request.params.school_id, body.trace.exception.message, body.trace.extra.school_name,
-        body.trace.extra.chart_config_overrides.y_axis_units, body.trace.extra.original_chart_type, body.trace.extra.transformations
-        from item_occurrence
-        WHERE
-        body.trace.extra.original_chart_type != NULL
-        ORDER by timestamp desc
+      SELECT timestamp, body.trace.extra.school_id, body.trace.extra.school_name, body.trace.extra.alert_type, body.trace.exception.message
+      from item_occurrence
+      where request.url is null
+      AND body.trace.extra.school_id != NULL
+      AND body.trace.extra.alert_type != NULL
+      ORDER by timestamp desc
       QUERY
     }
   }.freeze
