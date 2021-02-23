@@ -7,7 +7,7 @@ module RollbarAPI
   END_STATES = FAILED_STATES + ["success"]
 
   class RQLJobs
-    def initialize(api_token = ENV['ROLLBAR_READ_ACCESS_TOKEN'], client = nil)
+    def initialize(api_token, client = nil)
       @client = if client != nil
         client
                 else

@@ -1,7 +1,7 @@
 require 'rollbar_api/rql_jobs'
 
 class RollbarNotifierService
-  def initialize(rql_jobs = RollbarAPI::RQLJobs.new, description = nil)
+  def initialize(rql_jobs = RollbarAPI::RQLJobs.new(ENV['ROLLBAR_READ_ACCESS_TOKEN']), description = nil)
     @rql_jobs = rql_jobs
     @description = description
   end
