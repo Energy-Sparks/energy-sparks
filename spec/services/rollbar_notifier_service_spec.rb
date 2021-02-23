@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe RollbarNotifierService do
 
-  let(:rql_jobs)    { double("RollbarAPI::RQLJobs") }
+  let(:rql_jobs)    { double("RollbarAPI::RqlJobs") }
 
   #this is a subset of what the Rollbar API returns
   let(:job_result) {
