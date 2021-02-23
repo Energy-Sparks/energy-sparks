@@ -74,14 +74,15 @@ describe MeterManagement do
   end
 
   describe 'valid_dcc_meter?' do
-    let(:n3rgy_api)       { double("n3rgy_api") }
+    let(:n3rgy_api)         { double(:n3rgy_api) }
+    let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
 
     it "validates registered dcc meters" do
       meter = create(:electricity_meter, dcc_meter: true, consent_granted: true)
       expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn) do
         :available
       end
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql(true)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).valid_dcc_meter? ).to eql(true)
     end
 
     it "validates registered and consented dcc meters" do
@@ -89,7 +90,7 @@ describe MeterManagement do
       expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn) do
         :consent_required
       end
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql(true)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).valid_dcc_meter? ).to eql(true)
     end
 
     it "does not validate unregistered dcc meters" do
@@ -97,14 +98,14 @@ describe MeterManagement do
       expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn) do
         :unknown
       end
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql(false)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).valid_dcc_meter? ).to eql(false)
     end
 
     it "validates all other meters" do
       meter = create(:electricity_meter)
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql false
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).valid_dcc_meter? ).to eql false
       meter = create(:gas_meter)
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql false
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).valid_dcc_meter? ).to eql false
     end
 
     it "handles API errors" do
@@ -112,8 +113,8 @@ describe MeterManagement do
       allow(n3rgy_api).to receive(:status).with(meter.mpan_mprn) do
         raise
       end
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).check_n3rgy_status ).to eql(:api_error)
-      expect( MeterManagement.new(meter, n3rgy_api: n3rgy_api).valid_dcc_meter? ).to eql(false)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status ).to eql(:api_error)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).valid_dcc_meter? ).to eql(false)
     end
   end
 

@@ -25,10 +25,18 @@
   </div>
   <div class="form-group">
     <p class="alert alert-warning">Experimental features for N3RGY integration</p>
-    <%= form.check_box :dcc_meter %>
-    <%= form.label :dcc_meter, 'DCC Smart Meter' %>
-    <%= form.check_box :consent_granted %>
-    <%= form.label :consent_granted, 'Consent granted' %>
+    <div class="custom-control custom-checkbox">
+      <%= form.check_box :dcc_meter, class: 'custom-control-input'  %>
+      <%= form.label :dcc_meter, 'DCC Smart Meter', class: "custom-control-label"  %>
+    </div>
+    <div class="custom-control custom-checkbox">
+      <%= form.check_box :consent_granted, class: 'custom-control-input'  %>
+      <%= form.label :consent_granted, 'Consent granted', class: "custom-control-label"  %>
+    </div>
+    <div class="custom-control custom-checkbox">
+      <%= form.check_box :sandbox, class: 'custom-control-input' %>
+      <%= form.label :sandbox, class: "custom-control-label" %>
+    </div>
     <br>
     <%= form.label :earliest_available_data %>
     <%= date_field(:meter, :earliest_available_data, max: Time.zone.today, min: Date.parse("2012-01-01")) %>

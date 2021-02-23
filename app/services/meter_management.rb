@@ -1,8 +1,8 @@
 require 'dashboard'
 
 class MeterManagement
-  def initialize(meter, n3rgy_api: MeterReadingsFeeds::N3rgyData.new)
-    @n3rgy_api = n3rgy_api
+  def initialize(meter, n3rgy_api_factory: Amr::N3rgyApiFactory.new)
+    @n3rgy_api_factory = n3rgy_api_factory
     @meter = meter
   end
 
@@ -17,7 +17,7 @@ class MeterManagement
   end
 
   def check_n3rgy_status
-    return @n3rgy_api.status(@meter.mpan_mprn)
+    @n3rgy_api_factory.data_api(@meter).status(@meter.mpan_mprn)
   rescue => e
     Rails.logger.error "Exception: checking status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
