@@ -1,10 +1,10 @@
 <tbody>
   <% meters.each do |meter| %>
     <tr>
-      <td><%= meter.mpan_mprn %></td>
+      <td><%= meter.school.school_group.name %></td>
       <td><%= meter.meter_type.to_s.humanize%></td>
       <td><%= meter.school.name %></td>
-      <td><%= meter.school.school_group.name %></td>
+      <td><%= meter.mpan_mprn %></td>
       <td><%= nice_dates(meter.last_validated_reading) %></td>
     </tr>
   <% end %>
