@@ -1,14 +1,14 @@
 require 'rails_helper'
 require 'rollbar_api/rql_jobs.rb'
 
-module RollbarAPI
+module RollbarApi
   describe RqlJobs do
 
     let(:stubs)     { Faraday::Adapter::Test::Stubs.new }
     let(:client)      { Faraday.new { |b| b.adapter(:test, stubs) } }
 
     let(:api_token) { "token"}
-    let(:rql_jobs)  { RollbarAPI::RqlJobs.new(api_token, client)}
+    let(:rql_jobs)  { RollbarApi::RqlJobs.new(api_token, client)}
 
     let(:query)     { "select * from item_occurence" }
 
@@ -53,7 +53,7 @@ module RollbarAPI
     }
 
     it 'raises error for missing config' do
-      expect{ RollbarAPI::RqlJobs.new(nil) }.to raise_error(RuntimeError)
+      expect{ RollbarApi::RqlJobs.new(nil) }.to raise_error(RuntimeError)
     end
 
     context 'when submitting a job' do
