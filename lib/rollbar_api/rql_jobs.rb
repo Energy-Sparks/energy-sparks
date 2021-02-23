@@ -1,7 +1,7 @@
 require 'json'
 require 'faraday'
 
-module RollbarAPI
+module RollbarApi
   API_BASE = "https://api.rollbar.com".freeze
   FAILED_STATES = %w[failed cancelled timed_out].freeze
   END_STATES = FAILED_STATES + ["success"]
