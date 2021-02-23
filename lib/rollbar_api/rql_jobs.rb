@@ -6,7 +6,7 @@ module RollbarAPI
   FAILED_STATES = %w[failed cancelled timed_out].freeze
   END_STATES = FAILED_STATES + ["success"]
 
-  class RQLJobs
+  class RqlJobs
     def initialize(api_token, client = nil)
       @client = if client != nil
         client
