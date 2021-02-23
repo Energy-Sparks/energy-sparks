@@ -36,7 +36,7 @@ module DataFeeds
       rescue => e
         Rails.logger.error "Exception: running station import for #{station.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
         Rails.logger.error e.backtrace.join("\n")
-        Rollbar.error(e)
+        Rollbar.error(e, job: :meteostat_loader, station_id: station.id, station: station.title)
       end
     end
 

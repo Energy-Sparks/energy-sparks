@@ -42,7 +42,7 @@ module Alerts
       error_message = "Exception: #{@alert_type.class_name} for #{@school.name}: #{e.class} #{e.message}"
       Rails.logger.error error_message
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, school_id: @school.id, school_name: @school.name, alert_type: @alert_type.class_name)
+      Rollbar.error(e, job: :generate_alert_report, school_id: @school.id, school: @school.name, alert_type: @alert_type.class_name)
 
       error_message = "#{error_message}\n" + e.backtrace.join("\n")
 
