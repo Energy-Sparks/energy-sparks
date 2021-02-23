@@ -100,11 +100,13 @@ describe RollbarNotifierService do
     end
 
     it "builds links to Rollbar" do
-      allow(rql_jobs).to receive(:run_query).and_return(job_result)
-      results = RollbarNotifierService.new(rql_jobs).perform
-      email = ActionMailer::Base.deliveries.last
-      email_body = email.html_part.body.to_s
-      expect(email_body).to match(/href="https:\/\/rollbar.com\/energysparks\/EnergySparksTestEnvironment\/items\/564\/occurrences\/145051707090"/)
+      ClimateControl.modify ENVIRONMENT_IDENTIFIER: "Test" do
+        allow(rql_jobs).to receive(:run_query).and_return(job_result)
+        results = RollbarNotifierService.new(rql_jobs).perform
+        email = ActionMailer::Base.deliveries.last
+        email_body = email.html_part.body.to_s
+        expect(email_body).to match(/href="https:\/\/rollbar.com\/energysparks\/EnergySparksTestEnvironment\/items\/564\/occurrences\/145051707090"/)
+      end
     end
   end
 end
