@@ -30,6 +30,14 @@ module Amr
       expect( AmrDataFeedReading.count ).to eql 1
     end
 
+    it "handles empty reading for meter" do
+      expect( AmrDataFeedReading.count ).to eql 0
+      readings[meter.meter_type][:readings] = {}
+      upserter = Amr::N3rgyUpserter.new(meter: meter, config: config, readings: readings)
+      upserter.perform
+      expect( AmrDataFeedReading.count ).to eql 0
+    end
+
     it "does not create meters" do
       readings = {
         meter.meter_type => {
