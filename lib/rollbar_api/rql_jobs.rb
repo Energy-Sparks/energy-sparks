@@ -11,7 +11,7 @@ module RollbarAPI
       @client = if client != nil
         client
                 else
-        Faraday.new(API_BASE)
+        Faraday.new(API_BASE, request: { timeout: 20 })
                 end
       raise "ROLLBAR_READ_ACCESS_TOKEN not configured" unless api_token
       @api_token = api_token
