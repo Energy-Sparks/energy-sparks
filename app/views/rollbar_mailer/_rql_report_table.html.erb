@@ -1,0 +1,34 @@
+<h2><%= report_result[:title] %></h2>
+
+<p><%= report_result[:description] %></p>
+
+<% if report_result[:results][:error].present? %>
+ <p>Report failed to run</p>
+<% else %>
+  <table class="table mt-3 mb-5">
+    <thead class="thead-light">
+      <tr>
+        <% report_result[:results][:columns][0..-3].each do |col| %>
+          <th><%= nice_column_title(col) %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% report_result[:results][:rows].each do |row| %>
+      <tr>
+        <% row[0..-3].each_with_index do |val, index| %>
+          <% if index == 0 %>
+            <td>
+              <a href="<%= rollbar_item_url(@rollbar_environment, row[-2], row[-1]) %>">
+                <%= nice_dates_from_timestamp(val) %>
+              </a>
+            </td>
+          <% else %>
+            <td><%= val %></td>
+          <% end %>
+        <% end %>
+      <tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

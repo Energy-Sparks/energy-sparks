@@ -9,7 +9,7 @@ namespace :equivalences do
         Equivalences::GenerateEquivalences.new(school: school).perform
       rescue => e
         Rails.logger.error("#{e.message} for #{school.name}")
-        Rollbar.error(e, school_id: school.id, school_name: school.name)
+        Rollbar.error(e, job: :create_equivalences, school_id: school.id, school: school.name)
       end
 
     end

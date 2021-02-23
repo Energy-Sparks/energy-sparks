@@ -21,7 +21,7 @@ module Amr
     rescue => e
       Rails.logger.error "Exception: downloading N3rgy data for #{@meter.mpan_mprn} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e)
+      Rollbar.error(e, job: :n3rgy_download, meter_id: @meter.mpan_mprn, start_date: @start_date, end_date: @end_date)
     end
 
     private

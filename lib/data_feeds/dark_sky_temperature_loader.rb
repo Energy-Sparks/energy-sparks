@@ -40,7 +40,7 @@ module DataFeeds
     rescue => e
       Rails.logger.error "Exception: running dark sky area import for #{area.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e)
+      Rollbar.error(e, job: :dark_sky, area_id: area.id, area: area.title)
     end
 
     def process_day(reading_date, temperature_celsius_x48, area)

@@ -18,6 +18,12 @@ module ApplicationHelper
     "#{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')} "
   end
 
+  def nice_dates_from_timestamp(timestamp)
+    return "" if timestamp.nil?
+    datetime = DateTime.strptime(timestamp.to_s, '%s')
+    nice_dates(datetime)
+  end
+
   def active(bool = true)
     bool ? '' : 'bg-warning'
   end

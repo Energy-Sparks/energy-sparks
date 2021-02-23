@@ -46,6 +46,6 @@ class ImportNotifier
     AmrDataFeedConfig.order(:description).each do |config|
       meters = meters | yield(config)
     end
-    meters.reject {|m| !m.active? }.sort_by {|m| [m.school_name, m.meter_type, m.mpan_mprn]}
+    meters.reject {|m| !m.active? }.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
   end
 end

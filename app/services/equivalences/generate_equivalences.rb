@@ -18,7 +18,7 @@ module Equivalences
             Rails.logger.debug("#{e.message} for #{@school.name}")
           rescue => e
             Rails.logger.error("#{e.message} for #{@school.name}")
-            Rollbar.error(e, school_id: @school.id, school_name: @school.name)
+            Rollbar.error(e, job: :generate_equivalances, equivalence_type: equivalence_type, school_id: @school.id, school: @school.name)
           end
         end
       end
