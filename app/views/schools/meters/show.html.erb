@@ -1,6 +1,6 @@
 <h1>Meter: <%= @meter.mpan_mprn %></h1>
 <h2><%= @meter.name %></h2>
-<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+<p><%= link_to 'School meter management', school_meters_path(@school) %></p>
 <p>
   <%= link_to "Download CSV of Validated Readings", school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
   <%= link_to 'Edit', edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
