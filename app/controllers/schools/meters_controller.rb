@@ -16,6 +16,7 @@ module Schools
 
     def show
       @n3rgy_status = MeterManagement.new(@meter).check_n3rgy_status
+      @elements = MeterManagement.new(@meter).elements
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
