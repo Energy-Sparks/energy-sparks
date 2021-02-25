@@ -1,0 +1,11 @@
+<h1>Meter: <%= @meter.mpan_mprn %></h1>
+
+<p><%= link_to "Back", school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
+
+<h2>Inventory</h2>
+
+<p>
+  <pre>
+    <%= JSON.pretty_generate(@inventory).strip %>
+  </pre>
+</p>
