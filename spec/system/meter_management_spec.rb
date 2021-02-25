@@ -73,7 +73,7 @@ RSpec.describe "meter management", :meters, type: :system do
 
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}) }
+      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}, elements: [1]) }
 
       it 'the meter inventory button can be shown' do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
