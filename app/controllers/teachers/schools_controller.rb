@@ -18,7 +18,8 @@ module Teachers
       @observations = setup_timeline(@school.observations)
 
       setup_activity_suggestions
-      setup_analysis_pages(@school.latest_analysis_pages)
+
+      @co2_pages = process_analysis_templates(@school.latest_analysis_pages.co2)
     end
 
   private
