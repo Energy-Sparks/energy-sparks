@@ -35,6 +35,16 @@ RSpec.describe "meter management", :meters, type: :system do
         expect(page).to have_button('Delete', disabled: true)
       end
     end
+
+    context 'when the school has a DCC meter' do
+      let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
+
+      it 'the meter inventory button is not shown' do
+        click_on 'Manage meters'
+        click_on 'Details'
+        expect(page).not_to have_button('Inventory')
+      end
+    end
   end
 
   context 'as teacher' do
@@ -59,6 +69,20 @@ RSpec.describe "meter management", :meters, type: :system do
       visit root_path
       click_on('Schools')
       click_on('Oldfield Park Infants')
+    end
+
+    context 'when the school has a DCC meter' do
+      let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
+      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}) }
+
+      it 'the meter inventory button can be shown' do
+        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        click_on 'Manage meters'
+        click_on 'Details'
+        click_on 'Inventory'
+        expect(page).to have_content('device_id')
+        expect(page).to have_content('123999')
+      end
     end
 
     it 'allows adding of meters from the management page with validation' do
