@@ -13,11 +13,17 @@ RSpec.describe "teachers school view", type: :system do
     sign_in(user)
   end
 
-
   it 'I can visit the teacher dashboard' do
     visit teachers_school_path(school)
     expect(page).to have_content(school_name)
     expect(page).to have_link("Compare schools")
+  end
+
+  it 'shows link to co2 analysis page' do
+    co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
+    expect_any_instance_of(Teachers::SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
+    visit teachers_school_path(school)
+    expect(page).to have_link("Some CO2 page")
   end
 
   it 'displays interventions and temperature recordings in a timeline' do

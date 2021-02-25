@@ -7,6 +7,7 @@ module Teachers
     include DashboardEnergyCharts
     include DashboardAlerts
     include DashboardTimeline
+    include AnalysisPages
 
     before_action :check_aggregated_school_in_cache
 
@@ -17,6 +18,8 @@ module Teachers
       @observations = setup_timeline(@school.observations)
 
       setup_activity_suggestions
+
+      @co2_pages = process_analysis_templates(@school.latest_analysis_pages.co2)
     end
 
   private

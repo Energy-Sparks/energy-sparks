@@ -6,6 +6,11 @@
     <% if @school.school_group %>
       <%= link_to 'Compare schools', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% end %>
+    <% if @co2_pages.any? %>
+      <% @co2_pages.each do |page| %>
+        <%= link_to page.analysis_title , school_analysis_path(@school, page.analysis_page), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      <% end %>
+    <% end %>
     <% if @school.configuration %>
       <%= link_to "Learn more about your school's energy use", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% end %>
