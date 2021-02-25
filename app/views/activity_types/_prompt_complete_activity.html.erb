@@ -1,0 +1,20 @@
+<% if activity_type.active? && current_user && current_user.school %>
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <% if recorded == 0 %>
+        <h5>Be the first school to complete this activity!</h5>
+        <p>This activity will score your school <strong><%= activity_type.score %></strong> points!</p>
+        <% if can?(:create, Activity) %>
+          <%= link_to 'Record this activity', new_school_activity_path(current_user.school, activity_type_id: activity_type.id), class: 'btn btn-primary' %>
+        <% end %>
+      <% else %>
+        <h5>Complete this activity at your school</h5>
+        <p>This activity will score your school <strong><%= activity_type.score %></strong> points!</p>
+        <p><strong><%= pluralize(school_count, 'school has', 'schools have') %> scored points for this activity </strong>.</p>
+        <% if can?(:create, Activity) %>
+          <%= link_to 'Record this activity', new_school_activity_path(current_user.school, activity_type_id: activity_type.id), class: 'btn btn-primary' %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

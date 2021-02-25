@@ -1,0 +1,12 @@
+<h1>Custom Error Reports</h1>
+
+<p>
+The following reports having been run against the <%= @rollbar_environment %> project.
+</p>
+
+<p>
+</p>
+
+<% @reported_results.each do |key, result| %>
+  <%= render 'rql_report_table', report_result: result %>
+<% end %>

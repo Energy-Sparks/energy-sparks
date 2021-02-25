@@ -3,19 +3,27 @@ require 'rails_helper'
 RSpec.describe "teachers school view", type: :system do
 
   let(:school_name) { 'Theresa Green Infants'}
+  let!(:school_group)  { create(:school_group) }
   let!(:regional_calendar)  { create(:regional_calendar) }
   let!(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
-  let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name) }
+  let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name, school_group: school_group) }
   let!(:user)               { create(:school_admin, school: school)}
 
   before(:each) do
     sign_in(user)
   end
 
-
   it 'I can visit the teacher dashboard' do
     visit teachers_school_path(school)
-    expect(page.has_content? school_name).to be true
+    expect(page).to have_content(school_name)
+    expect(page).to have_link("Compare schools")
+  end
+
+  it 'shows link to co2 analysis page' do
+    co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
+    expect_any_instance_of(Teachers::SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
+    visit teachers_school_path(school)
+    expect(page).to have_link("Some CO2 page")
   end
 
   it 'displays interventions and temperature recordings in a timeline' do

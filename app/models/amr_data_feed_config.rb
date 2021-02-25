@@ -11,7 +11,7 @@
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key
 #  identifier              :text             not null
-#  import_warning_days     :integer          default(7)
+#  import_warning_days     :integer          default(10), not null
 #  meter_description_field :text
 #  missing_readings_limit  :integer
 #  mpan_mprn_field         :text             not null
@@ -35,7 +35,7 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
-  enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api]
+  enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api]
   enum source_type: [:email, :manual, :api, :sftp]
 
   has_many :amr_data_feed_import_logs

@@ -45,7 +45,7 @@ module DataFeeds
     rescue => e
       Rails.logger.error "Exception: running solar pv for #{area.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e)
+      Rollbar.error(e, job: :solar_pv_tuos_area, area_id: area.id, area: area.title)
     end
 
     def process_day(reading_date, generation_mw_x48, area, gsp_area)

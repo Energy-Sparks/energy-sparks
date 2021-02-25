@@ -128,8 +128,8 @@ describe 'Meter', :meters do
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
-        it 'is invalid with a number longer than 10 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 8758348459567832))
+        it 'is invalid with a number longer than 15 digits' do
+          meter = Meter.new(attributes.merge(mpan_mprn: 1234567890123456))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to_not be_empty
         end

@@ -15,6 +15,7 @@ module Schools
     end
 
     def show
+      @n3rgy_status = MeterManagement.new(@meter).check_n3rgy_status
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
@@ -22,8 +23,15 @@ module Schools
     end
 
     def create
+      manager = MeterManagement.new(@meter)
+      if @meter.dcc_meter? && !manager.valid_dcc_meter?
+        @meter.errors.add :base, "This meter is not registered with DCC"
+        load_meters
+        render :index
+        return
+      end
       if @meter.save
-        MeterManagement.new(@meter).process_creation!
+        manager.process_creation!
         redirect_to school_meters_path(@school)
       else
         load_meters
@@ -35,9 +43,16 @@ module Schools
     end
 
     def update
-      if @meter.update(meter_params)
+      @meter.attributes = meter_params
+      manager = MeterManagement.new(@meter)
+      if @meter.dcc_meter? && !manager.valid_dcc_meter?
+        @meter.errors.add :base, "This meter is not registered with DCC"
+        render :edit
+        return
+      end
+      if @meter.save
         if @meter.mpan_mprn_previously_changed?
-          MeterManagement.new(@meter).process_mpan_mpnr_change!
+          manager.process_mpan_mpnr_change!
         end
         redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
@@ -72,7 +87,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :consent_granted, :sandbox, :earliest_available_data)
     end
   end
 end

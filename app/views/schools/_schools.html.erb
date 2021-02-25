@@ -7,15 +7,20 @@
     </div>
     <div id="collapse<%= label %>" class="collapse" aria-labelledby="heading<%= label %>" data-parent="#accordion<%= label %>">
       <div class="card-body">
-        <% schools.each_slice(3) do |threeschools| %>
-          <div class="row">
-            <% threeschools.each do |school| %>
-              <div class="col-lg-4">
-                <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+        <div class='btn-group'>
+          <%= link_to 'Compare schools', benchmarks_path, class: 'btn nav-link' %>
+        </div>
+        <div class="padded-row">
+          <% schools.each_slice(3) do |threeschools| %>
+            <div class="row">
+              <% threeschools.each do |school| %>
+                <div class="col-lg-4">
+                  <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

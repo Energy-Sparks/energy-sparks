@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "analysis page", type: :system do
-  let!(:school) { create(:school) }
+  let!(:school_group) { create(:school_group) }
+  let!(:school) { create(:school, school_group: school_group) }
 
   let(:description) { 'all about this alert type' }
   let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
@@ -60,6 +61,7 @@ RSpec.describe "analysis page", type: :system do
 
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content("This is what you need to do")
+        expect(page).to have_link("Compare schools")
 
         expect(page.all('.fas.fa-star').size).to eq(4)
         expect(page.all('.fas.fa-star-half-alt').size).to eq(1)

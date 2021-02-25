@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '~> 2.6.5'
 
 # Rails/Core
-gem 'rails', '~> 6.0.3.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.3.5' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -23,7 +23,7 @@ gem 'closed_struct'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.12.1'
-# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'solar-for-schools-short-term-fix', ref: 'ce215603cdd198067b2927132e3a4711767f369c'
+# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: '1191-beis4-n3rgy-json-interface'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -90,6 +90,9 @@ gem 'oj'
 # Email service
 gem 'mailgun_rails'
 gem 'MailchimpMarketing'
+
+# Eventbrite for training page
+gem 'eventbrite_sdk'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

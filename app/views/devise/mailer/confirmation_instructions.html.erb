@@ -2,7 +2,11 @@
 
 <p>Welcome <%= @resource.name %></p>
 
-<p>An account has been created for you on Energy Sparks.</p>
+<% if @resource.school.present? %>
+  <p>An account has been created for you on Energy Sparks for <%= @resource.school.name %>.</p>
+<% else %>
+  <p>An account has been created for you on Energy Sparks.</p>
+<% end %>
 
 <p>You can confirm your account email through the link below:</p>
 
@@ -12,4 +16,3 @@
   If you have any questions or concerns then please contact the <%= t('application') %> team by replying to
   this email.
 </p>
-

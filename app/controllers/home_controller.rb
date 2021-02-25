@@ -46,6 +46,10 @@ class HomeController < ApplicationController
   def attribution
   end
 
+  def training
+    @events = Events::ListEvents.new.perform
+  end
+
   def user_guide_videos
     @videos = Video.order(:position)
   end
