@@ -76,4 +76,13 @@ namespace :utility do
     RollbarNotifierService.new.perform
   end
 
+  desc 'Check elements of DCC meters'
+  task check_elements: :environment do
+    api_factory = Amr::N3rgyApiFactory.new
+    Meter.where(dcc_meter: true).order(:mpan_mprn).each do |meter|
+      api = api_factory.data_api(meter)
+      elements = api.elements(meter.mpan_mprn, meter.meter_type)
+      puts "#{meter.mpan_mprn}, #{meter.school.name}, #{elements.size}"
+    end
+  end
 end
