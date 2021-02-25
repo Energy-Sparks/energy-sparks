@@ -60,6 +60,14 @@ module Schools
       end
     end
 
+    def inventory
+      @inventory = Amr::N3rgyApiFactory.new.data_api(@meter).inventory(@meter.mpan_mprn)
+      render :inventory
+    rescue => e
+      flash[:error] = e
+      render :inventory
+    end
+
     def deactivate
       @meter.update!(active: false)
       redirect_to school_meters_path(@school), notice: 'Meter deactivated'
