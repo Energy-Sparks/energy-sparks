@@ -33,7 +33,7 @@ class SchoolCreator
     @school.update!(visible: true)
     record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
     if should_send_activation_email?
-      OnboardingMailer.with(school_onboarding: @school.school_onboarding).activation_email.deliver_now
+      OnboardingMailer.with(to: activation_email_list(@school), school_onboarding: @school.school_onboarding).activation_email.deliver_now
       record_event(@school.school_onboarding, :activation_email_sent)
     end
   end
@@ -49,6 +49,13 @@ class SchoolCreator
   end
 
 private
+
+  def activation_email_list(school)
+    users = [school.school_onboarding.created_user]
+    #also email admin, staff and group users
+    users += (school.school_admin.to_a + school.cluster_users.to_a + school.users.staff.to_a)
+    users.uniq.map(&:email)
+  end
 
   def add_school(user, school)
     user.add_cluster_school(school)
