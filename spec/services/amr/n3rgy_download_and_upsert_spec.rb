@@ -25,11 +25,15 @@ module Amr
 
     context "when downloading data" do
       it "should handle and log exceptions" do
+        expect( AmrDataFeedImportLog.count ).to eql 0
+
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, start_date, end_date) do
           raise
         end
         upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
         upserter.perform
+        expect( AmrDataFeedImportLog.count ).to eql 1
+        expect( AmrDataFeedImportLog.first.error_messages ).to_not be_blank
       end
 
       it "should use provided date window" do
