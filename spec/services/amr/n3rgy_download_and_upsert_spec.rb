@@ -61,41 +61,47 @@ module Amr
         upserter.perform
       end
 
-      it "should request recent data, if there are readings" do
+      context "when there are readings" do
 
-        last_week = Date.today - 7
-        meter.update!({
-          earliest_available_data: last_week
-        })
+        let(:last_week) { Date.today - 7 }
 
-        amr_data_feed_reading = create(:amr_data_feed_reading, meter: meter, reading_date: last_week)
-        amr_data_feed_reading = create(:amr_data_feed_reading, meter: meter, reading_date: last_week+1)
-        amr_data_feed_reading = create(:amr_data_feed_reading, meter: meter, reading_date: last_week+2)
-
-        #most recent reading is for earliest available date, so start reading new data from there
-        #which is 5 days ago
-        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week+2, yesterday) do
-          readings
+        before do
+          create(:amr_data_feed_reading, meter: meter, reading_date: last_week)
+          create(:amr_data_feed_reading, meter: meter, reading_date: last_week+1)
+          create(:amr_data_feed_reading, meter: meter, reading_date: last_week+2)
         end
 
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
-        upserter.perform
-      end
+        it "should request data from available data date if that was earlier than current first reading" do
+          meter.update!(earliest_available_data: last_week - 1)
+          expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week-1, yesterday) do
+            readings
+          end
 
-      it "should backfill if there is a gap" do
-        #reading date is yesterday
-        amr_data_feed_reading = create(:amr_data_feed_reading, meter: meter, reading_date: Date.yesterday)
-        #gap between most recent reading and earliest available data, so try re-reading
-        expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, yesterday) do
-          readings
+          upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+          upserter.perform
         end
 
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
-        upserter.perform
+        it "should request data from current last reading if first reading is earlier than earliest_available_data" do
+          meter.update!(earliest_available_data: last_week)
+          expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week+2, yesterday) do
+            readings
+          end
 
+          upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+          upserter.perform
+        end
+
+        it "should request data from last reading date if no earliest_available_data" do
+          meter.update!(earliest_available_data: nil)
+          expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week+2, yesterday) do
+            readings
+          end
+
+          upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+          upserter.perform
+        end
       end
     end
-
 
     context "when upserting data" do
       it "should result in new readings" do

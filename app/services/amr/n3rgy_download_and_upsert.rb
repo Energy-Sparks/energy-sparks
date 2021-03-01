@@ -37,7 +37,7 @@ module Amr
         #Note: this could be improved as its potentially inefficient to request all data, could just
         #aim to find the latest gap in readings and fill, so we have enough. Or find all gaps
         #and invoke API multiple times (which would require a larger refactor of this class)
-        if earliest_reading_date.present? && Date.parse(earliest_reading_date).after?(@meter.earliest_available_data)
+        if earliest_reading_date.present? && @meter.earliest_available_data && Date.parse(earliest_reading_date).after?(@meter.earliest_available_data)
           return @meter.earliest_available_data
         end
         #otherwise if use date of latest reading
