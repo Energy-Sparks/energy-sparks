@@ -15,18 +15,27 @@ module Amr
     end
 
     def perform
+      @import_log = create_import_log
       start_date = read_start_date(@start_date)
       end_date = read_end_date(@end_date)
       n3rgy_api = @n3rgy_api_factory.data_api(@meter)
       readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).readings
-      N3rgyUpserter.new(meter: @meter, config: @config, readings: readings).perform
+      N3rgyUpserter.new(meter: @meter, config: @config, readings: readings, import_log: @import_log).perform
     rescue => e
+      @import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} : #{e.message}")
       Rails.logger.error "Exception: downloading N3rgy data for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e, job: :n3rgy_download, meter_id: @meter.mpan_mprn, start_date: start_date, end_date: end_date)
     end
 
     private
+
+    def create_import_log
+      AmrDataFeedImportLog.create(
+        amr_data_feed_config_id: @config.id,
+        file_name: "N3rgy API import for #{@meter.mpan_mprn} #{DateTime.now.utc}",
+        import_time: DateTime.now.utc)
+    end
 
     def read_start_date(start_date)
       #override if specified

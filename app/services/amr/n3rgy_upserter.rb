@@ -2,11 +2,11 @@ require 'dashboard'
 
 module Amr
   class N3rgyUpserter
-    def initialize(meter:, config:, readings:)
+    def initialize(meter:, config:, readings:, import_log:)
       @meter = meter
       @amr_data_feed_config = config
       @readings = readings
-      @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: "N3rgy API import #{DateTime.now.utc}", import_time: DateTime.now.utc)
+      @amr_data_feed_import_log = import_log
     end
 
     def perform
