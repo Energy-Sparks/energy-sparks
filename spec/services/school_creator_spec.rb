@@ -123,6 +123,18 @@ describe SchoolCreator, :schools, type: :service do
         service.make_visible!
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to include('is live on Energy Sparks')
+        expect(email.to).to eql [onboarding_user.email]
+        expect(school_onboarding).to have_event(:activation_email_sent)
+      end
+
+      it 'sends an activation email to staff and admins' do
+        school_admin = create(:school_admin, school: school)
+        staff = create(:staff, school: school)
+        service = SchoolCreator.new(school)
+        service.make_visible!
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to include('is live on Energy Sparks')
+        expect(email.to).to match [onboarding_user.email, school_admin.email, staff.email]
         expect(school_onboarding).to have_event(:activation_email_sent)
       end
 
