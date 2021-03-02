@@ -8,7 +8,7 @@ module Amr
     let!(:config)     { create(:amr_data_feed_config) }
     let!(:log)        { create(:amr_data_feed_import_log) }
     let!(:e_meter)    { create(:electricity_meter_with_reading, reading_count: 2, school: school, config: config) }
-    let!(:g_meter)    { create(:gas_meter_with_reading, school: school) }
+    let!(:g_meter)    { create(:gas_meter_with_reading, school: school, dcc_meter: true) }
 
     it 'builds an unvalidated meter collection' do
       amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build
@@ -18,12 +18,14 @@ module Amr
       first_electricity_meter = amr_data[:electricity_meters].first
 
       expect(first_electricity_meter[:identifier]).to eq e_meter.mpan_mprn
+      expect(first_electricity_meter[:dcc_meter]).to be false
       expect(first_electricity_meter[:readings].size).to eq 2
       expect(first_electricity_meter[:readings].map { |reading| reading[:kwh_data_x48] }).to match_array e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) }
 
       first_gas_meter = amr_data[:heat_meters].first
 
       expect(first_gas_meter[:identifier]).to eq g_meter.mpan_mprn
+      expect(first_gas_meter[:dcc_meter]).to be true
       expect(first_gas_meter[:readings].first[:reading_date]).to eq Date.parse(g_meter.amr_data_feed_readings.first.reading_date)
       expect(first_gas_meter[:readings].first[:kwh_data_x48]).to eq g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
     end
