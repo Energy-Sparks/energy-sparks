@@ -38,6 +38,7 @@
 
 //= require aggregated_meter_collection
 //= require date_pickers
+//= require checkboxes
 
 //= require observations
 //= require form_wizard
