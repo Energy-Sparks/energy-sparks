@@ -1,6 +1,6 @@
 <h1>Meter: <%= @meter.mpan_mprn %></h1>
 <h2><%= @meter.name %></h2>
-<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+<p><%= link_to 'School meter management', school_meters_path(@school) %></p>
 <p>
   <%= link_to "Download CSV of Validated Readings", school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
   <%= link_to 'Edit', edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
@@ -8,6 +8,9 @@
     <%= link_to 'Report', admin_reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
   <% end %>
   <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+  <% if @meter.dcc_meter? && can?(:view_inventory, @meter) %>
+    <%= link_to 'Inventory', inventory_school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
+  <% end %>
 </p>
 
 <dl class="row">
@@ -25,8 +28,12 @@
   <dd class="col-sm-9"><%= @meter.dcc_meter? %></dd>
   <dt class="col-sm-3">Consent Granted?</dt>
   <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
+  <dt class="col-sm-3">Sandbox?</dt>
+  <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
   <dt class="col-sm-3">Earliest Available Data</dt>
   <dd class="col-sm-9"><%= @meter.earliest_available_data %></dd>
   <dt class="col-sm-3">N3RGY API Status</dt>
-  <dd class="col-sm-9"><%= @n3rgy_status %></dt>
+  <dd class="col-sm-9"><%= @n3rgy_status %></dd>
+  <dt class="col-sm-3">Meter Elements</dt>
+  <dd class="col-sm-9"><%= @elements %></dd>
 </dl>

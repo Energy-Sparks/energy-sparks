@@ -102,6 +102,7 @@ Rails.application.routes.draw do
 
       resources :meters do
         member do
+          get :inventory
           put :activate
           put :deactivate
         end

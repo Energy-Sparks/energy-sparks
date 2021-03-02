@@ -17,6 +17,17 @@ class RollbarNotifierService
       AND timestamp > unix_timestamp() - 60 * 60 * 48
       ORDER by timestamp desc
       QUERY
+    },
+    n3rgy_errors: {
+      title: "N3RGY Meter loading errors",
+      description: "Errors reported when trying to load data from N3RGY",
+      rql_query: <<-QUERY
+      SELECT timestamp, body.trace.extra.meter_id, body.trace.extra.start_date, body.trace.extra.end_date, body.trace.exception.message
+      from item_occurrence
+      where body.trace.extra.job = 'n3rgy_download'
+      AND timestamp > unix_timestamp() - 60 * 60 * 48
+      ORDER by timestamp desc
+      QUERY
     }
   }.freeze
 
