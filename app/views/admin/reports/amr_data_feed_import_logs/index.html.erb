@@ -21,7 +21,7 @@
         <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
         <td><%= log.error_messages %></td>
         <td><%= log.file_name %></td>
-        <td><%= nice_date_times log.import_time %></td>
+        <td data-order="<%= log.import_time.strftime("%s") %>"><%= nice_date_times log.import_time %></td>
       </tr>
     <% end %>
   </tbody>
