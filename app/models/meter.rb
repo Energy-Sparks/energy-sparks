@@ -14,6 +14,7 @@
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
 #  pseudo                         :boolean          default(FALSE)
+#  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  updated_at                     :datetime         not null

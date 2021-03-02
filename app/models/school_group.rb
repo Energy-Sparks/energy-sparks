@@ -38,6 +38,9 @@ class SchoolGroup < ApplicationRecord
   has_many :calendars, through: :schools
   has_many :users
 
+  has_many :school_group_partners, -> { order(position: :asc) }
+  has_many :partners, through: :school_group_partners
+
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true

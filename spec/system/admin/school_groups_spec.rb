@@ -41,6 +41,9 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       expect(school_group.name).to eq('B & NES')
     end
 
+    it 'can add a partner to the group'
+    it 'can add multiple partners to the group'
+
     it 'can delete a school group' do
       school_group = create(:school_group)
       click_on 'Edit School Groups'

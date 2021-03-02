@@ -25,4 +25,9 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
+  context '#partners' do
+    it "can add a partner"
+    it "orders partners by position"
+  end
+
 end
