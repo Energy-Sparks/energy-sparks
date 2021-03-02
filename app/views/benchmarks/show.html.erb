@@ -37,6 +37,11 @@
             <% end %>
           </div>
         <% end %>
+        <hr/>
+        <div class="custom-control custom-checkbox">
+          <%= check_box_tag "abc", false, false, { id: "abc", class: 'custom-control-input multi-select check-all' } %>
+          <%= label_tag "abc", "Select all", class: 'custom-control-label' %>
+        </div>
       </fieldset>
     </div>
     <div class="col">
