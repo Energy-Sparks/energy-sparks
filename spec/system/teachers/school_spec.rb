@@ -68,7 +68,7 @@ RSpec.describe "teachers school view", type: :system do
         visit teachers_school_path(school)
 
         expect(page).to have_content('Gas')
-        # if redirect fails it will stille be processing
+        # if redirect fails it will still be processing
         expect(page).to_not have_content('processing')
         expect(page).to_not have_content("we're having trouble processing your energy data today")
       end
@@ -81,7 +81,6 @@ RSpec.describe "teachers school view", type: :system do
 
       it 'shows an error message', errors_expected: true do
         visit teachers_school_path(school)
-
         expect(page).to have_content("we're having trouble processing your energy data today")
       end
     end
@@ -96,4 +95,3 @@ RSpec.describe "teachers school view", type: :system do
     end
   end
 end
-
