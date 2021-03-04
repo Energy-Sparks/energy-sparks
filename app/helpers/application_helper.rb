@@ -61,9 +61,7 @@ module ApplicationHelper
 
   def missing_dates(dates)
     if dates.count > 0
-      "#{dates.count} <br/> (#{dates.first} to #{dates.last})".html_safe
-    else
-      0
+      dates.count
     end
   end
 

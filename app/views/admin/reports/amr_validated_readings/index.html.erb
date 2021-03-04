@@ -40,7 +40,7 @@
         <% if @meter_scope.empty? %>
           <th>Active</th>
         <% end %>
-        <th>Missing readings</th>
+        <th>Gaps</th>
         <th>First validated reading</th>
         <th>Last validated reading</th>
       </tr>
@@ -57,7 +57,7 @@
               <% if @meter_scope.empty? %>
                 <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
               <% end %>
-              <td><%= missing_dates(meter.missing_validated_reading_dates) %></td>
+              <td class="missing-dates"><%= missing_dates(meter.missing_validated_reading_dates) %></td>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
               <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
             </tr>
