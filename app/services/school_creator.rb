@@ -51,7 +51,8 @@ class SchoolCreator
 private
 
   def activation_email_list(school)
-    users = [school.school_onboarding.created_user]
+    users = []
+    users << school.school_onboarding.created_user unless school.school_onboarding.created_user.nil?
     #also email admin, staff and group users
     users += (school.school_admin.to_a + school.cluster_users.to_a + school.users.staff.to_a)
     users.uniq.map(&:email)
