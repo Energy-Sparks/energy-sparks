@@ -18,4 +18,8 @@ class Partner < ApplicationRecord
 
   validates :image, presence: true
   validates :position, numericality: true, presence: true
+
+  def display_name
+    name || "Partner #{id}"
+  end
 end

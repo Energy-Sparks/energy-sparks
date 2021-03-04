@@ -1,0 +1,19 @@
+<h2><%= @school_group.name %> - Partners</h2>
+
+<p><%= link_to 'Partners', admin_partners_path, class: ''%> associated with this school group.</p>
+
+<%= form_tag admin_school_group_partners_path(@school_group), method: :put do %>
+  <%= submit_tag 'Update associated partners', class: 'btn btn-primary mb-3'%>
+
+  <% @partners.each do |partner| %>
+    <ul class="list-unstyled school-group-partners">
+        <li>
+          <%= number_field_tag  "school_group_partners[#{partner.id}][position]", @positions[partner.id], min: 0, max: 99, step: 1 %>
+          <%= label_tag "school_group_partners[#{partner.id}][position]", partner.display_name %>
+          <%= hidden_field_tag  "school_group_partners[#{partner.id}][partner_id]", partner.id %>
+        </li>
+    </ul>
+  <% end %>
+
+  <%= submit_tag 'Update associated partners', class: 'btn btn-primary'%>
+<% end %>
