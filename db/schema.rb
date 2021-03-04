@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_132742) do
+ActiveRecord::Schema.define(version: 2021_03_02_164242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -894,6 +894,16 @@ ActiveRecord::Schema.define(version: 2021_03_02_132742) do
     t.bigint "created_by_id"
     t.jsonb "meter_types", default: []
     t.index ["school_group_id"], name: "index_school_group_meter_attributes_on_school_group_id"
+  end
+
+  create_table "school_group_partners", force: :cascade do |t|
+    t.bigint "school_group_id"
+    t.bigint "partner_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["partner_id"], name: "index_school_group_partners_on_partner_id"
+    t.index ["school_group_id"], name: "index_school_group_partners_on_school_group_id"
   end
 
   create_table "school_groups", force: :cascade do |t|

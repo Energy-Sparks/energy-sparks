@@ -39,9 +39,8 @@ RSpec.describe Admin::PartnersController, type: :controller do
       it "displays the partner" do
         get :show, params: { id: partner.to_param }
         expect(assigns(:partner)).to eql(partner)
+        expect(response).to render_template("show")
       end
-
-      it "lists schools and groups"
     end
 
     describe "POST #create" do
@@ -91,13 +90,26 @@ RSpec.describe Admin::PartnersController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      context "and there are no schools" do
-        it "removes the partner"
-      end
-      context "and there are schools" do
-        it "removes the association to the school"
+      it "removes the partner" do
+        partner
+        expect {
+          delete :destroy, params: { id: partner.to_param }
+        }.to change(Partner, :count).by(-1)
       end
     end
 
+    describe "with school groups" do
+      let(:school_group)    { create(:school_group) }
+      before(:each) do
+        partner.school_groups << school_group
+      end
+      it "removes the partner" do
+        expect {
+          delete :destroy, params: { id: partner.to_param }
+        }.to change(Partner, :count).by(-1)
+        expect(SchoolGroupPartner.count).to eql(0)
+        expect(SchoolGroup.count).to eql(1)
+      end
+    end
   end
 end

@@ -13,7 +13,7 @@
 class Partner < ApplicationRecord
   has_one_attached :image
 
-  has_many :school_group_partners
+  has_many :school_group_partners, dependent: :delete_all
   has_many :school_groups, through: :school_group_partners
 
   validates :image, presence: true

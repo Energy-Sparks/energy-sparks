@@ -29,9 +29,15 @@ describe 'Partners', type: :system do
     end
 
     context "an existing partner" do
+      let!(:partner)       { create(:partner) }
+
       before(:each) do
-        create(:partner)
         visit admin_partners_path
+      end
+
+      it 'allows user to view the partner' do
+        click_on 'Show'
+        expect(page).to have_content(partner.name)
       end
 
       it 'allows the user to edit a partner' do
@@ -53,12 +59,22 @@ describe 'Partners', type: :system do
         expect { click_on 'Delete' }.to change { Partner.count }.by(-1)
         expect(page).to have_content('Partner was successfully destroyed.')
       end
-
-      it 'warns if there is a school attached'
-      it 'warns if there is a school group attached'
-
     end
 
+    context "a partner associated with a school group" do
+      let(:school_group)          { create(:school_group, name: "Local School Group") }
+      let(:partner)               { create(:partner) }
+
+      before(:each) do
+        partner.school_groups << school_group
+        visit admin_partner_path(partner)
+      end
+
+      it 'lists the groups on partner page' do
+        expect(page).to have_content("Local School Group")
+      end
+
+    end
 
   end
 end
