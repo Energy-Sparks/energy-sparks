@@ -192,4 +192,18 @@ describe 'Meter', :meters do
       expect(meter.first_validated_reading).to eql(old_one.reading_date)
     end
   end
+
+  describe '#missing_validated_reading_dates' do
+
+    let(:meter) { create(:electricity_meter) }
+
+    it "should find total missing readings" do
+      create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-05'))
+      create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-07'))
+      create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-09'))
+
+      expect(meter.missing_validated_reading_dates.count).to eql(2)
+      expect(meter.missing_validated_reading_dates).to match_array([Date.parse('2018-12-06'), Date.parse('2018-12-08')])
+    end
+  end
 end
