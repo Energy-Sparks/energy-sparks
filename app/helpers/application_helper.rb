@@ -61,13 +61,7 @@ module ApplicationHelper
 
   def missing_dates(dates)
     if dates.count > 0
-<<<<<<< HEAD
       dates.count
-=======
-      "#{dates.count} <br/> (#{dates.first} to #{dates.last})".html_safe
-    else
-      0
->>>>>>> 48761bdf... Show dates where readings dont exist
     end
   end
 
