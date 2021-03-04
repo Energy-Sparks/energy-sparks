@@ -89,6 +89,14 @@ class Meter < ApplicationRecord
     amr_validated_readings.maximum(:reading_date)
   end
 
+  def missing_validated_reading_dates
+    if first_validated_reading && last_validated_reading && (last_validated_reading - first_validated_reading).to_i > amr_validated_readings.count
+      (first_validated_reading..last_validated_reading).to_a - amr_validated_readings.map(&:reading_date)
+    else
+      []
+    end
+  end
+
   def display_name
     name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end

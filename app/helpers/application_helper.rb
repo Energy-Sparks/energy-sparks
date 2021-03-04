@@ -59,6 +59,12 @@ module ApplicationHelper
     end
   end
 
+  def missing_dates(dates)
+    if dates.count > 0
+      dates.count
+    end
+  end
+
   def class_for_alert_colour(colour)
     return class_for_alert_colour(:unknown) if colour.nil?
     case colour.to_sym

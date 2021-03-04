@@ -66,4 +66,22 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
       expect(page).to have_content 'January'
     end
   end
+
+  context 'when there are gaps in the meter readings' do
+
+    before do
+      create(:amr_validated_reading, meter: meter, reading_date: meter.first_validated_reading - 1.week)
+    end
+
+    it 'shows count of missing dates' do
+      click_on('Manage')
+      click_on('Reports')
+      click_on('AMR Report')
+
+      expect(page).to have_content 'Gaps'
+      within '.missing-dates' do
+        expect(page).to have_content '6'
+      end
+    end
+  end
 end
