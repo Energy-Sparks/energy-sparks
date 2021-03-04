@@ -40,13 +40,14 @@
         <% if @meter_scope.empty? %>
           <th>Active</th>
         <% end %>
+        <th>Missing readings</th>
         <th>First validated reading</th>
         <th>Last validated reading</th>
       </tr>
     </thead>
     <tbody>
       <% @school_groups.each do |school_group| %>
-        <tr class='table-active'><td colspan="5"><strong><%= school_group.name %></strong></td></tr>
+        <tr class='table-active'><td colspan="6"><strong><%= school_group.name %></strong></td></tr>
         <% school_group.schools.by_name.each do |school| %>
           <% school.meters.where(@meter_scope).each_with_index do |meter, index| %>
             <tr>
@@ -56,6 +57,7 @@
               <% if @meter_scope.empty? %>
                 <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
               <% end %>
+              <td><%= missing_dates(meter.missing_validated_reading_dates) %></td>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
               <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
             </tr>
