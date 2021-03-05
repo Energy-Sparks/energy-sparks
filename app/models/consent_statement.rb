@@ -5,4 +5,8 @@ class ConsentStatement < ApplicationRecord
   validates :title, :content, presence: true
 
   scope :by_date, -> { order(created_at: :desc) }
+
+  def editable?
+    consent_grants.empty?
+  end
 end

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "consent_grants", type: :system do
+RSpec.describe 'consent_grants', type: :system do
 
   let(:admin) { create(:admin) }
-  let(:consent_statement) { ConsentStatement.create!( title: "First consent statement", content: "You may use my data..") }
+  let(:consent_statement) { ConsentStatement.create!( title: 'First consent statement', content: 'You may use my data..') }
 
   before do
     sign_in(admin)
@@ -33,11 +33,11 @@ RSpec.describe "consent_grants", type: :system do
     it 'shows all consents granted' do
       click_on 'Consents Granted'
       puts ConsentGrant.last.inspect
-      expect(page).to have_content("Consents Granted")
+      expect(page).to have_content('Consents Granted')
       expect(page).to have_content(school.name)
       expect(page).to have_content(name)
       expect(page).to have_content(job_title)
-      expect(page).to have_content("First consent statement")
+      expect(page).to have_content('First consent statement')
     end
 
     it 'shows consent details and contents' do
@@ -47,8 +47,8 @@ RSpec.describe "consent_grants", type: :system do
       expect(page).to have_content(name)
       expect(page).to have_content(job_title)
       expect(page).to have_content(ip_address)
-      expect(page).to have_content("First consent statement")
-      expect(page).to have_content("You may use my data..")
+      expect(page).to have_content('First consent statement')
+      expect(page).to have_content('You may use my data..')
     end
   end
 end
