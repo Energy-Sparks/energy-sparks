@@ -24,10 +24,14 @@ module Admin
     end
 
     def update
-      # TODO only if not referenced yet
-      if @consent_statement.update(consent_statement_params)
-        redirect_to admin_consent_statements_path, notice: 'Consent statement was successfully updated.'
+      if @consent_statement.editable?
+        if @consent_statement.update(consent_statement_params)
+          redirect_to admin_consent_statements_path, notice: 'Consent statement was successfully updated.'
+        else
+          render :edit
+        end
       else
+        flash[:error] = 'This consent statement is no longer editable'
         render :edit
       end
     end

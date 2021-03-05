@@ -41,11 +41,19 @@ RSpec.describe 'consent_statements', type: :system do
       )
     end
 
-    it 'does not allow edits' do
+    it 'does not show edit button' do
       click_on 'Consent Statements'
       expect(page).to have_content('Consent Statements')
       expect(page).not_to have_link('Edit')
       expect(page).to have_link('View')
+    end
+
+    it 'does not allow update' do
+      visit edit_admin_consent_statement_path(consent_statement)
+      click_on 'Create consent statement'
+      fill_in 'Title', with: 'Updated consent statement'
+      expect(page).to have_content('This consent statement is no longer editable')
+      expect(consent_statement.reload.title).to eq('First consent statement')
     end
   end
 end
