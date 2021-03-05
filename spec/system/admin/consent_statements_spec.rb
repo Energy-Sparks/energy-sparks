@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "consent_statements", type: :system do
 
-  let!(:admin) { create(:admin) }
+  let(:admin) { create(:admin) }
 
   before do
     sign_in(admin)

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "consent_grants", type: :system do
 
-  let!(:admin) { create(:admin) }
-  let!(:consent_statement) { ConsentStatement.create!( title: "First consent statement", content: "You may use my data..") }
+  let(:admin) { create(:admin) }
+  let(:consent_statement) { ConsentStatement.create!( title: "First consent statement", content: "You may use my data..") }
 
   before do
     sign_in(admin)
@@ -13,10 +13,11 @@ RSpec.describe "consent_grants", type: :system do
 
   context 'when consent grants exist' do
 
-    let!(:user) { create(:user) }
-    let!(:school) { create(:school) }
-    let!(:name) { 'Mr Consent' }
-    let!(:job_title) { 'Chief Granter' }
+    let(:user) { create(:user) }
+    let(:school) { create(:school) }
+    let(:name) { 'Mr Consent' }
+    let(:job_title) { 'Chief Granter' }
+    let(:ip_address) { '123.456.789.000' }
 
     before do
       ConsentGrant.create!(
@@ -24,7 +25,8 @@ RSpec.describe "consent_grants", type: :system do
         school: school,
         consent_statement: consent_statement,
         name: name,
-        job_title: job_title
+        job_title: job_title,
+        ip_address: ip_address
       )
     end
 
@@ -36,6 +38,17 @@ RSpec.describe "consent_grants", type: :system do
       expect(page).to have_content(name)
       expect(page).to have_content(job_title)
       expect(page).to have_content("First consent statement")
+    end
+
+    it 'shows consent details and contents' do
+      click_on 'Consents Granted'
+      click_on 'View'
+      expect(page).to have_content(school.name)
+      expect(page).to have_content(name)
+      expect(page).to have_content(job_title)
+      expect(page).to have_content(ip_address)
+      expect(page).to have_content("First consent statement")
+      expect(page).to have_content("You may use my data..")
     end
   end
 end
