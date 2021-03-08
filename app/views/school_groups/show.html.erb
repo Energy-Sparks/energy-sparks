@@ -5,7 +5,7 @@
 <p>
 <% if @partners.any? %>
   Energy Sparks currently works with <%= @schools.count %> schools from <%= @school_group.name %> in
-  partnership with <%= list_of_partners_as_links(@partners).html_safe %>.
+  partnership with <%= list_of_partners_as_links(@partners) %>.
 <% else %>
   Energy Sparks currently works with <%= @schools.count %> schools from <%= @school_group.name %>.
 <% end %>
