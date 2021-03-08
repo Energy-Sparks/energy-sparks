@@ -209,15 +209,15 @@ describe 'Meter', :meters do
         create(:amr_validated_reading, meter: meter, reading_date: base_date + 7.days, status: 'ORIG')
       end
 
-      describe '#recent_modified_validated_readings' do
+      describe '#modified_validated_readings' do
         it "should find only non-ORIG readings in last 2 years" do
-          expect(meter.recent_modified_validated_readings.count).to eq(5)
+          expect(meter.modified_validated_readings.count).to eq(5)
         end
       end
 
-      describe '#recent_gappy_validated_readings' do
+      describe '#gappy_validated_readings' do
         it "should find gap in ORIG readings" do
-          gaps = meter.recent_gappy_validated_readings(2)
+          gaps = meter.gappy_validated_readings(2)
           expect(gaps.count).to eql(2)
           gap = gaps.first
           expect(gap.first.reading_date).to eql(base_date + 1.days)
