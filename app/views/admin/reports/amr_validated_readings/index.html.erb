@@ -59,7 +59,7 @@
                 <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
               <% end %>
               <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
-              <td class="missing-dates"><%= meter.modified_validated_readings.count %></td>
+              <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
               <td><%= nice_dates(meter.first_validated_reading) %></td>
               <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
             </tr>
