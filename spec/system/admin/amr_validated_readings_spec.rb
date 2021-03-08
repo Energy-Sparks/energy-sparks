@@ -69,18 +69,31 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
 
   context 'when there are gaps in the meter readings' do
 
+    let(:base_date) { Date.today - 1.year }
+
     before do
-      create(:amr_validated_reading, meter: meter, reading_date: meter.first_validated_reading - 1.week)
+      create(:amr_validated_reading, meter: meter, reading_date: base_date, status: 'ORIG')
+      15.times do |idx|
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 1 + idx.days, status: 'NOT_ORIG')
+      end
+      create(:amr_validated_reading, meter: meter, reading_date: base_date + 17, status: 'ORIG')
+      create(:amr_validated_reading, meter: meter, reading_date: base_date + 18, status: 'NOT_ORIG')
     end
 
-    it 'shows count of missing dates' do
+    it 'shows count of modified dates and gaps' do
       click_on('Manage')
       click_on('Reports')
       click_on('AMR Report')
 
-      expect(page).to have_content 'Gaps'
-      within '.missing-dates' do
-        expect(page).to have_content '6'
+      expect(page).to have_content 'Large gaps in last 2 years'
+      expect(page).to have_content 'Modified readings in last 2 years'
+
+      within '.gappy-dates' do
+        expect(page).to have_content "15 day gap (from #{base_date + 1.day} to #{base_date + 15.days})"
+      end
+
+      within '.modified-dates' do
+        expect(page).to have_content '16'
       end
     end
   end
