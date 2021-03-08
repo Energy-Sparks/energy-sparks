@@ -101,10 +101,20 @@ describe SchoolCreator, :schools, type: :service do
   describe 'make_visible!' do
     let(:school){ create :school, visible: false}
 
-    it 'updates the active flag on the school to be true' do
-      service = SchoolCreator.new(school)
-      service.make_visible!
-      expect(school.visible).to eq(true)
+    context 'where the school has not been created via the onboarding process' do
+
+      it 'sends an activation email to staff and admins' do
+        school_admin = create(:school_admin, school: school)
+        staff = create(:staff, school: school)
+        service = SchoolCreator.new(school)
+        service.make_visible!
+        expect(school.visible).to eq(true)
+        email = ActionMailer::Base.deliveries.last
+        expect(email).to_not be nil
+        expect(email.subject).to include('is live on Energy Sparks')
+        expect(email.to).to match [school_admin.email, staff.email]
+      end
+
     end
 
     context 'where the school has been created as part of the onboarding process' do
@@ -115,6 +125,7 @@ describe SchoolCreator, :schools, type: :service do
         expect(school_onboarding).to be_incomplete
         service = SchoolCreator.new(school)
         service.make_visible!
+        expect(school.visible).to eq(true)
         expect(school_onboarding).to be_complete
       end
 
