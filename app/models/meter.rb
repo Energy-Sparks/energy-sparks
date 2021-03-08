@@ -89,12 +89,17 @@ class Meter < ApplicationRecord
     amr_validated_readings.maximum(:reading_date)
   end
 
-  def missing_validated_reading_dates
-    if first_validated_reading && last_validated_reading && (last_validated_reading - first_validated_reading).to_i > amr_validated_readings.count
-      (first_validated_reading..last_validated_reading).to_a - amr_validated_readings.map(&:reading_date)
-    else
-      []
-    end
+  def recent_modified_validated_readings
+    amr_validated_readings.in_last_2_years.modified
+  end
+
+  def recent_gappy_validated_readings(gap_size = 14)
+    # only interested if there are enough non_ORIG readings
+    return [] unless amr_validated_readings.in_last_2_years.modified.count >= gap_size
+    # find chunks where consecutive readings were all non-ORIG
+    gaps = amr_validated_readings.in_last_2_years.by_date.chunk_while { |r1, r2| r1.modified && r2.modified }
+    # return chunks of specified size or bigger
+    gaps.select { |gap| gap.count >= gap_size }
   end
 
   def display_name

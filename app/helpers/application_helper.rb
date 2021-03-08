@@ -24,6 +24,12 @@ module ApplicationHelper
     nice_dates(datetime)
   end
 
+  def date_range_from_readings(readings_chunks)
+    readings_chunks.map do |chunk|
+      "#{chunk.size} day gap (from #{chunk.first.reading_date} to #{chunk.last.reading_date})"
+    end.join('<br/>').html_safe
+  end
+
   def active(bool = true)
     bool ? '' : 'bg-warning'
   end
