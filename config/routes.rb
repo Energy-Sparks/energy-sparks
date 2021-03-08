@@ -264,6 +264,7 @@ Rails.application.routes.draw do
       scope module: :schools do
         resources :meter_attributes
         resources :school_attributes
+        resource :partners, only: [:show, :update]
       end
     end
 

@@ -13,7 +13,7 @@ module Admin
 
       def update
         position_attributes = params.permit(school_group_partners: [:position, :partner_id]).fetch(:school_group_partners) { {} }
-        @school_group.update_school_group_positions!(position_attributes)
+        @school_group.update_school_partner_positions!(position_attributes)
         redirect_to admin_school_groups_path, notice: 'Partners updated'
       end
     end

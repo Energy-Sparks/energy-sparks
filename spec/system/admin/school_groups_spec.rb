@@ -70,7 +70,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
     it 'has a partner link on the school group page' do
       click_on 'Manage Partners'
       expect(page).to have_content("BANES")
-      expect(page).to have_content(partner_1.name)
+      expect(page).to have_content(partner_1.display_name)
     end
 
     it 'assigns partners to school groups via text box position' do

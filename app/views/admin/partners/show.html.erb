@@ -19,6 +19,17 @@
         <% end %>
       </ul>
     <% end %>
+
+    <% if @partner.schools.any? %>
+      <h3>Schools</h3>
+      <p>This partner is directly linked to <%= pluralize(@partner.schools.count, 'school') %></p>
+      <ul>
+        <% @partner.schools.each do |school| %>
+          <li><%= link_to school.name, school_path(school) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
  </div>
 </div>
 

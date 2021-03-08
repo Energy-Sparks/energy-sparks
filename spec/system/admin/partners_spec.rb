@@ -64,9 +64,11 @@ describe 'Partners', type: :system do
     context "a partner associated with a school group" do
       let(:school_group)          { create(:school_group, name: "Local School Group") }
       let(:partner)               { create(:partner) }
+      let(:school)                { create(:school, name: "Partnered School") }
 
       before(:each) do
         partner.school_groups << school_group
+        partner.schools << school
         visit admin_partner_path(partner)
       end
 
@@ -74,6 +76,9 @@ describe 'Partners', type: :system do
         expect(page).to have_content("Local School Group")
       end
 
+      it "lists the schools on the partner page" do
+        expect(page).to have_content("Partnered School")
+      end
     end
 
   end

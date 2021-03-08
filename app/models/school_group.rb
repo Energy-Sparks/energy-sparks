@@ -68,7 +68,7 @@ class SchoolGroup < ApplicationRecord
     name_changed? || super
   end
 
-  def update_school_group_positions!(position_attributes)
+  def update_school_partner_positions!(position_attributes)
     transaction do
       school_group_partners.destroy_all
       update!(school_group_partners_attributes: position_attributes)

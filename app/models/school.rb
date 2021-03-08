@@ -344,6 +344,13 @@ class School < ApplicationRecord
     update!(process_data: true)
   end
 
+  def update_school_partner_positions!(position_attributes)
+    transaction do
+      school_partners.destroy_all
+      update!(school_partners_attributes: position_attributes)
+    end
+  end
+
   private
 
   def add_joining_observation
