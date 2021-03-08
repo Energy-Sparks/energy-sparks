@@ -18,4 +18,17 @@ describe Partner do
     end
   end
 
+  context "with schools" do
+    let(:school)          { create(:school, name: "Nottingham") }
+    let(:other_school)    { create(:school, name: "Bath") }
+
+    it "removes association" do
+      school.partners << partner
+      other_school.partners << partner
+      expect(SchoolPartner.count).to eql(2)
+      partner.destroy
+      expect(SchoolPartner.count).to eql(0)
+      expect(School.count).to_not eql(0)
+    end
+  end
 end

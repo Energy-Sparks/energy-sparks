@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_164242) do
+ActiveRecord::Schema.define(version: 2021_03_08_142748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -975,6 +975,16 @@ ActiveRecord::Schema.define(version: 2021_03_02_164242) do
     t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
     t.index ["template_calendar_id"], name: "index_school_onboardings_on_template_calendar_id"
     t.index ["uuid"], name: "index_school_onboardings_on_uuid", unique: true
+  end
+
+  create_table "school_partners", force: :cascade do |t|
+    t.bigint "school_id"
+    t.bigint "partner_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["partner_id"], name: "index_school_partners_on_partner_id"
+    t.index ["school_id"], name: "index_school_partners_on_school_id"
   end
 
   create_table "school_times", force: :cascade do |t|

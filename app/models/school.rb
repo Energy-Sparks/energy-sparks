@@ -117,6 +117,10 @@ class School < ApplicationRecord
 
   has_and_belongs_to_many :cluster_users, class_name: "User", join_table: :cluster_schools_users
 
+  has_many :school_partners, -> { order(position: :asc) }
+  has_many :partners, through: :school_partners
+  accepts_nested_attributes_for :school_partners, reject_if: proc {|attributes| attributes['position'].blank?}
+
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
   scope :by_name,            -> { order(name: :asc) }
