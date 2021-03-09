@@ -142,6 +142,8 @@ Rails.application.routes.draw do
       resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
+      resources :consent_documents
+
       resource :usage, controller: :usage, only: :show
       resources :downloads, only: [:index]
       resources :batch_runs, only: [:index, :create, :show]
