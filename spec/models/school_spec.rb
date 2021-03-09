@@ -257,6 +257,16 @@ describe School do
       expect(subject.partners.first).to eql(other_partner)
       expect(subject.partners).to match_array([other_partner, partner])
     end
+
+    it "finds all partners" do
+      expect(subject.all_partners).to match([])
+      subject.partners << partner
+      expect(subject.all_partners).to match([partner])
+      subject.school_group.partners << other_partner
+      expect(subject.all_partners).to match([partner, other_partner])
+      subject.partners.destroy_all
+      expect(subject.all_partners).to match([other_partner])
+    end
   end
 
 end

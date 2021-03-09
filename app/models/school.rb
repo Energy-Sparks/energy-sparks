@@ -351,6 +351,12 @@ class School < ApplicationRecord
     end
   end
 
+  def all_partners
+    all_partners = partners
+    all_partners += school_group.partners if school_group.present?
+    all_partners
+  end
+
   private
 
   def add_joining_observation

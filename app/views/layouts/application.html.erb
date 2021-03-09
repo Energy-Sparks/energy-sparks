@@ -15,6 +15,9 @@
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>
     </div>
+    <% if show_partner_footer?(@school) %>
+      <%= render 'shared/partners' %>
+    <% end %>
     <%= render 'shared/footer' %>
   </body>
 </html>
