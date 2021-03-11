@@ -92,6 +92,13 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
         expect(page).to have_content "15 days (#{(base_date + 1.day).to_s(:es_short)} to #{(base_date + 15.days).to_s(:es_short)})"
       end
 
+      expect(page).to have_content 'Large gaps in last 2 years'
+      expect(page).to have_content 'Modified readings in last 2 years'
+
+      within '.gappy-dates' do
+        expect(page).to have_content "15 days (#{(base_date + 1.day).to_s(:es_short)} to #{(base_date + 15.days).to_s(:es_short)})"
+      end
+
       within '.modified-dates' do
         expect(page).to have_content '16'
       end
