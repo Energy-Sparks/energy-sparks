@@ -548,6 +548,29 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
+  create_table "consent_grants", force: :cascade do |t|
+    t.bigint "consent_statement_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "school_id", null: false
+    t.text "name"
+    t.text "job_title"
+    t.text "school_name"
+    t.text "ip_address"
+    t.text "guid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consent_statement_id"], name: "index_consent_grants_on_consent_statement_id"
+    t.index ["school_id"], name: "index_consent_grants_on_school_id"
+    t.index ["user_id"], name: "index_consent_grants_on_user_id"
+  end
+
+  create_table "consent_statements", force: :cascade do |t|
+    t.text "title", null: false
+    t.boolean "current", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "contacts", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.text "name"
@@ -1280,6 +1303,9 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
+  add_foreign_key "consent_grants", "consent_statements"
+  add_foreign_key "consent_grants", "schools"
+  add_foreign_key "consent_grants", "users"
   add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
