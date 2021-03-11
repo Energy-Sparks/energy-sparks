@@ -49,6 +49,37 @@ RSpec.describe "school", type: :system do
     expect(page).to have_link("Compare schools")
   end
 
+  describe 'with partners' do
+
+    let(:partner)             { create(:partner, name: "School Sponsor", url: "http://example.org") }
+    let(:other_partner)       { create(:partner, name: "Big Tech Co", url: "https://example.com") }
+
+    before(:each) do
+      school.update!( {school_group: school_group_invisible })
+    end
+
+    it 'displays school group partners' do
+      school.school_group.partners << partner
+      visit school_path(school)
+      expect(page).to have_link("School Sponsor", href: "http://example.org")
+    end
+
+    it 'displays school partners' do
+      school.partners << partner
+      visit school_path(school)
+      expect(page).to have_link("School Sponsor", href: "http://example.org")
+    end
+
+    it 'displays all partners' do
+      school.school_group.partners << partner
+      school.partners << other_partner
+      visit school_path(school)
+      expect(page).to have_link("School Sponsor", href: "http://example.org")
+      expect(page).to have_link("Big Tech Co", href: "https://example.com")
+    end
+
+  end
+
   describe 'when logged in' do
     before(:each) do
       sign_in(admin)

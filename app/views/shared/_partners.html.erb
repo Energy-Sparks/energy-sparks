@@ -1,0 +1,18 @@
+<div class="container-fluid d-flex justify-content-center pb-2 pt-2">
+  <div class="row">
+    <div class="col-12">
+      <% @school.all_partners.each do |partner| %>
+        <a href="<%= partner.url || '#' %>">
+          <%= image_tag partner.image.variant(resize_to_limit: [100, 100]) %>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="container-fluid d-flex justify-content-center pb-2">
+  <div class="row">
+    <div class="col-12">
+      <span><small>Energy Sparks supports <%= @school.name %> in partnership with <%= list_of_partners_as_links(@school.all_partners) %></small></span>
+    </div>
+  </div>
+</div>
