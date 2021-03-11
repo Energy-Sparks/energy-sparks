@@ -9,6 +9,7 @@
     <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
     <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
+    <%= link_to 'Manage partners', admin_school_partners_path(school), class: 'dropdown-item' if can? :manage, SchoolPartner %>
     <%= link_to 'Alert reports', school_alert_reports_path(school), class: 'dropdown-item' if can? :index, Alert %>
     <%= link_to 'Content reports', school_content_reports_path(school), class: 'dropdown-item' if can? :index, ContentGenerationRun %>
     <%= link_to 'Email and SMS reports', school_subscription_generation_runs_path(school), class: 'dropdown-item' if can? :index, SubscriptionGenerationRun %>

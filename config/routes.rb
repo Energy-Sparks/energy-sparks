@@ -178,6 +178,7 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
+        resource :partners, only: [:show, :update]
       end
     end
     resources :scoreboards
@@ -265,6 +266,7 @@ Rails.application.routes.draw do
       scope module: :schools do
         resources :meter_attributes
         resources :school_attributes
+        resource :partners, only: [:show, :update]
       end
     end
 
