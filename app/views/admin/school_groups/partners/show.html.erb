@@ -1,6 +1,6 @@
 <h2><%= @school_group.name %> - Partners</h2>
 
-<p><%= link_to 'Partners', admin_partners_path, class: ''%> associated with this school group.</p>
+<p><%= link_to 'Partners', admin_partners_path %> associated with this school group.</p>
 
 <%= form_tag admin_school_group_partners_path(@school_group), method: :put do %>
   <%= submit_tag 'Update associated partners', class: 'btn btn-primary mb-3'%>
