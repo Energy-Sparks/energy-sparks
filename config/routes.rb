@@ -143,6 +143,7 @@ Rails.application.routes.draw do
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resources :consent_documents
+      resources :consent_grants, only: [:index, :show]
 
       resource :usage, controller: :usage, only: :show
       resources :downloads, only: [:index]
