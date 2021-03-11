@@ -92,7 +92,7 @@ class User < ApplicationRecord
   end
 
   def display_name
-    name || email
+    name.present? ? name : email
   end
 
   def staff_role_as_symbol
