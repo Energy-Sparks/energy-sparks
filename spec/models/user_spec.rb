@@ -3,6 +3,18 @@ require "cancan/matchers"
 
 describe User do
 
+  it 'generates display name' do
+    user = create(:user, name:"Name")
+    expect(user.display_name).to eql user.name
+
+    user = create(:user, name: nil)
+    expect(user.display_name).to eql user.email
+
+    user = create(:user, name: "")
+    expect(user.display_name).to eql user.email
+
+  end
+
   describe 'pupil validation' do
     let(:school){ create(:school) }
     let!(:existing_pupil){ create(:pupil, pupil_password: 'testtest', school: school) }
