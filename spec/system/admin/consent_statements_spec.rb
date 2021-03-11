@@ -44,10 +44,11 @@ RSpec.describe 'consent_statements', type: :system do
       )
     end
 
-    it 'does not show edit button' do
+    it 'does not show edit or delete button' do
       click_on 'Consent Statements'
       expect(page).to have_content('Consent Statements')
       expect(page).not_to have_link('Edit')
+      expect(page).not_to have_link('Delete')
       expect(page).to have_link('View')
     end
 
