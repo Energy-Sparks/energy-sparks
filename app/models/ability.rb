@@ -62,6 +62,7 @@ class Ability
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
+      can [:index, :read], ConsentGrant, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
       can :activate, Meter, { active: false }.merge(related_school_scope)
       can :deactivate, Meter, { active: true }.merge(related_school_scope)
