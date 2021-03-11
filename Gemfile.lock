@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: f2d9a118dd030780b060a81900c6bd5e35f25461
+  revision: 652742d7f63078a7e3b879cb148ed325edd295f7
   branch: max-summer-hot-water-kwh-model-optimisation
   specs:
     energy-sparks_analytics (1.2.1)
