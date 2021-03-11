@@ -39,7 +39,7 @@ module Admin
     def destroy
       if @consent_statement.editable?
         @consent_statement.destroy
-        redirect_to admin_consent_statements_path, notice: 'Consent statement was successfully destroyed.'
+        redirect_to admin_consent_statements_path, notice: 'Consent statement was successfully deleted.'
       else
         redirect_to admin_consent_statements_path, notice: 'This consent statement is no longer deletable'
       end

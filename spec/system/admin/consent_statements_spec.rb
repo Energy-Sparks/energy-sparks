@@ -23,6 +23,9 @@ RSpec.describe 'consent_statements', type: :system do
     click_on 'View'
     expect(page).to have_content('First consent statement')
     expect(page).to have_content('I will free my data..')
+    click_on 'All consent statements'
+    click_on 'Delete'
+    expect(page).to have_content('Consent statement was successfully deleted')
   end
 
   context 'consent grants exist for consent statement' do
