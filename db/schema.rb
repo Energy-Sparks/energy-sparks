@@ -548,13 +548,13 @@ ActiveRecord::Schema.define(version: 2021_03_09_132149) do
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
-
   create_table "consent_documents", force: :cascade do |t|
     t.bigint "school_id"
     t.text "title", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_consent_documents_on_school_id"
+  end
 
   create_table "consent_grants", force: :cascade do |t|
     t.bigint "consent_statement_id", null: false
