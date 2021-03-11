@@ -1,15 +1,15 @@
-<% content_for :page_title, 'AMR report' %>
+<% content_for :page_title, 'Meter data report' %>
 
-<h1>AMR Data report for active meters</h1>
+<h1>Data report for active meters</h1>
 <p><%= link_to 'Reports index', admin_reports_path, class: 'btn btn-success' %></p>
 <h2>Downloads</h2>
 <p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
 <p><%= link_to "Download meter collections", admin_schools_meter_collections_path %>
-<p>You can download all of the validated AMR data in CSV format. Note: this includes substituted data where readings are missing.</p>
-<p><%= link_to "All Validated AMR data", admin_reports_amr_validated_readings_path(format: :csv) %></p>
+<p>You can download all of the validated meter data in CSV format. Note: this includes substituted data where readings are missing.</p>
+<p><%= link_to "All validated meter data", admin_reports_amr_validated_readings_path(format: :csv) %></p>
 
-<p>You can download all of the raw, unvalidated AMR data in CSV format. This contains the data just as it appeared in the original import file.</p>
-<p><%= link_to "Download raw AMR data", admin_reports_amr_data_feed_readings_path(format: :csv) %></p>
+<p>You can download all of the raw, unvalidated meter data in CSV format. This contains the data just as it appeared in the original import file.</p>
+<p><%= link_to "Download raw meter data", admin_reports_amr_data_feed_readings_path(format: :csv) %></p>
 
 <% unless @meter_scope.empty? %>
   <h2>Meters</h2>
