@@ -90,7 +90,7 @@ RSpec.describe 'consent_grants', type: :system do
 
       it 'shows all consents granted' do
         visit school_consent_grants_path(school)
-        expect(page).to have_content('Consents Granted')
+        expect(page).to have_content("Consents Granted for #{school.name}")
         expect(page).to have_content(name)
         expect(page).not_to have_content(other_name)
       end
@@ -98,6 +98,7 @@ RSpec.describe 'consent_grants', type: :system do
       it 'shows consent details and contents' do
         visit school_consent_grants_path(school)
         click_on 'View'
+        expect(page).to have_content("Consent Granted for #{school.name}")
         expect(page).to have_content(school.name)
         expect(page).to have_content(name)
       end
