@@ -16,13 +16,13 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
     before(:each) do
       click_on 'Admin'
       click_on('Reports')
-      click_on('AMR Report')
+      click_on('Meter Report')
       expect(page.has_content?(school.name)).to be true
       expect(page.has_content?(meter.mpan_mprn)).to be true
     end
 
-    it 'allows a download of all Validated AMR data' do
-      click_on 'All Validated AMR data'
+    it 'allows a download of all Validated meter data' do
+      click_on 'All validated meter data'
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
@@ -40,7 +40,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
       it 'allows a download of all' do
         meter_with_raw_data = create(:electricity_meter_with_reading, name: 'Electricity meter 2', school: school)
 
-        click_on 'Download raw AMR data'
+        click_on 'Download raw meter data'
 
         # Make sure the page is a CSV
         header = page.response_headers['Content-Disposition']
@@ -61,7 +61,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
     it 'has a report which can be viewed', js: true do
       click_on('Manage')
       click_on('Reports')
-      click_on('AMR Report')
+      click_on('Meter Report')
       click_on(meter.mpan_mprn.to_s)
       expect(page).to have_content 'January'
     end
@@ -83,7 +83,7 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
     it 'shows count of modified dates and gaps' do
       click_on('Manage')
       click_on('Reports')
-      click_on('AMR Report')
+      click_on('Meter Report')
 
       expect(page).to have_content 'Large gaps in last 2 years'
       expect(page).to have_content 'Modified readings in last 2 years'
@@ -92,6 +92,12 @@ RSpec.describe "amr validated readings", :amr_validated_readings, type: :system 
         expect(page).to have_content "15 days (#{(base_date + 1.day).to_s(:es_short)} to #{(base_date + 15.days).to_s(:es_short)})"
       end
 
+      expect(page).to have_content 'Large gaps in last 2 years'
+      expect(page).to have_content 'Modified readings in last 2 years'
+
+      within '.gappy-dates' do
+        expect(page).to have_content "15 days (#{(base_date + 1.day).to_s(:es_short)} to #{(base_date + 15.days).to_s(:es_short)})"
+      end
       within '.modified-dates' do
         expect(page).to have_content '16'
       end

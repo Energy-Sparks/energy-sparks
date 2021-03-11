@@ -142,6 +142,8 @@ Rails.application.routes.draw do
       resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
+      resources :consent_documents
+
       resource :usage, controller: :usage, only: :show
       resources :downloads, only: [:index]
       resources :batch_runs, only: [:index, :create, :show]
@@ -167,6 +169,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :case_studies
+    resources :consent_statements
+    resources :consent_grants
     resources :partners
     resources :team_members
     resources :newsletters
@@ -176,6 +180,7 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
+        resource :partners, only: [:show, :update]
       end
     end
     resources :scoreboards
@@ -263,6 +268,7 @@ Rails.application.routes.draw do
       scope module: :schools do
         resources :meter_attributes
         resources :school_attributes
+        resource :partners, only: [:show, :update]
       end
     end
 

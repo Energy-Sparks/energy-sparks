@@ -1,0 +1,44 @@
+<% content_for :page_title do %><%= @partner.name.present? ? @partner.name : "Unnamed partner" %><% end %>
+
+<div class="row">
+  <div class="col">
+    <h1><%= @partner.name.present? ? @partner.name : "Unnamed partner" %></h1>
+
+    <% if @partner.image.attached? %>
+      <%= image_tag @partner.image.variant(resize_to_limit: [100, 100]) %>
+    <% end %>
+
+    <p>Order on the <%= link_to 'Team page', team_path %> <strong><%= @partner.position %></strong></p>
+
+    <% if @partner.school_groups.any? %>
+      <h3>School groups</h3>
+      <p>This partner is linked to <%= pluralize(@partner.school_groups.count, 'group') %></p>
+      <ul>
+        <% @partner.school_groups.each do |group| %>
+          <li><%= link_to group.name, admin_school_groups_path(group) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <% if @partner.schools.any? %>
+      <h3>Schools</h3>
+      <p>This partner is directly linked to <%= pluralize(@partner.schools.count, 'school') %></p>
+      <ul>
+        <% @partner.schools.each do |school| %>
+          <li><%= link_to school.name, school_path(school) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+ </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <hr>
+    <div class="btn-group">
+      <%= link_to 'Edit', edit_admin_partner_path(@partner), class: 'btn' %>
+      <%= link_to 'Delete', admin_partner_path(@partner), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+    </div>
+  </div>
+</div>

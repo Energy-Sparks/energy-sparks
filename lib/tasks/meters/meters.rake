@@ -213,9 +213,4 @@ namespace :meters do
 
   end
 
-
-
-
-
-
 end

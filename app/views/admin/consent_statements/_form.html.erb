@@ -1,0 +1,13 @@
+<%= simple_form_for([:admin, consent_statement]) do |f| %>
+
+  <%= render 'shared/errors', subject: consent_statement, subject_name: 'consent statement' %>
+
+  <%= f.input :title %>
+  <%= f.label 'Content', for: :content %>
+  <%= f.rich_text_area :content %>
+
+  <%= f.button :submit, 'Create consent statement' %>
+
+<% end %>
+
+<hr/>

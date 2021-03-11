@@ -18,7 +18,7 @@ describe "downloads", type: :system do
     end
 
     it 'allows a full download of data' do
-      click_on 'Download AMR data for all meters combined'
+      click_on 'Download meter data for all meters combined'
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
@@ -63,7 +63,7 @@ describe "downloads", type: :system do
     it 'allows a download of all filtered by school' do
       filtered_meter_with_raw_data = create(:electricity_meter_with_reading, name: 'Electricity meter Filter', school: filtered_school)
 
-      click_on 'Unvalidated AMR data as CSV'
+      click_on 'Unvalidated meter data as CSV'
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
