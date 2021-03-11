@@ -32,12 +32,12 @@ RSpec.describe 'consent_grants', type: :system do
 
     it 'shows all consents granted' do
       click_on 'Consents Granted'
-      puts ConsentGrant.last.inspect
       expect(page).to have_content('Consents Granted')
       expect(page).to have_content(school.name)
       expect(page).to have_content(name)
       expect(page).to have_content(job_title)
       expect(page).to have_content('First consent statement')
+      expect(page).to have_content(ConsentGrant.last.guid)
     end
 
     it 'shows consent details and contents' do

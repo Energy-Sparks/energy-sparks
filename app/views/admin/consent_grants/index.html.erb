@@ -9,6 +9,7 @@
       <th>Name</th>
       <th>Job Title</th>
       <th>Consent</th>
+      <th>Reference</th>
       <th>Date</th>
       <th>Actions</th>
     </tr>
@@ -21,6 +22,7 @@
         <td><%= consent_grant.name %></td>
         <td><%= consent_grant.job_title %></td>
         <td><%= consent_grant.consent_statement.title %></td>
+        <td><%= consent_grant.guid %></td>
         <td><%= consent_grant.created_at %></td>
         <td>
           <div class="btn-group">

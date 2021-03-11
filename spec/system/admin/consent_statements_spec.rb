@@ -55,5 +55,10 @@ RSpec.describe 'consent_statements', type: :system do
       expect(page).to have_content('This consent statement is no longer editable')
       expect(consent_statement.reload.title).to eq('First consent statement')
     end
+
+    it 'does not allow delete' do
+      page.driver.delete(admin_consent_statement_path(consent_statement))
+      expect(consent_statement.reload).to eq(consent_statement)
+    end
   end
 end
