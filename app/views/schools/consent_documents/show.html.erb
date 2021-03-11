@@ -1,0 +1,38 @@
+<% content_for :page_title do %>
+  View Bill <%= @consent_document.title %>
+<% end %>
+
+<h1>View bill</h1>
+
+<p>
+The following bill for <%= @school.name %> was uploaded on <%= nice_date_times(@consent_document.created_at) %>
+</p>
+
+<table class="table">
+ <tbody>
+   <tr>
+     <td>Title</td>
+     <td><%= @consent_document.title %>
+   </tr>
+   <tr>
+     <td>Description</td>
+     <td><%= @consent_document.description %></td>
+   </tr>
+   <tr>
+     <td>Uploaded file</td>
+     <td>
+       <%= link_to url_for(@consent_document.file), class: 'btn btn-primary' do %>
+         Download <i class="fas fa-file-download"></i>
+       <% end %>
+     </td>
+   </tr>
+ </tbody>
+</table>
+
+<div class="other-actions">
+  <%= link_to "Edit", edit_school_consent_document_path(@school, @consent_document), class: 'btn' %>
+  <% if can?(:delete, @consent_document) %>
+    <%= link_to "Delete", school_consent_document_path(@school, @consent_document), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'  %>
+  <% end %>
+  <%= link_to 'View bills', school_consent_documents_path(@school), class: 'btn' %>
+</div>

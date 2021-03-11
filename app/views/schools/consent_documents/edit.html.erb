@@ -1,0 +1,15 @@
+<% content_for :page_title do %>
+  <%= @school.name %> Edit Bill
+<% end %>
+
+<h1>Edit a bill</h1>
+
+<p>
+  Revise the details for a previously uploaded bill.
+</p>
+
+<%= render 'form', label: "Update", school: @school, consent_document: @consent_document %>
+
+<div class="other-actions">
+  <%= link_to 'Cancel', school_consent_documents_path, class: 'btn' %>
+</div>

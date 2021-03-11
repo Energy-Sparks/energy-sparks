@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_142748) do
+ActiveRecord::Schema.define(version: 2021_03_09_132149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -546,6 +546,14 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
     t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
     t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
+  end
+
+  create_table "consent_documents", force: :cascade do |t|
+    t.bigint "school_id"
+    t.text "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_consent_documents_on_school_id"
   end
 
   create_table "consent_grants", force: :cascade do |t|
