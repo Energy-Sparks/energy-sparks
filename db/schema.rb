@@ -50,7 +50,14 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "activities", force: :cascade do |t|
@@ -546,6 +553,29 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
     t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
     t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.index ["school_id"], name: "index_configurations_on_school_id"
+  end
+
+  create_table "consent_grants", force: :cascade do |t|
+    t.bigint "consent_statement_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "school_id", null: false
+    t.text "name"
+    t.text "job_title"
+    t.text "school_name"
+    t.text "ip_address"
+    t.text "guid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consent_statement_id"], name: "index_consent_grants_on_consent_statement_id"
+    t.index ["school_id"], name: "index_consent_grants_on_school_id"
+    t.index ["user_id"], name: "index_consent_grants_on_user_id"
+  end
+
+  create_table "consent_statements", force: :cascade do |t|
+    t.text "title", null: false
+    t.boolean "current", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -1225,6 +1255,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
 
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
   add_foreign_key "activities", "activity_types", on_delete: :restrict
   add_foreign_key "activities", "schools", on_delete: :cascade
@@ -1280,6 +1311,9 @@ ActiveRecord::Schema.define(version: 2021_03_08_142748) do
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
+  add_foreign_key "consent_grants", "consent_statements"
+  add_foreign_key "consent_grants", "schools"
+  add_foreign_key "consent_grants", "users"
   add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade
