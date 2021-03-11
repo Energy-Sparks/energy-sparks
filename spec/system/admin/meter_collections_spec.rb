@@ -18,7 +18,7 @@ describe "meter collections", type: :system do
     let!(:meter)        { create(:electricity_meter_with_reading, name: 'Electricity meter', school: school) }
 
     it 'allows a download of unvalidated meter data' do
-      click_on 'Unvalidated AMR data'
+      click_on 'Unvalidated meter data'
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
@@ -30,7 +30,7 @@ describe "meter collections", type: :system do
     let!(:meter)        { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
     it 'allows a download of validated meter data' do
-      click_on 'Validated AMR data'
+      click_on 'Validated meter data'
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
