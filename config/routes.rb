@@ -169,6 +169,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :case_studies
+    resources :consent_statements
+    resources :consent_grants
     resources :partners
     resources :team_members
     resources :newsletters

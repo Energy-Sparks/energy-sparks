@@ -77,6 +77,7 @@ class School < ApplicationRecord
   has_many :observations,         inverse_of: :school
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
+  has_many :consent_grants,       inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types

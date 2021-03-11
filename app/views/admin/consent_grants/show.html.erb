@@ -1,0 +1,23 @@
+<h1>Consent Granted</h1>
+
+<p><%= link_to 'All consents granted', admin_consent_grants_path %></p>
+
+<h2>Consent Details</h2>
+
+<ul>
+  <li>School: <%= link_to @consent_grant.school.name, school_path(@consent_grant.school) %></li>
+  <li>Name: <%= @consent_grant.name %></li>
+  <li>Job title: <%= @consent_grant.job_title %></li>
+  <li>IP address: <%= @consent_grant.ip_address %></li>
+  <li>Reference: <%= @consent_grant.guid %></li>
+</ul>
+
+<h2>Consent Document</h2>
+
+<h3>
+  <%= @consent_grant.consent_statement.title %>
+</h3>
+
+<p>
+  <%= @consent_grant.consent_statement.content %>
+</p>

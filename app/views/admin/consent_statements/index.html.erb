@@ -1,0 +1,35 @@
+<h1>Consent Statements</h1>
+
+<% if @consent_statements %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @consent_statements.each do |consent_statement| %>
+      <tr>
+        <td><%= consent_statement.title %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'View', admin_consent_statement_path(consent_statement), class: 'btn' %>
+            <% if consent_statement.editable? %>
+                <%= link_to 'Edit', edit_admin_consent_statement_path(consent_statement), class: 'btn' %>
+                <%= link_to 'Delete', admin_consent_statement_path(consent_statement), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
+              </div>
+            <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+  <p>There are no consent statements</p>
+<% end %>
+
+<p><%= link_to 'New consent statement', new_admin_consent_statement_path, class: 'btn'%></p>
