@@ -165,31 +165,68 @@ describe 'Meter', :meters do
     end
   end
 
-  describe '#last_validated_reading' do
-    it "should find latest reading" do
-      reading = create(:amr_validated_reading, reading_date: Date.parse('2018-12-01'))
-      meter = reading.meter
+  context 'with amr validated readings' do
 
-      expect(meter.last_validated_reading).to eql(reading.reading_date)
+    let(:meter) { create(:electricity_meter) }
 
-      today = create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-03'))
-      create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-02'))
+    context 'with dates' do
 
-      expect(meter.last_validated_reading).to eql(today.reading_date)
+      let(:base_date) { Date.today - 1.years }
+
+      before do
+        create(:amr_validated_reading, meter: meter, reading_date: base_date)
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 2.days)
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 4.days)
+      end
+
+      describe '#last_validated_reading' do
+        it "should find latest reading" do
+          expect(meter.last_validated_reading).to eql(base_date + 4.days)
+        end
+      end
+
+      describe '#first_validated_reading' do
+        it "should find first reading" do
+          expect(meter.first_validated_reading).to eql(base_date)
+        end
+      end
     end
-  end
 
-  describe '#first_validated_reading' do
-    it "should find first reading" do
-      reading = create(:amr_validated_reading, reading_date: Date.parse('2018-12-02'))
-      meter = reading.meter
+    context 'with statuses' do
 
-      expect(meter.first_validated_reading).to eql(reading.reading_date)
+      let(:base_date) { Date.today - 2.years }
 
-      today = create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-03'))
-      old_one = create(:amr_validated_reading, meter: meter, reading_date: Date.parse('2018-12-01'))
+      before do
+        create(:amr_validated_reading, meter: meter, reading_date: base_date - 2.day, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date - 1.day, status: 'ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date, status: 'ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 1.day, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 2.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 3.days, status: 'ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 4.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 5.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 6.days, status: 'NOT_ORIG')
+        create(:amr_validated_reading, meter: meter, reading_date: base_date + 7.days, status: 'ORIG')
+      end
 
-      expect(meter.first_validated_reading).to eql(old_one.reading_date)
+      describe '#modified_validated_readings' do
+        it "should find only non-ORIG readings in last 2 years" do
+          expect(meter.modified_validated_readings.count).to eq(5)
+        end
+      end
+
+      describe '#gappy_validated_readings' do
+        it "should find gap in ORIG readings" do
+          gaps = meter.gappy_validated_readings(2)
+          expect(gaps.count).to eql(2)
+          gap = gaps.first
+          expect(gap.first.reading_date).to eql(base_date + 1.days)
+          expect(gap.last.reading_date).to eql(base_date + 2.days)
+          gap = gaps.last
+          expect(gap.first.reading_date).to eql(base_date + 4.days)
+          expect(gap.last.reading_date).to eql(base_date + 6.days)
+        end
+      end
     end
   end
 end

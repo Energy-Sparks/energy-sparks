@@ -239,6 +239,34 @@ describe School do
       expect(school.latitude).to_not be nil
       expect(school.longitude).to_not be nil
     end
-
   end
+
+  context 'with partners' do
+    let(:partner)       { create(:partner) }
+    let(:other_partner) { create(:partner) }
+
+    it "can add a partner" do
+      expect(SchoolPartner.count).to eql(0)
+      subject.partners << partner
+      expect(SchoolPartner.count).to eql(1)
+    end
+
+    it "orders partners by position" do
+      SchoolPartner.create(school: subject, partner: partner, position: 1)
+      SchoolPartner.create(school: subject, partner: other_partner, position: 0)
+      expect(subject.partners.first).to eql(other_partner)
+      expect(subject.partners).to match_array([other_partner, partner])
+    end
+
+    it "finds all partners" do
+      expect(subject.all_partners).to match([])
+      subject.partners << partner
+      expect(subject.all_partners).to match([partner])
+      subject.school_group.partners << other_partner
+      expect(subject.all_partners).to match([partner, other_partner])
+      subject.partners.destroy_all
+      expect(subject.all_partners).to match([other_partner])
+    end
+  end
+
 end

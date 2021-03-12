@@ -38,6 +38,10 @@ class SchoolGroup < ApplicationRecord
   has_many :calendars, through: :schools
   has_many :users
 
+  has_many :school_group_partners, -> { order(position: :asc) }
+  has_many :partners, through: :school_group_partners
+  accepts_nested_attributes_for :school_group_partners, reject_if: proc {|attributes| attributes['position'].blank?}
+
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
@@ -62,5 +66,12 @@ class SchoolGroup < ApplicationRecord
 
   def should_generate_new_friendly_id?
     name_changed? || super
+  end
+
+  def update_school_partner_positions!(position_attributes)
+    transaction do
+      school_group_partners.destroy_all
+      update!(school_group_partners_attributes: position_attributes)
+    end
   end
 end

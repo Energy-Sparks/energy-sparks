@@ -14,14 +14,23 @@ module ApplicationHelper
   end
 
   def nice_dates(date)
-    return "" if date.nil?
-    "#{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')} "
+    date ? date.to_s(:es_full) : ""
+  end
+
+  def short_dates(date)
+    date ? date.to_s(:es_short) : ""
   end
 
   def nice_dates_from_timestamp(timestamp)
     return "" if timestamp.nil?
     datetime = DateTime.strptime(timestamp.to_s, '%s')
     nice_dates(datetime)
+  end
+
+  def date_range_from_reading_gaps(readings_chunks)
+    readings_chunks.map do |chunk|
+      "#{chunk.size} days (#{short_dates(chunk.first.reading_date)} to #{short_dates(chunk.last.reading_date)})"
+    end.join('<br/>').html_safe
   end
 
   def active(bool = true)
@@ -56,6 +65,12 @@ module ApplicationHelper
       "table-warning"
     else
       "table-success"
+    end
+  end
+
+  def missing_dates(dates)
+    if dates.count > 0
+      dates.count
     end
   end
 

@@ -1,0 +1,35 @@
+<h1>Consents Granted for <%= @school.name %></h1>
+
+<% if @consent_grants %>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Job Title</th>
+      <th>Consent</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @consent_grants.each do |consent_grant| %>
+      <tr>
+        <td><%= nice_dates(consent_grant.created_at) %></td>
+        <td><%= consent_grant.name %></td>
+        <td><%= consent_grant.job_title %></td>
+        <td><%= consent_grant.consent_statement.title %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'View', school_consent_grant_path(consent_grant.school, consent_grant), class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <p>There are no consent grants</p>
+<% end %>

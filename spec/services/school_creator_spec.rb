@@ -82,6 +82,16 @@ describe SchoolCreator, :schools, type: :service do
       expect(contact.name).to eq(onboarding_user.name)
     end
 
+    it 'defaults contact name when not set on administrator user' do
+      onboarding_user.update!( {name: ""} )
+      service = SchoolCreator.new(school)
+      service.onboard_school!(school_onboarding)
+      contact = school.contacts.first
+      expect(contact.email_address).to eq(onboarding_user.email)
+      expect(contact.user).to eq(onboarding_user)
+      expect(contact.name).to eq(onboarding_user.email)
+    end
+
     it 'creates onboarding events' do
       service = SchoolCreator.new(school)
       service.onboard_school!(school_onboarding)
@@ -101,10 +111,20 @@ describe SchoolCreator, :schools, type: :service do
   describe 'make_visible!' do
     let(:school){ create :school, visible: false}
 
-    it 'updates the active flag on the school to be true' do
-      service = SchoolCreator.new(school)
-      service.make_visible!
-      expect(school.visible).to eq(true)
+    context 'where the school has not been created via the onboarding process' do
+
+      it 'sends an activation email to staff and admins' do
+        school_admin = create(:school_admin, school: school)
+        staff = create(:staff, school: school)
+        service = SchoolCreator.new(school)
+        service.make_visible!
+        expect(school.visible).to eq(true)
+        email = ActionMailer::Base.deliveries.last
+        expect(email).to_not be nil
+        expect(email.subject).to include('is live on Energy Sparks')
+        expect(email.to).to match [school_admin.email, staff.email]
+      end
+
     end
 
     context 'where the school has been created as part of the onboarding process' do
@@ -115,6 +135,7 @@ describe SchoolCreator, :schools, type: :service do
         expect(school_onboarding).to be_incomplete
         service = SchoolCreator.new(school)
         service.make_visible!
+        expect(school.visible).to eq(true)
         expect(school_onboarding).to be_complete
       end
 
@@ -144,6 +165,20 @@ describe SchoolCreator, :schools, type: :service do
         service.make_visible!
         expect(ActionMailer::Base.deliveries.size).to eq(0)
       end
+
+      it 'sends email if onboarding doesnt have a created user' do
+        school_admin = create(:school_admin, school: school)
+        staff = create(:staff, school: school)
+        school_onboarding.update(created_user: nil)
+
+        service = SchoolCreator.new(school)
+        service.make_visible!
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to include('is live on Energy Sparks')
+        expect(email.to).to match [school_admin.email, staff.email]
+        expect(school_onboarding).to have_event(:activation_email_sent)
+      end
+
     end
   end
 

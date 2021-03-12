@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_22_164659) do
+ActiveRecord::Schema.define(version: 2021_03_09_132149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -548,6 +548,37 @@ ActiveRecord::Schema.define(version: 2021_02_22_164659) do
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
+  create_table "consent_documents", force: :cascade do |t|
+    t.bigint "school_id"
+    t.text "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_consent_documents_on_school_id"
+  end
+
+  create_table "consent_grants", force: :cascade do |t|
+    t.bigint "consent_statement_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "school_id", null: false
+    t.text "name"
+    t.text "job_title"
+    t.text "school_name"
+    t.text "ip_address"
+    t.text "guid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consent_statement_id"], name: "index_consent_grants_on_consent_statement_id"
+    t.index ["school_id"], name: "index_consent_grants_on_school_id"
+    t.index ["user_id"], name: "index_consent_grants_on_user_id"
+  end
+
+  create_table "consent_statements", force: :cascade do |t|
+    t.text "title", null: false
+    t.boolean "current", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "contacts", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.text "name"
@@ -805,6 +836,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_164659) do
     t.text "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
   end
 
   create_table "programme_activities", force: :cascade do |t|
@@ -895,6 +927,16 @@ ActiveRecord::Schema.define(version: 2021_02_22_164659) do
     t.index ["school_group_id"], name: "index_school_group_meter_attributes_on_school_group_id"
   end
 
+  create_table "school_group_partners", force: :cascade do |t|
+    t.bigint "school_group_id"
+    t.bigint "partner_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["partner_id"], name: "index_school_group_partners_on_partner_id"
+    t.index ["school_group_id"], name: "index_school_group_partners_on_school_group_id"
+  end
+
   create_table "school_groups", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -964,6 +1006,16 @@ ActiveRecord::Schema.define(version: 2021_02_22_164659) do
     t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
     t.index ["template_calendar_id"], name: "index_school_onboardings_on_template_calendar_id"
     t.index ["uuid"], name: "index_school_onboardings_on_uuid", unique: true
+  end
+
+  create_table "school_partners", force: :cascade do |t|
+    t.bigint "school_id"
+    t.bigint "partner_id"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["partner_id"], name: "index_school_partners_on_partner_id"
+    t.index ["school_id"], name: "index_school_partners_on_school_id"
   end
 
   create_table "school_times", force: :cascade do |t|
@@ -1259,6 +1311,9 @@ ActiveRecord::Schema.define(version: 2021_02_22_164659) do
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "configurations", "schools", on_delete: :cascade
+  add_foreign_key "consent_grants", "consent_statements"
+  add_foreign_key "consent_grants", "schools"
+  add_foreign_key "consent_grants", "users"
   add_foreign_key "contacts", "schools", on_delete: :cascade
   add_foreign_key "contacts", "staff_roles", on_delete: :restrict
   add_foreign_key "contacts", "users", on_delete: :cascade

@@ -14,6 +14,7 @@
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
 #  pseudo                         :boolean          default(FALSE)
+#  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  updated_at                     :datetime         not null
@@ -87,6 +88,21 @@ class Meter < ApplicationRecord
 
   def last_validated_reading
     amr_validated_readings.maximum(:reading_date)
+  end
+
+  def modified_validated_readings(years = 2)
+    since_date = Time.zone.today - years.years
+    amr_validated_readings.since(since_date).modified
+  end
+
+  def gappy_validated_readings(gap_size = 14, years = 2)
+    since_date = Time.zone.today - years.years
+    # only interested if there are enough non_ORIG readings
+    return [] unless amr_validated_readings.since(since_date).modified.count >= gap_size
+    # find chunks where consecutive readings were all non-ORIG
+    gaps = amr_validated_readings.since(since_date).by_date.chunk_while { |r1, r2| r1.modified && r2.modified }
+    # return chunks of specified size or bigger
+    gaps.select { |gap| gap.count >= gap_size }
   end
 
   def display_name

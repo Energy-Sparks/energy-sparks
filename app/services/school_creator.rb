@@ -33,8 +33,9 @@ class SchoolCreator
     @school.update!(visible: true)
     record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
     if should_send_activation_email?
-      OnboardingMailer.with(to: activation_email_list(@school), school_onboarding: @school.school_onboarding).activation_email.deliver_now
-      record_event(@school.school_onboarding, :activation_email_sent)
+      to = activation_email_list(@school)
+      OnboardingMailer.with(to: to, school: @school).activation_email.deliver_now unless to.empty?
+      record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
     end
   end
 
@@ -51,7 +52,10 @@ class SchoolCreator
 private
 
   def activation_email_list(school)
-    users = [school.school_onboarding.created_user]
+    users = []
+    if school.school_onboarding && school.school_onboarding.created_user.present?
+      users << school.school_onboarding.created_user
+    end
     #also email admin, staff and group users
     users += (school.school_admin.to_a + school.cluster_users.to_a + school.users.staff.to_a)
     users.uniq.map(&:email)
@@ -77,7 +81,7 @@ private
     record_events(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,
-        name: onboarding.created_user.name,
+        name: onboarding.created_user.display_name,
         email_address: onboarding.created_user.email,
         description: 'School Energy Sparks contact'
       )
@@ -85,7 +89,7 @@ private
   end
 
   def should_send_activation_email?
-    @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
+    @school.school_onboarding.nil? || @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
   end
 
   def should_complete_onboarding?

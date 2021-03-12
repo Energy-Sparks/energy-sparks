@@ -11,7 +11,7 @@ RSpec.describe "case_studies", type: :system do
     expect(page.has_content? "First Case Study").to be true
   end
 
-  it 'shows the expexted link' do
+  it 'shows the expected link' do
     visit case_studies_path
     expect(page.has_link? "", href: "/case_studies/#{case_study.id}/download").to be true
   end

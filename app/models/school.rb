@@ -75,7 +75,9 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
+  has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
+  has_many :consent_grants,       inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -116,6 +118,10 @@ class School < ApplicationRecord
   has_one :configuration, class_name: 'Schools::Configuration'
 
   has_and_belongs_to_many :cluster_users, class_name: "User", join_table: :cluster_schools_users
+
+  has_many :school_partners, -> { order(position: :asc) }
+  has_many :partners, through: :school_partners
+  accepts_nested_attributes_for :school_partners, reject_if: proc {|attributes| attributes['position'].blank?}
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
@@ -338,6 +344,19 @@ class School < ApplicationRecord
     raise ProcessDataError, "#{name} cannot process data as it has no floor area" if floor_area.blank?
     raise ProcessDataError, "#{name} cannot process data as it has no pupil numbers" if number_of_pupils.blank?
     update!(process_data: true)
+  end
+
+  def update_school_partner_positions!(position_attributes)
+    transaction do
+      school_partners.destroy_all
+      update!(school_partners_attributes: position_attributes)
+    end
+  end
+
+  def all_partners
+    all_partners = partners
+    all_partners += school_group.partners if school_group.present?
+    all_partners
   end
 
   private
