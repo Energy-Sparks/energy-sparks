@@ -13,6 +13,7 @@ class ConsentStatement < ApplicationRecord
   has_rich_text :content
 
   validates :title, :content, presence: true
+  validates_uniqueness_of :current, if: :current
 
   scope :by_date, -> { order(created_at: :desc) }
 
