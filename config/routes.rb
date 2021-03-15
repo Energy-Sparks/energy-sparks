@@ -170,8 +170,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :case_studies
-    resources :consent_statements
     resources :consent_grants, only: [:index, :show]
+    resources :consent_statements
+    post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
     resources :partners
     resources :team_members
     resources :newsletters
