@@ -26,7 +26,7 @@ module Admin
           end
         end
       end
-      return ConsentGrant.by_date
+      ConsentGrant.by_date
     end
   end
 end
