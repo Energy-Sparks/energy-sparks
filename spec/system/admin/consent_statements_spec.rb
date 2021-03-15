@@ -28,6 +28,20 @@ RSpec.describe 'consent_statements', type: :system do
     expect(page).to have_content('Consent statement was successfully deleted')
   end
 
+  context 'when several consent statements exist' do
+
+    let!(:consent_statement_1) { ConsentStatement.create!( title: 'First consent statement', content: 'You may use my data..', current: true) }
+    let!(:consent_statement_2) { ConsentStatement.create!( title: 'Second consent statement', content: 'You may still use my data..') }
+
+    it 'allows statement to be made current' do
+      click_on 'Consent Statements'
+      click_link 'Make current'
+      expect(page).to have_content('Consent statement set to current')
+      expect(consent_statement_1.reload.current).to be_falsey
+      expect(consent_statement_2.reload.current).to be_truthy
+    end
+  end
+
   context 'consent grants exist for consent statement' do
 
     let(:user) { create(:user) }

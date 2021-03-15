@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Current?</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -15,13 +16,20 @@
       <tr>
         <td><%= consent_statement.title %></td>
         <td>
+          <% if consent_statement.current? %>
+            Yes
+          <% else %>
+            <%= link_to 'Make current', admin_publish_consent_statement_path(consent_statement), method: :post, class: 'btn', data: { confirm: 'New schools will see this consent statement during onboarding. Do you want to continue?' } %>
+          <% end %>
+        </td>
+        <td>
           <div class="btn-group">
             <%= link_to 'View', admin_consent_statement_path(consent_statement), class: 'btn' %>
             <% if consent_statement.editable? %>
                 <%= link_to 'Edit', edit_admin_consent_statement_path(consent_statement), class: 'btn' %>
                 <%= link_to 'Delete', admin_consent_statement_path(consent_statement), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
-              </div>
             <% end %>
+          </div>
         </td>
       </tr>
     <% end %>
