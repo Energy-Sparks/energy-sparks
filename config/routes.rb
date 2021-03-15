@@ -171,7 +171,7 @@ Rails.application.routes.draw do
     resources :users
     resources :case_studies
     resources :consent_statements
-    resources :consent_grants
+    resources :consent_grants, only: [:index, :show]
     resources :partners
     resources :team_members
     resources :newsletters
