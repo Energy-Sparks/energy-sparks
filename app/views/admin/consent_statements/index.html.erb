@@ -19,7 +19,7 @@
           <% if consent_statement.current? %>
             Yes
           <% else %>
-            <%= link_to 'Make current', admin_publish_consent_statement_path(consent_statement), method: :post, class: 'btn' %>
+            <%= link_to 'Make current', admin_publish_consent_statement_path(consent_statement), method: :post, class: 'btn', data: { confirm: 'New schools will see this consent statement during onboarding. Do you want to continue?' } %>
           <% end %>
         </td>
         <td>
