@@ -26,7 +26,8 @@ RSpec.describe "school onboarding", :schools, type: :system do
 
   let(:admin) { create(:admin)}
 
-  let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher')}
+  let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher') }
+  let!(:consent_statement) { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
 
   context 'as an admin' do
 
@@ -174,24 +175,17 @@ RSpec.describe "school onboarding", :schools, type: :system do
       expect(page).to have_content('Welcome to Energy Sparks')
       click_on 'Next'
 
-      click_on 'I give permission'
-      expect(page).to have_content('Please confirm')
-
-      check 'I confirm agreement with the Energy Sparks privacy and cookie policy'
-      click_on 'I give permission'
-
-      onboarding.reload
-      expect(onboarding).to have_event(:permission_given)
-      expect(onboarding).to have_event(:privacy_policy_agreed)
-
       expect(page).to have_field('Email', with: onboarding.contact_email)
       fill_in 'Your name', with: 'A Teacher'
       select 'Headteacher', from: 'Role'
       fill_in 'Password', with: 'testtest1', match: :prefer_exact
       fill_in 'Password confirmation', with: 'testtest1'
+      check :privacy
       click_on 'Create my account'
 
       onboarding.reload
+      expect(onboarding).to have_event(:onboarding_user_created)
+      expect(onboarding).to have_event(:privacy_policy_agreed)
       expect(onboarding.created_user.name).to eq('A Teacher')
       expect(onboarding.created_user.role).to eq('school_onboarding')
 
@@ -215,6 +209,24 @@ RSpec.describe "school onboarding", :schools, type: :system do
       check 'KS1'
 
       click_on 'Update school details'
+
+      expect(page).to have_content(consent_statement.content.to_plain_text)
+
+      fill_in 'Name', with: 'Boss user'
+      fill_in 'Job title', with: 'Boss'
+      fill_in 'School name', with: 'Boss school'
+
+      click_on 'I give permission'
+
+      onboarding.reload
+      expect(onboarding).to have_event(:permission_given)
+
+      consent_grant = onboarding.school.consent_grants.last
+      expect(consent_grant.name).to eq('Boss user')
+      expect(consent_grant.job_title).to eq('Boss')
+      expect(consent_grant.school_name).to eq('Boss school')
+      expect(consent_grant.user).to eq(onboarding.created_user)
+      expect(consent_grant.school).to eq(onboarding.school)
 
       fill_in 'Name', with: 'The energy savers'
       fill_in 'Pupil password', with: ''
