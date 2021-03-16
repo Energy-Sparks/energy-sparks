@@ -359,6 +359,10 @@ class School < ApplicationRecord
     all_partners
   end
 
+  def consent_up_to_date?
+    consent_grants.any? && consent_grants.by_date.first.consent_statement.current
+  end
+
   private
 
   def add_joining_observation

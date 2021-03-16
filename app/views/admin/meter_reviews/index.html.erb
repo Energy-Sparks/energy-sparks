@@ -1,0 +1,48 @@
+<% content_for :page_title, 'Meter Reviews' %>
+
+<h1>Meter Reviews</h1>
+
+<p>
+The following schools have smart meters for which data is available via N3RGY. A
+review is required before access is enabled. Links are provided to their bills,
+latest grant of consent and a form to complete the review.
+</p>
+
+<table class="table">
+  <thead>
+    <th>School</th>
+    <th>Pending Smart Meters</th>
+    <th>Consent Current?</th>
+    <th>Bills Provided?</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% @schools.each do |school| %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= link_to school.meters.where(dcc_meter: true, consent_granted: false).count, school_meters_path(school) %></td>
+        <td class="consent">
+          <%= fa_icon( school.consent_up_to_date? ? 'check-circle text-success' : 'times-circle text-danger') %>
+          <%= link_to school_consent_grants_path(school) do %>
+             View
+          <% end %>
+        </td>
+        <td class="bills">
+          <%= fa_icon( school.consent_documents.any? ? 'check-circle text-success' : 'times-circle text-danger') %>
+          <%= link_to school_consent_documents_path(school) do %>
+             View
+          <% end %>
+        </td>
+        <td>
+          <% if !school.consent_up_to_date? %>
+            <a href="#" class="btn btn-default">Request consent</a>
+          <% end %>
+          <a href="#" class="btn btn-default">Request bill</a>
+          <% if school.consent_up_to_date? %>
+            <a href="#" class="btn btn-default">Complete review</a>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
