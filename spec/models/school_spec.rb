@@ -269,4 +269,16 @@ describe School do
     end
   end
 
+  context 'with consent' do
+    let!(:consent_statement)    { create(:consent_statement, current: true) }
+
+    it "identifies whether consent is current" do
+      expect(subject.consent_up_to_date?).to be false
+      create(:consent_grant, school: subject)
+      expect(subject.consent_up_to_date?).to be false
+      create(:consent_grant, school: subject, consent_statement: consent_statement)
+      expect(subject.consent_up_to_date?).to be true
+    end
+  end
+
 end
