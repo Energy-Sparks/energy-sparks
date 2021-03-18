@@ -7,13 +7,13 @@
     <h5>Before we can activate your school we need to:</h5>
 
     <ol>
-      <li>Get your permission to publish your school's energy data</li>
       <li>Set up your Energy Sparks school administrator account and pupil account</li>
       <li>Gather some more information about your school</li>
+      <li>Get your permission to publish your school's energy data</li>
     </ol>
 
     <p>Once you've completed this process we will review your school and activate your account on Energy Sparks.</p>
 
-    <%= link_to 'Next', onboarding_consent_path(@school_onboarding), class: 'btn btn-primary' %>
+    <%= link_to 'Next', new_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
   </div>
 </div>

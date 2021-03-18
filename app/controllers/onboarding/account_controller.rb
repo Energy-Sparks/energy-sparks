@@ -15,6 +15,7 @@ module Onboarding
       if @user.save
         @school_onboarding.update!(created_user: @user)
         @school_onboarding.events.create!(event: :onboarding_user_created)
+        @school_onboarding.events.create!(event: :privacy_policy_agreed)
         sign_in(@user, scope: :user)
         redirect_to new_onboarding_school_details_path(@school_onboarding)
       else

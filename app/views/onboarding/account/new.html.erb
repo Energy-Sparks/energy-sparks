@@ -18,6 +18,14 @@
       <%= f.input :password, required: true %>
       <%= f.input :password_confirmation, required: true %>
       <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+
+      <div class="custom-control custom-checkbox">
+        <%= check_box_tag "privacy", false, false, class: 'custom-control-input multi-select must-check' %>
+        <%= label_tag "privacy", "I confirm agreement with the Energy Sparks ", class: 'custom-control-label' %>
+        <%= link_to 'privacy and cookie policy', privacy_and_cookie_policy_path, target: '_blank' %>
+      </div>
+
+      <p></p>
       <%= f.button :submit, 'Create my account' %>
     <% end %>
   </div>
