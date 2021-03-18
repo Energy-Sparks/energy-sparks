@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 7a53039971dd8845461089ffef79aa7bab782384
+  revision: 2f540a6c7f01db0e1ef701f64d3db87c23f81882
   branch: dcc-meter-validation
   specs:
     energy-sparks_analytics (1.2.1)
