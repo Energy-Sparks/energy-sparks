@@ -43,6 +43,8 @@ class Meter < ApplicationRecord
 
   has_many :meter_attributes
 
+  belongs_to :meter_review, optional: true
+
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
 
