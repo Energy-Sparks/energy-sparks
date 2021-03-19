@@ -97,7 +97,7 @@ FactoryBot.define do
 
   factory :exported_solar_pv_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| "61#{sprintf('%012d', n)}" }
+    sequence(:mpan_mprn)  { |n| "91#{sprintf('%012d', n)}" }
     meter_type            { :exported_solar_pv }
     active                { true }
 
@@ -120,7 +120,7 @@ FactoryBot.define do
 
   factory :solar_pv_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| "61#{sprintf('%012d', n)}" }
+    sequence(:mpan_mprn)  { |n| "71#{sprintf('%012d', n)}" }
     meter_type            { :solar_pv }
     active                { true }
 

@@ -10,6 +10,20 @@ describe 'Meter', :meters do
 
   end
 
+  describe 'scopes' do
+    let(:valid_mpan) { 1234567890123 }
+    let(:valid_mpan_pseudo) { 91234567890123 }
+    let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: valid_mpan) }
+    let!(:electricity_meter_pseudo) { create(:electricity_meter, pseudo: true, mpan_mprn: valid_mpan_pseudo) }
+    let!(:gas_meter) { create(:gas_meter) }
+    let!(:solar_pv_meter) { create(:solar_pv_meter) }
+    let!(:exported_solar_pv_meter) { create(:exported_solar_pv_meter) }
+
+    it 'main_meters is only real gas and electricity' do
+      expect(Meter.main_meter).to match_array([gas_meter, electricity_meter])
+    end
+  end
+
   describe 'valid?' do
     describe 'mpan_mprn' do
       context 'with an electricity meter' do
