@@ -76,6 +76,10 @@ class Meter < ApplicationRecord
     meter_data_array.to_h { |record| [record[0].to_s, { fuel_type: record[1], school_id: record[2] }]}
   end
 
+  def possible_dcc?
+    [:electricity, :gas].include?(meter_type.to_sym)
+  end
+
   def school_name
     school.name
   end

@@ -34,6 +34,8 @@
   <dd class="col-sm-9"><%= @meter.earliest_available_data %></dd>
   <dt class="col-sm-3">N3RGY API Status</dt>
   <dd class="col-sm-9"><%= @n3rgy_status %></dd>
+  <dt class="col-sm-3">DCC last checked</dt>
+  <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
   <dt class="col-sm-3">Meter Elements</dt>
   <dd class="col-sm-9"><%= @elements %></dd>
 </dl>
