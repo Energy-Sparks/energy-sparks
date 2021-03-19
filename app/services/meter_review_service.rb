@@ -8,7 +8,7 @@ class MeterReviewService
 
   def self.find_schools_needing_review
     #find all schools/meters that are DCC meters, but which don't have a consent_granted flag.
-    School.joins(:meters).where("meters.dcc_meter=? AND consent_granted=?", true, false).order(:name).uniq
+    School.joins(:meters).where("meters.dcc_meter=? AND consent_granted=? AND meter_review_id is null", true, false).order(:name).uniq
     #this might need to be revised to check both that status and whether there is a completed review
   end
 

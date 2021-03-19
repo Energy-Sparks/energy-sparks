@@ -7,7 +7,7 @@ RSpec.describe 'meter_reviews', type: :system do
   let!(:other_school)          { create(:school) }
   let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
   let!(:dcc_meter_granted)     { create(:electricity_meter, school: reviewed_school, dcc_meter: true, consent_granted: true) }
-  let!(:electricity_meter)     { create(:electricity_meter, school: other_school, ) }
+  let!(:electricity_meter)     { create(:electricity_meter, school: other_school) }
 
   let!(:admin)                 { create(:admin) }
 
@@ -83,6 +83,7 @@ RSpec.describe 'meter_reviews', type: :system do
       before(:each) do
         click_on 'Meter Reviews'
       end
+
       it 'displays a tick' do
         expect(page).to have_css('td.bills i.fa-check-circle')
       end
@@ -101,4 +102,55 @@ RSpec.describe 'meter_reviews', type: :system do
 
   end
 
+  context 'when performing a review' do
+
+    before(:each) do
+      login_as(admin)
+      visit root_path
+      click_on 'Admin'
+    end
+
+    context 'and consent is not current' do
+      it 'should not allow completion' do
+        click_on 'Meter Reviews'
+        expect(page).to_not have_link("Complete review")
+      end
+    end
+
+    context 'when consent is current' do
+      let!(:consent_statement)      {   create(:consent_statement, current: true) }
+      let!(:consent_grant)          {   create(:consent_grant, consent_statement: consent_statement, school: school) }
+
+      before(:each) do
+        click_on 'Meter Reviews'
+      end
+
+      it 'should list the meters' do
+        click_on 'Complete review'
+        expect(page.has_unchecked_field?(dcc_meter.mpan_mprn)).to be true
+      end
+
+      it 'should link to the consent grant'
+      it 'should require meters to be added'
+      it 'should allow the review to be completed'
+      it 'completes the review'
+
+      it 'should not list previously reviewed meters'
+
+      context 'and documents are available' do
+        it 'should provide list of documents'
+        it 'should allow multiple documents to be added'
+      end
+
+    end
+  end
+
+  context 'when showing a review' do
+    it 'should link to consent grant'
+    it 'should display user'
+    it 'should list the meters'
+    it 'should link to consent documents'
+    it 'should list which user completed the review'
+    it 'should say when review was completed'
+  end
 end
