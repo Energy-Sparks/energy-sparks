@@ -1,21 +1,19 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
     <h1>Data sharing permission</h1>
-    <p>To meet our requirements under the Smart Energy Code, please can you now give us formal permission for your school's energy data to be published publicly to the Energy Sparks website.<p>
+    <p>To meet our requirements under the Smart Energy Code, please can you now give us formal permission for your school's energy data to be published to the Energy Sparks website.<p>
 
     <blockquote class="card bg-light">
       <div class="card-body">
-        <p>I would like to enrol <strong><%=@school_onboarding.school_name%></strong> in the Energy Sparks service to allow the school to better monitor our energy usage.</p>
-        <p>I understand that in order for this to happen, our energy usage data will need to be published under an open licence to Energy Sparks. This includes both ongoing and historical data.</p>
-        <p>I understand that publishing the data under an open licence will allow it to be accessed, used and shared by anyone, including the Energy Sparks team.</p>
-        <p>I would like to give permission to begin publishing our energy usage data at the earliest opportunity.</p>
-        <p>I also give permission for Energy Sparks to obtain our energy tariff information from our energy contract manager or supplier so as to provide more accurate cost and savings estimates through the Energy Sparks tool.</p>
-        <p>I understand that our school has the right to withdraw consent to our data being published to Energy Sparks at anytime. I can withdraw consent by emailing hello@energysparks.uk. We will then remove your ongoing and historical data from the Energy Sparks site.</p>
+        <%= @consent_grant.consent_statement.content %>
       </div>
     </blockquote>
 
-    <%= simple_form_for(@school_onboarding_consent, url: onboarding_consent_path(@school_onboarding), method: :post) do |f| %>
-      <%= f.input :privacy, as: :boolean, required: true, label: sanitize("I confirm agreement with the Energy Sparks #{link_to 'privacy and cookie policy', privacy_and_cookie_policy_path, target: '_blank' }") %>
+    <%= simple_form_for(@consent_grant, url: onboarding_consent_path(@school_onboarding), method: :post) do |f| %>
+      <%= f.hidden_field :consent_statement_id %>
+      <%= f.input :name %>
+      <%= f.input :job_title %>
+      <%= f.input :school_name %>
       <%= f.button :submit, 'I give permission', class: 'btn btn-primary' %>
     <% end %>
 
