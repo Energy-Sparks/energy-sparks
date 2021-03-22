@@ -54,5 +54,17 @@ module Amr
       amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build
       expect(amr_data[:electricity_meters].first[:readings].size).to eq 2
     end
+
+    it 'does not convert nil to 0.0' do
+      readings = Array.new(48, nil)
+      readings[0] = 1.23
+      e_meter.amr_data_feed_readings << AmrDataFeedReading.create!(meter: e_meter, amr_data_feed_config: config, readings: readings, reading_date: Date.tomorrow.strftime('%b %e %Y'), mpan_mprn: e_meter.mpan_mprn, amr_data_feed_import_log: log)
+
+      amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [], electricity_meters: [e_meter]).build
+
+      expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][0]).to be 1.23
+      expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][1]).to be nil
+      expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][47]).to be nil
+    end
   end
 end
