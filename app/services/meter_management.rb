@@ -37,7 +37,7 @@ class MeterManagement
 
   def process_creation!
     assign_amr_data_feed_readings
-    DccCheckerJob.perform_later(@meter) if @meter.possible_dcc?
+    DccCheckerJob.perform_later(@meter) if Meter.main_meter.exists?(@meter.id)
   end
 
   def process_mpan_mpnr_change!
