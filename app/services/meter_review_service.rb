@@ -10,18 +10,16 @@ class MeterReviewService
     Meter.unreviewed_dcc_meter.map(&:school).sort_by(&:name).uniq
   end
 
-  def complete_review!(meters, consent_documents = nil)
+  def complete_review!(meters, consent_documents = [])
     return nil unless meters.present? && meters.any?
-    @school.transaction do
-      review = MeterReview.create!(
-        school: @school,
-        user: @user,
-        consent_grant: current_consent
-      )
-      review.meters << meters
-      review.consent_documents << consent_documents if consent_documents.present?
-      return review
-    end
+    review = MeterReview.create!(
+      school: @school,
+      user: @user,
+      consent_grant: current_consent,
+      meters: meters,
+      consent_documents: consent_documents
+    )
+    review
   end
 
   private
