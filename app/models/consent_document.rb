@@ -16,6 +16,10 @@ class ConsentDocument < ApplicationRecord
   belongs_to :school
   has_one_attached :file
   has_rich_text :description
-  validates_presence_of :school, :title, :file, presence: true
+
+  has_and_belongs_to_many :meter_reviews
+
   scope :by_created_date, -> { order(created_at: :asc) }
+
+  validates_presence_of :school, :title, :file, presence: true
 end

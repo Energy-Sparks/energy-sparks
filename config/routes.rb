@@ -204,7 +204,7 @@ Rails.application.routes.draw do
     end
 
     resources :meter_attributes, only: :index
-    resources :meter_reviews
+    resources :meter_reviews, only: :index
 
     resources :programme_types do
       scope module: :programme_types do
@@ -272,6 +272,7 @@ Rails.application.routes.draw do
         resources :meter_attributes
         resources :school_attributes
         resource :partners, only: [:show, :update]
+        resources :meter_reviews
       end
     end
 

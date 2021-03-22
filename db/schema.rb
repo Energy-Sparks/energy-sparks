@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_132149) do
+ActiveRecord::Schema.define(version: 2021_03_18_144544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -556,6 +556,13 @@ ActiveRecord::Schema.define(version: 2021_03_09_132149) do
     t.index ["school_id"], name: "index_consent_documents_on_school_id"
   end
 
+  create_table "consent_documents_meter_reviews", id: false, force: :cascade do |t|
+    t.bigint "consent_document_id"
+    t.bigint "meter_review_id"
+    t.index ["consent_document_id"], name: "index_consent_documents_meter_reviews_on_consent_document_id"
+    t.index ["meter_review_id"], name: "index_consent_documents_meter_reviews_on_meter_review_id"
+  end
+
   create_table "consent_grants", force: :cascade do |t|
     t.bigint "consent_statement_id", null: false
     t.bigint "user_id", null: false
@@ -784,6 +791,17 @@ ActiveRecord::Schema.define(version: 2021_03_09_132149) do
     t.index ["meter_id"], name: "index_meter_attributes_on_meter_id"
   end
 
+  create_table "meter_reviews", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "consent_grant_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consent_grant_id"], name: "index_meter_reviews_on_consent_grant_id"
+    t.index ["school_id"], name: "index_meter_reviews_on_school_id"
+    t.index ["user_id"], name: "index_meter_reviews_on_user_id"
+  end
+
   create_table "meters", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "meter_type"
@@ -800,7 +818,9 @@ ActiveRecord::Schema.define(version: 2021_03_09_132149) do
     t.boolean "consent_granted", default: false
     t.date "earliest_available_data"
     t.boolean "sandbox", default: false
+    t.bigint "meter_review_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
+    t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
@@ -1349,7 +1369,11 @@ ActiveRecord::Schema.define(version: 2021_03_09_132149) do
   add_foreign_key "meter_attributes", "meters", on_delete: :cascade
   add_foreign_key "meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
+  add_foreign_key "meter_reviews", "consent_grants"
+  add_foreign_key "meter_reviews", "schools"
+  add_foreign_key "meter_reviews", "users"
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
+  add_foreign_key "meters", "meter_reviews"
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
