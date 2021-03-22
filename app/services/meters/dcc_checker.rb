@@ -13,7 +13,8 @@ module Meters
           fields[:dcc_meter] = true unless status == :unknown
           meter.update!(fields)
         rescue => e
-          puts e.inspect
+          Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}")
+          Rollbar.error(e, job: :dcc_checker, mpxn: meter.mpan_mprn)
         end
       end
     end
