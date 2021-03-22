@@ -29,6 +29,7 @@ FactoryBot.define do
     end
 
     factory :admin do
+      name { "Admin"}
       role { :admin }
     end
 
