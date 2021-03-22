@@ -39,7 +39,7 @@ module Amr
         reading_date: reading_date,
         type: 'ORIG',
         upload_datetime: reading.created_at,
-        kwh_data_x48: reading.readings.map(&:to_f)
+        kwh_data_x48: reading.readings.map { |r| r.to_f if r }
       }
     end
 
