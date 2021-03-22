@@ -55,6 +55,8 @@ class Meter < ApplicationRecord
   scope :sub_meter, -> { where(pseudo: true, meter_type: SUB_METER_TYPES) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
+  scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review: nil) }
+
   # If adding a new one, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 

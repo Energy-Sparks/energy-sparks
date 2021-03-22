@@ -7,7 +7,7 @@ module Admin
       def new
         @meter_review = MeterReview.new
         @consent_grant = @school.consent_grants.by_date.first
-        @pending_meters = @school.meters.where(dcc_meter: true, consent_granted: false, meter_review: nil).order(:mpan_mprn)
+        @pending_meters = @school.meters.unreviewed_dcc_meter.order(:mpan_mprn)
       end
 
       def create
