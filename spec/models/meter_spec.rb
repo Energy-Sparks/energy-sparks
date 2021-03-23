@@ -11,16 +11,28 @@ describe 'Meter', :meters do
   end
 
   describe 'scopes' do
-    let(:valid_mpan) { 1234567890123 }
-    let(:valid_mpan_pseudo) { 91234567890123 }
-    let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: valid_mpan) }
-    let!(:electricity_meter_pseudo) { create(:electricity_meter, pseudo: true, mpan_mprn: valid_mpan_pseudo) }
-    let!(:gas_meter) { create(:gas_meter) }
-    let!(:solar_pv_meter) { create(:solar_pv_meter) }
-    let!(:exported_solar_pv_meter) { create(:exported_solar_pv_meter) }
+    context 'when finding main meters' do
+      let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: 1234567890123) }
+      let!(:electricity_meter_pseudo) { create(:electricity_meter, pseudo: true, mpan_mprn: 91234567890123) }
+      let!(:gas_meter) { create(:gas_meter) }
+      let!(:solar_pv_meter) { create(:solar_pv_meter) }
+      let!(:exported_solar_pv_meter) { create(:exported_solar_pv_meter) }
 
-    it 'main_meters is only real gas and electricity' do
-      expect(Meter.main_meter).to match_array([gas_meter, electricity_meter])
+      it 'main_meters is only real gas and electricity' do
+        expect(Meter.main_meter).to match_array([gas_meter, electricity_meter])
+      end
+    end
+
+    context 'when finding meters for consent' do
+      let!(:meter_review) { create(:meter_review) }
+      let!(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1234567890111) }
+      let!(:electricity_meter_not_reviewed) { create(:electricity_meter, dcc_meter: true, mpan_mprn: 1234567890222) }
+      let!(:electricity_meter_not_dcc) { create(:electricity_meter, dcc_meter: false, mpan_mprn: 1234567890333) }
+      let!(:electricity_meter_consent_granted_already) { create(:electricity_meter, dcc_meter: true, consent_granted: true, mpan_mprn: 1234567890444) }
+
+      it 'awaiting_trusted_consent is only dcc meters with reviews' do
+        expect(Meter.awaiting_trusted_consent).to match_array([electricity_meter_reviewed])
+      end
     end
   end
 
