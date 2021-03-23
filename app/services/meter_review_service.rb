@@ -19,6 +19,7 @@ class MeterReviewService
       meters: meters,
       consent_documents: consent_documents
     )
+    DccGrantTrustedConsentsJob.perform_later(meters)
     review
   end
 
