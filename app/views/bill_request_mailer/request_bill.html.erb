@@ -13,25 +13,28 @@
 <li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
 </ul>
 
-<p>
-Energy Sparks needs to see a sample bill for the following meter numbers:
-</p>
+<% if @electricity_meters.any? || @gas_meters.any? %>
+  <p>
+  Energy Sparks needs to see a sample bill for the following meter numbers:
+  </p>
 
-<table class="table mt-2">
-  <tbody>
-  <% @electricity_meters.each do |m| %>
-   <tr>
-     <td>Electricity</td>
-     <td><%= m.mpan_mprn %></td>
-   </tr>
-  <% end %>
-  <% @gas_meters.each do |m| %>
-   <tr>
-     <td>Gas</td>
-     <td><%= m.mpan_mprn %></td>
-   </tr>
-  <% end %>
-  </tbody>
-</table>
+  <table class="table mt-2">
+    <tbody>
+    <% @electricity_meters.each do |m| %>
+     <tr>
+       <td>Electricity</td>
+       <td><%= m.mpan_mprn %></td>
+     </tr>
+    <% end %>
+    <% @gas_meters.each do |m| %>
+     <tr>
+       <td>Gas</td>
+       <td><%= m.mpan_mprn %></td>
+     </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+<% end %>
 
 <%= link_to "Upload your bill", school_consent_documents_url(@school), class: 'btn btn-primary mt-3 mb-3' %>

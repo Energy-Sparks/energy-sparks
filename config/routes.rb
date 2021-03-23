@@ -273,6 +273,7 @@ Rails.application.routes.draw do
         resources :school_attributes
         resource :partners, only: [:show, :update]
         resources :meter_reviews
+        resources :bill_requests
       end
     end
 
