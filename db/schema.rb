@@ -818,7 +818,6 @@ ActiveRecord::Schema.define(version: 2021_03_18_171552) do
     t.boolean "consent_granted", default: false
     t.date "earliest_available_data"
     t.boolean "sandbox", default: false
-    t.datetime "dcc_checked_at"
     t.bigint "meter_review_id"
     t.datetime "dcc_checked_at"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
