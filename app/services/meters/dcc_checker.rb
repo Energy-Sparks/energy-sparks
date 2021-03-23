@@ -13,8 +13,8 @@ module Meters
           fields[:dcc_meter] = true unless status == :unknown
           meter.update!(fields)
         rescue => e
-          Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}")
-          Rollbar.error(e, job: :dcc_checker, mpxn: meter.mpan_mprn)
+          Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")
+          Rollbar.error(e, job: :dcc_checker, mpxn: meter.mpan_mprn, school_name: meter.school.name)
         end
       end
     end
