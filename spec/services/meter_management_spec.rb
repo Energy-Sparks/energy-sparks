@@ -15,6 +15,17 @@ describe MeterManagement do
       expect(meter.amr_data_feed_readings).to match_array([amr_data_feed_reading])
     end
 
+    it 'queues a job to check dcc' do
+      expect(DccCheckerJob).to receive(:perform_later).with(meter)
+      MeterManagement.new(meter).process_creation!
+    end
+
+    it 'does not queue a dcc check job for a pseudo meter' do
+      pseudo_meter = create(:electricity_meter, pseudo: true, mpan_mprn: 91234567890123)
+      expect(DccCheckerJob).not_to receive(:perform_later)
+      MeterManagement.new(pseudo_meter).process_creation!
+    end
+
   end
 
   describe 'process_mpan_mpnr_change!' do

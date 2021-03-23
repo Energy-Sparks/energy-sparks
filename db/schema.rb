@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_144544) do
+ActiveRecord::Schema.define(version: 2021_03_18_171552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -819,6 +819,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_144544) do
     t.date "earliest_available_data"
     t.boolean "sandbox", default: false
     t.bigint "meter_review_id"
+    t.datetime "dcc_checked_at"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
