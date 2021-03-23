@@ -46,16 +46,19 @@ class Meter < ApplicationRecord
   belongs_to :meter_review, optional: true
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
+  MAIN_METER_TYPES = [:electricity, :gas].freeze
   SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :real, -> { where(pseudo: false) }
   scope :pseudo, -> { where(pseudo: true) }
+  scope :main_meter, -> { where(pseudo: false, meter_type: MAIN_METER_TYPES) }
   scope :sub_meter, -> { where(pseudo: true, meter_type: SUB_METER_TYPES) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
   scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review: nil) }
+  scope :awaiting_trusted_consent, -> { where(dcc_meter: true, consent_granted: false).where.not(meter_review: nil) }
 
   # If adding a new one, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]

@@ -143,6 +143,7 @@ RSpec.describe 'meter_reviews', type: :system do
       end
 
       it 'completes the review' do
+        expect(DccGrantTrustedConsentsJob).to receive(:perform_later).with([dcc_meter])
         click_on 'Perform review'
         check dcc_meter.mpan_mprn.to_s
         click_on 'Complete review'
