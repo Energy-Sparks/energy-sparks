@@ -4,6 +4,10 @@ module Admin
       load_and_authorize_resource :school
       load_and_authorize_resource
 
+      def index
+        @meter_reviews = @school.meter_reviews.order(:created_at)
+      end
+
       def new
         @meter_review = MeterReview.new
         @consent_grant = @school.consent_grants.by_date.first
