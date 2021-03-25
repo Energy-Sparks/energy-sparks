@@ -2,9 +2,9 @@
   <div class="col col-md-10 col-lg-8">
     <h1>Data sharing permission</h1>
 
-    <%= render 'statement' %>
+    <%= render 'onboarding/consent/statement' %>
 
-    <%= render 'form', consent_grant: @consent_grant, path: onboarding_consent_path(@school_onboarding) %>
+    <%= render 'onboarding/consent/form', consent_grant: @consent_grant, path: school_consents_path(@school) %>
 
     <h4 class="mt-3">Not sure?</h4>
     <p class="small">If you need more time to make a decision you can return to this page at any time using the link in the email. If you have any questions about the above permissions then you can <%= mail_to 'hello@energysparks.uk', 'email us'%> to discuss them.</p>

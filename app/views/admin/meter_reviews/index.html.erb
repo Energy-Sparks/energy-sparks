@@ -35,7 +35,7 @@ latest grant of consent and a form to complete the review.
         </td>
         <td>
           <% if !school.consent_up_to_date? %>
-            <a href="#" class="btn btn-default">Request consent</a>
+            <%= link_to "Request consent", new_admin_school_consent_request_path(school), class: 'btn btn-default' %>
           <% end %>
           <%= link_to "Request bill", new_admin_school_bill_request_path(school), class: 'btn btn-default' %>
           <% if school.consent_up_to_date? %>

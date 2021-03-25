@@ -1,0 +1,13 @@
+<h1 class="mb-3">Please provide permission for Energy Sparsk to access data for <%= @school.name %></h1>
+
+<p>
+We need your school to update its consent to allow Energy Sparks to continue to collect,
+process and display your energy data.
+</p>
+
+<%= link_to "Give consent", school_consents_url(@school), class: 'btn btn-primary mt-3 mb-3' %>
+
+<p>
+You can <%= link_to "view your school account", school_url(@school) %> if you want to
+review how your school is set up on our service.
+</p>
