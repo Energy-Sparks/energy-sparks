@@ -1,0 +1,7 @@
+<%= simple_form_for(consent_grant, url: path, method: :post) do |f| %>
+  <%= f.hidden_field :consent_statement_id %>
+  <%= f.input :name %>
+  <%= f.input :job_title %>
+  <%= f.input :school_name %>
+  <%= f.button :submit, 'I give permission', class: 'btn btn-primary' %>
+<% end %>

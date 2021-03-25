@@ -1,32 +1,17 @@
-<% content_for :page_title, "Request bill from #{@school.name}" %>
-<h1>Request bill</h1>
+<% content_for :page_title, "Request consent from #{@school.name}" %>
+<h1>Request consent</h1>
 
 <div class="row">
   <div class="col">
-    <p>Send an email to one or more users at <%= @school.name %> to request they upload
-      a bill</p>
+    <p>Send an email to one or more users at <%= @school.name %> to request consent for
+    accessing data</p>
   </div>
 </div>
 
 <div class="row">
   <div class="col">
-    <%= simple_form_for :bill_request, url: admin_school_bill_requests_path(@school) do |f| %>
+    <%= simple_form_for :consent_request, url: admin_school_consent_requests_path(@school) do |f| %>
       <div class="card-group">
-          <div class="card bg-light">
-            <div class="card-header">Which meter(s) should be on the bill?</div>
-            <div class="card-body">
-              <div class="form-check">
-                <%= f.collection_check_boxes(:meter_ids, @meters, :id, :mpan_mprn) do |b|  %>
-                  <div class="control-group">
-                    <%= b.check_box(class: "form-check-input") %>
-                    <%= b.label(class: "form-check-label") do %>
-                      <%= b.object.mpan_mprn %>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
           <div class="card bg-light">
             <div class="card-header">Which user(s) should be emailed?</div>
             <div class="card-body">
@@ -53,7 +38,7 @@
       <div class="row mt-1 mb-1">
        <div class="col">
          <div class="mt-4">
-           <%= f.button :submit, "Request bill", "data-confirm": 'Are you sure?', disabled: @users.empty? %>
+           <%= f.button :submit, "Request consent", "data-confirm": 'Are you sure?', disabled: @users.empty? %>
          </div>
          <hr>
          <div class="btn-group">

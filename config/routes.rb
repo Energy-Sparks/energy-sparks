@@ -148,6 +148,9 @@ Rails.application.routes.draw do
       resource :usage, controller: :usage, only: :show
       resources :downloads, only: [:index]
       resources :batch_runs, only: [:index, :create, :show]
+
+      resource :consents, only: [:show, :create]
+
     end
 
     # Maintain old scoreboard URL
@@ -273,6 +276,7 @@ Rails.application.routes.draw do
         resources :school_attributes
         resource :partners, only: [:show, :update]
         resources :meter_reviews
+        resources :consent_requests
         resources :bill_requests
       end
     end
