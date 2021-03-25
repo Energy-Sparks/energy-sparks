@@ -88,7 +88,7 @@ RSpec.describe "meter management", :meters, type: :system do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
         click_on 'Manage meters'
         click_on 'Edit'
-        expect(page).to have_content('This meter is available in the DCC')
+        expect(page).to have_content('This meter is available via n3rgy')
       end
     end
 
