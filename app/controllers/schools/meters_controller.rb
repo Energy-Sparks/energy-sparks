@@ -8,6 +8,7 @@ module Schools
     def index
       load_meters
       @meter = @school.meters.new
+      @pending_reviews = meters_need_review?
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_school(@school), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL), filename: "school-amr-readings-#{@school.name.parameterize}.csv" }
@@ -85,6 +86,10 @@ module Schools
     end
 
   private
+
+    def meters_need_review?
+      @school.meters.unreviewed_dcc_meter.any?
+    end
 
     def load_meters
       @meters ||= @school.meters

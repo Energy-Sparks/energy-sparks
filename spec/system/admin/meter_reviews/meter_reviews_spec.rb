@@ -100,6 +100,12 @@ RSpec.describe 'meter_reviews', type: :system do
       end
     end
 
+    context 'when viewing meters for school' do
+      it 'displays a link to perform a review' do
+        visit school_meters_path(school)
+        expect(page).to have_link("Review meters", href: new_admin_school_meter_review_path(school))
+      end
+    end
   end
 
   context 'when performing a review' do
@@ -201,5 +207,13 @@ RSpec.describe 'meter_reviews', type: :system do
       expect(page.has_link?( consent_document.title )).to be true
     end
 
+    context 'when viewing meters' do
+      it 'provides a link to meter reviews' do
+        visit school_meters_path(school)
+        expect(page).to have_link("Meter reviews", href: admin_school_meter_reviews_path(school) )
+      end
+    end
   end
+
+
 end

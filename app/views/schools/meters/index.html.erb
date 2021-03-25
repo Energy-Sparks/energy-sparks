@@ -101,6 +101,11 @@
     </tbody>
   <% end %>
 </table>
+
+<%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
+<% if @pending_reviews %>
+  <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
+<% end %>
 </div>
 
 <% if can? :manage, LowCarbonHubInstallation %>
