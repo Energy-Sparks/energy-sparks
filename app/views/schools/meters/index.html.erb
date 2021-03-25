@@ -120,7 +120,7 @@
   <div class="card bg-light mb-3">
     <div class="card-header"><h4>New meter</h4></div>
     <div class="card-body">
-      <%= render 'form', school: @school, meter: @meter %>
+      <%= render 'form', school: @school, meter: @meter, show_dcc_fields: false, meter_is_dcc: false %>
     </div>
   </div>
 <% end %>
