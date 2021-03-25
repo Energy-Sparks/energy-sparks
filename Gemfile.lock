@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 66f611db2286dfe08b736213dccaefd1e988d3b7
-  branch: 1346-add-findmpan-call-to-api
+  revision: 1f943f7e120cfeec420eed04e052cf0141b8916c
+  tag: 1.15.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
