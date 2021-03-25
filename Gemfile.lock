@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 08343635451565b5bc1726550af180053bfb9cd5
-  branch: dcc-meter-validation
+  revision: 66f611db2286dfe08b736213dccaefd1e988d3b7
+  branch: 1346-add-findmpan-call-to-api
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
