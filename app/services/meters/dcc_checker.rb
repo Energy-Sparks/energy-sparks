@@ -9,8 +9,8 @@ module Meters
       @meters.each do |meter|
         begin
           fields = { dcc_checked_at: DateTime.now }
-          status = @n3rgy_api_factory.data_api(meter).status(meter.mpan_mprn)
-          fields[:dcc_meter] = true unless status == :unknown
+          status = @n3rgy_api_factory.data_api(meter).find(meter.mpan_mprn)
+          fields[:dcc_meter] = status
           meter.update!(fields)
         rescue => e
           Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")
