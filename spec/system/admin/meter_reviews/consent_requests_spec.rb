@@ -116,7 +116,11 @@ RSpec.describe 'consent_requests', type: :system do
         expect(consent_grant.school_name).to eq('Boss school')
         expect(consent_grant.user).to eq(school_admin)
         expect(consent_grant.school).to eq(school)
+      end
 
+      it 'should display statement and terms checkbox' do
+        expect(page).to have_content(consent_statement.content.to_plain_text)
+        expect(page).to have_content('I confirm agreement with the Energy Sparks')
       end
     end
 
