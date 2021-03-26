@@ -10,6 +10,7 @@ module Schools
     def create
       @consent_grant = ConsentGrant.new(school_consent_params.merge(user: current_user, school: @school))
       if @consent_grant.save
+        ConsentGrantMailer.with(consent_grant: @consent_grant).email_consent.deliver_now
         redirect_to school_path(@school)
       else
         render :show
