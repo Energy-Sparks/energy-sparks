@@ -6,7 +6,9 @@ describe 'consent documents', type: :system do
   let(:school_admin)              { create(:school_admin, school: school) }
   let!(:admin)                    { create(:admin) }
 
-  context 'as an unknown user' do
+  context 'with not visible school' do
+      let!(:school)                   { create(:school, name: "School", visible: false)}
+
       it 'displays login page' do
         visit school_consent_documents_path(school)
         expect(page).to have_content("Sign in to Energy Sparks")

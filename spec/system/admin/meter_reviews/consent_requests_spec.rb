@@ -120,7 +120,10 @@ RSpec.describe 'consent_requests', type: :system do
       end
     end
 
-    context 'as an unknown user' do
+    context 'with non visible school' do
+        let!(:school)                   { create(:school, name: "School", visible: false)}
+        let!(:school_admin)          { create(:school_admin, school: school)}
+
         it 'displays login page' do
           visit school_consents_path(school)
           expect(page).to have_content("Sign in to Energy Sparks")
