@@ -176,6 +176,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Next'
 
       expect(page).to have_field('Email', with: onboarding.contact_email)
+      expect(page).to have_content('I confirm agreement with the Energy Sparks')
       fill_in 'Your name', with: 'A Teacher'
       select 'Headteacher', from: 'Role'
       fill_in 'Password', with: 'testtest1', match: :prefer_exact
@@ -211,6 +212,7 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Update school details'
 
       expect(page).to have_content(consent_statement.content.to_plain_text)
+      expect(page).not_to have_content('I confirm agreement with the Energy Sparks')
 
       fill_in 'Name', with: 'Boss user'
       fill_in 'Job title', with: 'Boss'
