@@ -6,6 +6,37 @@ describe 'consent documents', type: :system do
   let(:school_admin)              { create(:school_admin, school: school) }
   let!(:admin)                    { create(:admin) }
 
+  context 'as an unknown user' do
+      it 'displays login page' do
+        visit school_consent_documents_path(school)
+        expect(page).to have_content("Sign in to Energy Sparks")
+      end
+
+      context 'when logging in as the school admin user' do
+        it 'shows the page' do
+          visit school_consent_documents_path(school)
+          expect(page).to have_content("Sign in to Energy Sparks")
+          fill_in 'Email', with: school_admin.email
+          fill_in 'Password', with: school_admin.password
+          first("input[name='commit']").click
+          expect(page).to have_content("You have not provided us with any energy bills")
+        end
+      end
+
+      context 'when logging in as another user' do
+        let!(:other_user)       { create(:staff) }
+
+        it 'denies access' do
+          visit school_consent_documents_path(school)
+          expect(page).to have_content("Sign in to Energy Sparks")
+          fill_in 'Email', with: other_user.email
+          fill_in 'Password', with: other_user.password
+          first("input[name='commit']").click
+          expect(page).to have_content("You are not authorized to access this page")
+        end
+      end
+  end
+
   context 'as a school admin' do
 
     before(:each) do
