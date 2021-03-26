@@ -1,6 +1,6 @@
 module Schools
   class ConsentDocumentsController < ApplicationController
-    load_and_authorize_resource :school
+    load_resource :school
     load_and_authorize_resource :consent_document, through: :school
 
     def index
