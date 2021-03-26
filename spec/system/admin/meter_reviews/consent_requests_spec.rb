@@ -93,8 +93,9 @@ RSpec.describe 'consent_requests', type: :system do
       visit school_consents_path(school)
     end
 
-    it 'should display statement' do
+    it 'should display statement and terms checkbox' do
       expect(page).to have_content(consent_statement.content.to_plain_text)
+      expect(page).to have_content('I confirm agreement with the Energy Sparks')
     end
 
     it 'should record consent' do
