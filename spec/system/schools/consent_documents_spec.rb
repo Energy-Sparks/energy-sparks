@@ -34,6 +34,8 @@ describe 'consent documents', type: :system do
         expect(page).to have_content "Uploaded Bills"
         expect(page).to have_content "New bill"
         expect(page).to have_link 'Upload a new bill'
+        expect(page).to have_content "Edit"
+        expect(page).to_not have_content "Delete"
       end
 
       it 'can update a bill' do
@@ -89,13 +91,21 @@ describe 'consent documents', type: :system do
   end
 
   context 'as admin' do
+    let!(:consent_document) { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+
     before(:each) do
       sign_in(admin)
     end
 
-    context 'when managing consent documents' do
-      let!(:consent_document)                 { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+    context 'when viewing documents' do
+      it 'should allow admin to edit and delete' do
+        visit school_consent_documents_path(school)
+        expect(page).to have_link("Delete")
+        expect(page).to have_link("Edit")
+      end
+    end
 
+    context 'when managing consent documents' do
       it 'can delete a bill' do
         visit school_consent_document_path(school, consent_document)
         expect {
