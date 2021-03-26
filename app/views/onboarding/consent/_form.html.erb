@@ -3,5 +3,10 @@
   <%= f.input :name %>
   <%= f.input :job_title %>
   <%= f.input :school_name %>
+
+  <% if require_terms_agreement %>
+    <%= render 'shared/agree_terms_checkbox' %>
+  <% end %>
+
   <%= f.button :submit, 'I give permission', class: 'btn btn-primary' %>
 <% end %>
