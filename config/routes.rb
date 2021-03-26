@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'user-guide-videos', to: 'home#user_guide_videos'
   get 'team', to: 'home#team'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
+  get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
