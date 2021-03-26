@@ -134,6 +134,7 @@ RSpec.describe 'meter_reviews', type: :system do
       it 'should list the meters' do
         click_on 'Perform review'
         expect(page.has_unchecked_field?(dcc_meter.mpan_mprn.to_s)).to be true
+        expect(page.has_link?("View meters")).to be true
       end
 
       it 'should link to the consent grant' do
@@ -169,6 +170,11 @@ RSpec.describe 'meter_reviews', type: :system do
 
         it 'should provide list of documents' do
           expect(page.has_unchecked_field?(consent_document.title)).to be true
+          expect(page.has_link?("View documents")).to be true
+        end
+
+        it 'should allow a new bill to be requested' do
+          expect(page.has_link?("Request bill")).to be true
         end
 
         it 'should allow documents to be attached' do

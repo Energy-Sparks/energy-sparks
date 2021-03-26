@@ -46,6 +46,9 @@ class HomeController < ApplicationController
   def attribution
   end
 
+  def child_safeguarding_policy
+  end
+
   def training
     @events = Events::ListEvents.new.perform
   end
