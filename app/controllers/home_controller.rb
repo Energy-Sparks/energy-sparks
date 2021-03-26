@@ -43,6 +43,9 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def terms_and_conditions
+  end
+
   def attribution
   end
 
