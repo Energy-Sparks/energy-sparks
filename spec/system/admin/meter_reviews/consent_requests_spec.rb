@@ -7,11 +7,11 @@ RSpec.describe 'consent_requests', type: :system do
 
   let!(:admin)                 { create(:admin) }
 
-  before(:each) do
-    login_as admin
-  end
-
   context 'with pending meter review' do
+
+    before(:each) do
+      login_as admin
+    end
 
     it 'should provide navigation' do
       visit root_path
@@ -22,6 +22,10 @@ RSpec.describe 'consent_requests', type: :system do
   end
 
   context 'requesting consent' do
+
+    before(:each) do
+      login_as admin
+    end
 
     context 'with no users' do
 
@@ -88,31 +92,91 @@ RSpec.describe 'consent_requests', type: :system do
 
     let!(:school_admin)          { create(:school_admin, school: school)}
 
-    before(:each) do
-      login_as(school_admin)
-      visit school_consents_path(school)
+    context "as the school admin" do
+      before(:each) do
+        login_as(school_admin)
+        visit school_consents_path(school)
+      end
+
+      it 'should display statement' do
+        expect(page).to have_content(consent_statement.content.to_plain_text)
+      end
+
+      it 'should display statement and terms checkbox' do
+        expect(page).to have_content(consent_statement.content.to_plain_text)
+        expect(page).to have_content('I confirm agreement with the Energy Sparks')
+      end
+
+      context 'on completing form' do
+        before(:each) do
+          fill_in 'Name', with: 'Boss user'
+          fill_in 'Job title', with: 'Boss'
+          fill_in 'School name', with: 'Boss school'
+        end
+
+        it 'should record consent' do
+          click_on 'I give permission'
+
+          school.reload
+          consent_grant = school.consent_grants.last
+          expect(consent_grant.name).to eq('Boss user')
+          expect(consent_grant.job_title).to eq('Boss')
+          expect(consent_grant.school_name).to eq('Boss school')
+          expect(consent_grant.user).to eq(school_admin)
+          expect(consent_grant.school).to eq(school)
+        end
+
+        it 'should send an email' do
+          click_on 'I give permission'
+
+          expect(ActionMailer::Base.deliveries.count).to be 1
+          @email = ActionMailer::Base.deliveries.last
+          expect(@email.to).to match_array([school_admin.email])
+          expect(@email.subject).to eql("Your grant of consent to Energy Sparks")
+
+          email_body = @email.html_part.body.to_s
+          body = Capybara::Node::Simple.new(email_body.to_s)
+          expect(body).to have_link('view an online copy')
+          expect(body).to have_link('terms and conditions')
+        end
+
+      end
+
+
     end
 
-    it 'should display statement and terms checkbox' do
-      expect(page).to have_content(consent_statement.content.to_plain_text)
-      expect(page).to have_content('I confirm agreement with the Energy Sparks')
-    end
+    context 'with non visible school' do
+        let!(:school)                   { create(:school, name: "School", visible: false)}
+        let!(:school_admin)          { create(:school_admin, school: school)}
 
-    it 'should record consent' do
-      fill_in 'Name', with: 'Boss user'
-      fill_in 'Job title', with: 'Boss'
-      fill_in 'School name', with: 'Boss school'
+        it 'displays login page' do
+          visit school_consents_path(school)
+          expect(page).to have_content("Sign in to Energy Sparks")
+        end
 
-      click_on 'I give permission'
+        context 'when logging in as the school admin user' do
+          it 'shows the page' do
+            visit school_consents_path(school)
+            expect(page).to have_content("Sign in to Energy Sparks")
+            fill_in 'Email', with: school_admin.email
+            fill_in 'Password', with: school_admin.password
+            first("input[name='commit']").click
+            expect(page).to have_content(consent_statement.content.to_plain_text)
+          end
+        end
 
-      school.reload
-      consent_grant = school.consent_grants.last
-      expect(consent_grant.name).to eq('Boss user')
-      expect(consent_grant.job_title).to eq('Boss')
-      expect(consent_grant.school_name).to eq('Boss school')
-      expect(consent_grant.user).to eq(school_admin)
-      expect(consent_grant.school).to eq(school)
+        context 'when logging in as another user' do
+          let!(:other_user)       { create(:staff) }
 
+          it 'denies access' do
+            visit school_consent_documents_path(school)
+            expect(page).to have_content("Sign in to Energy Sparks")
+            fill_in 'Email', with: other_user.email
+            fill_in 'Password', with: other_user.password
+            first("input[name='commit']").click
+            expect(page).to have_content("You are not authorized to access this page")
+          end
+        end
     end
 
   end

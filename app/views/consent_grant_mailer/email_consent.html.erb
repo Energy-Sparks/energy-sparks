@@ -1,0 +1,23 @@
+<h1 class="mb-3">Your grant of consent to Energy Sparks</h1>
+
+<p>
+  Thank you for granting permission for Energy Sparks to access data for <%= @consent_grant.school.name %>.
+</p>
+
+<p>
+  For your records, here is a record of the consent that you gave us:
+</p>
+
+<blockquote class="card bg-light">
+  <div class="card-body">
+    <%= @consent_grant.consent_statement.content %>
+  </div>
+</blockquote>
+
+<p>
+<%= link_to 'view an online copy', school_consent_grant_url(@consent_grant.school, @consent_grant), class: 'btn btn-primary mt-3 mb-3' %>
+</p>
+
+<p>
+You can view our full <%= link_to 'terms and conditions', terms_and_conditions_url %> on our website.
+</p>
