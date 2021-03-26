@@ -14,7 +14,7 @@ module Onboarding
       @consent_grant = ConsentGrant.new(school_onboarding_consent_params.merge(user: current_user, school: @school_onboarding.school))
       if @consent_grant.save
         @school_onboarding.events.create!(event: :permission_given)
-
+        ConsentGrantMailer.with(consent_grant: @consent_grant).email_consent.deliver_now
         redirect_to new_onboarding_pupil_account_path(@school_onboarding)
       else
         render :show

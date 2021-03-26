@@ -102,26 +102,47 @@ RSpec.describe 'consent_requests', type: :system do
         expect(page).to have_content(consent_statement.content.to_plain_text)
       end
 
-      it 'should record consent' do
-        fill_in 'Name', with: 'Boss user'
-        fill_in 'Job title', with: 'Boss'
-        fill_in 'School name', with: 'Boss school'
-
-        click_on 'I give permission'
-
-        school.reload
-        consent_grant = school.consent_grants.last
-        expect(consent_grant.name).to eq('Boss user')
-        expect(consent_grant.job_title).to eq('Boss')
-        expect(consent_grant.school_name).to eq('Boss school')
-        expect(consent_grant.user).to eq(school_admin)
-        expect(consent_grant.school).to eq(school)
-      end
-
       it 'should display statement and terms checkbox' do
         expect(page).to have_content(consent_statement.content.to_plain_text)
         expect(page).to have_content('I confirm agreement with the Energy Sparks')
       end
+
+      context 'on completing form' do
+        before(:each) do
+          fill_in 'Name', with: 'Boss user'
+          fill_in 'Job title', with: 'Boss'
+          fill_in 'School name', with: 'Boss school'
+        end
+
+        it 'should record consent' do
+          click_on 'I give permission'
+
+          school.reload
+          consent_grant = school.consent_grants.last
+          expect(consent_grant.name).to eq('Boss user')
+          expect(consent_grant.job_title).to eq('Boss')
+          expect(consent_grant.school_name).to eq('Boss school')
+          expect(consent_grant.user).to eq(school_admin)
+          expect(consent_grant.school).to eq(school)
+        end
+
+        it 'should send an email' do
+          click_on 'I give permission'
+
+          expect(ActionMailer::Base.deliveries.count).to be 1
+          @email = ActionMailer::Base.deliveries.last
+          expect(@email.to).to match_array([school_admin.email])
+          expect(@email.subject).to eql("Your grant of consent to Energy Sparks")
+
+          email_body = @email.html_part.body.to_s
+          body = Capybara::Node::Simple.new(email_body.to_s)
+          expect(body).to have_link('view an online copy')
+          expect(body).to have_link('terms and conditions')
+        end
+
+      end
+
+
     end
 
     context 'with non visible school' do
