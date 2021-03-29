@@ -43,7 +43,7 @@
               <%= f.association :meters, label: "Which meters can be activated?", as: :check_boxes, collection: @pending_meters, value_method: :id, label_method: :mpan_mprn %>
             </div>
             <div class="card-footer">
-              <%= link_to "View meters", school_meters_path(@school), class: "btn btn-sm btn-default", target: "_new" %>
+              <%= link_to "View meters", school_meters_path(@school), class: "btn btn-sm btn-default", target: "_blank" %>
             </div>
           </div>
 
@@ -52,7 +52,7 @@
               <%= f.association :consent_documents, label: "Which documents were checked?", as: :check_boxes, collection: @school.consent_documents, value_method: :id, label_method: :title %>
             </div>
             <div class="card-footer">
-              <%= link_to "View documents", school_consent_documents_path(@school), class: "btn btn-sm btn-default", target: "_new" %>
+              <%= link_to "View documents", school_consent_documents_path(@school), class: "btn btn-sm btn-default", target: "_blank" %>
               <%= link_to "Request bill", new_admin_school_bill_request_path(@school), class: 'btn btn-sm btn-default' %>
             </div>
           </div>
