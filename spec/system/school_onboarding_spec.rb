@@ -212,12 +212,13 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Update school details'
 
       expect(page).to have_content(consent_statement.content.to_plain_text)
+      expect(page).to have_content('I give permission and confirm full agreement with')
 
       fill_in 'Name', with: 'Boss user'
       fill_in 'Job title', with: 'Boss'
       fill_in 'School name', with: 'Boss school'
 
-      click_on 'I give permission'
+      click_on 'Submit'
 
       onboarding.reload
       expect(onboarding).to have_event(:permission_given)

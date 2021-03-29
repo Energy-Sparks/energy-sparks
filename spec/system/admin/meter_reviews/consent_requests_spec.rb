@@ -98,12 +98,9 @@ RSpec.describe 'consent_requests', type: :system do
         visit school_consents_path(school)
       end
 
-      it 'should display statement' do
+      it 'should display statement and checkbox' do
         expect(page).to have_content(consent_statement.content.to_plain_text)
-      end
-
-      it 'should display statement' do
-        expect(page).to have_content(consent_statement.content.to_plain_text)
+        expect(page).to have_content('I give permission and confirm full agreement')
       end
 
       context 'on completing form' do
@@ -114,7 +111,7 @@ RSpec.describe 'consent_requests', type: :system do
         end
 
         it 'should record consent' do
-          click_on 'I give permission'
+          click_on 'Submit'
 
           school.reload
           consent_grant = school.consent_grants.last
@@ -126,7 +123,7 @@ RSpec.describe 'consent_requests', type: :system do
         end
 
         it 'should send an email' do
-          click_on 'I give permission'
+          click_on 'Submit'
 
           expect(ActionMailer::Base.deliveries.count).to be 1
           @email = ActionMailer::Base.deliveries.last
