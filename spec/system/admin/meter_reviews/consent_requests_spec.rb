@@ -136,7 +136,6 @@ RSpec.describe 'consent_requests', type: :system do
 
           email_body = @email.html_part.body.to_s
           body = Capybara::Node::Simple.new(email_body.to_s)
-          expect(body).to have_link('view an online copy')
           expect(body).to have_link('terms and conditions')
         end
 
