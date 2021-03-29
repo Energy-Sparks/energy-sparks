@@ -102,9 +102,8 @@ RSpec.describe 'consent_requests', type: :system do
         expect(page).to have_content(consent_statement.content.to_plain_text)
       end
 
-      it 'should display statement and terms checkbox' do
+      it 'should display statement' do
         expect(page).to have_content(consent_statement.content.to_plain_text)
-        expect(page).to have_content('I confirm agreement with the Energy Sparks')
       end
 
       context 'on completing form' do

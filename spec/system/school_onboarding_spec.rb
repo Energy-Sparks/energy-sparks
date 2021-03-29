@@ -212,7 +212,6 @@ RSpec.describe "school onboarding", :schools, type: :system do
       click_on 'Update school details'
 
       expect(page).to have_content(consent_statement.content.to_plain_text)
-      expect(page).not_to have_content('I confirm agreement with the Energy Sparks')
 
       fill_in 'Name', with: 'Boss user'
       fill_in 'Job title', with: 'Boss'

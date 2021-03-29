@@ -21,7 +21,7 @@
         <td><%= link_to "#{station.title}", data_feeds_weather_observations_path(station.id) %></td>
         <td><%= station.description %></td>
         <td>
-          <%= link_to "#{station.latitude}, #{station.longitude}", "https://www.openstreetmap.org/?mlat=#{station.latitude}&mlon=#{station.longitude}", target: '_blank' %>
+          <%= link_to "#{station.latitude}, #{station.longitude}", "https://www.openstreetmap.org/?mlat=#{station.latitude}&mlon=#{station.longitude}", target: "_blank" %>
         <td><%= station.observation_count %></td>
         <td><%= station.first_observation_date %></td>
         <td><%= station.last_observation_date %></td>
