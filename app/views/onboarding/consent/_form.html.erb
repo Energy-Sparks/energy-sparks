@@ -3,5 +3,12 @@
   <%= f.input :name %>
   <%= f.input :job_title %>
   <%= f.input :school_name %>
-  <%= f.button :submit, 'I give permission', class: 'btn btn-primary' %>
+
+  <div class="custom-control custom-checkbox agreements">
+    <%= check_box_tag "privacy", false, false, class: 'custom-control-input multi-select must-check' %>
+    <%= label_tag "privacy", "I give permission and confirm full agreement with the ", class: 'custom-control-label' %>
+    <%= link_to 'terms and conditions', terms_and_conditions_path, target: "_blank" %>
+  </div>
+
+  <%= f.button :submit, 'Submit', class: 'btn btn-primary' %>
 <% end %>
