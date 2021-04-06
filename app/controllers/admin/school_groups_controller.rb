@@ -44,7 +44,8 @@ module Admin
         :default_template_calendar_id,
         :default_dark_sky_area_id,
         :default_solar_pv_tuos_area_id,
-        :default_weather_station_id
+        :default_weather_station_id,
+        :public
       )
     end
   end
