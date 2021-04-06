@@ -24,6 +24,7 @@
 #  percentage_free_school_meals          :integer
 #  postcode                              :string
 #  process_data                          :boolean          default(FALSE)
+#  public                                :boolean          default(TRUE)
 #  school_group_id                       :bigint(8)
 #  school_type                           :integer
 #  scoreboard_id                         :bigint(8)

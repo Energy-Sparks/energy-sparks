@@ -157,6 +157,16 @@ RSpec.describe "school", type: :system do
         expect(school.key_stages).to_not include(ks3)
       end
 
+      it 'allows public/non-public management from school page' do
+        click_on(school_name)
+        click_on('Public')
+        school.reload
+        expect(school).to_not be_public
+        click_on('Not Public')
+        school.reload
+        expect(school).to be_public
+      end
+
       it 'allows visibility management from school page' do
         click_on(school_name)
         click_on('Visible')

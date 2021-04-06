@@ -2,13 +2,21 @@
   <div class="container">
     <div>
       <%= link_to school.name, school_path(school), class: "navbar-brand" %>
-      <% if can?(:change_visiblity, school) %>
+      <% if can?(:change_visibility, school) %>
         <% if school.visible? %>
           <%= link_to 'Visible', school_visibility_path(school), class: 'badge badge-pill badge-success', method: :delete %>
         <% else %>
           <%= link_to 'Not visible', school_visibility_path(school), class: 'badge badge-pill badge-danger', method: :post %>
         <% end %>
       <% end %>
+      <% if can?(:change_public, school) %>
+        <% if school.public? %>
+          <%= link_to 'Public', school_public_path(school), class: 'badge badge-pill badge-success', method: :delete %>
+        <% else %>
+          <%= link_to 'Not Public', school_public_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+        <% end %>
+      <% end %>
+
       <% if can?(:change_data_processing, school) %>
         <% if school.process_data? %>
           <%= link_to 'Processing data', school_data_processing_path(school), class: 'badge badge-pill badge-success', method: :delete %>
@@ -55,4 +63,3 @@
     </div>
   </div>
 </nav>
-

@@ -35,10 +35,12 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Edit School Groups'
       click_on 'Edit'
       fill_in 'Name', with: 'B & NES'
+      uncheck 'Public'
       click_on 'Update School group'
 
       school_group.reload
       expect(school_group.name).to eq('B & NES')
+      expect(school_group).to_not be_public
     end
 
     it 'can delete a school group' do

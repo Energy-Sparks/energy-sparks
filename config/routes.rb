@@ -97,6 +97,7 @@ Rails.application.routes.draw do
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
+      resource :public, only: [:create, :destroy], controller: :public
       resource :data_processing, only: [:create, :destroy], controller: :data_processing
       resources :contacts
       resources :subscription_generation_runs, only: [:index, :show]

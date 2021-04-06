@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_171552) do
+ActiveRecord::Schema.define(version: 2021_04_06_143402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -969,6 +969,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_171552) do
     t.bigint "default_dark_sky_area_id"
     t.bigint "default_template_calendar_id"
     t.bigint "default_weather_station_id"
+    t.boolean "public", default: true
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1084,6 +1085,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_171552) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.bigint "weather_station_id"
+    t.boolean "public", default: true
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1098,6 +1100,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_171552) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "academic_year_calendar_id"
+    t.boolean "public", default: true
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
