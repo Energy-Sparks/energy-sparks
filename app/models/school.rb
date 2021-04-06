@@ -78,6 +78,7 @@ class School < ApplicationRecord
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
   has_many :consent_grants,       inverse_of: :school
+  has_many :meter_reviews,        inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -357,6 +358,10 @@ class School < ApplicationRecord
     all_partners = partners
     all_partners += school_group.partners if school_group.present?
     all_partners
+  end
+
+  def consent_up_to_date?
+    consent_grants.any? && consent_grants.by_date.first.consent_statement.current
   end
 
   private

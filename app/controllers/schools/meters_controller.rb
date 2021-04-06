@@ -8,6 +8,7 @@ module Schools
     def index
       load_meters
       @meter = @school.meters.new
+      @pending_reviews = meters_need_review?
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_school(@school), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL), filename: "school-amr-readings-#{@school.name.parameterize}.csv" }
@@ -15,8 +16,9 @@ module Schools
     end
 
     def show
-      @n3rgy_status = MeterManagement.new(@meter).check_n3rgy_status
-      @elements = MeterManagement.new(@meter).elements
+      manager = MeterManagement.new(@meter)
+      @n3rgy_status = manager.check_n3rgy_status
+      @elements = manager.elements
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
@@ -25,12 +27,6 @@ module Schools
 
     def create
       manager = MeterManagement.new(@meter)
-      if @meter.dcc_meter? && !manager.valid_dcc_meter?
-        @meter.errors.add :base, "This meter is not registered with DCC"
-        load_meters
-        render :index
-        return
-      end
       if @meter.save
         manager.process_creation!
         redirect_to school_meters_path(@school)
@@ -41,16 +37,13 @@ module Schools
     end
 
     def edit
+      manager = MeterManagement.new(@meter)
+      @meter_is_dcc = manager.check_n3rgy_status
     end
 
     def update
       @meter.attributes = meter_params
       manager = MeterManagement.new(@meter)
-      if @meter.dcc_meter? && !manager.valid_dcc_meter?
-        @meter.errors.add :base, "This meter is not registered with DCC"
-        render :edit
-        return
-      end
       if @meter.save
         if @meter.mpan_mprn_previously_changed?
           manager.process_mpan_mpnr_change!
@@ -86,6 +79,10 @@ module Schools
 
   private
 
+    def meters_need_review?
+      @school.meters.unreviewed_dcc_meter.any?
+    end
+
     def load_meters
       @meters ||= @school.meters
       @active_meters = @meters.active.real.order(:mpan_mprn)
@@ -96,7 +93,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :consent_granted, :sandbox, :earliest_available_data)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data)
     end
   end
 end

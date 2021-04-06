@@ -43,7 +43,13 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def terms_and_conditions
+  end
+
   def attribution
+  end
+
+  def child_safeguarding_policy
   end
 
   def training

@@ -73,7 +73,7 @@ RSpec.describe "meter management", :meters, type: :system do
 
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}, elements: [1]) }
+      let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
 
       it 'the meter inventory button can be shown' do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
@@ -82,6 +82,13 @@ RSpec.describe "meter management", :meters, type: :system do
         click_on 'Inventory'
         expect(page).to have_content('device_id')
         expect(page).to have_content('123999')
+      end
+
+      it 'the dcc checkboxes and status are shown on the edit form' do
+        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        click_on 'Manage meters'
+        click_on 'Edit'
+        expect(page).to have_content('This meter is available via n3rgy')
       end
     end
 

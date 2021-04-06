@@ -5,6 +5,7 @@ FactoryBot.define do
     confirmed_at     { Time.zone.now }
 
     factory :school_admin  do
+      name { "School manager" }
       role { :school_admin }
       association :staff_role, factory: [:staff_role, :management]
       school
@@ -29,6 +30,7 @@ FactoryBot.define do
     end
 
     factory :admin do
+      name { "Admin"}
       role { :admin }
     end
 

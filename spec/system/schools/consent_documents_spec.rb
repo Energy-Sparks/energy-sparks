@@ -6,6 +6,39 @@ describe 'consent documents', type: :system do
   let(:school_admin)              { create(:school_admin, school: school) }
   let!(:admin)                    { create(:admin) }
 
+  context 'with not visible school' do
+      let!(:school)                   { create(:school, name: "School", visible: false)}
+
+      it 'displays login page' do
+        visit school_consent_documents_path(school)
+        expect(page).to have_content("Sign in to Energy Sparks")
+      end
+
+      context 'when logging in as the school admin user' do
+        it 'shows the page' do
+          visit school_consent_documents_path(school)
+          expect(page).to have_content("Sign in to Energy Sparks")
+          fill_in 'Email', with: school_admin.email
+          fill_in 'Password', with: school_admin.password
+          first("input[name='commit']").click
+          expect(page).to have_content("You have not provided us with any energy bills")
+        end
+      end
+
+      context 'when logging in as another user' do
+        let!(:other_user)       { create(:staff) }
+
+        it 'denies access' do
+          visit school_consent_documents_path(school)
+          expect(page).to have_content("Sign in to Energy Sparks")
+          fill_in 'Email', with: other_user.email
+          fill_in 'Password', with: other_user.password
+          first("input[name='commit']").click
+          expect(page).to have_content("You are not authorized to access this page")
+        end
+      end
+  end
+
   context 'as a school admin' do
 
     before(:each) do
@@ -34,6 +67,8 @@ describe 'consent documents', type: :system do
         expect(page).to have_content "Uploaded Bills"
         expect(page).to have_content "New bill"
         expect(page).to have_link 'Upload a new bill'
+        expect(page).to have_content "Edit"
+        expect(page).to_not have_content "Delete"
       end
 
       it 'can update a bill' do
@@ -89,13 +124,21 @@ describe 'consent documents', type: :system do
   end
 
   context 'as admin' do
+    let!(:consent_document) { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+
     before(:each) do
       sign_in(admin)
     end
 
-    context 'when managing consent documents' do
-      let!(:consent_document)                 { create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill") }
+    context 'when viewing documents' do
+      it 'should allow admin to edit and delete' do
+        visit school_consent_documents_path(school)
+        expect(page).to have_link("Delete")
+        expect(page).to have_link("Edit")
+      end
+    end
 
+    context 'when managing consent documents' do
       it 'can delete a bill' do
         visit school_consent_document_path(school, consent_document)
         expect {

@@ -20,9 +20,11 @@ Rails.application.routes.draw do
   get 'enrol', to: 'home#enrol'
   get 'datasets', to: 'home#datasets'
   get 'attribution', to: 'home#attribution'
+  get 'child-safeguarding-policy', to: 'home#child_safeguarding_policy'
   get 'user-guide-videos', to: 'home#user_guide_videos'
   get 'team', to: 'home#team'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
+  get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
@@ -148,6 +150,9 @@ Rails.application.routes.draw do
       resource :usage, controller: :usage, only: :show
       resources :downloads, only: [:index]
       resources :batch_runs, only: [:index, :create, :show]
+
+      resource :consents, only: [:show, :create]
+
     end
 
     # Maintain old scoreboard URL
@@ -170,8 +175,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :case_studies
+    resources :consent_grants, only: [:index, :show]
     resources :consent_statements
-    resources :consent_grants
+    post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
     resources :partners
     resources :team_members
     resources :newsletters
@@ -203,6 +209,7 @@ Rails.application.routes.draw do
     end
 
     resources :meter_attributes, only: :index
+    resources :meter_reviews, only: :index
 
     resources :programme_types do
       scope module: :programme_types do
@@ -270,6 +277,9 @@ Rails.application.routes.draw do
         resources :meter_attributes
         resources :school_attributes
         resource :partners, only: [:show, :update]
+        resources :meter_reviews
+        resources :consent_requests
+        resources :bill_requests
       end
     end
 

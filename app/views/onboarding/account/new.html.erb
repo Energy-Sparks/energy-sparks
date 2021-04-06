@@ -18,6 +18,9 @@
       <%= f.input :password, required: true %>
       <%= f.input :password_confirmation, required: true %>
       <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+
+      <%= render 'shared/agree_terms_checkbox' %>
+
       <%= f.button :submit, 'Create my account' %>
     <% end %>
   </div>

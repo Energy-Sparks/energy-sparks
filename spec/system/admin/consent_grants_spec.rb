@@ -20,7 +20,7 @@ RSpec.describe 'consent_grants', type: :system do
 
     context 'when consent grants exist' do
 
-      before do
+      let!(:grant)       {
         ConsentGrant.create!(
           user: user,
           school: school,
@@ -29,24 +29,56 @@ RSpec.describe 'consent_grants', type: :system do
           job_title: job_title,
           ip_address: ip_address
         )
+      }
+
+      let!(:meter)     { create(:gas_meter, school: school) }
+
+      before(:each) do
+        visit root_path
+        click_on 'Reports'
+        click_on 'Consents Granted'
       end
 
       it 'shows all consents granted' do
-        visit root_path
-        click_on 'Admin'
-        click_on 'Consents Granted'
         expect(page).to have_content('Consents Granted')
         expect(page).to have_content(school.name)
         expect(page).to have_content(name)
         expect(page).to have_content(job_title)
         expect(page).to have_content('First consent statement')
-        expect(page).to have_content(ConsentGrant.last.guid)
+        expect(page).to have_content(grant.guid)
+      end
+
+      it 'allows searching by reference' do
+        fill_in "Reference", with: 'none'
+        click_on "Search"
+        expect(page).to have_content "No results were found"
+
+        fill_in "Reference", with: grant.guid
+        click_on "Search"
+
+        expect(page).to have_content(school.name)
+        expect(page).to have_content(name)
+        expect(page).to have_content(job_title)
+        expect(page).to have_content('First consent statement')
+        expect(page).to have_content(grant.guid)
+      end
+
+      it 'allows searching by mpxn' do
+        fill_in "Mpxn", with: '999'
+        click_on "Search"
+        expect(page).to have_content "No results were found"
+
+        fill_in "Mpxn", with: meter.mpan_mprn
+        click_on "Search"
+
+        expect(page).to have_content(school.name)
+        expect(page).to have_content(name)
+        expect(page).to have_content(job_title)
+        expect(page).to have_content('First consent statement')
+        expect(page).to have_content(grant.guid)
       end
 
       it 'shows consent details and contents' do
-        visit root_path
-        click_on 'Admin'
-        click_on 'Consents Granted'
         click_on 'View'
         expect(page).to have_content(school.name)
         expect(page).to have_content(name)
@@ -55,6 +87,8 @@ RSpec.describe 'consent_grants', type: :system do
         expect(page).to have_content('First consent statement')
         expect(page).to have_content('You may use my data..')
       end
+
+
     end
   end
 

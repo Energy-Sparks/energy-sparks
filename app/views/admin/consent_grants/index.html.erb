@@ -1,6 +1,18 @@
 <h1>Consents Granted</h1>
 
-<% if @consent_grants %>
+<p>
+Find consent records by reference code provided to n3rgy or meter mpxn.
+</p>
+
+<%= simple_form_for :search, url: admin_consent_grants_path, method: "GET", html: { class: 'form' } do |f| %>
+  <%= f.input :reference, input_html: {value: params[:search].present? ? params[:search]["reference"]: ''} %>
+  <%= f.input :mpxn, input_html: {value: params[:search].present? ? params[:search]["mpxn"]: ''} %>
+  <%= f.submit "Search", class: "btn btn-primary" %>
+<% end %>
+
+<% if @consent_grants.any? %>
+
+<h3>Search results</h3>
 
 <table class="table">
   <thead>
@@ -35,5 +47,5 @@
 </table>
 
 <% else %>
-  <p>There are no consent grants</p>
+  <p>No results were found using the provided search parameters</p>
 <% end %>

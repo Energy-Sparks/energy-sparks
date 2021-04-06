@@ -36,6 +36,15 @@ module Admin
       end
     end
 
+    def publish
+      publisher = ConsentStatements::Publisher.new
+      if publisher.publish(@consent_statement)
+        redirect_to admin_consent_statements_path, notice: 'Consent statement set to current'
+      else
+        redirect_to admin_consent_statements_path, alert: publisher.error_message
+      end
+    end
+
     def destroy
       if @consent_statement.editable?
         @consent_statement.destroy

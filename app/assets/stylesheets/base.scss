@@ -166,3 +166,28 @@ div.meter-attributes {
 .accordion-block {
   padding-top: 20px;
 }
+
+dl dt {
+  margin-bottom: 0.5rem;
+}
+
+.terms-and-conditions {
+  ul {
+    list-style-type: none;
+  }
+  ul li {
+    margin: 0 0 10px 0;
+  }
+  table {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .right {
+    text-align: right;
+  }
+}
+
+.agreements {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

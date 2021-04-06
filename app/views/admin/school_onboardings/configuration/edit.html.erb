@@ -2,11 +2,12 @@
 
 <%= form_for(@school_onboarding, url: admin_school_onboarding_configuration_path) do |f| %>
   <h2>Calendar and Data Feed configuration</h2>
-  <div class="form-group">
-    <%= f.label :template_calendar_id, 'Template calendar' %>
-    <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :template_calendar_id, 'Template calendar' %>
+      <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
+    </div>
   </div>
-
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
@@ -19,9 +20,11 @@
       <%= f.select :dark_sky_area_id, options_from_collection_for_select(DarkSkyArea.all, 'id', 'title', (@school_onboarding.dark_sky_area.id if @school_onboarding.dark_sky_area)),{include_blank: true}, { class: 'form-control' }%>
     </div>
   </div>
-  <div class="form-group">
-    <%= f.label :weather_station_id, 'Weather Station' %>
-    <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.order(:title), 'id', 'title', @school_onboarding.weather_station_id), {include_blank: true}, { class: 'form-control' } %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :weather_station_id, 'Weather Station' %>
+      <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.order(:title), 'id', 'title', @school_onboarding.weather_station_id), {include_blank: true}, { class: 'form-control' } %>
+    </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">

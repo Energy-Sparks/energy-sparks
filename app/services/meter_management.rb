@@ -6,18 +6,8 @@ class MeterManagement
     @meter = meter
   end
 
-  def valid_dcc_meter?
-    #currently only doing validation on those potentially registered in DCC
-    return false unless @meter.dcc_meter?
-    status = check_n3rgy_status
-    if [:available, :consent_required].include? status
-      return true
-    end
-    return false
-  end
-
   def check_n3rgy_status
-    @n3rgy_api_factory.data_api(@meter).status(@meter.mpan_mprn)
+    @n3rgy_api_factory.data_api(@meter).find(@meter.mpan_mprn)
   rescue => e
     Rails.logger.error "Exception: checking status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
@@ -37,6 +27,7 @@ class MeterManagement
 
   def process_creation!
     assign_amr_data_feed_readings
+    DccCheckerJob.perform_later(@meter) if Meter.main_meter.exists?(@meter.id)
   end
 
   def process_mpan_mpnr_change!
