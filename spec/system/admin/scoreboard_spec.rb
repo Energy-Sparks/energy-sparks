@@ -36,6 +36,8 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       expect(scoreboard.name).to eq('BANES Only')
     end
 
+    it 'can make a scoreboard not public'
+
     it 'can delete a scoreboard' do
       scoreboard = create(:scoreboard, name: 'BANES and Frome')
       visit admin_scoreboards_path
