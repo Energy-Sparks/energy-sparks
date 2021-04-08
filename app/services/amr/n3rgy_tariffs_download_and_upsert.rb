@@ -24,8 +24,9 @@ module Amr
     private
 
     def create_import_log
-      N3rgyTariffImportLog.create(
-        description: "n3rgy API tariff import for #{@meter.mpan_mprn} #{DateTime.now.utc}",
+      TariffImportLog.create(
+        source: 'n3rgy-api',
+        description: "Tariff import for #{@meter.mpan_mprn} at #{DateTime.now.utc}",
         import_time: DateTime.now.utc)
     end
 

@@ -14,12 +14,12 @@ module Amr
     end
 
     def upsert_prices
-      records_count_before = N3rgyTariffPrice.count
+      records_count_before = TariffPrice.count
       data_for_upsert = add_import_log_id_and_dates_to_hash(@array_of_price_hashes)
 
-      result = N3rgyTariffPrice.upsert_all(data_for_upsert, unique_by: [:meter_id, :tariff_date])
+      result = TariffPrice.upsert_all(data_for_upsert, unique_by: [:meter_id, :tariff_date])
 
-      inserted_count = N3rgyTariffPrice.count - records_count_before
+      inserted_count = TariffPrice.count - records_count_before
       updated_count = result.rows.flatten.size - inserted_count
 
       @import_log.update(prices_imported: inserted_count, prices_updated: updated_count)
@@ -28,12 +28,12 @@ module Amr
     end
 
     def upsert_standing_charges
-      records_count_before = N3rgyTariffStandingCharge.count
+      records_count_before = TariffStandingCharge.count
       data_for_upsert = add_import_log_id_and_dates_to_hash(@array_of_standing_charge_hashes)
 
-      result = N3rgyTariffStandingCharge.upsert_all(data_for_upsert, unique_by: [:meter_id, :start_date])
+      result = TariffStandingCharge.upsert_all(data_for_upsert, unique_by: [:meter_id, :start_date])
 
-      inserted_count = N3rgyTariffStandingCharge.count - records_count_before
+      inserted_count = TariffStandingCharge.count - records_count_before
       updated_count = result.rows.flatten.size - inserted_count
 
       @import_log.update(standing_charges_imported: inserted_count, standing_charges_updated: updated_count)
@@ -47,7 +47,7 @@ module Amr
       created_at = DateTime.now.utc
       updated_at = DateTime.now.utc
       arr.each do |reading|
-        reading[:n3rgy_tariff_import_log_id] = @import_log.id
+        reading[:tariff_import_log_id] = @import_log.id
         reading[:created_at] = created_at
         reading[:updated_at] = updated_at
       end

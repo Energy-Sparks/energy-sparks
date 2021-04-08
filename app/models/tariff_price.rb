@@ -1,0 +1,2 @@
+class TariffPrice < ApplicationRecord
+end
