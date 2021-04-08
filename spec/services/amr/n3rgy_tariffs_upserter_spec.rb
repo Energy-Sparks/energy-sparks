@@ -32,8 +32,8 @@ module Amr
       expect( TariffPrice.count ).to eql 0
       upserter.perform
       expect( TariffPrice.count ).to eql 1
-      expect( TariffPrice.last.tariff_prices[0] ).to eql (JSON.parse(expected_tiered_tariff.to_json))
-      expect( TariffPrice.last.tariff_prices[1] ).to eql (0.15992)
+      expect( TariffPrice.last.prices[0] ).to eql (JSON.parse(expected_tiered_tariff.to_json))
+      expect( TariffPrice.last.prices[1] ).to eql (0.15992)
     end
 
     it "logs counts of inserts and updates" do

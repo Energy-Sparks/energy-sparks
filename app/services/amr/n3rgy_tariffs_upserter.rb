@@ -31,7 +31,7 @@ module Amr
         {
           meter_id: @meter.id,
           tariff_date: tariff_date,
-          prices: prices.to_json
+          prices: prices
         }
       end
     end
