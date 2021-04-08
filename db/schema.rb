@@ -1187,6 +1187,8 @@ ActiveRecord::Schema.define(version: 2021_04_08_112139) do
     t.text "source", null: false
     t.text "description"
     t.text "error_messages"
+    t.date "start_date"
+    t.date "end_date"
     t.datetime "import_time"
     t.integer "prices_imported", default: 0, null: false
     t.integer "prices_updated", default: 0, null: false
