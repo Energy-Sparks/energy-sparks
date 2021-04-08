@@ -1,9 +1,9 @@
 module Amr
   class TariffUpserter
-    def initialize(array_of_price_hashes, array_of_standing_charge_hashes, import_log)
+    def initialize(array_of_price_hashes, array_of_standing_charge_hashes, tariff_import_log)
       @array_of_price_hashes = array_of_price_hashes
       @array_of_standing_charge_hashes = array_of_standing_charge_hashes
-      @import_log = import_log
+      @tariff_import_log = tariff_import_log
     end
 
     def perform
@@ -22,7 +22,7 @@ module Amr
       inserted_count = TariffPrice.count - records_count_before
       updated_count = result.rows.flatten.size - inserted_count
 
-      @import_log.update(prices_imported: inserted_count, prices_updated: updated_count)
+      @tariff_import_log.update(prices_imported: inserted_count, prices_updated: updated_count)
 
       Rails.logger.info "Updated #{updated_count} Inserted #{inserted_count}"
     end
@@ -36,7 +36,7 @@ module Amr
       inserted_count = TariffStandingCharge.count - records_count_before
       updated_count = result.rows.flatten.size - inserted_count
 
-      @import_log.update(standing_charges_imported: inserted_count, standing_charges_updated: updated_count)
+      @tariff_import_log.update(standing_charges_imported: inserted_count, standing_charges_updated: updated_count)
 
       Rails.logger.info "Updated #{updated_count} Inserted #{inserted_count}"
     end
@@ -47,7 +47,7 @@ module Amr
       created_at = DateTime.now.utc
       updated_at = DateTime.now.utc
       arr.each do |reading|
-        reading[:tariff_import_log_id] = @import_log.id
+        reading[:tariff_import_log_id] = @tariff_import_log.id
         reading[:created_at] = created_at
         reading[:updated_at] = updated_at
       end
