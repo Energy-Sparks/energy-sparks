@@ -10,6 +10,24 @@ RSpec.describe "pupils school view", type: :system do
   let(:equivalence_type_content)  { create(:equivalence_type_content_version, equivalence_type: equivalence_type, equivalence: 'Your school spent {{gbp}} on electricity last year!')}
   let!(:equivalence)              { create(:equivalence, school: school, content_version: equivalence_type_content, data: {'gbp' => {'formatted_equivalence' => '£2.00'}}, to_date: Date.today ) }
 
+  describe 'when not logged in' do
+    it 'displays pupil dashboard for visible schools' do
+      visit pupils_school_path(school)
+      expect(page).to have_content('Your school spent £2.00 on electricity last year!')
+    end
+
+    context 'for non-public school' do
+      before(:each) do
+        school.update!(public: false)
+      end
+
+      it 'prompts for login' do
+        visit pupils_school_path(school)
+        expect(page.has_content? 'This school has disabled public access to its data').to be true
+      end
+    end
+  end
+
   describe 'when logged in as pupil' do
     before(:each) do
       sign_in(user)

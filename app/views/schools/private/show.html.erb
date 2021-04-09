@@ -1,0 +1,9 @@
+<div class="jumbotron">
+  <p class="lead">This school has disabled public access to its data.</p>
+  <p class="lead">
+    Use the links below to log in as a member of staff or pupil from this school.
+    Or <%= link_to 'explore another school', schools_path %>
+  </p>
+</div>
+
+<%= render 'shared/school_login_prompt', school: @school %>
