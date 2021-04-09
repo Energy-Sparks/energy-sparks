@@ -80,7 +80,7 @@ RSpec.describe "school", type: :system do
 
       it 'prompts user to login when viewing' do
         visit school_path(non_public_school)
-        expect(page.has_content? 'This school has disabled public access to its data').to be true
+        expect(page.has_content? 'This school has disabled public access').to be true
       end
     end
 
@@ -129,7 +129,7 @@ RSpec.describe "school", type: :system do
 
       it 'prompts user to login when viewing' do
         visit school_path(non_public_school)
-        expect(page.has_content? 'This school has disabled public access to its data').to be true
+        expect(page.has_content? 'This school has disabled public access').to be true
       end
 
     end

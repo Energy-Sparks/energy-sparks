@@ -23,7 +23,7 @@ RSpec.describe "pupils school view", type: :system do
 
       it 'prompts for login' do
         visit pupils_school_path(school)
-        expect(page.has_content? 'This school has disabled public access to its data').to be true
+        expect(page.has_content? 'This school has disabled public access').to be true
       end
     end
   end
