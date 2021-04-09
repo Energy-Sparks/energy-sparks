@@ -55,9 +55,11 @@ class Ability
         can :switch, School
       end
       #allow users from schools in same group to access dashboards
-      can [
-        :show, :usage, :show_pupils_dash, :show_teachers_dash
-      ], School, { school_group_id: user.school.school_group_id, visible: true, public: false }
+      if user.school.present?
+        can [
+          :show, :usage, :show_pupils_dash, :show_teachers_dash
+        ], School, { school_group_id: user.school.school_group_id, visible: true, public: false }
+      end
       can [
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity,
         :update, :manage_school_times, :suggest_activity, :manage_users,
