@@ -61,7 +61,7 @@ class HomeController < ApplicationController
   end
 
   def school_statistics
-    @school_groups = SchoolGroup.order(:name)
+    @school_groups = ComparisonService.new(current_user).list_school_groups
   end
 
   def team

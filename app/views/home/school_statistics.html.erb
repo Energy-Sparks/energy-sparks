@@ -48,20 +48,22 @@
             </thead>
             <tbody>
               <% school_group.schools.visible.each do |school| %>
-                <tr scope="row">
-                  <td class='fixed-width-150'><%= link_to school.name, school %></td>
-                  <td><%= school.urn %></td>
-                  <td><%= school.postcode %></td>
-                  <td><%= school.meters.gas.count %></td>
-                  <td><%= school.meters.electricity.count %></td>
-                  <td><%= school.meters.solar_pv.count %></td>
-                  <td><%= school.meters.exported_solar_pv.count %></td>
-                  <td><%= school.floor_area %></td>
-                  <td><%= school.number_of_pupils %></td>
-                  <td><%= school.percentage_free_school_meals %></td>
-                  <td><%= link_to school.activities.count, school_activities_path(school) %></td>
-                  <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
-                </tr>
+                <% if can?(:show, school) %>
+                  <tr scope="row">
+                    <td class='fixed-width-150'><%= link_to school.name, school %></td>
+                    <td><%= school.urn %></td>
+                    <td><%= school.postcode %></td>
+                    <td><%= school.meters.gas.count %></td>
+                    <td><%= school.meters.electricity.count %></td>
+                    <td><%= school.meters.solar_pv.count %></td>
+                    <td><%= school.meters.exported_solar_pv.count %></td>
+                    <td><%= school.floor_area %></td>
+                    <td><%= school.number_of_pupils %></td>
+                    <td><%= school.percentage_free_school_meals %></td>
+                    <td><%= link_to school.activities.count, school_activities_path(school) %></td>
+                    <td><%= link_to school.observations.intervention.count, school_interventions_path(school) %></td>
+                  </tr>
+                <% end %>
               <% end %>
             </tbody>
           </table>
@@ -70,6 +72,3 @@
     </div>
   </div>
 </div>
-
-
-

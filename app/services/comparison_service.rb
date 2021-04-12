@@ -22,6 +22,6 @@ class ComparisonService
     if @user.present? && @user.school.present? && @user.school.school_group.present?
         groups << @user.school.school_group
     end
-    groups.uniq
+    groups.uniq.sort_by(&:name)
   end
 end
