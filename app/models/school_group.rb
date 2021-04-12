@@ -11,6 +11,7 @@
 #  description                   :string
 #  id                            :bigint(8)        not null, primary key
 #  name                          :string           not null
+#  public                        :boolean          default(TRUE)
 #  slug                          :string           not null
 #  updated_at                    :datetime         not null
 #

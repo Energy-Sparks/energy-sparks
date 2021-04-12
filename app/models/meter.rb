@@ -5,10 +5,12 @@
 #  active                         :boolean          default(TRUE)
 #  consent_granted                :boolean          default(FALSE)
 #  created_at                     :datetime         not null
+#  dcc_checked_at                 :datetime
 #  dcc_meter                      :boolean          default(FALSE)
 #  earliest_available_data        :date
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
+#  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
@@ -22,6 +24,7 @@
 # Indexes
 #
 #  index_meters_on_low_carbon_hub_installation_id  (low_carbon_hub_installation_id)
+#  index_meters_on_meter_review_id                 (meter_review_id)
 #  index_meters_on_meter_type                      (meter_type)
 #  index_meters_on_mpan_mprn                       (mpan_mprn) UNIQUE
 #  index_meters_on_school_id                       (school_id)
@@ -30,6 +33,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (low_carbon_hub_installation_id => low_carbon_hub_installations.id) ON DELETE => cascade
+#  fk_rails_...  (meter_review_id => meter_reviews.id)
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_edge_installation_id => solar_edge_installations.id) ON DELETE => cascade
 #
