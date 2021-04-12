@@ -20,7 +20,8 @@ module RollbarApi
     def submit_job(query)
       body = {
         query_string: query,
-        access_token: @api_token
+        access_token: @api_token,
+        force_refresh: true
       }
       resp = @client.post("/api/1/rql/jobs") do |req|
         req.body = body.to_json
