@@ -3,5 +3,7 @@
   <%= f.input :academic_year_calendar_id, as: :select, collection: Calendar.national, include_blank: false, hint: 'Used for scoreboard academic years'%>
   <%= f.input :name %>
   <%= f.input :description %>
+  <%= f.input :public, as: :boolean %>
   <%= f.submit class: 'btn btn-primary' %>
+
 <% end %>

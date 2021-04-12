@@ -11,7 +11,7 @@ class RollbarNotifierService
       title: "Meter validation problems",
       description: "Validation failed for the following schools in the last 48 hours. Failed caused by the listed meter",
       rql_query: <<-QUERY
-      SELECT timestamp, body.trace.extra.school_id, body.trace.extra.school_name, body.trace.extra.mpan_mprn, body.trace.exception.message
+      SELECT timestamp, body.trace.extra.school_id, body.trace.extra.school, body.trace.extra.mpan_mprn, body.trace.exception.message
       from item_occurrence
       where body.trace.extra.job = 'validate_amr_readings'
       AND timestamp > unix_timestamp() - 60 * 60 * 48
