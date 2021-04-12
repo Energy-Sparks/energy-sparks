@@ -69,7 +69,7 @@
   </div>
 
   <div class="col card-deck actions">
-    <% if current_school_podium %>
+    <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
       <div class="card surrounding-schools">
         <div class="card-body">
           <% if current_school_podium.includes_school? %>
