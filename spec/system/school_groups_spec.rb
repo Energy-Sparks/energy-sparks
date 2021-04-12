@@ -46,7 +46,7 @@ describe 'school groups', :school_groups, type: :system do
 
       it 'doesnt show compare link' do
         visit school_group_path(school_group)
-        expect(page).to have_link("Compare schools")
+        expect(page).to_not have_link("Compare schools")
       end
     end
 
