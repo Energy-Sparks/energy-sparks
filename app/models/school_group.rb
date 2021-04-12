@@ -52,7 +52,7 @@ class SchoolGroup < ApplicationRecord
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
   scope :by_name, -> { order(name: :asc) }
-
+  scope :is_public, -> { where(public: true) }
   validates :name, presence: true
 
   def has_visible_schools?

@@ -83,8 +83,9 @@ private
   end
 
   def filter_lists
-    @school_groups = SchoolGroup.order(:name)
-    @scoreboards = ComparisonService.new(current_user).list_scoreboards
+    service = ComparisonService.new(current_user)
+    @school_groups = service.list_school_groups
+    @scoreboards = service.list_scoreboards
   end
 
   def benchmark_results

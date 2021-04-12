@@ -4,9 +4,9 @@ RSpec.describe "school", type: :system do
 
   let!(:admin)              { create(:admin)}
 
-  let(:school_name)               { 'Oldfield Park Infants' }
+  let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
-  let!(:school_group) { create(:school_group, name: 'School Group')}
+  let!(:school_group)       { create(:school_group, name: 'School Group')}
 
   it 'shows me a school page' do
     visit root_path
@@ -30,10 +30,37 @@ RSpec.describe "school", type: :system do
     expect(page.has_content? school_name).to be true
   end
 
-  it 'links to compare schools if in group' do
-    school.update(school_group: create(:school_group))
-    visit school_path(school)
-    expect(page).to have_link("Compare schools")
+  context 'with school in group' do
+    let(:public)      { true }
+
+    before(:each) do
+      school.update(school_group: create(:school_group, public: public))
+    end
+
+    it 'links to compare schools in public groups' do
+      visit school_path(school)
+      expect(page).to have_link("Compare schools")
+    end
+
+    context 'and group is private' do
+      let(:public)      { false }
+
+      it 'doesnt link to compare schools' do
+        visit school_path(school)
+        expect(page).to_not have_link("Compare schools")
+      end
+
+      context 'and signed in as school user' do
+        let!(:school_admin)          { create(:school_admin, school: school) }
+        before(:each) do
+          sign_in(school_admin)
+        end
+        it 'links to compare schools' do
+          visit school_path(school)
+          expect(page).to have_link("Compare schools")
+        end
+      end
+    end
   end
 
   context 'with invisible school' do

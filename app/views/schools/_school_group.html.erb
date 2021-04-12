@@ -9,7 +9,9 @@
       <div class="card-body">
         <div class='btn-group'>
           <%= link_to 'View schools', school_group_path(school_group), class: 'btn nav-link' %>
-          <%= link_to 'Compare schools', benchmarks_path(benchmark: {school_group_ids: [school_group.id]}), class: 'btn nav-link' %>
+          <% if can?(:compare, school_group) %>
+            <%= link_to 'Compare schools', benchmarks_path(benchmark: {school_group_ids: [school_group.id]}), class: 'btn nav-link' %>
+          <% end %>
         </div>
         <div class="padded-row">
           <% school_group.schools.visible.by_name.each do |school| %>

@@ -11,6 +11,7 @@ class Ability
     can :show, ActivityType
     can :index, School
     can :read, SchoolGroup
+    can :compare, SchoolGroup, public: true
     can :show, School, visible: true, public: true
     can :usage, School, visible: true, public: true
     can :show_pupils_dash, School, visible: true, public: true
@@ -60,6 +61,7 @@ class Ability
         can [
           :show, :usage, :show_pupils_dash, :show_teachers_dash
         ], School, { school_group_id: user.school.school_group_id, visible: true, public: false }
+        can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
       end
       can [
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity,
