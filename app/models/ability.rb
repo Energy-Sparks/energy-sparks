@@ -11,11 +11,11 @@ class Ability
     can :show, ActivityType
     can :index, School
     can :read, SchoolGroup
-    can :show, School, visible: true
-    can :usage, School, visible: true
-    can :show_pupils_dash, School, visible: true
-    can :show_teachers_dash, School, visible: true
-    can :suggest_activity, School, visible: true
+    can :show, School, visible: true, public: true
+    can :usage, School, visible: true, public: true
+    can :show_pupils_dash, School, visible: true, public: true
+    can :show_teachers_dash, School, visible: true, public: true
+    can :suggest_activity, School, visible: true, public: true
     can :read, Scoreboard
     can :read, FindOutMore
     can :read, Observation
@@ -54,7 +54,14 @@ class Ability
         can :read, [:my_school_menu, :school_downloads]
         can :switch, School
       end
+      #allow users from schools in same group to access dashboards
+      if user.school.present?
+        can [
+          :show, :usage, :show_pupils_dash, :show_teachers_dash
+        ], School, { school_group_id: user.school.school_group_id, visible: true, public: false }
+      end
       can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
         :read, :usage, :start_programme, :read_restricted_analysis

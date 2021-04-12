@@ -2,24 +2,11 @@ require 'rails_helper'
 
 RSpec.describe "school", type: :system do
 
+  let!(:admin)              { create(:admin)}
+
   let(:school_name)               { 'Oldfield Park Infants' }
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
-
-  let!(:school_group_invisible) { create(:school_group, name: 'Invisible Group')}
-  let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group_invisible)}
-
-  let!(:admin)              { create(:admin)}
-  let!(:ks1)                { KeyStage.create(name: 'KS1') }
-  let!(:ks2)                { KeyStage.create(name: 'KS2') }
-  let!(:ks3)                { KeyStage.create(name: 'KS3') }
-
-  it 'does not show invisible school or group' do
-    visit root_path
-    click_on('Schools')
-    expect(page.has_content? school_name).to be true
-    expect(page.has_content? 'Invisible School').to_not be true
-    expect(page.has_content? 'Invisible Group').to_not be true
-  end
+  let!(:school_group) { create(:school_group, name: 'School Group')}
 
   it 'shows me a school page' do
     visit root_path
@@ -49,13 +36,113 @@ RSpec.describe "school", type: :system do
     expect(page).to have_link("Compare schools")
   end
 
-  describe 'with partners' do
+  context 'with invisible school' do
+    let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group)}
+
+    it 'does not show invisible school or the group' do
+      visit root_path
+      click_on('Schools')
+      expect(page.has_content? school_name).to be true
+      expect(page.has_content? 'Invisible School').to_not be true
+      expect(page.has_content? 'School Group').to_not be true
+    end
+
+    context 'as admin' do
+      before(:each) do
+        sign_in(admin)
+        visit root_path
+        click_on('Schools')
+      end
+
+      it 'does show invisible school, but not the group' do
+        expect(page.has_content? school_name).to be true
+        expect(page.has_content? 'Not visible schools').to be true
+        expect(page.has_content? 'Invisible School').to be true
+        expect(page.has_content? 'School Group').to_not be true
+      end
+
+    end
+
+  end
+
+  context 'non-public school' do
+    let!(:non_public_school)       { create(:school, name: 'Non-public School', visible: true, public: false, school_group: school_group)}
+
+    context 'as unknown user' do
+
+      it 'is listed on school page' do
+        visit root_path
+        click_on('Schools')
+
+        expect(page.has_content? non_public_school.name).to be true
+        expect(page.has_content? 'School Group').to be true
+      end
+
+      it 'prompts user to login when viewing' do
+        visit school_path(non_public_school)
+        expect(page.has_content? 'This school has disabled public access').to be true
+      end
+    end
+
+    context 'as staff' do
+      let!(:school_admin)          { create(:school_admin, school: non_public_school) }
+
+      before(:each) do
+        sign_in(school_admin)
+      end
+
+      it 'displays the school page' do
+        visit school_path(non_public_school)
+        expect(page).to have_content(non_public_school.name)
+        expect(page).to have_link("Compare schools")
+      end
+
+      it 'redirects away user from the /private page' do
+        visit school_private_path(non_public_school)
+        expect(page).to have_content(non_public_school.name)
+        expect(page).to have_link("Compare schools")
+      end
+
+    end
+
+    context 'as a user in the same school group' do
+      let!(:school_in_same_group)   { create(:school, name: 'Same Group School', visible: true, school_group: school_group)}
+      let!(:other_admin)            { create(:school_admin, school: school_in_same_group) }
+
+      before(:each) do
+        sign_in(other_admin)
+      end
+
+      it 'displays the school page' do
+        visit school_path(non_public_school)
+        expect(page).to have_content(non_public_school.name)
+        expect(page).to have_link("Compare schools")
+      end
+
+    end
+
+    context 'as a unrelated school user' do
+      let!(:other_admin)    { create(:school_admin) }
+      before(:each) do
+        sign_in(other_admin)
+      end
+
+      it 'prompts user to login when viewing' do
+        visit school_path(non_public_school)
+        expect(page.has_content? 'This school has disabled public access').to be true
+      end
+
+    end
+
+  end
+
+  context 'with partners' do
 
     let(:partner)             { create(:partner, name: "School Sponsor", url: "http://example.org") }
     let(:other_partner)       { create(:partner, name: "Big Tech Co", url: "https://example.com") }
 
     before(:each) do
-      school.update!( {school_group: school_group_invisible })
+      school.update!( {school_group: school_group })
     end
 
     it 'displays school group partners' do
@@ -80,20 +167,13 @@ RSpec.describe "school", type: :system do
 
   end
 
-  describe 'when logged in' do
+  context 'as an admin' do
     before(:each) do
       sign_in(admin)
       visit root_path
       expect(page.has_content? 'Sign Out').to be true
       click_on('Schools')
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
-    end
-
-    it 'does show invisible school, but not group' do
-      expect(page.has_content? school_name).to be true
-      expect(page.has_content? 'Not visible schools').to be true
-      expect(page.has_content? 'Invisible School').to be true
-      expect(page.has_content? 'Invisible Group').to_not be true
     end
 
     describe 'school with gas meter' do
@@ -124,7 +204,11 @@ RSpec.describe "school", type: :system do
       end
     end
 
-    describe 'school management' do
+    describe 'managing a school' do
+
+      let!(:ks1)                { KeyStage.create(name: 'KS1') }
+      let!(:ks2)                { KeyStage.create(name: 'KS2') }
+      let!(:ks3)                { KeyStage.create(name: 'KS3') }
 
       it 'I can set up a school for KS1' do
         click_on(school_name)

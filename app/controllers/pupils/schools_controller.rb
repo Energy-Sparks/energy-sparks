@@ -3,10 +3,15 @@ module Pupils
     include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
     include DashboardAlerts
+    include NonPublicSchools
 
-    load_and_authorize_resource
+    load_resource
 
     skip_before_action :authenticate_user!
+
+    before_action only: [:show] do
+      redirect_unless_permitted :show
+    end
 
     def show
       authorize! :show_pupils_dash, @school

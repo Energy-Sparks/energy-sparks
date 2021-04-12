@@ -36,31 +36,5 @@
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 
 <% unless user_signed_in? %>
-  <div class="row dashboards mt-4 mb-4">
-    <div class="col-md-6 text-center">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-title">
-            <h2><%= @school.name  %> Staff</h2>
-          </div>
-          <div class="card-text">
-            <%= link_to 'Log in with your email address and password', new_user_session_path(role: :staff, school: @school), class: 'btn btn-rounded'%>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 text-center">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-title">
-            <h2><%= @school.name  %> Pupils</h2>
-          </div>
-          <div class="card-text">
-            <%=  link_to 'Log in with your pupil password', new_user_session_path(role: :pupil, school: @school), class: 'btn btn-rounded'%>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'shared/school_login_prompt', school: @school %>
 <% end %>
-
