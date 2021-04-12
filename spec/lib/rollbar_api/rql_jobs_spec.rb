@@ -63,7 +63,8 @@ module RollbarApi
         stubs.post("/api/1/rql/jobs") do |env|
           expect(env.body).to eql({
               'query_string': query,
-              'access_token': api_token
+              'access_token': api_token,
+              'force_refresh': true
           }.to_json)
           [
             200,
