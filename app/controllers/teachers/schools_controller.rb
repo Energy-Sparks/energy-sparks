@@ -8,8 +8,13 @@ module Teachers
     include DashboardAlerts
     include DashboardTimeline
     include AnalysisPages
+    include NonPublicSchools
 
     before_action :check_aggregated_school_in_cache
+
+    before_action only: [:show] do
+      redirect_unless_permitted :show
+    end
 
     def show
       authorize! :show_teachers_dash, @school

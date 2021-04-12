@@ -26,7 +26,7 @@ if ENV.key?('GENERATE_SITEMAP')
 
     add scoreboards_path
 
-    Scoreboard.find_each do |scoreboard|
+    Scoreboard.is_public.find_each do |scoreboard|
       add scoreboard_path(scoreboard)
     end
 

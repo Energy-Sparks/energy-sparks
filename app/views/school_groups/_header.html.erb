@@ -5,7 +5,9 @@
   <div class="col-md-4">
     <div class='btn-group float-right mt-4'>
       <%= link_to 'View all schools', schools_path, class: 'btn' %>
-      <%= link_to 'Compare schools', benchmarks_path(benchmark: benchmark_filter ), class: 'btn' if benchmark_filter %>
+      <% if school_group.present? && can?(:compare, school_group) %>
+        <%= link_to 'Compare schools', benchmarks_path(benchmark: benchmark_filter ), class: 'btn' if benchmark_filter %>
+      <% end %>
       <%= link_to 'Scoreboard', scoreboard_path(scoreboard), class: 'btn' if scoreboard %>
     </div>
   </div>

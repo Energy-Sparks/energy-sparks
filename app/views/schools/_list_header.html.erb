@@ -8,8 +8,12 @@
   <% if scoreboard  || benchmark_filter %>
     <div class="col-lg-5">
       <div class='btn-group float-right'>
-        <%= link_to 'Compare schools', benchmarks_path(benchmark: benchmark_filter ), class: 'btn' if benchmark_filter %>
-        <%= link_to 'Scoreboard', scoreboard_path(scoreboard), class: 'btn btn-primary float-right' if scoreboard %>
+        <% if can?(:compare, school_group) %>
+          <%= link_to 'Compare schools', benchmarks_path(benchmark: benchmark_filter ), class: 'btn' if benchmark_filter %>
+        <% end %>
+        <% if can?(:read, scoreboard) %>
+          <%= link_to 'Scoreboard', scoreboard_path(scoreboard), class: 'btn btn-primary float-right' if scoreboard %>
+        <% end %>
       </div>
     </div>
   <% end %>

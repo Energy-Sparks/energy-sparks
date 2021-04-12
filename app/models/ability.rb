@@ -11,12 +11,14 @@ class Ability
     can :show, ActivityType
     can :index, School
     can :read, SchoolGroup
-    can :show, School, visible: true
-    can :usage, School, visible: true
-    can :show_pupils_dash, School, visible: true
-    can :show_teachers_dash, School, visible: true
-    can :suggest_activity, School, visible: true
-    can :read, Scoreboard
+    can :compare, SchoolGroup, public: true
+    can :show, School, visible: true, public: true
+    can :usage, School, visible: true, public: true
+    can :show_pupils_dash, School, visible: true, public: true
+    can :show_teachers_dash, School, visible: true, public: true
+    can :suggest_activity, School, visible: true, public: true
+    can :read, Scoreboard, public: true
+
     can :read, FindOutMore
     can :read, Observation
     can :read, ProgrammeType
@@ -54,13 +56,22 @@ class Ability
         can :read, [:my_school_menu, :school_downloads]
         can :switch, School
       end
+      #allow users from schools in same group to access dashboards
+      if user.school.present?
+        can [
+          :show, :usage, :show_pupils_dash, :show_teachers_dash
+        ], School, { school_group_id: user.school.school_group_id, visible: true, public: false }
+        can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
+      end
       can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
         :read, :usage, :start_programme, :read_restricted_analysis
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
+      can :read, Scoreboard, public: false, id: user.default_scoreboard
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
       can [:index, :read], ConsentGrant, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
@@ -79,6 +90,7 @@ class Ability
     elsif user.staff? || user.volunteer? || user.pupil?
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
+      can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read_restricted_analysis, School, school_scope
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter

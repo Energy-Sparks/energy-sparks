@@ -1,0 +1,14 @@
+<%= content_for :page_title, "#{@school.name} has no public data" %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= @school.name %> has no public data</h1>
+</div>
+
+<p>This school has disabled public access to energy usage data and insights.</p>
+
+<p>
+  Use the links below to log in as a member of staff or pupil from this school.
+  Or <%= link_to 'explore another school', schools_path %>
+</p>
+
+<%= render 'shared/school_login_prompt', school: @school %>

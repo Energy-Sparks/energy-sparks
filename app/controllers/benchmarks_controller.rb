@@ -83,14 +83,18 @@ private
   end
 
   def filter_lists
-    @school_groups = SchoolGroup.order(:name)
-    @scoreboards = Scoreboard.order(:name)
+    service = ComparisonService.new(current_user)
+    @school_groups = service.list_school_groups
+    @scoreboards = service.list_scoreboards
   end
 
   def benchmark_results
     include_invisible = can? :show, :all_schools
 
     schools = SchoolFilter.new(**{ include_invisible: include_invisible }.merge(@benchmark_filter)).filter
+    unless include_invisible
+      schools = schools.keep_if {|s| can?(:show, s) }
+    end
     @benchmark_results = Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(schools)
   end
 
