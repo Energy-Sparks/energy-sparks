@@ -16,7 +16,8 @@ class Ability
     can :show_pupils_dash, School, visible: true, public: true
     can :show_teachers_dash, School, visible: true, public: true
     can :suggest_activity, School, visible: true, public: true
-    can :read, Scoreboard
+    can :read, Scoreboard, public: true
+
     can :read, FindOutMore
     can :read, Observation
     can :read, ProgrammeType
@@ -68,6 +69,7 @@ class Ability
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
+      can :read, Scoreboard, public: false, id: user.default_scoreboard
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
       can [:index, :read], ConsentGrant, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
@@ -86,6 +88,7 @@ class Ability
     elsif user.staff? || user.volunteer? || user.pupil?
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
+      can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read_restricted_analysis, School, school_scope
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter

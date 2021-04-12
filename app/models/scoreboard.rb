@@ -23,6 +23,8 @@
 class Scoreboard < ApplicationRecord
   extend FriendlyId
 
+  scope :is_public, -> { where(public: true) }
+
   FIRST_YEAR = 2018
 
   friendly_id :name, use: [:finders, :slugged, :history]

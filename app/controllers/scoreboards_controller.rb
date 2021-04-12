@@ -1,13 +1,14 @@
 class ScoreboardsController < ApplicationController
-  load_and_authorize_resource
+  load_resource
   skip_before_action :authenticate_user!
 
   # GET /scoreboards
   def index
-    @scoreboards = @scoreboards.order(:name)
+    @scoreboards = ComparisonService.new(current_user).list_scoreboards
   end
 
   def show
+    authorize! :read, @scoreboard
     @academic_year = if params[:academic_year]
                        @scoreboard.academic_year_calendar.academic_years.find(params[:academic_year])
                      else
