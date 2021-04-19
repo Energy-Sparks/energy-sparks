@@ -29,7 +29,7 @@ module Amr
 
     def tariffs
       @meter.tariff_prices.by_date.pluck(:tariff_date, :prices).inject({}) do |result, price|
-        result[price[0]] = JSON.parse(price[1])
+        result[price[0]] = price[1]
         result
       end
     end

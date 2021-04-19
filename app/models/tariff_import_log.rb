@@ -21,4 +21,5 @@ class TariffImportLog < ApplicationRecord
   has_many :tariff_standing_charges, inverse_of: :tariff_import_log
   scope :errored,       -> { where.not(error_messages: nil) }
   scope :successful,    -> { where(error_messages: nil) }
+  scope :by_import_time, -> { order(import_time: :desc) }
 end

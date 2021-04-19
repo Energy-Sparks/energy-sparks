@@ -71,7 +71,7 @@
                 <tr>
                   <td><%= tariff_attributes %></td>
                   <td>
-                    <div class="alert alert-info">from DCC tariff data</div>
+                    <div class="alert alert-info">from <%= link_to "DCC tariff data", admin_reports_tariff_path(meter) %></div>
                   </td>
                 </tr>
               <% end %>
