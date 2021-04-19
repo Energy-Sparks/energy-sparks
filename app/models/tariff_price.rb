@@ -17,7 +17,8 @@
 #  index_tariff_prices_on_tariff_import_log_id      (tariff_import_log_id)
 #
 class TariffPrice < ApplicationRecord
-  scope :by_date, -> { order(tariff_date: :asc) }
+  scope :by_date,       -> { order(tariff_date: :asc) }
+  scope :by_date_desc,  -> { order(tariff_date: :desc) }
 
   belongs_to :meter, inverse_of: :tariff_prices
   belongs_to :tariff_import_log, inverse_of: :tariff_prices

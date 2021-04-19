@@ -11,7 +11,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @meter.tariff_standing_charges.order(start_date: :desc).each do |tariff_standing_charge| %>
+    <% @meter.tariff_standing_charges.by_date_desc.each do |tariff_standing_charge| %>
       <tr>
         <td><%= nice_dates(tariff_standing_charge.start_date) rescue nil %></td>
         <td><%= tariff_standing_charge.value %></td>
@@ -32,9 +32,9 @@
     </tr>
     </thead>
     <tbody>
-    <% @meter.tariff_prices.order(tariff_date: :desc).each do |tariff_price| %>
+    <% @meter.tariff_prices.by_date_desc.each do |tariff_price| %>
       <tr>
-        <td style="white-space: nowrap"><%= nice_dates(tariff_price.tariff_date) rescue nil %></td>
+        <td class="nowrap"><%= nice_dates(tariff_price.tariff_date) rescue nil %></td>
         <td><%= tariff_price.prices %></td>
       </tr>
     <% end %>

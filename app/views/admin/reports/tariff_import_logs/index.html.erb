@@ -5,7 +5,7 @@
 <table class="table table-sorted">
   <thead>
     <tr>
-      <th</th>
+      <thSource</th>
       <th>Description</th>
       <th>Error messages</th>
       <th>Import Time</th>
@@ -14,10 +14,10 @@
   <tbody>
     <% @errored_logs.each do |log| %>
       <tr>
-        <td style="white-space: nowrap"><%= log.source %></td>
+        <td class="nowrap"><%= log.source %></td>
         <td><%= log.description %></td>
         <td><%= log.error_messages %></td>
-        <td data-order="<%= log.import_time.strftime("%s") %>"><%= nice_date_times log.import_time %></td>
+        <td class="nowrap">"><%= nice_date_times log.import_time %></td>
       </tr>
     <% end %>
   </tbody>
@@ -43,9 +43,9 @@
   <tbody>
     <% @successful_logs.each do |log| %>
       <tr>
-        <td style="white-space: nowrap"><%= log.source %></td>
+        <td class="nowrap"><%= log.source %></td>
         <td><%= log.description %></td>
-        <td style="white-space: nowrap"><%= nice_date_times log.import_time %></td>
+        <td class="nowrap"><%= nice_date_times log.import_time %></td>
         <td><%= log.prices_imported %></td>
         <td><%= log.prices_updated %></td>
         <td><%= log.standing_charges_imported %></td>

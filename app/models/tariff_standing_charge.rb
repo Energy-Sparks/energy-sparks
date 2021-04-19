@@ -17,7 +17,8 @@
 #  index_tariff_standing_charges_on_tariff_import_log_id     (tariff_import_log_id)
 #
 class TariffStandingCharge < ApplicationRecord
-  scope :by_date,            -> { order(start_date: :asc) }
+  scope :by_date,       -> { order(start_date: :asc) }
+  scope :by_date_desc,  -> { order(start_date: :desc) }
 
   belongs_to :meter, inverse_of: :tariff_standing_charges
   belongs_to :tariff_import_log, inverse_of: :tariff_standing_charges

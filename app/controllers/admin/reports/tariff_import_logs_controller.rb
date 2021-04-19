@@ -4,8 +4,8 @@ module Admin
       include Pagy::Backend
 
       def index
-        @errored_logs = TariffImportLog.errored.order(import_time: :desc)
-        @pagy, @successful_logs = pagy(TariffImportLog.successful.order(import_time: :desc))
+        @errored_logs = TariffImportLog.errored.by_import_time
+        @pagy, @successful_logs = pagy(TariffImportLog.successful.by_import_time)
       end
     end
   end

@@ -24,14 +24,12 @@
           <tr>
             <td><%= link_to(school.name, school_path(school)) %></td>
             <td><%= link_to(meter.display_name, admin_reports_tariff_path(meter)) %></td>
-
             <td><%= meter.tariff_standing_charges.count %></td>
-            <td><%= nice_dates(meter.tariff_standing_charges.order(:start_date).first.start_date) rescue nil %></td>
-            <td><%= nice_dates(meter.tariff_standing_charges.order(:start_date).last.start_date) rescue nil %></td>
-
+            <td class="nowrap"><%= nice_dates(meter.tariff_standing_charges.by_date.first.start_date) rescue nil %></td>
+            <td class="nowrap"><%= nice_dates(meter.tariff_standing_charges.by_date.last.start_date) rescue nil %></td>
             <td><%= meter.tariff_prices.count %></td>
-            <td><%= nice_dates(meter.tariff_prices.order(:tariff_date).first.tariff_date) rescue nil %></td>
-            <td><%= nice_dates(meter.tariff_prices.order(:tariff_date).last.tariff_date) rescue nil %></td>
+            <td class="nowrap"><%= nice_dates(meter.tariff_prices.by_date.first.tariff_date) rescue nil %></td>
+            <td class="nowrap"><%= nice_dates(meter.tariff_prices.by_date.last.tariff_date) rescue nil %></td>
           </tr>
         <% end %>
       <% end %>
