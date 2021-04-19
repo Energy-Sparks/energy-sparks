@@ -1,0 +1,41 @@
+<% content_for :page_title, 'Tariffs report' %>
+
+<h1>Data report for tariffs</h1>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>School</th>
+      <th>Meter</th>
+      <th>Standing charges</th>
+      <th>First standing charge</th>
+      <th>Last standing charge</th>
+      <th>Prices</th>
+      <th>First price</th>
+      <th>Last price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @group_meters.each do |school_group_name, school_meters| %>
+      <tr class='table-active'><td colspan="8"><strong><%= school_group_name || 'Ungrouped' %></strong></td></tr>
+      <% school_meters.each do |school, meters| %>
+        <% meters.each do |meter| %>
+          <tr>
+            <td><%= link_to(school.name, school_path(school)) %></td>
+            <td><%= link_to(meter.display_name, admin_reports_tariff_path(meter)) %></td>
+
+            <td><%= meter.tariff_standing_charges.count %></td>
+            <td><%= nice_dates(meter.tariff_standing_charges.order(:start_date).first.start_date) rescue nil %></td>
+            <td><%= nice_dates(meter.tariff_standing_charges.order(:start_date).last.start_date) rescue nil %></td>
+
+            <td><%= meter.tariff_prices.count %></td>
+            <td><%= nice_dates(meter.tariff_prices.order(:tariff_date).first.tariff_date) rescue nil %></td>
+            <td><%= nice_dates(meter.tariff_prices.order(:tariff_date).last.tariff_date) rescue nil %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+</div>
