@@ -10,7 +10,7 @@ FactoryBot.define do
       end
 
       after(:create) do |tariff_prices, evaluator|
-          tariff_prices.update(prices: evaluator.flat_rate.to_json)
+          tariff_prices.update(prices: evaluator.flat_rate)
       end
     end
 
@@ -20,7 +20,7 @@ FactoryBot.define do
       end
 
       after(:create) do |tariff_prices, evaluator|
-          tariff_prices.update(prices: evaluator.tiered_rate.to_json)
+          tariff_prices.update(prices: evaluator.tiered_rate)
       end
 
     end
@@ -31,7 +31,7 @@ FactoryBot.define do
       end
 
       after(:create) do |tariff_prices, evaluator|
-          tariff_prices.update(prices: evaluator.tiered_rate.to_json)
+          tariff_prices.update(prices: evaluator.tiered_rate)
       end
 
     end

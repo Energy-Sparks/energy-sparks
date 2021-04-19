@@ -199,6 +199,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
         click_on 'Manage school'
         click_on 'Meter attributes'
         expect(page).to have_content("from DCC tariff data")
+        expect(page).to have_link("DCC tariff data")
         expect(page).to have_content("Tariff from DCC SMETS2 meter")
       end
     end
