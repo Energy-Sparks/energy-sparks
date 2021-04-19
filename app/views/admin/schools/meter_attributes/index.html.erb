@@ -65,6 +65,17 @@
               </div>
             <% end %>
           <% end %>
+          <% if meter.dcc_meter? %>
+              <% tariff_attributes = build_tariff_attributes(meter) %>
+              <% if tariff_attributes.present? %>
+                <tr>
+                  <td><%= tariff_attributes %></td>
+                  <td>
+                    <div class="alert alert-info">from DCC tariff data</div>
+                  </td>
+                </tr>
+              <% end %>
+          <% end %>
         </tbody>
       <% end %>
     </table>
@@ -104,6 +115,3 @@
     <%= sanitize ap(@school.meter_attributes_to_analytics, index: false, plain: true) %>
   </div>
 </div>
-
-
-
