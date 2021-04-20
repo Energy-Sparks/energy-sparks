@@ -9,14 +9,15 @@ class Ability
     can :read, Activity, school: { visible: true }
     can :read, ActivityCategory
     can :show, ActivityType
-    can :index, School
+
     can :read, SchoolGroup
     can :compare, SchoolGroup, public: true
-    can :show, School, visible: true, public: true
-    can :usage, School, visible: true, public: true
-    can :show_pupils_dash, School, visible: true, public: true
-    can :show_teachers_dash, School, visible: true, public: true
-    can :suggest_activity, School, visible: true, public: true
+
+    can :index, School
+    can [
+      :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+    ], School, visible: true, public: true
+
     can :read, Scoreboard, public: true
 
     can :read, FindOutMore
@@ -64,14 +65,14 @@ class Ability
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
       end
       can [
-        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity,
+        :show, :usage, :show_pupils_dash, :show_teachers_dash,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
-        :read, :usage, :start_programme, :read_restricted_analysis
+        :read, :start_programme, :read_restricted_analysis
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
-      can :read, Scoreboard, public: false, id: user.default_scoreboard
+      can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
       can [:index, :read], ConsentGrant, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
@@ -88,6 +89,11 @@ class Ability
         user.id == other_user.id
       end
     elsif user.staff? || user.volunteer? || user.pupil?
+      school_scope = { id: user.school_id, visible: true }
+      can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+      ], School, school_scope
+      can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)

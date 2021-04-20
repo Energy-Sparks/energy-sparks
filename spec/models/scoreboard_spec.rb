@@ -29,6 +29,12 @@ describe Scoreboard, :scoreboards, type: :model do
         let(:user) { create(:admin) }
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
+      context 'school_admin' do
+        let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
+        let!(:user)         { create(:school_admin, school: school)}
+        it { expect(ability).to be_able_to(:read, scoreboard) }
+      end
+
       context 'staff' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
         let!(:user)         { create(:staff, school: school)}
