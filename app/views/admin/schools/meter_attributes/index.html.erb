@@ -66,15 +66,17 @@
             <% end %>
           <% end %>
           <% if meter.dcc_meter? %>
-              <% tariff_attributes = build_tariff_attributes(meter) %>
-              <% if tariff_attributes.present? %>
-                <tr>
-                  <td><%= tariff_attributes %></td>
-                  <td>
-                    <div class="alert alert-info">from <%= link_to "DCC tariff data", admin_reports_tariff_path(meter) %></div>
-                  </td>
-                </tr>
-              <% end %>
+          <% tariff_attributes = build_tariff_attributes(meter) %>
+            <% if tariff_attributes.present? %>
+              <tr id="<%= tariff_anchor(meter) %>">
+                <td>
+                  <%= tariff_attributes %>
+                </td>
+                <td>
+                  <div class="alert alert-info">from <%= link_to "DCC tariff data", admin_reports_tariff_path(meter) %></div>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       <% end %>
