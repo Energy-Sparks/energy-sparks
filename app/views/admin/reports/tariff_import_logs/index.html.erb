@@ -2,10 +2,10 @@
 
 <% if @errored_logs.any? %>
 <h2>Errored</h2>
-<table class="table table-sorted">
+<table class="table table-striped">
   <thead>
     <tr>
-      <thSource</th>
+      <th>Source</th>
       <th>Description</th>
       <th>Error messages</th>
       <th>Import Time</th>
@@ -17,7 +17,7 @@
         <td class="nowrap"><%= log.source %></td>
         <td><%= log.description %></td>
         <td><%= log.error_messages %></td>
-        <td class="nowrap">"><%= nice_date_times log.import_time %></td>
+        <td class="nowrap"><%= nice_date_times log.import_time %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,7 +28,7 @@
 
 <h2>Successful</h2>
 <%== pagy_bootstrap_nav(@pagy) %>
-<table class="table">
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Source</th>
