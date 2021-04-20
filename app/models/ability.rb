@@ -92,6 +92,7 @@ class Ability
       can [
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
       ], School, school_scope
+      can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
