@@ -68,9 +68,8 @@
           <% if meter.dcc_meter? %>
           <% tariff_attributes = build_tariff_attributes(meter) %>
             <% if tariff_attributes.present? %>
-              <tr>
+              <tr id="<%= tariff_anchor(meter) %>">
                 <td>
-                  <a href="#" name="<%= tariff_anchor(meter) %>"></a>
                   <%= tariff_attributes %>
                 </td>
                 <td>
