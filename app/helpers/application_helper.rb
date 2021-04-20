@@ -244,4 +244,8 @@ module ApplicationHelper
       'OTHER_' + words.first
     end
   end
+
+  def tariff_anchor(meter)
+    "#{meter.mpan_mprn}-tariff"
+  end
 end
