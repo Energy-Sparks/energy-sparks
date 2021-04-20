@@ -14,7 +14,7 @@ FactoryBot.define do
       end
     end
 
-    trait :with_tiered_tariff do
+    trait :with_differential_tariff do
       transient do
         tiered_rate   { Array.new(10, 0.1) + Array.new(20, 0.2) + Array.new(18, 0.3) }
       end

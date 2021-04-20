@@ -72,7 +72,7 @@ module Amr
       let(:date)        { Date.yesterday }
 
       let!(:standing_charge) { create(:tariff_standing_charge, meter: g_meter, start_date: date) }
-      let!(:prices)          { create(:tariff_price, :with_tiered_tariff, meter: g_meter, tariff_date: date) }
+      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: g_meter, tariff_date: date) }
 
       let(:amr_data)  { AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build }
 
