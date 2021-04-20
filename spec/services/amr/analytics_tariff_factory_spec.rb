@@ -19,7 +19,7 @@ module Amr
       let(:date)        { Date.yesterday }
 
       let!(:standing_charge) { create(:tariff_standing_charge, meter: meter, start_date: date) }
-      let!(:prices)          { create(:tariff_price, :with_tiered_tariff, meter: meter, tariff_date: date) }
+      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: meter, tariff_date: date) }
 
       it 'builds and returns the meter attributes' do
         attributes = factory.build

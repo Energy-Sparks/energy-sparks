@@ -184,7 +184,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
     context 'with dcc_meter' do
       let!(:standing_charge) { create(:tariff_standing_charge, meter: gas_meter, start_date: Date.today) }
-      let!(:prices)          { create(:tariff_price, :with_tiered_tariff, meter: gas_meter, tariff_date: Date.today) }
+      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: gas_meter, tariff_date: Date.today) }
 
       it 'does not display tariff attributes for other meters' do
         visit school_path(school)
