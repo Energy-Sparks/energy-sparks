@@ -391,6 +391,28 @@ describe School do
         end
       end
 
+      context "as teacher" do
+        let!(:user)          { create(:staff, school: school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+        end
+      end
+
+      context "as pupil" do
+        let!(:user)          { create(:pupil, school: school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+        end
+      end
+
       context "as related school admin" do
         let!(:user)          { create(:school_admin, school: other_school) }
 

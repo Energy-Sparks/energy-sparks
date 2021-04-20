@@ -87,7 +87,7 @@ describe SchoolGroup, :school_groups, type: :model do
         let!(:user)   { create(:pupil, school: school)}
 
         it 'allows comparison' do
-
+          expect(ability).to be_able_to(:compare, school_group)
         end
       end
 
