@@ -67,7 +67,7 @@ class Ability
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
-        :read, :usage, :start_programme, :read_restricted_analysis
+        :read, :start_programme, :read_restricted_analysis
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
@@ -88,6 +88,10 @@ class Ability
         user.id == other_user.id
       end
     elsif user.staff? || user.volunteer? || user.pupil?
+      school_scope = { id: user.school_id, visible: true }
+      can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+      ], School, school_scope
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
