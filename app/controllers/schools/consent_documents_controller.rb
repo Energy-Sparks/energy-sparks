@@ -1,5 +1,6 @@
 module Schools
   class ConsentDocumentsController < ApplicationController
+    include ApplicationHelper
     load_resource :school
     load_and_authorize_resource :consent_document, through: :school
 
@@ -10,7 +11,7 @@ module Schools
     end
 
     def new
-      @consent_document = ConsentDocument.new
+      @consent_document = ConsentDocument.new(title: "#{@school.name} Bill, Uploaded #{nice_dates(Time.zone.today)}")
     end
 
     def create
