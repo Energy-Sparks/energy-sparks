@@ -1,5 +1,7 @@
 <h1>Report for meter <%= @meter.school.name %> <small class="text-muted"><%= @meter.display_name %></small></h1>
 
+<p><%= link_to 'Meter attributes', admin_school_meter_attributes_path(@meter.school, anchor: tariff_anchor(@meter)), class: 'btn btn-success' %></p>
+
 <h2>Standing charges</h2>
 
 <div class="row">

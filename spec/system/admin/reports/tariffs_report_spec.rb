@@ -48,4 +48,13 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
     expect(page).to have_content('1.23')
     expect(page).to have_content('[1, 2, 3]')
   end
+
+  it 'links to meter attributes page' do
+    click_on 'Tariffs report'
+    click_on meter.display_name
+    click_on 'Meter attributes'
+
+    expect(page).to have_content('Meter attributes:')
+    expect(page).to have_link('DCC tariff data')
+  end
 end
