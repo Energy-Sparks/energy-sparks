@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_112139) do
+ActiveRecord::Schema.define(version: 2021_04_20_134549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1202,9 +1202,9 @@ ActiveRecord::Schema.define(version: 2021_04_08_112139) do
     t.bigint "meter_id"
     t.bigint "tariff_import_log_id"
     t.date "tariff_date", null: false
-    t.json "prices", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "prices"
     t.index ["meter_id", "tariff_date"], name: "index_tariff_prices_on_meter_id_and_tariff_date", unique: true
     t.index ["meter_id"], name: "index_tariff_prices_on_meter_id"
     t.index ["tariff_import_log_id"], name: "index_tariff_prices_on_tariff_import_log_id"

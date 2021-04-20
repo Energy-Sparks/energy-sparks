@@ -30,7 +30,7 @@ module Amr
     it "inserts new tariffs" do
       upserter.perform
       expect(meter.tariff_prices.count).to eq(1)
-      expect(meter.tariff_prices.last.prices[0]).to eq (JSON.parse(expected_tiered_tariff.to_json))
+      expect(meter.tariff_prices.last.prices[0]).to eq (expected_tiered_tariff)
       expect(meter.tariff_prices.last.prices[1]).to eq (0.15992)
     end
 
