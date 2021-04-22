@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Amr
-  describe N3rgyDownloadAndUpsert do
+  describe N3rgyReadingsDownloadAndUpsert do
 
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
@@ -30,7 +30,7 @@ module Amr
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, start_date, end_date) do
           raise
         end
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
+        upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
         upserter.perform
         expect( AmrDataFeedImportLog.count ).to eql 1
         expect( AmrDataFeedImportLog.first.error_messages ).to_not be_blank
@@ -40,7 +40,7 @@ module Amr
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, start_date, end_date) do
           readings
         end
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
+        upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
         upserter.perform
       end
 
@@ -48,7 +48,7 @@ module Amr
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, earliest, yesterday) do
           readings
         end
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+        upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
         upserter.perform
       end
 
@@ -61,7 +61,7 @@ module Amr
           earliest_available_data: nil
         })
 
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+        upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
         upserter.perform
       end
 
@@ -81,7 +81,7 @@ module Amr
             readings
           end
 
-          upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
           upserter.perform
         end
 
@@ -91,7 +91,7 @@ module Amr
             readings
           end
 
-          upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
           upserter.perform
         end
 
@@ -101,7 +101,7 @@ module Amr
             readings
           end
 
-          upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
+          upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
           upserter.perform
         end
       end
@@ -112,7 +112,7 @@ module Amr
         expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, start_date, end_date) do
           readings
         end
-        upserter = Amr::N3rgyDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
+        upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: start_date, end_date: end_date )
         upserter.perform
 
         expect( AmrDataFeedImportLog.count ).to eql 1

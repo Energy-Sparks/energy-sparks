@@ -1,5 +1,5 @@
 module Amr
-  class N3rgyDownloadAndUpsert
+  class N3rgyReadingsDownloadAndUpsert
     def initialize(
         meter:,
         config:,
@@ -20,7 +20,7 @@ module Amr
       end_date = read_end_date(@end_date)
       n3rgy_api = @n3rgy_api_factory.data_api(@meter)
       readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).readings
-      N3rgyUpserter.new(meter: @meter, config: @config, readings: readings, import_log: @import_log).perform
+      N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: @import_log).perform
     rescue => e
       @import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} : #{e.message}")
       Rails.logger.error "Exception: downloading N3rgy data for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
