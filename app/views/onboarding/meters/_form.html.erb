@@ -9,7 +9,7 @@
 
       <%= form.input :meter_type, as: :radio_buttons, collection: Meter::CREATABLE_METER_TYPES.map(&:to_s), label_method: :humanize %>
 
-      <%= form.input :mpan_mprn, label: 'Meter Point Number' %>
+      <%= form.input :mpan_mprn, as: :string, label: 'Meter Point Number' %>
       <%= form.input :name, label: 'Meter Name', hint: 'You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.' %>
       <%= form.input :meter_serial_number, labeL: 'Serial number', as: :string %>
       <%= form.button :submit %>
