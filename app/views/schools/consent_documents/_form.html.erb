@@ -1,14 +1,17 @@
 <%= simple_form_for [school, consent_document] do |f| %>
 
-  <div class="form-group">
-    <%= f.label :title %>
-    <%= f.text_field :title, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label 'Description', for: :description %>
-    <%= f.rich_text_area :description %>
-  </div>
+  <% if consent_document.new_record? %>
+    <%= f.input :title, as: :hidden %>
+  <% else %>
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label 'Description', for: :description %>
+      <%= f.rich_text_area :description %>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <%= f.input :file %>

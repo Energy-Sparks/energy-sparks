@@ -21,7 +21,7 @@ describe 'consent documents', type: :system do
           fill_in 'Email', with: school_admin.email
           fill_in 'Password', with: school_admin.password
           first("input[name='commit']").click
-          expect(page).to have_content("You have not provided us with any energy bills")
+          expect(page).to have_content("You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.")
         end
       end
 
@@ -48,15 +48,9 @@ describe 'consent documents', type: :system do
     context 'when managing consent documents' do
       it 'can create and upload a bill' do
         visit school_consent_documents_path(school)
-        expect(page).to have_content("You have not provided us with any energy bills")
-
-        title =  "New bill"
-        description = "Proof as requested"
+        expect(page).to have_content("You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.")
 
         click_on 'Upload a bill'
-
-        fill_in 'Title', with: title
-        fill_in_trix with: description
 
         click_on 'Upload'
         expect(page).to have_content 'blank'
@@ -65,7 +59,7 @@ describe 'consent documents', type: :system do
 
         click_on 'Upload'
         expect(page).to have_content "Uploaded Bills"
-        expect(page).to have_content "New bill"
+        expect(school.consent_documents.count).to eql(1)
         expect(page).to have_link 'Upload a new bill'
         expect(page).to have_content "Edit"
         expect(page).to_not have_content "Delete"
