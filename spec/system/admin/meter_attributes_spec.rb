@@ -182,6 +182,17 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       expect(new_attribute.deleted_by).to eq(admin)
     end
 
+    it 'works with tiered tariffs in generic accounting tariff' do
+      visit root_path
+      click_on 'Manage'
+      click_on 'Admin'
+      click_on 'Global Meter Attributes'
+      select 'Accounting tariff (generic + DCC)', from: 'type'
+      click_on 'New attribute'
+
+      expect(page).to have_content('New attribute: Accounting tariff (generic + DCC)')
+    end
+
     context 'with dcc_meter' do
       let!(:standing_charge) { create(:tariff_standing_charge, meter: gas_meter, start_date: Date.today) }
       let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: gas_meter, tariff_date: Date.today) }
