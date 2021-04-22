@@ -296,6 +296,7 @@ describe School do
         expect(ability).to_not be_able_to(:show_pupils_dash, school)
         expect(ability).to_not be_able_to(:show_teachers_dash, school)
         expect(ability).to_not be_able_to(:show_management_dash, school)
+        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
       end
 
       context "as school admin" do
@@ -306,6 +307,7 @@ describe School do
           expect(ability).to_not be_able_to(:show_pupils_dash, school)
           expect(ability).to_not be_able_to(:show_teachers_dash, school)
           expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -317,6 +319,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -332,6 +335,8 @@ describe School do
         #as the controller requires you to login
         expect(ability).to be_able_to(:show_teachers_dash, school)
         expect(ability).to_not be_able_to(:show_management_dash, school)
+
+        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
       end
 
       context "as school admin" do
@@ -342,6 +347,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -354,6 +360,7 @@ describe School do
           #at present this is allowed as any signed in user can see teacher dashboard
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -365,6 +372,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -378,6 +386,7 @@ describe School do
         expect(ability).to_not be_able_to(:show_pupils_dash, school)
         expect(ability).to_not be_able_to(:show_teachers_dash, school)
         expect(ability).to_not be_able_to(:show_management_dash, school)
+        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
       end
 
       context "as school admin" do
@@ -388,6 +397,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -399,6 +409,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -410,6 +421,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
       end
 
@@ -421,7 +433,33 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
+      end
+
+      context "as teacher from school in same group" do
+        let!(:user)          { create(:staff, school: other_school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as pupil from school in same group" do
+        let!(:user)          { create(:pupil, school: other_school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+
       end
 
       context "as admin" do
@@ -432,6 +470,7 @@ describe School do
           expect(ability).to be_able_to(:show_pupils_dash, school)
           expect(ability).to be_able_to(:show_teachers_dash, school)
           expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
         end
       end
 

@@ -61,7 +61,7 @@ class Ability
       if user.school.present?
         can [
           :show, :usage, :show_pupils_dash, :show_teachers_dash
-        ], School, { school_group_id: user.school.school_group_id, visible: true, public: false }
+        ], School, { school_group_id: user.school.school_group_id, visible: true }
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
       end
       can [
@@ -89,19 +89,26 @@ class Ability
         user.id == other_user.id
       end
     elsif user.staff? || user.volunteer? || user.pupil?
+      #abilities for own school
       school_scope = { id: user.school_id, visible: true }
       can [
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
       ], School, school_scope
+      #can also do these things for schools in same group
+      can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+      ], School, { school_group_id: user.school.school_group_id, visible: true }
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
-      can :read_restricted_analysis, School, school_scope
+      #can read real cost data only if school is public
+      can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
       if user.staff? || user.volunteer?
         can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
+        can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
