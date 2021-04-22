@@ -93,7 +93,7 @@ private
 
     schools = SchoolFilter.new(**{ include_invisible: include_invisible }.merge(@benchmark_filter)).filter
     unless include_invisible
-      schools = schools.keep_if {|s| can?(:show, s) }
+      schools = schools.select {|s| can?(:show, s) }
     end
     @benchmark_results = Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(schools)
   end
