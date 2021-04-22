@@ -89,12 +89,12 @@ class Ability
         user.id == other_user.id
       end
     elsif user.staff? || user.volunteer? || user.pupil?
-      #abilities for own school
+      #abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
       can [
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
       ], School, school_scope
-      #can also do these things for schools in same group
+      #they can also do these things for schools in same group
       can [
         :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
       ], School, { school_group_id: user.school.school_group_id, visible: true }
@@ -102,10 +102,15 @@ class Ability
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
-      #can read real cost data only if school is public
-      can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
+      #pupils and volunteers can only read real cost data if their school is public
+      if user.volunteer? || user.pupil?
+        can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
+      else
+        #but staff can read it regardless
+        can :read_restricted_analysis, School, { id: user.school_id, visible: true }
+      end
       if user.staff? || user.volunteer?
         can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
         can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
