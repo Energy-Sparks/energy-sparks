@@ -24,7 +24,7 @@ script:
 - bundle exec rails db:prepare
 - bundle exec rubocop app lib data-pipeline/handlers
 - bundle exec bundle-audit check --update
-- nvm install node
+- nvm install node@15
 - node -v
 - yarn
 - bundle exec rails webpacker:compile
