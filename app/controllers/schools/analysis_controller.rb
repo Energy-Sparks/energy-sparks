@@ -55,7 +55,7 @@ module Schools
 
     def check_authorisation
       if @alert_type.user_restricted && cannot?(:read_restricted_analysis, @school)
-        redirect_to school_analysis_index_path(@school), notice: 'Only a user for this school can access this content'
+        redirect_to school_analysis_index_path(@school), notice: 'Only an admin or staff user for this school can access this content'
       end
     end
 
