@@ -2,11 +2,11 @@
   <%= @school.name %> Upload Bill
 <% end %>
 
-<h1>Upload a bill</h1>
+<h1>Upload an energy bill</h1>
 
 <p>
   Upload an energy bill for your school as proof that you have access to
-  your energy meters, so that we can enable access to your data
+  your energy meters. We need this proof before we are able to provide access to your data.
 </p>
 
 <%= render 'form', label: "Upload", school: @school, consent_document: @consent_document %>

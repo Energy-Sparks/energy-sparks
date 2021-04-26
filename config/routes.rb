@@ -137,6 +137,7 @@ Rails.application.routes.draw do
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
+      get :private, to: 'private#show'
 
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
@@ -258,8 +259,11 @@ Rails.application.routes.draw do
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
+      get 'tariffs', to: 'tariffs#index', as: :tariffs
+      get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
       resources :benchmark_result_generation_runs, only: [:index, :show]
       resources :amr_data_feed_import_logs, only: [:index]
+      resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
     end
     resource :settings, only: [:show, :update]

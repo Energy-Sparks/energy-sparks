@@ -67,5 +67,27 @@ module Amr
       expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][1]).to be 0.0
       expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][47]).to be 0.0
     end
+
+    context 'with custom_tariffs' do
+      let(:date)        { Date.yesterday }
+
+      let!(:standing_charge) { create(:tariff_standing_charge, meter: g_meter, start_date: date) }
+      let!(:prices)          { create(:tariff_price, :with_differential_tariff, meter: g_meter, tariff_date: date) }
+
+      let(:amr_data)  { AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build }
+
+      it 'includes meter attributes' do
+        first_electricity_meter = amr_data[:electricity_meters].first
+        expect(first_electricity_meter[:attributes]).to be_nil
+      end
+
+      it 'includes extra meter attributes for dcc_meters' do
+        first_gas_meter = amr_data[:heat_meters].first
+        expect(first_gas_meter[:attributes]).to_not be_nil
+        expect(first_gas_meter[:attributes][:accounting_tariff_generic]).to_not be_nil
+      end
+
+    end
+
   end
 end

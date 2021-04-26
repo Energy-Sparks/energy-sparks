@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe SchoolGroup, :school_groups, type: :model do
 
-  let!(:school_group) { create :school_group }
+  let!(:school_group) { create :school_group, public: public }
+  let(:public)    { true }
 
   subject { school_group }
 
@@ -44,4 +45,70 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
+  describe 'abilities' do
+    let(:ability) { Ability.new(user) }
+    let(:user) { nil }
+
+    context 'public group' do
+      context 'as guest' do
+        it 'allows comparison' do
+          expect(ability).to be_able_to(:compare, school_group)
+        end
+      end
+    end
+
+    context 'private group' do
+      let(:public)    { false }
+      let(:school)    { create(:school, school_group: group ) }
+      let(:group)     { nil }
+
+      context 'as guest' do
+        it 'does not allow comparison' do
+          expect(ability).to_not be_able_to(:compare, school_group)
+        end
+      end
+
+      context 'as user from another school' do
+        let!(:user)          { create(:school_admin) }
+        it 'does not allow comparison' do
+          expect(ability).to_not be_able_to(:compare, school_group)
+        end
+      end
+
+      context 'as admin' do
+        let!(:user)   { create(:admin) }
+        it 'allows comparison' do
+          expect(ability).to be_able_to(:compare, school_group)
+        end
+      end
+
+      context 'as staff' do
+        let(:group)    { school_group }
+        let!(:user)   { create(:pupil, school: school)}
+
+        it 'allows comparison' do
+          expect(ability).to be_able_to(:compare, school_group)
+        end
+      end
+
+      context 'as school admin' do
+        let(:group)           { school_group }
+        let!(:user)          { create(:school_admin, school: school) }
+
+        it 'allows comparison' do
+          expect(ability).to be_able_to(:compare, school_group)
+        end
+      end
+
+      context 'as admin from school in same group' do
+        let(:group)           { school_group }
+        let(:other_school)    { create(:school, school_group: school_group ) }
+        let!(:user)           { create(:school_admin, school: other_school) }
+        it 'allows comparison' do
+          expect(ability).to be_able_to(:compare, school_group)
+        end
+      end
+
+    end
+  end
 end

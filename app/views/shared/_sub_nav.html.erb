@@ -38,7 +38,7 @@
 
           <%= render 'shared/manage_school', school: school if can? :update, school %>
 
-          <% if podium && podium.includes_school? %>
+          <% if podium && podium.includes_school? && can?(:read, podium.scoreboard) %>
             <span class="nav-lozenge mt-1">
               <li class="nav-item">
                 <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link' do %>

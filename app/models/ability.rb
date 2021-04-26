@@ -9,14 +9,17 @@ class Ability
     can :read, Activity, school: { visible: true }
     can :read, ActivityCategory
     can :show, ActivityType
-    can :index, School
+
     can :read, SchoolGroup
-    can :show, School, visible: true
-    can :usage, School, visible: true
-    can :show_pupils_dash, School, visible: true
-    can :show_teachers_dash, School, visible: true
-    can :suggest_activity, School, visible: true
-    can :read, Scoreboard
+    can :compare, SchoolGroup, public: true
+
+    can :index, School
+    can [
+      :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+    ], School, visible: true, public: true
+
+    can :read, Scoreboard, public: true
+
     can :read, FindOutMore
     can :read, Observation
     can :read, ProgrammeType
@@ -54,13 +57,22 @@ class Ability
         can :read, [:my_school_menu, :school_downloads]
         can :switch, School
       end
+      #allow users from schools in same group to access dashboards
+      if user.school.present?
+        can [
+          :show, :usage, :show_pupils_dash, :show_teachers_dash
+        ], School, { school_group_id: user.school.school_group_id, visible: true }
+        can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
+      end
       can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
-        :read, :usage, :start_programme, :read_restricted_analysis
+        :read, :start_programme, :read_restricted_analysis
       ], School, school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
+      can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
       can [:index, :read], ConsentGrant, related_school_scope
       can [:index, :create, :read, :update], Meter, related_school_scope
@@ -77,13 +89,31 @@ class Ability
         user.id == other_user.id
       end
     elsif user.staff? || user.volunteer? || user.pupil?
+      #abilities that give you access to dashboards for own school
+      school_scope = { id: user.school_id, visible: true }
+      can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+      ], School, school_scope
+      #they can also do these things for schools in same group
+      can [
+        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+      ], School, { school_group_id: user.school.school_group_id, visible: true }
+      can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
-      can :read_restricted_analysis, School, school_scope
+      can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
+      #pupils and volunteers can only read real cost data if their school is public
+      if user.volunteer? || user.pupil?
+        can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
+      else
+        #but staff can read it regardless
+        can :read_restricted_analysis, School, { id: user.school_id, visible: true }
+      end
       if user.staff? || user.volunteer?
         can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
+        can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id

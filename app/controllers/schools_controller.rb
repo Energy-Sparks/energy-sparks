@@ -6,6 +6,7 @@ class SchoolsController < ApplicationController
   include DashboardAlerts
   include DashboardTimeline
   include DashboardPriorities
+  include NonPublicSchools
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -14,6 +15,10 @@ class SchoolsController < ApplicationController
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
   before_action :check_aggregated_school_in_cache, only: [:show]
+
+  before_action only: [:show] do
+    redirect_unless_permitted :show
+  end
 
   # GET /schools
   def index

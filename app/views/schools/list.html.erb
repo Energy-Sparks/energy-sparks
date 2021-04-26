@@ -30,12 +30,12 @@ Schools
   </ul>
 
   <% @school_groups.each do |school_group| %>
-    <%= render 'schools/list_header', name: school_group.name, scoreboard: nil, benchmark_filter: {school_group_ids: [school_group.id]}%>
+    <%= render 'schools/list_header', name: school_group.name, school_group: school_group, scoreboard: nil, benchmark_filter: {school_group_ids: [school_group.id]}%>
     <%= render 'schools/list_cards', schools: school_group.schools.visible.by_name %>
   <% end %>
 
   <% if @ungrouped_visible_schools.any? %>
-    <%= render 'schools/list_header', name: 'Other schools', scoreboard: nil, benchmark_filter: nil %>
+    <%= render 'schools/list_header', name: 'Other schools', school_group: nil, scoreboard: nil, benchmark_filter: nil %>
     <%= render 'schools/list_cards', schools: @ungrouped_visible_schools %>
   <% end %>
 </section>

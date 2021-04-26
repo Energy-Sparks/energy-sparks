@@ -281,4 +281,202 @@ describe School do
     end
   end
 
+  context 'checking abilities' do
+    subject(:ability) { Ability.new(user) }
+    let(:user) { nil }
+
+    let!(:school_group) { create(:school_group, name: 'School Group')}
+    let!(:other_school) { create(:school, name: 'Other School', visible: true, school_group: school_group)}
+
+    context 'Schools that are not visible' do
+      let!(:school)       { create(:school, name: 'School', visible: false, school_group: school_group)}
+
+      it 'disallows guest access' do
+        expect(ability).to_not be_able_to(:show, school)
+        expect(ability).to_not be_able_to(:show_pupils_dash, school)
+        expect(ability).to_not be_able_to(:show_teachers_dash, school)
+        expect(ability).to_not be_able_to(:show_management_dash, school)
+        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+      end
+
+      context "as school admin" do
+        let!(:user)          { create(:school_admin, school: school) }
+
+        it 'disallows access' do
+          expect(ability).to_not be_able_to(:show, school)
+          expect(ability).to_not be_able_to(:show_pupils_dash, school)
+          expect(ability).to_not be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as admin" do
+        let(:user) { create(:admin) }
+
+        it "can do anything" do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+    end
+
+    context 'Schools that are visible' do
+      let!(:school)       { create(:school, name: 'School', visible: true, school_group: school_group)}
+
+      it 'disallows guest access' do
+        expect(ability).to be_able_to(:show, school)
+        expect(ability).to be_able_to(:show_pupils_dash, school)
+        #FIXME: this is allowed here, but in practice, guests cant do this
+        #as the controller requires you to login
+        expect(ability).to be_able_to(:show_teachers_dash, school)
+        expect(ability).to_not be_able_to(:show_management_dash, school)
+
+        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+      end
+
+      context "as school admin" do
+        let!(:user)          { create(:school_admin, school: school) }
+
+        it 'disallows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as related school admin" do
+        let!(:user)          { create(:school_admin, school: other_school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          #at present this is allowed as any signed in user can see teacher dashboard
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as admin" do
+        let(:user) { create(:admin) }
+
+        it "can do anything" do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+    end
+
+    context 'Schools that are not public' do
+      let!(:school)       { create(:school, name: 'School', visible: true, public: false, school_group: school_group)}
+
+      it 'disallows guest access' do
+        expect(ability).to_not be_able_to(:show, school)
+        expect(ability).to_not be_able_to(:show_pupils_dash, school)
+        expect(ability).to_not be_able_to(:show_teachers_dash, school)
+        expect(ability).to_not be_able_to(:show_management_dash, school)
+        expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+      end
+
+      context "as school admin" do
+        let!(:user)          { create(:school_admin, school: school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as teacher" do
+        let!(:user)          { create(:staff, school: school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as pupil" do
+        let!(:user)          { create(:pupil, school: school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as related school admin" do
+        let!(:user)          { create(:school_admin, school: other_school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as teacher from school in same group" do
+        let!(:user)          { create(:staff, school: other_school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+      context "as pupil from school in same group" do
+        let!(:user)          { create(:pupil, school: other_school) }
+
+        it 'allows access' do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to_not be_able_to(:read_restricted_analysis, school)
+        end
+
+      end
+
+      context "as admin" do
+        let(:user) { create(:admin) }
+
+        it "can do anything" do
+          expect(ability).to be_able_to(:show, school)
+          expect(ability).to be_able_to(:show_pupils_dash, school)
+          expect(ability).to be_able_to(:show_teachers_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:read_restricted_analysis, school)
+        end
+      end
+
+    end
+
+
+  end
+
 end

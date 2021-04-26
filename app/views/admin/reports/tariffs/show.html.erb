@@ -1,0 +1,45 @@
+<h1>Report for meter <%= @meter.school.name %> <small class="text-muted"><%= @meter.display_name %></small></h1>
+
+<p><%= link_to 'Meter attributes', admin_school_meter_attributes_path(@meter.school, anchor: tariff_anchor(@meter)), class: 'btn btn-success' %></p>
+
+<h2>Standing charges</h2>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Start date</th>
+      <th>Standing charge</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @meter.tariff_standing_charges.by_date_desc.each do |tariff_standing_charge| %>
+      <tr>
+        <td><%= nice_dates(tariff_standing_charge.start_date) rescue nil %></td>
+        <td><%= tariff_standing_charge.value %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h2>Prices</h2>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Tariff date</th>
+      <th>Prices</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @meter.tariff_prices.by_date_desc.each do |tariff_price| %>
+      <tr>
+        <td class="nowrap"><%= nice_dates(tariff_price.tariff_date) rescue nil %></td>
+        <td><%= tariff_price.prices %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

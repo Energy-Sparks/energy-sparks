@@ -1,6 +1,6 @@
 <% content_for :page_title, @school_group.name %>
 
-<%= render 'header', name: @school_group.name, scoreboard: @school_group.default_scoreboard, benchmark_filter: {school_group_ids: [@school_group.id]}%>
+<%= render 'header', name: @school_group.name, school_group: @school_group, scoreboard: @school_group.default_scoreboard, benchmark_filter: {school_group_ids: [@school_group.id]}%>
 
 <p>
 <% if @partners.any? %>
@@ -20,6 +20,6 @@
 <%= render 'schools/list_cards', schools: @school_group.schools.visible.by_name %>
 
 <% if @school_group.schools.not_visible.any? && can?(:read_invisible_schools, School) %>
-  <%= render 'header', name: 'Not visible schools', scoreboard: nil, benchmark_filter: nil %>
+  <%= render 'header', name: 'Not visible schools', school_group: nil, scoreboard: nil, benchmark_filter: nil %>
   <%= render 'schools/list_cards', schools: @school_group.schools.not_visible.by_name %>
 <% end %>
