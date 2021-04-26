@@ -105,7 +105,7 @@ RSpec.describe "analysis page", type: :system do
 
       it 'redirects the user with a message if it is user restricted and the user is not the right type' do
         click_on alert_type_rating_content_version.analysis_title
-        expect(page).to have_content('Only a user for this school can access this content')
+        expect(page).to have_content('Only an admin or staff user for this school can access this content')
         within 'h1' do
           expect(page).to_not have_content('Heating advice')
         end
