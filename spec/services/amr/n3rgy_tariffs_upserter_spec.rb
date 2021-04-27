@@ -62,5 +62,21 @@ module Amr
       end
     end
 
+    context 'when prices are duplicates' do
+      let(:expected_prices_other) { expected_prices.dup }
+
+      it 'removes duplicates' do
+        expected_prices_other[0] = 123.45
+        tariffs[:kwh_tariffs] = {
+          start_date => expected_prices,
+          start_date + 1 => expected_prices, # should remove this one
+          start_date + 2 => expected_prices_other
+        }
+        upserter.perform
+        meter.reload
+        expect(meter.tariff_prices.count).to eq(2)
+        expect(meter.tariff_prices.map(&:tariff_date)).to match_array([start_date, start_date + 2])
+      end
+    end
   end
 end
