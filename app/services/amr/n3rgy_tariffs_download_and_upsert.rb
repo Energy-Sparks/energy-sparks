@@ -8,14 +8,8 @@ module Amr
     end
 
     def perform
-      unless @start_date && @end_date
-        available_dates = n3rgy_api.tariffs_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
-        current_dates = tariffs_current_date_range(@meter)
-      end
-
-      start_date = @start_date || Amr::N3rgyDownloaderDates.start_date(available_dates, current_dates)
-      end_date = @end_date || Amr::N3rgyDownloaderDates.end_date(available_dates)
-
+      start_date = @start_date || available_dates.first
+      end_date = @end_date || available_dates.last
       import_log = create_import_log(start_date, end_date)
       tariffs = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).tariffs
       N3rgyTariffsUpserter.new(meter: @meter, tariffs: tariffs, import_log: import_log).perform
@@ -32,6 +26,16 @@ module Amr
       @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
     end
 
+    def available_dates
+      @available_dates ||= (n3rgy_api.tariffs_available_date_range(@meter.mpan_mprn, @meter.fuel_type) || default_date_range)
+    end
+
+    def default_date_range
+      start_date = Time.zone.today - 13.months
+      end_date = Time.zone.today - 1
+      (start_date..end_date)
+    end
+
     def create_import_log(start_date, end_date)
       TariffImportLog.create(
         source: 'n3rgy-api',
@@ -39,14 +43,6 @@ module Amr
         start_date: start_date,
         end_date: end_date,
         import_time: DateTime.now.utc)
-    end
-
-    def tariffs_current_date_range(meter)
-      if meter.tariff_prices.any?
-        first = meter.tariff_prices.minimum(:tariff_date)
-        last = meter.tariff_prices.maximum(:tariff_date)
-        (first..last)
-      end
     end
   end
 end
