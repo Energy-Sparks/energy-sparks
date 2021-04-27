@@ -23,12 +23,14 @@ module Amr
 
     it "inserts new standing charges" do
       upserter.perform
+      meter.reload
       expect(meter.tariff_standing_charges.count).to eq(1)
       expect(meter.tariff_standing_charges.last.value).to eq(expected_standing_charge)
     end
 
     it "inserts new tariffs" do
       upserter.perform
+      meter.reload
       expect(meter.tariff_prices.count).to eq(1)
       expect(meter.tariff_prices.last.prices[0]).to eq (expected_tiered_tariff)
       expect(meter.tariff_prices.last.prices[1]).to eq (0.15992)
