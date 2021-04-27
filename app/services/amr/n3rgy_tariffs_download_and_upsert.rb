@@ -45,7 +45,7 @@ module Amr
       if meter.tariff_prices.any?
         first = meter.tariff_prices.minimum(:tariff_date)
         last = meter.tariff_prices.maximum(:tariff_date)
-        (Date.parse(first)..Date.parse(last))
+        (first..last)
       end
     end
   end
