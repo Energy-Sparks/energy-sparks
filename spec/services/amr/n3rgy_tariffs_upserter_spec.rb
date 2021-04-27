@@ -40,5 +40,25 @@ module Amr
       upserter.perform
     end
 
+    context 'if readings already exist' do
+
+      let!(:tariff_price_1) { create(:tariff_price, meter: meter, tariff_date: start_date - 2.days) }
+      let!(:tariff_price_2) { create(:tariff_price, meter: meter, tariff_date: start_date - 1.day) }
+      let!(:tariff_standing_charge_1) { create(:tariff_standing_charge, meter: meter, start_date: start_date - 2.days) }
+      let!(:tariff_standing_charge_2) { create(:tariff_standing_charge, meter: meter, start_date: start_date - 1.day) }
+
+      it "removes old prices and standing charges" do
+        expect( meter.tariff_prices.count ).to eql 2
+        expect( meter.tariff_standing_charges.count ).to eql 2
+        upserter.perform
+        expect( meter.tariff_prices.count ).to eql 1
+        expect( meter.tariff_standing_charges.count ).to eql 1
+        expect( meter.tariff_prices ).not_to include(tariff_price_1)
+        expect( meter.tariff_prices ).not_to include(tariff_price_2)
+        expect( meter.tariff_standing_charges ).not_to include(tariff_standing_charge_1)
+        expect( meter.tariff_standing_charges ).not_to include(tariff_standing_charge_2)
+      end
+    end
+
   end
 end

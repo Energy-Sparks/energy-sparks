@@ -10,6 +10,9 @@ module Amr
 
     def perform
       return if @tariffs.empty?
+      Rails.logger.info "Deleting #{@meter.tariff_prices.count} tariff_prices and #{@meter.tariff_standing_charges.count} tariff_standing_charges for #{@meter.mpan_mprn} at #{@meter.school.name}"
+      @meter.tariff_prices.delete_all
+      @meter.tariff_standing_charges.delete_all
       Rails.logger.info "Upserting #{kwh_tariffs} for #{@meter.mpan_mprn} at #{@meter.school.name}"
       TariffUpserter.new(prices_array(kwh_tariffs), standing_charges_array(standing_charges), @import_log).perform
       Rails.logger.info "Upserted #{@import_log.prices_updated} prices and #{@import_log.standing_charges_updated} standing charges for #{@meter.mpan_mprn} at #{@meter.school.name}"
