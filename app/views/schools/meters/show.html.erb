@@ -7,6 +7,9 @@
   <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
     <%= link_to 'Report', admin_reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
   <% end %>
+  <% if can?(:view_meter_attributes, @meter) %>
+    <%= link_to 'Attributes', admin_school_single_meter_attribute_path(@school, @meter), class: 'btn btn-sm' %>
+  <% end %>
   <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
   <% if @meter.dcc_meter? && can?(:view_inventory, @meter) %>
     <%= link_to 'Inventory', inventory_school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
