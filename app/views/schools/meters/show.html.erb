@@ -11,6 +11,9 @@
   <% if @meter.dcc_meter? && can?(:view_inventory, @meter) %>
     <%= link_to 'Inventory', inventory_school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
   <% end %>
+  <% if @meter.dcc_meter? && can?(:view_tariff_reports, @meter)%>
+    <%= link_to 'Tariff Report', admin_reports_tariff_path(@meter), class: 'btn btn-info btn-sm' %>
+  <% end %>
 </p>
 
 <dl class="row">
