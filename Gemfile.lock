@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: c729654a5a1053e842bc2e0227c0daaca01f1ab4
+  revision: d157cbe7111b622c0afe2f21bdbb51ec2f803895
   branch: refactor-financial-advice-to-native
   specs:
     energy-sparks_analytics (1.2.1)
