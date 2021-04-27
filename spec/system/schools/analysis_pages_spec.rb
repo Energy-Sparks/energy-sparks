@@ -44,7 +44,8 @@ RSpec.describe "analysis page", type: :system do
         [
           {type: :enhanced_title, content: { title: 'Heating advice', rating: 10.0 }},
           {type: :html, content: '<h2>Turn your heating down</h2>'},
-          {type: :chart_name, content: :benchmark}
+          {type: :chart_name, content: :benchmark},
+          {type: :chart_name, content: :meter_chart, mpan_mprn: 1234567890}
         ]
       )
     end
@@ -141,6 +142,14 @@ RSpec.describe "analysis page", type: :system do
         within 'h2' do
           expect(page).to have_content('Turn your heating down')
         end
+        expect(page.find('#chart_benchmark')).to_not be_nil
+      end
+
+      it 'produces right chart elements' do
+        click_on alert_type_rating_content_version.analysis_title
+        expect(page.find('#chart_benchmark')).to_not be_nil
+        expect(page.find('#chart_meter_chart_1234567890')).to_not be_nil
+
       end
     end
 
