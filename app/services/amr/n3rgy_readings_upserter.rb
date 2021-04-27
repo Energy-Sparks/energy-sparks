@@ -1,7 +1,7 @@
 require 'dashboard'
 
 module Amr
-  class N3rgyUpserter
+  class N3rgyReadingsUpserter
     def initialize(meter:, config:, readings:, import_log:)
       @meter = meter
       @amr_data_feed_config = config
