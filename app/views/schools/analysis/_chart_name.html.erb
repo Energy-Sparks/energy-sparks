@@ -1,5 +1,6 @@
 <div id="chart_wrapper_<%= content %>" class="pt-3 chart-wrapper">
   <%= render 'shared/analysis_controls' %>
   <h5 class="text-center"></h5>
-  <%= chart_tag(school, content, show_advice: false, no_zoom: true, wrap: false) %>
+  <% chart_config = mpan_mprn.present? ? { mpan_mprn: mpan_mprn } : {} %>
+  <%= chart_tag(school, content, show_advice: false, no_zoom: true, wrap: false, chart_config: chart_config) %>
 </div>
