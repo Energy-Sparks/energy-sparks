@@ -5,7 +5,7 @@ module ChartHelper
     chart_container = content_tag(
       :div,
       '',
-      id: "chart_#{chart_type}",
+      id: chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{chart_config[:mpan_mprn]}" : "chart_#{chart_type}",
       class: html_class,
       data: {
         chart_config: chart_config.merge(
