@@ -7,10 +7,8 @@ module Amr
     end
 
     def perform
-      ActiveRecord::Base.transaction do
-        upsert_prices
-        upsert_standing_charges
-      end
+      upsert_prices
+      upsert_standing_charges
     end
 
     def upsert_prices
