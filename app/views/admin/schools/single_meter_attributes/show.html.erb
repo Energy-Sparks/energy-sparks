@@ -1,6 +1,8 @@
-<h1>Meter attributes: <%= @school.name %></h1>
+<h1>Individual Meter attributes for <%= @meter.name %></h1>
 
 <p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+
+<p><%= link_to 'Meter details', school_meter_path(@school, @meter) %></p>
 
 <ul class="nav nav-tabs" id="top-level-meter-attribute-tabs">
   <li class="nav-item">
@@ -27,23 +29,19 @@
   <div class="tab-pane fade show active" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
 
     <table class="table">
-      <% @meters.each do |meter| %>
-        <%= render 'meter_attributes_table', school: @school, available_meter_attributes: @available_meter_attributes, meter: meter %>
-      <% end %>
+      <%= render 'admin/schools/meter_attributes/meter_attributes_table', school: @school, available_meter_attributes: @available_meter_attributes, meter: @meter %>
     </table>
   </div>
 
   <div class="tab-pane fade" id="deleted-meter-attributes-content" role="tabpanel" aria-labelledby="deleted-meter-attributes-tab">
     <h2>Deleted attributes</h2>
     <table class="table">
-      <% @meters.each do |meter| %>
-        <%= render 'deleted_attributes_table', school: @school, meter: meter %>
-      <% end %>
+      <%= render 'admin/schools/meter_attributes/deleted_attributes_table', school: @school, meter: @meter %>
     </table>
   </div>
 
   <div class="tab-pane fade" id="all-meter-attributes-content" role="tabpanel" aria-labelledby="all-meter-attributes-tab">
     <h2>Full attributes</h2>
-    <%= sanitize ap(@school.meter_attributes_to_analytics, index: false, plain: true) %>
+    <%= sanitize ap(@meter.meter_attributes_to_analytics, index: false, plain: true) %>
   </div>
 </div>
