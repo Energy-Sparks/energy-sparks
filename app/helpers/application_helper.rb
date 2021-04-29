@@ -230,6 +230,14 @@ module ApplicationHelper
 
   def print_meter_attribute(meter_attribute)
     sanitize(ap(MeterAttribute.to_analytics([meter_attribute]), index: false, plain: true))
+  rescue => e
+    e.message
+  end
+
+  def print_meter_attributes(school, index = false, plain = true)
+    sanitize ap(school.meter_attributes_to_analytics, index: index, plain: plain)
+  rescue => e
+    e.message
   end
 
   def warnings_from_warning_types(warning_types)
