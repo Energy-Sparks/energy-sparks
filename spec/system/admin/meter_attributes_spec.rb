@@ -19,8 +19,8 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       visit school_path(school)
       click_on 'Manage school'
       click_on 'Meter attributes'
-
       expect(page).to have_content('Meter attributes: Oldfield Park Infants')
+      click_on 'Edit'
     end
 
     it 'allow the admin to manage the meter attributes' do
