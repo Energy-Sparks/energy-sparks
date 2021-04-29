@@ -56,7 +56,8 @@ module Admin
 
       def destroy
         meter_attribute = MeterAttribute.find(params[:id])
-        meter_attribute.update!(deleted_by: current_user)
+        meter_attribute.deleted_by = current_user
+        meter_attribute.save(validate: false)
         redirect_to admin_school_meter_attributes_path(@school)
       rescue => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
