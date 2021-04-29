@@ -14,6 +14,15 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       sign_in(admin)
     end
 
+    it 'handles errors from the meter attributes to protect against changes in analytics definitions' do
+      expect(MeterAttribute).to receive(:to_analytics).and_raise(StandardError)
+      visit school_path(school)
+      click_on 'Manage school'
+      click_on 'Meter attributes'
+
+      expect(page).to have_content('Meter attributes: Oldfield Park Infants')
+    end
+
     it 'allow the admin to manage the meter attributes' do
       visit school_path(school)
       click_on 'Manage school'

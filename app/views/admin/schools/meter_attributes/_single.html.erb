@@ -1,9 +1,9 @@
 <tr>
-  <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
-  <td><%= meter_attribute.reason %></td>
-  <td><%= meter_attribute.created_by.email if meter_attribute.created_by %></td>
-  <td><%= nice_date_times(meter_attribute.created_at) %></td>
-  <td><%= print_meter_attribute(meter_attribute) %></td>
+  <td><%= meter_attribute.meter_attribute_type.attribute_name  rescue 'NO meter_attribute_type!'%></td>
+  <td><%= meter_attribute.reason rescue 'NO meter_attribute_type!' %></td>
+  <td><%= meter_attribute.created_by.email if meter_attribute.created_by rescue 'NO meter_attribute_type!' %></td>
+  <td><%= nice_date_times(meter_attribute.created_at)  rescue 'NO meter_attribute_type!'%></td>
+  <td><%= print_meter_attribute(meter_attribute)  rescue 'NO meter_attribute_type!'%></td>
 </tr>
 <% if meter_attribute.replaces %>
   <%= render 'admin/schools/meter_attributes/single', meter_attribute: meter_attribute.replaces %>

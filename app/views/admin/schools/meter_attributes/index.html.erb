@@ -114,6 +114,6 @@
 
   <div class="tab-pane fade" id="all-meter-attributes-content" role="tabpanel" aria-labelledby="all-meter-attributes-tab">
     <h2>Full attributes</h2>
-    <%= sanitize ap(@school.meter_attributes_to_analytics, index: false, plain: true) %>
+    <%= sanitize ap(@school.meter_attributes_to_analytics, index: false, plain: true)  rescue 'ALL BROKEN!' %>
   </div>
 </div>

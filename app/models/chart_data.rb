@@ -23,7 +23,7 @@ class ChartData
     parent_timescale_description = chart_manager.parent_chart_timescale_description(transformed_chart_config)
 
     values = ChartDataValues.new(
-      chart_manager.run_chart(transformed_chart_config, transformed_chart_type),
+      chart_manager.N3rgyReadingsUpserter(transformed_chart_config, transformed_chart_type),
       transformed_chart_type,
       transformations: @transformations,
       allowed_operations: allowed_operations,
