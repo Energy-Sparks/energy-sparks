@@ -37,7 +37,7 @@ module Admin
         @meter_attribute_type = @meter_attribute.meter_attribute_type
         @input_data = @meter_attribute.input_data
       rescue => e
-        redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.errors
+        redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
 
       def update
