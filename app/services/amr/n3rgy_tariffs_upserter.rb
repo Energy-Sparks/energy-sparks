@@ -30,20 +30,13 @@ module Amr
     end
 
     def prices_array(tariff_prices_hash)
-      ary = tariff_prices_hash.map do |tariff_date, prices|
+      tariff_prices_hash.map do |tariff_date, prices|
         {
           meter_id: @meter.id,
           tariff_date: tariff_date,
           prices: prices
         }
       end
-      deduplicate_prices(ary)
-    end
-
-    def deduplicate_prices(ary)
-      deduped = [ary.first]
-      ary.each_cons(2) { |a, b| deduped << b if a[:prices] != b[:prices] }
-      deduped
     end
 
     def standing_charges_array(standing_charges_hash)
