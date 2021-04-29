@@ -1,0 +1,51 @@
+<thead class="thead-light">
+  <tr scope="row">
+    <th>
+      <%= link_to school_meter_path(meter.school, meter) do %>
+        <%= fa_icon(fuel_type_icon(meter.meter_type)) %> <%= meter.mpan_mprn %> <%= "(#{meter.name})" unless meter.name.blank? %>
+      <% end %>
+    </th>
+    <th>
+      <%= render 'shared/meter_attributes/new_select', available_meter_attributes: available_meter_attributes, create_path: new_admin_school_meter_attribute_path(school), meter_id: meter.id %>
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <% meter.global_meter_attributes.each do |meter_attribute| %>
+    <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: meter_attribute do %>
+      <div class="alert alert-info">from <%= link_to "Global attributes", admin_global_meter_attributes_path %></div>
+    <% end %>
+  <% end %>
+  <% meter.school_group_meter_attributes.each do |meter_attribute| %>
+    <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: meter_attribute do %>
+      <div class="alert alert-info">from <%= link_to "#{school.school_group.name} attributes", admin_school_group_meter_attributes_path(@school.school_group)%></div>
+    <% end %>
+  <% end %>
+  <% meter.school_meter_attributes.each do |meter_attribute| %>
+    <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: meter_attribute do %>
+      <div class="alert alert-info">from <%= link_to "#{school.name} attributes", admin_school_school_attributes_path(@school)%></div>
+    <% end %>
+  <% end %>
+  <% meter.meter_attributes.active.each do |meter_attribute| %>
+    <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: meter_attribute do %>
+      <div class="btn-group">
+        <%= link_to 'Edit', edit_admin_school_meter_attribute_path(school, meter_attribute), class: 'btn btn-sm' if can?(:edit, meter_attribute) %>
+        <%= button_to 'Delete', admin_school_meter_attribute_path(school, meter_attribute), method: :delete, class: 'btn btn-sm' if can?(:delete, meter_attribute) %>
+        <%= link_to 'History', admin_school_meter_attribute_path(school, meter_attribute), class: 'btn btn-sm' if can?(:show, meter_attribute) %>
+      </div>
+    <% end %>
+  <% end %>
+  <% if meter.dcc_meter? %>
+  <% tariff_attributes = build_tariff_attributes(meter) %>
+    <% if tariff_attributes.present? %>
+      <tr id="<%= tariff_anchor(meter) %>">
+        <td>
+          <%= tariff_attributes %>
+        </td>
+        <td>
+          <div class="alert alert-info">from <%= link_to "DCC tariff data", admin_reports_tariff_path(meter) %></div>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</tbody>
