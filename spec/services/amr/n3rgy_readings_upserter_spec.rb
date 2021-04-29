@@ -21,35 +21,21 @@ module Amr
     let(:upserter) { Amr::N3rgyReadingsUpserter.new(meter: meter, config: config, readings: readings, import_log: import_log) }
 
     it "inserts new readings" do
-      expect {
-        upserter.perform
-      }.to change(meter.amr_data_feed_readings, :count).by(1)
+      expect( AmrDataFeedReading.count ).to eql 0
+      upserter.perform
+      expect( AmrDataFeedReading.count ).to eql 1
     end
 
     it "handles empty reading for meter" do
+      expect( AmrDataFeedReading.count ).to eql 0
       readings[meter.meter_type][:readings] = {}
-      expect {
-        upserter.perform
-      }.not_to change(meter.amr_data_feed_readings, :count)
+      upserter.perform
+      expect( AmrDataFeedReading.count ).to eql 0
     end
 
     it "logs counts of inserts and updates" do
       expect(import_log).to receive(:update).with(records_imported: 1, records_updated: 0)
       upserter.perform
-    end
-
-    context 'if readings already exist' do
-
-      let!(:reading_1) { create(:amr_data_feed_reading, meter: meter, reading_date: start_date - 2.days) }
-      let!(:reading_2) { create(:amr_data_feed_reading, meter: meter, reading_date: start_date - 1.day) }
-
-      it "removes old readings" do
-        expect( meter.amr_data_feed_readings.count ).to eql 2
-        upserter.perform
-        expect( meter.amr_data_feed_readings.count ).to eql 1
-        expect( meter.amr_data_feed_readings ).not_to include(reading_1)
-        expect( meter.amr_data_feed_readings ).not_to include(reading_2)
-      end
     end
 
     context  "if mpan is new" do
