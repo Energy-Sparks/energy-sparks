@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 536333a2cddcc685dd4d447459a7b3215f1eb001
+  revision: 6b3617f452797fae6ef3f4a02c68c111f99d6629
   branch: reintroduce-default-accounting-tariff
   specs:
     energy-sparks_analytics (1.2.1)
