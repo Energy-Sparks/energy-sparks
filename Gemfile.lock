@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: fe861a7340e4ff42a0759b4ae6f3bec0e34e7790
+  revision: d79b2760cbea7b626c5c517330901fe383b99a04
   branch: reintroduce-default-accounting-tariff
   specs:
     energy-sparks_analytics (1.2.1)
@@ -133,7 +133,7 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
-    backports (3.20.2)
+    backports (3.21.0)
     bcrypt (3.1.15)
     benchmark-memory (0.1.2)
       memory_profiler (~> 0.9)
@@ -272,7 +272,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (1.8.9)
+    i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     image_processing (1.11.0)
       mini_magick (>= 4.9.5, < 5)
@@ -326,7 +326,7 @@ GEM
     mimemagic (0.3.5)
     mini_magick (4.10.1)
     mini_mime (1.0.2)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
     minimization (0.2.5)
       text-table (~> 1.2)
     minitest (5.14.4)
@@ -343,7 +343,7 @@ GEM
       connection_pool (~> 2.2)
     netrc (0.11.0)
     nio4r (2.5.5)
-    nokogiri (1.11.2)
+    nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     notiffany (0.1.3)
