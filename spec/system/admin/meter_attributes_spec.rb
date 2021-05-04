@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe "meter attribute management", :meters, type: :system do
 
-  let!(:school_group)  { create(:school_group, name: 'BANES') }
-  let(:school_name)   { 'Oldfield Park Infants'}
-  let!(:school)       { create_active_school(name: school_name, school_group: school_group) }
-  let!(:admin)        { create(:admin)}
-  let!(:gas_meter)    { create :gas_meter, name: 'Gas meter', school: school }
+  let!(:school_group)       { create(:school_group, name: 'BANES') }
+  let!(:school_name)        { 'Oldfield Park Infants'}
+  let!(:school)             { create_active_school(name: school_name, school_group: school_group) }
+  let!(:admin)              { create(:admin)}
+  let!(:gas_meter)          { create :gas_meter, name: 'Gas meter', school: school }
 
   context 'as admin' do
 
@@ -14,14 +14,55 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       sign_in(admin)
     end
 
-    it 'handles errors from the meter attributes to protect against changes in analytics definitions' do
-      expect(MeterAttribute).to receive(:to_analytics).and_raise(StandardError)
-      visit school_path(school)
-      click_on 'Manage school'
-      click_on 'Meter attributes'
-      expect(page).to have_content('Meter attributes: Oldfield Park Infants')
-      click_on 'Edit'
+    context 'when analytics attributs are broken' do
+
+      before :each do
+        expect(MeterAttribute).to receive(:to_analytics).at_least(:once).and_raise(StandardError.new('There was an error'))
+      end
+
+      it 'shows broken index' do
+        meter_attribute = create(:meter_attribute, meter: gas_meter)
+        visit school_path(school)
+        click_on 'Manage school'
+        click_on 'Meter attributes'
+        expect(page).to have_content('Meter attributes: Oldfield Park Infants')
+        expect(page).to have_content('There was an error')
+      end
+
+      it 'deletes broken meter attribute' do
+        meter_attribute = create(:meter_attribute, meter: gas_meter)
+        visit school_path(school)
+        click_on 'Manage school'
+        click_on 'Meter attributes'
+        click_on 'Delete'
+        expect(gas_meter.reload.meter_attributes.active.count).to eq(0)
+        expect(gas_meter.reload.meter_attributes.deleted.count).to eq(1)
+        expect(page).to have_content('There was an error')
+      end
+
+      it 'deletes broken school attribute' do
+        meter_attribute = create(:school_meter_attribute, school: school)
+        visit school_path(school)
+        click_on 'Manage school'
+        click_on 'Meter attributes'
+        click_on 'School-wide attributes'
+        click_on 'Delete'
+        expect(school.reload.meter_attributes.active.count).to eq(0)
+        expect(school.reload.meter_attributes.deleted.count).to eq(1)
+        expect(page).to have_content('There was an error')
+      end
+
+      it 'deletes broken global meter attribute' do
+        meter_attribute = create(:global_meter_attribute)
+        visit admin_path(school)
+        click_on 'Global Meter Attributes'
+        click_on 'Delete'
+        expect(GlobalMeterAttribute.active.count).to eq(0)
+        expect(GlobalMeterAttribute.deleted.count).to eq(1)
+        expect(page).to have_content('There was an error')
+      end
     end
+
 
     it 'allow the admin to manage the meter attributes' do
       visit school_path(school)
