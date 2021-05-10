@@ -1,9 +1,15 @@
 <fieldset class='form-group'>
   <%= form.label field_name, label: label.to_s.humanize, required: field.required?, class: 'col-form-label-lg', hint: field.hint unless label.blank? %>
   <%= form.hint field.hint %>
+
+  <% if !field.required? && field_name != 'root' %>
+    <%= check_box_tag "abc", false, false, { class: 'check-all-attributes' } %>
+  <% end %>
+
   <div class="<%= 'ml-5' unless field_name == 'root' %>">
     <% field.structure.each do |key, structure| %>
-      <%= render "shared/meter_attributes/#{structure.type.to_s}", value: value ? value[key.to_s] : nil, field: structure, field_name: field_name + "[#{key}]", form: form, label: key %>
+      <%= render "shared/meter_attributes/#{structure.type.to_s}", value: value ? value[key.to_s] : nil, field: structure, field_name: field_name + "[#{key}]", form: form, label: key, parent: field_name %>
     <% end %>
   </div>
+
 </fieldset>
