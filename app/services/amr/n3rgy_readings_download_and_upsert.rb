@@ -27,7 +27,7 @@ module Amr
       readings = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).readings
       N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
     rescue => e
-      import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} : #{e.message}")
+      import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} : #{e.message}") if import_log
       Rails.logger.error "Exception: downloading N3rgy data for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e, job: :n3rgy_download, meter_id: @meter.mpan_mprn, start_date: start_date, end_date: end_date)
