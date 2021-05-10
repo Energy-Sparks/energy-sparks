@@ -44,6 +44,19 @@ RSpec.describe "meter management", :meters, type: :system do
         click_on 'Details'
         expect(page).not_to have_button('Inventory')
       end
+
+      it 'the tariff report button is not shown' do
+        click_on 'Manage meters'
+        click_on 'Details'
+        expect(page).not_to have_button('Tariff Report')
+      end
+
+      it 'the attributes button is not shown' do
+        click_on 'Manage meters'
+        click_on 'Details'
+        expect(page).not_to have_button('Attributes')
+      end
+
     end
   end
 
@@ -82,6 +95,20 @@ RSpec.describe "meter management", :meters, type: :system do
         click_on 'Inventory'
         expect(page).to have_content('device_id')
         expect(page).to have_content('123999')
+      end
+
+      it 'the tariff report can be shown' do
+        click_on 'Manage meters'
+        click_on 'Details'
+        click_on 'Tariff Report'
+        expect(page).to have_content("Standing charges")
+      end
+
+      it 'the single meter attributes view can be shown' do
+        click_on 'Manage meters'
+        click_on 'Details'
+        click_on 'Attributes'
+        expect(page).to have_content("Individual Meter attributes")
       end
 
       it 'the dcc checkboxes and status are shown on the edit form' do

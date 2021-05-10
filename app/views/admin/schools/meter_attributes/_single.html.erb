@@ -1,5 +1,5 @@
 <tr>
-  <td><%= meter_attribute.meter_attribute_type.attribute_name %></td>
+  <td><%= safely { meter_attribute.meter_attribute_type.attribute_name } %></td>
   <td><%= meter_attribute.reason %></td>
   <td><%= meter_attribute.created_by.email if meter_attribute.created_by %></td>
   <td><%= nice_date_times(meter_attribute.created_at) %></td>

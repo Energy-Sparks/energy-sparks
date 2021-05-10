@@ -7,20 +7,22 @@ module Amr
     end
 
     def perform
-      ActiveRecord::Base.transaction do
-        upsert_prices
-        upsert_standing_charges
-      end
+      upsert_prices
+      upsert_standing_charges
     end
 
     def upsert_prices
       records_count_before = TariffPrice.count
       data_for_upsert = add_import_log_id_and_dates_to_hash(@array_of_price_hashes)
 
-      result = TariffPrice.upsert_all(data_for_upsert, unique_by: [:meter_id, :tariff_date])
+      updated_count = 0
+      inserted_count = 0
 
-      inserted_count = TariffPrice.count - records_count_before
-      updated_count = result.rows.flatten.size - inserted_count
+      unless data_for_upsert.empty?
+        result = TariffPrice.upsert_all(data_for_upsert, unique_by: [:meter_id, :tariff_date])
+        inserted_count = TariffPrice.count - records_count_before
+        updated_count = result.rows.flatten.size - inserted_count
+      end
 
       @tariff_import_log.update(prices_imported: inserted_count, prices_updated: updated_count)
 
@@ -31,10 +33,14 @@ module Amr
       records_count_before = TariffStandingCharge.count
       data_for_upsert = add_import_log_id_and_dates_to_hash(@array_of_standing_charge_hashes)
 
-      result = TariffStandingCharge.upsert_all(data_for_upsert, unique_by: [:meter_id, :start_date])
+      updated_count = 0
+      inserted_count = 0
 
-      inserted_count = TariffStandingCharge.count - records_count_before
-      updated_count = result.rows.flatten.size - inserted_count
+      unless data_for_upsert.empty?
+        result = TariffStandingCharge.upsert_all(data_for_upsert, unique_by: [:meter_id, :start_date])
+        inserted_count = TariffStandingCharge.count - records_count_before
+        updated_count = result.rows.flatten.size - inserted_count
+      end
 
       @tariff_import_log.update(standing_charges_imported: inserted_count, standing_charges_updated: updated_count)
 

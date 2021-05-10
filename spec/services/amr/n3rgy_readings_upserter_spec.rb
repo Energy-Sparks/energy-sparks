@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Amr
-  describe N3rgyUpserter do
+  describe N3rgyReadingsUpserter do
 
     let(:meter)           { create(:electricity_meter) }
     let(:config)          { create(:amr_data_feed_config)}
@@ -18,7 +18,7 @@ module Amr
     }
     let(:import_log)    { create(:amr_data_feed_import_log) }
 
-    let(:upserter) { Amr::N3rgyUpserter.new(meter: meter, config: config, readings: readings, import_log: import_log) }
+    let(:upserter) { Amr::N3rgyReadingsUpserter.new(meter: meter, config: config, readings: readings, import_log: import_log) }
 
     it "inserts new readings" do
       expect( AmrDataFeedReading.count ).to eql 0
