@@ -66,6 +66,8 @@ class Meter < ApplicationRecord
 
   scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review: nil) }
   scope :awaiting_trusted_consent, -> { where(dcc_meter: true, consent_granted: false).where.not(meter_review: nil) }
+  scope :dcc, -> { where(dcc_meter: true) }
+  scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
 
   # If adding a new one, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]

@@ -133,7 +133,6 @@ Rails.application.routes.draw do
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 
-
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
@@ -154,7 +153,6 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
-
     end
 
     # Maintain old scoreboard URL
@@ -177,6 +175,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :case_studies
+    resources :consents, only: [:index]
     resources :consent_grants, only: [:index, :show]
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
@@ -244,6 +243,7 @@ Rails.application.routes.draw do
     resources :calendars, only: [:new, :create, :index, :show]
 
     resources :global_meter_attributes
+    resources :consents
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update] do
@@ -280,6 +280,7 @@ Rails.application.routes.draw do
       resource :aggregated_meter_collection, only: :show, constraints: lambda { |request| request.format == :yaml }
       scope module: :schools do
         resources :meter_attributes
+        resources :school_attributes
         resources :school_attributes
         resources :single_meter_attributes, only: [:show]
         resource :partners, only: [:show, :update]
