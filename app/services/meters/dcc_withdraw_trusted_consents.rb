@@ -1,5 +1,5 @@
 module Meters
-  class DccGrantTrustedConsents
+  class DccWithdrawTrustedConsents
     attr_reader :errors
 
     def initialize(meters, n3rgy_api_factory = Amr::N3rgyApiFactory.new)
@@ -11,13 +11,12 @@ module Meters
     def perform
       @meters.each do |meter|
         begin
-          reference = meter.meter_review.consent_grant.guid
-          @n3rgy_api_factory.consent_api(meter).grant_trusted_consent(meter.mpan_mprn, reference)
-          meter.update(consent_granted: true)
+          @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
+          meter.update(consent_granted: false)
         rescue => e
           @errors << e
           Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")
-          Rollbar.error(e, job: :dcc_grant_trusted_consents, mpxn: meter.mpan_mprn, school_name: meter.school.name)
+          Rollbar.error(e, job: :dcc_withdraw_trusted_consents, mpxn: meter.mpan_mprn, school_name: meter.school.name)
         end
       end
       return errors.empty?
