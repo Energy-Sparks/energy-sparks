@@ -2,9 +2,9 @@
 
 <p>
   <% if params[:sandbox] %>
-    <%= link_to "Show without sandbox meters", admin_consents_path, class: 'btn' %>
+    <%= link_to "Show without sandbox meters", admin_dcc_consents_path, class: 'btn' %>
   <% else %>
-    <%= link_to "Show with sandbox meters", admin_consents_path(sandbox: true), class: 'btn' %>
+    <%= link_to "Show with sandbox meters", admin_dcc_consents_path(sandbox: true), class: 'btn' %>
   <% end %>
 </p>
 
@@ -23,8 +23,11 @@
 
 <% @dcc_consent_calcs.grouped_meters.each do |school_group, school_meters| %>
   <div class="nav-anchor">
-    <a name="<%= school_group.name.parameterize %>"> </a>
-    <h2><%= "#{school_group.name} (#{school_meters.count} consented schools)" %></h2>
+    <% if school_group %>
+      <h2><%= "#{school_group.name} (#{school_meters.count} consented schools)" %></h2>
+    <% else %>
+      <h2><%= "No group (#{school_meters.count} consented schools)" %></h2>
+    <% end %>
   </div>
 
   <table class="table">

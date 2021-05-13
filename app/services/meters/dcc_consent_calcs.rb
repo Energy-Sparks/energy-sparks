@@ -24,10 +24,12 @@ module Meters
     def grouped_meters
       grouped = {}
       meters_by_group = {}
+      no_group = OpenStruct.new(name: 'Ungrouped')
       @meters.each do |meter|
-        meters_by_group[meter.school.school_group] ||= {}
-        meters_by_group[meter.school.school_group][meter.school] ||= []
-        meters_by_group[meter.school.school_group][meter.school] << meter
+        school_group = meter.school.school_group || no_group
+        meters_by_group[school_group] ||= {}
+        meters_by_group[school_group][meter.school] ||= []
+        meters_by_group[school_group][meter.school] << meter
       end
       meters_by_group = meters_by_group.sort_by { |k, _v| k.name }
       meters_by_group.each { |k, v| grouped[k] = v.sort_by { |x, _y| x.name } }

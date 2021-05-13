@@ -59,5 +59,17 @@ RSpec.describe "DCC consents", type: :system do
         expect(page).to have_link('Show without sandbox meters')
       end
     end
+
+    context 'when the school has an ungrouped DCC meter' do
+      let!(:school_without_group) { create(:school) }
+      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school_without_group, mpan_mprn: 1234567890123 ) }
+
+      it 'the DCC consents counts are shown' do
+        allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([])
+        click_on('DCC Consents')
+        expect(page).to have_content('Ungrouped')
+        expect(page).to have_content('1234567890123')
+      end
+    end
   end
 end

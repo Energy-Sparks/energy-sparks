@@ -1,5 +1,5 @@
 module Admin
-  class ConsentsController < AdminController
+  class DccConsentsController < AdminController
     def index
       if params[:sandbox]
         @dcc_consent_calcs = Meters::DccConsentCalcs.new(Meter.dcc, production_data_api.list + sandbox_data_api.list)
