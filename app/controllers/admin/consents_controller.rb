@@ -1,29 +1,11 @@
 module Admin
   class ConsentsController < AdminController
     def index
-      meters = Meter.dcc
-
-      @production_consents = production_data_api.list
-      @sandbox_consents = sandbox_data_api.list
-
-      @grouped_meters = {}
-
-      meters_by_group = {}
-      meters.each do |meter|
-        meters_by_group[meter.school.school_group] ||= {}
-        meters_by_group[meter.school.school_group][meter.school] ||= []
-        meters_by_group[meter.school.school_group][meter.school] << meter
+      if params[:sandbox]
+        @dcc_consent_calcs = Meters::DccConsentCalcs.new(Meter.dcc, production_data_api.list + sandbox_data_api.list)
+      else
+        @dcc_consent_calcs = Meters::DccConsentCalcs.new(Meter.dcc.reject(&:sandbox), production_data_api.list)
       end
-
-      meters_by_group = meters_by_group.sort_by { |k, _v| k.name }
-      meters_by_group.each { |k, v| @grouped_meters[k] = v.sort_by { |x, _y| x.name } }
-
-      mpans = meters.map(&:mpan_mprn).map(&:to_s)
-      @orphan_production_consents = @production_consents - mpans
-      @orphan_sandbox_consents = @sandbox_consents - mpans
-
-      @total_schools_with_consents = meters.map(&:school).uniq.count
-      @total_meters_with_consents = meters.count
     end
 
     private
