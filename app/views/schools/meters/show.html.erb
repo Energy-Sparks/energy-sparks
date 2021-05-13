@@ -12,10 +12,10 @@
   <% end %>
   <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
   <% if @meter.dcc_meter? %>
-    <% if @meter.consent_granted? && can?(:withdraw_consent, @meter) %>
+    <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
       <%= link_to 'Withdraw consent', admin_withdraw_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
     <% end %>
-    <% if !@meter.consent_granted? && can?(:grant_consent, @meter) %>
+    <% if @meter.can_grant_consent? && can?(:grant_consent, @meter) %>
       <%= link_to 'Grant consent', admin_grant_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
     <% end %>
     <% if can?(:view_inventory, @meter) %>
@@ -40,7 +40,9 @@
   <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
   <dt class="col-sm-3">DCC Meter?</dt>
   <dd class="col-sm-9"><%= @meter.dcc_meter? %></dd>
-  <dt class="col-sm-3">Consent Granted?</dt>
+  <dt class="col-sm-3">User Consented?</dt>
+  <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
+  <dt class="col-sm-3">DCC Consented?</dt>
   <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
   <dt class="col-sm-3">Sandbox?</dt>
   <dd class="col-sm-9"><%= @meter.sandbox? %></dd>

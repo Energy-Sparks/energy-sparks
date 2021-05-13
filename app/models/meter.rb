@@ -157,6 +157,14 @@ class Meter < ApplicationRecord
     expected_check.to_s == mpan.last
   end
 
+  def can_grant_consent?
+    meter_review.present? && !consent_granted
+  end
+
+  def can_withdraw_consent?
+    consent_granted
+  end
+
   private
 
   def real_electric?
