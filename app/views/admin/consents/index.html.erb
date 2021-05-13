@@ -1,34 +1,27 @@
 <h1>DCC Consents</h1>
 
-<h2>Total schools with DCC consents: <%= @total_schools_with_consents %></h2>
-<h2>Total meters with DCC consents: <%= @total_meters_with_consents %></h2>
+<p>
+  <% if params[:sandbox] %>
+    <%= link_to "Show without sandbox meters", admin_consents_path, class: 'btn' %>
+  <% else %>
+    <%= link_to "Show with sandbox meters", admin_consents_path(sandbox: true), class: 'btn' %>
+  <% end %>
+</p>
 
-<% unless @orphan_production_consents.empty? && @orphan_sandbox_consents.empty? %>
+<h2>Total schools with DCC consents: <%= @dcc_consent_calcs.total_schools_with_consents %></h2>
+<h2>Total meters with DCC consents: <%= @dcc_consent_calcs.total_meters_with_consents %></h2>
 
+<% if @dcc_consent_calcs.orphan_consents.any? %>
   <h2>MPANs in n3rgy list but not in our DCC records</h2>
-
-  <% @orphan_production_consents.each do |mpxn|  %>
-    <% if Meter.exists?(mpan_mprn: mpxn) %>
-      <p><%= link_to mpxn, "#" %></p>
-    <% else %>
-      <p><%= "#{mpxn}" %></p>
-    <% end %>
+  <% @dcc_consent_calcs.orphan_consents.each do |mpxn|  %>
+    <p><%= "#{mpxn}" %></p>
   <% end %>
-
-  <% @orphan_sandbox_consents.each do |mpxn|  %>
-    <% if Meter.exists?(mpan_mprn: mpxn) %>
-      <p><%= link_to "#{mpxn} (sandbox)", "#" %></p>
-    <% else %>
-      <p><%= "#{mpxn} (sandbox)" %></p>
-    <% end %>
-  <% end %>
-
 <% end %>
 
 <br>
 <br>
 
-<% @grouped_meters.each do |school_group, school_meters| %>
+<% @dcc_consent_calcs.grouped_meters.each do |school_group, school_meters| %>
   <div class="nav-anchor">
     <a name="<%= school_group.name.parameterize %>"> </a>
     <h2><%= "#{school_group.name} (#{school_meters.count} consented schools)" %></h2>
@@ -42,10 +35,9 @@
       <th>MPAN</th>
       <th>Type</th>
       <th>Reviewed</th>
-      <th>Consent granted?</th>
+      <th>User consented?</th>
       <th>Sandbox?</th>
       <th>Active?</th>
-      <th>n3rgy consented</th>
     </tr>
     </thead>
     <tbody>
@@ -60,7 +52,6 @@
         <td><%= meter.consent_granted? %></td>
         <td><%= meter.sandbox? %></td>
         <td><%= meter.active? %></td>
-        <td><%= @production_consents.include?(meter.mpan_mprn.to_s) || @sandbox_consents.include?(meter.mpan_mprn.to_s) %></td>
       </tr>
       <% end %>
     <% end %>

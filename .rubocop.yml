@@ -59,6 +59,9 @@ Rails/Validation:
   Enabled: false
 Rails/EnumHash:
   Enabled: false
+# added JLH 2021-05-13
+Style/ConditionalAssignment:
+  Enabled: false
 
 # Performance cops
 Performance/CompareWithBlock:
