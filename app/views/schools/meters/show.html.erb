@@ -40,7 +40,9 @@
   <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
   <dt class="col-sm-3">DCC Meter?</dt>
   <dd class="col-sm-9"><%= @meter.dcc_meter? %></dd>
-  <dt class="col-sm-3">Consent Granted?</dt>
+  <dt class="col-sm-3">User Consented?</dt>
+  <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
+  <dt class="col-sm-3">DCC Consented?</dt>
   <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
   <dt class="col-sm-3">Sandbox?</dt>
   <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
