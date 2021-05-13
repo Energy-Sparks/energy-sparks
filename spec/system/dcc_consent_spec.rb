@@ -59,10 +59,6 @@ RSpec.describe "DCC consents", type: :system do
         expect(page).to have_link('Show without sandbox meters')
       end
     end
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a8dfbea8... Changed name and handle ungrouped schools
 
     context 'when the school has an ungrouped DCC meter' do
       let!(:school_without_group) { create(:school) }
@@ -75,10 +71,5 @@ RSpec.describe "DCC consents", type: :system do
         expect(page).to have_content('1234567890123')
       end
     end
-<<<<<<< HEAD
-=======
->>>>>>> 5142cf59... Show with or without sandbox meters
-=======
->>>>>>> a8dfbea8... Changed name and handle ungrouped schools
   end
 end
