@@ -8,6 +8,16 @@ module Admin
       end
     end
 
+    def grant
+      meter = Meter.find_by_mpan_mprn(params[:mpxn])
+      render plain: meter.inspect
+    end
+
+    def withdraw
+      meter = Meter.find_by_mpan_mprn(params[:mpxn])
+      render plain: meter.inspect
+    end
+
     private
 
     def production_data_api

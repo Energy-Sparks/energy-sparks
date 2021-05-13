@@ -176,6 +176,8 @@ Rails.application.routes.draw do
     resources :users
     resources :case_studies
     resources :dcc_consents, only: [:index]
+    post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
+    post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
