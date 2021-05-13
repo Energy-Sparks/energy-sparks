@@ -38,6 +38,36 @@ RSpec.describe "DCC consents", type: :system do
         expect(page).to have_content('MPANs in n3rgy list but not in our DCC records')
         expect(page).to have_content('998877')
       end
+
+      context 'when granting consent' do
+        let!(:meter_review) { create(:meter_review, meters: [meter_1] ) }
+        it 'allows grant of consent' do
+          allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
+          allow_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:grant_trusted_consent).with(1234567890123, meter_review.consent_grant.guid).and_return(true)
+          click_on('DCC Consents')
+          click_on('1234567890123')
+          expect(page).to have_content('Meter: 1234567890123')
+          click_on('Grant consent')
+          expect(page).to have_content('Consent granted for 1234567890123')
+          expect(meter_1.reload.consent_granted).to be_truthy
+        end
+      end
+
+      context 'when withdrawing consent' do
+        before do
+          meter_1.update(consent_granted: true)
+        end
+        it 'allows withdrawal of consent' do
+          allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
+          allow_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:withdraw_trusted_consent).with(1234567890123).and_return(true)
+          click_on('DCC Consents')
+          click_on('1234567890123')
+          expect(page).to have_content('Meter: 1234567890123')
+          click_on('Withdraw consent')
+          expect(page).to have_content('Consent withdrawn for 1234567890123')
+          expect(meter_1.reload.consent_granted).to be_falsey
+        end
+      end
     end
 
     context 'when the school has a sandbox DCC meter' do

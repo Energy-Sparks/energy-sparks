@@ -10,12 +10,22 @@ module Admin
 
     def grant
       meter = Meter.find_by_mpan_mprn(params[:mpxn])
-      render plain: meter.inspect
+      service = Meters::DccGrantTrustedConsents.new([meter])
+      if service.perform
+        redirect_back fallback_location: admin_dcc_consents_path, notice: "Consent granted for #{meter.mpan_mprn}"
+      else
+        redirect_back fallback_location: admin_dcc_consents_path, alert: service.errors.map(&:message).join('<br/>')
+      end
     end
 
     def withdraw
       meter = Meter.find_by_mpan_mprn(params[:mpxn])
-      render plain: meter.inspect
+      service = Meters::DccWithdrawTrustedConsents.new([meter])
+      if service.perform
+        redirect_back fallback_location: admin_dcc_consents_path, notice: "Consent withdrawn for #{meter.mpan_mprn}"
+      else
+        redirect_back fallback_location: admin_dcc_consents_path, alert: service.errors.map(&:message).join('<br/>')
+      end
     end
 
     private
