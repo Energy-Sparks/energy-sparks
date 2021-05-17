@@ -39,8 +39,10 @@
       <th>Type</th>
       <th>Reviewed</th>
       <th>User consented?</th>
+      <th>DCC consented?</th>
       <th>Sandbox?</th>
       <th>Active?</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -52,9 +54,18 @@
         <td><%= link_to meter.mpan_mprn, school_meter_path(school, meter) %></td>
         <td><%= meter.meter_type.capitalize %></td>
         <td><%= link_to nice_dates(meter.meter_review.created_at), admin_school_meter_review_path(school, meter.meter_review) if meter.meter_review %></td>
+        <td><%= meter.meter_review.present? %></td>
         <td><%= meter.consent_granted? %></td>
         <td><%= meter.sandbox? %></td>
         <td><%= meter.active? %></td>
+        <td>
+          <% if meter.can_withdraw_consent? && can?(:withdraw_consent, meter) %>
+            <%= link_to 'Withdraw consent', admin_withdraw_dcc_consent_path(mpxn: meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
+          <% end %>
+          <% if meter.can_grant_consent? && can?(:grant_consent, meter) %>
+            <%= link_to 'Grant consent', admin_grant_dcc_consent_path(mpxn: meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     <% end %>
