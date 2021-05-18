@@ -39,7 +39,14 @@ module Admin
       end
     end
 
-  private
+    def destroy
+      SchoolOnboardingDeletor.new(@school_onboarding).delete!
+      redirect_back fallback_location: admin_school_onboardings_path, notice: 'School onboarding was successfully destroyed.'
+    rescue => e
+      redirect_back fallback_location: admin_school_onboardings_path, notice: e.message
+    end
+
+    private
 
     def produce_csv
       CSV.generate do |csv|

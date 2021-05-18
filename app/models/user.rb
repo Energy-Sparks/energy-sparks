@@ -109,6 +109,10 @@ class User < ApplicationRecord
     cluster_schools << school unless cluster_schools.include?(school)
   end
 
+  def remove_cluster_school(school)
+    cluster_schools.delete(school)
+  end
+
   def self.new_pupil(school, attributes)
     new(
       attributes.merge(

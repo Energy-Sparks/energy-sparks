@@ -21,9 +21,9 @@
         </tr>
       </thead>
       <tbody>
-        <% school_group.school_onboardings.select(&:incomplete?).each do |onboarding| %>
+        <% school_group.school_onboardings.by_name.select(&:incomplete?).each do |onboarding| %>
           <tr>
-            <td><%= onboarding.school_name %></td>
+            <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
             <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
             <td><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
             <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
@@ -35,6 +35,7 @@
                 <% else %>
                   <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
                 <% end %>
+                <%= button_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
               </div>
             </td>
           </tr>
