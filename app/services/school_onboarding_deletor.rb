@@ -4,10 +4,12 @@ class SchoolOnboardingDeletor
   end
 
   def delete!
-    if @school_onboarding.created_user && @school_onboarding.school
-      remove_school(@school_onboarding.created_user, @school_onboarding.school)
+    SchoolOnboarding.transaction do
+      if @school_onboarding.created_user && @school_onboarding.school
+        remove_school(@school_onboarding.created_user, @school_onboarding.school)
+      end
+      @school_onboarding.destroy
     end
-    @school_onboarding.destroy
   end
 
   private
@@ -21,6 +23,7 @@ class SchoolOnboardingDeletor
         user.update!(school: nil, role: :school_onboarding)
       end
     end
+    school.consent_grants.destroy_all
     school.delete
   end
 end
