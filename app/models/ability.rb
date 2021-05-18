@@ -122,7 +122,7 @@ class Ability
       can :manage, SchoolOnboarding, created_user_id: nil
     elsif user.school_onboarding?
       can :manage, SchoolOnboarding do |onboarding|
-        onboarding.created_user == user
+        onboarding.created_user == user || onboarding.created_user.nil?
       end
     end
   end
