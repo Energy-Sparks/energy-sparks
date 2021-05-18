@@ -9,6 +9,8 @@ module Onboarding
     def load_school_onboarding
       @school_onboarding = SchoolOnboarding.find_by_uuid!(params.fetch(:onboarding_id) { params[:id] })
       authorize! :manage, @school_onboarding
+    rescue => e
+      redirect_to root_path, notice: e.message
     end
 
     def redirect_if_event(event, path)
