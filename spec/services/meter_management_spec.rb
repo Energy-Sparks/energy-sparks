@@ -107,4 +107,44 @@ describe MeterManagement do
     end
   end
 
+  describe 'activate or deactivate' do
+
+    context 'for non-DCC meter' do
+
+      let(:meter) { create(:electricity_meter) }
+
+      it "sets meter active" do
+        meter.update(active: false)
+        MeterManagement.new(meter).activate_meter!
+        expect( meter.active ).to be_truthy
+      end
+
+      it "sets meter inactive" do
+        meter.update(active: true)
+        MeterManagement.new(meter).deactivate_meter!
+        expect( meter.active ).to be_falsey
+      end
+    end
+
+    context 'for DCC meter' do
+
+      let(:meter) { create(:electricity_meter, dcc_meter: true) }
+
+      it "sets meter active and consents" do
+        expect_any_instance_of(Meters::DccGrantTrustedConsents).to receive(:perform).and_return(true)
+        meter.update(active: true, consent_granted: false, meter_review: create(:meter_review))
+        MeterManagement.new(meter).activate_meter!
+        meter.reload
+        expect( meter.active ).to be_truthy
+      end
+
+      it "sets meter inactive and unconsents" do
+        expect_any_instance_of(Meters::DccWithdrawTrustedConsents).to receive(:perform).and_return(true)
+        meter.update(active: true, consent_granted: true)
+        MeterManagement.new(meter).deactivate_meter!
+        meter.reload
+        expect( meter.active ).to be_falsey
+      end
+    end
+  end
 end
