@@ -10,7 +10,11 @@
   <% if can?(:view_meter_attributes, @meter) %>
     <%= link_to 'Attributes', admin_school_single_meter_attribute_path(@school, @meter), class: 'btn btn-sm' %>
   <% end %>
-  <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+  <% if @meter.active? %>
+    <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+  <% else %>
+    <%= link_to 'Activate', activate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+  <% end %>
   <% if @meter.dcc_meter? %>
     <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
       <%= link_to 'Withdraw consent', admin_withdraw_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
