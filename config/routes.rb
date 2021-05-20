@@ -274,6 +274,7 @@ Rails.application.routes.draw do
 
     namespace :schools do
       resources :meter_collections, only: :index
+      resources :removals, only: :index
     end
 
     resources :schools, only: [:show] do
@@ -289,6 +290,11 @@ Rails.application.routes.draw do
         resources :meter_reviews
         resources :consent_requests
         resources :bill_requests
+      end
+      member do
+        get :removal
+        post :deactivate_meters
+        post :deactivate
       end
     end
 

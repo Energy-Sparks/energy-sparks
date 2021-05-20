@@ -1,0 +1,55 @@
+<h2><%= @school.name %> - Removal</h2>
+
+<h3>Visibility</h3>
+
+<% if @school.visible? %>
+  <p>School cannot be removed while still visible</p>
+<% else %>
+  <p>School is not visible, so can be removed</p>
+<% end %>
+
+
+<h3>Users</h3>
+
+<% if @school.users.any? %>
+  <p>School cannot be removed while it has users</p>
+  <ol>
+    <% @school.users.each do |user| %>
+      <li><%= user.email %></li>
+    <% end %>
+  </ol>
+<% else %>
+  <p>School has no users, so can be removed</p>
+<% end %>
+
+
+<h3>Meters</h3>
+
+<% if @school.meters.any? %>
+  <p>School cannot be removed while it has meters</p>
+  <ol>
+    <% @school.meters.each do |meter| %>
+      <li><%= meter.mpan_mprn %></li>
+    <% end %>
+  </ol>
+  <%= button_to 'Remove meters', deactivate_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+<% else %>
+  <p>School has no meters, so can be removed</p>
+<% end %>
+
+
+<h3>Meter Reviews</h3>
+
+<% if @school.meter_reviews.any? %>
+  <p>School cannot be removed while it has meter reviews</p>
+  <ol>
+    <% @school.meter_reviews.each do |meter_review| %>
+      <li><%= meter_review.inspect %></li>
+    <% end %>
+  </ol>
+<% else %>
+  <p>School has no meter reviews, so can be removed</p>
+<% end %>
+
+
+<%= button_to 'Remove school', deactivate_admin_school_path(@school), method: :post, class: 'btn btn-success'%>

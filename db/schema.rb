@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_134549) do
+ActiveRecord::Schema.define(version: 2021_05_20_134717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1086,6 +1086,8 @@ ActiveRecord::Schema.define(version: 2021_04_20_134549) do
     t.decimal "longitude", precision: 10, scale: 6
     t.bigint "weather_station_id"
     t.boolean "public", default: true
+    t.boolean "active", default: true
+    t.date "removal_date"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

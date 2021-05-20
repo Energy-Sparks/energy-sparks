@@ -1,0 +1,18 @@
+<h2>Schools that have been removed</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Removal date</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @schools.each do |school| %>
+    <tr>
+      <td><%= school.name %></td>
+      <td><%= nice_dates(school.removal_date) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
