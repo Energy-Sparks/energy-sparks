@@ -1,6 +1,6 @@
-<h2><%= @school.name %> - Removal</h2>
+<h1><%= @school.name %> - Removal</h1>
 
-<h3>Visibility</h3>
+<h2>Visibility</h2>
 
 <% if @school.visible? %>
   <p>School cannot be removed while still visible</p>
@@ -9,7 +9,7 @@
 <% end %>
 
 
-<h3>Users</h3>
+<h2>Users</h2>
 
 <% if @school.users.any? %>
   <p>School cannot be removed while it has users</p>
@@ -23,7 +23,7 @@
 <% end %>
 
 
-<h3>Meters</h3>
+<h2>Meters</h2>
 
 <% if @school.meters.any? %>
   <p>School cannot be removed while it has meters</p>
@@ -38,7 +38,7 @@
 <% end %>
 
 
-<h3>Meter Reviews</h3>
+<h2>Meter Reviews</h2>
 
 <% if @school.meter_reviews.any? %>
   <p>School cannot be removed while it has meter reviews</p>
