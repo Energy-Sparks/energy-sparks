@@ -63,13 +63,13 @@ module Schools
     end
 
     def deactivate
-      @meter.update!(active: false)
+      MeterManagement.new(@meter).deactivate_meter!
       redirect_to school_meters_path(@school), notice: 'Meter deactivated'
     end
 
     def activate
-      @meter.update!(active: true)
-      redirect_to school_meters_path(@school), notice: 'Meter deactivated'
+      MeterManagement.new(@meter).activate_meter!
+      redirect_to school_meters_path(@school), notice: 'Meter activated'
     end
 
     def destroy
