@@ -4,6 +4,7 @@ describe SchoolRemover, :schools, type: :service do
 
   let(:school) { create(:school, visible: false) }
   let!(:school_admin) { create(:school_admin, school: school) }
+  let!(:meter) { create(:electricity_meter, school: school) }
 
   let(:service) { SchoolRemover.new(school) }
 
@@ -31,8 +32,13 @@ describe SchoolRemover, :schools, type: :service do
     end
   end
 
-  # deactivate meters
-  # remove meter readings, tariffs
+  describe '#remove_meters!' do
+    it 'deactivates the meters' do
+      expect_any_instance_of(MeterManagement).to receive_messages([:deactivate_meter!, :remove_data!])
+      service.remove_meters!
+    end
+  end
+
   # remove school from user cluster schools
   # remove alert contacts
 
