@@ -27,7 +27,7 @@ describe SchoolRemover, :schools, type: :service do
     it 'locks the user account' do
       service.remove_users!
       expect(school.users.all?(&:access_locked?)).to be_truthy
-      expect(school.users.all?{|u| u.email.include?('removed@example.com')}).to be_truthy
+      expect(school.users.all?{|u| u.email.include?('removed')}).to be_truthy
     end
   end
 
@@ -38,10 +38,5 @@ describe SchoolRemover, :schools, type: :service do
 
   # remove onboarding?
   # remove calendars?
-  # remove calendars?
-
-
-
-
 
 end
