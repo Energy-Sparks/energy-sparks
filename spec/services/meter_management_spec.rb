@@ -128,7 +128,9 @@ describe MeterManagement do
 
     context 'for DCC meter' do
 
-      let(:meter) { create(:electricity_meter, dcc_meter: true) }
+      let!(:meter)                   { create(:electricity_meter_with_reading, dcc_meter: true) }
+      let!(:tariff_price)            { create(:tariff_price, meter: meter) }
+      let!(:tariff_standing_charge)  { create(:tariff_standing_charge, meter: meter) }
 
       it "sets meter active and consents" do
         expect_any_instance_of(Meters::DccGrantTrustedConsents).to receive(:perform).and_return(true)
@@ -145,6 +147,26 @@ describe MeterManagement do
         meter.reload
         expect( meter.active ).to be_falsey
       end
+
+      it "removes tariffs" do
+        MeterManagement.new(meter).remove_data!
+        expect( meter.tariff_prices.count ).to eq 0
+        expect( meter.tariff_standing_charges.count ).to eq 0
+      end
+
+      it "removes amr data feed readings" do
+        MeterManagement.new(meter).remove_data!
+        expect( meter.amr_data_feed_readings.count ).to eq 0
+      end
+
+      context 'when meter has validated readings' do
+        let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true) }
+        it "removes validated readings" do
+          MeterManagement.new(meter).remove_data!
+          expect( meter.amr_validated_readings.count ).to eq 0
+        end
+      end
+>>>>>>> 1305-remove-retire-a-school-from-energy-sparks
     end
   end
 end
