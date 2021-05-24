@@ -22,6 +22,11 @@ class SchoolRemover
   def remove_meters!
     raise SchoolRemover::Error.new('Cannot remove meters while school is still visible') if @school.visible?
     @school.transaction do
+      @school.meters.each do |meter|
+        service = MeterManagement.new(meter)
+        service.deactivate_meter!
+        service.remove_data!
+      end
       # deactivate all meters and remove tariffs and data
     end
   end
