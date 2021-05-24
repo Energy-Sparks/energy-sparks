@@ -32,10 +32,11 @@ class SchoolRemover
     raise SchoolRemover::Error.new('Cannot remove meters while school is still visible') if @school.visible?
     @school.transaction do
       @school.users.each do |user|
-        # IF USER NOT GROUP USER WITH OTHER SCHOOLS....
-        user.lock_access!(send_instructions: false)
-        user.update(email: 'removed-' + SecureRandom.alphanumeric + '@example.com')
-        # END
+        if user.has_other_schools?
+          user.remove_school(@school)
+        else
+          user.lock_access!(send_instructions: false)
+        end
       end
     end
   end

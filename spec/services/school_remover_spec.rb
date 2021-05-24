@@ -25,10 +25,18 @@ describe SchoolRemover, :schools, type: :service do
   end
 
   describe '#remove_users!' do
-    it 'locks the user account' do
+    it 'locks the user account if only for that school' do
       service.remove_users!
       expect(school.users.all?(&:access_locked?)).to be_truthy
-      expect(school.users.all?{|u| u.email.include?('removed')}).to be_truthy
+    end
+
+    it 'switches user to other school if available' do
+      other_school = create(:school)
+      school_admin.add_cluster_school(other_school)
+      service.remove_users!
+      school_admin.reload
+      expect(school_admin.access_locked?).to be_falsey
+      expect(school_admin.school).to eq(other_school)
     end
   end
 
