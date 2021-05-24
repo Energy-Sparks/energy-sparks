@@ -3,6 +3,8 @@ module Admin
     load_and_authorize_resource :school
 
     def removal
+      service = SchoolRemover.new(@school)
+      @can_remove_school = service.can_remove_school?
     end
 
     def deactivate_meters

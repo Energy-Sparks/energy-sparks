@@ -1,11 +1,11 @@
-<h1><%= @school.name %> - Removal</h1>
+<h1><%= @school.name %><%= " (INACTIVE)" unless @school.active? %> - Removal</h1>
 
 <h2>Visibility</h2>
 
 <% if @school.visible? %>
   <p>School cannot be removed while still visible</p>
 <% else %>
-  <p>School is not visible, so can be removed</p>
+  <p>School is not visible</p>
 <% end %>
 
 
@@ -19,7 +19,7 @@
     <% end %>
   </ol>
 <% else %>
-  <p>School has no users, so can be removed</p>
+  <p>School has no users</p>
 <% end %>
 
 
@@ -34,7 +34,7 @@
   </ol>
   <%= button_to 'Remove meters', deactivate_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
 <% else %>
-  <p>School has no meters, so can be removed</p>
+  <p>School has no meters</p>
 <% end %>
 
 
@@ -48,8 +48,10 @@
     <% end %>
   </ol>
 <% else %>
-  <p>School has no meter reviews, so can be removed</p>
+  <p>School has no meter reviews</p>
 <% end %>
 
 
-<%= button_to 'Remove school', deactivate_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+<% if @can_remove_school %>
+  <%= button_to 'Remove school', deactivate_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+<% end %>

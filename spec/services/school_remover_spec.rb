@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
 
-  let(:school) { create(:school, active: true, visible: false) }
+  let(:school) { create(:school, visible: false) }
 
   let(:service) { SchoolRemover.new(school) }
 
@@ -10,6 +10,7 @@ describe SchoolRemover, :schools, type: :service do
     it 'marks the school as inactive and sets removal date' do
       service.remove_school!
       expect(school.active).to be_falsey
+      expect(school.process_data).to be_falsey
       expect(school.removal_date).to eq(Time.zone.today)
     end
 

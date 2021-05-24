@@ -10,7 +10,7 @@
   <tbody>
   <% @schools.each do |school| %>
     <tr>
-      <td><%= school.name %></td>
+      <td><%= link_to school.name, admin_school_path(school) %></td>
       <td><%= nice_dates(school.removal_date) %></td>
     </tr>
   <% end %>
