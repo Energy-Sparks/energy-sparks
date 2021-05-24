@@ -3,6 +3,7 @@ require 'rails_helper'
 describe SchoolRemover, :schools, type: :service do
 
   let(:school) { create(:school, visible: false) }
+  let!(:school_admin) { create(:school_admin, school: school) }
 
   let(:service) { SchoolRemover.new(school) }
 
@@ -22,6 +23,14 @@ describe SchoolRemover, :schools, type: :service do
     end
   end
 
+  describe '#remove_users!' do
+    it 'locks the user account' do
+      service.remove_users!
+      expect(school.users.all?(&:access_locked?)).to be_truthy
+      expect(school.users.all?{|u| u.email.include?('removed@example.com')}).to be_truthy
+    end
+  end
+
   # deactivate meters
   # remove meter readings, tariffs
   # remove school from user cluster schools
@@ -30,5 +39,9 @@ describe SchoolRemover, :schools, type: :service do
   # remove onboarding?
   # remove calendars?
   # remove calendars?
+
+
+
+
 
 end

@@ -1,57 +1,47 @@
-<h1><%= @school.name %><%= " (INACTIVE)" unless @school.active? %> - Removal</h1>
+<h1><%= @school.name %><%= @school.active? ? " REMOVAL" : " (INACTIVE)"  %></h1>
 
 <h2>Visibility</h2>
 
-<% if @school.visible? %>
-  <p>School cannot be removed while still visible</p>
-<% else %>
+<% if @school_remover.school_ready? %>
   <p>School is not visible</p>
+<% else %>
+  <p>School cannot be removed while still visible</p>
 <% end %>
 
 
 <h2>Users</h2>
 
-<% if @school.users.any? %>
-  <p>School cannot be removed while it has users</p>
-  <ol>
-    <% @school.users.each do |user| %>
-      <li><%= user.email %></li>
-    <% end %>
-  </ol>
+<ol>
+  <% @school.users.each do |user| %>
+    <li><%= user.email %><%= user.access_locked? ? ' (LOCKED)' : '' %></li>
+  <% end %>
+</ol>
+
+<% if @school_remover.users_ready? %>
+  <p>School has no active users</p>
 <% else %>
-  <p>School has no users</p>
+  <p>School cannot be removed while it has active users</p>
+  <%= button_to 'Remove users', deactivate_users_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
 <% end %>
 
 
 <h2>Meters</h2>
 
-<% if @school.meters.any? %>
-  <p>School cannot be removed while it has meters</p>
-  <ol>
-    <% @school.meters.each do |meter| %>
-      <li><%= meter.mpan_mprn %></li>
-    <% end %>
-  </ol>
+<ol>
+  <% @school.meters.each do |meter| %>
+    <li><%= meter.mpan_mprn %><%= meter.active? ? '' : ' (INACTIVE)' %></li>
+  <% end %>
+</ol>
+
+<% if @school_remover.meters_ready? %>
+  <p>School has no active meters</p>
+<% else %>
+  <p>School cannot be removed while it has active meters</p>
   <%= button_to 'Remove meters', deactivate_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
-<% else %>
-  <p>School has no meters</p>
 <% end %>
 
 
-<h2>Meter Reviews</h2>
 
-<% if @school.meter_reviews.any? %>
-  <p>School cannot be removed while it has meter reviews</p>
-  <ol>
-    <% @school.meter_reviews.each do |meter_review| %>
-      <li><%= meter_review.inspect %></li>
-    <% end %>
-  </ol>
-<% else %>
-  <p>School has no meter reviews</p>
-<% end %>
-
-
-<% if @can_remove_school %>
+<% if @school_remover.can_remove_school? %>
   <%= button_to 'Remove school', deactivate_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
 <% end %>

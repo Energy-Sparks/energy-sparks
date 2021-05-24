@@ -3,8 +3,15 @@ module Admin
     load_and_authorize_resource :school
 
     def removal
+      @school_remover = SchoolRemover.new(@school)
+    end
+
+    def deactivate_users
       service = SchoolRemover.new(@school)
-      @can_remove_school = service.can_remove_school?
+      service.remove_users!
+      redirect_back fallback_location: root_path, notice: "Users have been deactivated"
+    rescue => e
+      redirect_back fallback_location: root_path, notice: e.message
     end
 
     def deactivate_meters

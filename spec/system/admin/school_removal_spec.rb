@@ -12,7 +12,7 @@ RSpec.describe "school removal", :schools, type: :system do
   it 'removes school and shows on removals list' do
     visit school_path(school)
     click_on 'Remove school'
-    expect(page).to have_content('My High School - Removal')
+    expect(page).to have_content('My High School REMOVAL')
     click_button 'Remove school'
     expect(page).to have_content('School has been removed')
     school.reload

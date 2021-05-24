@@ -294,6 +294,7 @@ Rails.application.routes.draw do
       member do
         get :removal
         post :deactivate_meters
+        post :deactivate_users
         post :deactivate
       end
     end
