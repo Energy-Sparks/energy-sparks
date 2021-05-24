@@ -10,9 +10,7 @@
     <% end %>
   </ol>
 
-  <% if @school_remover.users_ready? %>
-    <p>School has no active users</p>
-  <% else %>
+  <% unless @school_remover.users_ready? %>
     <p>School cannot be removed while it has active users</p>
     <%= button_to 'Remove users', deactivate_users_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
   <% end %>
@@ -26,16 +24,14 @@
     <% end %>
   </ol>
 
-  <% if @school_remover.meters_ready? %>
-    <p>School has no active meters</p>
-  <% else %>
+  <% unless @school_remover.meters_ready? %>
     <p>School cannot be removed while it has active meters</p>
     <%= button_to 'Remove meters', deactivate_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
   <% end %>
 
 
-
-  <% if @school_remover.can_remove_school? %>
+  <% if @school.active && @school_remover.can_remove_school? %>
+    <br/>
     <%= button_to 'Remove school', deactivate_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
   <% end %>
 
