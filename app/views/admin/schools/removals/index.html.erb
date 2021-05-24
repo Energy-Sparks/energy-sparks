@@ -5,6 +5,7 @@
     <tr>
       <th>Name</th>
       <th>Removal date</th>
+      <th>Meters</th>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +13,11 @@
     <tr>
       <td><%= link_to school.name, admin_school_path(school) %></td>
       <td><%= nice_dates(school.removal_date) %></td>
+      <td>
+        <% school.meters.each do |meter| %>
+          <p><%= link_to meter.mpan_mprn, school_meters_path(meter.school) %></p>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>
