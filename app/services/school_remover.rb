@@ -29,7 +29,7 @@ class SchoolRemover
   end
 
   def remove_users!
-    raise SchoolRemover::Error.new('Cannot remove meters while school is still visible') if @school.visible?
+    raise SchoolRemover::Error.new('Cannot remove users while school is still visible') if @school.visible?
     @school.transaction do
       @school.users.each do |user|
         if user.has_other_schools?
