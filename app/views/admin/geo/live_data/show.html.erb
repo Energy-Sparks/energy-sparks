@@ -11,7 +11,7 @@
 <% if @data %>
 
   <h3>Power timestamp</h3>
-  <p><%= "#{@data['powerTimestamp']}" %></p>
+  <p><%= "#{Time.at(@data['powerTimestamp']).to_s}" %></p>
 
   <h3>Power readings</h3>
 
