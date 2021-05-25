@@ -127,14 +127,16 @@ class School < ApplicationRecord
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
-  scope :by_name,            -> { order(name: :asc) }
-  scope :visible,            -> { where(visible: true) }
-  scope :not_visible,        -> { where(visible: false) }
-  scope :process_data,       -> { where(process_data: true) }
-  scope :without_group,      -> { where(school_group_id: nil) }
-  scope :without_scoreboard, -> { where(scoreboard_id: nil) }
+  scope :active,             -> { where(active: true) }
+  scope :inactive,           -> { where(active: false) }
+  scope :visible,            -> { active.where(visible: true) }
+  scope :not_visible,        -> { active.where(visible: false) }
+  scope :process_data,       -> { active.where(process_data: true) }
+  scope :without_group,      -> { active.where(school_group_id: nil) }
+  scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
 
   scope :with_config, -> { joins(:configuration) }
+  scope :by_name,     -> { order(name: :asc) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website
   validates_uniqueness_of :urn

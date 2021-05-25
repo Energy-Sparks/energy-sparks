@@ -15,14 +15,7 @@ class SchoolOnboardingDeletor
   private
 
   def remove_school(user, school)
-    user.remove_cluster_school(school)
-    if user.school == school
-      if user.cluster_schools_for_switching.any?
-        user.update!(school: user.cluster_schools_for_switching.first)
-      else
-        user.update!(school: nil, role: :school_onboarding)
-      end
-    end
+    user.remove_school(school)
     school.consent_grants.destroy_all
     school.delete
   end

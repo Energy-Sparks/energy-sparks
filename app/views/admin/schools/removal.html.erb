@@ -1,0 +1,44 @@
+<h1><%= @school.name %><%= @school.active? ? " REMOVAL" : " (INACTIVE)"  %></h1>
+
+<% if @school_remover.school_ready? %>
+
+  <h2>Users</h2>
+
+  <ol>
+    <% @school.users.each do |user| %>
+      <li><%= user.email %><%= user.access_locked? ? ' (LOCKED)' : '' %></li>
+    <% end %>
+  </ol>
+
+  <% unless @school_remover.users_ready? %>
+    <p>School cannot be removed while it has active users</p>
+    <%= button_to 'Remove users', deactivate_users_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+  <% end %>
+
+
+  <h2>Meters</h2>
+
+  <ol>
+    <% @school.meters.each do |meter| %>
+      <li><%= meter.mpan_mprn %><%= meter.active? ? '' : ' (INACTIVE)' %></li>
+    <% end %>
+  </ol>
+
+  <% unless @school_remover.meters_ready? %>
+    <p>School cannot be removed while it has active meters</p>
+    <%= button_to 'Remove meters', deactivate_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+  <% end %>
+
+
+  <% if @school.active && @school_remover.can_remove_school? %>
+    <br/>
+    <%= button_to 'Remove school', deactivate_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+  <% end %>
+
+<% else %>
+
+  <h2>Visibility</h2>
+
+  <p>School cannot be removed while still visible</p>
+
+<% end %>
