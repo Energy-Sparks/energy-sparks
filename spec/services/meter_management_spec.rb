@@ -166,7 +166,6 @@ describe MeterManagement do
           expect( meter.amr_validated_readings.count ).to eq 0
         end
       end
->>>>>>> 1305-remove-retire-a-school-from-energy-sparks
     end
   end
 end
