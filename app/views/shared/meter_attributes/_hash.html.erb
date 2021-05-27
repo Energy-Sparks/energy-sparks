@@ -3,7 +3,8 @@
   <%= form.hint field.hint %>
 
   <% if field_name != 'root' && can_ignore_children?(field) %>
-    <%= check_box_tag "disable", false, false, { title: "Disable section" , class: 'check-all-attributes' } %>
+    <%= check_box_tag "disable", false, false, { title: "Disable section" , class: 'disable-attributes' } %>
+    <%= label_tag 'disabled-label', '(disabled)', class: 'hidden disabled-label' %>
   <% end %>
 
   <div class="<%= 'ml-5' unless field_name == 'root' %>">

@@ -14,25 +14,12 @@ $(document).ready(function() {
     $("form .must-check").closest('form').find(':submit').prop('disabled', true);
   }
 
-  $(document).on('click','.check-all-attributes',function(){
+  $(document).on('click','.disable-attributes',function(){
     $(this).closest('.form-group').find(':checkbox').prop('checked',this.checked);
-    $(this).closest('.form-group').find('select').prop('disabled',!this.checked);
-    $(this).closest('.form-group').find('input:not(:checkbox)').prop('disabled',!this.checked);
+    $(this).closest('.form-group').find('select').prop('disabled', this.checked);
+    $(this).closest('.form-group').find('input').prop('disabled', this.checked);
+    $(this).prop('disabled', false);
+    $(this).next('.disabled-label').toggle();
   });
-
-  $("form").find('input:not(:checkbox)').each(function(){
-    if ($(this).val().length > 0) {
-      $(this).prop('disabled',false);
-      // alert($(this).closest('fieldset').find(':checkbox').length);
-      $(this).closest('fieldset').find(':checkbox').prop('checked',true);
-    }
-  });
-
-  // $("form").find('select').each(function(){
-  //   if ($(this).val().length > 0) {
-  //     $(this).prop('disabled',false);
-  //     $(this).closest('fieldset').find(':checkbox').prop('checked',true);
-  //   }
-  // });
 
 });
