@@ -16,8 +16,8 @@ RSpec.describe "DCC consents", type: :system do
     end
 
     context 'when the school has a DCC meter' do
-      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:meter_2) { create(:gas_meter, dcc_meter: true, name: 'Gas meter', school: school, mpan_mprn: 987654321 ) }
+      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, consent_granted: false, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
+      let!(:meter_2) { create(:gas_meter, dcc_meter: true, consent_granted: true, name: 'Gas meter', school: school, mpan_mprn: 987654321 ) }
 
       it 'the DCC consents counts are shown' do
         allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([])
@@ -26,7 +26,7 @@ RSpec.describe "DCC consents", type: :system do
         expect(page).to have_content('1234567890123')
         expect(page).to have_content('987654321')
         expect(page).to have_content('Total schools with DCC consents: 1')
-        expect(page).to have_content('Total meters with DCC consents: 2')
+        expect(page).to have_content('Total meters with DCC consents: 1')
         expect(page).to have_content(school_group.name)
         expect(page).to have_content(school_name)
         expect(page).not_to have_content('MPANs in n3rgy list but not in our DCC records')
@@ -42,8 +42,8 @@ RSpec.describe "DCC consents", type: :system do
       context 'when granting consent' do
         let!(:meter_review) { create(:meter_review, meters: [meter_1] ) }
         it 'allows grant of consent' do
-          allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
-          allow_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:grant_trusted_consent).with(1234567890123, meter_review.consent_grant.guid).and_return(true)
+          expect_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
+          expect_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:grant_trusted_consent).with(1234567890123, meter_review.consent_grant.guid).and_return(true)
           click_on('DCC Consents')
           click_on('1234567890123')
           expect(page).to have_content('Meter: 1234567890123')
@@ -54,25 +54,22 @@ RSpec.describe "DCC consents", type: :system do
       end
 
       context 'when withdrawing consent' do
-        before do
-          meter_1.update(consent_granted: true)
-        end
         it 'allows withdrawal of consent' do
-          allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
-          allow_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:withdraw_trusted_consent).with(1234567890123).and_return(true)
+          expect_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([''])
+          expect_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:withdraw_trusted_consent).with(987654321).and_return(true)
           click_on('DCC Consents')
-          click_on('1234567890123')
-          expect(page).to have_content('Meter: 1234567890123')
+          click_on('987654321')
+          expect(page).to have_content('Meter: 987654321')
           click_on('Withdraw consent')
-          expect(page).to have_content('Consent withdrawn for 1234567890123')
+          expect(page).to have_content('Consent withdrawn for 987654321')
           expect(meter_1.reload.consent_granted).to be_falsey
         end
       end
     end
 
     context 'when the school has a sandbox DCC meter' do
-      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:meter_2) { create(:gas_meter, dcc_meter: true, name: 'Gas meter', school: school, mpan_mprn: 987654321, sandbox: true ) }
+      let!(:meter_1) { create(:electricity_meter, dcc_meter: true, consent_granted: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
+      let!(:meter_2) { create(:gas_meter, dcc_meter: true, consent_granted: true, name: 'Gas meter', school: school, mpan_mprn: 987654321, sandbox: true ) }
 
       it 'the DCC consents counts are shown' do
         allow_any_instance_of(MeterReadingsFeeds::N3rgyData).to receive(:list).and_return([])
