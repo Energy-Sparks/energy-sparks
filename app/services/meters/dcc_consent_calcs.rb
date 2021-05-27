@@ -6,11 +6,15 @@ module Meters
     end
 
     def total_schools_with_consents
-      @meters.map(&:school).uniq.count
+      consented_meters.map(&:school).uniq.count
     end
 
     def total_meters_with_consents
-      @meters.count
+      consented_meters.count
+    end
+
+    def consented_meters
+      @meters.select(&:consent_granted)
     end
 
     def orphan_consents
