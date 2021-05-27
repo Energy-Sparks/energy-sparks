@@ -45,7 +45,40 @@ class MeterManagement
     end
   end
 
-private
+  def activate_meter!
+    result = true
+    @meter.transaction do
+      @meter.update!(active: true)
+      if @meter.can_grant_consent?
+        result = Meters::DccGrantTrustedConsents.new([@meter]).perform
+      end
+    end
+    result
+  end
+
+  def deactivate_meter!
+    result = true
+    @meter.transaction do
+      @meter.update!(active: false)
+      if @meter.can_withdraw_consent?
+        result = Meters::DccWithdrawTrustedConsents.new([@meter]).perform
+      end
+    end
+    result
+  end
+
+  def remove_data!
+    result = true
+    @meter.transaction do
+      @meter.tariff_prices.delete_all
+      @meter.tariff_standing_charges.delete_all
+      @meter.amr_data_feed_readings.delete_all
+      @meter.amr_validated_readings.delete_all
+    end
+    result
+  end
+
+  private
 
   def assign_amr_data_feed_readings
     AmrDataFeedReading.where(mpan_mprn: @meter.mpan_mprn).update_all(meter_id: @meter.id)

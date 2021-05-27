@@ -86,7 +86,7 @@ class HomeController < ApplicationController
     if user_signed_in?
       if current_user.school
         redirect_to redirect_with_school_path
-      elsif current_user.school_onboarding?
+      elsif current_user.school_onboarding? && current_user.school_onboardings.any?
         redirect_to onboarding_path(current_user.school_onboardings.last)
       elsif current_user.school_group && can?(:show, current_user.school_group)
         redirect_to school_group_path(current_user.school_group)

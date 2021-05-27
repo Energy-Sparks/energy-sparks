@@ -11,8 +11,8 @@ module Meters
     def perform
       @meters.each do |meter|
         begin
-          @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
           meter.update(consent_granted: false)
+          @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
         rescue => e
           @errors << e
           Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")

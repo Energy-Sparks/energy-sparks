@@ -56,6 +56,8 @@ class SchoolOnboarding < ApplicationRecord
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
 
+  scope :by_name, -> { order(school_name: :asc) }
+
   def has_event?(event_name)
     events.where(event: event_name).any?
   end

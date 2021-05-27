@@ -107,4 +107,65 @@ describe MeterManagement do
     end
   end
 
+  describe 'activate or deactivate' do
+
+    context 'for non-DCC meter' do
+
+      let(:meter) { create(:electricity_meter) }
+
+      it "sets meter active" do
+        meter.update(active: false)
+        MeterManagement.new(meter).activate_meter!
+        expect( meter.active ).to be_truthy
+      end
+
+      it "sets meter inactive" do
+        meter.update(active: true)
+        MeterManagement.new(meter).deactivate_meter!
+        expect( meter.active ).to be_falsey
+      end
+    end
+
+    context 'for DCC meter' do
+
+      let!(:meter)                   { create(:electricity_meter_with_reading, dcc_meter: true) }
+      let!(:tariff_price)            { create(:tariff_price, meter: meter) }
+      let!(:tariff_standing_charge)  { create(:tariff_standing_charge, meter: meter) }
+
+      it "sets meter active and consents" do
+        expect_any_instance_of(Meters::DccGrantTrustedConsents).to receive(:perform).and_return(true)
+        meter.update(active: true, consent_granted: false, meter_review: create(:meter_review))
+        MeterManagement.new(meter).activate_meter!
+        meter.reload
+        expect( meter.active ).to be_truthy
+      end
+
+      it "sets meter inactive and unconsents" do
+        expect_any_instance_of(Meters::DccWithdrawTrustedConsents).to receive(:perform).and_return(true)
+        meter.update(active: true, consent_granted: true)
+        MeterManagement.new(meter).deactivate_meter!
+        meter.reload
+        expect( meter.active ).to be_falsey
+      end
+
+      it "removes tariffs" do
+        MeterManagement.new(meter).remove_data!
+        expect( meter.tariff_prices.count ).to eq 0
+        expect( meter.tariff_standing_charges.count ).to eq 0
+      end
+
+      it "removes amr data feed readings" do
+        MeterManagement.new(meter).remove_data!
+        expect( meter.amr_data_feed_readings.count ).to eq 0
+      end
+
+      context 'when meter has validated readings' do
+        let!(:meter) { create(:electricity_meter_with_validated_reading, dcc_meter: true) }
+        it "removes validated readings" do
+          MeterManagement.new(meter).remove_data!
+          expect( meter.amr_validated_readings.count ).to eq 0
+        end
+      end
+    end
+  end
 end
