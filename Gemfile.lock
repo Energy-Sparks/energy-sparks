@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: b5ea60d3bda07c9156787da349b8a226827b99ca
-  branch: 1466-fetch-live-data-from-geo-cad
+  revision: b257e38aa55e67e0dc9414a8485ab18576534905
+  branch: per-meter-baseload-charts
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
