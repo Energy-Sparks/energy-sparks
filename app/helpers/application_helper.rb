@@ -262,4 +262,8 @@ module ApplicationHelper
   def tariff_anchor(meter)
     "#{meter.mpan_mprn}-tariff"
   end
+
+  def can_ignore_children?(field)
+    !field.required? && field.structure.any? { |_k, v| v.required? }
+  end
 end
