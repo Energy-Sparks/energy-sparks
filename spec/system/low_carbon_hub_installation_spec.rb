@@ -23,7 +23,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       fill_in(:low_carbon_hub_installation_username, with: username)
       fill_in(:low_carbon_hub_installation_password, with: password)
 
-      expect { click_on 'Create' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
+      expect { click_on 'Create installation' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
 
       expect(page).to_not have_content("There are no Rtone installations at the moment for this school")
       expect(page).to have_content(rbee_meter_id)

@@ -25,8 +25,7 @@ module Amr
       LowCarbonHubDownloadAndUpsert.new(
         low_carbon_hub_installation: installation,
         start_date: first_reading_date,
-        end_date: first_reading_date + 1.day,
-        low_carbon_hub_api: low_carbon_hub_api
+        end_date: first_reading_date + 1.day
       ).perform
 
       installation
