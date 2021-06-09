@@ -25,6 +25,9 @@ module Schools
       end
     rescue EnergySparksUnexpectedStateException
       redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Rtone API is not available at the moment'
+    rescue => e
+      flash[:error] = e.message
+      render :new
     end
 
     def destroy
