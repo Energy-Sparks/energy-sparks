@@ -15,6 +15,8 @@ module Schools
       @low_carbon_hub_installation = Amr::LowCarbonHubInstallationFactory.new(
         school: @school,
         rbee_meter_id: low_carbon_hub_installation_params[:rbee_meter_id],
+        username: low_carbon_hub_installation_params[:username],
+        password: low_carbon_hub_installation_params[:password],
         amr_data_feed_config: AmrDataFeedConfig.find(low_carbon_hub_installation_params[:amr_data_feed_config_id]),
       ).perform
 
@@ -43,7 +45,7 @@ module Schools
 
     def low_carbon_hub_installation_params
       params.require(:low_carbon_hub_installation).permit(
-        :rbee_meter_id, :amr_data_feed_config_id
+        :rbee_meter_id, :amr_data_feed_config_id, :username, :password
       )
     end
 

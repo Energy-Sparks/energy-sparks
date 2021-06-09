@@ -20,11 +20,16 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
 
       fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
+      fill_in(:low_carbon_hub_installation_username, with: username)
+      fill_in(:low_carbon_hub_installation_password, with: password)
+
       expect { click_on 'Create' }.to change { Meter.count }.by(3).and change { LowCarbonHubInstallation.count }.by(1).and change { AmrDataFeedReading.count }.by(6)
 
       expect(page).to_not have_content("There are no Rtone installations at the moment for this school")
       expect(page).to have_content(rbee_meter_id)
       expect(school.low_carbon_hub_installations.count).to be 1
+      expect(school.low_carbon_hub_installations.first.username).to eql username
+      expect(school.low_carbon_hub_installations.first.password).to eql password
       expect(school.meters.count).to be 3
 
       expect(page).to have_content(info_text)
@@ -39,9 +44,9 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
     end
 
     it 'handles being run out of hours properly' do
-      expect(LowCarbonHubMeterReadings).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
+      expect(Amr::LowCarbonHubInstallationFactory).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
 
-      click_on 'Create'
+      click_on 'Create installation'
       expect(page).to have_content("There are no Rtone installations at the moment for this school")
       expect(page).to have_content("Rtone API is not available at the moment")
     end
@@ -57,9 +62,6 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       click_on 'Manage Rtone installations'
       expect(page).to have_content low_carbon_hub_installation.rbee_meter_id
       expect { click_on 'Delete' }.to change { Meter.count }.by(-3).and change { LowCarbonHubInstallation.count }.by(-1).and change { AmrValidatedReading.count }.by(-3)
-
-
-
     end
   end
 end
