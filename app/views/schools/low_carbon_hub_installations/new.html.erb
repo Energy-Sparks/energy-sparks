@@ -1,16 +1,16 @@
-<h1>Create a new Low Carbon Hub installation</h1>
+<h1>Create a new Rtone installation</h1>
 <h2><%= @school.name %></h2>
 
 
 <%= simple_form_for [@school, @low_carbon_hub_installation] do |form| %>
-  <%= render 'shared/errors', subject: @low_carbon_hub_installation, subject_name: 'low carbon hub installation' %>
+  <%= render 'shared/errors', subject: @low_carbon_hub_installation, subject_name: 'rtone installation' %>
 
   <%= form.input :amr_data_feed_config_id, collection: AmrDataFeedConfig.low_carbon_hub_api.pluck(:description, :id), label_method: :first, value_method: :second, include_blank: false %>
-  <%= form.input :rbee_meter_id, as: :string %>
-
+  <%= form.input :rbee_meter_id, as: :string, label: "Rbee id" %>
 
   <div class="actions">
-    <%= form.submit class: 'btn btn-primary'%>
+    <%= form.submit "Create installation", class: 'btn btn-primary'%>
+    <%= link_to 'Cancel', school_low_carbon_hub_installations_path(@school), class: 'btn' %>
   </div>
 
 <% end %>
