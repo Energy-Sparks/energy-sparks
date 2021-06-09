@@ -10,6 +10,7 @@
     <h2>Rbee id: <%= installation.rbee_meter_id %></h2>
     <p>
       <%= link_to 'Details', school_low_carbon_hub_installation_path(@school, installation), class: 'btn' %>
+      <%= link_to 'Edit', edit_school_low_carbon_hub_installation_path(@school, installation), class: 'btn' %>
       <%= link_to 'Delete', school_low_carbon_hub_installation_path(@school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
     </p>
   <% end %>

@@ -32,6 +32,17 @@ module Schools
       render :new
     end
 
+    def edit
+    end
+
+    def update
+      if @low_carbon_hub_installation.update(low_carbon_hub_installation_params)
+        redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Installation was updated'
+      else
+        render :edit
+      end
+    end
+
     def destroy
       @low_carbon_hub_installation.meters.each do |meter|
         MeterManagement.new(meter).delete_meter!
