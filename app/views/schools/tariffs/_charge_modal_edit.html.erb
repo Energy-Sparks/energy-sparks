@@ -1,8 +1,8 @@
-<div class="modal" tabindex="-1" id="charge-modal" role="dialog" data-calendar="123">
+<div class="modal" tabindex="-1" id="charge-modal-edit" role="dialog" data-calendar="123">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><span class="event-action"></span> Rate</h5>
+        <h5 class="modal-title"><span class="event-action"></span> Charge</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -13,14 +13,14 @@
       <div class="modal-body">
 
         <span class="form-group">
-          <%= label_tag 'Rate (£)' %>
-          <%= number_field_tag :rate %>
+          <%= label_tag 'Amount (£)' %>
+          <%= number_field_tag :amount %>
         </span>
 
         per
 
         <span class="form-group">
-          <%= select_tag :rate_unit, options_for_select(['kwh']) %>
+          <%= select_tag :rate_unit, options_for_select(['kWh', 'kva', 'day']) %>
         </span>
 
 

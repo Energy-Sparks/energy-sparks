@@ -28,7 +28,7 @@
     <td>Duos amber</td>
     <td>9.573p/kwh</td>
     <td>
-      <%= link_to "Edit", '#', class: 'btn btn-info addsection' %>
+      <%= link_to "Edit", '#', class: 'btn btn-info editsection' %>
       <%= link_to "Delete", '#', class: 'btn btn-info removesection' %>
     </td>
   </tr>
@@ -36,7 +36,7 @@
     <td>Duos green</td>
     <td>9.573p/kwh</td>
     <td>
-      <%= link_to "Edit", '#', class: 'btn btn-info addsection' %>
+      <%= link_to "Edit", '#', class: 'btn btn-info editsection' %>
       <%= link_to "Delete", '#', class: 'btn btn-info removesection' %>
     </td>
   </tr>
@@ -44,7 +44,7 @@
     <td>Fixed charge</td>
     <td>17.34p/day</td>
     <td>
-      <%= link_to "Edit", '#', class: 'btn btn-info addsection' %>
+      <%= link_to "Edit", '#', class: 'btn btn-info editsection' %>
       <%= link_to "Delete", '#', class: 'btn btn-info removesection' %>
     </td>
   </tr>
@@ -52,7 +52,7 @@
     <td>Agreed availability charge</td>
     <td>58.23p/kva</td>
     <td>
-      <%= link_to "Edit", '#', class: 'btn btn-info addsection' %>
+      <%= link_to "Edit", '#', class: 'btn btn-info editsection' %>
       <%= link_to "Delete", '#', class: 'btn btn-info removesection' %>
     </td>
   </tr>
@@ -62,7 +62,8 @@
 
 
 
-<%= render 'charge_modal' %>
+<%= render 'charge_modal_new' %>
+<%= render 'charge_modal_edit' %>
 
 
 
@@ -89,6 +90,10 @@
     newRate();
   });
 
+  $('body').on('click', '.editsection', function() {
+    editRate();
+  });
+
   $('body').on('click', '.removesection', function(event) {
     removeRate(event);
   });
@@ -109,7 +114,25 @@
     //
     // $('#delete_button').hide();
 
-    $('#charge-modal').modal();
+    $('#charge-modal-new').modal();
+  }
+
+  function editRate(event) {
+    // var calendarId =  $('#event-modal').data('calendar');
+    //
+    // $(".event-action").html('New');
+    // $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
+    // $('#event-modal input[name="_method"]').val('post');
+    //
+    // $("#calendar_event_calendar_event_type_id").val('');
+    // $('#event-modal input[name="calendar_event[title]"]').val('');
+    //
+    // $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
+    // $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
+    //
+    // $('#delete_button').hide();
+
+    $('#charge-modal-edit').modal();
   }
 
   function removeRate(event) {
