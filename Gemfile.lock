@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 5c7e90980f5bd826cc28bbb0edadbbe501490d36
-  branch: aws-eb-test
+  revision: 54d47e70b8c02a5d3cd5a62e76fae8bfa7c9d1f7
+  branch: tariff-descriptions
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
