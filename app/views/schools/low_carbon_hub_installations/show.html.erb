@@ -1,12 +1,22 @@
-<h1>Rtone installation data for <%= @low_carbon_hub_installation.rbee_meter_id %></h1>
-<h2><%= @school.name %></h2>
+<h1><%= @school.name %> Rbee meter <%= @low_carbon_hub_installation.rbee_meter_id %></h1>
 
-<p><%= link_to "All Rtone installations for #{@school.name}",  school_low_carbon_hub_installations_path(@school) %>
-<% @low_carbon_hub_installation.information.each do |key, value| %>
-  <dl>
-    <dt><%= key %></dt>
-    <dd><%= value %></dd>
-  </dl>
-<% end %>
+<p><%= link_to "All Solar API feeds for #{@school.name}",  school_solar_feeds_configuration_index_path(@school) %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @low_carbon_hub_installation.information.each do |key, value| %>
+      <tr>
+        <th><%= key %></th>
+        <td><%= value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <p><%= link_to 'Delete', school_low_carbon_hub_installation_path(@school, @low_carbon_hub_installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>

@@ -111,7 +111,7 @@
 <% if can? :manage_solar_feed_configuration, School %>
   <hr>
   <h3>Solar API Feeds</h3>
-  <p><%= link_to 'View and manage solar API feeds', school_solar_feeds_configuration_index_path(@school) %></p>
+  <p><%= link_to 'Manage Solar API feeds', school_solar_feeds_configuration_index_path(@school) %></p>
 <% end %>
 
 <% if can? :create, Meter %>

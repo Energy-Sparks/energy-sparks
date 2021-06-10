@@ -1,0 +1,13 @@
+<%= simple_form_for [school, solar_edge_installation] do |form| %>
+  <%= render 'shared/errors', subject: solar_edge_installation, subject_name: 'solar edge api feed' %>
+
+  <%= form.input :amr_data_feed_config_id, collection: AmrDataFeedConfig.solar_edge_api.pluck(:description, :id), label_method: :first, value_method: :second, include_blank: false %>
+  <%= form.input :mpan, as: :string, disabled: solar_edge_installation.persisted? %>
+  <%= form.input :site_id, as: :string, label: "Site id" %>
+  <%= form.input :api_key, as: :string, label: "API key" %>
+
+  <div class="actions">
+    <%= form.submit "Submit", class: 'btn btn-primary'%>
+  </div>
+
+<% end %>

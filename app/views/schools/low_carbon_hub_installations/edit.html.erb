@@ -1,8 +1,8 @@
-<h1>Update Rtone installation</h1>
+<h1>Update Rtone API feed</h1>
 <h2><%= @school.name %></h2>
 
 <%= render 'form', school: @school, low_carbon_hub_installation: @low_carbon_hub_installation %>
 
 <div class="other-actions">
-  <%= link_to 'Cancel', school_low_carbon_hub_installations_path(@school), class: 'btn' %>
+  <%= link_to 'Cancel', school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
 </div>

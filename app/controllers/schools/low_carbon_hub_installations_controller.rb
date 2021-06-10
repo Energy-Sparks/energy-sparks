@@ -21,12 +21,12 @@ module Schools
       ).perform
 
       if @low_carbon_hub_installation.persisted?
-        redirect_to school_low_carbon_hub_installation_path(@school, @low_carbon_hub_installation), notice: 'Low Carbon Hub installation was successfully created.'
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Low Carbon Hub installation was successfully created.'
       else
         render :new
       end
     rescue EnergySparksUnexpectedStateException
-      redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Rtone API is not available at the moment'
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Rtone API is not available at the moment'
     rescue => e
       flash[:error] = e.message
       render :new
@@ -37,7 +37,7 @@ module Schools
 
     def update
       if @low_carbon_hub_installation.update(low_carbon_hub_installation_params)
-        redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Installation was updated'
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Installation was updated'
       else
         render :edit
       end
@@ -49,7 +49,7 @@ module Schools
       end
 
       @low_carbon_hub_installation.destroy
-      redirect_to school_low_carbon_hub_installations_path(@school), notice: 'Low carbon hub deleted'
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Low carbon hub deleted'
     end
 
   private

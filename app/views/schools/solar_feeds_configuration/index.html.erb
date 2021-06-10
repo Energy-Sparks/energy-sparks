@@ -8,26 +8,33 @@
   <table class="table table-sm">
     <tbody>
       <tr>
-        <th>Site Id</th>
-        <th>Mpan</th>
+        <th class="w-25">Mpan</th>
+        <th class="w-25">Site Id</th>
         <th>API Key</th>
-        <th>Actions</th>
+        <th class="w-25">Actions</th>
       </tr>
       <% @solar_edge_installations.each do |installation| %>
         <tr>
-          <td><%= installation.site_id %></td>
           <td><%= installation.mpan %></td>
+          <td><%= installation.site_id %></td>
           <td><%= installation.api_key %></td>
           <td>
-            <a class="btn">foo</a>
+            <p>
+              <%= link_to 'Edit', edit_school_solar_edge_installation_path(@school, installation), class: 'btn' %>
+              <%= link_to 'Delete', school_solar_edge_installation_path(@school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </p>
+
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% else %>
-  <p>This school has no Solar Edge feeds</p>
+  <p>This school has no Solar Edge API feeds</p>
 <% end %>
+
+<p><%= link_to 'New Solar Edge installation', new_school_solar_edge_installation_path, class: 'btn' %></p>
+
 
 <h3>Rtone</h3>
 
@@ -35,10 +42,10 @@
   <table class="table table-sm">
     <tbody>
       <tr>
-        <th>RBee Id</th>
-        <th>Username</th>
+        <th class="w-25">RBee Id</th>
+        <th class="w-25">Username</th>
         <th>Password</th>
-        <th>Actions</th>
+        <th class="w-25">Actions</th>
       </tr>
       <% @rtone_installations.each do |installation| %>
         <tr>
@@ -50,6 +57,7 @@
           <td><%= installation.password %></td>
           <td>
             <p>
+              <%= link_to 'Edit', edit_school_low_carbon_hub_installation_path(@school, installation), class: 'btn' %>
               <%= link_to 'Delete', school_low_carbon_hub_installation_path(@school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
             </p>
           </td>
@@ -58,10 +66,9 @@
     </tbody>
   </table>
 <% else %>
-  <p>This school has no Rtone feeds</p>
+  <p>This school has no Rtone API feeds</p>
 <% end %>
 
-<p class="alert alert-warning">Please note, you cannot create a new, or download data for, a Low carbon hub installation between <%= @start_time %> and <%= @end_time %></p>
-
+<p class="alert alert-warning">You cannot create a new new Rtone installation, or download data from an installation, between <%= @start_time %> and <%= @end_time %></p>
 
 <p><%= link_to 'New Rtone installation', new_school_low_carbon_hub_installation_path, class: 'btn' %></p>
