@@ -1,4 +1,15 @@
-<h1>Manage meters: <%= @school.name %></h1>
+<h1>Meters</h1>
+
+<div class="mb-2">
+  <%= link_to 'School downloads', school_downloads_path(@school), class: ''%>
+  <% if can? :manage_solar_feed_configuration, School %>
+    <%= link_to 'Manage Solar API feeds', school_solar_feeds_configuration_index_path(@school) %>
+  <% end %>
+  <%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
+  <% if @pending_reviews %>
+    <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
+  <% end %>
+</div>
 
 <% unless @invalid_mpan.empty? %>
   <div class="alert alert-warning">
@@ -19,16 +30,14 @@
   <% end %>
 <% end %>
 
-<p><%= link_to 'School home', school_path(@school) %>, <%= link_to 'School downloads', school_downloads_path(@school) %></p>
 
-<h3>Meters</h3>
 <div class="table-responsive">
 <table class="table table-sm">
   <thead>
     <tr>
       <th scope="col">Type</th>
       <th scope="col">Meter Point Number</th>
-      <th scope="col">Meter Description</th>
+      <th scope="col">Description</th>
       <th scope="col">Imported Readings</th>
       <th scope="col">Validated readings</th>
       <th scope="col">First validated reading</th>
@@ -54,7 +63,7 @@
   <% if @active_pseudo_meters.any? %>
   <thead>
     <tr>
-      <th colspan="9">Active pseudo (Low carbon hub) meters</th>
+      <th colspan="9">Active pseudo meters</th>
     </tr>
   </thead>
   <tbody>
@@ -101,18 +110,7 @@
     </tbody>
   <% end %>
 </table>
-
-<%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
-<% if @pending_reviews %>
-  <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
-<% end %>
 </div>
-
-<% if can? :manage_solar_feed_configuration, School %>
-  <hr>
-  <h3>Solar API Feeds</h3>
-  <p><%= link_to 'Manage Solar API feeds', school_solar_feeds_configuration_index_path(@school) %></p>
-<% end %>
 
 <% if can? :create, Meter %>
   <div class="card bg-light mb-3">
