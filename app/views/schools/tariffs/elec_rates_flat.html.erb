@@ -1,13 +1,27 @@
-<h1>Add standing charges</h1>
+<h1>Add tariff rates</h1>
 
 <h2><%= render 'title', type: 'electricity' %> </h2>
 
 
-<div id="sections">
-  <div class="section">
-    <%= render 'elec_standing_charge_element' %>
-  </div>
-</div>
+<h4>Rates</h4>
+
+<table class="table table-striped table-sm">
+
+  <thead>
+  <tr>
+    <th>Tariff type</th>
+    <th>Rate</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr scope="row">
+    <td>00:00 to 23:30</td>
+    <td>9.573p/kwh</td>
+  </tr>
+  </tbody>
+
+</table>
+
 
 
 <%= link_to "Add another", '#', class: 'btn btn-info addsection' %>
@@ -19,10 +33,8 @@
 
 <%= form_tag school_tariffs_path, method: :get do %>
 
-  <%= hidden_field_tag :name, 'name', value: params[:name] %>
-  <%= hidden_field_tag :start_date, 'start_date', value: params[:start_date] %>
-  <%= hidden_field_tag :end_date, 'end_date', value: params[:end_date] %>
-  <%= hidden_field_tag :tariffs, 'tariffs', value: '123' %>
+  <%= hidden_field_tag :step, 'elec_charges' %>
+  <%= render 'hidden_fields' %>
 
   <%= submit_tag "Next", class: 'btn btn-info' %>
 
@@ -76,4 +88,3 @@
   });
 
 </script>
-

@@ -1,104 +1,109 @@
-<h1>Tariffs for <%= @school.name %></h1>
-
+<h1>All tariffs</h1>
 
 <h2>Electricity</h2>
 
 <div>
-  <%= link_to 'Add tariff', school_tariffs_path(step: 'elec1'), class: 'btn btn-success' %>
+  <%= link_to 'Add tariff', school_tariffs_path(step: 'elec_details'), class: 'btn btn-success' %>
 </div>
 
 <br/>
 <br/>
 
-<% if @tariffs.empty? %>
+<div id="accordion1" class="accordion-block">
+  <div class="card">
+    <div class="card-header" id="heading1">
+      <h5 class="mb-0">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse1" href="#collapse1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+          EDF electricity for 2020-04-01 to 2021-03-31
+        </a>
+      </h5>
+    </div>
+    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion1">
+      <div class="card-body">
+        <div class="padded-row">
+          <%= render 'elec_rate_table' %>
+          <br/>
+          <%= render 'elec_charge_table' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <br/>
-  <p>You don't have any electricity tariffs yet</p>
-  <br/>
-
-<% else %>
-
-  <h3>EDF electricity for 2021-04-01 to 2022-03-31</h3>
-
-  <h4>Rates</h4>
-
-  <table class="table table-striped table-sm">
-
-    <thead>
-    <tr>
-      <th>Tariff type</th>
-      <th>Rate</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr scope="row">
-      <td>00:00 to 06:30</td>
-      <td>9.573p/kwh</td>
-    </tr>
-    <tr scope="row">
-      <td>08:00 to 19:30</td>
-      <td>23.573p/kwh</td>
-    </tr>
-    <tr scope="row">
-      <td>20:00 to 23:30</td>
-      <td>15.432p/kwh</td>
-    </tr>
-    </tbody>
-
-  </table>
-
-  <h4>Standing charges</h4>
-
-  <table class="table table-striped table-sm">
-
-    <thead>
-    <tr>
-      <th>Standing charge type</th>
-      <th>Amount</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr scope="row">
-      <td>Duos red</td>
-      <td>9.573p/kwh</td>
-    </tr>
-    <tr scope="row">
-      <td>Duos amber</td>
-      <td>9.573p/kwh</td>
-    </tr>
-    <tr scope="row">
-      <td>Duos green</td>
-      <td>9.573p/kwh</td>
-    </tr>
-    <tr scope="row">
-      <td>Fixed charge</td>
-      <td>17.93p/day</td>
-    </tr>
-    <tr scope="row">
-      <td>Reactive power charge</td>
-      <td>0.1245p/kva</td>
-    </tr>
-    </tbody>
-
-  </table>
+<div id="accordion2" class="accordion-block">
+  <div class="card">
+    <div class="card-header" id="heading2">
+      <h5 class="mb-0">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse2" href="#collapse2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+          EDF electricity for 2021-04-01 to 2022-03-31
+        </a>
+      </h5>
+    </div>
+    <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordion2">
+      <div class="card-body">
+        <div class="padded-row">
+          <%= render 'elec_rate_table' %>
+          <br/>
+          <%= render 'elec_charge_table' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-<% end %>
-
-<br/>
 <br/>
 <br/>
 
 <h2>Gas</h2>
 
 <div>
-  <%= link_to 'Add tariff', school_tariffs_path(step: 'gas1'), class: 'btn btn-success' %>
+  <%= link_to 'Add tariff', school_tariffs_path(step: 'gas_details'), class: 'btn btn-success' %>
 </div>
 
 <br/>
 <br/>
 
-<br/>
-<p>You don't have any gas tariffs yet</p>
-<br/>
+<div id="accordion1" class="accordion-block">
+  <div class="card">
+    <div class="card-header" id="heading1">
+      <h5 class="mb-0">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse1" href="#collapse1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+          EDF gas for 2020-04-01 to 2021-03-31
+        </a>
+      </h5>
+    </div>
+    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion1">
+      <div class="card-body">
+        <div class="padded-row">
+          <%= render 'elec_rate_table' %>
+          <br/>
+          <%= render 'elec_charge_table' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="accordion2" class="accordion-block">
+  <div class="card">
+    <div class="card-header" id="heading2">
+      <h5 class="mb-0">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse2" href="#collapse2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+          EDF gas for 2021-04-01 to 2022-03-31
+        </a>
+      </h5>
+    </div>
+    <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordion2">
+      <div class="card-body">
+        <div class="padded-row">
+          <%= render 'elec_rate_table' %>
+          <br/>
+          <%= render 'elec_charge_table' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 

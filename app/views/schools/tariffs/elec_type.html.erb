@@ -1,0 +1,37 @@
+<h1>Tariff type</h1>
+
+<h2><%= render 'title', type: 'electricity' %> </h2>
+
+
+Is this a simple flat rate?
+
+
+<br/>
+<br/>
+
+<%= form_tag school_tariffs_path, method: :get do %>
+
+  <%= hidden_field_tag :step, 'elec_rates_flat' %>
+  <%= render 'hidden_fields' %>
+
+  <%= submit_tag "Simple", class: 'btn btn-info' %>
+
+<% end %>
+
+<br/>
+<br/>
+
+Or a rate which varies by time of day (e.g. Economy7, day/night rates)
+
+<br/>
+<br/>
+
+<%= form_tag school_tariffs_path, method: :get do %>
+
+  <%= hidden_field_tag :step, 'elec_rates_differential' %>
+  <%= render 'hidden_fields' %>
+
+  <%= submit_tag "Economy 7", class: 'btn btn-info' %>
+
+<% end %>
+
