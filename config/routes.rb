@@ -110,6 +110,11 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
+
+      resources :solar_feeds_configuration, only: [:index]
+
+      resources :solar_edge_installations, only: [:new, :create, :edit, :update, :destroy]
+
       resources :low_carbon_hub_installations
 
       resource :meter_readings_validation, only: [:create]

@@ -1,0 +1,67 @@
+<h1>Solar API feeds for <%= @school.name %></h1>
+
+<p><%= link_to 'View all school meters',  school_meters_path(@school) %></p>
+
+<h3>Solar Edge</h3>
+
+<% if @solar_edge_installations.any? %>
+  <table class="table table-sm">
+    <tbody>
+      <tr>
+        <th>Site Id</th>
+        <th>Mpan</th>
+        <th>API Key</th>
+        <th>Actions</th>
+      </tr>
+      <% @solar_edge_installations.each do |installation| %>
+        <tr>
+          <td><%= installation.site_id %></td>
+          <td><%= installation.mpan %></td>
+          <td><%= installation.api_key %></td>
+          <td>
+            <a class="btn">foo</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This school has no Solar Edge feeds</p>
+<% end %>
+
+<h3>Rtone</h3>
+
+<% if @rtone_installations.any? %>
+  <table class="table table-sm">
+    <tbody>
+      <tr>
+        <th>RBee Id</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Actions</th>
+      </tr>
+      <% @rtone_installations.each do |installation| %>
+        <tr>
+          <td>
+            <%= link_to installation.rbee_meter_id, school_low_carbon_hub_installation_path(@school, installation)
+            %>
+          </td>
+          <td><%= installation.username %></td>
+          <td><%= installation.password %></td>
+          <td>
+            <p>
+              <%= link_to 'Delete', school_low_carbon_hub_installation_path(@school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            </p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This school has no Rtone feeds</p>
+<% end %>
+
+<p class="alert alert-warning">Please note, you cannot create a new, or download data for, a Low carbon hub installation between <%= @start_time %> and <%= @end_time %></p>
+
+
+<p><%= link_to 'New Rtone installation', new_school_low_carbon_hub_installation_path, class: 'btn' %></p>
