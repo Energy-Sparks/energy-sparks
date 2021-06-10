@@ -158,6 +158,7 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
+      resources :tariffs
     end
 
     # Maintain old scoreboard URL

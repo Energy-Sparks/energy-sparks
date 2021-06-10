@@ -1,0 +1,54 @@
+
+<hr/>
+
+<h3>Add a rate <a href="#" class='remove btn'>remove</a></h3>
+
+
+<div class='ml-5'>
+
+  <div class="form-row'">
+
+    <fieldset class='form-group'>
+
+      <span class="form-group">
+        <%= label_tag :from %>
+        <%= time_select :from, 'from', default: {:hour => '0', :minute => '00'} %>
+      </span>
+
+      <span class="form-group">
+        <%= label_tag :to %>
+        <%= time_select :to, 'to', default: {:hour => '06', :minute => '30'} %>
+      </span>
+
+      <br/>
+
+      <span class="form-group">
+        <%= label_tag 'Rate (£)' %>
+        <%= number_field_tag :rate %>
+      </span>
+
+      per
+
+      <span class="form-group">
+        <%= select_tag :rate_unit, options_for_select(['kwh']) %>
+      </span>
+
+      <br/>
+      <br/>
+
+      <span class="form-group">
+        <%= label_tag 'Weekdays' %>
+        <%= radio_button_tag :weekday, 'weekday', checked: true %>
+      </span>
+      <span class="form-group">
+        <%= label_tag 'Weekends' %>
+        <%= radio_button_tag :weekday, 'weekend', checked: true %>
+      </span>
+
+
+    </fieldset>
+
+
+  </div>
+
+</div>
