@@ -6,9 +6,12 @@ module Amr
     include_context "low carbon hub data"
 
     it 'creates the meters and initial readings' do
+      allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
+
       expect(amr_data_feed_config).to_not be nil
 
-      factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, low_carbon_hub_api: low_carbon_hub_api, amr_data_feed_config: amr_data_feed_config)
+      factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, amr_data_feed_config: amr_data_feed_config,
+        username: username, password: password)
       expect { factory.perform }.to change { Meter.count }.by(3)
       expect(school.meters.solar_pv.count).to be 1
       expect(school.meters.electricity.count).to be 1

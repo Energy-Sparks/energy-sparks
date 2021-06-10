@@ -110,7 +110,7 @@ Rails.application.routes.draw do
           put :deactivate
         end
       end
-      resources :low_carbon_hub_installations, only: [:show, :index, :create, :new, :destroy]
+      resources :low_carbon_hub_installations
 
       resource :meter_readings_validation, only: [:create]
 

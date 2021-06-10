@@ -6,7 +6,7 @@ module Amr
         low_carbon_hub_installation:,
         start_date:,
         end_date:,
-        low_carbon_hub_api: LowCarbonHubMeterReadings.new
+        low_carbon_hub_api:
       )
       @low_carbon_hub_installation = low_carbon_hub_installation
       @low_carbon_hub_api = low_carbon_hub_api
