@@ -15,7 +15,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
 
     it 'I can add and delete a low carbon hub installation' do
       expect(page).to have_content("This school has no Rtone API feeds")
-      click_on 'New Rtone installation'
+      click_on 'New Rtone API feed'
 
       allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
 
@@ -44,7 +44,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
 
     it 'I can edit an installation' do
       expect(page).to have_content("This school has no Rtone API feeds")
-      click_on 'New Rtone installation'
+      click_on 'New Rtone API feed'
 
       allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
 
@@ -74,7 +74,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
 
     it 'handles being run out of hours properly' do
       expect(page).to have_content("This school has no Rtone API feeds")
-      click_on 'New Rtone installation'
+      click_on 'New Rtone API feed'
 
       expect(Amr::LowCarbonHubInstallationFactory).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
 

@@ -8,7 +8,7 @@ module Schools
 
     def create
       if @solar_edge_installation.save
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Solar Edge installation created.'
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Solar Edge API feed created.'
       else
         render :new
       end
@@ -19,7 +19,7 @@ module Schools
 
     def update
       if @solar_edge_installation.update(solar_edge_installation_params)
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Installation was updated'
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Solar Edge API feed was updated'
       else
         render :edit
       end
@@ -31,7 +31,7 @@ module Schools
       end
 
       @solar_edge_installation.destroy
-      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Solar Edge Installation deleted"
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Solar Edge API feed deleted"
     end
 
     private
