@@ -126,7 +126,7 @@ RSpec.describe "meter management", :meters, type: :system do
       expect(page).to have_content("Meter type can't be blank")
 
       fill_in 'Meter Point Number', with: '123543'
-      fill_in 'Meter Name', with: 'Gas'
+      fill_in 'Name', with: 'Gas'
       choose 'Gas'
       click_on 'Create Meter'
 

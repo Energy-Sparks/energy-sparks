@@ -59,7 +59,8 @@ RSpec.describe "school creation", :schools, type: :system do
 
     click_on 'Next'
 
-    expect(page).to have_content("Manage meters: St Mary's School")
+    expect(page).to have_content("St Mary's School")
+    expect(page).to have_content("Meters")
 
     school = School.where(urn: '4444244').first
     expect(school.key_stages).to match_array([ks1])
