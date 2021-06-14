@@ -7,7 +7,7 @@
     <%= form.text_field :mpan_mprn, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= form.label :name, 'Meter Name' %>
+    <%= form.label :name, 'Name' %>
     <%= form.text_field :name, class: 'form-control' %>
   </div>
   <div class="form-group">
@@ -15,7 +15,7 @@
     <%= form.text_field :meter_serial_number, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= form.label :meter_type, 'Meter Type' %>
+    <%= form.label :meter_type, 'Type' %>
     <% Meter::CREATABLE_METER_TYPES.each do |meter_type| %>
       <div class="form-check">
         <%= form.radio_button :meter_type, meter_type, class: "form-check-input" %>

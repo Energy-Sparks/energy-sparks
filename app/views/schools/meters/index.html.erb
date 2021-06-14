@@ -1,4 +1,17 @@
-<h1>Manage meters: <%= @school.name %></h1>
+<h1>Meters</h1>
+
+<div class="mb-2">
+  <%= link_to 'School downloads', school_downloads_path(@school), class: ''%>
+  <% if can? :manage_solar_feed_configuration, School %>
+    <%= link_to 'Manage Solar API feeds', school_solar_feeds_configuration_index_path(@school) %>
+  <% end %>
+  <% if can? :manage, MeterReview %>
+    <%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
+    <% if @pending_reviews %>
+      <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
+    <% end %>
+  <% end %>
+</div>
 
 <% unless @invalid_mpan.empty? %>
   <div class="alert alert-warning">
@@ -19,16 +32,14 @@
   <% end %>
 <% end %>
 
-<p><%= link_to 'School home', school_path(@school) %>, <%= link_to 'School downloads', school_downloads_path(@school) %></p>
 
-<h3>Meters</h3>
 <div class="table-responsive">
 <table class="table table-sm">
   <thead>
     <tr>
       <th scope="col">Type</th>
       <th scope="col">Meter Point Number</th>
-      <th scope="col">Meter Description</th>
+      <th scope="col">Name</th>
       <th scope="col">Imported Readings</th>
       <th scope="col">Validated readings</th>
       <th scope="col">First validated reading</th>
@@ -54,7 +65,7 @@
   <% if @active_pseudo_meters.any? %>
   <thead>
     <tr>
-      <th colspan="9">Active pseudo (Low carbon hub) meters</th>
+      <th colspan="9">Active pseudo meters</th>
     </tr>
   </thead>
   <tbody>
@@ -101,24 +112,11 @@
     </tbody>
   <% end %>
 </table>
-
-<%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
-<% if @pending_reviews %>
-  <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
-<% end %>
 </div>
-
-<% if can? :manage, LowCarbonHubInstallation %>
-  <hr/>
-  <h3>Low carbon hub installations</h3>
-  <p><%= link_to 'List low carbon hub installations', school_low_carbon_hub_installations_path(@school) %></p>
-  <p><%= link_to 'New carbon hub installation', new_school_low_carbon_hub_installation_path(@school), class: 'btn' %></p>
-  <hr/>
-<% end %>
 
 <% if can? :create, Meter %>
   <div class="card bg-light mb-3">
-    <div class="card-header"><h4>New meter</h4></div>
+    <div class="card-header"><h4>Add meter</h4></div>
     <div class="card-body">
       <%= render 'form', school: @school, meter: @meter, show_dcc_fields: false, meter_is_dcc: false %>
     </div>
