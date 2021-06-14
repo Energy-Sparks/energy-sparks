@@ -5,9 +5,11 @@
   <% if can? :manage_solar_feed_configuration, School %>
     <%= link_to 'Manage Solar API feeds', school_solar_feeds_configuration_index_path(@school) %>
   <% end %>
-  <%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
-  <% if @pending_reviews %>
-    <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
+  <% if can? :manage, MeterReview %>
+    <%= link_to "Meter reviews", admin_school_meter_reviews_path(@school) %>
+    <% if @pending_reviews %>
+      <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
+    <% end %>
   <% end %>
 </div>
 
@@ -37,7 +39,7 @@
     <tr>
       <th scope="col">Type</th>
       <th scope="col">Meter Point Number</th>
-      <th scope="col">Description</th>
+      <th scope="col">Name</th>
       <th scope="col">Imported Readings</th>
       <th scope="col">Validated readings</th>
       <th scope="col">First validated reading</th>
@@ -114,7 +116,7 @@
 
 <% if can? :create, Meter %>
   <div class="card bg-light mb-3">
-    <div class="card-header"><h4>New meter</h4></div>
+    <div class="card-header"><h4>Add meter</h4></div>
     <div class="card-body">
       <%= render 'form', school: @school, meter: @meter, show_dcc_fields: false, meter_is_dcc: false %>
     </div>
