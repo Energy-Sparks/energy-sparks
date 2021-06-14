@@ -5,7 +5,7 @@
     <%= link_to 'Calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
     <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
     <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
-    <%= link_to 'Manage Rtone installations', school_low_carbon_hub_installations_path(school), class: 'dropdown-item' if can? :manage, LowCarbonHubInstallation %>
+    <%= link_to 'Solar API feeds', school_solar_feeds_configuration_index_path(school), class: 'dropdown-item' if can? :manage_solar_feed_configuration, School %>
     <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
     <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
