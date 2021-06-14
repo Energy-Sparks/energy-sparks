@@ -3,11 +3,6 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
-    def index
-      @start_time = formatted_localised_utc_time('12pm')
-      @end_time = formatted_localised_utc_time('1pm')
-    end
-
     def new
     end
 
