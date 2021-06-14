@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_20_134717) do
+ActiveRecord::Schema.define(version: 2021_06_09_102549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -749,6 +749,8 @@ ActiveRecord::Schema.define(version: 2021_05_20_134717) do
     t.json "information", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "username"
+    t.string "password"
     t.index ["amr_data_feed_config_id"], name: "index_low_carbon_hub_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_low_carbon_hub_installations_on_school_id"
   end
