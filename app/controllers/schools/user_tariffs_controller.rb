@@ -14,10 +14,13 @@ module Schools
     def create
       @user_tariff = @school.user_tariffs.build(user_tariff_params)
       if @user_tariff.save
-        redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
+        redirect_to choose_type_school_user_tariff_path(@school, @user_tariff)
       else
         render :new
       end
+    end
+
+    def choose_type
     end
 
     def update
@@ -39,7 +42,7 @@ module Schools
     private
 
     def user_tariff_params
-      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date)
+      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate)
     end
   end
 end

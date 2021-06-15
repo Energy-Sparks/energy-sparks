@@ -24,6 +24,9 @@ describe 'user tariffs', type: :system do
         fill_in 'Name', with: 'My First Tariff'
         click_button('Next')
 
+        expect(page).to have_content('Edit electricity tariff')
+        click_button('Economy 7')
+
         expect(page).to have_content('Tariff rates')
         expect(page).to have_content('My First Tariff electricity for 2021-04-01 to 2022-03-31')
 
