@@ -1,6 +1,6 @@
 <%= f.input :start_time, as: :string %>
 <%= f.input :end_time, as: :string %>
 <%= f.input :value, label: 'Value (in kWh)' %>
-<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+<%= link_to "Cancel", school_user_tariff_user_tariff_prices_path(school, user_tariff), class: 'btn' %>
 <%= f.submit 'Save', class: 'btn btn-primary' %>
 

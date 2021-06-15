@@ -10,6 +10,6 @@
   <%= f.select :units, options_for_select(['kwh','day','kva'], f.object ? f.object.units : ''), {include_blank: true}, { class: 'form-control' } %>
 </div>
 <p></p>
-<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+<%= link_to "Cancel", school_user_tariff_user_tariff_charges_path(school, user_tariff), class: 'btn' %>
 <%= f.submit 'Save', class: 'btn btn-primary' %>
 

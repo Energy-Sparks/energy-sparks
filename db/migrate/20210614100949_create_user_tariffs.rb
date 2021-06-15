@@ -1,6 +1,7 @@
 class CreateUserTariffs < ActiveRecord::Migration[6.0]
   def change
     create_table :user_tariffs do |t|
+      t.references    :school, null: false
       t.text          :name
       t.text          :fuel_type, null: false
       t.boolean       :flat_rate, default: true

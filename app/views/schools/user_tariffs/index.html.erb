@@ -26,6 +26,10 @@
             <br/>
             <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: user_tariff %>
           </div>
+          <div class="padded-row">
+            <%= link_to "Edit", edit_school_user_tariff_path(@school, user_tariff), class: 'btn' %>
+            <%= link_to "Delete", school_user_tariff_path(@school, user_tariff), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+          </div>
         </div>
       </div>
     </div>

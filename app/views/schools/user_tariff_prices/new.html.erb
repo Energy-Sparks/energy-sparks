@@ -2,6 +2,6 @@
 
 <%= simple_form_for :user_tariff_price, url: school_user_tariff_user_tariff_prices_path(@school, @user_tariff) do |f| %>
 
-  <%= render 'form', user_tariff_price: @user_tariff_price, f: f %>
+  <%= render 'form', school: @school, user_tariff: @user_tariff, user_tariff_price: @user_tariff_price, f: f %>
 
 <% end %>

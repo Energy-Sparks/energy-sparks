@@ -1277,6 +1277,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_100949) do
   end
 
   create_table "user_tariffs", force: :cascade do |t|
+    t.bigint "school_id", null: false
     t.text "name"
     t.text "fuel_type", null: false
     t.boolean "flat_rate", default: true
@@ -1284,6 +1285,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_100949) do
     t.date "end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 
   create_table "users", force: :cascade do |t|

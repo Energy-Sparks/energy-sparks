@@ -1,0 +1,22 @@
+<%= f.input :fuel_type, as: :hidden %>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <%= f.input :name, as: :string %>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <%= f.input :start_date %>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <%= f.input :end_date %>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <%= f.input :flat_rate %>
+  </div>
+</div>
+<%= f.submit 'Next', class: 'btn'%>
