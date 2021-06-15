@@ -23,6 +23,7 @@ module Schools
     rescue EnergySparksUnexpectedStateException
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Rtone API is not available at the moment'
     rescue => e
+      Rollbar.error(e)
       flash[:error] = e.message
       render :new
     end

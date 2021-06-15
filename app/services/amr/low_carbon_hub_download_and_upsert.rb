@@ -18,7 +18,7 @@ module Amr
     private
 
     def low_carbon_hub_api
-      @low_carbon_hub_api ||= LowCarbonHubMeterReadings.new(username: username, password: password)
+      @low_carbon_hub_api ||= LowCarbonHubMeterReadings.new(username, password)
     end
 
     def username
