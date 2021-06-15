@@ -17,7 +17,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       expect(page).to have_content("This school has no Rtone API feeds")
       click_on 'New Rtone API feed'
 
-      allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
+      allow(LowCarbonHubMeterReadings).to receive(:new).with(username, password).and_return(low_carbon_hub_api)
 
       fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
       fill_in(:low_carbon_hub_installation_username, with: username)
@@ -46,7 +46,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       expect(page).to have_content("This school has no Rtone API feeds")
       click_on 'New Rtone API feed'
 
-      allow(LowCarbonHubMeterReadings).to receive(:new).and_return(low_carbon_hub_api)
+      allow(LowCarbonHubMeterReadings).to receive(:new).with(username, password).and_return(low_carbon_hub_api)
 
       fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
       fill_in(:low_carbon_hub_installation_username, with: username)
