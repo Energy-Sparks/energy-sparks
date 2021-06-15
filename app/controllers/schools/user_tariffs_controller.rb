@@ -44,14 +44,6 @@ module Schools
 
     private
 
-    # def get_meters
-    #   params[:user_tariff][:meters].reject(&:empty?).map{|id| Meter.find(id)}
-    # end
-
-    def get_fuel_type
-      params[:fuel_type]
-    end
-
     def user_tariff_params
       params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, meter_ids: [])
     end
