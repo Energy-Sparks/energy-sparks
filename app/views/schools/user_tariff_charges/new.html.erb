@@ -1,0 +1,7 @@
+<h1>Add tariff standing charge</h1>
+
+<%= simple_form_for :user_tariff_charge, url: school_user_tariff_user_tariff_charges_path(@school, @user_tariff) do |f| %>
+
+  <%= render 'form', user_tariff_charge: @user_tariff_charge, f: f %>
+
+<% end %>

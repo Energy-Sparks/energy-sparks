@@ -1,0 +1,26 @@
+<h1>Add <%= @tariff.fuel_type %> tariff</h1>
+
+<%= simple_form_for [:school, @tariff] do |f| %>
+  <%= f.input :fuel_type, as: :hidden %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.input :name, as: :string %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.input :start_date %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.input :end_date %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.input :flat_rate %>
+    </div>
+  </div>
+  <%= f.submit 'Next', class: 'btn'%>
+<% end %>

@@ -1,0 +1,15 @@
+<div class="form-group">
+  <%= f.label :charge_type %>
+  <%= f.select :charge_type, options_for_select(['Duos red/amber/green', 'Fixed charge', 'Agreed availability charge', 'Reactive power charge', 'Settlement agency fee'], f.object ? f.object.charge_type : ''), {include_blank: true}, { class: 'form-control' } %>
+</div>
+<div class="form-group">
+  <%= f.input :value %>
+</div>
+<div class="form-group">
+  <%= f.label :units %>
+  <%= f.select :units, options_for_select(['kwh','day','kva'], f.object ? f.object.units : ''), {include_blank: true}, { class: 'form-control' } %>
+</div>
+<p></p>
+<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+<%= f.submit 'Save', class: 'btn btn-primary' %>
+

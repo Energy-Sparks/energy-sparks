@@ -3,7 +3,7 @@
 <h2>Electricity</h2>
 
 <div>
-  <%= link_to 'Add tariff', school_tariffs_path(step: 'elec_details'), class: 'btn btn-success' %>
+  <%= link_to 'Add electricity tariff', new_school_user_tariff_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
 </div>
 
 <br/>
@@ -58,7 +58,7 @@
 <h2>Gas</h2>
 
 <div>
-  <%= link_to 'Add tariff', school_tariffs_path(step: 'gas_details'), class: 'btn btn-success' %>
+  <%= link_to 'Add gas tariff', '#', class: 'btn btn-success' %>
 </div>
 
 <br/>

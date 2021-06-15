@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_102549) do
+ActiveRecord::Schema.define(version: 2021_06_14_100949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1253,6 +1253,37 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_tariff_charges", force: :cascade do |t|
+    t.bigint "user_tariff_id", null: false
+    t.text "charge_type", null: false
+    t.decimal "value", null: false
+    t.text "units", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_tariff_id"], name: "index_user_tariff_charges_on_user_tariff_id"
+  end
+
+  create_table "user_tariff_prices", force: :cascade do |t|
+    t.bigint "user_tariff_id", null: false
+    t.text "start_time", null: false
+    t.text "end_time", null: false
+    t.decimal "value", null: false
+    t.text "units", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
+  end
+
+  create_table "user_tariffs", force: :cascade do |t|
+    t.text "name"
+    t.text "fuel_type", null: false
+    t.boolean "flat_rate", default: true
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
