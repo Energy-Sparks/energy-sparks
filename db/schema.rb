@@ -1278,7 +1278,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_100949) do
 
   create_table "user_tariffs", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.text "name"
+    t.text "name", null: false
     t.text "fuel_type", null: false
     t.boolean "flat_rate", default: true
     t.date "start_date", null: false
