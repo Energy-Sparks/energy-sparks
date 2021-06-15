@@ -9,101 +9,26 @@
 <br/>
 <br/>
 
-<div id="accordion1" class="accordion-block">
-  <div class="card">
-    <div class="card-header" id="heading1">
-      <h5 class="mb-0">
-        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse1" href="#collapse1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-          EDF electricity for 2020-04-01 to 2021-03-31
-        </a>
-      </h5>
-    </div>
-    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion1">
-      <div class="card-body">
-        <div class="padded-row">
-          <%= render 'elec_rate_table' %>
-          <br/>
-          <%= render 'elec_charge_table' %>
+<% @user_tariffs.select{|tariff| tariff.electricity?}.each_with_index do |user_tariff, idx| %>
+  <div id="accordion<%= idx %>" class="accordion-block">
+    <div class="card">
+      <div class="card-header" id="heading<%= idx %>">
+        <h5 class="mb-0">
+          <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse<%= idx %>" href="#collapse<%= idx %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+            <%= render 'title', user_tariff: user_tariff %>
+          </a>
+        </h5>
+      </div>
+      <div id="collapse<%= idx %>" class="collapse" aria-labelledby="heading<%= idx %>" data-parent="#accordion<%= idx %>">
+        <div class="card-body">
+          <div class="padded-row">
+            <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: user_tariff %>
+            <br/>
+            <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: user_tariff %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div id="accordion2" class="accordion-block">
-  <div class="card">
-    <div class="card-header" id="heading2">
-      <h5 class="mb-0">
-        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse2" href="#collapse2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-          EDF electricity for 2021-04-01 to 2022-03-31
-        </a>
-      </h5>
-    </div>
-    <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordion2">
-      <div class="card-body">
-        <div class="padded-row">
-          <%= render 'elec_rate_table' %>
-          <br/>
-          <%= render 'elec_charge_table' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<br/>
-<br/>
-
-<h2>Gas</h2>
-
-<div>
-  <%= link_to 'Add gas tariff', '#', class: 'btn btn-success' %>
-</div>
-
-<br/>
-<br/>
-
-<div id="accordion3" class="accordion-block">
-  <div class="card">
-    <div class="card-header" id="heading3">
-      <h5 class="mb-0">
-        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse3" href="#collapse3" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-          EDF gas for 2020-04-01 to 2021-03-31
-        </a>
-      </h5>
-    </div>
-    <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordion3">
-      <div class="card-body">
-        <div class="padded-row">
-          <%= render 'elec_rate_table' %>
-          <br/>
-          <%= render 'elec_charge_table' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="accordion4" class="accordion-block">
-  <div class="card">
-    <div class="card-header" id="heading4">
-      <h5 class="mb-0">
-        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse4" href="#collapse4" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-          EDF gas for 2021-04-01 to 2022-03-31
-        </a>
-      </h5>
-    </div>
-    <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordion4">
-      <div class="card-body">
-        <div class="padded-row">
-          <%= render 'elec_rate_table' %>
-          <br/>
-          <%= render 'elec_charge_table' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+<% end %>
 

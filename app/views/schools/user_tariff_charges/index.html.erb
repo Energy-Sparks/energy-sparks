@@ -6,30 +6,6 @@
   <%= link_to "Add standing charge", new_school_user_tariff_user_tariff_charge_path(@school, @user_tariff), class: 'btn' %>
 </h4>
 
-<table class="table table-striped table-sm">
+<%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: @user_tariff %>
 
-  <thead>
-  <tr>
-    <th>Standing charge type</th>
-    <th>Amount</th>
-    <th>Units</th>
-    <th style="width: 10%"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @user_tariff.user_tariff_charges.each do |user_tariff_charge| %>
-    <tr class="rate-row">
-      <td><%= user_tariff_charge.charge_type %></td>
-      <td><%= user_tariff_charge.value %></td>
-      <td><%= user_tariff_charge.units %></td>
-      <td>
-        <%= link_to "Edit", edit_school_user_tariff_user_tariff_charge_path(@school, @user_tariff, user_tariff_charge), class: 'btn' %>
-        <%= link_to "Delete", school_user_tariff_user_tariff_charge_path(@school, @user_tariff, user_tariff_charge.id), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
-      </td>
-    </tr>
-  <% end %>
-  </tbody>
-
-</table>
-
-<%= link_to "Next", school_user_tariff_review_path(@school, @user_tariff), class: 'btn' %>
+<%= link_to "Next", school_user_tariff_path(@school, @user_tariff), class: 'btn' %>

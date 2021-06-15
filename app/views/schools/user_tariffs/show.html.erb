@@ -1,0 +1,13 @@
+<h1>Review tariff</h1>
+
+<h2><%= render 'title', user_tariff: @user_tariff %> </h2>
+
+<h4>Rates</h4>
+
+<%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff %>
+
+<h4>Standing charges</h4>
+
+<%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: @user_tariff %>
+
+<%= link_to "Finished", school_user_tariffs_path(@school), class: 'btn' %>

@@ -161,8 +161,10 @@ Rails.application.routes.draw do
       resources :user_tariffs do
         resources :user_tariff_prices
         resources :user_tariff_charges
-        get :review, to: 'user_tariffs#review'
+        # get :review, to: 'user_tariffs#review'
       end
+      # get 'user_tariffs/:id/review', to: 'user_tariffs#review', as: :new_exemplar_simulation
+
     end
 
     # Maintain old scoreboard URL

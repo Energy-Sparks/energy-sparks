@@ -54,9 +54,8 @@ describe 'user tariffs', type: :system do
         click_link('Next')
         expect(page).to have_content('Review tariff')
 
-        click_link('Next')
+        click_link('Finished')
         expect(page).to have_content('All tariffs')
-
       end
 
     end
