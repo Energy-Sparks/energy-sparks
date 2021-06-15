@@ -8,7 +8,7 @@ module Schools
     end
 
     def new
-      @user_tariff = @school.user_tariffs.build(fuel_type: params[:fuel_type], start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31'))
+      @user_tariff = @school.user_tariffs.build(user_tariff_params.merge(start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31')))
     end
 
     def create
@@ -18,6 +18,9 @@ module Schools
       else
         render :new
       end
+    end
+
+    def choose_meters
     end
 
     def choose_type
@@ -41,8 +44,16 @@ module Schools
 
     private
 
+    # def get_meters
+    #   params[:user_tariff][:meters].reject(&:empty?).map{|id| Meter.find(id)}
+    # end
+
+    def get_fuel_type
+      params[:fuel_type]
+    end
+
     def user_tariff_params
-      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate)
+      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, meter_ids: [])
     end
   end
 end

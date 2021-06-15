@@ -4,13 +4,13 @@ describe 'user tariffs', type: :system do
 
   let!(:school)                   { create_active_school(name: "Big School")}
   let!(:admin)                    { create(:admin) }
+  let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }
 
   context 'as an admin' do
 
     before(:each) do
       sign_in(admin)
     end
-
 
     context 'creating electricity tariffs' do
 
@@ -19,6 +19,11 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('All tariffs')
 
         click_link('Add electricity tariff')
+
+        expect(page).to have_content('Select meters for tariff')
+        check('12345678901234')
+        click_button('Next')
+
         expect(page).to have_content('Add electricity tariff')
 
         fill_in 'Name', with: 'My First Tariff'
@@ -59,6 +64,9 @@ describe 'user tariffs', type: :system do
 
         click_link('Finished')
         expect(page).to have_content('All tariffs')
+        expect(page).to have_content('12345678901234')
+
+        expect(UserTariff.last.meters).to match_array([electricity_meter])
       end
 
     end

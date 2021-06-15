@@ -2,6 +2,7 @@ class UserTariff < ApplicationRecord
   belongs_to :school, inverse_of: :user_tariffs
   has_many :user_tariff_prices, inverse_of: :user_tariff
   has_many :user_tariff_charges, inverse_of: :user_tariff
+  has_and_belongs_to_many :meters, inverse_of: :user_tariffs
 
   validates :name, :start_date, :end_date, presence: true
 

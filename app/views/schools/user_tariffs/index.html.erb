@@ -3,7 +3,7 @@
 <h2>Electricity</h2>
 
 <div>
-  <%= link_to 'Add electricity tariff', new_school_user_tariff_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
+  <%= link_to 'Add electricity tariff', choose_meters_school_user_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
 </div>
 
 <br/>
@@ -26,6 +26,16 @@
             <br/>
             <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: user_tariff %>
           </div>
+          <%# if user_tariff.meters.present? %>
+            <div class="padded-row">
+              <p>The following meters are associated with this tariff:</p>
+              <ul>
+                <% user_tariff.meters.each do |meter| %>
+                  <li><%= meter.mpan_mprn %></li>
+                <% end %>
+              </ul>
+            </div>
+          <%# end %>
           <div class="padded-row">
             <%= link_to "Edit", edit_school_user_tariff_path(@school, user_tariff), class: 'btn' %>
             <%= link_to "Delete", school_user_tariff_path(@school, user_tariff), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>

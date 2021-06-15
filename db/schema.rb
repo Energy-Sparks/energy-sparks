@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_14_100949) do
+ActiveRecord::Schema.define(version: 2021_06_15_143142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -828,6 +828,13 @@ ActiveRecord::Schema.define(version: 2021_06_14_100949) do
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
+  end
+
+  create_table "meters_user_tariffs", id: false, force: :cascade do |t|
+    t.bigint "meter_id"
+    t.bigint "user_tariff_id"
+    t.index ["meter_id"], name: "index_meters_user_tariffs_on_meter_id"
+    t.index ["user_tariff_id"], name: "index_meters_user_tariffs_on_user_tariff_id"
   end
 
   create_table "newsletters", force: :cascade do |t|
