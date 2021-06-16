@@ -1,9 +1,6 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Your account details</h1>
-
-    <p><%= @school_onboarding.school_name %> will have an administrator login to manage your school on Energy Sparks.</p>
-    <p>Enter the Name, email and password you want to use for this account below:</p>
+    <h1>Update your school adminstrator account details</h1>
 
     <%= simple_form_for(current_user, url: onboarding_account_path(@school_onboarding)) do |f| %>
       <%= f.input :name, label: 'Your name'%>
@@ -11,8 +8,15 @@
       <%= f.input :password %>
       <%= f.input :password_confirmation %>
       <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+
+      <div class="custom-control custom-checkbox pb-3">
+        <input type="checkbox" class="custom-control-input" id="user_auto_subscribe_newsletter" name="user[subscribe_to_newsletter]"
+        <%= @school_onboarding.subscribe_to_newsletter ? 'checked' : 'unchecked' %> >
+        <label class="custom-control-label" for="user_auto_subscribe_newsletter">Subscribe to newsletters</label>
+      </div>
+
       <%= f.button :submit, 'Update my account' %>
-      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'your-account'), class: 'btn' %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'), class: 'btn' %>
     <% end %>
   </div>
 </div>

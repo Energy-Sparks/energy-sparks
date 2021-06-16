@@ -1,22 +1,27 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Welcome to Energy Sparks</h1>
+    <h1>Set up your school on Energy Sparks</h1>
 
     <p>
-      Thank you for enrolling <%= @school_onboarding.school_name %> onto the Energy Sparks programme (www.energysparks.uk).
+      Thank you for enrolling <strong><%= @school_onboarding.school_name %></strong> with Energy Sparks!
+    </p>
+    <p>
       We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.
     </p>
 
-    <h5>Before we can activate your school we need to:</h5>
+    <h5>To get started, we need to complete the following steps:</h5>
 
     <ol>
-      <li>Set up your Energy Sparks school administrator account and pupil account</li>
-      <li>Gather some more information about your school</li>
+      <li>Create your school administrator account</li>
+      <li>Gather some information about your school</li>
       <li>Get your permission to collect, store, analyse and publish your school's energy data</li>
+      <li>Create a pupil account</li>
     </ol>
 
-    <p>Once you've completed this process we will review your school and activate your account on Energy Sparks.</p>
+    <p>
+      The setup process should take less than 10 minutes.
+    </p>
 
-    <%= link_to 'Next', new_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+    <%= link_to 'Start', new_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
   </div>
 </div>

@@ -11,12 +11,13 @@ module Onboarding
     end
 
     def create
-      @user = User.new_school_onboarding(user_params)
+      @user = User.new_school_onboarding(user_params.except(:subscribe_to_newsletter))
       if @user.save
         @school_onboarding.update!(created_user: @user)
         @school_onboarding.events.create!(event: :onboarding_user_created)
         @school_onboarding.events.create!(event: :privacy_policy_agreed)
         sign_in(@user, scope: :user)
+        @school_onboarding.update!(subscribe_to_newsletter: user_params[:subscribe_to_newsletter] == 'on')
         redirect_to new_onboarding_school_details_path(@school_onboarding)
       else
         render :new
@@ -27,10 +28,11 @@ module Onboarding
     end
 
     def update
-      if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?})
+      if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?}.except(:subscribe_to_newsletter))
         @school_onboarding.events.create!(event: :onboarding_user_updated)
+        @school_onboarding.update!(subscribe_to_newsletter: user_params[:subscribe_to_newsletter] == 'on')
         bypass_sign_in(current_user)
-        redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'your-account')
+        redirect_to new_onboarding_completion_path(@school_onboarding)
       else
         render :edit
       end
@@ -45,7 +47,7 @@ module Onboarding
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id, :subscribe_to_newsletter)
     end
   end
 end
