@@ -1,61 +1,21 @@
-<p><%= school.name %> was created on <%= nice_dates(school.created_at) %></p>
+<% if school.persisted? && current_user.admin? %>
+  <p><%= school.name %> was created on <%= nice_dates(school.created_at) %></p>
+<% end %>
 
 <%= f.input :name, label: 'School name'%>
 <%= f.input :urn, label: 'Unique Reference Number', hint: 'This is your URN in England, SEED in Scotland' %>
 
-<%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, label: 'Activation date', hint: 'This is the date when the school becomes active on Energy Sparks' %>
-
-<h2>School Type</h2>
-<div class="form-group">
-  <% School.school_types.keys.each do |school_type| %>
-    <div class="form-check form-check-inline">
-      <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
-      <%= f.label "school_type_#{school_type.to_sym}", t("school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
-    </div>
-  <% end %>
-</div>
-
-<hr/>
-
-<p>Currently Energy Sparks supports Key Stages for filtering relevant activities. If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6.</p>
-<p>Please select which Key Stages this school teaches.</p>
-
-<%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
-  <div class="custom-control custom-checkbox custom-control-inline">
-    <%= b.check_box(class: "custom-control-input") %>
-    <%= b.label(class: "custom-control-label") do %>
-      <%= b.object.name %>
-    <% end %>
-  </div>
+<% if current_user.admin? %>
+  <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, label: 'Activation date', hint: 'This is the date when the school becomes active on Energy Sparks' %>
 <% end %>
 
-<hr/>
-
-<div class="form-row">
-  <%= f.input :floor_area, label: 'Floor area in square metres', hint: "If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT", wrapper_html: {class: 'col-md-6'}%>
-  <%= f.input :number_of_pupils, wrapper_html: {class: 'col-md-6'}%>
-</div>
-
-<div class="form-row">
-  <%= f.input :percentage_free_school_meals, label: 'Percentage of pupils eligible for free school meals at any time during the past 6 years', hint: "If you don't know, plese leave this field blank." %>
-</div>
-
-
-<%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
-<%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
-<%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
-<%= f.input :serves_dinners, label: 'Our school serves school dinners on site', input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
-<%= f.input :cooks_dinners_onsite, label: 'Dinners are cooked on site', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
-<%= f.input :cooks_dinners_for_other_schools, label: 'The kitchen cooks dinners for other schools', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
-<%= f.input :cooks_dinners_for_other_schools_count, label: 'How many schools does your school cook dinners for?', wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>
-
-<h2>Address</h2>
+<h2 id="address">Address</h2>
 <%= f.input :address %>
 <%= f.input :postcode %>
 <%= f.input :website %>
 
 <% if can?(:manage, :geocoding) %>
-  <h2>Geographic location</h2>
+  <h2>Location</h2>
   <p>Leave these blank to have them set from the postcode</p>
   <%= f.input :latitude %>
   <%= f.input :longitude %>
@@ -67,3 +27,51 @@
   <% end %>
 <% end %>
 
+<h2 id="basic-details">Basic details</h2>
+<div class="form-group">
+  <p>Stage of education</p>
+
+  <% School.school_types.keys.each do |school_type| %>
+    <div class="form-check form-check-inline">
+      <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
+      <%= f.label "school_type_#{school_type.to_sym}", t("school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="form-group pt-2">
+  <p>Key stages</p>
+
+  <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <%= b.check_box(class: "custom-control-input") %>
+      <%= b.label(class: "custom-control-label") do %>
+        <%= b.object.name %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <small class="form-text text-muted">If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6.</small>
+</div>
+
+<div class="form-group pt-2">
+  <%= f.input :number_of_pupils %>
+</div>
+
+<div class="form-group">
+  <%= f.input :percentage_free_school_meals, label: 'Percentage of pupils eligible for free school meals at any time during the past 6 years', hint: "If you don't know, please leave this field blank." %>
+</div>
+
+<h2 id="school-features">School features</h2>
+
+<div class="form-group">
+  <%= f.input :floor_area, label: 'Floor area in square metres', hint: "If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT" %>
+</div>
+
+<%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
+<%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
+<%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
+<%= f.input :serves_dinners, label: 'Our school serves school dinners on site', input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
+<%= f.input :cooks_dinners_onsite, label: 'Dinners are cooked on site', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
+<%= f.input :cooks_dinners_for_other_schools, label: 'The kitchen cooks dinners for other schools', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
+<%= f.input :cooks_dinners_for_other_schools_count, label: 'How many schools does your school cook dinners for?', wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>

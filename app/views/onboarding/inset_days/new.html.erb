@@ -5,7 +5,7 @@
     <%= simple_form_for(@calendar_event, url: onboarding_inset_days_path(@school_onboarding)) do |f| %>
       <%= render 'form', form: f, calendar_event_types: @calendar_event_types %>
       <%= f.button :submit, 'Add inset day' %>
-      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'inset-days'), class: 'btn' %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'inset-days', show: 'inset-days'), class: 'btn' %>
     <% end %>
   </div>
 </div>

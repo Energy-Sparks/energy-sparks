@@ -172,7 +172,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       #Add specific tests for each stage, rather than lots of assertions here
       it 'it walks through the expected sequence' do
         #Welcome
-        click_on 'Next'
+        click_on 'Start'
 
         #Account
         fill_in 'Your name', with: 'A Teacher'
@@ -187,13 +187,13 @@ RSpec.describe "onboarding", :schools, type: :system do
         fill_in 'Address', with: '1 Station Road'
         fill_in 'Postcode', with: 'A1 2BC'
         fill_in 'Website', with: 'http://oldfield.sch.uk'
-        click_on 'Update school details'
+        click_on 'Save school details'
 
         #Consent
         fill_in 'Name', with: 'Boss user'
         fill_in 'Job title', with: 'Boss'
         fill_in 'School name', with: 'Boss school'
-        click_on 'Submit'
+        click_on 'Grant consent'
 
         #Pupils
         fill_in 'Name', with: 'The energy savers'
@@ -201,16 +201,16 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Create pupil account'
 
         #Completion
-        click_on "I've finished"
+        click_on "Complete setup", match: :first
         expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
       end
 
       it 'starts at the welcome page' do
-        expect(page).to have_content('Welcome to Energy Sparks')
+        expect(page).to have_content('Set up your school on Energy Sparks')
       end
 
       it 'allows a new account to be created' do
-        click_on 'Next'
+        click_on 'Start'
         expect(page).to have_field('Email', with: onboarding.contact_email)
         expect(page).to have_content('I confirm agreement with the Energy Sparks')
         fill_in 'Your name', with: 'A Teacher'
@@ -241,7 +241,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
 
         it 'prompts for school details' do
-          expect(page).to have_content("Your school details")
+          expect(page).to have_content("Tell us about #{school_name}")
           fill_in 'Unique Reference Number', with: '4444244'
           fill_in 'Number of pupils', with: 300
           fill_in 'Floor area in square metres', with: 400
@@ -261,7 +261,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           choose 'Primary'
           check 'KS1'
 
-          click_on 'Update school details'
+          click_on 'Save school details'
 
           onboarding.reload
           expect(onboarding).to have_event(:school_details_created)
@@ -295,7 +295,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           fill_in 'Job title', with: 'Boss'
           fill_in 'School name', with: 'Boss school'
 
-          click_on 'Submit'
+          click_on 'Grant consent'
 
           onboarding.reload
           expect(onboarding).to have_event(:permission_given)
@@ -357,14 +357,14 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
 
         it 'the process can be completed' do
-          expect(page).to have_content("You're almost there!")
-          click_on "I've finished"
+          expect(page).to have_content("Final step: review your answers")
+          click_on "Complete setup", match: :first
           expect(onboarding).to have_event(:onboarding_complete)
           expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
         end
 
         it 'sends an email after completion' do
-          click_on "I've finished"
+          click_on "Complete setup", match: :first
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
           expect(email.to).to include(admin.email)
@@ -397,20 +397,20 @@ RSpec.describe "onboarding", :schools, type: :system do
 
       it 'meters can be added' do
         visit new_onboarding_completion_path(onboarding)
-        expect(page).to have_content('Meters: 0')
+        expect(page).to have_content('Configure energy meters')
         click_on 'Add a meter'
         fill_in 'Meter Point Number', with: '123543'
         fill_in 'Meter Name', with: 'Gas'
         choose 'Gas'
         click_on 'Create Meter'
-        expect(page).to have_content('Meters: 1')
+        expect(page).to have_content('123543')
       end
 
       it 'opening times can be added' do
         visit new_onboarding_completion_path(onboarding)
-
+        expect(page).to have_content('Set your school opening times')
         expect(page).to have_content('Monday 08:50 - 15:20')
-        click_on 'Set school times'
+        click_on 'Set opening times'
         fill_in 'monday-opening_time', with: '900'
         click_on 'Update school times'
         expect(page).to have_content('Monday 09:00 - 15:20')
@@ -422,7 +422,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         visit new_onboarding_completion_path(onboarding)
 
         # Inset days
-        expect(page).to have_content('Inset days: 0')
+        expect(page).to have_content('Configure inset days')
         click_on 'Add an inset day'
         fill_in 'Description', with: 'Teacher training'
         select 'Teacher training', from: 'Type'
@@ -431,7 +431,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         expect(page).to have_field('Date', with: '2019-01-09')
 
         expect { click_on 'Add inset day' }.to change { CalendarEvent.count }.by(1)
-        expect(page).to have_content('Inset days: 1')
+        expect(page).to have_content('2019-01-09')
       end
 
       it 'account details can be edited' do
