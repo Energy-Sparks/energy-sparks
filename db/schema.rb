@@ -1029,6 +1029,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_143142) do
     t.bigint "template_calendar_id"
     t.bigint "scoreboard_id"
     t.bigint "weather_station_id"
+    t.boolean "subscribe_to_newsletter", default: true
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"

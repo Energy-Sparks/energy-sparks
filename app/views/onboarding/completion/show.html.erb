@@ -1,0 +1,42 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+
+    <h1>Setup completed</h1>
+
+    <p>
+      <%= @school_onboarding.school.name %> has been successfully set up on Energy Sparks. Thank you.
+    </p>
+
+    <h3>What happens next?</h3>
+
+    <p>
+      Before your school goes live on Energy Sparks we will review the information you've provided, and
+      ensure we have access to your energy data.
+    </p>
+
+    <p>
+      This normally takes about 24 hours. We will email you when we've completed our final checks.
+    </p>
+
+    <h3>Eager to get started?</h3>
+
+    <p>
+      In the meantime you can:
+    </p>
+
+    <ul>
+      <li>Review our <a href="https://energysparks.uk/resources/12/download">user guide</a> or
+      watch our <%= link_to 'training_videos', user_guide_videos_path %></li>
+      <li>Sign up to one of our <%= link_to 'live webinar training sessions', training_path %></li>
+      <li>
+        Or look at how
+        <% if @school_onboarding.school.school_group.present? %>
+          <%= link_to 'schools in your area', school_group_path(@school_onboarding.school.school_group) %> are using Energy Sparks
+        <% else %>
+        <%= link_to 'other schools', school_group_path(@school_onboarding.school.school_group) %> are using Energy Sparks
+        <% end %>
+      </li>
+    </ul>
+
+  </div>
+</div>

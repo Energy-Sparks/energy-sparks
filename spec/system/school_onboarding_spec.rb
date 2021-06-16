@@ -60,6 +60,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on "Send setup email"
 
       onboarding = SchoolOnboarding.first
+      expect(onboarding.subscribe_to_newsletter).to eql true
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')
@@ -202,7 +203,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         #Completion
         click_on "Complete setup", match: :first
-        expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
+        expect(page).to have_content("Setup completed")
       end
 
       it 'starts at the welcome page' do
@@ -224,10 +225,9 @@ RSpec.describe "onboarding", :schools, type: :system do
         expect(onboarding).to have_event(:onboarding_user_created)
         expect(onboarding).to have_event(:privacy_policy_agreed)
         expect(onboarding.created_user.name).to eq('A Teacher')
+        expect(onboarding.subscribe_to_newsletter).to eql true
         expect(onboarding.created_user.role).to eq('school_onboarding')
       end
-
-      it 'stores newsletter preference'
 
       it 'allows an existing user to sign in'
 
@@ -271,8 +271,6 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
           expect(onboarding.school.percentage_free_school_meals).to eq(16)
         end
-
-        it 'signs user up to newsletter after school is created'
 
       end
 
@@ -323,8 +321,6 @@ RSpec.describe "onboarding", :schools, type: :system do
           visit new_onboarding_pupil_account_path(onboarding)
         end
 
-        it 'should do something with consent here???'
-
         it 'prompts for a pupil login' do
           fill_in 'Name', with: 'The energy savers'
           fill_in 'Pupil password', with: 'theenergysavers'
@@ -349,9 +345,13 @@ RSpec.describe "onboarding", :schools, type: :system do
         let(:user) { create(:onboarding_user) }
         let(:school) { build(:school, visible: false) }
 
+        let(:mailchimp_subscriber) { spy(:mailchimp_subscriber) }
+
         before(:each) do
           onboarding.update!(created_user: user)
           SchoolCreator.new(school).onboard_school!(onboarding)
+          allow(MailchimpSubscriber).to receive(:new).and_return(mailchimp_subscriber)
+
           sign_in(user)
           visit new_onboarding_completion_path(onboarding)
         end
@@ -360,7 +360,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(page).to have_content("Final step: review your answers")
           click_on "Complete setup", match: :first
           expect(onboarding).to have_event(:onboarding_complete)
-          expect(page).to have_content("We'll have a look at school details you've sent us and let you know when your school goes live.")
+          expect(page).to have_content("Setup completed")
         end
 
         it 'sends an email after completion' do
@@ -369,6 +369,27 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
           expect(email.to).to include(admin.email)
         end
+
+        context 'newsletter signup' do
+          before(:each) do
+            onboarding.update!(subscribe_to_newsletter: true)
+          end
+          it 'contacts mailchimp' do
+            click_on "Complete setup", match: :first
+            expect(mailchimp_subscriber).to have_received(:subscribe).with(school, user)
+          end
+        end
+
+        context 'declined newsletter signup' do
+          before(:each) do
+            onboarding.update!(subscribe_to_newsletter: false)
+          end
+          it 'does not contact mailchimp' do
+            click_on "Complete setup", match: :first
+            expect(mailchimp_subscriber).not_to have_received(:subscribe).with(school, user)
+          end
+        end
+
       end
     end
 
@@ -381,8 +402,6 @@ RSpec.describe "onboarding", :schools, type: :system do
         SchoolCreator.new(school).onboard_school!(onboarding)
         sign_in(user)
       end
-
-      it 'redirects me if I revisit the start'
 
       it 'pupil details can be edited' do
         pupil = create(:pupil, school: school)
@@ -442,6 +461,15 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Update my account'
         user.reload
         expect(user.name).to eq('Better name')
+      end
+
+      it 'stores newsletter preference when editing account' do
+        visit new_onboarding_completion_path(onboarding)
+        click_on 'Edit your account'
+        uncheck 'Subscribe to newsletters'
+        click_on 'Update my account'
+        onboarding.reload
+        expect(onboarding.subscribe_to_newsletter).to eql false
       end
 
       it 'school details can be edited' do

@@ -8,6 +8,13 @@
       <%= f.input :password %>
       <%= f.input :password_confirmation %>
       <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+
+      <div class="custom-control custom-checkbox pb-3">
+        <input type="checkbox" class="custom-control-input" id="user_auto_subscribe_newsletter" name="user[subscribe_to_newsletter]"
+        <%= @school_onboarding.subscribe_to_newsletter ? 'checked' : 'unchecked' %> >
+        <label class="custom-control-label" for="user_auto_subscribe_newsletter">Subscribe to newsletters</label>
+      </div>
+
       <%= f.button :submit, 'Update my account' %>
       <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'), class: 'btn' %>
     <% end %>

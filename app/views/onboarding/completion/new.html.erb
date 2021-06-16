@@ -30,8 +30,16 @@
                   <td><%=current_user.email%></td>
                 </tr>
                 <tr>
+                  <th>Role:</th>
+                  <td><%=current_user.staff_role.title%></td>
+                </tr>
+                <tr>
                   <th>Password:</th>
                   <td>***********</td>
+                </tr>
+                <tr>
+                  <th>Subscribe to newsletter?</th>
+                  <td><%= @school_onboarding.subscribe_to_newsletter ? 'Yes' : 'No' %></td>
                 </tr>
               </tbody>
             </table>
