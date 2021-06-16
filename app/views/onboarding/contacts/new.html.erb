@@ -1,11 +1,12 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>New alert contact</h1>
+    <h1>Add a new alert contact</h1>
+
     <%= simple_form_for(@contact, url: onboarding_contacts_path(@school_onboarding)) do |f| %>
       <%= render 'schools/contacts/form', f: f, submit: 'Save' %>
     <% end %>
     <div class="other-actions">
-      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'alert-contacts'), class: 'btn btn-secondary' %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'alert-contacts', show: 'alert-contacts'), class: 'btn btn-secondary' %>
     </div>
   </div>
 </div>

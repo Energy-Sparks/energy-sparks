@@ -1,8 +1,8 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Your account details</h1>
+    <h1>Step 1: Create your school administrator account</h1>
 
-    <p><%= @school_onboarding.school_name %> will have an administrator login to manage your school on Energy Sparks.</p>
+    <p>Your administrator login will allow you to manage your school on Energy Sparks.</p>
 
     <p>You can use an existing administrator account if you have one:</p>
 
@@ -10,7 +10,7 @@
       <%= link_to "Use an existing account", new_onboarding_sessions_path(@school_onboarding), class: :btn %>
     </p>
 
-    <p>Or, to set up a new account, enter the name, email and password you want to use below:</p>
+    <p>Use the form below to create a new account:</p>
 
     <%= simple_form_for(@user, url: onboarding_account_path(@school_onboarding)) do |f| %>
       <%= f.input :name, label: 'Your name'%>

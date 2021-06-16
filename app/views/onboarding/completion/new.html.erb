@@ -1,241 +1,392 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>You're almost there!</h1>
+    <h1>Final step: review your answers</h1>
 
-    <p>You've completed all the required sections.</p>
+    <p>
+    Review and update your answers before completing setup.
+    </p>
 
-    <div class="card mb-3" id="school-details">
-      <div class="card-header">
-        <h4>Your school details</h4>
-      </div>
-      <div class="card-body">
-        <dl>
-          <dt>School name:</dt>
-          <dd><%=@school.name%></dd>
-          <dt>URN:</dt>
-          <dd><%=@school.urn%></dd>
-          <dt>School type:</dt>
-          <dd><%=@school.school_type.try(:humanize) %></dd>
-          <dt>Key stages:</dt>
-          <dd><%=@school.key_stages.map(&:name).to_sentence %></dd>
-          <dt>Number of pupils:</dt>
-          <dd><%=@school.number_of_pupils %></dd>
-          <dt>Floor area:</dt>
-          <dd><%=@school.floor_area %></dd>
-          <dt>School address:</dt>
-          <dd><%=@school.address %></dd>
-          <dt>Postcode:</dt>
-          <dd><%=@school.postcode %></dd>
-          <dt>Website:</dt>
-          <dd><%=@school.website %></dd>
-          <dt>Has solar panels?</dt>
-          <dd><%= @school.indicated_has_solar_panels ? 'Yes' : 'No' %></dd>
-          <dt>Has night storage heaters?</dt>
-          <dd><%= @school.indicated_has_storage_heaters ? 'Yes' : 'No' %></dd>
-          <dt>Has swimming pool?</dt>
-          <dd><%= @school.has_swimming_pool ? 'Yes' : 'No' %></dd>
-          <dt>Serves school dinners?</dt>
-          <dd><%= @school.serves_dinners ? 'Yes' : 'No' %></dd>
-          <% if @school.serves_dinners %>
-            <dt>Cooks dinners on site</dt>
-            <dd><%= @school.cooks_dinners_onsite ? 'Yes' : 'No' %></dd>
-            <% if @school.cooks_dinners_onsite %>
-              <dt>Cook dinners for other schools:</dt>
-              <dd><%= @school.cooks_dinners_for_other_schools ? 'Yes' : 'No' %></dd>
-              <% if @school.cooks_dinners_for_other_schools %>
-                <dt>Number of schools:</dt>
-                <dd><%= @school.cooks_dinners_for_other_schools_count %></dd>
-              <% end %>
-            <% end %>
-          <% end %>
-        </dl>
-        <%= link_to 'Edit school details', edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
-      </div>
-    </div>
-
-    <div class="card mb-3" id="your-account">
-      <div class="card-header">
-        <h4>Your account</h4>
-      </div>
-      <div class="card-body">
-        <dl>
-          <dt>Name:</dt>
-          <dd><%=current_user.name%></dd>
-          <dt>Email:</dt>
-          <dd><%=current_user.email%></dd>
-          <dt>Password:</dt>
-          <dd>***********</dd>
-        </dl>
-        <%= link_to 'Edit your account', edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
-      </div>
-    </div>
-
-    <% if @pupil %>
-      <div class="card mb-3" id="pupil-password">
+    <div id="accordion">
+      <div class="card mb-3" id="your-account">
         <div class="card-header">
-          <h4>Pupil account</h4>
+          <h4>
+            1.
+              Your school administrator account
+            <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-account"
+              aria-expanded="<%= params[:show]=='account' ? 'true' : 'false' %>" aria-controls="collapse-account">View</button></span>
+          </h4>
+
         </div>
-        <div class="card-body">
-          <dl>
-            <dt>Name:</dt>
-            <dd><%=@pupil.name%></dd>
-            <dt>Password:</dt>
-            <dd><%= @pupil.pupil_password %></dd>
-          </dl>
-          <%= link_to 'Edit pupil account', edit_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-primary' %>
+        <div id="collapse-account" class="collapse <%= 'show' if params[:show]=='account' %>">
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th>Name:</th>
+                  <td><%=current_user.name%></td>
+                </tr>
+                <tr>
+                  <th>Email:</th>
+                  <td><%=current_user.email%></td>
+                </tr>
+                <tr>
+                  <th>Password:</th>
+                  <td>***********</td>
+                </tr>
+              </tbody>
+            </table>
+            <%= link_to 'Edit your account', edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+          </div>
         </div>
       </div>
-    <% end %>
 
-    <h2>Other things you might want to look at:</h2>
+      <div class="card mb-3" id="school-details">
+        <div class="card-header">
+          <h4>2.
+              Your school details
+            <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-details"
+              aria-expanded="<%= params[:show]=='school-details' ? 'true' : 'false' %>" aria-controls="collapse-school-details">View</button></span>
+          </h4>
+        </div>
+        <div id="collapse-school-details" class="collapse <%= 'show' if params[:show]=='school-details' %>">
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th>School name:</th>
+                  <td><%=@school.name%></td>
+                </tr>
+                <tr>
+                  <th>URN:</th>
+                  <td><%=@school.urn%></td>
+                </tr>
+                <tr>
+                  <th>School address:</th>
+                  <td><%=@school.address %></td>
+                </tr>
+                <tr>
+                  <th>Postcode:</th>
+                  <td><%=@school.postcode %></td>
+                </tr>
+                <tr>
+                  <th>Website:</th>
+                  <td><%=@school.website %></td>
+                </tr>
+                <tr>
+                  <th>Stage of education:</th>
+                  <td>
+                    <% if @school.school_type.present? %>
+                      <%= @school.school_type.try(:humanize) %>
+                    <% else %>
+                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Key stages:</th>
+                  <td>
+                    <% if @school.key_stages.present? %>
+                      <%= @school.key_stages.map(&:name).to_sentence %>
+                    <% else %>
+                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Number of pupils:</th>
+                  <td>
+                    <% if @school.number_of_pupils.present? %>
+                      <%=@school.number_of_pupils %>
+                    <% else %>
+                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Percentage of free school meals:</th>
+                  <td>
+                    <% if @school.percentage_free_school_meals.present? %>
+                      <%=@school.percentage_free_school_meals %>
+                    <% else %>
+                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Floor area:</th>
+                  <td>
+                    <% if @school.floor_area.present? %>
+                      <%=@school.floor_area %>
+                    <% else %>
+                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'school-features') %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>School has solar PV panels?</th>
+                  <td><%= @school.indicated_has_solar_panels ? 'Yes' : 'No' %></td>
+                </tr>
+                <tr>
+                  <th>School has night storage heaters?</th>
+                  <td><%= @school.indicated_has_storage_heaters ? 'Yes' : 'No' %></td>
+                </tr>
+                <tr>
+                  <th>School has its own swimming pool?</th>
+                  <td><%= @school.has_swimming_pool ? 'Yes' : 'No' %></td>
+                </tr>
+                <tr>
+                  <th>School serves school dinners on site?</th>
+                  <td><%= @school.serves_dinners ? 'Yes' : 'No' %></td>
+                </tr>
+                <% if @school.serves_dinners %>
+                  <tr>
+                    <th>Dinners are cooked on site?</th>
+                    <td><%= @school.cooks_dinners_onsite ? 'Yes' : 'No' %></td>
+                  </tr>
+                  <% if @school.cooks_dinners_onsite %>
+                    <tr>
+                      <th>Kitchen cooks dinners for other schools?</th>
+                      <td><%= @school.cooks_dinners_for_other_schools ? 'Yes' : 'No' %></td>
+                    </tr>
+                    <% if @school.cooks_dinners_for_other_schools %>
+                      <tr>
+                        <th>Number of schools:</th>
+                        <td><%= @school.cooks_dinners_for_other_schools_count %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <%= link_to 'Edit school details', edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-3" id="consent">
+        <div class="card-header">
+          <h4>3.
+            Consent
+            <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-consent"
+              aria-expanded="false" aria-controls="collapse-consent">View</button></span>
+          </h4>
+        </div>
+        <div id="collapse-consent" class="collapse">
+          <div class="card-body">
+            <% if @school.consent_up_to_date? %>
+            You have given us consent to collect, store, analyse and publish your school's energy data
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <% if @pupil %>
+        <div class="card mb-3" id="pupil-password">
+          <div class="card-header">
+            <h4>4.
+              Pupil account
+            <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-pupil-password"
+              aria-expanded="<%= params[:show]=='pupil-password' ? 'true' : 'false' %>" aria-controls="collapse-pupil-password">View</button></span>
+            </h4>
+          </div>
+          <div id="collapse-pupil-password" class="collapse <%= 'show' if params[:show]=='pupil-password' %>">
+            <div class="card-body">
+              <table class="table table-borderless">
+                <tbody>
+                  <tr>
+                    <th>Pupil account name:</th>
+                    <td><%=@pupil.name%></td>
+                  </tr>
+                  <tr>
+                    <th>Pupil password:</th>
+                    <td><%= @pupil.pupil_password %></td>
+                  </tr>
+                </tbody>
+              </table>
+              <%= link_to 'Edit pupil account', edit_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-primary' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%= button_to "Complete setup", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
+
+    <hr>
+
+    <h2>Optional steps</h2>
+
     <p>
     It's not necessary for you to fill in the following sections to complete the sign-up process,
     but the more information you provide the quicker your school can start using Energy Sparks
-    and our our energy calculations will be more accurate.
+    and our energy calculations will become more accurate.
     <p>
 
-    <div class="card mb-3" id="meters">
-      <div class="card-header">
-        <h4>Meters: <%=@school.meters.count%></h4>
-      </div>
-      <div class="card-body">
-        <% if @school.meters.empty? %>
-          <p>If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details from your Local Authority, Multi-academy Trust or school group.</p>
-        <% else %>
-          <table class="table mb-3">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>MPAN/MPRN</th>
-                <th>Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <% @school.meters.each do |meter|%>
-              <tr>
-                <td><%= meter.meter_type.humanize %></td>
-                <td><%= meter.mpan_mprn %></td>
-                <td><%= meter.name %></td>
-                <td>
-                  <%= link_to 'Edit', edit_onboarding_meter_path(@school_onboarding, meter), class: 'btn btn-sm btn-warning' %>
-                </td>
-              </tr>
+    <div id="accordion-optional-steps">
+      <div class="card mb-3" id="meters">
+        <div class="card-header">
+          <h4>
+            Configure energy meters
+            <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-meters"
+              aria-expanded="<%= params[:show]=='meters' ? 'true' : 'false' %>" aria-controls="collapse-meters">View</button></span>
+          </h4>
+        </div>
+        <div id="collapse-meters" class="collapse <%= 'show' if params[:show]=='meters' %>">
+          <div class="card-body">
+            <% if @school.meters.empty? %>
+              <p>If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details from your Local Authority, Multi-academy Trust or school group.</p>
+            <% else %>
+              <table class="table table-borderless mb-3">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>MPAN/MPRN</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <% @school.meters.each do |meter|%>
+                  <tr>
+                    <td><%= meter.meter_type.humanize %></td>
+                    <td><%= meter.mpan_mprn %></td>
+                    <td><%= meter.name %></td>
+                    <td>
+                      <%= link_to 'Edit', edit_onboarding_meter_path(@school_onboarding, meter), class: 'btn btn-sm btn-warning' %>
+                    </td>
+                  </tr>
+                <% end %>
+                <tbody>
+                </tbody>
+              </table>
             <% end %>
-            <tbody>
-            </tbody>
-          </table>
-        <% end %>
-        <%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
+            <%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
+          </div>
+        </div>
       </div>
+
     </div>
 
     <div class="card mb-3" id="opening-times">
       <div class="card-header">
-        <h4>School opening times</h4>
+        <h4>
+          Set your school opening times
+          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-opening-times"
+            aria-expanded="<%= params[:show]=='opening-times' ? 'true' : 'false' %>" aria-controls="collapse-opening-times">View</button></span>
+        </h4>
       </div>
-      <div class="card-body">
-        <p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
-        <table class="table mb-3">
-          <thead>
-            <tr>
-              <th>Day</th>
-              <th>Opening times</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @school_times.each do |school_time| %>
+      <div id="collapse-opening-times" class="collapse <%= 'show' if params[:show]=='opening-times' %>">
+        <div class="card-body">
+          <p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
+          <table class="table table-borderless mb-3">
+            <thead>
               <tr>
-                <td><%= school_time.day.humanize %></td>
-                <td>
-                  <%= format_school_time(school_time.opening_time) %> - <%= format_school_time(school_time.closing_time) %>
-                </td>
+                <th>Day</th>
+                <th>Opening times</th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-
-        <%= link_to 'Set school times', edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
+            </thead>
+            <tbody>
+              <% @school_times.each do |school_time| %>
+                <tr>
+                  <td><%= school_time.day.humanize %></td>
+                  <td>
+                    <%= format_school_time(school_time.opening_time) %> - <%= format_school_time(school_time.closing_time) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to 'Set opening times', edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
+        </div>
       </div>
     </div>
 
     <% if @inset_days %>
       <div class="card mb-3" id="inset-days">
         <div class="card-header">
-          <h4>Inset days: <%= @inset_days.count %></h4>
+          <h4>Configure inset days
+          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-inset-days"
+            aria-expanded="<%= params[:show]=='inset-days' ? 'true' : 'false' %>" aria-controls="collapse-inset-days">View</button></span>
+          </h4>
         </div>
-        <div class="card-body">
-          <p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p>
-          <p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p>
-          <p>Once your account is activated, you will be able to add any other dates where your school terms differ from your Local Authority recommended dates.</p>
-          <table class="table mb-3">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @inset_days.each do |inset_day| %>
+        <div id="collapse-inset-days" class="collapse <%= 'show' if params[:show]=='inset-days' %>">
+          <div class="card-body">
+            <p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p>
+            <p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p>
+            <p>Once your account is activated, you will be able to add any other dates where your school terms differ from your Local Authority recommended dates.</p>
+            <table class="table table-borderless mb-3">
+              <thead>
                 <tr>
-                  <td><%= inset_day.start_date %></td>
-                  <td><%= inset_day.calendar_event_type.title %></td>
-                  <td><%= inset_day.title %></td>
-                  <td>
-                    <div class="btn-group">
-                      <%= link_to 'Edit', edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>
-                      <%= link_to 'Delete', onboarding_inset_day_path(@school_onboarding, inset_day), method: :delete, class: 'btn btn-sm btn-danger' %>
-                    </div>
-                  </td>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Actions</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
+              </thead>
+              <tbody>
+                <% @inset_days.each do |inset_day| %>
+                  <tr>
+                    <td><%= inset_day.start_date %></td>
+                    <td><%= inset_day.calendar_event_type.title %></td>
+                    <td><%= inset_day.title %></td>
+                    <td>
+                      <div class="btn-group">
+                        <%= link_to 'Edit', edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>
+                        <%= link_to 'Delete', onboarding_inset_day_path(@school_onboarding, inset_day), method: :delete, class: 'btn btn-sm btn-danger' %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
+          </div>
         </div>
       </div>
     <% end %>
 
     <div class="card mb-3" id="alert-contacts">
       <div class="card-header">
-        <h4>Sign-up for Energy Sparks alerts</h4>
+        <h4>
+          Sign-up for Energy Sparks alerts
+          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-alerts"
+            aria-expanded="<%= params[:show]=='alert-contacts' ? 'true' : 'false' %>" aria-controls="collapse-alerts">View</button></span>
+        </h4>
       </div>
-      <div class="card-body">
-        <%= render 'shared/contact_explainer' %>
-        <p>The alerts can be sent by email or text message to a mobile phone.</p>
-        <table class="table mb-3">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Mobile phone number</th>
-              <th>Email Address</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <% @school.contacts.each do |contact|%>
-            <tr>
-              <td><%= contact.name %></td>
-              <td><%= contact.description %></td>
-              <td><%= contact.mobile_phone_number %></td>
-              <td><%= contact.email_address %></td>
-              <td>
-                <%= link_to 'Edit', edit_onboarding_contact_path(@school_onboarding, contact), class: 'btn btn-sm btn-warning' %>
-                <%= link_to 'Delete', onboarding_contact_path(@school_onboarding, contact), method: :delete, class: 'btn btn-sm btn-danger' %>
-              </td>
-            </tr>
-          <% end %>
-          <tbody>
-          </tbody>
-        </table>
-        <%= link_to 'Add an alert contact', new_onboarding_contact_path(@school_onboarding), class: 'btn btn-primary' %>
+      <div id="collapse-alerts" class="collapse  <%= 'show' if params[:show]=='alert-contacts' %>">
+        <div class="card-body">
+          <%= render 'shared/contact_explainer' %>
+          <p>The alerts can be sent by email or text message to a mobile phone.</p>
+          <table class="table table-borderless mb-3">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Mobile phone number</th>
+                <th>Email Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <% @school.contacts.each do |contact|%>
+              <tr>
+                <td><%= contact.name %></td>
+                <td><%= contact.description %></td>
+                <td><%= contact.mobile_phone_number %></td>
+                <td><%= contact.email_address %></td>
+                <td>
+                  <%= link_to 'Edit', edit_onboarding_contact_path(@school_onboarding, contact), class: 'btn btn-sm btn-warning' %>
+                  <%= link_to 'Delete', onboarding_contact_path(@school_onboarding, contact), method: :delete, class: 'btn btn-sm btn-danger' %>
+                </td>
+              </tr>
+            <% end %>
+            <tbody>
+            </tbody>
+          </table>
+          <%= link_to 'Add an alert contact', new_onboarding_contact_path(@school_onboarding), class: 'btn btn-primary' %>
+        </div>
       </div>
     </div>
 
-
-    <p>If you're ready to finish....</p>
-
-    <%= button_to "I've finished!", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
+    <%= button_to "Complete setup", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
   </div>
 </div>
