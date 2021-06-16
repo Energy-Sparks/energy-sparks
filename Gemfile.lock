@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 07621093e2973bf8cc47934646be9e9b10f4d1ee
-  branch: tariff-descriptions
+  revision: 9105ad1dd9598c3fa38fb559e1f8238e3ab358a2
+  tag: 1.19.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
