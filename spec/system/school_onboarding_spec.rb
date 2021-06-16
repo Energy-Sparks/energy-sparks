@@ -306,8 +306,6 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(consent_grant.school).to eq(onboarding.school)
         end
 
-        it 'sends a confirmation email'
-
       end
 
       context 'having given consent' do
