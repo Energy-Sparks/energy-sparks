@@ -3,6 +3,8 @@ RSpec.shared_context  "low carbon hub data", shared_context: :metadata do
   let!(:school)               { create(:school) }
   let(:low_carbon_hub_api)    { double("low_carbon_hub_api") }
   let(:rbee_meter_id)         { "216057958" }
+  let(:username)              { "rtone-user" }
+  let(:password)              { "rtone-pass" }
   let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :low_carbon_hub_api) }
   let(:info_text)             { 'Some info' }
   let(:information)           { { info: info_text } }
