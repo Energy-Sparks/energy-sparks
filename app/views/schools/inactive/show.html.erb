@@ -1,5 +1,13 @@
 <div class="jumbotron">
   <h1 class="display-4"><%= @school.name %></h1>
   <p class="lead">Your school is currently inactive while we are setting up your energy data. You will get an email notification when your school's account is activated on Energy Sparks.</p>
-  <p><%= link_to 'Take a look at other participating, active schools', schools_path %></p>
+
+  <p>
+    Take a look at how
+    <% if @school.school_group.present? %>
+      <%= link_to 'schools in your area', school_group_path(@school.school_group) %> are using Energy Sparks
+    <% else %>
+      <%= link_to 'other schools', schools_path %> are using Energy Sparks
+    <% end %>
+  </p>
 </div>
