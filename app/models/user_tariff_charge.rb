@@ -36,7 +36,7 @@ class UserTariffCharge < ApplicationRecord
     kva: 'kVA',
     day: 'day',
     month: 'month',
-    quarterly: 'quarterly',
+    quarter: 'quarter',
   }.freeze
 
   def self.charge_types
