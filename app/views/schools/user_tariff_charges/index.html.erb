@@ -6,6 +6,6 @@
   <%= link_to "Add standing charge", new_school_user_tariff_user_tariff_charge_path(@school, @user_tariff), class: 'btn' %>
 </h4>
 
-<%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: @user_tariff %>
+<%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
 
 <%= link_to "Next", school_user_tariff_path(@school, @user_tariff), class: 'btn' %>

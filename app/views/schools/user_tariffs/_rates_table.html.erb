@@ -2,22 +2,24 @@
 
   <thead>
   <tr>
-    <th>Type</th>
+    <th style="width: 50%">Type</th>
     <th>Rate</th>
-    <th>Units</th>
-    <th style="width: 10%"></th>
+    <% if allow_edits %>
+      <th style="width: 10%"></th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
   <% user_tariff.user_tariff_prices.each do |user_tariff_price| %>
     <tr class="rate-row">
       <td><%= user_tariff_price.start_time %> to <%= user_tariff_price.end_time %></td>
-      <td><%= user_tariff_price.value %></td>
-      <td><%= user_tariff_price.units %></td>
-      <td>
-        <%= link_to "Edit", edit_school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), class: 'btn' %>
-        <%= link_to "Delete", school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
-      </td>
+      <td><%= user_tariff_price.value %> £/kWh</td>
+      <% if allow_edits %>
+        <td>
+          <%= link_to "Edit", edit_school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), class: 'btn' %>
+          <%= link_to "Delete", school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+        </td>
+      <% end %>
     </tr>
   <% end %>
   </tbody>

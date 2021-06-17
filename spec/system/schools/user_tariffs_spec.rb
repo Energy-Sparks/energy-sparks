@@ -39,13 +39,13 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('Add tariff rate')
         fill_in 'Start time', with: '00:00'
         fill_in 'End time', with: '07:00'
-        fill_in 'Value (in kWh)', with: '1.23'
+        fill_in 'Value in £/kWh', with: '1.23'
         click_button('Save')
 
         expect(page).to have_content('Tariff rates')
         expect(page).to have_content('00:00')
         expect(page).to have_content('07:00')
-        expect(page).to have_content('1.23')
+        expect(page).to have_content('1.23 £/kWh')
 
         click_link('Next')
 
@@ -55,12 +55,15 @@ describe 'user tariffs', type: :system do
         click_link('Add standing charge')
         expect(page).to have_content('Add tariff standing charge')
         select 'Fixed charge', from: 'Charge type'
-        fill_in 'Value', with: '1.23'
-        select 'kva', from: 'Units'
+        fill_in 'Value', with: '4.56'
+        select 'kVA', from: 'Units'
         click_button('Save')
 
         click_link('Next')
         expect(page).to have_content('Review tariff')
+        expect(page).to have_content('1.23 £/kWh')
+        expect(page).to have_content('4.56 per kVA')
+        expect(page).not_to have_link('Delete')
 
         click_link('Finished')
         expect(page).to have_content('All tariffs')
