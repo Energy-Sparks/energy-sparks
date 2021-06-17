@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_102549) do
+ActiveRecord::Schema.define(version: 2021_06_15_143142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -830,6 +830,13 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
   end
 
+  create_table "meters_user_tariffs", id: false, force: :cascade do |t|
+    t.bigint "meter_id"
+    t.bigint "user_tariff_id"
+    t.index ["meter_id"], name: "index_meters_user_tariffs_on_meter_id"
+    t.index ["user_tariff_id"], name: "index_meters_user_tariffs_on_user_tariff_id"
+  end
+
   create_table "newsletters", force: :cascade do |t|
     t.text "title", null: false
     t.text "url", null: false
@@ -1253,6 +1260,39 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_tariff_charges", force: :cascade do |t|
+    t.bigint "user_tariff_id", null: false
+    t.text "charge_type", null: false
+    t.decimal "value", null: false
+    t.text "units", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_tariff_id"], name: "index_user_tariff_charges_on_user_tariff_id"
+  end
+
+  create_table "user_tariff_prices", force: :cascade do |t|
+    t.bigint "user_tariff_id", null: false
+    t.text "start_time", null: false
+    t.text "end_time", null: false
+    t.decimal "value", null: false
+    t.text "units", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
+  end
+
+  create_table "user_tariffs", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.text "name", null: false
+    t.text "fuel_type", null: false
+    t.boolean "flat_rate", default: true
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 
   create_table "users", force: :cascade do |t|

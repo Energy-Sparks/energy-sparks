@@ -3,6 +3,7 @@
 # Table name: schools
 #
 #  activation_date                       :date
+#  active                                :boolean          default(TRUE)
 #  address                               :text
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
@@ -25,6 +26,7 @@
 #  postcode                              :string
 #  process_data                          :boolean          default(FALSE)
 #  public                                :boolean          default(TRUE)
+#  removal_date                          :date
 #  school_group_id                       :bigint(8)
 #  school_type                           :integer
 #  scoreboard_id                         :bigint(8)
@@ -80,6 +82,7 @@ class School < ApplicationRecord
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
   has_many :consent_grants,       inverse_of: :school
   has_many :meter_reviews,        inverse_of: :school
+  has_many :user_tariffs,         inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types

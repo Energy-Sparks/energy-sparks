@@ -1,0 +1,13 @@
+<h1>Add <%= @user_tariff.fuel_type %> tariff</h1>
+
+<%= simple_form_for [@school, @user_tariff] do |f| %>
+
+  <%= f.hidden_field :fuel_type, value: @user_tariff.fuel_type %>
+
+  <% @user_tariff.meters.each do |meter| %>
+    <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>
+  <% end %>
+
+  <%= render 'form', school: @school, user_tariff: @user_tariff, f: f %>
+
+<% end %>
