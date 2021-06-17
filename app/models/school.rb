@@ -3,6 +3,7 @@
 # Table name: schools
 #
 #  activation_date                       :date
+#  active                                :boolean          default(TRUE)
 #  address                               :text
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
@@ -25,6 +26,7 @@
 #  postcode                              :string
 #  process_data                          :boolean          default(FALSE)
 #  public                                :boolean          default(TRUE)
+#  removal_date                          :date
 #  school_group_id                       :bigint(8)
 #  school_type                           :integer
 #  scoreboard_id                         :bigint(8)
