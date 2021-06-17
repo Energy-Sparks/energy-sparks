@@ -218,6 +218,8 @@ RSpec.describe "onboarding", :schools, type: :system do
         select 'Headteacher', from: 'Role'
         fill_in 'Password', with: 'testtest1', match: :prefer_exact
         fill_in 'Password confirmation', with: 'testtest1'
+        expect(page).to have_checked_field('newsletter_subscribe_to_newsletter')
+
         check :privacy
         click_on 'Create my account'
 
@@ -241,7 +243,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
 
         it 'prompts for school details' do
-          expect(page).to have_content("Tell us about #{school_name}")
+          expect(page).to have_content("Tell us about your school")
           fill_in 'Unique Reference Number', with: '4444244'
           fill_in 'Number of pupils', with: 300
           fill_in 'Floor area in square metres', with: 400
@@ -468,6 +470,11 @@ RSpec.describe "onboarding", :schools, type: :system do
         click_on 'Update my account'
         onboarding.reload
         expect(onboarding.subscribe_to_newsletter).to eql false
+        click_on 'Edit your account'
+        check 'Subscribe to newsletters'
+        click_on 'Update my account'
+        onboarding.reload
+        expect(onboarding.subscribe_to_newsletter).to eql true
       end
 
       it 'school details can be edited' do
