@@ -6,16 +6,35 @@ describe 'user tariffs', type: :system do
   let!(:admin)                    { create(:admin) }
   let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }
 
+  context 'as a school admin' do
+    let!(:school_admin)                    { create(:school_admin, school: school) }
+
+    before(:each) do
+      sign_in(school_admin)
+    end
+
+    it 'menu item is not there' do
+      visit school_path(school)
+      expect(page).not_to have_link('Manage tariffs')
+    end
+
+    it 'access is denied' do
+      visit school_user_tariffs_path(school)
+      expect(page).to have_content('not authorized')
+      expect(page).to have_content('Management Dashboard')
+    end
+  end
+
   context 'as an admin' do
 
     before(:each) do
       sign_in(admin)
-      visit school_path(school)
     end
 
     context 'creating electricity tariffs' do
 
       it 'can create a tariff and add prices and charges' do
+        visit school_path(school)
         click_link('Manage tariffs')
 
         expect(page).to have_content('All tariffs')
