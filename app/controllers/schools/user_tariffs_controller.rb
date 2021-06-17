@@ -1,7 +1,7 @@
 module Schools
   class UserTariffsController < ApplicationController
-    load_resource :school
-    load_resource :user_tariff
+    load_and_authorize_resource :school
+    load_and_authorize_resource :user_tariff
 
     def index
       @user_tariffs = @school.user_tariffs.by_name

@@ -16,6 +16,7 @@
     <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
     <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
     <%= link_to 'Meter attributes', admin_school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
+    <%= link_to 'Manage tariffs', school_user_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
     <%= link_to 'Remove school', removal_admin_school_path(school), class: 'dropdown-item' if can? :remove_school, school %>
   </div>
 </li>

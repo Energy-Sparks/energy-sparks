@@ -10,12 +10,14 @@ describe 'user tariffs', type: :system do
 
     before(:each) do
       sign_in(admin)
+      visit school_path(school)
     end
 
     context 'creating electricity tariffs' do
 
       it 'can create a tariff and add prices and charges' do
-        visit school_user_tariffs_path(school)
+        click_link('Manage tariffs')
+
         expect(page).to have_content('All tariffs')
 
         click_link('Add electricity tariff')
