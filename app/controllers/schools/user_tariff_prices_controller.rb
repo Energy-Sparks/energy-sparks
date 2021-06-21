@@ -19,7 +19,10 @@ module Schools
       if @user_tariff_price.save
         redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
       else
-        render :new
+        respond_to do |format|
+          format.html { render :new }
+          format.js { render :new }
+        end
       end
     end
 
