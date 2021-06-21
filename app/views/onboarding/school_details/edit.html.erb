@@ -1,8 +1,10 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
+    <h1>Update your school information</h1>
+
     <%= simple_form_for(@school, url: onboarding_school_details_path(@school_onboarding)) do |f| %>
       <%= render 'form', school: @school, school_onboarding: @school_onboarding, key_stages: @key_stages %>
-      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'school-details'), class: 'btn' %>
+      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'school-details', show: 'school-details'), class: 'btn' %>
     <% end %>
   </div>
 </div>

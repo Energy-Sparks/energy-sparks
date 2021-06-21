@@ -5,7 +5,7 @@
 #  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
 #  meter_id             :bigint(8)
-#  prices               :json
+#  prices               :text
 #  tariff_date          :date             not null
 #  tariff_import_log_id :bigint(8)
 #  updated_at           :datetime         not null

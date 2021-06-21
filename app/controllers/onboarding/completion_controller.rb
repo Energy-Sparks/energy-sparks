@@ -1,5 +1,6 @@
 module Onboarding
   class CompletionController < BaseController
+    include NewsletterSubscriber
     skip_before_action :check_complete, only: :show
 
     def new
@@ -14,6 +15,7 @@ module Onboarding
 
     def create
       @school_onboarding.events.create(event: :onboarding_complete)
+      subscribe_newsletter(@school_onboarding.school, @school_onboarding.created_user) if @school_onboarding.subscribe_to_newsletter
       OnboardingMailer.with(school_onboarding: @school_onboarding).completion_email.deliver_now
       redirect_to onboarding_completion_path(@school_onboarding)
     end
@@ -22,14 +24,7 @@ module Onboarding
       if @school_onboarding.school.visible?
         redirect_to school_path(@school_onboarding.school), notice: 'Your school is now active!'
       else
-        signup_details = {
-          onboarding_complete: true,
-          user_name: @school_onboarding.created_user.name,
-          school_name: @school_onboarding.school.name,
-          email_address: @school_onboarding.created_user.email,
-          tags: MailchimpTags.new(@school_onboarding.school).tags
-        }
-        redirect_to new_mailchimp_signup_path(signup_details)
+        :show
       end
     end
   end

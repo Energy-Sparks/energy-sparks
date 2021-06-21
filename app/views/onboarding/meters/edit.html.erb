@@ -1,1 +1,14 @@
-<%= render 'form', meter: @meter, school_onboarding: @school_onboarding , url: onboarding_meter_path(@school_onboarding, @meter)%>
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>Update meter</h1>
+
+    <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters).</p>
+    <p>Your MPAN should be printed on your electricity bill. It is a 13 digit number, and can be referred to as a ‘Supply Number’. An example number is: 20 0001 5001 165. Do not confuse your MPAN with your electricity supplier account number or the meter serial number printed on your electricity meter.</p>
+
+    <p>Your MPRN should be printed on your gas bill. The format of a MPRN is standard. It is between 6-10 numerical digits long. Do not confuse your MPRN with your gas supplier account number or the meter serial number printed on your gas meter.</p>
+
+    <%= render 'form', meter: @meter, school_onboarding: @school_onboarding , url: onboarding_meter_path(@school_onboarding, @meter)%>
+
+
+  </div>
+</div>

@@ -111,7 +111,7 @@ RSpec.describe 'consent_requests', type: :system do
         end
 
         it 'should record consent' do
-          click_on 'Submit'
+          click_on 'Grant consent'
 
           school.reload
           consent_grant = school.consent_grants.last
@@ -123,7 +123,7 @@ RSpec.describe 'consent_requests', type: :system do
         end
 
         it 'should send an email' do
-          click_on 'Submit'
+          click_on 'Grant consent'
 
           expect(ActionMailer::Base.deliveries.count).to be 1
           @email = ActionMailer::Base.deliveries.last
