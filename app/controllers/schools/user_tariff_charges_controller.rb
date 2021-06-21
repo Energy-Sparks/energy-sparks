@@ -8,6 +8,10 @@ module Schools
 
     def new
       @user_tariff_charge = @user_tariff.user_tariff_charges.build
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def create
@@ -21,6 +25,10 @@ module Schools
 
     def edit
       @user_tariff_charge = @user_tariff.user_tariff_charges.find(params[:id])
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def update

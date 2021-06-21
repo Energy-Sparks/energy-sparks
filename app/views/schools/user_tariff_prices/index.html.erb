@@ -3,8 +3,10 @@
 <h2><%= render 'title', user_tariff: @user_tariff %> </h2>
 
 <h4>Rates
-  <%= link_to "Add rate", new_school_user_tariff_user_tariff_price_path(@school, @user_tariff), class: 'btn' %>
+  <%= link_to "Add rate", new_school_user_tariff_user_tariff_price_path(@school, @user_tariff), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
 </h4>
+
+<div id="modal-window" class="modal hide fade" role="dialog" aria-hidden="true"></div>
 
 <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
 

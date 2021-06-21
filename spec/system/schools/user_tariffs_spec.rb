@@ -57,7 +57,6 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('My First Tariff electricity for 2021-04-01 to 2022-03-31')
 
         click_link('Add rate')
-        expect(page).to have_content('Add tariff rate')
         fill_in 'Start time', with: '00:00'
         fill_in 'End time', with: '07:00'
         fill_in 'Value in £/kWh', with: '1.23'
@@ -74,7 +73,6 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('My First Tariff electricity for 2021-04-01 to 2022-03-31')
 
         click_link('Add standing charge')
-        expect(page).to have_content('Add tariff standing charge')
         select 'Fixed charge', from: 'Charge type'
         fill_in 'Value', with: '4.56'
         select 'kVA', from: 'Units'

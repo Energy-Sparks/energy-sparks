@@ -15,7 +15,7 @@
       <td><%= user_tariff_charge.value %> per <%= charge_type_units_humanized(user_tariff_charge.units) %></td>
       <% if allow_edits %>
         <td>
-          <%= link_to "Edit", edit_school_user_tariff_user_tariff_charge_path(school, user_tariff, user_tariff_charge), class: 'btn' %>
+          <%= link_to "Edit", edit_school_user_tariff_user_tariff_charge_path(school, user_tariff, user_tariff_charge), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
           <%= link_to "Delete", school_user_tariff_user_tariff_charge_path(school, user_tariff, user_tariff_charge), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
         </td>
       <% end %>

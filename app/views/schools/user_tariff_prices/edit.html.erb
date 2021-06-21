@@ -1,7 +1,3 @@
-<h1>Edit tariff rate</h1>
-
 <%= simple_form_for @user_tariff_price, url: school_user_tariff_user_tariff_price_path(@school, @user_tariff, @user_tariff_price), method: :put do |f| %>
-
   <%= render 'form', school: @school, user_tariff: @user_tariff, user_tariff_price: @user_tariff_price, f: f %>
-
 <% end %>
