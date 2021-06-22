@@ -2,24 +2,32 @@
 
   <thead>
   <tr>
-    <th style="width: 50%">Type</th>
+    <th class="description">Time range</th>
     <th>Rate</th>
     <% if allow_edits %>
-      <th style="width: 10%"></th>
+      <th class="actions"></th>
     <% end %>
   </tr>
   </thead>
   <tbody>
-  <% user_tariff.user_tariff_prices.each do |user_tariff_price| %>
+  <% if user_tariff.user_tariff_prices.any? %>
+    <% user_tariff.user_tariff_prices.each do |user_tariff_price| %>
+      <tr class="rate-row">
+        <td><%= user_tariff_price.start_time %> to <%= user_tariff_price.end_time %></td>
+        <td><%= user_tariff_price.value %> £/kWh</td>
+        <% if allow_edits %>
+          <td>
+            <%= link_to "Edit", edit_school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+            <%= link_to "Delete", school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% else %>
     <tr class="rate-row">
-      <td><%= user_tariff_price.start_time %> to <%= user_tariff_price.end_time %></td>
-      <td><%= user_tariff_price.value %> £/kWh</td>
-      <% if allow_edits %>
-        <td>
-          <%= link_to "Edit", edit_school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
-          <%= link_to "Delete", school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
-        </td>
-      <% end %>
+      <td colspan='10'>
+        No energy charges specified yet
+      </td>
     </tr>
   <% end %>
   </tbody>
