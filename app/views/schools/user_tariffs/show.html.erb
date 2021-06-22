@@ -19,5 +19,10 @@
 <br/>
 <br/>
 
+<%= link_to "View as JSON", school_user_tariff_path(@school, @user_tariff, format: :json), class: 'btn', target: '_blank' if can? :download, UserTariff %>
+
+<br/>
+<br/>
+
 <%= link_to "Previous", school_user_tariff_user_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
 <%= link_to "Finished", school_user_tariffs_path(@school), class: 'btn' %>

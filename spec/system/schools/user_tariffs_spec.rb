@@ -89,8 +89,6 @@ describe 'user tariffs', type: :system do
 
         expect(UserTariff.last.meters).to match_array([electricity_meter])
       end
-
     end
-
   end
 end
