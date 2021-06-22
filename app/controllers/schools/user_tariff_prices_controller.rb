@@ -8,27 +8,43 @@ module Schools
 
     def new
       @user_tariff_price = @user_tariff.user_tariff_prices.build
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def create
       @user_tariff_price = @user_tariff.user_tariff_prices.build(user_tariff_price_params.merge(units: 'kwh'))
-      if @user_tariff_price.save
-        redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
-      else
-        render :new
+      respond_to do |format|
+        if @user_tariff_price.save
+          format.html { redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff) }
+          format.js
+        else
+          format.html { render :new }
+          format.js { render :new }
+        end
       end
     end
 
     def edit
       @user_tariff_price = @user_tariff.user_tariff_prices.find(params[:id])
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def update
       @user_tariff_price = @user_tariff.user_tariff_prices.find(params[:id])
-      if @user_tariff_price.update(user_tariff_price_params)
-        redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
-      else
-        render :edit
+      respond_to do |format|
+        if @user_tariff_price.update(user_tariff_price_params)
+          format.html { redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff) }
+          format.js
+        else
+          format.html { render :edit }
+          format.js { render :edit }
+        end
       end
     end
 
