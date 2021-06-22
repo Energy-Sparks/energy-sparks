@@ -1,0 +1,55 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-10 col-lg-8">
+    <h1>Step 4: Add additional accounts</h1>
+
+    <p>
+    You can add any number of additional accounts for the adult users at your school.
+    </p>
+
+    <p>
+    Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts. Administrator accounts can also manage other users and update your school details.
+    </p>
+
+    <p>
+    New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed.
+    </p>
+
+    <% if @users.any? %>
+      <table class="table table-condensed school_admin">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Admin?</th>
+            <th>Role</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td><%= y_n(user.school_admin?) %></td>
+                <td><%= user.staff_role.try(:title) %></td>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to('Edit', edit_onboarding_user_path(@school_onboarding, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
+                    <%= link_to('Delete', onboarding_user_path(@school_onboarding, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+                  </div>
+                </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true"></div>
+
+    <%= link_to 'Add new account', new_onboarding_user_path(@school_onboarding), { class: 'btn btn-default', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }  %>
+
+    <%= link_to 'Skip for now', new_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-default' %>
+
+  </div>
+</div>

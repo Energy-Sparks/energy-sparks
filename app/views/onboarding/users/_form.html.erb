@@ -1,0 +1,5 @@
+<%= f.input :name, required: true %>
+<%= f.input :email, required: true %>
+<%= f.input :role, label: "Type", required: true, collection: User.roles.except(:guest, :admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer).keys, label_method: :titleize %>
+
+<%= f.input :staff_role_id, label: 'Role', required: true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is their primary role in relation to Energy Sparks?'%>

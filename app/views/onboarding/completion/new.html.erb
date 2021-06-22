@@ -189,10 +189,33 @@
         </div>
       </div>
 
+      <div class="card mb-3" id="school-users">
+        <div class="card-header">
+          <h4>4.
+            Additional school users
+          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-users"
+            aria-expanded="<%= params[:show]=='school-users' ? 'true' : 'false' %>" aria-controls="collapse-school-users">View</button></span>
+          </h4>
+        </div>
+        <div id="collapse-school-users" class="collapse <%= 'show' if params[:show]=='school-users' %>">
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <th></th>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <%= link_to 'Add another user', new_onboarding_user_path(@school_onboarding), class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+
       <% if @pupil %>
         <div class="card mb-3" id="pupil-password">
           <div class="card-header">
-            <h4>4.
+            <h4>5.
               Pupil account
             <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-pupil-password"
               aria-expanded="<%= params[:show]=='pupil-password' ? 'true' : 'false' %>" aria-controls="collapse-pupil-password">View</button></span>
