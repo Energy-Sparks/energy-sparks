@@ -37,7 +37,7 @@ module Schools
     def show
       respond_to do |format|
         format.html
-        format.json { render json: Meters::UserTariffMeterAttributes.new(@user_tariff).to_meter_attributes.to_json }
+        format.json { render json: @user_tariff.to_json }
       end
     end
 
