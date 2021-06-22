@@ -37,6 +37,7 @@
             </div>
           <%# end %>
           <div class="padded-row">
+            <%= link_to "View as JSON", school_user_tariff_path(@school, user_tariff, format: :json), class: 'btn', target: '_blank' %>
             <%= link_to "Edit", edit_school_user_tariff_path(@school, user_tariff), class: 'btn' %>
             <%= link_to "Delete", school_user_tariff_path(@school, user_tariff), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
           </div>

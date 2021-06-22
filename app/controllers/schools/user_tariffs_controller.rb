@@ -35,6 +35,10 @@ module Schools
     end
 
     def show
+      respond_to do |format|
+        format.html
+        format.json { render json: Meters::UserTariffMeterAttributes.new(@user_tariff).to_meter_attributes.to_json }
+      end
     end
 
     def destroy
