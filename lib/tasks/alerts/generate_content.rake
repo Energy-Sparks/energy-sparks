@@ -1,7 +1,7 @@
 namespace :alerts do
   desc 'Run alert content job'
   task generate_content: [:environment] do
-    puts Time.zone.now
+    puts "#{DateTime.now.utc} Generate content start"
     schools = School.process_data.with_config
 
     schools.each do |school|
@@ -9,6 +9,6 @@ namespace :alerts do
       Alerts::GenerateContent.new(school).perform
     end
 
-    puts Time.zone.now
+    puts "#{DateTime.now.utc} Generate content end"
   end
 end

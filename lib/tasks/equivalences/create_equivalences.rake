@@ -1,7 +1,8 @@
 namespace :equivalences do
   desc 'Run equivalences job'
   task create: [:environment] do
-    puts Time.zone.now
+    puts "#{DateTime.now.utc} Generate equivalences start"
+
     schools = School.process_data.with_config
     schools.each do |school|
       begin
@@ -13,6 +14,6 @@ namespace :equivalences do
       end
 
     end
-    puts Time.zone.now
+    puts "#{DateTime.now.utc} Generate equivalences end"
   end
 end
