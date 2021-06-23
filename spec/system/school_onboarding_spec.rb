@@ -151,6 +151,7 @@ RSpec.describe "onboarding", :schools, type: :system do
   context 'as a user' do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
     let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher') }
+    let!(:governor_role) { create(:staff_role, :management, title: 'Governor') }
 
     let!(:onboarding) do
       create(
@@ -195,6 +196,9 @@ RSpec.describe "onboarding", :schools, type: :system do
         fill_in 'Job title', with: 'Boss'
         fill_in 'School name', with: 'Boss school'
         click_on 'Grant consent'
+
+        #Additional school accounts
+        click_on 'Skip for now'
 
         #Pupils
         fill_in 'Name', with: 'The energy savers'
@@ -370,6 +374,21 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(email.to).to include(admin.email)
         end
 
+        it 'sends confirmation emails after completion' do
+          staff = create(:staff, school: school, confirmed_at: nil)
+          click_on "Complete setup", match: :first
+          email = ActionMailer::Base.deliveries.first
+          expect(email.subject).to eq('Energy Sparks: confirm your account')
+          expect(email.to).to include(staff.email)
+        end
+
+        it 'adds alerts contacts after completion' do
+          staff = create(:staff, school: school, confirmed_at: nil)
+          click_on "Complete setup", match: :first
+          expect(school.contacts.count).to eql 2
+          expect(school.contacts.last.email_address).to eql(staff.email)
+        end
+
         context 'newsletter signup' do
           before(:each) do
             onboarding.update!(subscribe_to_newsletter: true)
@@ -486,6 +505,47 @@ RSpec.describe "onboarding", :schools, type: :system do
         school.reload
         expect(school.name).to eq('Correct school')
       end
+
+      it 'additional accounts can be added and edited' do
+        onboarding.events.create!(event: :pupil_account_created)
+
+        visit new_onboarding_completion_path(onboarding)
+        expect(page).to have_content("You have not added any additional school accounts")
+        click_on 'Manage users'
+
+        expect(page).to have_content("Manage your school accounts")
+        click_on 'Add new account'
+        fill_in 'Name', with: "Extra user"
+        fill_in 'Email', with: 'extra+user@example.org'
+        select 'Staff', from: 'Type'
+        select 'Headteacher', from: 'Role'
+        click_on 'Create account'
+
+        expect(page).to have_content("extra+user@example.org")
+        expect(page).to have_content("Headteacher")
+        expect(page).to have_content("Manage your school accounts")
+
+        click_on 'Edit'
+
+        fill_in 'Name', with: "user name"
+        fill_in 'Email', with: 'user+updated@example.org'
+        select 'Governor', from: 'Role'
+        click_on 'Update account'
+
+        expect(page).to have_content("Manage your school accounts")
+        expect(page).to have_content("user name")
+        expect(page).to have_content("user+updated@example.org")
+        expect(page).to have_content("Governor")
+
+        click_on 'Continue'
+        expect(page).to have_content("Final step: review your answers")
+        expect(page).to have_content("user+updated@example.org")
+
+        expect(onboarding.school.users.count).to eql 2
+        expect(onboarding.school.users.first).to be_confirmed
+        expect(onboarding.school.users.last).to_not be_confirmed
+      end
+
 
       it 'the user is listed as a default contact, and contacts can be managed' do
         visit new_onboarding_completion_path(onboarding)

@@ -71,6 +71,11 @@ class SchoolOnboarding < ApplicationRecord
     events.where(event: :onboarding_complete).empty?
   end
 
+  def ready_for_review?
+    #adding pupil password is trigger for last step
+    events.where(event: :pupil_account_created).any?
+  end
+
   def complete?
     events.where(event: :onboarding_complete).any?
   end
