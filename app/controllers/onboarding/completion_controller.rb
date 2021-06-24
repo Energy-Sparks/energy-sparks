@@ -1,6 +1,8 @@
 module Onboarding
   class CompletionController < BaseController
     include NewsletterSubscriber
+    include OnboardingHelper
+
     skip_before_action :check_complete, only: :show
 
     def new
@@ -21,9 +23,7 @@ module Onboarding
 
       send_confirmation_instructions(users)
       create_additional_contacts(users)
-
-      #subscribe all users to newsletters
-      subscribe_newsletter(@school_onboarding.school, @school_onboarding.created_user) if @school_onboarding.subscribe_to_newsletter
+      subscribe_users_to_newsletter(@school_onboarding.school.users.reject(&:pupil?))
 
       OnboardingMailer.with(school_onboarding: @school_onboarding).completion_email.deliver_now
       redirect_to onboarding_completion_path(@school_onboarding)
@@ -43,6 +43,12 @@ module Onboarding
       #confirm other users created during onboarding
       users.each do |user|
         user.send_confirmation_instructions unless user.confirmed?
+      end
+    end
+
+    def subscribe_users_to_newsletter(users)
+      users.each do |user|
+        subscribe_newsletter(@school_onboarding.school, user) if user_subscribed_to_newsletter?(@school_onboarding, user)
       end
     end
 

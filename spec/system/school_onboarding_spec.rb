@@ -391,7 +391,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         context 'newsletter signup' do
           before(:each) do
-            onboarding.update!(subscribe_to_newsletter: true)
+            onboarding.update!(subscribe_users_to_newsletter: [user.id])
           end
           it 'contacts mailchimp' do
             click_on "Complete setup", match: :first
@@ -401,12 +401,29 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         context 'declined newsletter signup' do
           before(:each) do
-            onboarding.update!(subscribe_to_newsletter: false)
+            onboarding.update!(subscribe_users_to_newsletter: [])
           end
           it 'does not contact mailchimp' do
             click_on "Complete setup", match: :first
             expect(mailchimp_subscriber).not_to have_received(:subscribe).with(school, user)
           end
+        end
+
+        context 'subscribes extra users to mailchimp' do
+            let(:subscriber)  { create(:staff, school: school ) }
+            let(:non_subscriber)  { create(:staff, school: school ) }
+
+            before(:each) do
+              onboarding.update!(subscribe_users_to_newsletter: [user.id, subscriber.id])
+            end
+
+            it 'signs up the right users' do
+              click_on "Complete setup", match: :first
+              expect(mailchimp_subscriber).to have_received(:subscribe).with(school, user)
+              expect(mailchimp_subscriber).to have_received(:subscribe).with(school, subscriber)
+              expect(mailchimp_subscriber).to_not have_received(:subscribe).with(school, non_subscriber)
+            end
+
         end
 
       end
@@ -488,12 +505,12 @@ RSpec.describe "onboarding", :schools, type: :system do
         uncheck 'Subscribe to newsletters'
         click_on 'Update my account'
         onboarding.reload
-        expect(onboarding.subscribe_to_newsletter).to eql false
+        expect(onboarding.subscribe_users_to_newsletter).to eql []
         click_on 'Edit your account'
         check 'Subscribe to newsletters'
         click_on 'Update my account'
         onboarding.reload
-        expect(onboarding.subscribe_to_newsletter).to eql true
+        expect(onboarding.subscribe_users_to_newsletter).to eql [user.id]
       end
 
       it 'school details can be edited' do
@@ -515,27 +532,38 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         expect(page).to have_content("Manage your school accounts")
         click_on 'Add new account'
+        expect(page).to have_checked_field('newsletter_subscribe_to_newsletter')
+
         fill_in 'Name', with: "Extra user"
         fill_in 'Email', with: 'extra+user@example.org'
         select 'Staff', from: 'Type'
         select 'Headteacher', from: 'Role'
+
         click_on 'Create account'
 
         expect(page).to have_content("extra+user@example.org")
         expect(page).to have_content("Headteacher")
         expect(page).to have_content("Manage your school accounts")
 
+        onboarding.reload
+        expect(onboarding.subscribe_users_to_newsletter).to eql([onboarding.school.users.last.id])
+
         click_on 'Edit'
 
         fill_in 'Name', with: "user name"
         fill_in 'Email', with: 'user+updated@example.org'
         select 'Governor', from: 'Role'
+        uncheck 'Subscribe to newsletters'
+
         click_on 'Update account'
 
         expect(page).to have_content("Manage your school accounts")
         expect(page).to have_content("user name")
         expect(page).to have_content("user+updated@example.org")
         expect(page).to have_content("Governor")
+
+        onboarding.reload
+        expect(onboarding.subscribe_users_to_newsletter).to eql([])
 
         click_on 'Continue'
         expect(page).to have_content("Final step: review your answers")
