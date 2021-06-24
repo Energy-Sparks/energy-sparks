@@ -17,8 +17,8 @@
         <td><%= number_to_currency(user_tariff_price.value, unit: '£') %> per kWh</td>
         <% if allow_edits %>
           <td>
-            <%= link_to "Edit", edit_school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
-            <%= link_to "Delete", school_user_tariff_user_tariff_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+            <%= link_to "Edit", edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+            <%= link_to "Delete", school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
           </td>
         <% end %>
       </tr>

@@ -40,7 +40,7 @@ class UserTariff < ApplicationRecord
       "end_date" => end_date.to_s(:es_compact),
       "source" => "manually_entered",
       "name" => name,
-      "type" => "differential",
+      "type" => flat_rate ? "flat" : "differential",
       "sub_type" => "",
       "vat" => "5%",
       "rates" => rates,

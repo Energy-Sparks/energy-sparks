@@ -31,7 +31,7 @@ describe 'user tariffs', type: :system do
       sign_in(admin)
     end
 
-    context 'creating electricity tariffs' do
+    context 'creating flat rate electricity tariffs' do
 
       it 'can create a tariff and add prices and charges' do
         visit school_path(school)
@@ -47,14 +47,70 @@ describe 'user tariffs', type: :system do
 
         expect(page).to have_content('Add electricity tariff')
 
-        fill_in 'Name', with: 'My First Tariff'
+        fill_in 'Name', with: 'My First Flat Tariff'
+        click_button('Next')
+
+        expect(page).to have_content('Edit electricity tariff')
+        click_button('Simple')
+
+        expect(page).to have_content('Energy charges')
+        expect(page).to have_content('My First Flat Tariff electricity for 2021-04-01 to 2022-03-31')
+
+        fill_in 'Rate in £/kWh', with: '1.5'
+        click_button('Next')
+
+        expect(page).to have_content('Standing charges')
+        expect(page).to have_content('My First Flat Tariff electricity for 2021-04-01 to 2022-03-31')
+
+        click_link('Add standing charge')
+        select 'Fixed charge', from: 'Charge type'
+        fill_in 'Value', with: '4.56'
+        choose 'kVA'
+        click_button('Save')
+
+        click_link('Next')
+        expect(page).to have_content('Review tariff')
+        expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
+        expect(page).to have_content('£4.56 per kVA')
+        expect(page).not_to have_link('Delete')
+
+        click_link('Finished')
+        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('12345678901234')
+
+        user_tariff = UserTariff.last
+        expect(user_tariff.meters).to match_array([electricity_meter])
+        user_tariff_price = user_tariff.user_tariff_prices.first
+        expect(user_tariff_price.start_time.to_s(:time)).to eq('00:00')
+        expect(user_tariff_price.end_time.to_s(:time)).to eq('23:30')
+        expect(user_tariff_price.units).to eq('kwh')
+      end
+    end
+
+    context 'creating differential electricity tariffs' do
+
+      it 'can create a tariff and add prices and charges' do
+        visit school_path(school)
+        click_link('Manage tariffs')
+
+        expect(page).to have_content('All tariffs')
+
+        click_link('Add electricity tariff')
+
+        expect(page).to have_content('Select meters for tariff')
+        check('12345678901234')
+        click_button('Next')
+
+        expect(page).to have_content('Add electricity tariff')
+
+        fill_in 'Name', with: 'My First Diff Tariff'
         click_button('Next')
 
         expect(page).to have_content('Edit electricity tariff')
         click_button('Economy 7')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Tariff electricity for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Diff Tariff electricity for 2021-04-01 to 2022-03-31')
 
         click_link('Add energy charge')
 
@@ -73,7 +129,7 @@ describe 'user tariffs', type: :system do
         click_link('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Tariff electricity for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Diff Tariff electricity for 2021-04-01 to 2022-03-31')
 
         click_link('Add standing charge')
         select 'Fixed charge', from: 'Charge type'

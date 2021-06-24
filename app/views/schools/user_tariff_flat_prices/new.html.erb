@@ -1,0 +1,7 @@
+<h1>Energy charges</h1>
+
+<h2><%= render 'title', user_tariff: @user_tariff %> </h2>
+
+<%= simple_form_for @user_tariff_price, url: school_user_tariff_user_tariff_flat_prices_path(@school, @user_tariff) do |f| %>
+  <%= render 'form', school: @school, user_tariff: @user_tariff, user_tariff_price: @user_tariff_price, f: f %>
+<% end %>
