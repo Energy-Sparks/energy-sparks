@@ -9,6 +9,6 @@
   <%= f.input :units, as: :radio_buttons, collection: UserTariffCharge.charge_type_units, label_method: :first %>
 </div>
 <p></p>
-<%= link_to "Cancel", school_user_tariff_user_tariff_charges_path(school, user_tariff), class: 'btn' %>
+<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 <%= f.submit 'Save', class: 'btn btn-primary' %>
 

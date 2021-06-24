@@ -35,6 +35,10 @@ module Schools
     end
 
     def show
+      respond_to do |format|
+        format.html
+        format.json { render json: @user_tariff.to_json }
+      end
     end
 
     def destroy

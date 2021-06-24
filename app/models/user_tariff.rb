@@ -33,4 +33,30 @@ class UserTariff < ApplicationRecord
   def gas?
     fuel_type.to_sym == :gas
   end
+
+  def to_json(*_args)
+    {
+      "start_date" => start_date.to_s(:es_compact),
+      "end_date" => end_date.to_s(:es_compact),
+      "source" => "manually_entered",
+      "name" => name,
+      "type" => "differential",
+      "sub_type" => "",
+      "vat" => "5%",
+      "rates" => rates,
+    }.to_json
+  end
+
+  private
+
+  def rates
+    attrs = {}
+    user_tariff_prices.each_with_index do |price, idx|
+      attrs["rate#{idx}"] = { "rate" => price.value.to_s, "per" => price.units.to_s, "from" => price.start_time.to_s(:time), "to" => price.end_time.to_s(:time) }
+    end
+    user_tariff_charges.each do |charge|
+      attrs[charge.charge_type.to_s] = { "rate" => charge.value.to_s, "per" => charge.units.to_s }
+    end
+    attrs
+  end
 end
