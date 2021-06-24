@@ -18,7 +18,7 @@ describe UserTariff do
         )
     end
 
-    let(:user_tariff_price)  { UserTariffPrice.new(start_time: '03:30', end_time: '23:00', value: 1.23, units: 'kwh') }
+    let(:user_tariff_price)  { UserTariffPrice.new(start_time: '03:00', end_time: '23:30', value: 1.23, units: 'kwh') }
     let(:user_tariff_charge_1)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
     let(:user_tariff_charge_2)  { UserTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
 
@@ -140,8 +140,8 @@ describe UserTariff do
       rates = attributes['rates']
       expect(rates['rate0']["per"]).to eq('kwh')
       expect(rates['rate0']["rate"]).to eq('1.23')
-      expect(rates['rate0']["from"]).to eq({ "hour" => "3", "minutes" => "30"})
-      expect(rates['rate0']["to"]).to eq({ "hour" => "23", "minutes" => "0"})
+      expect(rates['rate0']["from"]).to eq("03:00")
+      expect(rates['rate0']["to"]).to eq("23:30")
     end
   end
 end

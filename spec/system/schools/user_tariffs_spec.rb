@@ -57,14 +57,18 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('My First Tariff electricity for 2021-04-01 to 2022-03-31')
 
         click_link('Add energy charge')
-        fill_in 'Start time', with: '00:00'
-        fill_in 'End time', with: '07:00'
-        fill_in 'Rate in £/kWh', with: '1.23'
+
+        select '00', from: 'user_tariff_price_start_time_4i'
+        select '00', from: 'user_tariff_price_start_time_5i'
+        select '07', from: 'user_tariff_price_end_time_4i'
+        select '00', from: 'user_tariff_price_end_time_5i'
+
+        fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Save')
 
         expect(page).to have_content('00:00')
         expect(page).to have_content('07:00')
-        expect(page).to have_content('1.23 £/kWh')
+        expect(page).to have_content('£1.50 per kWh')
 
         click_link('Next')
 
@@ -79,8 +83,8 @@ describe 'user tariffs', type: :system do
 
         click_link('Next')
         expect(page).to have_content('Review tariff')
-        expect(page).to have_content('1.23 £/kWh')
-        expect(page).to have_content('4.56 per kVA')
+        expect(page).to have_content('£1.50 per kWh')
+        expect(page).to have_content('£4.56 per kVA')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
