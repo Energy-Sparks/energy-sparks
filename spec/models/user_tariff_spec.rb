@@ -13,6 +13,7 @@ describe UserTariff do
         end_date: '2022-03-31',
         name: 'My First Tariff',
         flat_rate: true,
+        vat_rate: '20%',
         user_tariff_prices: user_tariff_prices,
         user_tariff_charges: user_tariff_charges,
         )
@@ -33,7 +34,7 @@ describe UserTariff do
       expect(attributes['source']).to eq('manually_entered')
       expect(attributes['type']).to eq('flat')
       expect(attributes['sub_type']).to eq('')
-      expect(attributes['vat']).to eq('5%')
+      expect(attributes['vat']).to eq('20%')
     end
 
     it "should include standing charges" do
@@ -63,6 +64,7 @@ describe UserTariff do
         end_date: '2022-03-31',
         name: 'My First Tariff',
         flat_rate: false,
+        vat_rate: '5%',
         user_tariff_prices: user_tariff_prices,
         user_tariff_charges: user_tariff_charges,
         )
