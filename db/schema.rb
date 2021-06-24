@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_22_143051) do
+ActiveRecord::Schema.define(version: 2021_06_24_085240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1276,12 +1276,13 @@ ActiveRecord::Schema.define(version: 2021_06_22_143051) do
 
   create_table "user_tariff_prices", force: :cascade do |t|
     t.bigint "user_tariff_id", null: false
-    t.text "start_time", null: false
-    t.text "end_time", null: false
     t.decimal "value", null: false
     t.text "units", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.time "start_at"
+    t.time "start_time", default: "2000-01-01 00:00:00", null: false
+    t.time "end_time", default: "2000-01-01 23:30:00", null: false
     t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
   end
 
