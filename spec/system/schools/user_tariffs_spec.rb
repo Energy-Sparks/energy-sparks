@@ -63,12 +63,12 @@ describe 'user tariffs', type: :system do
         select '07', from: 'user_tariff_price_end_time_4i'
         select '00', from: 'user_tariff_price_end_time_5i'
 
-        fill_in 'Rate in £/kWh', with: '1.23'
+        fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Save')
 
         expect(page).to have_content('00:00')
         expect(page).to have_content('07:00')
-        expect(page).to have_content('1.23 £/kWh')
+        expect(page).to have_content('£1.50 per kWh')
 
         click_link('Next')
 
@@ -83,8 +83,8 @@ describe 'user tariffs', type: :system do
 
         click_link('Next')
         expect(page).to have_content('Review tariff')
-        expect(page).to have_content('1.23 £/kWh')
-        expect(page).to have_content('4.56 per kVA')
+        expect(page).to have_content('£1.50 per kWh')
+        expect(page).to have_content('£4.56 per kVA')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
