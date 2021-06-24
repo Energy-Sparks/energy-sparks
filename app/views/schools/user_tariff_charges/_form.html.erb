@@ -3,7 +3,7 @@
   <%= f.select :charge_type, options_for_select(UserTariffCharge.charge_types, f.object ? f.object.charge_type : ''), {include_blank: true}, { class: 'form-control' } %>
 </div>
 <div class="form-group">
-  <%= f.input :value %>
+  <%= f.input :value, label: 'Value in £' %>
 </div>
 <div class="form-group">
   <%= f.input :units, as: :radio_buttons, collection: UserTariffCharge.charge_type_units, label_method: :first %>
