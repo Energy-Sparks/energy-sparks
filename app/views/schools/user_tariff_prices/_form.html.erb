@@ -1,5 +1,5 @@
-<%= f.input :start_time, as: :time, minute_step: 30 %>
-<%= f.input :end_time, as: :time, minute_step: 30 %>
+<%= f.input :start_time, minute_step: 30 %>
+<%= f.input :end_time, minute_step: 30 %>
 <%= f.input :value, label: 'Rate in £/kWh' %>
 <%= link_to "Cancel", school_user_tariff_user_tariff_prices_path(school, user_tariff), class: 'btn' %>
 <%= f.submit 'Save', class: 'btn btn-primary' %>

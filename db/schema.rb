@@ -1282,7 +1282,7 @@ ActiveRecord::Schema.define(version: 2021_06_24_085240) do
     t.datetime "updated_at", precision: 6, null: false
     t.time "start_at"
     t.time "start_time", default: "2000-01-01 00:00:00", null: false
-    t.time "end_time", default: "2000-01-01 23:30:00", null: false
+    t.time "end_time", default: "2000-01-01 00:00:00", null: false
     t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
   end
 
