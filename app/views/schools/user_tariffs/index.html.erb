@@ -22,7 +22,11 @@
       <div id="collapse<%= idx %>" class="collapse" aria-labelledby="heading<%= idx %>" data-parent="#accordion<%= idx %>">
         <div class="card-body">
           <div class="padded-row">
-            <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
+            <% if user_tariff.flat_rate? %>
+              <%= render 'schools/user_tariffs/flat_rate', school: @school, user_tariff: user_tariff, allow_edits: false %>
+            <% else %>
+              <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
+            <% end %>
             <br/>
             <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
           </div>
