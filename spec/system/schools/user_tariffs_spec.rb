@@ -70,7 +70,7 @@ describe 'user tariffs', type: :system do
 
         click_link('Next')
         expect(page).to have_content('Review tariff')
-        expect(page).to have_content('£1.50 per kWh')
+        expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
         expect(page).to have_content('£4.56 per kVA')
         expect(page).not_to have_link('Delete')
 
