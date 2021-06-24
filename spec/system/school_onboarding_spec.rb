@@ -575,32 +575,6 @@ RSpec.describe "onboarding", :schools, type: :system do
       end
 
 
-      it 'the user is listed as a default contact, and contacts can be managed' do
-        visit new_onboarding_completion_path(onboarding)
-        within '#alert-contacts' do
-          expect(page).to have_content(user.name)
-          click_on 'Edit'
-        end
-
-        fill_in 'Mobile phone number', with: '07123 4567890'
-        click_on 'Save'
-        expect(school.contacts.first.mobile_phone_number).to eq('07123 4567890')
-
-        within '#alert-contacts' do
-          click_on 'Delete'
-        end
-
-        expect(school.contacts.size).to eq(0)
-
-        click_on 'Add an alert contact'
-
-        fill_in 'Name', with: 'Joe Bloggs'
-        fill_in 'Email', with: 'test@example.com'
-        click_on 'Save'
-
-        expect(school.contacts.size).to eq(1)
-      end
-
     end
   end
 
