@@ -395,48 +395,6 @@
       </div>
     <% end %>
 
-    <div class="card mb-3" id="alert-contacts">
-      <div class="card-header">
-        <h4>
-          Sign-up for Energy Sparks alerts
-          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-alerts"
-            aria-expanded="<%= params[:show]=='alert-contacts' ? 'true' : 'false' %>" aria-controls="collapse-alerts">View</button></span>
-        </h4>
-      </div>
-      <div id="collapse-alerts" class="collapse  <%= 'show' if params[:show]=='alert-contacts' %>">
-        <div class="card-body">
-          <%= render 'shared/contact_explainer' %>
-          <p>The alerts can be sent by email or text message to a mobile phone.</p>
-          <table class="table table-borderless mb-3">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Mobile phone number</th>
-                <th>Email Address</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <% @school.contacts.each do |contact|%>
-              <tr>
-                <td><%= contact.name %></td>
-                <td><%= contact.description %></td>
-                <td><%= contact.mobile_phone_number %></td>
-                <td><%= contact.email_address %></td>
-                <td>
-                  <%= link_to 'Edit', edit_onboarding_contact_path(@school_onboarding, contact), class: 'btn btn-sm btn-warning' %>
-                  <%= link_to 'Delete', onboarding_contact_path(@school_onboarding, contact), method: :delete, class: 'btn btn-sm btn-danger' %>
-                </td>
-              </tr>
-            <% end %>
-            <tbody>
-            </tbody>
-          </table>
-          <%= link_to 'Add an alert contact', new_onboarding_contact_path(@school_onboarding), class: 'btn btn-primary' %>
-        </div>
-      </div>
-    </div>
-
     <%= button_to "Complete setup", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
   </div>
 </div>
