@@ -2,7 +2,7 @@ module Onboarding
   class ConsentController < BaseController
     skip_before_action :authenticate_user!
     before_action do
-      redirect_if_event(:permission_given, new_onboarding_pupil_account_path(@school_onboarding))
+      redirect_if_event(:permission_given, onboarding_users_path(@school_onboarding))
     end
 
     def show
@@ -15,7 +15,7 @@ module Onboarding
       if @consent_grant.save
         @school_onboarding.events.create!(event: :permission_given)
         ConsentGrantMailer.with(consent_grant: @consent_grant).email_consent.deliver_now
-        redirect_to new_onboarding_pupil_account_path(@school_onboarding)
+        redirect_to onboarding_users_path(@school_onboarding)
       else
         render :show
       end

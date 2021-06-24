@@ -64,6 +64,7 @@ Rails.application.routes.draw do
       resource :pupil_account,  only: [:new, :create, :edit, :update], controller: 'pupil_account'
       resource :completion,     only: [:new, :create, :show], controller: 'completion'
       resources :meters,        only: [:new, :create, :edit, :update]
+      resources :users,         only: [:index, :new, :create, :edit, :update, :destroy]
       resource :school_times,   only: [:edit, :update]
       resources :inset_days,    only: [:new, :create, :edit, :update, :destroy]
       resources :contacts,      only: [:new, :create, :edit, :update, :destroy]

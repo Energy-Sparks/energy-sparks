@@ -1,5 +1,3 @@
-
-
 require 'rails_helper'
 
 describe SchoolOnboarding, type: :model do
@@ -23,6 +21,13 @@ describe SchoolOnboarding, type: :model do
       onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete]
       expect(onboarding.incomplete?).to be false
       expect(onboarding.complete?).to be true
+    end
+
+    it 'knows when it is ready for review' do
+      onboarding = create :school_onboarding, :with_events, event_names: [:pupil_account_created]
+      expect(onboarding.incomplete?).to be true
+      expect(onboarding.complete?).to be false
+      expect(onboarding.ready_for_review?).to be true
     end
 
     it 'knows when it is incomplete' do
