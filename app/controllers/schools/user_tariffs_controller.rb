@@ -49,7 +49,7 @@ module Schools
     private
 
     def user_tariff_params
-      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, meter_ids: [])
+      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, :vat_rate, meter_ids: [])
     end
   end
 end
