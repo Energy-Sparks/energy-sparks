@@ -286,9 +286,17 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         before(:each) do
           onboarding.update!(created_user: user)
+          onboarding.events.create!(event: :onboarding_user_created)
           SchoolCreator.new(school).onboard_school!(onboarding)
           sign_in(user)
           visit onboarding_consent_path(onboarding)
+        end
+
+        it 'reminds me where I am on resume' do
+          visit onboarding_path(onboarding)
+          expect(page).to have_content("You have a few more steps to complete before we can setup your school.")
+          click_on 'Continue'
+          expect(page).to have_content(consent_statement.content.to_plain_text)
         end
 
         it 'prompts for consent' do
