@@ -189,10 +189,52 @@
         </div>
       </div>
 
+      <div class="card mb-3" id="school-users">
+        <div class="card-header">
+          <h4>4.
+            Additional school accounts
+          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-users"
+            aria-expanded="<%= params[:show]=='school-users' ? 'true' : 'false' %>" aria-controls="collapse-school-users">View</button></span>
+          </h4>
+        </div>
+        <div id="collapse-school-users" class="collapse <%= 'show' if params[:show]=='school-users' %>">
+          <div class="card-body">
+            <% if @users.any? %>
+              <table class="table table-condensed table-borderless">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Admin?</th>
+                    <th>Role</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% @users.each do |user| %>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td><%= y_n(user.school_admin?) %></td>
+                        <td><%= user.staff_role.try(:title) %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <p>You have not added any additional school accounts. You will be able to add new accounts later, but doing so
+              now will help you and the staff get setup sooner.</p>
+            <% end %>
+            <%= link_to 'Manage users', onboarding_users_path(@school_onboarding), class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+
       <% if @pupil %>
         <div class="card mb-3" id="pupil-password">
           <div class="card-header">
-            <h4>4.
+            <h4>5.
               Pupil account
             <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-pupil-password"
               aria-expanded="<%= params[:show]=='pupil-password' ? 'true' : 'false' %>" aria-controls="collapse-pupil-password">View</button></span>
@@ -352,48 +394,6 @@
         </div>
       </div>
     <% end %>
-
-    <div class="card mb-3" id="alert-contacts">
-      <div class="card-header">
-        <h4>
-          Sign-up for Energy Sparks alerts
-          <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-alerts"
-            aria-expanded="<%= params[:show]=='alert-contacts' ? 'true' : 'false' %>" aria-controls="collapse-alerts">View</button></span>
-        </h4>
-      </div>
-      <div id="collapse-alerts" class="collapse  <%= 'show' if params[:show]=='alert-contacts' %>">
-        <div class="card-body">
-          <%= render 'shared/contact_explainer' %>
-          <p>The alerts can be sent by email or text message to a mobile phone.</p>
-          <table class="table table-borderless mb-3">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Mobile phone number</th>
-                <th>Email Address</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <% @school.contacts.each do |contact|%>
-              <tr>
-                <td><%= contact.name %></td>
-                <td><%= contact.description %></td>
-                <td><%= contact.mobile_phone_number %></td>
-                <td><%= contact.email_address %></td>
-                <td>
-                  <%= link_to 'Edit', edit_onboarding_contact_path(@school_onboarding, contact), class: 'btn btn-sm btn-warning' %>
-                  <%= link_to 'Delete', onboarding_contact_path(@school_onboarding, contact), method: :delete, class: 'btn btn-sm btn-danger' %>
-                </td>
-              </tr>
-            <% end %>
-            <tbody>
-            </tbody>
-          </table>
-          <%= link_to 'Add an alert contact', new_onboarding_contact_path(@school_onboarding), class: 'btn btn-primary' %>
-        </div>
-      </div>
-    </div>
 
     <%= button_to "Complete setup", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
   </div>

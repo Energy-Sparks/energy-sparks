@@ -9,19 +9,48 @@
       We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.
     </p>
 
-    <h5>To get started, we need to complete the following steps:</h5>
+    <% if @school_onboarding.started? %>
+      <h5>You have a few more steps to complete before we can setup your school.</h5>
 
-    <ol>
-      <li>Create your school administrator account</li>
-      <li>Gather some information about your school</li>
-      <li>Get your permission to collect, store, analyse and publish your school's energy data</li>
-      <li>Create a pupil account</li>
-    </ol>
+      <ol class="list-unstyled">
+        <li><%= fa_icon(@school_onboarding.onboarding_user_created? ? 'check-circle text-success' : 'times-circle text-secondary') %>
+            Create your school administrator account
+        </li>
+        <li><%= fa_icon(@school_onboarding.school_details_created? ? 'check-circle text-success' : 'times-circle text-secondary') %>
+            Gather some information about your school
+        </li>
+        <li><%= fa_icon(@school_onboarding.permission_given? ? 'check-circle text-success' : 'times-circle text-secondary') %>
+            Get your permission to collect, store, analyse and publish your school's energy data
+        </li>
+        <li><%= fa_icon(@school_onboarding.additional_users_created? ? 'check-circle text-success' : 'times-circle text-secondary') %>
+            Add any additional staff or school administrator accounts
+        </li>
+        <li><%= fa_icon(@school_onboarding.pupil_account_created? ? 'check-circle text-success' : 'times-circle text-secondary') %>
+            Create a pupil account
+        </li>
+        <li><%= fa_icon('times-circle text-secondary') %>
+           Final review
+        </li>
+      </ol>
 
-    <p>
-      The setup process should take less than 10 minutes.
-    </p>
+      <%= link_to 'Continue', new_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+    <% else %>
+      <h5>To get started, we need to complete the following steps:</h5>
 
-    <%= link_to 'Start', new_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+
+        <ol>
+        <li>Create your school administrator account</li>
+        <li>Gather some information about your school</li>
+        <li>Get your permission to collect, store, analyse and publish your school's energy data</li>
+        <li>Add any additional staff or school administrator accounts</li>
+        <li>Create a pupil account</li>
+      </ol>
+
+      <p>
+        The setup process should take less than 10 minutes.
+      </p>
+
+      <%= link_to 'Start', new_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+    <% end %>
   </div>
 </div>

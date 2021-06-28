@@ -1,0 +1,11 @@
+<%= f.input :name, required: false %>
+<%= f.input :email, required: true %>
+
+<%= f.input :role, label: "Type", required: true, collection: User.roles.except(:guest, :admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer).keys, label_method: :titleize, hint: 'Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details' %>
+
+<%= f.input :staff_role_id, label: 'Role', required: true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is the users relationship with the school?'%>
+
+
+<%= simple_fields_for :newsletter do |n| %>
+  <%= n.input :subscribe_to_newsletter, label: "Subscribe to newsletters", class: "custom-control-input", as: :boolean, input_html: { checked: user.persisted? ? user_subscribed_to_newsletter?(school_onboarding, user) : true} %>
+<% end %>

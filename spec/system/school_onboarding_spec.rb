@@ -151,6 +151,7 @@ RSpec.describe "onboarding", :schools, type: :system do
   context 'as a user' do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
     let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher') }
+    let!(:governor_role) { create(:staff_role, :management, title: 'Governor') }
 
     let!(:onboarding) do
       create(
@@ -195,6 +196,9 @@ RSpec.describe "onboarding", :schools, type: :system do
         fill_in 'Job title', with: 'Boss'
         fill_in 'School name', with: 'Boss school'
         click_on 'Grant consent'
+
+        #Additional school accounts
+        click_on 'Skip for now'
 
         #Pupils
         fill_in 'Name', with: 'The energy savers'
@@ -282,9 +286,17 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         before(:each) do
           onboarding.update!(created_user: user)
+          onboarding.events.create!(event: :onboarding_user_created)
           SchoolCreator.new(school).onboard_school!(onboarding)
           sign_in(user)
           visit onboarding_consent_path(onboarding)
+        end
+
+        it 'reminds me where I am on resume' do
+          visit onboarding_path(onboarding)
+          expect(page).to have_content("You have a few more steps to complete before we can setup your school.")
+          click_on 'Continue'
+          expect(page).to have_content(consent_statement.content.to_plain_text)
         end
 
         it 'prompts for consent' do
@@ -370,9 +382,24 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(email.to).to include(admin.email)
         end
 
+        it 'sends confirmation emails after completion' do
+          staff = create(:staff, school: school, confirmed_at: nil)
+          click_on "Complete setup", match: :first
+          email = ActionMailer::Base.deliveries.first
+          expect(email.subject).to eq('Energy Sparks: confirm your account')
+          expect(email.to).to include(staff.email)
+        end
+
+        it 'adds alerts contacts after completion' do
+          staff = create(:staff, school: school, confirmed_at: nil)
+          click_on "Complete setup", match: :first
+          expect(school.contacts.count).to eql 2
+          expect(school.contacts.last.email_address).to eql(staff.email)
+        end
+
         context 'newsletter signup' do
           before(:each) do
-            onboarding.update!(subscribe_to_newsletter: true)
+            onboarding.update!(subscribe_users_to_newsletter: [user.id])
           end
           it 'contacts mailchimp' do
             click_on "Complete setup", match: :first
@@ -382,12 +409,29 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         context 'declined newsletter signup' do
           before(:each) do
-            onboarding.update!(subscribe_to_newsletter: false)
+            onboarding.update!(subscribe_users_to_newsletter: [])
           end
           it 'does not contact mailchimp' do
             click_on "Complete setup", match: :first
             expect(mailchimp_subscriber).not_to have_received(:subscribe).with(school, user)
           end
+        end
+
+        context 'subscribes extra users to mailchimp' do
+            let(:subscriber)  { create(:staff, school: school ) }
+            let(:non_subscriber)  { create(:staff, school: school ) }
+
+            before(:each) do
+              onboarding.update!(subscribe_users_to_newsletter: [user.id, subscriber.id])
+            end
+
+            it 'signs up the right users' do
+              click_on "Complete setup", match: :first
+              expect(mailchimp_subscriber).to have_received(:subscribe).with(school, user)
+              expect(mailchimp_subscriber).to have_received(:subscribe).with(school, subscriber)
+              expect(mailchimp_subscriber).to_not have_received(:subscribe).with(school, non_subscriber)
+            end
+
         end
 
       end
@@ -469,12 +513,12 @@ RSpec.describe "onboarding", :schools, type: :system do
         uncheck 'Subscribe to newsletters'
         click_on 'Update my account'
         onboarding.reload
-        expect(onboarding.subscribe_to_newsletter).to eql false
+        expect(onboarding.subscribe_users_to_newsletter).to eql []
         click_on 'Edit your account'
         check 'Subscribe to newsletters'
         click_on 'Update my account'
         onboarding.reload
-        expect(onboarding.subscribe_to_newsletter).to eql true
+        expect(onboarding.subscribe_users_to_newsletter).to eql [user.id]
       end
 
       it 'school details can be edited' do
@@ -487,31 +531,57 @@ RSpec.describe "onboarding", :schools, type: :system do
         expect(school.name).to eq('Correct school')
       end
 
-      it 'the user is listed as a default contact, and contacts can be managed' do
+      it 'additional accounts can be added and edited' do
+        onboarding.events.create!(event: :pupil_account_created)
+
         visit new_onboarding_completion_path(onboarding)
-        within '#alert-contacts' do
-          expect(page).to have_content(user.name)
-          click_on 'Edit'
-        end
+        expect(page).to have_content("You have not added any additional school accounts")
+        click_on 'Manage users'
 
-        fill_in 'Mobile phone number', with: '07123 4567890'
-        click_on 'Save'
-        expect(school.contacts.first.mobile_phone_number).to eq('07123 4567890')
+        expect(page).to have_content("Manage your school accounts")
+        click_on 'Add new account'
+        expect(page).to have_checked_field('newsletter_subscribe_to_newsletter')
 
-        within '#alert-contacts' do
-          click_on 'Delete'
-        end
+        fill_in 'Name', with: "Extra user"
+        fill_in 'Email', with: 'extra+user@example.org'
+        select 'Staff', from: 'Type'
+        select 'Headteacher', from: 'Role'
 
-        expect(school.contacts.size).to eq(0)
+        click_on 'Create account'
 
-        click_on 'Add an alert contact'
+        expect(page).to have_content("extra+user@example.org")
+        expect(page).to have_content("Headteacher")
+        expect(page).to have_content("Manage your school accounts")
 
-        fill_in 'Name', with: 'Joe Bloggs'
-        fill_in 'Email', with: 'test@example.com'
-        click_on 'Save'
+        onboarding.reload
+        expect(onboarding.subscribe_users_to_newsletter).to eql([onboarding.school.users.last.id])
 
-        expect(school.contacts.size).to eq(1)
+        click_on 'Edit'
+
+        fill_in 'Name', with: "user name"
+        fill_in 'Email', with: 'user+updated@example.org'
+        select 'Governor', from: 'Role'
+        uncheck 'Subscribe to newsletters'
+
+        click_on 'Update account'
+
+        expect(page).to have_content("Manage your school accounts")
+        expect(page).to have_content("user name")
+        expect(page).to have_content("user+updated@example.org")
+        expect(page).to have_content("Governor")
+
+        onboarding.reload
+        expect(onboarding.subscribe_users_to_newsletter).to eql([])
+
+        click_on 'Continue'
+        expect(page).to have_content("Final step: review your answers")
+        expect(page).to have_content("user+updated@example.org")
+
+        expect(onboarding.school.users.count).to eql 2
+        expect(onboarding.school.users.first).to be_confirmed
+        expect(onboarding.school.users.last).to_not be_confirmed
       end
+
 
     end
   end

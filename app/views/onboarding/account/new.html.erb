@@ -24,7 +24,7 @@
       </p>
 
       <%= simple_fields_for :newsletter do |n| %>
-        <%= n.input :subscribe_to_newsletter, label: "Subscribe to newsletters", class: "custom-control-input", as: :boolean, input_html: { checked: @school_onboarding.subscribe_to_newsletter} %>
+        <%= n.input :subscribe_to_newsletter, label: "Subscribe to newsletters", class: "custom-control-input", as: :boolean, input_html: { checked: @user.persisted? ? user_subscribed_to_newsletter?(@school_onboarding, @user) : true } %>
       <% end %>
 
       <%= render 'shared/agree_terms_checkbox' %>

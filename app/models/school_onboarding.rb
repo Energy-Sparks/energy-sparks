@@ -67,12 +67,41 @@ class SchoolOnboarding < ApplicationRecord
     (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
   end
 
-  def incomplete?
-    events.where(event: :onboarding_complete).empty?
+  def complete?
+    has_event?(:onboarding_complete)
   end
 
-  def complete?
-    events.where(event: :onboarding_complete).any?
+  def incomplete?
+    !complete?
+  end
+
+  def started?
+    !has_only_sent_email_or_reminder?
+  end
+
+  def onboarding_user_created?
+    has_event?(:onboarding_user_created)
+  end
+
+  def school_details_created?
+    has_event?(:school_details_created)
+  end
+
+  def pupil_account_created?
+    has_event?(:pupil_account_created)
+  end
+
+  def permission_given?
+    has_event?(:permission_given)
+  end
+
+  def additional_users_created?
+    school.present? && school.users.count {|u| !u.pupil?} > 1
+  end
+
+  def ready_for_review?
+    #adding pupil password is trigger for last step
+    pupil_account_created?
   end
 
   def to_param
