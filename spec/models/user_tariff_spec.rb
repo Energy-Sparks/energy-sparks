@@ -26,32 +26,32 @@ describe UserTariff do
     let(:user_tariff_charges)  { [user_tariff_charge] }
 
     it "should include basic fields" do
-      attributes = JSON.parse(user_tariff.to_json)
+      attributes = user_tariff.to_hash
 
-      expect(attributes['name']).to eq('My First Tariff')
-      expect(attributes['start_date']).to eq('01/04/2021')
-      expect(attributes['end_date']).to eq('31/03/2022')
-      expect(attributes['source']).to eq('manually_entered')
-      expect(attributes['type']).to eq('flat')
-      expect(attributes['sub_type']).to eq('')
-      expect(attributes['vat']).to eq('20%')
+      expect(attributes[:name]).to eq('My First Tariff')
+      expect(attributes[:start_date]).to eq('01/04/2021')
+      expect(attributes[:end_date]).to eq('31/03/2022')
+      expect(attributes[:source]).to eq(:manually_entered)
+      expect(attributes[:type]).to eq(:flat)
+      expect(attributes[:sub_type]).to eq('')
+      expect(attributes[:vat]).to eq('20%')
     end
 
     it "should include standing charges" do
-      attributes = JSON.parse(user_tariff.to_json)
+      attributes = user_tariff.to_hash
 
-      rates = attributes['rates']
-      expect(rates['fixed_charge']).to eq({'per' => 'month', 'rate' => '4.56'})
+      rates = attributes[:rates]
+      expect(rates[:fixed_charge]).to eq({per: 'month', rate: '4.56'})
     end
 
     it "should include rate" do
-      attributes = JSON.parse(user_tariff.to_json)
+      attributes = user_tariff.to_hash
 
-      rates = attributes['rates']
-      expect(rates['rate0']["per"]).to eq('kwh')
-      expect(rates['rate0']["rate"]).to eq('1.23')
-      expect(rates['rate0']["from"]).to eq("00:00")
-      expect(rates['rate0']["to"]).to eq("23:30")
+      rates = attributes[:rates]
+      expect(rates[:rate0][:per]).to eq('kwh')
+      expect(rates[:rate0][:rate]).to eq('1.23')
+      expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
+      expect(rates[:rate0][:to]).to eq({hour: "23", minutes: "30"})
     end
   end
 
@@ -79,37 +79,37 @@ describe UserTariff do
     let(:user_tariff_charges)  { [user_tariff_charge_1, user_tariff_charge_2] }
 
     it "should include basic fields" do
-      attributes = JSON.parse(user_tariff.to_json)
+      attributes = user_tariff.to_hash
 
-      expect(attributes['name']).to eq('My First Tariff')
-      expect(attributes['start_date']).to eq('01/04/2021')
-      expect(attributes['end_date']).to eq('31/03/2022')
-      expect(attributes['source']).to eq('manually_entered')
-      expect(attributes['type']).to eq('differential')
-      expect(attributes['sub_type']).to eq('')
-      expect(attributes['vat']).to eq('5%')
+      expect(attributes[:name]).to eq('My First Tariff')
+      expect(attributes[:start_date]).to eq('01/04/2021')
+      expect(attributes[:end_date]).to eq('31/03/2022')
+      expect(attributes[:source]).to eq(:manually_entered)
+      expect(attributes[:type]).to eq(:differential)
+      expect(attributes[:sub_type]).to eq('')
+      expect(attributes[:vat]).to eq('5%')
     end
 
     it "should include standing charges" do
-      attributes = JSON.parse(user_tariff.to_json)
+      attributes = user_tariff.to_hash
 
-      rates = attributes['rates']
-      expect(rates['fixed_charge']).to eq({'per' => 'month', 'rate' => '4.56'})
-      expect(rates['agreed_availability_charge']).to eq({'per' => 'kva', 'rate' => '6.78'})
+      rates = attributes[:rates]
+      expect(rates[:fixed_charge]).to eq({:per => 'month', :rate => '4.56'})
+      expect(rates[:agreed_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
     end
 
     it "should include rates" do
-      attributes = JSON.parse(user_tariff.to_json)
+      attributes = user_tariff.to_hash
 
-      rates = attributes['rates']
-      expect(rates['rate0']["per"]).to eq('kwh')
-      expect(rates['rate0']["rate"]).to eq('1.23')
-      expect(rates['rate0']["from"]).to eq("00:00")
-      expect(rates['rate0']["to"]).to eq("03:30")
-      expect(rates['rate1']["per"]).to eq('kwh')
-      expect(rates['rate1']["rate"]).to eq('2.46')
-      expect(rates['rate1']["from"]).to eq("04:00")
-      expect(rates['rate1']["to"]).to eq("23:30")
+      rates = attributes[:rates]
+      expect(rates[:rate0][:per]).to eq('kwh')
+      expect(rates[:rate0][:rate]).to eq('1.23')
+      expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
+      expect(rates[:rate0][:to]).to eq({hour: "03", minutes: "30"})
+      expect(rates[:rate1][:per]).to eq('kwh')
+      expect(rates[:rate1][:rate]).to eq('2.46')
+      expect(rates[:rate1][:from]).to eq({hour: "04", minutes: "00"})
+      expect(rates[:rate1][:to]).to eq({hour: "23", minutes: "30"})
     end
   end
 end

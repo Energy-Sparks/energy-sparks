@@ -134,12 +134,12 @@ describe 'user tariffs', type: :system do
         click_button('Next')
 
         expect(page).to have_content('Edit electricity tariff')
-        click_button('Economy 7')
+        click_button('Day/Night tariff')
 
         expect(page).to have_content('Energy charges')
         expect(page).to have_content('My First Diff Tariff electricity for 2021-04-01 to 2022-03-31')
 
-        click_link('Add energy charge')
+        click_link('Add rate')
 
         select '00', from: 'user_tariff_price_start_time_4i'
         select '00', from: 'user_tariff_price_start_time_5i'

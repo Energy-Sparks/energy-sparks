@@ -12,9 +12,9 @@
 <br/>
 <br/>
 
-<p>Or a rate which varies by time of day (e.g. Economy7, day/night rates)</p>
+<p>Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)</p>
 
 <%= simple_form_for [@school, @user_tariff] do |f| %>
   <%= f.hidden_field :flat_rate, value: false %>
-  <%= submit_tag "Economy 7", class: 'btn btn-info' %>
+  <%= submit_tag "Day/Night tariff", class: 'btn btn-info' %>
 <% end %>

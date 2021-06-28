@@ -34,17 +34,21 @@ class UserTariff < ApplicationRecord
     fuel_type.to_sym == :gas
   end
 
-  def to_json(*_args)
+  def meter_attribute
+    MeterAttribute.new(attribute_type: :accounting_tariff_generic, input_data: to_hash)
+  end
+
+  def to_hash
     {
-      "start_date" => start_date.to_s(:es_compact),
-      "end_date" => end_date.to_s(:es_compact),
-      "source" => "manually_entered",
-      "name" => name,
-      "type" => flat_rate ? "flat" : "differential",
-      "sub_type" => "",
-      "vat" => vat_rate,
-      "rates" => rates,
-    }.to_json
+      start_date: start_date.to_s(:es_compact),
+      end_date: end_date.to_s(:es_compact),
+      source: :manually_entered,
+      name: name,
+      type: flat_rate ? :flat : :differential,
+      sub_type: '',
+      vat: vat_rate,
+      rates: rates,
+    }
   end
 
   private
@@ -52,11 +56,19 @@ class UserTariff < ApplicationRecord
   def rates
     attrs = {}
     user_tariff_prices.each_with_index do |price, idx|
-      attrs["rate#{idx}"] = { "rate" => price.value.to_s, "per" => price.units.to_s, "from" => price.start_time.to_s(:time), "to" => price.end_time.to_s(:time) }
+      attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time) }
     end
     user_tariff_charges.each do |charge|
-      attrs[charge.charge_type.to_s] = { "rate" => charge.value.to_s, "per" => charge.units.to_s }
+      attrs[charge.charge_type.to_sym] = { rate: charge.value.to_s, per: charge.units.to_s }
     end
     attrs
+  end
+
+  def hour_minutes(time)
+    hm = time.to_s(:time).split(':')
+    {
+      hour: hm.first,
+      minutes: hm.last
+    }
   end
 end
