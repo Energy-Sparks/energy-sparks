@@ -1,0 +1,7 @@
+<h4>Edit account</h4>
+
+<%= simple_form_for @user, url: onboarding_user_path(@school_onboarding, @user), remote: true do |f| %>
+  <%= render 'form', f: f, user: @user, school_onboarding: @school_onboarding %>
+  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  <%= f.submit 'Update account', class: 'btn btn-rounded'%>
+<% end %>

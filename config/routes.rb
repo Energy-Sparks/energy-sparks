@@ -64,6 +64,7 @@ Rails.application.routes.draw do
       resource :pupil_account,  only: [:new, :create, :edit, :update], controller: 'pupil_account'
       resource :completion,     only: [:new, :create, :show], controller: 'completion'
       resources :meters,        only: [:new, :create, :edit, :update]
+      resources :users,         only: [:index, :new, :create, :edit, :update, :destroy]
       resource :school_times,   only: [:edit, :update]
       resources :inset_days,    only: [:new, :create, :edit, :update, :destroy]
       resources :contacts,      only: [:new, :create, :edit, :update, :destroy]
@@ -158,6 +159,17 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
+      resources :user_tariffs do
+        resources :user_tariff_prices
+        resources :user_tariff_charges
+        collection do
+          get :choose_meters, to: 'user_tariffs#choose_meters'
+        end
+        member do
+          get :choose_type, to: 'user_tariffs#choose_type'
+        end
+      end
+
     end
 
     # Maintain old scoreboard URL

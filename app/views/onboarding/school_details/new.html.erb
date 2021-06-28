@@ -1,5 +1,13 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
+    <h1>Step 2: Tell us about your school</h1>
+
+    <p>
+    Tell us about your school so that we can tailor the activities and insights
+    we provide to you and your pupils, so that you can get the best from our
+    service.
+    </p>
+
     <%= simple_form_for(@school, url: onboarding_school_details_path(@school_onboarding)) do |f| %>
       <%= render 'form', school: @school, school_onboarding: @school_onboarding, key_stages: @key_stages %>
     <% end %>

@@ -1,19 +1,10 @@
-<div class="row justify-content-md-center">
-  <div class="col col-md-10 col-lg-8">
-    <h1>New meter</h1>
-    <p>The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters).</p>
-    <p>Your MPAN should be printed on your electricity bill. It is a 13 digit number, and can be referred to as a ‘Supply Number’. An example number is: 20 0001 5001 165. Do not confuse your MPAN with your electricity supplier account number or the meter serial number printed on your electricity meter.</p>
+<%= simple_form_for meter, url: url do |form| %>
 
-    <p>Your MPRN should be printed on your gas bill. The format of a MPRN is standard. It is between 6-10 numerical digits long. Do not confuse your MPRN with your gas supplier account number or the meter serial number printed on your gas meter.</p>
-    <%= simple_form_for meter, url: url do |form| %>
+  <%= form.input :meter_type, as: :radio_buttons, collection: Meter::CREATABLE_METER_TYPES.map(&:to_s), label_method: :humanize %>
 
-      <%= form.input :meter_type, as: :radio_buttons, collection: Meter::CREATABLE_METER_TYPES.map(&:to_s), label_method: :humanize %>
-
-      <%= form.input :mpan_mprn, as: :string, label: 'Meter Point Number' %>
-      <%= form.input :name, label: 'Meter Name', hint: 'You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.' %>
-      <%= form.input :meter_serial_number, labeL: 'Serial number', as: :string %>
-      <%= form.button :submit %>
-      <%= link_to 'Back', new_onboarding_completion_path(school_onboarding, anchor: 'meters'), class: 'btn' %>
-    <% end %>
-  </div>
-</div>
+  <%= form.input :mpan_mprn, as: :string, label: 'Meter Point Number' %>
+  <%= form.input :name, label: 'Meter Name', hint: 'You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.' %>
+  <%= form.input :meter_serial_number, labeL: 'Serial number', as: :string %>
+  <%= form.button :submit %>
+  <%= link_to 'Back', new_onboarding_completion_path(school_onboarding, anchor: 'meters', show: 'meters'), class: 'btn' %>
+<% end %>

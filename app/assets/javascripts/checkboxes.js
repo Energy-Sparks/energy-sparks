@@ -14,4 +14,12 @@ $(document).ready(function() {
     $("form .must-check").closest('form').find(':submit').prop('disabled', true);
   }
 
+  $(document).on('click','.disable-attributes',function(){
+    $(this).closest('.form-group').find(':checkbox').prop('checked',this.checked);
+    $(this).closest('.form-group').find('select').prop('disabled', this.checked);
+    $(this).closest('.form-group').find('input').prop('disabled', this.checked);
+    $(this).prop('disabled', false);
+    $(this).next('.disabled-label').toggle();
+  });
+
 });

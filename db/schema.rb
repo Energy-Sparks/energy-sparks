@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_102549) do
+ActiveRecord::Schema.define(version: 2021_06_24_122050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -372,6 +372,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
+    t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -830,6 +831,13 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
   end
 
+  create_table "meters_user_tariffs", id: false, force: :cascade do |t|
+    t.bigint "meter_id"
+    t.bigint "user_tariff_id"
+    t.index ["meter_id"], name: "index_meters_user_tariffs_on_meter_id"
+    t.index ["user_tariff_id"], name: "index_meters_user_tariffs_on_user_tariff_id"
+  end
+
   create_table "newsletters", force: :cascade do |t|
     t.text "title", null: false
     t.text "url", null: false
@@ -1022,6 +1030,8 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.bigint "template_calendar_id"
     t.bigint "scoreboard_id"
     t.bigint "weather_station_id"
+    t.boolean "subscribe_to_newsletter", default: true
+    t.bigint "subscribe_users_to_newsletter", default: [], null: false, array: true
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -1253,6 +1263,39 @@ ActiveRecord::Schema.define(version: 2021_06_09_102549) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_tariff_charges", force: :cascade do |t|
+    t.bigint "user_tariff_id", null: false
+    t.text "charge_type", null: false
+    t.decimal "value", null: false
+    t.text "units", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_tariff_id"], name: "index_user_tariff_charges_on_user_tariff_id"
+  end
+
+  create_table "user_tariff_prices", force: :cascade do |t|
+    t.bigint "user_tariff_id", null: false
+    t.decimal "value", null: false
+    t.text "units", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.time "start_time", default: "2000-01-01 00:00:00", null: false
+    t.time "end_time", default: "2000-01-01 23:30:00", null: false
+    t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
+  end
+
+  create_table "user_tariffs", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.text "name", null: false
+    t.text "fuel_type", null: false
+    t.boolean "flat_rate", default: true
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 
   create_table "users", force: :cascade do |t|

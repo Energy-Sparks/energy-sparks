@@ -1,7 +1,7 @@
 namespace :alerts do
   desc 'Run alert subscription job'
   task generate_subscriptions: [:environment] do
-    puts Time.zone.now
+    puts "#{DateTime.now.utc} Generate subscriptions start"
     schools = School.process_data.visible.with_config
 
     schools.each do |school|
@@ -14,6 +14,6 @@ namespace :alerts do
       Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: subscription_frequency)
     end
 
-    puts Time.zone.now
+    puts "#{DateTime.now.utc} Generate subscriptions end"
   end
 end

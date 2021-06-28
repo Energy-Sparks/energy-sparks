@@ -2,22 +2,23 @@
 #
 # Table name: school_onboardings
 #
-#  contact_email         :string           not null
-#  created_at            :datetime         not null
-#  created_by_id         :bigint(8)
-#  created_user_id       :bigint(8)
-#  dark_sky_area_id      :bigint(8)
-#  id                    :bigint(8)        not null, primary key
-#  notes                 :text
-#  school_group_id       :bigint(8)
-#  school_id             :bigint(8)
-#  school_name           :string           not null
-#  scoreboard_id         :bigint(8)
-#  solar_pv_tuos_area_id :bigint(8)
-#  template_calendar_id  :bigint(8)
-#  updated_at            :datetime         not null
-#  uuid                  :string           not null
-#  weather_station_id    :bigint(8)
+#  contact_email           :string           not null
+#  created_at              :datetime         not null
+#  created_by_id           :bigint(8)
+#  created_user_id         :bigint(8)
+#  dark_sky_area_id        :bigint(8)
+#  id                      :bigint(8)        not null, primary key
+#  notes                   :text
+#  school_group_id         :bigint(8)
+#  school_id               :bigint(8)
+#  school_name             :string           not null
+#  scoreboard_id           :bigint(8)
+#  solar_pv_tuos_area_id   :bigint(8)
+#  subscribe_to_newsletter :boolean          default(TRUE)
+#  template_calendar_id    :bigint(8)
+#  updated_at              :datetime         not null
+#  uuid                    :string           not null
+#  weather_station_id      :bigint(8)
 #
 # Indexes
 #
@@ -66,12 +67,41 @@ class SchoolOnboarding < ApplicationRecord
     (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
   end
 
-  def incomplete?
-    events.where(event: :onboarding_complete).empty?
+  def complete?
+    has_event?(:onboarding_complete)
   end
 
-  def complete?
-    events.where(event: :onboarding_complete).any?
+  def incomplete?
+    !complete?
+  end
+
+  def started?
+    !has_only_sent_email_or_reminder?
+  end
+
+  def onboarding_user_created?
+    has_event?(:onboarding_user_created)
+  end
+
+  def school_details_created?
+    has_event?(:school_details_created)
+  end
+
+  def pupil_account_created?
+    has_event?(:pupil_account_created)
+  end
+
+  def permission_given?
+    has_event?(:permission_given)
+  end
+
+  def additional_users_created?
+    school.present? && school.users.count {|u| !u.pupil?} > 1
+  end
+
+  def ready_for_review?
+    #adding pupil password is trigger for last step
+    pupil_account_created?
   end
 
   def to_param
