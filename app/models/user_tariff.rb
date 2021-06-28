@@ -39,16 +39,20 @@ class UserTariff < ApplicationRecord
   end
 
   def to_hash
-    {
+    hsh = {
       start_date: start_date.to_s(:es_compact),
       end_date: end_date.to_s(:es_compact),
       source: :manually_entered,
       name: name,
       type: flat_rate ? :flat : :differential,
       sub_type: '',
-      vat: vat_rate,
       rates: rates,
     }
+    # remove when 0% added to analytics
+    if ['5%', '20%'].include?(vat_rate)
+      hsh[:vat] = vat_rate
+    end
+    hsh
   end
 
   private

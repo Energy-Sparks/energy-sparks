@@ -4,7 +4,30 @@ describe UserTariff do
 
   let(:school) { create(:school) }
 
-  context 'with flat rate electricity tariff' do
+  context 'with only basic fields' do
+
+    let(:user_tariff)  do
+      UserTariff.new(
+        school: school,
+        start_date: '2021-04-01',
+        end_date: '2022-03-31',
+        name: 'My Empty Tariff',
+        flat_rate: true,
+        vat_rate: '0%',
+        )
+    end
+
+    it "should create valid analytics meter attribute" do
+      meter_attribute = MeterAttribute.to_analytics([user_tariff.meter_attribute])
+
+      expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My Empty Tariff')
+      expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
+      expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
+      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(nil)
+    end
+  end
+
+    context 'with flat rate electricity tariff' do
 
     let(:user_tariff)  do
       UserTariff.new(
