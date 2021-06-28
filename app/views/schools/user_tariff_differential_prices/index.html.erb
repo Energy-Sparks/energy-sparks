@@ -6,7 +6,7 @@
 
 <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
 
-<%= link_to "Add energy charge", new_school_user_tariff_user_tariff_price_path(@school, @user_tariff), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+<%= link_to "Add rate", new_school_user_tariff_user_tariff_differential_price_path(@school, @user_tariff), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
 
 <br/>
 <br/>

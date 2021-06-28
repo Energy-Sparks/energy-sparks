@@ -14,4 +14,10 @@
     <%= f.input :end_date %>
   </div>
 </div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <%= f.label :vat_rate, 'VAT rate' %>
+    <%= f.select :vat_rate, options_for_select(['0%', '5%', '20%'], f.object ? f.object.vat_rate : ''), {required: :true,}, { class: 'form-control' } %>
+  </div>
+</div>
 <%= f.submit 'Next', class: 'btn'%>

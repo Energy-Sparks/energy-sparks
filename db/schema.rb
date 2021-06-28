@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_122050) do
+ActiveRecord::Schema.define(version: 2021_06_28_103042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1295,6 +1295,7 @@ ActiveRecord::Schema.define(version: 2021_06_24_122050) do
     t.date "end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "vat_rate"
     t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 
@@ -1511,6 +1512,8 @@ ActiveRecord::Schema.define(version: 2021_06_24_122050) do
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
+  add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict

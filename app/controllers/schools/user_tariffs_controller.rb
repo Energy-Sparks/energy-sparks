@@ -21,6 +21,13 @@ module Schools
     end
 
     def choose_meters
+      if params[:fuel_type] == 'electricity'
+        @meters = @school.meters.electricity
+      elsif params[:fuel_type] == 'gas'
+        @meters = @school.meters.gas
+      else
+        @meters = []
+      end
     end
 
     def choose_type
@@ -35,10 +42,6 @@ module Schools
     end
 
     def show
-      respond_to do |format|
-        format.html
-        format.json { render json: @user_tariff.to_json }
-      end
     end
 
     def destroy
@@ -49,7 +52,7 @@ module Schools
     private
 
     def user_tariff_params
-      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, meter_ids: [])
+      params.require(:user_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, :vat_rate, meter_ids: [])
     end
   end
 end
