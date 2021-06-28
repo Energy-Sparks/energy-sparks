@@ -1295,6 +1295,7 @@ ActiveRecord::Schema.define(version: 2021_06_24_122050) do
     t.date "end_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "vat_rate"
     t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 

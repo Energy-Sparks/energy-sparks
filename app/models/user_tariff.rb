@@ -42,7 +42,7 @@ class UserTariff < ApplicationRecord
       "name" => name,
       "type" => flat_rate ? "flat" : "differential",
       "sub_type" => "",
-      "vat" => "5%",
+      "vat" => vat_rate,
       "rates" => rates,
     }.to_json
   end
