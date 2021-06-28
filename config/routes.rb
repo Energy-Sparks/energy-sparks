@@ -160,7 +160,9 @@ Rails.application.routes.draw do
 
       resource :consents, only: [:show, :create]
       resources :user_tariffs do
-        resources :user_tariff_prices
+        resources :user_tariff_prices, only: [:index, :new, :edit]
+        resources :user_tariff_flat_prices
+        resources :user_tariff_differential_prices
         resources :user_tariff_charges
         collection do
           get :choose_meters, to: 'user_tariffs#choose_meters'

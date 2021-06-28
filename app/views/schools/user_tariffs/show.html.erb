@@ -3,11 +3,21 @@
 <h2><%= render 'title', user_tariff: @user_tariff %> </h2>
 
 <h4>
+  VAT rate: <%= @user_tariff.vat_rate %>
+</h4>
+
+<hr/>
+
+<h4>
   Energy charges
   <%= link_to "Edit", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
 </h4>
 
-<%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: false %>
+<% if @user_tariff.flat_rate? %>
+  <%= render 'schools/user_tariffs/flat_rate', school: @school, user_tariff: @user_tariff, allow_edits: false %>
+<% else %>
+  <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: false %>
+<% end %>
 
 <h4>
   Standing charges

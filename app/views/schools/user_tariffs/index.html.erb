@@ -22,20 +22,29 @@
       <div id="collapse<%= idx %>" class="collapse" aria-labelledby="heading<%= idx %>" data-parent="#accordion<%= idx %>">
         <div class="card-body">
           <div class="padded-row">
-            <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
+            <p>VAT rate: <%= user_tariff.vat_rate %></p>
+          </div>
+          <div class="padded-row">
+            <% if user_tariff.flat_rate? %>
+              <%= render 'schools/user_tariffs/flat_rate', school: @school, user_tariff: user_tariff, allow_edits: false %>
+            <% else %>
+              <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
+            <% end %>
             <br/>
             <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
           </div>
-          <%# if user_tariff.meters.present? %>
-            <div class="padded-row">
+          <div class="padded-row">
+            <% if user_tariff.meters.present? %>
               <p>The following meters are associated with this tariff:</p>
               <ul>
                 <% user_tariff.meters.each do |meter| %>
                   <li><%= meter.mpan_mprn %></li>
                 <% end %>
               </ul>
-            </div>
-          <%# end %>
+            <% else %>
+              <p>There are no meters associated with this tariff</p>
+            <% end %>
+          </div>
           <div class="padded-row">
             <%= link_to "View as JSON", school_user_tariff_path(@school, user_tariff, format: :json), class: 'btn', target: '_blank' if can? :download, UserTariff %>
             <%= link_to "Edit", edit_school_user_tariff_path(@school, user_tariff), class: 'btn' %>
