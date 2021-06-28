@@ -9,50 +9,23 @@
 <br/>
 <br/>
 
-<% @user_tariffs.select{|tariff| tariff.electricity?}.each_with_index do |user_tariff, idx| %>
-  <div id="accordion<%= idx %>" class="accordion-block">
-    <div class="card">
-      <div class="card-header" id="heading<%= idx %>">
-        <h5 class="mb-0">
-          <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse<%= idx %>" href="#collapse<%= idx %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-            <%= render 'title', user_tariff: user_tariff %>
-          </a>
-        </h5>
-      </div>
-      <div id="collapse<%= idx %>" class="collapse" aria-labelledby="heading<%= idx %>" data-parent="#accordion<%= idx %>">
-        <div class="card-body">
-          <div class="padded-row">
-            <p>VAT rate: <%= user_tariff.vat_rate %></p>
-          </div>
-          <div class="padded-row">
-            <% if user_tariff.flat_rate? %>
-              <%= render 'schools/user_tariffs/flat_rate', school: @school, user_tariff: user_tariff, allow_edits: false %>
-            <% else %>
-              <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
-            <% end %>
-            <br/>
-            <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: user_tariff, allow_edits: false %>
-          </div>
-          <div class="padded-row">
-            <% if user_tariff.meters.present? %>
-              <p>The following meters are associated with this tariff:</p>
-              <ul>
-                <% user_tariff.meters.each do |meter| %>
-                  <li><%= meter.mpan_mprn %></li>
-                <% end %>
-              </ul>
-            <% else %>
-              <p>There are no meters associated with this tariff</p>
-            <% end %>
-          </div>
-          <div class="padded-row">
-            <%= link_to "Review", school_user_tariff_path(@school, user_tariff), class: 'btn' if can? :download, UserTariff %>
-            <%= link_to "Edit", edit_school_user_tariff_path(@school, user_tariff), class: 'btn' %>
-            <%= link_to "Delete", school_user_tariff_path(@school, user_tariff), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<% @electricity_tariffs.each do |user_tariff| %>
+  <%= render 'tariff', user_tariff: user_tariff, school: @school %>
+<% end %>
+
+<br/>
+<br/>
+
+<h2>Gas</h2>
+
+<div>
+  <%= link_to 'Add gas tariff', choose_meters_school_user_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>
+</div>
+
+<br/>
+<br/>
+
+<% @gas_tariffs.each do |user_tariff| %>
+  <%= render 'tariff', user_tariff: user_tariff, school: @school %>
 <% end %>
 

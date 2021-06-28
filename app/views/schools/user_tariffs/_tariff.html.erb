@@ -1,0 +1,44 @@
+<div id="accordion<%= user_tariff.id %>" class="accordion-block">
+  <div class="card">
+    <div class="card-header" id="heading<%= user_tariff.id %>">
+      <h5 class="mb-0">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse<%= user_tariff.id %>" href="#collapse<%= user_tariff.id %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+          <%= render 'title', user_tariff: user_tariff %>
+        </a>
+      </h5>
+    </div>
+    <div id="collapse<%= user_tariff.id %>" class="collapse" aria-labelledby="heading<%= user_tariff.id %>" data-parent="#accordion<%= user_tariff.id %>">
+      <div class="card-body">
+        <div class="padded-row">
+          <p>VAT rate: <%= user_tariff.vat_rate %></p>
+        </div>
+        <div class="padded-row">
+          <% if user_tariff.flat_rate? %>
+            <%= render 'schools/user_tariffs/flat_rate', school: school, user_tariff: user_tariff, allow_edits: false %>
+          <% else %>
+            <%= render 'schools/user_tariffs/rates_table', school: school, user_tariff: user_tariff, allow_edits: false %>
+          <% end %>
+          <br/>
+          <%= render 'schools/user_tariffs/charges_table', school: school, user_tariff: user_tariff, allow_edits: false %>
+        </div>
+        <div class="padded-row">
+          <% if user_tariff.meters.present? %>
+            <p>The following meters are associated with this tariff:</p>
+            <ul>
+              <% user_tariff.meters.each do |meter| %>
+                <li><%= meter.mpan_mprn %></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>There are no meters associated with this tariff</p>
+          <% end %>
+        </div>
+        <div class="padded-row">
+          <%= link_to "Review", school_user_tariff_path(school, user_tariff), class: 'btn' if can? :download, UserTariff %>
+          <%= link_to "Edit", edit_school_user_tariff_path(school, user_tariff), class: 'btn' %>
+          <%= link_to "Delete", school_user_tariff_path(school, user_tariff), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
