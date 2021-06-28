@@ -5,6 +5,7 @@ describe 'user tariffs', type: :system do
   let!(:school)                   { create_active_school(name: "Big School")}
   let!(:admin)                    { create(:admin) }
   let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }
+  let!(:gas_meter)                      { create(:gas_meter, school: school, mpan_mprn: '999888777') }
 
   context 'as a school admin' do
     let!(:school_admin)                    { create(:school_admin, school: school) }
@@ -42,6 +43,9 @@ describe 'user tariffs', type: :system do
         click_link('Add electricity tariff')
 
         expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content(electricity_meter.mpan_mprn)
+        expect(page).not_to have_content(gas_meter.mpan_mprn)
+
         click_button('Next')
 
         expect(page).to have_content('Add electricity tariff')
@@ -134,12 +138,12 @@ describe 'user tariffs', type: :system do
         click_button('Next')
 
         expect(page).to have_content('Edit electricity tariff')
-        click_button('Economy 7')
+        click_button('Day/Night tariff')
 
         expect(page).to have_content('Energy charges')
         expect(page).to have_content('My First Diff Tariff electricity for 2021-04-01 to 2022-03-31')
 
-        click_link('Add energy charge')
+        click_link('Add rate')
 
         select '00', from: 'user_tariff_price_start_time_4i'
         select '00', from: 'user_tariff_price_start_time_5i'
