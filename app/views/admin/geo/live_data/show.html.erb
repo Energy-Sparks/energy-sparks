@@ -1,0 +1,36 @@
+<% if @token && @system_id %>
+  <% content_for :head do %>
+    <meta http-equiv="refresh" content="3" />
+  <% end %>
+<% end %>
+
+<h1>Geo Live Data</h1>
+
+<br/>
+
+<% if @data %>
+
+  <h3>Power timestamp</h3>
+  <p><%= "#{Time.at(@data['powerTimestamp']).to_s}" %></p>
+
+  <h3>Power readings</h3>
+
+  <% @data['power'].each do |power| %>
+    <p><%= "#{power['type']}" %> : <%= "#{power['watts']}" %> watts</p>
+  <% end %>
+
+  <br/>
+  <br/>
+
+  <%= link_to 'Stop', admin_geo_live_data_path, class: 'btn' %>
+
+<% else %>
+
+  <%= form_tag admin_geo_live_data_path do %>
+    <%= label_tag "System Id" %>
+    <%= text_field_tag "system_id", @system_id, class: 'form-control', required: true %>
+    <br/>
+    <%= submit_tag 'Start', class: 'btn' %>
+  <% end %>
+
+<% end %>
