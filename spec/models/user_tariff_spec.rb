@@ -53,6 +53,14 @@ describe UserTariff do
       expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
       expect(rates[:rate0][:to]).to eq({hour: "23", minutes: "30"})
     end
+
+    it "should create valid analytics meter attribute" do
+      meter_attribute = MeterAttribute.to_analytics([user_tariff.meter_attribute])
+
+      expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My First Tariff')
+      expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
+      expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
+    end
   end
 
   context 'with differential electricity tariff' do
@@ -110,6 +118,14 @@ describe UserTariff do
       expect(rates[:rate1][:rate]).to eq('2.46')
       expect(rates[:rate1][:from]).to eq({hour: "04", minutes: "00"})
       expect(rates[:rate1][:to]).to eq({hour: "23", minutes: "30"})
+    end
+
+    it "should create valid analytics meter attribute" do
+      meter_attribute = MeterAttribute.to_analytics([user_tariff.meter_attribute])
+
+      expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My First Tariff')
+      expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
+      expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:differential)
     end
   end
 end
