@@ -5,7 +5,7 @@
 <%= simple_form_for :user_tariff, url: new_school_user_tariff_path(@school), method: :get do |f| %>
   <br/>
   <%= f.hidden_field :fuel_type, value: params[:fuel_type] %>
-  <%= f.input :meter_ids, as: :check_boxes, collection: @school.meters.map{|meter| [meter.mpan_mprn, meter.id]} %>
+  <%= f.input :meter_ids, as: :check_boxes, collection: @meters.map{|meter| [meter.mpan_mprn, meter.id]} %>
   <br/>
   <%= submit_tag "Next", class: 'btn btn-info' %>
 <% end %>

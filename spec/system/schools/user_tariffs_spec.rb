@@ -5,6 +5,7 @@ describe 'user tariffs', type: :system do
   let!(:school)                   { create_active_school(name: "Big School")}
   let!(:admin)                    { create(:admin) }
   let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }
+  let!(:gas_meter)                      { create(:gas_meter, school: school, mpan_mprn: '999888777') }
 
   context 'as a school admin' do
     let!(:school_admin)                    { create(:school_admin, school: school) }
@@ -42,6 +43,9 @@ describe 'user tariffs', type: :system do
         click_link('Add electricity tariff')
 
         expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content(electricity_meter.mpan_mprn)
+        expect(page).not_to have_content(gas_meter.mpan_mprn)
+
         click_button('Next')
 
         expect(page).to have_content('Add electricity tariff')

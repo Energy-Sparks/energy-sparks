@@ -21,6 +21,13 @@ module Schools
     end
 
     def choose_meters
+      if params[:fuel_type] == 'electricity'
+        @meters = @school.meters.electricity
+      elsif params[:fuel_type] == 'gas'
+        @meters = @school.meters.gas
+      else
+        @meters = []
+      end
     end
 
     def choose_type
