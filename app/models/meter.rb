@@ -143,8 +143,12 @@ class Meter < ApplicationRecord
     GlobalMeterAttribute.for(self)
   end
 
+  def user_tariff_meter_attributes
+    user_tariffs.map(&:meter_attribute)
+  end
+
   def all_meter_attributes
-    global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active
+    global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active + user_tariff_meter_attributes
   end
 
   def meter_attributes_to_analytics
