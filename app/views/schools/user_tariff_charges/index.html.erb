@@ -1,6 +1,8 @@
 <h1>Standing charges</h1>
 
-<h2><%= render 'title', user_tariff: @user_tariff %> </h2>
+<h2><%= user_tariff_title(@user_tariff) %></h2>
+
+<%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
 
 <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true"></div>
 

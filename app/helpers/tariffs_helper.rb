@@ -1,4 +1,8 @@
 module TariffsHelper
+  def user_tariff_title(user_tariff)
+    "#{user_tariff.name} #{user_tariff.fuel_type} for #{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)}"
+  end
+
   def user_tariff_charge_types
     UserTariffCharge::CHARGE_TYPES.keys.map {|k| [k.to_s.humanize, k]}
   end

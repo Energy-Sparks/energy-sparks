@@ -53,13 +53,15 @@ describe 'user tariffs', type: :system do
         click_button('Next')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Gas Tariff gas for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Gas Tariff gas for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('999888777')
 
         fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Gas Tariff gas for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Gas Tariff gas for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('999888777')
 
         click_link('Add standing charge')
         select 'Fixed charge', from: 'Charge type'
@@ -69,6 +71,7 @@ describe 'user tariffs', type: :system do
 
         click_link('Next')
         expect(page).to have_content('Review tariff')
+        expect(page).to have_content('999888777')
         expect(page).to have_content('VAT rate: 5%')
         expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
         expect(page).to have_content('£4.56 per kVA')
@@ -139,13 +142,13 @@ describe 'user tariffs', type: :system do
         click_button('Simple')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Flat Tariff electricity for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Flat Tariff electricity for 01/04/2021 to 31/03/2022')
 
         fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Flat Tariff electricity for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Flat Tariff electricity for 01/04/2021 to 31/03/2022')
 
         click_link('Add standing charge')
         select 'Fixed charge', from: 'Charge type'
@@ -198,7 +201,7 @@ describe 'user tariffs', type: :system do
         click_button('Day/Night tariff')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Diff Tariff electricity for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Diff Tariff electricity for 01/04/2021 to 31/03/2022')
 
         click_link('Add rate')
 
@@ -217,7 +220,7 @@ describe 'user tariffs', type: :system do
         click_link('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Diff Tariff electricity for 2021-04-01 to 2022-03-31')
+        expect(page).to have_content('My First Diff Tariff electricity for 01/04/2021 to 31/03/2022')
 
         click_link('Add standing charge')
         select 'Fixed charge', from: 'Charge type'
@@ -244,8 +247,8 @@ describe 'user tariffs', type: :system do
       let!(:user_tariff)  do
         UserTariff.create(
           school: school,
-          start_date: '2021-04-01',
-          end_date: '2022-03-31',
+          start_date: '01/04/2021',
+          end_date: '31/03/2022',
           name: 'My First Tariff',
           fuel_type: :electricity,
           flat_rate: true,

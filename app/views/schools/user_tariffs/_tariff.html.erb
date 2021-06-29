@@ -3,7 +3,7 @@
     <div class="card-header" id="heading<%= user_tariff.id %>">
       <h5 class="mb-0">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse<%= user_tariff.id %>" href="#collapse<%= user_tariff.id %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-          <%= render 'title', user_tariff: user_tariff %>
+          <%= user_tariff_title(user_tariff) %>
         </a>
       </h5>
     </div>
@@ -22,16 +22,7 @@
           <%= render 'schools/user_tariffs/charges_table', school: school, user_tariff: user_tariff, allow_edits: false %>
         </div>
         <div class="padded-row">
-          <% if user_tariff.meters.present? %>
-            <p>The following meters are associated with this tariff:</p>
-            <ul>
-              <% user_tariff.meters.each do |meter| %>
-                <li><%= meter.mpan_mprn %></li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p>There are no meters associated with this tariff</p>
-          <% end %>
+          <%= render 'meters', user_tariff: user_tariff %>
         </div>
         <div class="padded-row">
           <%= link_to "Review", school_user_tariff_path(school, user_tariff), class: 'btn' if can? :download, UserTariff %>

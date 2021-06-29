@@ -1,6 +1,8 @@
 <h1>Edit <%= @user_tariff.fuel_type %> tariff</h1>
 
-<h2><%= render 'title', user_tariff: @user_tariff %> </h2>
+<h2><%= user_tariff_title(@user_tariff) %></h2>
+
+<%= render 'meters', user_tariff: @user_tariff %>
 
 <p>Is this a simple flat rate?</p>
 
