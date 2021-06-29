@@ -12,8 +12,8 @@
   <% if user_tariff.user_tariff_charges.any? %>
     <% user_tariff.user_tariff_charges.each do |user_tariff_charge| %>
       <tr class="rate-row">
-        <td><%= charge_type_humanized(user_tariff_charge.charge_type) %></td>
-        <td><%= number_to_currency(user_tariff_charge.value, unit: '£') %> per <%= charge_type_units_humanized(user_tariff_charge.units) %></td>
+        <td><%= user_tariff_charge_type_humanized(user_tariff_charge.charge_type) %></td>
+        <td><%= number_to_currency(user_tariff_charge.value, unit: '£') %> per <%= user_tariff_charge_type_units_humanized(user_tariff_charge.units) %></td>
         <% if allow_edits %>
           <td>
             <%= link_to "Edit", edit_school_user_tariff_user_tariff_charge_path(school, user_tariff, user_tariff_charge), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
