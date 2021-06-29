@@ -20,15 +20,48 @@ class UserTariffCharge < ApplicationRecord
   validates :charge_type, :value, :units, presence: true
 
   CHARGE_TYPES = {
-    duos_red: 'Duos red',
-    duos_amber: 'Duos amber',
-    duos_green: 'Duos green',
-    fixed_charge: 'Fixed charge',
-    agreed_availability_charge: 'Agreed availability charge',
-    reactive_power_charge: 'Reactive power charge',
-    settlement_agency_fee: 'Settlement agency fee',
-    half_hourly_data_charge: 'Half hourly data charge',
-    site_fee: 'Site fee',
+    standing_charge: {
+      units: [:day, :month, :quarter]
+    },
+    climate_change_levy: {
+      units: [:kwh]
+    },
+    renewable_energy_obligation: {
+      units: [:kwh]
+    },
+    feed_in_tariff_levy: {
+      units: [:kwh]
+    },
+    agreed_capacity: {
+      units: [:day, :month, :quarter]
+    },
+    agreed_availability_charge: {
+      units: [:kva]
+    },
+    settlement_agency_fee: {
+      units: [:day, :month, :quarter]
+    },
+    reactive_power_charge: {
+      units: [:kva]
+    },
+    half_hourly_data_charge: {
+      units: [:day, :month, :quarter]
+    },
+    fixed_charge: {
+      units: [:day, :month, :quarter]
+    },
+    nhh_metering_agent_charge: {
+      units: [:kwh, :day, :month, :quarter]
+    },
+    meter_asset_provider_charge: {
+      units: [:day, :month, :quarter]
+    },
+    site_fee: {
+      units: [:day, :month, :quarter]
+    },
+    other: {
+      units: [:kwh, :day, :month, :quarter]
+    },
   }.freeze
 
   CHARGE_TYPE_UNITS = {
@@ -38,12 +71,4 @@ class UserTariffCharge < ApplicationRecord
     month: 'month',
     quarter: 'quarter',
   }.freeze
-
-  def self.charge_types
-    CHARGE_TYPES.map {|k, v| [v, k]}
-  end
-
-  def self.charge_type_units
-    CHARGE_TYPE_UNITS.map {|k, v| [v, k]}
-  end
 end
