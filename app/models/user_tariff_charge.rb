@@ -23,9 +23,6 @@ class UserTariffCharge < ApplicationRecord
     standing_charge: {
       units: [:day, :month, :quarter]
     },
-    climate_change_levy: {
-      units: [:kwh]
-    },
     renewable_energy_obligation: {
       units: [:kwh]
     },
