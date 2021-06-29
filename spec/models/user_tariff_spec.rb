@@ -7,11 +7,12 @@ describe UserTariff do
   context 'with only basic fields' do
 
     let(:user_tariff)  do
-      UserTariff.new(
+      UserTariff.create(
         school: school,
         start_date: '2021-04-01',
         end_date: '2022-03-31',
         name: 'My Empty Tariff',
+        fuel_type: :electricity,
         flat_rate: true,
         vat_rate: '0%',
         )
@@ -30,11 +31,12 @@ describe UserTariff do
     context 'with flat rate electricity tariff' do
 
     let(:user_tariff)  do
-      UserTariff.new(
+      UserTariff.create(
         school: school,
         start_date: '2021-04-01',
         end_date: '2022-03-31',
         name: 'My First Tariff',
+        fuel_type: :electricity,
         flat_rate: true,
         vat_rate: '20%',
         user_tariff_prices: user_tariff_prices,
@@ -89,11 +91,12 @@ describe UserTariff do
   context 'with differential electricity tariff' do
 
     let(:user_tariff)  do
-      UserTariff.new(
+      UserTariff.create(
         school: school,
         start_date: '2021-04-01',
         end_date: '2022-03-31',
         name: 'My First Tariff',
+        fuel_type: :electricity,
         flat_rate: false,
         vat_rate: '5%',
         user_tariff_prices: user_tariff_prices,
