@@ -1,6 +1,8 @@
 <h1>Review tariff</h1>
 
-<h2><%= render 'title', user_tariff: @user_tariff %> </h2>
+<h2><%= user_tariff_title(@user_tariff) %></h2>
+
+<%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
 
 <h4>
   VAT rate: <%= @user_tariff.vat_rate %>
