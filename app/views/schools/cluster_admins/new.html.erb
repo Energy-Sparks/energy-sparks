@@ -1,0 +1,26 @@
+<h1>Add existing users as a school admin</h1>
+
+<p>
+  If you would like to add an existing Energy Sparks users as an administrator for
+  your school then provide the email address they registered with below.
+</p>
+
+<%= simple_form_for :user, url: school_cluster_admins_path(@school) do |f| %>
+  <% if !flash.empty? %>
+    <p><strong>We were unable to find a user with this email address. Please check that you have
+      the right address or <%= link_to 'add a new school admin', new_school_school_admin_path(@school) %> instead.
+    </strong>
+    </p>
+  <% end %>
+
+  <%= f.input :email, required: :true %>
+
+  <div class="custom-control custom-checkbox pb-3">
+    <input type="checkbox" class="custom-control-input" id="user_auto_create_alert_contact" name="user[auto_create_alert_contact]" checked >
+    <label class="custom-control-label" for="user_auto_create_alert_contact">Subscribe to school alerts</label>
+  </div>
+
+  <%= f.submit 'Add user', class: 'btn btn-rounded'%>
+  <%= link_to 'Cancel', school_users_path(@school), class: 'btn btn-secondary' %>
+
+<% end %>

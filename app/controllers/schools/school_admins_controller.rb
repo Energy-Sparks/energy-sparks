@@ -24,12 +24,12 @@ module Schools
     end
 
     def edit
-      @school_admin = @school.users.school_admin.find(params[:id])
+      @school_admin = @school.find_user_or_cluster_user_by_id(params[:id])
       authorize! :edit, @school_admin
     end
 
     def update
-      @school_admin = @school.users.school_admin.find(params[:id])
+      @school_admin = @school.find_user_or_cluster_user_by_id(params[:id])
       authorize! :update, @school_admin
       if @school_admin.update(school_admin_params)
         redirect_to school_users_path(@school)

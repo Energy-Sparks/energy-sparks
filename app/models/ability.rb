@@ -84,7 +84,13 @@ class Ability
       end
       can :manage, Observation, related_school_scope
       can :crud, Programme, related_school_scope
+
       can [:manage, :enable_alerts], User, related_school_scope
+
+      can [:manage, :enable_alerts], User do |other_user|
+        other_user.cluster_schools.include?(user.school)
+      end
+
       cannot :delete, User do |other_user|
         user.id == other_user.id
       end

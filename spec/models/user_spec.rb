@@ -38,6 +38,42 @@ describe User do
       end
     end
 
+    context "as a school admin" do
+      let(:school) { create(:school) }
+      let(:another_school) { create(:school) }
+      let(:user) { create(:school_admin, school: school) }
+
+      let(:other_admin) { create(:school_admin, school: school) }
+      let(:cluster_admin) { create(:school_admin, cluster_schools: [school]) }
+
+
+      %i[index show usage suggest_activity].each do |action|
+        it{ is_expected.to be_able_to(action, school) }
+      end
+
+      %w(ActivityType ActivityCategory).each do |thing|
+        it { is_expected.to_not be_able_to(:manage, thing.constantize.new) }
+      end
+
+      it { is_expected.to be_able_to(:manage, Activity.new(school: school)) }
+      it { is_expected.not_to be_able_to(:manage, Activity.new(school: another_school)) }
+      it { is_expected.to be_able_to(:read, ActivityCategory.new) }
+      it { is_expected.to be_able_to(:show, ActivityType.new) }
+
+      it "can manage another school admin for this school" do
+        expect(subject).to be_able_to(:manage, other_admin)
+      end
+
+      it "cannot manage another school admin" do
+        expect(subject).to_not be_able_to(:manage, create(:school_admin, school: another_school))
+      end
+
+      it "can manage cluster admin for this school" do
+        expect(subject).to be_able_to(:manage, cluster_admin)
+      end
+
+    end
+
     context "when is a school user" do
       let(:school) { create(:school) }
       let(:another_school) { create(:school) }

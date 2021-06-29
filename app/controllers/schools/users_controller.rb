@@ -1,18 +1,24 @@
 module Schools
   class UsersController < ApplicationController
     load_and_authorize_resource :school
-    load_and_authorize_resource :user, through: :school
-
 
     def index
       authorize! :manage_users, @school
-      @school_admins = (@users.school_admin + @school.cluster_users).uniq
+      @users = @school.users
+      @school_admins = (@school.cluster_users + @users.school_admin).uniq
       @staff = @users.staff
       @pupils = @users.pupil
     end
 
     def destroy
-      @user.destroy
+      authorize! :manage_users, @school
+      @user = @school.find_user_or_cluster_user_by_id(params[:id])
+      if @user.has_other_schools?
+        @user.cluster_schools.delete(@school)
+        @user.contacts.where(school: @school).delete_all
+      else
+        @user.destroy
+      end
       redirect_back fallback_location: school_users_path(@school)
     end
   end
