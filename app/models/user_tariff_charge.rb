@@ -59,6 +59,15 @@ class UserTariffCharge < ApplicationRecord
     site_fee: {
       units: [:day, :month, :quarter]
     },
+    duos_red: {
+      units: [:kwh]
+    },
+    duos_amber: {
+      units: [:kwh]
+    },
+    duos_green: {
+      units: [:kwh]
+    },
     other: {
       units: [:kwh, :day, :month, :quarter]
     },
