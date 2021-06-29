@@ -160,6 +160,10 @@ class School < ApplicationRecord
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
+  def find_user_or_cluster_user_by_id(id)
+    users.find_by_id(id) || cluster_users.find_by_id(id)
+  end
+
   def latest_alert_run
     alert_generation_runs.order(created_at: :desc).first
   end

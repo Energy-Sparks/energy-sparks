@@ -1,6 +1,7 @@
 module Schools
   class ClusterAdminsController < ApplicationController
     include AlertContactCreator
+    include NewsletterSubscriber
 
     load_and_authorize_resource :school
 
@@ -11,7 +12,9 @@ module Schools
       user = User.find_by_email(user_params[:email])
       if user
         user.add_cluster_school(@school)
-        user.save!
+        if user.save
+          create_alert_contact(@school, user) if auto_create_alert_contact?
+        end
         redirect_to school_users_path(@school), notice: "User added as school admin"
       else
         flash[:alert] = "User not found"

@@ -6,8 +6,6 @@
 </p>
 
 <%= simple_form_for :user, url: school_cluster_admins_path(@school) do |f| %>
-  <%= f.input :email, required: :true %>
-
   <% if !flash.empty? %>
     <p><strong>We were unable to find a user with this email address. Please check that you have
       the right address or <%= link_to 'add a new school admin', new_school_school_admin_path(@school) %> instead.
@@ -15,10 +13,14 @@
     </p>
   <% end %>
 
+  <%= f.input :email, required: :true %>
+
   <div class="custom-control custom-checkbox pb-3">
     <input type="checkbox" class="custom-control-input" id="user_auto_create_alert_contact" name="user[auto_create_alert_contact]" checked >
-    <label class="custom-control-label" for="user_auto_create_alert_contact">Auto create alert contact</label>
+    <label class="custom-control-label" for="user_auto_create_alert_contact">Subscribe to school alerts</label>
   </div>
 
-  <%= f.submit 'Add users', class: 'btn btn-rounded'%>
+  <%= f.submit 'Add user', class: 'btn btn-rounded'%>
+  <%= link_to 'Cancel', school_users_path(@school), class: 'btn btn-secondary' %>
+
 <% end %>
