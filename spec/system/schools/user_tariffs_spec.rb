@@ -238,5 +238,39 @@ describe 'user tariffs', type: :system do
         expect(UserTariff.last.meters).to match_array([electricity_meter])
       end
     end
+
+    context 'with existing user tariff' do
+
+      let!(:user_tariff)  do
+        UserTariff.create(
+          school: school,
+          start_date: '2021-04-01',
+          end_date: '2022-03-31',
+          name: 'My First Tariff',
+          fuel_type: :electricity,
+          flat_rate: true,
+          vat_rate: '20%',
+          user_tariff_prices: [user_tariff_price],
+          user_tariff_charges: [user_tariff_charge],
+          meters: [electricity_meter]
+        )
+      end
+
+      let(:user_tariff_price)  { UserTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: 'kwh') }
+      let(:user_tariff_charge)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
+
+      it 'shows meter attributes on the meter attributes page' do
+        visit admin_school_single_meter_attribute_path(school, electricity_meter)
+
+        expect(page).to have_content('My First Tariff')
+        expect(page).to have_content('manually_entered')
+        expect(page).to have_content('Thu, 01 Apr 2021')
+        expect(page).to have_content('Thu, 31 Mar 2022')
+        expect(page).to have_content('1.23')
+        expect(page).to have_content(':kwh')
+        expect(page).to have_content('4.56')
+        expect(page).to have_content(':month')
+      end
+    end
   end
 end
