@@ -13,7 +13,7 @@ module Schools
       if user
         user.add_cluster_school(@school)
         if user.save
-          create_alert_contact(@school, user) if auto_create_alert_contact?
+          create_or_update_alert_contact(@school, user) if auto_create_alert_contact?
         end
         redirect_to school_users_path(@school), notice: "User added as school admin"
       else
@@ -25,7 +25,7 @@ module Schools
     private
 
     def user_params
-      params.require(:user).permit(:email, :auto_create_alert_contact)
+      params.require(:user).permit(:email)
     end
   end
 end

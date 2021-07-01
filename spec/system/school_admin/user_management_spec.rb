@@ -78,7 +78,7 @@ describe 'School admin user management' do
       end
 
       it 'can create staff without generating an alert contact' do
-        uncheck 'Subscribe to alerts'
+        uncheck 'Subscribe to school alerts'
         expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
 
         staff = school.users.staff.first
@@ -112,6 +112,25 @@ describe 'School admin user management' do
       expect(school.users.staff.count).to eq(0)
     end
 
+    it 'can edit alert contact' do
+      staff = create(:staff, school: school)
+      contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
+      click_on 'Manage users'
+      within '.staff' do
+        click_on 'Edit'
+      end
+
+      uncheck "Subscribe to school alerts"
+      expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
+
+      within '.staff' do
+        click_on 'Edit'
+      end
+      expect(page).to_not have_checked_field('contact_auto_create_alert_contact')
+      check "Subscribe to school alerts"
+      expect { click_on 'Update account' }.to change { Contact.count }.by(1)
+
+    end
   end
 
   describe 'managing school admins' do
@@ -147,7 +166,7 @@ describe 'School admin user management' do
       end
 
       it 'doesnt create contact when requested' do
-        uncheck 'Subscribe to alerts'
+        uncheck 'Subscribe to school alerts'
         expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
       end
 
@@ -178,6 +197,34 @@ describe 'School admin user management' do
         expect(page).to have_content("Ms Jones")
         new_admin.reload
         expect(new_admin.name).to eq('Ms Jones')
+      end
+
+      it 'can edit alert contact' do
+        within '.school_admin' do
+          #this avoids problems with ambiguous matches in find/click_on
+          #find the row for the new admin, using name set above
+          tr = find(:xpath, "//td", text: new_admin.name).ancestor("tr")
+          #click on the edit for that row
+          within tr do
+            click_on 'Edit'
+          end
+        end
+        uncheck "Subscribe to school alerts"
+        expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
+
+        within '.school_admin' do
+          #this avoids problems with ambiguous matches in find/click_on
+          #find the row for the new admin, using name set above
+          tr = find(:xpath, "//td", text: new_admin.name).ancestor("tr")
+          #click on the edit for that row
+          within tr do
+            click_on 'Edit'
+          end
+        end
+        expect(page).to_not have_checked_field('contact_auto_create_alert_contact')
+        check "Subscribe to school alerts"
+        expect { click_on 'Update account' }.to change { Contact.count }.by(1)
+
       end
 
       context 'when deleting' do

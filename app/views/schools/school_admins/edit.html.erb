@@ -2,6 +2,6 @@
 
 <%= simple_form_for @school_admin, url: school_school_admin_path(@school, @school_admin) do |f| %>
   <%= render 'form', f: f %>
-  <%= render 'schools/users/auto_create_alert_contact' %>
+  <%= render 'schools/users/auto_create_alert_contact', f: f, school: @school, user: @school_admin %>
   <%= f.submit 'Update account', class: 'btn btn-rounded'%>
 <% end %>

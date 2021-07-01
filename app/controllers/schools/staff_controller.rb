@@ -31,6 +31,7 @@ module Schools
       @staff = @school.users.staff.find(params[:id])
       authorize! :update, @staff
       if @staff.update(staff_params)
+        update_alert_contact(@school, @staff)
         redirect_to school_users_path(@school)
       else
         render :edit

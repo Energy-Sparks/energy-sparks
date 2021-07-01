@@ -8,7 +8,6 @@
 </ul>
 <p>Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.</p>
 
-<div class="custom-control custom-checkbox pb-3">
-  <input type="checkbox" class="custom-control-input" id="user_auto_create_alert_contact" name="user[auto_create_alert_contact]" checked >
-  <label class="custom-control-label" for="user_auto_create_alert_contact">Subscribe to alerts</label>
-</div>
+<%= simple_fields_for :contact do |n| %>
+  <%= n.input :auto_create_alert_contact, label: "Subscribe to school alerts", as: :boolean, class: "custom-checkbox pb-3", wrapper_html: { id: "test", class: "custom-checkbox pb-3"}, label_html: {class: "custom-control-label"}, input_html: { class: "custom-control-input", checked: user.persisted? ? user.contacts.where(school: school).any? : true } %>
+<% end %>
