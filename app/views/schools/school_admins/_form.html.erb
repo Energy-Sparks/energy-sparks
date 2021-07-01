@@ -1,6 +1,3 @@
 <%= f.input :name, required: :true %>
 <%= f.input :email, required: :true %>
 <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is their primary role in relation to Energy Sparks?'%>
-
-<%= render 'schools/users/auto_create_alert_contact' %>
-<%= render 'schools/users/auto_subscribe_newsletter' %>

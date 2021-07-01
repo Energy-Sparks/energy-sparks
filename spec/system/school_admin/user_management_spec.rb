@@ -78,7 +78,7 @@ describe 'School admin user management' do
       end
 
       it 'can create staff without generating an alert contact' do
-        uncheck 'Auto create alert contact'
+        uncheck 'Subscribe to alerts'
         expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
 
         staff = school.users.staff.first
@@ -147,7 +147,7 @@ describe 'School admin user management' do
       end
 
       it 'doesnt create contact when requested' do
-        uncheck 'Auto create alert contact'
+        uncheck 'Subscribe to alerts'
         expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
       end
 
