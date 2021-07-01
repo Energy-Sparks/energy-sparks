@@ -207,19 +207,19 @@ describe 'School admin user management' do
       end
 
       it 'has option to add another school admin' do
-        expect(page).to have_content("Add existing account")
-        click_on "Add existing account"
-        expect(page).to have_content("Add existing users as a school admin")
+        expect(page).to have_content("Add an existing Energy Sparks user as a school admin")
+        click_on "Add an existing Energy Sparks user as a school admin"
+        expect(page).to have_content("Add an existing user as a school admin")
       end
 
       it 'warns if user not found' do
-        click_on "Add existing account"
+        click_on "Add an existing Energy Sparks user as a school admin"
         click_on "Add user"
         expect(page).to have_content("We were unable to find a user with this email address")
       end
 
       it 'adds the user' do
-        click_on "Add existing account"
+        click_on "Add an existing Energy Sparks user as a school admin"
         fill_in "Email", with: other_school_admin.email
         click_on "Add user"
         expect(page).to have_content(other_school_admin.name)
@@ -228,13 +228,13 @@ describe 'School admin user management' do
       end
 
       it 'adds the user as an alert contact, by default' do
-        click_on "Add existing account"
+        click_on "Add an existing Energy Sparks user as a school admin"
         fill_in "Email", with: other_school_admin.email
         expect { click_on "Add user" }.to change { Contact.count }.by(1)
       end
 
       it 'doesnt add alert contact if requested' do
-        click_on "Add existing account"
+        click_on "Add an existing Energy Sparks user as a school admin"
         fill_in "Email", with: other_school_admin.email
         uncheck "Subscribe to school alerts"
         expect { click_on "Add user" }.to_not change { Contact.count }
