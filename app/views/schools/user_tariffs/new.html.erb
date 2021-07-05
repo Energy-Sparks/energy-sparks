@@ -3,6 +3,7 @@
 <%= simple_form_for [@school, @user_tariff] do |f| %>
 
   <%= f.hidden_field :fuel_type, value: @user_tariff.fuel_type %>
+  <%= f.hidden_field :flat_rate, value: @user_tariff.flat_rate %>
 
   <% @user_tariff.meters.each do |meter| %>
     <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>

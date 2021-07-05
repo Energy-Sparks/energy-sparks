@@ -1,14 +1,45 @@
-<div class="form-group">
-  <%= f.label :charge_type %>
-  <%= f.select :charge_type, options_for_select(UserTariffCharge.charge_types, f.object ? f.object.charge_type : ''), {include_blank: true}, { class: 'form-control' } %>
+<div class="user_tariff_charges_form">
+  <div class="form-group">
+    <%= f.label :charge_type %>
+    <%= f.select :charge_type, options_for_select(user_tariff_charge_types, f.object ? f.object.charge_type : ''), {required: true}, { class: 'form-control' } %>
+  </div>
+  <div class="form-group">
+    <%= f.input :value, label: 'Value in £' %>
+  </div>
+  <div class="form-group">
+    <%= f.input :units, label: 'Per', as: :radio_buttons, collection: user_tariff_charge_type_units, label_method: :first %>
+  </div>
+  <p></p>
+  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+  <%= f.submit 'Save', class: 'btn btn-primary' %>
 </div>
-<div class="form-group">
-  <%= f.input :value, label: 'Value in £' %>
-</div>
-<div class="form-group">
-  <%= f.input :units, label: 'Per', as: :radio_buttons, collection: UserTariffCharge.charge_type_units, label_method: :first %>
-</div>
-<p></p>
-<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-<%= f.submit 'Save', class: 'btn btn-primary' %>
 
+<script>
+  $(document).ready(function() {
+
+    var chargeTypeUnits = <%= user_tariff_charge_type_units_as_json.html_safe %>
+
+    function showRelevantUnits(chargeType) {
+      if (chargeType) {
+        if (chargeTypeUnits[chargeType]) {
+          // disable all radios, then enable the relevant ones
+          $('.user_tariff_charge_units .form-check .form-check-input').prop('disabled', true);
+          $.each(chargeTypeUnits[chargeType]['units'], function(index, value) {
+            $('#user_tariff_charge_units_' + value).prop( "disabled", false );
+          });
+        }
+      }
+      // show all radios, then hide disabled ones
+      $('.user_tariff_charge_units .form-check input').closest('.form-check').show();
+      $('.user_tariff_charge_units .form-check input:disabled').closest('.form-check').hide();
+    }
+
+    if ($(".user_tariff_charges_form").length) {
+      $('#user_tariff_charge_charge_type').on('change', function() {
+        showRelevantUnits(this.value);
+      });
+      showRelevantUnits($('#user_tariff_charge_charge_type').val());
+    }
+
+  });
+</script>

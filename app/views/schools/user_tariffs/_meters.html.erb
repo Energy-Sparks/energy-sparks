@@ -1,0 +1,15 @@
+<% if user_tariff.meters.present? %>
+  <p>The following meters are associated with this tariff:</p>
+  <ul>
+    <% user_tariff.meters.each do |meter| %>
+      <li>
+        <%= meter.mpan_mprn %>
+        <%= "(#{meter.name})" unless meter.name.blank? %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no meters associated with this tariff</p>
+<% end %>
+
+<br/>

@@ -1,5 +1,11 @@
 <%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
 
+<% if can? :switch, School %>
+  <% if current_user && !current_user.cluster_schools_for_switching.blank? %>
+    <%= render 'shared/switch_schools' %>
+  <% end %>
+<% end %>
+
 <% if current_user && current_user.default_scoreboard %>
   <li class="nav-item"><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
 <% end %>
