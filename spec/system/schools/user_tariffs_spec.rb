@@ -49,7 +49,6 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('Add gas tariff')
 
         fill_in 'Name', with: 'My First Gas Tariff'
-        select '5%', from: 'VAT rate'
         click_button('Next')
 
         expect(page).to have_content('Energy charges')
@@ -63,18 +62,18 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('My First Gas Tariff gas for 01/04/2021 to 31/03/2022')
         expect(page).to have_content('999888777')
 
-        click_link('Add standing charge')
-        select 'Fixed charge', from: 'Charge type'
-        fill_in 'Value', with: '4.56'
-        choose 'kVA'
-        click_button('Save')
+        fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
+        select 'month', from: 'user_tariff_charges[fixed_charge][units]'
+        check 'CCL'
+        select '5%', from: 'VAT rate'
 
-        click_link('Next')
+        click_button('Next')
+
         expect(page).to have_content('Review tariff')
         expect(page).to have_content('999888777')
         expect(page).to have_content('VAT rate: 5%')
         expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
-        expect(page).to have_content('£4.56 per kVA')
+        expect(page).to have_content('£4.56 per month')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
@@ -85,6 +84,7 @@ describe 'user tariffs', type: :system do
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([gas_meter])
         expect(user_tariff.vat_rate).to eq('5%')
+        expect(user_tariff.ccl).to be_truthy
         user_tariff_price = user_tariff.user_tariff_prices.first
         expect(user_tariff_price.start_time.to_s(:time)).to eq('00:00')
         expect(user_tariff_price.end_time.to_s(:time)).to eq('23:30')
@@ -135,7 +135,6 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('Add electricity tariff')
 
         fill_in 'Name', with: 'My First Flat Tariff'
-        select '5%', from: 'VAT rate'
         click_button('Next')
 
         expect(page).to have_content('Edit electricity tariff')
@@ -150,17 +149,17 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('Standing charges')
         expect(page).to have_content('My First Flat Tariff electricity for 01/04/2021 to 31/03/2022')
 
-        click_link('Add standing charge')
-        select 'Fixed charge', from: 'Charge type'
-        fill_in 'Value', with: '4.56'
-        choose 'kVA'
-        click_button('Save')
+        fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
+        select 'month', from: 'user_tariff_charges[fixed_charge][units]'
+        check 'CCL'
+        select '5%', from: 'VAT rate'
 
-        click_link('Next')
+        click_button('Next')
+
         expect(page).to have_content('Review tariff')
         expect(page).to have_content('VAT rate: 5%')
         expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
-        expect(page).to have_content('£4.56 per kVA')
+        expect(page).to have_content('£4.56 per month')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
@@ -171,6 +170,7 @@ describe 'user tariffs', type: :system do
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([electricity_meter])
         expect(user_tariff.vat_rate).to eq('5%')
+        expect(user_tariff.ccl).to be_truthy
         user_tariff_price = user_tariff.user_tariff_prices.first
         expect(user_tariff_price.start_time.to_s(:time)).to eq('00:00')
         expect(user_tariff_price.end_time.to_s(:time)).to eq('23:30')
@@ -222,16 +222,15 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('Standing charges')
         expect(page).to have_content('My First Diff Tariff electricity for 01/04/2021 to 31/03/2022')
 
-        click_link('Add standing charge')
-        select 'Fixed charge', from: 'Charge type'
-        fill_in 'Value', with: '4.56'
-        choose 'kVA'
-        click_button('Save')
+        fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
+        select 'month', from: 'user_tariff_charges[fixed_charge][units]'
+        check 'CCL'
+        select '5%', from: 'VAT rate'
 
-        click_link('Next')
+        click_button('Next')
         expect(page).to have_content('Review tariff')
         expect(page).to have_content('£1.50 per kWh')
-        expect(page).to have_content('£4.56 per kVA')
+        expect(page).to have_content('£4.56 per month')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
@@ -253,6 +252,7 @@ describe 'user tariffs', type: :system do
           fuel_type: :electricity,
           flat_rate: true,
           vat_rate: '20%',
+          ccl: true,
           user_tariff_prices: [user_tariff_price],
           user_tariff_charges: [user_tariff_charge],
           meters: [electricity_meter]

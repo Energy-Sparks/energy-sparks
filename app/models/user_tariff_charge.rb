@@ -14,10 +14,16 @@
 #
 #  index_user_tariff_charges_on_user_tariff_id  (user_tariff_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (user_tariff_id => user_tariffs.id) ON DELETE => cascade
+#
 class UserTariffCharge < ApplicationRecord
   belongs_to :user_tariff, inverse_of: :user_tariff_charges
 
   validates :charge_type, :value, :units, presence: true
+
+  scope :for_type, ->(type) { where('charge_type = ?', type.to_s) }
 
   CHARGE_TYPES = {
     standing_charge: {
@@ -57,13 +63,13 @@ class UserTariffCharge < ApplicationRecord
       units: [:day, :month, :quarter]
     },
     duos_red: {
-      units: [:kwh]
+      units: []
     },
     duos_amber: {
-      units: [:kwh]
+      units: []
     },
     duos_green: {
-      units: [:kwh]
+      units: []
     },
     other: {
       units: [:kwh, :day, :month, :quarter]

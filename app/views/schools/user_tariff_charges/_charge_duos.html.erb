@@ -1,0 +1,71 @@
+<table class="table table-charges">
+  <tbody>
+
+  <tr>
+    <td class="description">
+      Duos red
+    </td>
+    <td class="value">
+      Rate
+    </td>
+    <td class="value">
+      <div class="form-group">
+        <%= f.fields_for :duos_red do |ff| %>
+          <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_red) %>
+          <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
+          <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+        <% end %>
+      </div>
+    </td>
+    <td class="units">
+    </td>
+    <td class="units">
+    </td>
+  </tr>
+
+  <tr>
+    <td class="description">
+      Duos amber
+    </td>
+    <td class="value">
+      Rate
+    </td>
+    <td class="value">
+      <div class="form-group">
+        <%= f.fields_for :duos_amber do |ff| %>
+          <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_amber) %>
+          <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
+          <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+        <% end %>
+      </div>
+    </td>
+    <td class="units">
+    </td>
+    <td class="units">
+    </td>
+  </tr>
+
+  <tr>
+    <td class="description">
+      Duos green
+    </td>
+    <td class="value">
+      Rate
+    </td>
+    <td class="value">
+      <div class="form-group">
+        <%= f.fields_for :duos_green do |ff| %>
+          <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_green) %>
+          <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
+          <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+        <% end %>
+      </div>
+    </td>
+    <td class="units">
+    </td>
+    <td class="units">
+    </td>
+  </tr>
+
+  </tbody>
+</table>

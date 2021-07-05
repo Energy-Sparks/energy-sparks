@@ -1,0 +1,33 @@
+<h2>Consumption and supply charges</h2>
+
+<%= f.fields_for :fixed_charge do |ff| %>
+  <%= render 'charge_basic', charge_type: :fixed_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :fixed_charge), f: ff %>
+<% end %>
+
+<%= f.fields_for :site_fee do |ff| %>
+  <%= render 'charge_basic', charge_type: :site_fee, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :site_fee), f: ff %>
+<% end %>
+
+
+<h2>Distribution charges</h2>
+
+<h3>Unit rate charge</h3>
+
+<%= render 'charge_duos', user_tariff_charges: user_tariff_charges, f: f %>
+
+
+<h2>Transmission charges</h2>
+
+<h2>Other charges</h2>
+
+<h3>CCL</h3>
+
+<%= f.fields_for :user_tariff do |ff| %>
+  <%= render 'charge_ccl', user_tariff: user_tariff, f: ff %>
+<% end %>
+
+<h3>VAT</h3>
+
+<%= f.fields_for :user_tariff do |ff| %>
+  <%= render 'charge_vat', user_tariff: user_tariff, f: ff %>
+<% end %>

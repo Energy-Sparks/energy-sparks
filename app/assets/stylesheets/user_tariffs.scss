@@ -1,0 +1,18 @@
+.table-charges {
+  td {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  td.description {
+    width: 60%
+  }
+  td.value {
+    width: 10%
+  }
+  td.units {
+    width: 10%
+  }
+}
+
+.table .thead-dark th {
+  background-color: $dark-blue !important;
+}
