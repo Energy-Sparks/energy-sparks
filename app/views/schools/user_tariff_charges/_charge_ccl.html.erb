@@ -1,18 +1,17 @@
-<%= render 'shared/errors', subject: user_tariff_price, subject_name: 'price' %>
+<%= render 'shared/errors', subject: user_tariff, subject_name: 'user_tariff' %>
 
 <table class="table table-charges">
   <tbody>
   <tr>
     <td class="description">
-      Rate
+      Climate charge levy
     </td>
     <td class="value">
     </td>
     <td class="value">
-      <%= f.input :value, label: false, input_html: { value: user_tariff_price.value }, required: false %>
+      <%= f.check_box :ccl, checked: user_tariff.ccl, class: 'form-control' %>
     </td>
     <td class="units">
-      per £/kWh
     </td>
     <td class="units">
     </td>

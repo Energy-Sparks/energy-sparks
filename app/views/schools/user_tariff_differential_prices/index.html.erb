@@ -1,18 +1,24 @@
-<h1>Energy charges</h1>
-
 <h2><%= user_tariff_title(@user_tariff) %></h2>
 
-<%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
+<div class="user_tariff">
 
-<div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
+  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
 
-<%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
+  <h3>Energy charges</h3>
 
-<%= link_to "Add rate", new_school_user_tariff_user_tariff_differential_price_path(@school, @user_tariff), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+  <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
-<br/>
-<br/>
-<br/>
+  <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
 
-<%= link_to "Previous", edit_school_user_tariff_path(@school, @user_tariff), class: 'btn' %>
-<%= link_to "Next", school_user_tariff_user_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
+  <br/>
+
+  <%= link_to "Add rate", new_school_user_tariff_user_tariff_differential_price_path(@school, @user_tariff), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+
+  <br/>
+  <br/>
+  <br/>
+
+  <%= link_to "Previous", edit_school_user_tariff_path(@school, @user_tariff), class: 'btn' %>
+  <%= link_to "Next", school_user_tariff_user_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
+
+</div>

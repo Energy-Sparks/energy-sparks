@@ -1,20 +1,10 @@
-<table class="table table-striped table-sm">
-
-  <thead>
-  <tr>
-    <th class="description">Time range</th>
-    <th>Rate</th>
-    <% if allow_edits %>
-      <th class="actions"></th>
-    <% end %>
-  </tr>
-  </thead>
+<table class="table table-charges">
   <tbody>
   <% if user_tariff.user_tariff_prices.any? %>
     <% user_tariff.user_tariff_prices.each do |user_tariff_price| %>
-      <tr class="rate-row">
-        <td><%= user_tariff_price.start_time.to_s(:time) %> to <%= user_tariff_price.end_time.to_s(:time) %></td>
-        <td><%= number_to_currency(user_tariff_price.value, unit: '£') %> per kWh</td>
+      <tr>
+        <td class="description">Day/night tariff: <%= user_tariff_price.start_time.to_s(:time) %> to <%= user_tariff_price.end_time.to_s(:time) %></td>
+        <td class="value"><%= number_to_currency(user_tariff_price.value, unit: '£') %> per kWh</td>
         <% if allow_edits %>
           <td>
             <%= link_to "Edit", edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
@@ -24,12 +14,11 @@
       </tr>
     <% end %>
   <% else %>
-    <tr class="rate-row">
+    <tr>
       <td colspan='10'>
         No energy charges specified yet
       </td>
     </tr>
   <% end %>
   </tbody>
-
 </table>

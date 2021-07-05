@@ -1,18 +1,18 @@
-<%= render 'shared/errors', subject: user_tariff_price, subject_name: 'price' %>
+<%= render 'shared/errors', subject: user_tariff, subject_name: 'user_tariff' %>
 
 <table class="table table-charges">
   <tbody>
   <tr>
     <td class="description">
+      VAT rate
+    </td>
+    <td class="value">
       Rate
     </td>
     <td class="value">
-    </td>
-    <td class="value">
-      <%= f.input :value, label: false, input_html: { value: user_tariff_price.value }, required: false %>
+      <%= f.select :vat_rate, options_for_select(['0%', '5%', '20%'], user_tariff.vat_rate), {required: :true}, { class: 'form-control' } %>
     </td>
     <td class="units">
-      per £/kWh
     </td>
     <td class="units">
     </td>

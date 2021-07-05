@@ -1,22 +1,24 @@
-<h1>Edit <%= @user_tariff.fuel_type %> tariff</h1>
+<h1><%= user_tariff_title(@user_tariff) %></h1>
 
-<h2><%= user_tariff_title(@user_tariff) %></h2>
+<div class="user_tariff">
 
-<%= render 'meters', user_tariff: @user_tariff %>
+  <%= render 'meters', user_tariff: @user_tariff %>
 
-<p>Is this a simple flat rate?</p>
+  <p>Is this a simple flat rate?</p>
 
-<%= simple_form_for [@school, @user_tariff] do |f| %>
-  <%= f.hidden_field :flat_rate, value: true %>
-  <%= submit_tag "Simple", class: 'btn btn-info' %>
-<% end %>
+  <%= simple_form_for [@school, @user_tariff] do |f| %>
+    <%= f.hidden_field :flat_rate, value: true %>
+    <%= submit_tag "Simple", class: 'btn btn-info' %>
+  <% end %>
 
-<br/>
-<br/>
+  <br/>
+  <br/>
 
-<p>Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)</p>
+  <p>Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)</p>
 
-<%= simple_form_for [@school, @user_tariff] do |f| %>
-  <%= f.hidden_field :flat_rate, value: false %>
-  <%= submit_tag "Day/Night tariff", class: 'btn btn-info' %>
-<% end %>
+  <%= simple_form_for [@school, @user_tariff] do |f| %>
+    <%= f.hidden_field :flat_rate, value: false %>
+    <%= submit_tag "Day/Night tariff", class: 'btn btn-info' %>
+  <% end %>
+
+</div>
