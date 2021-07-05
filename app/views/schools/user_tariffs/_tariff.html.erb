@@ -9,10 +9,10 @@
     </div>
     <div id="collapse<%= user_tariff.id %>" class="collapse" aria-labelledby="heading<%= user_tariff.id %>" data-parent="#accordion<%= user_tariff.id %>">
       <div class="card-body">
-        <div class="padded-row">
-          <p>VAT rate: <%= user_tariff.vat_rate %></p>
+        <div>
+          <%= render 'meters', user_tariff: user_tariff %>
         </div>
-        <div class="padded-row">
+        <div>
           <% if user_tariff.flat_rate? %>
             <%= render 'schools/user_tariffs/flat_rate', school: school, user_tariff: user_tariff, allow_edits: false %>
           <% else %>
@@ -20,9 +20,6 @@
           <% end %>
           <br/>
           <%= render 'schools/user_tariffs/charges_table', school: school, user_tariff: user_tariff, allow_edits: false %>
-        </div>
-        <div class="padded-row">
-          <%= render 'meters', user_tariff: user_tariff %>
         </div>
         <div class="padded-row">
           <%= link_to "Review", school_user_tariff_path(school, user_tariff), class: 'btn' if can? :download, UserTariff %>

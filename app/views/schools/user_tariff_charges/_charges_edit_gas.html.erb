@@ -1,5 +1,5 @@
 
-<h2>Consumption and supply charges</h2>
+<h4>Consumption and supply charges</h4>
 
 <div class="fixed_charge">
   <%= f.fields_for :fixed_charge do |ff| %>
@@ -7,7 +7,9 @@
   <% end %>
 </div>
 
-<h2>Other charges</h2>
+<br/>
+
+<h4>Other charges</h4>
 
 <%= f.fields_for :other do |ff| %>
   <%= render 'charge_basic', charge_type: :other, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :other), f: ff %>

@@ -1,19 +1,22 @@
-<h1>Standing charges</h1>
+<h2>Standing charges for <%= user_tariff_title(@user_tariff) %></h2>
 
-<h2><%= user_tariff_title(@user_tariff) %></h2>
+<div class="user_tariff">
 
-<%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
+  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
 
-<%= simple_form_for :user_tariff_charges, url: school_user_tariff_user_tariff_charges_path(@school, @user_tariff) do |f| %>
+  <%= simple_form_for :user_tariff_charges, url: school_user_tariff_user_tariff_charges_path(@school, @user_tariff) do |f| %>
 
-  <% if @user_tariff.gas? %>
-    <%= render 'charges_edit_gas', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
-  <% else %>
-    <%= render 'charges_edit_electricity', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+    <% if @user_tariff.gas? %>
+      <%= render 'charges_edit_gas', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+    <% else %>
+      <%= render 'charges_edit_electricity', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+    <% end %>
+
+    <br/>
+
+    <%= link_to "Previous", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
+    <%= f.submit 'Next', class: 'btn btn-primary' %>
+
   <% end %>
 
-  <%= link_to "Previous", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
-  <%= f.submit 'Next', class: 'btn btn-primary' %>
-
-<% end %>
-
+</div>
