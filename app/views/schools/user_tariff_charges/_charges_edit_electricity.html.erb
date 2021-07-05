@@ -1,4 +1,4 @@
-<h2>Consumption and supply charges</h2>
+<h4>Consumption and supply charges</h4>
 
 <%= f.fields_for :fixed_charge do |ff| %>
   <%= render 'charge_basic', charge_type: :fixed_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :fixed_charge), f: ff %>
@@ -11,10 +11,13 @@
 
 <!--demand charge-->
 
+<br/>
 
-<h2>Distribution charges</h2>
+<h4>Distribution charges</h4>
 
 <%= render 'charge_duos', user_tariff_charges: user_tariff_charges, f: f %>
+
+<br/>
 
 <%= f.fields_for :agreed_availability_charge do |ff| %>
   <%= render 'charge_basic', charge_type: :agreed_availability_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :agreed_availability_charge), f: ff %>
@@ -33,8 +36,9 @@
 <!--excess avaolablility charge-->
 <!--available capacity-->
 
+<br/>
 
-<h2>Transmission charges</h2>
+<h4>Transmission charges</h4>
 
 <%= f.fields_for :settlement_agency_fee do |ff| %>
   <%= render 'charge_basic', charge_type: :settlement_agency_fee, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :settlement_agency_fee), f: ff %>
@@ -55,7 +59,9 @@
 <!--NHH Automatic Meter Reading (AMR) Charge-->
 <!--Reconciliation-->
 
-<h2>Other charges</h2>
+<br/>
+
+<h4>Other charges</h4>
 
 <%= f.fields_for :user_tariff do |ff| %>
   <%= render 'charge_vat', user_tariff: user_tariff, f: ff %>

@@ -52,14 +52,14 @@ describe 'user tariffs', type: :system do
         click_button('Next')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Gas Tariff gas for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('My First Gas Tariff (gas, 01/04/2021 to 31/03/2022)')
         expect(page).to have_content('999888777')
 
-        fill_in 'Rate in £/kWh', with: '1.5'
+        fill_in "user_tariff_price[value]", with: '1.5'
         click_button('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Gas Tariff gas for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('My First Gas Tariff (gas, 01/04/2021 to 31/03/2022)')
         expect(page).to have_content('999888777')
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
@@ -69,17 +69,18 @@ describe 'user tariffs', type: :system do
 
         click_button('Next')
 
-        expect(page).to have_content('Review tariff')
+        expect(page).to have_content('Please review')
         expect(page).to have_content('999888777')
-        expect(page).to have_content('VAT rate: 5%')
-        expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
+        expect(page).to have_content('5%')
+        expect(page).to have_content('Flat rate tariff')
+        expect(page).to have_content('£1.50 per kWh')
         expect(page).to have_content('£4.56 per month')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
         expect(page).to have_content('All tariffs')
         expect(page).to have_content('999888777')
-        expect(page).to have_content('VAT rate: 5%')
+        expect(page).to have_content('5%')
 
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([gas_meter])
@@ -137,17 +138,16 @@ describe 'user tariffs', type: :system do
         fill_in 'Name', with: 'My First Flat Tariff'
         click_button('Next')
 
-        expect(page).to have_content('Edit electricity tariff')
         click_button('Simple')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Flat Tariff electricity for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('My First Flat Tariff (electricity, 01/04/2021 to 31/03/2022)')
 
-        fill_in 'Rate in £/kWh', with: '1.5'
+        fill_in "user_tariff_price[value]", with: '1.5'
         click_button('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Flat Tariff electricity for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('My First Flat Tariff (electricity, 01/04/2021 to 31/03/2022)')
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
         select 'month', from: 'user_tariff_charges[fixed_charge][units]'
@@ -156,16 +156,17 @@ describe 'user tariffs', type: :system do
 
         click_button('Next')
 
-        expect(page).to have_content('Review tariff')
-        expect(page).to have_content('VAT rate: 5%')
-        expect(page).to have_content('Flat rate tariff: £1.50 per kWh')
+        expect(page).to have_content('Please review')
+        expect(page).to have_content('5%')
+        expect(page).to have_content('Flat rate tariff')
+        expect(page).to have_content('£1.50 per kWh')
         expect(page).to have_content('£4.56 per month')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
         expect(page).to have_content('All tariffs')
         expect(page).to have_content('12345678901234')
-        expect(page).to have_content('VAT rate: 5%')
+        expect(page).to have_content('5%')
 
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([electricity_meter])
@@ -197,11 +198,10 @@ describe 'user tariffs', type: :system do
         fill_in 'Name', with: 'My First Diff Tariff'
         click_button('Next')
 
-        expect(page).to have_content('Edit electricity tariff')
         click_button('Day/Night tariff')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Diff Tariff electricity for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('My First Diff Tariff (electricity, 01/04/2021 to 31/03/2022)')
 
         click_link('Add rate')
 
@@ -220,7 +220,7 @@ describe 'user tariffs', type: :system do
         click_link('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Diff Tariff electricity for 01/04/2021 to 31/03/2022')
+        expect(page).to have_content('My First Diff Tariff (electricity, 01/04/2021 to 31/03/2022)')
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
         select 'month', from: 'user_tariff_charges[fixed_charge][units]'
@@ -228,7 +228,7 @@ describe 'user tariffs', type: :system do
         select '5%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
         click_button('Next')
-        expect(page).to have_content('Review tariff')
+        expect(page).to have_content('Please review')
         expect(page).to have_content('£1.50 per kWh')
         expect(page).to have_content('£4.56 per month')
         expect(page).not_to have_link('Delete')
