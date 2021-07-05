@@ -1,0 +1,8 @@
+<%= render 'shared/errors', subject: user_tariff, subject_name: 'user_tariff' %>
+
+<div class="form-row">
+  <div class="form-group col-md-3">
+    <%= f.label :vat_rate, 'VAT rate' %>
+    <%= f.select :vat_rate, options_for_select(['0%', '5%', '20%'], user_tariff.vat_rate), {required: :true}, { class: 'form-control' } %>
+  </div>
+</div>

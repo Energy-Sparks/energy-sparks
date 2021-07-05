@@ -2,6 +2,7 @@
 #
 # Table name: user_tariffs
 #
+#  ccl        :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  end_date   :date             not null
 #  flat_rate  :boolean          default(TRUE)
@@ -11,6 +12,7 @@
 #  school_id  :bigint(8)        not null
 #  start_date :date             not null
 #  updated_at :datetime         not null
+#  vat_rate   :string
 #
 # Indexes
 #

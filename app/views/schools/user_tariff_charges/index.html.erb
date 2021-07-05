@@ -4,15 +4,16 @@
 
 <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
 
-<div id="modal-window" class="modal hide" role="dialog" aria-hidden="true"></div>
+<%= simple_form_for :user_tariff_charges, url: school_user_tariff_user_tariff_charges_path(@school, @user_tariff) do |f| %>
 
-<%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
+  <% if @user_tariff.gas? %>
+    <%= render 'charges_edit_gas', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+  <% else %>
+    <%= render 'charges_edit_electricity', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+  <% end %>
 
-<%= link_to "Add standing charge", new_school_user_tariff_user_tariff_charge_path(@school, @user_tariff), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+  <%= link_to "Previous", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
+  <%= f.submit 'Next', class: 'btn btn-primary' %>
 
-<br/>
-<br/>
-<br/>
+<% end %>
 
-<%= link_to "Previous", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
-<%= link_to "Next", school_user_tariff_path(@school, @user_tariff), class: 'btn' %>

@@ -1,0 +1,8 @@
+<%= render 'shared/errors', subject: user_tariff, subject_name: 'user_tariff' %>
+
+<div class="form-row">
+  <div class="form-group col-md-3">
+    <%= f.label :ccl, 'CCL' %>
+    <%= f.check_box :ccl, checked: user_tariff.ccl, class: 'form-control' %>
+  </div>
+</div>
