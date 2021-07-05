@@ -64,8 +64,8 @@ describe 'user tariffs', type: :system do
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
         select 'month', from: 'user_tariff_charges[fixed_charge][units]'
-        check 'CCL'
-        select '5%', from: 'VAT rate'
+        check 'user_tariff_charges[user_tariff][ccl]'
+        select '5%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
         click_button('Next')
 
@@ -151,8 +151,8 @@ describe 'user tariffs', type: :system do
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
         select 'month', from: 'user_tariff_charges[fixed_charge][units]'
-        check 'CCL'
-        select '5%', from: 'VAT rate'
+        check 'user_tariff_charges[user_tariff][ccl]'
+        select '5%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
         click_button('Next')
 
@@ -224,8 +224,8 @@ describe 'user tariffs', type: :system do
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
         select 'month', from: 'user_tariff_charges[fixed_charge][units]'
-        check 'CCL'
-        select '5%', from: 'VAT rate'
+        check 'user_tariff_charges[user_tariff][ccl]'
+        select '5%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
         click_button('Next')
         expect(page).to have_content('Review tariff')
