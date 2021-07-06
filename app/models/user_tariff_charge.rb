@@ -32,7 +32,8 @@ class UserTariffCharge < ApplicationRecord
     },
     asc_limit_kw: {
       units: [],
-      label: 'kVA'
+      label: 'kVA',
+      name: 'Available capacity'
     },
     renewable_energy_obligation: {
       units: [:kwh]
