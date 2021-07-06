@@ -4,7 +4,7 @@ module TariffsHelper
   end
 
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)
-    user_tariff_charges.find { |c| c.is_type?(charge_type) } || UserTariffCharge.new(charge_type: charge_type)
+    user_tariff_charges.find { |c| c.is_type?([charge_type]) } || UserTariffCharge.new(charge_type: charge_type)
   end
 
   def user_tariff_charge_type_units_for(charge_type)
