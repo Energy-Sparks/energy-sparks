@@ -19,6 +19,14 @@ module TariffsHelper
     settings(charge_type).fetch(:name, charge_type.to_s.humanize)
   end
 
+  def user_tariff_charge_value(user_tariff_charge)
+    if user_tariff_charge.units
+      "#{number_to_currency(user_tariff_charge.value, unit: '£')} per #{user_tariff_charge_type_units_humanized(user_tariff_charge.units)}"
+    else
+      user_tariff_charge.value.to_s
+    end
+  end
+
   def user_tariff_charge_type_value_label(charge_type, default = 'Value in £')
     settings(charge_type).fetch(:label, default)
   end

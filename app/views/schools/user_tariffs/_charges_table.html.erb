@@ -4,7 +4,7 @@
     <% user_tariff.user_tariff_charges.each do |user_tariff_charge| %>
       <tr>
         <td class="description"><%= user_tariff_charge_type_description(user_tariff_charge.charge_type) %></td>
-        <td class="value"><%= number_to_currency(user_tariff_charge.value, unit: '£') %> per <%= user_tariff_charge_type_units_humanized(user_tariff_charge.units) %></td>
+        <td class="value"><%= user_tariff_charge_value(user_tariff_charge) %></td>
       </tr>
     <% end %>
   <% end %>

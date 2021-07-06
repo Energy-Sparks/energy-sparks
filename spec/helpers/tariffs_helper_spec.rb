@@ -62,4 +62,15 @@ describe TariffsHelper do
       expect(user_tariff_charge_type_value_label(:my_new_type)).to eq('Value in £')
     end
   end
+
+  describe '.user_tariff_charge_value' do
+    it "returns string with currency per unit" do
+      user_tariff_charge = UserTariffCharge.new(value: 1.23, units: :kva)
+      expect(user_tariff_charge_value(user_tariff_charge)).to eq('£1.23 per kVA')
+    end
+    it "returns simple value" do
+      user_tariff_charge = UserTariffCharge.new(value: 1.23)
+      expect(user_tariff_charge_value(user_tariff_charge)).to eq('1.23')
+    end
+  end
 end

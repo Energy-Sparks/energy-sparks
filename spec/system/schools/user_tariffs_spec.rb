@@ -151,6 +151,7 @@ describe 'user tariffs', type: :system do
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
         select 'month', from: 'user_tariff_charges[fixed_charge][units]'
+        fill_in "user_tariff_charges[asc_limit_kw][value]", with: '9.87'
         check 'user_tariff_charges[user_tariff][ccl]'
         select '5%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
@@ -161,6 +162,7 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content('Flat rate tariff')
         expect(page).to have_content('£1.50 per kWh')
         expect(page).to have_content('£4.56 per month')
+        expect(page).to have_content('9.87')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
