@@ -73,10 +73,8 @@ describe UserTariff do
       attributes = user_tariff.to_hash
 
       rates = attributes[:rates]
-      expect(rates[:rate0][:per]).to eq('kwh')
-      expect(rates[:rate0][:rate]).to eq('1.23')
-      expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
-      expect(rates[:rate0][:to]).to eq({hour: "23", minutes: "30"})
+      expect(rates[:flat_rate][:per]).to eq('kwh')
+      expect(rates[:flat_rate][:rate]).to eq('1.23')
     end
 
     it "should create valid analytics meter attribute" do
