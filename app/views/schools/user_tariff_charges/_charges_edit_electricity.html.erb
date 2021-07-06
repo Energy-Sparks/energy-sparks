@@ -9,8 +9,6 @@
 <% end %>
 
 
-<!--demand charge-->
-
 <br/>
 
 <h4>Distribution charges</h4>
@@ -31,11 +29,6 @@
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :feed_in_tariff_levy), f: ff %>
 <% end %>
 
-<!--total distrbution charge-->
-<!--duos capcity charge-->
-<!--excess avaolablility charge-->
-<!--available capacity-->
-
 <br/>
 
 <h4>Transmission charges</h4>
@@ -51,13 +44,6 @@
 <%= f.fields_for :nhh_metering_agent_charge do |ff| %>
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :nhh_metering_agent_charge), f: ff %>
 <% end %>
-
-<!--Total Transmission and agent charges-->
-<!--Data Collection (DC/DA) Agent Charge-->
-<!--TNUoS-->
-<!--TNUoS Reconciliation-->
-<!--NHH Automatic Meter Reading (AMR) Charge-->
-<!--Reconciliation-->
 
 <br/>
 

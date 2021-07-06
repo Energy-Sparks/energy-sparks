@@ -98,4 +98,8 @@ class UserTariffCharge < ApplicationRecord
     month: 'month',
     quarter: 'quarter',
   }.freeze
+
+  def is_type?(type)
+    charge_type.to_sym == type.to_sym
+  end
 end
