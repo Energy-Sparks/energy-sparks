@@ -3,10 +3,6 @@ module TariffsHelper
     "#{user_tariff.name} (#{user_tariff.fuel_type}, #{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)})"
   end
 
-  def user_tariff_charge_types
-    UserTariffCharge::CHARGE_TYPES.keys.map {|k| [k.to_s.humanize, k]}
-  end
-
   def user_tariff_charge_type_units
     UserTariffCharge::CHARGE_TYPE_UNITS.map {|k, v| [v, k]}
   end
@@ -29,11 +25,12 @@ module TariffsHelper
     UserTariffCharge::CHARGE_TYPE_UNITS[charge_type_units.to_sym]
   end
 
-  def user_tariff_charge_type_units_as_json
-    UserTariffCharge::CHARGE_TYPES.to_json
-  end
-
   def user_tariff_charge_type_description(charge_type)
-    charge_type.to_s.humanize
+    type = UserTariffCharge::CHARGE_TYPES[charge_type.to_sym]
+    if type && type[:name]
+      type[:name]
+    else
+      charge_type.to_s.humanize
+    end
   end
 end

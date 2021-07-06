@@ -55,7 +55,8 @@ class UserTariffCharge < ApplicationRecord
       units: [:day, :month, :quarter]
     },
     nhh_metering_agent_charge: {
-      units: [:kwh, :day, :month, :quarter]
+      units: [:kwh, :day, :month, :quarter],
+      name: 'NHH metering agent charge'
     },
     meter_asset_provider_charge: {
       units: [:day, :month, :quarter]
@@ -64,13 +65,16 @@ class UserTariffCharge < ApplicationRecord
       units: [:day, :month, :quarter]
     },
     duos_red: {
-      units: []
+      units: [],
+      name: 'Unit rate charge (red)'
     },
     duos_amber: {
-      units: []
+      units: [],
+      name: 'Unit rate charge (amber)'
     },
     duos_green: {
-      units: []
+      units: [],
+      name: 'Unit rate charge (green)'
     },
     other: {
       units: [:kwh, :day, :month, :quarter]
