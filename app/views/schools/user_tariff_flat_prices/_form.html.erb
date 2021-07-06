@@ -9,7 +9,7 @@
     <td class="value">
     </td>
     <td class="value">
-      <%= f.input :value, label: false, input_html: { value: user_tariff_price.value }, required: false %>
+      <%= f.input :value, as: :string, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_price.value }, required: false %>
     </td>
     <td class="units">
       per £/kWh

@@ -1,0 +1,15 @@
+<table class="table table-charges">
+  <tbody>
+    <%= f.fields_for :agreed_availability_charge do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :agreed_availability_charge), f: ff %>
+    <% end %>
+
+    <%= f.fields_for :excess_availability_charge do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :excess_availability_charge), f: ff %>
+    <% end %>
+
+    <%= f.fields_for :asc_limit_kw do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :asc_limit_kw), f: ff %>
+    <% end %>
+  </tbody>
+</table>

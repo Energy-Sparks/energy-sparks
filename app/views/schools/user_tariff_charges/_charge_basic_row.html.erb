@@ -1,0 +1,22 @@
+<%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
+<tr>
+  <td class="description">
+    <%= user_tariff_charge_type_description(user_tariff_charge.charge_type) %>
+  </td>
+  <td class="value">
+    <%= user_tariff_charge_type_value_label(user_tariff_charge.charge_type) %>
+  </td>
+  <td class="value">
+      <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+  </td>
+  <td class="units">
+    <% if user_tariff_charge_type_units_for(user_tariff_charge.charge_type).any? %>
+      per
+    <% end %>
+  </td>
+  <td class="units">
+    <% if user_tariff_charge_type_units_for(user_tariff_charge.charge_type).any? %>
+      <%= f.select :units, options_for_select(user_tariff_charge_type_units_for(user_tariff_charge.charge_type), user_tariff_charge.units), {required: :true}, { class: 'form-control' } %>
+    <% end %>
+  </td>
+</tr>

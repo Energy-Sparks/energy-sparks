@@ -1,23 +1,5 @@
-<%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-
 <table class="table table-charges">
   <tbody>
-  <tr>
-    <td class="description">
-      <%= user_tariff_charge_type_description(user_tariff_charge.charge_type) %>
-    </td>
-    <td class="value">
-        Value in £
-    </td>
-    <td class="value">
-        <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
-    </td>
-    <td class="units">
-        per
-    </td>
-    <td class="units">
-        <%= f.select :units, options_for_select(user_tariff_charge_type_units_for(charge_type), user_tariff_charge.units), {required: :true}, { class: 'form-control' } %>
-    </td>
-  </tr>
+    <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge, f: f %>
   </tbody>
 </table>
