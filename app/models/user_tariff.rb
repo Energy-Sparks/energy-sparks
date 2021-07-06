@@ -67,8 +67,14 @@ class UserTariff < ApplicationRecord
 
   def rates
     attrs = {}
-    user_tariff_prices.each_with_index do |price, idx|
-      attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time) }
+    if flat_rate
+      if (first_price = user_tariff_prices.first)
+        attrs[:flat_rate] = { rate: first_price.value.to_s, per: first_price.units.to_s }
+      end
+    else
+      user_tariff_prices.each_with_index do |price, idx|
+        attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time) }
+      end
     end
     user_tariff_charges.select { |c| c.units.present? }.each do |charge|
       attrs[charge.charge_type.to_sym] = { rate: charge.value.to_s, per: charge.units.to_s }
