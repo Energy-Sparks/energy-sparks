@@ -10,7 +10,7 @@
         Value in £
     </td>
     <td class="value">
-        <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+        <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
     </td>
     <td class="units">
         per

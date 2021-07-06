@@ -22,6 +22,7 @@ class UserTariffCharge < ApplicationRecord
   belongs_to :user_tariff, inverse_of: :user_tariff_charges
 
   validates :charge_type, :value, :units, presence: true
+  validates :value, numericality: true
 
   scope :for_type, ->(type) { where('charge_type = ?', type.to_s) }
 

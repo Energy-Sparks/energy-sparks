@@ -18,11 +18,12 @@
     }
   }
 
-  .right {
-    float: right;
+  .spaced {
+    margin: 10px;
   }
 
-  .table .thead-dark th {
-    background-color: $dark-blue !important;
+  // imput fields with specified 'pattern' will highlight when invalid
+  input:invalid {
+    color: red;
   }
 }

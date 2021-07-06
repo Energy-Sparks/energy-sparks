@@ -13,7 +13,7 @@
         <%= f.fields_for :duos_red do |ff| %>
           <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_red) %>
           <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-          <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+          <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
         <% end %>
       </div>
     </td>
@@ -35,7 +35,7 @@
         <%= f.fields_for :duos_amber do |ff| %>
           <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_amber) %>
           <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-          <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+          <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
         <% end %>
       </div>
     </td>
@@ -57,7 +57,7 @@
         <%= f.fields_for :duos_green do |ff| %>
           <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_green) %>
           <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-          <%= f.input :value, label: false, input_html: { value: user_tariff_charge.value }, required: false %>
+          <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
         <% end %>
       </div>
     </td>
