@@ -1,11 +1,11 @@
 <h4>Consumption and supply charges</h4>
 
 <%= f.fields_for :fixed_charge do |ff| %>
-  <%= render 'charge_basic', charge_type: :fixed_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :fixed_charge), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :fixed_charge), f: ff %>
 <% end %>
 
 <%= f.fields_for :site_fee do |ff| %>
-  <%= render 'charge_basic', charge_type: :site_fee, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :site_fee), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :site_fee), f: ff %>
 <% end %>
 
 
@@ -19,16 +19,16 @@
 
 <br/>
 
-<%= f.fields_for :agreed_availability_charge do |ff| %>
-  <%= render 'charge_basic', charge_type: :agreed_availability_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :agreed_availability_charge), f: ff %>
-<% end %>
+<%= render 'charge_availability', user_tariff_charges: user_tariff_charges, f: f %>
+
+<br/>
 
 <%= f.fields_for :reactive_power_charge do |ff| %>
-  <%= render 'charge_basic', charge_type: :reactive_power_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :reactive_power_charge), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :reactive_power_charge), f: ff %>
 <% end %>
 
 <%= f.fields_for :feed_in_tariff_levy do |ff| %>
-  <%= render 'charge_basic', charge_type: :feed_in_tariff_levy, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :feed_in_tariff_levy), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :feed_in_tariff_levy), f: ff %>
 <% end %>
 
 <!--total distrbution charge-->
@@ -41,15 +41,15 @@
 <h4>Transmission charges</h4>
 
 <%= f.fields_for :settlement_agency_fee do |ff| %>
-  <%= render 'charge_basic', charge_type: :settlement_agency_fee, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :settlement_agency_fee), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :settlement_agency_fee), f: ff %>
 <% end %>
 
 <%= f.fields_for :meter_asset_provider_charge do |ff| %>
-  <%= render 'charge_basic', charge_type: :meter_asset_provider_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :meter_asset_provider_charge), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :meter_asset_provider_charge), f: ff %>
 <% end %>
 
 <%= f.fields_for :nhh_metering_agent_charge do |ff| %>
-  <%= render 'charge_basic', charge_type: :nhh_metering_agent_charge, user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :nhh_metering_agent_charge), f: ff %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :nhh_metering_agent_charge), f: ff %>
 <% end %>
 
 <!--Total Transmission and agent charges-->

@@ -30,6 +30,10 @@ class UserTariffCharge < ApplicationRecord
     standing_charge: {
       units: [:day, :month, :quarter]
     },
+    asc_limit_kw: {
+      units: [],
+      label: 'kVA'
+    },
     renewable_energy_obligation: {
       units: [:kwh]
     },
@@ -40,6 +44,9 @@ class UserTariffCharge < ApplicationRecord
       units: [:day, :month, :quarter]
     },
     agreed_availability_charge: {
+      units: [:kva]
+    },
+    excess_availability_charge: {
       units: [:kva]
     },
     settlement_agency_fee: {
@@ -66,15 +73,18 @@ class UserTariffCharge < ApplicationRecord
     },
     duos_red: {
       units: [],
-      name: 'Unit rate charge (red)'
+      name: 'Unit rate charge (red)',
+      label: 'Rate'
     },
     duos_amber: {
       units: [],
-      name: 'Unit rate charge (amber)'
+      name: 'Unit rate charge (amber)',
+      label: 'Rate'
     },
     duos_green: {
       units: [],
-      name: 'Unit rate charge (green)'
+      name: 'Unit rate charge (green)',
+      label: 'Rate'
     },
     other: {
       units: [:kwh, :day, :month, :quarter]

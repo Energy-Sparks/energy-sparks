@@ -1,71 +1,15 @@
 <table class="table table-charges">
   <tbody>
+    <%= f.fields_for :duos_red do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :duos_red), f: ff %>
+    <% end %>
 
-  <tr>
-    <td class="description">
-      <%= user_tariff_charge_type_description(:duos_red)%>
-    </td>
-    <td class="value">
-      Rate
-    </td>
-    <td class="value">
-      <div class="form-group">
-        <%= f.fields_for :duos_red do |ff| %>
-          <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_red) %>
-          <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-          <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
-        <% end %>
-      </div>
-    </td>
-    <td class="units">
-    </td>
-    <td class="units">
-    </td>
-  </tr>
+    <%= f.fields_for :duos_amber do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :duos_amber), f: ff %>
+    <% end %>
 
-  <tr>
-    <td class="description">
-      <%= user_tariff_charge_type_description(:duos_amber)%>
-    </td>
-    <td class="value">
-      Rate
-    </td>
-    <td class="value">
-      <div class="form-group">
-        <%= f.fields_for :duos_amber do |ff| %>
-          <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_amber) %>
-          <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-          <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
-        <% end %>
-      </div>
-    </td>
-    <td class="units">
-    </td>
-    <td class="units">
-    </td>
-  </tr>
-
-  <tr>
-    <td class="description">
-      <%= user_tariff_charge_type_description(:duos_green)%>
-    </td>
-    <td class="value">
-      Rate
-    </td>
-    <td class="value">
-      <div class="form-group">
-        <%= f.fields_for :duos_green do |ff| %>
-          <% user_tariff_charge = user_tariff_charge_for_type(user_tariff_charges, :duos_green) %>
-          <%= render 'shared/errors', subject: user_tariff_charge, subject_name: 'charge' %>
-          <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_charge.value }, required: false %>
-        <% end %>
-      </div>
-    </td>
-    <td class="units">
-    </td>
-    <td class="units">
-    </td>
-  </tr>
-
+    <%= f.fields_for :duos_green do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :duos_green), f: ff %>
+    <% end %>
   </tbody>
 </table>

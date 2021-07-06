@@ -8,11 +8,11 @@ module TariffsHelper
   end
 
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)
-    user_tariff_charges.find { |c| c.charge_type.to_s == charge_type.to_s } || UserTariffCharge.new(charge_type: charge_type)
+    user_tariff_charges.find { |c| c.charge_type.to_sym == charge_type.to_sym } || UserTariffCharge.new(charge_type: charge_type)
   end
 
   def user_tariff_charge_type_units_for(charge_type)
-    UserTariffCharge::CHARGE_TYPES[charge_type][:units].map { |k| [UserTariffCharge::CHARGE_TYPE_UNITS[k], k] }
+    UserTariffCharge::CHARGE_TYPES[charge_type.to_sym][:units].map { |k| [UserTariffCharge::CHARGE_TYPE_UNITS[k], k] }
   rescue
     []
   end
@@ -31,6 +31,15 @@ module TariffsHelper
       type[:name]
     else
       charge_type.to_s.humanize
+    end
+  end
+
+  def user_tariff_charge_type_value_label(charge_type)
+    type = UserTariffCharge::CHARGE_TYPES[charge_type.to_sym]
+    if type && type[:label]
+      type[:label]
+    else
+      'Value in £'
     end
   end
 end
