@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_28_103042) do
+ActiveRecord::Schema.define(version: 2021_07_06_135149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1269,7 +1269,7 @@ ActiveRecord::Schema.define(version: 2021_06_28_103042) do
     t.bigint "user_tariff_id", null: false
     t.text "charge_type", null: false
     t.decimal "value", null: false
-    t.text "units", null: false
+    t.text "units"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_tariff_id"], name: "index_user_tariff_charges_on_user_tariff_id"
@@ -1296,6 +1296,7 @@ ActiveRecord::Schema.define(version: 2021_06_28_103042) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "vat_rate"
+    t.boolean "ccl", default: false
     t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 

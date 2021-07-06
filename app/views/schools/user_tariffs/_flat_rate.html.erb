@@ -1,5 +1,22 @@
-<% if user_tariff.user_tariff_prices.any? %>
-  <h3>Flat rate tariff: <%= number_to_currency(user_tariff.user_tariff_prices.first.value, unit: '£') %> per kWh</h3>
-<% else %>
-  <h3>No flat rate tariff has been set yet</h3>
-<% end %>
+<table class="table table-charges">
+  <tbody>
+  <% if user_tariff.user_tariff_prices.any? %>
+    <tr>
+      <td class="description">Flat rate tariff</td>
+      <td class="value"><%= number_to_currency(user_tariff.user_tariff_prices.first.value, unit: '£') %> per kWh</td>
+      <% if allow_edits %>
+        <td>
+          <%= link_to "Edit", edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+          <%= link_to "Delete", school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+        </td>
+      <% end %>
+    </tr>
+  <% else %>
+    <tr>
+      <td colspan='10'>
+        No flat rate tariff has been set yet
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

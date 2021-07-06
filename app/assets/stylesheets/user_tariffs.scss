@@ -1,0 +1,29 @@
+.user_tariff {
+  .table-charges {
+    margin-bottom: 0px;
+    td {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    td.description {
+      width: 60%
+    }
+    td.value {
+      width: 10%
+    }
+    td.units {
+      width: 10%
+    }
+    .form-group {
+      margin-bottom: 0px
+    }
+  }
+
+  .spaced {
+    margin: 10px;
+  }
+
+  // imput fields with specified 'pattern' will highlight when invalid
+  input:invalid {
+    color: red;
+  }
+}

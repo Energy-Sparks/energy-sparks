@@ -1,6 +1,6 @@
 <%= f.input :start_time, minute_step: 30 %>
 <%= f.input :end_time, minute_step: 30 %>
-<%= f.input :value, label: 'Rate in £/kWh' %>
+<%= f.input :value, pattern: '[0-9.]+', label: 'Rate in £/kWh' %>
 <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 <%= f.submit 'Save', class: 'btn btn-primary' %>
 

@@ -1,5 +1,9 @@
-<h1>Edit <%= @user_tariff.fuel_type %> tariff</h1>
+<h1><%= user_tariff_title(@user_tariff) %></h1>
 
-<%= simple_form_for [@school, @user_tariff] do |f| %>
-  <%= render 'form', school: @school, user_tariff: @user_tariff, f: f %>
-<% end %>
+<div class="user_tariff">
+
+  <%= simple_form_for [@school, @user_tariff] do |f| %>
+    <%= render 'form', school: @school, user_tariff: @user_tariff, f: f %>
+  <% end %>
+
+</div>
