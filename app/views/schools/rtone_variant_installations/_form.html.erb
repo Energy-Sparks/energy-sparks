@@ -7,7 +7,7 @@
   include_blank: false, label: "Energy Sparks Meter" %>
 
   <%= form.input :rtone_meter_id, as: :string, label: "Rtone Meter Id", disabled: rtone_variant_installation.persisted? %>
-  <%= form.input :rtone_meter_type, collection: RtoneVariantInstallation.rtone_meter_types.keys, include_blank: false, label: "Rtone Meter Type" %>
+  <%= form.input :rtone_component_type, collection: RtoneVariantInstallation.rtone_component_types.keys, include_blank: false, label: "Rtone Meter Type" %>
 
   <%= form.input :username, as: :string %>
   <%= form.input :password, as: :string %>

@@ -45,7 +45,7 @@ RSpec.describe "Rtone variant installation management", :low_carbon_hub_installa
 
       click_on 'Submit'
 
-      expect(school.rtone_variant_installations.first.rtone_meter_type).to eql "in1"
+      expect(school.rtone_variant_installations.first.rtone_component_type).to eql "in1"
       expect(school.rtone_variant_installations.first.password).to eql "changed-pass"
       expect(school.rtone_variant_installations.first.username).to eql "changed-user"
 
