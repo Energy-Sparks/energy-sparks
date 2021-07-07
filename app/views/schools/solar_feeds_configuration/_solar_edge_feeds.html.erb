@@ -1,0 +1,30 @@
+<% if solar_edge_installations.any? %>
+  <table class="table table-sm">
+    <tbody>
+      <tr>
+        <th class="w-25">Mpan</th>
+        <th class="w-25">Site Id</th>
+        <th>API Key</th>
+        <th class="w-25">Actions</th>
+      </tr>
+      <% solar_edge_installations.each do |installation| %>
+        <tr>
+          <td><%= installation.mpan %></td>
+          <td><%= installation.site_id %></td>
+          <td><%= installation.api_key %></td>
+          <td>
+            <p>
+              <%= link_to 'Edit', edit_school_solar_edge_installation_path(school, installation), class: 'btn' %>
+              <%= link_to 'Delete', school_solar_edge_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </p>
+
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This school has no Solar Edge API feeds</p>
+<% end %>
+
+<p><%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %></p>

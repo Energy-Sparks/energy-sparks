@@ -16,6 +16,7 @@
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
 #  pseudo                         :boolean          default(FALSE)
+#  rtone_variant_installation_id  :bigint(8)
 #  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
@@ -27,6 +28,7 @@
 #  index_meters_on_meter_review_id                 (meter_review_id)
 #  index_meters_on_meter_type                      (meter_type)
 #  index_meters_on_mpan_mprn                       (mpan_mprn) UNIQUE
+#  index_meters_on_rtone_variant_installation_id   (rtone_variant_installation_id)
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
 #
@@ -34,6 +36,7 @@
 #
 #  fk_rails_...  (low_carbon_hub_installation_id => low_carbon_hub_installations.id) ON DELETE => cascade
 #  fk_rails_...  (meter_review_id => meter_reviews.id)
+#  fk_rails_...  (rtone_variant_installation_id => rtone_variant_installations.id)
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_edge_installation_id => solar_edge_installations.id) ON DELETE => cascade
 #
@@ -42,6 +45,7 @@ class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
+  has_one :rtone_variant_installation, required: false
 
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy

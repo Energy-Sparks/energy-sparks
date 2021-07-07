@@ -35,7 +35,7 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
-  enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api]
+  enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api, :rtone_variant_api]
   enum source_type: [:email, :manual, :api, :sftp]
 
   has_many :amr_data_feed_import_logs

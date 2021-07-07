@@ -6,6 +6,7 @@ module Schools
       @start_time = formatted_localised_utc_time('12pm')
       @end_time = formatted_localised_utc_time('1pm')
       @rtone_installations = @school.low_carbon_hub_installations
+      @rtone_variant_installations = @school.rtone_variant_installations
       @solar_edge_installations = @school.solar_edge_installations
     end
 
