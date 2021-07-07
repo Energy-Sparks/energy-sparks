@@ -922,7 +922,8 @@ ActiveRecord::Schema.define(version: 2021_07_07_085818) do
     t.string "username"
     t.string "password"
     t.string "rtone_meter_id"
-    t.integer "rtone_meter_type"
+    t.integer "rtone_component_type"
+    t.json "configuration"
     t.bigint "school_id", null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.bigint "meter_id", null: false

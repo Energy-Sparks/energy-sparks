@@ -42,7 +42,7 @@ module Schools
 
     def rtone_variant_installation_params
       params.require(:rtone_variant_installation).permit(
-        :amr_data_feed_config_id, :meter_id, :rtone_meter_id, :rtone_meter_type, :username, :password
+        :amr_data_feed_config_id, :meter_id, :rtone_meter_id, :rtone_component_type, :username, :password
       )
     end
   end

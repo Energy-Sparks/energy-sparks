@@ -4,7 +4,8 @@ class CreateRtoneVariantInstallations < ActiveRecord::Migration[6.0]
       t.string :username
       t.string :password
       t.string :rtone_meter_id
-      t.integer :rtone_meter_type
+      t.integer :rtone_component_type
+      t.json   :configuration
       t.references :school, null: false, foreign_key: true
       t.references :amr_data_feed_config, null: false, foreign_key: true
       t.references :meter, null: false, foreign_key: true
