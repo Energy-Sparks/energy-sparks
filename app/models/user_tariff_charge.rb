@@ -5,7 +5,7 @@
 #  charge_type    :text             not null
 #  created_at     :datetime         not null
 #  id             :bigint(8)        not null, primary key
-#  units          :text             not null
+#  units          :text
 #  updated_at     :datetime         not null
 #  user_tariff_id :bigint(8)        not null
 #  value          :decimal(, )      not null
