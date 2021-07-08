@@ -5,6 +5,9 @@ FactoryBot.define do
     sequence(:rbee_meter_id, (100000..900000).cycle)  { |n| n }
     amr_data_feed_config
 
+    username { |n| "username_#{n}" }
+    password { |n| "password_#{n}" }
+
     factory :low_carbon_hub_installation_with_meters_and_validated_readings do
 
       transient do
@@ -22,4 +25,3 @@ FactoryBot.define do
     end
   end
 end
-
