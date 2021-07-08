@@ -1,4 +1,4 @@
-namespace :amr do
+namespace :solar do
   desc "Import solar edge data"
   task :import_solar_edge_readings, [:start_date, :end_date] => :environment do |_t, args|
 
