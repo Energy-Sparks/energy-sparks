@@ -919,10 +919,10 @@ ActiveRecord::Schema.define(version: 2021_07_07_085818) do
   end
 
   create_table "rtone_variant_installations", force: :cascade do |t|
-    t.string "username"
-    t.string "password"
-    t.string "rtone_meter_id"
-    t.integer "rtone_component_type"
+    t.string "username", null: false
+    t.string "password", null: false
+    t.string "rtone_meter_id", null: false
+    t.integer "rtone_component_type", null: false
     t.json "configuration"
     t.bigint "school_id", null: false
     t.bigint "amr_data_feed_config_id", null: false
