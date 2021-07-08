@@ -1,18 +1,21 @@
 module Solar
-  class LowCarbonHubDownloadAndUpsert
+  class LowCarbonHubDownloadAndUpsert < BaseDownloadAndUpsert
     def initialize(
-        low_carbon_hub_installation:,
+        installation:,
         start_date:,
         end_date:
       )
-      @low_carbon_hub_installation = low_carbon_hub_installation
-      @start_date = start_date
-      @end_date = end_date
+      super(start_date: start_date, end_date: end_date, installation: installation)
     end
 
-    def perform
-      readings = LowCarbonHubDownloader.new(low_carbon_hub_installation: @low_carbon_hub_installation, start_date: @start_date, end_date: @end_date, low_carbon_hub_api: low_carbon_hub_api).readings
-      LowCarbonHubUpserter.new(low_carbon_hub_installation: @low_carbon_hub_installation, readings: readings).perform
+    def download_and_upsert
+      readings = LowCarbonHubDownloader.new(installation: @installation, start_date: start_date, end_date: end_date, api: low_carbon_hub_api).readings
+
+      LowCarbonHubUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
+    end
+
+    def job
+      :rtone_download
     end
 
     private
@@ -22,11 +25,11 @@ module Solar
     end
 
     def username
-      @low_carbon_hub_installation.username || ENV['ENERGYSPARKSRBEEUSERNAME']
+      @installation.username || ENV['ENERGYSPARKSRBEEUSERNAME']
     end
 
     def password
-      @low_carbon_hub_installation.password || ENV['ENERGYSPARKSRBEEPASSWORD']
+      @installation.password || ENV['ENERGYSPARKSRBEEPASSWORD']
     end
   end
 end

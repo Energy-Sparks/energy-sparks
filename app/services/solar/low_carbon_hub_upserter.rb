@@ -2,11 +2,11 @@ require 'dashboard'
 
 module Solar
   class LowCarbonHubUpserter
-    def initialize(low_carbon_hub_installation:, readings:)
-      @low_carbon_hub_installation = low_carbon_hub_installation
+    def initialize(installation:, readings:, import_log:)
+      @low_carbon_hub_installation = installation
       @readings = readings
       @amr_data_feed_config = @low_carbon_hub_installation.amr_data_feed_config
-      @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: "Low Carbon Hub API import #{DateTime.now.utc}", import_time: DateTime.now.utc)
+      @amr_data_feed_import_log = import_log
     end
 
     def perform

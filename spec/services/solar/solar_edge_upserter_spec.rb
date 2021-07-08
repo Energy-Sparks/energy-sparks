@@ -5,6 +5,7 @@ module Solar
 
     let(:mpan) { 1112223334445 }
     let!(:solar_edge_installation) { create(:solar_edge_installation, mpan: mpan, api_key: 'n8r3yr98rn3xnr') }
+    let(:import_log)    { create(:amr_data_feed_import_log) }
 
     let(:solar_pv_readings)           { { "Sun, 29 Nov 2020" => Array.new(48, 1.0), "Mon, 30 Nov 2020" => Array.new(48, 2.0) } }
     let(:electricity_readings)        { { "Sun, 29 Nov 2020" => Array.new(48, 3.0), "Mon, 30 Nov 2020" => Array.new(48, 4.0) } }
@@ -24,7 +25,7 @@ module Solar
 
     it 'creates new pseudo meters' do
       expect {
-        SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings).perform
+        SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
       }.to change { Meter.count }.by(3)
       expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
       expect(solar_edge_installation.meters.electricity.last.mpan_mprn).to eq(expected_electricity_mpan)
@@ -33,7 +34,7 @@ module Solar
 
     it 'creates amr readings' do
       expect {
-        SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings).perform
+        SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
       }.to change { AmrDataFeedReading.count }.by(6)
       amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
       expect(amr_reading.readings[0]).to eq('2.0')
@@ -44,7 +45,7 @@ module Solar
     end
 
     it 'does not log any errors or warnings' do
-      SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings).perform
+      SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
       amr_data_feed_import_log = AmrDataFeedImportLog.last
       expect(amr_data_feed_import_log.error_messages).to be_blank
       expect(amr_data_feed_import_log.amr_reading_warnings).to be_empty

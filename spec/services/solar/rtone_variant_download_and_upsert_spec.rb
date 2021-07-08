@@ -22,7 +22,7 @@ module Solar
     let(:requested_start_date) { nil }
     let(:requested_end_date) { nil }
 
-    let(:upserter)  { Solar::RtoneVariantDownloadAndUpsert.new(rtone_variant_installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
+    let(:upserter)  { Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
 
     before(:each) do
       expect(LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
@@ -48,7 +48,9 @@ module Solar
       end
 
       it "should insert data" do
-        expect{ upserter.perform }.to change(AmrDataFeedReading, :count).by(1)
+        expect(AmrDataFeedReading.count).to eql 0
+        upserter.perform
+        expect(AmrDataFeedReading.count).to eql 1
       end
     end
 

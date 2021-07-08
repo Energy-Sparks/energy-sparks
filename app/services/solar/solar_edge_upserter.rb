@@ -2,11 +2,11 @@ require 'dashboard'
 
 module Solar
   class SolarEdgeUpserter
-    def initialize(solar_edge_installation:, readings:)
+    def initialize(solar_edge_installation:, readings:, import_log:)
       @solar_edge_installation = solar_edge_installation
       @readings = readings
       @amr_data_feed_config = @solar_edge_installation.amr_data_feed_config
-      @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: "Solar Edge API import #{DateTime.now.utc}", import_time: DateTime.now.utc)
+      @amr_data_feed_import_log = import_log
     end
 
     def perform

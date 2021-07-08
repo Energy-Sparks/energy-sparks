@@ -8,7 +8,7 @@ namespace :solar do
     puts "#{DateTime.now.utc} import_rtone_variant_readings start"
     RtoneVariantInstallation.all.each do |installation|
       puts "Running for #{installation.rtone_meter_id}"
-      Solar::RtoneVariantDownloadAndUpsert.new(rtone_variant_installation: installation, start_date: start_date, end_date: end_date).perform
+      Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
     end
     puts "#{DateTime.now.utc} import_rtone_variant_readings end"
   end

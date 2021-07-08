@@ -3,13 +3,13 @@ require 'dashboard'
 module Solar
   class LowCarbonHubDownloader
     def initialize(
-        low_carbon_hub_installation:,
+        installation:,
         start_date:,
         end_date:,
-        low_carbon_hub_api:
+        api:
       )
-      @low_carbon_hub_installation = low_carbon_hub_installation
-      @low_carbon_hub_api = low_carbon_hub_api
+      @low_carbon_hub_installation = installation
+      @low_carbon_hub_api = api
       @start_date = start_date
       @end_date = end_date
     end

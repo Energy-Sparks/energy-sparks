@@ -25,7 +25,7 @@ module Solar
 
       # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
       LowCarbonHubDownloadAndUpsert.new(
-        low_carbon_hub_installation: installation,
+        installation: installation,
         start_date: first_reading_date,
         end_date: first_reading_date + 1.day
       ).perform
