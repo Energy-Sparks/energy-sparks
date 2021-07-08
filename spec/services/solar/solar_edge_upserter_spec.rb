@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module Amr
+module Solar
   describe SolarEdgeUpserter do
 
     let(:mpan) { 1112223334445 }

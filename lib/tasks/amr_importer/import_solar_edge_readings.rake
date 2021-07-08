@@ -20,7 +20,7 @@ namespace :amr do
                      end
                    end
 
-      Amr::SolarEdgeDownloadAndUpsert.new(solar_edge_installation: installation, start_date: start_date, end_date: end_date).perform
+      Solar::SolarEdgeDownloadAndUpsert.new(solar_edge_installation: installation, start_date: start_date, end_date: end_date).perform
     end
   end
 end

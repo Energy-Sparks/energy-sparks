@@ -1,4 +1,4 @@
-module Amr
+module Solar
   class SolarEdgeDownloadAndUpsert
     def initialize(
         solar_edge_installation:,
