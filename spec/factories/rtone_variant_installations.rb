@@ -8,6 +8,6 @@ FactoryBot.define do
     password { |n| "password_#{n}" }
 
     sequence(:rtone_meter_id, (100000..900000).cycle)  { |n| n }
-    rtone_meter_type { 1 }
+    rtone_component_type { 1 }
   end
 end

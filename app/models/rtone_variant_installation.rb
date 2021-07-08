@@ -37,7 +37,7 @@ class RtoneVariantInstallation < ApplicationRecord
   validates_uniqueness_of :rtone_meter_id, scope: :school
 
   def latest_electricity_reading
-    if meter.amr_data_feed_readings.any
+    if meter.amr_data_feed_readings.any?
       Date.parse(meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
     end
   end
