@@ -1,6 +1,6 @@
 require 'dashboard'
 
-module Amr
+module Solar
   class LowCarbonHubDownloader
     def initialize(
         low_carbon_hub_installation:,

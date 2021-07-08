@@ -1,4 +1,4 @@
-module Amr
+module Solar
   class LowCarbonHubDownloadAndUpsert
     def initialize(
         low_carbon_hub_installation:,

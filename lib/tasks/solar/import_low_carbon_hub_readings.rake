@@ -1,4 +1,4 @@
-namespace :amr do
+namespace :solar do
   desc "Import low carbon hub data"
   task :import_low_carbon_hub_readings, [:start_date, :end_date] => :environment do |_t, args|
 
@@ -16,7 +16,7 @@ namespace :amr do
                      installation.latest_electricity_reading < default_start_date ? installation.latest_electricity_reading : default_start_date
                    end
 
-      Amr::LowCarbonHubDownloadAndUpsert.new(low_carbon_hub_installation: installation, start_date: start_date, end_date: end_date).perform
+      Solar::LowCarbonHubDownloadAndUpsert.new(low_carbon_hub_installation: installation, start_date: start_date, end_date: end_date).perform
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'dashboard'
 
-module Amr
+module Solar
   class LowCarbonHubInstallationFactory
     def initialize(
         school:,
