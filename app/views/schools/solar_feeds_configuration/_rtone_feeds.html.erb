@@ -1,0 +1,34 @@
+<% if rtone_installations.any? %>
+  <table class="table table-sm">
+    <tbody>
+      <tr>
+        <th class="w-25">RBee Id</th>
+        <th class="w-25">Username</th>
+        <th>Password</th>
+        <th class="w-25">Actions</th>
+      </tr>
+      <% rtone_installations.each do |installation| %>
+        <tr>
+          <td>
+            <%= link_to installation.rbee_meter_id, school_low_carbon_hub_installation_path(school, installation)
+            %>
+          </td>
+          <td><%= installation.username %></td>
+          <td><%= installation.password %></td>
+          <td>
+            <p>
+              <%= link_to 'Edit', edit_school_low_carbon_hub_installation_path(school, installation), class: 'btn' %>
+              <%= link_to 'Delete', school_low_carbon_hub_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            </p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This school has no Rtone API feeds</p>
+<% end %>
+
+<p class="alert alert-warning">You cannot create a new new Rtone installation, or download data from an installation, between <%= start_time %> and <%= end_time %></p>
+
+<p><%= link_to 'New Rtone API feed', new_school_low_carbon_hub_installation_path, class: 'btn' %></p>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_06_135149) do
+ActiveRecord::Schema.define(version: 2021_07_07_085818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -918,6 +918,22 @@ ActiveRecord::Schema.define(version: 2021_07_06_135149) do
     t.index ["resource_file_type_id"], name: "index_resource_files_on_resource_file_type_id"
   end
 
+  create_table "rtone_variant_installations", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "password", null: false
+    t.string "rtone_meter_id", null: false
+    t.integer "rtone_component_type", null: false
+    t.json "configuration"
+    t.bigint "school_id", null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.bigint "meter_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_data_feed_config_id"], name: "index_rtone_variant_installations_on_amr_data_feed_config_id"
+    t.index ["meter_id"], name: "index_rtone_variant_installations_on_meter_id"
+    t.index ["school_id"], name: "index_rtone_variant_installations_on_school_id"
+  end
+
   create_table "school_alert_type_exclusions", force: :cascade do |t|
     t.bigint "alert_type_id"
     t.bigint "school_id"
@@ -1474,6 +1490,9 @@ ActiveRecord::Schema.define(version: 2021_07_06_135149) do
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
   add_foreign_key "resource_files", "resource_file_types", on_delete: :restrict
+  add_foreign_key "rtone_variant_installations", "amr_data_feed_configs"
+  add_foreign_key "rtone_variant_installations", "meters"
+  add_foreign_key "rtone_variant_installations", "schools"
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
