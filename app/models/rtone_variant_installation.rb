@@ -7,12 +7,12 @@
 #  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
 #  meter_id                :bigint(8)        not null
-#  password                :string
-#  rtone_component_type    :integer
-#  rtone_meter_id          :string
+#  password                :string           not null
+#  rtone_component_type    :integer          not null
+#  rtone_meter_id          :string           not null
 #  school_id               :bigint(8)        not null
 #  updated_at              :datetime         not null
-#  username                :string
+#  username                :string           not null
 #
 # Indexes
 #
