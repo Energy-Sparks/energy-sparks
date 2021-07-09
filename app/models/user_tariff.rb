@@ -53,17 +53,17 @@ class UserTariff < ApplicationRecord
       rates: rates,
       vat: vat_rate,
       asc_limit_kw: value_for_charge(:asc_limit_kw),
-      climate_change_levy: ccl ? '1' : '0'
+      climate_change_levy: ccl
     }
   end
 
-  private
-
   def value_for_charge(type)
-    if (charge = user_tariff_charges.find { |c| c.is_type?([type]) })
+    if (charge = user_tariff_charges.for_type(type).first)
       charge.value.to_s
     end
   end
+
+  private
 
   def rates
     attrs = {}
@@ -82,6 +82,7 @@ class UserTariff < ApplicationRecord
     user_tariff_charges.select { |c| c.is_type?([:duos_red, :duos_amber, :duos_green]) }.each do |charge|
       attrs[charge.charge_type.to_sym] = charge.value.to_s
     end
+    attrs[:tnuos] = tnuos
     attrs
   end
 

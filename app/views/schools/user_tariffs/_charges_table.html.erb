@@ -8,13 +8,21 @@
       </tr>
     <% end %>
   <% end %>
+  <% if user_tariff.tnuos? %>
+    <tr>
+      <td class="description">TNUoS (Transmission Network Use of System)</td>
+      <td class="value"><%= y_n(user_tariff.tnuos?)  %></td>
+    </tr>
+  <% end %>
   <tr>
     <td class="description">VAT rate</td>
     <td class="value"><%= user_tariff.vat_rate  %></td>
   </tr>
-  <tr>
-    <td class="description">Climate charge levy</td>
-    <td class="value"><%= y_n(user_tariff.ccl?)  %></td>
-  </tr>
+  <% if user_tariff.ccl? %>
+    <tr>
+      <td class="description">Climate charge levy</td>
+      <td class="value"><%= y_n(user_tariff.ccl?)  %></td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
