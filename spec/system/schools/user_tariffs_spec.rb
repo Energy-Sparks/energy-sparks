@@ -95,6 +95,20 @@ describe 'user tariffs', type: :system do
 
     context 'creating flat rate electricity tariffs' do
 
+      it 'requires a meter to be selected' do
+        visit school_path(school)
+        click_link('Manage tariffs')
+        click_link('Add electricity tariff')
+
+        expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content(electricity_meter.mpan_mprn)
+        uncheck(electricity_meter.mpan_mprn)
+        click_button('Next')
+
+        expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content('Please select at least one meter')
+      end
+
       it 'can handle partially created tariff with bits missing' do
         visit school_path(school)
         click_link('Manage tariffs')
@@ -118,7 +132,6 @@ describe 'user tariffs', type: :system do
 
         expect(page).to have_content('All tariffs')
         expect(page).to have_content('No flat rate tariff has been set yet')
-        expect(page).to have_content('There are no meters associated with this tariff')
       end
 
       it 'can create a flat rate tariff with price' do
