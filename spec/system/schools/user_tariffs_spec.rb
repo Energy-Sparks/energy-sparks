@@ -273,6 +273,9 @@ describe 'user tariffs', type: :system do
         fill_in "user_tariff_charges[meter_asset_provider_charge][value]", with: '3.21'
         fill_in "user_tariff_charges[nhh_metering_agent_charge][value]", with: '1.9'
 
+        fill_in "user_tariff_charges[nhh_automatic_meter_reading_charge][value]", with: '.12'
+        fill_in "user_tariff_charges[data_collection_dcda_agent_charge][value]", with: '.34'
+
         check 'user_tariff_charges[user_tariff][tnuos]'
         check 'user_tariff_charges[user_tariff][ccl]'
         select '20%', from: 'user_tariff_charges[user_tariff][vat_rate]'
@@ -298,6 +301,8 @@ describe 'user tariffs', type: :system do
         expect(user_tariff.value_for_charge(:settlement_agency_fee)).to eq('6.54')
         expect(user_tariff.value_for_charge(:meter_asset_provider_charge)).to eq('3.21')
         expect(user_tariff.value_for_charge(:nhh_metering_agent_charge)).to eq('1.9')
+        expect(user_tariff.value_for_charge(:nhh_automatic_meter_reading_charge)).to eq('0.12')
+        expect(user_tariff.value_for_charge(:data_collection_dcda_agent_charge)).to eq('0.34')
       end
     end
 
