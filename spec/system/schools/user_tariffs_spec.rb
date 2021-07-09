@@ -62,14 +62,14 @@ describe 'user tariffs', type: :system do
         click_button('Next')
 
         expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Gas Tariff (gas, 01/04/2021 to 31/03/2022)')
+        expect(page).to have_content('01/04/2021 to 31/03/2022 : My First Gas Tariff')
         expect(page).to have_content('999888777')
 
         fill_in "user_tariff_price[value]", with: '1.5'
         click_button('Next')
 
         expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Gas Tariff (gas, 01/04/2021 to 31/03/2022)')
+        expect(page).to have_content('01/04/2021 to 31/03/2022 : My First Gas Tariff')
         expect(page).to have_content('999888777')
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'

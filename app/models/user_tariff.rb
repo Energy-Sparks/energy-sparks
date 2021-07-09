@@ -27,6 +27,7 @@ class UserTariff < ApplicationRecord
   validates :name, :start_date, :end_date, presence: true
 
   scope :by_name, -> { order(name: :asc) }
+  scope :by_start_date, -> { order(start_date: :asc) }
   scope :electricity, -> { where(fuel_type: 'electricity') }
   scope :gas, -> { where(fuel_type: 'gas') }
 

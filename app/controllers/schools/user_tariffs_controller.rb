@@ -5,9 +5,9 @@ module Schools
 
     def index
       @electricity_meters = @school.meters.electricity
-      @electricity_tariffs = @school.user_tariffs.electricity.by_name
+      @electricity_tariffs = @school.user_tariffs.electricity.by_start_date.by_name
       @gas_meters = @school.meters.gas
-      @gas_tariffs = @school.user_tariffs.gas.by_name
+      @gas_tariffs = @school.user_tariffs.gas.by_start_date.by_name
     end
 
     def new
