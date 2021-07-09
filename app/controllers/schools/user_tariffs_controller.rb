@@ -4,12 +4,17 @@ module Schools
     load_and_authorize_resource :user_tariff
 
     def index
+      @electricity_meters = @school.meters.electricity
       @electricity_tariffs = @school.user_tariffs.electricity.by_name
+      @gas_meters = @school.meters.gas
       @gas_tariffs = @school.user_tariffs.gas.by_name
     end
 
     def new
       @user_tariff = @school.user_tariffs.build(user_tariff_params.merge(default_params))
+      if @user_tariff.meter_ids.empty?
+        redirect_back fallback_location: school_user_tariffs_path(@school), notice: "Please select at least one meter for this tariff"
+      end
     end
 
     def create
