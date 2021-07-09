@@ -37,6 +37,10 @@
   <%= render 'charge_tnuos', user_tariff: user_tariff, f: ff %>
 <% end %>
 
+<%= f.fields_for :data_collection_dcda_agent_charge do |ff| %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :data_collection_dcda_agent_charge), f: ff %>
+<% end %>
+
 <%= f.fields_for :settlement_agency_fee do |ff| %>
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :settlement_agency_fee), f: ff %>
 <% end %>
@@ -47,6 +51,10 @@
 
 <%= f.fields_for :nhh_metering_agent_charge do |ff| %>
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :nhh_metering_agent_charge), f: ff %>
+<% end %>
+
+<%= f.fields_for :nhh_automatic_meter_reading_charge do |ff| %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :nhh_automatic_meter_reading_charge), f: ff %>
 <% end %>
 
 <br/>
