@@ -11,6 +11,9 @@
       <%= link_to "Review meters", new_admin_school_meter_review_path(@school) %>
     <% end %>
   <% end %>
+  <% if can? :manage, UserTariff %>
+    <%= link_to 'Manage tariffs', school_user_tariffs_path(@school) %>
+  <% end %>
 </div>
 
 <% unless @invalid_mpan.empty? %>
