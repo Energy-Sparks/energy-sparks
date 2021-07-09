@@ -2,6 +2,9 @@
 
 <div class="user_tariff">
 
+  <p>Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff.</p>
+  <br/>
+
   <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
 
   <%= simple_form_for @user_tariff_price, url: school_user_tariff_user_tariff_flat_price_path(@school, @user_tariff, @user_tariff_price), method: :put do |f| %>
