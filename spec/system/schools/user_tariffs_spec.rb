@@ -32,6 +32,16 @@ describe 'user tariffs', type: :system do
       sign_in(admin)
     end
 
+    context 'has navigation links' do
+      it 'from meters page' do
+        visit school_meters_path(school)
+        within '.application' do
+          click_link('Manage tariffs')
+        end
+        expect(page).to have_content('All tariffs')
+      end
+    end
+
     context 'creating flat rate gas tariffs' do
 
       it 'can create a tariff and add prices and charges' do
@@ -323,6 +333,12 @@ describe 'user tariffs', type: :system do
         expect(page).to have_content(':kwh')
         expect(page).to have_content('4.56')
         expect(page).to have_content(':month')
+      end
+
+      it 'links to the review page' do
+        visit admin_school_single_meter_attribute_path(school, electricity_meter)
+        click_link 'User tariffs'
+        expect(page).to have_content('Please review and confirm the rates for this tariff')
       end
     end
   end
