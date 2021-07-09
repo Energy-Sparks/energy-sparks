@@ -33,6 +33,10 @@
 
 <h4>Transmission charges</h4>
 
+<%= f.fields_for :user_tariff do |ff| %>
+  <%= render 'charge_tnuos', user_tariff: user_tariff, f: ff %>
+<% end %>
+
 <%= f.fields_for :settlement_agency_fee do |ff| %>
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :settlement_agency_fee), f: ff %>
 <% end %>
