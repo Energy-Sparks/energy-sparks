@@ -38,7 +38,7 @@ describe 'user tariffs', type: :system do
         within '.application' do
           click_link('Manage tariffs')
         end
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
       end
     end
 
@@ -48,7 +48,7 @@ describe 'user tariffs', type: :system do
         visit school_path(school)
         click_link('Manage tariffs')
 
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
 
         click_link('Add gas tariff')
 
@@ -88,9 +88,8 @@ describe 'user tariffs', type: :system do
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
         expect(page).to have_content('999888777')
-        expect(page).to have_content('5%')
 
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([gas_meter])
@@ -123,7 +122,7 @@ describe 'user tariffs', type: :system do
         visit school_path(school)
         click_link('Manage tariffs')
 
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
 
         click_link('Add electricity tariff')
 
@@ -140,8 +139,8 @@ describe 'user tariffs', type: :system do
 
         visit school_user_tariffs_path(school)
 
-        expect(page).to have_content('All tariffs')
-        expect(page).to have_content('No flat rate tariff has been set yet')
+        expect(page).to have_content('Manage tariffs')
+        expect(page).to have_content('No consumption charges have been set yet')
       end
 
       it 'can create a flat rate tariff with price' do
@@ -168,7 +167,7 @@ describe 'user tariffs', type: :system do
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
         expect(page).to have_content('12345678901234')
 
         user_tariff = UserTariff.last
@@ -221,7 +220,7 @@ describe 'user tariffs', type: :system do
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
         expect(page).to have_content('12345678901234')
 
         user_tariff = UserTariff.last

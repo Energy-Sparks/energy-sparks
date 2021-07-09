@@ -10,20 +10,43 @@
     </div>
     <div id="collapse<%= user_tariff.id %>" class="collapse" aria-labelledby="heading<%= user_tariff.id %>" data-parent="#accordion<%= user_tariff.id %>">
       <div class="card-body">
-        <div>
-          <%= render 'meters', user_tariff: user_tariff %>
-        </div>
-        <div>
-          <% if user_tariff.flat_rate? %>
-            <%= render 'schools/user_tariffs/flat_rate', school: school, user_tariff: user_tariff, allow_edits: false %>
-          <% else %>
-            <%= render 'schools/user_tariffs/rates_table', school: school, user_tariff: user_tariff, allow_edits: false %>
-          <% end %>
-          <br/>
-          <%= render 'schools/user_tariffs/charges_table', school: school, user_tariff: user_tariff, allow_edits: false %>
-        </div>
+        <table class="table table-charges">
+          <tbody>
+          <tr>
+            <td class="description">Type</td>
+            <td class="value"><%= user_tariff.flat_rate ? 'Simple tariff' : 'Day/night tariff' %></td>
+          </tr>
+          <tr>
+            <td class="description">Start date</td>
+            <td class="value"><%= user_tariff.start_date.to_s(:es_compact) %></td>
+          </tr>
+          <tr>
+            <td class="description">End date</td>
+            <td class="value"><%= user_tariff.end_date.to_s(:es_compact) %></td>
+          </tr>
+
+          <tr>
+            <% if user_tariff.user_tariff_prices.any? %>
+              <td class="description">Consumption charges</td>
+              <td class="value nowrap">
+                <% user_tariff.user_tariff_prices.each do |price| %>
+                  <%= "#{price.start_time.to_s(:time)} to #{price.end_time.to_s(:time)} : " if !user_tariff.flat_rate %>
+                  <%= number_to_currency(user_tariff.user_tariff_prices.first.value, unit: '£') %> per kWh
+                  <br/>
+                <% end %>
+              </td>
+            <% else %>
+              <td colspan='10'>No consumption charges have been set yet</td>
+            <% end %>
+          </tr>
+
+          </tbody>
+        </table>
+
+        <br/>
+
         <div class="padded-row">
-          <%= link_to "Review", school_user_tariff_path(school, user_tariff), class: 'btn' if can? :download, UserTariff %>
+          <%= link_to "Full details", school_user_tariff_path(school, user_tariff), class: 'btn' if can? :download, UserTariff %>
           <%= link_to "Edit", edit_school_user_tariff_path(school, user_tariff), class: 'btn' %>
           <%= link_to "Delete", school_user_tariff_path(school, user_tariff), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
         </div>
