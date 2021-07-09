@@ -3,7 +3,7 @@
     <div class="card-header" id="heading<%= user_tariff.id %>">
       <h5 class="mb-0">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse<%= user_tariff.id %>" href="#collapse<%= user_tariff.id %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-          <%= user_tariff_title(user_tariff) %>
+          <%= user_tariff_title(user_tariff, true) %>
           <%= button_tag 'View', class: 'btn right user-tariff-show-button' %>
         </a>
       </h5>

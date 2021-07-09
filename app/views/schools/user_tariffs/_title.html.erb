@@ -1,17 +1,15 @@
 <% if user_tariff.meters.present? %>
   <div class="row">
     <div class="col-md-4">
-      <p>Meters associated with this tariff:</p>
+      <p>Tariff:</p>
     </div>
     <div class="col-md-3 right">
-      <% user_tariff.meters.each do |meter| %>
-        <strong>
-          <%= meter.mpan_mprn %>
-          <%= "(#{meter.name})" unless meter.name.blank? %>
+      <strong>
+        <%= user_tariff_title(@user_tariff) %>
         </strong>
-      <% end %>
     </div>
   </div>
 <% else %>
   <p>There are no meters associated with this tariff</p>
 <% end %>
+

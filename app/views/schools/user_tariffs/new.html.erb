@@ -1,6 +1,8 @@
-<h1>Add <%= @user_tariff.fuel_type %> tariff</h1>
+<h1>Choose a name and date range for this <%= @user_tariff.fuel_type %> tariff</h1>
 
 <div class="user_tariff">
+
+  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
 
   <%= simple_form_for [@school, @user_tariff] do |f| %>
 

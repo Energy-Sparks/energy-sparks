@@ -1,10 +1,10 @@
-<h2><%= user_tariff_title(@user_tariff) %></h2>
+<h1>Add consumption charges for each time period for this tariff</h1>
 
 <div class="user_tariff">
 
-  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
+  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
 
-  <h3>Energy charges</h3>
+  <h3>Consumption charges</h3>
 
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
