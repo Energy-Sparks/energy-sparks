@@ -239,23 +239,42 @@ describe 'user tariffs', type: :system do
         fill_in "user_tariff_charges[duos_amber][value]", with: '4.44'
         fill_in "user_tariff_charges[duos_green][value]", with: '5.55'
 
+        fill_in "user_tariff_charges[agreed_availability_charge][value]", with: '6.66'
+        fill_in "user_tariff_charges[excess_availability_charge][value]", with: '7.77'
+        fill_in "user_tariff_charges[asc_limit_kw][value]", with: '8.88'
+
+        fill_in "user_tariff_charges[reactive_power_charge][value]", with: '9.99'
+        fill_in "user_tariff_charges[feed_in_tariff_levy][value]", with: '9.87'
+
+        fill_in "user_tariff_charges[settlement_agency_fee][value]", with: '6.54'
+        fill_in "user_tariff_charges[meter_asset_provider_charge][value]", with: '3.21'
+        fill_in "user_tariff_charges[nhh_metering_agent_charge][value]", with: '1.9'
+
         check 'user_tariff_charges[user_tariff][tnuos]'
         check 'user_tariff_charges[user_tariff][ccl]'
         select '20%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
         click_button('Next')
         expect(page).to have_content('Please review')
-        expect(page).to have_content('£1.50 per kWh')
-        expect(page).to have_content('£1.11 per day')
-        expect(page).to have_content('£2.22 per month')
-        expect(page).to have_content('3.33')
-        expect(page).to have_content('4.44')
-        expect(page).to have_content('5.55')
 
         user_tariff = UserTariff.last
         expect(user_tariff.tnuos).to be_truthy
         expect(user_tariff.ccl).to be_truthy
         expect(user_tariff.vat_rate).to eq('20%')
+
+        expect(user_tariff.value_for_charge(:fixed_charge)).to eq('1.11')
+        expect(user_tariff.value_for_charge(:site_fee)).to eq('2.22')
+        expect(user_tariff.value_for_charge(:duos_red)).to eq('3.33')
+        expect(user_tariff.value_for_charge(:duos_amber)).to eq('4.44')
+        expect(user_tariff.value_for_charge(:duos_green)).to eq('5.55')
+        expect(user_tariff.value_for_charge(:agreed_availability_charge)).to eq('6.66')
+        expect(user_tariff.value_for_charge(:excess_availability_charge)).to eq('7.77')
+        expect(user_tariff.value_for_charge(:asc_limit_kw)).to eq('8.88')
+        expect(user_tariff.value_for_charge(:reactive_power_charge)).to eq('9.99')
+        expect(user_tariff.value_for_charge(:feed_in_tariff_levy)).to eq('9.87')
+        expect(user_tariff.value_for_charge(:settlement_agency_fee)).to eq('6.54')
+        expect(user_tariff.value_for_charge(:meter_asset_provider_charge)).to eq('3.21')
+        expect(user_tariff.value_for_charge(:nhh_metering_agent_charge)).to eq('1.9')
       end
     end
 

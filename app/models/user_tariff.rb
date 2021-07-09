@@ -57,13 +57,13 @@ class UserTariff < ApplicationRecord
     }
   end
 
-  private
-
   def value_for_charge(type)
-    if (charge = user_tariff_charges.find { |c| c.is_type?([type]) })
+    if (charge = user_tariff_charges.for_type(type).first)
       charge.value.to_s
     end
   end
+
+  private
 
   def rates
     attrs = {}
