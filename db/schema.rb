@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_09_091537) do
+ActiveRecord::Schema.define(version: 2021_07_12_163310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1299,6 +1299,7 @@ ActiveRecord::Schema.define(version: 2021_07_09_091537) do
     t.datetime "updated_at", precision: 6, null: false
     t.time "start_time", default: "2000-01-01 00:00:00", null: false
     t.time "end_time", default: "2000-01-01 23:30:00", null: false
+    t.string "description"
     t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
   end
 

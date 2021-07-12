@@ -198,8 +198,8 @@ describe 'user tariffs', type: :system do
 
         click_button('Day/Night tariff')
 
-        expect(page).to have_content('Day/night tariff: 00:00 to 07:00')
-        expect(page).to have_content('Day/night tariff: 07:30 to 23:30')
+        expect(page).to have_content('Night rate (00:00 to 07:00)')
+        expect(page).to have_content('Day rate (07:00 to 00:00)')
 
         first('.user-tariff-show-button').click
 
@@ -211,8 +211,8 @@ describe 'user tariffs', type: :system do
         fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Save')
 
-        expect(page).to have_content('Day/night tariff: 00:30 to 08:30')
-        expect(page).to have_content('Day/night tariff: 07:30 to 23:30')
+        expect(page).to have_content('Night rate (00:30 to 08:30)')
+        expect(page).to have_content('Day rate (07:00 to 00:00)')
         expect(page).to have_content('£1.50 per kWh')
         expect(page).to have_content('£0.00 per kWh')
 
@@ -235,8 +235,8 @@ describe 'user tariffs', type: :system do
         expect(user_tariff_price.value.to_s).to eq('1.5')
         expect(user_tariff_price.units).to eq('kwh')
         user_tariff_price = user_tariff.user_tariff_prices.last
-        expect(user_tariff_price.start_time.to_s(:time)).to eq('07:30')
-        expect(user_tariff_price.end_time.to_s(:time)).to eq('23:30')
+        expect(user_tariff_price.start_time.to_s(:time)).to eq('07:00')
+        expect(user_tariff_price.end_time.to_s(:time)).to eq('00:00')
         expect(user_tariff_price.value.to_s).to eq('0.0')
         expect(user_tariff_price.units).to eq('kwh')
       end
