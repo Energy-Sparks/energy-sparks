@@ -15,8 +15,8 @@ class UserTariffDefaultPricesCreator
 
   def times(mpxn)
     night_times = Economy7Times.times(mpxn)
-    day_time_start = TimeOfDay.add_hours_and_minutes(night_times.last, 0, 30)
-    day_time_end = TimeOfDay.add_hours_and_minutes(night_times.first, 0, -30)
+    day_time_start = night_times.last
+    day_time_end = night_times.first
     [night_times, day_time_start..day_time_end]
   end
 
