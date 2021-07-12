@@ -29,8 +29,10 @@ describe UserTariffDefaultPricesCreator do
       expect(user_tariff.user_tariff_prices.count).to eq(2)
       expect(user_tariff.user_tariff_prices.first.start_time.to_s(:time)).to eq('00:00')
       expect(user_tariff.user_tariff_prices.first.end_time.to_s(:time)).to eq('07:00')
+      expect(user_tariff.user_tariff_prices.first.description).to eq('Night rate')
       expect(user_tariff.user_tariff_prices.last.start_time.to_s(:time)).to eq('07:00')
       expect(user_tariff.user_tariff_prices.last.end_time.to_s(:time)).to eq('00:00')
+      expect(user_tariff.user_tariff_prices.last.description).to eq('Day rate')
     end
   end
 end
