@@ -1,12 +1,12 @@
 require 'dashboard'
 
-module Amr
+module Solar
   class LowCarbonHubUpserter
-    def initialize(low_carbon_hub_installation:, readings:)
-      @low_carbon_hub_installation = low_carbon_hub_installation
+    def initialize(installation:, readings:, import_log:)
+      @low_carbon_hub_installation = installation
       @readings = readings
       @amr_data_feed_config = @low_carbon_hub_installation.amr_data_feed_config
-      @amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @amr_data_feed_config.id, file_name: "Low Carbon Hub API import #{DateTime.now.utc}", import_time: DateTime.now.utc)
+      @amr_data_feed_import_log = import_log
     end
 
     def perform
@@ -24,7 +24,7 @@ module Amr
           pseudo: true
         ).first_or_create!
 
-        DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log).perform
+        Amr::DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log).perform
         Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported}for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"
       end
     end

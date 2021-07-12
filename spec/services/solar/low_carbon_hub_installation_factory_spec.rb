@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'dashboard'
 
-module Amr
+module Solar
   describe LowCarbonHubInstallationFactory do
     include_context "low carbon hub data"
 
