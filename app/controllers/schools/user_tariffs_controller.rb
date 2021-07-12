@@ -5,9 +5,9 @@ module Schools
 
     def index
       @electricity_meters = @school.meters.electricity
-      @electricity_tariffs = @school.user_tariffs.electricity.by_name
+      @electricity_tariffs = @school.user_tariffs.electricity.by_start_date.by_name
       @gas_meters = @school.meters.gas
-      @gas_tariffs = @school.user_tariffs.gas.by_name
+      @gas_tariffs = @school.user_tariffs.gas.by_start_date.by_name
     end
 
     def new
@@ -45,6 +45,7 @@ module Schools
 
     def update
       if @user_tariff.update(user_tariff_params)
+        UserTariffDefaultPricesCreator.new(@user_tariff).process
         redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
       else
         render :edit

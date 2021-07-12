@@ -38,7 +38,7 @@ describe 'user tariffs', type: :system do
         within '.application' do
           click_link('Manage tariffs')
         end
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
       end
     end
 
@@ -48,28 +48,28 @@ describe 'user tariffs', type: :system do
         visit school_path(school)
         click_link('Manage tariffs')
 
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
 
         click_link('Add gas tariff')
 
-        expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content('Select meters for this tariff')
         check('999888777')
         click_button('Next')
 
-        expect(page).to have_content('Add gas tariff')
+        expect(page).to have_content('Choose a name and date range')
 
         fill_in 'Name', with: 'My First Gas Tariff'
         click_button('Next')
 
-        expect(page).to have_content('Energy charges')
-        expect(page).to have_content('My First Gas Tariff (gas, 01/04/2021 to 31/03/2022)')
+        expect(page).to have_content('Add consumption charges')
+        expect(page).to have_content('01/04/2021 to 31/03/2022 : My First Gas Tariff')
         expect(page).to have_content('999888777')
 
         fill_in "user_tariff_price[value]", with: '1.5'
         click_button('Next')
 
-        expect(page).to have_content('Standing charges')
-        expect(page).to have_content('My First Gas Tariff (gas, 01/04/2021 to 31/03/2022)')
+        expect(page).to have_content('Add standing charges')
+        expect(page).to have_content('01/04/2021 to 31/03/2022 : My First Gas Tariff')
         expect(page).to have_content('999888777')
 
         fill_in "user_tariff_charges[fixed_charge][value]", with: '4.56'
@@ -79,7 +79,7 @@ describe 'user tariffs', type: :system do
 
         click_button('Next')
 
-        expect(page).to have_content('Please review')
+        expect(page).to have_content('Tariff details')
         expect(page).to have_content('999888777')
         expect(page).to have_content('5%')
         expect(page).to have_content('Flat rate tariff')
@@ -88,9 +88,8 @@ describe 'user tariffs', type: :system do
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
         expect(page).to have_content('999888777')
-        expect(page).to have_content('5%')
 
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([gas_meter])
@@ -110,12 +109,12 @@ describe 'user tariffs', type: :system do
         click_link('Manage tariffs')
         click_link('Add electricity tariff')
 
-        expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content('Select meters for this tariff')
         expect(page).to have_content(electricity_meter.mpan_mprn)
         uncheck(electricity_meter.mpan_mprn)
         click_button('Next')
 
-        expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content('Select meters for this tariff')
         expect(page).to have_content('Please select at least one meter')
       end
 
@@ -123,25 +122,25 @@ describe 'user tariffs', type: :system do
         visit school_path(school)
         click_link('Manage tariffs')
 
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
 
         click_link('Add electricity tariff')
 
-        expect(page).to have_content('Select meters for tariff')
+        expect(page).to have_content('Select meters for this tariff')
         expect(page).to have_content(electricity_meter.mpan_mprn)
         expect(page).not_to have_content(gas_meter.mpan_mprn)
 
         click_button('Next')
 
-        expect(page).to have_content('Add electricity tariff')
+        expect(page).to have_content('Choose a name and date range')
         fill_in 'Name', with: 'My First Flat Tariff'
         click_button('Next')
         click_button('Simple')
 
         visit school_user_tariffs_path(school)
 
-        expect(page).to have_content('All tariffs')
-        expect(page).to have_content('No flat rate tariff has been set yet')
+        expect(page).to have_content('Manage tariffs')
+        expect(page).to have_content('No consumption charges have been set yet')
       end
 
       it 'can create a flat rate tariff with price' do
@@ -162,13 +161,13 @@ describe 'user tariffs', type: :system do
 
         click_button('Next')
 
-        expect(page).to have_content('Please review')
+        expect(page).to have_content('Tariff details')
         expect(page).to have_content('Flat rate tariff')
         expect(page).to have_content('£1.50 per kWh')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
         expect(page).to have_content('12345678901234')
 
         user_tariff = UserTariff.last
@@ -199,37 +198,46 @@ describe 'user tariffs', type: :system do
 
         click_button('Day/Night tariff')
 
-        click_link('Add rate')
+        expect(page).to have_content('Night rate (00:00 to 07:00)')
+        expect(page).to have_content('Day rate (07:00 to 00:00)')
+
+        first('.user-tariff-show-button').click
 
         select '00', from: 'user_tariff_price_start_time_4i'
-        select '00', from: 'user_tariff_price_start_time_5i'
-        select '07', from: 'user_tariff_price_end_time_4i'
-        select '00', from: 'user_tariff_price_end_time_5i'
+        select '30', from: 'user_tariff_price_start_time_5i'
+        select '08', from: 'user_tariff_price_end_time_4i'
+        select '30', from: 'user_tariff_price_end_time_5i'
 
         fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Save')
 
-        expect(page).to have_content('00:00')
-        expect(page).to have_content('07:00')
+        expect(page).to have_content('Night rate (00:30 to 08:30)')
+        expect(page).to have_content('Day rate (07:00 to 00:00)')
         expect(page).to have_content('£1.50 per kWh')
+        expect(page).to have_content('£0.00 per kWh')
 
         click_link('Next')
         click_button('Next')
 
-        expect(page).to have_content('Please review')
+        expect(page).to have_content('Tariff details')
         expect(page).to have_content('£1.50 per kWh')
         expect(page).not_to have_link('Delete')
 
         click_link('Finished')
-        expect(page).to have_content('All tariffs')
+        expect(page).to have_content('Manage tariffs')
         expect(page).to have_content('12345678901234')
 
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([electricity_meter])
         user_tariff_price = user_tariff.user_tariff_prices.first
-        expect(user_tariff_price.start_time.to_s(:time)).to eq('00:00')
-        expect(user_tariff_price.end_time.to_s(:time)).to eq('07:00')
+        expect(user_tariff_price.start_time.to_s(:time)).to eq('00:30')
+        expect(user_tariff_price.end_time.to_s(:time)).to eq('08:30')
         expect(user_tariff_price.value.to_s).to eq('1.5')
+        expect(user_tariff_price.units).to eq('kwh')
+        user_tariff_price = user_tariff.user_tariff_prices.last
+        expect(user_tariff_price.start_time.to_s(:time)).to eq('07:00')
+        expect(user_tariff_price.end_time.to_s(:time)).to eq('00:00')
+        expect(user_tariff_price.value.to_s).to eq('0.0')
         expect(user_tariff_price.units).to eq('kwh')
       end
     end
@@ -281,7 +289,7 @@ describe 'user tariffs', type: :system do
         select '20%', from: 'user_tariff_charges[user_tariff][vat_rate]'
 
         click_button('Next')
-        expect(page).to have_content('Please review')
+        expect(page).to have_content('Tariff details')
 
         user_tariff = UserTariff.last
         expect(user_tariff.tnuos).to be_truthy
@@ -343,7 +351,7 @@ describe 'user tariffs', type: :system do
       it 'links to the review page' do
         visit admin_school_single_meter_attribute_path(school, electricity_meter)
         click_link 'User tariffs'
-        expect(page).to have_content('Please review and confirm the rates for this tariff')
+        expect(page).to have_content('Tariff details')
       end
     end
   end

@@ -1,8 +1,13 @@
-<h2>Energy charges for <%= user_tariff_title(@user_tariff) %></h2>
+<h1>Add consumption charges for this tariff</h1>
 
 <div class="user_tariff">
 
-  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
+  <p>Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff.</p>
+  <br/>
+
+  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+
+  <br/>
 
   <%= simple_form_for @user_tariff_price, url: school_user_tariff_user_tariff_flat_prices_path(@school, @user_tariff) do |f| %>
     <%= render 'form', school: @school, user_tariff: @user_tariff, user_tariff_price: @user_tariff_price, f: f %>

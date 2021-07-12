@@ -24,4 +24,6 @@ class UserTariffPrice < ApplicationRecord
 
   validates :start_time, :end_time, :value, :units, presence: true
   validates :value, numericality: true
+
+  scope :by_start_time, -> { order(start_time: :asc) }
 end
