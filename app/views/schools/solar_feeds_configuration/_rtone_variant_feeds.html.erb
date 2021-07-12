@@ -1,0 +1,33 @@
+<% if rtone_variant_installations.any? %>
+  <table class="table table-sm">
+    <tbody>
+      <tr>
+        <th>Rtone Id</th>
+        <th>Rtone Meter Type</th>
+        <th>Meter</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th class="w-25">Actions</th>
+      </tr>
+      <% rtone_variant_installations.each do |installation| %>
+        <tr>
+          <td><%= installation.rtone_meter_id %></td>
+          <td><%= installation.rtone_component_type %></td>
+          <td><%= installation.meter.mpan_mprn %></td>
+          <td><%= installation.username %></td>
+          <td><%= installation.password %></td>
+          <td>
+            <p>
+              <%= link_to 'Edit', edit_school_rtone_variant_installation_path(school, installation), class: 'btn' %>
+              <%= link_to 'Delete', school_rtone_variant_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            </p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This school has no Rtone Variant API feeds</p>
+<% end %>
+
+<p><%= link_to 'New Rtone Variant API feed', new_school_rtone_variant_installation_path, class: 'btn' %></p>
