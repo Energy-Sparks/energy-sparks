@@ -76,7 +76,7 @@ RSpec.describe "Low carbon hub management", :low_carbon_hub_installations, type:
       expect(page).to have_content("This school has no Rtone API feeds")
       click_on 'New Rtone API feed'
 
-      expect(Amr::LowCarbonHubInstallationFactory).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
+      expect(Solar::LowCarbonHubInstallationFactory).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
 
       click_on 'Submit'
       expect(page).to have_content("This school has no Rtone API feeds")

@@ -2,8 +2,8 @@ require 'dashboard'
 
 module Solar
   class RtoneVariantUpserter
-    def initialize(rtone_variant_installation:, readings:, import_log:)
-      @rtone_variant_installation = rtone_variant_installation
+    def initialize(installation:, readings:, import_log:)
+      @rtone_variant_installation = installation
       @readings = readings
       @import_log = import_log
     end

@@ -7,7 +7,7 @@ module Schools
     end
 
     def create
-      @low_carbon_hub_installation = Amr::LowCarbonHubInstallationFactory.new(
+      @low_carbon_hub_installation = Solar::LowCarbonHubInstallationFactory.new(
         school: @school,
         rbee_meter_id: low_carbon_hub_installation_params[:rbee_meter_id],
         username: low_carbon_hub_installation_params[:username],
