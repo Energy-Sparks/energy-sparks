@@ -9,6 +9,8 @@
 
   <h3>Consumption charges</h3>
 
+  <p><%= user_tariff_prices_text(@user_tariff) %></p>
+
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
   <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>

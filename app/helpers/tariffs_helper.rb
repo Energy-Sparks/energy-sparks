@@ -20,6 +20,12 @@ module TariffsHelper
     end
   end
 
+  def user_tariff_prices_text(user_tariff)
+    if user_tariff.user_tariff_prices.map(&:description).include?(UserTariffPrice::NIGHT_RATE_DESCRIPTION)
+      "Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill."
+    end
+  end
+
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)
     user_tariff_charges.find { |c| c.is_type?([charge_type]) } || UserTariffCharge.new(charge_type: charge_type)
   end
