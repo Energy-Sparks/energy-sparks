@@ -1,6 +1,15 @@
 module TariffsHelper
-  def user_tariff_title(user_tariff)
-    "#{user_tariff.name} (#{user_tariff.fuel_type}, #{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)})"
+  def user_tariff_title(user_tariff, with_mpxn = false)
+    str = "#{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)}"
+    str += " : #{user_tariff.name}" if user_tariff.name.present?
+    if user_tariff.meters.any? && with_mpxn
+      if user_tariff.gas?
+        str += " (for MPRN #{user_tariff.meters.map(&:mpan_mprn).to_sentence})"
+      else
+        str += " (for MPAN #{user_tariff.meters.map(&:mpan_mprn).to_sentence})"
+      end
+    end
+    str
   end
 
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)

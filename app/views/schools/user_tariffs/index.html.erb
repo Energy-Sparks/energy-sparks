@@ -1,6 +1,15 @@
-<h1>All tariffs</h1>
+<h1>Manage tariffs</h1>
 
 <div class="user_tariff">
+
+  <p>
+    Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed on your
+    <%= link_to 'cost analysis', admin_school_analysis_path(@school) %>
+    pages.
+  </p>
+
+  <p>Changes to the cost calculations based on these tariffs will update overnight.</p>
+  <br/>
 
   <% if @electricity_meters.any? %>
     <h2>Electricity</h2>

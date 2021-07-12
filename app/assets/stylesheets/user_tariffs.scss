@@ -18,8 +18,16 @@
     }
   }
 
+  .right {
+    float: right;
+  }
+
   .spaced {
     margin: 10px;
+  }
+
+  .user-tariff-show-button {
+    margin-top: -5px
   }
 
   // imput fields with specified 'pattern' will highlight when invalid

@@ -6,9 +6,9 @@
         <td class="description">Day/night tariff: <%= user_tariff_price.start_time.to_s(:time) %> to <%= user_tariff_price.end_time.to_s(:time) %></td>
         <td class="value"><%= number_to_currency(user_tariff_price.value, unit: '£') %> per kWh</td>
         <% if allow_edits %>
-          <td>
-            <%= link_to "Edit", edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), {class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
-            <%= link_to "Delete", school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+          <td class="value">
+            <%= link_to "Edit", edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), {class: 'btn user-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
+            <%= link_to "Delete", school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger user-tariff-show-button' %>
           </td>
         <% end %>
       </tr>
@@ -16,7 +16,7 @@
   <% else %>
     <tr>
       <td colspan='10'>
-        No energy charges specified yet
+        No consumption charges specified yet
       </td>
     </tr>
   <% end %>
