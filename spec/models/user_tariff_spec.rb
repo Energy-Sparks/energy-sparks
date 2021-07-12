@@ -24,7 +24,7 @@ describe UserTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My Empty Tariff')
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
-      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(nil)
+      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:"0%")
     end
   end
 
@@ -73,10 +73,8 @@ describe UserTariff do
       attributes = user_tariff.to_hash
 
       rates = attributes[:rates]
-      expect(rates[:rate0][:per]).to eq('kwh')
-      expect(rates[:rate0][:rate]).to eq('1.23')
-      expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
-      expect(rates[:rate0][:to]).to eq({hour: "23", minutes: "30"})
+      expect(rates[:flat_rate][:per]).to eq('kwh')
+      expect(rates[:flat_rate][:rate]).to eq('1.23')
     end
 
     it "should create valid analytics meter attribute" do
@@ -122,6 +120,38 @@ describe UserTariff do
       expect(attributes[:type]).to eq(:differential)
       expect(attributes[:sub_type]).to eq('')
       expect(attributes[:vat]).to eq('5%')
+    end
+
+    it "should include duos" do
+      user_tariff.user_tariff_charges << UserTariffCharge.create(charge_type: :duos_red, value: 6.78)
+
+      attributes = user_tariff.to_hash
+      expect(attributes[:rates][:duos_red]).to eq('6.78')
+    end
+
+    it "should include asc limit kw" do
+      user_tariff.user_tariff_charges << UserTariffCharge.create(charge_type: :asc_limit_kw, value: 5.43)
+
+      attributes = user_tariff.to_hash
+      expect(attributes[:asc_limit_kw]).to eq('5.43')
+    end
+
+    it "should include ccl" do
+      attributes = user_tariff.to_hash
+      expect(attributes[:climate_change_levy]).to be_falsey
+
+      user_tariff.update(ccl: true)
+      attributes = user_tariff.to_hash
+      expect(attributes[:climate_change_levy]).to be_truthy
+    end
+
+    it "should include tnuos" do
+      attributes = user_tariff.to_hash
+      expect(attributes[:rates][:tnuos]).to be_falsey
+
+      user_tariff.update(tnuos: true)
+      attributes = user_tariff.to_hash
+      expect(attributes[:rates][:tnuos]).to be_truthy
     end
 
     it "should include standing charges" do

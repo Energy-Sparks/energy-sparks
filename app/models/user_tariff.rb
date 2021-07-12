@@ -2,6 +2,7 @@
 #
 # Table name: user_tariffs
 #
+#  ccl        :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  end_date   :date             not null
 #  flat_rate  :boolean          default(TRUE)
@@ -11,6 +12,7 @@
 #  school_id  :bigint(8)        not null
 #  start_date :date             not null
 #  updated_at :datetime         not null
+#  vat_rate   :string
 #
 # Indexes
 #
@@ -41,7 +43,7 @@ class UserTariff < ApplicationRecord
   end
 
   def to_hash
-    hsh = {
+    {
       start_date: start_date.to_s(:es_compact),
       end_date: end_date.to_s(:es_compact),
       source: :manually_entered,
@@ -49,24 +51,38 @@ class UserTariff < ApplicationRecord
       type: flat_rate ? :flat : :differential,
       sub_type: '',
       rates: rates,
+      vat: vat_rate,
+      asc_limit_kw: value_for_charge(:asc_limit_kw),
+      climate_change_levy: ccl
     }
-    # remove when 0% added to analytics
-    if ['5%', '20%'].include?(vat_rate)
-      hsh[:vat] = vat_rate
+  end
+
+  def value_for_charge(type)
+    if (charge = user_tariff_charges.for_type(type).first)
+      charge.value.to_s
     end
-    hsh
   end
 
   private
 
   def rates
     attrs = {}
-    user_tariff_prices.each_with_index do |price, idx|
-      attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time) }
+    if flat_rate
+      if (first_price = user_tariff_prices.first)
+        attrs[:flat_rate] = { rate: first_price.value.to_s, per: first_price.units.to_s }
+      end
+    else
+      user_tariff_prices.each_with_index do |price, idx|
+        attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time) }
+      end
     end
-    user_tariff_charges.each do |charge|
+    user_tariff_charges.select { |c| c.units.present? }.each do |charge|
       attrs[charge.charge_type.to_sym] = { rate: charge.value.to_s, per: charge.units.to_s }
     end
+    user_tariff_charges.select { |c| c.is_type?([:duos_red, :duos_amber, :duos_green]) }.each do |charge|
+      attrs[charge.charge_type.to_sym] = charge.value.to_s
+    end
+    attrs[:tnuos] = tnuos
     attrs
   end
 

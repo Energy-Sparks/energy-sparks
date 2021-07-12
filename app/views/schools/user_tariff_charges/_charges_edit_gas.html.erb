@@ -1,0 +1,25 @@
+
+<h4>Consumption and supply charges</h4>
+
+<div class="fixed_charge">
+  <%= f.fields_for :fixed_charge do |ff| %>
+    <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :fixed_charge), f: ff %>
+  <% end %>
+</div>
+
+<br/>
+
+<h4>Other charges</h4>
+
+<%= f.fields_for :other do |ff| %>
+  <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :other), f: ff %>
+<% end %>
+
+<%= f.fields_for :user_tariff do |ff| %>
+  <%= render 'charge_vat', user_tariff: user_tariff, f: ff %>
+<% end %>
+
+<%= f.fields_for :user_tariff do |ff| %>
+  <%= render 'charge_ccl', user_tariff: user_tariff, f: ff %>
+<% end %>
+

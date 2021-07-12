@@ -1,31 +1,36 @@
 <h1>All tariffs</h1>
 
-<h2>Electricity</h2>
+<div class="user_tariff">
 
-<div>
-  <%= link_to 'Add electricity tariff', choose_meters_school_user_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
+  <% if @electricity_meters.any? %>
+    <h2>Electricity</h2>
+    <div>
+      <%= link_to 'Add electricity tariff', choose_meters_school_user_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
+    </div>
+    <br/>
+    <% if @electricity_tariffs.any? %>
+      <% @electricity_tariffs.each do |user_tariff| %>
+        <%= render 'tariff', user_tariff: user_tariff, school: @school %>
+      <% end %>
+    <% else %>
+      <h4>There are no electricity tariffs set up yet</h4>
+    <% end %>
+    <br/>
+    <br/>
+  <% end %>
+
+  <% if @gas_meters.any? %>
+    <h2>Gas</h2>
+    <div>
+      <%= link_to 'Add gas tariff', choose_meters_school_user_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>
+    </div>
+    <br/>
+    <% if @gas_tariffs.any? %>
+      <% @gas_tariffs.each do |user_tariff| %>
+        <%= render 'tariff', user_tariff: user_tariff, school: @school %>
+      <% end %>
+    <% else %>
+      <h4>There are no gas tariffs set up yet</h4>
+    <% end %>
+  <% end %>
 </div>
-
-<br/>
-<br/>
-
-<% @electricity_tariffs.each do |user_tariff| %>
-  <%= render 'tariff', user_tariff: user_tariff, school: @school %>
-<% end %>
-
-<br/>
-<br/>
-
-<h2>Gas</h2>
-
-<div>
-  <%= link_to 'Add gas tariff', choose_meters_school_user_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>
-</div>
-
-<br/>
-<br/>
-
-<% @gas_tariffs.each do |user_tariff| %>
-  <%= render 'tariff', user_tariff: user_tariff, school: @school %>
-<% end %>
-
