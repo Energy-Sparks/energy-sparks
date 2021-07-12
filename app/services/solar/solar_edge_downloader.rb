@@ -1,15 +1,15 @@
 require 'dashboard'
 
-module Amr
+module Solar
   class SolarEdgeDownloader
     def initialize(
-        solar_edge_installation:,
+        installation:,
         start_date:,
         end_date:,
-        solar_edge_api:
+        api:
       )
-      @solar_edge_installation = solar_edge_installation
-      @solar_edge_api = solar_edge_api
+      @solar_edge_installation = installation
+      @solar_edge_api = api
       @start_date = start_date
       @end_date = end_date
     end
