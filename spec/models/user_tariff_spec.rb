@@ -138,11 +138,20 @@ describe UserTariff do
 
     it "should include ccl" do
       attributes = user_tariff.to_hash
-      expect(attributes[:climate_change_levy]).to eq('0')
+      expect(attributes[:climate_change_levy]).to be_falsey
 
       user_tariff.update(ccl: true)
       attributes = user_tariff.to_hash
-      expect(attributes[:climate_change_levy]).to eq('1')
+      expect(attributes[:climate_change_levy]).to be_truthy
+    end
+
+    it "should include tnuos" do
+      attributes = user_tariff.to_hash
+      expect(attributes[:rates][:tnuos]).to be_falsey
+
+      user_tariff.update(tnuos: true)
+      attributes = user_tariff.to_hash
+      expect(attributes[:rates][:tnuos]).to be_truthy
     end
 
     it "should include standing charges" do

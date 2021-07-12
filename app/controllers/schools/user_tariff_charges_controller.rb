@@ -37,7 +37,7 @@ module Schools
     end
 
     def user_tariff_params
-      params.require(:user_tariff_charges).permit(user_tariff: [:vat_rate, :ccl])[:user_tariff]
+      params.require(:user_tariff_charges).permit(user_tariff: [:vat_rate, :ccl, :tnuos])[:user_tariff]
     end
   end
 end

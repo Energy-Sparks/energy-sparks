@@ -68,8 +68,16 @@ class UserTariffCharge < ApplicationRecord
       units: [:kwh, :day, :month, :quarter],
       name: 'NHH metering agent charge'
     },
+    nhh_automatic_meter_reading_charge: {
+      units: [:kwh, :day, :month, :quarter],
+      name: 'NHH automatic meter reading charge'
+    },
     meter_asset_provider_charge: {
       units: [:day, :month, :quarter]
+    },
+    data_collection_dcda_agent_charge: {
+      units: [:day, :month, :quarter],
+      name: 'Data Collection DC/DA Agent Charge'
     },
     site_fee: {
       units: [:day, :month, :quarter]
