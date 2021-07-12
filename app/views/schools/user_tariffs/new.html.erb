@@ -5,7 +5,8 @@
   <p>There should only be one tariff for each date period, for each meter.</p>
   <br/>
 
-  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
+  <br/>
 
   <%= simple_form_for [@school, @user_tariff] do |f| %>
 
