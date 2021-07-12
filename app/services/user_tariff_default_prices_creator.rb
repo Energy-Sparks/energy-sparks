@@ -8,24 +8,20 @@ class UserTariffDefaultPricesCreator
     return if @user_tariff.meters.empty?
     return if @user_tariff.user_tariff_prices.any?
 
-    times(@user_tariff.meters.first.mpan_mprn).each do |times|
-      @user_tariff.user_tariff_prices.create!(user_tariff_price_defaults(times.first.to_s, times.last.to_s))
-    end
+    night_times = Economy7Times.times(@user_tariff.meters.first.mpan_mprn)
+    day_times = night_times.last..night_times.first
+
+    @user_tariff.user_tariff_prices.create!(user_tariff_price_defaults(night_times.first.to_s, night_times.last.to_s, 'Night rate'))
+    @user_tariff.user_tariff_prices.create!(user_tariff_price_defaults(day_times.first.to_s, day_times.last.to_s, 'Day rate'))
   end
 
-  def times(mpxn)
-    night_times = Economy7Times.times(mpxn)
-    day_time_start = night_times.last
-    day_time_end = night_times.first
-    [night_times, day_time_start..day_time_end]
-  end
-
-  def user_tariff_price_defaults(start_time, end_time)
+  def user_tariff_price_defaults(start_time, end_time, description)
     {
       start_time: start_time,
       end_time: end_time,
       value: 0,
-      units: 'kwh'
+      units: 'kwh',
+      description: description
     }
   end
 end

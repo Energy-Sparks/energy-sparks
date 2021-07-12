@@ -12,6 +12,14 @@ module TariffsHelper
     str
   end
 
+  def user_tariff_price_title(user_tariff_price)
+    if user_tariff_price.description.present?
+      "#{user_tariff_price.description} (#{user_tariff_price.start_time.to_s(:time)} to #{user_tariff_price.end_time.to_s(:time)})"
+    else
+      "Rate from #{user_tariff_price.start_time.to_s(:time)} to #{user_tariff_price.end_time.to_s(:time)}"
+    end
+  end
+
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)
     user_tariff_charges.find { |c| c.is_type?([charge_type]) } || UserTariffCharge.new(charge_type: charge_type)
   end
