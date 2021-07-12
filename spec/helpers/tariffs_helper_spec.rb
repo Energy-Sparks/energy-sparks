@@ -25,6 +25,17 @@ describe TariffsHelper do
     end
   end
 
+  describe '.user_tariff_prices_text' do
+    it "gives text if default prices exist" do
+      user_tariff.user_tariff_prices << UserTariffPrice.new(start_time: '00:00', end_time: '03:00', description: UserTariffPrice::NIGHT_RATE_DESCRIPTION)
+      expect(user_tariff_prices_text(user_tariff)).to include("we've set some default day/night periods")
+    end
+    it "no text if no default prices exist" do
+      user_tariff.user_tariff_prices << UserTariffPrice.new(start_time: '00:00', end_time: '03:00', description: '')
+      expect(user_tariff_prices_text(user_tariff)).to be_nil
+    end
+  end
+
   describe '.user_tariff_charge_for_type' do
 
     let(:user_tariff_charge_1) { UserTariffCharge.new(charge_type: :fixed_charge) }
