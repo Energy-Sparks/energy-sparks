@@ -198,19 +198,23 @@ describe 'user tariffs', type: :system do
 
         click_button('Day/Night tariff')
 
-        click_link('Add rate')
+        expect(page).to have_content('Night rate (00:00 to 07:00)')
+        expect(page).to have_content('Day rate (07:00 to 00:00)')
+
+        first('.user-tariff-show-button').click
 
         select '00', from: 'user_tariff_price_start_time_4i'
-        select '00', from: 'user_tariff_price_start_time_5i'
-        select '07', from: 'user_tariff_price_end_time_4i'
-        select '00', from: 'user_tariff_price_end_time_5i'
+        select '30', from: 'user_tariff_price_start_time_5i'
+        select '08', from: 'user_tariff_price_end_time_4i'
+        select '30', from: 'user_tariff_price_end_time_5i'
 
         fill_in 'Rate in £/kWh', with: '1.5'
         click_button('Save')
 
-        expect(page).to have_content('00:00')
-        expect(page).to have_content('07:00')
+        expect(page).to have_content('Night rate (00:30 to 08:30)')
+        expect(page).to have_content('Day rate (07:00 to 00:00)')
         expect(page).to have_content('£1.50 per kWh')
+        expect(page).to have_content('£0.00 per kWh')
 
         click_link('Next')
         click_button('Next')
@@ -226,9 +230,14 @@ describe 'user tariffs', type: :system do
         user_tariff = UserTariff.last
         expect(user_tariff.meters).to match_array([electricity_meter])
         user_tariff_price = user_tariff.user_tariff_prices.first
-        expect(user_tariff_price.start_time.to_s(:time)).to eq('00:00')
-        expect(user_tariff_price.end_time.to_s(:time)).to eq('07:00')
+        expect(user_tariff_price.start_time.to_s(:time)).to eq('00:30')
+        expect(user_tariff_price.end_time.to_s(:time)).to eq('08:30')
         expect(user_tariff_price.value.to_s).to eq('1.5')
+        expect(user_tariff_price.units).to eq('kwh')
+        user_tariff_price = user_tariff.user_tariff_prices.last
+        expect(user_tariff_price.start_time.to_s(:time)).to eq('07:00')
+        expect(user_tariff_price.end_time.to_s(:time)).to eq('00:00')
+        expect(user_tariff_price.value.to_s).to eq('0.0')
         expect(user_tariff_price.units).to eq('kwh')
       end
     end
