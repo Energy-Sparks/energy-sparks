@@ -15,7 +15,7 @@ module Schools
     rescue => e
       Rollbar.error(e)
       respond_to do |format|
-        format.json { render json: { status: 'error', message: e.message }, status: :internal_server_error}
+        format.json { render json: { status: 'error', message: e.message }, status: :unauthorized}
       end
     end
   end

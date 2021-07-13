@@ -73,7 +73,7 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
         let(:public)  { true }
         it "can request a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(500)
+          expect(response).to have_http_status(401)
         end
       end
       context "that is private" do
@@ -81,7 +81,7 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
 
         it "can request a load" do
           post :post, format: :json, params: { school_id: school.id }
-          expect(response).to have_http_status(500)
+          expect(response).to have_http_status(401)
         end
       end
     end
