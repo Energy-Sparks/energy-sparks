@@ -8,7 +8,7 @@ module AlertContactCreator
   end
 
   def existing_alert_contact?(school, user)
-    find_contact(school, user)
+    find_contact(school, user).present?
   end
 
   def update_alert_contact(school, user)
