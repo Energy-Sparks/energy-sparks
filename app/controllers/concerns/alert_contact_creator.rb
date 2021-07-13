@@ -3,8 +3,12 @@ module AlertContactCreator
 
   private
 
+  def find_contact(school, user)
+    Schools::ContactFinder.new(school).contact_for(user)
+  end
+
   def existing_alert_contact?(school, user)
-    user.contacts.where(school: school).any?
+    find_contact(school, user)
   end
 
   def update_alert_contact(school, user)
@@ -16,15 +20,14 @@ module AlertContactCreator
   end
 
   def create_or_update_alert_contact(school, user)
-    if existing_alert_contact?(school, user)
-      contact = user.contacts.where(school: school).first
+    if (contact = find_contact(school, user))
       contact.update!(
         email_address: user.email,
         name: user.name,
         staff_role_id: user.staff_role_id
       )
     else
-      Contact.create!(email_address: user.email, name: user.name, school: school, user: user, staff_role_id: user.staff_role_id)
+      create_alert_contact(school, user)
     end
   end
 
@@ -32,8 +35,10 @@ module AlertContactCreator
     Contact.create!(email_address: user.email, name: user.name, school: school, user: user, staff_role_id: user.staff_role_id)
   end
 
-  def delete_contact(_school, user)
-    user.contacts.where(school: @school).delete_all
+  def delete_contact(school, user)
+    if (contact = find_contact(school, user))
+      contact.delete
+    end
   end
 
   def auto_create_alert_contact?
