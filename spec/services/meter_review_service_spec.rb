@@ -14,6 +14,10 @@ RSpec.describe MeterReviewService do
 
   context 'when completing a review' do
 
+    before do
+      allow_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(true)
+    end
+
     context 'and school has consent' do
       let!(:consent_grant)     { create(:consent_grant, consent_statement: consent_statement, school: school) }
 
@@ -33,15 +37,6 @@ RSpec.describe MeterReviewService do
       it 'should associate the meters' do
         review = service.complete_review!([dcc_meter])
         expect(review.meters).to match([dcc_meter])
-      end
-
-      it 'should require meters' do
-        expect {
-          service.complete_review!([])
-        }.to_not change{MeterReview.count}
-        expect {
-          service.complete_review!(nil)
-        }.to_not change{MeterReview.count}
       end
 
       context 'and documents are checked' do
@@ -65,4 +60,29 @@ RSpec.describe MeterReviewService do
 
   end
 
+  context 'when checking meters' do
+    it 'raises error if no meters' do
+      expect {
+        service.complete_review!([  ])
+      }.to raise_error(MeterReviewService::MeterReviewError)
+    end
+    it 'raises error if meter not flagged as DCC' do
+      dcc_meter.update(dcc_meter: false)
+      expect {
+        service.complete_review!([ dcc_meter ])
+      }.to raise_error(MeterReviewService::MeterReviewError)
+    end
+    it 'raises error if meter not found in DCC api (api error)' do
+      expect_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(:api_error)
+      expect {
+        service.complete_review!([ dcc_meter ])
+      }.to raise_error(MeterReviewService::MeterReviewError)
+    end
+    it 'raises error if meter not found in DCC api (false)' do
+      expect_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(false)
+      expect {
+        service.complete_review!([ dcc_meter ])
+      }.to raise_error(MeterReviewService::MeterReviewError)
+    end
+  end
 end

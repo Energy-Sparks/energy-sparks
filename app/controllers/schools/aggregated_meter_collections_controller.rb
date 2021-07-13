@@ -1,9 +1,10 @@
 module Schools
   class AggregatedMeterCollectionsController < ApplicationController
-    load_and_authorize_resource :school
+    load_resource :school
     skip_before_action :authenticate_user!
 
     def post
+      authorize! :show, @school
       # JSON request to load cache
       service = AggregateSchoolService.new(@school)
       service.aggregate_school unless service.in_cache?
@@ -14,7 +15,7 @@ module Schools
     rescue => e
       Rollbar.error(e)
       respond_to do |format|
-        format.json { render json: { status: 'error', message: e.message }, status: :internal_server_error}
+        format.json { render json: { status: 'error', message: e.message }, status: :unauthorized}
       end
     end
   end

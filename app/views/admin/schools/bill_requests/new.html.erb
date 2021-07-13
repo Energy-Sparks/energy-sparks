@@ -36,7 +36,7 @@
                     <div class="control-group">
                       <%= b.check_box(class: "form-check-input") %>
                       <%= b.label(class: "form-check-label") do %>
-                        <%= b.object.name %> (<%= b.object.staff_role.title %>)
+                        <%= b.object.name %> (<%= b.object.staff_role.try(:title) %>)
                       <% end %>
                     </div>
                   <% end %>
