@@ -4,6 +4,7 @@ module Schools
     skip_before_action :authenticate_user!
 
     def post
+      authorize! :show, @school
       # JSON request to load cache
       service = AggregateSchoolService.new(@school)
       service.aggregate_school unless service.in_cache?
