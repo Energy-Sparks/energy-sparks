@@ -77,7 +77,7 @@ RSpec.describe "school", type: :system do
 
       it 'prompts user to login when viewing' do
         visit school_path(school_invisible)
-        expect(page.has_content? 'Your school is currently inactive while we are setting up your energy data.').to be true
+        expect(page.has_content? 'You are not authorized to access this page').to be true
       end
 
     end
