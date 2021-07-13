@@ -111,6 +111,7 @@ RSpec.describe 'meter_reviews', type: :system do
   context 'when performing a review' do
 
     before(:each) do
+      allow_any_instance_of(MeterManagement).to receive(:check_n3rgy_status).and_return(true)
       login_as(admin)
       visit root_path
       click_on 'Admin'
