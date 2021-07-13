@@ -2,7 +2,14 @@
 
 <div class="user_tariff">
 
-  <p>Any changes to the tariff will be reflected in the cost calculations which will update overnight.</p>
+  <p>
+    Any changes to the tariff will be reflected in the
+    <%= link_to 'electricity cost analysis', analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts') %>
+    and
+    <%= link_to 'gas cost analysis', analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts') %>
+    pages which will update overnight.
+  </p>
+
   <br/>
 
   <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
