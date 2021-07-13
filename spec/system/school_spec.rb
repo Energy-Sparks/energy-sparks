@@ -66,12 +66,20 @@ RSpec.describe "school", type: :system do
   context 'with invisible school' do
     let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group)}
 
-    it 'does not show invisible school or the group' do
-      visit root_path
-      click_on('Schools')
-      expect(page.has_content? school_name).to be true
-      expect(page.has_content? 'Invisible School').to_not be true
-      expect(page.has_content? 'School Group').to_not be true
+    context "as guest user" do
+      it 'does not show invisible school or the group' do
+        visit root_path
+        click_on('Schools')
+        expect(page.has_content? school_name).to be true
+        expect(page.has_content? 'Invisible School').to_not be true
+        expect(page.has_content? 'School Group').to_not be true
+      end
+
+      it 'prompts user to login when viewing' do
+        visit school_path(school_invisible)
+        expect(page.has_content? 'Your school is currently inactive while we are setting up your energy data.').to be true
+      end
+
     end
 
     context 'as admin' do
@@ -86,6 +94,12 @@ RSpec.describe "school", type: :system do
         expect(page.has_content? 'Not visible schools').to be true
         expect(page.has_content? 'Invisible School').to be true
         expect(page.has_content? 'School Group').to_not be true
+      end
+
+      it 'shows school' do
+        visit school_path(school_invisible)
+        expect(page.has_link? "Pupil dashboard").to be true
+        expect(page.has_content? school_invisible.name).to be true
       end
 
     end

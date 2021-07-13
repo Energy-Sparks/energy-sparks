@@ -36,6 +36,12 @@ describe User do
       %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User).each do |thing|
         it { is_expected.to be_able_to(:manage, thing.constantize.new) }
       end
+
+      it { is_expected.to be_able_to(:show, create(:school, visible: false, public: true)) }
+      it { is_expected.to be_able_to(:show, create(:school, visible: true, public: true)) }
+      it { is_expected.to be_able_to(:show, create(:school, visible: false, public: true)) }
+      it { is_expected.to be_able_to(:show, create(:school, visible: false, public: false)) }
+
     end
 
     context "as a school admin" do
