@@ -22,6 +22,7 @@ module AlertContactCreator
   def create_or_update_alert_contact(school, user)
     if (contact = find_contact(school, user))
       contact.update!(
+        user: user,
         email_address: user.email,
         name: user.name,
         staff_role_id: user.staff_role_id

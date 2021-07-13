@@ -5,7 +5,7 @@ module Schools
     end
 
     def contact_for(user)
-      Contact.where(school: @school).where(email_address: user.email).last
+      user.contacts.where(school: @school).last || Contact.where(school: @school).where(email_address: user.email).last
     end
   end
 end
