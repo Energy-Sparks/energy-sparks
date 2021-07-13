@@ -103,6 +103,9 @@ function processAnalysisCharts(){
       setupAnalysisControls(this, chartConfig);
     });
   }
+
+  //activate tooltips
+  $('[data-toggle="tooltip"]').tooltip();
 }
 
 function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
@@ -295,4 +298,3 @@ function isDrilldownTransformation(transformation){
 }
 
 $(document).ready(processAnalysisCharts);
-
