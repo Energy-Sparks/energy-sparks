@@ -131,6 +131,49 @@ describe 'School admin user management' do
       expect { click_on 'Update account' }.to change { Contact.count }.by(1)
 
     end
+
+    it 'can update contact email address if contact has user association' do
+      staff = create(:staff, school: school)
+      contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
+      click_on 'Manage users'
+      within '.staff' do
+        click_on 'Edit'
+      end
+
+      fill_in 'Email', with: 'blah@test.com'
+
+      expect { click_on 'Update account' }.not_to change { Contact.count }
+
+      contact.reload
+      expect(contact.email_address).to eq('blah@test.com')
+    end
+
+    it 'can update contact when contact exists for that email without user association' do
+      staff = create(:staff, school: school)
+      contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+      click_on 'Manage users'
+      within '.staff' do
+        click_on 'Edit'
+      end
+
+      expect { click_on 'Update account' }.not_to change { Contact.count }
+
+      contact.reload
+      expect(contact.user).to eq(staff)
+    end
+
+    it 'can remove contact when contact exists for that email without user association' do
+      staff = create(:staff, school: school)
+      contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+      click_on 'Manage users'
+      within '.staff' do
+        click_on 'Edit'
+      end
+
+      uncheck "Subscribe to school alerts"
+      expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
+      expect { contact.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   describe 'managing school admins' do

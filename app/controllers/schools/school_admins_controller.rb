@@ -15,7 +15,7 @@ module Schools
       authorize! :manage_users, @school
       @school_admin = User.new_school_admin(@school, school_admin_params)
       if @school_admin.save
-        create_alert_contact(@school, @school_admin) if auto_create_alert_contact?
+        create_or_update_alert_contact(@school, @school_admin) if auto_create_alert_contact?
         subscribe_newsletter(@school, @school_admin) if auto_subscribe_newsletter?
         redirect_to school_users_path(@school)
       else
