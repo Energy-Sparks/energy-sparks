@@ -1,15 +1,21 @@
-<h1><%= user_tariff_title(@user_tariff) %></h1>
+<h1>Tariff details</h1>
 
 <div class="user_tariff">
 
-  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
-
-  <h2>Please review and confirm the rates for this tariff:</h2>
+  <p>
+    Any changes to the tariff will be reflected in the
+    <%= link_to 'electricity cost analysis', analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts') %>
+    and
+    <%= link_to 'gas cost analysis', analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts') %>
+    pages which will update overnight.
+  </p>
 
   <br/>
 
+  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+
   <h4>
-    Energy charges
+    Consumption charges
     <%= link_to "Edit", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
   </h4>
 
@@ -34,16 +40,10 @@
   <%= link_to "Previous", school_user_tariff_user_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
   <%= link_to "Finished", school_user_tariffs_path(@school), class: 'btn' %>
 
-  <% if can? :download, UserTariff %>
-    <br/>
-    <br/>
-    <br/>
-    <hr/>
-    <br/>
-    <h4>Meter attribute view (admin only)</h4>
-    <br/>
-    <br/>
-    <%= print_meter_attribute(@user_tariff.meter_attribute) %>
-  <% end %>
-
+  <div class="hidden">
+    <% if can? :download, UserTariff %>
+      <h4>Meter attribute view (admin only)</h4>
+      <%= print_meter_attribute(@user_tariff.meter_attribute) %>
+    <% end %>
+  </div>
 </div>

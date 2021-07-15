@@ -27,6 +27,7 @@ class UserTariff < ApplicationRecord
   validates :name, :start_date, :end_date, presence: true
 
   scope :by_name, -> { order(name: :asc) }
+  scope :by_start_date, -> { order(start_date: :asc) }
   scope :electricity, -> { where(fuel_type: 'electricity') }
   scope :gas, -> { where(fuel_type: 'gas') }
 
@@ -73,7 +74,7 @@ class UserTariff < ApplicationRecord
       end
     else
       user_tariff_prices.each_with_index do |price, idx|
-        attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time) }
+        attrs["rate#{idx}".to_sym] = { rate: price.value.to_s, per: price.units.to_s, from: hour_minutes(price.start_time), to: hour_minutes(price.end_time.advance(minutes: -30)) }
       end
     end
     user_tariff_charges.select { |c| c.units.present? }.each do |charge|

@@ -85,9 +85,9 @@ module Solar
 
     context "when there are no readings" do
       let(:expected_end) { Date.yesterday }
-      let(:expected_start) { Date.yesterday - 5 }
+      let(:expected_start) { nil }
 
-      it "should default to loading last 6 days" do
+      it "should load all readings" do
         expect(api).to receive(:download_by_component).with(installation.rtone_meter_id, installation.rtone_component_type, installation.meter.mpan_mprn, expected_start, expected_end).and_return(readings)
         upserter.perform
       end

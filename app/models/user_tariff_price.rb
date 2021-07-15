@@ -24,4 +24,9 @@ class UserTariffPrice < ApplicationRecord
 
   validates :start_time, :end_time, :value, :units, presence: true
   validates :value, numericality: true
+
+  scope :by_start_time, -> { order(start_time: :asc) }
+
+  NIGHT_RATE_DESCRIPTION = 'Night rate'.freeze
+  DAY_RATE_DESCRIPTION = 'Day rate'.freeze
 end

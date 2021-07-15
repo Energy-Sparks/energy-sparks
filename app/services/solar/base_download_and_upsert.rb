@@ -39,8 +39,10 @@ module Solar
       default_start_date = Date.yesterday - 5
       if @requested_start_date
         @requested_start_date
+      elsif latest_reading.nil?
+        nil
       else
-        latest_reading && latest_reading < default_start_date ? latest_reading : default_start_date
+        latest_reading < default_start_date ? latest_reading : default_start_date
       end
     end
 

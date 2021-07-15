@@ -1,6 +1,29 @@
 module TariffsHelper
-  def user_tariff_title(user_tariff)
-    "#{user_tariff.name} (#{user_tariff.fuel_type}, #{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)})"
+  def user_tariff_title(user_tariff, with_mpxn = false)
+    str = "#{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)}"
+    str += " : #{user_tariff.name}" if user_tariff.name.present?
+    if user_tariff.meters.any? && with_mpxn
+      if user_tariff.gas?
+        str += " (for MPRN #{user_tariff.meters.map(&:mpan_mprn).to_sentence})"
+      else
+        str += " (for MPAN #{user_tariff.meters.map(&:mpan_mprn).to_sentence})"
+      end
+    end
+    str
+  end
+
+  def user_tariff_price_title(user_tariff_price)
+    if user_tariff_price.description.present?
+      "#{user_tariff_price.description} (#{user_tariff_price.start_time.to_s(:time)} to #{user_tariff_price.end_time.to_s(:time)})"
+    else
+      "Rate from #{user_tariff_price.start_time.to_s(:time)} to #{user_tariff_price.end_time.to_s(:time)}"
+    end
+  end
+
+  def user_tariff_prices_text(user_tariff)
+    if user_tariff.user_tariff_prices.map(&:description).include?(UserTariffPrice::NIGHT_RATE_DESCRIPTION)
+      "Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill."
+    end
   end
 
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)

@@ -162,18 +162,18 @@ describe UserTariff do
       expect(rates[:agreed_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
     end
 
-    it "should include rates" do
+    it "should include rates with adjusted end times" do
       attributes = user_tariff.to_hash
 
       rates = attributes[:rates]
       expect(rates[:rate0][:per]).to eq('kwh')
       expect(rates[:rate0][:rate]).to eq('1.23')
       expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
-      expect(rates[:rate0][:to]).to eq({hour: "03", minutes: "30"})
+      expect(rates[:rate0][:to]).to eq({hour: "03", minutes: "00"})
       expect(rates[:rate1][:per]).to eq('kwh')
       expect(rates[:rate1][:rate]).to eq('2.46')
       expect(rates[:rate1][:from]).to eq({hour: "04", minutes: "00"})
-      expect(rates[:rate1][:to]).to eq({hour: "23", minutes: "30"})
+      expect(rates[:rate1][:to]).to eq({hour: "23", minutes: "00"})
     end
 
     it "should create valid analytics meter attribute" do

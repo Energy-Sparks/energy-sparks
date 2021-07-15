@@ -5,10 +5,34 @@ describe TariffsHelper do
   let(:user_tariff) { UserTariff.new(name: 'My Tariff', fuel_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31')}
 
   describe '.user_tariff_title' do
-    it "includes name, fuel type and dates" do
+    it "includes name, and dates" do
       expect(user_tariff_title(user_tariff)).to match("My Tariff")
-      expect(user_tariff_title(user_tariff)).to match("gas")
       expect(user_tariff_title(user_tariff)).to match("01/01/2018")
+      expect(user_tariff_title(user_tariff)).to match("31/12/2018")
+    end
+    it "includes mpan for electricity meter" do
+      user_tariff.update(fuel_type: :electricity)
+      user_tariff.meters << create(:electricity_meter, mpan_mprn: '111122222333344')
+      expect(user_tariff_title(user_tariff, true)).to match("MPAN 111122222333344")
+      expect(user_tariff_title(user_tariff, false)).not_to match("MPAN 111122222333344")
+    end
+    it "includes mprns for gas meters" do
+      user_tariff.meters << create(:gas_meter, mpan_mprn: '1234567')
+      user_tariff.meters << create(:gas_meter, mpan_mprn: '9876543')
+      user_tariff.meters << create(:gas_meter, mpan_mprn: '1122334')
+      expect(user_tariff_title(user_tariff, true)).to match("MPRN 1234567, 9876543, and 1122334")
+      expect(user_tariff_title(user_tariff, false)).not_to match("MPRN 1234567, 9876543, and 1122334")
+    end
+  end
+
+  describe '.user_tariff_prices_text' do
+    it "gives text if default prices exist" do
+      user_tariff.user_tariff_prices << UserTariffPrice.new(start_time: '00:00', end_time: '03:00', description: UserTariffPrice::NIGHT_RATE_DESCRIPTION)
+      expect(user_tariff_prices_text(user_tariff)).to include("we've set some default day/night periods")
+    end
+    it "no text if no default prices exist" do
+      user_tariff.user_tariff_prices << UserTariffPrice.new(start_time: '00:00', end_time: '03:00', description: '')
+      expect(user_tariff_prices_text(user_tariff)).to be_nil
     end
   end
 
