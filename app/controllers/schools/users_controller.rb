@@ -59,6 +59,13 @@ module Schools
       redirect_back fallback_location: school_users_path(@school)
     end
 
+    def make_school_admin
+      @user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :update, @user
+      @user.update(role: :school_admin)
+      redirect_to school_users_path(@school)
+    end
+
     private
 
     def user_params

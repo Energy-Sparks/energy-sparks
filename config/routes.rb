@@ -146,7 +146,11 @@ Rails.application.routes.draw do
 
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
-      resources :users
+      resources :users do
+        member do
+          post :make_school_admin
+        end
+      end
       resources :cluster_admins, only: [:new, :create]
       resources :pupils, only: [:new, :create, :edit, :update]
 
