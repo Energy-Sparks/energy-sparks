@@ -59,6 +59,8 @@ describe 'School admin user management' do
         click_on 'Manage users'
         click_on 'New staff account'
 
+        expect(page).to have_content('New staff account')
+
         fill_in 'Name', with: 'Mrs Jones'
         fill_in 'Email', with: 'mrsjones@test.com'
         select 'Teacher', from: 'Role'
@@ -99,6 +101,8 @@ describe 'School admin user management' do
       within '.staff' do
         click_on 'Edit'
       end
+
+      expect(page).to have_content('Edit staff account')
 
       fill_in 'Name', with: 'Ms Jones'
       click_on 'Update account'
@@ -185,6 +189,8 @@ describe 'School admin user management' do
         click_on 'Manage users'
         click_on 'New school admin account'
 
+        expect(page).to have_content('New school admin account')
+
         fill_in 'Name', with: 'Mrs Jones'
         fill_in 'Email', with: 'mrsjones@test.com'
         select 'Management', from: 'Role'
@@ -233,6 +239,8 @@ describe 'School admin user management' do
             click_on 'Edit'
           end
         end
+
+        expect(page).to have_content('Edit school admin account')
 
         fill_in 'Name', with: 'Ms Jones'
         click_on 'Update account'

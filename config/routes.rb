@@ -146,10 +146,8 @@ Rails.application.routes.draw do
 
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
-      resources :users, only: [:index, :destroy]
+      resources :users
       resources :cluster_admins, only: [:new, :create]
-      resources :school_admins, only: [:new, :create, :edit, :update]
-      resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resources :consent_documents

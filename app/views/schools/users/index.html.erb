@@ -22,7 +22,7 @@
             <td><%= user.staff_role.try(:title) %></td>
             <td>
               <div class="btn-group">
-                <%= link_to('Edit', edit_school_school_admin_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
+                <%= link_to('Edit', edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
                 <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
               </div>
             </td>
@@ -34,7 +34,7 @@
   <p>There are no school admin accounts for this school.</p>
 <% end %>
 
-<%= link_to 'New school admin account', new_school_school_admin_path(@school), class: 'btn btn-primary' %>
+<%= link_to 'New school admin account', new_school_user_path(@school, role: :school_admin), class: 'btn btn-primary' %>
 <%= link_to 'Add an existing Energy Sparks user as a school admin', new_school_cluster_admin_path(@school), class: 'btn btn-primary' %>
 
 <h2 class="mt-4">Staff accounts</h2>
@@ -61,7 +61,7 @@
             <td><%= user.staff_role.try(:title) %></td>
             <td>
               <div class="btn-group">
-                <%= link_to('Edit', edit_school_staff_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
+                <%= link_to('Edit', edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
                 <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
               </div>
             </td>
@@ -73,7 +73,7 @@
   <p>There are no staff accounts for this school.</p>
 <% end %>
 
-<%= link_to 'New staff account', new_school_staff_path(@school), class: 'btn btn-primary' %>
+<%= link_to 'New staff account', new_school_user_path(@school, role: :staff), class: 'btn btn-primary' %>
 
 <h2 class="mt-4">Pupil accounts</h2>
 
