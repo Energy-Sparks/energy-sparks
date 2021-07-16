@@ -2,58 +2,66 @@
 
 <h1>Administration</h1>
 
-<h2>School set up</h2>
-<ul>
-  <li><%= link_to "Manual School Setup", new_school_path %></li>
-  <li><%= link_to "Automatic School Setup", admin_school_onboardings_path %></li>
-  <li><%= link_to "Calendars", admin_calendars_path %></li>
-  <li><%= link_to "Meter Reviews", admin_meter_reviews_path %></li>
-</ul>
+<div class="row">
+  <div class="col">
+    <h2>School onboarding</h2>
+    <ul>
+      <li><%= link_to "Manual School Setup", new_school_path %></li>
+      <li><%= link_to "Automatic School Setup", admin_school_onboardings_path %></li>
+      <li><%= link_to "Calendars", admin_calendars_path %></li>
+      <li><%= link_to "Meter Reviews", admin_meter_reviews_path %></li>
+    </ul>
 
-<h2>Schools, Scoreboards and groups</h2>
-<ul>
-  <li><%= link_to "Edit School Groups", admin_school_groups_path %></li>
-  <li><%= link_to "View School groups", school_groups_path %></li>
-  <li><%= link_to "Edit Scoreboards", admin_scoreboards_path %></li>
-</ul>
+    <h2>Schools, groups and scoreboards</h2>
+    <ul>
+      <li><%= link_to "Find school by MPXN", admin_meters_path %></li>
+      <li><%= link_to "Edit School Groups", admin_school_groups_path %></li>
+      <li><%= link_to "View School groups", school_groups_path %></li>
+      <li><%= link_to "Edit Scoreboards", admin_scoreboards_path %></li>
+    </ul>
 
-<h2>Users</h2>
-<ul>
-  <li><%= link_to "Users", admin_users_path %></li>
-</ul>
+    <h2>Users and consent</h2>
+    <ul>
+      <li><%= link_to "Users", admin_users_path %></li>
+      <li><%= link_to "DCC Consents", admin_dcc_consents_path %></li>
+      <li><%= link_to "Consent Statements", admin_consent_statements_path %></li>
+    </ul>
 
-<h2>Activities and Programmes</h2>
-<ul>
-  <li><%= link_to "Activity Categories", admin_activity_categories_path %></li>
-  <li><%= link_to "Activity Types", admin_activity_types_path %></li>
-  <li><%= link_to "Programme Types", admin_programme_types_path %></li>
-</ul>
+    <h2>Activities and Programmes</h2>
+    <ul>
+      <li><%= link_to "Activity Categories", admin_activity_categories_path %></li>
+      <li><%= link_to "Activity Types", admin_activity_types_path %></li>
+      <li><%= link_to "Programme Types", admin_programme_types_path %></li>
+    </ul>
 
-<h2>Alerts and Equivalences</h2>
-<ul>
-  <li><%= link_to "Alert Types", admin_alert_types_path %></li>
-  <li><%= link_to "Equivalence Types", admin_equivalence_types_path %></li>
-</ul>
+  </div>
+  <div class="col">
+    <h2>Data feeds and meter attributes</h2>
+    <ul>
+      <li><%= link_to "Global Meter Attributes", admin_global_meter_attributes_path %></li>
+      <li><%= link_to "AMR Data feed configuration", admin_amr_data_feed_configs_path %></li>
+      <li><%= link_to "Dark Sky Areas", admin_dark_sky_areas_path %></li>
+      <li><%= link_to "Solar PV Areas", admin_solar_pv_tuos_areas_path %></li>
+      <li><%= link_to "Weather Stations", admin_weather_stations_path %></li>
+    </ul>
 
-<h2>Data feeds and meter attributes</h2>
-<ul>
-  <li><%= link_to "Global Meter Attributes", admin_global_meter_attributes_path %></li>
-  <li><%= link_to "AMR Data feed configuration", admin_amr_data_feed_configs_path %></li>
-  <li><%= link_to "Dark Sky Areas", admin_dark_sky_areas_path %></li>
-  <li><%= link_to "Solar PV Areas", admin_solar_pv_tuos_areas_path %></li>
-  <li><%= link_to "Weather Stations", admin_weather_stations_path %></li>
-</ul>
+    <h2>Alerts and Equivalences</h2>
+    <ul>
+      <li><%= link_to "Alert Types", admin_alert_types_path %></li>
+      <li><%= link_to "Equivalence Types", admin_equivalence_types_path %></li>
+    </ul>
 
-<h2>Other</h2>
-<ul>
-  <li><%= link_to "Geo Live Data", admin_geo_live_data_path %></li>
-  <li><%= link_to "DCC Consents", admin_dcc_consents_path %></li>
-  <li><%= link_to "Consent Statements", admin_consent_statements_path %></li>
-  <li><%= link_to "Case studies", admin_case_studies_path %></li>
-  <li><%= link_to "Newsletters", admin_newsletters_path %></li>
-  <li><%= link_to "Resources", admin_resource_files_path %></li>
-  <li><%= link_to "Videos", admin_videos_path %></li>
-  <li><%= link_to "Partners", admin_partners_path %></li>
-  <li><%= link_to "Team members", admin_team_members_path %></li>
-  <li><%= link_to "Site Settings", admin_settings_path %></li>
-</ul>
+    <h2>Other</h2>
+    <ul>
+      <li><%= link_to "Geo Live Data", admin_geo_live_data_path %></li>
+      <li><%= link_to "Case studies", admin_case_studies_path %></li>
+      <li><%= link_to "Newsletters", admin_newsletters_path %></li>
+      <li><%= link_to "Resources", admin_resource_files_path %></li>
+      <li><%= link_to "Videos", admin_videos_path %></li>
+      <li><%= link_to "Partners", admin_partners_path %></li>
+      <li><%= link_to "Team members", admin_team_members_path %></li>
+      <li><%= link_to "Site Settings", admin_settings_path %></li>
+    </ul>
+
+  </div>
+</div>

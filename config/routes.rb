@@ -199,6 +199,7 @@ Rails.application.routes.draw do
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
+    resources :meters, only: [:index]
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
     resources :partners
