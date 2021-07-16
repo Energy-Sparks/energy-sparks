@@ -7,13 +7,13 @@
 <br/>
 
 <% @school_groups.each do |school_group| %>
-  <p><%= link_to school_group.name, "##{school_group.name.parameterize}" %></p>
+  <p><%= link_to school_group.name, "##{school_group.slug}" %></p>
 <% end %>
 
 <% @school_groups.each do |school_group| %>
 
   <div class="nav-anchor">
-    <a name="<%= school_group.name.parameterize %>"> </a>
+    <a name="<%= school_group.slug %>"> </a>
     <h3><%= school_group.name %></h3>
   </div>
 

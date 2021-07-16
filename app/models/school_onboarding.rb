@@ -110,6 +110,6 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def page_anchor
-    school_group.name.parameterize if school_group
+    school_group.slug if school_group
   end
 end
