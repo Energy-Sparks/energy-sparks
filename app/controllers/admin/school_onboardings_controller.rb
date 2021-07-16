@@ -7,8 +7,6 @@ module Admin
 
     def index
       @school_groups = SchoolGroup.order(name: :asc)
-      @completed_schools = @school_onboardings.order(:created_at).select(&:complete?)
-
       respond_to do |format|
         format.html
         format.csv { send_data produce_csv, filename: INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME }
@@ -16,6 +14,10 @@ module Admin
     end
 
     def new
+    end
+
+    def completed
+      @completed_schools = @school_onboardings.order(:updated_at).select(&:complete?)
     end
 
     def create

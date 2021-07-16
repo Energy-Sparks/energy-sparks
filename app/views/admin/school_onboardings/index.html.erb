@@ -25,7 +25,7 @@
           <tr>
             <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
             <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
-            <td><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
+            <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
             <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
             <td>
               <div class="btn-group">
@@ -46,25 +46,3 @@
     <p>No schools are onboarding for <%= school_group.name %></p>
   <% end %>
 <% end %>
-
-
-<h2>Completed schools</h2>
-
-<table class="table table-sorted">
-  <thead>
-    <tr>
-      <th>School name</th>
-      <th>Contact email</th>
-      <th>Onboarded at event</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @completed_schools.each do |onboarding| %>
-      <tr>
-        <td><%= onboarding.school_name %></td>
-        <td><%= onboarding.contact_email %></td>
-        <td><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>

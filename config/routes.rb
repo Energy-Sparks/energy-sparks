@@ -281,6 +281,9 @@ Rails.application.routes.draw do
         resource :reminder, only: [:create], controller: 'reminder'
         resources :events, only: [:create]
       end
+      collection do
+        get 'completed'
+      end
     end
     namespace :reports do
       resources :alert_subscribers, only: :index

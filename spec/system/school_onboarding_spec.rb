@@ -146,6 +146,19 @@ RSpec.describe "onboarding", :schools, type: :system do
 
       expect(onboarding.contact_email).to eq new_email_address
     end
+
+    it 'shows recently onboarded schools' do
+      school = create :school
+      onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete], school: school
+      click_on 'Manage'
+      click_on 'Reports'
+      click_on 'Recently onboarded'
+
+      expect(page).to have_content 'Schools recently onboarded'
+
+      click_on onboarding.school_name
+      expect(page).to have_content 'Management Dashboard'
+    end
   end
 
   context 'as a user' do
