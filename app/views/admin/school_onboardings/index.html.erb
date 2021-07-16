@@ -1,13 +1,22 @@
-<h1>Schools being set up automatically</h1>
+<h1>School onboardings in progress</h1>
 
-<%= link_to 'New Automatic School Setup', new_admin_school_onboarding_path, class: 'btn mb-3' %>
+<%= link_to 'New Automatic School Setup', new_admin_school_onboarding_path, class: 'btn' %>
+<%= link_to 'Download as CSV', admin_school_onboardings_path(format: :csv), class: 'btn' %>
 
-<h2>In progress schools</h2>
-
-<p><%= link_to 'Download as CSV', admin_school_onboardings_path(format: :csv), class: 'btn' %>
+<br/>
+<br/>
 
 <% @school_groups.each do |school_group| %>
-  <h3><%= school_group.name %></h3>
+  <p><%= link_to school_group.name, "##{school_group.name.parameterize}" %></p>
+<% end %>
+
+<% @school_groups.each do |school_group| %>
+
+  <div class="nav-anchor">
+    <a name="<%= school_group.name.parameterize %>"> </a>
+    <h3><%= school_group.name %></h3>
+  </div>
+
   <% if school_group.school_onboardings.select(&:incomplete?).any? %>
     <p>Schools onboarding: <%= school_group.school_onboardings.select(&:incomplete?).count %>
     <table class="table table-sorted">

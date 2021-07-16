@@ -147,6 +147,12 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(onboarding.contact_email).to eq new_email_address
     end
 
+    it 'shows links to groups' do
+      onboarding = create :school_onboarding, :with_events
+      click_on 'Automatic School Setup'
+      expect(page).to have_link onboarding.school_group.name
+    end
+
     it 'shows recently onboarded schools' do
       school = create :school
       onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete], school: school
