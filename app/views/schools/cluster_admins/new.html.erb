@@ -8,7 +8,7 @@
 <%= simple_form_for :user, url: school_cluster_admins_path(@school) do |f| %>
   <% if !flash.empty? %>
     <p><strong>We were unable to find a user with this email address. Please check that you have
-      the right address or <%= link_to 'add a new school admin', new_school_school_admin_path(@school) %> instead.
+      the right address or <%= link_to 'add a new school admin', new_school_user_path(@school, role: :school_admin) %> instead.
     </strong>
     </p>
   <% end %>

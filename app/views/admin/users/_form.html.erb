@@ -1,4 +1,4 @@
-<%= simple_form_for([:admin, user]) do |f| %>
+<%= simple_form_for([:admin, user], html: { class: 'admin-user-form' }) do |f| %>
 
   <%= f.input :name %>
   <%= f.input :email %>
