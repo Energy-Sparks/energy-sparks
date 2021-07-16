@@ -6,7 +6,7 @@ module Admin
       def create
         OnboardingMailer.with(school_onboarding: @school_onboarding).reminder_email.deliver_now
         @school_onboarding.events.create!(event: :reminder_sent)
-        redirect_to admin_school_onboardings_path
+        redirect_to admin_school_onboardings_path(anchor: @school_onboarding.page_anchor)
       end
     end
   end
