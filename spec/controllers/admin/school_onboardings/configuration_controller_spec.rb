@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Admin::SchoolOnboardings::ReminderController, type: :controller do
+RSpec.describe Admin::SchoolOnboardings::ConfigurationController, type: :controller do
 
   let(:admin)             { create(:admin) }
   let(:school_group)      { create :school_group, name: 'My Super Group' }
   let(:expected_anchor)   { 'my-super-group' }
+  let(:template_calendar) { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
 
   let(:onboarding)        { create :school_onboarding, :with_events, event_names: [:email_sent], school_group: school_group }
 
@@ -12,11 +13,10 @@ RSpec.describe Admin::SchoolOnboardings::ReminderController, type: :controller d
     sign_in(admin)
   end
 
-  describe '#create' do
+  describe '#update' do
     it 'redirects to url with anchor' do
-      post :create, params: {school_onboarding_id: onboarding.uuid}
+      post :update, params: { school_onboarding_id: onboarding.uuid, school_onboarding: { :template_calendar_id => template_calendar.id } }
       expect(response).to redirect_to(admin_school_onboardings_path(anchor: expected_anchor))
-      expect(onboarding.reload.events.map(&:event)).to include('reminder_sent')
     end
   end
 end

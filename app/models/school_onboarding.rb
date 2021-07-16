@@ -108,4 +108,8 @@ class SchoolOnboarding < ApplicationRecord
   def to_param
     uuid
   end
+
+  def page_anchor
+    school_group.name.parameterize if school_group
+  end
 end
