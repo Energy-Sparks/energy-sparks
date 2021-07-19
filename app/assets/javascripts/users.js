@@ -19,13 +19,15 @@ function setupSchoolGroupAndClusterControls() {
 }
 
 $(document).ready(function() {
-  $("body").on("change", ".user-update", function(ev) {
-    $(this.form).submit();
-  });
-  if ($("#user_role").length) {
-    $("body").on("change", "#user_role", function(ev) {
-      setupSchoolGroupAndClusterControls();
+  if ($(".admin-user-form").length) {
+    $("body").on("change", ".user-update", function (ev) {
+      $(this.form).submit();
     });
-    setupSchoolGroupAndClusterControls();
+    if ($("#user_role").length) {
+      $("body").on("change", "#user_role", function (ev) {
+        setupSchoolGroupAndClusterControls();
+      });
+      setupSchoolGroupAndClusterControls();
+    }
   }
 });

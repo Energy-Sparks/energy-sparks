@@ -1,0 +1,7 @@
+<h1>Edit <%= @user.role.humanize(capitalize: false) %> account</h1>
+
+<%= simple_form_for @user, url: school_user_path(@school, @user) do |f| %>
+  <%= render 'form', f: f %>
+  <%= render 'schools/users/auto_create_alert_contact', f: f, school: @school, user: @user %>
+  <%= f.submit 'Update account', class: 'btn btn-rounded'%>
+<% end %>

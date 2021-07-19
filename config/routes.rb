@@ -146,10 +146,12 @@ Rails.application.routes.draw do
 
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
-      resources :users, only: [:index, :destroy]
+      resources :users do
+        member do
+          post :make_school_admin
+        end
+      end
       resources :cluster_admins, only: [:new, :create]
-      resources :school_admins, only: [:new, :create, :edit, :update]
-      resources :staff, only: [:new, :create, :edit, :update], controller: :staff
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resources :consent_documents
@@ -199,6 +201,7 @@ Rails.application.routes.draw do
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
+    resources :meters, only: [:index]
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
     resources :partners
@@ -278,6 +281,9 @@ Rails.application.routes.draw do
         resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
         resources :events, only: [:create]
+      end
+      collection do
+        get 'completed'
       end
     end
     namespace :reports do

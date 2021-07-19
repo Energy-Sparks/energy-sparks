@@ -75,4 +75,8 @@ class SchoolGroup < ApplicationRecord
       update!(school_group_partners_attributes: position_attributes)
     end
   end
+
+  def page_anchor
+    name.parameterize
+  end
 end

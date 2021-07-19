@@ -16,7 +16,7 @@ module Admin
       def update
         @school_onboarding.update!(school_params)
         if @school_onboarding.has_event?(:email_sent)
-          redirect_to admin_school_onboardings_path
+          redirect_to admin_school_onboardings_path(anchor: @school_onboarding.page_anchor)
         else
           redirect_to new_admin_school_onboarding_email_path(@school_onboarding)
         end

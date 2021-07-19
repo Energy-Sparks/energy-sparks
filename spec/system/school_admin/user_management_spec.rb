@@ -59,6 +59,8 @@ describe 'School admin user management' do
         click_on 'Manage users'
         click_on 'New staff account'
 
+        expect(page).to have_content('New staff account')
+
         fill_in 'Name', with: 'Mrs Jones'
         fill_in 'Email', with: 'mrsjones@test.com'
         select 'Teacher', from: 'Role'
@@ -99,6 +101,8 @@ describe 'School admin user management' do
       within '.staff' do
         click_on 'Edit'
       end
+
+      expect(page).to have_content('Edit staff account')
 
       fill_in 'Name', with: 'Ms Jones'
       click_on 'Update account'
@@ -174,6 +178,23 @@ describe 'School admin user management' do
       expect { click_on 'Update account' }.to change { Contact.count }.by(-1)
       expect { contact.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it 'can promote staff user to school admin' do
+      staff = create(:staff, school: school)
+      contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school: school)
+      click_on 'Manage users'
+      within '.staff' do
+        expect(page).to have_content(staff.name)
+        click_on 'Make school admin'
+      end
+
+      within '.school_admin' do
+        expect(page).to have_content(staff.name)
+      end
+
+      staff.reload
+      expect(staff.role).to eq('school_admin')
+    end
   end
 
   describe 'managing school admins' do
@@ -184,6 +205,8 @@ describe 'School admin user management' do
       before(:each) do
         click_on 'Manage users'
         click_on 'New school admin account'
+
+        expect(page).to have_content('New school admin account')
 
         fill_in 'Name', with: 'Mrs Jones'
         fill_in 'Email', with: 'mrsjones@test.com'
@@ -233,6 +256,8 @@ describe 'School admin user management' do
             click_on 'Edit'
           end
         end
+
+        expect(page).to have_content('Edit school admin account')
 
         fill_in 'Name', with: 'Ms Jones'
         click_on 'Update account'

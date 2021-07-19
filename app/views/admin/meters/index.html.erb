@@ -1,0 +1,41 @@
+<h1>Find schools by meter</h1>
+
+<p>
+Use this form to find the school based on an MPAN or MPRN. You can include a partial MPXN to do a wildcard search. A maximum of 20 meters will be turned
+</p>
+
+<%= simple_form_for :search, url: admin_meters_path, method: "GET", html: { class: 'form' } do |f| %>
+  <%= f.input :mpxn, input_html: {value: params[:search].present? ? params[:search]["mpxn"]: ''} %>
+  <%= f.submit "Search", class: "btn btn-primary" %>
+<% end %>
+
+<% if @meters.any? %>
+    <table class="table">
+      <thead>
+          <th>Meter</th>
+          <th>School</th>
+          <th>Group</th>
+          <th>Actions</th>
+      </thead>
+      <tbody>
+        <% @meters.each do |meter| %>
+          <tr>
+            <td>
+              <%= link_to meter.mpan_mprn, school_meter_path(meter.school, meter) %>
+            </td>
+            <td>
+              <%= link_to meter.school.name, school_path(meter.school) %>
+            </td>
+            <td><%= meter.school.school_group.name if meter.school.school_group.present? %></td>
+            <td>
+              <%= link_to "View all meters", school_meters_path(meter.school), class: 'btn btn-sm' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+<% else %>
+  <% if params[:search].present? %>
+    <p>No meters were found using this mpxn</p>
+  <% end %>
+<% end %>
