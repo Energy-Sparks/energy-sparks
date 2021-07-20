@@ -1,8 +1,26 @@
-<div class="d-flex justify-content-between align-items-center">
-  <h1>Progress for <%= @school.name %></h1>
-</div>
+<h1>Setting and tracking targets for your <%= @fuel_type.to_s.humanize %></h1>
 
-<h3>Monthly progress</h3>
+<p>
+  'Targeting and Tracking' on Energy Sparks lets you set separate targets for reducing
+  your electricity, gas or storage heater consumption over the next year. Energy Sparks
+  then lets you track how you are progressing versus these targets throughout the year.
+</p>
+
+<p>
+  Targets are set as a percentage of last year's energy consumption using the targetting setting
+  editor on the 'Manage School' menu above. So for example by setting a 95% target you would be
+  aiming to reduce your <%= @fuel_type.to_s %> consumption by 5% compared with last year.
+</p>
+
+<p>
+  <% if @current_target %>
+    Your school has a target of a <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target) %>
+  <% end %>
+</p>
+
+<p>
+  This table shows you how the school has been doing on a monthly basis:
+</p>
 
 <table class="table table-striped table-sm">
   <thead>
@@ -24,7 +42,9 @@
   </tbody>
 </table>
 
-<h3>Cumulative progress</h3>
+<p>
+  This table shows you the same information but cumulatively:
+</p>
 
 <table class="table table-striped table-sm">
   <thead>
@@ -46,9 +66,16 @@
   </tbody>
 </table>
 
-
 <% if @progress.current_cumulative_performance > 0.0 %>
-  <p>Current progress for the year: <%= format_target(@progress.current_cumulative_performance, :relative_percent) %> (bad)</p>
+  <p>
+    Unfortunately you are currently running
+    <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
+    above target.
+  </p>
 <% else %>
-  <p>Current progress for the year: <%= format_target(@progress.current_cumulative_performance, :relative_percent) %> (good)</p>
+  <p>
+    Congratulations, you are currently running
+    <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
+    below the target.
+  </p>
 <% end %>

@@ -94,6 +94,16 @@ module ApplicationHelper
     end
   end
 
+  def target_percent_cell_colour(percent)
+    if percent
+      if percent > 0.0
+        'bg-negative-light'
+      else
+        'bg-positive-light'
+      end
+    end
+  end
+
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
