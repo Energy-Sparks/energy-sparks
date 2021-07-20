@@ -1,0 +1,10 @@
+<tr>
+  <td>
+    <%= title %>
+  </td>
+  <% keys.each do |key| %>
+    <td>
+      <%= format_target(data[key], units) %>
+    </td>
+  <% end %>
+</tr>

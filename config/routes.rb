@@ -86,6 +86,7 @@ Rails.application.routes.draw do
       end
 
       resources :analysis, controller: :analysis, only: [:index, :show]
+      resources :targets, controller: :targets, only: [:index]
 
       resources :activity_categories, only: [:index]
       resources :activity_types, only: [:index, :show]
