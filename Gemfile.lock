@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 685dac7573fce5448db82eca9f314a26e1b753a9
-  branch: 1587-create-interface-for-app-to-request-current-progress-against-targets-from-analytics
+  revision: fc27e86feff48a75b4496f1ca479820a13d6db02
+  tag: 1.21.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)

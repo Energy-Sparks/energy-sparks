@@ -1,7 +1,6 @@
 module Schools
   class TargetsController < ApplicationController
     load_and_authorize_resource :school
-    skip_before_action :authenticate_user!
 
     include SchoolAggregation
 
