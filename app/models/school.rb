@@ -332,8 +332,12 @@ class School < ApplicationRecord
     GlobalMeterAttribute.pseudo
   end
 
+  def school_target_attributes
+    target? ? current_target.meter_attributes_by_meter_type : {}
+  end
+
   def all_pseudo_meter_attributes
-    [school_group_pseudo_meter_attributes, pseudo_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes

@@ -10,7 +10,42 @@ class SchoolTarget < ApplicationRecord
     Time.zone.now <= target
   end
 
+  def meter_attributes_by_meter_type
+    attributes = {}
+    attributes[:aggregated_electricity] = [meter_attribute_for_electricity_target] if electricity.present?
+    attributes[:aggregated_gas] = [meter_attribute_for_gas_target] if gas.present?
+    attributes[:storage_heater_aggregated] = [meter_attribute_for_storage_heaters_target] if storage_heaters.present?
+    attributes
+  end
+
+  def meter_attribute_for_electricity_target
+    MeterAttribute.new(attribute_type: :targeting_and_tracking, input_data: target_to_hash(electricity))
+  end
+
+  def meter_attribute_for_gas_target
+    MeterAttribute.new(attribute_type: :targeting_and_tracking, input_data: target_to_hash(gas))
+  end
+
+  def meter_attribute_for_storage_heaters_target
+    MeterAttribute.new(attribute_type: :targeting_and_tracking, input_data: target_to_hash(storage_heaters))
+  end
+
   private
+
+  def target_to_hash(target)
+    {
+      start_date: start_date,
+      target: target_to_percent_reduction(target)
+    }
+  end
+
+  def target_to_percent_reduction(target)
+    return 100.0 - target
+  end
+
+  def start_date
+    created_at.to_date.beginning_of_month
+  end
 
   def must_have_one_target
     if electricity.blank? && gas.blank? && storage_heaters.blank?
