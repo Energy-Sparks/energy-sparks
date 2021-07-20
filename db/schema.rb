@@ -1071,9 +1071,9 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
   create_table "school_targets", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.date "target"
-    t.integer "electricity"
-    t.integer "gas"
-    t.integer "storage_heaters"
+    t.float "electricity"
+    t.float "gas"
+    t.float "storage_heaters"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_school_targets_on_school_id"
