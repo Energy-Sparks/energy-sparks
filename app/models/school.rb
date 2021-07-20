@@ -83,6 +83,7 @@ class School < ApplicationRecord
   has_many :consent_grants,       inverse_of: :school
   has_many :meter_reviews,        inverse_of: :school
   has_many :user_tariffs,         inverse_of: :school
+  has_many :school_targets,       inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -163,6 +164,14 @@ class School < ApplicationRecord
 
   def find_user_or_cluster_user_by_id(id)
     users.find_by_id(id) || cluster_users.find_by_id(id)
+  end
+
+  def target?
+    school_targets.any?
+  end
+
+  def current_target
+    school_targets.by_date.first
   end
 
   def latest_alert_run
