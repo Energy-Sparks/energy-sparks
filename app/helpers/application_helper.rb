@@ -266,4 +266,8 @@ module ApplicationHelper
   def can_ignore_children?(field)
     !field.required? && field.structure.any? { |_k, v| v.required? }
   end
+
+  def format_target(value, units)
+    FormatEnergyUnit.format(units, value, :html, false, true, :target)
+  end
 end
