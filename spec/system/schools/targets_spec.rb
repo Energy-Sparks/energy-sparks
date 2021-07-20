@@ -6,14 +6,17 @@ describe 'targets', type: :system do
   let(:school)                    { create_active_school(name: "Big School")}
   let(:target)                    { create(:school_target, school: school) }
   let(:months)                    { ['jan', 'feb'] }
+  let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [1,2] }
   let(:monthly_usage_kwh)         { [1,2] }
   let(:monthly_performance)       { [-0.25,0.35] }
   let(:cumulative_targets_kwh)    { [1,2] }
   let(:cumulative_usage_kwh)      { [1,2] }
   let(:cumulative_performance)    { [-0.99,0.99] }
+
   let(:progress) do
     TargetsProgress.new(
+        fuel_type: fuel_type,
         months: months,
         monthly_targets_kwh: monthly_targets_kwh,
         monthly_usage_kwh: monthly_usage_kwh,
