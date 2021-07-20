@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_163310) do
+ActiveRecord::Schema.define(version: 2021_07_20_083618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1068,6 +1068,17 @@ ActiveRecord::Schema.define(version: 2021_07_12_163310) do
     t.index ["school_id"], name: "index_school_partners_on_school_id"
   end
 
+  create_table "school_targets", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "target"
+    t.integer "electricity"
+    t.integer "gas"
+    t.integer "storage_heaters"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_school_targets_on_school_id"
+  end
+
   create_table "school_times", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.integer "opening_time", default: 850
@@ -1520,6 +1531,7 @@ ActiveRecord::Schema.define(version: 2021_07_12_163310) do
   add_foreign_key "school_onboardings", "scoreboards", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
+  add_foreign_key "school_targets", "schools"
   add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars", on_delete: :restrict
   add_foreign_key "schools", "school_groups", on_delete: :restrict
