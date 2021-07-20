@@ -1,8 +1,8 @@
-<h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
+<h1>Tracking progress to reduce your <%= @progress.fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
 
 <p>
   <% if @current_target %>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target) %>
+    Your school has set a target to reduce its <%= @progress.fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target) %>
   <% end %>
 </p>
 
