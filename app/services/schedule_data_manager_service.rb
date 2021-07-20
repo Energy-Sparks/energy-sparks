@@ -38,7 +38,7 @@ class ScheduleDataManagerService
       #FEATURE FLAG: if this is set then we want to start using Meteostat data
       #Relies on the school, or its group also having been associated with
       #a station
-      if ENV["FEATURE_FLAG_USE_METEOSTAT"] == 'true'
+      if EnergySparks::FeatureFlags.active?(:use_meteostat)
         earliest = load_meteostat_readings(data)
         load_dark_sky_readings(data, earliest)
       else
@@ -73,7 +73,7 @@ class ScheduleDataManagerService
   private
 
   def cache_key_temperatures
-    if ENV["FEATURE_FLAG_USE_METEOSTAT"] == 'true'
+    if EnergySparks::FeatureFlags.active?(:use_meteostat)
       "#{@weather_station_id}-#{@dark_sky_area_id}-dark-sky-temperatures"
     else
       "#{@dark_sky_area_id}-dark-sky-temperatures"
