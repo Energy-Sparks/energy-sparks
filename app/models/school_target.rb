@@ -5,9 +5,10 @@ class SchoolTarget < ApplicationRecord
   validate :must_have_one_target
 
   scope :by_date, -> { order(created_at: :desc) }
+  scope :by_start_date, -> { order(start_date: :desc) }
 
   def current?
-    Time.zone.now <= target_date
+    Time.zone.now >= start_date && Time.zone.now <= target_date
   end
 
   def meter_attributes_by_meter_type

@@ -25,6 +25,9 @@ RSpec.describe SchoolTarget, type: :model do
 
       target = SchoolTarget.new({school: school, electricity: 10, start_date: start_date, target_date: Date.today.last_year})
       expect(target.current?).to be false
+
+      target = SchoolTarget.new({school: school, electricity: 10, start_date: Date.tomorrow, target_date: target_date})
+      expect(target.current?).to be false
     end
   end
 
