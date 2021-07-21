@@ -10,7 +10,6 @@ module Schools
     #create service
     #when revising targets, set defaults based on most recent
 
-    #prompt user to set first target
     def index
       if @school.has_current_target?
         redirect_to school_school_target_path(@school, @school.current_target)
@@ -19,8 +18,6 @@ module Schools
       end
     end
 
-    #show the current target
-    #summarise the current target, with links to progress and edit
     def show
     end
 
@@ -38,7 +35,6 @@ module Schools
       end
     end
 
-    #update and redirect to show
     def create
       @school_target = create_target
       if @school_target.update(school_target_params)
@@ -50,11 +46,9 @@ module Schools
       end
     end
 
-    #edit the current target
     def edit
     end
 
-    #update and redirect to show
     def update
       if @school_target.update(school_target_params)
         redirect_to school_school_target_path(@school, @school_target)
