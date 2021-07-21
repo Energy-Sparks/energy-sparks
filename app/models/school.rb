@@ -166,14 +166,6 @@ class School < ApplicationRecord
     users.find_by_id(id) || cluster_users.find_by_id(id)
   end
 
-  def target?
-    school_targets.any?
-  end
-
-  def current_target
-    school_targets.by_date.first
-  end
-
   def latest_alert_run
     alert_generation_runs.order(created_at: :desc).first
   end
@@ -324,16 +316,40 @@ class School < ApplicationRecord
     end
   end
 
+  def has_target?
+    school_targets.any?
+  end
+
+  def has_current_target?
+    current_target.present?
+  end
+
+  def current_target
+    school_targets.by_start_date.select(&:current?).first
+  end
+
+  def most_recent_target
+    school_targets.by_start_date.first
+  end
+
+  def school_target_attributes
+    #use the current target if we have one, otherwise the most current target
+    #based on start date. So if target as expired, then progress pages still work
+    if has_current_target?
+      current_target.meter_attributes_by_meter_type
+    elsif has_target?
+      most_recent_target.meter_attributes_by_meter_type
+    else
+      {}
+    end
+  end
+
   def school_group_pseudo_meter_attributes
     school_group ? school_group.pseudo_meter_attributes : {}
   end
 
   def global_pseudo_meter_attributes
     GlobalMeterAttribute.pseudo
-  end
-
-  def school_target_attributes
-    target? ? current_target.meter_attributes_by_meter_type : {}
   end
 
   def all_pseudo_meter_attributes

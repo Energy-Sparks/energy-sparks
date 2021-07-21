@@ -1070,7 +1070,8 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
 
   create_table "school_targets", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.date "target"
+    t.date "target_date"
+    t.date "start_date"
     t.float "electricity"
     t.float "gas"
     t.float "storage_heaters"

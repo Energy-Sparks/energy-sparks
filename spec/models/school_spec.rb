@@ -479,4 +479,63 @@ describe School do
 
   end
 
+  context 'with school targets' do
+
+    it "there is no target by default" do
+      expect(subject.has_target?).to be false
+      expect(subject.current_target).to be nil
+    end
+
+    it "there are no meter attributes without a target" do
+      expect(subject.school_target_attributes).to eql({})
+      expect(subject.all_pseudo_meter_attributes).to eql({})
+    end
+
+    context "when a target is set" do
+      let!(:target) { create(:school_target, start_date: Date.yesterday, school: subject) }
+
+      before(:each) do
+        subject.reload
+      end
+
+      it "should find the target" do
+        expect(subject.has_target?).to be true
+        expect(subject.has_current_target?).to eql true
+        expect(subject.current_target).to eql target
+        expect(subject.most_recent_target).to eql target
+      end
+
+      it "the target should add meter attributes" do
+        expect(subject.all_pseudo_meter_attributes).to_not eql({})
+      end
+
+      context "with multiple targets" do
+        let!(:future_target) { create(:school_target, start_date: Date.tomorrow, school: subject) }
+
+        it "should find the current target" do
+          expect(subject.has_target?).to be true
+          expect(subject.has_current_target?).to be true
+          expect(subject.current_target).to eql target
+          expect(subject.most_recent_target).to eql future_target
+        end
+      end
+
+      context "with expired target" do
+        before(:each) do
+          target.update!(target_date: Date.yesterday)
+        end
+
+        it "should find the expired target" do
+          expect(subject.has_target?).to be true
+          expect(subject.has_current_target?).to be false
+          expect(subject.current_target).to eql nil
+          expect(subject.most_recent_target).to eql target
+        end
+
+        it "should still produce meter attributes" do
+          expect(subject.all_pseudo_meter_attributes).to_not eql({})
+        end
+      end
+    end
+  end
 end
