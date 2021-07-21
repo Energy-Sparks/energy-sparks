@@ -1,0 +1,53 @@
+<% content_for :page_title, 'Set your first energy saving target' %>
+
+<div class="row">
+  <div class="col-md-8">
+    <h1>Set your first energy saving target</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <p>
+      Its time to set your first
+      target to reduce your energy consumption.
+    </p>
+
+    <p>
+      Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommend set of steps to help you achieve your targets by:
+    </p>
+
+    <ul>
+      <li>providing reports to monitor your progress</li>
+      <li>suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders</li>
+      <li>suggesting activities for pupils to help you engage the whole school</li>
+      <li>providing more insight through our detailed analyis of your energy usage</li>
+    </ul>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>Your first target</h3>
+
+    <div class="alert alert-info">
+      <p>
+        <%= far_icon("lightbulb fa-lg") %>
+        <strong>Tip</strong>: don't try to be too ambitious.
+      </p>
+      Focus on building momentum and making some early savings.
+    </div>
+
+    <p>
+      You can set separate targets for reducing your electricity, gas or storage heater usage.
+    </p>
+
+    <p>
+      Based on our work with schools across the UK, we recommend setting the following targets for your school this year.
+    </p>
+
+    <%= render "form", target: @target %>
+
+  </div>
+</div>

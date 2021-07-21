@@ -1,0 +1,47 @@
+<% content_for :page_title, 'Your current energy saving target' %>
+
+<div class="row">
+  <div class="col-md-8">
+    <h1>Your current energy saving target</h1>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-8">
+    You school currently has targets to reduced its energy usage by <%= nice_dates(@target.target_date) %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <table class="table table-responsive">
+      <thead>
+        <tr>
+          <th class="col-sm-8" colspan="2">Target</th>
+          <th class="col-sm-2">Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Reduce your electricity usage by</td>
+          <td><%= @target.electricity %> %</td>
+          <td>View progress</td>
+        </tr>
+        <tr>
+          <td>Reduce your gas usage by</td>
+          <td><%= @target.gas %> %</td>
+          <td>View progress</td>
+        </tr>
+        <tr>
+          <td>Reduce your storage heater usage by</td>
+          <td><%= @target.storage_heaters %> %</td>
+          <td>View progress</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Need to <%= link_to "revise your target", edit_school_school_target_path(@school, @target) %>?
+    </p>
+  </div>
+</div>
