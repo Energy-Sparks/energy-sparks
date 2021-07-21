@@ -48,6 +48,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it "links to progress pages"
+
     it "allows target to be edited" do
       click_on "revise your target"
       expect(page).to have_content("Update your energy saving target")

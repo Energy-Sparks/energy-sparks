@@ -1,14 +1,14 @@
 module Schools
   class SchoolTargetsController < ApplicationController
     load_and_authorize_resource :school
+    load_and_authorize_resource :school_target, via: :school
 
     #TODO
-    #confirmation pages / notices
     #error messages on forms
-    #access control, e.g. edit targets, load_and_authorize
+    #confirmation pages / notices
     #only showing relevant targets
+    #create service
     #when revising targets, set defaults based on most recent
-    #create service?
 
     #prompt user to set first target
     def index
@@ -22,7 +22,6 @@ module Schools
     #show the current target
     #summarise the current target, with links to progress and edit
     def show
-      @target = @school.has_current_target? ? @school.current_target : @school.most_recent_target
     end
 
     #create first or new target if current has expired
@@ -30,20 +29,20 @@ module Schools
       if @school.has_current_target?
         redirect_to school_school_target_path(@school, @school.current_target)
       elsif @school.has_target?
+        @school_target = create_target
         @most_recent_target = @school.most_recent_target
-        @target = create_target
         render :new
       else
-        @target = create_target
+        @school_target = create_target
         render :first
       end
     end
 
     #update and redirect to show
     def create
-      @target = create_target
-      if @target.update(school_target_params)
-        redirect_to school_school_target_path(@school, @target)
+      @school_target = create_target
+      if @school_target.update(school_target_params)
+        redirect_to school_school_target_path(@school, @school_target)
       elsif @school.has_target?
         render :edit
       else
@@ -53,14 +52,12 @@ module Schools
 
     #edit the current target
     def edit
-      @target = @school.school_targets.find(params[:id])
     end
 
     #update and redirect to show
     def update
-      @target = @school.school_targets.find(params[:id])
-      if @target.update(school_target_params)
-        redirect_to school_school_target_path(@school, @target)
+      if @school_target.update(school_target_params)
+        redirect_to school_school_target_path(@school, @school_target)
       else
         render :edit
       end

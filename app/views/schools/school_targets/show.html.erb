@@ -8,7 +8,7 @@
 
 <div class="row mb-3">
   <div class="col-md-8">
-    You school currently has targets to reduced its energy usage by <%= nice_dates(@target.target_date) %>
+    You school currently has targets to reduced its energy usage by <%= nice_dates(@school_target.target_date) %>
   </div>
 </div>
 
@@ -24,24 +24,24 @@
       <tbody>
         <tr>
           <td>Reduce your electricity usage by</td>
-          <td><%= @target.electricity %> %</td>
+          <td><%= @school_target.electricity %> %</td>
           <td>View progress</td>
         </tr>
         <tr>
           <td>Reduce your gas usage by</td>
-          <td><%= @target.gas %> %</td>
+          <td><%= @school_target.gas %> %</td>
           <td>View progress</td>
         </tr>
         <tr>
           <td>Reduce your storage heater usage by</td>
-          <td><%= @target.storage_heaters %> %</td>
+          <td><%= @school_target.storage_heaters %> %</td>
           <td>View progress</td>
         </tr>
       </tbody>
     </table>
 
     <p>
-      Need to <%= link_to "revise your target", edit_school_school_target_path(@school, @target) %>?
+      Need to <%= link_to "revise your target", edit_school_school_target_path(@school, @school_target) %>?
     </p>
   </div>
 </div>

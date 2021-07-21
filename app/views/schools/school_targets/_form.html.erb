@@ -1,9 +1,9 @@
-<%= form_with model: [target.school, target], html: {class: 'form-horizontal'} do |f| %>
+<%= form_with model: [school_target.school, school_target], html: {class: 'form-horizontal'} do |f| %>
 
       <div class="input-group col-12">
         <%= f.label :electricity, "Reducing electricity usage by", class: "form-label col-sm-6" %>
           <%= f.number_field :electricity, class: 'form-control col-sm-2', min: 0, max: 10, step: :any,
-          value: target.electricity || 0.0 %>
+          value: school_target.electricity || 0.0 %>
           <div class="input-group-append">
             <span class="input-group-text"> % </span>
           </div>
@@ -12,7 +12,7 @@
       <div class="input-group col-12">
         <%= f.label :gas, "Reducing gas usage by", class: "form-label col-sm-6" %>
           <%= f.number_field :gas, class: 'form-control col-sm-2', min: 0, max: 10, step: :any,
-          value: target.gas || 0.0 %>
+          value: school_target.gas || 0.0 %>
           <div class="input-group-append">
             <span class="input-group-text"> % </span>
           </div>
@@ -20,21 +20,21 @@
 
       <div class="input-group col-12">
         <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label col-sm-6" %>
-          <%= f.number_field :storage_heaters, class: 'form-control col-sm-2', min: 0, max: 10, step: :any, value: target.storage_heaters || 0.0 %>
+          <%= f.number_field :storage_heaters, class: 'form-control col-sm-2', min: 0, max: 10, step: :any, value: school_target.storage_heaters || 0.0 %>
           <div class="input-group-append">
             <span class="input-group-text"> % </span>
           </div>
       </div>
 
-      <% if !target.persisted? %>
+      <% if !school_target.persisted? %>
         <div class="input-group mt-3">
           <p>
-            Your new target will run from <strong><%= nice_dates(@target.start_date) %></strong> to
-            <strong><%= nice_dates(@target.target_date) %></strong>
+            Your new target will run from <strong><%= nice_dates(school_target.start_date) %></strong> to
+            <strong><%= nice_dates(school_target.target_date) %></strong>
           </p>
         </div>
       <% end %>
 
-      <%= f.submit target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
+      <%= f.submit school_target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
 
 <% end %>
