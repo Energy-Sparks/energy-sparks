@@ -1,13 +1,13 @@
 class SchoolTarget < ApplicationRecord
   belongs_to :school
 
-  validates_presence_of :school, :target
+  validates_presence_of :school, :target_date, :start_date
   validate :must_have_one_target
 
   scope :by_date, -> { order(created_at: :desc) }
 
   def current?
-    Time.zone.now <= target
+    Time.zone.now <= target_date
   end
 
   def meter_attributes_by_meter_type
@@ -41,10 +41,6 @@ class SchoolTarget < ApplicationRecord
 
   def target_to_percent_reduction(target)
     return 100.0 - target
-  end
-
-  def start_date
-    created_at.to_date.beginning_of_month
   end
 
   def must_have_one_target

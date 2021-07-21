@@ -479,4 +479,20 @@ describe School do
 
   end
 
+  context 'with targets' do
+
+    it "the school should not have a target by default" do
+      expect(subject.target?).to be false
+      expect(subject.current_target).to be nil
+      expect(subject.school_target_attributes).to eql({})
+      expect(subject.all_pseudo_meter_attributes).to eql({})
+    end
+
+    it "the school should indicate it if has a target" do
+      target = create(:school_target, school: subject)
+      expect(subject.target?).to be true
+      expect(subject.current_target).to eql target
+      expect(subject.all_pseudo_meter_attributes).to_not eql({})
+    end
+  end
 end
