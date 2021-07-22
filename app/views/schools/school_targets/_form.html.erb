@@ -1,10 +1,14 @@
 <%= form_with model: [school_target.school, school_target], local: true, html: {class: 'form-horizontal'} do |f| %>
 
+  <%= hidden_field :school_target, :start_date %>
+  <%= hidden_field :school_target, :target_date %>
+  <%= hidden_field :school_target, :school_id %>
+
   <%= render 'shared/errors', subject: school_target, subject_name: 'School target' %>
 
   <div class="input-group col-12">
     <%= f.label :electricity, "Reducing electricity usage by", class: "form-label col-sm-6" %>
-      <%= f.number_field :electricity, class: 'form-control col-sm-2', min: 0, max: 10, step: :any,
+      <%= f.text_field :electricity, class: 'form-control col-sm-2',
       value: school_target.electricity || 0.0 %>
       <div class="input-group-append">
         <span class="input-group-text"> % </span>
@@ -13,7 +17,7 @@
 
   <div class="input-group col-12">
     <%= f.label :gas, "Reducing gas usage by", class: "form-label col-sm-6" %>
-      <%= f.number_field :gas, class: 'form-control col-sm-2', min: 0, max: 10, step: :any,
+      <%= f.text_field :gas, class: 'form-control col-sm-2',
       value: school_target.gas || 0.0 %>
       <div class="input-group-append">
         <span class="input-group-text"> % </span>
@@ -22,7 +26,7 @@
 
   <div class="input-group col-12">
     <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label col-sm-6" %>
-      <%= f.number_field :storage_heaters, class: 'form-control col-sm-2', min: 0, max: 10, step: :any, value: school_target.storage_heaters || 0.0 %>
+      <%= f.text_field :storage_heaters, class: 'form-control col-sm-2', value: school_target.storage_heaters || 0.0 %>
       <div class="input-group-append">
         <span class="input-group-text"> % </span>
       </div>

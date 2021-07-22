@@ -3,7 +3,6 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource :school_target, via: :school
 
-    #TODO
     #error messages on forms
     #confirmation pages / notices
     #only showing relevant targets
@@ -36,11 +35,10 @@ module Schools
     end
 
     def create
-      @school_target = create_target
-      if @school_target.update(school_target_params)
+      if @school_target.save
         redirect_to school_school_target_path(@school, @school_target)
       elsif @school.has_target?
-        render :edit
+        render :new
       else
         render :first
       end
@@ -60,8 +58,7 @@ module Schools
     private
 
     def create_target
-      @school.school_targets.new(
-        school: @school,
+      @school.school_targets.build(
         start_date: Time.zone.today.beginning_of_month,
         target_date: Time.zone.today.beginning_of_month.next_year,
         electricity: 5.0,
@@ -71,7 +68,7 @@ module Schools
     end
 
     def school_target_params
-      params.require(:school_target).permit(:electricity, :gas, :storage_heaters)
+      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
     end
   end
 end

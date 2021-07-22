@@ -84,8 +84,4 @@ RSpec.describe 'school targets', type: :system do
 
   end
 
-  context "when school has limited data" do
-    it "warns about limited reporting"
-  end
-
 end
