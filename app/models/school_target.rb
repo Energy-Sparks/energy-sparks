@@ -41,7 +41,7 @@ class SchoolTarget < ApplicationRecord
   end
 
   def target_to_percent_reduction(target)
-    return 100.0 - target
+    return (100.0 - target) / 100.0
   end
 
   def must_have_one_target
