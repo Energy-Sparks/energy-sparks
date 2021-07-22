@@ -33,7 +33,6 @@ RSpec.describe 'school targets', type: :system do
       expect(school.current_target.storage_heaters).to eql 25.0
     end
 
-    it "displays custom confirmation for first target"
   end
 
   context "with target" do
@@ -47,7 +46,9 @@ RSpec.describe 'school targets', type: :system do
       expect(page).to have_content("Your current energy saving target")
     end
 
-    it "links to progress pages"
+    it "links to progress pages" do
+      expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+    end
 
     it "allows target to be edited" do
       click_on "revise your target"
@@ -63,8 +64,6 @@ RSpec.describe 'school targets', type: :system do
       expect(school.current_target.gas).to eql 7.0
       expect(school.current_target.storage_heaters).to eql 7.0
     end
-
-    it "displays confirmation when target revised"
 
     it "redirects from new target page" do
       visit new_school_school_target_path(school, target)
