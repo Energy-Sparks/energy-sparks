@@ -35,7 +35,7 @@ describe 'targets', type: :system do
     end
 
     it 'shows target page' do
-      visit school_targets_path(school)
+      visit school_progress_index_path(school)
       expect(page).to have_content('Tracking progress')
       expect(page).to have_content('jan')
       expect(page).to have_content('feb')
