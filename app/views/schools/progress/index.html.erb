@@ -1,0 +1,83 @@
+<h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
+
+<% if @show_storage_heater_notes %>
+  <p>
+    Note, this page shows electricity usage excluding storage heaters - they can be reviewed separately <%= link_to 'here', storage_heaters_school_progress_index_path(@school) %>.
+  </p>
+<% end %>
+
+<% if @current_target %>
+  <p>
+    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target_date) %>
+  </p>
+<% end %>
+
+<% if @progress  %>
+
+  <% if @progress.current_cumulative_performance > 0.0 %>
+    <p>
+      Unfortunately you are currently running
+      <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
+      above target.
+    </p>
+  <% else %>
+    <p>
+      Congratulations, you are currently running
+      <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
+      below the target.
+    </p>
+  <% end %>
+
+
+  <h2>Month by month progress</h2>
+
+  <table class="table table-striped table-sm">
+    <thead>
+    <tr>
+      <th>
+        Month
+      </th>
+      <% @progress.months.each do |month| %>
+        <th>
+          <%= month %>
+        </th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <%= render 'row', title: 'Target (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, units: :kwh %>
+    <%= render 'row', title: 'Current year (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, units: :kwh %>
+    <%= render 'row', title: 'Monthly performance', data: @progress.monthly_performance, keys: @progress.months, units: :relative_percent %>
+    </tbody>
+  </table>
+
+
+  <h2>Cumulative progress</h2>
+
+  <table class="table table-striped table-sm">
+    <thead>
+    <tr>
+      <th>
+        Month
+      </th>
+      <% @progress.months.each do |month| %>
+        <th>
+          <%= month %>
+        </th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <%= render 'row', title: 'Target (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, units: :kwh %>
+    <%= render 'row', title: 'Current year (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, units: :kwh %>
+    <%= render 'row', title: 'Cumulative performance', data: @progress.cumulative_performance, keys: @progress.months, units: :relative_percent %>
+    </tbody>
+  </table>
+
+<% else %>
+
+  <p>
+    Sorry, we encountered an error while trying to calculate your progress..
+  </p>
+
+<% end %>

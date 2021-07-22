@@ -70,6 +70,7 @@ class Ability
         :show_management_dash,
         :read, :start_programme, :read_restricted_analysis
       ], School, school_scope
+      can :manage, SchoolTarget, related_school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)

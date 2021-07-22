@@ -86,6 +86,14 @@ Rails.application.routes.draw do
       end
 
       resources :analysis, controller: :analysis, only: [:index, :show]
+      resources :progress, controller: :progress, only: [:index] do
+        collection do
+          get :electricity
+          get :gas
+          get :storage_heaters
+        end
+      end
+      resources :school_targets, except: [:destroy]
 
       resources :activity_categories, only: [:index]
       resources :activity_types, only: [:index, :show]
