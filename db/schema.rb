@@ -230,12 +230,12 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
-    t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
     t.string "analysis_subtitle"
     t.date "analysis_start_date"
     t.date "analysis_end_date"
     t.decimal "analysis_weighting", default: "5.0"
+    t.text "find_out_more_table_variable", default: "none"
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
@@ -1096,8 +1096,8 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "urn", null: false
     t.integer "level", default: 0
+    t.integer "urn", null: false
     t.bigint "calendar_id"
     t.string "slug"
     t.bigint "temperature_area_id"
