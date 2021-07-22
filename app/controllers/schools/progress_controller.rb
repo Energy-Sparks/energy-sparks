@@ -27,14 +27,25 @@ module Schools
     private
 
     def index_for(fuel_type)
+      @fuel_type = fuel_type
       @current_target = @school.current_target
-      @progress = TargetsService.new(aggregate_school, fuel_type).progress
+      @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
+      begin
+        @progress = TargetsService.new(aggregate_school, @fuel_type).progress
+      rescue => e
+        Rollbar.error(e)
+        flash[:error] = e.message
+      end
       render :index
     end
 
     def missing(fuel_type)
       @fuel_type = fuel_type
       render :missing
+    end
+
+    def show_storage_heater_notes(school, fuel_type)
+      fuel_type == :electricity && school.has_storage_heaters?
     end
   end
 end
