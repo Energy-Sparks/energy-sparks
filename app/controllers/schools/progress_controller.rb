@@ -27,8 +27,14 @@ module Schools
     private
 
     def index_for(fuel_type)
+      @fuel_type = fuel_type
       @current_target = @school.current_target
-      @progress = TargetsService.new(aggregate_school, fuel_type).progress
+      begin
+        @progress = TargetsService.new(aggregate_school, @fuel_type).progress
+      rescue => e
+        Rollbar.error(e)
+        flash[:error] = e.message
+      end
       render :index
     end
 

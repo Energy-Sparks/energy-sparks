@@ -31,30 +31,46 @@ describe 'targets', type: :system do
 
   context 'as an admin' do
 
-    before(:each) do
-      sign_in(admin)
-      allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+    context 'with calculated progress' do
+
+      before(:each) do
+        sign_in(admin)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+      end
+
+      it 'redirects to electricity' do
+        visit school_progress_index_path(school)
+        expect(page).to have_content('Tracking progress')
+      end
+
+      it 'shows electricity progress' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_content('Tracking progress')
+        expect(page).to have_content('jan')
+        expect(page).to have_content('feb')
+        expect(page).to have_content('-25%')
+        expect(page).to have_content('+35%')
+        expect(page).to have_content('-99%')
+        expect(page).to have_content('+99%')
+      end
+
+      it 'shows missing page' do
+        visit gas_school_progress_index_path(school)
+        expect(page).to have_content("We don't have a record of gas being used at your school")
+      end
     end
 
-    it 'redirects to electricity' do
-      visit school_progress_index_path(school)
-      expect(page).to have_content('Tracking progress')
-    end
+    context 'with error from analytics' do
 
-    it 'shows electricity progress' do
-      visit electricity_school_progress_index_path(school)
-      expect(page).to have_content('Tracking progress')
-      expect(page).to have_content('jan')
-      expect(page).to have_content('feb')
-      expect(page).to have_content('-25%')
-      expect(page).to have_content('+35%')
-      expect(page).to have_content('-99%')
-      expect(page).to have_content('+99%')
-    end
+      before(:each) do
+        sign_in(admin)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
+      end
 
-    it 'shows missing page' do
-      visit gas_school_progress_index_path(school)
-      expect(page).to have_content("We don't have a record of gas being used at your school")
+      it 'handles errors' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_content("Sorry, we encountered an error")
+      end
     end
   end
 end
