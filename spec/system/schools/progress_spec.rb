@@ -4,6 +4,8 @@ describe 'targets', type: :system do
 
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
+  let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
+  let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
   let(:target)                    { create(:school_target, school: school) }
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
@@ -34,8 +36,13 @@ describe 'targets', type: :system do
       allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
     end
 
-    it 'shows target page' do
+    it 'redirects to electricity' do
       visit school_progress_index_path(school)
+      expect(page).to have_content('Tracking progress')
+    end
+
+    it 'shows electricity progress' do
+      visit electricity_school_progress_index_path(school)
       expect(page).to have_content('Tracking progress')
       expect(page).to have_content('jan')
       expect(page).to have_content('feb')
@@ -43,6 +50,11 @@ describe 'targets', type: :system do
       expect(page).to have_content('+35%')
       expect(page).to have_content('-99%')
       expect(page).to have_content('+99%')
+    end
+
+    it 'shows missing page' do
+      visit gas_school_progress_index_path(school)
+      expect(page).to have_content("We don't have a record of gas being used at your school")
     end
   end
 end

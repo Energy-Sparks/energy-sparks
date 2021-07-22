@@ -1,3 +1,5 @@
+require 'benchmark'
+
 module Schools
   class ProgressController < ApplicationController
     load_and_authorize_resource :school
@@ -11,15 +13,15 @@ module Schools
     end
 
     def electricity
-      index_for(:electricity)
+      @school.has_electricity? ? index_for(:electricity) : missing(:electricity)
     end
 
     def gas
-      index_for(:gas)
+      @school.has_gas? ? index_for(:gas) : missing(:gas)
     end
 
     def storage_heaters
-      index_for(:storage_heaters)
+      @school.has_storage_heaters? ? index_for(:storage_heaters) : missing(:storage_heaters)
     end
 
     private
@@ -28,6 +30,11 @@ module Schools
       @current_target = @school.current_target
       @progress = TargetsService.new(aggregate_school, fuel_type).progress
       render :index
+    end
+
+    def missing(fuel_type)
+      @fuel_type = fuel_type
+      render :missing
     end
   end
 end
