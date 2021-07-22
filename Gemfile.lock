@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 0a871a18051c05a47a742341e485cd5a88d68acc
-  branch: 1590-create-application-page-to-display-targets
+  revision: 6903870c4f19ff9ce532d74f46ea2f97de094cbf
+  tag: 1.21.1
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
