@@ -93,6 +93,7 @@ Rails.application.routes.draw do
           get :storage_heaters
         end
       end
+      resources :school_targets, except: [:destroy]
 
       resources :activity_categories, only: [:index]
       resources :activity_types, only: [:index, :show]
