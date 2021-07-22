@@ -25,17 +25,17 @@
         <tr>
           <td>Reduce your electricity usage by</td>
           <td><%= @school_target.electricity %> %</td>
-          <td>View progress</td>
+          <td><%= link_to "View progress", electricity_school_progress_index_path(@school) %></td>
         </tr>
         <tr>
           <td>Reduce your gas usage by</td>
           <td><%= @school_target.gas %> %</td>
-          <td>View progress</td>
+          <td><%= link_to "View progress", gas_school_progress_index_path(@school) %></td>
         </tr>
         <tr>
           <td>Reduce your storage heater usage by</td>
           <td><%= @school_target.storage_heaters %> %</td>
-          <td>View progress</td>
+          <td><%= link_to "View progress", storage_heaters_school_progress_index_path(@school) %></td>
         </tr>
       </tbody>
     </table>
