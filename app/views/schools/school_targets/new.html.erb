@@ -1,2 +1,41 @@
+<% content_for :page_title, 'Update your energy saving target' %>
 
-<%= render "form", school_target: @school_target %>
+<div class="row">
+  <div class="col-md-8">
+    <h1>Review and set your next energy saving target</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <p>
+      The target date for your previous target has been reached. Its time to
+      <%= link_to "review your progress", school_school_target_path(@school, @previous_school_target) %> and set a new target.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>Your new target</h3>
+
+    <div class="alert alert-info">
+      <p>
+        <%= far_icon("lightbulb fa-lg") %>
+        <strong>Tip</strong>: Review your dashboard.<br>
+        Before setting your new target, check our recommendations to help inform your planning
+      </p>
+    </div>
+
+    <p>
+      You can set separate targets for reducing your electricity, gas or storage heater usage.
+    </p>
+
+    <p>
+      By default we've carried forward your targets from last year. You can amend them below.
+    </p>
+
+    <%= render "form", school_target: @school_target %>
+
+  </div>
+</div>

@@ -74,12 +74,25 @@ RSpec.describe 'school targets', type: :system do
 
   context "with expired target" do
     let!(:target)          { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday) }
+
     before(:each) do
       visit school_school_targets_path(school)
     end
 
     it "prompts to create new target" do
-      expect(page).to have_content("New")
+      expect(page).to have_content("Review and set your next energy saving target")
+    end
+
+    it "creates new target from old" do
+      expect( find_field("Reducing electricity usage by").value ).to eq target.electricity.to_s
+
+      fill_in "Reducing electricity usage by", with: 15
+
+      click_on 'Set this target'
+
+      expect(school.current_target.electricity).to eql 15.0
+      expect(school.current_target.gas).to eql target.gas
+      expect(school.current_target.storage_heaters).to eql target.storage_heaters
     end
 
   end
