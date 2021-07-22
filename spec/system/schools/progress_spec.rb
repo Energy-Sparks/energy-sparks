@@ -58,6 +58,22 @@ describe 'targets', type: :system do
         visit gas_school_progress_index_path(school)
         expect(page).to have_content("We don't have a record of gas being used at your school")
       end
+
+      it 'does not show message about storage heaters' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).not_to have_content("excluding storage heaters")
+      end
+
+      context 'when school also has storage heaters' do
+
+        let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
+
+        it 'does show message about storage heaters' do
+          visit electricity_school_progress_index_path(school)
+          expect(page).to have_content("excluding storage heaters")
+        end
+
+      end
     end
 
     context 'with error from analytics' do

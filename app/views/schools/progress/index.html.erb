@@ -1,11 +1,16 @@
 <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
 
-<% if @current_target %>
+<% if @show_storage_heater_notes %>
   <p>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target) %>
+    Note, this page shows electricity usage excluding storage heaters - they can be reviewed separately <%= link_to 'here', storage_heaters_school_progress_index_path(@school) %>.
   </p>
 <% end %>
 
+<% if @current_target %>
+  <p>
+    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target_date) %>
+  </p>
+<% end %>
 
 <% if @progress  %>
 
