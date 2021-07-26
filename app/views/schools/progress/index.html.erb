@@ -14,18 +14,20 @@
 
 <% if @progress  %>
 
-  <% if @progress.current_cumulative_performance > 0.0 %>
-    <p>
-      Unfortunately you are currently running
-      <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
-      above target.
-    </p>
-  <% else %>
-    <p>
-      Congratulations, you are currently running
-      <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
-      below the target.
-    </p>
+  <% if @progress.current_cumulative_performance %>
+    <% if @progress.current_cumulative_performance > 0.0 %>
+      <p>
+        Unfortunately you are currently running
+        <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
+        above target.
+      </p>
+    <% else %>
+      <p>
+        Congratulations, you are currently running
+        <%= format_target(@progress.current_cumulative_performance, :relative_percent) %>
+        below the target.
+      </p>
+    <% end %>
   <% end %>
 
 
