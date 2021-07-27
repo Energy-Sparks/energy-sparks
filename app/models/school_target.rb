@@ -4,6 +4,8 @@ class SchoolTarget < ApplicationRecord
   validates_presence_of :school, :target_date, :start_date
   validate :must_have_one_target
 
+  validates :electricity, :gas, :storage_heaters, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
 

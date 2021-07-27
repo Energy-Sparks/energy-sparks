@@ -163,6 +163,11 @@ div.meter-attributes {
 }
 
 
+// imput fields with specified 'pattern' will highlight when invalid
+input:invalid {
+  color: red;
+}
+
 .funnel-image {
   border-radius: 0.5rem 0.5rem;
 }

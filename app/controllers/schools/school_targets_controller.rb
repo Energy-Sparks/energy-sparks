@@ -30,7 +30,7 @@ module Schools
 
     def create
       if @school_target.save
-        redirect_to school_school_target_path(@school, @school_target)
+        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
       elsif @school.has_target?
         render :new
       else
@@ -43,7 +43,7 @@ module Schools
 
     def update
       if @school_target.update(school_target_params)
-        redirect_to school_school_target_path(@school, @school_target)
+        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else
         render :edit
       end

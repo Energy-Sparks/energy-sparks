@@ -26,6 +26,8 @@ RSpec.describe 'school targets', type: :system do
       fill_in "Reducing storage heater usage by", with: 25
 
       click_on 'Set this target'
+
+      expect(page).to have_content('Target successfully created')
       expect(page).to have_content("Your current energy saving target")
       expect(school.has_current_target?).to eql(true)
       expect(school.current_target.electricity).to eql 15.0
@@ -60,9 +62,20 @@ RSpec.describe 'school targets', type: :system do
 
       click_on 'Update our target'
 
+      expect(page).to have_content('Target successfully updated')
+
       expect(school.current_target.electricity).to eql 7.0
       expect(school.current_target.gas).to eql 7.0
       expect(school.current_target.storage_heaters).to eql 7.0
+    end
+
+    it "validates target values" do
+      click_on "revise your target"
+
+      fill_in "Reducing gas usage by", with: 123
+      click_on 'Update our target'
+
+      expect(page).to have_content('Gas must be less than or equal to 100')
     end
 
     it "redirects from new target page" do
