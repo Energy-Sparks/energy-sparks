@@ -47,6 +47,10 @@
 
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent energy use alerts'%>
 
+<% if EnergySparks::FeatureFlags.active?(:school_targets) && !@school.has_target? %>
+  <%= render 'shared/dashboard_prompt', school: @school, title: 'Things to do', colour: :negative, content: 'Set some targets for reducing energy consumption over the year.'%>
+<% end %>
+
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 
 <div class="row padded-row management-energy-saving-actions d-flex justify-content-center mb-3">
