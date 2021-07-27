@@ -69,6 +69,9 @@ describe 'Management dashboard' do
       end
 
       it 'displays energy saving target prompt' do
+
+        allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets).and_return(true)
+
         visit root_path
         expect(page).to have_content('Set some targets')
         expect(page).to have_link('Set energy saving target')
