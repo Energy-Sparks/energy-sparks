@@ -68,6 +68,16 @@ describe 'Management dashboard' do
         expect(page).to have_content('£2,000')
       end
 
+      it 'displays energy saving target prompt' do
+        visit root_path
+        expect(page).to have_content('Set some targets')
+        expect(page).to have_link('Set energy saving target')
+
+        school.school_targets << create(:school_target)
+        visit root_path
+        expect(page).not_to have_content('Set some targets')
+      end
+
       it 'displays a report version of the page' do
         visit root_path
         click_on 'Report view'
