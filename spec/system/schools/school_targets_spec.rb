@@ -65,6 +65,15 @@ RSpec.describe 'school targets', type: :system do
       expect(school.current_target.storage_heaters).to eql 7.0
     end
 
+    it "validates target values" do
+      click_on "revise your target"
+
+      fill_in "Reducing gas usage by", with: 123
+      click_on 'Update our target'
+
+      expect(page).to have_content('Gas must be less than or equal to 100')
+    end
+
     it "redirects from new target page" do
       visit new_school_school_target_path(school, target)
       expect(page).to have_content("Your current energy saving target")
