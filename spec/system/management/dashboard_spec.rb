@@ -73,12 +73,12 @@ describe 'Management dashboard' do
         allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets).and_return(true)
 
         visit root_path
-        expect(page).to have_content('Set some targets')
+        expect(page).to have_content("Set targets to reduce your school's energy consumption")
         expect(page).to have_link('Set energy saving target')
 
         school.school_targets << create(:school_target)
         visit root_path
-        expect(page).not_to have_content('Set some targets')
+        expect(page).not_to have_content("Set targets to reduce your school's energy consumption")
       end
 
       it 'displays a report version of the page' do

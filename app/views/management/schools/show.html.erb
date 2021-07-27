@@ -27,12 +27,22 @@
   <%= render 'overview_charts', overview_charts: @overview_charts %>
 <% end %>
 
-<% if @add_contacts %>
-  <%= render 'shared/add_contacts', school: @school %>
-<% end %>
+<% if @add_contacts || @add_pupils || @add_targets %>
 
-<% if @add_pupils %>
-  <%= render 'shared/add_pupils', school: @school %>
+  <h2>Things to do</h2>
+
+  <% if @add_contacts %>
+    <%= render 'shared/add_contacts', school: @school %>
+  <% end %>
+
+  <% if @add_pupils %>
+    <%= render 'shared/add_pupils', school: @school %>
+  <% end %>
+
+  <% if @add_targets %>
+    <%= render 'shared/add_targets', school: @school %>
+  <% end %>
+
 <% end %>
 
 <% unless @management_priorities.empty? %>
