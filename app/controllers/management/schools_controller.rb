@@ -13,7 +13,6 @@ module Management
 
     def show
       authorize! :show_management_dash, @school
-      @charts = setup_charts(@school.configuration)
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
       @observations = setup_timeline(@school.observations)
       @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
