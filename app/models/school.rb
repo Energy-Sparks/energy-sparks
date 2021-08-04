@@ -83,6 +83,7 @@ class School < ApplicationRecord
   has_many :consent_grants,       inverse_of: :school
   has_many :meter_reviews,        inverse_of: :school
   has_many :user_tariffs,         inverse_of: :school
+  has_many :school_targets,       inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -315,6 +316,34 @@ class School < ApplicationRecord
     end
   end
 
+  def has_target?
+    school_targets.any?
+  end
+
+  def has_current_target?
+    current_target.present?
+  end
+
+  def current_target
+    school_targets.by_start_date.select(&:current?).first
+  end
+
+  def most_recent_target
+    school_targets.by_start_date.first
+  end
+
+  def school_target_attributes
+    #use the current target if we have one, otherwise the most current target
+    #based on start date. So if target as expired, then progress pages still work
+    if has_current_target?
+      current_target.meter_attributes_by_meter_type
+    elsif has_target?
+      most_recent_target.meter_attributes_by_meter_type
+    else
+      {}
+    end
+  end
+
   def school_group_pseudo_meter_attributes
     school_group ? school_group.pseudo_meter_attributes : {}
   end
@@ -324,7 +353,7 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    [school_group_pseudo_meter_attributes, pseudo_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes

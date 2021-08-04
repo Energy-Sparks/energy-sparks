@@ -44,6 +44,7 @@ public/assets
 
 # RubyMine
 .idea
+*/.rakeTasks
 
 # Ignore uploaded files in development
 /storage/*

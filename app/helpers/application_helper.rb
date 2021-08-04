@@ -94,6 +94,16 @@ module ApplicationHelper
     end
   end
 
+  def target_percent_cell_colour(percent)
+    if percent
+      if percent > 0.0
+        'bg-negative-light'
+      else
+        'bg-positive-light'
+      end
+    end
+  end
+
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
@@ -265,5 +275,9 @@ module ApplicationHelper
 
   def can_ignore_children?(field)
     !field.required? && field.structure.any? { |_k, v| v.required? }
+  end
+
+  def format_target(value, units)
+    FormatEnergyUnit.format(units, value, :html, false, true, :target)
   end
 end

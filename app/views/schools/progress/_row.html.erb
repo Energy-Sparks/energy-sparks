@@ -1,0 +1,10 @@
+<tr>
+  <td>
+    <%= title %>
+  </td>
+  <% keys.each do |key| %>
+    <td class=<%= target_percent_cell_colour(data[key]) if units == :relative_percent %>>
+      <%= format_target(data[key], units) %>
+    </td>
+  <% end %>
+</tr>

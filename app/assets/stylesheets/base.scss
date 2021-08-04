@@ -75,12 +75,28 @@ nav li {
   background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
 }
 
+.bg-positive-dark {
+  background-color: $bg-positive;
+}
+
+.bg-positive-light {
+  background-color: $bg-positive-light;
+}
+
 .bg-neutral {
   background-image: linear-gradient(to right, $bg-neutral 0%, $bg-neutral-light 100%);
 }
 
 .bg-negative {
   background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
+}
+
+.bg-negative-dark {
+  background-color: $bg-negative;
+}
+
+.bg-negative-light {
+  background-color: $bg-negative-light;
 }
 
 .bg-light-blue {
@@ -146,6 +162,11 @@ div.meter-attributes {
   display: block !important;
 }
 
+
+// imput fields with specified 'pattern' will highlight when invalid
+input:invalid {
+  color: red;
+}
 
 .funnel-image {
   border-radius: 0.5rem 0.5rem;
