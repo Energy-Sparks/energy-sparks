@@ -19,12 +19,6 @@
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: false %>
 <% end %>
 
-<h2>Recent use</h2>
-
-<div class="row dashboards">
-  <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
-</div>
-
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent energy use alerts'%>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

@@ -83,7 +83,7 @@ describe 'Management dashboard' do
 
       it 'displays a report version of the page' do
         visit root_path
-        click_on 'Report view'
+        click_on 'Print view'
         expect(page).to have_content("Management information for #{school.name}")
         expect(page).to have_content('Spending too much money on heating')
         expect(page).to have_content('£2,000')

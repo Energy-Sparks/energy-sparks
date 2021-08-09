@@ -1,6 +1,7 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Analysis for <%= @school.name %></h1>
   <div class="h5">
+    <%= link_to "Explore your data", pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% if @school.school_group && can?(:compare, @school.school_group) %>
       <%= link_to 'Compare schools', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% end %>
