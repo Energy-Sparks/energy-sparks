@@ -54,6 +54,14 @@ describe 'targets', type: :system do
         expect(page).to have_content('+99%')
       end
 
+      it 'shows charts' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_content("Progress charts")
+        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_to_date_cumulative_line')).to_not be_nil
+        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_to_date_line')).to_not be_nil
+        expect(page.find('#chart_wrapper_targeting_and_tracking_weekly_electricity_one_year_line')).to_not be_nil
+      end
+
       it 'shows missing page' do
         visit gas_school_progress_index_path(school)
         expect(page).to have_content("We don't have a record of gas being used at your school")
