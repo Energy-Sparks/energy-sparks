@@ -2,10 +2,15 @@ require 'rails_helper'
 
 describe 'Adult dashboard' do
 
-  let!(:school_group){ create(:school_group) }
-  let!(:school){ create(:school, school_group: school_group) }
-  let(:staff){ create(:staff, school: school, staff_role: create(:staff_role, :management)) }
-  let!(:intervention){ create(:observation, school: school) }
+  let(:school_name)         { 'Theresa Green Infants'}
+  let!(:school_group)       { create(:school_group) }
+  let!(:regional_calendar)  { create(:regional_calendar) }
+  let!(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
+  let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name, school_group: school_group) }
+  let!(:intervention)       { create(:observation, school: school) }
+
+  let!(:school_admin)       { create(:school_admin, school: school)}
+  let(:staff)               { create(:staff, school: school, staff_role: create(:staff_role, :management)) }
 
   describe 'when not logged in' do
     it 'prompts for login' do
@@ -19,7 +24,7 @@ describe 'Adult dashboard' do
       sign_in(staff)
     end
 
-    it 'allows login and access to management dashboard' do
+    it 'allows login and access to dashboard' do
       visit root_path
       expect(page).to have_content("#{school.name}")
       expect(page).to have_content("Adult Dashboard")
@@ -87,6 +92,77 @@ describe 'Adult dashboard' do
         expect(page).to have_content("Management information for #{school.name}")
         expect(page).to have_content('Spending too much money on heating')
         expect(page).to have_content('£2,000')
+      end
+    end
+
+  end
+
+  context 'when logged in as a school admin' do
+    before(:each) do
+      sign_in(school_admin)
+    end
+
+    it 'I can visit the dashboard' do
+      visit management_school_path(school)
+      expect(page).to have_content(school_name)
+      expect(page).to have_link("Compare schools")
+    end
+
+    it 'shows link to co2 analysis page' do
+      co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
+      expect_any_instance_of(Management::SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
+      visit management_school_path(school)
+      expect(page).to have_link("Some CO2 page")
+    end
+
+    it 'displays interventions and temperature recordings in a timeline' do
+      intervention_type = create(:intervention_type, title: 'Upgraded insulation')
+      create(:observation, :intervention, school: school, intervention_type: intervention_type)
+      create(:observation_with_temperature_recording_and_location, school: school)
+      activity_type = create(:activity_type) # doesn't get saved if built with activity below
+      create(:activity, school: school, activity_type: activity_type)
+
+      visit management_school_path(school)
+      expect(page).to have_content('Recorded temperatures in')
+      expect(page).to have_content('Upgraded insulation')
+      expect(page).to have_content('Completed an activity')
+      click_on 'View all actions'
+      expect(page).to have_content('Recorded temperatures in')
+      expect(page).to have_content('Upgraded insulation')
+      expect(page).to have_content('Completed an activity')
+    end
+
+    describe 'has a loading page which redirects to the right place', js: true do
+      before(:each) do
+        allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+        allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
+      end
+
+      context 'with a successful load' do
+        before(:each) do
+          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+          school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
+        end
+        it 'renders a loading page and then back to the dashboard page once complete' do
+          visit management_school_path(school)
+
+          expect(page).to have_content('Your annual usage')
+          # if redirect fails it will still be processing
+          expect(page).to_not have_content('processing')
+          expect(page).to_not have_content("we're having trouble processing your energy data today")
+        end
+      end
+
+      context 'with a loading error' do
+        before(:each) do
+          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
+        end
+
+        it 'shows an error message', errors_expected: true do
+          visit management_school_path(school)
+          expect(page).to have_content("we're having trouble processing your energy data today")
+        end
       end
     end
 
