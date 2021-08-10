@@ -58,7 +58,7 @@ RSpec.describe "analysis page", type: :system do
         sign_in(user)
 
         visit school_path(school)
-        click_on "Learn more about your school's energy use"
+        click_on "Review your energy analysis"
 
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content("This is what you need to do")

@@ -14,12 +14,13 @@ describe 'adding a new activity' do
 
   before(:each) do
     sign_in(admin)
-    visit school_path(school)
-    click_on('Choose another activity')
-    click_on('Record your activity')
   end
 
   it 'allows an activity to be created without title' do
+    visit school_path(school)
+    click_on('Complete activities')
+    click_on('Record your activity')
+
     expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
     select(activity_type_name, from: 'Activity type')
     click_on 'Save activity'
@@ -29,6 +30,8 @@ describe 'adding a new activity' do
   end
 
   it 'allows an activity to be created with custom title', js: true do
+    visit suggest_activity_school_path(school)
+    click_on('Record your activity')
     select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
 
