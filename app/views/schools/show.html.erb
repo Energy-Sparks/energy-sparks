@@ -1,18 +1,8 @@
 <%= content_for :page_title, @school.name %>
 
-<div class="d-flex justify-content-between align-items-center">
-  <h1>Adult Dashboard</h1>
-  <div class="h5">
-    <% if @school.school_group && can?(:compare, @school.school_group) %>
-      <%= link_to 'Compare schools', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-    <% end %>
-    <% if @school.configuration %>
-      <%= link_to "Review this school's energy analysis", school_analysis_index_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-    <% end %>
-  </div>
-</div>
+<%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true %>
 
-<h2>Annual use</h2>
+<h2>Annual usage</h2>
 
 <% if @overview_table %>
   <%= render 'management/schools/overview_table', overview_table: @overview_table %>
@@ -22,17 +12,13 @@
   <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
 <% end %>
 
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title, title: 'Act on energy usage'%>
+
 <% unless @management_priorities.empty? %>
+  <h3>Energy saving opportunities</h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 
-<h2>Recent use</h2>
-
-<div class="row dashboards">
-  <%= render 'shared/dashboard_energy_charts', charts: @charts, school: @school %>
-</div>
-
-<%= render 'shared/dashboard_alerts', school: @school, dashboard_alerts: @dashboard_alerts, content_field: :public_dashboard_title, title: 'Act on energy usage'%>
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 
 <% unless user_signed_in? %>

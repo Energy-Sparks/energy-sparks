@@ -1,6 +1,7 @@
 class SchoolsController < ApplicationController
   include SchoolAggregation
   include ActivityTypeFilterable
+  include AnalysisPages
   include Measurements
   include DashboardEnergyCharts
   include DashboardAlerts
@@ -47,6 +48,8 @@ class SchoolsController < ApplicationController
       @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
       @overview_charts = setup_energy_overview_charts(@school.configuration)
       @overview_table = setup_management_table
+      #setup just the co2
+      @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
     end
   end
 
