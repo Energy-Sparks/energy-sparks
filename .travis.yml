@@ -18,6 +18,8 @@ addons:
     packages:
     - google-chrome-stable
 sudo: required
+before_install:
+  RUBYOPT='--disable-did_you_mean' bundle install
 before_script:
 - cp config/database.travis.yml config/database.yml
 script:
