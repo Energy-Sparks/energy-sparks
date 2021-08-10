@@ -22,7 +22,7 @@ describe 'user tariffs', type: :system do
     it 'access is denied' do
       visit school_user_tariffs_path(school)
       expect(page).to have_content('not authorized')
-      expect(page).to have_content('Management Dashboard')
+      expect(page).to have_content('Adult Dashboard')
     end
   end
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Management dashboard' do
+describe 'Adult dashboard' do
 
   let!(:school_group){ create(:school_group) }
   let!(:school){ create(:school, school_group: school_group) }
@@ -22,7 +22,7 @@ describe 'Management dashboard' do
     it 'allows login and access to management dashboard' do
       visit root_path
       expect(page).to have_content("#{school.name}")
-      expect(page).to have_content("Management Dashboard")
+      expect(page).to have_content("Adult Dashboard")
       expect(page).to have_content("Recorded temperatures")
       expect(page).to have_link("Compare schools")
     end
