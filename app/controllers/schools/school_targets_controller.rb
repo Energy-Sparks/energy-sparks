@@ -6,6 +6,7 @@ module Schools
     include SchoolAggregation
     include SchoolProgress
 
+    before_action :check_aggregated_school_in_cache, only: :show
     before_action :calculate_current_progress, only: :show
 
     def index

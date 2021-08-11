@@ -10,18 +10,18 @@ module Schools
     end
 
     def gas_progress
-      @school.has_gas? ? progress(school, :gas) : nil
+      @school.has_gas? ? progress(:gas) : nil
     end
 
     def storage_heater_progress
-      @school.has_storage_heaters? ? progress(school, :storage_heaters) : nil
+      @school.has_storage_heaters? ? progress(:storage_heaters) : nil
     end
 
     private
 
     def progress(fuel_type)
       begin
-        return TargetsService.new(@aggregate_school, fuel_type).progress.current_cumulative_performance_versus_synthetic_last_year
+        return TargetsService.new(@aggregated_school, fuel_type).progress.current_cumulative_performance_versus_synthetic_last_year
       rescue => e
         Rollbar.error(e)
         return nil
