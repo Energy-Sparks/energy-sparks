@@ -94,6 +94,10 @@ gem 'MailchimpMarketing'
 # Eventbrite for training page
 gem 'eventbrite_sdk'
 
+# Upgrading to 1.5.0 resolves an issue with infinite loops caused by
+# attempting to log NoMethodError exceptions (either puts or logger)
+gem 'did_you_mean'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -128,10 +132,6 @@ group :development do
   gem 'fasterer'
   gem 'bundler-audit'
   gem 'brakeman'
-
-  # Upgrading to 1.5.0 resolves an issue with infinite loops caused by
-  # attempting to log NoMethodError exceptions (either puts or logger)
-  gem 'did_you_mean'
 end
 
 group :test do
