@@ -9,6 +9,10 @@ private
     @storage_heater_progress = progress_service.storage_heater_progress
   end
 
+  def setup_management_table
+    @overview_table = progress_service.setup_management_table
+  end
+
   def progress_service
     @progress_service ||= Schools::ProgressService.new(@school, aggregate_school)
   end

@@ -17,6 +17,16 @@ module Schools
       @school.has_storage_heaters? ? progress(:storage_heaters) : nil
     end
 
+    #TEMPORARY
+    def setup_management_table
+      table = @school.latest_management_dashboard_tables.first.table
+      table.each do |row|
+        row.insert(-2, "Target progress") if row[0] == ""
+        row.insert(-2, FormatEnergyUnit.format(:relative_percent, electricity_progress, :html, false, true, :target)) if row[0] == "Electricity"
+        row.insert(-2, FormatEnergyUnit.format(:relative_percent, gas_progress, :html, false, true, :target)) if row[0] == "Gas"
+      end
+    end
+
     private
 
     def progress(fuel_type)
