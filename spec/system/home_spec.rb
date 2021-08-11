@@ -132,15 +132,19 @@ RSpec.describe "home", type: :system do
     end
 
     context 'with a visible school' do
-      it 'does not redirect to holding page' do
 
+      it 'redirects from teacher page' do
+        visit "/teachers/schools/#{school.slug}"
+        expect(page).to have_content('Adult Dashboard')
+      end
+
+      it 'does not redirect to holding page' do
         expect(page).to_not have_content('Your school is currently inactive while we are setting up your energy data')
       end
 
       it 'does have navigation options' do
         expect(page).to have_content('My school')
         expect(page).to have_link('Pupil dashboard')
-        expect(page).to have_link('Teacher dashboard')
       end
     end
   end

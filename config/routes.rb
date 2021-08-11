@@ -341,8 +341,9 @@ Rails.application.routes.draw do
 
   end # Admin name space
 
+  #redirect from old teacher dashboard
   namespace :teachers do
-    resources :schools, only: :show
+    get '/schools/:name', to: redirect('/management/schools/%{name}')
   end
 
   namespace :management do

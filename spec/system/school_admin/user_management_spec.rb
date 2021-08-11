@@ -7,7 +7,7 @@ describe 'School admin user management' do
 
   before(:each) do
     sign_in(school_admin)
-    visit teachers_school_path(school)
+    visit management_school_path(school)
   end
 
   describe 'for pupils' do

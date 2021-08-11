@@ -13,9 +13,9 @@ describe 'adding interventions' do
   end
 
   it 'allows a user to add and edit interventions', js: true do
-    visit teachers_school_path(school)
+    visit management_school_path(school)
 
-    click_on 'Record an energy saving action'
+    click_on 'Record an action'
 
     click_on boiler_intervention.intervention_type_group.title
 
@@ -62,7 +62,7 @@ describe 'adding interventions' do
     intervention = create(:observation, :intervention, school: school)
     school.calendar.update(based_on: create(:regional_calendar, :with_academic_years))
 
-    visit teachers_school_path(school)
+    visit management_school_path(school)
     click_on 'View all actions'
 
     expect{

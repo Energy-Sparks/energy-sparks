@@ -58,7 +58,7 @@ RSpec.describe "analysis page", type: :system do
         sign_in(user)
 
         visit school_path(school)
-        click_on "Learn more about your school's energy use"
+        click_on "Review your energy analysis"
 
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content("This is what you need to do")
@@ -93,7 +93,7 @@ RSpec.describe "analysis page", type: :system do
     context 'as non school related user, restricted' do
       before do
         visit school_path(school)
-        click_on "Review this school's energy analysis"
+        click_on "Review energy analysis"
 
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content("This is what you need to do")
@@ -123,7 +123,7 @@ RSpec.describe "analysis page", type: :system do
 
         sign_in(group_admin)
         visit school_path(school)
-        click_on "Review this school's energy analysis"
+        click_on "Review energy analysis"
 
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content("This is what you need to do")
