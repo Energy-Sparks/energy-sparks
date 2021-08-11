@@ -6,12 +6,12 @@
     <li class="nav-item mt-2 px-2"><%= link_to "Pupil dashboard", pupils_school_path(@school) %></li>
   <% end %>
 
-  <% if show_teachers_dashboard_button? %>
-    <li class="nav-item mt-2 px-3"><%= link_to "Teacher dashboard", teachers_school_path(@school) %></li>
+  <% if show_management_dashboard_button? %>
+    <li class="nav-item mt-2 px-2"><%= link_to "Adult dashboard", management_school_path(@school) %></li>
   <% end %>
 
-  <% if show_management_dashboard_button? %>
-    <li class="nav-item mt-2 px-2"><%= link_to "Management dashboard", management_school_path(@school) %></li>
+  <% if !show_management_dashboard_button? && show_adult_dashboard_button? %>
+    <li class="nav-item mt-2 px-2"><%= link_to "Adult dashboard", school_path(@school) %></li>
   <% end %>
 
 <% else %>

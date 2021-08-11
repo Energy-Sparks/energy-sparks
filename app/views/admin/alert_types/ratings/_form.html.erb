@@ -61,9 +61,9 @@
     <% end %>
   <% end %>
 
-  <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Management dashboard alert' do %>
+  <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Adult dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :management_dashboard_title) do %>
-      <%= content.label 'Management dashboard title', for: :management_dashboard_title %>
+      <%= content.label 'Adult dashboard title', for: :management_dashboard_title %>
       <%= content.rich_text_area :management_dashboard_title %>
     <% end %>
   <% end %>

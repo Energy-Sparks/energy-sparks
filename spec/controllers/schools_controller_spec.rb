@@ -26,11 +26,11 @@ RSpec.describe SchoolsController, type: :controller do
   end
 
   describe "GET #show" do
-    it "redirects to the teacher dashboard" do
+    it "shows the adult dashboard" do
       school = FactoryBot.create :school
       get :show, params: {id: school.to_param}
       expect(assigns(:school)).to eq(school)
-      expect(response).to_not redirect_to(teachers_school_path(school))
+      expect(response).to_not redirect_to(management_school_path(school))
     end
   end
 
