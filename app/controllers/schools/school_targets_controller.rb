@@ -3,6 +3,11 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource :school_target, via: :school
 
+    include SchoolAggregation
+    include SchoolProgress
+
+    before_action :calculate_current_progress, only: :show
+
     def index
       if @school.has_current_target?
         redirect_to school_school_target_path(@school, @school.current_target)
