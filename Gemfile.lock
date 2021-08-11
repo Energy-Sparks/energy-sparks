@@ -206,6 +206,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    did_you_mean (1.5.0)
     diff-lcs (1.4.4)
     dirty-memoize (0.0.4)
     distribution (0.8.0)
@@ -640,6 +641,7 @@ DEPENDENCIES
   closed_struct
   database_cleaner
   devise
+  did_you_mean
   dotenv-rails (~> 2.7.4)
   energy-sparks_analytics!
   eventbrite_sdk
