@@ -20,6 +20,7 @@ module Schools
     #TEMPORARY
     def setup_management_table
       table = @school.latest_management_dashboard_tables.first.table
+      return table unless EnergySparks::FeatureFlags.active?(:school_targets)
       table.each do |row|
         row.insert(-2, "Target progress") if row[0] == ""
         row.insert(-2, FormatEnergyUnit.format(:relative_percent, electricity_progress, :html, false, true, :target)) if row[0] == "Electricity"
