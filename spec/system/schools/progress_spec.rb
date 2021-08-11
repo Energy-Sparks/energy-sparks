@@ -15,6 +15,7 @@ describe 'targets', type: :system do
   let(:cumulative_targets_kwh)    { [1,2] }
   let(:cumulative_usage_kwh)      { [1,2] }
   let(:cumulative_performance)    { [-0.99,0.99] }
+  let(:partial_months)            { ['feb'] }
 
   let(:progress) do
     TargetsProgress.new(
@@ -25,7 +26,10 @@ describe 'targets', type: :system do
         monthly_performance: monthly_performance,
         cumulative_targets_kwh: cumulative_targets_kwh,
         cumulative_usage_kwh: cumulative_usage_kwh,
-        cumulative_performance: cumulative_performance
+        cumulative_performance: cumulative_performance,
+        cumulative_performance_versus_synthetic_last_year: cumulative_performance,
+        monthly_performance_versus_synthetic_last_year: monthly_performance,
+        partial_months: partial_months
     )
   end
 
