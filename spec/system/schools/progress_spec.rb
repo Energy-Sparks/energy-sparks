@@ -4,7 +4,7 @@ describe 'targets', type: :system do
 
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
-  let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
+  let!(:fuel_electricity)         { Schools::FuelConfiguration.new(has_electricity: true) }
   let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
   let(:target)                    { create(:school_target, school: school) }
   let(:months)                    { ['jan', 'feb'] }
@@ -78,7 +78,11 @@ describe 'targets', type: :system do
 
       context 'when school also has storage heaters' do
 
-        let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
+        let!(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
+
+        before(:each) do
+          school.configuration.update(fuel_configuration: fuel_electricity)
+        end
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
