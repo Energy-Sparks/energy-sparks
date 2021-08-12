@@ -37,7 +37,7 @@ module Schools
       if value.nil?
         "not enough data"
       else
-        FormatEnergyUnit.format(:relative_percent, electricity_progress, :html, false, true, :target)
+        FormatEnergyUnit.format(:relative_percent, value, :html, false, true, :target)
       end
     end
 
