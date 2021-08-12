@@ -28,6 +28,7 @@ module Schools
         row.insert(-2, "Target progress") if row[0] == ""
         row.insert(-2, format_for_table(electricity_progress)) if row[0] == "Electricity"
         row.insert(-2, format_for_table(gas_progress)) if row[0] == "Gas"
+        row.insert(-2, format_for_table(storage_heater_progress)) if row[0] == "Storage heaters"
       end
     end
 
