@@ -7,6 +7,9 @@ RSpec.describe 'school targets', type: :system do
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:school_admin)      { create(:school_admin, school: school) }
 
+  let(:fuel_electricity)   { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true) }
+  let!(:school_config)     { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
+
   before(:each) do
     sign_in(school_admin)
   end

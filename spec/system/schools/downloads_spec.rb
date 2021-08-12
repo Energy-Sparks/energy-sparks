@@ -10,6 +10,8 @@ describe "downloads", type: :system do
 
   context 'as teacher' do
     before(:each) do
+      allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+
       sign_in(teacher)
       visit root_path
       #this is the my school menu link

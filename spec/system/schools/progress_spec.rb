@@ -5,7 +5,7 @@ describe 'targets', type: :system do
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
   let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
-  let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
+  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
   let(:target)                    { create(:school_target, school: school) }
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
