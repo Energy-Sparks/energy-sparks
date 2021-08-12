@@ -17,26 +17,46 @@
     <table class="table table-responsive">
       <thead>
         <tr>
-          <th class="col-sm-8" colspan="2">Target</th>
-          <th class="col-sm-2">Progress</th>
+          <th class="col-sm-4"></th>
+          <th class="col-sm-1">Target</th>
+          <th class="col-sm-1">Progress</th>
+          <th class="col-sm-2">Report</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Reduce your electricity usage by</td>
           <td><%= @school_target.electricity %> %</td>
-          <td><%= link_to "View progress", electricity_school_progress_index_path(@school) %></td>
+          <% if @school.has_electricity? %>
+            <td class=<%= target_percent_cell_colour(@electricity_progress)%>><%= format_target(@electricity_progress, :relative_percent) %></td>
+            <td><%= link_to "View progress", electricity_school_progress_index_path(@school) %></td>
+          <% else %>
+            <td>-</td>
+            <td>Not applicable</td>
+          <% end %>
         </tr>
         <tr>
           <td>Reduce your gas usage by</td>
           <td><%= @school_target.gas %> %</td>
-          <td><%= link_to "View progress", gas_school_progress_index_path(@school) %></td>
+          <% if @school.has_gas? %>
+            <td class=<%= target_percent_cell_colour(@gas_progress)%>><%= format_target(@gas_progress, :relative_percent) %></td>
+            <td><%= link_to "View progress", gas_school_progress_index_path(@school) %></td>
+          <% else %>
+            <td>-</td>
+            <td>Not applicable</td>
+          <% end %>
         </tr>
-        <tr>
-          <td>Reduce your storage heater usage by</td>
-          <td><%= @school_target.storage_heaters %> %</td>
-          <td><%= link_to "View progress", storage_heaters_school_progress_index_path(@school) %></td>
-        </tr>
+          <tr>
+            <td>Reduce your storage heater usage by</td>
+            <td class=<%= target_percent_cell_colour(@storage_heater_progress)%>><%= @school_target.storage_heaters %> %</td>
+            <% if @school.has_storage_heaters? %>
+              <td><%= format_target(@storage_heater_progress, :relative_percent) %></td>
+              <td><%= link_to "View progress", storage_heaters_school_progress_index_path(@school) %></td>
+            <% else %>
+              <td>-</td>
+              <td>Not applicable</td>
+            <% end %>
+          </tr>
       </tbody>
     </table>
 
