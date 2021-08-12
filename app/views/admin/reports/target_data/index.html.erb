@@ -1,0 +1,51 @@
+<% content_for :page_title, 'Target data report' %>
+
+<h1>Target data report</h1>
+
+<%= form_tag admin_reports_target_data_path, method: :get do %>
+  <%= select_tag :school_group_id, options_from_collection_for_select(@school_groups, :id, :name, params[:school_group_id]) %>
+  <%= submit_tag 'Search', class: 'btn' %>
+<% end %>
+
+<% if @report.any? %>
+  <h3>Results for <%= @school_group.name %></h3>
+
+  <%= link_to "Download CSV", admin_reports_target_data_path(school_group_id: params[:school_group_id], format: :csv) %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>School</th>
+        <th>Visible?</th>
+        <th>Fuel Type</th>
+        <th>Enough calendar data?</th>
+        <th>Enough AMR data?</th>
+        <th>School target already set?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @report.each do |school, result| %>
+        <% result.each do |fuel_result| %>
+          <tr>
+            <td><%= link_to school.name, management_school_path(school) %></td>
+            <td>
+              <%= fa_icon( school.visible? ? 'check-circle text-success' : 'times-circle text-danger') %>
+            </td>
+            <td><%= fuel_result[:fuel_type] %></td>
+            <td>
+              <%= fa_icon( fuel_result[:calendar_data] ? 'check-circle text-success' : 'times-circle text-danger') %>
+            </td>
+            <td>
+              <%= fa_icon( fuel_result[:amr_data] ? 'check-circle text-success' : 'times-circle text-danger') %>
+            </td>
+            <td>
+              <%= fa_icon( fuel_result[:current_target] ? 'check-circle text-success' : 'times-circle text-danger') %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+
+<% end %>

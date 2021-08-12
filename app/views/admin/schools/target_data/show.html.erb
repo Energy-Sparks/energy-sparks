@@ -1,0 +1,51 @@
+<% content_for :page_title, 'Target data report' %>
+
+<h1>Target data report for <%= @school.name %></h1>
+
+<% if @school.has_current_target? %>
+  <%= link_to "View target", school_school_targets_path(@school) %>
+<% end %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fuel Type</th>
+      <th>Enough calendar data?</th>
+      <th>Enough AMR data?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @electricity_service.present? %>
+      <tr>
+        <td>Electricity</td>
+        <td>
+          <%= fa_icon( @electricity_service.enough_calendar_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+        </td>
+        <td>
+          <%= fa_icon( @electricity_service.enough_amr_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+        </td>
+      </tr>
+    <% end %>
+    <% if @gas_service.present? %>
+      <tr>
+        <td>Gas</td>
+        <td>
+          <%= fa_icon( @gas_service.enough_calendar_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+        </td>
+        <td>
+          <%= fa_icon( @gas_service.enough_amr_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+        </td>
+      </tr>
+    <% end %>
+    <% if @storage_heater_service.present? %>
+      <tr>
+        <td>Gas</td>
+        <td>
+          <%= fa_icon( @storage_heater_service.enough_calendar_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+        </td>
+        <td>
+          <%= fa_icon( @storage_heater_service.enough_amr_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
