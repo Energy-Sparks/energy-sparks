@@ -29,7 +29,7 @@
           <td><%= @school_target.electricity %> %</td>
           <% if @school.has_electricity? %>
             <td class=<%= target_percent_cell_colour(@electricity_progress)%>><%= format_target(@electricity_progress, :relative_percent) %></td>
-            <td><%= link_to "View detail", electricity_school_progress_index_path(@school) %></td>
+            <td><%= link_to "View progress", electricity_school_progress_index_path(@school) %></td>
           <% else %>
             <td>-</td>
             <td>Not applicable</td>
@@ -40,7 +40,7 @@
           <td><%= @school_target.gas %> %</td>
           <% if @school.has_gas? %>
             <td class=<%= target_percent_cell_colour(@gas_progress)%>><%= format_target(@gas_progress, :relative_percent) %></td>
-            <td><%= link_to "View detail", gas_school_progress_index_path(@school) %></td>
+            <td><%= link_to "View progress", gas_school_progress_index_path(@school) %></td>
           <% else %>
             <td>-</td>
             <td>Not applicable</td>
@@ -51,7 +51,7 @@
             <td class=<%= target_percent_cell_colour(@storage_heater_progress)%>><%= @school_target.storage_heaters %> %</td>
             <% if @school.has_storage_heaters? %>
               <td><%= format_target(@storage_heater_progress, :relative_percent) %></td>
-              <td><%= link_to "View detail", storage_heaters_school_progress_index_path(@school) %></td>
+              <td><%= link_to "View progress", storage_heaters_school_progress_index_path(@school) %></td>
             <% else %>
               <td>-</td>
               <td>Not applicable</td>
