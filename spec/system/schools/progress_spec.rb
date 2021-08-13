@@ -5,7 +5,6 @@ describe 'targets', type: :system do
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
   let!(:fuel_electricity)         { Schools::FuelConfiguration.new(has_electricity: true) }
-  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
   let(:target)                    { create(:school_target, school: school) }
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
@@ -34,6 +33,13 @@ describe 'targets', type: :system do
   end
 
   context 'as an admin' do
+
+    let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: false) }
+
+    before(:each) do
+      #update here to avoid duplicating records
+      school.configuration.update!(fuel_configuration: fuel_electricity)
+    end
 
     context 'with calculated progress' do
 
@@ -78,11 +84,7 @@ describe 'targets', type: :system do
 
       context 'when school also has storage heaters' do
 
-        let!(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
-
-        before(:each) do
-          school.configuration.update(fuel_configuration: fuel_electricity)
-        end
+        let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
