@@ -176,6 +176,10 @@ RSpec.describe "meter management", :meters, type: :system do
     context 'when the school has a meter with readings' do
       let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
+      before(:each) do
+        allow_any_instance_of(Schools::SchoolTargetService).to receive(:enough_data?).and_return(true)
+      end
+
       before(:each) {
         click_on 'Manage meters'
       }
@@ -186,5 +190,37 @@ RSpec.describe "meter management", :meters, type: :system do
         expect(school.meters.count).to eq(0)
       end
     end
+
+    context 'when checking target data' do
+      context 'and there is enough' do
+        before(:each) do
+          allow_any_instance_of(Schools::SchoolTargetService).to receive(:enough_data?).and_return(true)
+          click_on 'Manage meters'
+        end
+
+        it 'should say' do
+          expect(page).to have_content("This school has enough data for at least one fuel type to generate targets")
+        end
+        it 'should link to detail' do
+          expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
+        end
+      end
+
+      context 'and there is not enough' do
+        before(:each) do
+          allow_any_instance_of(Schools::SchoolTargetService).to receive(:enough_data?).and_return(false)
+          click_on 'Manage meters'
+        end
+
+        it 'should say' do
+          expect(page).to have_content("This school does not have enough data to generate targets")
+        end
+
+        it 'should link to detail' do
+          expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
+        end
+      end
+    end
+
   end
 end

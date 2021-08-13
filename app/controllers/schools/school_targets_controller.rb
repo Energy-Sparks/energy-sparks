@@ -26,10 +26,10 @@ module Schools
         redirect_to school_school_target_path(@school, @school.current_target)
       elsif @school.has_target?
         @previous_school_target = @school.most_recent_target
-        @school_target = create_target(@previous_school_target)
+        @school_target = Schools::SchoolTargetService.new(@school).build_target
         render :new
       else
-        @school_target = create_target
+        @school_target = Schools::SchoolTargetService.new(@school).build_target
         render :first
       end
     end
@@ -56,26 +56,6 @@ module Schools
     end
 
     private
-
-    def create_target(previous = nil)
-      if previous.present?
-        @school.school_targets.build(
-          start_date: Time.zone.today.beginning_of_month,
-          target_date: Time.zone.today.beginning_of_month.next_year,
-          electricity: previous.electricity,
-          gas: previous.gas,
-          storage_heaters: previous.storage_heaters
-        )
-      else
-        @school.school_targets.build(
-          start_date: Time.zone.today.beginning_of_month,
-          target_date: Time.zone.today.beginning_of_month.next_year,
-          electricity: 5.0,
-          gas: 5.0,
-          storage_heaters: 5.0
-        )
-      end
-    end
 
     def school_target_params
       params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
