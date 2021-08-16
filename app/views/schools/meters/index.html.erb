@@ -22,6 +22,20 @@
   </div>
 <% end %>
 
+<% if can?(:view_target_data, @school) %>
+  <% if @enough_data_for_targets %>
+    <div class="alert alert-success">
+      <%= link_to 'View target data', admin_school_target_data_path(@school), class: 'btn mr-3' %>
+      This school has enough data for at least one fuel type to generate targets
+    </div>
+  <% else %>
+    <div class="alert alert-warning">
+      <%= link_to 'View target data', admin_school_target_data_path(@school), class: 'btn mr-3' %>
+      This school does not have enough data to generate targets
+    </div>
+  <% end %>
+<% end %>
+
 <% if can?(:validate_meters, @school) && @school.meters_with_readings.any? %>
   <% if @school.process_data? %>
     <div class="alert alert-secondary">

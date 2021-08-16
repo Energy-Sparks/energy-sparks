@@ -1,0 +1,18 @@
+<tr>
+  <td><%= fuel_type %></td>
+  <% if service.present? %>
+    <td>
+      <%= fa_icon( service.enough_calendar_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+    </td>
+    <td>
+      <%= fa_icon( service.enough_amr_data_to_calculate_target? ? 'check-circle text-success' : 'times-circle text-danger') %>
+    </td>
+  <% else %>
+    <td>
+      Not applicable
+    </td>
+    <td>
+      Not applicable
+    </td>
+  <% end %>
+</tr>
