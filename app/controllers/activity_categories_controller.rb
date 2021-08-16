@@ -8,5 +8,6 @@ class ActivityCategoriesController < ApplicationController
   def index
     @filter = activity_type_filter
     @activity_categories = @activity_categories.order(:name)
+    @activity_types = ActivityType.all
   end
 end

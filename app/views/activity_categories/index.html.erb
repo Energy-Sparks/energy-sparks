@@ -1,25 +1,62 @@
-<% content_for :page_title, "Activities" %>
-
-<%= render 'list_and_filters', filter: @filter, activity_categories: @activity_categories, title: "Energy Sparks Activities" do %>
-  <% @activity_categories.each_with_index do |activity_category, idx| %>
-    <div class="tab-pane fade show <%= idx == 0 ? 'active' : '' %>" id="v-pills-cat<%= activity_category.id %>" role="tabpanel" aria-labelledby="v-pills-cat<%= activity_category.id %>-tab">
-      <% if activity_category.description.present? %>
-        <p><%= activity_category.description %></p>
-      <% end %>
-      <% if @filter.for_category(activity_category).any? %>
-        <% @filter.for_category(activity_category).order(:score).each do |activity_type| %>
-          <p>
-            <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= activity_type.score %></span>
-            <%= link_to "#{activity_type.name} (#{activity_type.key_stage_list})", activity_type_path(activity_type) %>
-          </p>
-        <% end %>
-      <% else %>
-        <p>There are no activities for this category, using the filters you have set.</p>
-      <% end %>
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Energy saving activities</h1>
+      <div class="h5">
+          <a class="btn btn-outline-dark rounded-pill font-weight-bold" href="">Search</a>
+            <a class="btn btn-outline-dark rounded-pill font-weight-bold" href="">Adult activities</a>
+          <a class="btn btn-outline-dark rounded-pill font-weight-bold" href="">Record an activity</a>
+      </div>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>
 
-<% if can? :manage, ActivityCategory %>
-  <%= link_to 'Manage activity categories', admin_activity_categories_path, class: 'btn' %>
-<% end %>
+<div class="row padded-row">
+  <div class="col">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce cursus urna in lectus auctor, at euismod lorem sagittis. Sed convallis orci metus, a posuere lorem mollis a. Quisque rhoncus ipsum velit, vel porttitor felis vulputate sit amet. Vivamus tortor ipsum, venenatis non ante nec, mattis pulvinar dolor.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+    <h5><strong>Recommended for your school</strong></h5>
+      <div class="">
+        <a class="btn btn-outline-dark rounded-pill" href="/management/schools/green-lane-ce-primary?report=true">
+          View all
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "row" %>
+
+<div class="padded-row"></div>
+
+<div class="row">
+  <div class="col">
+    <h5><strong>Pupil missions</strong></h5>
+  </div>
+</div>
+
+<%= render "row_pupil" %>
+
+<div class="padded-row"></div>
+
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+    <h5><strong>Teaching resources</strong></h5>
+      <div class="">
+        <a class="btn btn-outline-dark rounded-pill" href="/management/schools/green-lane-ce-primary?report=true">
+          View all
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "row_teacher" %>
