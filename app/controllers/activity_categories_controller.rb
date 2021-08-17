@@ -9,5 +9,12 @@ class ActivityCategoriesController < ApplicationController
     @filter = activity_type_filter
     @activity_categories = @activity_categories.order(:name)
     @activity_types = ActivityType.all
+    if params[:view_all]
+      render :list
+    elsif params[:search]
+      render :search
+    else
+      render :index
+    end
   end
 end
