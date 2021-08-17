@@ -1,14 +1,47 @@
 <% content_for :page_title do %>
-    Activity Type: <%= @activity_type.name %>
+    <%= @activity_type.name %>
 <% end %>
 
 <div class="row padded-row">
+  <div class="col-md-3">
+    <img src="holder.js/300x200" alt="Card image cap">
+  </div>
   <div class="col-md-9">
-    <h1><%= @activity_type.name %></h1>
-    <%= render 'activity_types/activity_type_badges', activity_type: @activity_type %>
+    <h2><%= @activity_type.name %></h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit....
+    </p>
+    <h5>
+      <span class="badge badge-light">Maths</span>
+      <span class="badge badge-info">KS2</span>
+      <span class="badge badge-info">KS3</span>
+    </h5>
+    <a href="/activity_categories?view_all=true">View other Analyst activities</a>
+  </div>
+</div>
 
+<% if params[:school] %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="row alert info-bar text-dark bg-neutral" role="alert">
+      <div class="col-md-1">
+        <i class="fas fa-tasks fa-2x"></i>
+      </div>
+      <div class="col-md-8">
+      Complete this activity to score your school <strong>10</strong> points!
+      </div>
+      <div class="col-md-3">
+          <button class='btn btn-light rounded-pill font-weight-bold' style="line-height: 1.0; font-size: 16px; height: auto; width: auto;">Record this activity</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<% end %>
+
+<div class="row padded-row">
+  <div class="col-md-8">
     <div class="activity_type">
-      <h3>Activity summary</h3>
       <% if @activity_type.description %>
         <%= @activity_type.description %>
       <% else %>
@@ -16,14 +49,15 @@
       <% end %>
     </div>
   </div>
-  <div class="col-md-3 pt-2">
-    <%= render 'activity_types/activity_type_resources', activity_type: @activity_type %>
+  <div class="col-md-4">
+    <h4 style="padding-top: 0px;">Download resources</h4>
+    <!-- following is what trix generates I think -->
+    <div class="trix-content">
+      <div>
+        <a href="">Link 1</a>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="row">
-</div>
-
 <%= render 'activity_types/prompt_complete_activity', activity_type: @activity_type, recorded: @recorded, school_count: @school_count %>
-
-<p><%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary' %></p>
