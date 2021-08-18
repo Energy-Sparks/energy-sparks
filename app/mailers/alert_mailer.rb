@@ -1,4 +1,6 @@
 class AlertMailer < ApplicationMailer
+  helper :application
+
   def alert_email
     @email_address = params[:email_address]
     @events = params[:events]

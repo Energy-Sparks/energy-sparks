@@ -1,29 +1,88 @@
 <h1>Energy Sparks alerts for <%= link_to @school.name, school_url(@school) %></h1>
-<p>You have been assigned as a contact for the following alerts from Energy Sparks.</p>
-<% if @unsubscribe_emails %>
-  <p>Please contact a school administrator if you wish to unsubscribe from these emails: <%= @unsubscribe_emails %></p>
+
+<div class="s-3"></div>
+<p>
+  We analyse your school's energy data to highlight where you are making progress
+  or where you may be able to take steps to reduce your usage to save money and
+  reduce carbon emissions.
+</p>
+
+<div class="s-3"></div>
+
+<h3>Stay up to date</h3>
+
+<div class="s-3"></div>
+
+<% if EnergySparks::FeatureFlags.active?(:school_targets) %>
+  <% if @school.has_current_target? %>
+    <p>
+     Your school has set a target to reduce its energy usage by <%= nice_dates(@school.current_target.target_date) %>.
+     <strong><%= link_to "Your school's progress report", school_school_targets_url(@school) %></strong> will help you
+      monitor progress and suggest ways to take action.
+    </p>
+    <%= link_to 'View your progress report', school_school_targets_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+  <% elsif @school.has_target? %>
+    <p>
+     Your school set a target to reduce its energy usage by <%= nice_dates(@school.most_recent_target.target_date) %>.
+     Its time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target) %> and set a new target
+    </p>
+    <%= link_to 'Set a new target', school_school_targets_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+  <% else %>
+    <%= render 'shared/mailer/first_target_prompt' %>
+  <% end %>
 <% end %>
 
+<p>
+  Your <strong><%= link_to 'school dashboard', school_url(@school) %></strong> always shows your latest alerts and
+  our <strong><%= link_to 'detailed analysis', school_analysis_index_url(@school) %></strong> of your energy usage will provide further insights.
+</p>
+
+<%= link_to 'View your school dashboard', school_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+
+<h3>Latest updates</h3>
+<div class="s-3"></div>
+
 <% @alert_content.each do |alert_content| %>
-  <hr/>
-  <h3 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h3>
-  <%= alert_content.email_content %>
+  <div class="row">
+    <div class="col col-lg-12">
+      <h5 class="mb-2 mt-2"><%= sanitize alert_content.email_title %></h5>
+      <%= alert_content.email_content %>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col col-lg-4">
       <% if alert_content.find_out_more %>
         <p>
-          <%= link_to 'Find Out More', school_find_out_more_url(@school, alert_content.find_out_more), class: 'btn btn-primary mt-2 mb-2'%>
+          <%= link_to 'Find out more', school_find_out_more_url(@school, alert_content.find_out_more), class: 'btn btn-primary mt-2 mb-2'%>
         </p>
       <% end %>
     </div>
     <div class="col col-lg-8">
       <% if alert_content.unsubscription_uuid %>
         <div class="text-right mt-lg-3">
-          <%= link_to "[I don't want to see alerts like this]", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid), class: 'text-muted' %>
+          <%= link_to "Don't show me alerts like this", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid), class: 'text-muted' %>
         </div>
       <% end %>
     </div>
   </div>
+  <div class="s-3"></div>
 <% end %>
+
 <hr/>
-<p>Please send any feedback to hello@energysparks.uk</p>
+
+<h5>Why am I receiving these emails?</h5>
+<div class="s-3"></div>
+
+<p>You have been signed up to receive energy alerts for your school.</p>
+<div class="s-3"></div>
+
+<p>You can stop receiving, or temporarily pause individual alerts by clicking the links provided in this email.</p>
+<div class="s-3"></div>
+
+<% if @unsubscribe_emails %>
+  <p>If you wish to completely unsubscribe from these emails then contact your school administrator(s): <%= @unsubscribe_emails %></p>
+<% end %>
+<div class="s-3"></div>
+
+<p>If you have any feedback on these emails, please contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.</p>
