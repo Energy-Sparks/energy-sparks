@@ -12,27 +12,7 @@
 <% if EnergySparks::FeatureFlags.active?(:school_targets) %>
   <h5 class="mb-3">Set your first targets</h5>
 
-  <p>
-    Your first step with Energy Sparks should be to <strong><%= link_to 'set your first
-    targets', school_school_targets_url(@school) %></strong> for reducing your energy consumption.
-  </p>
-
-  <div class="s-3"></div>
-
-  <p>
-    We'll provide you with reports to help you monitor your progress,
-    a recommended set of activities that will engage the whole school,
-    and additional insights through our detailed analysis of your energy usage
-  </p>
-
-  <div class="s-3"></div>
-
-  <p>
-    Not sure what's achievable? We've suggested an initial target based on our successes
-    working with schools across the country. Take a look.
-  </p>
-
-  <%= link_to 'Set your first target', school_school_targets_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right' %>
+  <%= render 'shared/mailer/first_target_prompt' %>
 
   <div class="s-3"></div>
 
