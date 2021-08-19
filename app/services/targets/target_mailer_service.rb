@@ -11,6 +11,7 @@ module Targets
     end
 
     def invite_schools_to_set_first_target
+      return unless EnergySparks::FeatureFlags.active?(:school_targets)
       list_schools.each do |school|
         to = to(school)
         if to.any?
@@ -21,6 +22,7 @@ module Targets
     end
 
     def invite_schools_to_review_target
+      return unless EnergySparks::FeatureFlags.active?(:school_targets)
       list_schools_requiring_review.each do |school|
         to = to(school)
         if to.any?
