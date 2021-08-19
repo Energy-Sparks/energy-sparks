@@ -36,6 +36,7 @@ class SchoolCreator
       to = activation_email_list(@school)
       OnboardingMailer.with(to: to, school: @school).activation_email.deliver_now unless to.empty?
       record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
+      @school.school_target_events.create(event: :first_target_sent) if EnergySparks::FeatureFlags.active?(:school_targets)
     end
   end
 

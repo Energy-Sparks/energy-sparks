@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe Schools::ProgressService do
+RSpec.describe Targets::ProgressService do
 
   let!(:school)             { create(:school) }
   let!(:aggregated_school)  { double('meter-collection') }
   let(:target)              { create(:school_target, school: school) }
   let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: true) }
-  let!(:service)            { Schools::ProgressService.new(school, aggregated_school) }
+  let!(:service)            { Targets::ProgressService.new(school, aggregated_school) }
   let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
 
   let(:months)                    { ['jan', 'feb'] }

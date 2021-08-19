@@ -14,6 +14,6 @@ private
   end
 
   def progress_service
-    @progress_service ||= Schools::ProgressService.new(@school, aggregate_school)
+    @progress_service ||= Targets::ProgressService.new(@school, aggregate_school)
   end
 end

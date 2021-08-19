@@ -26,10 +26,10 @@ module Schools
         redirect_to school_school_target_path(@school, @school.current_target)
       elsif @school.has_target?
         @previous_school_target = @school.most_recent_target
-        @school_target = Schools::SchoolTargetService.new(@school).build_target
+        @school_target = Targets::SchoolTargetService.new(@school).build_target
         render :new
       else
-        @school_target = Schools::SchoolTargetService.new(@school).build_target
+        @school_target = Targets::SchoolTargetService.new(@school).build_target
         render :first
       end
     end

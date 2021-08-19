@@ -1,0 +1,10 @@
+<h1 class="mb-3">Set your next energy saving target</h1>
+<div class="s-3"></div>
+
+<p>
+ Your school set a target to reduce its energy usage by <%= nice_dates(@school.most_recent_target.target_date) %>.
+ It's time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target) %> and set a new target
+ for the year ahead.
+</p>
+
+<%= link_to 'Set a new target', school_school_targets_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>

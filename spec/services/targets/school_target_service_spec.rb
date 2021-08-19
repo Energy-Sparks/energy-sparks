@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Schools::SchoolTargetService do
+RSpec.describe Targets::SchoolTargetService do
 
   let!(:school)             { create(:school) }
   let!(:aggregated_school)  { double('meter-collection') }
 
-  let!(:service)            { Schools::SchoolTargetService.new(school) }
+  let!(:service)            { Targets::SchoolTargetService.new(school) }
 
   context 'when building' do
     context 'a new target' do
@@ -20,9 +20,9 @@ RSpec.describe Schools::SchoolTargetService do
       end
 
       it 'should have default values' do
-        expect(target.electricity).to eql Schools::SchoolTargetService::DEFAULT_ELECTRICITY_TARGET
-        expect(target.gas).to eql Schools::SchoolTargetService::DEFAULT_GAS_TARGET
-        expect(target.storage_heaters).to eql Schools::SchoolTargetService::DEFAULT_STORAGE_HEATERS_TARGET
+        expect(target.electricity).to eql Targets::SchoolTargetService::DEFAULT_ELECTRICITY_TARGET
+        expect(target.gas).to eql Targets::SchoolTargetService::DEFAULT_GAS_TARGET
+        expect(target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATERS_TARGET
       end
     end
 

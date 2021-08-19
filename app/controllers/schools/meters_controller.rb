@@ -83,7 +83,7 @@ module Schools
 
     def enough_data_for_targets?
       return nil unless can?(:view_target_data, @school)
-      Schools::SchoolTargetService.new(@school).enough_data?
+      Targets::SchoolTargetService.new(@school).enough_data?
     end
 
     def meters_need_review?
