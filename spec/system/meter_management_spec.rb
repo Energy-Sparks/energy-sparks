@@ -177,7 +177,7 @@ RSpec.describe "meter management", :meters, type: :system do
       let!(:meter) { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
       before(:each) do
-        allow_any_instance_of(Schools::SchoolTargetService).to receive(:enough_data?).and_return(true)
+        allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
       end
 
       before(:each) {
@@ -194,7 +194,7 @@ RSpec.describe "meter management", :meters, type: :system do
     context 'when checking target data' do
       context 'and there is enough' do
         before(:each) do
-          allow_any_instance_of(Schools::SchoolTargetService).to receive(:enough_data?).and_return(true)
+          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
           click_on 'Manage meters'
         end
 
@@ -208,7 +208,7 @@ RSpec.describe "meter management", :meters, type: :system do
 
       context 'and there is not enough' do
         before(:each) do
-          allow_any_instance_of(Schools::SchoolTargetService).to receive(:enough_data?).and_return(false)
+          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
           click_on 'Manage meters'
         end
 
