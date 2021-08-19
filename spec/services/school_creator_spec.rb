@@ -155,6 +155,18 @@ describe SchoolCreator, :schools, type: :service do
           expect(email.to).to eql [onboarding_user.email]
         end
 
+        it 'records target invite if feature is active' do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+          service.make_visible!
+          expect(school.has_school_target_event?(:first_target_sent)).to be true
+        end
+
+        it 'records target invite if feature is active' do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
+          service.make_visible!
+          expect(school.has_school_target_event?(:first_target_sent)).to be false
+        end
+
         it 'records that an email was sent' do
           service.make_visible!
           expect(school_onboarding).to have_event(:activation_email_sent)
