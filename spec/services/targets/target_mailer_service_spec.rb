@@ -6,6 +6,7 @@ RSpec.describe Targets::TargetMailerService do
   let!(:service)            { Targets::TargetMailerService.new }
 
   before(:each) do
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(enough_data)
   end
 
