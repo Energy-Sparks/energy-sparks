@@ -15,7 +15,7 @@ module Admin
       def generate_report_for_group
         if params[:school_group_id].present?
           @school_group = SchoolGroup.find(params[:school_group_id])
-          return ::Schools::GroupTargetDataReportService.new(@school_group).report
+          return ::Targets::SchoolGroupTargetDataReportService.new(@school_group).report
         end
         {}
       end

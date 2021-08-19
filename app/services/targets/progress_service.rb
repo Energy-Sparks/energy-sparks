@@ -1,4 +1,4 @@
-module Schools
+module Targets
   class ProgressService
     def initialize(school, aggregated_school)
       @school = school

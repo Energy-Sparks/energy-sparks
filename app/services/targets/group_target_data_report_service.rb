@@ -1,5 +1,5 @@
-module Schools
-  class GroupTargetDataReportService
+module Targets
+  class SchoolGroupTargetDataReportService
     def initialize(school_group)
       @school_group = school_group
     end
