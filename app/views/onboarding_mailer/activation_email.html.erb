@@ -9,7 +9,7 @@
 
 <%= link_to 'View your school dashboard', school_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
 
-<% if EnergySparks::FeatureFlags.active?(:school_targets) %>
+<% if @target_prompt %>
   <h5 class="mb-3">Set your first targets</h5>
 
   <%= render 'shared/mailer/first_target_prompt' %>

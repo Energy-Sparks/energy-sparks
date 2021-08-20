@@ -21,9 +21,7 @@ module Targets
     def setup_management_table
       dashboard_table = @school.latest_management_dashboard_tables.first
       return nil unless dashboard_table.present?
-      puts EnergySparks::FeatureFlags.active?(:school_targets).inspect
       return dashboard_table.table unless EnergySparks::FeatureFlags.active?(:school_targets)
-      puts "ON"
       dashboard_table.table.each do |row|
         row.insert(-2, "Target progress") if row[0] == ""
         row.insert(-2, format_for_table(electricity_progress)) if row[0] == "Electricity"

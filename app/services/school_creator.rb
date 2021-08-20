@@ -34,9 +34,10 @@ class SchoolCreator
     record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
     if should_send_activation_email?
       to = activation_email_list(@school)
-      OnboardingMailer.with(to: to, school: @school).activation_email.deliver_now unless to.empty?
+      target_prompt = include_target_prompt_in_email?
+      OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now unless to.empty?
       record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
-      @school.school_target_events.create(event: :first_target_sent) if EnergySparks::FeatureFlags.active?(:school_targets)
+      @school.school_target_events.create(event: :first_target_sent) if target_prompt
     end
   end
 
@@ -91,6 +92,10 @@ private
 
   def should_send_activation_email?
     @school.school_onboarding.nil? || @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
+  end
+
+  def include_target_prompt_in_email?
+    return EnergySparks::FeatureFlags.active?(:school_targets) && Targets::SchoolTargetService.new(@school).enough_data?
   end
 
   def should_complete_onboarding?
