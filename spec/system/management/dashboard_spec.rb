@@ -76,6 +76,7 @@ describe 'Adult dashboard' do
       it 'displays energy saving target prompt' do
 
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
 
         visit root_path
         expect(page).to have_content("Set targets to reduce your school's energy consumption")
@@ -84,6 +85,14 @@ describe 'Adult dashboard' do
         school.school_targets << create(:school_target)
         visit root_path
         expect(page).not_to have_content("Set targets to reduce your school's energy consumption")
+      end
+
+      it 'doesnt displays energy saving target prompt if not enough data' do
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
+
+        visit root_path
+        expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
       end
 
       it 'displays a report version of the page' do
