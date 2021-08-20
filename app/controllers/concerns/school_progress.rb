@@ -3,6 +3,10 @@ module SchoolProgress
 
 private
 
+  def prompt_for_target?
+    EnergySparks::FeatureFlags.active?(:school_targets) && !@school.has_target? && Targets::SchoolTargetService.new(@school).enough_data?
+  end
+
   def calculate_current_progress
     @electricity_progress = progress_service.electricity_progress
     @gas_progress = progress_service.gas_progress

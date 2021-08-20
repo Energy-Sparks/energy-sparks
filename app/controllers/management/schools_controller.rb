@@ -23,7 +23,7 @@ module Management
 
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
-      @add_targets = !@school.has_target? && EnergySparks::FeatureFlags.active?(:school_targets)
+      @add_targets = prompt_for_target?
 
       @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
 
