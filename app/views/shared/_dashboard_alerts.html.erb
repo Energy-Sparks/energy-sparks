@@ -1,6 +1,6 @@
 <% unless dashboard_alerts.empty? %>
 
-  <div class="act-on-energy-usage">
+  <div class="act-on-energy-usage" id="dashboard-alerts">
     <h3><%= title %></h3>
     <% dashboard_alerts.each do |alert_content|%>
       <% if local_assigns[:show_debug] %>
