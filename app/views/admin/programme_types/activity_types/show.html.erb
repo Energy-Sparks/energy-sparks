@@ -1,19 +1,30 @@
-<h2><%= @programme_type.title %> </h2>
-<p>Activity types associated with this programme.</p>
-<%= link_to 'Programme Types', admin_programme_types_path, class: 'btn btn-primary mb-3'%>
+<h2>Editing Programme: "<%= @programme_type.title %>" </h2>
+<p>Update the activity types associated with this programme or go back to the list of <%= link_to 'Programme Types', admin_programme_types_path %></p>
+
 <%= form_tag admin_programme_type_activity_types_path(@programme_type), method: :put do %>
   <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3'%>
+  <div class="card-columns">
+
   <% @activity_categories_and_types.each do |activity_category, activity_types| %>
-    <h3><%= activity_category.name %></h2>
-    <ul class="list-unstyled alert-type-activities">
-      <%- activity_types.each do |activity_type| %>
-        <li>
-          <%= number_field_tag  "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], min: 0, max: 99, step: 1 %>
-          <%= label_tag "activity_types[#{activity_type.id}][position]", activity_type.name %>
-          <%= hidden_field_tag  "activity_types[#{activity_type.id}][activity_type_id]", activity_type.id %>
-        </li>
-      <% end %>
-    </ul>
+    <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= activity_category.name %></h5>
+      <div class="col">
+          <%- activity_types.each do |activity_type| %>
+          <div class="form-group row alert-type-activities">
+            <div class="col-sm-2">
+            <%= number_field_tag  "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], min: 0, max: 99, step: 1, class: "form-control form-control-sm" %>
+            </div>
+            <div class="col-sm-10">
+              <%= label_tag "activity_types[#{activity_type.id}][position]", activity_type.name, class: "col-form-label-sm" %>
+              <%= hidden_field_tag  "activity_types[#{activity_type.id}][activity_type_id]", activity_type.id %>
+            </div>
+          </div>
+          <% end %>
+      </div>
+    </div>
+    </div>
   <% end %>
+</div>
   <%= submit_tag 'Update associated activity types', class: 'btn btn-primary'%>
 <% end %>
