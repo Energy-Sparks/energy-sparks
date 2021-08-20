@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_19_130734) do
+ActiveRecord::Schema.define(version: 2021_08_20_095845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -891,6 +891,7 @@ ActiveRecord::Schema.define(version: 2021_08_19_130734) do
     t.boolean "active", default: false
     t.text "short_description"
     t.string "document_link"
+    t.boolean "default", default: false
   end
 
   create_table "programmes", force: :cascade do |t|
