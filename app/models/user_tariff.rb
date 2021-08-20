@@ -11,6 +11,7 @@
 #  name       :text             not null
 #  school_id  :bigint(8)        not null
 #  start_date :date             not null
+#  tnuos      :boolean          default(FALSE)
 #  updated_at :datetime         not null
 #  vat_rate   :string
 #

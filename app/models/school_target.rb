@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: school_targets
+#
+#  created_at      :datetime         not null
+#  electricity     :float
+#  gas             :float
+#  id              :bigint(8)        not null, primary key
+#  school_id       :bigint(8)        not null
+#  start_date      :date
+#  storage_heaters :float
+#  target_date     :date
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_school_targets_on_school_id  (school_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (school_id => schools.id)
+#
 class SchoolTarget < ApplicationRecord
   belongs_to :school
 

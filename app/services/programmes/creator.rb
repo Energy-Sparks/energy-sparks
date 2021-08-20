@@ -6,8 +6,8 @@ module Programmes
     end
 
     def create
-      programme = Programme.create(
-        school: @school,
+      return if already_enrolled?
+      programme = @school.programmes.create(
         programme_type: @programme_type,
         started_on: Time.zone.today
       )
@@ -23,6 +23,14 @@ module Programmes
     def create_programme_activity(programme, activity_type, position)
       activity = @school.activities.find_by(activity_type: activity_type)
       programme.programme_activities.create!(activity_type: activity_type, position: position, activity: activity)
+    end
+
+    def already_enrolled?
+      enrolled = false
+      @school.programmes.each do |programme|
+        enrolled = programme.programme_type == @programme_type
+      end
+      enrolled
     end
   end
 end
