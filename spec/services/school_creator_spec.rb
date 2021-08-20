@@ -180,6 +180,14 @@ describe SchoolCreator, :schools, type: :service do
           expect(school_onboarding).to have_event(:activation_email_sent)
         end
 
+        it 'enrols in default programme' do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+          default_programme = create(:programme_type_with_activity_types, default: true)
+          service.make_visible!
+          school.reload
+          expect(school.programmes.any?).to be true
+        end
+
         context 'when there are staff and admins' do
           let!(:school_admin)  { create(:school_admin, school: school) }
           let!(:staff) { create(:staff, school: school) }
@@ -255,7 +263,6 @@ describe SchoolCreator, :schools, type: :service do
             end
 
           end
-
 
         end
       end

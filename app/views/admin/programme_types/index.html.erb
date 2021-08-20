@@ -6,6 +6,7 @@
       <tr>
         <th>Title</th>
         <th>Active</th>
+        <th>Default?</th>
         <th>Activities in Programme</th>
         <th></th>
         <th></th>
@@ -16,6 +17,7 @@
         <tr>
           <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
           <td><%= programme_type.active ? 'Active' : 'Inactive' %></td>
+          <td><%= programme_type.default ? 'Yes' : 'No' %></td>
           <td><%= programme_type.activity_types.count %></td>
           <td><%= link_to 'Edit activities', admin_programme_type_activity_types_path(programme_type), class: 'btn btn-warning btn-sm' %></td>
           <td>
