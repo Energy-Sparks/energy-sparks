@@ -19,20 +19,23 @@
   <% end %>
 </div>
 
-<div class="row padded-row">
+<div class="row">
   <div class="col">
-    <h3>Taking action to achieve your targets</h3>
+    <h3>Achieving your targets</h3>
   </div>
 </div>
 
-<div class="card-deck">
-  <div class="card">
+<div class="card-deck activities">
+  <div class="card activity">
     <div class="card-body">
       <h4 class="card-title">Working with the pupils</h4>
       <p>Here are some suggested activities that can be undertaken
         with pupils</p>
         <ul>
-          <% ActivityType.all.active.sample(5).each do |activity_type| %>
+          <% @activities_from_programmes.each do |activity_type| %>
+           <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+          <% end %>
+          <% @activities_from_alerts.each do |activity_type| %>
            <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
           <% end %>
         </ul>
@@ -45,7 +48,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card activity">
     <div class="card-body">
       <h4 class="card-title">Taking action around the school</h4>
       <p>Some suggested activities you can take around the school</p>
@@ -63,7 +66,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card activity">
     <div class="card-body">
       <h4 class="card-title">Explore your data</h4>
       <p>We analyse your data to provide insights and weekly alerts</p>
@@ -85,7 +88,6 @@
             <%= link_to 'Compare usage with schools in your group', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}) %>
           </li>
         <% end %>
-
       </ul>
     </div>
     <div class="card-footer">
@@ -96,3 +98,21 @@
     </div>
   </div>
 </div>
+
+<% if can?(:manage, Activity) || can?(:create, Observation) %>
+  <div class="card-deck actions">
+    <% if can?(:manage, Activity) %>
+      <div class="card mb-2 text-center">
+        <%= link_to 'Choose another activity', suggest_activity_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:create, Observation) %>
+      <div class="card mb-2">
+        <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+      <div class="card mb-2">
+        <%= link_to 'View dashboard', management_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+  </div>
+<% end %>

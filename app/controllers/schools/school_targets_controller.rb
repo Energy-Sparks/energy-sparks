@@ -5,6 +5,7 @@ module Schools
 
     include SchoolAggregation
     include SchoolProgress
+    include ActivityTypeFilterable
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :calculate_current_progress, only: :show
@@ -18,6 +19,7 @@ module Schools
     end
 
     def show
+      setup_activity_suggestions
     end
 
     #create first or new target if current has expired
@@ -59,6 +61,13 @@ module Schools
 
     def school_target_params
       params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+    end
+
+    def setup_activity_suggestions
+      @activities_count = @school.activities.count
+      suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
+      @activities_from_programmes = suggester.suggest_from_programmes.limit(4)
+      @activities_from_alerts = suggester.suggest_from_find_out_mores.sample(1)
     end
   end
 end
