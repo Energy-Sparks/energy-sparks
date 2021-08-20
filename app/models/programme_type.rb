@@ -17,6 +17,7 @@ class ProgrammeType < ApplicationRecord
   has_many :programmes
 
   scope :active, -> { where(active: true) }
+  scope :default, -> { where(default: true) }
 
   validates_presence_of :title
 
