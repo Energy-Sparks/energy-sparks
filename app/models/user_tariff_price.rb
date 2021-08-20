@@ -3,6 +3,7 @@
 # Table name: user_tariff_prices
 #
 #  created_at     :datetime         not null
+#  description    :string
 #  end_time       :time             default(Sat, 01 Jan 2000 23:30:00 UTC +00:00), not null
 #  id             :bigint(8)        not null, primary key
 #  start_time     :time             default(Sat, 01 Jan 2000 00:00:00 UTC +00:00), not null
