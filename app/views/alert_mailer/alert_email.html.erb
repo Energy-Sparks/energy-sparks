@@ -13,7 +13,7 @@
 
 <div class="s-3"></div>
 
-<% if EnergySparks::FeatureFlags.active?(:school_targets) %>
+<% if @target_prompt %>
   <% if @school.has_current_target? %>
     <p>
      Your school has set a target to reduce its energy usage by <%= nice_dates(@school.current_target.target_date) %>.

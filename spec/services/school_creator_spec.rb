@@ -155,14 +155,22 @@ describe SchoolCreator, :schools, type: :service do
           expect(email.to).to eql [onboarding_user.email]
         end
 
-        it 'records target invite if feature is active' do
+        it 'records target invite if feature is active and enough data' do
+          allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           service.make_visible!
           expect(school.has_school_target_event?(:first_target_sent)).to be true
         end
 
-        it 'records target invite if feature is active' do
+        it 'does not records target invite if feature is in active' do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
+          service.make_visible!
+          expect(school.has_school_target_event?(:first_target_sent)).to be false
+        end
+
+        it 'does not records target invite if not enough data is in active' do
+          allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
+          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           service.make_visible!
           expect(school.has_school_target_event?(:first_target_sent)).to be false
         end
@@ -221,7 +229,9 @@ describe SchoolCreator, :schools, type: :service do
           end
 
           context 'request to set targets' do
-            it 'when feature is active' do
+            let(:enough_data) { true }
+            it 'when feature is active and enough data' do
+              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
               allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
               service.make_visible!
               expect(email_body).to include("Set your first targets")
@@ -229,12 +239,24 @@ describe SchoolCreator, :schools, type: :service do
             end
 
             it 'not when feature is inactive' do
+              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
               allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
               service.make_visible!
               expect(email_body).to_not include("Set your first targets")
               expect(matcher).to_not have_link("Set your first target")
             end
+
+            it 'but not when not enough data' do
+              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
+              allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+              service.make_visible!
+              expect(email_body).to_not include("Set your first targets")
+              expect(matcher).to_not have_link("Set your first target")
+            end
+
           end
+
+
         end
       end
     end

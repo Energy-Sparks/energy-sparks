@@ -94,6 +94,7 @@ describe Alerts::GenerateEmailNotifications do
 
       before(:each) do
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(active)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
         alert_subscription_event_1.reload
@@ -107,11 +108,12 @@ describe Alerts::GenerateEmailNotifications do
       end
     end
 
-    context 'and feature is active' do
+    context 'and feature is active and theres enough data' do
       let(:active)  { true }
 
       before(:each) do
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(active)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
         alert_subscription_event_1.reload
@@ -121,7 +123,6 @@ describe Alerts::GenerateEmailNotifications do
       it 'prompts for first target if not set' do
         expect(matcher).to have_link("Set your first target")
       end
-
     end
 
     context 'and feature is active and target is set' do
@@ -130,6 +131,7 @@ describe Alerts::GenerateEmailNotifications do
 
       before(:each) do
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(active)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
         alert_subscription_event_1.reload
@@ -149,6 +151,7 @@ describe Alerts::GenerateEmailNotifications do
 
       before(:each) do
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(active)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
         Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
         Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
         alert_subscription_event_1.reload
