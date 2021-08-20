@@ -1,67 +1,21 @@
-<% content_for :page_title, 'Your current energy saving target' %>
+<% content_for :page_title, 'Your current energy saving targets' %>
 
-<div class="row">
-  <div class="col-md-8">
-    <h1>Your current energy saving target</h1>
-  </div>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Your energy saving target</h1>
+  <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
 </div>
 
-<div class="row mb-3">
-  <div class="col-md-8">
-    You school currently has targets to reduced its energy usage by <%= nice_dates(@school_target.target_date) %>
-  </div>
-</div>
+<div class="card-deck" id="target-cards">
+  <% if @school.has_electricity? %>
+    <%= render "progress_card", school_target: @school_target, fuel_type: :electricity, target: @school_target.electricity, progress: @electricity_progress,
+    progress_path: electricity_school_progress_index_path(@school)  %>
+  <% end %>
+  <% if @school.has_gas? %>
+    <%= render "progress_card", school_target: @school_target, fuel_type: :gas, target: @school_target.gas, progress: @gas_progress,
+    progress_path: gas_school_progress_index_path(@school)  %>
+  <% end %>
+  <% if @school.has_storage_heaters? %>
+    <%= render "progress_card", school_target: @school_target, fuel_type: :storage_heaters, target: @school_target.storage_heaters, progress: @storage_heater_progress, progress_path: storage_heaters_school_progress_index_path(@school)  %>
+  <% end %>
 
-<div class="row">
-  <div class="col-md-8">
-    <table class="table table-responsive">
-      <thead>
-        <tr>
-          <th class="col-sm-4"></th>
-          <th class="col-sm-1">Target</th>
-          <th class="col-sm-1">Progress</th>
-          <th class="col-sm-2">Report</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Reduce your electricity usage by</td>
-          <td><%= @school_target.electricity %> %</td>
-          <% if @school.has_electricity? %>
-            <td class=<%= target_percent_cell_colour(@electricity_progress)%>><%= format_target(@electricity_progress, :relative_percent) %></td>
-            <td><%= link_to "View progress", electricity_school_progress_index_path(@school) %></td>
-          <% else %>
-            <td>-</td>
-            <td>Not applicable</td>
-          <% end %>
-        </tr>
-        <tr>
-          <td>Reduce your gas usage by</td>
-          <td><%= @school_target.gas %> %</td>
-          <% if @school.has_gas? %>
-            <td class=<%= target_percent_cell_colour(@gas_progress)%>><%= format_target(@gas_progress, :relative_percent) %></td>
-            <td><%= link_to "View progress", gas_school_progress_index_path(@school) %></td>
-          <% else %>
-            <td>-</td>
-            <td>Not applicable</td>
-          <% end %>
-        </tr>
-          <tr>
-            <td>Reduce your storage heater usage by</td>
-            <td class=<%= target_percent_cell_colour(@storage_heater_progress)%>><%= @school_target.storage_heaters %> %</td>
-            <% if @school.has_storage_heaters? %>
-              <td><%= format_target(@storage_heater_progress, :relative_percent) %></td>
-              <td><%= link_to "View progress", storage_heaters_school_progress_index_path(@school) %></td>
-            <% else %>
-              <td>-</td>
-              <td>Not applicable</td>
-            <% end %>
-          </tr>
-      </tbody>
-    </table>
-
-    <p>
-      Need to <%= link_to "revise your target", edit_school_school_target_path(@school, @school_target) %>?
-    </p>
-  </div>
 </div>

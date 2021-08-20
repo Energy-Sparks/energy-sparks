@@ -36,7 +36,7 @@ RSpec.describe 'school targets', type: :system do
       click_on 'Set this target'
 
       expect(page).to have_content('Target successfully created')
-      expect(page).to have_content("Your current energy saving target")
+      expect(page).to have_content("Your energy saving target")
       expect(school.has_current_target?).to eql(true)
       expect(school.current_target.electricity).to eql 15.0
       expect(school.current_target.gas).to eql 15.0
@@ -53,7 +53,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it "displays current target" do
-      expect(page).to have_content("Your current energy saving target")
+      expect(page).to have_content("Your energy saving target")
     end
 
     it "links to progress pages" do
@@ -65,7 +65,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it "allows target to be edited" do
-      click_on "revise your target"
+      click_on "Revise your target"
       expect(page).to have_content("Update your energy saving target")
 
       fill_in "Reducing electricity usage by", with: 7
@@ -82,7 +82,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it "validates target values" do
-      click_on "revise your target"
+      click_on "Revise your target"
 
       fill_in "Reducing gas usage by", with: 123
       click_on 'Update our target'
@@ -92,7 +92,7 @@ RSpec.describe 'school targets', type: :system do
 
     it "redirects from new target page" do
       visit new_school_school_target_path(school, target)
-      expect(page).to have_content("Your current energy saving target")
+      expect(page).to have_content("Your energy saving target")
     end
   end
 
