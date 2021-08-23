@@ -7,11 +7,19 @@ RSpec.describe 'school targets', type: :system do
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:school_admin)      { create(:school_admin, school: school) }
 
+  let(:fuel_electricity)   { Schools::FuelConfiguration.new(
+    has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
+
   before(:each) do
+    #Update the configuration rather than creating one, as the school factory builds one
+    #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
+    #relationship
+    school.configuration.update!(fuel_configuration: fuel_electricity)
     sign_in(school_admin)
   end
 
   context "with no target" do
+
     before(:each) do
       visit school_school_targets_path(school)
     end
@@ -28,7 +36,7 @@ RSpec.describe 'school targets', type: :system do
       click_on 'Set this target'
 
       expect(page).to have_content('Target successfully created')
-      expect(page).to have_content("Your current energy saving target")
+      expect(page).to have_content("Your energy saving target")
       expect(school.has_current_target?).to eql(true)
       expect(school.current_target.electricity).to eql 15.0
       expect(school.current_target.gas).to eql 15.0
@@ -45,15 +53,19 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it "displays current target" do
-      expect(page).to have_content("Your current energy saving target")
+      expect(page).to have_content("Your energy saving target")
     end
 
     it "links to progress pages" do
+      #Extra check for debugging flickering test
+      expect(Schools::Configuration.count).to eql 1
+      expect(School.first.has_electricity?).to be true
+
       expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
     end
 
     it "allows target to be edited" do
-      click_on "revise your target"
+      click_on "Revise your target"
       expect(page).to have_content("Update your energy saving target")
 
       fill_in "Reducing electricity usage by", with: 7
@@ -70,7 +82,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it "validates target values" do
-      click_on "revise your target"
+      click_on "Revise your target"
 
       fill_in "Reducing gas usage by", with: 123
       click_on 'Update our target'
@@ -80,7 +92,7 @@ RSpec.describe 'school targets', type: :system do
 
     it "redirects from new target page" do
       visit new_school_school_target_path(school, target)
-      expect(page).to have_content("Your current energy saving target")
+      expect(page).to have_content("Your energy saving target")
     end
   end
 
@@ -108,5 +120,4 @@ RSpec.describe 'school targets', type: :system do
     end
 
   end
-
 end

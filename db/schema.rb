@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_20_083618) do
+ActiveRecord::Schema.define(version: 2021_08_20_095845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -891,6 +891,7 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
     t.boolean "active", default: false
     t.text "short_description"
     t.string "document_link"
+    t.boolean "default", default: false
   end
 
   create_table "programmes", force: :cascade do |t|
@@ -1068,6 +1069,14 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
     t.index ["school_id"], name: "index_school_partners_on_school_id"
   end
 
+  create_table "school_target_events", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.integer "event", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_school_target_events_on_school_id"
+  end
+
   create_table "school_targets", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.date "target_date"
@@ -1209,7 +1218,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
     t.string "title", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "dashboard", default: 0, null: false
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -1532,6 +1540,7 @@ ActiveRecord::Schema.define(version: 2021_07_20_083618) do
   add_foreign_key "school_onboardings", "scoreboards", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "users", column: "created_user_id", on_delete: :nullify
+  add_foreign_key "school_target_events", "schools", on_delete: :cascade
   add_foreign_key "school_targets", "schools"
   add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars", on_delete: :restrict

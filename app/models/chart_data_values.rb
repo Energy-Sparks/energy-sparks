@@ -98,7 +98,8 @@ class ChartDataValues
     elsif @chart1_type == :scatter
       scatter
     elsif @chart1_type == :line
-      if @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
+      #TODO chart colours that show gas/electricity/storage should all be using usage_line.
+      if @chart_type.match?(/^targeting_and_tracking/) || @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_line
       else
         line

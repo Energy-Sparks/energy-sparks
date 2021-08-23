@@ -24,14 +24,19 @@ describe 'programme type management', type: :system do
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
       expect(page).to have_content('Inactive')
+      expect(page).to have_content('No')
 
       click_on 'Edit'
       fill_in 'Title', with: new_title
       check("Active", allow_label_click: true)
+      check("Default", allow_label_click: true)
+
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(new_title)
       expect(page).to have_content('Active')
+      expect(page).to have_content('Yes')
+
       click_on new_title
       expect(page).to have_content(description)
       click_on 'All programme types'

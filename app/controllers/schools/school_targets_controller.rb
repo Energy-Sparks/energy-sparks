@@ -3,6 +3,13 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource :school_target, via: :school
 
+    include SchoolAggregation
+    include SchoolProgress
+    include ActivityTypeFilterable
+
+    before_action :check_aggregated_school_in_cache, only: :show
+    before_action :calculate_current_progress, only: :show
+
     def index
       if @school.has_current_target?
         redirect_to school_school_target_path(@school, @school.current_target)
@@ -12,6 +19,7 @@ module Schools
     end
 
     def show
+      setup_activity_suggestions
     end
 
     #create first or new target if current has expired
@@ -20,10 +28,10 @@ module Schools
         redirect_to school_school_target_path(@school, @school.current_target)
       elsif @school.has_target?
         @previous_school_target = @school.most_recent_target
-        @school_target = create_target(@previous_school_target)
+        @school_target = Targets::SchoolTargetService.new(@school).build_target
         render :new
       else
-        @school_target = create_target
+        @school_target = Targets::SchoolTargetService.new(@school).build_target
         render :first
       end
     end
@@ -51,28 +59,15 @@ module Schools
 
     private
 
-    def create_target(previous = nil)
-      if previous.present?
-        @school.school_targets.build(
-          start_date: Time.zone.today.beginning_of_month,
-          target_date: Time.zone.today.beginning_of_month.next_year,
-          electricity: previous.electricity,
-          gas: previous.gas,
-          storage_heaters: previous.storage_heaters
-        )
-      else
-        @school.school_targets.build(
-          start_date: Time.zone.today.beginning_of_month,
-          target_date: Time.zone.today.beginning_of_month.next_year,
-          electricity: 5.0,
-          gas: 5.0,
-          storage_heaters: 5.0
-        )
-      end
-    end
-
     def school_target_params
       params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+    end
+
+    def setup_activity_suggestions
+      @activities_count = @school.activities.count
+      suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
+      @activities_from_programmes = suggester.suggest_from_programmes.limit(4)
+      @activities_from_alerts = suggester.suggest_from_find_out_mores.sample(1)
     end
   end
 end

@@ -19,6 +19,7 @@ class OnboardingMailer < ApplicationMailer
   def activation_email
     @school = params[:school]
     @to = params[:to]
+    @target_prompt = params[:target_prompt]
     make_bootstrap_mail(to: @to, subject: "#{@school.name} is live on Energy Sparks")
   end
 

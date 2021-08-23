@@ -1,12 +1,13 @@
 class SchoolsController < ApplicationController
   include SchoolAggregation
   include ActivityTypeFilterable
-  include Measurements
+  include AnalysisPages
   include DashboardEnergyCharts
   include DashboardAlerts
   include DashboardTimeline
   include DashboardPriorities
   include NonPublicSchools
+  include SchoolProgress
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -19,6 +20,8 @@ class SchoolsController < ApplicationController
   before_action only: [:show] do
     redirect_unless_permitted :show
   end
+
+  before_action :setup_management_table, only: :show
 
   # GET /schools
   def index
@@ -46,7 +49,9 @@ class SchoolsController < ApplicationController
       @observations = setup_timeline(@school.observations)
       @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
       @overview_charts = setup_energy_overview_charts(@school.configuration)
-      @overview_table = setup_management_table
+
+      #setup just the co2
+      @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
     end
   end
 
@@ -153,14 +158,8 @@ private
   def redirect_for_active_school_or_admin
     if current_user.pupil?
       redirect_to pupils_school_path(@school), status: :found
-    elsif current_user.staff_role
-      redirect_to [current_user.staff_role.dashboard.to_sym, @school], status: :found
     else
       redirect_to management_school_path(@school), status: :found
     end
-  end
-
-  def setup_management_table
-    @school.latest_management_dashboard_tables.first
   end
 end

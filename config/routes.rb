@@ -305,7 +305,9 @@ Rails.application.routes.draw do
       resources :amr_data_feed_import_logs, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
+      resources :target_data, only: :index
     end
+
     resource :settings, only: [:show, :update]
 
     resources :reports, only: [:index]
@@ -328,6 +330,7 @@ Rails.application.routes.draw do
         resources :meter_reviews
         resources :consent_requests
         resources :bill_requests
+        resource :target_data, only: :show
       end
       member do
         get :removal
@@ -341,8 +344,9 @@ Rails.application.routes.draw do
 
   end # Admin name space
 
+  #redirect from old teacher dashboard
   namespace :teachers do
-    resources :schools, only: :show
+    get '/schools/:name', to: redirect('/management/schools/%{name}')
   end
 
   namespace :management do

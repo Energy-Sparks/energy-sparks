@@ -3,6 +3,7 @@
 # Table name: programme_types
 #
 #  active            :boolean          default(FALSE)
+#  default           :boolean          default(FALSE)
 #  document_link     :string
 #  id                :bigint(8)        not null, primary key
 #  short_description :text
@@ -16,8 +17,11 @@ class ProgrammeType < ApplicationRecord
   has_many :programmes
 
   scope :active, -> { where(active: true) }
+  scope :default, -> { where(default: true) }
 
   validates_presence_of :title
+
+  validates_uniqueness_of :default, if: :default
 
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
 

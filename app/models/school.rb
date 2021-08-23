@@ -84,6 +84,7 @@ class School < ApplicationRecord
   has_many :meter_reviews,        inverse_of: :school
   has_many :user_tariffs,         inverse_of: :school
   has_many :school_targets,       inverse_of: :school
+  has_many :school_target_events, inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
@@ -330,6 +331,10 @@ class School < ApplicationRecord
 
   def most_recent_target
     school_targets.by_start_date.first
+  end
+
+  def has_school_target_event?(event_name)
+    school_target_events.where(event: event_name).any?
   end
 
   def school_target_attributes

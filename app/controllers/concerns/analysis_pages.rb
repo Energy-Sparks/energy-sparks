@@ -8,9 +8,13 @@ module AnalysisPages
     @solar_pages = process_analysis_templates(analysis_pages.solar_pv)
     @hot_water_pages = process_analysis_templates(analysis_pages.hot_water)
     @tariff_pages = process_analysis_templates(analysis_pages.tariffs)
-    @co2_pages = process_analysis_templates(analysis_pages.co2)
+    @co2_pages = setup_co2_pages(analysis_pages)
     @boiler_control_pages = process_analysis_templates(analysis_pages.boiler_control)
     @storage_heater_pages = process_analysis_templates(analysis_pages.storage_heaters)
+  end
+
+  def setup_co2_pages(analysis_pages)
+    process_analysis_templates(analysis_pages.co2)
   end
 
   def process_analysis_templates(pages)

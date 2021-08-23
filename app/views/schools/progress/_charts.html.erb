@@ -1,0 +1,22 @@
+<ul class="nav nav-tabs" id="targets-overview" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id='cumulative-progress-tab' data-toggle="tab" href="#cumulative-progress-<%= fuel_type.to_s %>" role="tab" aria-controls="cumulative-progress-<%= fuel_type.to_s %>" aria-selected="true">Cumulative progress</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id='to-date-progress-tab' data-toggle="tab" href="#to-date-progress-<%= fuel_type.to_s %>" role="tab" aria-controls="to-date-progress-<%= fuel_type.to_s %>" aria-selected="true">Weekly progress</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id='year-to-date-progress-tab' data-toggle="tab" href="#year-to-date-progress-<%= fuel_type.to_s %>" role="tab" aria-controls="to-date-progress-<%= fuel_type.to_s %>" aria-selected="true">Weekly progress to date</a>
+  </li>
+</ul>
+<div class="tab-content" id="targets-overview-tabs">
+  <div class="tab-pane fade show active" id="cumulative-progress-<%= fuel_type.to_s %>" role="tabpanel" aria-labelledby="cumulative-progress-tab">
+    <%= render 'schools/analysis/chart_name', school: @school, content: "targeting_and_tracking_weekly_#{fuel_type.to_s}_to_date_cumulative_line", mpan_mprn: nil %>
+  </div>
+  <div class="tab-pane fade show" id="to-date-progress-<%= fuel_type.to_s %>" role="tabpanel" aria-labelledby="to-date-progress-tab">
+    <%= render 'schools/analysis/chart_name', school: @school, content: "targeting_and_tracking_weekly_#{fuel_type.to_s}_to_date_line", mpan_mprn: nil %>
+  </div>
+  <div class="tab-pane fade show" id="year-to-date-progress-<%= fuel_type.to_s %>" role="tabpanel" aria-labelledby="year-to-date-progress-tab">
+    <%= render 'schools/analysis/chart_name', school: @school, content: "targeting_and_tracking_weekly_#{fuel_type.to_s}_one_year_line", mpan_mprn: nil %>
+  </div>
+</div>

@@ -170,7 +170,7 @@ RSpec.describe 'alert type management', type: :system do
           end
         end
 
-        check 'Management dashboard alert'
+        check 'Adult dashboard alert'
         fill_in_trix with: 'MDASH - Your school is using gas'
 
         within '.management_dashboard_alert_active' do

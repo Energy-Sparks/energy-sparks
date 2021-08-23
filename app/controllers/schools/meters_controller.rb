@@ -9,6 +9,8 @@ module Schools
       load_meters
       @meter = @school.meters.new
       @pending_reviews = meters_need_review?
+      @enough_data_for_targets = enough_data_for_targets?
+
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_school(@school), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL), filename: "school-amr-readings-#{@school.name.parameterize}.csv" }
@@ -78,6 +80,11 @@ module Schools
     end
 
   private
+
+    def enough_data_for_targets?
+      return nil unless can?(:view_target_data, @school)
+      Targets::SchoolTargetService.new(@school).enough_data?
+    end
 
     def meters_need_review?
       @school.meters.unreviewed_dcc_meter.any?

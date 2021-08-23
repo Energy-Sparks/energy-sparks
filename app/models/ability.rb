@@ -15,7 +15,7 @@ class Ability
 
     can :index, School
     can [
-      :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+      :show, :usage, :show_pupils_dash, :suggest_activity
     ], School, visible: true, public: true
 
     can :read, Scoreboard, public: true
@@ -59,13 +59,11 @@ class Ability
       end
       #allow users from schools in same group to access dashboards
       if user.school.present?
-        can [
-          :show, :usage, :show_pupils_dash, :show_teachers_dash
-        ], School, { school_group_id: user.school.school_group_id, visible: true }
+        can [:show, :usage, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
       end
       can [
-        :show, :usage, :show_pupils_dash, :show_teachers_dash,
+        :show, :usage, :show_pupils_dash,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
         :read, :start_programme, :read_restricted_analysis
@@ -99,11 +97,11 @@ class Ability
       #abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
       can [
-        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+        :show, :usage, :show_pupils_dash, :suggest_activity
       ], School, school_scope
       #they can also do these things for schools in same group
       can [
-        :show, :usage, :show_pupils_dash, :show_teachers_dash, :suggest_activity
+        :show, :usage, :show_pupils_dash, :suggest_activity
       ], School, { school_group_id: user.school.school_group_id, visible: true }
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
