@@ -2,7 +2,7 @@ class ActivityCategoriesController < ApplicationController
   include ActivityTypeFilterable
 
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :show]
 
   # GET /activity_categories
   def index

@@ -1,6 +1,6 @@
 <% content_for :page_title, "Activities for #{@school.name}" %>
 
-<%= render 'activity_categories/list_and_filters', filter: @filter, activity_categories: @activity_categories, title: "Energy Sparks Activities for #{@school.name}" do %>
+<%= render 'list_and_filters', filter: @filter, activity_categories: @activity_categories, title: "Energy Sparks Activities for #{@school.name}" do %>
   <% @activity_categories.each_with_index do |activity_category, idx| %>
     <div class="tab-pane fade show <%= idx == 0 ? 'active' : '' %>" id="v-pills-cat<%= activity_category.id %>" role="tabpanel" aria-labelledby="v-pills-cat<%= activity_category.id %>-tab">
       <% if activity_category.description.present? %>

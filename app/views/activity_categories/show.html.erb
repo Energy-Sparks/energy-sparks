@@ -1,14 +1,60 @@
-<p>
-  <strong>Name:</strong>
-  <%= @activity_category.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @activity_category.description %>
-</p>
-
-<div class="other-actions">
-  <%= link_to 'Edit', edit_activity_category_path(@activity_category), class: 'btn btn-primary' %>
-  <%= link_to 'Back', activity_categories_path, class: 'btn btn-secondary'  %>
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1><%= @activity_category.name %></h1>
+      <div>
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary'  %>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div class="row mt-2">
+  <div class="col">
+    <p>
+      <% if @activity_category.description.present? %>
+        <%= @activity_category.description %>
+      <% else %>
+        Completing activities will allow you to score points.
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-10">
+    <p>
+      Filter X activities: <span class="badge badge-pill badge-light">DESIGN</span>
+      <span class="badge badge-pill badge-info">KS1</span>
+      <span class="badge badge-pill badge-info">KS2</span>
+    </p>
+  </div>
+</div>
+
+<% @activity_category.activity_types.each do |activity_type| %>
+  <div class="row mt-2">
+    <div class="col-sm-2">
+      <%= link_to activity_type_path(activity_type) do %>
+        <img class="img-fluid" src="holder.js/286x150" alt="Card image cap">
+      <% end %>
+    </div>
+    <div class="col-sm-10">
+      <h3>
+        <%= link_to activity_type.name, activity_type_path(activity_type) %>
+      </h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit....
+        <%#= activity_type.description %>
+      </p>
+      <% activity_type.subjects.each do |subject| %>
+        <span class="badge badge-pill badge-primary"><%= subject.name %></span>
+      <% end %>
+      <% activity_type.key_stages.each do |key_stage| %>
+        <span class="badge badge-pill badge-info"><%= key_stage.name %></span>
+      <% end %>
+      <span class="badge badge-pill badge-success">10</span>
+    </div>
+  </div>
+<% end %>
