@@ -9,15 +9,15 @@ RSpec.describe Targets::ProgressService do
   let!(:service)            { Targets::ProgressService.new(school, aggregated_school) }
   let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
 
-  let(:months)                    { ['jan', 'feb'] }
+  let(:months)                    { [Date.today.last_month.strftime("%b"), Date.today.strftime("%b")] }
   let(:fuel_type)                 { :electricity }
-  let(:monthly_targets_kwh)       { [1,2] }
-  let(:monthly_usage_kwh)         { [1,2] }
+  let(:monthly_targets_kwh)       { [10,10] }
+  let(:monthly_usage_kwh)         { [10,5] }
   let(:monthly_performance)       { [-0.25,0.35] }
-  let(:cumulative_targets_kwh)    { [1,2] }
-  let(:cumulative_usage_kwh)      { [1,2] }
+  let(:cumulative_targets_kwh)    { [10,20] }
+  let(:cumulative_usage_kwh)      { [10,15] }
   let(:cumulative_performance)    { [-0.99,0.99] }
-  let(:partial_months)            { ['feb'] }
+  let(:partial_months)            { [Date.today.strftime("%b")] }
 
   let(:progress) do
     TargetsProgress.new(
@@ -39,35 +39,55 @@ RSpec.describe Targets::ProgressService do
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
   end
 
-  context 'when calculating progress' do
+  context '#progress' do
     context 'and there is an error' do
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
       end
 
       it 'returns nil' do
-        expect(service.electricity_progress).to be_nil
+        expect(service.cumulative_progress(:electricity)).to be_nil
       end
     end
 
-    context 'for electricity' do
-      context 'and there is no fuel type' do
+    context 'for a fuel type' do
+      context 'and its not present' do
         let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: false) }
         it 'returns nil' do
-          expect(service.electricity_progress).to be_nil
+          expect(service.cumulative_progress(:electricity)).to be_nil
         end
       end
 
-      context 'and there is electricity' do
+      context 'and it is present' do
 
         before(:each) do
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         end
 
         it 'returns the value' do
-          expect(service.electricity_progress).to be 0.99
+          expect(service.cumulative_progress(:electricity)).to be 0.99
         end
       end
+    end
+  end
+
+  context '#current_target' do
+    before(:each) do
+      allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+    end
+
+    it 'returns the right value' do
+      expect(service.current_monthly_target(:electricity)).to eql 20
+    end
+  end
+
+  context '#current_usage' do
+    before(:each) do
+      allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+    end
+
+    it 'returns the right value' do
+      expect(service.current_monthly_usage(:electricity)).to eql 15
     end
   end
 
