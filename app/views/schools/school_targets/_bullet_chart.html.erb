@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-2 justify-content-center align-self-center">
+    <h3 class="card-title"><%= fuel_type.to_s.capitalize %></h3>
+  </div>
+  <div class="col-md-8">
+    <figure class="highcharts-figure">
+        <div class="bullet-chart" id="bullet-chart-<%= fuel_type.to_s %>" data-title="Cumulative progress to date" data-series='{"y": 409000,"target": 422000}'
+        data-label="Consumption" data-units="kWh" data-bands='<%= bullet_chart_bands %>'></div>
+    </figure>
+  </div>
+  <div class="col-md-2 justify-content-center align-self-center">
+    <span class="text-center">
+      <%= link_to "View progress", progress_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    </span>
+  </div>
+</div>

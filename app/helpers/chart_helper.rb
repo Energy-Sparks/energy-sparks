@@ -50,4 +50,16 @@ module ChartHelper
     )
     chart_container
   end
+
+  def bullet_chart_bands
+    [{
+        from: 0,
+        to: 622_000,
+        color: '#A1FFE9'
+    }, {
+        from: 622_000,
+        to: 1_000_000,
+        color: '#FF9B9C'
+    }].to_json
+  end
 end
