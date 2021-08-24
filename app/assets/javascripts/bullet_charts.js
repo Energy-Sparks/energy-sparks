@@ -49,7 +49,7 @@ $(document).ready(function() {
             data: [series]
         }],
         tooltip: {
-            pointFormat: '<b>{point.y} '+ units + '</b> (with target at {point.target} ' + units + ')'
+            pointFormat: '<b>{point.y} '+ units + '</b> (with target of {point.target} ' + units + ' by month end)'
         }
     });
   }

@@ -51,15 +51,27 @@ module ChartHelper
     chart_container
   end
 
-  def bullet_chart_bands
+  #hash, :progress, :target, :usage
+  def bullet_chart_series(progress, units = :kwh)
+    return {
+      "y": bullet_chart_number(progress[:usage], units),
+      "target": bullet_chart_number(progress[:target], units)
+    }.to_json
+  end
+
+  def bullet_chart_bands(progress, units = :kwh)
     [{
         from: 0,
-        to: 622_000,
+        to: bullet_chart_number(progress[:target], units),
         color: '#A1FFE9'
     }, {
-        from: 622_000,
+        from: bullet_chart_number(progress[:target], units),
         to: 1_000_000,
         color: '#FF9B9C'
     }].to_json
+  end
+
+  def bullet_chart_number(number, units = :kwh)
+    format_target(number, units).delete(",").to_i
   end
 end
