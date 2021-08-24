@@ -31,7 +31,9 @@ module Schools
       @current_target = @school.current_target
       @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
       begin
-        @progress = TargetsService.new(aggregate_school, @fuel_type).progress
+        service = TargetsService.new(aggregate_school, @fuel_type)
+        @progress = service.progress
+        @debug_content = service.analytics_debug_info if current_user.analytics?
       rescue => e
         Rollbar.error(e)
         flash[:error] = e.message
