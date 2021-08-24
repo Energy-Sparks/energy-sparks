@@ -80,6 +80,11 @@
 
   <%= render 'charts', school: @school, fuel_type: @fuel_type %>
 
+  <% if current_user.analytics? %>
+    <h2>Debug</h2>
+    <%= @debug_content %>
+  <% end %>
+
 <% else %>
 
   <p>
