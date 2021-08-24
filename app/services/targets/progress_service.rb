@@ -25,7 +25,7 @@ module Targets
     def setup_management_table
       dashboard_table = @school.latest_management_dashboard_tables.first
       return nil unless dashboard_table.present?
-      return dashboard_table.table unless EnergySparks::FeatureFlags.active?(:school_targets)
+      return dashboard_table.table unless @school.has_target? && EnergySparks::FeatureFlags.active?(:school_targets)
       dashboard_table.table.each do |row|
         row.insert(-2, "Target progress") if row[0] == ""
         row.insert(-2, format_for_table(cumulative_progress(:electricity))) if row[0] == "Electricity"
