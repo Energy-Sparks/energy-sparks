@@ -38,7 +38,7 @@ $(document).ready(function() {
             enabled: false
         },
         xAxis: {
-            categories: ['<span class="hc-cat-title">' + label + '</span><br/>('+ units + ')']
+            categories: ['<span class="bullet-chart-title">' + label + '</span><br/>('+ units + ')']
         },
         yAxis: {
             gridLineWidth: 0,
