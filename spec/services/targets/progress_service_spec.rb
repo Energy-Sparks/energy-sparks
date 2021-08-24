@@ -4,7 +4,6 @@ RSpec.describe Targets::ProgressService do
 
   let!(:school)             { create(:school) }
   let!(:aggregated_school)  { double('meter-collection') }
-  let(:target)              { create(:school_target, school: school) }
   let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: true) }
   let!(:service)            { Targets::ProgressService.new(school, aggregated_school) }
   let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
@@ -98,7 +97,7 @@ RSpec.describe Targets::ProgressService do
       end
     end
 
-    context 'and there is a ManagementDashboardTable' do
+    context 'and there is analytics data' do
       let!(:content_generation_run) { create(:content_generation_run, school: school)}
 
       let(:summary) {
@@ -113,7 +112,7 @@ RSpec.describe Targets::ProgressService do
       let!(:alert)     { create(:alert, table_data: table_data ) }
       let!(:management_dashboard_table) { create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert) }
 
-      context 'but the feature flag is off' do
+      context 'but the feature is off' do
         before(:each) do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
         end
@@ -122,20 +121,31 @@ RSpec.describe Targets::ProgressService do
         end
       end
 
-      context 'but the feature flag is on' do
+      context 'but the feature is on' do
         before(:each) do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         end
 
-        it 'includes the progress' do
-          table = service.setup_management_table
-          table.each do |row|
-            expect(row.size).to eql 8
+        context 'and theres a target' do
+          let!(:target)              { create(:school_target, school: school) }
+
+          it 'includes the progress' do
+            table = service.setup_management_table
+            table.each do |row|
+              expect(row.size).to eql 8
+            end
+            expect(table[0]).to include("Target progress")
+            expect(table[1]).to include("+99%")
           end
-          expect(table[0]).to include("Target progress")
-          expect(table[1]).to include("+99%")
         end
+
+        context 'and theres no target' do
+          it 'does not include the progress' do
+            expect(service.setup_management_table).to eql summary
+          end
+        end
+
       end
     end
   end
