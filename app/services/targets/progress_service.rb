@@ -3,18 +3,22 @@ module Targets
     def initialize(school, aggregated_school)
       @school = school
       @aggregated_school = aggregated_school
+      @progress_by_fuel_type = {}
     end
 
-    def electricity_progress
-      @school.has_electricity? ? progress(:electricity) : nil
+    def cumulative_progress(fuel_type)
+      target_progress = target_progress(fuel_type)
+      target_progress.present? ? target_progress.current_cumulative_performance_versus_synthetic_last_year : nil
     end
 
-    def gas_progress
-      @school.has_gas? ? progress(:gas) : nil
+    def current_monthly_target(fuel_type)
+      target_progress = target_progress(fuel_type)
+      target_progress.present? ? target_progress.cumulative_targets_kwh[this_month] : nil
     end
 
-    def storage_heater_progress
-      @school.has_storage_heaters? ? progress(:storage_heaters) : nil
+    def current_monthly_usage(fuel_type)
+      target_progress = target_progress(fuel_type)
+      target_progress.present? ? target_progress.cumulative_usage_kwh[this_month] : nil
     end
 
     #TEMPORARY
@@ -24,13 +28,21 @@ module Targets
       return dashboard_table.table unless EnergySparks::FeatureFlags.active?(:school_targets)
       dashboard_table.table.each do |row|
         row.insert(-2, "Target progress") if row[0] == ""
-        row.insert(-2, format_for_table(electricity_progress)) if row[0] == "Electricity"
-        row.insert(-2, format_for_table(gas_progress)) if row[0] == "Gas"
-        row.insert(-2, format_for_table(storage_heater_progress)) if row[0] == "Storage heaters"
+        row.insert(-2, format_for_table(cumulative_progress(:electricity))) if row[0] == "Electricity"
+        row.insert(-2, format_for_table(cumulative_progress(:gas))) if row[0] == "Gas"
+        row.insert(-2, format_for_table(cumulative_progress(:storage_heaters))) if row[0] == "Storage heaters"
       end
     end
 
     private
+
+    def this_month
+      Time.zone.now.strftime("%b")
+    end
+
+    def has_fuel_type?(fuel_type)
+      @school.send("has_#{fuel_type}?".to_sym)
+    end
 
     def format_for_table(value)
       if value.nil?
@@ -40,13 +52,18 @@ module Targets
       end
     end
 
-    def progress(fuel_type)
+    def target_progress(fuel_type)
+      return nil unless has_fuel_type?(fuel_type)
       begin
-        return TargetsService.new(@aggregated_school, fuel_type).progress.current_cumulative_performance_versus_synthetic_last_year
+        @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e
         Rollbar.error(e)
         return nil
       end
+    end
+
+    def target_service(fuel_type)
+      TargetsService.new(@aggregated_school, fuel_type)
     end
   end
 end
