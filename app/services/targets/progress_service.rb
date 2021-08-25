@@ -30,7 +30,7 @@ module Targets
         row.insert(-2, "Target progress") if row[0] == ""
         row.insert(-2, format_for_table(cumulative_progress(:electricity))) if row[0] == "Electricity"
         row.insert(-2, format_for_table(cumulative_progress(:gas))) if row[0] == "Gas"
-        row.insert(-2, format_for_table(cumulative_progress(:storage_heaters))) if row[0] == "Storage heaters"
+        row.insert(-2, format_for_table(cumulative_progress(:storage_heater))) if row[0] == "Storage heaters"
       end
     end
 

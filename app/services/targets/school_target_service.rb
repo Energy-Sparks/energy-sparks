@@ -2,7 +2,7 @@ module Targets
   class SchoolTargetService
     DEFAULT_ELECTRICITY_TARGET = 5.0
     DEFAULT_GAS_TARGET = 5.0
-    DEFAULT_STORAGE_HEATERS_TARGET = 5.0
+    DEFAULT_STORAGE_HEATER_TARGET = 5.0
 
     def initialize(school)
       @school = school
@@ -14,7 +14,7 @@ module Targets
         target_date: target_end_date,
         electricity: electricity_target,
         gas: gas_target,
-        storage_heaters: storage_heaters_target
+        storage_heaters: storage_heater_target
       )
     end
 
@@ -22,7 +22,7 @@ module Targets
       aggregate_school = AggregateSchoolService.new(@school).aggregate_school
       return true if @school.has_electricity? && target_service(aggregate_school, :electricity).enough_data_to_set_target?
       return true if @school.has_gas? && target_service(aggregate_school, :gas).enough_data_to_set_target?
-      return true if @school.has_storage_heaters? && target_service(aggregate_school, :storage_heaters).enough_data_to_set_target?
+      return true if @school.has_storage_heaters? && target_service(aggregate_school, :storage_heater).enough_data_to_set_target?
       return false
     end
 
@@ -44,8 +44,8 @@ module Targets
       most_recent_target.present? ? most_recent_target.gas : DEFAULT_GAS_TARGET
     end
 
-    def storage_heaters_target
-      most_recent_target.present? ? most_recent_target.storage_heaters : DEFAULT_STORAGE_HEATERS_TARGET
+    def storage_heater_target
+      most_recent_target.present? ? most_recent_target.storage_heaters : DEFAULT_STORAGE_HEATER_TARGET
     end
 
     def most_recent_target
