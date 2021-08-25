@@ -20,8 +20,8 @@ module Schools
       @school.has_gas? ? index_for(:gas) : missing(:gas)
     end
 
-    def storage_heaters
-      @school.has_storage_heaters? ? index_for(:storage_heaters) : missing(:storage_heaters)
+    def storage_heater
+      @school.has_storage_heaters? ? index_for(:storage_heater) : missing(:storage_heater)
     end
 
     private

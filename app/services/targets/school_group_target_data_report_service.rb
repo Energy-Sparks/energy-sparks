@@ -28,7 +28,7 @@ module Targets
       result = []
       result << report_for_school_and_fuel_type(school, aggregate_school, :electricity) if school.has_electricity?
       result << report_for_school_and_fuel_type(school, aggregate_school, :gas) if school.has_gas?
-      result << report_for_school_and_fuel_type(school, aggregate_school, :storage_heaters) if school.has_storage_heaters?
+      result << report_for_school_and_fuel_type(school, aggregate_school, :storage_heater) if school.has_storage_heaters?
       result
     end
 
@@ -36,8 +36,8 @@ module Targets
       service = target_service(aggregate_school, fuel_type)
       {
         fuel_type: fuel_type,
-        calendar_data: service.enough_calendar_data_to_calculate_target?,
-        amr_data: service.enough_amr_data_to_calculate_target?,
+        calendar_data: service.enough_holidays?,
+        amr_data: service.enough_readings_to_calculate_target?,
         current_target: school.has_current_target?
       }
     end
