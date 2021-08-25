@@ -14,33 +14,34 @@ describe NextActivitySuggesterWithFilter do
   subject { NextActivitySuggesterWithFilter.new(school, activity_type_filter) }
 
   describe '.suggest_from_activity_history' do
-    context "with no activity types set for the school nor any initial suggestions rely on top up" do
+    context "school has no activities and there are no initial suggestions rely on top up" do
       let!(:activity_types_for_ks1_ks2) { create_list(:activity_type, 3, key_stages: [ks1, ks2])}
       let!(:activity_types_for_ks2)     { create_list(:activity_type, 3, key_stages: [ks2])}
       let!(:activity_types_for_ks3)     { create_list(:activity_type, 2, key_stages: [ks3])}
 
       let(:no_activity_types_set_or_inital_expected) { activity_types_for_ks1_ks2 + activity_types_for_ks3 }
 
-      it "suggests any 6 if no suggestions using the filter" do
+      it "suggests a random sample" do
         expect(subject.suggest_from_activity_history).to match_array(no_activity_types_set_or_inital_expected)
       end
+
     end
 
-    context "with initial suggestions" do
+    context "school has no activities and there are initial suggestions" do
 
       let!(:activity_types_with_suggestions_for_ks1_ks2) { create_list(:activity_type, 3, :as_initial_suggestions, key_stages: [ks1, ks2])}
       let!(:activity_types_with_suggestions_for_ks2)     { create_list(:activity_type, 3, :as_initial_suggestions, key_stages: [ks2])}
-      let!(:activity_types_with_suggestions_for_ks3)     { create_list(:activity_type, 2, :as_initial_suggestions, key_stages: [ks1, ks2], subjects: [maths])}
+      let!(:activity_types_with_suggestions_for_ks3)     { create_list(:activity_type, 2, :as_initial_suggestions, key_stages: [ks3], subjects: [maths])}
 
       let(:activity_types_with_suggestions) { activity_types_with_suggestions_for_ks1_ks2 + activity_types_with_suggestions_for_ks3 }
 
-      it "suggests the first five initial suggestions" do
+      it "suggests the initial suggestions based on Key Stages for school" do
        expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions)
       end
 
       context 'where the filter restricts the available activities' do
         let(:activity_type_filter){ ActivityTypeFilter.new(query: {subject_ids: [maths.id]}, school: school)}
-        it 'does not top up with duplicate activity types' do
+        it 'applies the subject filter' do
           expect(subject.suggest_from_activity_history).to match_array(activity_types_with_suggestions_for_ks3)
         end
       end
@@ -67,7 +68,7 @@ describe NextActivitySuggesterWithFilter do
       let!(:activity_type_with_further_suggestions)   { create :activity_type, :with_further_suggestions, number_of_suggestions: 6, key_stages: [ks1, ks3]}
       let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
 
-      it "suggests the five follow ons from original" do
+      it "suggests only the repeatable follow-on activities" do
         repeatable_done = activity_type_with_further_suggestions.suggested_types.second
         activity = create(:activity, activity_type: repeatable_done, school: school)
 
@@ -162,6 +163,29 @@ describe NextActivitySuggesterWithFilter do
         result = subject.suggest_from_find_out_mores
         expect(result).to match_array([])
       end
+    end
+
+  end
+
+  describe '.suggest_for_school_targets' do
+    #3 in programme
+    let!(:programme_type)  { create :programme_type_with_activity_types }
+    let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
+    let(:activity_types)  { programme_type.activity_types }
+
+    let!(:ks1_activity_type){ activity_types[0].tap{|activity_type| activity_type.update!(key_stages: [ks1])} }
+
+    #2 initial suggestions
+    let!(:activity_types_with_suggestions_for_ks1) { create_list(:activity_type, 2, :as_initial_suggestions, key_stages: [ks1])}
+
+    it 'suggests from programmes first' do
+      suggestions = subject.suggest_for_school_targets(1)
+      expect(suggestions).to match_array([ks1_activity_type])
+    end
+
+    it 'suggests other activities as a fallback' do
+      suggestions = subject.suggest_for_school_targets(3)
+      expect(suggestions).to match_array([ks1_activity_type]+activity_types_with_suggestions_for_ks1)
     end
 
   end

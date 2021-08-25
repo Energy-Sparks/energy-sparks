@@ -64,10 +64,8 @@ module Schools
     end
 
     def setup_activity_suggestions
-      @activities_count = @school.activities.count
       suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
-      @activities_from_programmes = suggester.suggest_from_programmes.limit(4)
-      @activities_from_alerts = suggester.suggest_from_find_out_mores.sample(1)
+      @suggestions = suggester.suggest_for_school_targets
     end
   end
 end
