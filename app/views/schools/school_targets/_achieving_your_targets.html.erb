@@ -1,0 +1,70 @@
+<div class="card-deck activities">
+  <div class="card activity">
+    <div class="card-body">
+      <h4 class="card-title">Working with the pupils</h4>
+      <p>Here are some suggested activities that can be undertaken
+        with pupils</p>
+        <ul>
+          <% @suggestions.each do |activity_type| %>
+           <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+          <% end %>
+        </ul>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Engaging with pupils is an important part of the Energy Sparks programme.
+        Recording activities will score you points.
+      </small>
+    </div>
+  </div>
+
+  <div class="card activity">
+    <div class="card-body">
+      <h4 class="card-title">Taking action around the school</h4>
+      <p>Some suggested activities you can take around the school</p>
+      <ul>
+        <% InterventionType.all.sample(5).each do |intervention_type| %>
+         <li><%= intervention_type.title %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Logging activities will help you monitor progress. We'll display these
+        actions on your usage charts.
+      </small>
+    </div>
+  </div>
+
+  <div class="card activity">
+    <div class="card-body">
+      <h4 class="card-title">Explore your data</h4>
+      <p>We analyse your data to provide insights and weekly alerts</p>
+      <ul>
+        <li>
+          <%= link_to "Explore your data", pupils_school_analysis_path(@school) %>
+        </li>
+        <li>
+          <%= link_to "Review your energy analysis", school_analysis_index_path(@school) %>
+        </li>
+        <li>
+          <%= link_to 'View energy saving opportunities', management_school_management_priorities_path(@school)  %>
+        </li>
+        <li>
+          <%= link_to 'View recent alerts', management_school_path(@school, anchor: "dashboard-alerts") %>
+        </li>
+        <% if @school.school_group && can?(:compare, @school.school_group) %>
+          <li>
+            <%= link_to 'Compare usage with schools in your group', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Be sure to regularly check your dashboard and weekly alerts for our latest
+        advice
+      </small>
+    </div>
+  </div>
+</div>

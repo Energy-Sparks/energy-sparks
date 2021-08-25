@@ -48,6 +48,8 @@ RSpec.describe 'school targets', type: :system do
   context "with target" do
     let!(:target)          { create(:school_target, school: school) }
 
+    let!(:activity_type)   { create(:activity_type)}
+
     before(:each) do
       visit school_school_targets_path(school)
     end
@@ -62,6 +64,16 @@ RSpec.describe 'school targets', type: :system do
       expect(School.first.has_electricity?).to be true
 
       expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+    end
+
+    it "includes achieving your targets section" do
+      expect(page).to have_content("Working with the pupils")
+      expect(page).to have_link("Choose another activity", href: suggest_activity_school_path(school))
+      expect(page).to have_link("Explore your data", href: pupils_school_analysis_path(school))
+    end
+
+    it "includes links to activities" do
+      expect(page).to have_link(activity_type.name, href: activity_type_path(activity_type))
     end
 
     it "allows target to be edited" do

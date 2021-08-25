@@ -37,6 +37,19 @@ class NextActivitySuggesterWithFilter
     end
   end
 
+  #For school targets page. Selecting activities based on an order of preference
+  #filtering based on key stages, with a fallback to other activities
+  def suggest_for_school_targets(limit = 5)
+    suggestions = suggest_from_programmes.to_a
+    return suggestions.take(limit) unless suggestions.length < limit
+
+    top_up_from_list(suggest_from_find_out_mores, suggestions)
+    return suggestions.take(limit) unless suggestions.length < limit
+
+    top_up_from_list(suggest_from_activity_history, suggestions)
+    suggestions.take(limit)
+  end
+
 private
 
   def get_initial_suggestions(suggestions)
@@ -57,6 +70,10 @@ private
 
   def top_up_if_not_enough_suggestions(suggestions)
     more = @filter.activity_types.random_suggestions.sample(NUMBER_OF_SUGGESTIONS - suggestions.length)
+    top_up_from_list(more, suggestions)
+  end
+
+  def top_up_from_list(more, suggestions)
     suggestions.concat(more.select {|suggestion| suggestion_can_be_added?(suggestion, suggestions)})
   end
 
