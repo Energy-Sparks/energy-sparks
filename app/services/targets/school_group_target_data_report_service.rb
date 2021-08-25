@@ -8,8 +8,15 @@ module Targets
     def report
       report = {}
       schools.each do |school|
-        aggregate_school = AggregateSchoolService.new(school).aggregate_school
-        report[school] = report_for_school(school, aggregate_school)
+        begin
+          aggregate_school = AggregateSchoolService.new(school).aggregate_school
+          report[school] = report_for_school(school, aggregate_school)
+        rescue => e
+          report[school] = []
+          Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
+          Rails.logger.error e.backtrace.join("\n")
+          Rollbar.error(e, job: :target_data, school: school)
+        end
       end
       report
     end
@@ -36,8 +43,11 @@ module Targets
       service = target_service(aggregate_school, fuel_type)
       {
         fuel_type: fuel_type,
-        calendar_data: service.enough_holidays?,
-        amr_data: service.enough_readings_to_calculate_target?,
+        holidays: service.enough_holidays?,
+        readings: service.enough_readings_to_calculate_target?,
+        estimate_needed: service.annual_kwh_estimate_required?,
+        estimate_set: service.annual_kwh_estimate?,
+        target: service.target_set?,
         current_target: school.has_current_target?
       }
     end
