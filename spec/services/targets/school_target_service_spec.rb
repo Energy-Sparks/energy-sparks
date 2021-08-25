@@ -22,7 +22,7 @@ RSpec.describe Targets::SchoolTargetService do
       it 'should have default values' do
         expect(target.electricity).to eql Targets::SchoolTargetService::DEFAULT_ELECTRICITY_TARGET
         expect(target.gas).to eql Targets::SchoolTargetService::DEFAULT_GAS_TARGET
-        expect(target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATERS_TARGET
+        expect(target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATER_TARGET
       end
     end
 
