@@ -3,7 +3,7 @@ namespace :targets do
   task enough_data_report: [:environment] do
     puts "#{Time.zone.now} Generating enough-data report"
     CSV.open("/tmp/enough-data-report.csv", "w") do |csv|
-      csv << ["Group", "School", "Visible?", "Fuel Type", "Holidays?", "Temperature?", "Readings?", "Estimate needed?", "Estimate set?", "Target already set?"]
+      csv << ["Group", "School", "Visible?", "Fuel Type", "Holidays?", "Temperature?", "Readings?", "Estimate needed?", "Estimate set?", "Target?", "Current target?"]
       SchoolGroup.all.each do |school_group|
         service = Targets::SchoolGroupTargetDataReportService.new(school_group)
         data = service.report
@@ -15,6 +15,7 @@ namespace :targets do
               school.visible,
               fuel_result_data[:fuel_type],
               fuel_result_data[:holidays],
+              fuel_result_data[:temperature],
               fuel_result_data[:readings],
               fuel_result_data[:estimate_needed],
               fuel_result_data[:estimate_set],
