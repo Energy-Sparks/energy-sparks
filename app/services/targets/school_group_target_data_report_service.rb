@@ -44,6 +44,7 @@ module Targets
       {
         fuel_type: fuel_type,
         holidays: service.enough_holidays?,
+        temperature: service.enough_temperature_data?,
         readings: service.enough_readings_to_calculate_target?,
         estimate_needed: service.annual_kwh_estimate_required?,
         estimate_set: service.annual_kwh_estimate?,
