@@ -8,13 +8,7 @@
   </div>
   <div class="col-md-6">
     <h2><%= @activity_type.name %></h2>
-    <p>
-      <% if @activity_type.summary %>
-        <%= @activity_type.summary %>
-      <% else %>
-        <em>No summary given</em>
-      <% end %>
-    </p>
+    <p><%= @activity_type.summary %></p>
     <div>
       <%= render 'activity_types/activity_type_subjects', activity_type: @activity_type %>
       <%= render 'activity_types/activity_type_key_stages', activity_type: @activity_type %>

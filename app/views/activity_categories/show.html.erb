@@ -33,8 +33,7 @@
         <%= link_to activity_type.name, activity_type_path(activity_type) %>
       </h3>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit....
-        <%#= activity_type.description %>
+        <%= activity_type.summary %>
       </p>
       <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
       <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
