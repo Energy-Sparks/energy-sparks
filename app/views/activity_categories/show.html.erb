@@ -1,14 +1,43 @@
-<p>
-  <strong>Name:</strong>
-  <%= @activity_category.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @activity_category.description %>
-</p>
-
-<div class="other-actions">
-  <%= link_to 'Edit', edit_activity_category_path(@activity_category), class: 'btn btn-primary' %>
-  <%= link_to 'Back', activity_categories_path, class: 'btn btn-secondary'  %>
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1><%= @activity_category.name %></h1>
+      <div>
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary'  %>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div class="row mt-2">
+  <div class="col">
+    <p>
+      <% if @activity_category.description.present? %>
+        <%= @activity_category.description %>
+      <% else %>
+        Completing activities will allow you to score points.
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<% @activity_category.activity_types.by_name.each do |activity_type| %>
+  <div class="row mt-2">
+    <div class="col-sm-2">
+      <%= link_to activity_type_path(activity_type) do %>
+        <%= render 'activity_types/activity_type_image', activity_type: activity_type %>
+      <% end %>
+    </div>
+    <div class="col-sm-10">
+      <h3>
+        <%= link_to activity_type.name, activity_type_path(activity_type) %>
+      </h3>
+      <p>
+        <%= activity_type.summary %>
+      </p>
+      <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
+      <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
+      <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
+    </div>
+  </div>
+<% end %>

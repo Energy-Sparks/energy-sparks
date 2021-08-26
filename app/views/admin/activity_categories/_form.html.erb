@@ -1,5 +1,6 @@
 <%= simple_form_for([:admin, activity_category]) do |f| %>
   <%= f.input :name, as: :string %>
   <%= f.input :description, as: :string %>
+  <%= f.input :featured, as: :boolean %>
   <%= f.submit class: 'btn' %>
 <% end %>

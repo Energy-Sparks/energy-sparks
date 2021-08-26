@@ -39,12 +39,14 @@ describe "activity type", type: :system do
 
     it 'can add a new activity for KS1 with filters' do
       description = 'The description'
+      summary = 'An activity to try'
       download_links = 'Some download links'
       school_specific_description = description + ' for SCHOOOOOOLS'
       activity_name = 'New activity'
 
       click_on 'New Activity Type'
       fill_in('Name', with: activity_name)
+      fill_in('Summary', with: summary)
 
       attach_file("activity_type_image", Rails.root + "spec/fixtures/images/activity-type-placeholder.png")
 
@@ -72,6 +74,7 @@ describe "activity type", type: :system do
 
       activity_type = ActivityType.first
 
+      expect(activity_type.summary).to eq(summary)
       expect(activity_type.key_stages).to match_array([ks1])
       expect(activity_type.subjects).to   match_array([science])
       expect(activity_type.activity_timings).to    match_array([half_hour])

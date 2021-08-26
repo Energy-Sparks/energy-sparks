@@ -61,7 +61,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  config.active_record.logger = nil
+  # config.active_record.logger = nil
 
   # For when you need severity etc in log file
   # logger           = ActiveSupport::Logger.new(STDOUT)
@@ -71,7 +71,7 @@ Rails.application.configure do
 
   # config.logger = ActiveSupport::TaggedLogging.new(logger)
 
-  config.log_level = :info
+  config.log_level = :debug
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
