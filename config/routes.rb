@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   resources :mailchimp_signups, only: [:new, :create, :index]
 
   resources :activity_types, only: [:index, :show]
-  resources :activity_categories, only: [:index]
+  resources :activity_categories, only: [:index, :show]
 
   resources :calendars, only: [:show] do
     scope module: :calendars do

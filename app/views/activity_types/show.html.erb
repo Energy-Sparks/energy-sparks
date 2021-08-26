@@ -1,14 +1,30 @@
 <% content_for :page_title do %>
-    Activity Type: <%= @activity_type.name %>
+  <%= @activity_type.name %>
 <% end %>
 
 <div class="row padded-row">
-  <div class="col-md-9">
-    <h1><%= @activity_type.name %></h1>
-    <%= render 'activity_types/activity_type_badges', activity_type: @activity_type %>
+  <div class="col-md-3">
+    <%= render 'activity_types/activity_type_image', activity_type: @activity_type %>
+  </div>
+  <div class="col-md-6">
+    <h2><%= @activity_type.name %></h2>
+    <p><%= @activity_type.summary %></p>
+    <div>
+      <%= render 'activity_types/activity_type_subjects', activity_type: @activity_type %>
+      <%= render 'activity_types/activity_type_key_stages', activity_type: @activity_type %>
+      <%= render 'activity_types/activity_type_score', activity_type: @activity_type %>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <%= link_to "All #{@activity_type.activity_category.name} activities", activity_category_path(@activity_type.activity_category), class: 'btn btn-secondary float-right' %>
+  </div>
+</div>
 
+<%= render 'activity_types/prompt_score', activity_type: @activity_type, recorded: @recorded, school_count: @school_count %>
+
+<div class="row padded-row">
+  <div class="col-md-9">
     <div class="activity_type">
-      <h3>Activity summary</h3>
       <% if @activity_type.description %>
         <%= @activity_type.description %>
       <% else %>
@@ -16,14 +32,13 @@
       <% end %>
     </div>
   </div>
-  <div class="col-md-3 pt-2">
-    <%= render 'activity_types/activity_type_resources', activity_type: @activity_type %>
+  <div class="col-md-3">
+    <% if @activity_type.download_links.present? %>
+      <h4 style="padding-top: 0px;">Download resources</h4>
+      <div class="activity_type">
+        <%= @activity_type.download_links %>
+      </div>
+    <% end %>
   </div>
 </div>
 
-<div class="row">
-</div>
-
-<%= render 'activity_types/prompt_complete_activity', activity_type: @activity_type, recorded: @recorded, school_count: @school_count %>
-
-<p><%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary' %></p>

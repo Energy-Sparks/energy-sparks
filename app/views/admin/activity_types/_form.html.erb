@@ -27,6 +27,9 @@
     <%= f.input :image, label: false %>
   </p>
 
+  <%= f.input :summary, as: :string %>
+  <p class="small">The summary text will appear on lists of activity types.</p>
+
   <div class="download-links-trix-editor">
     <%= f.label 'Download links', for: :download_links %>
     <p class="small">These download links will appear in the right-hand panel under the image.</p>

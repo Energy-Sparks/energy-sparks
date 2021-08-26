@@ -7,6 +7,8 @@
     <tr>
       <th>Name</th>
       <th>Description</th>
+      <th>Activity types</th>
+      <th>Featured</th>
       <th></th>
     </tr>
   </thead>
@@ -15,6 +17,8 @@
       <tr>
         <td><%= link_to activity_category.name, admin_activity_category_path(activity_category) %></td>
         <td><%= activity_category.description %></td>
+        <td><%= activity_category.activity_types.count %></td>
+        <td><%= y_n(activity_category.featured) %></td>
         <td><%= link_to 'Edit', edit_admin_activity_category_path(activity_category), class: 'btn'%></td>
       </tr>
     <% end %>

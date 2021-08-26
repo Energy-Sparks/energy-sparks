@@ -38,6 +38,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       new_description = 'Now then'
       click_on 'New activity category'
       fill_in 'Description', with: new_description
+      check 'Featured'
       expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(0)
       expect(page).to have_content("can't be blank")
       fill_in 'Name', with: new_name
@@ -45,6 +46,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       expect(page).to have_content('Activity Categories')
       expect(page).to have_content(activity_category.name)
       expect(page).to have_content(new_description)
+      expect(page).to have_content('Yes')
     end
   end
 

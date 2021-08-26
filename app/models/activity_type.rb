@@ -41,6 +41,7 @@ class ActivityType < ApplicationRecord
   scope :data_driven, -> { where(data_driven: true) }
   scope :random_suggestions, -> { active.repeatable }
   scope :custom_last, -> { order(:custom) }
+  scope :by_name, -> { order(name: :asc) }
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
