@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_095845) do
+ActiveRecord::Schema.define(version: 2021_08_26_103258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_095845) do
     t.boolean "repeatable", default: true
     t.boolean "data_driven", default: false
     t.boolean "custom", default: false
+    t.string "summary"
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
