@@ -21,7 +21,6 @@
     </h5>
   </div>
   <div class="col-md-3">
-    <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary xfloat-right'  %>
     <%= link_to "All #{@activity_type.activity_category.name} activities", activity_category_path(@activity_type.activity_category), class: 'btn btn-secondary float-right' %>
   </div>
 </div>
