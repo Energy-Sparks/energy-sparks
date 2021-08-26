@@ -6,7 +6,7 @@
   <div class="col-md-3">
     <img src="holder.js/300x200" alt="Card image cap">
   </div>
-  <div class="col-md-9">
+  <div class="col-md-6">
     <h2><%= @activity_type.name %></h2>
     <p>
       <% if @activity_type.summary %>
@@ -19,7 +19,10 @@
       <%= render 'activity_types/activity_type_subjects', activity_type: @activity_type %>
       <%= render 'activity_types/activity_type_key_stages', activity_type: @activity_type %>
     </h5>
-    <%= link_to "View other #{@activity_type.activity_category.name} activities", activity_category_path(@activity_type.activity_category) %>
+  </div>
+  <div class="col-md-3">
+    <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary xfloat-right'  %>
+    <%= link_to "All #{@activity_type.activity_category.name} activities", activity_category_path(@activity_type.activity_category), class: 'btn btn-secondary float-right' %>
   </div>
 </div>
 
@@ -43,7 +46,7 @@
 <% end %>
 
 <div class="row padded-row">
-  <div class="col-md-8">
+  <div class="col-md-9">
     <div class="activity_type">
       <% if @activity_type.description %>
         <%= @activity_type.description %>
@@ -52,7 +55,7 @@
       <% end %>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <% if @activity_type.download_links.present? %>
       <h4 style="padding-top: 0px;">Download resources</h4>
       <div class="activity_type">
@@ -63,5 +66,3 @@
 </div>
 
 <%= render 'activity_types/prompt_complete_activity', activity_type: @activity_type, recorded: @recorded, school_count: @school_count %>
-
-<p><%= link_to 'View all activities', activity_categories_path, class: 'btn btn-secondary' %></p>
