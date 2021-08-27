@@ -119,20 +119,28 @@ RSpec.describe "meter management", :meters, type: :system do
       end
     end
 
-    it 'allows adding of meters from the management page with validation' do
-      click_on('Manage meters')
+    context 'when creating meters' do
+      it 'allows adding of meters from the management page with validation' do
+        click_on('Manage meters')
 
-      click_on 'Create Meter'
-      expect(page).to have_content("Meter type can't be blank")
+        click_on 'Create Meter'
+        expect(page).to have_content("Meter type can't be blank")
 
-      fill_in 'Meter Point Number', with: '123543'
-      fill_in 'Name', with: 'Gas'
-      choose 'Gas'
-      click_on 'Create Meter'
+        fill_in 'Meter Point Number', with: '123543'
+        fill_in 'Name', with: 'Gas'
+        choose 'Gas'
+        click_on 'Create Meter'
 
-      expect(school.meters.count).to eq(1)
-      expect(school.meters.first.mpan_mprn).to eq(123543)
+        expect(school.meters.count).to eq(1)
+        expect(school.meters.first.mpan_mprn).to eq(123543)
+      end
+
+      context "and there are targets" do
+        it 'adds a school target event when a new fuel type is added'
+      end
+
     end
+
 
     context 'when the school has a meter' do
 

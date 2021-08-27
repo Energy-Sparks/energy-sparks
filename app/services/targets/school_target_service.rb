@@ -37,14 +37,17 @@ module Targets
     end
 
     def electricity_target
+      return nil unless @school.has_electricity?
       most_recent_target.present? ? most_recent_target.electricity : DEFAULT_ELECTRICITY_TARGET
     end
 
     def gas_target
+      return nil unless @school.has_gas?
       most_recent_target.present? ? most_recent_target.gas : DEFAULT_GAS_TARGET
     end
 
     def storage_heater_target
+      return nil unless @school.has_storage_heaters?
       most_recent_target.present? ? most_recent_target.storage_heaters : DEFAULT_STORAGE_HEATER_TARGET
     end
 

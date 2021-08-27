@@ -7,40 +7,72 @@ RSpec.describe 'school targets', type: :system do
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:school_admin)      { create(:school_admin, school: school) }
 
-  let(:fuel_electricity)   { Schools::FuelConfiguration.new(
-    has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
+  let(:fuel_configuration)   { Schools::FuelConfiguration.new(
+    has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true) }
 
   before(:each) do
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
-    school.configuration.update!(fuel_configuration: fuel_electricity)
+    school.configuration.update!(fuel_configuration: fuel_configuration)
     sign_in(school_admin)
   end
 
   context "with no target" do
 
-    before(:each) do
-      visit school_school_targets_path(school)
+    context "with all fuel types" do
+      before(:each) do
+        visit school_school_targets_path(school)
+      end
+
+      it "prompts to create first target" do
+        expect(page).to have_content("Set your first energy saving target")
+      end
+
+      context "and all fuel types" do
+        it "allows all targets to be set" do
+          fill_in "Reducing electricity usage by", with: 15
+          fill_in "Reducing gas usage by", with: 15
+          fill_in "Reducing storage heater usage by", with: 25
+
+          click_on 'Set this target'
+
+          expect(page).to have_content('Target successfully created')
+          expect(page).to have_content("Your energy saving target")
+          expect(school.has_current_target?).to eql(true)
+          expect(school.current_target.electricity).to eql 15.0
+          expect(school.current_target.gas).to eql 15.0
+          expect(school.current_target.storage_heaters).to eql 25.0
+        end
+      end
+
     end
 
-    it "prompts to create first target" do
-      expect(page).to have_content("Set your first energy saving target")
-    end
+    context "and only electricity" do
+      let(:fuel_configuration)   { Schools::FuelConfiguration.new(
+        has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
 
-    it "allows target to be created" do
-      fill_in "Reducing electricity usage by", with: 15
-      fill_in "Reducing gas usage by", with: 15
-      fill_in "Reducing storage heater usage by", with: 25
+      before(:each) do
+        school.configuration.update!(fuel_configuration: fuel_configuration)
+        visit school_school_targets_path(school)
+      end
 
-      click_on 'Set this target'
+      it "allows electricity target to be created" do
+        expect(page).to_not have_content("Reducing gas usage by")
+        expect(page).to_not have_content("Reducing storage heater usage by")
 
-      expect(page).to have_content('Target successfully created')
-      expect(page).to have_content("Your energy saving target")
-      expect(school.has_current_target?).to eql(true)
-      expect(school.current_target.electricity).to eql 15.0
-      expect(school.current_target.gas).to eql 15.0
-      expect(school.current_target.storage_heaters).to eql 25.0
+        fill_in "Reducing electricity usage by", with: 15
+        click_on 'Set this target'
+
+        expect(page).to have_content('Target successfully created')
+        expect(page).to have_content("Your energy saving target")
+        expect(school.has_current_target?).to eql(true)
+        expect(school.current_target.electricity).to eql 15.0
+        expect(school.current_target.gas).to eql nil
+        expect(school.current_target.storage_heaters).to eql nil
+      end
+
+
     end
 
   end
@@ -106,6 +138,19 @@ RSpec.describe 'school targets', type: :system do
       visit new_school_school_target_path(school, target)
       expect(page).to have_content("Your energy saving target")
     end
+
+    context "and fuel configuration has changed" do
+      context "and theres enough data" do
+        it "displays a prompt to revise the target"
+        context "and gas was added" do
+          it "displays the relevant field"
+        end
+        context "and storage heater was added" do
+          it "displays the relevant field"
+        end
+      end
+    end
+
   end
 
   context "with expired target" do
