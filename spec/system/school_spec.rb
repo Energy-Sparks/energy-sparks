@@ -330,8 +330,29 @@ RSpec.describe "school", type: :system do
         end
 
         context "can update storage heaters" do
-          it "and changes are saved"
-          it "and a school target event is recorded"
+          it "and changes are saved" do
+            click_on(school_name)
+            click_on('Edit school details')
+            check 'Our school has night storage heaters'
+
+            click_on('Update School')
+
+            school.reload
+            expect(school.indicated_has_storage_heaters).to be true
+          end
+
+          it "and a school target event is recorded" do
+            create(:school_target, school: school, storage_heaters: nil)
+
+            click_on(school_name)
+            click_on('Edit school details')
+            check 'Our school has night storage heaters'
+
+            click_on('Update School')
+
+            school.reload
+            expect(school.has_school_target_event?(:storage_heaters_added)).to be true
+          end
         end
 
       end

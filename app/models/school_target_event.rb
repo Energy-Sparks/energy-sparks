@@ -23,6 +23,8 @@ class SchoolTargetEvent < ApplicationRecord
   #review_target_sent: have we asked them to set a new target?
   enum event: {
     first_target_sent: 0,
-    review_target_sent: 10
+    review_target_sent: 10,
+    storage_heaters_added: 20,
+    storage_heaters_removed: 25
   }
 end

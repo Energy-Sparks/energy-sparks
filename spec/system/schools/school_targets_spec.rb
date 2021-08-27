@@ -72,7 +72,6 @@ RSpec.describe 'school targets', type: :system do
         expect(school.current_target.storage_heaters).to eql nil
       end
 
-
     end
 
   end
