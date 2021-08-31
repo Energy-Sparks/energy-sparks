@@ -6,7 +6,7 @@ RSpec.describe "activity type", type: :system do
   let!(:ks3) { KeyStage.create(name: 'KS3') }
 
   let!(:activity_category_1) { create(:activity_category, name: 'cat1', description: 'save some energy', featured: true)}
-  let!(:activity_type_1_1) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks1, ks2])}
+  let!(:activity_type_1_1) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks1, ks2], description: 'public descriptive text here')}
   let!(:activity_type_1_2) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
   let!(:activity_type_1_3) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
   let!(:activity_type_1_4) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
@@ -30,32 +30,38 @@ RSpec.describe "activity type", type: :system do
         visit activity_categories_path
       end
 
-      it 'shows featured activity categories with at least 5 activities' do
-        expect(page.has_content?(activity_category_1.name)).to be true
-        expect(page.has_content?(activity_category_2.name)).to_not be true
-        expect(page.has_content?(activity_category_3.name)).to_not be true
+      it 'shows featured activity categories with at least 5 activities, but not Recommended section' do
+        expect(page).to have_content(activity_category_1.name)
+        expect(page).not_to have_content(activity_category_2.name)
+        expect(page).not_to have_content(activity_category_3.name)
+        expect(page).not_to have_content('Recommended')
       end
 
       it 'shows 5 activities ' do
-        expect(page.has_content?(activity_type_1_1.name)).to be true
-        expect(page.has_content?(activity_type_1_2.name)).to be true
-        expect(page.has_content?(activity_type_1_3.name)).to be true
-        expect(page.has_content?(activity_type_1_4.name)).to be true
-        expect(page.has_content?(activity_type_1_5.name)).to be true
+        expect(page).to have_content(activity_type_1_1.name)
+        expect(page).to have_content(activity_type_1_2.name)
+        expect(page).to have_content(activity_type_1_3.name)
+        expect(page).to have_content(activity_type_1_4.name)
+        expect(page).to have_content(activity_type_1_5.name)
 
-        expect(page.has_content?(activity_type_2_1.name)).not_to be true
-        expect(page.has_content?(activity_type_3_1.name)).not_to be true
+        expect(page).not_to have_content(activity_type_2_1.name)
+        expect(page).not_to have_content(activity_type_3_1.name)
       end
 
-      it 'shows activity category page' do
+      it 'links to category page, activity page and back' do
         click_link 'View all'
-        expect(page.has_content?(activity_category_1.name)).to be true
-        expect(page.has_content?(activity_category_1.description)).to be true
-        expect(page.has_content?(activity_type_1_1.name)).to be true
-        expect(page.has_content?(activity_type_1_2.name)).to be true
-        expect(page.has_content?(activity_type_1_3.name)).to be true
-        expect(page.has_content?(activity_type_1_4.name)).to be true
-        expect(page.has_content?(activity_type_1_5.name)).to be true
+        expect(page).to have_content(activity_category_1.name)
+        expect(page).to have_content(activity_category_1.description)
+
+        click_link activity_type_1_1.name
+        expect(page).to have_content(activity_type_1_1.name)
+        expect(page).to have_content('public descriptive text here')
+
+        click_link "All #{activity_category_1.name} activities"
+        expect(page).to have_content(activity_category_1.name)
+
+        click_link 'All activities'
+        expect(page).to have_content('Energy saving activities')
       end
     end
   end

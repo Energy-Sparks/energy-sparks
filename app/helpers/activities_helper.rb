@@ -1,6 +1,7 @@
 module ActivitiesHelper
   def activity_categories_path_url(school)
-    school ? school_activity_categories_path(school) : activity_categories_path
+    # might have school without id during onboarding
+    school && school.id ? school_activity_categories_path(school) : activity_categories_path
   end
 
   def activity_category_path_url(school, activity_category)
