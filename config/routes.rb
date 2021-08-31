@@ -95,7 +95,11 @@ Rails.application.routes.draw do
       end
       resources :school_targets, except: [:destroy]
 
-      resources :activity_categories, only: [:index]
+      resources :activity_categories, only: [:index, :show] do
+        collection do
+          get :recommended
+        end
+      end
       resources :activity_types, only: [:index, :show]
 
       resources :programme_types, only: [:index, :show]

@@ -4,6 +4,6 @@ class ActivityCategoriesController < ApplicationController
 
   def index
     @activity_categories = @activity_categories.featured.by_name
-    @activity_categories = @activity_categories.select { |activity_category| activity_category.activity_types.count > 4 }
+    @activity_categories = @activity_categories.select { |activity_category| activity_category.activity_types.active.count > 4 }
   end
 end
