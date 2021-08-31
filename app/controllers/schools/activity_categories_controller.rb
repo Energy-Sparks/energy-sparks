@@ -1,15 +1,17 @@
 module Schools
-  class ActivityCategoriesController < ApplicationController
+  class ActivityCategoriesController < ::ActivityCategoriesController
     include ActivityTypeFilterable
 
     load_and_authorize_resource :school
 
-    def index
-      @filter = activity_type_filter
-      @activity_categories = ActivityCategory.all.includes(:activity_types).order(:name)
+    before_action :load_suggested_activities
+
+    def recommended
     end
 
-    def show
+    def load_suggested_activities
+      suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
+      @suggested_activities = suggester.suggest_for_school_targets(100)
     end
   end
 end

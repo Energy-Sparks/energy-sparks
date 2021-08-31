@@ -15,13 +15,28 @@
   </div>
 </div>
 
+<% if @suggested_activities %>
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3>Recommended for your school</h3>
+        <div>
+          <%= link_to 'View all', recommended_school_activity_categories_path(@school), class: "btn btn-secondary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render "cards", activity_types: @suggested_activities.first(5) %>
+  <div class="row padded-row"></div>
+<% end %>
+
 <% @activity_categories.each do |activity_category| %>
   <div class="row">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
         <h3><%= activity_category.name %></h3>
         <div>
-          <%= link_to 'View all', activity_category_path(activity_category), class: "btn btn-secondary" %>
+          <%= link_to 'View all', activity_category_path_url(@school, activity_category), class: "btn btn-secondary" %>
         </div>
       </div>
     </div>
