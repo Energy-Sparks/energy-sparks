@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<% @activity_category.activity_types.by_name.each do |activity_type| %>
+<% @activity_category.activity_types.active.by_name.each do |activity_type| %>
   <div class="row mt-2">
     <div class="col-sm-2">
       <%= link_to activity_type_path_url(@school, activity_type) do %>

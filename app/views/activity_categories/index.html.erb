@@ -41,6 +41,6 @@
       </div>
     </div>
   </div>
-  <%= render "cards", activity_types: activity_category.activity_types.sample(5) %>
+  <%= render "cards", activity_types: activity_category.activity_types.active.sample(5) %>
   <div class="row padded-row"></div>
 <% end %>

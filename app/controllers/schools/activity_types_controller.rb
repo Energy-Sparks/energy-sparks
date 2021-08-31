@@ -3,7 +3,7 @@ module Schools
     load_resource :school
     load_and_authorize_resource
 
-    before_action :load_content
+    before_action :load_content, only: :show
 
     def load_content
       @content = TemplateInterpolation.new(
