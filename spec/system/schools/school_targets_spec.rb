@@ -11,6 +11,8 @@ RSpec.describe 'school targets', type: :system do
     has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true) }
 
   before(:each) do
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
