@@ -341,7 +341,7 @@ RSpec.describe "school", type: :system do
             expect(school.indicated_has_storage_heaters).to be true
           end
 
-          it "and a school target event is recorded" do
+          it "and user is prompted to review target" do
             create(:school_target, school: school, storage_heaters: nil)
 
             click_on(school_name)
@@ -352,6 +352,9 @@ RSpec.describe "school", type: :system do
 
             school.reload
             expect(school.has_school_target_event?(:storage_heater_added)).to be true
+
+            visit school_path(school)
+            expect(page).to have_content("The configuration of your school has changed, you may need to revisit your targets for this year.")
           end
         end
 
