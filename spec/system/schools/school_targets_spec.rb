@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'school targets', type: :system do
 
-  let!(:school)            { create(:school) }
+  let!(:school)            { create(:school, indicated_has_storage_heaters: true) }
   let!(:gas_meter)         { create(:gas_meter, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:school_admin)      { create(:school_admin, school: school) }
@@ -53,6 +53,7 @@ RSpec.describe 'school targets', type: :system do
         has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
 
       before(:each) do
+        school.update!(indicated_has_storage_heaters: false)
         school.configuration.update!(fuel_configuration: fuel_configuration)
         visit school_school_targets_path(school)
       end
@@ -139,13 +140,45 @@ RSpec.describe 'school targets', type: :system do
     end
 
     context "and fuel configuration has changed" do
+      let!(:school_target_event) { create(:school_target_event, school: school, event: :storage_heater_added)}
+
       context "and theres enough data" do
-        it "displays a prompt to revise the target"
+        before(:each) do
+          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
+        end
+
+        it "displays a prompt to revisit the target" do
+          visit school_school_targets_path(school)
+          expect(page).to have_content("The configuration of your Storage heaters has changed")
+        end
+
         context "and gas was added" do
           it "displays the relevant field"
+          it "includes a prompt on the form"
+          it "no longer prompts after target is revised"
         end
+
         context "and storage heater was added" do
-          it "displays the relevant field"
+          before(:each) do
+            visit school_school_targets_path(school)
+            click_on("Review your target")
+          end
+
+          it "displays the relevant field" do
+            expect(page).to have_content("Reducing storage heater usage by")
+          end
+
+          it "includes a prompt on the form" do
+            expect(page).to have_content("The configuration of your Storage heaters has changed")
+          end
+
+          it "no longer prompts after target is revised" do
+            fill_in "Reducing storage heater usage by", with: 1
+            click_on "Update our target"
+            expect(page).to_not have_content("The configuration of your Storage heaters has changed")
+            expect(school.current_target.storage_heaters).to eql 1.0
+          end
+
         end
       end
     end

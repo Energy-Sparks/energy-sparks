@@ -20,6 +20,8 @@ module Schools
 
     def show
       setup_activity_suggestions
+      @prompt_to_review_target = prompt_to_review_target?
+      @fuel_types_changed = fuel_types_changed
     end
 
     #create first or new target if current has expired
@@ -47,10 +49,13 @@ module Schools
     end
 
     def edit
+      @prompt_to_review_target = prompt_to_review_target?
+      @fuel_types_changed = fuel_types_changed
     end
 
     def update
       if @school_target.update(school_target_params)
+        @school.school_target_events.where(event: SchoolTargetEvent.all_fuel_type_events).destroy_all
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else
         render :edit

@@ -17,6 +17,17 @@
   <%= render "bullet_chart", school_target: @school_target, fuel_type: :storage_heaters, target: @school_target.storage_heaters, progress: @storage_heater_progress, progress_path: storage_heaters_school_progress_index_path(@school)  %>
 <% end %>
 
+<% if @prompt_to_review_target %>
+  <div class="row alert text-dark bg-neutral">
+    <div class="col-md-2">
+      <%= link_to "Review your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-light rounded-pill" %>
+    </div>
+    <div class="col">
+      <span class="align-middle">The configuration of your <%= @fuel_types_changed.map(&:humanize).map(&:pluralize).to_sentence %> has changed, which means you may need to revisit your targets for this year.</span>
+    </div>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col">
     <h3>Achieving your targets</h3>

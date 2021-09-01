@@ -24,19 +24,19 @@ module Schools
       #But if the setting is flipped backed before the target is updated, then remove the event
       # rubocop:disable Style/IfInsideElse
       if has_storage_heater_target? &&
-         if !has_now_indicated_they_have_storage_meters? && !has_school_target_event?(:storage_heaters_removed)
-           create_school_target_event(:storage_heaters_removed)
-         elsif has_now_indicated_they_have_storage_meters? && has_school_target_event?(:storage_heaters_removed)
-           remove_school_target_event(:storage_heaters_removed)
+         if !has_now_indicated_they_have_storage_meters? && !has_school_target_event?(:storage_heater_removed)
+           create_school_target_event(:storage_heater_removed)
+         elsif has_now_indicated_they_have_storage_meters? && has_school_target_event?(:storage_heater_removed)
+           remove_school_target_event(:storage_heater_removed)
          end
       else
         #If the schools current target doesnt include storage heaters, we need to
         #record that they now have them.
         #But if the setting is flipped backed before the target is updated, then remove the event
-        if has_now_indicated_they_have_storage_meters? && !has_school_target_event?(:storage_heaters_added)
-          create_school_target_event(:storage_heaters_added)
-        elsif !has_now_indicated_they_have_storage_meters? && has_school_target_event?(:storage_heaters_added)
-         remove_school_target_event(:storage_heaters_added)
+        if has_now_indicated_they_have_storage_meters? && !has_school_target_event?(:storage_heater_added)
+          create_school_target_event(:storage_heater_added)
+        elsif !has_now_indicated_they_have_storage_meters? && has_school_target_event?(:storage_heater_added)
+         remove_school_target_event(:storage_heater_added)
         end
       end
       # rubocop:enable Style/IfInsideElse

@@ -14,7 +14,7 @@ RSpec.describe Targets::SchoolTargetService do
     school.configuration.update!(fuel_configuration: fuel_configuration)
   end
 
-  context 'when building' do
+  describe '#build_target' do
     context 'a new target' do
       let(:target) { service.build_target }
 
@@ -69,7 +69,7 @@ RSpec.describe Targets::SchoolTargetService do
     end
   end
 
-  context 'checking data' do
+  describe '#enough_data?' do
     before(:each) do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
     end
@@ -95,4 +95,24 @@ RSpec.describe Targets::SchoolTargetService do
 
   end
 
+  describe '#fuel_type_changed?' do
+    it 'handles empty events' do
+      expect( service.fuel_types_changed? ).to be false
+    end
+
+    [:storage_heater, :electricity, :gas].each do |fuel_type|
+      it "identifies #{fuel_type} fuel type changes" do
+        create(:school_target_event, event: "#{fuel_type}_added".to_sym, school: school)
+        expect( service.fuel_types_changed? ).to be true
+        SchoolTargetEvent.destroy_all
+        create(:school_target_event, event: "#{fuel_type}_added".to_sym, school: school)
+        expect( service.fuel_types_changed? ).to be true
+      end
+    end
+
+    it 'ignores other events' do
+      create(:school_target_event, event: :first_target_sent, school: school)
+      expect( service.fuel_types_changed? ).to be false
+    end
+  end
 end

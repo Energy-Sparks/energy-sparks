@@ -4,7 +4,15 @@ module SchoolProgress
 private
 
   def prompt_for_target?
-    EnergySparks::FeatureFlags.active?(:school_targets) && !@school.has_target? && Targets::SchoolTargetService.new(@school).enough_data?
+    EnergySparks::FeatureFlags.active?(:school_targets) && !@school.has_target? && target_service.enough_data?
+  end
+
+  def prompt_to_review_target?
+    EnergySparks::FeatureFlags.active?(:school_targets) && @school.has_target? && target_service.fuel_types_changed?
+  end
+
+  def fuel_types_changed
+    target_service.fuel_types_changed
   end
 
   def calculate_current_progress
@@ -31,5 +39,9 @@ private
 
   def progress_service
     @progress_service ||= Targets::ProgressService.new(@school, aggregate_school)
+  end
+
+  def target_service
+    @target_service ||= Targets::SchoolTargetService.new(@school)
   end
 end

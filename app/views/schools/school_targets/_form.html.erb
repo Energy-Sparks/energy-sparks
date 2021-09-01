@@ -34,7 +34,7 @@
     </div>
   <% end %>
 
-  <% if school_target.school.has_storage_heaters? %>
+  <% if school_target.school.indicated_has_storage_heaters? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
         <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label" %>
@@ -48,14 +48,19 @@
     </div>
   <% end %>
 
-  <% if !school_target.persisted? %>
-    <div class="input-group mt-3">
+  <div class="input-group mt-3">
+      <% if !school_target.persisted? %>
       <p>
         Your new target will run from <strong><%= nice_dates(school_target.start_date) %></strong> to
         <strong><%= nice_dates(school_target.target_date) %></strong>
       </p>
-    </div>
-  <% end %>
+      <% else %>
+      <p>
+        You are aiming to achieve your target between <strong><%= nice_dates(school_target.start_date) %></strong> and
+        <strong><%= nice_dates(school_target.target_date) %></strong>
+      </p>
+      <% end %>
+  </div>
 
   <%= f.submit school_target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
 

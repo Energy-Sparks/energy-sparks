@@ -28,7 +28,7 @@ describe Schools::SchoolUpdater do
             school.update!(indicated_has_storage_heaters: true)
             service.after_update!
             school.reload
-            expect(school.has_school_target_event?(:storage_heaters_added)).to be true
+            expect(school.has_school_target_event?(:storage_heater_added)).to be true
           end
 
           it 'removes the event if the setting is changed back' do
@@ -36,7 +36,7 @@ describe Schools::SchoolUpdater do
             service.after_update!
             school.update!(indicated_has_storage_heaters: false)
             service.after_update!
-            expect(school.has_school_target_event?(:storage_heaters_added)).to be false
+            expect(school.has_school_target_event?(:storage_heater_added)).to be false
           end
         end
 
@@ -47,7 +47,7 @@ describe Schools::SchoolUpdater do
             school.update!(indicated_has_storage_heaters: false)
             service.after_update!
             school.reload
-            expect(school.has_school_target_event?(:storage_heaters_removed)).to be true
+            expect(school.has_school_target_event?(:storage_heater_removed)).to be true
           end
 
           it 'removes the event if the setting is changed back' do
@@ -55,7 +55,7 @@ describe Schools::SchoolUpdater do
             service.after_update!
             school.update!(indicated_has_storage_heaters: true)
             service.after_update!
-            expect(school.has_school_target_event?(:storage_heaters_removed)).to be false
+            expect(school.has_school_target_event?(:storage_heater_removed)).to be false
           end
         end
 

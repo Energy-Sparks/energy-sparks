@@ -351,7 +351,7 @@ RSpec.describe "school", type: :system do
             click_on('Update School')
 
             school.reload
-            expect(school.has_school_target_event?(:storage_heaters_added)).to be true
+            expect(school.has_school_target_event?(:storage_heater_added)).to be true
           end
         end
 
