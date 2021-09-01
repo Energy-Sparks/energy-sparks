@@ -80,7 +80,7 @@ RSpec.describe 'school targets', type: :system do
   end
 
   context "with target" do
-    let!(:target)          { create(:school_target, school: school) }
+    let!(:target)          { create(:school_target, school: school, storage_heaters: nil) }
 
     let!(:activity_type)   { create(:activity_type)}
 
@@ -175,10 +175,9 @@ RSpec.describe 'school targets', type: :system do
           end
 
           it "no longer prompts after target is revised" do
-            fill_in "Reducing storage heater usage by", with: 1
             click_on "Update our target"
             expect(page).to_not have_content("The configuration of your Storage heaters has changed")
-            expect(school.current_target.storage_heaters).to eql 1.0
+            expect(school.current_target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATER_TARGET
           end
 
         end

@@ -49,6 +49,7 @@ module Schools
     end
 
     def edit
+      target_service.refresh_target(@school_target)
       @prompt_to_review_target = prompt_to_review_target?
       @fuel_types_changed = fuel_types_changed
     end

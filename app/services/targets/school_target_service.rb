@@ -18,6 +18,18 @@ module Targets
       )
     end
 
+    def refresh_target(target)
+      if fuel_types_changed.include?("storage_heater") && target.storage_heaters.nil?
+        target.storage_heaters = DEFAULT_STORAGE_HEATER_TARGET
+      end
+      if fuel_types_changed.include?("electricity") && target.electricity.nil?
+        target.electricity = DEFAULT_ELECTRICITY_TARGET
+      end
+      if fuel_types_changed.include?("gas") && target.gas.nil?
+        target.gas = DEFAULT_GAS_TARGET
+      end
+    end
+
     def enough_data?
       return true if enough_data_for_electricity?
       return true if enough_data_for_gas?
@@ -30,11 +42,11 @@ module Targets
     end
 
     def enough_data_for_gas?
-      @school.has_gas? && target_service(aggregate_school, :gas).enough_data_to_set_target?
+      @school.has_gas? && enough_data_for_fuel_type?(:gas)
     end
 
     def enough_data_for_storage_heater?
-      @school.has_storage_heaters? && target_service(aggregate_school, :storage_heater).enough_data_to_set_target?
+      @school.has_storage_heaters? && enough_data_for_fuel_type?(:storage_heater)
     end
 
     def fuel_types_changed?
