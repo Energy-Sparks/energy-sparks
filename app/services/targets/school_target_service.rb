@@ -66,7 +66,7 @@ module Targets
     end
 
     def storage_heater_target
-      return nil unless @school.has_storage_heaters?
+      return nil unless @school.has_storage_heaters? || @school.indicated_has_storage_heaters?
       most_recent_target.present? ? most_recent_target.storage_heaters : DEFAULT_STORAGE_HEATER_TARGET
     end
 

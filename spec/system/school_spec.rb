@@ -330,6 +330,10 @@ RSpec.describe "school", type: :system do
         end
 
         context "can update storage heaters" do
+          before(:each) do
+            allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+          end
+
           it "and changes are saved" do
             click_on(school_name)
             click_on('Edit school details')
