@@ -18,8 +18,8 @@ describe 'adding a new activity' do
 
   it 'allows an activity to be created without title' do
     visit school_path(school)
-    click_on('Complete activities')
-    click_on('Record your activity')
+    click_on 'Complete activities'
+    click_on 'Record your activity'
 
     expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
     select(activity_type_name, from: 'Activity type')
@@ -31,7 +31,7 @@ describe 'adding a new activity' do
 
   it 'allows an activity to be created with custom title', js: true do
     visit suggest_activity_school_path(school)
-    click_on('Record your activity')
+    click_on 'Record your activity'
     select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
 
@@ -44,4 +44,15 @@ describe 'adding a new activity' do
     expect(page.has_content?(custom_title)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
   end
+
+  it 'allows activity to be recorded from individual page, and shows previously completed activities' do
+    visit school_activity_type_path(school, activity_type)
+    click_on 'Record this activity'
+    click_on 'Save activity'
+    expect(page).to have_content("Activity was successfully created")
+
+    visit school_activity_type_path(school, activity_type)
+    expect(page).to have_content("Activity previously completed on")
+  end
+
 end
