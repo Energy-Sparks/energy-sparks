@@ -24,20 +24,26 @@ RSpec.describe "activity type", type: :system do
   let!(:activity_type_3_4) { create(:activity_type, activity_category: activity_category_3, key_stages: [ks3])}
   let!(:activity_type_3_5) { create(:activity_type, activity_category: activity_category_3, key_stages: [ks3])}
 
+  let!(:activity_category_4) { create(:activity_category, name: 'cat4', pupil: true)}
+  let!(:activity_type_4_1) { create(:activity_type, activity_category: activity_category_4)}
+
   context 'as a public user' do
     describe 'activity categories can be viewed' do
       before(:each) do
         visit activity_categories_path
       end
 
-      it 'shows featured activity categories with at least 5 activities, but not Recommended section' do
+      it 'shows featured activity categories with at least 5 activities, and Pupil activities, but not Recommended section' do
         expect(page).to have_content(activity_category_1.name)
         expect(page).not_to have_content(activity_category_2.name)
         expect(page).not_to have_content(activity_category_3.name)
         expect(page).not_to have_content('Recommended')
+
+        expect(page).to have_content('Pupil activities')
+        expect(page).to have_content(activity_category_4.name)
       end
 
-      it 'shows 5 activities ' do
+      it 'shows 5 activities' do
         expect(page).to have_content(activity_type_1_1.name)
         expect(page).to have_content(activity_type_1_2.name)
         expect(page).to have_content(activity_type_1_3.name)

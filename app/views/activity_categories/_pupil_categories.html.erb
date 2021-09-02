@@ -1,0 +1,24 @@
+<div class="card-deck">
+  <% activity_categories.each do |activity_category| %>
+    <div class="card">
+      <%= link_to activity_category_path_url(@school, activity_category) do %>
+        <%= render 'activity_categories/activity_category_image', activity_category: activity_category %>
+      <% end %>
+      <div class="card-body">
+        <p class="card-text">
+          <%= activity_category.name %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <p class="card-text">
+        Using our activities pupils can score points for their school while learning about energy and climate change.
+      </p>
+      <p class="card-text">
+        Browse through different activities linked to a variety of subjects and key stages.
+      </p>
+    </div>
+  </div>
+</div>
