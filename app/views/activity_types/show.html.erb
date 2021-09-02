@@ -20,7 +20,9 @@
   </div>
 </div>
 
-<%= render 'activity_types/previous_records', activity_type: @activity_type, school: current_user_school %>
+<% if current_user_school %>
+  <%= render 'activity_types/previous_records', activity_type: @activity_type, school: current_user_school %>
+<% end %>
 
 <% if @can_be_completed && can?(:create, Activity) %>
   <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: current_user_school %>
