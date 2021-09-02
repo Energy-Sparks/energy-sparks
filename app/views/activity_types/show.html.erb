@@ -21,7 +21,10 @@
 </div>
 
 <%= render 'activity_types/previous_records', activity_type: @activity_type, school: current_user_school %>
-<%= render 'activity_types/prompt_score', activity_type: @activity_type, recorded: @recorded, school: current_user_school, school_count: @school_count %>
+
+<% if @can_be_completed && can?(:create, Activity) %>
+  <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: current_user_school %>
+<% end %>
 
 <div class="row padded-row">
   <div class="col-md-9">

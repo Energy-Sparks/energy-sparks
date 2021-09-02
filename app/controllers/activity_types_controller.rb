@@ -13,10 +13,15 @@ class ActivityTypesController < ApplicationController
     @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
     if current_user_school
       @content = load_content(@activity_type, current_user_school)
+      @can_be_completed = can_be_completed(@activity_type, current_user_school)
     end
   end
 
   private
+
+  def can_be_completed(activity_type, school)
+    ActivityTypeFilter.new(school: school, query: { not_completed_or_repeatable: true }).activity_types.include?(activity_type)
+  end
 
   def load_content(activity_type, school)
     TemplateInterpolation.new(
