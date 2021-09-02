@@ -1,7 +1,7 @@
 <div class="card-deck">
   <% activity_categories.each do |activity_category| %>
     <div class="card">
-      <%= link_to activity_category_path_url(@school, activity_category) do %>
+      <%= link_to activity_category_path(activity_category) do %>
         <%= render 'activity_categories/activity_category_image', activity_category: activity_category %>
       <% end %>
       <div class="card-body">

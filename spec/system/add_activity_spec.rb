@@ -46,12 +46,12 @@ describe 'adding a new activity' do
   end
 
   it 'allows activity to be recorded from individual page, and shows previously completed activities' do
-    visit school_activity_type_path(school, activity_type)
+    visit activity_type_path(activity_type)
     click_on 'Record this activity'
     click_on 'Save activity'
     expect(page).to have_content("Activity was successfully created")
 
-    visit school_activity_type_path(school, activity_type)
+    visit activity_type_path(activity_type)
     expect(page).to have_content("Activity previously completed on")
   end
 
