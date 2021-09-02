@@ -29,7 +29,7 @@ RSpec.describe "activity type", type: :system do
 
       it 'shows categories with 5 activity types, plus Recommended section' do
         expect_any_instance_of(NextActivitySuggesterWithFilter).to receive(:suggest_for_school_targets).and_return([activity_type_3_1])
-        visit school_activity_categories_path(school)
+        visit activity_categories_path
 
         expect(page).to have_content(activity_category_1.name)
         expect(page).to have_content(activity_type_1_1.name)
@@ -44,7 +44,7 @@ RSpec.describe "activity type", type: :system do
 
       it 'links to category page, activity page and back' do
         allow_any_instance_of(NextActivitySuggesterWithFilter).to receive(:suggest_for_school_targets).and_return([])
-        visit school_activity_categories_path(school)
+        visit activity_categories_path
 
         click_link 'View all'
         expect(page).to have_content(activity_category_1.name)

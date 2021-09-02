@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_26_134753) do
+ActiveRecord::Schema.define(version: 2021_09_02_102522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_134753) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.boolean "featured", default: false
+    t.boolean "pupil", default: false
   end
 
   create_table "activity_timings", force: :cascade do |t|

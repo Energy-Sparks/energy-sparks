@@ -1,6 +1,25 @@
 <%= simple_form_for([:admin, activity_category]) do |f| %>
   <%= f.input :name, as: :string %>
   <%= f.input :description, as: :string %>
+
+  <%= f.label 'Image' %>
+  <p class="small">This image will appear in the list of categories.</p>
+
+  <div class="upload-preview">
+    <div class="col-md-3">
+      <% if !f.object.image.blank? %>
+        <%= image_tag f.object.image, width: '300px' %>
+      <% else %>
+        <%= image_tag '1x1.png' %>
+      <% end %>
+    </div>
+  </div>
+
+  <p>
+    <%= f.input :image, label: false %>
+  </p>
+
   <%= f.input :featured, as: :boolean %>
+  <%= f.input :pupil, as: :boolean %>
   <%= f.submit class: 'btn' %>
 <% end %>

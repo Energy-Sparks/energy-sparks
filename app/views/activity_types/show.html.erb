@@ -16,12 +16,17 @@
     </div>
   </div>
   <div class="col-md-3">
-    <%= link_to "All #{@activity_type.activity_category.name} activities", activity_category_path_url(@school, @activity_type.activity_category), class: 'btn btn-secondary float-right' %>
+    <%= link_to "All #{@activity_type.activity_category.name} activities", activity_category_path(@activity_type.activity_category), class: 'btn btn-secondary float-right' %>
   </div>
 </div>
 
-<%= render 'activity_types/previous_records', activity_type: @activity_type, school: @school %>
-<%= render 'activity_types/prompt_score', activity_type: @activity_type, recorded: @recorded, school: @school, school_count: @school_count %>
+<% if current_user_school %>
+  <%= render 'activity_types/previous_records', activity_type: @activity_type, school: current_user_school %>
+<% end %>
+
+<% if @can_be_completed && can?(:create, Activity) %>
+  <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: current_user_school %>
+<% end %>
 
 <div class="row padded-row">
   <div class="col-md-9">

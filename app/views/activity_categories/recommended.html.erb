@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1>Recommended for your school</h1>
       <div>
-        <%= link_to 'All activities', activity_categories_path_url(@school), class: 'btn btn-secondary'  %>
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary'  %>
       </div>
     </div>
   </div>
@@ -20,13 +20,13 @@
 <% @suggested_activities.each do |activity_type| %>
   <div class="row mt-2">
     <div class="col-sm-2">
-      <%= link_to school_activity_type_path(@school, activity_type) do %>
+      <%= link_to activity_type_path(activity_type) do %>
         <%= render 'activity_types/activity_type_image', activity_type: activity_type %>
       <% end %>
     </div>
     <div class="col-sm-10">
       <h3>
-        <%= link_to activity_type.name, school_activity_type_path(@school, activity_type) %>
+        <%= link_to activity_type.name, activity_type_path(activity_type) %>
       </h3>
       <p>
         <%= activity_type.summary %>
