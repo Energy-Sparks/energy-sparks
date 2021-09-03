@@ -2,83 +2,130 @@
 
 <h1>Reports</h1>
 
-<h2>Amr Data</h2>
-<ul>
-  <li><%= link_to "AMR File imports report", admin_reports_amr_data_feed_import_logs_path %></li>
-  <li><%= link_to "Meter Report", admin_reports_amr_validated_readings_path %></li>
-  <li><%= link_to "Meter Report with deprecated meters included", admin_reports_amr_validated_readings_path(all_meters: true) %></li>
-</ul>
+<h2>System</h2>
 
-<h2>Tariffs</h2>
-<ul>
-  <li><%= link_to "Tariff imports report", admin_reports_tariff_import_logs_path %></li>
-  <li><%= link_to "Tariffs report", admin_reports_tariffs_path %></li>
-</ul>
+<div class="row">
+  <div class="col">
+    <h3>Schools & users</h3>
+    <ul>
+      <li><%= link_to "Schools removed", admin_schools_removals_path %></li>
+      <li><%= link_to "Recently onboarded", completed_admin_school_onboardings_path %></li>
+      <li><%= link_to "Consents Granted", admin_consent_grants_path %></li>
+    </ul>
 
-<h2>Schools</h2>
+    <h3>Activities</h3>
 
-<ul>
-  <li><%= link_to "Schools removed", admin_schools_removals_path %></li>
-  <li><%= link_to "Recently onboarded", completed_admin_school_onboardings_path %></li>
-</ul>
+    <ul>
+      <li><%= link_to "Recently recorded activities", admin_reports_activities_path %></li>
+    </ul>
 
-<h2>Users</h2>
+    <h3>Alert communications</h3>
+    <ul>
+      <li><%= link_to 'Alert subscribers', admin_reports_alert_subscribers_path %></li>
+      <li><%= link_to 'Email unsubscriptions', admin_unsubscriptions_path %></li>
+    </ul>
+  </div>
 
-<ul>
-  <li><%= link_to "Consents Granted", admin_consent_grants_path %></li>
-</ul>
+  <div class="col">
+    <h3>Amr Data</h3>
+    <ul>
+      <li><%= link_to "AMR File imports report", admin_reports_amr_data_feed_import_logs_path %></li>
+      <li><%= link_to "Meter Report", admin_reports_amr_validated_readings_path %></li>
+      <li><%= link_to "Meter Report with deprecated meters included", admin_reports_amr_validated_readings_path(all_meters: true) %></li>
+    </ul>
 
-<h2>Benchmarks</h2>
-<ul>
-  <li><%= link_to "Benchmark Result Generation Runs", admin_reports_benchmark_result_generation_runs_path %></li>
-</ul>
+    <h3>Tariffs</h3>
+    <ul>
+      <li><%= link_to "Tariff imports report", admin_reports_tariff_import_logs_path %></li>
+      <li><%= link_to "Tariffs report", admin_reports_tariffs_path %></li>
+    </ul>
 
-<h2>Alert communications</h2>
-<ul>
-  <li><%= link_to 'Alert subscribers', admin_reports_alert_subscribers_path %></li>
-  <li><%= link_to 'Email unsubscriptions', admin_unsubscriptions_path %></li>
-</ul>
+    <h3>Benchmarks</h3>
+    <ul>
+      <li><%= link_to "Benchmark Result Generation Runs", admin_reports_benchmark_result_generation_runs_path %></li>
+    </ul>
+  </div>
+</div>
 
-<h2>Carbon Intensity</h2>
-<ul>
-  <li><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path %></li>
-</ul>
+<hr>
 
-<h2>Dark Sky Feed</h2>
-<ul>
-  <% DarkSkyArea.all.each do |area| %>
-    <li><%= link_to "#{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id) %></li>
-  <% end %>
-</ul>
+<h2>External Data Feed Reports</h2>
 
-<h2>Solar PV Feed</h2>
-<ul>
-  <% SolarPvTuosArea.all.each do |area| %>
-    <li><%= link_to "#{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id) %></li>
-  <% end %>
-</ul>
+<div class="row">
+  <div class="col">
+    <h3>Carbon Intensity</h3>
+    <ul>
+      <li><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path %></li>
+    </ul>
+  </div>
+  <div class="col">
+    <h3>Dark Sky Feed</h3>
+    <ul>
+      <% DarkSkyArea.all.order(:title).each do |area| %>
+        <li><%= link_to "#{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col">
+    <h3>Solar PV Feed</h3>
+    <ul>
+      <% SolarPvTuosArea.all.order(:title).each do |area| %>
+        <li><%= link_to "#{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col">
+    <h3>Weather Stations</h3>
+    <ul>
+      <% WeatherStation.by_title.each do |area| %>
+        <li><%= link_to "#{area.title}", data_feeds_weather_observations_path(area.id) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
 
-<h2>Weather Stations</h2>
-<ul>
-  <% WeatherStation.by_title.each do |area| %>
-    <li><%= link_to "#{area.title}", data_feeds_weather_observations_path(area.id) %></li>
-  <% end %>
-</ul>
+<hr>
 
+<h2>Downloads</h2>
 
-<h1>Downloads</h1>
+<div class="row">
+  <div class="col">
+    <ul>
+      <li><%= link_to "Download meter collections", admin_schools_meter_collections_path %></li>
+      <li><%= link_to "Download meter attributes", admin_meter_attributes_path(format: :yaml) %></li>
+    </ul>
+  </div>
+</div>
 
-<ul>
-  <li><%= link_to "Download meter collections", admin_schools_meter_collections_path %></li>
-  <li><%= link_to "Download meter attributes", admin_meter_attributes_path(format: :yaml) %></li>
-  <% DarkSkyArea.all.each do |area| %>
-    <li><%= link_to "Dark Sky Weather CSV for #{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id, format: "csv") %></li>
-  <% end %>
-  <% SolarPvTuosArea.all.each do |area| %>
-    <li><%= link_to "Solar Pv 2 tuos CSV for #{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv") %></li>
-  <% end %>
-  <% WeatherStation.all.each do |area| %>
-    <li><%= link_to "#{area.provider.capitalize} Weather Station CSV for #{area.title}", data_feeds_weather_observations_path(area.id, format: "csv") %></li>
-  <% end %>
-  <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></li>
-</ul>
+<div class="row">
+  <div class="col">
+    <h3>Carbon Intensity</h3>
+    <ul>
+      <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></li>
+    </ul>
+  </div>
+  <div class="col">
+    <h3>Dark Sky Feed</h3>
+    <ul>
+      <% DarkSkyArea.all.order(:title).each do |area| %>
+        <li><%= link_to "CSV for #{area.title}", data_feeds_dark_sky_temperature_readings_path(area.id, format: "csv") %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col">
+    <h3>Solar PV Feed</h3>
+    <ul>
+      <% SolarPvTuosArea.all.order(:title).each do |area| %>
+        <li><%= link_to "CSV for #{area.title}", data_feeds_solar_pv_tuos_readings_path(area.id, format: "csv") %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col">
+    <h3>Weather Stations</h3>
+    <ul>
+      <% WeatherStation.by_title.each do |area| %>
+        <li><%= link_to "CSV for #{area.title}", data_feeds_weather_observations_path(area.id, format: "csv") %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

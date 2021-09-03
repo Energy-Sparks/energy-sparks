@@ -1,0 +1,50 @@
+<% content_for :page_title, 'Latest activities' %>
+
+<h1>Recently recorded activities</h1>
+
+<p>
+  The following is a list of the 50 most recently recorded activities by schools across the
+  whole system
+</p>
+
+<p>Activities with a <span class="text-success">Green link</span> are those where the school has
+  provided a custom title. Others are shown as a <span class="text-muted">grey link</span> </p>
+<p>
+
+<p>
+The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the activity includes
+images provided by the user
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Recorded</th>
+      <th>Happened</th>
+      <th>School</th>
+      <th>Title</th>
+      <th>Images?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @activities.each do |activity| %>
+      <tr>
+        <td><%= nice_dates(activity.created_at) %></td>
+        <td><%= nice_dates(activity.happened_on) %></td>
+        <td><%= link_to activity.school.name, school_path(activity.school) %></td>
+        <td>
+          <%= link_to school_activity_path(activity.school, activity) do %>
+            <% if activity.title.present? %>
+              <span class="text-success"><%= activity.title %></span>
+            <% else %>
+              <span class="text-muted"><%= activity.activity_type.name %></span>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
