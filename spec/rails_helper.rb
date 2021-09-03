@@ -13,7 +13,7 @@ require 'capybara/rspec'
 require 'webdrivers'
 require 'capybara/email/rspec'
 require 'cancan/matchers'
-
+require 'wisper/rspec/matchers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -67,4 +67,7 @@ RSpec.configure do |config|
   config.before { ActionMailer::Base.deliveries.clear }
 
   config.include ApplicationHelper, include_application_helper: true
+
+  # Wisper gem helpers
+  config.include(Wisper::RSpec::BroadcastMatcher)
 end

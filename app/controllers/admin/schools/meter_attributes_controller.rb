@@ -15,12 +15,13 @@ module Admin
       end
 
       def create
-        meter = @school.meters.find(params[:attribute][:meter_id])
-        meter.meter_attributes.create!(
-          attribute_type: params[:attribute][:type],
-          reason: params[:attribute][:reason],
-          input_data: params[:attribute][:root],
-          created_by: current_user
+        service = Meters::MeterAttributeManager.new(@school)
+        service.create!(
+          params[:attribute][:meter_id],
+          params[:attribute][:type],
+          params[:attribute][:root],
+          params[:attribute][:reason],
+          current_user
         )
         redirect_to admin_school_meter_attributes_path(@school)
       rescue => e
@@ -41,23 +42,21 @@ module Admin
       end
 
       def update
-        meter_attribute = MeterAttribute.find(params[:id])
-        new_attribute = meter_attribute.meter.meter_attributes.create!(
-          attribute_type: meter_attribute.attribute_type,
-          reason: params[:attribute][:reason],
-          input_data: params[:attribute][:root],
-          created_by: current_user
+        service = Meters::MeterAttributeManager.new(@school)
+        service.update!(
+          params[:id],
+          params[:attribute][:root],
+          params[:attribute][:reason],
+          current_user
         )
-        meter_attribute.update!(replaced_by: new_attribute)
         redirect_to admin_school_meter_attributes_path(@school)
       rescue => e
         redirect_back fallback_location: edit_admin_school_meter_attribute_path(@school, meter_attribute), notice: e.message
       end
 
       def destroy
-        meter_attribute = MeterAttribute.find(params[:id])
-        meter_attribute.deleted_by = current_user
-        meter_attribute.save(validate: false)
+        service = Meters::MeterAttributeManager.new(@school)
+        service.delete!(params[:id], current_user)
         redirect_to admin_school_meter_attributes_path(@school)
       rescue => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message

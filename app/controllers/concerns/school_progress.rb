@@ -8,11 +8,12 @@ private
   end
 
   def prompt_to_review_target?
-    EnergySparks::FeatureFlags.active?(:school_targets) && @school.has_target? && target_service.fuel_types_changed?
+    EnergySparks::FeatureFlags.active?(:school_targets) && @school.has_target? && @school.most_recent_target.suggest_revision?
   end
 
   def fuel_types_changed
-    target_service.fuel_types_changed
+    return nil unless @school.has_target?
+    @school.most_recent_target.revised_fuel_types
   end
 
   def calculate_current_progress

@@ -330,10 +330,6 @@ RSpec.describe "school", type: :system do
         end
 
         context "can update storage heaters" do
-          before(:each) do
-            allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-          end
-
           it "and changes are saved" do
             click_on(school_name)
             click_on('Edit school details')
@@ -343,22 +339,6 @@ RSpec.describe "school", type: :system do
 
             school.reload
             expect(school.indicated_has_storage_heaters).to be true
-          end
-
-          it "and user is prompted to review target" do
-            create(:school_target, school: school, storage_heaters: nil)
-
-            click_on(school_name)
-            click_on('Edit school details')
-            check 'Our school has night storage heaters'
-
-            click_on('Update School')
-
-            school.reload
-            expect(school.has_school_target_event?(:storage_heater_added)).to be true
-
-            visit school_path(school)
-            expect(page).to have_content("The configuration of your school has changed, you may need to revisit your targets for this year.")
           end
         end
 

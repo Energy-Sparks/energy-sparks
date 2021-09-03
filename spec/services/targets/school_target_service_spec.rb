@@ -92,27 +92,5 @@ RSpec.describe Targets::SchoolTargetService do
         expect(service.enough_data?).to be true
       end
     end
-
-  end
-
-  describe '#fuel_type_changed?' do
-    it 'handles empty events' do
-      expect( service.fuel_types_changed? ).to be false
-    end
-
-    [:storage_heater, :electricity, :gas].each do |fuel_type|
-      it "identifies #{fuel_type} fuel type changes" do
-        create(:school_target_event, event: "#{fuel_type}_added".to_sym, school: school)
-        expect( service.fuel_types_changed? ).to be true
-        SchoolTargetEvent.destroy_all
-        create(:school_target_event, event: "#{fuel_type}_added".to_sym, school: school)
-        expect( service.fuel_types_changed? ).to be true
-      end
-    end
-
-    it 'ignores other events' do
-      create(:school_target_event, event: :first_target_sent, school: school)
-      expect( service.fuel_types_changed? ).to be false
-    end
   end
 end

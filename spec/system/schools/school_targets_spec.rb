@@ -142,11 +142,11 @@ RSpec.describe 'school targets', type: :system do
     end
 
     context "and fuel configuration has changed" do
-      let!(:school_target_event) { create(:school_target_event, school: school, event: :storage_heater_added)}
 
       context "and theres enough data" do
         before(:each) do
           allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
+          target.update!(suggest_revision: true, revised_fuel_types: ["storage heater"])
         end
 
         it "displays a prompt to revisit the target" do
@@ -177,6 +177,8 @@ RSpec.describe 'school targets', type: :system do
           it "no longer prompts after target is revised" do
             click_on "Update our target"
             expect(page).to_not have_content("The configuration of your Storage heaters has changed")
+            target.reload
+            expect(target.suggest_revision?).to be false
             expect(school.current_target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATER_TARGET
           end
 
