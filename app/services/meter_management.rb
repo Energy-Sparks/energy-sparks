@@ -1,9 +1,12 @@
 require 'dashboard'
 
 class MeterManagement
+  include Wisper::Publisher
+
   def initialize(meter, n3rgy_api_factory: Amr::N3rgyApiFactory.new)
     @n3rgy_api_factory = n3rgy_api_factory
     @meter = meter
+    subscribe(Targets::FuelTypeEventListener.new)
   end
 
   def check_n3rgy_status
@@ -53,6 +56,7 @@ class MeterManagement
         result = Meters::DccGrantTrustedConsents.new([@meter]).perform
       end
     end
+    broadcast(:meter_activated, @meter)
     result
   end
 
@@ -64,6 +68,7 @@ class MeterManagement
         result = Meters::DccWithdrawTrustedConsents.new([@meter]).perform
       end
     end
+    broadcast(:meter_deactivated, @meter)
     result
   end
 
