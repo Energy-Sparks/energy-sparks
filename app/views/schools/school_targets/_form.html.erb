@@ -6,50 +6,61 @@
 
   <%= render 'shared/errors', subject: school_target, subject_name: 'School target' %>
 
-  <div class="input-group col-12">
-    <div class="col-sm-6">
-      <%= f.label :electricity, "Reducing electricity usage by", class: "form-label" %>
+  <% if school_target.school.has_electricity? %>
+    <div class="input-group col-12">
+      <div class="col-sm-6">
+        <%= f.label :electricity, "Reducing electricity usage by", class: "form-label" %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :electricity, class: 'form-control', value: school_target.electricity || 0.0, pattern: '[0-9.]+' %>
+      </div>
+      <div class="input-group-append">
+        <span class="input-group-text"> % </span>
+      </div>
     </div>
-    <div class="col-sm-2">
-      <%= f.text_field :electricity, class: 'form-control', value: school_target.electricity || 0.0, pattern: '[0-9.]+' %>
-    </div>
-    <div class="input-group-append">
-      <span class="input-group-text"> % </span>
-    </div>
-  </div>
+  <% end %>
 
-  <div class="input-group col-12">
-    <div class="col-sm-6">
-      <%= f.label :gas, "Reducing gas usage by", class: "form-label" %>
+  <% if school_target.school.has_gas? %>
+    <div class="input-group col-12">
+      <div class="col-sm-6">
+        <%= f.label :gas, "Reducing gas usage by", class: "form-label" %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :gas, class: 'form-control', value: school_target.gas || 0.0, pattern: '[0-9.]+'  %>
+      </div>
+      <div class="input-group-append">
+        <span class="input-group-text"> % </span>
+      </div>
     </div>
-    <div class="col-sm-2">
-      <%= f.text_field :gas, class: 'form-control', value: school_target.gas || 0.0, pattern: '[0-9.]+'  %>
-    </div>
-    <div class="input-group-append">
-      <span class="input-group-text"> % </span>
-    </div>
-  </div>
+  <% end %>
 
-  <div class="input-group col-12">
-    <div class="col-sm-6">
-      <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label" %>
+  <% if school_target.school.indicated_has_storage_heaters? %>
+    <div class="input-group col-12">
+      <div class="col-sm-6">
+        <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label" %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :storage_heaters, class: 'form-control', value: school_target.storage_heaters || 0.0, pattern: '[0-9.]+' %>
+      </div>
+      <div class="input-group-append">
+        <span class="input-group-text"> % </span>
+      </div>
     </div>
-    <div class="col-sm-2">
-      <%= f.text_field :storage_heaters, class: 'form-control', value: school_target.storage_heaters || 0.0, pattern: '[0-9.]+' %>
-    </div>
-    <div class="input-group-append">
-      <span class="input-group-text"> % </span>
-    </div>
-  </div>
+  <% end %>
 
-  <% if !school_target.persisted? %>
-    <div class="input-group mt-3">
+  <div class="input-group mt-3">
+      <% if !school_target.persisted? %>
       <p>
         Your new target will run from <strong><%= nice_dates(school_target.start_date) %></strong> to
         <strong><%= nice_dates(school_target.target_date) %></strong>
       </p>
-    </div>
-  <% end %>
+      <% else %>
+      <p>
+        You are aiming to achieve your target between <strong><%= nice_dates(school_target.start_date) %></strong> and
+        <strong><%= nice_dates(school_target.target_date) %></strong>
+      </p>
+      <% end %>
+  </div>
 
   <%= f.submit school_target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
 

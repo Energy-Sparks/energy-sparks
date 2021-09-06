@@ -26,6 +26,10 @@
   <%= render 'shared/add_targets', school: @school %>
 <% end %>
 
+<% if @review_targets %>
+  <%= render 'shared/review_targets', school: @school %>
+<% end %>
+
 <%= render 'shared/add_intervention', school: @school %>
 
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent alerts'%>

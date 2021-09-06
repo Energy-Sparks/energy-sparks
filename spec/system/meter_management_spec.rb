@@ -119,20 +119,23 @@ RSpec.describe "meter management", :meters, type: :system do
       end
     end
 
-    it 'allows adding of meters from the management page with validation' do
-      click_on('Manage meters')
+    context 'when creating meters' do
+      it 'allows adding of meters from the management page with validation' do
+        click_on('Manage meters')
 
-      click_on 'Create Meter'
-      expect(page).to have_content("Meter type can't be blank")
+        click_on 'Create Meter'
+        expect(page).to have_content("Meter type can't be blank")
 
-      fill_in 'Meter Point Number', with: '123543'
-      fill_in 'Name', with: 'Gas'
-      choose 'Gas'
-      click_on 'Create Meter'
+        fill_in 'Meter Point Number', with: '123543'
+        fill_in 'Name', with: 'Gas'
+        choose 'Gas'
+        click_on 'Create Meter'
 
-      expect(school.meters.count).to eq(1)
-      expect(school.meters.first.mpan_mprn).to eq(123543)
+        expect(school.meters.count).to eq(1)
+        expect(school.meters.first.mpan_mprn).to eq(123543)
+      end
     end
+
 
     context 'when the school has a meter' do
 
@@ -159,6 +162,17 @@ RSpec.describe "meter management", :meters, type: :system do
         click_on 'Activate'
         gas_meter.reload
         expect(gas_meter.active).to eq(true)
+      end
+
+      context 'with a school target' do
+        let!(:school_target)  { create(:school_target, school: school) }
+
+        it 'fuel type changes are flagged when meters are activated and deactivated' do
+          click_on 'Deactivate'
+          click_on 'Activate'
+          school_target.reload
+          expect(school_target.suggest_revision?).to be true
+        end
       end
 
       it 'allows deletion of inactive meters' do
