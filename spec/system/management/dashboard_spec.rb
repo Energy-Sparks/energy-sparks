@@ -19,6 +19,21 @@ describe 'Adult dashboard' do
     end
   end
 
+  context 'when logged in as pupil' do
+    let(:pupil) { create(:pupil, school: school)}
+    before(:each) do
+      sign_in(pupil)
+    end
+    it 'allows login and access to dashboard' do
+      visit root_path
+      expect(page).to have_content("#{school.name}")
+      expect(page).to have_link("Adult dashboard", href: management_school_path(school))
+      click_on 'Adult dashboard'
+      expect(page).to have_content("#{school.name}")
+      expect(page).to have_link("Compare schools")
+    end
+  end
+
   context 'when logged in as staff' do
     before(:each) do
       sign_in(staff)
