@@ -15,7 +15,7 @@
           <%= far_icon("lightbulb fa-lg") %>
           <strong>Suggestion</strong> Review your targets.<br>
         </p>
-        The configuration of your <%= @fuel_types_changed.map(&:humanize).map(&:pluralize).to_sentence %> has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets.
+        Your <%= @fuel_types_changed.map(&:humanize).to_sentence %> configuration has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets.
       </div>
     <% else %>
       <div class="alert alert-warning">
