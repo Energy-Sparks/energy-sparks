@@ -151,13 +151,7 @@ RSpec.describe 'school targets', type: :system do
 
         it "displays a prompt to revisit the target" do
           visit school_school_targets_path(school)
-          expect(page).to have_content("The configuration of your Storage heaters has changed")
-        end
-
-        context "and gas was added" do
-          it "displays the relevant field"
-          it "includes a prompt on the form"
-          it "no longer prompts after target is revised"
+          expect(page).to have_content("Your Storage heater configuration has changed")
         end
 
         context "and storage heater was added" do
@@ -171,12 +165,12 @@ RSpec.describe 'school targets', type: :system do
           end
 
           it "includes a prompt on the form" do
-            expect(page).to have_content("The configuration of your Storage heaters has changed")
+            expect(page).to have_content("Your Storage heater configuration has changed")
           end
 
           it "no longer prompts after target is revised" do
             click_on "Update our target"
-            expect(page).to_not have_content("The configuration of your Storage heaters has changed")
+            expect(page).to_not have_content("Your Storage heater configuration has changed")
             target.reload
             expect(target.suggest_revision?).to be false
             expect(school.current_target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATER_TARGET
