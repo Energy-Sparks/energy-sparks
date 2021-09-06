@@ -43,6 +43,8 @@ describe Targets::FuelTypeEventListener, type: :system do
             expect(school_target.revised_fuel_types).to match_array ["storage heater"]
           end
 
+          it 'removes flag if the list is empty'
+
         end
       end
     end

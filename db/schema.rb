@@ -1088,7 +1088,6 @@ ActiveRecord::Schema.define(version: 2021_09_03_082618) do
     t.float "storage_heaters"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "suggest_revision", default: false
     t.string "revised_fuel_types", default: [], null: false, array: true
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end

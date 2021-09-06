@@ -55,7 +55,7 @@ module Schools
     end
 
     def update
-      if @school_target.update(school_target_params.merge({ suggest_revision: false, revised_fuel_types: [] }))
+      if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
         AggregateSchoolService.new(@school).invalidate_cache
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else

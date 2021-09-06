@@ -146,7 +146,7 @@ RSpec.describe 'school targets', type: :system do
       context "and theres enough data" do
         before(:each) do
           allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          target.update!(suggest_revision: true, revised_fuel_types: ["storage heater"])
+          target.update!(revised_fuel_types: ["storage heater"])
         end
 
         it "displays a prompt to revisit the target" do

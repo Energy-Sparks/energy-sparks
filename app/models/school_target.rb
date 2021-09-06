@@ -55,6 +55,10 @@ class SchoolTarget < ApplicationRecord
     MeterAttribute.new(attribute_type: :targeting_and_tracking, input_data: target_to_hash(storage_heaters))
   end
 
+  def suggest_revision?
+    revised_fuel_types.any?
+  end
+
   private
 
   def target_to_hash(target)
