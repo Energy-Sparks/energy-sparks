@@ -22,6 +22,6 @@ class ActivityCategoriesController < ApplicationController
   private
 
   def load_suggested_activities(school)
-    NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest_for_school_targets(100)
+    NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest_for_school_targets(20)
   end
 end
