@@ -10,6 +10,7 @@ class ActivityCategoriesController < ApplicationController
     end
     @pupil_categories = ActivityCategory.pupil.by_name
     @activity_categories = ActivityCategory.featured.by_name.select { |activity_category| activity_category.activity_types.active.count > 4 }
+    @programme_types = ProgrammeType.active
   end
 
   def show

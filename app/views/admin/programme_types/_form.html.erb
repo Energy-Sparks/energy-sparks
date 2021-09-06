@@ -1,10 +1,34 @@
 <%= simple_form_for([:admin, programme_type]) do |f| %>
   <%= f.input :title %>
-  <%= f.label 'Description', for: :description %>
-  <%= f.rich_text_area :description %>
+
+  <%= f.label 'Image' %>
+  <p class="small">This image will appear in the list of programmes.</p>
+
+  <div class="upload-preview">
+    <div class="col-md-3">
+      <% if !f.object.image.blank? %>
+        <%= image_tag f.object.image, width: '300px' %>
+      <% else %>
+        <%= image_tag '1x1.png' %>
+      <% end %>
+    </div>
+  </div>
+
+  <p>
+    <%= f.input :image, label: false %>
+  </p>
+
   <%= f.input :short_description %>
+
+  <%= f.label 'Description', for: :description %>
+
+  <div class="trix-wrapper">
+    <%= f.rich_text_area :description %>
+  </div>
+
   <%= f.input :document_link %>
   <%= f.input :active %>
   <%= f.input :default %>
+
   <%= f.submit 'Save', class: 'btn btn-success' %>
 <% end %>

@@ -1,0 +1,17 @@
+<div class="row justify-content-md-center">
+  <div class="col col-lg-8">
+    <h1>Programme Types</h1>
+
+    <% @programme_types.each do |programme_type| %>
+      <div class="jumbotron">
+        <h2><%= link_to programme_type.title, programme_type_path(programme_type) %></h2>
+        <div class="lead mt-3"><%= programme_type.short_description %></div>
+        <p>
+          <%#= link_to 'Continue', school_programme_path(@school, programme), class: 'btn btn-primary btn-lg'%>
+          <%#= button_to 'Start programme', school_programmes_path(@school, programme_type_id: programme_type), class: 'btn btn-lg btn-success' if can?(:start_programme, @school) %>
+        </p>
+      </div>
+    <% end %>
+
+  </div>
+</div>

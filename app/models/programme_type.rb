@@ -11,6 +11,7 @@
 #
 
 class ProgrammeType < ApplicationRecord
+  has_one_attached :image
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
 
