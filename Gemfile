@@ -94,6 +94,8 @@ gem 'MailchimpMarketing'
 # Eventbrite for training page
 gem 'eventbrite_sdk'
 
+gem 'wisper', '2.0.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -113,6 +115,7 @@ group :development, :test do
   gem 'rubocop-rails', '2.8.0'
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
+  gem 'wisper-rspec', require: false
 end
 
 group :development do

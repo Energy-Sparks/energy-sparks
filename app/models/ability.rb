@@ -109,6 +109,11 @@ class Ability
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
+      #pupils can view management dashboard for their school and others in group
+      if user.pupil?
+        can :show_management_dash, School, id: user.school_id, visible: true
+        can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
+      end
       #pupils and volunteers can only read real cost data if their school is public
       if user.volunteer? || user.pupil?
         can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
