@@ -41,7 +41,11 @@ Rails.application.routes.draw do
   resources :mailchimp_signups, only: [:new, :create, :index]
 
   resources :activity_types, only: [:index, :show]
-  resources :activity_categories, only: [:index, :show]
+  resources :activity_categories, only: [:index, :show] do
+    collection do
+      get :recommended
+    end
+  end
 
   resources :calendars, only: [:show] do
     scope module: :calendars do
@@ -94,10 +98,6 @@ Rails.application.routes.draw do
         end
       end
       resources :school_targets, except: [:destroy]
-
-      resources :activity_categories, only: [:index]
-      resources :activity_types, only: [:index, :show]
-
       resources :programme_types, only: [:index, :show]
       resources :programmes, only: [:show, :create]
 
@@ -305,6 +305,7 @@ Rails.application.routes.draw do
       resources :amr_data_feed_import_logs, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
+      resources :activities, only: :index
     end
 
     resource :settings, only: [:show, :update]

@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_082618) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.boolean "featured", default: false
+    t.boolean "pupil", default: false
   end
 
   create_table "activity_timings", force: :cascade do |t|

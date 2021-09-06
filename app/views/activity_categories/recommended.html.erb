@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
-      <h1><%= @activity_category.name %></h1>
+      <h1>Recommended for your school</h1>
       <div>
         <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary'  %>
       </div>
@@ -12,16 +12,12 @@
 <div class="row mt-2">
   <div class="col">
     <p>
-      <% if @activity_category.description.present? %>
-        <%= @activity_category.description %>
-      <% else %>
-        Completing activities will allow you to score points.
-      <% end %>
+      These are activities that are suggested for your school, based on your previous activity and your targets.
     </p>
   </div>
 </div>
 
-<% @activity_category.activity_types.active.by_name.each do |activity_type| %>
+<% @suggested_activities.each do |activity_type| %>
   <div class="row mt-2">
     <div class="col-sm-2">
       <%= link_to activity_type_path(activity_type) do %>
