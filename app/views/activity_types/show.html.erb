@@ -20,15 +20,21 @@
   </div>
 </div>
 
-<%= render 'activity_types/prompt_score', activity_type: @activity_type, recorded: @recorded, school_count: @school_count %>
+<% if current_user_school %>
+  <%= render 'activity_types/previous_records', activity_type: @activity_type, school: current_user_school %>
+<% end %>
+
+<% if @can_be_completed && can?(:create, Activity) %>
+  <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: current_user_school %>
+<% end %>
 
 <div class="row padded-row">
   <div class="col-md-9">
     <div class="activity_type">
-      <% if @activity_type.description %>
-        <%= @activity_type.description %>
+      <% if @content %>
+        <%= @content.school_specific_description_or_fallback %>
       <% else %>
-        <p><em>No description given</em></p>
+        <%= @activity_type.description %>
       <% end %>
     </div>
   </div>

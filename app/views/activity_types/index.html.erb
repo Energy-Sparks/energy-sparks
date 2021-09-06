@@ -10,6 +10,9 @@
           <th scope="col">Name</th>
           <th scope="col">Score</th>
           <th scope="col">Key Stages</th>
+          <% if current_user_school %>
+            <th scope="col">Completed</th>
+          <% end %>
         </tr>
       </thead>
 
@@ -19,6 +22,9 @@
             <td><%= link_to activity_type.name, activity_type_path(activity_type) %></td>
             <td><%= activity_type.score %></td>
             <td><%= activity_type.key_stage_list %></td>
+            <% if current_user_school %>
+              <td><%= current_user_school.activities.includes(:activity_type).where(activity_type: activity_type).any? ? 'Yes' : '' %></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>

@@ -9,6 +9,7 @@
       <th>Description</th>
       <th>Activity types</th>
       <th>Featured</th>
+      <th>Pupil</th>
       <th></th>
     </tr>
   </thead>
@@ -19,6 +20,7 @@
         <td><%= activity_category.description %></td>
         <td><%= activity_category.activity_types.count %></td>
         <td><%= y_n(activity_category.featured) %></td>
+        <td><%= y_n(activity_category.pupil) %></td>
         <td><%= link_to 'Edit', edit_admin_activity_category_path(activity_category), class: 'btn'%></td>
       </tr>
     <% end %>

@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :analytics_code
-  helper_method :site_settings, :current_school_podium
+  helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -22,7 +22,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-private
+  def current_user_school
+    if current_user && current_user.school
+      current_user.school
+    end
+  end
+
+  private
 
   def analytics_code
     @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']

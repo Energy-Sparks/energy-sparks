@@ -7,8 +7,8 @@ class Ability
 
     # all users can do these things
     can :read, Activity, school: { visible: true }
-    can :read, ActivityCategory
-    can :show, ActivityType
+    can [:read, :recommended], ActivityCategory
+    can :read, ActivityType
 
     can :read, SchoolGroup
     can :compare, SchoolGroup, public: true

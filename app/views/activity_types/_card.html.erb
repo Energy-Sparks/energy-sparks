@@ -7,7 +7,7 @@
   <% end %>
 
   <div class="card-body">
-    <%= link_to school_activity_type_path(school, activity_type) do %>
+    <%= link_to activity_type_path(activity_type) do %>
       <%= "#{activity_type.name} (#{activity_type.key_stage_list})" %>
     <% end %>
   </div>
