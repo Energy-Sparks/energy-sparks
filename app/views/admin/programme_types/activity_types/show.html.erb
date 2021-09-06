@@ -13,7 +13,7 @@
           <%- activity_types.each do |activity_type| %>
           <div class="form-group row alert-type-activities">
             <div class="col-sm-2">
-            <%= number_field_tag  "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], min: 0, max: 99, step: 1, class: "form-control form-control-sm" %>
+            <%= text_field_tag  "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], class: "form-control form-control-sm" %>
             </div>
             <div class="col-sm-10">
               <%= label_tag "activity_types[#{activity_type.id}][position]", activity_type.name, class: "col-form-label-sm" %>
