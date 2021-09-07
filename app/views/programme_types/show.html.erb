@@ -8,13 +8,21 @@
   </div>
   <div class="col-md-6">
     <h2><%= @programme_type.title %></h2>
-    <p><%= @programme_type.description %></p>
-    <% if @programme_type.document_link.present? %>
-      <%= link_to 'Download printable programme as a PDF', @programme_type.document_link, target: '_blank' %>
-    <% end %>
+    <p><%= @programme_type.short_description %></p>
   </div>
   <div class="col-md-3">
     <%= link_to "View all programmes", programme_types_path, class: 'btn btn-secondary float-right' %>
+  </div>
+</div>
+
+<div class="row padded-row">
+  <div class="col-md-9">
+    <p><%= @programme_type.description %></p>
+  </div>
+  <div class="col-md-3">
+    <% if @programme_type.document_link.present? %>
+      <%= link_to 'Download printable programme as PDF', @programme_type.document_link, target: '_blank' %>
+    <% end %>
   </div>
 </div>
 
