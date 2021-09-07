@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_03_082618) do
+ActiveRecord::Schema.define(version: 2021_09_07_095906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1090,6 +1090,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_082618) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "revised_fuel_types", default: [], null: false, array: true
+    t.datetime "report_last_generated"
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 

@@ -40,7 +40,7 @@ RSpec.describe 'school targets', type: :system do
           click_on 'Set this target'
 
           expect(page).to have_content('Target successfully created')
-          expect(page).to have_content("Your energy saving target")
+          expect(page).to have_content("We are calculating your targets")
           expect(school.has_current_target?).to eql(true)
           expect(school.current_target.electricity).to eql 15.0
           expect(school.current_target.gas).to eql 15.0
@@ -68,7 +68,7 @@ RSpec.describe 'school targets', type: :system do
         click_on 'Set this target'
 
         expect(page).to have_content('Target successfully created')
-        expect(page).to have_content("Your energy saving target")
+        expect(page).to have_content("We are calculating your targets")
         expect(school.has_current_target?).to eql(true)
         expect(school.current_target.electricity).to eql 15.0
         expect(school.current_target.gas).to eql nil
@@ -79,7 +79,22 @@ RSpec.describe 'school targets', type: :system do
 
   end
 
-  context "with target" do
+  context "with newly created target" do
+    let!(:target)          { create(:school_target, school: school, report_last_generated: nil) }
+
+    before(:each) do
+      visit school_school_targets_path(school)
+    end
+
+    it "displays message to come back tomorrow" do
+      expect(page).to have_content("We are calculating your targets")
+      expect(page).to have_content("Check back tomorrow to see the results.")
+      expect(page).to_not have_link("View progress", href: electricity_school_progress_index_path(school))
+    end
+
+  end
+
+  context "with target that has generated" do
     let!(:target)          { create(:school_target, school: school, storage_heaters: nil) }
 
     let!(:activity_type)   { create(:activity_type)}
