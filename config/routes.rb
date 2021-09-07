@@ -229,6 +229,8 @@ Rails.application.routes.draw do
     resources :activity_types
     resource :activity_type_preview, only: :create
 
+    resources :intervention_type_groups, except: [:destroy]
+
     resources :dark_sky_areas, except: [:destroy, :show]
     resources :weather_stations, except: [:destroy, :show]
     resources :solar_pv_tuos_areas, except: [:destroy, :show]

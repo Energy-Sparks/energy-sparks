@@ -12,5 +12,9 @@
 class InterventionTypeGroup < ApplicationRecord
   has_many :intervention_types
 
+  has_one_attached :image
+
+  scope :by_title, -> { order(title: :asc) }
+
   validates :title, presence: true, uniqueness: true
 end
