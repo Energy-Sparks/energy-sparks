@@ -37,6 +37,12 @@ class ProgrammeType < ApplicationRecord
     programmes.where(school: school).last
   end
 
+  def activity_of_type_for_school(school, activity_type)
+    if (programme = programme_for_school(school))
+      programme.activity_of_type(activity_type)
+    end
+  end
+
   def update_activity_type_positions!(position_attributes)
     transaction do
       programme_type_activity_types.destroy_all
