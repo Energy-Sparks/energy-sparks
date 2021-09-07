@@ -28,27 +28,31 @@
 
 <h2>Activities</h2>
 
-<div class="row padded-row">
-  <div class="col-md-9">
-  <% @programme_type.activity_types.active.by_name.each do |activity_type| %>
-    <div class="row mt-2">
-      <div class="col-sm-2">
-        <%= link_to activity_type_path(activity_type) do %>
-          <%= render 'activity_types/image', activity_type: activity_type %>
-        <% end %>
-      </div>
-      <div class="col-sm-10">
-        <h3>
-          <%= link_to activity_type.name, activity_type_path(activity_type) %>
-        </h3>
-        <p>
-          <%= activity_type.summary %>
-        </p>
-        <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
-        <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
-        <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
-      </div>
+
+<% @programme_type.activity_types.active.by_name.each do |activity_type| %>
+  <div class="row mt-2">
+    <div class="col-sm-2">
+      <%= link_to activity_type_path(activity_type) do %>
+        <%= render 'activity_types/image', activity_type: activity_type %>
+      <% end %>
     </div>
-  <% end %>
+    <div class="col-sm-8">
+      <h3>
+        <%= link_to activity_type.name, activity_type_path(activity_type) %>
+      </h3>
+      <p>
+        <%= activity_type.summary %>
+      </p>
+      <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
+      <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
+      <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
+    </div>
+    <div class="col-sm-2">
+      <% if current_user_school && @programme_type.programme_for_school(current_user_school).activity_of_type(activity_type) %>
+        <span class="mr-5 h4 check"><%= fa_icon("check-circle text-success") %></span>
+        <br/>
+        <span><%= link_to nice_dates(@programme_type.programme_for_school(current_user_school).activity_of_type(activity_type).happened_on), school_activity_path(current_user_school, @programme_type.programme_for_school(current_user_school).activity_of_type(activity_type)) %></span>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
