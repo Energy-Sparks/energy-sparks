@@ -36,8 +36,7 @@
 
 <h2>Activities</h2>
 
-
-<% @programme_type.activity_types.active.by_name.each do |activity_type| %>
+<% @programme_type.activity_types_by_position.each do |activity_type| %>
   <div class="row mt-2">
     <div class="col-sm-2">
       <%= link_to activity_type_path(activity_type) do %>

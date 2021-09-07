@@ -29,6 +29,10 @@ class ProgrammeType < ApplicationRecord
 
   has_rich_text :description
 
+  def activity_types_by_position
+    programme_type_activity_types.order(:position).map(&:activity_type)
+  end
+
   def programme_for_school(school)
     programmes.where(school: school).last
   end
