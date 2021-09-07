@@ -5,7 +5,7 @@ class ProgrammeTypesController < ApplicationController
   before_action :load_programme_types
 
   def index
-    @programme_types = @programme_types.active
+    @programme_types = @programme_types.active.by_title
   end
 
   def show
@@ -15,9 +15,9 @@ class ProgrammeTypesController < ApplicationController
 
   def load_programme_types
     if current_user_school
-      @started = current_user_school.programmes.active
-      @started_programmes = ProgrammeType.active.where(id: @started.map(&:programme_type_id))
-      @available_programmes = ProgrammeType.active.where.not(id: @started.map(&:programme_type_id))
+      school_programme_type_ids = current_user_school.programmes.map(&:programme_type_id)
+      @started_programmes = ProgrammeType.active.where(id: school_programme_type_ids).by_title
+      @available_programmes = ProgrammeType.active.where.not(id: school_programme_type_ids).by_title
     end
   end
 end

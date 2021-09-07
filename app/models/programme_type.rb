@@ -19,6 +19,7 @@ class ProgrammeType < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :default, -> { where(default: true) }
+  scope :by_title, -> { order(title: :asc) }
 
   validates_presence_of :title
 
