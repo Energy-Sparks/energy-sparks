@@ -1,4 +1,6 @@
 class ContentBatch
+  include Wisper::Publisher
+
   def initialize(schools = School.process_data, logger = Rails.logger)
     @schools = schools
     @logger = logger
@@ -51,6 +53,7 @@ class ContentBatch
 
       @logger.info "Generated alert content"
 
+      broadcast(:school_content_generated, school)
     rescue StandardError => e
       @logger.error "There was an error for #{school.name} - #{e.message}"
       Rollbar.error(e, job: :content_batch, school_id: school.id, school: school.name)

@@ -20,7 +20,6 @@ class ContentRegenerator
     log("Total AMR Readings after: #{total_amr_readings_after} - inserted: #{total_amr_readings_after - total_amr_readings_before}")
 
     ContentBatch.new([@school], @logger).regenerate
-
     log('Finished')
   end
 
