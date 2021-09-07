@@ -48,19 +48,43 @@
     </div>
   <% end %>
 
-  <div class="input-group mt-3">
-      <% if !school_target.persisted? %>
-      <p>
-        Your new target will run from <strong><%= nice_dates(school_target.start_date) %></strong> to
-        <strong><%= nice_dates(school_target.target_date) %></strong>
-      </p>
-      <% else %>
-      <p>
-        You are aiming to achieve your target between <strong><%= nice_dates(school_target.start_date) %></strong> and
-        <strong><%= nice_dates(school_target.target_date) %></strong>
-      </p>
-      <% end %>
-  </div>
+  <% if can?(:revise_target_dates, :school_targets) %>
+    <div class="input-group alert-secondary col-12 mt-3">
+      <div class="col-sm-9">
+        <strong>Admin options</strong>
+      </div>
+    </div>
+    <div class="input-group alert-secondary col-12">
+      <div class="col-sm-6">
+        <%= f.label :start_date, "Start date", class: "form-label" %>
+      </div>
+      <div class="col-sm-3">
+        <%= f.date_field :start_date, class: 'form-control', value: school_target.start_date %>
+      </div>
+    </div>
+    <div class="input-group alert-secondary col-12 mb-2">
+      <div class="col-sm-6">
+        <%= f.label :target_date, "Target date", class: "form-label" %>
+      </div>
+      <div class="col-sm-3">
+        <%= f.date_field :target_date, class: 'form-control', value: school_target.target_date %>
+      </div>
+    </div>
+  <% else %>
+    <div class="input-group mt-3">
+        <% if !school_target.persisted? %>
+        <p>
+          Your new target will run from <strong><%= nice_dates(school_target.start_date) %></strong> to
+          <strong><%= nice_dates(school_target.target_date) %></strong>
+        </p>
+        <% else %>
+        <p>
+          You are aiming to achieve your target between <strong><%= nice_dates(school_target.start_date) %></strong> and
+          <strong><%= nice_dates(school_target.target_date) %></strong>
+        </p>
+        <% end %>
+    </div>
+  <% end %>
 
   <%= f.submit school_target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
 
