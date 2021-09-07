@@ -47,6 +47,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :programme_types, only: [:index, :show]
+
   resources :calendars, only: [:show] do
     scope module: :calendars do
       resources :calendar_events

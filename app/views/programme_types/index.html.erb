@@ -1,0 +1,54 @@
+<% content_for :page_title, "Programmes" %>
+
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Programmes</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row padded-row">
+  <div class="col">
+    <p>A programme brings together some activities designed to help with progress toward some targets..</p>
+  </div>
+</div>
+
+
+<% if current_user_school %>
+
+  <% unless @started_programmes.blank? %>
+
+    <div class="row">
+      <div class="col">
+        <h3>Programmes you've already started</h3>
+      </div>
+    </div>
+    <%= render "cards", programme_types: @started_programmes %>
+    <div class="row padded-row"></div>
+
+  <% end %>
+
+  <% unless @available_programmes.blank? %>
+
+    <div class="row">
+      <div class="col">
+        <h3>Programmes you can start</h3>
+      </div>
+    </div>
+    <%= render "cards", programme_types: @available_programmes %>
+    <div class="row padded-row"></div>
+
+  <% end %>
+
+<% else %>
+
+  <div class="row">
+    <div class="col">
+      <h3>Available programmes</h3>
+    </div>
+  </div>
+  <%= render "cards", programme_types: @programme_types %>
+  <div class="row padded-row"></div>
+
+<% end %>

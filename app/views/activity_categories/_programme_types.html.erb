@@ -1,0 +1,14 @@
+<div class="card-deck programme-types">
+  <% programme_types.each do |programme_type| %>
+    <div class="card">
+      <%= link_to programme_type_path(programme_type) do %>
+        <%= render 'programme_types/image', programme_type: programme_type %>
+      <% end %>
+      <div class="card-body">
+        <p class="card-text">
+          <%= programme_type.title %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>

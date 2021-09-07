@@ -11,6 +11,7 @@
 #
 
 class ProgrammeType < ApplicationRecord
+  has_one_attached :image
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
 
@@ -18,6 +19,7 @@ class ProgrammeType < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :default, -> { where(default: true) }
+  scope :by_title, -> { order(title: :asc) }
 
   validates_presence_of :title
 
@@ -26,6 +28,14 @@ class ProgrammeType < ApplicationRecord
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
   has_rich_text :description
+
+  def activity_types_by_position
+    programme_type_activity_types.order(:position).map(&:activity_type)
+  end
+
+  def programme_for_school(school)
+    programmes.where(school: school).last
+  end
 
   def update_activity_type_positions!(position_attributes)
     transaction do
