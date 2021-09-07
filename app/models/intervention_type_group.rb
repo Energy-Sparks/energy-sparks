@@ -15,6 +15,7 @@ class InterventionTypeGroup < ApplicationRecord
   has_one_attached :image
 
   scope :by_title, -> { order(title: :asc) }
+  scope :active,   -> { where(active: true) }
 
   validates :title, presence: true, uniqueness: true
 end
