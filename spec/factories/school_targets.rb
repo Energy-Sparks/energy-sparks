@@ -6,5 +6,6 @@ FactoryBot.define do
     electricity { rand(1..10) }
     gas { rand(1..10) }
     storage_heaters { rand(1..10) }
+    report_last_generated { DateTime.now }
   end
 end
