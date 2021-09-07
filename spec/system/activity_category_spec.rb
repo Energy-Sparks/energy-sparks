@@ -60,7 +60,9 @@ RSpec.describe "activity type", type: :system do
       end
 
       it 'links to category page, activity page and back' do
-        click_link 'View all'
+        within '.activity-categories' do
+          click_link 'View all'
+        end
         expect(page).to have_content(activity_category_1.name)
         expect(page).to have_content(activity_category_1.description)
 

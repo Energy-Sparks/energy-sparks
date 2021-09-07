@@ -55,10 +55,10 @@
       <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
     </div>
     <div class="col-sm-2">
-      <% if current_user_school && @programme_type.programme_for_school(current_user_school) && @programme_type.programme_for_school(current_user_school).activity_of_type(activity_type) %>
+      <% if @programme_type.activity_of_type_for_school(current_user_school, activity_type) %>
         <span class="mr-5 h4 check"><%= fa_icon("check-circle text-success") %></span>
         <br/>
-        <span><%= link_to nice_dates(@programme_type.programme_for_school(current_user_school).activity_of_type(activity_type).happened_on), school_activity_path(current_user_school, @programme_type.programme_for_school(current_user_school).activity_of_type(activity_type)) %></span>
+        <span><%= link_to nice_dates(@programme_type.activity_of_type_for_school(current_user_school, activity_type).happened_on), school_activity_path(current_user_school, @programme_type.activity_of_type_for_school(current_user_school, activity_type)) %></span>
       <% end %>
     </div>
   </div>
