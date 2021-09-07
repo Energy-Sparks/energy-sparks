@@ -7,14 +7,22 @@
     <h1><%= @activity_type.name %></h1>
     <%= render 'activity_types/activity_type_badges', activity_type: @activity_type %>
 
+    <h3>Activity summary</h3>
+    <% if @activity_type.summary %>
+      <%= @activity_type.summary %>
+    <% else %>
+      <p><em>No summary given</em></p>
+    <% end %>
+
     <div class="activity_type">
-      <h3>Activity summary</h3>
+      <h3>Activity description</h3>
       <% if @activity_type.description %>
         <%= @activity_type.description %>
       <% else %>
         <p><em>No description given</em></p>
       <% end %>
     </div>
+
     <h3>School specific description</h3>
     <div class="row">
       <div class="col-md-12 activity_type">

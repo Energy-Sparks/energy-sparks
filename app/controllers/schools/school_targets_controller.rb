@@ -20,6 +20,8 @@ module Schools
 
     def show
       setup_activity_suggestions
+      @prompt_to_review_target = prompt_to_review_target?
+      @fuel_types_changed = fuel_types_changed
     end
 
     #create first or new target if current has expired
@@ -47,10 +49,14 @@ module Schools
     end
 
     def edit
+      target_service.refresh_target(@school_target)
+      @prompt_to_review_target = prompt_to_review_target?
+      @fuel_types_changed = fuel_types_changed
     end
 
     def update
-      if @school_target.update(school_target_params)
+      if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
+        AggregateSchoolService.new(@school).invalidate_cache
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else
         render :edit
@@ -64,10 +70,8 @@ module Schools
     end
 
     def setup_activity_suggestions
-      @activities_count = @school.activities.count
       suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
-      @activities_from_programmes = suggester.suggest_from_programmes.limit(4)
-      @activities_from_alerts = suggester.suggest_from_find_out_mores.sample(1)
+      @suggestions = suggester.suggest_for_school_targets
     end
   end
 end

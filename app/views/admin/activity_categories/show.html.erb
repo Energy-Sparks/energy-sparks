@@ -3,6 +3,16 @@
 
 <p><strong>Description:</strong><%= @activity_category.description %></p>
 
+<p><strong>Image:</strong>
+
+<% if !@activity_category.image.blank? %>
+  <p><%= image_tag @activity_category.image, width: '300px', class: "activity_type_image" %></p>
+<% end %>
+
+
+<p><strong>Featured:</strong><%= y_n(@activity_category.featured) %></p>
+<p><strong>Pupil:</strong><%= y_n(@activity_category.pupil) %></p>
+
 <div class="other-actions">
   <%= link_to 'Edit', edit_admin_activity_category_path(@activity_category), class: 'btn btn-primary' %>
   <%= link_to 'Back', activity_categories_path, class: 'btn btn-secondary'  %>

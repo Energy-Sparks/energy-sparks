@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '~> 2.6.5'
 
 # Rails/Core
-gem 'rails', '~> 6.0.3.7' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -22,7 +22,7 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.23.0'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.25.1'
 # gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: '1590-create-application-page-to-display-targets'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -94,6 +94,8 @@ gem 'MailchimpMarketing'
 # Eventbrite for training page
 gem 'eventbrite_sdk'
 
+gem 'wisper', '2.0.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -113,6 +115,7 @@ group :development, :test do
   gem 'rubocop-rails', '2.8.0'
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
+  gem 'wisper-rspec', require: false
 end
 
 group :development do

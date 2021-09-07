@@ -2,7 +2,7 @@ module Targets
   class SchoolTargetService
     DEFAULT_ELECTRICITY_TARGET = 5.0
     DEFAULT_GAS_TARGET = 5.0
-    DEFAULT_STORAGE_HEATERS_TARGET = 5.0
+    DEFAULT_STORAGE_HEATER_TARGET = 5.0
 
     def initialize(school)
       @school = school
@@ -14,16 +14,39 @@ module Targets
         target_date: target_end_date,
         electricity: electricity_target,
         gas: gas_target,
-        storage_heaters: storage_heaters_target
+        storage_heaters: storage_heater_target
       )
     end
 
+    def refresh_target(target)
+      if target.revised_fuel_types.include?("storage heater") && target.storage_heaters.nil?
+        target.storage_heaters = DEFAULT_STORAGE_HEATER_TARGET
+      end
+      if target.revised_fuel_types.include?("electricity") && target.electricity.nil?
+        target.electricity = DEFAULT_ELECTRICITY_TARGET
+      end
+      if target.revised_fuel_types.include?("gas") && target.gas.nil?
+        target.gas = DEFAULT_GAS_TARGET
+      end
+    end
+
     def enough_data?
-      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
-      return true if @school.has_electricity? && target_service(aggregate_school, :electricity).enough_data_to_set_target?
-      return true if @school.has_gas? && target_service(aggregate_school, :gas).enough_data_to_set_target?
-      return true if @school.has_storage_heaters? && target_service(aggregate_school, :storage_heaters).enough_data_to_set_target?
+      return true if enough_data_for_electricity?
+      return true if enough_data_for_gas?
+      return true if enough_data_for_storage_heater?
       return false
+    end
+
+    def enough_data_for_electricity?
+      @school.has_electricity? && enough_data_for_fuel_type?(:electricity)
+    end
+
+    def enough_data_for_gas?
+      @school.has_gas? && enough_data_for_fuel_type?(:gas)
+    end
+
+    def enough_data_for_storage_heater?
+      @school.has_storage_heaters? && enough_data_for_fuel_type?(:storage_heater)
     end
 
     private
@@ -37,19 +60,30 @@ module Targets
     end
 
     def electricity_target
+      return nil unless @school.has_electricity?
       most_recent_target.present? ? most_recent_target.electricity : DEFAULT_ELECTRICITY_TARGET
     end
 
     def gas_target
+      return nil unless @school.has_gas?
       most_recent_target.present? ? most_recent_target.gas : DEFAULT_GAS_TARGET
     end
 
-    def storage_heaters_target
-      most_recent_target.present? ? most_recent_target.storage_heaters : DEFAULT_STORAGE_HEATERS_TARGET
+    def storage_heater_target
+      return nil unless @school.has_storage_heaters? || @school.indicated_has_storage_heaters?
+      most_recent_target.present? ? most_recent_target.storage_heaters : DEFAULT_STORAGE_HEATER_TARGET
     end
 
     def most_recent_target
       @most_recent_target ||= @school.most_recent_target
+    end
+
+    def enough_data_for_fuel_type?(fuel_type)
+      target_service(aggregate_school, fuel_type).enough_data_to_set_target?
+    end
+
+    def aggregate_school
+      @aggregate_school ||= AggregateSchoolService.new(@school).aggregate_school
     end
 
     def target_service(aggregate_school, fuel_type)

@@ -5,19 +5,28 @@
   <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
 </div>
 
-<div class="card-deck" id="target-cards">
-  <% if @school.has_electricity? %>
-    <%= render "progress_card", school_target: @school_target, fuel_type: :electricity, target: @school_target.electricity, progress: @electricity_progress,
-    progress_path: electricity_school_progress_index_path(@school)  %>
-  <% end %>
-  <% if @school.has_gas? %>
-    <%= render "progress_card", school_target: @school_target, fuel_type: :gas, target: @school_target.gas, progress: @gas_progress,
-    progress_path: gas_school_progress_index_path(@school)  %>
-  <% end %>
-  <% if @school.has_storage_heaters? %>
-    <%= render "progress_card", school_target: @school_target, fuel_type: :storage_heaters, target: @school_target.storage_heaters, progress: @storage_heater_progress, progress_path: storage_heaters_school_progress_index_path(@school)  %>
-  <% end %>
-</div>
+<% if @school.has_electricity? %>
+  <%= render "bullet_chart", school_target: @school_target, fuel_type: :electricity, target: @school_target.electricity, progress: @electricity_progress,
+  progress_path: electricity_school_progress_index_path(@school)  %>
+<% end %>
+<% if @school.has_gas? %>
+  <%= render "bullet_chart", school_target: @school_target, fuel_type: :gas, target: @school_target.gas, progress: @gas_progress,
+  progress_path: gas_school_progress_index_path(@school)  %>
+<% end %>
+<% if @school.has_storage_heaters? %>
+  <%= render "bullet_chart", school_target: @school_target, fuel_type: :storage_heaters, target: @school_target.storage_heaters, progress: @storage_heater_progress, progress_path: storage_heaters_school_progress_index_path(@school)  %>
+<% end %>
+
+<% if @prompt_to_review_target %>
+  <div class="row alert text-dark bg-neutral">
+    <div class="col-md-2">
+      <%= link_to "Review your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-light rounded-pill" %>
+    </div>
+    <div class="col">
+      <span class="align-middle">Your <%= @fuel_types_changed.map(&:humanize).to_sentence %> configuration has changed, which means you may need to revisit your targets for this year.</span>
+    </div>
+  </div>
+<% end %>
 
 <div class="row">
   <div class="col">
@@ -25,79 +34,7 @@
   </div>
 </div>
 
-<div class="card-deck activities">
-  <div class="card activity">
-    <div class="card-body">
-      <h4 class="card-title">Working with the pupils</h4>
-      <p>Here are some suggested activities that can be undertaken
-        with pupils</p>
-        <ul>
-          <% @activities_from_programmes.each do |activity_type| %>
-           <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
-          <% end %>
-          <% @activities_from_alerts.each do |activity_type| %>
-           <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
-          <% end %>
-        </ul>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">
-        Engaging with pupils is an important part of the Energy Sparks programme.
-        Recording activities will score you points.
-      </small>
-    </div>
-  </div>
-
-  <div class="card activity">
-    <div class="card-body">
-      <h4 class="card-title">Taking action around the school</h4>
-      <p>Some suggested activities you can take around the school</p>
-      <ul>
-        <% InterventionType.all.sample(5).each do |intervention_type| %>
-         <li><%= intervention_type.title %></li>
-        <% end %>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">
-        Logging activities will help you monitor progress. We'll display these
-        actions on your usage charts.
-      </small>
-    </div>
-  </div>
-
-  <div class="card activity">
-    <div class="card-body">
-      <h4 class="card-title">Explore your data</h4>
-      <p>We analyse your data to provide insights and weekly alerts</p>
-      <ul>
-        <li>
-          <%= link_to "Explore your data", pupils_school_analysis_path(@school) %>
-        </li>
-        <li>
-          <%= link_to "Review your energy analysis", school_analysis_index_path(@school) %>
-        </li>
-        <li>
-          <%= link_to 'View energy saving opportunities', management_school_management_priorities_path(@school)  %>
-        </li>
-        <li>
-          <%= link_to 'View recent alerts', management_school_path(@school, anchor: "dashboard-alerts") %>
-        </li>
-        <% if @school.school_group && can?(:compare, @school.school_group) %>
-          <li>
-            <%= link_to 'Compare usage with schools in your group', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}) %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">
-        Be sure to regularly check your dashboard and weekly alerts for our latest
-        advice
-      </small>
-    </div>
-  </div>
-</div>
+<%= render "achieving_your_targets" %>
 
 <% if can?(:manage, Activity) || can?(:create, Observation) %>
   <div class="card-deck actions">

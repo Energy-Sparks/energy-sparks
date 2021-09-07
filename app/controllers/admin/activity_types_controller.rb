@@ -62,6 +62,7 @@ module Admin
     def activity_type_params
       params.require(:activity_type).permit(:name,
           :description,
+          :summary,
           :school_specific_description,
           :download_links,
           :image,

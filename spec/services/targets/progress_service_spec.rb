@@ -4,20 +4,19 @@ RSpec.describe Targets::ProgressService do
 
   let!(:school)             { create(:school) }
   let!(:aggregated_school)  { double('meter-collection') }
-  let(:target)              { create(:school_target, school: school) }
   let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: true) }
   let!(:service)            { Targets::ProgressService.new(school, aggregated_school) }
   let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
 
-  let(:months)                    { ['jan', 'feb'] }
+  let(:months)                    { [Date.today.last_month.strftime("%b"), Date.today.strftime("%b")] }
   let(:fuel_type)                 { :electricity }
-  let(:monthly_targets_kwh)       { [1,2] }
-  let(:monthly_usage_kwh)         { [1,2] }
+  let(:monthly_targets_kwh)       { [10,10] }
+  let(:monthly_usage_kwh)         { [10,5] }
   let(:monthly_performance)       { [-0.25,0.35] }
-  let(:cumulative_targets_kwh)    { [1,2] }
-  let(:cumulative_usage_kwh)      { [1,2] }
+  let(:cumulative_targets_kwh)    { [10,20] }
+  let(:cumulative_usage_kwh)      { [10,15] }
   let(:cumulative_performance)    { [-0.99,0.99] }
-  let(:partial_months)            { ['feb'] }
+  let(:partial_months)            { [Date.today.strftime("%b")] }
 
   let(:progress) do
     TargetsProgress.new(
@@ -39,35 +38,55 @@ RSpec.describe Targets::ProgressService do
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
   end
 
-  context 'when calculating progress' do
+  context '#progress' do
     context 'and there is an error' do
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
       end
 
       it 'returns nil' do
-        expect(service.electricity_progress).to be_nil
+        expect(service.cumulative_progress(:electricity)).to be_nil
       end
     end
 
-    context 'for electricity' do
-      context 'and there is no fuel type' do
+    context 'for a fuel type' do
+      context 'and its not present' do
         let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: false) }
         it 'returns nil' do
-          expect(service.electricity_progress).to be_nil
+          expect(service.cumulative_progress(:electricity)).to be_nil
         end
       end
 
-      context 'and there is electricity' do
+      context 'and it is present' do
 
         before(:each) do
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         end
 
         it 'returns the value' do
-          expect(service.electricity_progress).to be 0.99
+          expect(service.cumulative_progress(:electricity)).to be 0.99
         end
       end
+    end
+  end
+
+  context '#current_target' do
+    before(:each) do
+      allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+    end
+
+    it 'returns the right value' do
+      expect(service.current_monthly_target(:electricity)).to eql 20
+    end
+  end
+
+  context '#current_usage' do
+    before(:each) do
+      allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+    end
+
+    it 'returns the right value' do
+      expect(service.current_monthly_usage(:electricity)).to eql 15
     end
   end
 
@@ -78,7 +97,7 @@ RSpec.describe Targets::ProgressService do
       end
     end
 
-    context 'and there is a ManagementDashboardTable' do
+    context 'and there is analytics data' do
       let!(:content_generation_run) { create(:content_generation_run, school: school)}
 
       let(:summary) {
@@ -93,7 +112,7 @@ RSpec.describe Targets::ProgressService do
       let!(:alert)     { create(:alert, table_data: table_data ) }
       let!(:management_dashboard_table) { create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert) }
 
-      context 'but the feature flag is off' do
+      context 'but the feature is off' do
         before(:each) do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
         end
@@ -102,20 +121,31 @@ RSpec.describe Targets::ProgressService do
         end
       end
 
-      context 'but the feature flag is on' do
+      context 'but the feature is on' do
         before(:each) do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         end
 
-        it 'includes the progress' do
-          table = service.setup_management_table
-          table.each do |row|
-            expect(row.size).to eql 8
+        context 'and theres a target' do
+          let!(:target)              { create(:school_target, school: school) }
+
+          it 'includes the progress' do
+            table = service.setup_management_table
+            table.each do |row|
+              expect(row.size).to eql 8
+            end
+            expect(table[0]).to include("Target progress")
+            expect(table[1]).to include("+99%")
           end
-          expect(table[0]).to include("Target progress")
-          expect(table[1]).to include("+99%")
         end
+
+        context 'and theres no target' do
+          it 'does not include the progress' do
+            expect(service.setup_management_table).to eql summary
+          end
+        end
+
       end
     end
   end

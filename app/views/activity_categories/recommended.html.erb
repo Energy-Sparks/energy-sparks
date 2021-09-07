@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Recommended for your school</h1>
+      <div>
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-secondary'  %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col">
+    <p>
+      These are activities that are suggested for your school, based on your previous activity and your targets.
+    </p>
+  </div>
+</div>
+
+<% @suggested_activities.each do |activity_type| %>
+  <div class="row mt-2">
+    <div class="col-sm-2">
+      <%= link_to activity_type_path(activity_type) do %>
+        <%= render 'activity_types/activity_type_image', activity_type: activity_type %>
+      <% end %>
+    </div>
+    <div class="col-sm-10">
+      <h3>
+        <%= link_to activity_type.name, activity_type_path(activity_type) %>
+      </h3>
+      <p>
+        <%= activity_type.summary %>
+      </p>
+      <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
+      <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
+      <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
+    </div>
+  </div>
+<% end %>

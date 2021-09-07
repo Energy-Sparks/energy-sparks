@@ -124,6 +124,17 @@ describe MeterManagement do
         MeterManagement.new(meter).deactivate_meter!
         expect( meter.active ).to be_falsey
       end
+
+      it 'broadcasts activation event' do
+        meter.update(active: false)
+        expect { MeterManagement.new(meter).activate_meter! }.to broadcast(:meter_activated, meter)
+      end
+
+      it 'broadcasts deactivation event' do
+        meter.update(active: true)
+        expect { MeterManagement.new(meter).deactivate_meter! }.to broadcast(:meter_deactivated, meter)
+      end
+
     end
 
     context 'for DCC meter' do

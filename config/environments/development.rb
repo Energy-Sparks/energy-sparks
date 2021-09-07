@@ -33,7 +33,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # To use amazon locally, ensure you have the AWS credentials set up in your .env file
-  #config.active_storage.service = :amazon
+  # config.active_storage.service = :amazon
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -61,7 +61,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  config.active_record.logger = nil
+  # config.active_record.logger = nil
 
   # For when you need severity etc in log file
   # logger           = ActiveSupport::Logger.new(STDOUT)
@@ -71,7 +71,7 @@ Rails.application.configure do
 
   # config.logger = ActiveSupport::TaggedLogging.new(logger)
 
-  config.log_level = :info
+  config.log_level = :debug
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

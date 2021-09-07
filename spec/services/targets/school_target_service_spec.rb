@@ -7,7 +7,14 @@ RSpec.describe Targets::SchoolTargetService do
 
   let!(:service)            { Targets::SchoolTargetService.new(school) }
 
-  context 'when building' do
+  let(:fuel_configuration)   { Schools::FuelConfiguration.new(
+    has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true) }
+
+  before(:each) do
+    school.configuration.update!(fuel_configuration: fuel_configuration)
+  end
+
+  describe '#build_target' do
     context 'a new target' do
       let(:target) { service.build_target }
 
@@ -22,7 +29,23 @@ RSpec.describe Targets::SchoolTargetService do
       it 'should have default values' do
         expect(target.electricity).to eql Targets::SchoolTargetService::DEFAULT_ELECTRICITY_TARGET
         expect(target.gas).to eql Targets::SchoolTargetService::DEFAULT_GAS_TARGET
-        expect(target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATERS_TARGET
+        expect(target.storage_heaters).to eql Targets::SchoolTargetService::DEFAULT_STORAGE_HEATER_TARGET
+      end
+
+      context 'and school has limited fuel types' do
+        let(:fuel_configuration)   { Schools::FuelConfiguration.new(
+          has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
+
+        before(:each) do
+          school.configuration.update!(fuel_configuration: fuel_configuration)
+        end
+
+        it 'only sets defaults for those' do
+          expect(target.electricity).to eql Targets::SchoolTargetService::DEFAULT_ELECTRICITY_TARGET
+          expect(target.gas).to be nil
+          expect(target.storage_heaters).to be nil
+        end
+
       end
     end
 
@@ -46,7 +69,7 @@ RSpec.describe Targets::SchoolTargetService do
     end
   end
 
-  context 'checking data' do
+  describe '#enough_data?' do
     before(:each) do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
     end
@@ -61,11 +84,7 @@ RSpec.describe Targets::SchoolTargetService do
     end
 
     context 'and there is enough data' do
-      let(:fuel_electricity)   { Schools::FuelConfiguration.new(
-        has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
-
       before(:each) do
-        school.configuration.update!(fuel_configuration: fuel_electricity)
         allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
       end
 
@@ -73,7 +92,5 @@ RSpec.describe Targets::SchoolTargetService do
         expect(service.enough_data?).to be true
       end
     end
-
   end
-
 end

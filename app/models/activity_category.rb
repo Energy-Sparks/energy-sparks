@@ -14,6 +14,12 @@ class ActivityCategory < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name
 
+  has_one_attached :image
+
+  scope :by_name, -> { order(name: :asc) }
+  scope :featured, -> { where(featured: true) }
+  scope :pupil, -> { where(pupil: true) }
+
   def self.listed_with_activity_types
     all.order(:name).map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
   end

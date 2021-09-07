@@ -406,7 +406,7 @@ describe School do
         it 'allows access' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
           expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
       end
@@ -439,7 +439,7 @@ describe School do
         it 'allows access' do
           expect(ability).to be_able_to(:show, school)
           expect(ability).to be_able_to(:show_pupils_dash, school)
-          expect(ability).to_not be_able_to(:show_management_dash, school)
+          expect(ability).to be_able_to(:show_management_dash, school)
           expect(ability).to_not be_able_to(:read_restricted_analysis, school)
         end
 

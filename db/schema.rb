@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_095845) do
+ActiveRecord::Schema.define(version: 2021_09_03_082618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(version: 2021_08_20_095845) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+    t.boolean "featured", default: false
+    t.boolean "pupil", default: false
   end
 
   create_table "activity_timings", force: :cascade do |t|
@@ -137,6 +139,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_095845) do
     t.boolean "repeatable", default: true
     t.boolean "data_driven", default: false
     t.boolean "custom", default: false
+    t.string "summary"
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
   end
@@ -1086,6 +1089,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_095845) do
     t.float "storage_heaters"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "revised_fuel_types", default: [], null: false, array: true
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 

@@ -16,6 +16,18 @@ RSpec.describe SchoolTarget, type: :model do
       target = SchoolTarget.new({school: school, start_date: start_date, target_date: target_date})
       expect(target.valid?).to be false
     end
+
+    it "should allow nil values for some targets" do
+      target = SchoolTarget.new({school: school, start_date: start_date, target_date: target_date, electricity: 10})
+      expect(target.valid?).to be true
+
+      target = SchoolTarget.new({school: school, start_date: start_date, target_date: target_date, gas: 10})
+      expect(target.valid?).to be true
+
+      target = SchoolTarget.new({school: school, start_date: start_date, target_date: target_date, storage_heaters: 10})
+      expect(target.valid?).to be true
+
+    end
   end
 
   context "when finding current target" do
