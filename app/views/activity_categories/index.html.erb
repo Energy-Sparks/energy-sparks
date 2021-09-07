@@ -30,21 +30,6 @@
   <div class="row padded-row"></div>
 <% end %>
 
-<% @activity_categories.each do |activity_category| %>
-  <div class="row">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h3><%= activity_category.name %></h3>
-        <div>
-          <%= link_to 'View all', activity_category_path(activity_category), class: "btn btn-secondary" %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%= render "cards", activity_types: activity_category.activity_types.active.sample(5) %>
-  <div class="row padded-row"></div>
-<% end %>
-
 <% if !@pupil_categories.blank? %>
   <div class="row">
     <div class="col">
@@ -62,6 +47,9 @@
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
         <h3>Programmes</h3>
+        <div>
+          <%= link_to 'View all', programme_types_path, class: "btn btn-secondary" %>
+        </div>
       </div>
     </div>
   </div>
@@ -69,3 +57,18 @@
   <div class="row padded-row"></div>
 <% end %>
 
+
+<% @activity_categories.each do |activity_category| %>
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3><%= activity_category.name %></h3>
+        <div>
+          <%= link_to 'View all', activity_category_path(activity_category), class: "btn btn-secondary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render "cards", activity_types: activity_category.activity_types.active.sample(5) %>
+  <div class="row padded-row"></div>
+<% end %>

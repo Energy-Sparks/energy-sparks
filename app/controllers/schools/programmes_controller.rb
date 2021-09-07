@@ -5,8 +5,8 @@ module Schools
 
     def create
       programme_type = ProgrammeType.find(params[:programme_type_id])
-      programme = Programmes::Creator.new(@school, programme_type).create
-      redirect_to school_programme_path(@school, programme)
+      Programmes::Creator.new(@school, programme_type).create
+      redirect_to programme_type_path(programme_type)
     end
 
     def show

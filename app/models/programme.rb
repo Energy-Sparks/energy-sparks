@@ -31,5 +31,5 @@ class Programme < ApplicationRecord
 
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
 
-  delegate :title, :description, :document_link, to: :programme_type
+  delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 end

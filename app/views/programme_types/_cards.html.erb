@@ -1,0 +1,17 @@
+<% programme_types.each do |programme_type| %>
+  <div class="row mt-2">
+    <div class="col-sm-2">
+      <%= link_to programme_type_path(programme_type) do %>
+        <%= render 'programme_types/image', programme_type: programme_type %>
+      <% end %>
+    </div>
+    <div class="col-sm-10">
+      <h3>
+        <%= link_to programme_type.title, programme_type_path(programme_type) %>
+      </h3>
+      <p>
+        <%= programme_type.short_description %>
+      </p>
+    </div>
+  </div>
+<% end %>

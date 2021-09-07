@@ -28,6 +28,10 @@ class ProgrammeType < ApplicationRecord
 
   has_rich_text :description
 
+  def programme_for_school(school)
+    programmes.where(school: school).last
+  end
+
   def update_activity_type_positions!(position_attributes)
     transaction do
       programme_type_activity_types.destroy_all
