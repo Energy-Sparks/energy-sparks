@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "programme type", type: :system do
 
-  let!(:school_admin) { create(:school_admin)}
+  let!(:school) { create(:school)}
+  let!(:school_admin) { create(:school_admin, school: school)}
 
   let!(:programme_type_1) { create(:programme_type, title: 'prog1')}
   let!(:programme_type_2) { create(:programme_type, title: 'prog2', active: false)}
@@ -28,12 +29,14 @@ RSpec.describe "programme type", type: :system do
     end
 
     it 'prompts to start' do
-      expect(school_admin.school.programmes).to be_empty
+      expect(school.programmes).to be_empty
       visit programme_type_path(programme_type_1)
       expect(page).to have_content('enrol your school')
-      click_link 'Start'
+      expect {
+        click_link 'Start'
+      }.to change(Programme, :count).by(1)
       expect(page).to have_content('You started this programme')
-      expect(school_admin.school.programmes).not_to be_empty
+      expect(school.reload.programmes).not_to be_empty
     end
   end
 end
