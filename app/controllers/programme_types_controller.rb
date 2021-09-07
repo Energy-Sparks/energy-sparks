@@ -17,7 +17,8 @@ class ProgrammeTypesController < ApplicationController
     if current_user_school
       school_programme_type_ids = current_user_school.programmes.map(&:programme_type_id)
       @started_programmes = ProgrammeType.active.where(id: school_programme_type_ids).by_title
-      @available_programmes = ProgrammeType.active.where.not(id: school_programme_type_ids).by_title
+    else
+      @started_programmes = []
     end
   end
 end

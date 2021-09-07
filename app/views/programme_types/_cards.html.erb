@@ -12,6 +12,9 @@
       <p>
         <%= programme_type.short_description %>
       </p>
+      <% if started_programmes.include?(programme_type) %>
+        <p>You are enrolled in this programme</p>
+      <% end %>
     </div>
   </div>
 <% end %>
