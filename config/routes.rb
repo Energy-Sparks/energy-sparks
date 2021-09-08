@@ -309,6 +309,7 @@ Rails.application.routes.draw do
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
+      resources :interventions, only: :index
     end
 
     resource :settings, only: [:show, :update]
