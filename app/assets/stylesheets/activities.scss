@@ -52,3 +52,14 @@ trix-toolbar .button_groups {
   font-size: 24px;
 }
 
+img.activity-card-img {
+  min-height: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+img.activity-card-img-thumbnail {
+  min-height: 100px;
+  max-height: 100px;
+  object-fit: contain;
+}
