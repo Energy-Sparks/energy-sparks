@@ -1,5 +1,5 @@
 <% if activity_category.image.present? %>
-  <%= image_tag activity_category.image, class: "card-img-top img-fluid" %>
+  <%= image_tag activity_category.image, class: "card-img-top img-fluid " + css_class %>
 <% else %>
-  <%= image_tag "placeholder300x200.png", class: "card-img-top img-fluid" %>
+  <%= image_tag "placeholder300x200.png", class: "card-img-top img-fluid " + css_class %>
 <% end %>
