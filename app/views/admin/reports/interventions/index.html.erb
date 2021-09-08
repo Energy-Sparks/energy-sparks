@@ -1,0 +1,41 @@
+<% content_for :page_title, 'Latest activities' %>
+
+<h1>Recently recorded interventions</h1>
+
+<p>
+  The following is a list of the 50 most recently recorded interventions ("Energy saving actions") by schools across the
+  whole system
+</p>
+
+<p>Interventions with a <span class="text-success">Green link</span> are those where the school has
+  provided a description. Others are shown as a <span class="text-muted">grey link</span> </p>
+<p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Recorded</th>
+      <th>Happened</th>
+      <th>School</th>
+      <th>Intervention Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @observations.each do |observation| %>
+      <tr>
+        <td><%= nice_dates(observation.created_at) %></td>
+        <td><%= nice_dates(observation.at) %></td>
+        <td><%= link_to observation.school.name, school_path(observation.school) %></td>
+        <td>
+          <%= link_to school_intervention_path(observation.school, observation) do %>
+            <% if observation.description.present? %>
+              <span class="text-success"><%= observation.intervention_type.title %></span>
+            <% else %>
+              <span class="text-muted"><%= observation.intervention_type.title %></span>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -229,6 +229,9 @@ Rails.application.routes.draw do
     resources :activity_types
     resource :activity_type_preview, only: :create
 
+    resources :intervention_type_groups, except: [:destroy]
+    resources :intervention_types
+
     resources :dark_sky_areas, except: [:destroy, :show]
     resources :weather_stations, except: [:destroy, :show]
     resources :solar_pv_tuos_areas, except: [:destroy, :show]
@@ -306,6 +309,7 @@ Rails.application.routes.draw do
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
+      resources :interventions, only: :index
     end
 
     resource :settings, only: [:show, :update]

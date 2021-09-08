@@ -2,15 +2,17 @@
 #
 # Table name: school_targets
 #
-#  created_at      :datetime         not null
-#  electricity     :float
-#  gas             :float
-#  id              :bigint(8)        not null, primary key
-#  school_id       :bigint(8)        not null
-#  start_date      :date
-#  storage_heaters :float
-#  target_date     :date
-#  updated_at      :datetime         not null
+#  created_at            :datetime         not null
+#  electricity           :float
+#  gas                   :float
+#  id                    :bigint(8)        not null, primary key
+#  report_last_generated :datetime
+#  revised_fuel_types    :string           default([]), not null, is an Array
+#  school_id             :bigint(8)        not null
+#  start_date            :date
+#  storage_heaters       :float
+#  target_date           :date
+#  updated_at            :datetime         not null
 #
 # Indexes
 #
