@@ -17,7 +17,7 @@
       <tr>
         <td><%= link_to intervention_type_group.title, admin_intervention_type_group_path(intervention_type_group) %></td>
         <td><%= intervention_type_group.description %></td>
-        <td><%= intervention_type_group.intervention_types.count %></td>
+        <td><%= link_to intervention_type_group.intervention_types.count, admin_intervention_types_path(anchor: "intervention_type_group_#{intervention_type_group.id}") %></td>
         <td><%= y_n(intervention_type_group.active?) %></td>
         <td><%= link_to 'Edit', edit_admin_intervention_type_group_path(intervention_type_group), class: 'btn'%></td>
       </tr>
