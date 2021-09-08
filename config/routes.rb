@@ -230,6 +230,7 @@ Rails.application.routes.draw do
     resource :activity_type_preview, only: :create
 
     resources :intervention_type_groups, except: [:destroy]
+    resources :intervention_types
 
     resources :dark_sky_areas, except: [:destroy, :show]
     resources :weather_stations, except: [:destroy, :show]

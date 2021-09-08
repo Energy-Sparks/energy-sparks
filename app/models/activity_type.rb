@@ -12,6 +12,7 @@
 #  name                   :string
 #  repeatable             :boolean          default(TRUE)
 #  score                  :integer
+#  summary                :string
 #  updated_at             :datetime         not null
 #
 # Indexes
