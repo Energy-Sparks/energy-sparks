@@ -1,5 +1,6 @@
 <%= simple_form_for([:admin, intervention_type_group]) do |f| %>
   <%= f.input :title, as: :string %>
+  <%= f.input :description, as: :string %>
 
   <%= f.label 'Image' %>
   <p class="small">This image will appear in the list of categories.</p>

@@ -41,8 +41,7 @@ module Admin
 
   private
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def activity_type_params
+    def intervention_type_params
       params.require(:intervention_type).permit(:title,
           :summary,
           :description,
@@ -50,7 +49,8 @@ module Admin
           :image,
           :active,
           :intervention_type_group_id,
-          :points)
+          :points,
+          :other)
     end
   end
 end

@@ -2,7 +2,7 @@
   html: { id: 'intervention_type_form' }) do |f| %>
 
   <%= f.input :title, as: :string %>
-  <%= f.input :intervention_type_group_id, as: :select, collection: InterventionTypeGroup.all, include_blank: false %>
+  <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
 
   <%= f.label 'Image' %>
   <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
@@ -36,7 +36,7 @@
     <%= f.rich_text_area :description %>
   </div>
 
-  <%= f.input :points, as: :string %>
+  <%= f.input :points, label: 'Score', as: :string %>
 
   <%= f.input :active %>
 
