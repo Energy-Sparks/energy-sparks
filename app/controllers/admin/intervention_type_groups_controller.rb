@@ -34,7 +34,7 @@ module Admin
   private
 
     def intervention_type_group_params
-      params.require(:intervention_type_group).permit(:title, :description, :image, :active)
+      params.require(:intervention_type_group).permit(:title, :description, :image, :active, :icon)
     end
   end
 end

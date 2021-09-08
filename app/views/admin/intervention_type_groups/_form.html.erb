@@ -5,6 +5,9 @@
   <%= f.label 'Image' %>
   <p class="small">This image will appear in the list of categories.</p>
 
+  <%= f.input :icon, as: :string %>
+  <p class="small">This icon is used to mark the interventions on some pages. See <a href="https://fontawesome.com/v5.15/icons?d=gallery&p=2" target="_new">fontawesome</a> for icon names
+
   <div class="upload-preview">
     <div class="col-md-3">
       <% if !f.object.image.blank? %>
