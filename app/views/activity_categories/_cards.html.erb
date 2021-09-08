@@ -2,19 +2,23 @@
   <% activity_types.each do |activity_type| %>
     <div class="card">
       <%= link_to activity_type_path(activity_type) do %>
-        <%= render 'activity_types/activity_type_image', activity_type: activity_type %>
+        <%= render 'activity_types/activity_type_image', activity_type: activity_type, css_class: "activity-card-img" %>
       <% end %>
       <div class="card-body">
         <p class="card-text">
-          <%= activity_type.name %>
+          <%= link_to activity_type.name, activity_type_path(activity_type) %>
         </p>
       </div>
       <div class="card-footer" style="border-top: none; background-color: white;">
-        <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
       </div>
       <div class="card-footer" style="border-top: none; background-color: white;">
-        <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
-        <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
+        <% if activity_type.key_stages.any? %>
+          <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
+        <% end %>
+        <% if activity_type.subjects.any? %>
+          <%= "<br>".html_safe if activity_type.key_stages.any? %>
+          <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
+        <% end %>
       </div>
     </div>
   <% end %>
