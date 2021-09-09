@@ -32,7 +32,7 @@ describe "Intervention Types", type: :system do
       fill_in('Title', with: title)
       fill_in('Summary', with: summary)
 
-      attach_file("intervention_type_image", Rails.root + "spec/fixtures/images/activity-type-placeholder.png")
+      attach_file("intervention_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
       within('.download-links-trix-editor') do
         fill_in_trix with: download_links
@@ -53,10 +53,10 @@ describe "Intervention Types", type: :system do
 
       expect(intervention_type.title).to eq(title)
       expect(intervention_type.summary).to eq(summary)
-      expect(intervention_type.image.filename).to eq('activity-type-placeholder.png')
+      expect(intervention_type.image.filename).to eq('placeholder.png')
 
       click_on title
-      expect(page).to have_css("img[src*='activity-type-placeholder.png']")
+      expect(page).to have_css("img[src*='placeholder.png']")
       expect(page).to have_content(download_links)
       expect(page).to have_content(summary)
       expect(page).to have_content(description)

@@ -60,9 +60,7 @@ RSpec.describe "activity type", type: :system do
       end
 
       it 'links to category page, activity page and back' do
-        within '.activity-categories' do
-          click_link 'View all'
-        end
+        click_link 'View all 5 activities'
         expect(page).to have_content(activity_category_1.name)
         expect(page).to have_content(activity_category_1.description)
 
@@ -74,11 +72,11 @@ RSpec.describe "activity type", type: :system do
         expect(page).to have_content(activity_category_1.name)
 
         click_link 'All activities'
-        expect(page).to have_content('Energy saving activities')
+        expect(page).to have_content('Explore energy saving activities')
       end
 
       it 'links to programme type page' do
-        within '.programme-types' do
+        within '#programme-types' do
           first(".card-img-top").click
         end
         expect(page).to have_content(programme_type.title)
