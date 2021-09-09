@@ -12,12 +12,12 @@
       <p>
         <%= programme_type.short_description %>
       </p>
-      <% if started_programmes.include?(programme_type) %>
+      <% if current_user && user_progress.enrolled?(programme_type) %>
         <p><span class="h4 check"><%= fa_icon("check-circle text-success") %></span> You have already started this programme</p>
       <% end %>
     </div>
     <div class="col-sm-2 align-self-center">
-      <%= link_to started_programmes.include?(programme_type) ? "Continue" : "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <%= link_to user_progress.enrolled?(programme_type) ? "Continue" : "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
     </div>
   </div>
 <% end %>
