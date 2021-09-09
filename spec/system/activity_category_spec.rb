@@ -55,7 +55,7 @@ RSpec.describe "activity type", type: :system do
       end
 
       it 'links to category page, activity page and back' do
-        click_link 'View all'
+        click_link 'View all 5 activities'
         expect(page).to have_content(activity_category_1.name)
         expect(page).to have_content(activity_category_1.description)
 
@@ -67,7 +67,7 @@ RSpec.describe "activity type", type: :system do
         expect(page).to have_content(activity_category_1.name)
 
         click_link 'All activities'
-        expect(page).to have_content('Energy saving activities')
+        expect(page).to have_content('Explore energy saving activities')
       end
     end
   end

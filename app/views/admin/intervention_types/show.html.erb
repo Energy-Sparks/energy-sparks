@@ -1,0 +1,39 @@
+<% content_for :page_title do %>
+    Intervention Type: <%= @intervention_type.title %>
+<% end %>
+
+<div class="row padded-row">
+  <div class="col-md-9">
+    <h1><%= @intervention_type.title %></h1>
+
+    <h3>Intervention summary</h3>
+    <% if @intervention_type.summary %>
+      <%= @intervention_type.summary %>
+    <% else %>
+      <p><em>No summary given</em></p>
+    <% end %>
+
+    <div class="intervention_type">
+      <h3>Intervention description</h3>
+      <% if @intervention_type.description.present? %>
+        <%= @intervention_type.description %>
+      <% else %>
+        <p><em>No description given</em></p>
+      <% end %>
+    </div>
+
+  </div>
+  <div class="col-md-3 pt-2">
+    <%= render 'activity_types/activity_type_resources', activity_type: @intervention_type %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <p><strong>Currently active:</strong> <%= @intervention_type.active %></p>
+    <div class="other-actions">
+      <%= link_to 'Edit', edit_admin_intervention_type_path(@intervention_type), class: 'btn btn-primary' %>
+      <%= link_to 'All Types', admin_intervention_types_path, class: 'btn btn-secondary'  %>
+    </div>
+  </div>
+</div>

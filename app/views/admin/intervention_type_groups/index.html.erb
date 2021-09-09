@@ -1,0 +1,28 @@
+<% content_for :page_title, "Activities" %>
+
+<h1>Intervention Categories</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Intervention types</th>
+      <th>Active?</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @intervention_type_groups.each do |intervention_type_group| %>
+      <tr>
+        <td><%= link_to intervention_type_group.title, admin_intervention_type_group_path(intervention_type_group) %></td>
+        <td><%= intervention_type_group.description %></td>
+        <td><%= link_to intervention_type_group.intervention_types.count, admin_intervention_types_path(anchor: "intervention_type_group_#{intervention_type_group.id}") %></td>
+        <td><%= y_n(intervention_type_group.active?) %></td>
+        <td><%= link_to 'Edit', edit_admin_intervention_type_group_path(intervention_type_group), class: 'btn'%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to 'New intervention category', new_admin_intervention_type_group_path, class: 'btn' %></p>

@@ -30,7 +30,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :local
+  config.active_storage.service = :amazon
 
   # To use amazon locally, ensure you have the AWS credentials set up in your .env file
   # config.active_storage.service = :amazon
