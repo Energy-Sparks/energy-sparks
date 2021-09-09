@@ -21,6 +21,9 @@ class ProgrammeType < ApplicationRecord
   scope :default, -> { where(default: true) }
   scope :by_title, -> { order(title: :asc) }
 
+  scope :default_first, -> { order(default: :desc) }
+  scope :featured, -> { active.default_first.by_title }
+
   validates_presence_of :title
 
   validates_uniqueness_of :default, if: :default
