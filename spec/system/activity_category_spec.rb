@@ -76,7 +76,7 @@ RSpec.describe "activity type", type: :system do
       end
 
       it 'links to programme type page' do
-        within '.programme-types' do
+        within '#programme-types' do
           first(".card-img-top").click
         end
         expect(page).to have_content(programme_type.title)
