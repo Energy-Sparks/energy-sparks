@@ -32,8 +32,8 @@
         </div>
       </div>
     </div>
-    <%= render "cards", activity_types: @suggested_activities.first(5), card_deck_css: "bg-light" %>
   </div>
+  <%= render "cards", activity_types: @suggested_activities.first(5), card_deck_css: "bg-light" %>
 <% end %>
 
 <% if !@programme_types.blank? %>
@@ -57,8 +57,8 @@
         <h3>Pupil activities</h3>
       </div>
     </div>
-    <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
   </div>
+  <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
 <% end %>
 
 <% @activity_categories.each do |activity_category| %>
@@ -71,6 +71,6 @@
         </div>
       </div>
     </div>
-    <%= render "cards", activity_types: activity_category.activity_types.active.sample(5), card_deck_css: "" %>
   </div>
+  <%= render "cards", activity_types: activity_category.activity_types.active.sample(5), card_deck_css: "" %>
 <% end %>
