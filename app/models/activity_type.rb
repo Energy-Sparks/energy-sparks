@@ -38,8 +38,13 @@ class ActivityType < ApplicationRecord
   where(active: true, custom: false, data_driven: true, repeatable: true)
 
   scope :active, -> { where(active: true) }
+  scope :not_custom, -> { where(custom: false) }
+
+  scope :active_and_not_custom, -> { active.not_custom }
+
   scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
+
   scope :random_suggestions, -> { active.repeatable }
   scope :custom_last, -> { order(:custom) }
   scope :by_name, -> { order(name: :asc) }

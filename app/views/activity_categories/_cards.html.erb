@@ -12,12 +12,12 @@
       <div class="card-footer" style="border-top: none; background-color: white;">
       </div>
       <div class="card-footer" style="border-top: none; background-color: white;">
-        <% if activity_type.key_stages.any? %>
-          <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
-        <% end %>
         <% if activity_type.subjects.any? %>
-          <%= "<br>".html_safe if activity_type.key_stages.any? %>
           <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
+        <% end %>
+        <% if activity_type.key_stages.any? %>
+          <%= "<br>".html_safe if activity_type.subjects.any? %>
+          <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
         <% end %>
       </div>
     </div>
