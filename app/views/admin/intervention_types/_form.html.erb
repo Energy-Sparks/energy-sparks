@@ -1,0 +1,48 @@
+<%= simple_form_for([:admin, intervention_type],
+  html: { id: 'intervention_type_form' }) do |f| %>
+
+  <%= f.input :title, as: :string %>
+  <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
+
+  <%= f.label 'Image' %>
+  <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
+
+  <div class="upload-preview">
+    <div class="col-md-3">
+      <% if !f.object.image.blank? %>
+        <%= image_tag f.object.image, width: '300px' %>
+      <% else %>
+        <%= image_tag '1x1.png' %>
+      <% end %>
+    </div>
+  </div>
+
+  <p>
+    <%= f.input :image, label: false %>
+  </p>
+
+  <%= f.input :summary, as: :string %>
+  <p class="small">The summary text will appear on lists of intervention types.</p>
+
+  <div class="download-links-trix-editor">
+    <%= f.label 'Download links', for: :download_links %>
+    <p class="small">These download links will appear in the right-hand panel under the image.</p>
+    <%= f.rich_text_area :download_links %>
+  </div>
+
+  <div class="description-trix-editor">
+    <%= f.label 'Description', for: :description %>
+    <p class="small">The description of the intervention for all users</p>
+    <%= f.rich_text_area :description %>
+  </div>
+
+  <%= f.input :points, label: 'Score', as: :string %>
+
+  <%= f.input :active %>
+
+  <%= f.input :other, label: "Custom ('Other')" %>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>
