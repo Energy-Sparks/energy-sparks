@@ -32,10 +32,34 @@
         </div>
       </div>
     </div>
-    <%= render "cards", activity_types: @suggested_activities.first(5) %>
-    <div class="row padded-row"></div>
+    <%= render "cards", activity_types: @suggested_activities.first(5), card_deck_css: "bg-light" %>
   </div>
-  <%= render "cards", activity_types: @suggested_activities.first(5), card_deck_css: "bg-light" %>
+<% end %>
+
+<% if !@pupil_categories.blank? %>
+  <div class="row mt-3 bg-light">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3>Pupil activities</h3>
+      </div>
+    </div>
+    <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
+  </div>
+<% end %>
+
+<% if !@programme_types.blank? %>
+<div class="row mt-3">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3>Programmes</h3>
+      <div>
+        <%= link_to 'View all programmes', programme_types_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render "programme_types", programme_types: @programme_types.first(5) %>
+
 <% end %>
 
 <% @activity_categories.each do |activity_category| %>
@@ -48,21 +72,6 @@
         </div>
       </div>
     </div>
-    <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
-    <div class="row padded-row"></div>
+    <%= render "cards", activity_types: activity_category.activity_types.active.sample(5), card_deck_css: "" %>
   </div>
-  <%= render "cards", activity_types: activity_category.activity_types.active.sample(5), card_deck_css: "" %>
-<% end %>
-
-<% if !@pupil_categories.blank? %>
-  <div class="row mt-3 bg-light">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h3>Pupil activities</h3>
-      </div>
-    </div>
-    <%= render "programme_types", programme_types: @programme_types.first(5) %>
-    <div class="row padded-row"></div>
-  </div>
-  <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
 <% end %>

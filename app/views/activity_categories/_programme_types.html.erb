@@ -2,7 +2,7 @@
   <% programme_types.each do |programme_type| %>
     <div class="card">
       <%= link_to programme_type_path(programme_type) do %>
-        <%= render 'programme_types/image', programme_type: programme_type %>
+        <%= render 'programme_types/image', programme_type: programme_type, css_class: "activity-card-img" %>
       <% end %>
       <div class="card-body">
         <p class="card-text">

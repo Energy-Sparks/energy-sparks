@@ -4,7 +4,7 @@
 
 <div class="row padded-row">
   <div class="col-md-3">
-    <%= render 'programme_types/image', programme_type: @programme_type %>
+    <%= render 'programme_types/image', programme_type: @programme_type, css_class: "" %>
   </div>
   <div class="col-md-6">
     <h2><%= @programme_type.title %></h2>
@@ -40,7 +40,7 @@
   <div class="row mt-2">
     <div class="col-sm-2">
       <%= link_to activity_type_path(activity_type) do %>
-        <%= render 'activity_types/image', activity_type: activity_type %>
+        <%= render 'activity_types/image', activity_type: activity_type, css_class: "activity-card-img-thumbnail" %>
       <% end %>
     </div>
     <div class="col-sm-8">
