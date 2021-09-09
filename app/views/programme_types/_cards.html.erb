@@ -1,20 +1,23 @@
 <% programme_types.each do |programme_type| %>
-  <div class="row mt-2">
+  <div class="row mt-4">
     <div class="col-sm-2">
       <%= link_to programme_type_path(programme_type) do %>
         <%= render 'programme_types/image', programme_type: programme_type, css_class: "activity-card-img"  %>
       <% end %>
     </div>
-    <div class="col-sm-10">
-      <p>
+    <div class="col-sm-8">
+      <h4><strong>
         <%= link_to programme_type.title, programme_type_path(programme_type), style: "text-decoration: none;" %>
-      </p>
+      </strong></h4>
       <p>
         <%= programme_type.short_description %>
       </p>
       <% if started_programmes.include?(programme_type) %>
-        <p>You have already started this programme</p>
+        <p><span class="h4 check"><%= fa_icon("check-circle text-success") %></span> You have already started this programme</p>
       <% end %>
+    </div>
+    <div class="col-sm-2 align-self-center">
+      <%= link_to started_programmes.include?(programme_type) ? "Continue" : "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
     </div>
   </div>
 <% end %>
