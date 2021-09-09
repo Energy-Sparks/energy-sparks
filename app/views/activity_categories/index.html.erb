@@ -26,51 +26,53 @@
   <div class="row bg-light">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <h3>Recommended for your school</h3>
+        <h4><strong>Recommended for your school</strong></h4>
         <div>
           <%= link_to 'View all suggestions', recommended_activity_categories_path, class: "btn btn-secondary" %>
         </div>
       </div>
+      <p>Our suggestions based on your school programmes and analysis of your energy data</p>
     </div>
   </div>
   <%= render "cards", activity_types: @suggested_activities.first(5), card_deck_css: "bg-light" %>
-<% end %>
-
-<% if !@programme_types.blank? %>
-  <div class="row mt-3">
-    <div class="col">
-      <div class="d-flex justify-content-between align-items-center">
-        <h3>Programmes</h3>
-        <div>
-          <%= link_to 'View all programmes', programme_types_path, class: "btn btn-secondary" %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%= render "programme_types", programme_types: @programme_types.first(5) %>
 <% end %>
 
 <% if !@pupil_categories.blank? %>
   <div class="row mt-3 bg-light">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <h3>Pupil activities</h3>
+        <h4><strong>Pupil activities</strong></h4>
       </div>
     </div>
   </div>
   <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
 <% end %>
 
+<% if !@programme_types.blank? %>
+  <div class="row mt-3 bg-light">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4><strong>Our Programmes</strong></h4>
+        <div>
+          <%= link_to 'View all programmes', programme_types_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+      <p>Short programmes of related activities that pupils can work through step-by-step to achieve greater impact</p>
+    </div>
+  </div>
+  <%= render "programme_types", programme_types: @programme_types.first(5) %>
+<% end %>
+
 <% @activity_categories.each do |activity_category| %>
   <div class="row mt-3">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <h3><%= activity_category.name %></h3>
+        <h4><strong><%= activity_category.name %></strong></h4>
         <div>
           <%= link_to "View all #{activity_category.activity_types.active.count} activities", activity_category_path(activity_category), class: "btn btn-secondary" %>
         </div>
       </div>
     </div>
   </div>
-  <%= render "cards", activity_types: activity_category.activity_types.active.sample(5), card_deck_css: "" %>
+  <%= render "cards", activity_types: activity_category.activity_types.active_and_not_custom.sample(5), card_deck_css: "" %>
 <% end %>
