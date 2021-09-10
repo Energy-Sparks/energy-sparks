@@ -112,6 +112,7 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
 
       it 'indicates I am enrolled on list of programmes' do
         click_on("View all programmes")
+        expect(page).to have_content("You have already started this programme")
         expect(page).to have_link("Continue", href: programme_type_path(programme_type_1))
         expect(page).to have_link("View", href: programme_type_path(programme_type_3))
       end
