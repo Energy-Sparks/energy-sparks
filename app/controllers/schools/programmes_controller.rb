@@ -8,8 +8,5 @@ module Schools
       Programmes::Creator.new(@school, programme_type).create
       redirect_to programme_type_path(programme_type)
     end
-
-    def show
-    end
   end
 end

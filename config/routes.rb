@@ -100,8 +100,7 @@ Rails.application.routes.draw do
         end
       end
       resources :school_targets, except: [:destroy]
-      resources :programme_types, only: [:index, :show]
-      resources :programmes, only: [:show, :create]
+      resources :programmes, only: [:create]
 
       resource :action, only: [:new]
 
