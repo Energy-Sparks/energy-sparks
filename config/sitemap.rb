@@ -6,6 +6,7 @@ if ENV.key?('GENERATE_SITEMAP')
 
     # Home controller stuff
     add root_path
+
     add for_teachers_path
     add for_pupils_path
     add for_management_path
@@ -14,17 +15,31 @@ if ENV.key?('GENERATE_SITEMAP')
     add contact_path
     add enrol_path
     add datasets_path
+    add attribution_path
     add team_path
     add privacy_and_cookie_policy_path
+    add terms_and_conditions_path
+    add case_studies_path
+    add newsletters_path
+    add user_guide_videos_path
+    add resources_path
 
     add schools_path
-    add activity_types_path
+    add scoreboards_path
+    add programme_types_path
+    add activity_categories_path
+
+    ActivityCategory.all.find_each do |activity_category|
+      add activity_category_path(activity_category)
+    end
 
     ActivityType.active.find_each do |activity_type|
       add activity_type_path(activity_type)
     end
 
-    add scoreboards_path
+    ProgrammeType.active.find_each do |programme_type|
+      add programme_type_path(programme_type)
+    end
 
     Scoreboard.is_public.find_each do |scoreboard|
       add scoreboard_path(scoreboard)
@@ -33,7 +48,6 @@ if ENV.key?('GENERATE_SITEMAP')
     School.visible.find_each do |school|
       add school_path(school)
       add school_activities_path(school)
-      add school_programme_types_path(school)
       add school_timeline_path(school)
     end
   end
