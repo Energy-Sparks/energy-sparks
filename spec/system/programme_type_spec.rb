@@ -84,6 +84,8 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       let(:activity)      { create(:activity, school: school, activity_type: activity_type, happened_on: Date.yesterday)}
 
       before(:each) do
+        #this is because the Enroller relies on this currently
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
         Programmes::Enroller.new(programme_type_1).enrol(school)
         ActivityCreator.new(activity).process
         click_on programme_type_1.title

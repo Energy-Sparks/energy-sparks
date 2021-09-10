@@ -45,6 +45,9 @@ describe Programmes::UserProgress, type: :service do
 
     context 'and enrolled in programme' do
       before(:each) do
+        #this is because the Enroller relies on this currently
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+
         Programmes::Enroller.new(programme_type_1).enrol(school)
       end
 
