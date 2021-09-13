@@ -1,7 +1,7 @@
 <h1>Your energy saving actions</h1>
 
 <% if can? :create, Observation %>
-  <p><%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-primary' %></p>
+  <p><%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-primary' %></p>
 <% end %>
 
 <table class="table table-borderless">
