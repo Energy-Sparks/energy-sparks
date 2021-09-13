@@ -8,7 +8,7 @@
 
 <% if @current_target %>
   <p>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target_date) %>
+    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>
   </p>
 <% end %>
 
@@ -19,13 +19,13 @@
       <p>
         Unfortunately you are currently running
         <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
-        above target.
+        above last years consumption.
       </p>
     <% else %>
       <p>
-        Congratulations, you are currently running
+        Well done, you are currently running
         <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
-        below the target.
+        below last years consumption.
       </p>
     <% end %>
   <% end %>
@@ -49,7 +49,7 @@
     <tbody>
     <%= render 'row', title: 'Target (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, units: :kwh %>
     <%= render 'row', title: 'Usage (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, units: :kwh %>
-    <%= render 'row', title: 'Overall reduction', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent %>
+    <%= render 'row', title: 'Overall change since last year', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent %>
     </tbody>
   </table>
 
@@ -72,7 +72,7 @@
     <tbody>
     <%= render 'row', title: 'Target (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, units: :kwh %>
     <%= render 'row', title: 'Usage (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, units: :kwh %>
-    <%= render 'row', title: 'Overall performance', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent %>
+    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent %>
     </tbody>
   </table>
 
