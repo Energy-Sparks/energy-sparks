@@ -3,7 +3,7 @@
     <%= title %>
   </td>
   <% keys.each do |key| %>
-    <td class="<%= target_percent_cell_colour(data[key]) if units == :relative_percent %> text-right">
+    <td class="text-right <%= target_percent_cell_colour(data[key]) if units == :relative_percent %><%= ' partial-month' if partial_months[key] %>">
       <%= format_target(data[key], units) %>
     </td>
   <% end %>

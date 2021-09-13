@@ -33,7 +33,7 @@ module Schools
       begin
         service = TargetsService.new(aggregate_school, @fuel_type)
         @progress = service.progress
-        @debug_content = service.analytics_debug_info if current_user.analytics?
+        @debug_content = service.analytics_debug_info # if current_user.analytics?
       rescue => e
         Rollbar.error(e)
         flash[:error] = e.message

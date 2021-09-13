@@ -30,31 +30,7 @@
     <% end %>
   <% end %>
 
-
-  <h2>Month by month progress</h2>
-
-  <table class="table table-bordered table-hover table-sm">
-    <thead class="thead-dark">
-    <tr>
-      <th>
-        Month
-      </th>
-      <% @progress.months.each do |month| %>
-        <th class="text-right">
-          <%= month %>
-        </th>
-      <% end %>
-    </tr>
-    </thead>
-    <tbody>
-    <%= render 'row', title: 'Target (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Usage (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall change since last year', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent, final_row: true %>
-    </tbody>
-  </table>
-
-
-  <h2>Cumulative progress</h2>
+  <h3>Month by month progress</h3>
 
   <table class="table table-bordered table-hover table-sm">
     <thead class="thead-dark">
@@ -70,19 +46,47 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Usage (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, partial_months: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall change since last year', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
-  <h2>Progress charts</h2>
+  <h3>Cumulative progress</h3>
+
+  <table class="table table-bordered table-hover table-sm">
+    <thead class="thead-dark">
+    <tr>
+      <th>
+        Month
+      </th>
+      <% @progress.months.each do |month| %>
+        <th class="text-right">
+          <%= month %>
+        </th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, partial_months: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, units: :relative_percent, final_row: true %>
+    </tbody>
+  </table>
+
+  <p>
+    In the tables above <span class="partial-month">text in red</span> indicates where we have only partial consumption data for a given month. Your usage figures and our estimate of your progress will not be accurate until the end of the month, or until we receive additional data. We also indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">exceeded your target</span> in a given month.
+  </p>
+
+  <h3>Progress charts</h3>
 
   <%= render 'charts', school: @school, fuel_type: @fuel_type %>
 
   <% if current_user.analytics? %>
     <h2>Debug</h2>
-    <%= @debug_content %>
+    <pre class="debug">
+      <%= JSON.pretty_generate(@debug_content) %>
+    </pre>
   <% end %>
 
 <% else %>
