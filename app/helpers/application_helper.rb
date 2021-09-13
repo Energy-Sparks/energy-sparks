@@ -97,9 +97,9 @@ module ApplicationHelper
   def target_percent_cell_colour(percent)
     if percent
       if percent > 0.0
-        'bg-negative-light'
+        'bg-negative-dark'
       else
-        'bg-positive-light'
+        'bg-positive-dark'
       end
     end
   end

@@ -63,11 +63,11 @@ module ChartHelper
     [{
         from: 0,
         to: bullet_chart_number(progress[:target], units),
-        color: '#A1FFE9'
+        color: '#50E3C2'
     }, {
         from: bullet_chart_number(progress[:target], units),
         to: 1_000_000,
-        color: '#FF9B9C'
+        color: '#FF3A5B'
     }].to_json
   end
 

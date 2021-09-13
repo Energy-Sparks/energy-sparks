@@ -32,6 +32,7 @@ module Schools
       @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
       begin
         service = TargetsService.new(aggregate_school, @fuel_type)
+        @recent_data = service.recent_data?
         @progress = service.progress
         #@debug_content = service.analytics_debug_info if current_user.analytics?
       rescue => e

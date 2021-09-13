@@ -68,7 +68,7 @@
     <h3>Suggestions based on your previous activities</h3>
     <%= render 'suggestion_card_deck', suggestions: @suggestions_from_activity_history %>
 
-    <h3>Suggestions based on your current <%= link_to 'programmes', school_programme_types_path(@school) %></h3>
+    <h3>Suggestions based on your current <%= link_to 'programmes', programme_types_path(@school) %></h3>
     <%= render 'suggestion_card_deck', suggestions: @suggestions_from_programmes %>
 
     <h3>Suggestions based on your alerts</h3>
@@ -76,4 +76,3 @@
 
   </div>
 </div>
-

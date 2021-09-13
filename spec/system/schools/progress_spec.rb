@@ -14,7 +14,7 @@ describe 'targets', type: :system do
   let(:cumulative_targets_kwh)    { [1,2] }
   let(:cumulative_usage_kwh)      { [1,2] }
   let(:cumulative_performance)    { [-0.99,0.99] }
-  let(:partial_months)            { ['feb'] }
+  let(:partial_months)            { {'jan': false, 'feb': true} }
 
   let(:progress) do
     TargetsProgress.new(
@@ -46,6 +46,7 @@ describe 'targets', type: :system do
       before(:each) do
         sign_in(admin)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
 
       it 'redirects to electricity' do
@@ -64,6 +65,11 @@ describe 'targets', type: :system do
         expect(page).to have_content('+99%')
       end
 
+      it 'does not show warning' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to_not have_content("We have not received data for your electricity usage for over thirty days")
+      end
+
       it 'shows charts' do
         visit electricity_school_progress_index_path(school)
         expect(page).to have_content("Progress charts")
@@ -79,7 +85,7 @@ describe 'targets', type: :system do
 
       it 'does not show message about storage heaters' do
         visit electricity_school_progress_index_path(school)
-        expect(page).not_to have_content("excluding storage heaters")
+        expect(page).not_to have_content("does not include your storage heater usage")
       end
 
       context 'when school also has storage heaters' do
@@ -88,12 +94,23 @@ describe 'targets', type: :system do
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("excluding storage heaters")
+          expect(page).to have_content("does not include your storage heater usage")
         end
 
       end
     end
 
+    context 'with out of date data' do
+      before(:each) do
+        sign_in(admin)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
+      end
+      it 'displays a warning electricity progress' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
+      end
+    end
     context 'with error from analytics' do
 
       before(:each) do
