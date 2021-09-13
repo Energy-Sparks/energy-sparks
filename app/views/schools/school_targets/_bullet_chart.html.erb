@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md-2 justify-content-center align-self-center">
-    <h4 class="card-title"><%= fuel_type.to_s.capitalize %></h4>
+    <h4 class="card-title"><%= fuel_type.to_s.humanize %></h4>
   </div>
   <div class="col-md-6">
     <figure class="highcharts-figure">
-        <div class="bullet-chart" id="bullet-chart-<%= fuel_type.to_s %>" data-title="Cumulative progress to date" data-series='<%= bullet_chart_series(progress) %>'
-        data-label="Consumption" data-units="kWh" data-bands='<%= bullet_chart_bands(progress) %>'></div>
+        <div class="bullet-chart" id="bullet-chart-<%= fuel_type.to_s %>" data-title="Progress against target consumption" data-series='<%= bullet_chart_series(progress) %>'
+        data-label="Consumption" data-units="kWh" data-start-date="<%=nice_dates(school_target.start_date)%>" data-bands='<%= bullet_chart_bands(progress) %>'></div>
     </figure>
   </div>
   <div class="col-md-2 justify-content-center align-self-center align-items-center">
