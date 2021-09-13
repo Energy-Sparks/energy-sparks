@@ -18,7 +18,7 @@ module Targets
 
     def current_monthly_usage(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.cumulative_usage_kwh[this_month] : nil
+      target_progress.present? ? target_progress.current_cumulative_usage_kwh : nil
     end
 
     #TEMPORARY
