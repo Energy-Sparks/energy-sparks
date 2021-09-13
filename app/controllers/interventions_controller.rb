@@ -8,7 +8,7 @@ class InterventionsController < ApplicationController
   def create
     @observation = current_user.school.observations.new(observation_params)
     if InterventionCreator.new(@observation).process
-      redirect_to school_interventions_path(@school)
+      redirect_to school_interventions_path(current_user_school)
     else
       render :new
     end

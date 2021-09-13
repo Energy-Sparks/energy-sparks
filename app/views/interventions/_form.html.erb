@@ -1,22 +1,12 @@
-<fieldset class="wizard-stage" id="what_did_you_do">
-  <h2>What did you do?</h2>
-  <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
+<fieldset>
   <%= f.label 'Describe what was done', for: :description %>
   <%= f.rich_text_area :description, wrapper_html: {class: 'border-left pl-3 ml-2'}%>
-  <%#= link_to 'Back', previous_page, class: 'wizard-button btn btn-secondary d-none' %>
-  <%= link_to 'Continue', '#', class: 'wizard-button btn btn-primary d-none', data: {to_stage: 'when_did_you_do_it'} %>
 </fieldset>
-
-<fieldset class="wizard-stage" id="when_did_you_do_it">
-  <h2>When did you do it?</h2>
-  <%= f.input :at, as: :tempus_dominus_date, label: 'Start date', input_html: { class: "form-control form-control-lg", data: { max_date: h(Time.now.httpdate) }} %>
-  <%= link_to 'Back', '#', class: 'wizard-button btn btn-secondary d-none', data: {to_stage: 'what_did_you_do'} %>
-  <%= link_to 'Continue', '#', class: 'wizard-button btn btn-primary  d-none', data: {to_stage: 'confirmation'} %>
+<fieldset>
+  <%= f.label 'When did you do it?', for: :at %>
+  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg", data: { max_date: h(Time.now.httpdate) }} %>
 </fieldset>
-
-<fieldset class="wizard-stage" id="confirmation">
-  <p>On <span id="intervention_date_confirmation"></span> you <span id="intervention_type_confirmation"></span></p>
-  <h2>Is that correct?</h2>
-  <%#= link_to 'Back', previous_page, class: 'wizard-button btn btn-secondary d-none', data: {to_stage: 'when_did_you_do_it'}%>
-  <%= f.submit 'Confirm', class: 'btn btn-success' %>
+<fieldset>
+  <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
 </fieldset>
+<%= f.submit 'Save', class: 'btn btn-success' %>
