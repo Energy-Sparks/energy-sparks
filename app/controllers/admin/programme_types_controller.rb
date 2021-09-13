@@ -36,7 +36,7 @@ module Admin
   private
 
     def programme_type_params
-      params.require(:programme_type).permit(:title, :description, :short_description, :document_link, :active, :default)
+      params.require(:programme_type).permit(:title, :description, :short_description, :document_link, :active, :default, :image)
     end
   end
 end

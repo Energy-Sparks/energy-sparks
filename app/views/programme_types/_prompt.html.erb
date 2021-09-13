@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-md-9">
+    <div class="row info-bar text-dark bg-neutral" role="alert">
+      <div class="col-md-1 align-self-center">
+        <i class="fas fa-tasks fa-2x"></i>
+      </div>
+      <div class="col-md-8 align-self-center">
+        You can enrol your school in this programme
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Start', school_programmes_path(school, programme_type_id: programme_type), method: :post, class: 'btn btn-secondary' %>
+      </div>
+    </div>
+  </div>
+</div>

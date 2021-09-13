@@ -48,7 +48,7 @@ describe "activity type", type: :system do
       fill_in('Name', with: activity_name)
       fill_in('Summary', with: summary)
 
-      attach_file("activity_type_image", Rails.root + "spec/fixtures/images/activity-type-placeholder.png")
+      attach_file("activity_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
       within('.download-links-trix-editor') do
         fill_in_trix with: download_links
@@ -81,13 +81,13 @@ describe "activity type", type: :system do
       expect(activity_type.topics).to     match_array([energy])
       expect(activity_type.impacts).to    match_array([reducing_electricity])
 
-      expect(activity_type.image.filename).to eq('activity-type-placeholder.png')
+      expect(activity_type.image.filename).to eq('placeholder.png')
 
       expect(page.has_content?("Activity type was successfully created.")).to be true
       expect(ActivityType.count).to be 1
 
       click_on activity_name
-      expect(page).to have_css("img[src*='activity-type-placeholder.png']")
+      expect(page).to have_css("img[src*='placeholder.png']")
       expect(page).to have_content(download_links)
       expect(page).to have_content(description)
       expect(page).to have_content(school_specific_description)
