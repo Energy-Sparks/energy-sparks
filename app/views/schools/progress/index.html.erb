@@ -1,20 +1,19 @@
 <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
 
-<% if @show_storage_heater_notes %>
-  <p>
-    Note, this page shows electricity usage excluding storage heaters - they can be reviewed separately <%= link_to 'here', storage_heaters_school_progress_index_path(@school) %>.
-  </p>
-<% end %>
-
 <% if @current_target %>
   <p>
     Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>.
   </p>
 <% end %>
 
-<% if @progress  %>
-
-  <% if @progress.current_cumulative_performance_versus_synthetic_last_year %>
+<% if !@recent_data %>
+  <div class="row alert info-bar text-light bg-negative">
+    <div class="col">
+      <span class="align-middle">We have not received data for your <%= @fuel_type == :storage_heater ? 'electricity' : @fuel_type %> usage for over thirty days. As a result your progress report will be out of date.</span>
+    </div>
+  </div>
+<% else %>
+  <% if @progress && @progress.current_cumulative_performance_versus_synthetic_last_year %>
     <% if @progress.current_cumulative_performance_versus_synthetic_last_year > 0.0 %>
       <p>
         Unfortunately you are currently running
@@ -29,6 +28,15 @@
       </p>
     <% end %>
   <% end %>
+<% end %>
+
+<% if @show_storage_heater_notes %>
+  <p>
+    Note: this page shows progress on reducing your electricity usage. It does not include your storage heater usage. This <%= link_to 'can be reviewed separately', storage_heaters_school_progress_index_path(@school) %>.
+  </p>
+<% end %>
+
+<% if @progress  %>
 
   <h3>Month by month progress</h3>
 
