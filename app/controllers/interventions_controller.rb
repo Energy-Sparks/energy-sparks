@@ -14,6 +14,26 @@ class InterventionsController < ApplicationController
     end
   end
 
+  def edit
+    @observation = Observation.find(params[:id])
+    @intervention_type = @observation.intervention_type
+  end
+
+  def update
+    @observation = Observation.find(params[:id])
+    if @observation.update(observation_params)
+      redirect_to school_interventions_path(current_user_school)
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @observation = Observation.find(params[:id])
+    ObservationRemoval.new(@observation).process
+    redirect_back fallback_location: school_interventions_path(current_user_school)
+  end
+
   private
 
   def observation_params

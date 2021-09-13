@@ -80,7 +80,7 @@ describe 'adding interventions' do
       sign_in(user)
     end
 
-    it 'allows a user to add and interventions' do
+    it 'allows a user to add, edit, delete interventions' do
       visit intervention_type_groups_path
 
       click_on 'Changed boiler'
@@ -96,8 +96,18 @@ describe 'adding interventions' do
       expect(intervention.intervention_type).to eq(boiler_intervention)
       expect(intervention.at.to_date).to eq(Date.new(2019, 7, 1))
 
-      click_on 'Changed boiler'
-      expect(page).to have_content('We changed to a more efficient boiler')
+      click_on 'Edit'
+
+      fill_in_trix with: 'We changed to a super efficient boiler'
+      fill_in 'observation_at', with: '01/06/2019'
+
+      click_on 'Save'
+
+      expect(intervention.reload.at.to_date).to eq(Date.new(2019, 6, 1))
+
+      click_on 'Delete'
+
+      expect(page).not_to have_content('Changed boiler')
     end
   end
 
