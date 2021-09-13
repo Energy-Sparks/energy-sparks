@@ -1,5 +1,12 @@
 <h1><%= @programme_type.title %></h1>
 
+<h2>Image</h2>
+
+<% if !@programme_type.image.blank? %>
+  <p><%= image_tag @programme_type.image, width: '300px', class: "programme_type_image" %></p>
+<% end %>
+
+<h2>Description</h2>
 <p><%= @programme_type.description %></p>
 
 <h2>Activities</h2>

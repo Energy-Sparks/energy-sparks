@@ -27,13 +27,15 @@ RSpec.describe "activity type", type: :system do
   let!(:activity_category_4) { create(:activity_category, name: 'cat4', pupil: true)}
   let!(:activity_type_4_1) { create(:activity_type, activity_category: activity_category_4)}
 
+  let!(:programme_type) { create(:programme_type, title: 'prog1')}
+
   context 'as a public user' do
     describe 'activity categories can be viewed' do
       before(:each) do
         visit activity_categories_path
       end
 
-      it 'shows featured activity categories with at least 5 activities, and Pupil activities, but not Recommended section' do
+      it 'shows featured activity categories with at least 5 activities, plus Pupil activities and Programmes, but not Recommended section' do
         expect(page).to have_content(activity_category_1.name)
         expect(page).not_to have_content(activity_category_2.name)
         expect(page).not_to have_content(activity_category_3.name)
@@ -41,6 +43,9 @@ RSpec.describe "activity type", type: :system do
 
         expect(page).to have_content('Pupil activities')
         expect(page).to have_content(activity_category_4.name)
+
+        expect(page).to have_content('Programmes')
+        expect(page).to have_content(programme_type.title)
       end
 
       it 'shows 5 activities' do
@@ -68,6 +73,13 @@ RSpec.describe "activity type", type: :system do
 
         click_link 'All activities'
         expect(page).to have_content('Explore energy saving activities')
+      end
+
+      it 'links to programme type page' do
+        within '#programme-types' do
+          first(".card-img-top").click
+        end
+        expect(page).to have_content(programme_type.title)
       end
     end
   end

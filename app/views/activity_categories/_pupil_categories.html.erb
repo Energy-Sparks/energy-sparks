@@ -1,8 +1,8 @@
-<div class="card-deck bg-light pb-4">
+<div class="card-deck bg-light pb-4 activities-deck">
   <% activity_categories.each do |activity_category| %>
     <div class="card">
       <%= link_to activity_category_path(activity_category) do %>
-        <%= render 'activity_categories/activity_category_image', activity_category: activity_category, css_class: "activity-card-img" %>
+        <%= render 'image', activity_category: activity_category, css_class: "activity-card-img" %>
       <% end %>
       <div class="card-body">
         <p class="card-text">
@@ -14,10 +14,10 @@
   <div class="card">
     <div class="card-body">
       <p class="card-text">
-        Using our activities pupils can score points for their school while learning about energy and climate change.
+        Groups of activities themed around specific learning pathways.
       </p>
       <p class="card-text">
-        Browse through different activities linked to a variety of subjects and key stages.
+        Individual activities are linked to a variety of subjects and key stages.
       </p>
     </div>
   </div>

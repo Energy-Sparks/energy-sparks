@@ -1,0 +1,18 @@
+<% content_for :page_title, "Programmes" %>
+
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="display-4"><strong>Our Energy Saving Programmes</strong></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>Short programmes of related activities that pupils can work through step-by-step to achieve greater impact</p>
+    <p>As an Energy Sparks user you can enrol in any of our programmes and record activities to track your progress and score points for your school.</p>
+  </div>
+</div>
+
+<%= render "cards", programme_types: @programme_types, user_progress: @user_progress %>
