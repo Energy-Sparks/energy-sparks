@@ -1,0 +1,23 @@
+<div class="card-deck pb-4 activities-deck <%= card_deck_css %>">
+  <% intervention_types.each do |intervention_type| %>
+    <div class="card">
+      <%= link_to intervention_type_path(intervention_type) do %>
+        <%#= render 'intervention_types/image', intervention_type: intervention_type, css_class: "activity-card-img" %>
+      <% end %>
+      <div class="card-body">
+        <p class="card-text">
+          <%= link_to intervention_type.title, intervention_type_path(intervention_type) %>
+        </p>
+      </div>
+      <div class="card-footer" style="border-top: none; background-color: white;">
+        <%# if activity_type.subjects.any? %>
+          <%#= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
+        <%# end %>
+        <%# if activity_type.key_stages.any? %>
+          <%#= "<br>".html_safe if activity_type.subjects.any? %>
+          <%#= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
+        <%# end %>
+      </div>
+    </div>
+  <% end %>
+</div>
