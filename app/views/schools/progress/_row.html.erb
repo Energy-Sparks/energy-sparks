@@ -1,9 +1,9 @@
-<tr>
-  <td>
+<tr class="<%= 'target-final-row' if final_row %>">
+  <td class="<%= 'target-final-row' if final_row %>">
     <%= title %>
   </td>
   <% keys.each do |key| %>
-    <td class=<%= target_percent_cell_colour(data[key]) if units == :relative_percent %>>
+    <td class="<%= target_percent_cell_colour(data[key]) if units == :relative_percent %> text-right">
       <%= format_target(data[key], units) %>
     </td>
   <% end %>

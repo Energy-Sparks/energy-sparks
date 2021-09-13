@@ -5,3 +5,16 @@
 .bullet-chart-title {
   font-weight: bold;
 }
+
+.target-final-row {
+  border-top-width: thick !important;
+}
+
+.target-final-row {
+  td {
+    border-top-width: thick;
+  }
+  td:first-child {
+    font-weight: bold
+  }
+}
