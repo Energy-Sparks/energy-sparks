@@ -16,5 +16,9 @@
 </div>
 
 <% if current_user_school %>
+  <%= render 'intervention_types/previous_records', interventions: @interventions, school: current_user_school %>
+<% end %>
+
+<% if current_user_school %>
   <%= render 'intervention_types/prompt', intervention_type: @intervention_type, school: current_user_school %>
 <% end %>

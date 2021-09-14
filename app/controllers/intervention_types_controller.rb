@@ -7,5 +7,8 @@ class InterventionTypesController < ApplicationController
   end
 
   def show
+    if current_user_school
+      @interventions = current_user_school.observations.includes(:intervention_type).intervention.where(intervention_type: @intervention_type).visible.by_date
+    end
   end
 end
