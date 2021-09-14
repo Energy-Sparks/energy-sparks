@@ -20,7 +20,7 @@ module Schools
 
     def show
       setup_activity_suggestions
-      @target_service = target_service
+      @progress_service = progress_service
       @prompt_to_review_target = prompt_to_review_target?
       @fuel_types_changed = fuel_types_changed
     end

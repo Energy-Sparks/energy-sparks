@@ -6,6 +6,10 @@ module Targets
       @progress_by_fuel_type = {}
     end
 
+    def display_progress_for_fuel_type?(fuel_type)
+      has_fuel_type_and_target?(fuel_type) && target_service(fuel_type).enough_data_to_set_target?
+    end
+
     def cumulative_progress(fuel_type)
       target_progress = target_progress(fuel_type)
       target_progress.present? ? target_progress.current_cumulative_performance_versus_synthetic_last_year : nil
@@ -28,13 +32,28 @@ module Targets
       return dashboard_table.table unless @school.has_target? && EnergySparks::FeatureFlags.active?(:school_targets)
       dashboard_table.table.each do |row|
         row.insert(-2, "Target progress") if row[0] == ""
-        row.insert(-2, format_for_table(cumulative_progress(:electricity))) if row[0] == "Electricity"
-        row.insert(-2, format_for_table(cumulative_progress(:gas))) if row[0] == "Gas"
-        row.insert(-2, format_for_table(cumulative_progress(:storage_heater))) if row[0] == "Storage heaters"
+        row.insert(-2, management_table_entry(:electricity)) if row[0] == "Electricity"
+        row.insert(-2, management_table_entry(:gas)) if row[0] == "Gas"
+        row.insert(-2, management_table_entry(:storage_heater)) if row[0] == "Storage heaters"
       end
     end
 
     private
+
+    def has_target_for_fuel_type?(fuel_type)
+      target = @school.most_recent_target
+      return false unless target.present?
+      case fuel_type
+      when :electricity
+        target.electricity.present?
+      when :gas
+        target.gas.present?
+      when :storage_heater, :storage_heaters
+        target.storage_heaters.present?
+      else
+        false
+      end
+    end
 
     def this_month
       Time.zone.now.strftime("%b")
@@ -42,6 +61,16 @@ module Targets
 
     def has_fuel_type?(fuel_type)
       @school.send("has_#{fuel_type}?".to_sym)
+    end
+
+    def has_fuel_type_and_target?(fuel_type)
+      has_fuel_type?(fuel_type) && has_target_for_fuel_type?(fuel_type)
+    end
+
+    def management_table_entry(fuel_type)
+      return "-" unless has_fuel_type_and_target?(fuel_type)
+      return "not enough data" unless target_service(fuel_type).enough_data_to_set_target?
+      format_for_table(cumulative_progress(fuel_type))
     end
 
     def format_for_table(value)
