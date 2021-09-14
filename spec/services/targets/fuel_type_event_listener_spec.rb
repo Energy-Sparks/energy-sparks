@@ -31,7 +31,7 @@ describe Targets::FuelTypeEventListener, type: :system do
           listener.meter_attribute_created(meter_attribute)
           school_target.reload
           expect(school_target.suggest_revision?).to be true
-          expect(school_target.revised_fuel_types).to match_array ["storage heater"]
+          expect(school_target.revised_fuel_types).to match_array ["storage_heater"]
         end
 
         it 'flags fuel types only once' do
@@ -39,11 +39,11 @@ describe Targets::FuelTypeEventListener, type: :system do
           listener.meter_attribute_created(create(:storage_heaters_attribute, meter: meter))
           school_target.reload
           expect(school_target.suggest_revision?).to be true
-          expect(school_target.revised_fuel_types).to match_array ["storage heater"]
+          expect(school_target.revised_fuel_types).to match_array ["storage_heater"]
         end
 
         it 'removes flag if the list is empty' do
-          school_target.update!(revised_fuel_types: ["storage heater"])
+          school_target.update!(revised_fuel_types: ["storage_heater"])
           meter_attribute.update!(deleted_by: create(:admin))
           listener.meter_attribute_deleted(meter_attribute)
           school_target.reload
