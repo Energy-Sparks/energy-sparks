@@ -52,7 +52,7 @@
     <% end %>
     <% if can?(:create, Observation) %>
       <div class="card mb-2">
-        <%= link_to 'Record an energy saving action', new_school_action_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
     <% if can?(:start_programme, school) %>
