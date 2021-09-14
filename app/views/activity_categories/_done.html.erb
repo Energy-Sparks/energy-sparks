@@ -1,0 +1,5 @@
+<% activity_type.activities_for_school(current_user_school).by_date.each do |activity| %>
+  <p>
+    <span class="h4 check"><%= far_icon("check-circle text-success") %></span>&nbsp;Done on <%= nice_dates(activity.happened_on) %>
+  </p>
+<% end %>

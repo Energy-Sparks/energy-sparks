@@ -55,6 +55,7 @@ class ActivityType < ApplicationRecord
   has_many :activity_type_suggestions
   has_many :suggested_types, through: :activity_type_suggestions
   has_many :programme_activities
+  has_many :activities, inverse_of: :activity_type
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
@@ -72,5 +73,9 @@ class ActivityType < ApplicationRecord
 
   def school_specific_description_or_fallback
     school_specific_description.blank? ? description : school_specific_description
+  end
+
+  def activities_for_school(school)
+    activities.for_school(school)
   end
 end
