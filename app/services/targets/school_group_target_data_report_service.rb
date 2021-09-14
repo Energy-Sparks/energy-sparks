@@ -52,7 +52,7 @@ module Targets
             target_service = ::TargetsService.new(aggregate_school, fuel_type)
             begin
               #If school has that fuel type and there's enough data
-              if school.send("has_#{fuel_type}?".to_sym) && target_service.enough_data_to_set_target?
+              if school.send("has_#{fuel_type}?".to_sym) && target_service.meter_present? && target_service.enough_data_to_set_target?
                 #record we have enough data
                 report[school][fuel_type][:enough_data] = true
                 report[school][fuel_type][:recent_data] = target_service.recent_data?
