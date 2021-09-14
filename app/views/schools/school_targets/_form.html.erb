@@ -6,7 +6,7 @@
 
   <%= render 'shared/errors', subject: school_target, subject_name: 'School target' %>
 
-  <% if school_target.school.has_electricity? %>
+  <% if target_service.enough_data_for_electricity? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
         <%= f.label :electricity, "Reducing electricity usage by", class: "form-label" %>
@@ -20,7 +20,7 @@
     </div>
   <% end %>
 
-  <% if school_target.school.has_gas? %>
+  <% if target_service.enough_data_for_gas? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
         <%= f.label :gas, "Reducing gas usage by", class: "form-label" %>
@@ -34,7 +34,7 @@
     </div>
   <% end %>
 
-  <% if school_target.school.indicated_has_storage_heaters? %>
+  <% if target_service.enough_data_for_storage_heater? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
         <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label" %>

@@ -20,6 +20,7 @@ module Schools
 
     def show
       setup_activity_suggestions
+      @target_service = target_service
       @prompt_to_review_target = prompt_to_review_target?
       @fuel_types_changed = fuel_types_changed
     end
@@ -30,10 +31,10 @@ module Schools
         redirect_to school_school_target_path(@school, @school.current_target)
       elsif @school.has_target?
         @previous_school_target = @school.most_recent_target
-        @school_target = Targets::SchoolTargetService.new(@school).build_target
+        @school_target = target_service.build_target
         render :new
       else
-        @school_target = Targets::SchoolTargetService.new(@school).build_target
+        @school_target = target_service.build_target
         render :first
       end
     end
@@ -59,6 +60,7 @@ module Schools
         AggregateSchoolService.new(@school).invalidate_cache
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else
+        target_service
         render :edit
       end
     end
