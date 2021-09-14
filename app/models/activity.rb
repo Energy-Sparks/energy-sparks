@@ -35,6 +35,7 @@ class Activity < ApplicationRecord
   validates_presence_of :school, :activity_type, :activity_category, :happened_on
 
   scope :for_school, ->(school) { where(school: school) }
+  scope :by_date, -> { order(happened_on: :asc) }
 
   has_rich_text :description
 
