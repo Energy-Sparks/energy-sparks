@@ -1,0 +1,9 @@
+<div class="row justify-content-md-center">
+  <div class="col col-lg-8">
+    <h3>Tell us about an energy saving action</h3>
+    <h4><%= @intervention_type.title %></h4>
+    <%= simple_form_for([@school, @observation], url: interventions_path, html: {class: 'wizard intervention'}) do |f| %>
+      <%= render 'form', f: f, intervention_type: @intervention_type %>
+    <% end %>
+  </div>
+</div>

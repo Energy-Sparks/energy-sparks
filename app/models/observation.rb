@@ -46,6 +46,7 @@ class Observation < ApplicationRecord
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
   scope :visible, -> { where(visible: true) }
+  scope :by_date, -> { order(at: :desc) }
 
   has_rich_text :description
 

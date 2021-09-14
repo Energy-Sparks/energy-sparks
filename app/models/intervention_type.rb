@@ -35,6 +35,10 @@ class InterventionType < ApplicationRecord
   scope :active,        -> { where(active: true) }
   scope :display_order, -> { order(:other, :title) }
 
+  scope :not_other, -> { where(other: false) }
+
+  scope :active_and_not_other, -> { active.not_other }
+
   def display_with_points
     points ? "#{title} (#{points} points)" : title
   end

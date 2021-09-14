@@ -1,7 +1,7 @@
 <h1>Your energy saving actions</h1>
 
 <% if can? :create, Observation %>
-  <p><%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-primary' %></p>
+  <p><%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-primary' %></p>
 <% end %>
 
 <table class="table table-borderless">
@@ -27,8 +27,8 @@
           <td class="text-right">
             <% if can?(:manage, intervention) %>
               <div class="btn-group">
-                <%= link_to 'Edit', edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
-                <%= link_to 'Delete', school_intervention_path(@school, intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+                <%= link_to 'Edit', edit_intervention_path(intervention), class: 'btn btn-warning' %>
+                <%= link_to 'Delete', intervention_path(intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
               </div>
             <% end %>
           </td>

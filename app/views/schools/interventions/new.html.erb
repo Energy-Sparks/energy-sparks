@@ -2,7 +2,7 @@
   <div class="col col-lg-8">
     <h3>Tell us about an energy saving action</h3>
     <%= simple_form_for([@school, @observation], url: school_interventions_path(@school, intervention_type_group_id: @intervention_type_group.id), html: {class: 'wizard intervention'}) do |f| %>
-      <%= render 'form', f: f, intervention_types: @intervention_types, intervention_type_group: @intervention_type_group, previous_page: new_school_action_path(@school)%>
+      <%= render 'form', f: f, intervention_types: @intervention_types, intervention_type_group: @intervention_type_group, previous_page: intervention_type_groups_path %>
     <% end %>
   </div>
 </div>
