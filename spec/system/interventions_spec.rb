@@ -92,6 +92,22 @@ describe 'adding interventions' do
 
       expect(page).not_to have_content('Changed boiler')
     end
+
+    it 'shows previously completed interventions' do
+      visit intervention_type_groups_path
+
+      click_on 'Changed boiler'
+      click_on "Record this action"
+
+      fill_in_trix with: 'We changed to a more efficient boiler'
+      fill_in 'observation_at', with: '01/07/2019'
+      click_on 'Save'
+
+      visit intervention_type_groups_path
+
+      click_on 'Changed boiler'
+      expect(page).to have_content('Action previously completed on')
+    end
   end
 
   context 'using the public pages' do
