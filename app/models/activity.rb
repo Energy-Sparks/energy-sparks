@@ -26,13 +26,16 @@
 
 class Activity < ApplicationRecord
   belongs_to :school, inverse_of: :activities
-  belongs_to :activity_type
+  belongs_to :activity_type, inverse_of: :activities
   belongs_to :activity_category, optional: true
 
   has_many   :programme_activities
   has_many   :observations
 
   validates_presence_of :school, :activity_type, :activity_category, :happened_on
+
+  scope :for_school, ->(school) { where(school: school) }
+  scope :by_date, -> { order(happened_on: :asc) }
 
   has_rich_text :description
 
