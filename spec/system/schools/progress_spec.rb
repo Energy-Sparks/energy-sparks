@@ -32,6 +32,10 @@ describe 'targets', type: :system do
     )
   end
 
+  before(:each) do
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+  end
+
   context 'as an admin' do
 
     let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: false) }
