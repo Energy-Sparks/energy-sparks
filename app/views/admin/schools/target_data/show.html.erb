@@ -12,10 +12,12 @@ Where there is enough calendar and AMR data we should be able to generate both
 their targets and a progress report.
 </p>
 
-<% if @school.has_current_target? %>
-<p>
-This school currently has a target set, you can <%= link_to "view their target and progress", school_school_targets_path(@school) %>
-</p>
+Is the targets feature enabled for this school?: <strong><%= @school.enable_targets_feature? %></strong>
+
+<% if @school.enable_targets_feature? && @school.has_current_target? %>
+  <p>
+    This school currently has a target set, you can <%= link_to "view their target and progress", school_school_targets_path(@school) %>
+  </p>
 <% end %>
 
 <table class="table">

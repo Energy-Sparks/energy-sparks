@@ -36,7 +36,7 @@ module Targets
 
     def with_enough_data(schools)
       schools.select do |school|
-        Targets::SchoolTargetService.new(school).enough_data?
+        Targets::SchoolTargetService.targets_enabled?(school) && Targets::SchoolTargetService.new(school).enough_data?
       end
     end
 
