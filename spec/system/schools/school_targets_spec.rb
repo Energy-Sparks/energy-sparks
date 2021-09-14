@@ -127,7 +127,12 @@ RSpec.describe 'school targets', type: :system do
       it "includes achieving your targets section" do
         expect(page).to have_content("Working with the pupils")
         expect(page).to have_link("Choose another activity", href: suggest_activity_school_path(school))
-        expect(page).to have_link("Explore your data", href: pupils_school_analysis_path(school))
+
+        expect(page).to have_content("Taking action around the school")
+        expect(page).to have_link('Record an energy saving action', href: intervention_type_groups_path)
+
+        expect(page).to have_content("Explore your data")
+        expect(page).to have_link("View dashboard", href: management_school_path(school))
       end
 
       it "includes links to activities" do
@@ -135,8 +140,11 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "includes links to intervention types" do
-        expect(page).to have_link('Record an energy saving action', href: intervention_type_groups_path)
         expect(page).to have_link(intervention_type.title, href: intervention_type_path(intervention_type))
+      end
+
+      it "includes links to analysis" do
+        expect(page).to have_link("Explore your data", href: pupils_school_analysis_path(school))
       end
 
       it "allows target to be edited" do
