@@ -25,6 +25,22 @@ RSpec.describe 'school targets', type: :system do
       sign_in(school_admin)
     end
 
+    context 'with targets disabled' do
+      before(:each) do
+          school.update!(enable_targets_feature: false)
+      end
+
+      it 'doesnt have a link to review targets' do
+        expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+      end
+
+      it 'doesnt let me navigate there' do
+        visit school_school_targets_path(school)
+        expect(page).to have_current_path(management_school_path(school))
+      end
+
+    end
+
     context "with no target" do
 
       context "with all fuel types" do

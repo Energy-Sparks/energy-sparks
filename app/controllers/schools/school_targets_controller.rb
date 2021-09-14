@@ -8,6 +8,7 @@ module Schools
     include ActivityTypeFilterable
 
     before_action :check_aggregated_school_in_cache, only: :show
+    before_action :redirect_if_disabled
     before_action :calculate_current_progress, only: :show
 
     def index

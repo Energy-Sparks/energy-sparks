@@ -128,6 +128,15 @@ RSpec.describe Targets::ProgressService do
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         end
 
+        context 'but not for our school' do
+          before(:each) do
+            school.update!(enable_targets_feature: false)
+          end
+          it 'does not include the progress' do
+            expect(service.setup_management_table).to eql summary
+          end
+        end
+
         context 'and theres a target' do
           let!(:target)              { create(:school_target, school: school) }
 

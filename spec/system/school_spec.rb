@@ -329,6 +329,16 @@ RSpec.describe "school", type: :system do
           expect(school.activation_date).to eq nil
         end
 
+        it 'can change target feature flag' do
+          expect(school.enable_targets_feature?).to be true
+          click_on(school_name)
+          click_on('Edit school details')
+          uncheck 'Enable targets feature'
+          click_on('Update School')
+          school.reload
+          expect(school.enable_targets_feature?).to be false
+        end
+
         context "can update storage heaters" do
           it "and changes are saved" do
             click_on(school_name)

@@ -110,6 +110,13 @@ describe 'Adult dashboard' do
         expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
       end
 
+      it 'doesnt display prompt if feature disabled' do
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+        school.update!(enable_targets_feature: false)
+        visit root_path
+        expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
+      end
+
       it 'displays a report version of the page' do
         visit root_path
         click_on 'Print view'

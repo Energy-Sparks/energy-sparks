@@ -99,7 +99,7 @@ private
   end
 
   def include_target_prompt_in_email?
-    return EnergySparks::FeatureFlags.active?(:school_targets) && Targets::SchoolTargetService.new(@school).enough_data?
+    return Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
   end
 
   def enrol_in_default_programme

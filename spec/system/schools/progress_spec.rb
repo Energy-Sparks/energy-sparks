@@ -55,6 +55,12 @@ describe 'targets', type: :system do
         expect(page).to have_content('Tracking progress')
       end
 
+      it 'redirects to management dashboard if disabled' do
+        school.update!(enable_targets_feature: false)
+        visit school_progress_index_path(school)
+        expect(page).to have_current_path(management_school_path(school))
+      end
+
       it 'shows electricity progress' do
         visit electricity_school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')

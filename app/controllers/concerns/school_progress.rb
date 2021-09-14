@@ -3,12 +3,16 @@ module SchoolProgress
 
 private
 
+  def redirect_if_disabled
+    redirect_to school_path(@school) unless Targets::SchoolTargetService.targets_enabled?(@school)
+  end
+
   def prompt_for_target?
-    EnergySparks::FeatureFlags.active?(:school_targets) && !@school.has_target? && target_service.enough_data?
+    Targets::SchoolTargetService.targets_enabled?(@school) && !@school.has_target? && target_service.enough_data?
   end
 
   def prompt_to_review_target?
-    EnergySparks::FeatureFlags.active?(:school_targets) && target_service.prompt_to_review_target?
+    Targets::SchoolTargetService.targets_enabled?(@school) && target_service.prompt_to_review_target?
   end
 
   def fuel_types_changed
