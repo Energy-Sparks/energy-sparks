@@ -48,6 +48,9 @@ Rails.application.routes.draw do
   end
 
   resources :programme_types, only: [:index, :show]
+  resources :intervention_type_groups, only: [:index, :show]
+  resources :intervention_types, only: [:index, :show]
+  resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
   resources :calendars, only: [:show] do
     scope module: :calendars do
