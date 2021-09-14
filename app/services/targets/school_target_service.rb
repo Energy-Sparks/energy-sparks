@@ -8,6 +8,10 @@ module Targets
       @school = school
     end
 
+    def self.targets_enabled?(school)
+      EnergySparks::FeatureFlags.active?(:school_targets) && school.enable_targets_feature?
+    end
+
     def build_target
       @school.school_targets.build(
         start_date: target_start_date,

@@ -32,6 +32,10 @@ describe 'targets', type: :system do
     )
   end
 
+  before(:each) do
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+  end
+
   context 'as an admin' do
 
     let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: false) }
@@ -53,6 +57,12 @@ describe 'targets', type: :system do
       it 'redirects to electricity' do
         visit school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')
+      end
+
+      it 'redirects to management dashboard if disabled' do
+        school.update!(enable_targets_feature: false)
+        visit school_progress_index_path(school)
+        expect(page).to have_current_path(management_school_path(school))
       end
 
       it 'shows electricity progress' do

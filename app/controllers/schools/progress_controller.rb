@@ -5,8 +5,10 @@ module Schools
     load_and_authorize_resource :school
 
     include SchoolAggregation
+    include SchoolProgress
 
     before_action :check_aggregated_school_in_cache, only: :index
+    before_action :redirect_if_disabled
 
     def index
       redirect_to electricity_school_progress_index_path

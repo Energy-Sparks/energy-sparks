@@ -143,6 +143,29 @@ describe Alerts::GenerateEmailNotifications do
         expect(matcher).to_not have_link("Set your first target")
         expect(matcher).to have_link("View your progress report")
       end
+
+    end
+
+    context 'but feature is disabled for our school' do
+      let(:active)  { true }
+      let!(:target)          { create(:school_target, school: school) }
+
+      before(:each) do
+        school.update!(enable_targets_feature: false)
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(active)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
+        Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run).perform([alert_1, alert_2])
+        Alerts::GenerateEmailNotifications.new(subscription_generation_run: subscription_generation_run).perform
+        alert_subscription_event_1.reload
+        alert_subscription_event_2.reload
+      end
+
+      it 'the link isnt included' do
+        expect(matcher).to_not have_link("View your progress report")
+        expect(matcher).to_not have_link("Set a new target")
+        expect(matcher).to_not have_link("Set your first target")
+      end
+
     end
 
     context 'and feature is active and target is expired' do

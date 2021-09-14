@@ -35,12 +35,24 @@ RSpec.describe Targets::TargetMailerService do
         expect(list_of_schools).to contain_exactly(other_school)
       end
 
-      context 'when a school cant use feature' do
-        let(:enough_data) { false }
-        it 'should ignore schools that cant use feature' do
-          expect(list_of_schools).to be_empty
+      context 'when a school cant use feature because of data' do
+        context 'because they lack data' do
+          let(:enough_data) { false }
+          it 'should ignore schools that cant use feature' do
+            expect(list_of_schools).to be_empty
+          end
+        end
+        context 'because its disabled for them' do
+          before(:each) do
+            school.update!(enable_targets_feature: false)
+          end
+          it 'should ignore schools that cant use feature' do
+            expect(list_of_schools).to contain_exactly(other_school)
+          end
         end
       end
+
+
   end
 
   describe '#list_schools_requiring_review' do
