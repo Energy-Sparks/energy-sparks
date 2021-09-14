@@ -106,6 +106,7 @@ RSpec.describe 'school targets', type: :system do
       let!(:target)          { create(:school_target, school: school, storage_heaters: nil) }
 
       let!(:activity_type)   { create(:activity_type)}
+      let!(:intervention_type)   { create(:intervention_type)}
 
       before(:each) do
         visit school_school_targets_path(school)
@@ -131,6 +132,11 @@ RSpec.describe 'school targets', type: :system do
 
       it "includes links to activities" do
         expect(page).to have_link(activity_type.name, href: activity_type_path(activity_type))
+      end
+
+      it "includes links to intervention types" do
+        expect(page).to have_link('Record an energy saving action', href: intervention_type_groups_path)
+        expect(page).to have_link(intervention_type.title, href: intervention_type_path(intervention_type))
       end
 
       it "allows target to be edited" do
