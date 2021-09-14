@@ -8,7 +8,7 @@ private
   end
 
   def prompt_to_review_target?
-    EnergySparks::FeatureFlags.active?(:school_targets) && @school.has_target? && @school.most_recent_target.suggest_revision?
+    EnergySparks::FeatureFlags.active?(:school_targets) && target_service.prompt_to_review_target?
   end
 
   def fuel_types_changed

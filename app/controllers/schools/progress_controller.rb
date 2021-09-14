@@ -13,15 +13,15 @@ module Schools
     end
 
     def electricity
-      @school.has_electricity? ? index_for(:electricity) : missing(:electricity)
+      progress_service.display_progress_for_fuel_type?(:electricity) ? index_for(:electricity) : missing(:electricity)
     end
 
     def gas
-      @school.has_gas? ? index_for(:gas) : missing(:gas)
+      progress_service.display_progress_for_fuel_type?(:gas) ? index_for(:gas) : missing(:gas)
     end
 
     def storage_heater
-      @school.has_storage_heaters? ? index_for(:storage_heater) : missing(:storage_heater)
+      progress_service.display_progress_for_fuel_type?(:storage_heaters) ? index_for(:storage_heater) : missing(:storage_heater)
     end
 
     private
@@ -49,6 +49,10 @@ module Schools
 
     def show_storage_heater_notes(school, fuel_type)
       fuel_type == :electricity && school.has_storage_heaters?
+    end
+
+    def progress_service
+      Targets::ProgressService.new(@school, aggregate_school)
     end
   end
 end

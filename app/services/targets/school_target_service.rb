@@ -18,6 +18,14 @@ module Targets
       )
     end
 
+    def prompt_to_review_target?
+      if @school.has_target? && @school.most_recent_target.suggest_revision?
+        @school.most_recent_target.revised_fuel_types.each do |fuel_type|
+          return true if enough_data_for_fuel_type?(fuel_type.to_sym)
+        end
+      end
+    end
+
     def refresh_target(target)
       if target.revised_fuel_types.include?("storage heater") && target.storage_heaters.nil?
         target.storage_heaters = DEFAULT_STORAGE_HEATER_TARGET

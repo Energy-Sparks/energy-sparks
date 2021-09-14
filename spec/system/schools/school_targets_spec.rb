@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'school targets', type: :system do
 
-  let!(:school)            { create(:school, indicated_has_storage_heaters: true) }
+  let!(:school)            { create(:school) }
   let!(:gas_meter)         { create(:gas_meter, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
 
@@ -11,7 +11,7 @@ RSpec.describe 'school targets', type: :system do
 
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-
+    allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
@@ -63,7 +63,6 @@ RSpec.describe 'school targets', type: :system do
           has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
 
         before(:each) do
-          school.update!(indicated_has_storage_heaters: false)
           school.configuration.update!(fuel_configuration: fuel_configuration)
           visit school_school_targets_path(school)
         end
@@ -82,9 +81,33 @@ RSpec.describe 'school targets', type: :system do
           expect(school.current_target.gas).to eql nil
           expect(school.current_target.storage_heaters).to eql nil
         end
-
       end
 
+      context "and only enough data for electricity" do
+
+        before(:each) do
+          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data_for_gas?).and_return(false)
+          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data_for_storage_heater?).and_return(false)
+          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data_for_electricity?).and_return(true)
+          school.configuration.update!(fuel_configuration: fuel_configuration)
+          visit school_school_targets_path(school)
+        end
+
+        it "allows electricity target to be created" do
+          expect(page).to_not have_content("Reducing gas usage by")
+          expect(page).to_not have_content("Reducing storage heater usage by")
+
+          fill_in "Reducing electricity usage by", with: 15
+          click_on 'Set this target'
+
+          expect(page).to have_content('Target successfully created')
+          expect(page).to have_content("We are calculating your targets")
+          expect(school.has_current_target?).to eql(true)
+          expect(school.current_target.electricity).to eql 15.0
+          expect(school.current_target.gas).to eql nil
+          expect(school.current_target.storage_heaters).to eql nil
+        end
+      end
     end
 
     context "with newly created target" do

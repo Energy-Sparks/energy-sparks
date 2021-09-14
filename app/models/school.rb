@@ -342,7 +342,7 @@ class School < ApplicationRecord
     #based on start date. So if target as expired, then progress pages still work
     if has_current_target?
       current_target.meter_attributes_by_meter_type
-    elsif has_target?
+    elsif most_recent_target.present?
       most_recent_target.meter_attributes_by_meter_type
     else
       {}
