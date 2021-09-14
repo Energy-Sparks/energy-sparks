@@ -2,7 +2,7 @@
   <% intervention_types.each do |intervention_type| %>
     <div class="card">
       <%= link_to intervention_type_path(intervention_type) do %>
-        <%#= render 'intervention_types/image', intervention_type: intervention_type, css_class: "activity-card-img" %>
+        <%= render 'intervention_types/image', intervention_type: intervention_type, css_class: "activity-card-img" %>
       <% end %>
       <div class="card-body">
         <p class="card-text">
