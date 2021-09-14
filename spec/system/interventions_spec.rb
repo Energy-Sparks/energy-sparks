@@ -95,11 +95,13 @@ describe 'adding interventions' do
   end
 
   context 'using the public pages' do
-    it 'allows public user to view interventions' do
+    it 'allows public user to view intervention types' do
       visit intervention_type_groups_path
       expect(page).to have_content(boiler_intervention.intervention_type_group.title)
+
       click_on 'Changed boiler'
       expect(page).to have_content('Old boiler bad, new boiler good')
+
       click_on "All #{boiler_intervention.intervention_type_group.title} actions"
       expect(page).to have_content(boiler_intervention.intervention_type_group.title)
     end

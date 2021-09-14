@@ -9,11 +9,6 @@
   <div class="col-md-6">
     <h2><%= @intervention_type.title %></h2>
     <p><%= @intervention_type.summary %></p>
-    <div>
-      <%#= render 'activity_types/activity_type_score', activity_type: @intervention_type %>
-      <%#= render 'activity_types/activity_type_key_stages', activity_type: @intervention_type %>
-      <%#= render 'activity_types/activity_type_subjects', activity_type: @intervention_type %>
-    </div>
   </div>
   <div class="col-md-3">
     <%= link_to "All #{@intervention_type.intervention_type_group.title} actions", intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-secondary float-right' %>
@@ -23,27 +18,3 @@
 <% if current_user_school %>
   <%= render 'intervention_types/prompt', intervention_type: @intervention_type, school: current_user_school %>
 <% end %>
-
-<%# if @can_be_completed && can?(:create, Activity) %>
-  <%#= render 'activity_types/prompt_score', activity_type: @intervention_type, school: current_user_school %>
-<%# end %>
-
-<!--<div class="row padded-row">-->
-<!--  <div class="col-md-9">-->
-<!--    <div class="activity_type">-->
-      <%# if @content %>
-        <%#= @content.school_specific_description_or_fallback %>
-      <%# else %>
-        <%#= @intervention_type.description %>
-      <%# end %>
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="col-md-3">-->
-    <%# if @intervention_type.download_links.present? %>
-<!--      <h4 style="padding-top: 0px;">Download resources</h4>-->
-<!--      <div class="activity_type">-->
-        <%#= @intervention_type.download_links %>
-<!--      </div>-->
-    <%# end %>
-<!--  </div>-->
-<!--</div>-->
