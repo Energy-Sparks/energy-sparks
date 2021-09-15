@@ -50,4 +50,19 @@ describe ApplicationHelper do
       expect(helper.other_field_name('MAT')).to eq('OTHER_MAT')
     end
   end
+
+  describe 'human_counts' do
+    it 'shows 0 as once' do
+      expect(helper.human_counts([])).to eq('no times')
+    end
+    it 'shows 1 as once' do
+      expect(helper.human_counts([1])).to eq('once')
+    end
+    it 'shows 2 as twice' do
+      expect(helper.human_counts([1,2])).to eq('twice')
+    end
+    it 'shows more than 2 as several times' do
+      expect(helper.human_counts([1,2,3])).to eq('several times')
+    end
+  end
 end
