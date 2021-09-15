@@ -2,17 +2,21 @@
 
 <%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true %>
 
-<h2>Annual usage</h2>
+<h3>Annual usage summary</h3>
 
 <% if @overview_table %>
   <%= render 'management/schools/overview_table', overview_table: @overview_table %>
 <% end %>
 
+<h3>Act on energy usage</h3>
+
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title %>
+
+<h3>Annual energy usage</h3>
+
 <% unless @overview_charts.empty? %>
   <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
 <% end %>
-
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title, title: 'Act on energy usage'%>
 
 <% unless @management_priorities.empty? %>
   <h3>Energy saving opportunities</h3>

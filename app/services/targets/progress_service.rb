@@ -25,23 +25,48 @@ module Targets
       target_progress.present? ? target_progress.current_cumulative_usage_kwh : nil
     end
 
-    #TEMPORARY
-    def setup_management_table
+    def management_table
       dashboard_table = @school.latest_management_dashboard_tables.first
-      return nil unless dashboard_table.present?
-      return dashboard_table.table unless Targets::SchoolTargetService.targets_enabled?(@school) && @school.has_target?
-      dashboard_table.table.each do |row|
-        row.insert(-2, "Target progress") if row[0] == ""
-        row.insert(-2, management_table_entry(:electricity)) if row[0] == "Electricity"
-        row.insert(-2, management_table_entry(:gas)) if row[0] == "Gas"
-        row.insert(-2, management_table_entry(:storage_heater)) if row[0] == "Storage heaters"
+      return dashboard_table.table if dashboard_table.present?
+    end
+
+    def progress_summary
+      if Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
+        ProgressSummary.new(
+          school_target: target,
+          electricity: fuel_type_progress(:electricity),
+          gas: fuel_type_progress(:gas),
+          storage_heater: fuel_type_progress(:storage_heaters)
+        )
       end
     end
 
     private
 
+    def fuel_type_progress(fuel_type)
+      if display_progress_for_fuel_type?(fuel_type)
+        Targets::FuelProgress.new(
+          fuel_type: fuel_type,
+          progress: cumulative_progress(fuel_type),
+          usage: current_monthly_usage(fuel_type),
+          target: current_monthly_target(fuel_type)
+        )
+      end
+    end
+
+    def has_fuel_type?(fuel_type)
+      @school.send("has_#{fuel_type}?".to_sym)
+    end
+
+    def has_fuel_type_and_target?(fuel_type)
+      has_fuel_type?(fuel_type) && has_target_for_fuel_type?(fuel_type)
+    end
+
+    def target
+      @school.most_recent_target
+    end
+
     def has_target_for_fuel_type?(fuel_type)
-      target = @school.most_recent_target
       return false unless target.present?
       case fuel_type
       when :electricity
@@ -59,30 +84,8 @@ module Targets
       Time.zone.now.strftime("%b")
     end
 
-    def has_fuel_type?(fuel_type)
-      @school.send("has_#{fuel_type}?".to_sym)
-    end
-
-    def has_fuel_type_and_target?(fuel_type)
-      has_fuel_type?(fuel_type) && has_target_for_fuel_type?(fuel_type)
-    end
-
-    def management_table_entry(fuel_type)
-      return "-" unless has_fuel_type_and_target?(fuel_type)
-      return "not enough data" unless target_service(fuel_type).enough_data_to_set_target?
-      format_for_table(cumulative_progress(fuel_type))
-    end
-
-    def format_for_table(value)
-      if value.nil?
-        "not enough data"
-      else
-        FormatEnergyUnit.format(:relative_percent, value, :html, false, true, :target)
-      end
-    end
-
     def target_progress(fuel_type)
-      return nil unless has_fuel_type?(fuel_type)
+      return nil unless has_fuel_type_and_target?(fuel_type)
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e
