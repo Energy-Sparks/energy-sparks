@@ -18,19 +18,39 @@ RSpec.describe 'school targets', type: :system do
     school.configuration.update!(fuel_configuration: fuel_configuration)
   end
 
+  context 'as an admin' do
+    let(:admin)              { create(:admin) }
+
+    before(:each) do
+      sign_in(admin)
+      visit school_path(school)
+    end
+
+    it 'lets me view target data' do
+      expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
+    end
+  end
+
   context 'as a school admin' do
     let!(:school_admin)      { create(:school_admin, school: school) }
 
     before(:each) do
       sign_in(school_admin)
+      visit school_path(school)
+    end
+
+    it 'doesnt let me view target data' do
+      expect(page).to_not have_link("View target data", href: admin_school_target_data_path(school))
     end
 
     context 'with targets disabled' do
       before(:each) do
-          school.update!(enable_targets_feature: false)
+        school.update!(enable_targets_feature: false)
       end
 
       it 'doesnt have a link to review targets' do
+        visit school_path(school)
+        expect( Targets::SchoolTargetService.targets_enabled?(school) ).to be false
         expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
       end
 

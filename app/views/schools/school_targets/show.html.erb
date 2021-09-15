@@ -19,16 +19,14 @@
     </div>
   </div>
 <% else %>
-  <% if @progress_service.display_progress_for_fuel_type?(:electricity) %>
-    <%= render "bullet_chart", school_target: @school_target, fuel_type: :electricity, target: @school_target.electricity, progress: @electricity_progress,
-    progress_path: electricity_school_progress_index_path(@school)  %>
+  <% if @progress_summary.electricity_progress.present? %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.electricity_progress, school_target: @school_target, progress_path: electricity_school_progress_index_path(@school)  %>
   <% end %>
-  <% if @progress_service.display_progress_for_fuel_type?(:gas) %>
-    <%= render "bullet_chart", school_target: @school_target, fuel_type: :gas, target: @school_target.gas, progress: @gas_progress,
-    progress_path: gas_school_progress_index_path(@school)  %>
+  <% if @progress_summary.gas_progress.present? %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.gas_progress, school_target: @school_target, progress_path: gas_school_progress_index_path(@school)  %>
   <% end %>
-  <% if @progress_service.display_progress_for_fuel_type?(:storage_heaters) %>
-    <%= render "bullet_chart", school_target: @school_target, fuel_type: :storage_heaters, target: @school_target.storage_heaters, progress: @storage_heater_progress, progress_path: storage_heaters_school_progress_index_path(@school)  %>
+  <% if @progress_summary.storage_heater_progress.present? %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.storage_heater_progress, school_target: @school_target, progress_path: storage_heaters_school_progress_index_path(@school)  %>
   <% end %>
 
   <% if @prompt_to_review_target %>
