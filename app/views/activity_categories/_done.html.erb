@@ -1,0 +1,7 @@
+<div class="col-md-6">
+  <div class="row alert alert-secondary info-bar text-dark bg-light" role="alert">
+    <span class="h4 check"><%= far_icon("check-circle text-success") %></span>
+    &nbsp;Activity previously completed&nbsp;
+    <strong><%= human_counts(activity_type.activities_for_school(current_user_school)) %></strong>
+  </div>
+</div>

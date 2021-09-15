@@ -53,6 +53,10 @@ describe 'adding a new activity' do
 
     visit activity_type_path(activity_type)
     expect(page).to have_content("Activity previously completed on")
+
+    visit activity_category_path(activity_type.activity_category)
+    expect(page).to have_content("Activity previously completed")
+    expect(page).to have_content("once")
   end
 
 end
