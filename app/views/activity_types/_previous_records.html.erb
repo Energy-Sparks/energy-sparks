@@ -1,17 +1,19 @@
-<% school.activities.includes(:activity_type).where(activity_type: activity_type).order(:happened_on).each do |activity| %>
-  <div class="row">
-    <div class="col-md-9">
-      <div class="row alert info-bar text-dark bg-light" role="alert">
-        <div class="col-md-1">
-          <i class="fas fa-tasks fa-2x"></i>
-        </div>
-        <div class="col-md-8">
-          Activity previously completed on: <%= nice_dates activity.happened_on %>
-        </div>
-        <div class="col-md-3">
-          <%= link_to "View completed activity", school_activity_path(school, activity), class: 'btn btn-primary' %>
-        </div>
+<div class="row">
+  <div class="col-md-9">
+    <div class="row alert alert-secondary info-bar text-dark bg-light" role="alert">
+      <div class="col-md-1">
+        <span class="h2 check"><%= far_icon("check-circle text-success") %></span>
+      </div>
+      <div class="col-md-8">
+        Activity previously completed
+        <strong>
+          <%= link_to "#{human_counts(activities)}", school_timeline_path(school) %>
+        </strong>
+        <%= activities.count > 1 ? ' most recently on ' : ' on ' %>
+        <strong>
+          <%= link_to "#{nice_dates(activities.last.happened_on)}", school_activity_path(school, activities.last) %>
+        </strong>
       </div>
     </div>
   </div>
-<% end %>
+</div>
