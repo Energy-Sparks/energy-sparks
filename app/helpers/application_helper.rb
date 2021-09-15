@@ -21,6 +21,19 @@ module ApplicationHelper
     date ? date.to_s(:es_short) : ""
   end
 
+  def human_counts(collection)
+    case collection.count
+    when 0
+      'no times'
+    when 1
+      'once'
+    when 2
+      'twice'
+    else
+      'several times'
+    end
+  end
+
   def nice_dates_from_timestamp(timestamp)
     return "" if timestamp.nil?
     datetime = DateTime.strptime(timestamp.to_s, '%s')
