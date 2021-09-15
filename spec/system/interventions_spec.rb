@@ -63,6 +63,11 @@ describe 'adding interventions' do
       sign_in(user)
     end
 
+    it 'has a top-level navigation item' do
+      visit root_path
+      expect(page).to have_link("Actions", href: intervention_type_groups_path)
+    end
+
     it 'allows a user to add, edit, delete interventions' do
       visit intervention_type_groups_path
 
