@@ -110,7 +110,7 @@ describe 'Adult dashboard' do
         expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
       end
 
-      it 'doesnt display prompt if feature disabled' do
+      it 'doesnt display prompt if feature disabled for school' do
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
         school.update!(enable_targets_feature: false)
         visit root_path
@@ -126,6 +126,45 @@ describe 'Adult dashboard' do
       end
     end
 
+    describe 'with targets' do
+      let(:progress_summary) { nil }
+      let!(:school_target)    { create(:school_target, school: school) }
+
+      before(:each) do
+        allow_any_instance_of(Targets::ProgressService).to receive(:progress_summary).and_return(progress_summary)
+        visit school_path(school)
+      end
+
+      context 'and there is no data' do
+        it 'has no notice' do
+          expect(page).to_not have_content("you are currently meeting all of your energy saving targets")
+          expect(page).to_not have_content("Unfortunately you are not meeting your targets")
+        end
+      end
+
+      context 'that are being met' do
+        let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
+        it 'displays a notice' do
+          expect(page).to have_content("you are currently meeting all of your energy saving targets")
+        end
+
+        it 'links to target page' do
+          expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+        end
+      end
+
+      context 'that are not being met' do
+        let(:progress_summary)  { build(:progress_summary_with_failed_target, school_target: school_target) }
+
+        it 'displays a notice' do
+          expect(page).to have_content("Unfortunately you are not meeting your target to reduce your gas usage")
+        end
+
+        it 'links to target page' do
+          expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+        end
+      end
+    end
   end
 
   context 'when logged in as a school admin' do

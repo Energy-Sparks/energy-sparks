@@ -8,11 +8,11 @@
   <%= render 'overview_table', overview_table: @overview_table %>
 <% end %>
 
-<% unless @overview_charts.empty? %>
-  <%= render 'overview_charts', overview_charts: @overview_charts %>
-<% end %>
+<h3>Act on your energy usage</h3>
 
-<h3>Things to do</h3>
+<%= render 'shared/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
+
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 
 <% if @add_contacts %>
   <%= render 'shared/add_contacts', school: @school %>
@@ -23,19 +23,23 @@
 <% end %>
 
 <% if @add_targets %>
-  <%= render 'shared/add_targets', school: @school %>
+  <%= render 'shared/targets/add_targets', school: @school %>
 <% end %>
 
 <% if @review_targets %>
-  <%= render 'shared/review_targets', school: @school %>
+  <%= render 'shared/targets/review_targets', school: @school %>
 <% end %>
 
 <%= render 'shared/add_intervention', school: @school %>
 
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent alerts'%>
+<h3>Your annual energy usage</h3>
+
+<% unless @overview_charts.empty? %>
+  <%= render 'overview_charts', overview_charts: @overview_charts %>
+<% end %>
 
 <% unless @management_priorities.empty? %>
-  <h3>Energy saving opportunities</h3>
+  <h3>Your energy saving opportunities</h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 

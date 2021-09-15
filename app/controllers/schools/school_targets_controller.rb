@@ -9,7 +9,6 @@ module Schools
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
-    before_action :calculate_current_progress, only: :show
 
     def index
       if @school.has_current_target?
@@ -21,7 +20,7 @@ module Schools
 
     def show
       setup_activity_suggestions
-      @progress_service = progress_service
+      @progress_summary = progress_service.progress_summary
       @prompt_to_review_target = prompt_to_review_target?
       @fuel_types_changed = fuel_types_changed
     end

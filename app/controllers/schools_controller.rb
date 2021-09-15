@@ -21,8 +21,6 @@ class SchoolsController < ApplicationController
     redirect_unless_permitted :show
   end
 
-  before_action :setup_management_table, only: :show
-
   # GET /schools
   def index
     @schools = School.visible.by_name
@@ -49,7 +47,8 @@ class SchoolsController < ApplicationController
       @observations = setup_timeline(@school.observations)
       @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
       @overview_charts = setup_energy_overview_charts(@school.configuration)
-
+      @overview_table = progress_service.management_table
+      @progress_summary = progress_service.progress_summary
       #setup just the co2
       @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
     end

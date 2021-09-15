@@ -9,16 +9,19 @@
   <%= render 'overview_table', overview_table: @overview_table %>
 <% end %>
 
+<h2>Recent energy alerts</h2>
+
+<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+
 <% @overview_charts.each_with_index do |(energy, chart_config), index| %>
   <h2>Annual <%= energy.to_s.humanize.downcase %> overview</h2>
   <%= chart_tag(@school, chart_config[:chart].last, show_advice: false, no_zoom: true, chart_config: {y_axis_units: chart_config[:units]}) %>
 <% end %>
 
-
 <% unless @management_priorities.empty? %>
+  <h3>Energy saving opportunities</h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: false %>
 <% end %>
 
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Recent energy use alerts'%>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
