@@ -6,7 +6,7 @@
 <%= form_tag admin_alert_type_rating_activity_types_path(@alert_type, @rating), method: :put do %>
   <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3'%>
   <% @activity_categories_and_types.each do |activity_category, activity_types| %>
-    <h3><%= activity_category.name %></h2>
+    <h3><%= activity_category.name %></h3>
     <ul class="list-unstyled alert-type-activities">
       <%- activity_types.each do |activity_type| %>
         <li>
