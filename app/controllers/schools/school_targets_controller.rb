@@ -7,7 +7,7 @@ module Schools
     include SchoolProgress
     include ActivityTypeFilterable
 
-    skip_before_action :authenticate_user!
+    skip_before_action :authenticate_user!, only: [:index, :show]
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
