@@ -57,6 +57,9 @@ class ActivityType < ApplicationRecord
   has_many :programme_activities
   has_many :activities, inverse_of: :activity_type
 
+  has_many :programme_type_activity_types
+  has_many :programme_types, through: :programme_type_activity_types
+
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
   has_rich_text :description

@@ -22,7 +22,7 @@ module Programmes
 
     def create_programme_activity(programme, activity_type, position)
       activity = @school.activities.find_by(activity_type: activity_type)
-      programme.programme_activities.create!(activity_type: activity_type, position: position, activity: activity)
+      programme.programme_activities.create!(activity_type: activity_type, position: position, activity: activity) if activity.present?
     end
 
     def already_enrolled?

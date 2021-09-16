@@ -87,13 +87,13 @@ describe NextActivitySuggesterWithFilter do
 
   describe '.suggest_from_programmes' do
 
-    let(:programme_type)  { create :programme_type_with_activity_types }
+    let!(:programme_type)  { create :programme_type_with_activity_types }
     let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
     let(:activity_types)  { programme_type.activity_types }
 
-    let(:ks1_activity_type){ activity_types[0].tap{|activity_type| activity_type.update!(key_stages: [ks1])} }
-    let(:ks2_activity_type){ activity_types[1].tap{|activity_type| activity_type.update!(key_stages: [ks2])} }
-    let(:ks3_activity_type){ activity_types[2].tap{|activity_type| activity_type.update!(key_stages: [ks3])} }
+    let!(:ks1_activity_type){ activity_types[0].tap{|activity_type| activity_type.update!(key_stages: [ks1])} }
+    let!(:ks2_activity_type){ activity_types[1].tap{|activity_type| activity_type.update!(key_stages: [ks2])} }
+    let!(:ks3_activity_type){ activity_types[2].tap{|activity_type| activity_type.update!(key_stages: [ks3])} }
 
     it 'filters the activity types' do
       result = subject.suggest_from_programmes
@@ -109,7 +109,7 @@ describe NextActivitySuggesterWithFilter do
 
     context 'where the school has completed the activity' do
       it 'does not use the activity type' do
-        programme.programme_activities.where(activity_type: ks1_activity_type).first.update!(activity: create(:activity, activity_type: ks1_activity_type, school: school))
+        create(:activity, activity_type: ks1_activity_type, school: school)
         expect(subject.suggest_from_programmes).to match_array([ks3_activity_type])
       end
     end
