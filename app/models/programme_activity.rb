@@ -16,8 +16,6 @@
 
 class ProgrammeActivity < ApplicationRecord
   belongs_to :activity_type
-  belongs_to :activity, optional: true
+  belongs_to :activity, optional: true #no longer optional, but existing data has this
   belongs_to :programme
-
-  delegate :name, to: :activity_type
 end
