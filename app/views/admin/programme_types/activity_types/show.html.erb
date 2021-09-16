@@ -2,7 +2,7 @@
 <p>Update the activity types associated with this programme or go back to the list of <%= link_to 'Programme Types', admin_programme_types_path %></p>
 
 <%= form_tag admin_programme_type_activity_types_path(@programme_type), method: :put do %>
-  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3'%>
+  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3', data: {confirm: 'Note: adding or removing activities will impact currently enrolled schools. Are you sure?'}%>
   <div class="card-columns">
 
   <% @activity_categories_and_types.each do |activity_category, activity_types| %>
@@ -26,5 +26,5 @@
     </div>
   <% end %>
 </div>
-  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary'%>
+  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary', data: {confirm: 'Note: adding or removing activities will impact currently enrolled schools. Are you sure?'}%>
 <% end %>
