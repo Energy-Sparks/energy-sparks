@@ -116,7 +116,7 @@ describe User do
       it { is_expected.to be_able_to(:show, school) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
       it { is_expected.to be_able_to(:show, ActivityType.new) }
-      it { is_expected.to be_able_to(:read, create(:school_target) ) }
+      it { is_expected.to be_able_to(:show, create(:school_target) ) }
     end
   end
 
