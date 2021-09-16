@@ -33,7 +33,7 @@ describe User do
     context "when is an admin" do
       let(:user) { create(:admin) }
 
-      %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User).each do |thing|
+      %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User SchoolTarget).each do |thing|
         it { is_expected.to be_able_to(:manage, thing.constantize.new) }
       end
 
@@ -41,7 +41,6 @@ describe User do
       it { is_expected.to be_able_to(:show, create(:school, visible: true, public: true)) }
       it { is_expected.to be_able_to(:show, create(:school, visible: false, public: true)) }
       it { is_expected.to be_able_to(:show, create(:school, visible: false, public: false)) }
-
     end
 
     context "as a school admin" do
@@ -57,9 +56,12 @@ describe User do
         it{ is_expected.to be_able_to(action, school) }
       end
 
-      %w(ActivityType ActivityCategory).each do |thing|
+      %w(ActivityType ActivityCategory SchoolTarget).each do |thing|
         it { is_expected.to_not be_able_to(:manage, thing.constantize.new) }
       end
+
+      it { is_expected.to be_able_to(:manage, create(:school_target, school: school)) }
+      it { is_expected.to_not be_able_to(:manage, create(:school_target, school: another_school)) }
 
       it { is_expected.to be_able_to(:manage, Activity.new(school: school)) }
       it { is_expected.not_to be_able_to(:manage, Activity.new(school: another_school)) }
@@ -93,6 +95,9 @@ describe User do
         it{ is_expected.to be_able_to(action, school) }
       end
 
+      it { is_expected.to be_able_to(:manage, create(:school_target, school: school)) }
+      it { is_expected.to_not be_able_to(:manage, create(:school_target, school: another_school)) }
+
       it { is_expected.to be_able_to(:manage, Activity.new(school: school)) }
       it { is_expected.not_to be_able_to(:manage, Activity.new(school: another_school)) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
@@ -111,7 +116,7 @@ describe User do
       it { is_expected.to be_able_to(:show, school) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
       it { is_expected.to be_able_to(:show, ActivityType.new) }
-
+      it { is_expected.to be_able_to(:read, create(:school_target) ) }
     end
   end
 

@@ -7,6 +7,8 @@ module Schools
     include SchoolProgress
     include ActivityTypeFilterable
 
+    skip_before_action :authenticate_user!
+
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
 
@@ -19,6 +21,7 @@ module Schools
     end
 
     def show
+      authorize! :show, @school_target
       setup_activity_suggestions
       @actions = Interventions::SuggestAction.new(@school).suggest
       @progress_summary = progress_service.progress_summary
@@ -41,6 +44,7 @@ module Schools
     end
 
     def create
+      authorize! :create, @school_target
       if @school_target.save
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
       elsif @school.has_target?
@@ -51,12 +55,14 @@ module Schools
     end
 
     def edit
+      authorize! :edit, @school_target
       target_service.refresh_target(@school_target)
       @prompt_to_review_target = prompt_to_review_target?
       @fuel_types_changed = fuel_types_changed
     end
 
     def update
+      authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
         AggregateSchoolService.new(@school).invalidate_cache
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
