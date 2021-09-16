@@ -35,6 +35,9 @@ class AlertTypeRating < ApplicationRecord
   has_many :alert_type_rating_activity_types
   has_many :activity_types, through: :alert_type_rating_activity_types
 
+  has_many :alert_type_rating_intervention_types
+  has_many :intervention_types, through: :alert_type_rating_intervention_types
+
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
 
   validates :rating_from, :rating_to, :description, presence: true
@@ -43,6 +46,7 @@ class AlertTypeRating < ApplicationRecord
   validate :ratings_not_out_of_order
 
   accepts_nested_attributes_for :alert_type_rating_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :alert_type_rating_intervention_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
   def current_content
     content_versions.latest.first
@@ -66,8 +70,19 @@ class AlertTypeRating < ApplicationRecord
     end
   end
 
+  def update_intervention_type_positions!(position_attributes)
+    transaction do
+      alert_type_rating_intervention_types.destroy_all
+      update!(alert_type_rating_intervention_types_attributes: position_attributes)
+    end
+  end
+
   def ordered_activity_types
     activity_types.order('alert_type_rating_activity_types.position').group('activity_types.id, alert_type_rating_activity_types.position')
+  end
+
+  def ordered_intervention_types
+    intervention_types.order('alert_type_rating_intervention_types.position').group('intervention_types.id, alert_type_rating_intervention_types.position')
   end
 
 

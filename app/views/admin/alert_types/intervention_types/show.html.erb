@@ -1,0 +1,21 @@
+<%= render 'admin/alert_types/nav', alert_type: @alert_type %>
+
+<h2><%= @rating.description %> </h2>
+<p>Intervention types associated with this alert type will be suggested to users and appear in the Find Out More functionality.</p>
+
+<%= form_tag admin_alert_type_rating_intervention_types_path(@alert_type, @rating), method: :put do %>
+  <%= submit_tag 'Update associated actions', class: 'btn btn-primary mb-3'%>
+  <% @intervention_type_groups_and_types.each do |intervention_type_group, intervention_types| %>
+    <h3><%= intervention_type_group.title %></h3>
+    <ul class="list-unstyled alert-type-activities">
+      <%- intervention_types.each do |intervention_type| %>
+        <li>
+          <%= text_field_tag "intervention_types[#{intervention_type.id}][position]", @positions[intervention_type.id] %>
+          <%= label_tag "intervention_types[#{intervention_type.id}][position]", intervention_type.title %>
+          <%= hidden_field_tag  "intervention_types[#{intervention_type.id}][intervention_type_id]", intervention_type.id %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= submit_tag 'Update associated actions', class: 'btn btn-primary'%>
+<% end %>

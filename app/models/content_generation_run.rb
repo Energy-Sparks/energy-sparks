@@ -27,6 +27,7 @@ class ContentGenerationRun < ApplicationRecord
   has_many :find_out_more_content_versions, through: :find_out_mores, source: :content_version
   has_many :find_out_more_alert_type_ratings, through: :find_out_more_content_versions, source: :alert_type_rating
   has_many :find_out_more_activity_types, through: :find_out_more_alert_type_ratings, source: :activity_types
+  has_many :find_out_more_intervention_types, through: :find_out_more_alert_type_ratings, source: :intervention_types
 
   belongs_to :school
 end
