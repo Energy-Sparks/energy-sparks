@@ -266,6 +266,7 @@ Rails.application.routes.draw do
       scope module: :alert_types do
         resources :ratings, only: [:index, :new, :create, :edit, :update] do
           resource :activity_types, only: [:show, :update]
+          resource :intervention_types, only: [:show, :update]
         end
         namespace :ratings do
           resource :preview, only: :create, controller: 'preview'

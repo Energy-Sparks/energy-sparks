@@ -20,4 +20,8 @@ class InterventionTypeGroup < ApplicationRecord
   scope :active,   -> { where(active: true) }
 
   validates :title, presence: true, uniqueness: true
+
+  def self.listed_with_intervention_types
+    all.order(:title).map {|group| [group, group.intervention_types.display_order.to_a]}
+  end
 end
