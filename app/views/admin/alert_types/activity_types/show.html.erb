@@ -10,7 +10,7 @@
     <ul class="list-unstyled alert-type-activities">
       <%- activity_types.each do |activity_type| %>
         <li>
-          <%= number_field_tag  "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], min: 0, max: 99, step: 1 %>
+          <%= text_field_tag "activity_types[#{activity_type.id}][position]", @positions[activity_type.id] %>
           <%= label_tag "activity_types[#{activity_type.id}][position]", activity_type.name %>
           <%= hidden_field_tag  "activity_types[#{activity_type.id}][activity_type_id]", activity_type.id %>
         </li>
