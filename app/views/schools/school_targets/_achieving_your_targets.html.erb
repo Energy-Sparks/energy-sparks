@@ -23,7 +23,7 @@
       <h4 class="card-title">Taking action around the school</h4>
       <p>Some suggested activities you can take around the school</p>
       <ul>
-        <% InterventionType.not_other.sample(5).each do |intervention_type| %>
+        <% @actions.each do |intervention_type| %>
          <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
         <% end %>
       </ul>
