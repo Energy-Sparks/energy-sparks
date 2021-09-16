@@ -10,6 +10,8 @@
 
 <h3>Act on energy usage</h3>
 
+<%= render 'shared/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
+
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title %>
 
 <h3>Annual energy usage</h3>

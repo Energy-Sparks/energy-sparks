@@ -340,4 +340,45 @@ RSpec.describe 'school targets', type: :system do
 
     end
   end
+
+  context 'as a guest user' do
+    let!(:target)          { create(:school_target, school: school) }
+    before(:each) do
+      visit school_school_targets_path(school)
+    end
+    it 'lets me view a target' do
+      expect(page).to have_content("Your energy saving target")
+    end
+    it 'shows me a link to the report' do
+      expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+    end
+    it 'doesnt have a revise link' do
+      expect(page).to_not have_link("Revise your target")
+    end
+    it 'doesnt have action links' do
+      expect(page).to_not have_link("Choose another activity")
+      expect(page).to_not have_link("Record an energy saving action")
+    end
+  end
+
+  context 'as a pupil' do
+    let!(:target)          { create(:school_target, school: school) }
+    let(:pupil)            { create(:pupil, school: school)}
+    before(:each) do
+      sign_in(pupil)
+      visit school_school_targets_path(school)
+    end
+    it 'lets me view a target' do
+      expect(page).to have_content("Your energy saving target")
+    end
+    it 'shows me a link to the report' do
+      expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+    end
+    it 'doesnt have a revise link' do
+      expect(page).to_not have_link("Revise your target")
+    end
+    it 'doesnt have action links' do
+      expect(page).to have_link("Choose another activity")
+    end
+  end
 end

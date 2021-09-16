@@ -90,7 +90,7 @@
 
   <%= render 'charts', school: @school, fuel_type: @fuel_type %>
 
-  <% if current_user.analytics? %>
+  <% if false #current_user.present? && current_user.analytics? %>
     <h2>Debug</h2>
     <pre class="debug">
       <%= JSON.pretty_generate(@debug_content) %>

@@ -6,7 +6,9 @@
   <% else %>
     <h1>Your energy saving target</h1>
   <% end %>
-  <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+  <% if can?(:manage, @school_target) %>
+    <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+  <% end %>
 </div>
 
 <% if @school_target.report_last_generated.nil? %>
