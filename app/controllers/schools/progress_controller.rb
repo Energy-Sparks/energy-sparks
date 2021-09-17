@@ -7,6 +7,7 @@ module Schools
     include SchoolAggregation
     include SchoolProgress
 
+    skip_before_action :authenticate_user!
     before_action :check_aggregated_school_in_cache, only: :index
     before_action :redirect_if_disabled
 
@@ -31,12 +32,13 @@ module Schools
     def index_for(fuel_type)
       @fuel_type = fuel_type
       @current_target = @school.current_target
+      authorize! :show, @current_target
       @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
       begin
         service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
         @progress = service.progress
-        #@debug_content = service.analytics_debug_info if current_user.analytics?
+        @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
         Rollbar.error(e)
         flash[:error] = e.message
