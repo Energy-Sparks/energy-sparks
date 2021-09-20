@@ -22,7 +22,11 @@
       </p>
     </div>
     <div class="col-sm-2 align-self-center">
-      <%= link_to user_progress.enrolled?(programme_type) ? "Continue" : "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <% if user_progress.enrolled?(programme_type) && !user_progress.completed_programme?(programme_type) %>
+        <%= link_to "Continue", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <% else %>
+        <%= link_to "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <% end %>
     </div>
   </div>
 <% end %>
