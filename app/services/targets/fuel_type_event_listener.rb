@@ -5,7 +5,7 @@ module Targets
       target = school_target(attribute.meter)
       return unless target.present?
       if storage_heater_attribute?(attribute) && first_storage_heater_attribute?(attribute)
-        add_fuel_type(target, "storage heater")
+        add_fuel_type(target, "storage_heater")
       end
     end
 
@@ -13,7 +13,7 @@ module Targets
       target = school_target(attribute.meter)
       return unless target.present?
       if storage_heater_attribute?(attribute) && last_storage_heater_attribute?(attribute)
-        remove_fuel_type(target, "storage heater")
+        remove_fuel_type(target, "storage_heater")
       end
     end
 

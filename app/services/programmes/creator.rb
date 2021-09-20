@@ -11,18 +11,28 @@ module Programmes
         programme_type: @programme_type,
         started_on: Time.zone.today
       )
-
-      @programme_type.programme_type_activity_types.each do |programme_type_activity_type|
-        create_programme_activity(programme, programme_type_activity_type.activity_type, programme_type_activity_type.position)
-      end
+      recognise_existing_progress(programme)
       programme
     end
 
     private
 
-    def create_programme_activity(programme, activity_type, position)
-      activity = @school.activities.find_by(activity_type: activity_type)
-      programme.programme_activities.create!(activity_type: activity_type, position: position, activity: activity)
+    def recognise_existing_progress(programme)
+      @programme_type.programme_type_activity_types.each do |programme_type_activity_type|
+        activity = latest_activity_this_academic_year(programme_type_activity_type.activity_type)
+        if activity.present?
+          programme.programme_activities.create!(activity_type: programme_type_activity_type.activity_type, activity: activity)
+        end
+      end
+    end
+
+    def latest_activity_this_academic_year(activity_type)
+      activities = @school.activities.where(activity_type: activity_type).order(happened_on: :desc)
+      activities.find { |activity| academic_year_for(activity).present? && academic_year_for(activity).current? }
+    end
+
+    def academic_year_for(activity)
+      @school.academic_year_for(activity.happened_on)
     end
 
     def already_enrolled?

@@ -17,8 +17,8 @@
     <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
     <%= link_to 'Meter attributes', admin_school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
     <%= link_to 'Manage tariffs', school_user_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
-    <%= link_to 'View target data', admin_school_target_data_path(school), class: 'dropdown-item' if can?(:view_target_data, SchoolTarget) %>
-    <%= link_to 'Review targets', school_school_targets_path(school), class: 'dropdown-item' if EnergySparks::FeatureFlags.active?(:school_targets) && can?(:manage, SchoolTarget) %>
+    <%= link_to 'View target data', admin_school_target_data_path(school), class: 'dropdown-item' if can?(:view_target_data, school) %>
+    <%= link_to 'Review targets', school_school_targets_path(school), class: 'dropdown-item' if Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) %>
     <%= link_to 'Remove school', removal_admin_school_path(school), class: 'dropdown-item' if can? :remove_school, school %>
   </div>
 </li>

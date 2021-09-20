@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-md-9">
+    <div class="row alert info-bar text-dark bg-neutral" role="alert">
+      <div class="col-md-1">
+        <i class="fas fa-tasks fa-2x"></i>
+      </div>
+      <div class="col-md-8">
+        Complete this action to score your school <strong><%= intervention_type.points %></strong> points!
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Record this action', new_intervention_path(intervention_type_id: intervention_type.id), class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+</div>

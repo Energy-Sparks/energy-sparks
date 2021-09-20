@@ -8,6 +8,10 @@ module Targets
       @school = school
     end
 
+    def self.targets_enabled?(school)
+      EnergySparks::FeatureFlags.active?(:school_targets) && school.enable_targets_feature?
+    end
+
     def build_target
       @school.school_targets.build(
         start_date: target_start_date,
@@ -16,6 +20,14 @@ module Targets
         gas: gas_target,
         storage_heaters: storage_heater_target
       )
+    end
+
+    def prompt_to_review_target?
+      if @school.has_target? && @school.most_recent_target.suggest_revision?
+        @school.most_recent_target.revised_fuel_types.each do |fuel_type|
+          return true if enough_data_for_fuel_type?(fuel_type.to_sym)
+        end
+      end
     end
 
     def refresh_target(target)

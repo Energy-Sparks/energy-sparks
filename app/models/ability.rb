@@ -8,6 +8,8 @@ class Ability
     # all users can do these things
     can :read, Activity, school: { visible: true }
     can [:read, :recommended], ActivityCategory
+    can [:read], InterventionTypeGroup
+    can [:read], InterventionType
     can :read, ActivityType
 
     can :read, SchoolGroup
@@ -24,6 +26,9 @@ class Ability
     can :read, Observation
     can :read, ProgrammeType
     can :read_dashboard_menu, School
+
+    can :show, SchoolTarget
+    can :index, SchoolTarget
 
     can :manage, Location, school_id: user.school_id
 
@@ -122,6 +127,7 @@ class Ability
         can :read_restricted_analysis, School, { id: user.school_id, visible: true }
       end
       if user.staff? || user.volunteer?
+        can :manage, SchoolTarget, school: { id: user.school_id, visible: true }
         can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
         can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
         can :crud, Programme, school: { id: user.school_id, visible: true }

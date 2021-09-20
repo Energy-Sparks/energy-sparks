@@ -2,11 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Targets::ProgressService do
 
-  let!(:school)             { create(:school) }
-  let!(:aggregated_school)  { double('meter-collection') }
-  let(:fuel_electricity)    { Schools::FuelConfiguration.new(has_electricity: true) }
-  let!(:service)            { Targets::ProgressService.new(school, aggregated_school) }
-  let!(:school_config)      { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
+  let!(:school)                   { create(:school) }
+  let!(:aggregated_school)        { double('meter-collection') }
+  let!(:school_target)            { create(:school_target, school: school) }
+
+  let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
+  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
+
+  let!(:service)                  { Targets::ProgressService.new(school, aggregated_school) }
 
   let(:months)                    { [Date.today.last_month.strftime("%b"), Date.today.strftime("%b")] }
   let(:fuel_type)                 { :electricity }
@@ -93,7 +96,7 @@ RSpec.describe Targets::ProgressService do
   context 'when calculating the management dashboard' do
     context 'and there is no ManagementDashboardTable' do
       it 'returns nil' do
-        expect(service.setup_management_table).to be_nil
+        expect(service.management_table).to be_nil
       end
     end
 
@@ -112,42 +115,62 @@ RSpec.describe Targets::ProgressService do
       let!(:alert)     { create(:alert, table_data: table_data ) }
       let!(:management_dashboard_table) { create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert) }
 
-      context 'but the feature is off' do
-        before(:each) do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
-        end
-        it 'does not include the progress' do
-          expect(service.setup_management_table).to eql summary
-        end
-      end
-
-      context 'but the feature is on' do
-        before(:each) do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
-        end
-
-        context 'and theres a target' do
-          let!(:target)              { create(:school_target, school: school) }
-
-          it 'includes the progress' do
-            table = service.setup_management_table
-            table.each do |row|
-              expect(row.size).to eql 8
-            end
-            expect(table[0]).to include("Target progress")
-            expect(table[1]).to include("+99%")
-          end
-        end
-
-        context 'and theres no target' do
-          it 'does not include the progress' do
-            expect(service.setup_management_table).to eql summary
-          end
-        end
-
+      it 'returns the alert content' do
+        expect(service.management_table).to eql summary
       end
     end
   end
 
+  context '#progress_summary' do
+    context 'and school targets are active' do
+      before(:each) do
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      end
+
+      it 'returns nil if school has no target' do
+        SchoolTarget.all.destroy_all
+        expect( service.progress_summary ).to be nil
+      end
+
+      context 'with only electricity fuel type' do
+        before(:each) do
+          allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        end
+        let(:progress_summary) { service.progress_summary }
+
+        it 'includes school target in summary' do
+          expect( progress_summary.school_target ).to eql school_target
+        end
+        it 'includes only that fuel type' do
+          expect( progress_summary.gas_progress ).to be nil
+          expect( progress_summary.storage_heater_progress ).to be nil
+          expect( progress_summary.electricity_progress ).to_not be nil
+        end
+
+        it 'reports the fuel progress' do
+          expect( progress_summary.electricity_progress.progress ).to eql 0.99
+          expect( progress_summary.electricity_progress.usage ).to eql 15
+          expect( progress_summary.electricity_progress.target ).to eql 20
+        end
+
+        it 'returns nil if feature disabled' do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
+          expect( service.progress_summary ).to be nil
+          school.update!(enable_targets_feature: false)
+          expect( service.progress_summary ).to be nil
+        end
+      end
+
+      context 'and not enough data' do
+        before(:each) do
+          allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(false)
+          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        end
+        it 'doesnt include fuel type' do
+          expect( service.progress_summary.electricity_progress).to be nil
+        end
+      end
+    end
+  end
 end

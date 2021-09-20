@@ -5,7 +5,7 @@ describe 'targets', type: :system do
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
   let!(:fuel_electricity)         { Schools::FuelConfiguration.new(has_electricity: true) }
-  let(:target)                    { create(:school_target, school: school) }
+  let!(:target)                    { create(:school_target, school: school) }
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [1,2] }
@@ -14,7 +14,7 @@ describe 'targets', type: :system do
   let(:cumulative_targets_kwh)    { [1,2] }
   let(:cumulative_usage_kwh)      { [1,2] }
   let(:cumulative_performance)    { [-0.99,0.99] }
-  let(:partial_months)            { ['feb'] }
+  let(:partial_months)            { {'jan': false, 'feb': true} }
 
   let(:progress) do
     TargetsProgress.new(
@@ -32,6 +32,10 @@ describe 'targets', type: :system do
     )
   end
 
+  before(:each) do
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+  end
+
   context 'as an admin' do
 
     let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: false) }
@@ -45,12 +49,20 @@ describe 'targets', type: :system do
 
       before(:each) do
         sign_in(admin)
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
 
       it 'redirects to electricity' do
         visit school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')
+      end
+
+      it 'redirects to management dashboard if disabled' do
+        school.update!(enable_targets_feature: false)
+        visit school_progress_index_path(school)
+        expect(page).to have_current_path(management_school_path(school))
       end
 
       it 'shows electricity progress' do
@@ -62,6 +74,11 @@ describe 'targets', type: :system do
         expect(page).to have_content('+35%')
         expect(page).to have_content('-99%')
         expect(page).to have_content('+99%')
+      end
+
+      it 'does not show warning' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to_not have_content("We have not received data for your electricity usage for over thirty days")
       end
 
       it 'shows charts' do
@@ -79,7 +96,7 @@ describe 'targets', type: :system do
 
       it 'does not show message about storage heaters' do
         visit electricity_school_progress_index_path(school)
-        expect(page).not_to have_content("excluding storage heaters")
+        expect(page).not_to have_content("does not include your storage heater usage")
       end
 
       context 'when school also has storage heaters' do
@@ -88,16 +105,29 @@ describe 'targets', type: :system do
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("excluding storage heaters")
+          expect(page).to have_content("does not include your storage heater usage")
         end
 
       end
     end
 
+    context 'with out of date data' do
+      before(:each) do
+        sign_in(admin)
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
+      end
+      it 'displays a warning electricity progress' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
+      end
+    end
     context 'with error from analytics' do
 
       before(:each) do
         sign_in(admin)
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
       end
 

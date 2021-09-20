@@ -11,6 +11,7 @@
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
 #  created_at                            :datetime         not null
 #  dark_sky_area_id                      :bigint(8)
+#  enable_targets_feature                :boolean          default(TRUE)
 #  floor_area                            :decimal(, )
 #  has_swimming_pool                     :boolean          default(FALSE), not null
 #  id                                    :bigint(8)        not null, primary key
@@ -342,7 +343,7 @@ class School < ApplicationRecord
     #based on start date. So if target as expired, then progress pages still work
     if has_current_target?
       current_target.meter_attributes_by_meter_type
-    elsif has_target?
+    elsif most_recent_target.present?
       most_recent_target.meter_attributes_by_meter_type
     else
       {}

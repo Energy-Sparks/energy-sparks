@@ -16,11 +16,35 @@ RSpec.describe 'alert type management', type: :system do
     let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
     let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
 
+    let!(:intervention_type_group) { create(:intervention_type_group) }
+    let!(:intervention_type_1) { create(:intervention_type, title: 'Install cladding', intervention_type_group: intervention_type_group)}
+    let!(:intervention_type_2) { create(:intervention_type, title: 'Check the boiler', intervention_type_group: intervention_type_group)}
+
     before do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
       click_on 'Alert Types'
+    end
+
+    it 'assigns intervention types to alerts via a text box position' do
+      click_on gas_fuel_alert_type_title
+      click_on 'Content management'
+      click_on 'Actions (0)'
+
+      expect(page.find_field('Install cladding').value).to be_blank
+      expect(page.find_field('Check the boiler').value).to be_blank
+
+      fill_in 'Check the boiler', with: '1'
+
+      click_on 'Update associated actions', match: :first
+      click_on 'Actions (1)'
+
+      expect(page.find_field('Install cladding').value).to be_blank
+      expect(page.find_field('Check the boiler').value).to eq('1')
+
+      expect(alert_type_rating.intervention_types).to match_array([intervention_type_2])
+      expect(alert_type_rating.alert_type_rating_intervention_types.first.position).to eq(1)
     end
 
     it 'assigns activity types to alerts via a text box position' do

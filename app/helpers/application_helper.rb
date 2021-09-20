@@ -97,9 +97,9 @@ module ApplicationHelper
   def target_percent_cell_colour(percent)
     if percent
       if percent > 0.0
-        'bg-negative-light'
+        'bg-negative-dark'
       else
-        'bg-positive-light'
+        'bg-positive-dark'
       end
     end
   end
@@ -223,7 +223,7 @@ module ApplicationHelper
   end
 
   def up_downify(text)
-    return if text.nil?
+    return if text.nil? || text == "-"
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)

@@ -30,4 +30,8 @@ class FindOutMore < ApplicationRecord
   def activity_types
     content_version.alert_type_rating.ordered_activity_types
   end
+
+  def intervention_types
+    content_version.alert_type_rating.ordered_intervention_types
+  end
 end

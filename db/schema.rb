@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_07_160618) do
+ActiveRecord::Schema.define(version: 2021_09_16_150402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -243,6 +243,16 @@ ActiveRecord::Schema.define(version: 2021_09_07_160618) do
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
+  end
+
+  create_table "alert_type_rating_intervention_types", force: :cascade do |t|
+    t.bigint "intervention_type_id", null: false
+    t.bigint "alert_type_rating_id", null: false
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_type_rating_id"], name: "idx_alert_type_rating_intervention_types_on_alrt_type_id"
+    t.index ["intervention_type_id"], name: "idx_alert_type_rating_intervention_types_on_int_type_id"
   end
 
   create_table "alert_type_rating_unsubscriptions", force: :cascade do |t|
@@ -1146,6 +1156,7 @@ ActiveRecord::Schema.define(version: 2021_09_07_160618) do
     t.boolean "public", default: true
     t.boolean "active", default: true
     t.date "removal_date"
+    t.boolean "enable_targets_feature", default: true
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1441,6 +1452,8 @@ ActiveRecord::Schema.define(version: 2021_09_07_160618) do
   add_foreign_key "alert_subscription_events", "subscription_generation_runs", on_delete: :cascade
   add_foreign_key "alert_type_rating_activity_types", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_content_versions", "alert_type_ratings", on_delete: :cascade
+  add_foreign_key "alert_type_rating_intervention_types", "alert_type_ratings"
+  add_foreign_key "alert_type_rating_intervention_types", "intervention_types"
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "alert_type_ratings", on_delete: :cascade
   add_foreign_key "alert_type_rating_unsubscriptions", "contacts", on_delete: :cascade

@@ -6,6 +6,10 @@ module Targets
       @progress_by_fuel_type = {}
     end
 
+    def display_progress_for_fuel_type?(fuel_type)
+      has_fuel_type_and_target?(fuel_type) && target_service(fuel_type).enough_data_to_set_target?
+    end
+
     def cumulative_progress(fuel_type)
       target_progress = target_progress(fuel_type)
       target_progress.present? ? target_progress.current_cumulative_performance_versus_synthetic_last_year : nil
@@ -18,42 +22,70 @@ module Targets
 
     def current_monthly_usage(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.cumulative_usage_kwh[this_month] : nil
+      target_progress.present? ? target_progress.current_cumulative_usage_kwh : nil
     end
 
-    #TEMPORARY
-    def setup_management_table
+    def management_table
       dashboard_table = @school.latest_management_dashboard_tables.first
-      return nil unless dashboard_table.present?
-      return dashboard_table.table unless @school.has_target? && EnergySparks::FeatureFlags.active?(:school_targets)
-      dashboard_table.table.each do |row|
-        row.insert(-2, "Target progress") if row[0] == ""
-        row.insert(-2, format_for_table(cumulative_progress(:electricity))) if row[0] == "Electricity"
-        row.insert(-2, format_for_table(cumulative_progress(:gas))) if row[0] == "Gas"
-        row.insert(-2, format_for_table(cumulative_progress(:storage_heater))) if row[0] == "Storage heaters"
+      return dashboard_table.table if dashboard_table.present?
+    end
+
+    def progress_summary
+      if Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
+        ProgressSummary.new(
+          school_target: target,
+          electricity: fuel_type_progress(:electricity),
+          gas: fuel_type_progress(:gas),
+          storage_heater: fuel_type_progress(:storage_heaters)
+        )
       end
     end
 
     private
 
-    def this_month
-      Time.zone.now.strftime("%b")
+    def fuel_type_progress(fuel_type)
+      if display_progress_for_fuel_type?(fuel_type)
+        Targets::FuelProgress.new(
+          fuel_type: fuel_type,
+          progress: cumulative_progress(fuel_type),
+          usage: current_monthly_usage(fuel_type),
+          target: current_monthly_target(fuel_type)
+        )
+      end
     end
 
     def has_fuel_type?(fuel_type)
       @school.send("has_#{fuel_type}?".to_sym)
     end
 
-    def format_for_table(value)
-      if value.nil?
-        "not enough data"
+    def has_fuel_type_and_target?(fuel_type)
+      has_fuel_type?(fuel_type) && has_target_for_fuel_type?(fuel_type)
+    end
+
+    def target
+      @school.most_recent_target
+    end
+
+    def has_target_for_fuel_type?(fuel_type)
+      return false unless target.present?
+      case fuel_type
+      when :electricity
+        target.electricity.present?
+      when :gas
+        target.gas.present?
+      when :storage_heater, :storage_heaters
+        target.storage_heaters.present?
       else
-        FormatEnergyUnit.format(:relative_percent, value, :html, false, true, :target)
+        false
       end
     end
 
+    def this_month
+      Time.zone.now.strftime("%b")
+    end
+
     def target_progress(fuel_type)
-      return nil unless has_fuel_type?(fuel_type)
+      return nil unless has_fuel_type_and_target?(fuel_type)
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e

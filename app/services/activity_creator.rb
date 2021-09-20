@@ -19,8 +19,8 @@ class ActivityCreator
 
   def process_programmes
     started_active_programmes.each do |programme|
-      programme_activities(programme).each { |programme_activity| update_with_activity!(programme_activity) }
-      programme.completed! if programme.programme_activities.all?(&:activity)
+      add_programme_activity(programme)
+      programme.completed! if completed_programme?(programme)
     end
   end
 
@@ -42,11 +42,24 @@ class ActivityCreator
     @activity.school.programmes.started.active
   end
 
+  def add_programme_activity(programme)
+    #create programme_activity for this programme, associated with programme, activity_type and activity
+    #but not if there already is a record for this activity type, so just recording the first instance
+    if programme_activities(programme).empty?
+      programme.programme_activities.create!(activity_type: @activity.activity_type, activity: @activity)
+    end
+  end
+
   def programme_activities(programme)
     programme.programme_activities.where(activity_type: @activity.activity_type)
   end
 
-  def update_with_activity!(programme_activity)
-    programme_activity.update!(activity: @activity)
+  def completed_programme?(programme)
+    #Completed programme if list of activity types in programme.programme_activities is same
+    #as list of activity types in programme.programme_type.activity_types
+    #programme.programme_activities.all?(&:activity)
+    programme_type_activity_ids = programme.programme_type.activity_types.order(:id).pluck(:id)
+    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id).sort
+    programme_activity_types == programme_type_activity_ids
   end
 end

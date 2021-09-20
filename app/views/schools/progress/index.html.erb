@@ -1,88 +1,100 @@
 <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
 
-<% if @show_storage_heater_notes %>
+<% if @current_target %>
   <p>
-    Note, this page shows electricity usage excluding storage heaters - they can be reviewed separately <%= link_to 'here', storage_heaters_school_progress_index_path(@school) %>.
+    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>.
   </p>
 <% end %>
 
-<% if @current_target %>
+<% if !@recent_data %>
+  <div class="row alert info-bar text-light bg-negative">
+    <div class="col">
+      <span class="align-middle">We have not received data for your <%= @fuel_type == :storage_heater ? 'electricity' : @fuel_type %> usage for over thirty days. As a result your progress report will be out of date.</span>
+    </div>
+  </div>
+<% else %>
+  <% if @progress && @progress.current_cumulative_performance_versus_synthetic_last_year %>
+    <% if @progress.current_cumulative_performance_versus_synthetic_last_year > 0.0 %>
+      <p>
+        Unfortunately you are currently running
+        <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
+        above last years consumption.
+      </p>
+    <% else %>
+      <p>
+        Well done, you are currently running
+        <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
+        below last years consumption.
+      </p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @show_storage_heater_notes %>
   <p>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% reduction by <%= nice_dates(@current_target.target_date) %>
+    Note: this page shows progress on reducing your electricity usage. It does not include your storage heater usage. This <%= link_to 'can be reviewed separately', storage_heaters_school_progress_index_path(@school) %>.
   </p>
 <% end %>
 
 <% if @progress  %>
 
-  <% if @progress.current_cumulative_performance_versus_synthetic_last_year %>
-    <% if @progress.current_cumulative_performance_versus_synthetic_last_year > 0.0 %>
-      <p>
-        Unfortunately you are currently running
-        <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
-        above target.
-      </p>
-    <% else %>
-      <p>
-        Congratulations, you are currently running
-        <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
-        below the target.
-      </p>
-    <% end %>
-  <% end %>
+  <h3>Month by month progress</h3>
 
-
-  <h2>Month by month progress</h2>
-
-  <table class="table table-striped table-sm">
-    <thead>
+  <table class="table table-bordered table-hover table-sm">
+    <thead class="thead-dark">
     <tr>
       <th>
         Month
       </th>
       <% @progress.months.each do |month| %>
-        <th>
+        <th class="text-right">
           <%= month %>
         </th>
       <% end %>
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, units: :kwh %>
-    <%= render 'row', title: 'Usage (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, units: :kwh %>
-    <%= render 'row', title: 'Overall reduction', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent %>
+    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, partial_months: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall change since last year', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
+  <h3>Cumulative progress</h3>
 
-  <h2>Cumulative progress</h2>
-
-  <table class="table table-striped table-sm">
-    <thead>
+  <table class="table table-bordered table-hover table-sm">
+    <thead class="thead-dark">
     <tr>
       <th>
         Month
       </th>
       <% @progress.months.each do |month| %>
-        <th>
+        <th class="text-right">
           <%= month %>
         </th>
       <% end %>
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, units: :kwh %>
-    <%= render 'row', title: 'Usage (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, units: :kwh %>
-    <%= render 'row', title: 'Overall performance', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, units: :relative_percent %>
+    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, partial_months: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
-  <h2>Progress charts</h2>
+  <p>
+    In the tables above <span class="partial-month">text in red</span> indicates where we have only partial consumption data for a given month. Your usage figures and our estimate of your progress will not be accurate until the end of the month, or until we receive additional data. We also indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">exceeded your target</span> in a given month.
+  </p>
+
+  <h3>Progress charts</h3>
 
   <%= render 'charts', school: @school, fuel_type: @fuel_type %>
 
-  <% if current_user.analytics? %>
+  <% if false #current_user.present? && current_user.analytics? %>
     <h2>Debug</h2>
-    <%= @debug_content %>
+    <pre class="debug">
+      <%= JSON.pretty_generate(@debug_content) %>
+    </pre>
   <% end %>
 
 <% else %>

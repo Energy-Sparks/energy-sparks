@@ -1,0 +1,24 @@
+<% content_for :page_title do %>
+  <%= @intervention_type.title %>
+<% end %>
+
+<div class="row padded-row">
+  <div class="col-md-3">
+    <%= render 'activity_types/image', activity_type: @intervention_type, css_class: "" %>
+  </div>
+  <div class="col-md-6">
+    <h2><%= @intervention_type.title %></h2>
+    <p><%= @intervention_type.summary %></p>
+  </div>
+  <div class="col-md-3">
+    <%= link_to "All #{@intervention_type.intervention_type_group.title} actions", intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-secondary float-right' %>
+  </div>
+</div>
+
+<% if current_user_school %>
+  <%= render 'intervention_types/previous_records', interventions: @interventions, school: current_user_school %>
+<% end %>
+
+<% if current_user_school %>
+  <%= render 'intervention_types/prompt', intervention_type: @intervention_type, school: current_user_school %>
+<% end %>

@@ -5,12 +5,12 @@ module Programmes
     end
 
     def enrol(school)
-      return unless enrol?
+      return unless enrol?(school)
       Programmes::Creator.new(school, @enrol_programme_type).create
     end
 
     def enrol_all
-      return unless enrol?
+      return unless enrol?(school)
       School.visible.each do |school|
         enrol(school)
       end
@@ -22,8 +22,8 @@ module Programmes
       programme_type || ProgrammeType.default.first
     end
 
-    def enrol?
-      @enrol_programme_type.present? && EnergySparks::FeatureFlags.active?(:school_targets)
+    def enrol?(school)
+      @enrol_programme_type.present? && Targets::SchoolTargetService.targets_enabled?(school)
     end
   end
 end

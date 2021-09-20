@@ -6,7 +6,9 @@
   <% else %>
     <h1>Your energy saving target</h1>
   <% end %>
-  <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+  <% if can?(:manage, @school_target) %>
+    <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+  <% end %>
 </div>
 
 <% if @school_target.report_last_generated.nil? %>
@@ -19,16 +21,14 @@
     </div>
   </div>
 <% else %>
-  <% if @school.has_electricity? %>
-    <%= render "bullet_chart", school_target: @school_target, fuel_type: :electricity, target: @school_target.electricity, progress: @electricity_progress,
-    progress_path: electricity_school_progress_index_path(@school)  %>
+  <% if @progress_summary.electricity_progress.present? %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.electricity_progress, school_target: @school_target, progress_path: electricity_school_progress_index_path(@school)  %>
   <% end %>
-  <% if @school.has_gas? %>
-    <%= render "bullet_chart", school_target: @school_target, fuel_type: :gas, target: @school_target.gas, progress: @gas_progress,
-    progress_path: gas_school_progress_index_path(@school)  %>
+  <% if @progress_summary.gas_progress.present? %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.gas_progress, school_target: @school_target, progress_path: gas_school_progress_index_path(@school)  %>
   <% end %>
-  <% if @school.has_storage_heaters? %>
-    <%= render "bullet_chart", school_target: @school_target, fuel_type: :storage_heaters, target: @school_target.storage_heaters, progress: @storage_heater_progress, progress_path: storage_heaters_school_progress_index_path(@school)  %>
+  <% if @progress_summary.storage_heater_progress.present? %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.storage_heater_progress, school_target: @school_target, progress_path: storage_heaters_school_progress_index_path(@school)  %>
   <% end %>
 
   <% if @prompt_to_review_target %>
@@ -61,7 +61,7 @@
     <% end %>
     <% if can?(:create, Observation) %>
       <div class="card mb-2">
-        <%= link_to 'Record an energy saving action', new_school_action_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
       <div class="card mb-2">

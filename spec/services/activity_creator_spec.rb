@@ -45,24 +45,25 @@ describe ActivityCreator do
       activity = build(:activity, activity_type: activity_type, school: school)
       ActivityCreator.new(activity).process
 
+      expect(programme.programme_activities.count).to eql 1
       expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be activity.id
     end
 
     it "completes the programme if all the activities are completed" do
-      programme.programme_activities.each do |programme_activity|
-        activity = build(:activity, activity_type: programme_activity.activity_type, school: school)
+      programme_type.activity_types.each do |activity_type|
+        activity = build(:activity, activity_type: activity_type, school: school)
         ActivityCreator.new(activity).process
       end
       programme.reload
       expect(programme.completed?).to eq(true)
     end
 
-    it "doesn't complete if the programme isn't active" do
+    it "doesn't add activity in programme if the programme isn't active" do
       programme_type.update(active: false)
       activity = build(:activity, activity_type: activity_type, school: school)
       ActivityCreator.new(activity).process
 
-      expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be nil
+      expect(programme.programme_activities.count).to eql 0
     end
   end
 end

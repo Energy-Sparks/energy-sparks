@@ -1,12 +1,23 @@
 <h1><%= @school.name %> content run: <%= nice_date_times(@run.created_at) %></h1>
 
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @teacher_dashboard_alerts, school: @school, content_field: :teacher_dashboard_title, title: 'Teacher dashboard alerts', show_all: true %>
+<h3>Teacher dashboard alerts</h3>
+
+<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @teacher_dashboard_alerts, school: @school, content_field: :teacher_dashboard_title, show_all: true %>
 <hr />
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @pupil_dashboard_alerts, school: @school, content_field: :pupil_dashboard_title, title: 'Pupil dashboard alerts', show_all: true %>
+
+<h3>Pupil dashboard alerts</h3>
+
+<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @pupil_dashboard_alerts, school: @school, content_field: :pupil_dashboard_title, show_all: true %>
 <hr />
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @management_dashboard_alerts, school: @school, content_field: :management_dashboard_title, title: 'Adult dashboard alerts', show_all: true %>
+
+<h3>Adult dashboard alerts</h3>
+
+<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @management_dashboard_alerts, school: @school, content_field: :management_dashboard_title, show_all: true %>
 <hr />
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @public_dashboard_alerts, school: @school, content_field: :public_dashboard_title, title: 'Public dashboard alerts', show_all: true %>
+
+<h3>Public dashboard alerts</h3>
+
+<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @public_dashboard_alerts, school: @school, content_field: :public_dashboard_title, show_all: true %>
 
 <hr />
 <%= render 'management/management_priorities/list', show_debug: true, management_priorities: @management_priorities, school: @school, show_more: false  %>
