@@ -41,8 +41,8 @@
         <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
         <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
       <% else %>
-        <%= render 'activity_categories/done', activity_type: activity_type %>
-      <% end %>
+        <%= render 'activity_types/previous_records', activities: activity_type.activities_for_school(current_user_school).by_date, school: current_user_school %>
+    <% end %>
     </div>
   </div>
 <% end %>
