@@ -560,6 +560,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stateful_enum (0.6.0)
     strongtyping (2.0.7)
     structured_warnings (0.3.0)
     sys-uname (1.0.4)
@@ -693,6 +694,7 @@ DEPENDENCIES
   simple_form
   simplecov
   sitemap_generator
+  stateful_enum (= 0.6.0)
   statsample!
   terminal-notifier
   terminal-notifier-guard

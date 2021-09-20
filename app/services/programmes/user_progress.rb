@@ -28,6 +28,14 @@ module Programmes
       end
     end
 
+    def completed_programme?(programme_type)
+      if user_and_school?
+        if (programme = programme_type.programme_for_school(school))
+          programme.completed?
+        end
+      end
+    end
+
     private
 
     def user_and_school?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_16_150402) do
+ActiveRecord::Schema.define(version: 2021_09_20_154424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -917,6 +917,8 @@ ActiveRecord::Schema.define(version: 2021_09_16_150402) do
     t.integer "status", default: 0, null: false
     t.date "started_on", null: false
     t.date "ended_on"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end

@@ -37,6 +37,10 @@
   <%= render 'started', programme_type: @programme_type, school: current_user_school %>
 <% end %>
 
+<% if @user_progress.completed_programme?(@programme_type) %>
+  <%= render 'completed', programme_type: @programme_type, school: current_user_school %>
+<% end %>
+
 <% if @user_progress.enrolled?(@programme_type) %>
   <h3>Current Progress</h3>
 <% else %>
