@@ -114,6 +114,7 @@ class Ability
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
+      can [:start_programme], School, id: user.school_id, visible: true
       #pupils can view management dashboard for their school and others in group
       if user.pupil?
         can :show_management_dash, School, id: user.school_id, visible: true
@@ -128,7 +129,7 @@ class Ability
       end
       if user.staff? || user.volunteer?
         can :manage, SchoolTarget, school: { id: user.school_id, visible: true }
-        can [:show_management_dash, :start_programme], School, id: user.school_id, visible: true
+        can [:show_management_dash], School, id: user.school_id, visible: true
         can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
