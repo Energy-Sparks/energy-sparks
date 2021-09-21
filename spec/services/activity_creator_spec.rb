@@ -58,6 +58,24 @@ describe ActivityCreator do
       expect(programme.completed?).to eq(true)
     end
 
+    context "when extra activities are recorded, which are no longer in the programme" do
+
+      before do
+        extra_activity_type = create(:activity_type)
+        extra_activity = create(:activity, activity_type: extra_activity_type)
+        programme.programme_activities.create(activity_type: extra_activity_type, activity: extra_activity)
+      end
+
+      it "still completes the programme when all activities are completed" do
+        programme_type.activity_types.each do |activity_type|
+          activity = build(:activity, activity_type: activity_type, school: school)
+          ActivityCreator.new(activity).process
+        end
+        programme.reload
+        expect(programme.completed?).to eq(true)
+      end
+    end
+
     it "doesn't add activity in programme if the programme isn't active" do
       programme_type.update(active: false)
       activity = build(:activity, activity_type: activity_type, school: school)
