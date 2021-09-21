@@ -102,7 +102,7 @@ describe NextActivitySuggesterWithFilter do
 
     context 'where the programme has finished' do
       it 'does not use the activity types' do
-        programme.completed!
+        programme.complete!
         expect(subject.suggest_from_programmes).to be_empty
       end
     end

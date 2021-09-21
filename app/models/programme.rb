@@ -26,7 +26,18 @@ class Programme < ApplicationRecord
   has_many :programme_activities
   has_many :activities, through: :programme_activities
 
-  enum status: [:started, :completed, :abandoned]
+  enum status: { started: 0, completed: 1, abandoned: 2 } do
+    event :complete do
+      after do
+        self.update(ended_on: Time.zone.now)
+      end
+      transition :started => :completed
+    end
+
+    event :abandon do
+      transition :started => :abandoned
+    end
+  end
 
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
 
