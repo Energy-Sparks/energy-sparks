@@ -62,7 +62,7 @@ private
 
   def get_suggestions_based_on_last_activity(suggestions)
     last_activity_type = @school.activities.order(:created_at).last.activity_type
-    activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(exclude_if_done_this_year: false), school: @school, scope: last_activity_type.suggested_types)
+    activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(exclude_if_done_this_year: true), school: @school, scope: last_activity_type.suggested_types)
     activity_type_filter.activity_types.each do |suggested_type|
       if suggestion_can_be_added?(suggested_type, suggestions)
         suggestions << suggested_type
