@@ -47,8 +47,8 @@ class ActivityCreator
     #but not if there already is a record for this activity type, so just recording the first instance
     if programme_activities(programme).empty?
       programme.programme_activities.create!(activity_type: @activity.activity_type, activity: @activity)
-    elsif programme_activities(programme).last.activity.nil?
-      # if programme activities were created without activities, set this activity in the record
+    else
+      # if programme activity already exists for this type, set the new activity
       programme_activities(programme).last.update(activity: @activity)
     end
   end
