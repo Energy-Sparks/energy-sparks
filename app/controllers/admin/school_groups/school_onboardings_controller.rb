@@ -13,7 +13,7 @@ module Admin
       private
 
       def filename(school_group)
-        "#{school_group.name}-onboarding-schools.csv"
+        "#{school_group.slug}-onboarding-schools.csv"
       end
 
       def produce_csv(school_group)
