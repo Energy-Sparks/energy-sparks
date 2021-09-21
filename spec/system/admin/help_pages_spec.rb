@@ -40,7 +40,7 @@ describe 'managing help pages', type: :system do
     end
 
     context 'with an existing page' do
-      let!(:help_page) { create(:help_page) }
+      let!(:help_page) { create(:help_page, feature: :school_targets) }
 
       it 'lets me publish and unpublish help pages' do
         refresh
