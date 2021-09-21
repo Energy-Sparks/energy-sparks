@@ -22,10 +22,9 @@ class NextActivitySuggesterWithFilter
 
   def suggest_from_programmes
     school_programme_type_ids = @school.programmes.joins(:programme_type).active.started.pluck(:programme_type_id)
-    school_activity_type_ids = @school.activities.pluck(:activity_type_id)
-    scope = ActivityType.joins(:programme_types, :programme_type_activity_types).where(programme_types: { active: true, id: school_programme_type_ids }).where.not(id: school_activity_type_ids).order('programme_type_activity_types.position ASC').group('activity_types.id, programme_type_activity_types.position')
+    scope = ActivityType.joins(:programme_types, :programme_type_activity_types).where(programme_types: { active: true, id: school_programme_type_ids }).order('programme_type_activity_types.position ASC').group('activity_types.id, programme_type_activity_types.position')
 
-    activity_type_filter = ActivityTypeFilter.new(query: @filter.query, school: @school, scope: scope)
+    activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(exclude_if_done_this_year: true), school: @school, scope: scope)
     activity_type_filter.activity_types
   end
 
@@ -63,7 +62,7 @@ private
 
   def get_suggestions_based_on_last_activity(suggestions)
     last_activity_type = @school.activities.order(:created_at).last.activity_type
-    activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(not_completed_or_repeatable: true), school: @school, scope: last_activity_type.suggested_types)
+    activity_type_filter = ActivityTypeFilter.new(query: @filter.query.merge(exclude_if_done_this_year: false), school: @school, scope: last_activity_type.suggested_types)
     activity_type_filter.activity_types.each do |suggested_type|
       if suggestion_can_be_added?(suggested_type, suggestions)
         suggestions << suggested_type

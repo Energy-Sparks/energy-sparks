@@ -3,10 +3,11 @@ class ActivityTypeFilter
 
   attr_reader :query
 
-  def initialize(query: {}, school: nil, scope: nil)
+  def initialize(query: {}, school: nil, scope: nil, current_date: Time.zone.today)
     @query = query
     @school = school
     @scope = (scope || default_scope).left_joins(*FILTERS).preload(:activity_category, *FILTERS).group('activity_types.id')
+    @current_date = current_date
   end
 
   def activity_types
@@ -14,9 +15,12 @@ class ActivityTypeFilter
       selected = send(:"selected_#{filter}")
       selected.any? ? results.where(filter => { id: selected }) : results
     end
-    if @school && not_completed_or_repeatable
-      completed_activity_type_ids = @school.activities.pluck(:activity_type_id)
-      filtered = filtered.where(repeatable: true).or(filtered.where.not(id: completed_activity_type_ids))
+    if @school && exclude_if_done_this_year
+      academic_year = @school.academic_year_for(@current_date)
+      if academic_year
+        completed_activities = @school.activities.between(academic_year.start_date, academic_year.end_date)
+        filtered = filtered.where.not(id: completed_activities.map(&:activity_type_id).uniq)
+      end
     end
     filtered
   end
@@ -35,8 +39,8 @@ class ActivityTypeFilter
     end
   end
 
-  def not_completed_or_repeatable
-    @query[:not_completed_or_repeatable]
+  def exclude_if_done_this_year
+    @query[:exclude_if_done_this_year]
   end
 
   def selected_subjects

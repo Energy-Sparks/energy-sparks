@@ -16,6 +16,18 @@ module Programmes
       end
     end
 
+    def in_progress?(programme_type)
+      enrolled?(programme_type) && !completed?(programme_type)
+    end
+
+    def completed?(programme_type)
+      if user_and_school?
+        if (programme = programme_type.programme_for_school(school))
+          programme.completed?
+        end
+      end
+    end
+
     def completed_activity(programme_type, activity_type)
       if user_and_school?
         programme_type.activity_of_type_for_school(school, activity_type)

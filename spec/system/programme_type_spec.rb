@@ -119,6 +119,20 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
         expect(page).to have_link("Continue", href: programme_type_path(programme_type_1))
         expect(page).to have_link("View", href: programme_type_path(programme_type_3))
       end
+
+      context 'after completing the programme' do
+        before(:each) do
+          programme_type_1.programme_for_school(school).complete!
+        end
+
+        it 'shows a completion message' do
+          click_on("View all programmes")
+          expect(page).to have_content("You have already completed this programme")
+          expect(page).to have_link("View", href: programme_type_path(programme_type_1))
+          visit programme_type_path(programme_type_1)
+          expect(page).to have_content("You completed this programme on")
+        end
+      end
     end
   end
 
