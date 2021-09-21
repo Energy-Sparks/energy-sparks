@@ -17,6 +17,11 @@
     <h3><%= school_group.name %></h3>
   </div>
 
+  <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(school_group, format: :csv), class: 'btn' %>
+
+  <br/>
+  <br/>
+
   <% if school_group.school_onboardings.select(&:incomplete?).any? %>
     <p>Schools onboarding: <%= school_group.school_onboardings.select(&:incomplete?).count %>
     <table class="table table-sorted">
