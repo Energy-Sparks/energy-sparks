@@ -96,14 +96,11 @@ module Targets
     def latest_reading_date_all_fuel_types
       latest_reading = Time.zone.today
       [:electricity, :gas, :storage_heater].each do |fuel_type|
-        #check for annual estimate attribute
-        unless using_annual_estimate?(fuel_type)
-          aggregate_meter = aggregate_school.aggregate_meter(fuel_type)
-          #school has this fuel type?
-          if aggregate_meter.present?
-            latest_data = aggregate_meter.amr_data.end_date
-            latest_reading = latest_data if latest_data.present? && latest_data < latest_reading
-          end
+        aggregate_meter = aggregate_school.aggregate_meter(fuel_type)
+        #school has this fuel type, and we're not using, or needing to use an estimate
+        if aggregate_meter.present? && !using_annual_estimate?(fuel_type)
+          latest_data = aggregate_meter.amr_data.end_date
+          latest_reading = latest_data if latest_data.present? && latest_data < latest_reading
         end
       end
       latest_reading
@@ -137,7 +134,7 @@ module Targets
     end
 
     def using_annual_estimate?(fuel_type)
-      target_service(aggregate_school, fuel_type).annual_kwh_estimate?
+      target_service(aggregate_school, fuel_type).annual_kwh_estimate_required?
     end
 
     def target_service(aggregate_school, fuel_type)

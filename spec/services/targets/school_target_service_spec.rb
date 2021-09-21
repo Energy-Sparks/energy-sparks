@@ -12,7 +12,7 @@ RSpec.describe Targets::SchoolTargetService do
 
   before(:each) do
     school.configuration.update!(fuel_configuration: fuel_configuration)
-    allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate?).and_return(false)
+    allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
   end
 
   describe '#build_target' do
