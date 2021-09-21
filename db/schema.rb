@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_20_154424) do
+ActiveRecord::Schema.define(version: 2021_09_20_152726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -720,6 +720,16 @@ ActiveRecord::Schema.define(version: 2021_09_20_154424) do
     t.index ["created_by_id"], name: "index_global_meter_attributes_on_created_by_id"
     t.index ["deleted_by_id"], name: "index_global_meter_attributes_on_deleted_by_id"
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
+  end
+
+  create_table "help_pages", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "feature", null: false
+    t.boolean "published", default: false, null: false
+    t.string "slug", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_help_pages_on_slug", unique: true
   end
 
   create_table "impacts", force: :cascade do |t|
