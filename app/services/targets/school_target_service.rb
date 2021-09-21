@@ -63,12 +63,47 @@ module Targets
 
     private
 
-    def target_start_date
+    def default_target_start_date
       Time.zone.today.beginning_of_month
     end
 
     def target_end_date
-      Time.zone.today.beginning_of_month.next_year
+      target_start_date.next_year
+    end
+
+    def target_start_date
+      @target_start_date ||= determine_target_start_date
+    end
+
+    #some schools are running slightly behind on their data, but do have enough data
+    #to set a target. In this case we're rolling back the target start date to the
+    #month of the last validated reading. But only if they're not using an annual
+    #estimate.
+    def determine_target_start_date
+      latest_reading_date = latest_reading_date_all_fuel_types
+      if latest_reading_date < default_target_start_date
+        return latest_reading_date.beginning_of_month
+      else
+        default_target_start_date
+      end
+    end
+
+    #Find latest reading data across fuel types, ignoring fuel types which
+    #the school doesn't have, or where we're using an annual estimate
+    #
+    #Uses the aggregate school and meter as we already have the data
+    #in-memory at this point
+    def latest_reading_date_all_fuel_types
+      latest_reading = Time.zone.today
+      [:electricity, :gas, :storage_heater].each do |fuel_type|
+        aggregate_meter = aggregate_school.aggregate_meter(fuel_type)
+        #school has this fuel type, and we're not using, or needing to use an estimate
+        if aggregate_meter.present? && !using_annual_estimate?(fuel_type)
+          latest_data = aggregate_meter.amr_data.end_date
+          latest_reading = latest_data if latest_data.present? && latest_data < latest_reading
+        end
+      end
+      latest_reading
     end
 
     def electricity_target
@@ -96,6 +131,10 @@ module Targets
 
     def aggregate_school
       @aggregate_school ||= AggregateSchoolService.new(@school).aggregate_school
+    end
+
+    def using_annual_estimate?(fuel_type)
+      target_service(aggregate_school, fuel_type).annual_kwh_estimate_required?
     end
 
     def target_service(aggregate_school, fuel_type)
