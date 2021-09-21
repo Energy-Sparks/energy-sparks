@@ -7,7 +7,8 @@ describe 'managing help pages', type: :system do
   context 'as an admin' do
     before(:each) do
       sign_in(admin)
-      visit admin_help_pages_path
+      visit admin_path
+      click_on 'Help Pages'
     end
 
     it 'lets me create and edit help pages' do
