@@ -106,7 +106,7 @@ RSpec.describe "onboarding", :schools, type: :system do
     it 'I can download a CSV of onboarding schools' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
       click_on 'Automatic School Setup'
-      click_on 'Download as CSV'
+      click_link 'Download as CSV', href: admin_school_onboardings_path(format: :csv)
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match /^attachment/
