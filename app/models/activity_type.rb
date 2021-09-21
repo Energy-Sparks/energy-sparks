@@ -35,17 +35,13 @@ class ActivityType < ApplicationRecord
   has_and_belongs_to_many :topics, join_table: :activity_type_topics
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
 
-  where(active: true, custom: false, data_driven: true, repeatable: true)
-
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }
 
   scope :active_and_not_custom, -> { active.not_custom }
-
-  scope :repeatable, -> { where(repeatable: true) }
   scope :data_driven, -> { where(data_driven: true) }
 
-  scope :random_suggestions, -> { active.repeatable }
+  scope :random_suggestions, -> { active }
   scope :custom_last, -> { order(:custom) }
   scope :by_name, -> { order(name: :asc) }
   validates_presence_of :name, :activity_category_id, :score

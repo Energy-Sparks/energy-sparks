@@ -10,7 +10,6 @@ module Programmes
     end
 
     def enrol_all
-      return unless enrol?(school)
       School.visible.each do |school|
         enrol(school)
       end

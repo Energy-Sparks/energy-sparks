@@ -72,6 +72,12 @@ RSpec.describe 'school targets', type: :system do
           expect(page).to have_content("Set your first energy saving target")
         end
 
+        it 'links to help page if there is one' do
+          create(:help_page, title: "Targets", feature: :school_targets, published: true)
+          refresh
+          expect(page).to have_link("Help")
+        end
+
         context "and all fuel types" do
           it "allows all targets to be set" do
             expect(page).to_not have_content("Start date")
@@ -181,6 +187,12 @@ RSpec.describe 'school targets', type: :system do
         expect(School.first.has_electricity?).to be true
 
         expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+      end
+
+      it 'links to help page if there is one' do
+        create(:help_page, title: "Targets", feature: :school_targets, published: true)
+        refresh
+        expect(page).to have_link("Help")
       end
 
       it "includes achieving your targets section" do

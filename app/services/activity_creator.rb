@@ -20,7 +20,7 @@ class ActivityCreator
   def process_programmes
     started_active_programmes.each do |programme|
       add_programme_activity(programme)
-      programme.completed! if completed_programme?(programme)
+      programme.complete! if completed_programme?(programme)
     end
   end
 
@@ -47,6 +47,9 @@ class ActivityCreator
     #but not if there already is a record for this activity type, so just recording the first instance
     if programme_activities(programme).empty?
       programme.programme_activities.create!(activity_type: @activity.activity_type, activity: @activity)
+    else
+      # if programme activity already exists for this type, set the new activity
+      programme_activities(programme).last.update(activity: @activity)
     end
   end
 
@@ -55,11 +58,10 @@ class ActivityCreator
   end
 
   def completed_programme?(programme)
-    #Completed programme if list of activity types in programme.programme_activities is same
-    #as list of activity types in programme.programme_type.activity_types
-    #programme.programme_activities.all?(&:activity)
-    programme_type_activity_ids = programme.programme_type.activity_types.order(:id).pluck(:id)
-    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id).sort
-    programme_activity_types == programme_type_activity_ids
+    # Completed programme if all activity types for the programme type are in the list of completed  activities
+    # (extra completed activities are ignored - activity types may have been removed from programme..)
+    programme_type_activity_ids = programme.programme_type.activity_types.pluck(:id)
+    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id)
+    (programme_type_activity_ids - programme_activity_types).empty?
   end
 end

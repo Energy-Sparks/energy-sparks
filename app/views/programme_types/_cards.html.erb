@@ -9,16 +9,23 @@
       <h4><strong>
         <%= link_to programme_type.title, programme_type_path(programme_type), style: "text-decoration: none;" %>
       </strong></h4>
-      <% if current_user && user_progress.enrolled?(programme_type) %>
-        <p><span class="h4 check"><%= fa_icon("check-circle text-success") %></span> You have already started this programme</p>
+      <% if current_user %>
+        <% if user_progress.completed?(programme_type) %>
+          <p><span class="h4 check"><%= fa_icon("check-circle text-success") %></span> You have already completed this programme</p>
+        <% elsif user_progress.enrolled?(programme_type) %>
+          <p><span class="h4 check"><%= far_icon("check-circle text-success") %></span> You have already started this programme</p>
+        <% end %>
       <% end %>
-
       <p>
         <%= programme_type.short_description %>
       </p>
     </div>
     <div class="col-sm-2 align-self-center">
-      <%= link_to user_progress.enrolled?(programme_type) ? "Continue" : "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <% if user_progress.in_progress?(programme_type) %>
+        <%= link_to "Continue", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <% else %>
+        <%= link_to "View", programme_type_path(programme_type), class: "btn btn-primary btn-lg" %>
+      <% end %>
     </div>
   </div>
 <% end %>

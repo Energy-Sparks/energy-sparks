@@ -69,7 +69,6 @@ module Admin
           :active,
           :activity_category_id,
           :score,
-          :repeatable,
           :data_driven,
           key_stage_ids: [],
           impact_ids: [],

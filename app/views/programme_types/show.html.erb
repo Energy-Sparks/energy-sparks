@@ -33,11 +33,13 @@
   <%= render 'prompt', programme_type: @programme_type, school: current_user_school %>
 <% end %>
 
-<% if @user_progress.enrolled?(@programme_type) %>
+<% if @user_progress.completed?(@programme_type) %>
+  <%= render 'completed', programme_type: @programme_type, school: current_user_school %>
+<% elsif @user_progress.enrolled?(@programme_type) %>
   <%= render 'started', programme_type: @programme_type, school: current_user_school %>
 <% end %>
 
-<% if @user_progress.enrolled?(@programme_type) %>
+<% if @user_progress.in_progress?(@programme_type) %>
   <h3>Current Progress</h3>
 <% else %>
   <h3>Activities</h3>

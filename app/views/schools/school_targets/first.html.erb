@@ -1,8 +1,9 @@
 <% content_for :page_title, 'Set your first energy saving target' %>
 
-<div class="row">
-  <div class="col-md-8">
-    <h1>Set your first energy saving target</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Set your first energy saving target</h1>
+  <div>
+    <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
 </div>
 
@@ -21,7 +22,7 @@
       <li>providing reports to monitor your progress</li>
       <li>suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders</li>
       <li>suggesting activities for pupils to help you engage the whole school</li>
-      <li>providing more insight through our detailed analyis of your energy usage</li>
+      <li>providing more insight through our detailed analysis of your energy usage</li>
     </ul>
 
   </div>
@@ -39,9 +40,7 @@
       Focus on building momentum and making some early savings.
     </div>
 
-    <p>
-      You can set separate targets for reducing your electricity, gas or storage heater usage.
-    </p>
+    <%= render 'fuel_type_note' %>
 
     <p>
       Based on our work with schools across the UK, we recommend setting the following targets for your school this year.

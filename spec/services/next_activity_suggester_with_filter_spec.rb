@@ -2,12 +2,17 @@ require 'rails_helper'
 
 describe NextActivitySuggesterWithFilter do
 
+  let!(:academic_year_start) { Date.today - 6.months }
+  let!(:academic_year_end) { Date.today + 6.months }
+  let!(:academic_year) { create(:academic_year, start_date: academic_year_start, end_date: academic_year_end) }
+  let!(:calendar) { create(:calendar, academic_years: [academic_year]) }
+
   let!(:ks1) { KeyStage.create(name: 'KS1') }
   let!(:ks2) { KeyStage.create(name: 'KS2') }
   let!(:ks3) { KeyStage.create(name: 'KS3') }
 
   let!(:maths) { Subject.create(name: 'Maths') }
-  let!(:school) { create :school, key_stages: [ks1, ks3] }
+  let!(:school) { create :school, key_stages: [ks1, ks3], calendar: calendar }
 
   let(:activity_type_filter){ ActivityTypeFilter.new(school: school)}
 
@@ -68,13 +73,13 @@ describe NextActivitySuggesterWithFilter do
       let!(:activity_type_with_further_suggestions)   { create :activity_type, :with_further_suggestions, number_of_suggestions: 6, key_stages: [ks1, ks3]}
       let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
 
-      it "suggests only the repeatable follow-on activities" do
+      it "suggests only the follow-on activities that haven't been done this academic year" do
         repeatable_done = activity_type_with_further_suggestions.suggested_types.second
-        activity = create(:activity, activity_type: repeatable_done, school: school)
+        activity = create(:activity, activity_type: repeatable_done, school: school, happened_on: academic_year_start - 1.month, created_at: academic_year_start - 1.month)
 
         non_repeatable_done = activity_type_with_further_suggestions.suggested_types.third
-        non_repeatable_done.update( name: 'DROP ME', repeatable: false)
-        activity = create(:activity, activity_type: non_repeatable_done, school: school)
+        non_repeatable_done.update( name: 'DROP ME' )
+        activity = create(:activity, activity_type: non_repeatable_done, school: school, happened_on: academic_year_start + 1.month, created_at: academic_year_start + 1.month)
 
         result = subject.suggest_from_activity_history
         activity_type_with_further_suggestions.reload
@@ -102,7 +107,7 @@ describe NextActivitySuggesterWithFilter do
 
     context 'where the programme has finished' do
       it 'does not use the activity types' do
-        programme.completed!
+        programme.complete!
         expect(subject.suggest_from_programmes).to be_empty
       end
     end

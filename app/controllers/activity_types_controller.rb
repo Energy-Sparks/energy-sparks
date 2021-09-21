@@ -20,7 +20,7 @@ class ActivityTypesController < ApplicationController
   private
 
   def can_be_completed(activity_type, school)
-    ActivityTypeFilter.new(school: school, query: { not_completed_or_repeatable: true }).activity_types.include?(activity_type)
+    ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
   end
 
   def load_content(activity_type, school)

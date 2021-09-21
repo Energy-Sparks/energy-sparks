@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_16_150402) do
+ActiveRecord::Schema.define(version: 2021_09_20_154424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -722,6 +722,16 @@ ActiveRecord::Schema.define(version: 2021_09_16_150402) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
+  create_table "help_pages", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "feature", null: false
+    t.boolean "published", default: false, null: false
+    t.string "slug", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_help_pages_on_slug", unique: true
+  end
+
   create_table "impacts", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -917,6 +927,8 @@ ActiveRecord::Schema.define(version: 2021_09_16_150402) do
     t.integer "status", default: 0, null: false
     t.date "started_on", null: false
     t.date "ended_on"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end

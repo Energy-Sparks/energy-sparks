@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   get 'all_benchmarks', to: 'benchmarks#show_all'
   get 'version', to: 'version#show'
 
+  resources :help, controller: 'help_pages', only: [:show]
+
   resources :mailchimp_signups, only: [:new, :create, :index]
 
   resources :activity_types, only: [:show]
@@ -226,6 +228,12 @@ Rails.application.routes.draw do
       scope module: :school_groups do
         resources :meter_attributes
         resource :partners, only: [:show, :update]
+      end
+    end
+    resources :help_pages do
+      member do
+        put :publish
+        put :hide
       end
     end
     resources :scoreboards

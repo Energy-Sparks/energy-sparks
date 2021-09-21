@@ -64,14 +64,16 @@ describe Programmes::Enroller do
   end
 
   describe "#enroll_all" do
-      let(:enrol_programme) { programme_type }
-      let(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
+      let!(:school)          { create(:school) }
+      let!(:enrol_programme) { programme_type }
+      let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
 
       before(:each) do
-        service.enrol(school)
+        service.enrol_all
       end
 
       it "enrolls them" do
+        school.reload
         expect(school.programmes.first.programme_type).to eql programme_type
       end
   end
