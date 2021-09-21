@@ -722,6 +722,16 @@ ActiveRecord::Schema.define(version: 2021_09_20_154424) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
+  create_table "help_pages", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "feature", null: false
+    t.boolean "published", default: false, null: false
+    t.string "slug", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_help_pages_on_slug", unique: true
+  end
+
   create_table "impacts", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false

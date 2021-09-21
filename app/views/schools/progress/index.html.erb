@@ -1,4 +1,10 @@
-<h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
+  <div>
+    <%= link_to "Review targets", school_school_target_path(@school, @current_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+  </div>
+</div>
 
 <% if @current_target %>
   <p>

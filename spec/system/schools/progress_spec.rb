@@ -76,6 +76,12 @@ describe 'targets', type: :system do
         expect(page).to have_content('+99%')
       end
 
+      it 'links to help page if there is one' do
+        create(:help_page, title: "Targets", feature: :school_targets, published: true)
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_link("Help")
+      end
+
       it 'does not show warning' do
         visit electricity_school_progress_index_path(school)
         expect(page).to_not have_content("We have not received data for your electricity usage for over thirty days")

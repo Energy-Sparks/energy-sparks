@@ -1,0 +1,38 @@
+<h1>Help Pages</h1>
+
+<div class="row">
+  <div class="col">
+    <p><%= link_to 'New Help Page', new_admin_help_page_path, class: 'btn' %></p>
+  </div>
+</div>
+
+<div class="row">
+ <div class="col">
+   <table class="table table-striped">
+     <thead>
+       <tr>
+         <th>Title</th>
+         <th>Published?</th>
+         <th>Actions</th>
+       </tr>
+     </thead>
+     <tbody>
+       <% @help_pages.each do |help_page| %>
+        <tr>
+          <td><%= link_to help_page.title, edit_admin_help_page_path(help_page) %></td>
+          <td><%= fa_icon( help_page.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+          <td>
+            <%= link_to 'Edit', edit_admin_help_page_path(help_page), class: "btn" %>
+            <% if help_page.published? %>
+            <%= link_to 'Hide', hide_admin_help_page_path(help_page), method: :put, class: "btn", data: {confirm: 'Note this will remove the content from view, are you sure?'} %>
+            <%= link_to 'View', help_path(help_page), class: "btn" %>
+            <% else %>
+            <%= link_to 'Publish', publish_admin_help_page_path(help_page), method: :put, class: "btn", data: {confirm: 'Note this will make the page public, are you sure?'} %>
+            <% end %>
+          </td>
+        </tr>
+       <% end %>
+     </tbody>
+   </table>
+ </div>
+</div>
