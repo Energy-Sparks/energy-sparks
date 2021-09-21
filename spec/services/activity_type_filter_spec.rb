@@ -193,19 +193,21 @@ RSpec.describe ActivityTypeFilter, type: :service do
     end
   end
 
-  describe 'not_completed_or_repeatable' do
+  describe 'exclude_if_done_this_year' do
 
-    let(:school){ create(:school) }
+    let(:academic_year){ create(:academic_year, start_date: '2019-09-01', end_date: '2020-08-31') }
+    let(:calendar){ create(:calendar, academic_years: [academic_year]) }
+    let(:school){ create(:school, calendar: calendar) }
 
-    subject { ActivityTypeFilter.new(school: school, query: {not_completed_or_repeatable: true}).activity_types.to_a }
+    subject { ActivityTypeFilter.new(school: school, query: {exclude_if_done_this_year: true}, current_date: Date.parse('2020-04-01')).activity_types.to_a }
 
     before do
-      create(:activity, activity_type: activity_type_1, school: school)
-      create(:activity, activity_type: activity_type_3, school: school)
+      create(:activity, activity_type: activity_type_1, school: school, happened_on: '2019-01-01')
+      create(:activity, activity_type: activity_type_2, school: school, happened_on: '2020-01-01')
     end
 
-    it 'excludes the completed activities unless one is repeatable' do
-      expect(subject).to match_array([activity_type_2, activity_type_3])
+    it 'excludes activity types where activity was completed within the academic year' do
+      expect(subject).to match_array([activity_type_1, activity_type_3])
     end
 
   end

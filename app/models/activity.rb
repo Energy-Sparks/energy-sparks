@@ -36,6 +36,7 @@ class Activity < ApplicationRecord
 
   scope :for_school, ->(school) { where(school: school) }
   scope :by_date, -> { order(happened_on: :asc) }
+  scope :between, ->(first_date, last_date) { where('happened_on BETWEEN ? AND ?', first_date, last_date) }
 
   has_rich_text :description
 
