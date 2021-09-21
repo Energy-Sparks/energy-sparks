@@ -27,8 +27,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science],
       activity_timings: [half_hour],
       impacts: [reducing_gas],
-      custom: true,
-      repeatable: false
+      custom: true
     )
   end
   let!(:activity_type_2) do
@@ -39,8 +38,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [science, maths],
       activity_timings: [hour],
       topics: [energy],
-      impacts: [reducing_gas],
-      repeatable: false
+      impacts: [reducing_gas]
     )
   end
   let!(:activity_type_3) do
@@ -51,8 +49,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
       subjects: [maths],
       activity_timings: [half_hour],
       topics: [pie_charts],
-      impacts: [reducing_gas],
-      repeatable: true
+      impacts: [reducing_gas]
     )
   end
 
