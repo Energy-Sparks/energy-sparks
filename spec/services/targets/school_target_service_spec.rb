@@ -12,6 +12,7 @@ RSpec.describe Targets::SchoolTargetService do
 
   before(:each) do
     school.configuration.update!(fuel_configuration: fuel_configuration)
+    allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate?).and_return(false)
   end
 
   describe '#build_target' do
@@ -66,6 +67,37 @@ RSpec.describe Targets::SchoolTargetService do
         expect(target.gas).to eql old_target.gas
         expect(target.storage_heaters).to eql old_target.storage_heaters
       end
+    end
+
+    context 'when meters are running slightly behind' do
+      let(:last_month) { Time.zone.today.last_month.beginning_of_month }
+      let(:this_month) { Time.zone.today.beginning_of_month }
+
+      let(:target) { service.build_target }
+
+      let(:aggregate_electricity_meter)   { double('aggregate-electricity-meter') }
+      let(:aggregate_gas_meter)           { double('aggregate-gas-meter') }
+
+      let(:amr_data)                      { double('amr-data') }
+
+      before(:each) do
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
+        allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate?).and_return(false)
+
+        allow(aggregated_school).to receive(:aggregate_meter).with(:electricity).and_return(aggregate_electricity_meter)
+        allow(aggregated_school).to receive(:aggregate_meter).with(:gas).and_return(aggregate_gas_meter)
+        allow(aggregated_school).to receive(:aggregate_meter).with(:storage_heater).and_return(nil)
+
+        allow(aggregate_electricity_meter).to receive(:amr_data).and_return(amr_data)
+        allow(aggregate_gas_meter).to receive(:amr_data).and_return(amr_data)
+
+        allow(amr_data).to receive(:end_date).and_return(Time.zone.today.last_month)
+      end
+
+      it 'should default to the previous month' do
+        expect(target.start_date).to eql last_month
+      end
+
     end
   end
 
