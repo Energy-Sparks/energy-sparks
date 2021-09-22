@@ -324,6 +324,7 @@ Rails.application.routes.draw do
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
       resources :interventions, only: :index
+      resources :school_targets, only: :index
     end
 
     resource :settings, only: [:show, :update]
