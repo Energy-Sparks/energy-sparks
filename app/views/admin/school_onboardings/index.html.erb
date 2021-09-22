@@ -14,8 +14,15 @@
 
   <div class="nav-anchor">
     <a name="<%= school_group.slug %>"> </a>
-    <h3><%= school_group.name %></h3>
   </div>
+
+  <br/>
+
+  <h3><%= school_group.name %></h3>
+  <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(school_group, format: :csv), class: 'btn' %>
+
+  <br/>
+  <br/>
 
   <% if school_group.school_onboardings.select(&:incomplete?).any? %>
     <p>Schools onboarding: <%= school_group.school_onboardings.select(&:incomplete?).count %>
