@@ -137,7 +137,7 @@ describe 'Adult dashboard' do
 
       context 'and there is no data' do
         it 'has no notice' do
-          expect(page).to_not have_content("you are currently meeting all of your energy saving targets")
+          expect(page).to_not have_content("Well done, you are currently meeting your target")
           expect(page).to_not have_content("Unfortunately you are not meeting your targets")
         end
       end
@@ -145,7 +145,7 @@ describe 'Adult dashboard' do
       context 'that are being met' do
         let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
         it 'displays a notice' do
-          expect(page).to have_content("you are currently meeting all of your energy saving targets")
+          expect(page).to have_content("Well done, you are currently meeting your target")
         end
 
         it 'links to target page' do
@@ -153,17 +153,33 @@ describe 'Adult dashboard' do
         end
       end
 
-      context 'that are not being met' do
+      context 'and gas is not being met' do
         let(:progress_summary)  { build(:progress_summary_with_failed_target, school_target: school_target) }
 
         it 'displays a notice' do
           expect(page).to have_content("Unfortunately you are not meeting your target to reduce your gas usage")
+          expect(page).to have_content("Well done, you are currently meeting your target to reduce your electricity and storage heater usage")
         end
 
         it 'links to target page' do
           expect(page).to have_link("Review progress", href: school_school_targets_path(school))
         end
       end
+
+      context 'with lagging data' do
+        let(:electricity_progress) { build(:fuel_progress, recent_data: false)}
+        let(:progress_summary)  { build(:progress_summary, electricity: electricity_progress, school_target: school_target) }
+
+        it 'displays a notice' do
+          expect(page).to_not have_content("Unfortunately you are not meeting your target")
+          expect(page).to have_content("Well done, you are currently meeting your target to reduce your gas and storage heater usage")
+        end
+
+        it 'links to target page' do
+          expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+        end
+      end
+
     end
   end
 

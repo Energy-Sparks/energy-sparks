@@ -12,6 +12,7 @@ RSpec.describe 'school targets', type: :system do
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+    allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
@@ -247,6 +248,18 @@ RSpec.describe 'school targets', type: :system do
       it "redirects from new target page" do
         visit new_school_school_target_path(school, target)
         expect(page).to have_content("Your energy saving target")
+      end
+
+      context "and fuel types are out of date" do
+        before(:each) do
+          #both gas and electricity will be out of date
+          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
+          visit school_school_targets_path(school)
+        end
+
+        it "displays a warning" do
+          expect(page).to have_content("We have not received data for your electricity and gas usage for over thirty days")
+        end
       end
 
       context "and fuel configuration has changed" do
