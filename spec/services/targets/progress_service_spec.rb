@@ -136,6 +136,7 @@ RSpec.describe Targets::ProgressService do
         before(:each) do
           allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
         end
         let(:progress_summary) { service.progress_summary }
 

@@ -1,17 +1,16 @@
-<% if progress_summary.present? && progress_summary.any_progress? %>
-  <% if progress_summary.any_failing_targets? %>
+<% if progress_summary.present? && progress_summary.any_failing_targets? %>
     <%= render 'schools/dashboard/info_bar',
       colour: 'bg-negative',
       icon: 'tachometer-alt fa-3x',
       content: "Unfortunately you are not meeting your target to reduce your #{progress_summary.failing_fuel_targets_as_sentence} usage",
       buttons: {'Review progress' => school_school_targets_path(school)}
     %>
-  <% else %>
+<% end %>
+<% if progress_summary.present? && progress_summary.any_passing_targets? %>
   <%= render 'schools/dashboard/info_bar',
     colour: 'bg-positive',
     icon: 'tachometer-alt fa-3x',
-    content: "Well done, you are currently meeting all of your energy saving targets!",
+    content: "Well done, you are currently meeting your target to reduce your #{progress_summary.passing_fuel_targets_as_sentence} usage!",
     buttons: {'Review progress' => school_school_targets_path(school)}
   %>
-  <% end %>
 <% end %>
