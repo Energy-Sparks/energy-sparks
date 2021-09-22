@@ -1,15 +1,15 @@
 <% content_for :page_title, @content.find_out_more_title %>
 
-<h4 class="pt-4"><%= sanitize @content.find_out_more_title %></h4>
+<h1 class="pt-4"><%= sanitize @content.find_out_more_title %></h1>
 
-<div class="row justify-content-md-center align-items-center">
+<div class="row">
   <% if @chart %>
-    <div class="col col-lg-6">
+    <div class="col">
       <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content %>
     </div>
   <% end %>
   <% if @table %>
-    <div class="col col-md-auto justify-content-md-center">
+    <div class="col">
       <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
@@ -32,10 +32,10 @@
   <% end %>
 </div>
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-md-8">
     <%= @content.find_out_more_content %>
   </div>
-  <div class="col-md-5 activities">
+  <div class="col-md-4 activities">
     <% unless @activity_types.empty? %>
       <h2>Activities which will help</h2>
       <% @activity_types.each do |activity_type| %>
