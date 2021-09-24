@@ -250,6 +250,18 @@ RSpec.describe 'school targets', type: :system do
         expect(page).to have_content("Your energy saving target")
       end
 
+      context "and fuel types are out of date" do
+        before(:each) do
+          #both gas and electricity will be out of date
+          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
+          visit school_school_targets_path(school)
+        end
+
+        it "displays a warning" do
+          expect(page).to have_content("We have not received data for your electricity and gas usage for over thirty days")
+        end
+      end
+
       context "and fuel configuration has changed" do
 
         context "and theres enough data" do

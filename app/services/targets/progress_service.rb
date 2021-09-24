@@ -49,7 +49,8 @@ module Targets
           fuel_type: fuel_type,
           progress: cumulative_progress(fuel_type),
           usage: current_monthly_usage(fuel_type),
-          target: current_monthly_target(fuel_type)
+          target: current_monthly_target(fuel_type),
+          recent_data: target_service(fuel_type).recent_data?
         )
       end
     end

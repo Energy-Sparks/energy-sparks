@@ -1,0 +1,30 @@
+<h1>School Targets</h1>
+
+Listing <strong><%= @currently_active %></strong> currently active school targets.
+
+<table class="table table-striped table-sorted">
+  <thead>
+    <tr>
+      <th>School</th>
+      <th>Start Date</th>
+      <th>Electricity</th>
+      <th>Gas</th>
+      <th>Storage heater</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_targets.each do |school_target| %>
+      <tr>
+        <td><%= school_target.school.name %></td>
+        <td><%= school_target.start_date %></td>
+        <td><%= school_target.electricity %></td>
+        <td><%= school_target.gas %></td>
+        <td><%= school_target.storage_heaters %></td>
+        <td>
+          <%= link_to "View target", school_school_targets_path(school_target.school, school_target), class: "btn btn-secondary" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -58,11 +58,10 @@ class ActivityCreator
   end
 
   def completed_programme?(programme)
-    #Completed programme if list of activity types in programme.programme_activities is same
-    #as list of activity types in programme.programme_type.activity_types
-    #programme.programme_activities.all?(&:activity)
-    programme_type_activity_ids = programme.programme_type.activity_types.order(:id).pluck(:id)
-    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id).sort
-    programme_activity_types == programme_type_activity_ids
+    # Completed programme if all activity types for the programme type are in the list of completed  activities
+    # (extra completed activities are ignored - activity types may have been removed from programme..)
+    programme_type_activity_ids = programme.programme_type.activity_types.pluck(:id)
+    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id)
+    (programme_type_activity_ids - programme_activity_types).empty?
   end
 end

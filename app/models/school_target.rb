@@ -33,6 +33,8 @@ class SchoolTarget < ApplicationRecord
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
 
+  scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end

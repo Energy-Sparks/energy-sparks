@@ -69,8 +69,9 @@ describe NextActivitySuggesterWithFilter do
     end
 
     context "with suggestions based on last activity type" do
-
-      let!(:activity_type_with_further_suggestions)   { create :activity_type, :with_further_suggestions, number_of_suggestions: 6, key_stages: [ks1, ks3]}
+      # ensure there are enough suggestions that we don't need to pick random extras, once we've excluded activities done this year..
+      let!(:number_of_suggestions) { NextActivitySuggesterWithFilter::NUMBER_OF_SUGGESTIONS + 1 }
+      let!(:activity_type_with_further_suggestions)   { create :activity_type, :with_further_suggestions, number_of_suggestions: number_of_suggestions, key_stages: [ks1, ks3]}
       let!(:last_activity) { create :activity, school: school, activity_type: activity_type_with_further_suggestions }
 
       it "suggests only the follow-on activities that haven't been done this academic year" do
