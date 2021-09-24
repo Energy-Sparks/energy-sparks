@@ -13,6 +13,7 @@ RSpec.describe 'school targets', type: :system do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
+    allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
