@@ -48,7 +48,7 @@
           <div class="card-body">
             <h4 class="card-title">Working with the pupils</h4>
             <p>Here are some suggested activities that can be undertaken
-              with pupils</p>
+              with pupils to address this issue</p>
             <ul>
             <% @activity_types.each do |activity_type| %>
              <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
@@ -68,7 +68,7 @@
       <div class="card activity <%= 'mt-2' if @activity_types.any? %>">
         <div class="card-body">
           <h4 class="card-title">Around the school</h4>
-      <p>Some suggested activities you can take around the school</p>
+      <p>Some suggested adult-led actions to address this issue</p>
           <ul>
           <% @actions.each do |intervention_type| %>
            <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
