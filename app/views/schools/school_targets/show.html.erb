@@ -31,7 +31,7 @@
     <%= render "bullet_chart", fuel_progress: @progress_summary.gas_progress, school_target: @school_target, progress_path: gas_school_progress_index_path(@school)  %>
   <% end %>
   <% if @progress_summary.storage_heater_progress.present? %>
-    <%= render "bullet_chart", fuel_progress: @progress_summary.storage_heater_progress, school_target: @school_target, progress_path: storage_heaters_school_progress_index_path(@school)  %>
+    <%= render "bullet_chart", fuel_progress: @progress_summary.storage_heater_progress, school_target: @school_target, progress_path: storage_heater_school_progress_index_path(@school)  %>
   <% end %>
 
   <% if @prompt_to_review_target %>
