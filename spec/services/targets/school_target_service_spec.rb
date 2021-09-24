@@ -75,23 +75,11 @@ RSpec.describe Targets::SchoolTargetService do
 
       let(:target) { service.build_target }
 
-      let(:aggregate_electricity_meter)   { double('aggregate-electricity-meter') }
-      let(:aggregate_gas_meter)           { double('aggregate-gas-meter') }
-
-      let(:amr_data)                      { double('amr-data') }
-
       before(:each) do
         allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
         allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate?).and_return(false)
-
-        allow(aggregated_school).to receive(:aggregate_meter).with(:electricity).and_return(aggregate_electricity_meter)
-        allow(aggregated_school).to receive(:aggregate_meter).with(:gas).and_return(aggregate_gas_meter)
-        allow(aggregated_school).to receive(:aggregate_meter).with(:storage_heater).and_return(nil)
-
-        allow(aggregate_electricity_meter).to receive(:amr_data).and_return(amr_data)
-        allow(aggregate_gas_meter).to receive(:amr_data).and_return(amr_data)
-
-        allow(amr_data).to receive(:end_date).and_return(Time.zone.today.last_month)
+        allow_any_instance_of(TargetsService).to receive(:meter_present?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:default_target_start_date).and_return(last_month)
       end
 
       it 'should default to the previous month' do
