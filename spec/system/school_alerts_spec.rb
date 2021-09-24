@@ -17,6 +17,7 @@ RSpec.describe "school alerts", type: :system do
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
+      let!(:intervention_type){ create(:intervention_type, title: 'Install cladding')}
       let!(:alert_type_rating) do
         create(
           :alert_type_rating,
@@ -27,7 +28,8 @@ RSpec.describe "school alerts", type: :system do
           management_dashboard_alert_active: true,
           teacher_dashboard_alert_active: true,
           pupil_dashboard_alert_active: true,
-          activity_types: [activity_type]
+          activity_types: [activity_type],
+          intervention_types: [intervention_type]
         )
       end
       let!(:alert_type_rating_content_version) do
@@ -62,14 +64,13 @@ RSpec.describe "school alerts", type: :system do
         visit root_path
 
         expect(page).to have_content('Your heating is on!')
-        #expect(page).to have_content("Turn off the heating")
 
         click_on("Find out more")
 
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content('This is what you need to do')
         expect(page).to have_content(activity_type.name)
-
+        expect(page).to have_content(intervention_type.title)
         expect(page).to have_selector('table', text: 'Body 1')
 
       end

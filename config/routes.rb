@@ -227,6 +227,7 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
+        resources :school_onboardings, only: [:index]
         resource :partners, only: [:show, :update]
       end
     end
@@ -323,6 +324,7 @@ Rails.application.routes.draw do
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
       resources :interventions, only: :index
+      resources :school_targets, only: :index
     end
 
     resource :settings, only: [:show, :update]
