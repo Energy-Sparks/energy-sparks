@@ -1,15 +1,15 @@
 <% content_for :page_title, @content.find_out_more_title %>
 
-<h4 class="pt-4"><%= sanitize @content.find_out_more_title %></h4>
+<h1 class="pt-4"><%= sanitize @content.find_out_more_title %></h1>
 
-<div class="row justify-content-md-center align-items-center">
+<div class="row">
   <% if @chart %>
-    <div class="col col-lg-6">
+    <div class="col">
       <%= render 'schools/find_out_more/chart', school: @school, chart: @chart, content: @content %>
     </div>
   <% end %>
   <% if @table %>
-    <div class="col col-md-auto justify-content-md-center">
+    <div class="col">
       <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
@@ -32,15 +32,58 @@
   <% end %>
 </div>
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-md-8">
+    <% unless @content_managed %>
+      <h3>Our analysis</h3>
+    <% end %>
     <%= @content.find_out_more_content %>
   </div>
-  <div class="col-md-5 activities">
-    <% unless @activity_types.empty? %>
-      <h2>Activities which will help</h2>
-      <% @activity_types.each do |activity_type| %>
-        <%= render 'activity_types/card', activity_type: activity_type, school: @school %>
+  <div class="col-md-4">
+    <% unless @activity_types.empty? && @actions.empty? %>
+      <h3>Taking action</h3>
+
+      <div class="activities">
+      <% if @activity_types.any? %>
+        <div class="card activity">
+          <div class="card-body">
+            <h4 class="card-title">Working with the pupils</h4>
+            <p>Here are some suggested activities that can be undertaken
+              with pupils to address this issue</p>
+            <ul>
+            <% @activity_types.each do |activity_type| %>
+             <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+            <% end %>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">
+              Engaging with pupils is an important part of the Energy Sparks programme.
+              Recording activities will score you points.
+            </small>
+          </div>
+        </div>
       <% end %>
+
+      <% if @actions.any? %>
+      <div class="card activity <%= 'mt-2' if @activity_types.any? %>">
+        <div class="card-body">
+          <h4 class="card-title">Around the school</h4>
+      <p>Some suggested adult-led actions to address this issue</p>
+          <ul>
+          <% @actions.each do |intervention_type| %>
+           <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
+          <% end %>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">
+            Logging activities will help you monitor progress. We'll display these
+            actions on your usage charts.
+          </small>
+        </div>
+      </div>
+      <% end %>
+      </div>
     <% end %>
   </div>
 </div>
