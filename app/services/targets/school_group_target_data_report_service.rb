@@ -88,7 +88,7 @@ module Targets
     private
 
     def schools
-      @school_group.schools.by_name
+      @school_group.schools.process_data.by_name
     end
 
     def target_service(aggregate_school, fuel_type)
