@@ -83,8 +83,8 @@ module Targets
       target_start_date = default_target_start_date
       [:electricity, :gas, :storage_heater].each do |fuel_type|
         service = target_service(aggregate_school, fuel_type)
-        #ignore if school doesnt have this fuel type, and we're not using, or needing to use an estimate
-        if service.meter_present? && !service.annual_kwh_estimate_required?
+        #ignore if school doesnt have this fuel type, we have enough data to set a target, and we're not using, or needing to use an estimate
+        if service.meter_present? && service.enough_data_to_set_target? && !service.annual_kwh_estimate_required?
           suggested_date = service.default_target_start_date
           target_start_date = suggested_date if suggested_date.present? && suggested_date < target_start_date
         end
