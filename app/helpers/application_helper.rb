@@ -293,4 +293,8 @@ module ApplicationHelper
   def format_target(value, units)
     FormatEnergyUnit.format(units, value, :html, false, true, :target)
   end
+
+  def progress_as_percent(completed, total)
+    (100 * completed.to_f / total.to_f).round.to_s + ' %'
+  end
 end

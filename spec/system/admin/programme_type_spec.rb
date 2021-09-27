@@ -81,5 +81,32 @@ describe 'programme type management', type: :system do
         expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating','Turn off the lights']
       end
     end
+
+    context 'when progammes exist for schools' do
+
+      let!(:school)  { create(:school)}
+      let!(:activity_category)  { create(:activity_category)}
+      let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
+      let!(:activity_type_2)    { create(:activity_type, name: 'Turn off the heat', activity_category: activity_category) }
+      let!(:programme_type)     { create(:programme_type, title: 'Eco Worrier', activity_types: [activity_type_1, activity_type_2]) }
+
+      before :each do
+        Programmes::Enroller.new(programme_type).enrol(school)
+        activity = Activity.create(school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today)
+        ActivityCreator.new(activity).process
+        school.reload
+      end
+
+      it 'shows links to programmes' do
+        visit admin_programme_types_path
+        expect(page).to have_content('Eco Worrier')
+        click_link '1'
+        expect(page).to have_content('Eco Worrier')
+        expect(page).to have_content('Total activities: 2')
+        expect(page).to have_content(school.name)
+        expect(page).to have_content('started')
+        expect(page).to have_content('50 %')
+      end
+    end
   end
 end
