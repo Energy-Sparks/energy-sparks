@@ -26,6 +26,7 @@ module Targets
       report = {}
       fuel_type_report = {
         enough_data: false,
+        recent_data: "N/A",
         success: false,
         progress: nil,
         error: nil
@@ -68,16 +69,17 @@ module Targets
               report[school][fuel_type][:error] = e.message
               Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
               Rails.logger.error e.backtrace.join("\n")
-              Rollbar.error(e, job: :test_targets, school: school)
+              Rollbar.error(e, job: :test_targets, school: school.name)
             end
           end
           # rubocop:enable Performance/CollectionLiteralInLoop
         rescue => e
+          puts school.name
           puts e.message
           puts e.backtrace
           Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
           Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e, job: :test_targets, school: school)
+          Rollbar.error(e, job: :test_targets, school: school.name)
         end
       end
       report
