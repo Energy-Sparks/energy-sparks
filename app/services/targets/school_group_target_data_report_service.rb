@@ -38,12 +38,17 @@ module Targets
           storage_heaters: fuel_type_report.dup
         }
         begin
+          school_target_service = Targets::SchoolTargetService.new(school)
+          #only test schools where we believe feature should work
+          next unless school_target_service.enough_data?
+
+          #generate a default target unless we have one
           unless school.has_target?
-            target = Targets::SchoolTargetService.new(school).build_target
+            target = school_target_service.build_target
             target.save!
           end
 
-          #Create meter collection without hitting the cache
+          #Create meter collection without hitting the application cache
           aggregate_school = Amr::AnalyticsMeterCollectionFactory.new(school).validated
           AggregateDataService.new(aggregate_school).aggregate_heat_and_electricity_meters
 
