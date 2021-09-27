@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @programme_types = ProgrammeType.order(:title)
+      @programme_types = @programme_types.by_title
     end
 
     def show
