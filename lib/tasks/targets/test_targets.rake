@@ -23,6 +23,6 @@ namespace :targets do
         end
       end
     end
-    puts "#{Time.zone.now} Finished enough-data report"
+    puts "#{Time.zone.now} Finished test-target report"
   end
 end
