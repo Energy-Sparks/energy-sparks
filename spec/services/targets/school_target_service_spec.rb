@@ -78,6 +78,7 @@ RSpec.describe Targets::SchoolTargetService do
       before(:each) do
         allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
         allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate?).and_return(false)
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:meter_present?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:default_target_start_date).and_return(last_month)
       end
