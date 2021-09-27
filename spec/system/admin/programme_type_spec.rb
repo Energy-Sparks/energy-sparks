@@ -94,6 +94,7 @@ describe 'programme type management', type: :system do
         Programmes::Enroller.new(programme_type).enrol(school)
         activity = Activity.create(school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today)
         ActivityCreator.new(activity).process
+        programme_type.reload
         school.reload
       end
 
