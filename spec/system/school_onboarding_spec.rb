@@ -117,8 +117,12 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page.source).to have_content onboarding.contact_email
     end
 
-    it 'I can download a CSV of onboarding schools for one group' do
+    it 'I can download a CSV of onboarding schools for one group, including manually created schools' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+
+      # aother school in the same group
+      create(:school, name: 'Manual school', school_group: onboarding.school_group)
+
       click_on 'Automatic School Setup'
       click_link 'Download as CSV', href: admin_school_group_school_onboardings_path(onboarding.school_group, format: :csv)
 
@@ -130,6 +134,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page.source).to have_content 'In progress'
       expect(page.source).to have_content onboarding.school_name
       expect(page.source).to have_content onboarding.contact_email
+      expect(page.source).to have_content 'Manual school'
     end
 
     it 'I can amend the email address if the user has not responded' do
