@@ -100,7 +100,7 @@ describe 'programme type management', type: :system do
       it 'shows links to programmes' do
         visit admin_programme_types_path
         expect(page).to have_content('Eco Worrier')
-        click_link '1'
+        click_link "#{programme_type.programmes.count}"
         expect(page).to have_content('Eco Worrier')
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
