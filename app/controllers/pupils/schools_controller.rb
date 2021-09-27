@@ -3,6 +3,7 @@ module Pupils
     include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
     include DashboardAlerts
+    include DashboardTimeline
     include NonPublicSchools
 
     load_resource
@@ -21,6 +22,7 @@ module Pupils
 
       @temperature_observations = @school.observations.temperature
       @show_temperature_observations = show_temperature_observations?
+      @observations = setup_timeline(@school.observations)
     end
 
   private
