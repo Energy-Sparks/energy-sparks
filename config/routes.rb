@@ -101,7 +101,7 @@ Rails.application.routes.draw do
         collection do
           get :electricity
           get :gas
-          get :storage_heaters
+          get :storage_heater
         end
       end
       resources :school_targets, except: [:destroy]
