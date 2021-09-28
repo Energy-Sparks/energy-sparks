@@ -4,7 +4,7 @@ module SchoolProgress
 private
 
   def redirect_if_disabled
-    redirect_to school_path(@school) unless Targets::SchoolTargetService.targets_enabled?(@school)
+    redirect_to school_path(@school) unless Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
   end
 
   def prompt_for_target?

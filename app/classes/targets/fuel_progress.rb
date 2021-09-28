@@ -18,6 +18,10 @@ module Targets
       @recent_data
     end
 
+    def can_chart?
+      @usage.present? && @target.present?
+    end
+
     def achieving_target?
       @progress.present? && @progress <= 0
     end
