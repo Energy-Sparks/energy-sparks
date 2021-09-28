@@ -88,7 +88,7 @@ describe 'programme type management', type: :system do
       let!(:activity_category)  { create(:activity_category)}
       let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
       let!(:activity_type_2)    { create(:activity_type, name: 'Turn off the heat', activity_category: activity_category) }
-      let!(:programme_type)     { create(:programme_type, title: 'Eco Worrier', activity_types: [activity_type_1, activity_type_2]) }
+      let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
 
       before :each do
         Programmes::Enroller.new(programme_type).enrol(school)
@@ -100,9 +100,9 @@ describe 'programme type management', type: :system do
 
       it 'shows links to programmes' do
         visit admin_programme_types_path
-        expect(page).to have_content('Eco Worrier')
+        expect(page).to have_content(programme_type.title)
         click_link "#{programme_type.programmes.count}"
-        expect(page).to have_content('Eco Worrier')
+        expect(page).to have_content(programme_type.title)
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
         expect(page).to have_content('started')
