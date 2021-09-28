@@ -12,24 +12,12 @@ RSpec.describe 'school targets', type: :system do
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+    allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
     school.configuration.update!(fuel_configuration: fuel_configuration)
-  end
-
-  context 'as an admin' do
-    let(:admin)              { create(:admin) }
-
-    before(:each) do
-      sign_in(admin)
-      visit school_path(school)
-    end
-
-    it 'lets me view target data' do
-      expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
-    end
   end
 
   context 'as a school admin' do
@@ -42,6 +30,18 @@ RSpec.describe 'school targets', type: :system do
 
     it 'doesnt let me view target data' do
       expect(page).to_not have_link("View target data", href: admin_school_target_data_path(school))
+    end
+
+    context 'when displaying menu links' do
+      it 'has a link to review targets when I can set one' do
+        expect(page).to have_link("Review targets", href: school_school_targets_path(school))
+      end
+
+      it 'has no link if not enough data' do
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(false)
+        refresh
+        expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+      end
     end
 
     context 'with targets disabled' do
@@ -334,6 +334,11 @@ RSpec.describe 'school targets', type: :system do
 
     before(:each) do
       sign_in(admin)
+    end
+
+    it 'lets me view target data' do
+      visit school_path(school)
+      expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
     end
 
     context 'when viewing a target' do

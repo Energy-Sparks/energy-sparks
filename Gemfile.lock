@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: a53bd7ca3574aef979d97729570853ff9e6a9c94
-  tag: 1.26.6
+  revision: bd1406f63c24c69d5ddeffebaa1b4f1744946fae
+  tag: 1.26.7
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -345,7 +345,7 @@ GEM
       connection_pool (~> 2.2)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.12.3)
+    nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     notiffany (0.1.3)

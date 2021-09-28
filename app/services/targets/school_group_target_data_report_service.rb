@@ -26,6 +26,7 @@ module Targets
       report = {}
       fuel_type_report = {
         enough_data: false,
+        recent_data: "N/A",
         success: false,
         progress: nil,
         error: nil
@@ -37,12 +38,17 @@ module Targets
           storage_heaters: fuel_type_report.dup
         }
         begin
+          school_target_service = Targets::SchoolTargetService.new(school)
+          #only test schools where we believe feature should work
+          next unless school_target_service.enough_data?
+
+          #generate a default target unless we have one
           unless school.has_target?
-            target = Targets::SchoolTargetService.new(school).build_target
+            target = school_target_service.build_target
             target.save!
           end
 
-          #Create meter collection without hitting the cache
+          #Create meter collection without hitting the application cache
           aggregate_school = Amr::AnalyticsMeterCollectionFactory.new(school).validated
           AggregateDataService.new(aggregate_school).aggregate_heat_and_electricity_meters
 
@@ -68,16 +74,17 @@ module Targets
               report[school][fuel_type][:error] = e.message
               Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
               Rails.logger.error e.backtrace.join("\n")
-              Rollbar.error(e, job: :test_targets, school: school)
+              Rollbar.error(e, job: :test_targets, school: school.name)
             end
           end
           # rubocop:enable Performance/CollectionLiteralInLoop
         rescue => e
+          puts school.name
           puts e.message
           puts e.backtrace
           Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
           Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e, job: :test_targets, school: school)
+          Rollbar.error(e, job: :test_targets, school: school.name)
         end
       end
       report
@@ -86,7 +93,7 @@ module Targets
     private
 
     def schools
-      @school_group.schools.by_name
+      @school_group.schools.process_data.by_name
     end
 
     def target_service(aggregate_school, fuel_type)

@@ -4,8 +4,9 @@ module Admin::Geo
 
     def create
       system_id = params[:system_id]
-      token = MeterReadingsFeeds::GeoApi.login(ENV['GEO_API_USERNAME'], ENV['GEO_API_PASSWORD'])
-      MeterReadingsFeeds::GeoApi.new(token).trigger_fast_update(system_id)
+      api = MeterReadingsFeeds::GeoApi.new(username: ENV['GEO_API_USERNAME'], password: ENV['GEO_API_PASSWORD'])
+      token = api.login
+      api.trigger_fast_update(system_id)
       session[:geo_token] = token
       redirect_to admin_geo_live_data_path(system_id: system_id)
     rescue => e
@@ -16,7 +17,7 @@ module Admin::Geo
       @system_id = params[:system_id]
       @token = session[:geo_token]
       if @token && @system_id
-        @data = MeterReadingsFeeds::GeoApi.new(@token).live_data(@system_id)
+        @data = MeterReadingsFeeds::GeoApi.new(token: @token).live_data(@system_id)
       else
         @system_id = DEFAULT_SYSTEM_ID
       end
