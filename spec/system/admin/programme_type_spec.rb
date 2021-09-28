@@ -100,7 +100,7 @@ describe 'programme type management', type: :system do
       it 'shows links to programmes and progress' do
         visit admin_programme_types_path
         expect(page).to have_content(programme_type.title)
-        click_link "#{programme_type.programmes.count}"
+        click_on 'Enrol schools'
         expect(page).to have_content(programme_type.title)
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
