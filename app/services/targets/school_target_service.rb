@@ -63,12 +63,33 @@ module Targets
 
     private
 
+    def target_end_date
+      target_start_date.next_year
+    end
+
     def target_start_date
+      @target_start_date ||= determine_target_start_date
+    end
+
+    def default_target_start_date
       Time.zone.today.beginning_of_month
     end
 
-    def target_end_date
-      Time.zone.today.beginning_of_month.next_year
+    #Some schools are running slightly behind on their data, but do have enough data
+    #to set a target. In this case we're rolling back the target start date to the
+    #month of the last validated reading. But only if they're not using an annual
+    #estimate.
+    def determine_target_start_date
+      target_start_date = default_target_start_date
+      [:electricity, :gas, :storage_heater].each do |fuel_type|
+        service = target_service(aggregate_school, fuel_type)
+        #ignore if school doesnt have this fuel type, we have enough data to set a target, and we're not using, or needing to use an estimate
+        if service.meter_present? && service.enough_data_to_set_target? && !service.annual_kwh_estimate_required?
+          suggested_date = service.default_target_start_date
+          target_start_date = suggested_date if suggested_date.present? && suggested_date < target_start_date
+        end
+      end
+      target_start_date
     end
 
     def electricity_target
