@@ -108,7 +108,7 @@ describe 'programme type management', type: :system do
         visit admin_programme_type_programmes_path(programme_type)
 
         # check school already enrolled isn't in dropdown
-        assert has_no_select?('programme_school_id', with_options: [school.name])
+        expect(page).not_to have_select('programme_school_id', with_options: [school.name])
 
         select another_school.name, from: :programme_school_id
         click_button 'Enrol'
