@@ -43,6 +43,10 @@ class Programme < ApplicationRecord
 
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 
+  def activity_types_completed
+    activities.map(&:activity_type).uniq
+  end
+
   def activity_of_type(activity_type)
     activities.where(activity_type: activity_type).last
   end
