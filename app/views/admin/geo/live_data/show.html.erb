@@ -15,8 +15,12 @@
 
   <h3>Power readings</h3>
 
-  <% @data['power'].each do |power| %>
-    <p><%= "#{power['type']}" %> : <%= "#{power['watts']}" %> watts</p>
+  <% if @data['power'].blank? %>
+    <p>No power readings yet..</p>
+  <% else %>
+    <% @data['power'].each do |power| %>
+      <p><%= "#{power['type']}" %> : <%= "#{power['watts']}" %> watts</p>
+    <% end %>
   <% end %>
 
   <br/>
