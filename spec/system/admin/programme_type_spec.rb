@@ -89,9 +89,10 @@ describe 'programme type management', type: :system do
       let!(:activity_type_2)    { create(:activity_type) }
       let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
       let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Date.today) }
-      let!(:activity)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today) }
+      let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
+      let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Date.today) }
 
-      it 'shows links to programmes' do
+      it 'shows links to programmes and progress' do
         visit admin_programme_types_path
         expect(page).to have_content(programme_type.title)
         click_link "#{programme_type.programmes.count}"
