@@ -101,6 +101,15 @@ describe 'programme type management', type: :system do
         expect(page).to have_content('started')
         expect(page).to have_content('50 %')
       end
+
+      it 'allows schools to be enrolled' do
+        another_school = create(:school)
+        visit admin_programme_type_programmes_path(programme_type)
+        select another_school.name, from: :programme_school_id
+        click_button 'Enrol'
+        expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
+        expect(another_school.programmes.last.programme_type).to eq(programme_type)
+      end
     end
   end
 end
