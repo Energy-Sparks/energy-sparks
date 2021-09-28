@@ -26,8 +26,6 @@ class UserTariffCharge < ApplicationRecord
 
   scope :for_type, ->(type) { where('charge_type = ?', type.to_s) }
 
-  scope :for_type, ->(type) { where('charge_type = ?', type.to_s) }
-
   CHARGE_TYPES = {
     standing_charge: {
       units: [:day, :month, :quarter]
