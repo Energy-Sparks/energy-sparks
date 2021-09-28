@@ -103,9 +103,13 @@ describe 'programme type management', type: :system do
         expect(page).to have_content('50 %')
       end
 
-      it 'allows schools to be enrolled' do
+      it 'allows schools to be enrolled if not in the programme already' do
         another_school = create(:school)
         visit admin_programme_type_programmes_path(programme_type)
+
+        # check school already enrolled isn't in dropdown
+        assert has_no_select?('programme_school_id', with_options: [school.name])
+
         select another_school.name, from: :programme_school_id
         click_button 'Enrol'
         expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
