@@ -92,6 +92,11 @@ describe 'programme type management', type: :system do
       let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
       let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Date.today) }
 
+      before :each do
+        # enrolment only enabled if targets enabled...
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      end
+
       it 'shows links to programmes and progress' do
         visit admin_programme_types_path
         expect(page).to have_content(programme_type.title)
@@ -113,7 +118,6 @@ describe 'programme type management', type: :system do
         select another_school.name, from: :programme_school_id
         click_button 'Enrol'
         expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
-        another_school.reload
         expect(another_school.programmes.last.programme_type).to eq(programme_type)
       end
     end
