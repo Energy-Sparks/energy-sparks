@@ -45,7 +45,7 @@
       </tbody>
     </table>
 
-  <%= link_to 'Choose Next Activity', suggest_activity_school_path(@school), class: 'btn btn-success' if can? :suggest_activity, @school %>
+  <%= link_to 'Choose Next Activity', activity_categories_path, class: 'btn btn-success' if can? :suggest_activity, @school %>
   <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
 
   <% if !user_signed_in?  %>
