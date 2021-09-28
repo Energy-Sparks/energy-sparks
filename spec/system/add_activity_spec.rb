@@ -17,8 +17,7 @@ describe 'adding a new activity' do
   end
 
   it 'allows an activity to be created without title' do
-    visit school_path(school)
-    click_on 'Complete activities'
+    visit suggest_activity_school_path(school)
     click_on 'Record your activity'
 
     expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
