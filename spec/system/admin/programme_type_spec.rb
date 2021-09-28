@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'programme type management', type: :system do
 
-  let!(:admin)  { create(:admin) }
+  let!(:school) { create(:school) }
+  let!(:admin)  { create(:admin, school: school) }
 
   describe 'managing' do
 
@@ -79,6 +80,26 @@ describe 'programme type management', type: :system do
         expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
         expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating','Turn off the lights']
+      end
+    end
+
+    context 'when progammes exist for schools' do
+
+      let!(:activity_type_1)    { create(:activity_type) }
+      let!(:activity_type_2)    { create(:activity_type) }
+      let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
+      let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Date.today) }
+      let!(:activity)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today) }
+
+      it 'shows links to programmes' do
+        visit admin_programme_types_path
+        expect(page).to have_content(programme_type.title)
+        click_link "#{programme_type.programmes.count}"
+        expect(page).to have_content(programme_type.title)
+        expect(page).to have_content('Total activities: 2')
+        expect(page).to have_content(school.name)
+        expect(page).to have_content('started')
+        expect(page).to have_content('50 %')
       end
     end
   end

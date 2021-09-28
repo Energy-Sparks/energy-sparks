@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :programme_type do
-    sequence(:title)              { |n| "Programme Type #{n}"}
-    active                        { true }
-    sequence(:description)        { |n| "Programme Type #{n} description"}
-    sequence(:short_description)  { |n| "Programme Type #{n} short description"}
+    sequence(:title)              { |n| "Programme Type title #{n}"}
+    sequence(:description)        { |n| "Programme Type description #{n}"}
+    sequence(:short_description)  { |n| "Programme Type short description #{n}"}
     sequence(:document_link)      { |n| "http://example.org/document#{n}.pdf" }
+    active                              { true }
 
     factory :programme_type_with_activity_types do
       transient do
