@@ -91,6 +91,11 @@ describe 'programme type management', type: :system do
       let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Date.today) }
       let!(:activity)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today) }
 
+      before :each do
+        # enrolment only enabled if targets enabled...
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      end
+
       it 'shows links to programmes' do
         visit admin_programme_types_path
         expect(page).to have_content(programme_type.title)
@@ -100,6 +105,19 @@ describe 'programme type management', type: :system do
         expect(page).to have_content(school.name)
         expect(page).to have_content('started')
         expect(page).to have_content('50 %')
+      end
+
+      it 'allows schools to be enrolled if not in the programme already' do
+        another_school = create(:school)
+        visit admin_programme_type_programmes_path(programme_type)
+
+        # check school already enrolled isn't in dropdown
+        expect(page).not_to have_select('programme_school_id', with_options: [school.name])
+
+        select another_school.name, from: :programme_school_id
+        click_button 'Enrol'
+        expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
+        expect(another_school.programmes.last.programme_type).to eq(programme_type)
       end
     end
   end
