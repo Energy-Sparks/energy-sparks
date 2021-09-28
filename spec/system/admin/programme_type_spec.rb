@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'programme type management', type: :system do
 
-  let!(:admin)  { create(:admin) }
+  let!(:school) { create(:school) }
+  let!(:admin)  { create(:admin, school: school) }
 
   describe 'managing' do
 
@@ -84,19 +85,11 @@ describe 'programme type management', type: :system do
 
     context 'when progammes exist for schools' do
 
-      let!(:school)  { create(:school)}
-      let!(:activity_category)  { create(:activity_category)}
-      let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
-      let!(:activity_type_2)    { create(:activity_type, name: 'Turn off the heat', activity_category: activity_category) }
+      let!(:activity_type_1)    { create(:activity_type) }
+      let!(:activity_type_2)    { create(:activity_type) }
       let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
-
-      before :each do
-        Programmes::Enroller.new(programme_type).enrol(school)
-        activity = Activity.create(school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today)
-        ActivityCreator.new(activity).process
-        programme_type.reload
-        school.reload
-      end
+      let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Date.today) }
+      let!(:activity)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today) }
 
       it 'shows links to programmes' do
         visit admin_programme_types_path
