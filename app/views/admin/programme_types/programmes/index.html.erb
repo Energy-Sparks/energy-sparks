@@ -36,4 +36,22 @@
   <p>No schools have enrolled in this programme yet</p>
 <% end %>
 
-<!--<%#= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm'%></td>-->
+<br/>
+<br/>
+
+<%= form_for(:programme) do |f| %>
+
+  <%#= render 'shared/errors', subject: @programme_type, subject_name: 'form' %>
+
+  <div class="row">
+<!--    <div class="col-md-2">-->
+        <%#= f.label :school_id, 'School to enrol' %>
+<!--    </div>-->
+    <div class="col-md-6">
+        <%= f.select :school_id, options_from_collection_for_select(@schools_to_enrol, 'id', 'name'), {prompt: 'Choose a school to enrol..'}, {class: 'form-control'} %>
+    </div>
+    <div class="col-md-2">
+      <%= f.submit 'Enrol', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
