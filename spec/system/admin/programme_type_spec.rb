@@ -112,6 +112,7 @@ describe 'programme type management', type: :system do
         select another_school.name, from: :programme_school_id
         click_button 'Enrol'
         expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
+        another_school.reload
         expect(another_school.programmes.last.programme_type).to eq(programme_type)
       end
     end
