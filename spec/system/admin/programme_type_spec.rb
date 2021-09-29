@@ -25,7 +25,7 @@ describe 'programme type management', type: :system do
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
-      expect(page).to have_content('Inactive')
+      expect(page).to have_css(".text-danger")
       expect(page).to have_content('No')
 
       expect(ProgrammeType.last.image.filename).to eq('placeholder.png')
@@ -38,7 +38,7 @@ describe 'programme type management', type: :system do
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(new_title)
-      expect(page).to have_content('Active')
+      expect(page).to have_css(".text-success")
       expect(page).to have_content('Yes')
 
       click_on new_title

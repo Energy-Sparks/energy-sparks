@@ -1,39 +1,65 @@
 <h1>Programme Types</h1>
 
-<% if @programme_types.any? %>
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Activities in Programme</th>
-        <th>Schools enrolled</th>
-        <th>Schools completed</th>
-        <th>Active</th>
-        <th>Default?</th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @programme_types.each do |programme_type| %>
-        <tr>
-          <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
-          <td><%= programme_type.activity_types.count %></td>
-          <td><%= link_to programme_type.programmes.started.count, admin_programme_type_programmes_path(programme_type) %></td>
-          <td><%= programme_type.programmes.completed.count %></td>
-          <td><%= programme_type.active ? 'Active' : 'Inactive' %></td>
-          <td><%= programme_type.default ? 'Yes' : 'No' %></td>
-          <td><%= link_to 'Enrol schools', admin_programme_type_programmes_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
-          <td><%= link_to 'Edit activities', admin_programme_type_activity_types_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
-          <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type), class: 'btn btn-warning btn-sm' %></td>
-          <td><%= link_to 'Delete', admin_programme_type_path(programme_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>There are no programme types</p>
-<% end %>
+<div class="row">
+  <div class="col">
+    <h4>Admin Notes</h4>
 
-<%= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm'%></td>
+    <ul>
+      <li>All schools will automatically be enrolled in programme marked as "default" once they are onboarded.
+        <% if ProgrammeType.default.any? %>
+         This is currently the "<strong><%= ProgrammeType.default.first.title %></strong>" programme
+        <% end %>
+      </li>
+      <li>
+        Use the "Enrol Schools" option to manually enrol schools in a programme
+      </li>
+      <li>
+        Editing a programme once schools have begun enrolling will impact their current progress. So take care with adding or removing activities once schools have engaged
+      </li>
+      <li>
+        Schools are automatically marked as having completed a programme once they have completed all the activities currently listed against it.
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row padded-row">
+  <div class="col">
+    <% if @programme_types.any? %>
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Activities in Programme</th>
+            <th>Schools enrolled</th>
+            <th>Schools completed</th>
+            <th>Active</th>
+            <th>Default?</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @programme_types.each do |programme_type| %>
+            <tr>
+              <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
+              <td><%= programme_type.activity_types.count %></td>
+              <td><%= link_to programme_type.programmes.started.count, admin_programme_type_programmes_path(programme_type) %></td>
+              <td><%= programme_type.programmes.completed.count %></td>
+              <td><%= checkmark(programme_type.active) %></td>
+              <td><%= programme_type.default ? 'Yes' : 'No' %></td>
+              <td><%= link_to 'Enrol schools', admin_programme_type_programmes_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
+              <td><%= link_to 'Edit activities', admin_programme_type_activity_types_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
+              <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type), class: 'btn btn-warning btn-sm' %></td>
+              <td><%= link_to 'Delete', admin_programme_type_path(programme_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>There are no programme types</p>
+    <% end %>
+    <%= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm'%>
+  </div>
+</div>

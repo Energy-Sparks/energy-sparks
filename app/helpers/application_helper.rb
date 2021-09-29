@@ -224,6 +224,10 @@ module ApplicationHelper
     boolean ? 'Yes' : 'No'
   end
 
+  def checkmark(boolean)
+    fa_icon(boolean ? 'check-circle text-success' : 'times-circle text-danger')
+  end
+
   def stars(rating)
     out_of_five = [(rating.round / 2.0), 0.5].max # enforce at least a half star
     full_stars = out_of_five.to_i
