@@ -24,6 +24,7 @@
           <td><%= programme_type.programmes.completed.count %></td>
           <td><%= programme_type.active ? 'Active' : 'Inactive' %></td>
           <td><%= programme_type.default ? 'Yes' : 'No' %></td>
+          <td><%= link_to 'Enrol schools', admin_programme_type_programmes_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
           <td><%= link_to 'Edit activities', admin_programme_type_activity_types_path(programme_type), class: 'btn btn-warning btn-sm nowrap' %></td>
           <td><%= link_to 'Edit', edit_admin_programme_type_path(programme_type), class: 'btn btn-warning btn-sm' %></td>
           <td><%= link_to 'Delete', admin_programme_type_path(programme_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
