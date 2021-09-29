@@ -4,14 +4,14 @@
 
 <div class="row padded-row">
   <div class="col-md-3">
-    <%= render 'activity_types/image', activity_type: @intervention_type, css_class: "" %>
+    <%= render 'image', intervention_type: @intervention_type, css_class: "" %>
   </div>
   <div class="col-md-6">
     <h2><%= @intervention_type.title %></h2>
     <p><%= @intervention_type.summary %></p>
   </div>
   <div class="col-md-3">
-    <%= link_to "All #{@intervention_type.intervention_type_group.title} actions", intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-secondary float-right' %>
+    <%= link_to "View #{@intervention_type.intervention_type_group.intervention_types.count} related actions", intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %>
   </div>
 </div>
 
@@ -22,3 +22,18 @@
 <% if current_user_school %>
   <%= render 'intervention_types/prompt', intervention_type: @intervention_type, school: current_user_school %>
 <% end %>
+
+<div class="row padded-row">
+  <div class="col-md-9">
+    <h3>Overview</h3>
+    <%= @intervention_type.description %>
+  </div>
+  <div class="col-md-3 text-center">
+    <% if @intervention_type.download_links.present? %>
+      <h4 style="padding-top: 0px;">Download resources</h4>
+      <div class="activity_type">
+        <%= @intervention_type.download_links %>
+      </div>
+    <% end %>
+  </div>
+</div>

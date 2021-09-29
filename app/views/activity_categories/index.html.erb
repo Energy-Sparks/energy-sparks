@@ -28,7 +28,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong>Recommended for your school</strong></h4>
         <div>
-          <%= link_to 'View all suggestions', recommended_activity_categories_path, class: "btn btn-secondary" %>
+          <%= link_to 'View all suggestions', recommended_activity_categories_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
         </div>
       </div>
       <p>Our suggestions based on your school programmes and analysis of your energy data</p>
@@ -56,7 +56,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong>Our Programmes</strong></h4>
         <div>
-          <%= link_to 'View all programmes', programme_types_path, class: "btn btn-secondary" %>
+          <%= link_to 'View all programmes', programme_types_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
         </div>
       </div>
       <p>Short programmes of related activities that pupils can work through step-by-step to achieve greater impact</p>
@@ -71,7 +71,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong><%= activity_category.name %></strong></h4>
         <div>
-          <%= link_to "View all #{activity_category.activity_types.active.count} activities", activity_category_path(activity_category), class: "btn btn-secondary" %>
+          <%= link_to "View all #{activity_category.activity_types.active.count} activities", activity_category_path(activity_category), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
         </div>
       </div>
     </div>
