@@ -20,10 +20,10 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong><%= intervention_type_group.title %></strong></h4>
         <div>
-          <%= link_to "View all #{intervention_type_group.intervention_types.active.count} action types", intervention_type_group_path(intervention_type_group), class: "btn btn-secondary" %>
+          <%= link_to "View all #{intervention_type_group.intervention_types.active.count} actions", intervention_type_group_path(intervention_type_group), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
         </div>
       </div>
     </div>
   </div>
-  <%= render "cards", intervention_types: intervention_type_group.intervention_types.active_and_not_other.sample(5), card_deck_css: "" %>
+  <%= render "cards", intervention_types: intervention_type_group.intervention_types.active_and_not_other.sample(4), card_deck_css: "" %>
 <% end %>

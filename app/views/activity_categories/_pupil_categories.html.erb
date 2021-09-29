@@ -1,24 +1,16 @@
-<div class="card-deck bg-light pb-4 activities-deck">
+<div class="row bg-light pb-4 activities-deck">
   <% activity_categories.each do |activity_category| %>
-    <div class="card">
-      <%= link_to activity_category_path(activity_category) do %>
-        <%= render 'image', activity_category: activity_category, css_class: "activity-card-img" %>
-      <% end %>
-      <div class="card-body">
-        <p class="card-text">
-          <%= link_to activity_category.name, activity_category_path(activity_category) %>
-        </p>
+    <div class="col-sm-3">
+      <div class="card pr-1 h-100">
+        <%= link_to activity_category_path(activity_category) do %>
+          <%= render 'image', activity_category: activity_category, css_class: "activity-card-img" %>
+        <% end %>
+        <div class="card-body">
+          <p class="card-text">
+            <%= link_to activity_category.name, activity_category_path(activity_category) %>
+          </p>
+        </div>
       </div>
     </div>
   <% end %>
-  <div class="card">
-    <div class="card-body">
-      <p class="card-text">
-        Groups of activities themed around specific learning pathways.
-      </p>
-      <p class="card-text">
-        Individual activities are linked to a variety of subjects and key stages.
-      </p>
-    </div>
-  </div>
 </div>

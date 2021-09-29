@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= @programme_type.title %></h1>
       <div>
-        <%= link_to 'Back', :back, class: 'btn btn-secondary'  %>
+        <%= link_to 'Back', admin_programme_types_path, class: 'btn btn-secondary'  %>
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
     <thead>
       <tr>
         <th>School</th>
-        <th>Activities completed</th>
+        <th>Activities types completed</th>
         <th>Progress</th>
         <th>Status</th>
       </tr>
@@ -25,8 +25,8 @@
       <% @programmes.each do |programme| %>
         <tr>
           <td><%= programme.school.name %></td>
-          <td><%= programme.activities.count %></td>
-          <td><%= progress_as_percent(programme.activities.count, @activity_types_count) %></td>
+          <td><%= programme.activity_types_completed.count %></td>
+          <td><%= progress_as_percent(programme.activity_types_completed.count, @activity_types_count) %></td>
           <td><%= programme.status %></td>
         </tr>
       <% end %>
@@ -36,4 +36,19 @@
   <p>No schools have enrolled in this programme yet</p>
 <% end %>
 
-<!--<%#= link_to 'New Programme Type', new_admin_programme_type_path, class: 'btn btn-primary btn-sm'%></td>-->
+<br/>
+<br/>
+
+<h3>Enrol schools in this programme</h3>
+<p>Enrolling a school will add a programme of this type, and mark the programme as "started".</p>
+
+<%= form_for(:programme) do |f| %>
+  <div class="row">
+    <div class="col-md-6">
+        <%= f.select :school_id, options_from_collection_for_select(@schools_to_enrol, 'id', 'name'), {prompt: 'Choose a school to enrol..'}, {class: 'form-control'} %>
+    </div>
+    <div class="col-md-2">
+      <%= f.submit 'Enrol', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

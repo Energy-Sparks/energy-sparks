@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="col-md-3">
-    <%= link_to "All #{@activity_type.activity_category.name} activities", activity_category_path(@activity_type.activity_category), class: 'btn btn-secondary float-right' %>
+    <%= link_to "View #{@activity_type.activity_category.activity_types.count} related activities", activity_category_path(@activity_type.activity_category), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
   </div>
 </div>
 

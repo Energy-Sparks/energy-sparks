@@ -10,7 +10,6 @@ RSpec.describe "activity type", type: :system do
   let!(:activity_type_1_2) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
   let!(:activity_type_1_3) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
   let!(:activity_type_1_4) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
-  let!(:activity_type_1_5) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
 
   let!(:activity_category_2) { create(:activity_category, name: 'cat2')}
   let!(:activity_type_2_1) { create(:activity_type, activity_category: activity_category_2, key_stages: [ks3])}
@@ -22,7 +21,6 @@ RSpec.describe "activity type", type: :system do
   let!(:activity_type_3_2) { create(:activity_type, activity_category: activity_category_3, key_stages: [ks3])}
   let!(:activity_type_3_3) { create(:activity_type, activity_category: activity_category_3, key_stages: [ks3])}
   let!(:activity_type_3_4) { create(:activity_type, activity_category: activity_category_3, key_stages: [ks3])}
-  let!(:activity_type_3_5) { create(:activity_type, activity_category: activity_category_3, key_stages: [ks3])}
 
   let!(:activity_category_4) { create(:activity_category, name: 'cat4', pupil: true)}
   let!(:activity_type_4_1) { create(:activity_type, activity_category: activity_category_4)}
@@ -35,7 +33,7 @@ RSpec.describe "activity type", type: :system do
         visit activity_categories_path
       end
 
-      it 'shows featured activity categories with at least 5 activities, plus Pupil activities and Programmes, but not Recommended section' do
+      it 'shows featured activity categories with at least 4 activities, plus Pupil activities and Programmes, but not Recommended section' do
         expect(page).to have_content(activity_category_1.name)
         expect(page).not_to have_content(activity_category_2.name)
         expect(page).not_to have_content(activity_category_3.name)
@@ -48,19 +46,18 @@ RSpec.describe "activity type", type: :system do
         expect(page).to have_content(programme_type.title)
       end
 
-      it 'shows 5 activities' do
+      it 'shows 4 activities' do
         expect(page).to have_content(activity_type_1_1.name)
         expect(page).to have_content(activity_type_1_2.name)
         expect(page).to have_content(activity_type_1_3.name)
         expect(page).to have_content(activity_type_1_4.name)
-        expect(page).to have_content(activity_type_1_5.name)
 
         expect(page).not_to have_content(activity_type_2_1.name)
         expect(page).not_to have_content(activity_type_3_1.name)
       end
 
       it 'links to category page, activity page and back' do
-        click_link 'View all 5 activities'
+        click_link 'View all 4 activities'
         expect(page).to have_content(activity_category_1.name)
         expect(page).to have_content(activity_category_1.description)
 
@@ -68,7 +65,7 @@ RSpec.describe "activity type", type: :system do
         expect(page).to have_content(activity_type_1_1.name)
         expect(page).to have_content('public descriptive text here')
 
-        click_link "All #{activity_category_1.name} activities"
+        click_link "View #{activity_category_1.activity_types.count} related activities"
         expect(page).to have_content(activity_category_1.name)
 
         click_link 'All activities'

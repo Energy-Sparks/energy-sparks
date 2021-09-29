@@ -25,7 +25,7 @@ describe 'programme type management', type: :system do
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
-      expect(page).to have_content('Inactive')
+      expect(page).to have_css(".text-danger")
       expect(page).to have_content('No')
 
       expect(ProgrammeType.last.image.filename).to eq('placeholder.png')
@@ -38,7 +38,7 @@ describe 'programme type management', type: :system do
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(new_title)
-      expect(page).to have_content('Active')
+      expect(page).to have_css(".text-success")
       expect(page).to have_content('Yes')
 
       click_on new_title
@@ -89,17 +89,36 @@ describe 'programme type management', type: :system do
       let!(:activity_type_2)    { create(:activity_type) }
       let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
       let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Date.today) }
-      let!(:activity)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.today) }
+      let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
+      let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Date.today) }
 
-      it 'shows links to programmes' do
+      before :each do
+        # enrolment only enabled if targets enabled...
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      end
+
+      it 'shows links to programmes and progress' do
         visit admin_programme_types_path
         expect(page).to have_content(programme_type.title)
-        click_link "#{programme_type.programmes.count}"
+        click_on 'Enrol schools'
         expect(page).to have_content(programme_type.title)
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
         expect(page).to have_content('started')
         expect(page).to have_content('50 %')
+      end
+
+      it 'allows schools to be enrolled if not in the programme already' do
+        another_school = create(:school)
+        visit admin_programme_type_programmes_path(programme_type)
+
+        # check school already enrolled isn't in dropdown
+        expect(page).not_to have_select('programme_school_id', with_options: [school.name])
+
+        select another_school.name, from: :programme_school_id
+        click_button 'Enrol'
+        expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
+        expect(another_school.programmes.last.programme_type).to eq(programme_type)
       end
     end
   end

@@ -65,4 +65,22 @@ describe ApplicationHelper do
       expect(helper.human_counts([1,2,3])).to eq('several times')
     end
   end
+
+  describe 'progress_as_percent' do
+    it 'formats as percent' do
+      expect(helper.progress_as_percent(10, 100)).to eq('10 %')
+    end
+    it 'to 0 dp' do
+      expect(helper.progress_as_percent(1, 3)).to eq('33 %')
+    end
+    it 'handles overachievment' do
+      expect(helper.progress_as_percent(110, 100)).to eq('100 %')
+    end
+    it 'handles non-numbers' do
+      expect(helper.progress_as_percent('foo', 'bar')).to eq(nil)
+    end
+    it 'handles divide by zero' do
+      expect(helper.progress_as_percent(10, 0)).to eq(nil)
+    end
+  end
 end
