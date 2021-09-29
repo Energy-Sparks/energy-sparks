@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= @intervention_type_group.title %></h1>
       <div>
-        <%= link_to 'All action type groups', intervention_type_groups_path, class: 'btn btn-secondary'  %>
+        <%= link_to 'All actions', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
       <% end %>
     </p>
     <p>
-      A collection of <strong><%= @intervention_type_group.intervention_types.active.count %></strong> actions types relevant to a range of subjects and key stages.
+      A collection of <strong><%= @intervention_type_group.intervention_types.active.count %></strong> actions that can be carried out around the school to help improve your save energy.
     </p>
   </div>
 </div>

@@ -6,7 +6,7 @@ describe 'adding interventions' do
   let!(:school)     { create(:school, :with_calendar, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
   let!(:user)       { create(:school_admin, school: school)}
 
-  let!(:boiler_intervention){ create :intervention_type, title: 'Changed boiler', summary: 'Old boiler bad, new boiler good' }
+  let!(:boiler_intervention){ create :intervention_type, title: 'Changed boiler', summary: 'Old boiler bad, new boiler good', description: 'How to change your boiler' }
 
   context 'using the management pages' do
 
@@ -122,8 +122,9 @@ describe 'adding interventions' do
 
       click_on 'Changed boiler'
       expect(page).to have_content('Old boiler bad, new boiler good')
+      expect(page).to have_content('How to change your boiler')
 
-      click_on "All #{boiler_intervention.intervention_type_group.title} actions"
+      click_on "View #{boiler_intervention.intervention_type_group.intervention_types.count} related actions"
       expect(page).to have_content(boiler_intervention.intervention_type_group.title)
     end
   end
