@@ -9,11 +9,11 @@
 </div>
 
 <div class="row">
-  <div class="col">
+  <div class="col-sm-6">
     <p>Energy Sparks provides extensive support to <%= link_to 'teachers', for_teachers_path %> and <%= link_to 'pupils', for_pupils_path %> in learning about energy and climate change within the context of your own school.</p>
     <p>Use the links below to explore <strong><%= @activity_count %></strong> freely available activities.
   </div>
-  <div class="col">
+  <div class="col-sm-6">
     <ul class="fa-ul">
       <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i>Eco-team and curriculum linked energy saving activities.</li>
       <li class="pb-3"><i class="fa-li fas fa-2x fa-check"></i>Energy related lesson plans and downloadable resources.</li>
@@ -34,7 +34,7 @@
       <p>Our suggestions based on your school programmes and analysis of your energy data</p>
     </div>
   </div>
-  <%= render "cards", activity_types: @suggested_activities.first(5), card_deck_css: "bg-light" %>
+  <%= render "cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
 <% end %>
 
 <% if !@pupil_categories.blank? %>
@@ -43,6 +43,8 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong>Pupil activities</strong></h4>
       </div>
+      <p>Groups of activities themed around specific learning pathways. Individual activities are linked to a variety of subjects and key stages.</p>
+
     </div>
   </div>
   <%= render "pupil_categories", activity_categories: @pupil_categories.first(4) %>
@@ -60,7 +62,7 @@
       <p>Short programmes of related activities that pupils can work through step-by-step to achieve greater impact</p>
     </div>
   </div>
-  <%= render "programme_types", programme_types: @programme_types.first(5) %>
+  <%= render "programme_types", programme_types: @programme_types.first(4) %>
 <% end %>
 
 <% @activity_categories.each do |activity_category| %>
@@ -74,5 +76,5 @@
       </div>
     </div>
   </div>
-  <%= render "cards", activity_types: activity_category.activity_types.active_and_not_custom.sample(5), card_deck_css: "" %>
+  <%= render "cards", activity_types: activity_category.activity_types.active_and_not_custom.sample(4), card_deck_css: "" %>
 <% end %>

@@ -13,7 +13,6 @@ RSpec.describe "activity type", type: :system do
   let!(:activity_type_1_2) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
   let!(:activity_type_1_3) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
   let!(:activity_type_1_4) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
-  let!(:activity_type_1_5) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3])}
 
   let!(:activity_category_2) { create(:activity_category, name: 'cat2', featured: true)}
   let!(:activity_type_2_1) { create(:activity_type, activity_category: activity_category_2, key_stages: [ks3])}
@@ -27,7 +26,7 @@ RSpec.describe "activity type", type: :system do
         sign_in(admin)
       end
 
-      it 'shows categories with 5 activity types, plus Recommended section' do
+      it 'shows categories with 4 activity types, plus Recommended section' do
         expect_any_instance_of(NextActivitySuggesterWithFilter).to receive(:suggest_for_school_targets).and_return([activity_type_3_1])
         visit activity_categories_path
 
@@ -46,7 +45,7 @@ RSpec.describe "activity type", type: :system do
         allow_any_instance_of(NextActivitySuggesterWithFilter).to receive(:suggest_for_school_targets).and_return([])
         visit activity_categories_path
 
-        click_link 'View all 5 activities'
+        click_link 'View all 4 activities'
         expect(page).to have_content(activity_category_1.name)
         expect(page).to have_content(activity_category_1.description)
 
