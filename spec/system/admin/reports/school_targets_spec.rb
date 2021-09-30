@@ -18,6 +18,6 @@ describe 'school targets report', type: :system do
     expect(page).to have_content(school_target_1.electricity)
     expect(page).to have_content(school_target_1.gas)
     expect(page).to have_content(school_target_1.storage_heaters)
-    expect(page).to have_link("View target", href: school_school_targets_path(school_target_1.school, school_target_1))
+    expect(page).to have_link("View target", href: school_school_target_path(school_target_1.school, school_target_1))
   end
 end
