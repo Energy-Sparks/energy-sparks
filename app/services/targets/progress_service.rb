@@ -90,7 +90,7 @@ module Targets
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e
-        Rollbar.error(e)
+        Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
         return nil
       end
     end

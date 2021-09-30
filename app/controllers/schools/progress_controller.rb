@@ -40,8 +40,8 @@ module Schools
         @progress = service.progress
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
-        Rollbar.error(e)
-        flash[:error] = e.message
+        Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
+        @debug_error = e.message
       end
       render :index
     end
