@@ -32,6 +32,15 @@ describe 'Adult dashboard' do
       expect(page).to have_content("#{school.name}")
       expect(page).to have_link("Compare schools")
     end
+
+    it 'does not display energy saving target prompt' do
+      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
+      visit management_school_path(school)
+      expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
+      expect(page).to_not have_link('Set energy saving target')
+    end
+
   end
 
   context 'when logged in as staff' do

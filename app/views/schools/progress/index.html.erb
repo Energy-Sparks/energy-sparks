@@ -6,12 +6,6 @@
   </div>
 </div>
 
-<% if @current_target %>
-  <p>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>.
-  </p>
-<% end %>
-
 <% if !@recent_data %>
   <div class="row alert info-bar text-light bg-negative">
     <div class="col">
@@ -34,6 +28,12 @@
       </p>
     <% end %>
   <% end %>
+<% end %>
+
+<% if @current_target %>
+  <p>
+    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>.
+  </p>
 <% end %>
 
 <% if @show_storage_heater_notes %>
@@ -96,17 +96,21 @@
 
   <%= render 'charts', school: @school, fuel_type: @fuel_type %>
 
-  <% if false #current_user.present? && current_user.analytics? %>
+  <% if current_user.present? && current_user.analytics? %>
     <h2>Debug</h2>
     <pre class="debug">
       <%= JSON.pretty_generate(@debug_content) %>
     </pre>
   <% end %>
-
 <% else %>
 
   <p>
-    Sorry, we encountered an error while trying to calculate your progress..
+    Unfortunately we are currently unable to display your detailed progress report. We have been notified about this error and will investigate.
   </p>
+
+  <% if current_user.present? && current_user.analytics? %>
+    <h2>Debug</h2>
+    <p>Error: <%= @debug_error if @debug_error.present? %></p>
+  <% end %>
 
 <% end %>

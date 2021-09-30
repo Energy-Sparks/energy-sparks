@@ -8,11 +8,11 @@ private
   end
 
   def prompt_for_target?
-    Targets::SchoolTargetService.targets_enabled?(@school) && !@school.has_target? && target_service.enough_data?
+    Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && !@school.has_target? && target_service.enough_data?
   end
 
   def prompt_to_review_target?
-    Targets::SchoolTargetService.targets_enabled?(@school) && target_service.prompt_to_review_target?
+    Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && target_service.prompt_to_review_target?
   end
 
   def fuel_types_changed
