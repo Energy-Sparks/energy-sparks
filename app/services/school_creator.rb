@@ -63,7 +63,7 @@ private
       users << school.school_onboarding.created_user
     end
     #also email admin, staff and group users
-    users += (school.school_admin.to_a + school.cluster_users.to_a + school.users.staff.to_a)
+    users += school.all_adult_school_users.to_a
     users.uniq.map(&:email)
   end
 

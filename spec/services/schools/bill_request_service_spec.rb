@@ -15,12 +15,14 @@ RSpec.describe Schools::BillRequestService do
 
     context 'with users' do
       let!(:school_admin)     { create(:school_admin, school: school)}
+      let!(:cluster_admin)    { create(:school_admin, name: "Cluster admin", cluster_schools: [school]) }
       let!(:staff)            { create(:staff, school: school)}
       let!(:pupil)            { create(:pupil, school: school)}
 
       it 'should return only staff and school admins' do
-        expect(service.users).to match_array([staff, school_admin])
+        expect(service.users).to match_array([staff, cluster_admin, school_admin])
       end
+
     end
 
   end

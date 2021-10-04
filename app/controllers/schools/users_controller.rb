@@ -8,7 +8,7 @@ module Schools
     def index
       authorize! :manage_users, @school
       @users = @school.users
-      @school_admins = (@school.cluster_users + @users.school_admin).uniq
+      @school_admins = @school.all_school_admins.uniq
       @staff = @users.staff
       @pupils = @users.pupil
     end

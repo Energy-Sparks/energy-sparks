@@ -5,7 +5,7 @@
       <p>Here are some suggested activities that can be undertaken
         with pupils</p>
         <ul>
-          <% @suggestions.each do |activity_type| %>
+          <% suggestions.each do |activity_type| %>
            <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
           <% end %>
         </ul>
@@ -23,7 +23,7 @@
       <h4 class="card-title">Taking action around the school</h4>
       <p>Some suggested activities you can take around the school</p>
       <ul>
-        <% @actions.each do |intervention_type| %>
+        <% actions.each do |intervention_type| %>
          <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
         <% end %>
       </ul>
@@ -42,20 +42,20 @@
       <p>We analyse your data to provide insights and weekly alerts</p>
       <ul>
         <li>
-          <%= link_to "Explore your data", pupils_school_analysis_path(@school) %>
+          <%= link_to "Explore your data", pupils_school_analysis_path(school) %>
         </li>
         <li>
-          <%= link_to "Review your energy analysis", school_analysis_index_path(@school) %>
+          <%= link_to "Review your energy analysis", school_analysis_index_path(school) %>
         </li>
         <li>
-          <%= link_to 'View energy saving opportunities', management_school_management_priorities_path(@school)  %>
+          <%= link_to 'View energy saving opportunities', management_school_management_priorities_path(school)  %>
         </li>
         <li>
-          <%= link_to 'View recent alerts', management_school_path(@school, anchor: "dashboard-alerts") %>
+          <%= link_to 'View recent alerts', management_school_path(school, anchor: "dashboard-alerts") %>
         </li>
-        <% if @school.school_group && can?(:compare, @school.school_group) %>
+        <% if school.school_group && can?(:compare, school.school_group) %>
           <li>
-            <%= link_to 'Compare usage with schools in your group', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}) %>
+            <%= link_to 'Compare usage with schools in your group', benchmarks_path(benchmark: {school_group_ids: [school.school_group.id]}) %>
           </li>
         <% end %>
       </ul>
