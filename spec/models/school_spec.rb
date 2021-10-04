@@ -520,4 +520,34 @@ describe School do
       end
     end
   end
+
+  context 'school users' do
+    let!(:school_admin)     { create(:school_admin, school: subject)}
+    let!(:cluster_admin)    { create(:school_admin, name: "Cluster admin", cluster_schools: [subject]) }
+    let!(:staff)            { create(:staff, school: subject)}
+    let!(:pupil)            { create(:pupil, school: subject)}
+
+    it 'identifies different groups' do
+      expect(subject.school_admin).to match_array([school_admin])
+      expect(subject.cluster_users).to match_array([cluster_admin])
+      expect(subject.staff).to match_array([staff])
+      expect(subject.all_school_admins).to match_array([school_admin, cluster_admin])
+      expect(subject.all_adult_school_users).to match_array([school_admin, cluster_admin, staff])
+    end
+
+    it 'handles empty lists' do
+      school = create(:school)
+      expect(school.school_admin).to be_empty
+      expect(school.cluster_users).to be_empty
+      expect(school.staff).to be_empty
+      expect(school.all_school_admins).to be_empty
+      expect(school.all_adult_school_users).to be_empty
+
+      new_admin = create(:school_admin, school: school)
+      expect(school.all_school_admins).to match_array([new_admin])
+      expect(school.all_adult_school_users).to match_array([new_admin])
+    end
+
+
+  end
 end
