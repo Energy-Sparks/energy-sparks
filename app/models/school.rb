@@ -259,7 +259,19 @@ class School < ApplicationRecord
   end
 
   def school_admin
-    users.where(role: :school_admin)
+    users.school_admin
+  end
+
+  def staff
+    users.staff
+  end
+
+  def all_school_admins
+    school_admin + cluster_users
+  end
+
+  def all_adult_school_users
+    all_school_admins + staff
   end
 
   def latest_content
