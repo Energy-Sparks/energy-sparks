@@ -5,7 +5,7 @@ module Schools
     end
 
     def users
-      users = @school.users.school_admin + @school.users.staff
+      users = @school.all_adult_school_users
       users.sort_by(&:staff_role)
     end
 
