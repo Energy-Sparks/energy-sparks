@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_20_154424) do
+ActiveRecord::Schema.define(version: 2021_10_04_094251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -487,6 +487,16 @@ ActiveRecord::Schema.define(version: 2021_09_20_154424) do
     t.bigint "benchmark_result_school_generation_run_id", null: false
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
     t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
+  end
+
+  create_table "cads", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.string "name", null: false
+    t.string "device_identifier", null: false
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_cads_on_school_id"
   end
 
   create_table "calendar_event_types", force: :cascade do |t|
@@ -1488,6 +1498,7 @@ ActiveRecord::Schema.define(version: 2021_09_20_154424) do
   add_foreign_key "benchmark_result_school_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_results", "benchmark_result_school_generation_runs", on_delete: :cascade
+  add_foreign_key "cads", "schools", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years", on_delete: :restrict
   add_foreign_key "calendar_events", "calendar_event_types", on_delete: :restrict
   add_foreign_key "calendar_events", "calendars", on_delete: :cascade

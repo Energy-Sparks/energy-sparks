@@ -75,6 +75,7 @@ class School < ApplicationRecord
 
   has_many :users
   has_many :meters,               inverse_of: :school
+  has_many :cads,                 inverse_of: :school
   has_many :school_times,         inverse_of: :school
   has_many :activities,           inverse_of: :school
   has_many :contacts,             inverse_of: :school

@@ -2,12 +2,14 @@
 #
 # Table name: programmes
 #
+#  created_at        :datetime         not null
 #  ended_on          :date
 #  id                :bigint(8)        not null, primary key
 #  programme_type_id :bigint(8)        not null
 #  school_id         :bigint(8)        not null
 #  started_on        :date             not null
 #  status            :integer          default("started"), not null
+#  updated_at        :datetime         not null
 #
 # Indexes
 #
