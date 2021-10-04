@@ -4,3 +4,33 @@
     <%= link_to_help_for_feature :live_data, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
 </div>
+
+
+
+
+
+<div class="row">
+  <div class="col">
+    <h3>Understanding your data consumption</h3>
+  </div>
+</div>
+
+<%= render "schools/school_targets/achieving_your_targets", suggestions: @suggestions, actions: @actions, school: @school %>
+
+<% if can?(:manage, Activity) || can?(:create, Observation) %>
+  <div class="card-deck actions">
+    <% if can?(:manage, Activity) %>
+      <div class="card mb-2 text-center">
+        <%= link_to 'Choose another activity', activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:create, Observation) %>
+      <div class="card mb-2">
+        <%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <div class="card mb-2">
+      <%= link_to 'View dashboard', management_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+    </div>
+  </div>
+<% end %>

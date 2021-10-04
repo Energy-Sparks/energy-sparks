@@ -29,12 +29,22 @@ RSpec.describe 'live data', type: :system do
 
     it 'lets me view live data' do
       expect(page).to have_content("Your live energy data")
+      expect(page).to have_content("Understanding your data consumption")
     end
 
     it 'has help page' do
       create(:help_page, title: "Live data", feature: :live_data, published: true)
       refresh
       expect(page).to have_link("Help")
+    end
+
+    it 'has links to suggestions actions etc' do
+      expect(page).to have_content("Working with the pupils")
+      expect(page).to have_content("Taking action around the school")
+      expect(page).to have_content("Explore your data")
+      expect(page).to have_link("Choose another activity")
+      expect(page).to have_link("Record an energy saving action")
+      expect(page).to have_link("View dashboard")
     end
   end
 end
