@@ -49,7 +49,7 @@ $(document).ready(function() {
 
       yAxis: [{
         min: 0,
-        max: 300,
+        max: 500,
         lineWidth: 2,
         lineColor: 'white',
         tickInterval: 10,

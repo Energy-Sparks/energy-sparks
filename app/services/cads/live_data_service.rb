@@ -7,8 +7,9 @@ module Cads
     def read
       result = { type: :electricity, units: :watts, value: 0, timestamp: 0 }
       data = api.live_data(@cad.device_identifier)
-      if data[:powerTimestamp] == 0
-        api.trigger_fast_update(@cad.device_identifier)
+      if data['powerTimestamp'] == 0
+        ret = api.trigger_fast_update(@cad.device_identifier)
+        puts "ret from trigger: #{ret}"
       else
         result[:timestamp] = data['powerTimestamp']
         if data['power']
