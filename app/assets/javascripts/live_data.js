@@ -2,13 +2,7 @@
 
 $(document).ready(function() {
 
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-  }
-
   function setupLiveDataChart(el) {
-
-    var rawData = 50;
 
     var chart = Highcharts.chart(el[0], {
       chart: {
@@ -21,7 +15,7 @@ $(document).ready(function() {
       },
 
       subtitle: {
-        text: rawData,
+        text: '0',
         style: {
           'font-size': '60px'
         },
@@ -98,7 +92,7 @@ $(document).ready(function() {
         color: Highcharts.getOptions().colors[0],
         radius: '100%',
         innerRadius: '80%',
-        data: [rawData]
+        data: [0]
       }]
 
     });
@@ -106,24 +100,20 @@ $(document).ready(function() {
     return chart;
   }
 
-  function startLiveDataChartUpdates(chart) {
+  function startLiveDataChartUpdates(chart, url) {
     setInterval(function () {
-      var point = chart.series[0].points[0];
-      var inc = getRandomInt(20) - 10;
-      var newVal = point.y + inc;
-
-      if (newVal < 0 || newVal > 100) {
-        newVal = point.y - inc;
-      }
-
-      point.update(newVal);
-      chart.setTitle(null, { text: newVal});
+      $.get(url).done(function(data) {
+        var newVal = data;
+        chart.series[0].points[0].update(newVal);
+        chart.setTitle(null, { text: newVal});
+      });
     }, 2000);
   }
 
   $(".live-data-chart").each( function() {
     var chart = setupLiveDataChart($(this));
-    startLiveDataChartUpdates(chart);
+    var url = $(this).data("url");
+    startLiveDataChartUpdates(chart, url);
   });
 
 });

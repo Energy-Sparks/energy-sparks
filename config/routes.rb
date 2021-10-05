@@ -159,6 +159,10 @@ Rails.application.routes.draw do
       get :live_data, to: 'live_data#show'
       get :private, to: 'private#show'
 
+      resources :cads, only: :show do
+        get :live_data, to: 'cads#live_data'
+      end
+
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
 
       resources :users do
