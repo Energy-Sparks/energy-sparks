@@ -19,12 +19,15 @@ RSpec.describe 'live data', type: :system do
     end
   end
 
-  context 'with feature enabled' do
+  context 'with feature enabled and active cad' do
+
+    let!(:cad) { create(:cad, active: true, school: school) }
 
     before(:each) do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       sign_in(school_admin)
-      visit school_live_data_path(school)
+      visit school_path(school)
+      click_link 'Live energy data'
     end
 
     it 'lets me view live data' do
