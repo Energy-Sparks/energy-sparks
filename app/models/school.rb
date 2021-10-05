@@ -259,6 +259,10 @@ class School < ApplicationRecord
     configuration.has_storage_heaters
   end
 
+  def has_live_data?
+    cads.active.any?
+  end
+
   def school_admin
     users.school_admin
   end

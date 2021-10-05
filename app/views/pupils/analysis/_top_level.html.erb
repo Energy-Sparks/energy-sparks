@@ -44,4 +44,14 @@
       </div>
     </div>
   <% end %>
+  <% if EnergySparks::FeatureFlags.active?(:live_data) && school.has_live_data? %>
+    <div class="card live-data-dark live-data-card m-3 text-center pb-3">
+      <div class="card-body">
+        <div class="p-4">
+          <%= fa_icon('tachometer-alt fa-3x') %>
+        </div>
+        <%= link_to 'Live energy data', school_live_data_path(school), class: 'h2 stretched-link text-decoration-none' %>
+      </div>
+    </div>
+  <% end %>
 </div>
