@@ -1,0 +1,70 @@
+<h1 class="mb-3">Targets & Tracking Weekly Summary</h1>
+
+<h2>Overview</h2>
+<p>
+There are <%= @target_summary.currently_active %> currently active school targets.
+</p>
+<div class="s-3"></div>
+<p>
+<%= @target_summary.first_target_sent %> schools have been invited to set a target.
+</p>
+<div class="s-3"></div>
+<p>
+<%= @target_summary.review_target_sent %> schools have been emailed to ask them to review
+their target after the target date was reached.
+</p>
+<div class="s-3"></div>
+
+<% if @progress_report.present? %>
+<h2>Progress Report</h2>
+<div class="s-3"></div>
+<p>
+  The attached progress report summarises the current progress for all schools that
+  have set a target. There is a single row for each school.
+</p>
+<div class="s-3"></div>
+<p>
+  The report columns are:
+  <ul>
+    <li><code>Group</code> - school group</li>
+    <li><code>School</code> - the name of the school</li>
+    <li><code>Targets Enabled?</code> - is the school configured to use the feature?</li>
+    <li><code>Enough Data?</code> - does the school have enough data/estimates to use the feature?</li>
+    <li><code>Start Date</code> - the start date for the target, if set</li>
+    <li><code>Target Date</code> - the target date for the target, if set</li>
+    <li><code>Electricity Target</code> - target for electricity, as set by user</li>
+    <li><code>Electricity Progress</code> - current cumulative progress towards target</li>
+    <li><code>Gas Target</code> - target for gas, as set by user</li>
+    <li><code>Gas Progress</code> - current cumulative progress towards target</li>
+    <li><code>Storage Heater Target</code> - target for storage heaters, as set by user</li>
+    <li><code>Storage Heater Progress</code> - current cumulative progress towards target</li>
+  </ul>
+</p>
+<div class="s-3"></div>
+<% end %>
+
+<% if @target_data_report.present? %>
+<h2>Target Data Report</h2>
+<div class="s-3"></div>
+<p>
+  The attached target data report summarises the data that impacts the
+  availability of the targets and tracking feature for all schools. There is a single row for each school and fuel type.
+</p>
+<p>
+  The report columns are:
+  <ul>
+    <li><code>Group</code> - school group</li>
+    <li><code>School</code> - the name of the school</li>
+    <li><code>Visible?</code> - is the school visible on the system?</li>
+    <li><code>Fuel Type</code> - the fuel type</li>
+    <li><code>Target set?</code> - has the school already set a target?</li>
+    <li><code>Holidays?</code> - is there enough holiday data to set a target?</li>
+    <li><code>Temperature?</code> - is there enough temperature data to set a target?</li>
+    <li><code>Readings?</code> - is there enough historical readings to set a target?</li>
+    <li><code>Annual estimate needed?</code> - is an annual estimate needed? (for schools with less than a years worth of data)</li>
+    <li><code>Annual estimate set?</code> - has an annual estimate been configured?</li>
+    <li><code>Can calculate synthetic data?</code> - given an estimate, can we actually calcualte a years worth of data to generate targets?</li>
+  </ul>
+</p>
+<div class="s-3"></div>
+<% end %>
