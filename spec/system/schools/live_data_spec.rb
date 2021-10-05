@@ -58,5 +58,18 @@ RSpec.describe 'live data', type: :system do
       end
       expect(page).to have_content("Your live energy data")
     end
+
+    it 'returns json data payload' do
+      cad_data = { type: :electricity, units: :watts, value: 123, timestamp: 1633443543 }
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(cad_data)
+
+      visit school_cad_live_data_path(school, school.cads.last)
+      data = JSON.parse(page.html)
+
+      expect(data['type']).to eq('electricity')
+      expect(data['units']).to eq('watts')
+      expect(data['value']).to eq(123)
+      expect(data['timestamp']).to eq(1633443543)
+    end
   end
 end

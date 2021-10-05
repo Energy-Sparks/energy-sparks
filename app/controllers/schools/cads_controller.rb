@@ -5,8 +5,9 @@ module Schools
     skip_before_action :authenticate_user!
 
     def live_data
-      # cad = @school.cads.find(params[:cad_id])
-      render json: rand(100)
+      cad = @school.cads.find(params[:cad_id])
+      service = Cads::LiveDataService.new(cad)
+      render json: service.read
     end
   end
 end

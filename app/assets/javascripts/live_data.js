@@ -49,7 +49,7 @@ $(document).ready(function() {
 
       yAxis: [{
         min: 0,
-        max: 100,
+        max: 300,
         lineWidth: 2,
         lineColor: 'white',
         tickInterval: 10,
@@ -103,7 +103,7 @@ $(document).ready(function() {
   function startLiveDataChartUpdates(chart, url) {
     setInterval(function () {
       $.get(url).done(function(data) {
-        var newVal = data;
+        var newVal = data['value'];
         chart.series[0].points[0].update(newVal);
         chart.setTitle(null, { text: newVal});
       });
