@@ -7,7 +7,8 @@ module Schools
     def live_data
       cad = @school.cads.find(params[:cad_id])
       service = Cads::LiveDataService.new(cad)
-      render json: service.read
+      value = service.read
+      render json: { type: :electricity, units: :watts, value: value }
     end
   end
 end

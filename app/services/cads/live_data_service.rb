@@ -4,26 +4,25 @@ module Cads
       @cad = cad
     end
 
-    def read
-      result = { type: :electricity, units: :watts, value: 0, timestamp: 0 }
+    def read(type = :electricity)
+      result = 0
       data = api.live_data(@cad.device_identifier)
       if data['powerTimestamp'] == 0
-        ret = api.trigger_fast_update(@cad.device_identifier)
-        puts "ret from trigger: #{ret}"
+        api.trigger_fast_update(@cad.device_identifier)
       else
-        result[:timestamp] = data['powerTimestamp']
-        if data['power']
-          data['power'].each do |power_entry|
-            if power_entry['type'] == 'ELECTRICITY'
-              result[:value] = power_entry['watts']
-            end
-          end
-        end
+        result = power_for_type(data['power'], type)
       end
       result
     end
 
     private
+
+    def power_for_type(powers, type)
+      if powers
+        power = powers.select { |p| p['type'].downcase == type.to_s }.last
+      end
+      power ? power['watts'] : 0
+    end
 
     def api
       unless @api
