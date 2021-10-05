@@ -105,7 +105,7 @@ $(document).ready(function() {
       $.get(url).done(function(data) {
         var newVal = data['value'];
         chart.series[0].points[0].update(newVal);
-        chart.setTitle(null, { text: newVal});
+        chart.setTitle(null, { text: newVal + " watts"});
       });
     }, refreshInterval);
   }
