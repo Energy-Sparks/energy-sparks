@@ -156,6 +156,7 @@ Rails.application.routes.draw do
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
+      get :live_data, to: 'live_data#show'
       get :private, to: 'private#show'
 
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'

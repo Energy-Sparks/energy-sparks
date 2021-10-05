@@ -26,6 +26,7 @@ class HelpPage < ApplicationRecord
   scope :by_title,             -> { order(title: :asc) }
 
   enum feature: {
-    school_targets: 0
+    school_targets: 0,
+    live_data: 1
   }
 end
