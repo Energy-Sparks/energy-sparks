@@ -1,8 +1,10 @@
 <div class="row">
   <div class="col-md-2 justify-content-center align-self-center">
-    <h4 class="card-title">Electricity</h4>
+    <h4 class="card-title"><%= fuel_type.to_s.humanize %></h4>
   </div>
   <div class="col-md-6">
-    <%= image_tag "placeholder-live-data.png", class: "card-img-top img-fluid" %>
+    <figure class="highcharts-figure">
+      <div class="live-data-chart" id="live-data-chart-<%= fuel_type.to_s %>" data-title="Live energy data" data-url='<%= school_path(@school) %>'></div>
+    </figure>
   </div>
 </div>
