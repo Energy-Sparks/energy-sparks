@@ -461,6 +461,17 @@ describe School do
 
   end
 
+  context 'with live data' do
+    let(:cad) { create(:cad, school: subject, active: true) }
+    it "checks for presence of active cads" do
+      expect(subject.has_live_data?).to be false
+      subject.cads << cad
+      expect(subject.has_live_data?).to be true
+      cad.update(active: false)
+      expect(subject.has_live_data?).to be false
+    end
+  end
+
   context 'with school targets' do
 
     it "there is no target by default" do
