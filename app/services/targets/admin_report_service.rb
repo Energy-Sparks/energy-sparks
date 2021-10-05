@@ -132,7 +132,7 @@ module Targets
       if fuel_target.present?
         row += [
           fuel_target,
-          fuel_progress.progress.present? ? format_target(fuel_progress.progress) : nil
+          fuel_progress.present? && fuel_progress.progress.present? ? format_target(fuel_progress.progress) : nil
         ]
       else
         row += Array.new(2, nil)
