@@ -4,7 +4,7 @@
   </div>
   <div class="col-md-6">
     <figure class="highcharts-figure">
-      <div class="live-data-chart" id="live-data-chart-<%= fuel_type.to_s %>" data-title="Live energy data" data-url='<%= school_cad_live_data_path(@school, @school.cads.last) %>'></div>
+      <div class="live-data-chart" id="live-data-chart-<%= fuel_type.to_s %>" data-title="Live energy data" data-refresh-interval="3000" data-max-value="3000" data-url='<%= school_cad_live_data_path(@school, @school.cads.last) %>'></div>
     </figure>
   </div>
 </div>

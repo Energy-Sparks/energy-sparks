@@ -2,9 +2,9 @@
 
 $(document).ready(function() {
 
-  function setupLiveDataChart(el) {
+  function setupLiveDataChart(container, maxValue) {
 
-    var chart = Highcharts.chart(el[0], {
+    var chart = Highcharts.chart(container, {
       chart: {
         type: 'solidgauge',
         marginTop: 10
@@ -49,7 +49,7 @@ $(document).ready(function() {
 
       yAxis: [{
         min: 0,
-        max: 500,
+        max: maxValue,
         lineWidth: 2,
         lineColor: 'white',
         tickInterval: 10,
@@ -100,20 +100,23 @@ $(document).ready(function() {
     return chart;
   }
 
-  function startLiveDataChartUpdates(chart, url) {
+  function startLiveDataChartUpdates(chart, url, refreshInterval) {
     setInterval(function () {
       $.get(url).done(function(data) {
         var newVal = data['value'];
         chart.series[0].points[0].update(newVal);
         chart.setTitle(null, { text: newVal});
       });
-    }, 2000);
+    }, refreshInterval);
   }
 
   $(".live-data-chart").each( function() {
-    var chart = setupLiveDataChart($(this));
+    var container = $(this).attr('id');
+    var maxValue = $(this).data('max-value');
     var url = $(this).data("url");
-    startLiveDataChartUpdates(chart, url);
+    var refreshInterval = $(this).data("refresh-interval");
+    var chart = setupLiveDataChart(container, maxValue);
+    startLiveDataChartUpdates(chart, url, refreshInterval);
   });
 
 });
