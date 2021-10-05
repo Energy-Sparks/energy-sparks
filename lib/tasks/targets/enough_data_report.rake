@@ -5,7 +5,7 @@ namespace :targets do
     CSV.open("/tmp/enough-data-report.csv", "w") do |csv|
       csv << ["Group", "School", "Visible?", "Fuel Type", "Holidays?", "Temperature?", "Readings?", "Estimate needed?", "Estimate set?", "Target?", "Current target?"]
       SchoolGroup.all.each do |school_group|
-        service = Targets::SchoolGroupTargetDataReportService.new(school_group)
+        service = Targets::SchoolGroupTargetDataReportingService.new(school_group)
         data = service.report
         data.each do |school, result_data|
           result_data.each do |fuel_result_data|
