@@ -49,5 +49,14 @@ RSpec.describe 'live data', type: :system do
       expect(page).to have_link("Record an energy saving action")
       expect(page).to have_link("View dashboard")
     end
+
+    it 'links from pupil analysis page' do
+      visit pupils_school_analysis_path(school)
+      within '.live-data-card' do
+        expect(page).to have_content("Live energy data")
+        click_link "Live energy data"
+      end
+      expect(page).to have_content("Your live energy data")
+    end
   end
 end
