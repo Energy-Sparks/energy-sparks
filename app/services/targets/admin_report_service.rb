@@ -131,13 +131,18 @@ module Targets
     def add_progress_report_fuel_type(row, fuel_target, fuel_progress)
       if fuel_target.present?
         row += [
-          fuel_target,
+          format_percent_reduction(fuel_target),
           fuel_progress.present? && fuel_progress.progress.present? ? format_target(fuel_progress.progress) : nil
         ]
       else
         row += Array.new(2, nil)
       end
       row
+    end
+
+    def format_percent_reduction(target)
+      return "0%" if target == 0
+      return "-#{target}%"
     end
 
     def format_target(value)
