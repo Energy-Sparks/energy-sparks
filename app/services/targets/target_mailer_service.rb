@@ -41,8 +41,7 @@ module Targets
     end
 
     def to(school)
-      #should we include cluster users might be a lot of email at start?
-      users = school.school_admin.to_a + school.cluster_users.to_a + school.users.staff.to_a
+      users = school.all_adult_school_users.to_a
       users.uniq.map(&:email)
     end
   end

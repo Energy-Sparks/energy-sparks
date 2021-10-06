@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<%= render "achieving_your_targets" %>
+<%= render "schools/school_targets/achieving_your_targets", suggestions: @suggestions, actions: @actions, school: @school %>
 
 <% if can?(:manage, Activity) || can?(:create, Observation) %>
   <div class="card-deck actions">

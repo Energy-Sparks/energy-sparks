@@ -18,11 +18,23 @@ $new-yellow: #FCB43A;
 
 $new-red: #FF3A5B;
 $light-blue: #97E6FC;
-$ligher-light-blue: #CBF4FF;
+$lighter-light-blue: #CBF4FF;
+
+$grey: #C4CCD4;
+$light-grey: #e6e6e6;
+$very-light-grey: #FCFFFF;
 
 $dark: #222222;
 
 $text: $dark;
+
+$bg-positive: #50E3C2;
+$bg-neutral: #97E6FC;
+$bg-negative: #FF3A5B;
+
+$bg-positive-light: #A1FFE9;
+$bg-neutral-light: #CBF4FF;
+$bg-negative-light: #FF9B9C;
 
 $electric-dark: #007EFF;
 $electric-light: #93e1f6;
@@ -36,14 +48,5 @@ $solar-light: #A1FFE9;
 $gas-dark: #FF8438;
 $gas-light: #ffdd4b;
 
-$bg-positive: #50E3C2;
-$bg-neutral: #97E6FC;
-$bg-negative: #FF3A5B;
-
-$bg-positive-light: #A1FFE9;
-$bg-neutral-light: #CBF4FF;
-$bg-negative-light: #FF9B9C;
-
-$grey: #C4CCD4;
-$light-grey: #e6e6e6;
-$very-light-grey: #FCFFFF;
+$live-data-dark: $green;
+$live-data-light: $light-grey;
