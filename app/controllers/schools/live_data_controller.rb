@@ -4,6 +4,7 @@ module Schools
 
     load_resource :school
 
+    skip_before_action :authenticate_user!
     before_action :redirect_if_disabled
 
     def show
