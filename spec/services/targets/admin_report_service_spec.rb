@@ -25,18 +25,18 @@ describe Targets::AdminReportService, type: :service do
 
     it 'should have expected data' do
       array = CSV.parse(report)[1]
-      expect(array).to match_array([
+      expect(array).to eq([
         school_group.name,
         school.name,
         "true",
         "true",
         "#{school_target.start_date.strftime("%Y-%m-%d")}",
         "#{school_target.target_date.strftime("%Y-%m-%d")}",
-        "#{school_target.electricity}",
+        "-#{school_target.electricity}%",
         "#{FormatEnergyUnit.format(:relative_percent, progress_summary.electricity_progress.progress, :html, false, true, :target)}",
-        "#{school_target.gas}",
+        "-#{school_target.gas}%",
         "#{FormatEnergyUnit.format(:relative_percent, progress_summary.gas_progress.progress, :html, false, true, :target)}",
-        "#{school_target.storage_heaters}",
+        "-#{school_target.storage_heaters}%",
         "#{FormatEnergyUnit.format(:relative_percent, progress_summary.storage_heater_progress.progress, :html, false, true, :target)}"
         ])
     end
@@ -65,7 +65,7 @@ describe Targets::AdminReportService, type: :service do
 
     it 'should have expected data' do
       array = CSV.parse(report)[1]
-      expect(array).to match_array([
+      expect(array).to eq([
         school_group.name,
         school.name,
         "true",
