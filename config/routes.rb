@@ -159,7 +159,7 @@ Rails.application.routes.draw do
       get :live_data, to: 'live_data#show'
       get :private, to: 'private#show'
 
-      resources :cads, only: :show do
+      resources :cads do
         get :live_data, to: 'cads#live_data'
       end
 
