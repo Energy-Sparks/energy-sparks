@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_04_094251) do
+ActiveRecord::Schema.define(version: 2021_10_08_103935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -496,6 +496,8 @@ ActiveRecord::Schema.define(version: 2021_10_04_094251) do
     t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "test_mode", default: false
+    t.integer "max_power"
     t.index ["school_id"], name: "index_cads_on_school_id"
   end
 
