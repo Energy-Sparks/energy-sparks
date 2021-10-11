@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: d2ca27191f52d933e24d5de0f2e3a9ef34e16455
-  branch: freezer-school-comparison-analysis
+  revision: 360c1465638b52df1ab15a7fd3fbf592ac631758
+  tag: 1.26.8
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
