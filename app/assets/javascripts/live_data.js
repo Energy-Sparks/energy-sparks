@@ -105,7 +105,7 @@ $(document).ready(function() {
       $.get(url).done(function(data) {
         var newVal = data['value'];
         chart.series[0].points[0].update(newVal);
-        chart.setTitle(null, { text: newVal + " watts"});
+        chart.setTitle(null, { text: newVal + " kW"});
       });
     }, refreshInterval);
   }
@@ -114,7 +114,7 @@ $(document).ready(function() {
     var container = $(this).attr('id');
     var maxValue = $(this).data('max-value');
     var url = $(this).data("url");
-    var refreshInterval = $(this).data("refresh-interval");
+    var refreshInterval = $(this).data("refresh-interval") * 1000;
     var chart = setupLiveDataChart(container, maxValue);
     startLiveDataChartUpdates(chart, url, refreshInterval);
   });

@@ -27,9 +27,9 @@
         <tr>
           <td><%= cad.name %></td>
           <td><%= cad.device_identifier %></td>
-          <td><%= cad.max_power %></td>
+          <td><%= cad.max_power %> kW</td>
           <td><%= y_n(cad.test_mode) %></td>
-          <td><%= cad.refresh_interval %></td>
+          <td><%= cad.refresh_interval %> secs</td>
           <td><%= y_n(cad.active) %></td>
           <td>
             <%= link_to 'Test', school_cad_live_data_path(@school, cad), class: 'btn btn-success' %>
