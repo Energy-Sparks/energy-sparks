@@ -36,9 +36,17 @@ module Schools
     end
 
     def live_data
-      cad = @school.cads.find(params[:cad_id])
-      value = data_service(cad).read
-      render json: { type: :electricity, units: :watts, value: value }
+      @cad = @school.cads.find(params[:cad_id])
+      @reading = data_service(@cad).read
+      respond_to do |format|
+        format.json { render json: { type: :electricity, units: :kw, value: @reading } }
+        format.html { }
+      end
+    rescue => @error
+      respond_to do |format|
+        format.json { render json: @error.message, status: :internal_server_error }
+        format.html { }
+      end
     end
 
     private

@@ -59,15 +59,42 @@ RSpec.describe 'live data', type: :system do
       expect(page).to have_content("Your live energy data")
     end
 
-    it 'returns json data payload' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
+    it 'returns html with reading' do
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
 
       visit school_cad_live_data_path(school, school.cads.last)
+
+      expect(page).to have_content('Live')
+      expect(page).to have_content('api is broken')
+    end
+
+    it 'returns html with error' do
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(0.123)
+
+      visit school_cad_live_data_path(school, school.cads.last)
+
+      expect(page).to have_content('Live')
+      expect(page).to have_content('0.123')
+    end
+
+    it 'returns json data payload' do
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(0.123)
+
+      visit school_cad_live_data_path(school, school.cads.last, format: :json)
       data = JSON.parse(page.html)
 
       expect(data['type']).to eq('electricity')
-      expect(data['units']).to eq('watts')
-      expect(data['value']).to eq(123)
+      expect(data['units']).to eq('kw')
+      expect(data['value']).to eq(0.123)
+    end
+
+    it 'returns json error' do
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
+
+      visit school_cad_live_data_path(school, school.cads.last, format: :json)
+
+      expect(page.status_code).to eql 500
+      expect(page.body).to eql ('api is broken')
     end
   end
 end

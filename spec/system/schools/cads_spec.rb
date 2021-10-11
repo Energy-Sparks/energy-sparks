@@ -22,13 +22,14 @@ describe 'CADs', type: :system do
       expect(page).to have_content('CAD was successfully created')
       expect(page).to have_content('My First CAD')
       click_link 'Edit'
-      fill_in 'Max power', with: '5000'
-      fill_in 'Refresh interval', with: '10000'
+      fill_in 'Maximum power (kW)', with: '5.5'
+      fill_in 'Refresh interval (seconds)', with: '10'
       check 'Test mode'
       click_button 'Save'
       expect(page).to have_content('CAD was successfully updated')
       expect(school.cads.count).to eq(1)
       expect(Cad.last.name).to eq('My First CAD')
+      expect(Cad.last.max_power).to eq(5.5)
       expect(Cad.last.test_mode).to be_truthy
       click_link 'Delete'
       expect(page).to have_content('CAD was successfully deleted')

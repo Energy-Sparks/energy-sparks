@@ -17,6 +17,7 @@
       <th scope="col">Device identifier</th>
       <th scope="col">Max power</th>
       <th scope="col">Test mode?</th>
+      <th scope="col">Refresh interval</th>
       <th scope="col">Active?</th>
       <th scope="col"></th>
     </tr>
@@ -26,10 +27,12 @@
         <tr>
           <td><%= cad.name %></td>
           <td><%= cad.device_identifier %></td>
-          <td><%= cad.max_power %></td>
+          <td><%= cad.max_power %> kW</td>
           <td><%= y_n(cad.test_mode) %></td>
+          <td><%= cad.refresh_interval %> secs</td>
           <td><%= y_n(cad.active) %></td>
           <td>
+            <%= link_to 'Test', school_cad_live_data_path(@school, cad), class: 'btn btn-success' %>
             <%= link_to 'Edit', edit_school_cad_path(@school, cad), class: 'btn btn-success' %>
             <%= link_to 'Delete', school_cad_path(@school, cad), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </td>

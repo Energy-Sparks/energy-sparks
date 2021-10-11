@@ -161,6 +161,7 @@ Rails.application.routes.draw do
 
       resources :cads do
         get :live_data, to: 'cads#live_data'
+        get :test, to: 'cads#test'
       end
 
       post :aggregated_meter_collection, to: 'aggregated_meter_collections#post'
