@@ -1,0 +1,9 @@
+<%= f.input :name %>
+<%= f.input :device_identifier %>
+<%= f.input :max_power %>
+<%= f.input :refresh_interval %>
+<%= f.input :test_mode %>
+<%= f.input :active %>
+
+<%= link_to 'Back', school_cads_path(@school), class: 'btn' %>
+<%= f.submit submit, class: 'btn btn-primary' %>
