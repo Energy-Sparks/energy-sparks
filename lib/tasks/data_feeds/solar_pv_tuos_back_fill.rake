@@ -19,7 +19,7 @@ namespace :data_feeds do
 
           p "Running #{solar_pv_tuos_area.title} for #{start_date} - #{end_date}"
 
-          DataFeeds::SolarPvTuosV2Loader.new(start_date, end_date).import_area(solar_pv_tuos_area)
+          DataFeeds::SolarPvTuosLoader.new(start_date, end_date).import_area(solar_pv_tuos_area)
 
           break if solar_pv_tuos_area.has_sufficient_readings?(Date.yesterday, MINIMUM_READINGS_PER_YEAR)
 
