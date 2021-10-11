@@ -499,8 +499,6 @@ ActiveRecord::Schema.define(version: 2021_10_08_103935) do
     t.boolean "test_mode", default: false
     t.integer "max_power", default: 1000
     t.integer "refresh_interval", default: 3000
-    t.float "last_reading", default: 0.0
-    t.datetime "last_read_at"
     t.index ["school_id"], name: "index_cads_on_school_id"
   end
 

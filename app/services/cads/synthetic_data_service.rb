@@ -5,10 +5,11 @@ module Cads
     end
 
     def read(*)
-      reading = @cad.last_reading + (@cad.max_power / 10).floor
-      reading = 0 if reading > @cad.max_power
-      @cad.update(last_reading: reading, last_read_at: Time.zone.now)
-      reading
+      if rand(100) > 80
+        rand(@cad.max_power)
+      else
+        rand(@cad.max_power / 2) + (@cad.max_power / 4)
+      end
     end
   end
 end

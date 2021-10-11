@@ -11,20 +11,11 @@ module Cads
       @service = Cads::SyntheticDataService.new(cad)
     end
 
-    it "incrememnts reading by 10% each call and loops" do
-      expect(@service.read).to eq(10.0)
-      expect(@service.read).to eq(20.0)
-      expect(@service.read).to eq(30.0)
-      # etc
-      6.times { @service.read }
-      expect(@service.read).to eq(100.0)
-      expect(@service.read).to eq(0.0)
-    end
-
-    it "sets a timestamp" do
-      expect(cad.last_read_at).to be_nil
-      @service.read
-      expect(cad.last_read_at).to_not be_nil
+    it "gives varying readings between 0 and max power" do
+      readings = []
+      10.times { readings << @service.read }
+      readings.each { |reading| expect(reading).to be_between(0, max_power) }
+      expect(readings.uniq.count).to be > 1
     end
   end
 end

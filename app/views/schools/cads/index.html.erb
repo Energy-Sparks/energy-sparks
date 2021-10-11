@@ -16,8 +16,6 @@
       <th scope="col">Name</th>
       <th scope="col">Device identifier</th>
       <th scope="col">Max power</th>
-      <th scope="col">Last reading</th>
-      <th scope="col">Last read at</th>
       <th scope="col">Test mode?</th>
       <th scope="col">Active?</th>
       <th scope="col"></th>
@@ -29,8 +27,6 @@
           <td><%= cad.name %></td>
           <td><%= cad.device_identifier %></td>
           <td><%= cad.max_power %></td>
-          <td><%= cad.last_reading %></td>
-          <td><%= nice_dates(cad.last_read_at) %></td>
           <td><%= y_n(cad.test_mode) %></td>
           <td><%= y_n(cad.active) %></td>
           <td>
