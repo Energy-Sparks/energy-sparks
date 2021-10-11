@@ -1,0 +1,18 @@
+<h1>Test CAD</h1>
+
+<h2>Mode</h2>
+<p><%= @cad.test_mode ? "TEST" : "LIVE" %></p>
+
+<% if @error %>
+  <h2>Error</h2>
+  <p><%= @error %></p>
+<% else %>
+  <h2>Current reading</h2>
+  <p><%= @reading %></p>
+<% end %>
+
+
+<br/>
+<br/>
+
+<%= link_to 'Retry', school_cad_live_data_path(@school, @cad), class: 'btn btn-success' %>
