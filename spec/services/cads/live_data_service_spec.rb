@@ -15,21 +15,21 @@ module Cads
       expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).with(cad.device_identifier).and_return(response)
       expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:trigger_fast_update).with(cad.device_identifier)
       result = Cads::LiveDataService.new(cad).read
-      expect(result).to eq(0)
+      expect(result).to eq(0.0)
     end
 
     it "returns power reading" do
       response = { 'powerTimestamp' => 123, 'power' => [{'type' => 'ELECTRICITY', 'watts' => 456}] }
       expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).with(cad.device_identifier).and_return(response)
       result = Cads::LiveDataService.new(cad).read
-      expect(result).to eq(456)
+      expect(result).to eq(0.456)
     end
 
     it "handles missing power reading for other type" do
       response = { 'powerTimestamp' => 123, 'power' => [{'type' => 'ELECTRICITY', 'watts' => 456}] }
       expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).with(cad.device_identifier).and_return(response)
       result = Cads::LiveDataService.new(cad).read(:gas)
-      expect(result).to eq(0)
+      expect(result).to eq(0.0)
     end
   end
 end

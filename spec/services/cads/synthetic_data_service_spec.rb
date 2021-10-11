@@ -5,7 +5,7 @@ module Cads
 
     let(:school)    { create(:school) }
     let(:cad)       { create(:cad, school: school, max_power: max_power) }
-    let(:max_power) { 100 }
+    let(:max_power) { 3 }
 
     before :each do
       @service = Cads::SyntheticDataService.new(cad)
