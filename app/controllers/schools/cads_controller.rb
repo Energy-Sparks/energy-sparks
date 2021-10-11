@@ -44,7 +44,7 @@ module Schools
       end
     rescue => @error
       respond_to do |format|
-        format.json { render json: @error.message, status: internal_server_error }
+        format.json { render json: @error.message, status: :internal_server_error }
         format.html { }
       end
     end
