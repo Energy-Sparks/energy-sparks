@@ -497,7 +497,7 @@ ActiveRecord::Schema.define(version: 2021_10_11_151740) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "test_mode", default: false
-    t.integer "max_power", default: 3
+    t.float "max_power", default: 3.0
     t.integer "refresh_interval", default: 5
     t.index ["school_id"], name: "index_cads_on_school_id"
   end
