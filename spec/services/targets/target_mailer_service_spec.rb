@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Targets::TargetMailerService do
 
+  include Rails.application.routes.url_helpers
+
   let!(:school)             { create(:school) }
   let!(:service)            { Targets::TargetMailerService.new }
 
