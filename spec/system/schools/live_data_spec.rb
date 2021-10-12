@@ -84,7 +84,7 @@ RSpec.describe 'live data', type: :system do
       data = JSON.parse(page.html)
 
       expect(data['type']).to eq('electricity')
-      expect(data['units']).to eq('kw')
+      expect(data['units']).to eq('kW')
       expect(data['value']).to eq(0.123)
     end
 
