@@ -12,7 +12,7 @@
 <% if @target_prompt %>
   <h5 class="mb-3">Set your first targets</h5>
 
-  <%= render 'shared/mailer/first_target_prompt' %>
+  <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters(source: "activation") %>
 
   <div class="s-3"></div>
 

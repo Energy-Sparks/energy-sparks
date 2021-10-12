@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Targets::TargetMailerService do
 
+  include Rails.application.routes.url_helpers
+
   let!(:school)             { create(:school) }
   let!(:service)            { Targets::TargetMailerService.new }
 
@@ -135,6 +137,17 @@ RSpec.describe Targets::TargetMailerService do
       expect(email_body).to include("Set your first energy saving target")
       expect(matcher).to have_link("Set your first target")
     end
+
+    it 'should add utm parameters' do
+      service.invite_schools_to_set_first_target
+      params = {
+        "utm_source": "invite",
+        "utm_medium": "email",
+        "utm_campaign": "targets"
+      }
+      expect(matcher).to have_link("Set your first target", href: school_school_targets_url(school, params: params, host: "localhost"))
+    end
+
   end
 
   describe '#invite_schools_to_review_target' do
@@ -174,6 +187,16 @@ RSpec.describe Targets::TargetMailerService do
       service.invite_schools_to_review_target
       expect(email_body).to include("Set your next energy saving target")
       expect(matcher).to have_link("Set a new target")
+    end
+
+    it 'should add utm parameters' do
+      service.invite_schools_to_review_target
+      params = {
+        "utm_source": "review",
+        "utm_medium": "email",
+        "utm_campaign": "targets"
+      }
+      expect(matcher).to have_link("Set a new target", href: school_school_targets_url(school, params: params, host: "localhost"))
     end
 
   end

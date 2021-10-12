@@ -1,4 +1,6 @@
 class OnboardingMailer < ApplicationMailer
+  helper :application
+
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
     make_bootstrap_mail(to: @school_onboarding.contact_email, subject: "Set up your school on Energy Sparks")

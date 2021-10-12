@@ -304,4 +304,20 @@ module ApplicationHelper
     percent = [100, (100 * completed.to_f / total.to_f)].min
     percent.round.to_s + ' %'
   end
+
+  def weekly_alert_utm_parameters
+    email_utm_parameters(source: "weekly-alert", campaign: "alerts")
+  end
+
+  def targets_utm_parameters(source: "weekly-alert")
+    email_utm_parameters(source: source, campaign: "targets")
+  end
+
+  def email_utm_parameters(source:, campaign:)
+    {
+      utm_source: source,
+      utm_medium: "email",
+      utm_campaign: campaign
+    }
+  end
 end
