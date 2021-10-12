@@ -113,7 +113,7 @@ $(document).ready(function() {
   }
 
   function subtitleWithTimestamp(value, units, date) {
-    return value + " " + units + "<br/><br/><br/><br/><div style='font-size: 18px; font-weight: lighter;'>last updated: " + date.toLocaleTimeString() + "</div>";
+    return value + " " + units + "<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
   }
 
   $(".live-data-chart").each( function() {
