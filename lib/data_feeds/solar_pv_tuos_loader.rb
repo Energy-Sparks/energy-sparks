@@ -1,8 +1,8 @@
 require 'dashboard'
 
 module DataFeeds
-  class SolarPvTuosV2Loader
-    def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday, solar_pv_tuos_interface = SheffieldSolarPVV2.new)
+  class SolarPvTuosLoader
+    def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday, solar_pv_tuos_interface = DataSources::PVLiveService.new)
       @start_date = start_date
       @end_date = end_date
       @solar_pv_tuos_interface = solar_pv_tuos_interface
