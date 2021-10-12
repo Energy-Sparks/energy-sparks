@@ -39,7 +39,7 @@ module Schools
       @cad = @school.cads.find(params[:cad_id])
       @reading = data_service(@cad).read
       respond_to do |format|
-        format.json { render json: { type: :electricity, units: :kw, value: @reading } }
+        format.json { render json: { type: :electricity, units: :kW, value: @reading } }
         format.html { }
       end
     rescue => @error

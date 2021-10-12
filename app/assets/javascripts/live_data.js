@@ -105,10 +105,15 @@ $(document).ready(function() {
     setInterval(function () {
       $.get(url).done(function(data) {
         var newVal = data['value'];
+        var units = data['units'];
         chart.series[0].points[0].update(newVal);
-        chart.setTitle(null, { text: newVal + " kW<br/><br/><br/><br/><div style='font-size: 15px;font-color: light-grey;'>last updated: " + (new Date().toLocaleTimeString()) + "</div>" });
+        chart.setTitle(null, { text: subtitleWithTimestamp(newVal, units, new Date()) });
       });
     }, refreshInterval);
+  }
+
+  function subtitleWithTimestamp(value, units, date) {
+    return value + " " + units + "<br/><br/><br/><br/><div style='font-size: 18px; font-weight: lighter;'>last updated: " + date.toLocaleTimeString() + "</div>";
   }
 
   $(".live-data-chart").each( function() {
