@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 82b86d1bbaa7d3a8021d521ed992f6b665c249b0
-  branch: sheffield-pv-live-v3
+  revision: ead44bea30ebb9c8a54ab3928ddaa1d76748e3a3
+  tag: 1.27.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
