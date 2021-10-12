@@ -4,8 +4,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-6 justify-content-center align-self-center">
+  <div class="col-md-12 justify-content-center align-self-center">
     <figure class="highcharts-figure">
       <div class="live-data-chart" id="live-data-chart-<%= fuel_type.to_s %>" style="height: 400px;" data-title="Live energy data" data-refresh-interval='<%= cad.refresh_interval %>' data-max-value='<%= cad.max_power %>' data-url='<%= school_cad_live_data_path(school, cad, format: :json) %>'></div>
     </figure>
