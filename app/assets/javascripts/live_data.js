@@ -28,6 +28,10 @@ $(document).ready(function() {
         enabled: false
       },
 
+      exporting: {
+        enabled: false
+      },
+
       pane: [{
         startAngle: -120,
         endAngle: 120,
