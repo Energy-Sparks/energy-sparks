@@ -389,7 +389,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.13.0)
     public_suffix (4.0.6)
-    puma (4.3.8)
+    puma (4.3.9)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -675,7 +675,7 @@ DEPENDENCIES
   pg
   pry
   pry-byebug (~> 3.9.0)
-  puma (= 4.3.8)
+  puma (= 4.3.9)
   rack
   rack-attack
   rack-canonical-host
