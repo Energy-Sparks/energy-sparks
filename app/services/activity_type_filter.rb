@@ -107,7 +107,7 @@ private
   end
 
   def exclude_live_data_activities(filtered)
-    live_data_activities = ActivityCategory.live_data.map(&:activity_types).flatten
+    live_data_activities = ActivityType.active.live_data
     filtered.where.not(id: live_data_activities.map(&:id))
   end
 end

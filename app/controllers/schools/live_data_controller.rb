@@ -6,7 +6,7 @@ module Schools
     before_action :redirect_if_disabled
 
     def show
-      @suggestions = ActivityCategory.live_data.map(&:activity_types).flatten.uniq.sample(5)
+      @suggestions = ActivityType.active.live_data.sample(5)
       @actions = Interventions::SuggestAction.new(@school).suggest
     end
 

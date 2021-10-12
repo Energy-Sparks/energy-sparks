@@ -44,6 +44,8 @@ class ActivityType < ApplicationRecord
   scope :random_suggestions, -> { active }
   scope :custom_last, -> { order(:custom) }
   scope :by_name, -> { order(name: :asc) }
+  scope :live_data, -> { joins(:activity_category).merge(ActivityCategory.live_data) }
+
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
