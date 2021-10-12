@@ -20,7 +20,7 @@
     <h3>Overview</h3>
     <p><%= @programme_type.description %></p>
   </div>
-  <div class="col-md-3 text-center">
+  <div class="col-md-3 text-center programme-type-download-links" data-event-value="<%= @programme_type.id %>">
     <% if @programme_type.document_link.present? %>
       <%= link_to @programme_type.document_link, class: "btn btn-lg", target: '_blank' do %>
         Download <%= fa_icon("download") %>

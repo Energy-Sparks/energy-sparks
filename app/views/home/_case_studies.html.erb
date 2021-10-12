@@ -22,7 +22,7 @@
                   <%= case_study.description %>
                 </div>
               </div>
-              <div class="card-footer">
+              <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
                 <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id ), class: 'btn' do %>
                   Download <i class="fas fa-file-download"></i>
                 <% end %>
