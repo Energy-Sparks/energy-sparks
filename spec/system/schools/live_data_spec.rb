@@ -23,6 +23,9 @@ RSpec.describe 'live data', type: :system do
 
     let!(:cad) { create(:cad, active: true, school: school) }
 
+    let!(:activity_category)  { create(:activity_category, live_data: true) }
+    let!(:activity_type)      { create(:activity_type, name: 'save gas', activity_category: activity_category) }
+
     before(:each) do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       sign_in(school_admin)
@@ -45,9 +48,13 @@ RSpec.describe 'live data', type: :system do
       expect(page).to have_content("Working with the pupils")
       expect(page).to have_content("Taking action around the school")
       expect(page).to have_content("Explore your data")
-      expect(page).to have_link("Choose another activity")
+      expect(page).to have_link("Choose another activity", href: activity_category_path(activity_category))
       expect(page).to have_link("Record an energy saving action")
       expect(page).to have_link("View dashboard")
+    end
+
+    it 'has links to suggestions from live data category' do
+      expect(page).to have_link("save gas")
     end
 
     it 'links from pupil analysis page' do
