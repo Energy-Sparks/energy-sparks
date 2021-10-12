@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module DataFeeds
-  describe SolarPvTuosV2Loader do
+  describe SolarPvTuosLoader do
 
     let(:solar_pv_tuos_interface)         { double("solar_pv_tuos_interface") }
     let(:good_generation_readings)        { Array.new(48, 10.0) }
@@ -25,7 +25,7 @@ module DataFeeds
           [ { start_date => good_generation_readings }, nil, nil ]
         end
 
-        spvtl = SolarPvTuosV2Loader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
+        spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
         expect { spvtl.import }.to change { SolarPvTuosReading.count }.from(0).to(1)
         expect(SolarPvTuosReading.first.generation_mw_x48).to eq good_generation_readings
 
@@ -33,7 +33,7 @@ module DataFeeds
           [ { start_date => good_sunny_generation_readings }, nil, nil ]
         end
 
-        spvtl = SolarPvTuosV2Loader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
+        spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
         expect { spvtl.import }.to_not change { SolarPvTuosReading.count }
         expect(SolarPvTuosReading.first.generation_mw_x48).to eq good_sunny_generation_readings
       end
@@ -44,7 +44,7 @@ module DataFeeds
         [ { start_date => bad_generation_readings }, nil, nil ]
       end
 
-      spvtl = SolarPvTuosV2Loader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
+      spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
       expect { spvtl.import }.to_not change { SolarPvTuosReading.count }
     end
   end

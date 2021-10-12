@@ -4,6 +4,6 @@ namespace :data_feeds do
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 11
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday - 1
 
-    DataFeeds::SolarPvTuosV2Loader.new(start_date, end_date).import
+    DataFeeds::SolarPvTuosLoader.new(start_date, end_date).import
   end
 end
