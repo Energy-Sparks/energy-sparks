@@ -17,13 +17,18 @@ $(document).ready(function() {
       subtitle: {
         text: '0',
         style: {
-          'font-size': '60px'
+          'font-size': '40px'
         },
         y: 200,
-        zIndex: 7
+        zIndex: 7,
+        useHTML: true
       },
 
       tooltip: {
+        enabled: false
+      },
+
+      exporting: {
         enabled: false
       },
 
@@ -104,10 +109,15 @@ $(document).ready(function() {
     setInterval(function () {
       $.get(url).done(function(data) {
         var newVal = data['value'];
+        var units = data['units'];
         chart.series[0].points[0].update(newVal);
-        chart.setTitle(null, { text: newVal + " kW"});
+        chart.setTitle(null, { text: subtitleWithTimestamp(newVal, units, new Date()) });
       });
     }, refreshInterval);
+  }
+
+  function subtitleWithTimestamp(value, units, date) {
+    return value + " " + units + "<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
   }
 
   $(".live-data-chart").each( function() {
