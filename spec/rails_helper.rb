@@ -70,4 +70,8 @@ RSpec.configure do |config|
 
   # Wisper gem helpers
   config.include(Wisper::RSpec::BroadcastMatcher)
+
+  # Make the rails routes available in all specs
+  config.include Rails.application.routes.url_helpers
+
 end
