@@ -17,10 +17,11 @@ $(document).ready(function() {
       subtitle: {
         text: '0',
         style: {
-          'font-size': '60px'
+          'font-size': '40px'
         },
         y: 200,
-        zIndex: 7
+        zIndex: 7,
+        useHTML: true
       },
 
       tooltip: {
@@ -105,7 +106,7 @@ $(document).ready(function() {
       $.get(url).done(function(data) {
         var newVal = data['value'];
         chart.series[0].points[0].update(newVal);
-        chart.setTitle(null, { text: newVal + " kW"});
+        chart.setTitle(null, { text: newVal + " kW<br/><br/><br/><br/><div style='font-size: 15px;font-color: light-grey;'>last updated: " + (new Date().toLocaleTimeString()) + "</div>" });
       });
     }, refreshInterval);
   }

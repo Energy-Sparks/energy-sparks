@@ -13,6 +13,11 @@ module ApplicationHelper
     datetime.strftime('%H:%M')
   end
 
+  def nice_times_with_seconds(datetime)
+    return "" if datetime.nil?
+    datetime.strftime('%H:%M:%S')
+  end
+
   def nice_dates(date)
     date ? date.to_s(:es_full) : ""
   end
