@@ -15,13 +15,8 @@ class ActivityTypeFilter
       selected = send(:"selected_#{filter}")
       selected.any? ? results.where(filter => { id: selected }) : results
     end
-    if @school && exclude_if_done_this_year
-      academic_year = @school.academic_year_for(@current_date)
-      if academic_year
-        completed_activities = @school.activities.between(academic_year.start_date, academic_year.end_date)
-        filtered = filtered.where.not(id: completed_activities.map(&:activity_type_id).uniq)
-      end
-    end
+    filtered = exclude_completed_activities(filtered) if exclude_if_done_this_year
+    filtered = exclude_live_data_activities(filtered) if exclude_live_data_activity_types
     filtered
   end
 
@@ -40,7 +35,7 @@ class ActivityTypeFilter
   end
 
   def exclude_if_done_this_year
-    @query[:exclude_if_done_this_year]
+    @school && @query[:exclude_if_done_this_year]
   end
 
   def selected_subjects
@@ -96,5 +91,23 @@ private
 
   def default_scope
     ActivityType.active.custom_last
+  end
+
+  def exclude_live_data_activity_types
+    @school && !@school.has_live_data?
+  end
+
+  def exclude_completed_activities(filtered)
+    academic_year = @school.academic_year_for(@current_date)
+    if academic_year
+      completed_activities = @school.activities.between(academic_year.start_date, academic_year.end_date)
+      filtered = filtered.where.not(id: completed_activities.map(&:activity_type_id).uniq)
+    end
+    filtered
+  end
+
+  def exclude_live_data_activities(filtered)
+    live_data_activities = ActivityCategory.live_data.map(&:activity_types).flatten
+    filtered.where.not(id: live_data_activities.map(&:id))
   end
 end
