@@ -28,7 +28,7 @@
     <h3>Overview</h3>
     <%= @intervention_type.description %>
   </div>
-  <div class="col-md-3 text-center">
+  <div class="col-md-3 text-center intervention-type-download-links" data-event-value="<%= @intervention_type.id %>">
     <% if @intervention_type.download_links.present? %>
       <h4 style="padding-top: 0px;">Download resources</h4>
       <div class="activity_type">
