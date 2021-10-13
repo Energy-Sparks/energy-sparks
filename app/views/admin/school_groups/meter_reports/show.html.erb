@@ -1,8 +1,8 @@
 <% content_for :page_title, "#{@school_group.name} meter data report" %>
 
-<h1>Data report for active meters</h1>
+<h1><%= @school_group.name %> meter report</h1>
 
-<p><%= link_to 'Reports index', admin_reports_path, class: 'btn btn-success' %></p>
+<p><%= link_to 'School group meter reports', admin_reports_meter_reports_path, class: 'btn btn-success' %></p>
 
 <h2>Downloads</h2>
 <p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
