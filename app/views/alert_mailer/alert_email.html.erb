@@ -17,28 +17,28 @@
   <% if @school.has_current_target? %>
     <p>
      Your school has set a target to reduce its energy usage by <%= nice_dates(@school.current_target.target_date) %>.
-     <strong><%= link_to "Your school's progress report", school_school_targets_url(@school) %></strong> will help you
+     <strong><%= link_to "Your school's progress report", school_school_targets_url(@school, params: targets_utm_parameters) %></strong> will help you
       monitor progress and suggest ways to take action.
     </p>
-    <%= link_to 'View your progress report', school_school_targets_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to 'View your progress report', school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
   <% elsif @school.has_target? %>
     <p>
      Your school set a target to reduce its energy usage by <%= nice_dates(@school.most_recent_target.target_date) %>.
-     Its time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target) %> and set a new target
+     Its time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters) %> and set a new target
      for the year ahead.
     </p>
-    <%= link_to 'Set a new target', school_school_targets_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to 'Set a new target', school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
   <% else %>
-    <%= render 'shared/mailer/first_target_prompt' %>
+    <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters %>
   <% end %>
 <% end %>
 
 <p>
-  Your <strong><%= link_to 'school dashboard', school_url(@school) %></strong> always shows your latest alerts and
-  our <strong><%= link_to 'detailed analysis', school_analysis_index_url(@school) %></strong> of your energy usage will provide further insights.
+  Your <strong><%= link_to 'school dashboard', school_url(@school, params: weekly_alert_utm_parameters) %></strong> always shows your latest alerts and
+  our <strong><%= link_to 'detailed analysis', school_analysis_index_url(@school, params: weekly_alert_utm_parameters) %></strong> of your energy usage will provide further insights.
 </p>
 
-<%= link_to 'View your school dashboard', school_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+<%= link_to 'View your school dashboard', school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
 
 <h3>Latest updates</h3>
 <div class="s-3"></div>
@@ -55,14 +55,14 @@
     <div class="col col-lg-4">
       <% if alert_content.find_out_more %>
         <p>
-          <%= link_to 'Find out more', school_find_out_more_url(@school, alert_content.find_out_more), class: 'btn btn-primary mt-2 mb-2'%>
+          <%= link_to 'Find out more', school_find_out_more_url(@school, alert_content.find_out_more, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-2 mb-2'%>
         </p>
       <% end %>
     </div>
     <div class="col col-lg-8">
       <% if alert_content.unsubscription_uuid %>
         <div class="text-right mt-lg-3">
-          <%= link_to "Don't show me alerts like this", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid), class: 'text-muted' %>
+          <%= link_to "Don't show me alerts like this", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid, params: weekly_alert_utm_parameters), class: 'text-muted' %>
         </div>
       <% end %>
     </div>

@@ -41,7 +41,7 @@
   <div class="col-md-3">
     <% if @activity_type.download_links.present? %>
       <h4 style="padding-top: 0px;">Download resources</h4>
-      <div class="activity_type">
+      <div class="activity_type activity-type-download-links" data-event-value="<%= @activity_type.id %>">
         <%= @activity_type.download_links %>
       </div>
     <% end %>

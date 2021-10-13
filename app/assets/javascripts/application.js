@@ -10,15 +10,16 @@
 //= require bootstrap
 
 //= require highcharts
+//= require highcharts-modules/highcharts-more
 //= require highcharts-modules/exporting
 //= require highcharts-modules/offline-exporting
 //= require highcharts-modules/annotations
 //= require highcharts-modules/bullet
+//= require highcharts-modules/solid-gauge
 
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
 
-//= require activities
 //= require activity_types
 //= require usage_charts
 //= require bullet_charts
@@ -50,3 +51,5 @@
 //= require table_sorting
 //= require mailchimp
 //= require map
+//= require live_data
+//= require gtag

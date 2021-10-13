@@ -22,8 +22,13 @@ describe 'adding interventions' do
       click_on 'Record this action'
 
       fill_in_trix with: 'We changed to a more efficient boiler'
+      fill_in 'observation_at', with: ''
+      click_on 'Record action'
+
+      expect(page).to have_content("can't be blank")
+
       fill_in 'observation_at', with: '01/07/2019'
-      click_on 'Save'
+      click_on 'Record action'
 
       intervention = school.observations.intervention.first
       expect(intervention.intervention_type).to eq(boiler_intervention)
@@ -34,7 +39,7 @@ describe 'adding interventions' do
       end
 
       fill_in 'observation_at', with: '20/06/2019', visible: false
-      click_on 'Save'
+      click_on 'Update action'
 
       intervention.reload
       expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
@@ -78,7 +83,7 @@ describe 'adding interventions' do
       fill_in_trix with: 'We changed to a more efficient boiler'
       fill_in 'observation_at', with: '01/07/2019'
 
-      click_on 'Save'
+      click_on 'Record action'
 
       intervention = school.observations.intervention.last
       expect(intervention.intervention_type).to eq(boiler_intervention)
@@ -89,8 +94,16 @@ describe 'adding interventions' do
       fill_in_trix with: 'We changed to a super efficient boiler'
       fill_in 'observation_at', with: '01/06/2019'
 
-      click_on 'Save'
+      click_on 'Update action'
 
+      expect(intervention.reload.at.to_date).to eq(Date.new(2019, 6, 1))
+
+      click_on 'Edit'
+
+      fill_in_trix with: 'We changed to a super efficient boiler. Its good'
+      click_on 'Update action'
+
+      expect(intervention.reload.description.body.to_s).to match 'We changed to a super efficient boiler. Its good'
       expect(intervention.reload.at.to_date).to eq(Date.new(2019, 6, 1))
 
       click_on 'Delete'
@@ -106,7 +119,7 @@ describe 'adding interventions' do
 
       fill_in_trix with: 'We changed to a more efficient boiler'
       fill_in 'observation_at', with: '01/07/2019'
-      click_on 'Save'
+      click_on 'Record action'
 
       visit intervention_type_groups_path
 

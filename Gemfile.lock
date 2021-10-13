@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: bd1406f63c24c69d5ddeffebaa1b4f1744946fae
-  tag: 1.26.7
+  revision: ead44bea30ebb9c8a54ab3928ddaa1d76748e3a3
+  tag: 1.27.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -389,7 +389,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.13.0)
     public_suffix (4.0.6)
-    puma (4.3.8)
+    puma (4.3.9)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -675,7 +675,7 @@ DEPENDENCIES
   pg
   pry
   pry-byebug (~> 3.9.0)
-  puma (= 4.3.8)
+  puma (= 4.3.9)
   rack
   rack-attack
   rack-canonical-host

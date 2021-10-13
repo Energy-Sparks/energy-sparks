@@ -196,7 +196,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
     let(:calendar){ create(:calendar, academic_years: [academic_year]) }
     let(:school){ create(:school, calendar: calendar) }
 
-    subject { ActivityTypeFilter.new(school: school, query: {exclude_if_done_this_year: true}, current_date: Date.parse('2020-04-01')).activity_types.to_a }
+    subject { ActivityTypeFilter.new(school: school, query: {exclude_if_done_this_year: true}, current_date: Date.parse('2020-04-01')) }
 
     before do
       create(:activity, activity_type: activity_type_1, school: school, happened_on: '2019-01-01')
@@ -204,9 +204,32 @@ RSpec.describe ActivityTypeFilter, type: :service do
     end
 
     it 'excludes activity types where activity was completed within the academic year' do
-      expect(subject).to match_array([activity_type_1, activity_type_3])
+      expect(subject.activity_types).to match_array([activity_type_1, activity_type_3])
     end
 
   end
 
+  describe 'with live data categories' do
+
+    let(:school)  { create(:school) }
+
+    subject { ActivityTypeFilter.new(school: school) }
+
+    before :each do
+      activity_category_1.update(live_data: true)
+    end
+
+    context 'when school does not have active CAD' do
+      it 'excludes activity types where activity category is live data' do
+        expect(subject.activity_types).to match_array([activity_type_2])
+      end
+    end
+
+    context 'when school does have active CAD' do
+      let!(:cad) { create(:cad, school: school, active: true) }
+      it 'includes activity types where activity category is live data' do
+        expect(subject.activity_types).to match_array([activity_type_1, activity_type_2, activity_type_3])
+      end
+    end
+  end
 end

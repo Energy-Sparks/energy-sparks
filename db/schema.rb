@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_04_094251) do
+ActiveRecord::Schema.define(version: 2021_10_12_133507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2021_10_04_094251) do
     t.string "description"
     t.boolean "featured", default: false
     t.boolean "pupil", default: false
+    t.boolean "live_data", default: false
   end
 
   create_table "activity_timings", force: :cascade do |t|
@@ -493,9 +494,12 @@ ActiveRecord::Schema.define(version: 2021_10_04_094251) do
     t.bigint "school_id", null: false
     t.string "name", null: false
     t.string "device_identifier", null: false
-    t.boolean "active", default: true
+    t.boolean "active", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "test_mode", default: false
+    t.float "max_power", default: 3.0
+    t.integer "refresh_interval", default: 5
     t.index ["school_id"], name: "index_cads_on_school_id"
   end
 

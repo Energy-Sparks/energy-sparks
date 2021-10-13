@@ -5,8 +5,7 @@
   </div>
 </div>
 
-
-<%= render "gauge" %>
+<%= render "gauge", school: @school, cad: @school.cads.last, fuel_type: :electricity %>
 
 <div class="row">
   <div class="col">
@@ -20,7 +19,7 @@
   <div class="card-deck actions">
     <% if can?(:manage, Activity) %>
       <div class="card mb-2 text-center">
-        <%= link_to 'Choose another activity', activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to 'Choose another activity', ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
     <% if can?(:create, Observation) %>
