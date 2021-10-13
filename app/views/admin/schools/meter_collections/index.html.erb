@@ -17,7 +17,7 @@
   <tbody>
     <% @school_groups.each do |school_group| %>
       <tr class='table-active'>
-        <td colspan="4"><strong><%= school_group.name %></strong></td>
+        <td colspan="4" id="school-group-<%= school_group.id %>"><strong><%= school_group.name %></strong></td>
       </tr>
       <% school_group.schools.by_name.each do |school| %>
         <tr>

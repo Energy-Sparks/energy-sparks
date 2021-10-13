@@ -235,6 +235,7 @@ Rails.application.routes.draw do
         resources :meter_attributes
         resources :school_onboardings, only: [:index]
         resource :partners, only: [:show, :update]
+        resource :meter_report, only: [:show]
       end
     end
     resources :help_pages do
@@ -332,6 +333,7 @@ Rails.application.routes.draw do
       resources :activities, only: :index
       resources :interventions, only: :index
       resources :school_targets, only: :index
+      resources :meter_reports, only: :index
     end
 
     resource :settings, only: [:show, :update]

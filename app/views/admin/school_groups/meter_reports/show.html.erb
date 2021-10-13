@@ -1,10 +1,12 @@
-<% content_for :page_title, 'Meter data report' %>
+<% content_for :page_title, "#{@school_group.name} meter data report" %>
 
 <h1>Data report for active meters</h1>
+
 <p><%= link_to 'Reports index', admin_reports_path, class: 'btn btn-success' %></p>
+
 <h2>Downloads</h2>
 <p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
-<p><%= link_to "Download meter collections", admin_schools_meter_collections_path %>
+<p><%= link_to "Download meter collections", admin_schools_meter_collections_path(anchor: "school-group-#{@school_group.id}") %>
 
 <% unless @meter_scope.empty? %>
   <h2>Meters</h2>
@@ -42,23 +44,20 @@
       </tr>
     </thead>
     <tbody>
-      <% @school_groups.each do |school_group| %>
-        <tr class='table-active'><td colspan="7"><strong><%= school_group.name %></strong></td></tr>
-        <% school_group.schools.by_name.each do |school| %>
-          <% school.meters.where(@meter_scope).each_with_index do |meter, index| %>
-            <tr>
-              <td><%= link_to(school.name, school_path(school)) %></td>
-              <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
-              <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
-              <% if @meter_scope.empty? %>
-                <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
-              <% end %>
-              <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
-              <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
-              <td><%= nice_dates(meter.first_validated_reading) %></td>
-              <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
-            </tr>
-          <% end %>
+      <% @school_group.schools.by_name.each do |school| %>
+        <% school.meters.where(@meter_scope).each_with_index do |meter, index| %>
+          <tr>
+            <td><%= link_to(school.name, school_path(school)) %></td>
+            <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
+            <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
+            <% if @meter_scope.empty? %>
+              <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
+            <% end %>
+            <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
+            <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
+            <td><%= nice_dates(meter.first_validated_reading) %></td>
+            <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
+          </tr>
         <% end %>
       <% end %>
     </tbody>
