@@ -22,6 +22,11 @@ describe 'adding interventions' do
       click_on 'Record this action'
 
       fill_in_trix with: 'We changed to a more efficient boiler'
+      fill_in 'observation_at', with: ''
+      click_on 'Save'
+
+      expect(page).to have_content("can't be blank")
+
       fill_in 'observation_at', with: '01/07/2019'
       click_on 'Save'
 
