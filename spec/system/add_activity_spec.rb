@@ -17,23 +17,20 @@ describe 'adding a new activity' do
   end
 
   it 'allows an activity to be created without title' do
-    visit suggest_activity_school_path(school)
-    click_on 'Record your activity'
+    visit activity_type_path(activity_type)
+    click_on 'Record this activity'
 
     expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
-    select(activity_type_name, from: 'Activity type')
     click_on 'Save activity'
     expect(page.has_content?('Activity was successfully created.')).to be true
     expect(page.has_content?(activity_type_name)).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
   end
 
-  it 'allows an activity to be created with custom title', js: true do
-    visit suggest_activity_school_path(school)
-    click_on 'Record your activity'
-    select(other_activity_type_name, from: 'Activity type')
+  it 'allows an activity to be created with custom title' do
+    visit activity_type_path(other_activity_type)
+    click_on 'Record this activity'
     fill_in :activity_title, with: custom_title
-
     fill_in_trix with: activity_description
 
     click_on 'Save activity'

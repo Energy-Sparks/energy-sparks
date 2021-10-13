@@ -12,9 +12,6 @@ describe 'editing an activity' do
   let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
   let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
 
-  let(:other_activity_type_name) { 'Exciting activity (please specify)' }
-  let!(:other_activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
-
   before(:each) do
     sign_in(admin)
     visit school_path(school)
@@ -27,21 +24,21 @@ describe 'editing an activity' do
     expect(find_field(:activity_happened_on).value).to eq Date.yesterday.strftime("%d/%m/%Y")
 
     fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
-    click_on 'Save activity'
+    click_on 'Update activity'
     expect(page.has_content?('Activity was successfully updated.')).to be true
     expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
   end
 
-  it 'allows an activity to be updated with custom title', js: true do
+  it 'allows an activity to be updated with custom title' do
+    activity_type.update!(custom: true)
+    refresh
     expect(page.has_content?('Update your activity'))
-    select(other_activity_type_name, from: 'Activity type')
     fill_in :activity_title, with: custom_title
     fill_in_trix with: new_activity_description
 
-    click_on 'Save activity'
+    click_on 'Update activity'
     expect(page.has_content?('Activity was successfully updated.')).to be true
     expect(page.has_content?(new_activity_description)).to be true
-    expect(page.has_content?(other_activity_type_name)).to be false
     expect(page.has_content?(custom_title)).to be true
   end
 end

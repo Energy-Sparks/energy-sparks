@@ -20,7 +20,6 @@
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
 
-//= require activities
 //= require activity_types
 //= require usage_charts
 //= require bullet_charts

@@ -2,45 +2,39 @@
 
   <%= render 'shared/errors', subject: activity, subject_name: 'activity' %>
 
-  <div class="form-group">
-    <%= f.label :happened_on, "When did you do the activity?" %>
-    <p class="small"> You can record a recent activity or even record older activities to build up a record of all of the energy saving activities you've carried out as a school.</p>
-    <%= f.input :happened_on, as: :tempus_dominus_date, default_date: Time.zone.today %>
+  <fieldset class="form-group">
+    <label>The activity you completed</label>
+    <p><%= activity.activity_type.name %></p>
+    <% if !activity.persisted? %>
+      <small class="form-text text-muted">Completing this activity will earn you <%= activity.activity_type.score %> points</small>
+    <% end %>
+  </fieldset>
+
+  <% if activity.activity_type.custom %>
+    <div class="form-group mt-4" id="title-field">
+      <%= f.label 'How would you describe this activity?' %>
+      <p class="small">As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity.</p>
+      <%= f.text_field :title, class: 'form-control', value: "Other"  %>
+    </div>
+  <% end %>
+
+  <div class="form-group mt-4">
+    <%= f.label "When did you complete this activity?", for: :happened_on %>
+    <p class="small">You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school.</p>
+    <%= f.input :happened_on, label: false, as: :tempus_dominus_date, default_date: Time.zone.today %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :activity_type_id %>
-    <p class="small">Specify the Energy Sparks activity type to earn the correct number of points for your efforts</p>
-    <%= f.select(
-        :activity_type_id,
-        grouped_options_for_select(
-          ActivityCategory.listed_with_activity_types.map{|category, types| [category.name, types.map{|type| [type.name, type.id, {data: {custom: type.custom}}]}]},
-          f.object.activity_type_id
-        ),
-        {include_blank: true, prompt: 'Please select'},
-        { class: 'form-control'}
-      )
-    %>
-  </div>
+  <%= f.hidden_field :activity_type_id, value: activity.activity_type.id, required: true %>
 
-  <div class="form-group" id="title-field">
-    <%= f.label 'Custom title' %>
-    <p class="small">This is a custom title as this activity does not fit one of the standard activities, choose a clear title which will make others want to read about your activity.</p>
-    <%= f.text_field :title, class: 'form-control'  %>
-  </div>
-
-  <div class="form-group">
-
+  <div class="form-group mt-4">
     <%= f.label :description, "Tell us more about what you did" %>
-    <p class="small">Please tell us a bit more about your activity. Insert a link to your school website if you’ve published information, photos or videos about your activity online.</p>
-    <p class="small">You can add formatting and links using the toolbar below. Hover over each icon to learn what it does.</p>
-    <p class="small">Please try to make your activity description as interesting as possible, so other schools are encouraged to try out your activity in their own school.</p>
-
-    <%= f.rich_text_area :description, required: true, autofocus: true %>
+    <small class="form-text text-muted">Tell us a bit more about your activity. What did you do? What did you learn? What could you do next to build on this task?</small>
+    <small class="form-text text-muted">You can add formatting, links to your school website and attach images using the toolbar below. Hover over each icon to learn what it does.</small>
+    <%= f.rich_text_area :description, required: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Save activity", class: 'btn btn-primary' %>
-    <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+    <%= f.submit activity.persisted? ? "Update activity" : "Save activity", class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', activity_type_path(activity.activity_type), class: 'btn btn-secondary' %>
   </div>
 <% end %>

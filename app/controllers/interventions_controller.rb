@@ -2,7 +2,7 @@ class InterventionsController < ApplicationController
   def new
     @intervention_type = InterventionType.find(params[:intervention_type_id])
     @intervention_type_group = @intervention_type.intervention_type_group
-    @observation = current_user.school.observations.new(intervention_type_id: @intervention_type.id)
+    @observation = current_user.school.observations.new(intervention_type_id: @intervention_type.id, at: Time.zone.now)
     authorize! :create, @observation
   end
 

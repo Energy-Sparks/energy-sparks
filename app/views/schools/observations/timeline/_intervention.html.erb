@@ -8,7 +8,7 @@
 <% if show_actions && can?(:manage, observation) %>
   <td class="text-right">
     <div class="btn-group">
-      <%= link_to 'Edit', edit_school_intervention_path(@school, observation), class: 'btn btn-warning' %>
+      <%= link_to 'Edit', edit_intervention_path(observation), class: 'btn btn-warning' %>
       <%= link_to 'Delete', school_intervention_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
     </div>
   </td>
