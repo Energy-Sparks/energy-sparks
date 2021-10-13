@@ -14,11 +14,6 @@ module Admin
                        end
 
         @school_groups = SchoolGroup.includes(:schools).where.not(schools: { id: nil }).order(:name)
-
-        respond_to do |format|
-          format.csv { send_data readings_to_csv(AmrValidatedReading.download_all_data, CSV_HEADER), filename: "all-amr-validated-readings.csv" }
-          format.html
-        end
       end
 
       def show
