@@ -12,7 +12,7 @@
       </thead>
     <% end %>
     <% type.resource_files.order(:title).each do |resource_file| %>
-      <tr>
+      <tr class="resource-download-links" data-event-value="<%= resource_file.id %>">
         <th scope="row">
           <%= link_to resource_file.title, controller: :resource_files, action: :download, serve: :inline, id: resource_file.id %>
         </th>
