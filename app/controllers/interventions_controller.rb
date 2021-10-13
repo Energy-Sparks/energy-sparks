@@ -12,6 +12,7 @@ class InterventionsController < ApplicationController
     if InterventionCreator.new(@observation).process
       redirect_to school_interventions_path(current_user_school)
     else
+      @intervention_type = @observation.intervention_type
       render :new
     end
   end
