@@ -9,7 +9,7 @@
   <td class="text-right">
     <div class="btn-group">
       <%= link_to 'Edit', edit_intervention_path(observation), class: 'btn btn-warning' %>
-      <%= link_to 'Delete', interventions_path(observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <%= link_to 'Delete', school_intervention_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
     </div>
   </td>
 <% end %>
