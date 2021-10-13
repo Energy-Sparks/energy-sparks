@@ -11,7 +11,7 @@ gem 'webpacker'
 gem "image_processing", "~> 1.2"
 
 # Freeze until ElasticBeanstalk rebuild
-gem 'puma', '4.3.8' # Use Puma as the app server
+gem 'puma', '4.3.9' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 
