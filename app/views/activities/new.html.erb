@@ -1,15 +1,13 @@
 <% content_for :page_title, 'Record activity' %>
 
-<div class="row padded-row">
-  <div class="col-md-12">
-    <h1>Record a new energy saving activity</h1>
-    <p>Tell us about an energy saving activity at your school. Every activity you record will score points for your school.</p>
-    <p><%= link_to "Learn more about activities", activity_categories_path %></p>
+<div class="row justify-content-md-center mt-2">
+  <div class="col col-lg-8">
+    <h2>Record a new energy saving activity for your school</h2>
   </div>
 </div>
 
-<div class="row jumbotron">
-  <div class="col-md-12 ">
+<div class="row justify-content-md-center mt-2">
+  <div class="col col-lg-8">
     <%= render 'form', activity: @activity %>
   </div>
 </div>

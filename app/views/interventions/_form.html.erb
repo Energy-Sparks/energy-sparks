@@ -1,12 +1,21 @@
-<fieldset>
-  <%= f.label 'Describe what was done', for: :description %>
-  <%= f.rich_text_area :description, wrapper_html: {class: 'border-left pl-3 ml-2'}%>
+<fieldset class="form-group">
+  <label>What did you do?</label>
+  <p><%= intervention_type.title %></p>
 </fieldset>
-<fieldset>
-  <%= f.label 'When did you do it?', for: :at %>
-  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg", data: { max_date: h(Time.now.httpdate) }} %>
+<fieldset class="form-group mt-4">
+  <%= f.label 'When did you complete this action?', for: :at %>
+  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg" } %>
+  <small class="form-text text-muted">You can record both recent and older actions to build up a complete record of all of the energy saving activities you've carried out as a school.</small>
+</fieldset>
+<fieldset class="form-group mt-4">
+  <%= f.label 'Tell us more about what you did', for: :description %>
+  <small class="form-text text-muted">Adding some background detail can help you track and monitor improvements</small>
+  <small class="form-text text-muted">You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does.</small>
+  <div class="mt-4">
+  <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
+  </div>
 </fieldset>
 <fieldset>
   <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
 </fieldset>
-<%= f.submit 'Save', class: 'btn btn-success' %>
+<%= f.submit observation.persisted? ? 'Update action' : 'Record action', class: 'btn btn-success' %>
