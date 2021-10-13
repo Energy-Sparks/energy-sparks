@@ -494,7 +494,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_133507) do
     t.bigint "school_id", null: false
     t.string "name", null: false
     t.string "device_identifier", null: false
-    t.boolean "active", default: true
+    t.boolean "active", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "test_mode", default: false
