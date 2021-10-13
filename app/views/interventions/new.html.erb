@@ -1,7 +1,9 @@
+<% content_for :page_title, 'Record energy saving action' %>
+
 <div class="row justify-content-md-center mt-2">
   <div class="col col-lg-8">
-    <h3>Record an energy saving action for <%= current_user.school.name %></h3>
-    <%= simple_form_for([@observation], url: interventions_path, html: {class: 'wizard intervention'}) do |f| %>
+    <h2>Record an energy saving action for your school</h2>
+    <%= simple_form_for([@observation], url: interventions_path, html: {class: 'activity-form'}) do |f| %>
       <%= render 'form', f: f, observation: @observation, intervention_type: @intervention_type %>
     <% end %>
   </div>
