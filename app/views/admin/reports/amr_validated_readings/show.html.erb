@@ -1,17 +1,56 @@
 <h1>Report for meter <%= @meter.school.name %> <small class="text-muted"><%= @meter.display_name %></small></h1>
-<p><%= link_to 'All meters', admin_reports_amr_validated_readings_path, class: 'btn btn-success' %> <%= link_to 'All reports', admin_reports_path, class: 'btn btn-success' %></p>
+<p><%= link_to 'School group meter report', admin_school_group_meter_report_path(@meter.school.school_group), class: 'btn btn-success' %></p>
 
-<h2>Validated meter readings</h2>
-<p>Dates start at date of first recorded reading, <%= @first_reading %>, up until the present day.</p><p>There is usually a delay of a few days before receiving meter readings, hence the last few days will usually have no readings.</p>
+<p>
+  This report provides a calendar view of the validated meter readings for this meter. It includes all data, starting from the
+  first recorded reading (<%= nice_dates(@first_validated_reading_date) %>), up until the present day.
+</p>
+
+<p>
+  There is usually a delay of a few days before receiving meter readings, hence the last few days will usually have no readings.
+</p>
+
+<h2>Reading summary</h2>
+
+<% if @gappy_validated_readings.any? %>
+  <div class="row">
+    <div class="col">
+      <p>There are several large gaps in the readings for this meter. In the last two years this includes:</p>
+      <ul>
+        <% @gappy_validated_readings.each do |gap| %>
+          <li><%= gap.size %> days between <%= short_dates(gap.first.reading_date) %> and <%= short_dates(gap.last.reading_date) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div id="data-calendar" class="calendar" data-url="/admin/reports/amr_validated_readings/summary/<%= @meter.id %>.json"></div>
+
+<div class="calendar-legend row">
+  <div class="legend-scale vertical col-md-4">
+    <ul class='legend-labels'>
+      <li><span style='background:#5cb85c;'></span><div class="description" style="font-size: 17px;"><small>Original uncorrected good data (ORIG)</small></div></li>
+      <li><span style='background:#3f7d69;'></span><div class="description" style="font-size: 17px;"><small>Corrected/modified data (not ORIG)</small></div></li>
+      <li><span style='background:#5297c6;'></span><div class="description" style="font-size: 17px;"><small>Zero usage, uncorrected original data (ORIG)</small></div></li>
+      <li><span style='background:#fcac21;'></span><div class="description" style="font-size: 17px;"><small>Zero usage, corrected/modified data (not ORIG)</small></div></li>
+      <li><span style='background:#ff4500;'></span><div class="description" style="font-size: 17px;"><small>Missing</small></div></li>
+    </ul>
+  </div>
+</div>
+
+<h2>Corrected readings</h2>
 
 <div id="calendar" class="calendar"></div>
 
-<div class='calendar-legend row'>
-  <div class='legend-scale vertical'>
-    <ul class='legend-labels'>
-      <% @colour_hash.each do |type, colour| %>
-        <li><span style='background:<%= colour %>;'></span><%= "#{@amr_types[type][:name]} (#{type})" %></li>
-      <% end %>
-    </ul>
-  </div>
+<div class="calendar-legend row">
+  <% @colour_hash.entries.in_groups_of(10, false).each do |group| %>
+    <div class="legend-scale vertical col-md-4">
+      <ul class='legend-labels'>
+        <% group.each do |type, colour| %>
+          <li><span style='background:<%= colour %>;'></span><div class="description" style="font-size: 17px;"><small><%= "#{@amr_types[type][:name]}" + (type == 'MISSING' ? "" : "(#{type})") %></small></div></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 </div>

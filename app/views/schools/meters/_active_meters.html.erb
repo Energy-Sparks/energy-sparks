@@ -7,6 +7,8 @@
     <td><%= meter.amr_validated_readings.count %></td>
     <td><%= nice_dates meter.first_validated_reading %></td>
     <td><%= nice_dates meter.last_validated_reading %></td>
+    <td><%= meter.zero_reading_days.count %></td>
+    <td><%= meter.gappy_validated_readings.count %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
         <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm' %>

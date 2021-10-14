@@ -124,6 +124,14 @@ class Meter < ApplicationRecord
     gaps.select { |gap| gap.count >= gap_size }
   end
 
+  def zero_reading_days
+    amr_validated_readings.where(one_day_kwh: 0)
+  end
+
+  def zero_reading_days_warning?
+    return true if fuel_type == :electricity && zero_reading_days.count > 0
+  end
+
   def display_name
     name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end
