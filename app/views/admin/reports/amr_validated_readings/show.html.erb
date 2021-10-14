@@ -12,6 +12,19 @@
 
 <h2>Reading summary</h2>
 
+<% if @gappy_validated_readings.any? %>
+  <div class="row">
+    <div class="col">
+      <p>There are several large gaps in the readings for this meter. In the last two years this includes:</p>
+      <ul>
+        <% @gappy_validated_readings.each do |gap| %>
+          <li><%= gap.size %> days between <%= short_dates(gap.first.reading_date) %> and <%= short_dates(gap.last.reading_date) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
 <div id="data-calendar" class="calendar" data-url="/admin/reports/amr_validated_readings/summary/<%= @meter.id %>.json"></div>
 
 <div class="calendar-legend row">
@@ -26,7 +39,7 @@
   </div>
 </div>
 
-<h2>Annotated readings</h2>
+<h2>Corrected readings</h2>
 
 <div id="calendar" class="calendar"></div>
 
