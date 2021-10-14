@@ -1,0 +1,32 @@
+<% content_for :page_title, 'Meter data reports' %>
+
+<h1>School group meter data reports </h1>
+
+<% if @school_groups.any? %>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @school_groups.each do |school_group| %>
+        <tr>
+          <td><%= school_group.name %></td>
+          <td>
+            <div class='btn-group'>
+              <%= link_to 'Meter Report', admin_school_group_meter_report_path(school_group), class: 'btn' %>
+              <%= link_to 'Download meter collections', admin_schools_meter_collections_path(anchor: "school-group-#{school_group.id}"), class: 'btn' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h2>There are no School groups</h2>
+<% end %>
+
+<%= link_to 'All Reports', admin_reports_path, class: 'btn btn-primary' %>

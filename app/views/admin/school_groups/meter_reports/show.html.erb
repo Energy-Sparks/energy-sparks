@@ -1,0 +1,70 @@
+<% content_for :page_title, "#{@school_group.name} meter data report" %>
+
+<h1><%= @school_group.name %> meter report</h1>
+
+<p><%= link_to 'School group meter reports', admin_reports_meter_reports_path, class: 'btn btn-success' %></p>
+
+<h2>Downloads</h2>
+<p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
+<p><%= link_to "Download meter collections", admin_schools_meter_collections_path(anchor: "school-group-#{@school_group.id}") %>
+
+<% unless @meter_scope.empty? %>
+  <h2>Meters</h2>
+  <p>This shows all active meters by default, if you would like deprecated meters to be included: <%= link_to 'Show all meters', admin_reports_amr_validated_readings_path(all_meters: true), class: 'btn' %></p>
+<% end %>
+
+<h3>Loader Legend</h3>
+<div class="row p-2">
+  <div class="col-2 table-danger"></div>
+  <div class="col-10">No reading for 30 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-warning"></div>
+  <div class="col-10">No reading for 5 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-success"></div>
+  <div class="col-10">Recent reading</div>
+</div>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>School</th>
+        <th>Supply</th>
+        <th>Readings calendar</th>
+        <% if @meter_scope.empty? %>
+          <th>Active</th>
+        <% end %>
+        <th>First validated reading</th>
+        <th>Last validated reading</th>
+        <th>Large gaps (last 2 years)</th>
+        <th>Modified readings (last 2 years)</th>
+        <th>Zero reading days</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @school_group.schools.by_name.each do |school| %>
+        <% school.meters.where(@meter_scope).order(:mpan_mprn).each_with_index do |meter, index| %>
+          <tr>
+            <td><%= link_to(school.name, school_path(school)) %></td>
+            <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
+
+            <td><%= link_to(meter.display_name, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
+            <% if @meter_scope.empty? %>
+              <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
+            <% end %>
+            <td><%= nice_dates(meter.first_validated_reading) %></td>
+            <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
+            <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
+            <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
+            <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
+              <%= meter.zero_reading_days.count %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
