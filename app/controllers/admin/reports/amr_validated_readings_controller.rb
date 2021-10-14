@@ -23,7 +23,9 @@ module Admin
             # Turn array of hashes in to a proper hash
             @reading_summary = @reading_summary.inject(:merge!)
           end
-          format.html
+          format.html do
+            @gappy_validated_readings = @meter.gappy_validated_readings
+          end
         end
       end
 
