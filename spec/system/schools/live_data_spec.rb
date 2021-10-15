@@ -76,23 +76,23 @@ RSpec.describe 'live data', type: :system do
     end
 
     it 'returns html with error' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(0.123)
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
 
       visit school_cad_live_data_path(school, school.cads.last)
 
       expect(page).to have_content('Live')
-      expect(page).to have_content('0.123')
+      expect(page).to have_content('123')
     end
 
     it 'returns json data payload' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(0.123)
+      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
 
       visit school_cad_live_data_path(school, school.cads.last, format: :json)
       data = JSON.parse(page.html)
 
       expect(data['type']).to eq('electricity')
-      expect(data['units']).to eq('kW')
-      expect(data['value']).to eq(0.123)
+      expect(data['units']).to eq('watts')
+      expect(data['value']).to eq(123)
     end
 
     it 'returns json error' do

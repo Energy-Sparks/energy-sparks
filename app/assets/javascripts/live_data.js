@@ -97,15 +97,15 @@ $(document).ready(function() {
     var i = 0;
     var stops = [];
     for (i = 0; i < 0.6; i += 0.01) {
-      stops.push([i, '#50E3C2']);
+      stops.push([i, '#5cb85c']); // $green
     }
     for (i = 0.6; i < 0.8; i += 0.01) {
-      stops.push([i, '#FF8438']);
+      stops.push([i, '#ffac21']); // $light-orange
     }
     for (i = 0.8; i < 1.0; i += 0.01) {
-      stops.push([i, '#FF3A5B']);
+      stops.push([i, '#ff4500']); // $bg-negative
     }
-    stops.push([1, '#FF3A5B']);
+    stops.push([1, '#FF3A5B']); // $bg-negative
     return stops;
   }
 
@@ -118,23 +118,22 @@ $(document).ready(function() {
     return data;
   }
 
-  function updateLiveChart(chart, newVal, units) {
+  function updateLiveChart(chart, newVal) {
     chart.series[0].setData(getData(newVal));
-    chart.setTitle(null, { text: subtitleWithTimestamp(newVal, units, new Date()) });
+    chart.setTitle(null, { text: subtitleWithTimestamp(newVal, new Date()) });
   }
 
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
     setInterval(function () {
       $.get(url).done(function(data) {
         var newVal = data['value'];
-        var units = data['units'];
-        updateLiveChart(chart, newVal, units);
+        updateLiveChart(chart, newVal);
       });
     }, refreshInterval);
   }
 
-  function subtitleWithTimestamp(value, units, date) {
-    return value + " " + units + "<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
+  function subtitleWithTimestamp(value, date) {
+    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
   }
 
   $(".live-data-chart").each( function() {
