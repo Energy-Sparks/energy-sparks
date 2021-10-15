@@ -118,22 +118,28 @@ $(document).ready(function() {
     return data;
   }
 
-  function updateLiveChart(chart, newVal) {
-    chart.series[0].setData(getData(newVal));
-    chart.setTitle(null, { text: subtitleWithTimestamp(newVal, new Date()) });
+  function updateSuccess(chart, reading) {
+    var timestamp = (new Date()).toLocaleTimeString();
+    chart.series[0].setData(getData(reading));
+    chart.setTitle(null, { text: subtitleWithMessage(reading, 'Last updated: ' + timestamp) });
+  }
+
+  function updateFailure(chart, reading) {
+    chart.setTitle(null, { text: subtitleWithMessage(reading, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrying..') });
   }
 
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
     setInterval(function () {
       $.get(url).done(function(data) {
-        var newVal = data['value'];
-        updateLiveChart(chart, newVal);
+        updateSuccess(chart, data['value']);
+      }).fail(function(data) {
+        updateFailure(chart, chart.series[0].points[0].y);
       });
     }, refreshInterval);
   }
 
-  function subtitleWithTimestamp(value, date) {
-    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
+  function subtitleWithMessage(value, message) {
+    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>" + message + "</div>";
   }
 
   $(".live-data-chart").each( function() {
