@@ -124,7 +124,8 @@ $(document).ready(function() {
     chart.setTitle(null, { text: subtitleWithMessage(reading, 'Last updated: ' + timestamp) });
   }
 
-  function updateFailure(chart, reading) {
+  function updateFailure(chart) {
+    var reading = chart.series[0].points[0].y;
     chart.setTitle(null, { text: subtitleWithMessage(reading, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrying..') });
   }
 
@@ -133,7 +134,7 @@ $(document).ready(function() {
       $.get(url).done(function(data) {
         updateSuccess(chart, data['value']);
       }).fail(function(data) {
-        updateFailure(chart, chart.series[0].points[0].y);
+        updateFailure(chart);
       });
     }, refreshInterval);
   }
