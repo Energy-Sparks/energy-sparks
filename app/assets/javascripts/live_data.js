@@ -2,8 +2,6 @@
 
 $(document).ready(function() {
 
-  var TOP = 94;
-
   function setupLiveDataChart(container, maxValue) {
 
     var chart = Highcharts.chart(container, {
@@ -59,7 +57,7 @@ $(document).ready(function() {
         max: maxValue,
         lineWidth: 2,
         lineColor: 'white',
-        tickInterval: maxValue / 100,
+        tickInterval: maxValue / 10,
         labels: {
           enabled: false
         },
@@ -68,19 +66,7 @@ $(document).ready(function() {
         tickWidth: 2,
         tickColor: 'white',
         zIndex: 6,
-        stops: [
-          [0, '#fff'],
-          [0.101, '#50E3C2'],
-          [0.201, '#50E3C2'],
-          [0.301, '#50E3C2'],
-          [0.401, '#50E3C2'],
-          [0.501, '#50E3C2'],
-          [0.601, '#50E3C2'],
-          [0.701, '#FF8438'],
-          [0.801, '#FF8438'],
-          [0.901, '#FF3A5B'],
-          [1, '#FF3A5B']
-        ]
+        stops: getStops()
       }, {
         linkedTo: 0,
         pane: 1,
@@ -99,7 +85,6 @@ $(document).ready(function() {
         color: Highcharts.getOptions().colors[0],
         radius: '100%',
         innerRadius: '80%',
-        // data: getData(Math.floor(Math.random() * TOP))
         data: 0
       }]
 
@@ -108,41 +93,32 @@ $(document).ready(function() {
     return chart;
   }
 
+  function getStops() {
+    var i = 0;
+    var stops = [];
+    for (i = 0; i < 0.6; i += 0.01) {
+      stops.push([i, '#50E3C2']);
+    }
+    for (i = 0.6; i < 0.8; i += 0.01) {
+      stops.push([i, '#FF8438']);
+    }
+    for (i = 0.8; i < 1.0; i += 0.01) {
+      stops.push([i, '#FF3A5B']);
+    }
+    stops.push([1, '#FF3A5B']);
+    return stops;
+  }
+
   function getData(rawData) {
-
-    var data = [];
-
+    var data = [rawData];
     var start = Math.round(Math.floor(rawData / 10) * 10);
-
-    // var i = 0;
-    // while (i < rawData) {
-    //   i = i + rawData/10;
-    //   data.push(i);
-    // }
-
-    data.push(rawData);
-
-    // var i = rawData;
-
-    // var i = start;
-    // while (i > 0) {
-    //   i = i - rawData/10;
-    //   data.push(i);
-    // }
-
-
     for (var i = start; i > 0; i -= 10) {
       data.push(i);
     }
-
     return data;
   }
 
   function updateLiveChart(chart, newVal, units) {
-    // console.log(newVal);
-    // console.log(getData(newVal));
-    console.log(chart.yAxis[0].max);
-    // chart.series[0].data = getData(newVal);
     chart.series[0].setData(getData(newVal));
     chart.setTitle(null, { text: subtitleWithTimestamp(newVal, units, new Date()) });
   }
@@ -150,12 +126,8 @@ $(document).ready(function() {
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
     setInterval(function () {
       $.get(url).done(function(data) {
-
         var newVal = data['value'];
         var units = data['units'];
-
-        newVal = Math.floor(Math.random() * TOP);
-
         updateLiveChart(chart, newVal, units);
       });
     }, refreshInterval);
@@ -167,20 +139,11 @@ $(document).ready(function() {
 
   $(".live-data-chart").each( function() {
     var container = $(this).attr('id');
-    // var maxValue = $(this).data('max-value');
-    var maxValue = 100;
+    var maxValue = $(this).data('max-value') * 1000;
     var url = $(this).data("url");
     var refreshInterval = $(this).data("refresh-interval") * 1000;
     var chart = setupLiveDataChart(container, maxValue);
     startLiveDataChartUpdates(chart, url, refreshInterval);
-
-    // console.log(chart.series[0]);
-    // console.log(chart.series[0].points[0]);
-    //
-    // updateLiveChart(chart, 23, 'kww');
-    //
-    // console.log(chart.series[0]);
-
   });
 
 });

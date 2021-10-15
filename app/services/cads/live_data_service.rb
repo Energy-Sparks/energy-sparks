@@ -12,7 +12,7 @@ module Cads
       else
         result = power_for_type(data['power'], type)
       end
-      result / 1000.0
+      result
     end
 
     private
