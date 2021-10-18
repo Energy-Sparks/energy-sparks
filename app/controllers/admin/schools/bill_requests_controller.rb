@@ -10,7 +10,7 @@ module Admin
       end
 
       def create
-        users = @school.users.where(id: params[:bill_request]["user_ids"])
+        users = User.where(id: params[:bill_request]["user_ids"])
         if users.any?
           meters = @school.meters.where(id: params[:bill_request]["meter_ids"])
           service = ::Schools::BillRequestService.new(@school)
