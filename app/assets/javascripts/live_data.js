@@ -57,28 +57,16 @@ $(document).ready(function() {
         max: maxValue,
         lineWidth: 2,
         lineColor: 'white',
-        tickInterval: 10,
+        tickInterval: maxValue / 10,
         labels: {
           enabled: false
         },
         minorTickWidth: 0,
         tickLength: 50,
-        tickWidth: 5,
+        tickWidth: 2,
         tickColor: 'white',
         zIndex: 6,
-        stops: [
-          [0, '#fff'],
-          [0.101, '#0f0'],
-          [0.201, '#2d0'],
-          [0.301, '#4b0'],
-          [0.401, '#690'],
-          [0.501, '#870'],
-          [0.601, '#a50'],
-          [0.701, '#c30'],
-          [0.801, '#e10'],
-          [0.901, '#f03'],
-          [1, '#f06']
-        ]
+        stops: getStops()
       }, {
         linkedTo: 0,
         pane: 1,
@@ -97,7 +85,7 @@ $(document).ready(function() {
         color: Highcharts.getOptions().colors[0],
         radius: '100%',
         innerRadius: '80%',
-        data: [0]
+        data: 0
       }]
 
     });
@@ -105,24 +93,52 @@ $(document).ready(function() {
     return chart;
   }
 
+  function getStops() {
+    var i = 0;
+    var stops = [];
+    for (i = 0; i < 0.6; i += 0.01) {
+      stops.push([i, '#5cb85c']); // $green
+    }
+    for (i = 0.6; i < 0.8; i += 0.01) {
+      stops.push([i, '#ffac21']); // $light-orange
+    }
+    for (i = 0.8; i < 1.0; i += 0.01) {
+      stops.push([i, '#FF3A5B']); // $bg-negative
+    }
+    stops.push([1, '#FF3A5B']); // $bg-negative
+    return stops;
+  }
+
+  function getData(rawData) {
+    var data = [rawData];
+    var start = Math.round(Math.floor(rawData / 10) * 10);
+    for (var i = start; i > 0; i -= 10) {
+      data.push(i);
+    }
+    return data;
+  }
+
+  function updateLiveChart(chart, newVal) {
+    chart.series[0].setData(getData(newVal));
+    chart.setTitle(null, { text: subtitleWithTimestamp(newVal, new Date()) });
+  }
+
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
     setInterval(function () {
       $.get(url).done(function(data) {
         var newVal = data['value'];
-        var units = data['units'];
-        chart.series[0].points[0].update(newVal);
-        chart.setTitle(null, { text: subtitleWithTimestamp(newVal, units, new Date()) });
+        updateLiveChart(chart, newVal);
       });
     }, refreshInterval);
   }
 
-  function subtitleWithTimestamp(value, units, date) {
-    return value + " " + units + "<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
+  function subtitleWithTimestamp(value, date) {
+    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
   }
 
   $(".live-data-chart").each( function() {
     var container = $(this).attr('id');
-    var maxValue = $(this).data('max-value');
+    var maxValue = $(this).data('max-value') * 1000;
     var url = $(this).data("url");
     var refreshInterval = $(this).data("refresh-interval") * 1000;
     var chart = setupLiveDataChart(container, maxValue);

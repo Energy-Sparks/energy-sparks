@@ -22,7 +22,7 @@ module Cads
       response = { 'powerTimestamp' => 123, 'power' => [{'type' => 'ELECTRICITY', 'watts' => 456}] }
       expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).with(cad.device_identifier).and_return(response)
       result = Cads::LiveDataService.new(cad).read
-      expect(result).to eq(0.456)
+      expect(result).to eq(456.0)
     end
 
     it "handles missing power reading for other type" do
