@@ -87,6 +87,59 @@ describe 'consent documents', type: :system do
         expect(page).to_not have_link "Delete"
       end
 
+      context 'an energysparks admin is emailed' do
+
+        let(:deliveries)  { ActionMailer::Base.deliveries.count }
+        let(:email)       { ActionMailer::Base.deliveries.last }
+        let(:email_body)  { email.html_part.body.to_s }
+        let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
+
+        before(:each) do
+          allow_any_instance_of(School).to receive(:consent_up_to_date?).and_return(true)
+        end
+
+        context 'when bill uploaded' do
+          before(:each) do
+            visit school_consent_documents_path(school)
+            click_on 'Upload a bill'
+            attach_file("File", Rails.root + "spec/fixtures/documents/fake-bill.pdf")
+            click_on 'Upload'
+            expect(school.consent_documents.count).to eql(1)
+          end
+
+          it 'sends an email' do
+            expect(deliveries).to eq 1
+            expect(email.to).to contain_exactly("services@energysparks.uk")
+            expect(email.subject).to eql "[energy-sparks-test] #{school.name} has uploaded a bill"
+            expect(matcher).to have_link("View bill")
+            expect(matcher).to have_link("Perform review")
+          end
+        end
+
+        context 'when bill edited' do
+          before(:each) do
+            bill = create(:consent_document, school: school, description: "Proof!", title: "Our Energy Bill")
+            visit school_consent_document_path(school, bill)
+            click_on 'Edit'
+
+            fill_in 'Title', with: "Changed title"
+            fill_in_trix with: "New description"
+
+            click_on 'Update'
+          end
+
+          it 'sends an email' do
+            expect(deliveries).to eq 1
+            expect(email.to).to contain_exactly("services@energysparks.uk")
+            expect(email.subject).to eql "[energy-sparks-test] #{school.name} has updated a bill"
+            expect(matcher).to have_link("View bill")
+            expect(matcher).to have_link("Perform review")
+          end
+
+        end
+
+      end
+
     end
 
     context 'when viewing consent documents' do
