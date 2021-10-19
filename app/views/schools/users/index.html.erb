@@ -24,6 +24,9 @@
               <div class="btn-group">
                 <%= link_to('Edit', edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
                 <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+                <% if current_user.admin? && !user.confirmed? %>
+                  <%= button_to 'Resend confirmation', admin_user_confirmation_path(user, school: true), class: 'btn btn-warning btn-sm' %>
+                <% end %>
               </div>
             </td>
         </tr>
@@ -63,6 +66,9 @@
               <div class="btn-group">
                 <%= link_to('Edit', edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
                 <%= link_to('Delete', school_user_path(@school, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+                <% if current_user.admin? && !user.confirmed? %>
+                  <%= button_to 'Resend confirmation', admin_user_confirmation_path(user, school: true), class: 'btn btn-warning btn-sm' %>
+                <% end %>
                 <%= link_to('Make school admin', make_school_admin_school_user_path(@school, user), method: :post, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:edit, user) %>
               </div>
             </td>
