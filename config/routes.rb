@@ -215,7 +215,11 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#index'
 
   namespace :admin do
-    resources :users
+    resources :users do
+      scope module: :users do
+        resource :confirmation, only: [:create], controller: 'confirmation'
+      end
+    end
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
