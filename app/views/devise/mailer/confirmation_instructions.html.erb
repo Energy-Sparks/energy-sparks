@@ -1,16 +1,31 @@
-<h1>Your Energy Sparks account</h1>
+<h1 class="mb-3">Please confirm your Energy Sparks account</h1>
 
-<p>Welcome <%= @resource.name %></p>
+<p>Welcome <%= @resource.name %>!</p>
+
+<div class="s-3"></div>
 
 <% if @resource.school.present? %>
-  <p>An account has been created for you on Energy Sparks for <%= @resource.school.name %>.</p>
+  <p>A user account has been created for you on Energy Sparks for <%= @resource.school.name %>.</p>
 <% else %>
-  <p>An account has been created for you on Energy Sparks.</p>
+  <p>A user account has been created for you on Energy Sparks.</p>
 <% end %>
 
-<p>You can confirm your account email through the link below:</p>
+<div class="s-3"></div>
+
+<p>Before you can begin using your account you need to confirm your email address using the link below</p>
 
 <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), class: 'btn btn-primary mb-3 mt-3' %>
+
+<div class="s-3"></div>
+
+<p>
+Once confirmed you will be able to login to see how much energy your school is using,
+find out about the greatest energy saving opportunities and explore our
+activities and educational resources designed to teach your pupils about
+energy whilst saving money for their school.
+</p>
+
+<div class="s-3"></div>
 
 <p>
   If you have any questions or concerns then please contact the <%= t('application') %> team by replying to
