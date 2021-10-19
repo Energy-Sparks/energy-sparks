@@ -1,28 +1,38 @@
 <h1>Users</h1>
 
-<%= link_to 'New User', new_admin_user_path, class: 'btn btn-primary' %>
+<div id="top" class="d-flex justify-content-between align-items-center">
+  <form action="" class="form">
+    <label for="admin-user-picker">See</label>
+    <select id="admin-user-picker" class="admin-user-picker">
+      <% @school_users.keys.each do |school_group| %>
+        <option value="#<%= school_group.name.parameterize %>"><%= school_group.name %></option>
+      <% end %>
+      <option value="#school_group_users">School group users</option>
+      <option value="#no_school_users">Users without a school</option>
+    </select>
+  </form>
 
-<% @school_users.keys.each do |school_group| %>
-  <p>See users for <%= link_to school_group.name, "##{school_group.name.parameterize}" %></p>
-<% end %>
-<p>See <%= link_to 'school group users', "#school_group_users" %></p>
-<p>See users  <%= link_to 'without a school', "#no_school_users" %></p>
+  <div>
+    <%= link_to 'New User', new_admin_user_path, class: 'btn btn-primary' %>
+  </div>
+</div>
 
 <% @school_users.each do |school_group, schools| %>
-  <div class="nav-anchor">
+  <div class="row nav-anchor">
     <a name="<%= school_group.name.parameterize %>"> </a>
     <h2><%= school_group.name %></h2>
   </div>
 
-  <table class="table table-condensed  table-sorted">
+  <table class="table table-condensed table-sorted">
     <thead>
       <tr>
         <th>School</th>
         <th>Name</th>
         <th>Email</th>
         <th>Role</th>
-        <th>Last signed in at</th>
-        <th>Access locked</th>
+        <th>Last signed in</th>
+        <th>Confirmed?</th>
+        <th>Locked?</th>
         <th></th>
       </tr>
     </thead>
@@ -32,12 +42,16 @@
           <tr>
             <td><%= link_to school.name, school_path(school) %></td>
             <td><%= user.name %></td>
-            <td><%= user.email %></td>
+            <td><%= user.pupil? ? "N/A" : user.email %></td>
             <td><%= user.role.titleize %></td>
             <td><%= display_last_signed_in_as(user) %></td>
+            <td><%= user.confirmed? ? 'Y' : 'N' %></td>
             <td><%= user.access_locked? ? 'Y' : '' %></td>
             <td>
               <div class="btn-group">
+                <% unless user.confirmed? %>
+                  <%= button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm' %>
+                <% end %>
                 <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
                 <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
               </div>
@@ -47,6 +61,7 @@
       <% end %>
     </tbody>
   </table>
+  <%= link_to "Back to Top", "#top", class: "btn btn-primary" %>
 <% end %>
 
 <div class="nav-anchor">
@@ -54,14 +69,15 @@
   <h2>School group users</h2>
 </div>
 
-<table class="table table-condensed  table-sorted">
+<table class="table table-condensed table-sorted">
   <thead>
     <tr>
       <th>Name</th>
       <th>Email</th>
       <th>Group</th>
-      <th>Last signed in at</th>
-      <th>Access locked</th>
+      <th>Last signed in</th>
+      <th>Confirmed?</th>
+      <th>Locked?</th>
       <th></th>
     </tr>
   </thead>
@@ -69,9 +85,10 @@
     <% @school_group_users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= user.email %></td>
+        <td><%= user.pupil? ? "N/A" : user.email %></td>
         <td><%= user.school_group.name %></td>
         <td><%= nice_date_times user.last_sign_in_at %></td>
+        <td><%= user.confirmed? ? 'Y' : 'N' %></td>
         <td><%= user.access_locked? ? 'Y' : '' %></td>
         <td>
           <div class="btn-group">
@@ -83,20 +100,22 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to "Back to Top", "#top", class: "btn btn-primary" %>
 
 <div class="nav-anchor">
   <a name="no_school_users"> </a>
   <h2>Users without a school</h2>
 </div>
 
-<table class="table table-condensed  table-sorted">
+<table class="table table-condensed table-sorted">
   <thead>
     <tr>
       <th>Name</th>
       <th>Email</th>
       <th>Role</th>
-      <th>Last signed in at</th>
-      <th>Access locked</th>
+      <th>Last signed in</th>
+      <th>Confirmed?</th>
+      <th>Locked?</th>
       <th></th>
     </tr>
   </thead>
@@ -104,9 +123,10 @@
     <% @unattached_users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= user.email %></td>
+        <td><%= user.pupil? ? "N/A" : user.email %></td>
         <td><%= user.role.titleize %></td>
         <td><%= nice_date_times user.last_sign_in_at %></td>
+        <td><%= user.confirmed? ? 'Y' : 'N' %></td>
         <td><%= user.access_locked? ? 'Y' : '' %></td>
         <td>
           <div class="btn-group">
@@ -118,5 +138,4 @@
     <% end %>
   </tbody>
 </table>
-
-
+<%= link_to "Back to Top", "#top", class: "btn btn-primary" %>

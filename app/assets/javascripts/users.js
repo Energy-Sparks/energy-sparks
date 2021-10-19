@@ -30,4 +30,10 @@ $(document).ready(function() {
       setupSchoolGroupAndClusterControls();
     }
   }
+
+  if ($("#admin-user-picker").length) {
+    $("#admin-user-picker").change(function() {
+      window.location.href = $(this).val();
+    });
+  }
 });
