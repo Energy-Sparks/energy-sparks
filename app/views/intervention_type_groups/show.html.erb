@@ -22,7 +22,7 @@
 </div>
 
 <% @intervention_type_group.intervention_types.active.display_order.each do |intervention_type| %>
-  <div class="row mt-2">
+  <div class="row mt-4">
     <div class="col-sm-2">
       <%= link_to intervention_type_path(intervention_type) do %>
         <%= render 'intervention_types/image', intervention_type: intervention_type, css_class: "activity-card-img-thumbnail" %>

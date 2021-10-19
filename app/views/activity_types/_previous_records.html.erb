@@ -1,9 +1,9 @@
 <div class="col-md-9">
   <div class="row alert alert-secondary info-bar text-dark bg-light" role="alert">
-    <div class="col-md-1">
-      <span class="h2 check"><%= far_icon("check-circle text-success") %></span>
+    <div class="col-lg-1 d-none d-lg-block">
+      <%= far_icon("check-circle text-success fa-2x") %>
     </div>
-    <div>
+    <div class="col-lg-11 col-sm-12">
       Activity previously completed
       <strong>
         <%= link_to "#{human_counts(activities)}", school_timeline_path(school) %>

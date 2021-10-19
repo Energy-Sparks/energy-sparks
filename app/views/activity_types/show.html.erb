@@ -20,12 +20,12 @@
   </div>
 </div>
 
-<% unless @activity_type.activities_for_school(current_user_school).empty? %>
-  <%= render 'activity_types/previous_records', activities: @activity_type.activities_for_school(current_user_school).by_date, school: current_user_school %>
-<% end %>
-
 <% if @can_be_completed && can?(:create, Activity) %>
   <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: current_user_school %>
+<% end %>
+
+<% unless @activity_type.activities_for_school(current_user_school).empty? %>
+  <%= render 'activity_types/previous_records', activities: @activity_type.activities_for_school(current_user_school).by_date, school: current_user_school %>
 <% end %>
 
 <div class="row padded-row">
