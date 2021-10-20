@@ -1,144 +1,148 @@
 require 'rails_helper'
 
+describe 'viewing and recording action', type: :system do
 
-describe 'adding interventions' do
+  let(:title)       { "Changed boiler" }
+  let(:summary)     { 'Old boiler bad, new boiler good' }
+  let(:description) { 'How to change your boiler' }
 
-  let!(:school)     { create(:school, :with_calendar, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
-  let!(:user)       { create(:school_admin, school: school)}
+  let!(:intervention_type){ create :intervention_type, title: title, summary: summary, description: description }
 
-  let!(:boiler_intervention){ create :intervention_type, title: 'Changed boiler', summary: 'Old boiler bad, new boiler good', description: 'How to change your boiler' }
+  let!(:school) { create_active_school() }
 
-  context 'using the management pages' do
+  context 'as a public user' do
 
-    before(:each) do
-      sign_in(user)
-    end
-
-    it 'allows a user to add and edit interventions' do
-      visit management_school_path(school)
-
-      click_on 'Record an action'
-      click_on 'Changed boiler'
-      click_on 'Record this action'
-
-      fill_in_trix with: 'We changed to a more efficient boiler'
-      fill_in 'observation_at', with: ''
-      click_on 'Record action'
-
-      expect(page).to have_content("can't be blank")
-
-      fill_in 'observation_at', with: '01/07/2019'
-      click_on 'Record action'
-
-      intervention = school.observations.intervention.first
-      expect(intervention.intervention_type).to eq(boiler_intervention)
-      expect(intervention.at.to_date).to eq(Date.new(2019, 7, 1))
-
-      within '.application' do
-        click_on 'Edit'
-      end
-
-      fill_in 'observation_at', with: '20/06/2019', visible: false
-      click_on 'Update action'
-
-      intervention.reload
-      expect(intervention.at.to_date).to eq(Date.new(2019, 6, 20))
-
-      click_on 'Changed boiler'
-      expect(page).to have_content('We changed to a more efficient boiler')
-    end
-
-    it 'destroys interventions' do
-      intervention = create(:observation, :intervention, school: school)
-      school.calendar.update(based_on: create(:regional_calendar, :with_academic_years))
-
-      visit management_school_path(school)
-      click_on 'View all actions'
-
-      expect{
-        click_on 'Delete'
-      }.to change{Observation.count}.from(1).to(0)
-    end
-
-  end
-
-  context 'using the public pages' do
-
-    before(:each) do
-      sign_in(user)
-    end
-
-    it 'has a top-level navigation item' do
+    it 'there is a top-level navigation item' do
       visit root_path
       expect(page).to have_link("Actions", href: intervention_type_groups_path)
     end
 
-    it 'allows a user to add, edit, delete interventions' do
-      visit intervention_type_groups_path
+    context 'viewing an action' do
+      before(:each) do
+        visit intervention_type_path(intervention_type)
+      end
 
-      click_on 'Changed boiler'
+      it 'should display title' do
+        expect(page).to have_content(title)
+      end
 
-      click_on "Record this action"
+      it 'should display score' do
+        expect(page).to have_content(intervention_type.points)
+      end
 
-      fill_in_trix with: 'We changed to a more efficient boiler'
-      fill_in 'observation_at', with: '01/07/2019'
+      it 'should display description' do
+        expect(page).to have_content(intervention_type.description.to_plain_text)
+        expect(page).to have_content(intervention_type.summary)
+      end
 
-      click_on 'Record action'
+      it 'should display navigation' do
+        expect(page).to have_link("View #{intervention_type.intervention_type_group.intervention_types.count} related actions")
+      end
 
-      intervention = school.observations.intervention.last
-      expect(intervention.intervention_type).to eq(boiler_intervention)
-      expect(intervention.at.to_date).to eq(Date.new(2019, 7, 1))
+      it 'should display resource links' do
+        expect(page).to have_content(intervention_type.download_links.to_plain_text)
+      end
 
-      click_on 'Edit'
-
-      fill_in_trix with: 'We changed to a super efficient boiler'
-      fill_in 'observation_at', with: '01/06/2019'
-
-      click_on 'Update action'
-
-      expect(intervention.reload.at.to_date).to eq(Date.new(2019, 6, 1))
-
-      click_on 'Edit'
-
-      fill_in_trix with: 'We changed to a super efficient boiler. Its good'
-      click_on 'Update action'
-
-      expect(intervention.reload.description.body.to_s).to match 'We changed to a super efficient boiler. Its good'
-      expect(intervention.reload.at.to_date).to eq(Date.new(2019, 6, 1))
-
-      click_on 'Delete'
-
-      expect(page).not_to have_content('Changed boiler')
+      it 'should display prompt to login' do
+        expect(page).to have_content("Are you an Energy Sparks user?")
+        expect(page).to have_link("Sign in to record action")
+      end
     end
 
-    it 'shows previously completed interventions' do
-      visit intervention_type_groups_path
+    context 'when logging in to record' do
+      let!(:staff)  { create(:staff, school: school)}
 
-      click_on 'Changed boiler'
-      click_on "Record this action"
+      before(:each) do
+        visit intervention_type_path(intervention_type)
+      end
 
-      fill_in_trix with: 'We changed to a more efficient boiler'
-      fill_in 'observation_at', with: '01/07/2019'
-      click_on 'Record action'
-
-      visit intervention_type_groups_path
-
-      click_on 'Changed boiler'
-      expect(page).to have_content('Action previously completed on')
+      it 'should redirect back to activity after login' do
+        click_on "Sign in to record action"
+        fill_in 'Email', with: staff.email
+        fill_in 'Password', with: staff.password
+        within '#staff' do
+          click_on 'Sign in'
+        end
+        expect(page).to have_content(intervention_type.title)
+        expect(page).to have_content("Complete this action to score your school #{intervention_type.points} points!")
+      end
     end
   end
 
-  context 'using the public pages' do
-    it 'allows public user to view intervention types' do
-      visit intervention_type_groups_path
-      expect(page).to have_content(boiler_intervention.intervention_type_group.title)
+  context 'as a school admin' do
+    let!(:school_admin)       { create(:school_admin, school: school)}
 
-      click_on 'Changed boiler'
-      expect(page).to have_content('Old boiler bad, new boiler good')
-      expect(page).to have_content('How to change your boiler')
+    before(:each) do
+      sign_in(school_admin)
+      visit intervention_type_path(intervention_type)
+    end
 
-      click_on "View #{boiler_intervention.intervention_type_group.intervention_types.count} related actions"
-      expect(page).to have_content(boiler_intervention.intervention_type_group.title)
+    context 'viewing an action' do
+      it 'should not see prompt to login' do
+        expect(page).to_not have_link("Sign in to record action")
+      end
+
+      it 'should see prompt to record it' do
+        expect(page).to have_content("Complete this action to score your school #{intervention_type.points} points!")
+        expect(page).to have_link("Record this action")
+      end
+    end
+
+    context 'viewing a previously recorded action' do
+      it 'should see previous records'
+      it 'should link to the activity'
+    end
+
+    context 'recording an action' do
+      it 'allows an action to be created' do
+        click_on 'Record this action'
+
+        fill_in_trix with: 'We changed to a more efficient boiler'
+        fill_in 'observation_at', with: ''
+        click_on 'Record action'
+
+        expect(page).to have_content("can't be blank")
+
+        fill_in 'observation_at', with: '01/07/2019'
+        click_on 'Record action'
+
+        observation = school.observations.intervention.first
+        expect(observation.intervention_type).to eq(intervention_type)
+        expect(observation.at.to_date).to eq(Date.new(2019, 7, 1))
+      end
+    end
+
+    context 'editing an action' do
+      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school)}
+
+      it 'can be updated' do
+        visit management_school_path(school)
+        click_on 'View all actions'
+
+        within '.application' do
+          click_on 'Edit'
+        end
+
+        fill_in_trix with: 'We changed to a more efficient boiler'
+        fill_in 'observation_at', with: '20/06/2019', visible: false
+        click_on 'Update action'
+
+        observation.reload
+        expect(observation.at.to_date).to eq(Date.new(2019, 6, 20))
+
+        click_on 'Changed boiler'
+        expect(page).to have_content('We changed to a more efficient boiler')
+
+      end
+
+      it 'can be deleted' do
+        visit management_school_path(school)
+        click_on 'View all actions'
+
+        expect{
+          click_on 'Delete'
+        }.to change{Observation.count}.from(1).to(0)
+      end
     end
   end
 end

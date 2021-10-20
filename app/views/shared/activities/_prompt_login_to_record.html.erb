@@ -4,10 +4,10 @@
       <i class="fas fa-tasks fa-3x"></i>
     </div>
     <div class="col-lg-7 col-sm-12">
-      Are you an Energy Sparks user?<br>Sign in now to record this activity and score your school <strong><%= activity_type.score %></strong> points!
+      Are you an Energy Sparks user?<br>Sign in now to record this <%= label %> and score your school <strong><%= score %></strong> points!
     </div>
     <div class="col-lg-4 col-sm-12">
-      <%= link_to 'Sign in to record activity', sign_in_and_redirect_path(url: activity_type_path(activity_type)), class: 'btn btn-primary' %>
+      <%= link_to "Sign in to record #{label}", sign_in_and_redirect_path(url: return_path), class: 'btn btn-primary' %>
     </div>
   </div>
 </div>

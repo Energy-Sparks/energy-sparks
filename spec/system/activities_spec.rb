@@ -21,33 +21,33 @@ describe 'viewing and recording activities', type: :system do
     end
 
     context 'viewing an activity type' do
-      it 'should see title' do
+      it 'should display title' do
         expect(page).to have_content(activity_type_name)
       end
 
-      it 'should see tags' do
+      it 'should display tags' do
         expect(page).to have_content(ks1.name)
         expect(page).to have_content(subject.name)
       end
 
-      it 'should see score' do
+      it 'should display score' do
         expect(page).to have_content(activity_type.score)
       end
 
-      it 'should see description' do
+      it 'should display description' do
         expect(page).to have_content(activity_type.description.to_plain_text)
         expect(page).to_not have_content(activity_type.school_specific_description.to_plain_text)
       end
 
-      it 'should see navigation' do
+      it 'should display navigation' do
         expect(page).to have_link("View #{activity_category.activity_types.count} related activities")
       end
 
-      it 'should see resource links' do
+      it 'should display resource links' do
         expect(page).to have_content(activity_type.download_links.to_plain_text)
       end
 
-      it 'should see prompt to login' do
+      it 'should display prompt to login' do
         expect(page).to have_content("Are you an Energy Sparks user?")
         expect(page).to have_link("Sign in to record activity")
       end
@@ -94,7 +94,7 @@ describe 'viewing and recording activities', type: :system do
       end
     end
 
-    context 'viewing a previously record activity' do
+    context 'viewing a previously recorded activity' do
       let!(:activity)     { create(:activity, school: school, activity_type: activity_type) }
 
       before(:each) do

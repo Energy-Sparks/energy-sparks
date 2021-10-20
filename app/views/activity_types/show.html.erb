@@ -21,7 +21,7 @@
 </div>
 
 <% if current_user.nil? %>
-  <%= render 'activity_types/prompt_login', activity_type: @activity_type %>
+  <%= render 'shared/activities/prompt_login_to_record', label: 'activity', score: @activity_type.score, return_path: activity_type_path(@activity_type) %>
 <% end %>
 
 <% if @can_be_completed && can?(:create, Activity) %>
