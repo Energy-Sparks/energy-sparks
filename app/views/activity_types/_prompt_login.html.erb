@@ -1,0 +1,13 @@
+<div class="col-md-9">
+  <div class="row alert info-bar text-dark bg-light" role="alert">
+    <div class="col-lg-1 d-none d-lg-block">
+      <i class="fas fa-tasks fa-3x"></i>
+    </div>
+    <div class="col-lg-7 col-sm-12">
+      Are you an Energy Sparks user?<br>Sign in now to record this activity and score your school <strong><%= activity_type.score %></strong> points!
+    </div>
+    <div class="col-lg-4 col-sm-12">
+      <%= link_to 'Sign in to record activity', sign_in_and_redirect_path(url: activity_type_path(activity_type)), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>
