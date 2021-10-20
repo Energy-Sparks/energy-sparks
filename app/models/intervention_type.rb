@@ -42,4 +42,8 @@ class InterventionType < ApplicationRecord
   def display_with_points
     points ? "#{title} (#{points} points)" : title
   end
+
+  def actions_for_school(school)
+    observations.for_school(school)
+  end
 end

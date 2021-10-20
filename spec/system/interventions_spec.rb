@@ -89,8 +89,19 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'viewing a previously recorded action' do
-      it 'should see previous records'
-      it 'should link to the activity'
+      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school)}
+
+      before(:each) do
+        refresh
+      end
+      it 'should see previous records' do
+        expect(page).to have_content("Action previously completed")
+        expect(page).to have_content("once")
+      end
+
+      it 'should link to the activity' do
+        expect(page).to have_link(href: school_intervention_path(school, observation))
+      end
     end
 
     context 'recording an action' do

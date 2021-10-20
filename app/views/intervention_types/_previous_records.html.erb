@@ -1,17 +1,19 @@
-<% interventions.each do |intervention| %>
-  <div class="row">
-    <div class="col-md-9">
-      <div class="row alert info-bar text-dark bg-light" role="alert">
-        <div class="col-md-1">
-          <i class="fas fa-tasks fa-2x"></i>
-        </div>
-        <div class="col-md-8">
-          Action previously completed on: <%= nice_dates intervention.at %>
-        </div>
-        <div class="col-md-3">
-          <%= link_to "View completed action", school_intervention_path(current_user_school, intervention), class: 'btn btn-primary' %>
-        </div>
+<div class="row">
+  <div class="col-md-9">
+    <div class="row alert alert-secondary info-bar text-dark bg-light" role="alert">
+      <div class="col-lg-1 d-none d-lg-block">
+        <%= far_icon("check-circle text-success fa-2x") %>
+      </div>
+      <div class="col-lg-11 col-sm-12">
+        Action previously completed
+        <strong>
+          <%= link_to "#{human_counts(interventions)}", school_timeline_path(school) %>
+        </strong>
+        <%= interventions.count > 1 ? ' most recently on ' : ' on ' %>
+        <strong>
+          <%= link_to "#{nice_dates(interventions.last.at)}", school_intervention_path(school, interventions.last) %>
+        </strong>
       </div>
     </div>
   </div>
-<% end %>
+</div>

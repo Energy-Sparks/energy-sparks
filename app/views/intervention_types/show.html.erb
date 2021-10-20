@@ -19,12 +19,12 @@
   <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.points, return_path: intervention_type_path(@intervention_type) %>
 <% end %>
 
-<% if current_user_school %>
-  <%= render 'intervention_types/previous_records', interventions: @interventions, school: current_user_school %>
-<% end %>
-
 <% if current_user_school && can?(:create, Observation) %>
   <%= render 'intervention_types/prompt_score', intervention_type: @intervention_type, school: current_user_school %>
+<% end %>
+
+<% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>
+  <%= render 'intervention_types/previous_records', interventions: @interventions, school: current_user_school %>
 <% end %>
 
 <div class="row padded-row">
