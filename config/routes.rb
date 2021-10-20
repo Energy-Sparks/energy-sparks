@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   get 'all_benchmarks', to: 'benchmarks#show_all'
   get 'version', to: 'version#show'
 
+  get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
+
   resources :help, controller: 'help_pages', only: [:show]
 
   resources :mailchimp_signups, only: [:new, :create, :index]

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "activity type", type: :system do
+RSpec.describe "activity category", type: :system do
   let!(:ks1) { KeyStage.create(name: 'KS1') }
   let!(:ks2) { KeyStage.create(name: 'KS2') }
   let!(:ks3) { KeyStage.create(name: 'KS3') }
