@@ -5,7 +5,7 @@
 <div class="row padded-row">
   <div class="col-md-9">
     <h1><%= @activity_type.name %></h1>
-    <%= render 'activity_types/activity_type_badges', activity_type: @activity_type %>
+    <%= render 'activity_type_badges', activity_type: @activity_type %>
 
     <h3>Activity summary</h3>
     <% if @activity_type.summary %>
@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="col-md-3 pt-2">
-    <%= render 'activity_types/activity_type_resources', activity_type: @activity_type %>
+    <%= render 'admin/activity_types/activity_type_resources', activity_type: @activity_type %>
   </div>
 </div>
 

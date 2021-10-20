@@ -47,6 +47,7 @@ class Observation < ApplicationRecord
 
   scope :visible, -> { where(visible: true) }
   scope :by_date, -> { order(at: :desc) }
+  scope :for_school, ->(school) { where(school: school) }
 
   has_rich_text :description
 

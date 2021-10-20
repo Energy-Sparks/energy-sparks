@@ -1,0 +1,13 @@
+<div class="col-md-9">
+  <div class="row alert info-bar text-dark bg-light" role="alert">
+    <div class="col-lg-1 d-none d-lg-block align-self-center">
+      <i class="fas fa-play-circle fa-3x"></i>
+    </div>
+    <div class="col-lg-7 col-sm-12">
+      Are you an Energy Sparks user?<br>Sign in and enrol your school in this programme, or record your recent progress.
+    </div>
+    <div class="col-lg-4 col-sm-12">
+      <%= link_to "Sign in now", sign_in_and_redirect_path(url: programme_type_path(programme_type)), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>
