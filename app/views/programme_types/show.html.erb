@@ -29,6 +29,10 @@
   </div>
 </div>
 
+<% if current_user.nil? %>
+  <%= render 'prompt_login', programme_type: @programme_type %>
+<% end %>
+
 <% if current_user_school && !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>
   <%= render 'prompt', programme_type: @programme_type, school: current_user_school %>
 <% end %>
