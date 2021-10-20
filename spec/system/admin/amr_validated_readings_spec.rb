@@ -26,7 +26,7 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
     end
 
     it 'links to a rich calendar view', js: true do
-      click_on(meter.mpan_mprn.to_s)
+      click_on(meter.name.to_s)
       expect(page).to have_content 'Report for meter'
       expect(page).to have_content 'January'
     end
