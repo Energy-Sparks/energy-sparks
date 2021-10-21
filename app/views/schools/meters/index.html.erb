@@ -124,9 +124,16 @@
           <td><%= meter.gappy_validated_readings.count %></td>
           <td>
             <div class="btn-group btn-group-sm" role="group">
-            <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm' %>
+              <% if can?(:edit, meter) %>
+                <%= link_to 'Details', school_meter_path(@school, meter), class: 'btn btn-sm' %>
+              <% end %>
               <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
                 <%= link_to 'Report', admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
+              <% end %>
+              <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
+                <%= link_to school_meter_path(@school, meter, format: "csv"), class: 'btn btn-info btn-sm' do %>
+                  <i class="fas fa-file-download"></i>
+                <% end %>
               <% end %>
             </div>
           </td>

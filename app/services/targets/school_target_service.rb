@@ -43,10 +43,15 @@ module Targets
     end
 
     def enough_data?
-      return true if enough_data_for_electricity?
-      return true if enough_data_for_gas?
-      return true if enough_data_for_storage_heater?
-      return false
+      begin
+        return true if enough_data_for_electricity?
+        return true if enough_data_for_gas?
+        return true if enough_data_for_storage_heater?
+        return false
+      rescue => e
+        Rollbar.error(e, school_id: @school.id, school: @school.name)
+        return false
+      end
     end
 
     def enough_data_for_electricity?

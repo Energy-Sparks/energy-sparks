@@ -6,6 +6,7 @@ FactoryBot.define do
     active                                  { true }
     sequence(:description)                  {|n| "description #{n}"}
     sequence(:school_specific_description)  {|n| "tschool specific description #{n}"}
+    sequence(:download_links)               {|n| "Download link #{n}"}
 
     trait :as_initial_suggestions do
       after(:create) do |activity_type, evaluator|

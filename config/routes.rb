@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   get 'all_benchmarks', to: 'benchmarks#show_all'
   get 'version', to: 'version#show'
 
+  get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
+
   resources :help, controller: 'help_pages', only: [:show]
 
   resources :mailchimp_signups, only: [:new, :create, :index]
@@ -215,7 +217,11 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#index'
 
   namespace :admin do
-    resources :users
+    resources :users do
+      scope module: :users do
+        resource :confirmation, only: [:create], controller: 'confirmation'
+      end
+    end
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
@@ -319,6 +325,7 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+    resources :activations, only: :index
     namespace :reports do
       resources :alert_subscribers, only: :index
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings

@@ -3,8 +3,7 @@ require 'rails_helper'
 describe 'Users', type: :system do
   let!(:admin)  { create(:admin) }
 
-  describe 'managing' do
-
+  describe 'managing users' do
     before do
       sign_in(admin)
     end
@@ -21,4 +20,3 @@ describe 'Users', type: :system do
     end
   end
 end
-

@@ -53,6 +53,26 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
       it 'doesnt prompt to start' do
         expect(page).to_not have_content("You can enrol your school in this programme")
       end
+
+      it 'prompts to login' do
+        expect(page).to have_content("Are you an Energy Sparks user?")
+        expect(page).to have_link("Sign in now")
+      end
+
+      context 'when logging in to enrol' do
+        let!(:staff)  { create(:staff, school: school)}
+
+        it 'should redirect back to programme after login' do
+          click_on "Sign in now"
+          fill_in 'Email', with: staff.email
+          fill_in 'Password', with: staff.password
+          within '#staff' do
+            click_on 'Sign in'
+          end
+          expect(page).to have_content(programme_type_1.title)
+          expect(page).to have_content("You can enrol your school in this programme")
+        end
+      end
     end
   end
 
@@ -69,6 +89,11 @@ RSpec.describe "programme types", type: :system, include_application_helper: tru
 
       it 'prompts to start' do
         expect(page).to have_content("You can enrol your school in this programme")
+      end
+
+      it 'does not prompt to login' do
+        expect(page).to_not have_content("Are you an Energy Sparks user?")
+        expect(page).to_not have_link("Sign in now")
       end
 
       it 'successfully enrols the school' do

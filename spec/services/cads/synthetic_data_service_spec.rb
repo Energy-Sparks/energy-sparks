@@ -11,10 +11,10 @@ module Cads
       @service = Cads::SyntheticDataService.new(cad)
     end
 
-    it "gives varying readings between 0 and max power" do
+    it "gives varying readings between 0 and max power in watts" do
       readings = []
       10.times { readings << @service.read }
-      readings.each { |reading| expect(reading).to be_between(0, max_power) }
+      readings.each { |reading| expect(reading).to be_between(0, 1000 * max_power) }
       expect(readings.uniq.count).to be > 1
     end
   end
