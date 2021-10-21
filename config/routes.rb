@@ -325,6 +325,7 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+    resources :activations, only: :index
     namespace :reports do
       resources :alert_subscribers, only: :index
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
