@@ -37,7 +37,7 @@ RSpec.describe "onboarding", :schools, type: :system do
     end
 
     it 'allows a new onboarding to be setup and sends an email to the school' do
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       click_on 'New Automatic School Setup'
 
       fill_in 'School name', with: school_name
@@ -69,7 +69,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     it 'sends reminder emails when requested' do
       onboarding = create :school_onboarding, :with_events
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       click_on 'Send reminder'
 
       email = ActionMailer::Base.deliveries.last
@@ -79,7 +79,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     it 'allows editing of an onboarding setup' do
       onboarding = create :school_onboarding, :with_events
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       click_on 'Edit'
 
       fill_in 'School name', with: 'A new name'
@@ -96,7 +96,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       school_onboarding = create :school_onboarding, :with_school
       expect(school_onboarding).to be_incomplete
 
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       click_on 'Mark as complete'
 
       school_onboarding.reload
@@ -105,7 +105,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     it 'I can download a CSV of onboarding schools' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       click_link 'Download as CSV', href: admin_school_onboardings_path(format: :csv)
 
       header = page.response_headers['Content-Disposition']
@@ -123,7 +123,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       # aother school in the same group
       create(:school, name: 'Manual school', school_group: onboarding.school_group)
 
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       click_link 'Download as CSV', href: admin_school_group_school_onboardings_path(onboarding.school_group, format: :csv)
 
       header = page.response_headers['Content-Disposition']
@@ -139,7 +139,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     it 'I can amend the email address if the user has not responded' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       expect(onboarding.has_only_sent_email_or_reminder?).to be true
 
       click_on 'Change'
@@ -169,7 +169,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     it 'shows links to groups' do
       onboarding = create :school_onboarding, :with_events
-      click_on 'Automatic School Setup'
+      click_on 'Manage school onboarding'
       expect(page).to have_link onboarding.school_group.name
     end
 
