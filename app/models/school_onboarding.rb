@@ -72,6 +72,10 @@ class SchoolOnboarding < ApplicationRecord
     has_event?(:onboarding_complete)
   end
 
+  def completed_on
+    complete? ? events.where(event: :onboarding_complete).last.created_at : nil
+  end
+
   def incomplete?
     !complete?
   end

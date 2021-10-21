@@ -6,8 +6,9 @@
   <div class="col">
     <h2>School onboarding</h2>
     <ul>
+      <li><%= link_to "Manage school onboarding", admin_school_onboardings_path %></li>
+      <li><%= link_to "Schools awaiting activation", admin_activations_path %></li>
       <li><%= link_to "Manual School Setup", new_school_path %></li>
-      <li><%= link_to "Automatic School Setup", admin_school_onboardings_path %></li>
       <li><%= link_to "Calendars", admin_calendars_path %></li>
       <li><%= link_to "Meter Reviews", admin_meter_reviews_path %></li>
     </ul>
