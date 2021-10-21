@@ -141,6 +141,8 @@
             <div class="btn-group btn-group-sm" role="group">
               <% if can? :delete, meter %>
                 <%= link_to 'Delete', school_meter_path(@school, meter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm' %>
+              <% else %>
+                <button class="btn btn-sm" disabled title="Only admins can delete meters with meter readings">Delete</button>
               <% end %>
               <%= link_to 'Activate', activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:activate, meter) %>
             </div>
