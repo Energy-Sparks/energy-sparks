@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
 
-  function setupLiveDataChart(container, maxValue) {
+  function setupLiveDataChart(container, maxVal) {
 
     var chart = Highcharts.chart(container, {
       chart: {
@@ -54,10 +54,10 @@ $(document).ready(function() {
 
       yAxis: [{
         min: 0,
-        max: maxValue,
+        max: maxVal,
         lineWidth: 2,
         lineColor: 'white',
-        tickInterval: maxValue / 10,
+        tickInterval: maxVal / 10,
         labels: {
           enabled: false
         },
@@ -109,17 +109,19 @@ $(document).ready(function() {
     return stops;
   }
 
-  function getData(rawData) {
+  function getData(rawData, maxVal) {
     var data = [rawData];
     var start = Math.round(Math.floor(rawData / 10) * 10);
-    for (var i = start; i > 0; i -= 10) {
+    var step = Math.round(maxVal / 100);
+    for (var i = start; i > 0; i -= step) {
       data.push(i);
     }
     return data;
   }
 
   function updateLiveChart(chart, newVal) {
-    chart.series[0].setData(getData(newVal));
+    var maxVal = chart.yAxis[0].max;
+    chart.series[0].setData(getData(newVal, maxVal));
     chart.setTitle(null, { text: subtitleWithTimestamp(newVal, new Date()) });
   }
 
@@ -138,10 +140,10 @@ $(document).ready(function() {
 
   $(".live-data-chart").each( function() {
     var container = $(this).attr('id');
-    var maxValue = $(this).data('max-value') * 1000;
+    var maxVal = $(this).data('max-value') * 1000;
     var url = $(this).data("url");
     var refreshInterval = $(this).data("refresh-interval") * 1000;
-    var chart = setupLiveDataChart(container, maxValue);
+    var chart = setupLiveDataChart(container, maxVal);
     startLiveDataChartUpdates(chart, url, refreshInterval);
   });
 
