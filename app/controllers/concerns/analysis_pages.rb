@@ -1,6 +1,13 @@
 module AnalysisPages
   extend ActiveSupport::Concern
 
+  def find_analysis_page_of_class(school, analysis_class)
+    alert_type = AlertType.where("lower(class_name) = ?", analysis_class.downcase).first
+    if alert_type && school.latest_analysis_pages.any?
+      school.latest_analysis_pages.includes(:alert).detect { |page| page.alert.alert_type_id == alert_type.id }
+    end
+  end
+
   def setup_analysis_pages(analysis_pages)
     @heating_pages = process_analysis_templates(analysis_pages.heating)
     @electricity_pages = process_analysis_templates(analysis_pages.electricity_use)
