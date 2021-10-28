@@ -58,6 +58,11 @@
             <%= link_to 'Compare usage with schools in your group', benchmarks_path(benchmark: {school_group_ids: [school.school_group.id]}) %>
           </li>
         <% end %>
+        <% if daily_variation_url %>
+          <li>
+            <%= link_to 'Daily variation in use', daily_variation_url %>
+          </li>
+        <% end %>
       </ul>
     </div>
     <div class="card-footer">

@@ -7,11 +7,7 @@ class AnalysisPageFinderController < ApplicationController
     analysis_class = params[:analysis_class]
 
     school = School.find_by!(urn: urn)
-    alert_type = AlertType.where("lower(class_name) = ?", analysis_class.downcase).first!
-
-    if school.latest_analysis_pages.any?
-      analysis_page = school.latest_analysis_pages.includes(:alert).detect { |page| page.alert.alert_type_id == alert_type.id }
-    end
+    analysis_page = find_analysis_page_of_class(school, analysis_class)
 
     if analysis_page
       redirect_to school_analysis_path(school.slug, analysis_page.id)
