@@ -127,7 +127,10 @@ $(document).ready(function() {
   }
 
   function updateFailure(chart) {
-    var reading = chart.series[0].points[0].y;
+    var reading = 0;
+    if (chart.series[0] && chart.series[0].points[0]) {
+      reading = chart.series[0].points[0].y;
+    }
     chart.setTitle(null, { text: subtitleWithMessage(reading, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrying..') });
   }
 
