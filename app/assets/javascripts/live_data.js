@@ -119,23 +119,38 @@ $(document).ready(function() {
     return data;
   }
 
-  function updateLiveChart(chart, newVal) {
+  function updateSuccess(chart, reading) {
+    var timestamp = (new Date()).toLocaleTimeString();
     var maxVal = chart.yAxis[0].max;
-    chart.series[0].setData(getData(newVal, maxVal));
-    chart.setTitle(null, { text: subtitleWithTimestamp(newVal, new Date()) });
+    chart.series[0].setData(getData(reading, maxVal));
+    chart.setTitle(null, { text: subtitleWithMessage(reading, 'Last updated: ' + timestamp) });
+  }
+
+  function updateFailure(chart) {
+    var reading = 0;
+    if (chart.series[0] && chart.series[0].points[0]) {
+      reading = chart.series[0].points[0].y;
+    }
+    chart.setTitle(null, { text: subtitleWithMessage(reading, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrying..') });
+  }
+
+  function updateLiveDataChart(chart, url) {
+    $.get(url).done(function(data) {
+      updateSuccess(chart, data['value']);
+    }).fail(function(data) {
+      updateFailure(chart);
+    });
   }
 
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
+    updateLiveDataChart(chart, url);
     setInterval(function () {
-      $.get(url).done(function(data) {
-        var newVal = data['value'];
-        updateLiveChart(chart, newVal);
-      });
+      updateLiveDataChart(chart, url);
     }, refreshInterval);
   }
 
-  function subtitleWithTimestamp(value, date) {
-    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
+  function subtitleWithMessage(value, message) {
+    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>" + message + "</div>";
   }
 
   $(".live-data-chart").each( function() {
