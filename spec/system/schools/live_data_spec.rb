@@ -28,6 +28,8 @@ RSpec.describe 'live data', type: :system do
 
     before(:each) do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      # the link to daily variation in use needs an analysis page for the AdviceElectricityIntraday alert type
+      allow_any_instance_of(Schools::LiveDataController).to receive(:find_analysis_page_of_class).and_return(true)
       sign_in(school_admin)
       visit school_path(school)
       click_link 'Live energy data'
@@ -51,6 +53,10 @@ RSpec.describe 'live data', type: :system do
       expect(page).to have_link("Choose another activity", href: activity_category_path(activity_category))
       expect(page).to have_link("Record an energy saving action")
       expect(page).to have_link("View pupil dashboard")
+    end
+
+    it 'has link to daily variation' do
+      expect(page).to have_link("Daily variation in use")
     end
 
     it 'has links to suggestions from live data category' do
