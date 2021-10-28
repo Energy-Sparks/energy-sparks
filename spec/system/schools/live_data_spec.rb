@@ -68,7 +68,7 @@ RSpec.describe 'live data', type: :system do
         expect(page).to have_content("Explore your data")
         expect(page).to have_link("Choose another activity", href: activity_category_path(activity_category))
         expect(page).to have_link("Record an energy saving action")
-        expect(page).to have_link("View dashboard")
+        expect(page).to have_link("View pupil dashboard")
       end
 
       it 'has links to suggestions from live data category' do
