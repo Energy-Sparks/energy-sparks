@@ -131,13 +131,18 @@ $(document).ready(function() {
     chart.setTitle(null, { text: subtitleWithMessage(reading, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrying..') });
   }
 
+  function updateLiveDataChart(chart, url) {
+    $.get(url).done(function(data) {
+      updateSuccess(chart, data['value']);
+    }).fail(function(data) {
+      updateFailure(chart);
+    });
+  }
+
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
+    updateLiveDataChart(chart, url);
     setInterval(function () {
-      $.get(url).done(function(data) {
-        updateSuccess(chart, data['value']);
-      }).fail(function(data) {
-        updateFailure(chart);
-      });
+      updateLiveDataChart(chart, url);
     }, refreshInterval);
   }
 
