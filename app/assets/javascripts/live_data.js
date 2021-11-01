@@ -177,7 +177,7 @@ $(document).ready(function() {
     var maxVal = $(this).data('max-value') * 1000;
     var url = $(this).data("url");
     var refreshInterval = $(this).data("refresh-interval") * 1000;
-    var timeoutInterval = $(this).data("timeout-interval") * 1000;
+    var timeoutInterval = $(this).data("timeout-interval") * 1000 * 60;
     var chart = setupLiveDataChart(container, maxVal);
     startLiveDataChartUpdates(chart, url, refreshInterval);
     startLiveDataTimeout(timeoutInterval);
