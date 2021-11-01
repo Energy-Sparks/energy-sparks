@@ -1,5 +1,7 @@
 module Cads
   class LiveDataService
+    CACHE_KEY = 'geo-token'.freeze
+
     def initialize(cad)
       @cad = cad
     end
@@ -25,11 +27,13 @@ module Cads
     end
 
     def api
-      unless @api
-        @api = MeterReadingsFeeds::GeoApi.new(username: ENV['GEO_API_USERNAME'], password: ENV['GEO_API_PASSWORD'])
-        @api.login
+      @api ||= @api = MeterReadingsFeeds::GeoApi.new(token: token)
+    end
+
+    def token
+      Rails.cache.fetch(CACHE_KEY, expires_in: 45.minutes) do
+        MeterReadingsFeeds::GeoApi.new(username: ENV['GEO_API_USERNAME'], password: ENV['GEO_API_PASSWORD']).login
       end
-      @api
     end
   end
 end
