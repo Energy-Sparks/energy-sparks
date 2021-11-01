@@ -39,14 +39,19 @@ module Cads
 
     context 'when api raises errors' do
 
-      before :each do
+      it "logs login error to rollbar" do
         expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_raise(StandardError.new('doh'))
-      end
-
-      it "logs error to rollbar" do
         expect(Rollbar).to receive(:error)
         result = Cads::LiveDataService.new(cad).read
       end
+
+      it "logs read error to rollbar" do
+        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_return(token)
+        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).and_raise(StandardError.new('doh'))
+        expect(Rollbar).to receive(:error)
+        result = Cads::LiveDataService.new(cad).read
+      end
+
     end
 
     context 'when caching tokens' do
