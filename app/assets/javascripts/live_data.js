@@ -2,6 +2,8 @@
 
 $(document).ready(function() {
 
+  var liveDataPaused = false;
+
   function setupLiveDataChart(container, maxVal) {
 
     var chart = Highcharts.chart(container, {
@@ -145,21 +147,40 @@ $(document).ready(function() {
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
     updateLiveDataChart(chart, url);
     setInterval(function () {
-      updateLiveDataChart(chart, url);
+      if (!liveDataPaused) {
+        updateLiveDataChart(chart, url);
+      }
     }, refreshInterval);
+  }
+
+  function startLiveDataTimeout(timeoutInterval) {
+    setInterval(function () {
+      promptTimeout();
+    }, timeoutInterval);
+  }
+
+  function promptTimeout() {
+    liveDataPaused = true;
+    $('#live-data-timeout-modal').modal();
   }
 
   function subtitleWithMessage(value, message) {
     return (value / 1000) + " kW<br/><div class='live-data-subtitle'>" + message + "</div>";
   }
 
+  $('#live-data-timeout-modal').on('hidden.bs.modal', function () {
+    location.reload();
+  });
+
   $(".live-data-chart").each( function() {
     var container = $(this).attr('id');
     var maxVal = $(this).data('max-value') * 1000;
     var url = $(this).data("url");
     var refreshInterval = $(this).data("refresh-interval") * 1000;
+    var timeoutInterval = $(this).data("timeout-interval") * 1000;
     var chart = setupLiveDataChart(container, maxVal);
     startLiveDataChartUpdates(chart, url, refreshInterval);
+    startLiveDataTimeout(timeoutInterval);
   });
 
 });
