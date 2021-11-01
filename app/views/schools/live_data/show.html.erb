@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<%= render "gauge", school: @school, cad: @school.cads.last, fuel_type: :electricity %>
+<%= render "gauge", school: @school, cad: @school.cads.last, fuel_type: :electricity, timeout_interval: @timeout_interval %>
 
 <div class="row">
   <div class="col">
@@ -32,3 +32,6 @@
     </div>
   </div>
 <% end %>
+
+
+<%= render 'timeout_modal', timeout_interval: @timeout_interval %>

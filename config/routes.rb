@@ -271,10 +271,6 @@ Rails.application.routes.draw do
       resources :alert_mailers, only: :show
     end
 
-    namespace :geo do
-      resource :live_data, only: [:show, :create]
-    end
-
     resources :meter_attributes, only: :index
     resources :meter_reviews, only: :index
 
