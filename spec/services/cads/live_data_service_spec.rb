@@ -40,14 +40,14 @@ module Cads
     context 'when api raises errors' do
 
       it "logs login error to rollbar" do
-        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_raise(StandardError.new('doh'))
+        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_raise(MeterReadingsFeeds::GeoApi::ApiFailure.new('doh'))
         expect(Rollbar).to receive(:error)
         result = Cads::LiveDataService.new(cad).read
       end
 
       it "logs read error to rollbar" do
         expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_return(token)
-        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).and_raise(StandardError.new('doh'))
+        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).and_raise(MeterReadingsFeeds::GeoApi::ApiFailure.new('doh'))
         expect(Rollbar).to receive(:error)
         result = Cads::LiveDataService.new(cad).read
       end
@@ -66,6 +66,13 @@ module Cads
         ClimateControl.modify "GEO_API_TOKEN_EXPIRY_MINUTES" => "123" do
           Cads::LiveDataService.new(cad).read
         end
+      end
+
+      it "resets token cache on auth error" do
+        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:login).and_return(token)
+        expect_any_instance_of(MeterReadingsFeeds::GeoApi).to receive(:live_data).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('doh'))
+        expect(Rails.cache).to receive(:delete).with(LiveDataService::CACHE_KEY)
+        Cads::LiveDataService.new(cad).read
       end
 
     end
