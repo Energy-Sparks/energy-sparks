@@ -1,6 +1,7 @@
 module Cads
   class LiveDataService
     CACHE_KEY = 'geo-token'.freeze
+    DEFAULT_EXPIRY = 45
 
     def initialize(cad)
       @cad = cad
@@ -15,6 +16,8 @@ module Cads
         result = power_for_type(data['power'], type)
       end
       result
+    rescue => e
+      Rollbar.error(e, school_id: @cad.school.id, school: @cad.school.name, device_identifier: @cad.device_identifier)
     end
 
     private
@@ -31,9 +34,13 @@ module Cads
     end
 
     def token
-      Rails.cache.fetch(CACHE_KEY, expires_in: 45.minutes) do
+      Rails.cache.fetch(CACHE_KEY, expires_in: expiry) do
         MeterReadingsFeeds::GeoApi.new(username: ENV['GEO_API_USERNAME'], password: ENV['GEO_API_PASSWORD']).login
       end
+    end
+
+    def expiry
+      ENV['GEO_API_TOKEN_EXPIRY_MINUTES'].blank? ? DEFAULT_EXPIRY.minutes : ENV['GEO_API_TOKEN_EXPIRY_MINUTES'].to_i.minutes
     end
   end
 end
