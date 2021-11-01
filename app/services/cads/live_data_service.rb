@@ -27,7 +27,7 @@ module Cads
     end
 
     def api
-      @api ||= @api = MeterReadingsFeeds::GeoApi.new(token: token)
+      @api ||= MeterReadingsFeeds::GeoApi.new(token: token)
     end
 
     def token
