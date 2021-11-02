@@ -67,6 +67,7 @@ class School < ApplicationRecord
   include ParentMeterAttributeHolder
 
   class ProcessDataError < StandardError; end
+  class DataEnabledError < StandardError; end
 
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
@@ -409,6 +410,11 @@ class School < ApplicationRecord
     raise ProcessDataError, "#{name} cannot process data as it has no floor area" if floor_area.blank?
     raise ProcessDataError, "#{name} cannot process data as it has no pupil numbers" if number_of_pupils.blank?
     update!(process_data: true)
+  end
+
+  def data_enabled!
+    # raise DataEnabledError, "#{name} cannot enable data as it has no meter readings" unless self.process_data
+    update!(data_enabled: true)
   end
 
   def update_school_partner_positions!(position_attributes)

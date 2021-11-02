@@ -396,6 +396,16 @@ RSpec.describe "school", type: :system do
         expect(school.process_data).to eq(false)
       end
 
+      it 'allows data enabled management from school page' do
+        click_on(school_name)
+        click_on('Enabled')
+        school.reload
+        expect(school).to_not be_data_enabled
+        click_on('Not enabled')
+        school.reload
+        expect(school).to be_data_enabled
+      end
+
     end
   end
 end
