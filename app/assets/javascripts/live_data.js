@@ -2,7 +2,9 @@
 
 $(document).ready(function() {
 
-  function setupLiveDataChart(container, maxValue) {
+  var liveDataPaused = false;
+
+  function setupLiveDataChart(container, maxVal) {
 
     var chart = Highcharts.chart(container, {
       chart: {
@@ -54,10 +56,10 @@ $(document).ready(function() {
 
       yAxis: [{
         min: 0,
-        max: maxValue,
+        max: maxVal,
         lineWidth: 2,
         lineColor: 'white',
-        tickInterval: maxValue / 10,
+        tickInterval: maxVal / 10,
         labels: {
           enabled: false
         },
@@ -109,40 +111,76 @@ $(document).ready(function() {
     return stops;
   }
 
-  function getData(rawData) {
+  function getData(rawData, maxVal) {
     var data = [rawData];
     var start = Math.round(Math.floor(rawData / 10) * 10);
-    for (var i = start; i > 0; i -= 10) {
+    var step = Math.round(maxVal / 100);
+    for (var i = start; i > 0; i -= step) {
       data.push(i);
     }
     return data;
   }
 
-  function updateLiveChart(chart, newVal) {
-    chart.series[0].setData(getData(newVal));
-    chart.setTitle(null, { text: subtitleWithTimestamp(newVal, new Date()) });
+  function updateSuccess(chart, reading) {
+    var timestamp = (new Date()).toLocaleTimeString();
+    var maxVal = chart.yAxis[0].max;
+    chart.series[0].setData(getData(reading, maxVal));
+    chart.setTitle(null, { text: subtitleWithMessage(reading, 'Last updated: ' + timestamp) });
+  }
+
+  function updateFailure(chart) {
+    var reading = 0;
+    if (chart.series[0] && chart.series[0].points[0]) {
+      reading = chart.series[0].points[0].y;
+    }
+    chart.setTitle(null, { text: subtitleWithMessage(reading, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrying..') });
+  }
+
+  function updateLiveDataChart(chart, url) {
+    $.get(url).done(function(data) {
+      updateSuccess(chart, data['value']);
+    }).fail(function(data) {
+      updateFailure(chart);
+    });
   }
 
   function startLiveDataChartUpdates(chart, url, refreshInterval) {
+    updateLiveDataChart(chart, url);
     setInterval(function () {
-      $.get(url).done(function(data) {
-        var newVal = data['value'];
-        updateLiveChart(chart, newVal);
-      });
+      if (!liveDataPaused) {
+        updateLiveDataChart(chart, url);
+      }
     }, refreshInterval);
   }
 
-  function subtitleWithTimestamp(value, date) {
-    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Last updated: " + date.toLocaleTimeString() + "</div>";
+  function startLiveDataTimeout(timeoutInterval) {
+    setInterval(function () {
+      promptTimeout();
+    }, timeoutInterval);
   }
+
+  function promptTimeout() {
+    liveDataPaused = true;
+    $('#live-data-timeout-modal').modal();
+  }
+
+  function subtitleWithMessage(value, message) {
+    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>" + message + "</div>";
+  }
+
+  $('#live-data-timeout-modal').on('hidden.bs.modal', function () {
+    location.reload();
+  });
 
   $(".live-data-chart").each( function() {
     var container = $(this).attr('id');
-    var maxValue = $(this).data('max-value') * 1000;
+    var maxVal = $(this).data('max-value') * 1000;
     var url = $(this).data("url");
     var refreshInterval = $(this).data("refresh-interval") * 1000;
-    var chart = setupLiveDataChart(container, maxValue);
+    var timeoutInterval = $(this).data("timeout-interval") * 1000 * 60;
+    var chart = setupLiveDataChart(container, maxVal);
     startLiveDataChartUpdates(chart, url, refreshInterval);
+    startLiveDataTimeout(timeoutInterval);
   });
 
 });

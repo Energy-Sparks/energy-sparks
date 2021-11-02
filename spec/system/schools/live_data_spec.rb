@@ -28,80 +28,99 @@ RSpec.describe 'live data', type: :system do
 
     before(:each) do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-      sign_in(school_admin)
-      visit school_path(school)
-      click_link 'Live energy data'
     end
 
-    it 'lets me view live data' do
-      expect(page).to have_content("Your live energy data")
-      expect(page).to have_content("Understanding your data consumption")
-    end
+    context 'when not logged in' do
+      it 'returns json data payload' do
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
 
-    it 'has help page' do
-      create(:help_page, title: "Live data", feature: :live_data, published: true)
-      refresh
-      expect(page).to have_link("Help")
-    end
+        visit school_cad_live_data_path(school, school.cads.last, format: :json)
+        data = JSON.parse(page.html)
 
-    it 'has links to suggestions actions etc' do
-      expect(page).to have_content("Working with the pupils")
-      expect(page).to have_content("Taking action around the school")
-      expect(page).to have_content("Explore your data")
-      expect(page).to have_link("Choose another activity", href: activity_category_path(activity_category))
-      expect(page).to have_link("Record an energy saving action")
-      expect(page).to have_link("View dashboard")
-    end
-
-    it 'has links to suggestions from live data category' do
-      expect(page).to have_link("save gas")
-    end
-
-    it 'links from pupil analysis page' do
-      visit pupils_school_analysis_path(school)
-      within '.live-data-card' do
-        expect(page).to have_content("Live energy data")
-        click_link "Live energy data"
+        expect(data['type']).to eq('electricity')
+        expect(data['units']).to eq('watts')
+        expect(data['value']).to eq(123)
       end
-      expect(page).to have_content("Your live energy data")
     end
 
-    it 'returns html with reading' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
+    context 'when logged in' do
 
-      visit school_cad_live_data_path(school, school.cads.last)
+      before(:each) do
+        sign_in(school_admin)
+        visit school_path(school)
+        click_link 'Live energy data'
+      end
 
-      expect(page).to have_content('Live')
-      expect(page).to have_content('api is broken')
-    end
+      it 'lets me view live data' do
+        expect(page).to have_content("Your live energy data")
+        expect(page).to have_content("Understanding your data consumption")
+      end
 
-    it 'returns html with error' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
+      it 'has help page' do
+        create(:help_page, title: "Live data", feature: :live_data, published: true)
+        refresh
+        expect(page).to have_link("Help")
+      end
 
-      visit school_cad_live_data_path(school, school.cads.last)
+      it 'has links to suggestions actions etc' do
+        expect(page).to have_content("Working with the pupils")
+        expect(page).to have_content("Taking action around the school")
+        expect(page).to have_content("Explore your data")
+        expect(page).to have_link("Choose another activity", href: activity_category_path(activity_category))
+        expect(page).to have_link("Record an energy saving action")
+        expect(page).to have_link("View pupil dashboard")
+      end
 
-      expect(page).to have_content('Live')
-      expect(page).to have_content('123')
-    end
+      it 'has links to suggestions from live data category' do
+        expect(page).to have_link("save gas")
+      end
 
-    it 'returns json data payload' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
+      it 'links from pupil analysis page' do
+        visit pupils_school_analysis_path(school)
+        within '.live-data-card' do
+          expect(page).to have_content("Live energy data")
+          click_link "Live energy data"
+        end
+        expect(page).to have_content("Your live energy data")
+      end
 
-      visit school_cad_live_data_path(school, school.cads.last, format: :json)
-      data = JSON.parse(page.html)
+      it 'returns html with reading' do
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
 
-      expect(data['type']).to eq('electricity')
-      expect(data['units']).to eq('watts')
-      expect(data['value']).to eq(123)
-    end
+        visit school_cad_live_data_path(school, school.cads.last)
 
-    it 'returns json error' do
-      allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
+        expect(page).to have_content('Live')
+        expect(page).to have_content('api is broken')
+      end
 
-      visit school_cad_live_data_path(school, school.cads.last, format: :json)
+      it 'returns html with error' do
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
 
-      expect(page.status_code).to eql 500
-      expect(page.body).to eql ('api is broken')
+        visit school_cad_live_data_path(school, school.cads.last)
+
+        expect(page).to have_content('Live')
+        expect(page).to have_content('123')
+      end
+
+      it 'returns json data payload' do
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
+
+        visit school_cad_live_data_path(school, school.cads.last, format: :json)
+        data = JSON.parse(page.html)
+
+        expect(data['type']).to eq('electricity')
+        expect(data['units']).to eq('watts')
+        expect(data['value']).to eq(123)
+      end
+
+      it 'returns json error' do
+        allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_raise(MeterReadingsFeeds::GeoApi::NotAuthorised.new('api is broken'))
+
+        visit school_cad_live_data_path(school, school.cads.last, format: :json)
+
+        expect(page.status_code).to eql 500
+        expect(page.body).to eql ('api is broken')
+      end
     end
   end
 end

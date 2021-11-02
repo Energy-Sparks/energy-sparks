@@ -20,6 +20,7 @@ class Ability
       :show, :usage, :show_pupils_dash, :suggest_activity
     ], School, visible: true, public: true
 
+    can :live_data, Cad, visible: true, public: true
     can :read, Scoreboard, public: true
 
     can :read, FindOutMore
