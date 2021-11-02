@@ -141,6 +141,7 @@ class School < ApplicationRecord
   scope :visible,            -> { active.where(visible: true) }
   scope :not_visible,        -> { active.where(visible: false) }
   scope :process_data,       -> { active.where(process_data: true) }
+  scope :data_enabled,       -> { active.where(data_enabled: true) }
   scope :without_group,      -> { active.where(school_group_id: nil) }
   scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
 

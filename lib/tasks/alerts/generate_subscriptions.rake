@@ -2,7 +2,7 @@ namespace :alerts do
   desc 'Run alert subscription job'
   task generate_subscriptions: [:environment] do
     puts "#{DateTime.now.utc} Generate subscriptions start"
-    schools = School.process_data.visible.with_config
+    schools = School.data_enabled.process_data.visible.with_config
 
     schools.each do |school|
       subscription_frequency = if school.holiday_approaching?
