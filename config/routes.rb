@@ -116,6 +116,7 @@ Rails.application.routes.draw do
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
       resource :data_processing, only: [:create, :destroy], controller: :data_processing
+      resource :data_enabled, only: [:create, :destroy], controller: :data_enabled
       resources :contacts
       resources :subscription_generation_runs, only: [:index, :show]
       resources :alert_subscription_events, only: [:show]
