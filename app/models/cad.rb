@@ -2,7 +2,7 @@
 #
 # Table name: cads
 #
-#  active            :boolean          default(TRUE)
+#  active            :boolean          default(FALSE)
 #  created_at        :datetime         not null
 #  device_identifier :string           not null
 #  id                :bigint(8)        not null, primary key
