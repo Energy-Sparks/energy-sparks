@@ -15,14 +15,16 @@
   <div class="row">
     <div class="col">
       <h2><%= school_group.name %></h2>
-      <table class="table table-sorted table-sm">
+      <table class="table table-sorted table-sm table-activations">
         <thead>
           <tr>
-            <th>School name</th>
-            <th>Onboarding completed</th>
-            <th>Meters</th>
-            <th>Awaiting meter review?</th>
-            <th>Actions</th>
+            <th class="name">School name</th>
+            <th class="completed">Onboarding completed</th>
+            <th class="meters">Meters</th>
+            <th class="review">Awaiting meter review?</th>
+            <th class="processing">Processing?</th>
+            <th class="enabled">Enabled?</th>
+            <th class="actions">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +45,8 @@
                  <%= link_to "(view)", admin_meter_reviews_path %>
                 <% end %>
               </td>
+              <td><%= y_n(school.process_data) %></td>
+              <td><%= y_n(school.data_enabled) %></td>
               <td>
                 <div class="btn-group">
                   <%= link_to 'Edit details', edit_school_path(school), class: "btn btn-sm" %>
