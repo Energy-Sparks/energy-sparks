@@ -67,7 +67,6 @@ class School < ApplicationRecord
   include ParentMeterAttributeHolder
 
   class ProcessDataError < StandardError; end
-  class DataEnabledError < StandardError; end
 
   friendly_id :slug_candidates, use: [:finders, :slugged, :history]
 
@@ -413,7 +412,6 @@ class School < ApplicationRecord
   end
 
   def data_enabled!
-    # raise DataEnabledError, "#{name} cannot enable data as it has no meter readings" unless self.process_data
     update!(data_enabled: true)
   end
 
