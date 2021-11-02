@@ -11,6 +11,7 @@
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
 #  created_at                            :datetime         not null
 #  dark_sky_area_id                      :bigint(8)
+#  data_enabled                          :boolean          default(TRUE)
 #  enable_targets_feature                :boolean          default(TRUE)
 #  floor_area                            :decimal(, )
 #  has_swimming_pool                     :boolean          default(FALSE), not null
