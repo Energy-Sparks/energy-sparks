@@ -411,10 +411,6 @@ class School < ApplicationRecord
     update!(process_data: true)
   end
 
-  def data_enabled!
-    update!(data_enabled: true)
-  end
-
   def update_school_partner_positions!(position_attributes)
     transaction do
       school_partners.destroy_all
