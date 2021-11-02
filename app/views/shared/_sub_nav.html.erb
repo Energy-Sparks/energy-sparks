@@ -7,7 +7,7 @@
         <% if school.visible? %>
           <%= link_to 'Visible', school_visibility_path(school), class: 'badge badge-pill badge-success', method: :delete %>
         <% else %>
-          <%= link_to 'Not visible', school_visibility_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+          <%= link_to 'Visible', school_visibility_path(school), class: 'badge badge-pill badge-danger', method: :post %>
         <% end %>
       <% end %>
 
@@ -15,15 +15,15 @@
         <% if school.public? %>
           <%= link_to 'Public', school_public_path(school), class: 'badge badge-pill badge-success', method: :delete %>
         <% else %>
-          <%= link_to 'Not Public', school_public_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+          <%= link_to 'Public', school_public_path(school), class: 'badge badge-pill badge-danger', method: :post %>
         <% end %>
       <% end %>
 
       <% if can?(:change_data_processing, school) %>
         <% if school.process_data? %>
-          <%= link_to 'Processing data', school_data_processing_path(school), class: 'badge badge-pill badge-success', method: :delete %>
+          <%= link_to 'Processing', school_data_processing_path(school), class: 'badge badge-pill badge-success', method: :delete %>
         <% else %>
-          <%= link_to 'Not processing data', school_data_processing_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+          <%= link_to 'Processing', school_data_processing_path(school), class: 'badge badge-pill badge-danger', method: :post %>
         <% end %>
       <% end %>
 
@@ -31,7 +31,7 @@
         <% if school.data_enabled? %>
           <%= link_to 'Enabled', school_data_enabled_path(school), class: 'badge badge-pill badge-success', method: :delete %>
         <% else %>
-          <%= link_to 'Not enabled', school_data_enabled_path(school), class: 'badge badge-pill badge-danger', method: :post %>
+          <%= link_to 'Enabled', school_data_enabled_path(school), class: 'badge badge-pill badge-danger', method: :post %>
         <% end %>
       <% end %>
 

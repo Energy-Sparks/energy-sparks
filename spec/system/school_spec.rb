@@ -359,7 +359,7 @@ RSpec.describe "school", type: :system do
         click_on('Public')
         school.reload
         expect(school).to_not be_public
-        click_on('Not Public')
+        click_on('Public')
         school.reload
         expect(school).to be_public
       end
@@ -369,7 +369,7 @@ RSpec.describe "school", type: :system do
         click_on('Visible')
         school.reload
         expect(school).to_not be_visible
-        click_on('Not visible')
+        click_on('Visible')
         school.reload
         expect(school).to be_visible
       end
@@ -378,11 +378,11 @@ RSpec.describe "school", type: :system do
         create(:gas_meter, :with_unvalidated_readings, school: school)
         school.update(process_data: false)
         click_on(school_name)
-        click_on('Not processing data')
+        click_on('Processing')
         expect(page).to have_content "#{school.name} will now process data"
         school.reload
         expect(school.process_data).to eq(true)
-        click_on('Processing data')
+        click_on('Processing')
         school.reload
         expect(school.process_data).to eq(false)
       end
@@ -390,7 +390,7 @@ RSpec.describe "school", type: :system do
       it 'disallows data process management if the school has no meter readings' do
         school.update(process_data: false)
         click_on(school_name)
-        click_on('Not processing data')
+        click_on('Processing')
         expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
         school.reload
         expect(school.process_data).to eq(false)
@@ -401,7 +401,7 @@ RSpec.describe "school", type: :system do
         click_on('Enabled')
         school.reload
         expect(school).to_not be_data_enabled
-        click_on('Not enabled')
+        click_on('Enabled')
         school.reload
         expect(school).to be_data_enabled
       end
