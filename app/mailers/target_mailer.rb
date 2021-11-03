@@ -7,6 +7,12 @@ class TargetMailer < ApplicationMailer
     make_bootstrap_mail(to: @to, subject: "Set your first energy saving target")
   end
 
+  def first_target_reminder
+    @school = params[:school]
+    @to = params[:to]
+    make_bootstrap_mail(to: @to, subject: "Reminder to set your first energy saving target")
+  end
+
   def review_target
     @school = params[:school]
     @to = params[:to]

@@ -4,6 +4,7 @@ namespace :targets do
     puts "#{Time.zone.now} Sending first target invite emails"
     if ENV['SEND_AUTOMATED_EMAILS']
       Targets::TargetMailerService.new.invite_schools_to_set_first_target
+      Targets::TargetMailerService.new.remind_schools_to_set_first_target
     else
       puts "#{Time.zone.now} Automated emails disabled, not sending invites"
     end
