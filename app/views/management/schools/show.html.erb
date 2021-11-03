@@ -45,12 +45,14 @@
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
 
-<div class="padded-row">
-  <div class="float-right">
-      <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
-        <%= fa_icon('file-alt') %>
-        Print view
-      <% end %>
-      <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+<% if @show_data_enabled_features %>
+  <div class="padded-row">
+    <div class="float-right">
+        <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
+          <%= fa_icon('file-alt') %>
+          Print view
+        <% end %>
+        <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+    </div>
   </div>
-</div>
+<% end %>

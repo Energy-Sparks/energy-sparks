@@ -15,5 +15,12 @@
         <%= link_to public ? "Review energy analysis" : "Review your energy analysis", school_analysis_index_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       <% end %>
     <% end %>
+    <% if !public && show_admin_page_switch?(school) %>
+      <% if params[:no_data] %>
+        <%= link_to 'Admin view', management_school_path(school), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
+      <% else %>
+        <%= link_to 'User view', management_school_path(school, no_data: true), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
+      <% end %>
+    <% end %>
   </div>
 </div>

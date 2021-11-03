@@ -99,6 +99,7 @@ describe 'Management dashboard' do
         expect(page).to have_link("Compare schools")
         expect(page).to have_link("Explore your data")
         expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Print view")
       end
 
       it 'shows temperature observations' do
@@ -311,15 +312,40 @@ describe 'Management dashboard' do
   end
 
   context 'when school is not data-enabled' do
+    before(:each) do
+      school.update!(data_enabled: false)
+    end
+
     context 'and logged in as admin' do
-      it 'overrides flag and shows data-enabled features'
-      it 'overrides flag and shows data-enabled links'
-      it 'shows option to view non data-enabled view'
+      let!(:admin)    { create(:admin) }
+      before(:each) do
+        sign_in(admin)
+        visit management_school_path(school)
+      end
+
+      it 'overrides flag and shows data-enabled features' do
+        #management table
+        expect(page).to have_content("Your annual usage")
+      end
+
+      it 'overrides flag and shows data-enabled links' do
+        expect(page).to have_link("Compare schools")
+        expect(page).to have_link("Explore your data")
+        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Download your data")
+      end
+
+      it 'shows link to user view' do
+        expect(page).to have_link("User view")
+        click_on("User view")
+        expect(page).to have_link("Admin view")
+        expect(page).to_not have_link("Explore your data")
+        expect(page).to_not have_content("Your annual usage")
+      end
     end
 
     context 'and logged in as staff' do
       before(:each) do
-        school.update!(data_enabled: false)
         sign_in(staff)
         visit management_school_path(school)
       end
@@ -342,6 +368,7 @@ describe 'Management dashboard' do
         expect(page).to_not have_link("Compare schools")
         expect(page).to_not have_link("Explore your data")
         expect(page).to_not have_link("Review your energy analysis")
+        expect(page).to_not have_link("Print view")
       end
 
     end

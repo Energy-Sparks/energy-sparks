@@ -14,7 +14,7 @@ module Management
 
     def show
       authorize! :show_management_dash, @school
-      @show_data_enabled_features = @school.data_enabled?
+      @show_data_enabled_features = show_data_enabled_features?
       setup_default_features
       setup_data_enabled_features if @show_data_enabled_features
       if params[:report] && @show_data_enabled_features
@@ -25,6 +25,14 @@ module Management
     end
 
     private
+
+    def show_data_enabled_features?
+      if current_user && current_user.admin?
+        true unless params[:no_data]
+      else
+        @school.data_enabled?
+      end
+    end
 
     def setup_data_enabled_features
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
