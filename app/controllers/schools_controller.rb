@@ -2,6 +2,7 @@ class SchoolsController < ApplicationController
   include SchoolAggregation
   include ActivityTypeFilterable
   include AnalysisPages
+  include DashboardSetup
   include DashboardEnergyCharts
   include DashboardAlerts
   include DashboardTimeline
@@ -42,15 +43,9 @@ class SchoolsController < ApplicationController
       redirect_to_specific_dashboard
     else
       authorize! :show, @school
-      @charts = setup_charts(@school.configuration)
-      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
-      @observations = setup_timeline(@school.observations)
-      @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
-      @overview_charts = setup_energy_overview_charts(@school.configuration)
-      @overview_table = progress_service.management_table
-      @progress_summary = progress_service.progress_summary
-      #setup just the co2
-      @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
+      @show_data_enabled_features = show_data_enabled_features?
+      setup_default_features
+      setup_data_enabled_features if @show_data_enabled_features
     end
   end
 
@@ -112,6 +107,19 @@ class SchoolsController < ApplicationController
   end
 
 private
+
+  def setup_default_features
+    @observations = setup_timeline(@school.observations)
+  end
+
+  def setup_data_enabled_features
+    @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
+    @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
+    @overview_charts = setup_energy_overview_charts(@school.configuration)
+    @overview_table = progress_service.management_table
+    @progress_summary = progress_service.progress_summary
+    @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
+  end
 
   def go_to_specific_dashboard?
     current_user && (current_user.school_id == @school.id || can?(:manage, :admin_functions))

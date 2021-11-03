@@ -8,59 +8,116 @@ RSpec.describe "school", type: :system do
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
   let!(:school_group)       { create(:school_group, name: 'School Group')}
 
-  it 'shows me a school page' do
-    visit root_path
-    click_on('Schools')
-    expect(page.has_content? "Energy Sparks schools across the UK").to be true
-    click_on(school_name)
-    expect(page.has_link? "Pupil dashboard").to be true
-    expect(page.has_content? school_name).to be true
-    expect(page.has_no_content? "Gas").to be true
+  let(:management_table) {
+    [
+      ["", "Annual Use (kWh)", "Annual CO2 (kg)", "Annual Cost", "Change from last year", "Change in last 4 school weeks", "Potential savings"],
+      ["Electricity", "730,000", "140,000", "£110,000", "+12%", "-8.5%", "£83,000"],
+      ["Gas", "not enough data", "not enough data", "not enough data", "not enough data", "-50%", "not enough data"]
+    ]
+  }
+
+  before(:each) do
+    allow_any_instance_of(Targets::ProgressService).to receive(:management_table).and_return(management_table)
   end
 
-  it 'links to the pupil dashboard' do
-    visit school_path(school)
+  context 'as a guest user' do
 
-    within('.sub-navbar') do
-      click_on('Pupil dashboard')
+    it 'shows me the adult dashboard by default' do
+      visit root_path
+      click_on('Schools')
+      expect(page.has_content? "Energy Sparks schools across the UK").to be true
+      click_on(school_name)
+
+      expect(page.has_link? "Pupil dashboard").to be true
+      expect(page.has_content? school_name).to be true
     end
 
-    expect(page.has_title? 'Pupil dashboard').to be true
-    expect(page.has_link? "Adult dashboard").to be true
-    expect(page.has_content? school_name).to be true
-  end
-
-  context 'with school in group' do
-    let(:public)      { true }
-
-    before(:each) do
-      school.update(school_group: create(:school_group, public: public))
-    end
-
-    it 'links to compare schools in public groups' do
+    it 'shows data-enabled features' do
       visit school_path(school)
-      expect(page).to have_link("Compare schools")
+      expect(page).to have_content("Annual usage summary")
     end
 
-    context 'and group is private' do
-      let(:public)      { false }
+    it 'shows data-enabled links' do
+      visit school_path(school)
+      expect(page).to have_link("Explore data")
+      expect(page).to have_link("Review energy analysis")
+    end
 
-      it 'doesnt link to compare schools' do
+    it 'links to the pupil dashboard' do
+      visit school_path(school)
+      within('.sub-navbar') do
+        click_on('Pupil dashboard')
+      end
+      expect(page.has_title? 'Pupil dashboard').to be true
+      expect(page.has_link? "Adult dashboard").to be true
+      expect(page.has_content? school_name).to be true
+    end
+
+
+    context 'with school in group' do
+      let(:public)      { true }
+
+      before(:each) do
+        school.update(school_group: create(:school_group, public: public))
+      end
+
+      it 'links to compare schools in public groups' do
         visit school_path(school)
-        expect(page).to_not have_link("Compare schools")
+        expect(page).to have_link("Compare schools")
       end
 
-      context 'and signed in as school user' do
-        let!(:school_admin)          { create(:school_admin, school: school) }
-        before(:each) do
-          sign_in(school_admin)
-        end
-        it 'links to compare schools' do
+      context 'and group is private' do
+        let(:public)      { false }
+
+        it 'doesnt link to compare schools' do
           visit school_path(school)
-          expect(page).to have_link("Compare schools")
+          expect(page).to_not have_link("Compare schools")
+        end
+
+        context 'and signed in as school user' do
+          let!(:school_admin)          { create(:school_admin, school: school) }
+          before(:each) do
+            sign_in(school_admin)
+          end
+          it 'links to compare schools' do
+            visit school_path(school)
+            expect(page).to have_link("Compare schools")
+          end
         end
       end
     end
+
+    context 'when school has partners' do
+
+      let(:partner)             { create(:partner, name: "School Sponsor", url: "http://example.org") }
+      let(:other_partner)       { create(:partner, name: "Big Tech Co", url: "https://example.com") }
+
+      before(:each) do
+        school.update!( {school_group: school_group })
+      end
+
+      it 'displays school group partners' do
+        school.school_group.partners << partner
+        visit school_path(school)
+        expect(page).to have_link("School Sponsor", href: "http://example.org")
+      end
+
+      it 'displays school partners' do
+        school.partners << partner
+        visit school_path(school)
+        expect(page).to have_link("School Sponsor", href: "http://example.org")
+      end
+
+      it 'displays all partners' do
+        school.school_group.partners << partner
+        school.partners << other_partner
+        visit school_path(school)
+        expect(page).to have_link("School Sponsor", href: "http://example.org")
+        expect(page).to have_link("Big Tech Co", href: "https://example.com")
+      end
+
+    end
+
   end
 
   context 'with invisible school' do
@@ -79,7 +136,6 @@ RSpec.describe "school", type: :system do
         visit school_path(school_invisible)
         expect(page.has_content? 'You are not authorized to access this page').to be true
       end
-
     end
 
     context 'as admin' do
@@ -177,37 +233,6 @@ RSpec.describe "school", type: :system do
 
   end
 
-  context 'with partners' do
-
-    let(:partner)             { create(:partner, name: "School Sponsor", url: "http://example.org") }
-    let(:other_partner)       { create(:partner, name: "Big Tech Co", url: "https://example.com") }
-
-    before(:each) do
-      school.update!( {school_group: school_group })
-    end
-
-    it 'displays school group partners' do
-      school.school_group.partners << partner
-      visit school_path(school)
-      expect(page).to have_link("School Sponsor", href: "http://example.org")
-    end
-
-    it 'displays school partners' do
-      school.partners << partner
-      visit school_path(school)
-      expect(page).to have_link("School Sponsor", href: "http://example.org")
-    end
-
-    it 'displays all partners' do
-      school.school_group.partners << partner
-      school.partners << other_partner
-      visit school_path(school)
-      expect(page).to have_link("School Sponsor", href: "http://example.org")
-      expect(page).to have_link("Big Tech Co", href: "https://example.com")
-    end
-
-  end
-
   context 'as an admin' do
     before(:each) do
       sign_in(admin)
@@ -217,36 +242,7 @@ RSpec.describe "school", type: :system do
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
     end
 
-    # describe 'school with gas meter' do
-    #   it 'shows me a school page' do
-    #     school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
-    #     click_on(school_name)
-    #     expect(page.has_content? "Gas").to be true
-    #     expect(page.has_content? "Electricity").to be false
-    #   end
-    # end
-    #
-    # describe 'school with electricity meter' do
-    #   it 'shows me a school page' do
-    #     school.configuration.update(electricity_dashboard_chart_type: Schools::Configuration::TEACHERS_ELECTRICITY, fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: false))
-    #     click_on(school_name)
-    #     expect(page.has_content? "Gas").to be false
-    #     expect(page.has_content? "Electricity").to be true
-    #   end
-    # end
-    #
-    # describe 'school with both meters' do
-    #   it 'shows me a school page with both meters' do
-    #     school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE, electricity_dashboard_chart_type: Schools::Configuration::TEACHERS_ELECTRICITY, fuel_configuration: Schools::FuelConfiguration.new(has_electricity: true, has_gas: true))
-    #     click_on(school_name)
-    #     expect(page.has_content? school_name).to be true
-    #     expect(page.has_content? "Gas").to be true
-    #     expect(page.has_content? "Electricity").to be true
-    #   end
-    # end
-
     describe 'managing a school' do
-
       let!(:ks1)                { KeyStage.create(name: 'KS1') }
       let!(:ks2)                { KeyStage.create(name: 'KS2') }
       let!(:ks3)                { KeyStage.create(name: 'KS3') }
@@ -407,5 +403,23 @@ RSpec.describe "school", type: :system do
       end
 
     end
+  end
+
+  context 'when school is not data-enabled' do
+    before(:each) do
+      school.update!(data_enabled: false)
+      visit school_path(school)
+    end
+
+    it 'does not show data-enabled features' do
+      expect(page).to_not have_content("Annual usage summary")
+    end
+
+    it 'does not show data-enabled links' do
+      expect(page).to_not have_link("Compare schools")
+      expect(page).to_not have_link("Explore data")
+      expect(page).to_not have_link("Review energy analysis")
+    end
+
   end
 end
