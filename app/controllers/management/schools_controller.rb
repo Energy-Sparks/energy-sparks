@@ -3,6 +3,7 @@ module Management
     load_and_authorize_resource
 
     include SchoolAggregation
+    include DashboardSetup
     include DashboardEnergyCharts
     include DashboardAlerts
     include DashboardTimeline
@@ -26,12 +27,10 @@ module Management
 
     private
 
-    def show_data_enabled_features?
-      if current_user && current_user.admin?
-        true unless params[:no_data]
-      else
-        @school.data_enabled?
-      end
+    def setup_default_features
+      @observations = setup_timeline(@school.observations)
+      @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
+      @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
     end
 
     def setup_data_enabled_features
@@ -40,15 +39,9 @@ module Management
       @overview_charts = setup_energy_overview_charts(@school.configuration)
       @overview_table = progress_service.management_table
       @progress_summary = progress_service.progress_summary
+      @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
       @add_targets = prompt_for_target?
       @review_targets = prompt_to_review_target?
-      @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
-    end
-
-    def setup_default_features
-      @observations = setup_timeline(@school.observations)
-      @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
-      @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
     end
   end
 end

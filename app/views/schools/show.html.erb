@@ -1,10 +1,9 @@
 <%= content_for :page_title, @school.name %>
 
-<%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: true %>
-
-<h3>Annual usage summary</h3>
+<%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
 
 <% if @overview_table %>
+  <h3>Annual usage summary</h3>
   <%= render 'management/schools/overview_table', overview_table: @overview_table %>
 <% end %>
 
@@ -12,15 +11,16 @@
 
 <%= render 'shared/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
 
-<%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title %>
+<% if @dashboard_alerts %>
+  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title %>
+<% end %>
 
-<h3>Annual energy usage</h3>
-
-<% unless @overview_charts.empty? %>
+<% if @overview_charts && @overview_charts.any? %>
+  <h3>Recent energy usage</h3>
   <%= render 'management/schools/overview_charts', overview_charts: @overview_charts %>
 <% end %>
 
-<% unless @management_priorities.empty? %>
+<% if @management_priorities && @management_priorities.any? %>
   <h3>Energy saving opportunities</h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
