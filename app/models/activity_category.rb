@@ -6,6 +6,7 @@
 #  description :string
 #  featured    :boolean          default(FALSE)
 #  id          :bigint(8)        not null, primary key
+#  live_data   :boolean          default(FALSE)
 #  name        :string
 #  pupil       :boolean          default(FALSE)
 #  updated_at  :datetime         not null

@@ -11,6 +11,7 @@
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
 #  created_at                            :datetime         not null
 #  dark_sky_area_id                      :bigint(8)
+#  data_enabled                          :boolean          default(TRUE)
 #  enable_targets_feature                :boolean          default(TRUE)
 #  floor_area                            :decimal(, )
 #  has_swimming_pool                     :boolean          default(FALSE), not null
@@ -140,6 +141,7 @@ class School < ApplicationRecord
   scope :visible,            -> { active.where(visible: true) }
   scope :not_visible,        -> { active.where(visible: false) }
   scope :process_data,       -> { active.where(process_data: true) }
+  scope :data_enabled,       -> { active.where(data_enabled: true) }
   scope :without_group,      -> { active.where(school_group_id: nil) }
   scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
 

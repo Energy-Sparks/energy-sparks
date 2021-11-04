@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_133507) do
+ActiveRecord::Schema.define(version: 2021_11_02_103718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1183,6 +1183,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_133507) do
     t.boolean "active", default: true
     t.date "removal_date"
     t.boolean "enable_targets_feature", default: true
+    t.boolean "data_enabled", default: true
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
