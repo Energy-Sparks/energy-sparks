@@ -10,6 +10,10 @@ module NavHelper
     request.host.include?('test')
   end
 
+  def show_admin_page_switch?(school)
+    current_user && current_user.admin? && !school.data_enabled?
+  end
+
   def show_sub_nav?(school, hide_subnav)
     school.present? && school.id && hide_subnav.nil?
   end
