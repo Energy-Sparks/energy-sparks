@@ -1,6 +1,6 @@
 <li class="nav-item dropdown mt-2">
-  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
-  <div class="dropdown-menu">
+  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage_school" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
+  <div class="dropdown-menu" aria-labelledby="manage_school">
     <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
     <%= link_to 'Calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
     <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>

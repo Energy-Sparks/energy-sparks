@@ -6,6 +6,8 @@ RSpec.describe "school", type: :system do
 
   let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:configuration)      { create(:configuration, school: school, fuel_configuration: fuel_configuration)}
   let!(:school_group)       { create(:school_group, name: 'School Group')}
 
   let(:management_table) {
@@ -403,6 +405,76 @@ RSpec.describe "school", type: :system do
       end
 
     end
+  end
+
+  context 'as staff' do
+    let(:staff)   { create(:staff, school: school) }
+
+    before(:each) do
+      sign_in(staff)
+      visit school_path(school)
+    end
+
+    context 'with school menu' do
+      it 'should have my school menu' do
+        expect(page).to have_css("#my_school_menu")
+        expect(page).to have_link("Electricity usage")
+        expect(page).to have_link("Gas usage")
+        expect(page).to have_link("Storage heater usage")
+        expect(page).to have_link("Energy analysis")
+        expect(page).to have_link("My alerts")
+        expect(page).to have_link("School programmes")
+        expect(page).to have_link("Complete activities")
+        expect(page).to have_link("Download our data")
+      end
+
+      it 'should display menu on other pages' do
+        click_on 'Scoreboard'
+        expect(page).to have_css("#my_school_menu")
+      end
+
+      it 'should not have a manage menu' do
+        expect(page).to_not have_css("#manage_school")
+      end
+    end
+
+  end
+
+  context 'as school admin' do
+    let(:school_admin)  { create(:school_admin, school: school) }
+    before(:each) do
+      sign_in(school_admin)
+      visit school_path(school)
+    end
+
+    context 'with school menu' do
+      it 'should have my school menu' do
+        expect(page).to have_css("#my_school_menu")
+        expect(page).to have_link("Electricity usage")
+        expect(page).to have_link("Gas usage")
+        expect(page).to have_link("Storage heater usage")
+        expect(page).to have_link("Energy analysis")
+        expect(page).to have_link("My alerts")
+        expect(page).to have_link("School programmes")
+        expect(page).to have_link("Complete activities")
+        expect(page).to have_link("Download our data")
+      end
+
+      it 'should display menu on other pages' do
+        click_on 'Scoreboard'
+        expect(page).to have_css("#my_school_menu")
+      end
+
+      it 'should have manage school menu' do
+        expect(page).to have_css("#manage_school")
+        expect(page).to have_link
+      end
+    end
+
+    context 'with manage school menu' do
+      it 'should display the right items'
+    end
+
   end
 
   context 'when school is not data-enabled' do
