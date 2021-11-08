@@ -4,24 +4,19 @@ class ActivitiesController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:index, :show]
 
-  # GET /activities
-  # GET /activities.json
   def index
     @activities = @activities.order(happened_on: :desc)
   end
 
-  # GET /activities/1
-  # GET /activities/1.json
   def show
-    @activity_type_content = TemplateInterpolation.new(
-      @activity.activity_type,
-      render_with: SchoolTemplate.new(@school)
-    ).interpolate(
-      :school_specific_description_or_fallback
-    )
+    interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
+    if show_data_enabled_activity?(@activity, @school)
+      @activity_type_content = interpolator.interpolate(:description).description
+    else
+      @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
   end
 
-  # GET /activities/new
   def new
     if params[:activity_type_id].present?
       activity_type = ActivityType.find(params[:activity_type_id])
@@ -32,12 +27,9 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  # GET /activities/1/edit
   def edit
   end
 
-  # POST /activities
-  # POST /activities.json
   def create
     respond_to do |format|
       if ActivityCreator.new(@activity).process
@@ -50,8 +42,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /activities/1
-  # PATCH/PUT /activities/1.json
   def update
     respond_to do |format|
       if @activity.update(activity_params)
@@ -64,8 +54,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  # DELETE /activities/1
-  # DELETE /activities/1.json
   def destroy
     @activity.observations.each {|observation| ObservationRemoval.new(observation).process}
     @activity.destroy
@@ -77,8 +65,11 @@ class ActivitiesController < ApplicationController
 
 private
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def activity_params
     params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content)
+  end
+
+  def show_data_enabled_activity?(activity, school)
+    activity.activity_type.data_driven? && !school.data_enabled?
   end
 end

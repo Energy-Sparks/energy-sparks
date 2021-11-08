@@ -4,15 +4,17 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:activity_category) { create(:activity_category)}
 
-  let!(:subject)    { Subject.create(name: "Science") }
-  let!(:ks1)        { KeyStage.create(name: 'KS1') }
+  let!(:subject)  { Subject.create(name: "Science") }
+  let!(:ks1)      { KeyStage.create(name: 'KS1') }
+  let(:activity_data_driven)    { true }
+  let(:school_data_enabled)     { true }
 
   let(:activity_type_name)           { 'Exciting activity' }
   let(:activity_description)    { "It's An #{activity_type_name}" }
 
-  let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject]) }
+  let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
 
-  let!(:school) { create_active_school() }
+  let!(:school) { create_active_school(data_enabled: school_data_enabled) }
 
   context 'as a public user' do
 
@@ -101,14 +103,43 @@ describe 'viewing and recording activities', type: :system do
         refresh
       end
 
-      it 'should see previous records' do
-        expect(page).to have_content("Activity previously completed")
-        expect(page).to have_content("once")
+      context 'when school is data enabled' do
+        it 'should see previous records' do
+          expect(page).to have_content("Activity previously completed")
+          expect(page).to have_content("once")
+        end
+
+        it 'should link to the activity' do
+          expect(page).to have_link(href: school_activity_path(school, activity))
+        end
+
+        it 'should show school specific description' do
+          visit school_activity_path(school, activity)
+          expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to_not have_content(activity_type.description.to_plain_text)
+        end
       end
 
-      it 'should link to the activity' do
-        expect(page).to have_link(href: school_activity_path(school, activity))
+      context 'when school not data enabled' do
+        let(:school_data_enabled) { false }
+
+        it 'should show generic description' do
+          visit school_activity_path(school, activity)
+          expect(page).to_not have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_content(activity_type.description.to_plain_text)
+        end
+
+        context 'when activity not data driven' do
+          let(:activity_data_driven)  { false }
+
+          it 'should show school specfici description' do
+            visit school_activity_path(school, activity)
+            expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+            expect(page).to_not have_content(activity_type.description.to_plain_text)
+          end
+        end
       end
+
     end
 
     context 'recording an activity' do
@@ -160,18 +191,40 @@ describe 'viewing and recording activities', type: :system do
     end
 
     context 'viewing an activity type' do
-      it 'should see school specific content' do
-        expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-        expect(page).to_not have_content(activity_type.description.to_plain_text)
+      context 'when school is data enabled' do
+        it 'should see school specific content' do
+          expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to_not have_content(activity_type.description.to_plain_text)
+        end
+
+        it 'should not see prompt to login' do
+          expect(page).to_not have_link("Sign in to record activity")
+        end
+
+        it 'should see prompt to record it' do
+          expect(page).to have_content("Complete this activity to score your school #{activity_type.score} points!")
+          expect(page).to have_link("Record this activity")
+        end
       end
 
-      it 'should not see prompt to login' do
-        expect(page).to_not have_link("Sign in to record activity")
-      end
+      context 'when school not data enabled' do
+        let(:school_data_enabled) { false }
 
-      it 'should see prompt to record it' do
-        expect(page).to have_content("Complete this activity to score your school #{activity_type.score} points!")
-        expect(page).to have_link("Record this activity")
+        it 'should see generic content if school if activity is data driven' do
+          visit activity_type_path(activity_type)
+          expect(page).to_not have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_content(activity_type.description.to_plain_text)
+        end
+
+        context 'when activity not data driven' do
+          let(:activity_data_driven)  { false }
+
+          it 'should see school specific content' do
+            visit activity_type_path(activity_type)
+            expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+            expect(page).to_not have_content(activity_type.description.to_plain_text)
+          end
+        end
       end
     end
   end
