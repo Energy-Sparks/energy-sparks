@@ -23,7 +23,7 @@ module Amr
         end
       rescue Amr::DataFeedValidatorException => e
         #ensure that unexpected validation errors are recorded in the import log
-        amr_data_feed_import_log.update(error_messages: [e.message], records_imported: 0, records_updated: 0)
+        amr_data_feed_import_log.update(error_messages: e.message, records_imported: 0, records_updated: 0)
         Rollbar.error(e, job: :import_all, config: @config.identifier)
       end
 
