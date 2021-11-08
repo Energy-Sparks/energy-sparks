@@ -17,10 +17,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def show_data_enabled_activity?(activity, school)
-    activity.activity_type.data_driven? && !school.data_enabled?
-  end
-
   def new
     if params[:activity_type_id].present?
       activity_type = ActivityType.find(params[:activity_type_id])
@@ -46,8 +42,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /activities/1
-  # PATCH/PUT /activities/1.json
   def update
     respond_to do |format|
       if @activity.update(activity_params)
@@ -73,5 +67,9 @@ private
 
   def activity_params
     params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content)
+  end
+
+  def show_data_enabled_activity?(activity, school)
+    activity.activity_type.data_driven? && !school.data_enabled?
   end
 end
