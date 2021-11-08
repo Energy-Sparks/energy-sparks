@@ -3,24 +3,30 @@
     school</a>
   <div class="dropdown-menu" aria-labelledby="my_school">
     <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
-    <% if current_user.school.has_solar_pv? %>
-      <%= link_to 'Electricity and solar usage', pupils_school_analysis_path(current_user.school, category: :solar), class: 'dropdown-item' %>
-    <% elsif current_user.school.has_electricity? %>
-      <%= link_to 'Electricity usage', pupils_school_analysis_path(current_user.school, category: :electricity), class: 'dropdown-item' %>
+    <% if current_user.school.data_enabled? %>
+      <% if current_user.school.has_solar_pv? %>
+        <%= link_to 'Electricity and solar usage', pupils_school_analysis_path(current_user.school, category: :solar), class: 'dropdown-item' %>
+      <% elsif current_user.school.has_electricity? %>
+        <%= link_to 'Electricity usage', pupils_school_analysis_path(current_user.school, category: :electricity), class: 'dropdown-item' %>
+      <% end %>
+      <%= link_to 'Gas usage', pupils_school_analysis_path(current_user.school, category: :gas), class: 'dropdown-item' if current_user.school.has_gas? %>
+      <%= link_to 'Storage heater usage', pupils_school_analysis_path(current_user.school, category: :storage_heaters), class: 'dropdown-item' if current_user.school.has_storage_heaters? %>
+      <% if EnergySparks::FeatureFlags.active?(:live_data) %>
+        <%= link_to 'Live energy data', school_live_data_path(current_user.school), class: 'dropdown-item' if current_user.school.has_live_data? %>
+      <% end %>
+      <%= link_to 'Energy analysis', school_analysis_index_path(current_user.school), class: 'dropdown-item' %>
+      <%= link_to 'Review targets', school_school_targets_path(current_user.school), class: 'dropdown-item' if Targets::SchoolTargetService.targets_enabled?(current_user.school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(current_user.school).enough_data? %>
     <% end %>
-    <%= link_to 'Gas usage', pupils_school_analysis_path(current_user.school, category: :gas), class: 'dropdown-item' if current_user.school.has_gas? %>
-    <%= link_to 'Storage heater usage', pupils_school_analysis_path(current_user.school, category: :storage_heaters), class: 'dropdown-item' if current_user.school.has_storage_heaters? %>
-    <%= link_to 'Energy analysis', school_analysis_index_path(current_user.school), class: 'dropdown-item' %>
-    <% if EnergySparks::FeatureFlags.active?(:live_data) %>
-      <%= link_to 'Live energy data', school_live_data_path(current_user.school), class: 'dropdown-item' if current_user.school.has_live_data? %>
-    <% end %>
+    <%= link_to 'School programmes', programme_types_path, class: 'dropdown-item' %>
+    <%= link_to 'Complete pupil activities', activity_categories_path, class: 'dropdown-item' %>
+    <%= link_to 'Energy saving actions', school_interventions_path(current_user.school), class: 'dropdown-item' if can? :index, Observation %>
     <% if current_user.contact_for_school %>
       <%= link_to 'My alerts', edit_school_contact_path(current_user.school, current_user.contact_for_school), class: 'dropdown-item' %>
     <% elsif can? :create, Contact %>
       <%= link_to 'My alerts', new_school_contact_path(current_user.school, user_id: current_user.id), class: 'dropdown-item' %>
     <% end %>
-    <%= link_to 'School programmes', programme_types_path, class: 'dropdown-item' %>
-    <%= link_to 'Complete activities', activity_categories_path, class: 'dropdown-item' %>
-    <%= link_to "Download our data", school_downloads_path(current_user.school), id: "download-your-data", class: 'dropdown-item' %>
+    <% if current_user.school.data_enabled? %>
+      <%= link_to "Download our data", school_downloads_path(current_user.school), id: "download-your-data", class: 'dropdown-item' %>
+    <% end %>
 </div>
 </li>

@@ -22,7 +22,6 @@ RSpec.describe 'School Partners', :schools, type: :system do
       end
 
       it 'has a partner link on the school group page' do
-        click_on 'Manage school'
         click_on 'Manage partners'
 
         expect(page).to have_content(school_name)
@@ -30,7 +29,6 @@ RSpec.describe 'School Partners', :schools, type: :system do
       end
 
       it 'assigns partners to school groups via text box position' do
-        click_on 'Manage school'
         click_on 'Manage partners'
 
         expect(page.find_field(partner_1.name).value).to be_blank
@@ -42,7 +40,6 @@ RSpec.describe 'School Partners', :schools, type: :system do
 
         click_on 'Update associated partners', match: :first
 
-        click_on 'Manage school'
         click_on 'Manage partners'
 
         expect(school.partners).to match_array([partner_3, partner_2])
@@ -52,7 +49,6 @@ RSpec.describe 'School Partners', :schools, type: :system do
         fill_in partner_3.name, with: ""
 
         click_on 'Update associated partners', match: :first
-        click_on 'Manage school'
         click_on 'Manage partners'
 
         school.reload

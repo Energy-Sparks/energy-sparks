@@ -337,7 +337,7 @@ RSpec.describe 'school targets', type: :system do
     end
 
     it 'lets me view target data' do
-      visit school_path(school)
+      visit school_meters_path(school)
       expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
     end
 

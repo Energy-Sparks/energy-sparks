@@ -23,7 +23,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       it 'shows broken index' do
         meter_attribute = create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
-        click_on 'Manage school'
         click_on 'Meter attributes'
         expect(page).to have_content('Meter attributes: Oldfield Park Infants')
         expect(page).to have_content('There was an error')
@@ -32,7 +31,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       it 'deletes broken meter attribute' do
         meter_attribute = create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
-        click_on 'Manage school'
         click_on 'Meter attributes'
         click_on 'Delete'
         expect(gas_meter.reload.meter_attributes.active.count).to eq(0)
@@ -43,7 +41,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       it 'deletes broken school attribute' do
         meter_attribute = create(:school_meter_attribute, school: school)
         visit school_path(school)
-        click_on 'Manage school'
         click_on 'Meter attributes'
         click_on 'School-wide attributes'
         click_on 'Delete'
@@ -66,7 +63,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
     it 'allow the admin to manage the meter attributes' do
       visit school_path(school)
-      click_on 'Manage school'
       click_on 'Meter attributes'
       select 'Heating model', from: 'type'
       click_on 'New attribute'
@@ -106,7 +102,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
     it 'allow the admin to manage school meter attributes' do
       visit school_path(school)
-      click_on 'Manage school'
       click_on 'Meter attributes'
       click_on 'School-wide attributes'
       select 'Function > Switch', from: 'type'
@@ -249,7 +244,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       it 'does not display tariff attributes for other meters' do
         visit school_path(school)
-        click_on 'Manage school'
         click_on 'Meter attributes'
         expect(page).to_not have_content("from DCC tariff data")
       end
@@ -257,7 +251,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       it 'allows admin to see tariff attributes for dcc meters' do
         gas_meter.update!(dcc_meter: true)
         visit school_path(school)
-        click_on 'Manage school'
         click_on 'Meter attributes'
         expect(page).to have_content("from DCC tariff data")
         expect(page).to have_link("DCC tariff data")
