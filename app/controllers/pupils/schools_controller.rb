@@ -2,6 +2,7 @@ module Pupils
   class SchoolsController < ApplicationController
     include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
+    include DashboardSetup
     include DashboardAlerts
     include DashboardTimeline
     include NonPublicSchools
@@ -16,16 +17,24 @@ module Pupils
 
     def show
       authorize! :show_pupils_dash, @school
-      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.pupil_dashboard, :pupil_dashboard_title, limit: 2)
-      activity_setup(@school)
-      equivalence_setup(@school)
+      @show_data_enabled_features = show_data_enabled_features?
+      setup_default_features
+      setup_data_enabled_features if @show_data_enabled_features
+    end
 
+  private
+
+    def setup_default_features
+      activity_setup(@school)
       @temperature_observations = @school.observations.temperature
       @show_temperature_observations = show_temperature_observations?
       @observations = setup_timeline(@school.observations)
     end
 
-  private
+    def setup_data_enabled_features
+      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.pupil_dashboard, :pupil_dashboard_title, limit: 2)
+      equivalence_setup(@school)
+    end
 
     def activity_setup(school)
       @activities_count = school.activities.count
