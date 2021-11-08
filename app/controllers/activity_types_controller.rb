@@ -10,10 +10,10 @@ class ActivityTypesController < ApplicationController
     @recorded = Activity.where(activity_type: @activity_type).count
     @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
     if current_user_school
-      @content = load_content(@activity_type, current_user_school)
+      @activity_type_content = load_content(@activity_type, current_user_school)
       @can_be_completed = can_be_completed(@activity_type, current_user_school)
     else
-      @content = @activity_type.description
+      @activity_type_content = @activity_type.description
     end
   end
 
