@@ -10,6 +10,7 @@ class SchoolFilter
     schools = @default_scope
     schools = schools_from_school_groups(schools) if @school_group_ids.any?
     schools = schools_from_scoreboards(schools) if @scoreboard_ids.any?
+    schools = schools_with_school_type(schools) if @school_types.any?
     schools.to_a
   end
 
@@ -21,5 +22,9 @@ class SchoolFilter
 
   def schools_from_scoreboards(schools)
     schools.where(scoreboard_id: @scoreboard_ids)
+  end
+
+  def schools_with_school_type(schools)
+    schools.where(school_type: @school_types)
   end
 end
