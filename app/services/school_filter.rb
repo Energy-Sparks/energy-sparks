@@ -1,7 +1,8 @@
 class SchoolFilter
-  def initialize(school_group_ids: [], scoreboard_ids: [], include_invisible: false)
+  def initialize(school_group_ids: [], scoreboard_ids: [], school_types: [], include_invisible: false)
     @school_group_ids = school_group_ids.reject(&:blank?)
     @scoreboard_ids = scoreboard_ids.reject(&:blank?)
+    @school_types = school_types
     @default_scope = include_invisible ? School.process_data.data_enabled : School.process_data.data_enabled.visible
   end
 

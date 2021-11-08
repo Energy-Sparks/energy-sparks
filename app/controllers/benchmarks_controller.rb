@@ -75,17 +75,20 @@ private
   def load_filter
     @benchmark_filter = {
       school_group_ids: (params.dig(:benchmark, :school_group_ids) || []).reject(&:empty?),
-      scoreboard_ids:   (params.dig(:benchmark, :scoreboard_ids) || []).reject(&:empty?)
+      scoreboard_ids:   (params.dig(:benchmark, :scoreboard_ids) || []).reject(&:empty?),
+      school_types:     (params.dig(:benchmark, :school_types) || []).reject(&:empty?)
     }
     school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
     scoreboard_names = Scoreboard.find(@benchmark_filter[:scoreboard_ids]).pluck(:name).join(', ')
-    @filter_names = school_group_names + scoreboard_names
+    school_type_names = School.school_types.invert.values_at(*@benchmark_filter[:school_types].map(&:to_i)).join(', ')
+    @filter_names = [school_group_names, scoreboard_names, school_type_names].join(', ')
   end
 
   def filter_lists
     service = ComparisonService.new(current_user)
     @school_groups = service.list_school_groups
     @scoreboards = service.list_scoreboards
+    @school_types = service.school_types
   end
 
   def benchmark_results
