@@ -103,19 +103,21 @@ describe 'viewing and recording activities', type: :system do
         refresh
       end
 
-      it 'should see previous records' do
-        expect(page).to have_content("Activity previously completed")
-        expect(page).to have_content("once")
-      end
+      context 'when school is data enabled' do
+        it 'should see previous records' do
+          expect(page).to have_content("Activity previously completed")
+          expect(page).to have_content("once")
+        end
 
-      it 'should link to the activity' do
-        expect(page).to have_link(href: school_activity_path(school, activity))
-      end
+        it 'should link to the activity' do
+          expect(page).to have_link(href: school_activity_path(school, activity))
+        end
 
-      it 'should show school specific description' do
-        visit school_activity_path(school, activity)
-        expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
-        expect(page).to_not have_content(activity_type.description.to_plain_text)
+        it 'should show school specific description' do
+          visit school_activity_path(school, activity)
+          expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to_not have_content(activity_type.description.to_plain_text)
+        end
       end
 
       context 'when school not data enabled' do
