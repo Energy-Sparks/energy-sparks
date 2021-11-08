@@ -13,12 +13,16 @@ class ActivitiesController < ApplicationController
   # GET /activities/1
   # GET /activities/1.json
   def show
-    @activity_type_content = TemplateInterpolation.new(
-      @activity.activity_type,
-      render_with: SchoolTemplate.new(@school)
-    ).interpolate(
-      :school_specific_description_or_fallback
-    )
+    interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
+    if show_data_enabled_activity?(@activity, @school)
+      @activity_type_content = interpolator.interpolate(:description).description
+    else
+      @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
+  end
+
+  def show_data_enabled_activity?(activity, school)
+    activity.activity_type.data_driven? && !school.data_enabled?
   end
 
   # GET /activities/new
