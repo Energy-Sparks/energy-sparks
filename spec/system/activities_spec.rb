@@ -10,7 +10,7 @@ describe 'viewing and recording activities', type: :system do
   let(:activity_type_name)           { 'Exciting activity' }
   let(:activity_description)    { "It's An #{activity_type_name}" }
 
-  let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject]) }
+  let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: true) }
 
   let!(:school) { create_active_school() }
 
@@ -109,6 +109,19 @@ describe 'viewing and recording activities', type: :system do
       it 'should link to the activity' do
         expect(page).to have_link(href: school_activity_path(school, activity))
       end
+
+      it 'should show school specific description' do
+        visit school_activity_path(school, activity)
+        expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+        expect(page).to_not have_content(activity_type.description.to_plain_text)
+      end
+
+      it 'should show generic description if school not data enabled' do
+        school.update(data_enabled: false)
+        visit school_activity_path(school, activity)
+        expect(page).to_not have_content(activity_type.school_specific_description.to_plain_text)
+        expect(page).to have_content(activity_type.description.to_plain_text)
+      end
     end
 
     context 'recording an activity' do
@@ -163,6 +176,13 @@ describe 'viewing and recording activities', type: :system do
       it 'should see school specific content' do
         expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
         expect(page).to_not have_content(activity_type.description.to_plain_text)
+      end
+
+      it 'should see generic content if school not data enabled' do
+        school.update(data_enabled: false)
+        visit activity_type_path(activity_type)
+        expect(page).to_not have_content(activity_type.school_specific_description.to_plain_text)
+        expect(page).to have_content(activity_type.description.to_plain_text)
       end
 
       it 'should not see prompt to login' do
