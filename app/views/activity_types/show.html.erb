@@ -35,11 +35,7 @@
 <div class="row padded-row">
   <div class="col-md-9">
     <div class="activity_type">
-      <% if @content %>
-        <%= @content.school_specific_description_or_fallback %>
-      <% else %>
-        <%= @activity_type.description %>
-      <% end %>
+      <%= @content %>
     </div>
   </div>
   <div class="col-md-3">
