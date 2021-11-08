@@ -29,13 +29,13 @@
   </div>
 <% end %>
 
-<% if @activity_type_content.school_specific_description_or_fallback %>
+<% if @activity_type_content %>
   <div class="row">
     <div class="col-md-12 text-white activity_type">
       <div class="card bg-secondary">
         <div class="card-body">
           <h3 class="card-title">Activity description</h3>
-          <p class="card-text"><%= @activity_type_content.school_specific_description_or_fallback %></p>
+          <p class="card-text"><%= @activity_type_content %></p>
         </div>
       </div>
     </div>
