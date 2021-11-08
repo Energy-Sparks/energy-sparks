@@ -13,12 +13,18 @@ module Amr
       Rails.logger.info "Loading: #{@config.local_bucket_path}/#{@file_name}"
       amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
 
-      amr_reading_data = CsvToAmrReadingData.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
+      begin
+        amr_reading_data = CsvToAmrReadingData.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
 
-      if amr_reading_data.valid?
-        ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_reading_data.valid_records, amr_reading_data.warnings)
-      else
-        amr_data_feed_import_log.update(error_messages: amr_reading_data.error_messages_joined, records_imported: 0, records_updated: 0)
+        if amr_reading_data.valid?
+          ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_reading_data.valid_records, amr_reading_data.warnings)
+        else
+          amr_data_feed_import_log.update(error_messages: amr_reading_data.error_messages_joined, records_imported: 0, records_updated: 0)
+        end
+      rescue Amr::DataFeedValidatorException => e
+        #ensure that unexpected validation errors are recorded in the import log
+        amr_data_feed_import_log.update(error_messages: e.message, records_imported: 0, records_updated: 0)
+        Rollbar.error(e, job: :import_all, config: @config.identifier)
       end
 
       @inserted_record_count = amr_data_feed_import_log.records_imported
