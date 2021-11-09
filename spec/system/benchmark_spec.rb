@@ -74,6 +74,16 @@ describe 'Benchmarks' do
     expect(page).to have_content('sorry')
   end
 
+  it 'school types can be filtered' do
+    click_on 'Page A'
+    expect(page).to have_content(school_1.name)
+    School.school_types.keys.each do |school_type|
+      expect(page).to have_checked_field(school_type.humanize)
+    end
+    uncheck('Primary')
+    click_on('Filter')
+  end
+
   context 'with analysis page content' do
     let!(:gas_meter) { create :gas_meter_with_reading, school: school_1 }
     let!(:alert_type_rating) do

@@ -25,7 +25,7 @@ class ComparisonService
     groups.uniq.sort_by(&:name)
   end
 
-  def school_types
+  def list_school_types
     School.school_types
   end
 end
