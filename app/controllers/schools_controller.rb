@@ -2,7 +2,6 @@ class SchoolsController < ApplicationController
   include SchoolAggregation
   include ActivityTypeFilterable
   include AnalysisPages
-  include DashboardSetup
   include DashboardEnergyCharts
   include DashboardAlerts
   include DashboardTimeline

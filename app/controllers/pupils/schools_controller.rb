@@ -2,7 +2,7 @@ module Pupils
   class SchoolsController < ApplicationController
     include ActionView::Helpers::NumberHelper
     include ActivityTypeFilterable
-    include DashboardSetup
+    include SchoolAggregation
     include DashboardAlerts
     include DashboardTimeline
     include NonPublicSchools

@@ -273,40 +273,6 @@ describe 'Management dashboard' do
         end
       end
 
-      describe 'has a loading page which redirects to the right place', js: true do
-        before(:each) do
-          allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
-          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-          allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
-        end
-
-        context 'with a successful load' do
-          before(:each) do
-            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-            school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
-          end
-          it 'renders a loading page and then back to the dashboard page once complete' do
-            visit management_school_path(school)
-
-            expect(page).to have_content('Adult Dashboard')
-            # if redirect fails it will still be processing
-            expect(page).to_not have_content('processing')
-            expect(page).to_not have_content("we're having trouble processing your energy data today")
-          end
-        end
-
-        context 'with a loading error' do
-          before(:each) do
-            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
-          end
-
-          it 'shows an error message', errors_expected: true do
-            visit management_school_path(school)
-            expect(page).to have_content("we're having trouble processing your energy data today")
-          end
-        end
-      end
-
     end
 
   end
