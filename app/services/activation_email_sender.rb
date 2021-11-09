@@ -8,7 +8,7 @@ class ActivationEmailSender
       to = activation_email_list(@school)
       if to.any?
         target_prompt = include_target_prompt_in_email?
-        OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now
+        OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt, data_enabled: @data_enabled).activation_email.deliver_now
 
         record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
         record_target_event(@school, :first_target_sent) if target_prompt

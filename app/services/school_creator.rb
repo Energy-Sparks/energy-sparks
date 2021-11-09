@@ -35,7 +35,7 @@ class SchoolCreator
     @school.update!(visible: true)
     record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
     enrol_in_default_programme
-    broadcast(:onboarding_school_made_visible, @school)
+    broadcast(:school_made_visible, @school)
   end
 
   def add_school_times

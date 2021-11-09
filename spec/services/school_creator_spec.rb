@@ -111,7 +111,7 @@ describe SchoolCreator, :schools, type: :service do
       before(:each) do
         expect {
           service.make_visible!
-        }.to broadcast(:onboarding_school_made_visible)
+        }.to broadcast(:school_made_visible)
       end
 
       it 'completes the onboarding process' do
