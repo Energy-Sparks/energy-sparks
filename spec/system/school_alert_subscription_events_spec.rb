@@ -18,6 +18,7 @@ RSpec.describe "school alert subscription events", type: :system do
 
     service.perform(subscription_frequency: AlertType.frequencies.keys)
     click_on(school.name)
+    click_on('Batch reports')
     click_on('Email and SMS reports')
     click_on 'View'
 

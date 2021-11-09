@@ -1,25 +1,22 @@
 <li class="nav-item dropdown mt-2">
-  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
-  <div class="dropdown-menu">
+  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage_school" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
+  <div class="dropdown-menu" aria-labelledby="manage_school">
     <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
-    <%= link_to 'Calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
-    <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
-    <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
-    <%= link_to 'Solar API feeds', school_solar_feeds_configuration_index_path(school), class: 'dropdown-item' if can? :manage_solar_feed_configuration, School %>
-    <%= link_to 'Manage school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
-    <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
+    <%= link_to 'Edit school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
+    <%= link_to 'School calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
     <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
-    <%= link_to 'Manage partners', admin_school_partners_path(school), class: 'dropdown-item' if can? :manage, SchoolPartner %>
-    <%= link_to 'Alert reports', school_alert_reports_path(school), class: 'dropdown-item' if can? :index, Alert %>
-    <%= link_to 'Content reports', school_content_reports_path(school), class: 'dropdown-item' if can? :index, ContentGenerationRun %>
-    <%= link_to 'Email and SMS reports', school_subscription_generation_runs_path(school), class: 'dropdown-item' if can? :index, SubscriptionGenerationRun %>
-    <%= link_to 'Energy saving actions', school_interventions_path(school), class: 'dropdown-item' if can? :index, Observation %>
-    <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
+    <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
+    <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
+    <% if current_user.admin? %>
+      <div class="dropdown-divider"></div>
+    <% end %>
+    <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
     <%= link_to 'Meter attributes', admin_school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
-    <%= link_to 'Manage tariffs', school_user_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
     <%= link_to 'Manage CADs', school_cads_path(school), class: 'dropdown-item' if can? :manage, Cad %>
-    <%= link_to 'View target data', admin_school_target_data_path(school), class: 'dropdown-item' if can?(:view_target_data, school) %>
-    <%= link_to 'Review targets', school_school_targets_path(school), class: 'dropdown-item' if Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
+    <%= link_to 'Manage partners', admin_school_partners_path(school), class: 'dropdown-item' if can? :manage, SchoolPartner %>
+    <%= link_to 'Batch reports', school_reports_path(school), class: 'dropdown-item' if can? :view_content_reports, school %>
+    <%= link_to 'Review targets', school_school_targets_path(school), class: 'dropdown-item' if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
+    <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
     <%= link_to 'Remove school', removal_admin_school_path(school), class: 'dropdown-item' if can? :remove_school, school %>
   </div>
 </li>

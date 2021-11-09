@@ -1,0 +1,13 @@
+<h1>Admin batch process reports for <%= @school.name %></h1>
+
+<ul>
+  <% if can? :index, ContentGenerationRun %>
+    <li><%= link_to 'Content reports', school_content_reports_path(@school) %> -- view summary of content generation runs</li>
+  <% end %>
+  <% if can? :index, Alert %>
+    <li><%= link_to 'Alert reports', school_alert_reports_path(@school) %> -- view summary of recent alert runs</li>
+  <% end %>
+  <% if can? :index, SubscriptionGenerationRun %>
+    <li><%= link_to 'Email and SMS reports', school_subscription_generation_runs_path(@school) %> -- view recently sent alerts</li>
+  <% end %>
+</ul>

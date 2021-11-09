@@ -6,6 +6,8 @@ RSpec.describe "school", type: :system do
 
   let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:configuration)      { create(:configuration, school: school, fuel_configuration: fuel_configuration)}
   let!(:school_group)       { create(:school_group, name: 'School Group')}
 
   let(:management_table) {
@@ -402,7 +404,105 @@ RSpec.describe "school", type: :system do
         expect(school).to be_data_enabled
       end
 
+      it 'shows extra manage menu items' do
+        visit school_path(school)
+        expect(page).to have_css("#manage_school")
+        expect(page).to have_link("Edit school details")
+        expect(page).to have_link("Edit school times")
+        expect(page).to have_link("School calendar")
+        expect(page).to have_link("Manage users")
+        expect(page).to have_link("Manage alert contacts")
+        expect(page).to have_link("Manage meters")
+        expect(page).to have_link("School configuration")
+        expect(page).to have_link("Meter attributes")
+        expect(page).to have_link("Manage CADs")
+        expect(page).to have_link("Manage partners")
+        expect(page).to have_link("Batch reports")
+        expect(page).to have_link("Expert analysis")
+        expect(page).to have_link("Remove school")
+      end
+
+      it 'displays reports path' do
+        visit school_path(school)
+        click_on 'Batch reports'
+        expect(page).to have_link("Content reports")
+        expect(page).to have_link("Alert reports")
+        expect(page).to have_link("Email and SMS reports")
+      end
     end
+  end
+
+  context 'as staff' do
+    let(:staff)   { create(:staff, school: school) }
+
+    before(:each) do
+      sign_in(staff)
+      visit school_path(school)
+    end
+
+    context 'with school menu' do
+      it 'should have my school menu' do
+        expect(page).to have_css("#my_school_menu")
+        expect(page).to have_link("Electricity usage")
+        expect(page).to have_link("Gas usage")
+        expect(page).to have_link("Storage heater usage")
+        expect(page).to have_link("Energy analysis")
+        expect(page).to have_link("My alerts")
+        expect(page).to have_link("School programmes")
+        expect(page).to have_link("Complete pupil activities")
+        expect(page).to have_link("Energy saving actions")
+        expect(page).to have_link("Download our data")
+      end
+
+      it 'should display menu on other pages' do
+        click_on 'Scoreboard'
+        expect(page).to have_css("#my_school_menu")
+      end
+
+      it 'should not have a manage menu' do
+        expect(page).to_not have_css("#manage_school")
+      end
+    end
+
+  end
+
+  context 'as school admin' do
+    let(:school_admin)  { create(:school_admin, school: school) }
+    before(:each) do
+      sign_in(school_admin)
+      visit school_path(school)
+    end
+
+    context 'with school menu' do
+      it 'should have my school menu' do
+        expect(page).to have_css("#my_school_menu")
+        expect(page).to have_link("Electricity usage")
+        expect(page).to have_link("Gas usage")
+        expect(page).to have_link("Storage heater usage")
+        expect(page).to have_link("Energy analysis")
+        expect(page).to have_link("My alerts")
+        expect(page).to have_link("School programmes")
+        expect(page).to have_link("Complete pupil activities")
+        expect(page).to have_link("Energy saving actions")
+        expect(page).to have_link("Download our data")
+      end
+
+      it 'should display menu on other pages' do
+        click_on 'Scoreboard'
+        expect(page).to have_css("#my_school_menu")
+      end
+
+      it 'should have manage school menu' do
+        expect(page).to have_css("#manage_school")
+        expect(page).to have_link("Edit school details")
+        expect(page).to have_link("Edit school times")
+        expect(page).to have_link("School calendar")
+        expect(page).to have_link("Manage users")
+        expect(page).to have_link("Manage alert contacts")
+        expect(page).to have_link("Manage meters")
+      end
+    end
+
   end
 
   context 'when school is not data-enabled' do
@@ -421,5 +521,50 @@ RSpec.describe "school", type: :system do
       expect(page).to_not have_link("Review energy analysis")
     end
 
+    context 'and signed in as staff' do
+      let(:staff)   { create(:staff, school: school) }
+
+      before(:each) do
+        sign_in(staff)
+        visit school_path(school)
+      end
+
+      it 'should not have data enabled features in my school menu' do
+        expect(page).to have_css("#my_school_menu")
+        expect(page).to_not have_link("Electricity usage")
+        expect(page).to_not have_link("Gas usage")
+        expect(page).to_not have_link("Storage heater usage")
+        expect(page).to_not have_link("Energy analysis")
+        expect(page).to have_link("My alerts")
+        expect(page).to have_link("School programmes")
+        expect(page).to have_link("Complete pupil activities")
+        expect(page).to have_link("Energy saving actions")
+        expect(page).to_not have_link("Download our data")
+        expect(page).to_not have_link("Review targets")
+      end
+    end
+
+    context 'and signed in as school admin' do
+      let(:school_admin)  { create(:school_admin, school: school) }
+      before(:each) do
+        sign_in(school_admin)
+        visit school_path(school)
+      end
+
+      it 'should not have data enabled features in my school menu' do
+        expect(page).to have_css("#my_school_menu")
+        expect(page).to_not have_link("Electricity usage")
+        expect(page).to_not have_link("Gas usage")
+        expect(page).to_not have_link("Storage heater usage")
+        expect(page).to_not have_link("Energy analysis")
+        expect(page).to have_link("My alerts")
+        expect(page).to have_link("School programmes")
+        expect(page).to have_link("Complete pupil activities")
+        expect(page).to have_link("Energy saving actions")
+        expect(page).to_not have_link("Download our data")
+        expect(page).to_not have_link("Review targets")
+      end
+
+    end
   end
 end
