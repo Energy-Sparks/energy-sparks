@@ -34,6 +34,12 @@ RSpec.describe "school", type: :system do
       expect(page.has_content? school_name).to be true
     end
 
+    it 'shows login form' do
+      visit school_path(school)
+      expect(page).to have_content('Log in with your email address and password')
+      expect(page).to have_content('Log in with your pupil password')
+    end
+
     it 'shows data-enabled features' do
       visit school_path(school)
       expect(page).to have_content("Annual usage summary")
