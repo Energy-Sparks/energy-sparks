@@ -100,10 +100,35 @@ describe ActivationEmailSender, :schools, type: :service do
           let(:email_body) { email.html_part.body.to_s }
           let(:matcher) { Capybara::Node::Simple.new(email_body.to_s) }
 
+          context 'for data enabled school' do
+            before :each do
+              school.update(data_enabled: true)
+              service.send
+            end
+
+            it 'links to explore' do
+              expect(matcher).to have_content("see how much energy your school is using")
+              expect(matcher).to have_link("explore our activities and educational resources")
+            end
+          end
+
+          context 'for non-data enabled school' do
+            before :each do
+              school.update(data_enabled: false)
+              service.send
+            end
+
+            it 'links to activities' do
+              expect(matcher).to have_link("activities and educational resources")
+              expect(matcher).to have_link("energy saving actions")
+            end
+          end
+
           it 'link to school dashboard' do
             service.send
             expect(matcher).to have_link("View your school dashboard")
           end
+
           it 'links to help content and contact' do
             service.send
             expect(matcher).to have_link("User Guide")
