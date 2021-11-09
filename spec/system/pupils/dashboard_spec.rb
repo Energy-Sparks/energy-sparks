@@ -20,7 +20,10 @@ describe 'Pupil dashboard' do
       visit pupils_school_path(school)
     end
 
-    it 'shows login form'
+    it 'shows login form' do
+      expect(page).to have_content('Log in with your email address and password')
+      expect(page).to have_content('Log in with your pupil password')
+    end
 
     it 'shows equivalences' do
       expect(page).to have_content('Your school spent £2.00 on electricity last year!')
