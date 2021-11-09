@@ -76,7 +76,7 @@ private
     @benchmark_filter = {
       school_group_ids: (params.dig(:benchmark, :school_group_ids) || []).reject(&:empty?),
       scoreboard_ids:   (params.dig(:benchmark, :scoreboard_ids) || []).reject(&:empty?),
-      school_types:     (params.dig(:benchmark, :school_types) || []).reject(&:empty?)
+      school_types:     (params.dig(:benchmark, :school_types) || School.school_types.map(&:second).map(&:to_s)).reject(&:empty?)
     }
     school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
     scoreboard_names = Scoreboard.find(@benchmark_filter[:scoreboard_ids]).pluck(:name).join(', ')
