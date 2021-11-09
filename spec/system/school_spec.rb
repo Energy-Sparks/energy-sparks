@@ -55,6 +55,43 @@ RSpec.describe "school", type: :system do
       expect(page.has_content? school_name).to be true
     end
 
+    describe 'has a loading page which redirects to the right place' do
+      before(:each) do
+        allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+      end
+
+      #non-javascript version of test to check that right template is delivered
+      context 'displays the holding page template' do
+        it 'renders a loading page' do
+          visit school_path(school)
+          expect(page).to have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
+        end
+      end
+
+      context 'with a successful ajax load', js: true do
+        it 'renders a loading page and then back to the dashboard page on success' do
+          visit school_path(school)
+
+          expect(page).to have_content('Adult Dashboard')
+          # if redirect fails it will still be processing
+          expect(page).to_not have_content('processing')
+          expect(page).to_not have_content("we're having trouble processing your energy data today")
+        end
+      end
+
+      context 'with an ajax loading error', js: true do
+        before(:each) do
+          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
+        end
+
+        it 'shows an error message', errors_expected: true do
+          visit school_path(school)
+          expect(page).to have_content("we're having trouble processing your energy data today")
+        end
+      end
+    end
+
 
     context 'with school in group' do
       let(:public)      { true }
@@ -519,6 +556,22 @@ RSpec.describe "school", type: :system do
       expect(page).to_not have_link("Compare schools")
       expect(page).to_not have_link("Explore data")
       expect(page).to_not have_link("Review energy analysis")
+    end
+
+    describe 'it does not show loading page' do
+      before(:each) do
+        allow(AggregateSchoolService).to receive(:caching_off?).and_return(false)
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
+      end
+
+      #non-javascript version of test to check that right template is delivered
+      context 'displays the holding page template' do
+        it 'renders a loading page' do
+          visit school_path(school)
+          expect(page).to have_content("Adult Dashboard")
+          expect(page).to_not have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
+        end
+      end
     end
 
     context 'and signed in as staff' do

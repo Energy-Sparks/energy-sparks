@@ -3,7 +3,6 @@ module Management
     load_and_authorize_resource
 
     include SchoolAggregation
-    include DashboardSetup
     include DashboardEnergyCharts
     include DashboardAlerts
     include DashboardTimeline
