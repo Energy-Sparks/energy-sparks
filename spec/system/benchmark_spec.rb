@@ -3,7 +3,8 @@ require 'rails_helper'
 describe 'Benchmarks' do
 
   let!(:school_group)       { create(:school_group) }
-  let!(:school_1)           { create(:school, school_group: school_group) }
+  let!(:school_1)           { create(:school, school_group: school_group, school_type: :primary) }
+  let!(:school_2)           { create(:school, school_group: school_group, school_type: :secondary) }
   let!(:user)               { create(:user)}
   let!(:run_1)              { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
   let!(:gas_fuel_alert_type) { create(:alert_type, source: :analysis, sub_category: :heating, fuel_type: :gas, description: description, frequency: :weekly) }
@@ -81,6 +82,7 @@ describe 'Benchmarks' do
       expect(page).to have_checked_field(school_type.humanize)
     end
     uncheck('Primary')
+    expect_any_instance_of(Alerts::CollateBenchmarkData).to receive(:perform).with([school_2])
     click_on('Filter')
   end
 
