@@ -19,6 +19,8 @@
 
   <h2 class="mt-2">Let's look at the energy use data for your school:</h2>
   <%= render 'pupils/analysis/top_level', school: @school %>
+<% else %>
+  <%= render 'default_equivalences', equivalences: @default_equivalences, chool: @school %>
 <% end %>
 
 <h2 class="mt-2">Things to do</h2>
