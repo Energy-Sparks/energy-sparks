@@ -22,6 +22,7 @@ class OnboardingMailer < ApplicationMailer
     @school = params[:school]
     @to = params[:to]
     @target_prompt = params[:target_prompt]
+    @data_enabled = @school.data_enabled
     make_bootstrap_mail(to: @to, subject: "#{@school.name} is live on Energy Sparks")
   end
 

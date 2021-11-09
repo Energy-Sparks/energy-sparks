@@ -1,4 +1,6 @@
 class SchoolCreator
+  include Wisper::Publisher
+
   def initialize(school)
     @school = school
   end
@@ -32,17 +34,8 @@ class SchoolCreator
   def make_visible!
     @school.update!(visible: true)
     record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
-    if should_send_activation_email?
-      to = activation_email_list(@school)
-      if to.any?
-        target_prompt = include_target_prompt_in_email?
-        OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now
-
-        record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
-        record_target_event(@school, :first_target_sent) if target_prompt
-      end
-      enrol_in_default_programme
-    end
+    enrol_in_default_programme
+    broadcast(:onboarding_school_made_visible, @school)
   end
 
   def add_school_times
@@ -56,16 +49,6 @@ class SchoolCreator
   end
 
 private
-
-  def activation_email_list(school)
-    users = []
-    if school.school_onboarding && school.school_onboarding.created_user.present?
-      users << school.school_onboarding.created_user
-    end
-    #also email admin, staff and group users
-    users += school.all_adult_school_users.to_a
-    users.uniq.map(&:email)
-  end
 
   def add_school(user, school)
     user.add_cluster_school(school)
@@ -92,14 +75,6 @@ private
         description: 'School Energy Sparks contact'
       )
     end
-  end
-
-  def should_send_activation_email?
-    @school.school_onboarding.nil? || @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
-  end
-
-  def include_target_prompt_in_email?
-    return Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
   end
 
   def enrol_in_default_programme

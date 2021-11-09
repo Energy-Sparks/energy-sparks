@@ -1,13 +1,36 @@
-<h1 class="mb-3"><%=@school.name %> is live on Energy Sparks</h1>
+<h1 class="mb-3"><%=@school.name %> is now live on Energy Sparks</h1>
 
-<p>
-  You can now use Energy Sparks to <strong><%= link_to 'see how much energy your school is using', school_url(@school) %></strong>,
-  set up alerts to warn you about high energy use and <strong><%= link_to 'explore our activities and
-  educational resources', activity_categories_url %></strong> designed to teach your pupils about energy whilst
-  saving money for their school.
-</p>
+<% if @data_enabled %>
 
-<%= link_to 'View your school dashboard', school_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+  <p>
+    You can now use Energy Sparks to <strong><%= link_to 'see how much energy your school is using', school_url(@school) %></strong>,
+    set up alerts to warn you about high energy use and <strong><%= link_to 'explore our activities and
+    educational resources', activity_categories_url %></strong> designed to teach your pupils about energy whilst
+    saving money for their school.
+  </p>
+
+  <%= link_to 'View your school dashboard', school_url(@school), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+
+<% else %>
+
+  <p>
+    You can now use Energy Sparks to begin recording your energy saving activities.
+    Explore our pupil-lead <strong><%= link_to 'activities and educational resources', activity_categories_path %></strong>
+    which are designed to teach your pupils about energy whilst saving money for their school.
+  </p>
+  <p>
+    We also have a range of <strong><%= link_to 'energy saving actions', intervention_type_groups_path %></strong> that you,
+    other members of staff and volunteers can carry out to start improving you energy usage.
+  </p>
+  <p>
+    View your <%= link_to 'school dashboard', school_url(@school) %> for suggestions for how to get started.
+  </p>
+  <p>
+    We will be in touch shortly to confirm when we have completed getting access to your energy data.
+  </p>
+
+<% end %>
+
 
 <% if @target_prompt %>
   <h5 class="mb-3">Set your first targets</h5>
