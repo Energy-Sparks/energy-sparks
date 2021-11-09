@@ -107,8 +107,4 @@ private
     result
   end
   alias_method :record_events, :record_event
-
-  def record_target_event(school, event)
-    school.school_target_events.create(event: event)
-  end
 end
