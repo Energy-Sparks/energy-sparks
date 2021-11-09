@@ -17,6 +17,9 @@ describe 'user tariffs', type: :system do
     it 'menu item is not there' do
       visit school_path(school)
       expect(page).not_to have_link('Manage tariffs')
+
+      visit school_meters_path(school)
+      expect(page).not_to have_link('Manage tariffs')
     end
 
     it 'access is denied' do
@@ -39,10 +42,6 @@ describe 'user tariffs', type: :system do
           click_link('Manage tariffs')
         end
         expect(page).to have_content('Manage tariffs')
-      end
-      it 'from user tariffs index to analysis pages' do
-        visit school_path(school)
-        click_link('Manage tariffs')
         expect(page).to have_link('electricity cost analysis')
         expect(page).to have_link('gas cost analysis')
       end
@@ -51,7 +50,7 @@ describe 'user tariffs', type: :system do
     context 'creating flat rate gas tariffs' do
 
       it 'can create a tariff and add prices and charges' do
-        visit school_path(school)
+        visit school_meters_path(school)
         click_link('Manage tariffs')
 
         expect(page).to have_content('Manage tariffs')
@@ -111,7 +110,7 @@ describe 'user tariffs', type: :system do
     context 'creating flat rate electricity tariffs' do
 
       it 'requires a meter to be selected' do
-        visit school_path(school)
+        visit school_meters_path(school)
         click_link('Manage tariffs')
         click_link('Add electricity tariff')
 
@@ -125,7 +124,7 @@ describe 'user tariffs', type: :system do
       end
 
       it 'can handle partially created tariff with bits missing' do
-        visit school_path(school)
+        visit school_meters_path(school)
         click_link('Manage tariffs')
 
         expect(page).to have_content('Manage tariffs')
@@ -150,7 +149,7 @@ describe 'user tariffs', type: :system do
       end
 
       it 'can create a flat rate tariff with price' do
-        visit school_path(school)
+        visit school_meters_path(school)
         click_link('Manage tariffs')
         click_link('Add electricity tariff')
 
@@ -192,7 +191,7 @@ describe 'user tariffs', type: :system do
     context 'creating differential electricity tariffs' do
 
       it 'can create a tariff and add prices and charges' do
-        visit school_path(school)
+        visit school_meters_path(school)
         click_link('Manage tariffs')
         click_link('Add electricity tariff')
 
@@ -251,7 +250,7 @@ describe 'user tariffs', type: :system do
     context 'adding electricity standing charges' do
 
       it 'can create a tariff and add charges' do
-        visit school_path(school)
+        visit school_meters_path(school)
         click_link('Manage tariffs')
         click_link('Add electricity tariff')
 

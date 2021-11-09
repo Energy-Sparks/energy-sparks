@@ -120,6 +120,7 @@ Rails.application.routes.draw do
       resources :contacts
       resources :subscription_generation_runs, only: [:index, :show]
       resources :alert_subscription_events, only: [:show]
+      resources :reports, only: [:index]
 
       resources :meters do
         member do

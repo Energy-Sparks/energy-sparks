@@ -14,7 +14,7 @@ describe 'managing school times' do
   end
 
   it 'allows setting of daily values and validates the inputs' do
-    click_on 'Manage school times'
+    click_on 'Edit school times'
 
     fill_in 'monday-opening_time', with: ''
     click_on 'Update school times'
