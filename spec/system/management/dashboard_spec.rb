@@ -90,6 +90,13 @@ describe 'Management dashboard' do
         expect(page).to have_content("Adult Dashboard")
       end
 
+
+      it 'shows the expected prompts' do
+        expect(page).to have_link("View your programmes")
+        expect(page).to have_link("Record a pupil activity")
+        expect(page).to have_link("Record an action")
+      end
+
       it 'shows data-enabled features' do
         #management table
         expect(page).to have_content("Your annual usage")
@@ -266,7 +273,7 @@ describe 'Management dashboard' do
           expect(page).to have_content('Recorded temperatures in')
           expect(page).to have_content('Upgraded insulation')
           expect(page).to have_content('Completed an activity')
-          click_on 'View all actions'
+          click_on 'View all events'
           expect(page).to have_content('Recorded temperatures in')
           expect(page).to have_content('Upgraded insulation')
           expect(page).to have_content('Completed an activity')
@@ -319,6 +326,13 @@ describe 'Management dashboard' do
       it 'allows access to dashboard' do
         expect(page).to have_content("#{school.name}")
         expect(page).to have_content("Adult Dashboard")
+      end
+
+      it 'shows the expected prompts' do
+        expect(page).to have_link("Find a course")
+        expect(page).to have_link("View your programmes")
+        expect(page).to have_link("Record a pupil activity")
+        expect(page).to have_link("Record an action")
       end
 
       it 'shows temperature observations' do

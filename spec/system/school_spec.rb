@@ -7,7 +7,6 @@ RSpec.describe "school", type: :system do
   let(:school_name)         { 'Oldfield Park Infants' }
   let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
-  let!(:configuration)      { create(:configuration, school: school, fuel_configuration: fuel_configuration)}
   let!(:school_group)       { create(:school_group, name: 'School Group')}
 
   let(:management_table) {
@@ -20,6 +19,10 @@ RSpec.describe "school", type: :system do
 
   before(:each) do
     allow_any_instance_of(Targets::ProgressService).to receive(:management_table).and_return(management_table)
+    #Update the configuration rather than creating one, as the school factory builds one
+    #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
+    #relationship
+    school.configuration.update!(fuel_configuration: fuel_configuration)
   end
 
   context 'as a guest user' do
