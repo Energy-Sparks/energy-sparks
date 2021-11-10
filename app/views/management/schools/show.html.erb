@@ -15,14 +15,6 @@
   <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
-<% if @add_contacts %>
-  <%= render 'management/schools/add_contacts', school: @school %>
-<% end %>
-
-<% if @add_pupils %>
-  <%= render 'management/schools/add_pupils', school: @school %>
-<% end %>
-
 <% if @add_targets %>
   <%= render 'management/schools/targets/add_targets', school: @school %>
 <% end %>
@@ -32,6 +24,14 @@
 <% end %>
 
 <%= render 'management/schools/add_intervention', school: @school %>
+
+<% if @add_pupils %>
+  <%= render 'management/schools/add_pupils', school: @school %>
+<% end %>
+
+<% if @add_contacts %>
+  <%= render 'management/schools/add_contacts', school: @school %>
+<% end %>
 
 <% if @overview_charts && @overview_charts.any? %>
   <h3>Your recent energy usage</h3>
