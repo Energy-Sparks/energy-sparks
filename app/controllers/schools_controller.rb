@@ -41,6 +41,7 @@ class SchoolsController < ApplicationController
     if go_to_specific_dashboard?
       redirect_to_specific_dashboard
     else
+      redirect_to pupils_school_path(@school) unless @school.data_enabled
       authorize! :show, @school
       @show_data_enabled_features = show_data_enabled_features?
       setup_default_features
