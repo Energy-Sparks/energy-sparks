@@ -9,29 +9,29 @@
 
 <h3>Act on your energy usage</h3>
 
-<%= render 'shared/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
+<%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
 
 <% if @dashboard_alerts %>
   <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
 <% if @add_contacts %>
-  <%= render 'shared/add_contacts', school: @school %>
+  <%= render 'management/schools/add_contacts', school: @school %>
 <% end %>
 
 <% if @add_pupils %>
-  <%= render 'shared/add_pupils', school: @school %>
+  <%= render 'management/schools/add_pupils', school: @school %>
 <% end %>
 
 <% if @add_targets %>
-  <%= render 'shared/targets/add_targets', school: @school %>
+  <%= render 'management/schools/targets/add_targets', school: @school %>
 <% end %>
 
 <% if @review_targets %>
-  <%= render 'shared/targets/review_targets', school: @school %>
+  <%= render 'management/schools/targets/review_targets', school: @school %>
 <% end %>
 
-<%= render 'shared/add_intervention', school: @school %>
+<%= render 'management/schools/add_intervention', school: @school %>
 
 <% if @overview_charts && @overview_charts.any? %>
   <h3>Your recent energy usage</h3>
