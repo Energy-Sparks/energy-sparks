@@ -14,7 +14,7 @@ private
 
   def show_data_enabled_features?
     if current_user && current_user.admin?
-      true unless params[:no_data]
+      params[:no_data] ? false : true
     else
       @school.data_enabled?
     end
