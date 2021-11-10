@@ -128,7 +128,7 @@ describe 'viewing and recording action', type: :system do
 
       it 'can be updated' do
         visit management_school_path(school)
-        click_on 'View all actions'
+        click_on 'View all events'
 
         within '.application' do
           click_on 'Edit'
@@ -148,7 +148,7 @@ describe 'viewing and recording action', type: :system do
 
       it 'can be deleted' do
         visit management_school_path(school)
-        click_on 'View all actions'
+        click_on 'View all events'
 
         expect{
           click_on 'Delete'

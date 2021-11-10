@@ -80,7 +80,7 @@ describe 'Pupil dashboard' do
         expect(page).to have_content('Recorded temperatures in')
         expect(page).to have_content('Upgraded insulation')
         expect(page).to have_content('Completed an activity')
-        click_on 'View all actions'
+        click_on 'View all events'
         expect(page).to have_content('Recorded temperatures in')
         expect(page).to have_content('Upgraded insulation')
         expect(page).to have_content('Completed an activity')

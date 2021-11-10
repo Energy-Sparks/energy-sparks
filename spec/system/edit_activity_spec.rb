@@ -15,7 +15,7 @@ describe 'editing an activity' do
   before(:each) do
     sign_in(admin)
     visit school_path(school)
-    click_on('View all actions')
+    click_on('View all events')
     click_on('Edit')
   end
 
