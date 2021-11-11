@@ -80,8 +80,7 @@ private
     }
     school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
     scoreboard_names = Scoreboard.find(@benchmark_filter[:scoreboard_ids]).pluck(:name).join(', ')
-    school_type_names = school_types_from_ids(@benchmark_filter[:school_types]).join(', ')
-    @filter_names = [school_group_names, scoreboard_names, school_type_names].join(', ')
+    @filter_names = school_group_names + scoreboard_names
   end
 
   def all_school_type_ids
