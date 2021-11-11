@@ -6,8 +6,7 @@
 
 <% if @consent_documents.any? %>
   <p>
-  You have provided us with the following bills as proof of your access to
-  the meters installed at your school.
+  You have provided us with the following bills as proof of which meters are installed at your school.
   </p>
 
   <p>
@@ -43,9 +42,21 @@
 
 <% else %>
   <p>
-    You have not yet provided us with any energy bills to demonstrate you
-    have access to the meters installed at your school.
+    You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.
   </p>
+
+  <p>
+   A copy of a recent bill will help ensure that we have authority to collect, process and display the data on your behalf.
+  </p>
+
+  <p>A bill needs to be dated within the last 3 months, and show:</p>
+
+  <ul>
+  <li>your school name</li>
+  <li>school address</li>
+  <li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
+  </ul>
+
   <p>
     <%= link_to "Upload a bill", new_school_consent_document_path(@school), class: 'btn btn-primary' %>
   </p>

@@ -13,6 +13,7 @@ module Schools
       electricity_meters = meters.select(&:electricity?)
       gas_meters = meters.select(&:gas?)
       BillRequestMailer.with(emails: users.map(&:email), school: @school, electricity_meters: electricity_meters, gas_meters: gas_meters, subject: "Please upload a recent energy bill to Energy Sparks").request_bill.deliver_now
+      @school.update!(bill_requested: true)
     end
   end
 end

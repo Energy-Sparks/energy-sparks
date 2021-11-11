@@ -36,6 +36,12 @@ RSpec.describe Schools::BillRequestService do
       }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
     end
 
+    it 'should set flag on school' do
+      expect{
+        service.request_documentation!([school_admin])
+      }.to change(school, :bill_requested).from(false).to(true)
+    end
+
     context 'when formatting email' do
         before(:each) do
           service.request_documentation!([school_admin])
