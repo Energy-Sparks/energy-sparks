@@ -344,6 +344,10 @@ describe 'Management dashboard' do
         expect(page).to_not have_content("Your annual usage")
       end
 
+      it 'shows placeholder chart' do
+        expect(page).to have_css(".chart-placeholder-image")
+      end
+
       it 'does not show data-enabled links' do
         expect(page).to_not have_link("Compare schools")
         expect(page).to_not have_link("Explore your data")

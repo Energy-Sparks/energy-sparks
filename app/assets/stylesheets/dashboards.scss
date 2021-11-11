@@ -184,3 +184,31 @@ table.management-priorities {
     color: $new-red;
   }
 }
+
+.chart-placeholder-image {
+    background-image: image-url('graph-placeholder.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 670px;
+    position: relative;
+}
+
+@media (max-width: 1199.98px) {
+  .chart-placeholder-image {
+      background-image: image-url('graph-placeholder-765.png');
+      height: 333px;
+  }
+}
+
+.chart-placeholder-text {
+  text-align: center;
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $grey;
+  color: $text;
+  border-radius: 0.75rem;
+}

@@ -44,7 +44,16 @@
 <% if @overview_charts && @overview_charts.any? %>
   <h3>Your recent energy usage</h3>
   <%= render 'overview_charts', overview_charts: @overview_charts %>
+<% elsif @show_data_enabled_features == false %>
+  <h3>Your recent energy usage</h3>
+  <div class="chart-placeholder-image">
+    <div class="chart-placeholder-text">
+      <h1>Coming Soon</h1>
+      <p>We're configuring access to your energy data and will notify you when it's ready to explore</p>
+    </div>
+  </div>
 <% end %>
+
 
 <% if @management_priorities && @management_priorities.any? %>
   <h3>Your energy saving opportunities</h3>
