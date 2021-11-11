@@ -15,6 +15,10 @@
   <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
+<% if @prompt_for_bill %>
+  <%= render 'management/schools/prompt_for_bill', school: @school %>
+<% end %>
+
 <% if @prompt_training %>
   <%= render 'management/schools/prompt_training' %>
 <% end %>
