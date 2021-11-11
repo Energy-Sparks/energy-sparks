@@ -45,6 +45,15 @@ describe 'consent documents', type: :system do
       sign_in(school_admin)
     end
 
+    context 'when viewing dashboard' do
+      before(:each) do
+        visit management_school_path(school)
+      end
+      it 'displays a prompt' do
+        expect(page).to have_content("We need you to provide a recent energy bill for your school")
+      end
+    end
+
     context 'when managing consent documents' do
       it 'can create and upload a bill' do
         expect(school.bill_requested).to eql(true)
