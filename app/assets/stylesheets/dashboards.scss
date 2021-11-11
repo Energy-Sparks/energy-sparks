@@ -187,11 +187,18 @@ table.management-priorities {
 
 .chart-placeholder-image {
     background-image: image-url('graph-placeholder.png');
-    background-position: center;
+    background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 500px;
+    height: 670px;
     position: relative;
+}
+
+@media (max-width: 1199.98px) {
+  .chart-placeholder-image {
+      background-image: image-url('graph-placeholder-765.png');
+      height: 333px;
+  }
 }
 
 .chart-placeholder-text {
@@ -202,6 +209,6 @@ table.management-priorities {
   left: 50%;
   transform: translate(-50%, -50%);
   background: $grey;
-  opacity: 0.95;
   color: $text;
+  border-radius: 0.75rem;
 }
