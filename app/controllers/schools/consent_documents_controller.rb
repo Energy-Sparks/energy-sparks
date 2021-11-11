@@ -18,6 +18,7 @@ module Schools
       @consent_document.school = @school
       if @consent_document.save
         BillRequestMailer.with(school: @school, consent_document: @consent_document, updated: false).notify_admin.deliver_now
+        @school.update!(bill_requested: false)
         redirect_to school_consent_documents_path, notice: 'Your bill was successfully uploaded.'
       else
         render :new
@@ -27,6 +28,7 @@ module Schools
     def update
       if @consent_document.update(consent_document_params)
         BillRequestMailer.with(school: @school, consent_document: @consent_document, updated: true).notify_admin.deliver_now
+        @school.update!(bill_requested: false)
         redirect_to school_consent_documents_path, notice: "The bill was successfully updated."
       else
         render :edit
