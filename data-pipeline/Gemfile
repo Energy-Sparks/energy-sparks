@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.3'
+ruby '2.7.2'
 
 gem 'aws-sdk-s3'
 gem 'mail'
@@ -10,4 +10,3 @@ group :test do
   gem 'rspec'
   gem 'bundler-audit'
 end
-
