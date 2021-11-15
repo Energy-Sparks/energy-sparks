@@ -1,5 +1,6 @@
 module Onboarding
   class CompletionController < BaseController
+    include NewsletterSubscriber
     include OnboardingHelper
     include Wisper::Publisher
 
