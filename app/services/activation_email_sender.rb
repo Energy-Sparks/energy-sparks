@@ -36,10 +36,6 @@ class ActivationEmailSender
     return Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
   end
 
-  def should_complete_onboarding?
-    @school.school_onboarding && @school.school_onboarding.incomplete?
-  end
-
   def record_event(onboarding, *events)
     result = yield if block_given?
     events.each do |event|

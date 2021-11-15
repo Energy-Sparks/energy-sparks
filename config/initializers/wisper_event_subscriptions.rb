@@ -5,7 +5,7 @@ Wisper.subscribe(Targets::ContentGenerationListener.new, :ContentBatch)
 
 #Send emails when school activated by making visible
 if EnergySparks::FeatureFlags.active?(:data_enabled_onboarding)
-  Wisper.subscribe(Onboarding::OnboardingDataEnabledListener, :SchoolCreator)
+  Wisper.subscribe(Onboarding::OnboardingDataEnabledListener)
 else
-  Wisper.subscribe(Onboarding::OnboardingListener, :SchoolCreator)
+  Wisper.subscribe(Onboarding::OnboardingListener)
 end
