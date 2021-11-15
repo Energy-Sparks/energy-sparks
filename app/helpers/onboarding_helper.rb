@@ -50,10 +50,6 @@ module OnboardingHelper
     end
   end
 
-  def should_send_activation_email?(school)
-    school.school_onboarding.nil? || school.school_onboarding && !school.school_onboarding.has_event?(:activation_email_sent)
-  end
-
   def should_complete_onboarding?(school)
     school.school_onboarding && school.school_onboarding.incomplete?
   end

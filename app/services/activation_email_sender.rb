@@ -4,17 +4,23 @@ class ActivationEmailSender
   end
 
   def send
-    to = activation_email_list(@school)
-    if to.any?
-      target_prompt = include_target_prompt_in_email?
-      OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now
+    if should_send_activation_email?(@school)
+      to = activation_email_list(@school)
+      if to.any?
+        target_prompt = include_target_prompt_in_email?
+        OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now
 
-      record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
-      record_target_event(@school, :first_target_sent) if target_prompt
+        record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
+        record_target_event(@school, :first_target_sent) if target_prompt
+      end
     end
   end
 
   private
+
+  def should_send_activation_email?(school)
+    school.school_onboarding.nil? || school.school_onboarding && !school.school_onboarding.has_event?(:activation_email_sent)
+  end
 
   def activation_email_list(school)
     users = []

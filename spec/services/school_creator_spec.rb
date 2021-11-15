@@ -123,21 +123,16 @@ describe SchoolCreator, :schools, type: :service do
       let(:onboarding_user){ create :onboarding_user }
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
 
-      it 'completes the onboarding process' do
-        expect(school_onboarding).to be_incomplete
+      it 'sets visibility' do
         service.make_visible!
         expect(school.visible).to eq(true)
-        expect(school_onboarding).to be_complete
       end
 
-      it 'enrols in default programme' do
-        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-        default_programme = create(:programme_type_with_activity_types, default: true)
-        service.make_visible!
-        school.reload
-        expect(school.programmes.any?).to be true
+      it 'broadcasts message' do
+        expect {
+          service.make_visible!
+        }.to broadcast(:school_made_visible, school)
       end
-
     end
   end
 

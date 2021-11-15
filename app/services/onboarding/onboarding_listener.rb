@@ -8,9 +8,7 @@ module Onboarding
         users = school.users.reject(&:pupil?)
         complete_onboarding(school.school_onboarding, users)
       end
-      if should_send_activation_email?(school)
-        ActivationEmailSender.new(school).send
-      end
+      ActivationEmailSender.new(school).send
     end
 
     def onboarding_completed(school_onboarding, current_user)
