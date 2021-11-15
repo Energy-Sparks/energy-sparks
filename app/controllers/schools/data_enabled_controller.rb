@@ -5,7 +5,7 @@ module Schools
     def create
       authorize! :change_data_enabled, @school
       @school.update!(data_enabled: true)
-      redirect_back fallback_location: school_path(@school), notice: "#{@school.name} is now data enabled"
+      redirect_back fallback_location: school_path(@school), notice: "#{@school.name} data is now visible"
     end
 
     def destroy
