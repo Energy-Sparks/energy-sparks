@@ -33,8 +33,6 @@ class SchoolCreator
 
   def make_visible!
     @school.update!(visible: true)
-    record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
-    enrol_in_default_programme
     broadcast(:school_made_visible, @school)
   end
 
@@ -79,10 +77,6 @@ private
 
   def enrol_in_default_programme
     Programmes::Enroller.new.enrol(@school)
-  end
-
-  def should_complete_onboarding?
-    @school.school_onboarding && @school.school_onboarding.incomplete?
   end
 
   def generate_calendar
