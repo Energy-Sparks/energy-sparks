@@ -329,7 +329,7 @@ describe 'Management dashboard' do
       end
 
       it 'shows the expected prompts' do
-        expect(page).to have_link("Find a course")
+        expect(page).to have_link("Find training")
         expect(page).to have_link("View your programmes")
         expect(page).to have_link("Record a pupil activity")
         expect(page).to have_link("Record an action")
