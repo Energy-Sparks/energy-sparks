@@ -122,7 +122,7 @@ RSpec.describe "home", type: :system do
       end
 
       it 'redirects to holding page' do
-        expect(page).to have_content('Your school is currently inactive while we are setting up your energy data')
+        expect(page).to have_content('We are still in the process of setting up your school on Energy Sparks')
       end
 
       it 'does not have navigation options' do
