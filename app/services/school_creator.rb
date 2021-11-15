@@ -75,10 +75,6 @@ private
     end
   end
 
-  def enrol_in_default_programme
-    Programmes::Enroller.new.enrol(@school)
-  end
-
   def generate_calendar
     if (template_calendar = @school.template_calendar)
       calendar = CalendarFactory.new(existing_calendar: template_calendar, title: @school.name, calendar_type: :school).create

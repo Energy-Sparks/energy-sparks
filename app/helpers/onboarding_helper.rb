@@ -1,15 +1,28 @@
 module OnboardingHelper
-  def change_user_subscribed_to_newsletter(onboarding, user, subscribe)
-    if subscribe
-      onboarding.subscribe_users_to_newsletter << user.id unless user_subscribed_to_newsletter?(onboarding, user)
-    else
-      onboarding.subscribe_users_to_newsletter.delete(user.id)
-    end
-    onboarding.save!
+  def complete_onboarding(school_onboarding, users)
+    school_onboarding.events.create(event: :onboarding_complete)
+    send_confirmation_instructions(users)
+    create_additional_contacts(school_onboarding, users)
+    subscribe_users_to_newsletter(school_onboarding, school_onboarding.school.users)
+    enrol_in_default_programme(school_onboarding.school)
+    OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
   end
 
-  def user_subscribed_to_newsletter?(onboarding, user)
-    onboarding.subscribe_users_to_newsletter.include?(user.id)
+  def enrol_in_default_programme(school)
+    Programmes::Enroller.new.enrol(school)
+  end
+
+  def change_user_subscribed_to_newsletter(school_onboarding, user, subscribe)
+    if subscribe
+      school_onboarding.subscribe_users_to_newsletter << user.id unless user_subscribed_to_newsletter?(school_onboarding, user)
+    else
+      school_onboarding.subscribe_users_to_newsletter.delete(user.id)
+    end
+    school_onboarding.save!
+  end
+
+  def user_subscribed_to_newsletter?(school_onboarding, user)
+    school_onboarding.subscribe_users_to_newsletter.include?(user.id)
   end
 
   def send_confirmation_instructions(users)
