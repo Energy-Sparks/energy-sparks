@@ -21,6 +21,12 @@
   <%= render 'pupils/analysis/top_level', school: @school %>
 <% else %>
   <%= render 'default_equivalences', equivalences: @default_equivalences, chool: @school %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-neutral',
+        icon: 'info-circle fa-3x',
+        content: "We're setting up this school's energy data and will update this page when it is ready to explore",
+        buttons: {}
+  %>
 <% end %>
 
 <h2 class="mt-2">Things to do</h2>
