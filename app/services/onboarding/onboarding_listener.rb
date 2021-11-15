@@ -5,7 +5,7 @@ module Onboarding
 
     def school_made_visible(school)
       if should_complete_onboarding?(school)
-        users = school.school_onboarding.school.users.reject(&:pupil?)
+        users = school.users.reject(&:pupil?)
         complete_onboarding(school.school_onboarding, users)
       end
       if should_send_activation_email?(school)
