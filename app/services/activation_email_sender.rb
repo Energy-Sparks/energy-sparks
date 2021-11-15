@@ -21,7 +21,7 @@ class ActivationEmailSender
   private
 
   def include_target_prompt_in_email?
-    return Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
+    Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
   end
 
   def record_target_event(school, event)
