@@ -52,4 +52,13 @@ module OnboardingHelper
   def should_complete_onboarding?(school)
     school.school_onboarding && school.school_onboarding.incomplete?
   end
+
+  def record_event(onboarding, *events)
+    result = yield if block_given?
+    events.each do |event|
+      onboarding.events.create(event: event)
+    end
+    result
+  end
+  alias_method :record_events, :record_event
 end

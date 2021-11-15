@@ -1,5 +1,6 @@
 module Onboarding
   class CompletionController < BaseController
+    include OnboardingHelper
     include Wisper::Publisher
 
     skip_before_action :check_complete, only: :show

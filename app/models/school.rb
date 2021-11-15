@@ -281,6 +281,16 @@ class School < ApplicationRecord
     all_school_admins + staff
   end
 
+  def activation_email_list
+    users = []
+    if school_onboarding && school_onboarding.created_user.present?
+      users << school_onboarding.created_user
+    end
+    #also email admin, staff and group users
+    users += all_adult_school_users.to_a
+    users.uniq.map(&:email)
+  end
+
   def latest_content
     content_generation_runs.order(created_at: :desc).first
   end
