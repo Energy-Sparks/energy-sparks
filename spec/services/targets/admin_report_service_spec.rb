@@ -69,6 +69,7 @@ describe Targets::AdminReportService, type: :service do
         school_group.name,
         school.name,
         "true",
+        "true",
         "electricity",
         "true",
         "true",
