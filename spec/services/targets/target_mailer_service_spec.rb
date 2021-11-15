@@ -27,6 +27,11 @@ RSpec.describe Targets::TargetMailerService do
         expect(list_of_schools).to contain_exactly(school)
       end
 
+      it 'ignores schools that are not data enabled' do
+        other_school.update!(data_enabled: false)
+        expect(list_of_schools).to contain_exactly(school)
+      end
+
       it 'should ignore schools with a target' do
         create(:school_target, school: school)
         expect(list_of_schools).to contain_exactly(other_school)
