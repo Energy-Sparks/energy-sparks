@@ -36,6 +36,11 @@ class SchoolCreator
     broadcast(:school_made_visible, @school)
   end
 
+  def make_data_enabled!
+    @school.update!(data_enabled: true)
+    broadcast(:school_made_data_enabled, @school)
+  end
+
   def add_school_times
     SchoolTime.days.each do |day, _value|
       @school.school_times.create(day: day)
