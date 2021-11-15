@@ -367,6 +367,10 @@ class School < ApplicationRecord
     school_target_events.where(event: event_name).any?
   end
 
+  def has_school_onboarding_event?(event_name)
+    school_onboarding && school_onboarding.has_event?(event_name)
+  end
+
   def school_target_attributes
     #use the current target if we have one, otherwise the most current target
     #based on start date. So if target as expired, then progress pages still work

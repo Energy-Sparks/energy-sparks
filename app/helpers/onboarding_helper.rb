@@ -55,8 +55,10 @@ module OnboardingHelper
 
   def record_event(onboarding, *events)
     result = yield if block_given?
-    events.each do |event|
-      onboarding.events.create(event: event)
+    if onboarding
+      events.each do |event|
+        onboarding.events.create(event: event)
+      end
     end
     result
   end

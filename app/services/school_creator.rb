@@ -43,7 +43,7 @@ class SchoolCreator
 
   def make_data_enabled!
     @school.update!(data_enabled: true)
-    record_event(@school.school_onboarding, :onboarding_data_enabled) if @school.school_onboarding
+    record_event(@school.school_onboarding, :onboarding_data_enabled)
     broadcast(:school_made_data_enabled, @school)
   end
 

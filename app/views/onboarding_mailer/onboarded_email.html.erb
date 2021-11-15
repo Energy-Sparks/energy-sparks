@@ -1,29 +1,30 @@
 <h1 class="mb-3"><%=@school.name %> is now live on Energy Sparks</h1>
 
 <p>
-  You can now use Energy Sparks to begin recording your energy saving activities.
-  Explore our pupil-lead <strong><%= link_to 'activities and educational resources', activity_categories_url %></strong>
+  We are working to get access to your school's energy data.
+</p>
+
+<p>
+  While waiting you can use Energy Sparks to begin recording your energy saving activities.
+  Explore our pupil-lead
+  <strong><%= link_to 'activities and educational resources', activity_categories_url %></strong>
   which are designed to teach your pupils about energy whilst saving money for their school.
 </p>
+
 <p>
-  We also have a range of <strong><%= link_to 'energy saving actions', intervention_type_groups_url %></strong> that you,
-  other members of staff and volunteers can carry out to start improving you energy usage.
+  We also have a range of
+  <strong><%= link_to 'energy saving actions', intervention_type_groups_url %></strong>
+  that you, other members of staff and volunteers can carry out to start improving you energy usage.
 </p>
+
 <p>
-  View your <%= link_to 'school dashboard', school_url(@school) %> for suggestions for how to get started.
+  View your <strong><%= link_to 'school dashboard', school_url(@school) %></strong> for suggestions for how to get started.
 </p>
+
 <p>
   We will be in touch shortly to confirm when we have completed getting access to your energy data.
 </p>
 
-<% if @target_prompt %>
-  <h5 class="mb-3">Set your first targets</h5>
-
-  <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters(source: "activation") %>
-
-  <div class="s-3"></div>
-
-<% end %>
 
 <h5 class="mb-3">Need some help?</h5>
 
