@@ -1,0 +1,52 @@
+<h1 class="mb-3"><%=@school.name %> energy data is now available on Energy Sparks</h1>
+
+<p>
+  You can now use Energy Sparks to <strong><%= link_to 'see how much energy your school is using', school_url(@school) %></strong>.
+</p>
+
+<p>
+  Your school and pupil dashboards now includes a range of insights, charts and analysis that will help you understand how your school consumes energy,
+  and recommendations of how to reduce your carbon footprint. You will now also receive alerts to warn you about high energy usage.
+</p>
+
+<p>
+  Alongside these new features you can continue to
+  <strong><%= link_to 'explore our activities and educational resources', activity_categories_url %></strong>
+  designed to teach your pupils about energy whilst saving money for their school.
+</p>
+
+<% if @target_prompt %>
+  <h5 class="mb-3">Set your first targets</h5>
+
+  <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters(source: "activation") %>
+
+  <div class="s-3"></div>
+
+<% end %>
+
+<h5 class="mb-3">Need some help?</h5>
+
+<p>
+ For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>,
+ watch our <%= link_to 'Training Videos', user_guide_videos_url %>
+ or join one of our <%= link_to 'live webinar training', training_url %> sessions.
+</p>
+
+<%= link_to 'Join a webinar', training_url, class: 'btn btn-primary mt-3 mb-3 float-right' %>
+
+<div class="s-3"></div>
+
+<h5 class="mb-3">Thanks for joining!</h5>
+
+<p>
+ We hope Energy Sparks will empower your pupils, school staff, and wider
+ school community to take action to make your school more energy efficient.
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= link_to 'Get in touch', contact_url %> if you have any further questions.
+</p>
+
+<div class="s-3"></div>
+<span class="float-right">-- The Energy Sparks Team</span>
