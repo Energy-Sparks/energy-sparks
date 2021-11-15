@@ -1,15 +1,12 @@
 module Onboarding
   class OnboardingDataEnabledListener
-    include OnboardingHelper
-    include NewsletterSubscriber
-
-    def school_made_visible(school)
+    def onboarding_completed(school_onboarding)
+      OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
+      school.update!(visible: true)
+      ActivationEmailSender.new(school).send
     end
 
-    def onboarding_completed(school_onboarding, current_user)
-      school.update!(visible: true)
-      users = school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
-      complete_onboarding(school_onboarding, users)
+    def school_made_visible(school)
     end
 
     def school_made_data_enabled(school)

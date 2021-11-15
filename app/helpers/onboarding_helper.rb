@@ -5,7 +5,6 @@ module OnboardingHelper
     create_additional_contacts(school_onboarding, users)
     subscribe_users_to_newsletter(school_onboarding, school_onboarding.school.users)
     enrol_in_default_programme(school_onboarding.school)
-    OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
   end
 
   def enrol_in_default_programme(school)

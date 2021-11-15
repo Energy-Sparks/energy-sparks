@@ -1,4 +1,5 @@
 class SchoolCreator
+  include OnboardingHelper
   include Wisper::Publisher
 
   def initialize(school)
@@ -33,11 +34,16 @@ class SchoolCreator
 
   def make_visible!
     @school.update!(visible: true)
+    if should_complete_onboarding?(@school)
+      users = @school.users.reject(&:pupil?)
+      complete_onboarding(@school.school_onboarding, users)
+    end
     broadcast(:school_made_visible, @school)
   end
 
   def make_data_enabled!
     @school.update!(data_enabled: true)
+    record_event(@school.school_onboarding, :onboarding_data_enabled) if @school.school_onboarding
     broadcast(:school_made_data_enabled, @school)
   end
 

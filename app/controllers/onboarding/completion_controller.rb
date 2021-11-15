@@ -16,7 +16,9 @@ module Onboarding
     end
 
     def create
-      broadcast(:onboarding_completed, @school_onboarding, current_user)
+      users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
+      complete_onboarding(@school_onboarding, users)
+      broadcast(:onboarding_completed, @school_onboarding)
       redirect_to onboarding_completion_path(@school_onboarding)
     end
 
