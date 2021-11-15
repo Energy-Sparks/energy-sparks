@@ -110,8 +110,17 @@ describe 'Pupil dashboard' do
       school.update!(data_enabled: false)
       visit pupils_school_path(school)
     end
-    it 'doesnt show equivalences' do
+    it 'doesnt show generated equivalences' do
       expect(page).to_not have_content('Your school spent £2.00 on electricity last year!')
+    end
+
+    it 'shows default equivalences' do
+      expect(page).to have_content('the average school')
+      expect(page).to have_content('How will your school compare?')
+    end
+
+    it 'shows message' do
+      expect(page).to have_content("We're setting up this school's energy data and will update this page when it is ready to explore")
     end
 
   end

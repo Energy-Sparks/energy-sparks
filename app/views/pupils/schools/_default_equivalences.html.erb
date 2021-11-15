@@ -6,6 +6,7 @@
           <div class="col-lg-6 equivalence-wrapper">
             <div><%= equivalence[:measure].html_safe %></div>
             <h1><%= equivalence[:equivalence] %></h1>
+            <p>How will your school compare? You'll soon be able to find out!</p>
           </div>
           <div class="col-lg-6 illustration-wrapper">
             <%= image_tag("equivalences/#{equivalence[:image_name]}.svg") if equivalence[:image_name].present? %>

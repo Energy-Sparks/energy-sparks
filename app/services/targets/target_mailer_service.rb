@@ -1,17 +1,17 @@
 module Targets
   class TargetMailerService
     def list_schools
-      candidates = School.visible.reject {|s| s.has_target? || s.has_school_target_event?(:first_target_sent)}
+      candidates = School.visible.data_enabled.reject {|s| s.has_target? || s.has_school_target_event?(:first_target_sent)}
       with_enough_data(candidates)
     end
 
     def list_schools_requiring_reminder
-      candidates = School.visible.reject { |s| reject_for_reminder?(s) }
+      candidates = School.visible.data_enabled.reject { |s| reject_for_reminder?(s) }
       with_enough_data(candidates)
     end
 
     def list_schools_requiring_review
-      candidates = School.visible.reject {|s| !s.has_target? || s.has_current_target? || s.has_school_target_event?(:review_target_sent)}
+      candidates = School.visible.data_enabled.reject {|s| !s.has_target? || s.has_current_target? || s.has_school_target_event?(:review_target_sent)}
       with_enough_data(candidates)
     end
 

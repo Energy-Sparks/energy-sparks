@@ -7,6 +7,7 @@
         <div class="card-body">
           <h2 class="card-title">Energy Sparks Total</h2>
           <p class="card-text">Active schools: <%= School.visible.count %></p>
+          <p class="card-text">Active (with data visible) schools: <%= School.visible.data_enabled.count %></p>
           <p class="card-text">Onboarding schools: <%= SchoolOnboarding.all.select(&:incomplete?).count %></p>
           <p class="card-text">Invisible schools: <%= School.not_visible.count %></p>
           <p class="card-text">Alert contacts: <%=Contact.count %></p>
@@ -26,6 +27,7 @@
             <div class="card-body">
               <h2 class="card-title"><%= link_to school_group.name, school_group_path(school_group) %></h2>
               <p class="card-text">Active schools: <%= school_group.schools.visible.count %></p>
+              <p class="card-text">Active (with data visible) schools: <%= school_group.schools.visible.data_enabled.count %></p>
               <p class="card-text">Invisible schools: <%= school_group.schools.not_visible.count %></p>
               <p class="card-text">Onboarding schools: <%= school_group.school_onboardings.select(&:incomplete?).count %></p>
               <p class="card-text">Alert contacts: <%= school_group.schools.sum { |school| school.contacts.count } %></p>
