@@ -1,6 +1,7 @@
 module Onboarding
   class OnboardingListener
     include OnboardingHelper
+    include NewsletterSubscriber
 
     def school_made_visible(school)
       ActivationEmailSender.new(school).send

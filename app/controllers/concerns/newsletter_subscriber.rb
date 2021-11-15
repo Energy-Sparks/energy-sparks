@@ -6,7 +6,8 @@ module NewsletterSubscriber
   def subscribe_newsletter(school, user)
     MailchimpSubscriber.new(MailchimpApi.new).subscribe(school, user)
   rescue MailchimpSubscriber::Error => e
-    flash[:error] = e.message
+    Rails.logger.error e.backtrace.join("\n")
+    Rollbar.error(e, school_id: school.id, school_name: school.name)
   end
 
   def auto_subscribe_newsletter?

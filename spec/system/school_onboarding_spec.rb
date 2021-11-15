@@ -26,6 +26,10 @@ RSpec.describe "onboarding", :schools, type: :system do
 
   let!(:consent_statement) { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
 
+  before :all do
+    Wisper.subscribe(Onboarding::OnboardingListener.new)
+  end
+
   context 'as an admin' do
     let!(:other_template_calendar)  { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
 

@@ -1,7 +1,6 @@
 module Onboarding
   class CompletionController < BaseController
     include Wisper::Publisher
-    include NewsletterSubscriber
 
     skip_before_action :check_complete, only: :show
 
