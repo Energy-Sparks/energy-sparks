@@ -13,15 +13,6 @@ module Onboarding
       broadcast(:onboarding_completed, @school_onboarding)
     end
 
-    def change_user_subscribed_to_newsletter(school_onboarding, user, subscribe)
-      if subscribe
-        school_onboarding.subscribe_users_to_newsletter << user.id unless user_subscribed_to_newsletter?(school_onboarding, user)
-      else
-        school_onboarding.subscribe_users_to_newsletter.delete(user.id)
-      end
-      school_onboarding.save!
-    end
-
     def should_complete_onboarding?(school)
       school.school_onboarding && school.school_onboarding.incomplete?
     end
@@ -44,10 +35,6 @@ module Onboarding
 
     def enrol_in_default_programme(school)
       Programmes::Enroller.new.enrol(school)
-    end
-
-    def user_subscribed_to_newsletter?(school_onboarding, user)
-      school_onboarding.subscribe_users_to_newsletter.include?(user.id)
     end
 
     def send_confirmation_instructions(users)

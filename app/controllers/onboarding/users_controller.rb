@@ -1,5 +1,7 @@
 module Onboarding
   class UsersController < BaseController
+    include NewsletterSubscriber
+
     def index
       @users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
     end
@@ -17,7 +19,7 @@ module Onboarding
       @user = @school_onboarding.school.users.build(user_params.merge(school: @school_onboarding.school))
       @user.skip_confirmation_notification!
       if @user.save
-        onboarding_service.change_user_subscribed_to_newsletter(@school_onboarding, @user, newsletter_params[:subscribe_to_newsletter])
+        change_user_subscribed_to_newsletter(@school_onboarding, @user, newsletter_params[:subscribe_to_newsletter])
         respond_to do |format|
           format.html { redirect_to onboarding_users_path(@school_onboarding) }
           format.js { render js: "window.location='#{onboarding_users_path(@school_onboarding)}'" }
@@ -43,7 +45,7 @@ module Onboarding
       @user = @school_onboarding.school.users.find(params[:id])
       authorize! :edit, @user
       if @user.update(user_params)
-        onboarding_service.change_user_subscribed_to_newsletter(@school_onboarding, @user, newsletter_params[:subscribe_to_newsletter])
+        change_user_subscribed_to_newsletter(@school_onboarding, @user, newsletter_params[:subscribe_to_newsletter])
         respond_to do |format|
           format.html { redirect_to onboarding_users_path(@school_onboarding) }
           format.js { render js: "window.location='#{onboarding_users_path(@school_onboarding)}'" }
@@ -69,10 +71,6 @@ module Onboarding
 
     def newsletter_params
       params.require(:newsletter).permit(:subscribe_to_newsletter).transform_values {|v| ActiveModel::Type::Boolean.new.cast(v)}
-    end
-
-    def onboarding_service
-      @onboarding_service ||= Onboarding::Service.new
     end
   end
 end
