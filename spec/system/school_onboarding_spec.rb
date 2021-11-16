@@ -43,12 +43,9 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     let(:wisper_subscriber) { Onboarding::OnboardingListener.new }
 
-    before :each do
-      Wisper.subscribe(wisper_subscriber)
-    end
-
     context 'completing onboarding' do
       before(:each) do
+        Wisper.subscribe(wisper_subscriber)
         visit onboarding_path(onboarding)
       end
 
@@ -289,7 +286,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         it 'sends an email after completion' do
           click_on "Complete setup", match: :first
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
+          expect(email.subject).to include("#{school_name} has completed the onboarding process")
           expect(email.to).to include(admin.email)
         end
 
@@ -325,7 +322,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           it 'sends an email after completion' do
             click_on "Complete setup", match: :first
             email = ActionMailer::Base.deliveries[-2]
-            expect(email.subject).to include('Oldfield Park Infants has completed the onboarding process')
+            expect(email.subject).to include("#{school_name} has completed the onboarding process")
             expect(email.to).to include(admin.email)
           end
 
