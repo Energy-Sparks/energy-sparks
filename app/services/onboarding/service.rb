@@ -1,5 +1,6 @@
 module Onboarding
   class Service
+    include Wisper::Publisher
     include NewsletterSubscriber
 
     def complete_onboarding(school_onboarding, users)
@@ -9,6 +10,7 @@ module Onboarding
       create_additional_contacts(school_onboarding, users)
       subscribe_users_to_newsletter(school_onboarding, school_onboarding.school.users)
       enrol_in_default_programme(school_onboarding.school)
+      broadcast(:onboarding_completed, @school_onboarding)
     end
 
     def set_visible_on_completion?

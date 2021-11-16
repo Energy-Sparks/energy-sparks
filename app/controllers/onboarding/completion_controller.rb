@@ -1,7 +1,5 @@
 module Onboarding
   class CompletionController < BaseController
-    include Wisper::Publisher
-
     skip_before_action :check_complete, only: :show
 
     def new
@@ -18,7 +16,6 @@ module Onboarding
     def create
       users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
       onboarding_service.complete_onboarding(@school_onboarding, users)
-      broadcast(:onboarding_completed, @school_onboarding)
       redirect_to onboarding_completion_path(@school_onboarding)
     end
 
