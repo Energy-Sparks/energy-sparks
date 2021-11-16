@@ -13,14 +13,6 @@ module Onboarding
       broadcast(:onboarding_completed, @school_onboarding)
     end
 
-    def set_visible_on_completion?
-      EnergySparks::FeatureFlags.active?(:data_enabled_onboarding)
-    end
-
-    def enrol_in_default_programme(school)
-      Programmes::Enroller.new.enrol(school)
-    end
-
     def change_user_subscribed_to_newsletter(school_onboarding, user, subscribe)
       if subscribe
         school_onboarding.subscribe_users_to_newsletter << user.id unless user_subscribed_to_newsletter?(school_onboarding, user)
@@ -28,6 +20,30 @@ module Onboarding
         school_onboarding.subscribe_users_to_newsletter.delete(user.id)
       end
       school_onboarding.save!
+    end
+
+    def should_complete_onboarding?(school)
+      school.school_onboarding && school.school_onboarding.incomplete?
+    end
+
+    def record_event(onboarding, *events)
+      result = yield if block_given?
+      if onboarding
+        events.each do |event|
+          onboarding.events.create(event: event)
+        end
+      end
+      result
+    end
+
+    private
+
+    def set_visible_on_completion?
+      EnergySparks::FeatureFlags.active?(:data_enabled_onboarding)
+    end
+
+    def enrol_in_default_programme(school)
+      Programmes::Enroller.new.enrol(school)
     end
 
     def user_subscribed_to_newsletter?(school_onboarding, user)
@@ -58,20 +74,5 @@ module Onboarding
         subscribe_newsletter(school_onboarding.school, user) if user_subscribed_to_newsletter?(school_onboarding, user)
       end
     end
-
-    def should_complete_onboarding?(school)
-      school.school_onboarding && school.school_onboarding.incomplete?
-    end
-
-    def record_event(onboarding, *events)
-      result = yield if block_given?
-      if onboarding
-        events.each do |event|
-          onboarding.events.create(event: event)
-        end
-      end
-      result
-    end
-    alias_method :record_events, :record_event
   end
 end

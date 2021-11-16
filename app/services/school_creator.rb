@@ -14,7 +14,7 @@ class SchoolCreator
         onboarding_service.record_event(onboarding, :school_admin_created) do
           add_school(onboarding.created_user, @school)
         end
-        onboarding_service.record_events(onboarding, :default_school_times_added) do
+        onboarding_service.record_event(onboarding, :default_school_times_added) do
           process_new_school!
         end
         create_default_contact(onboarding)
@@ -78,7 +78,7 @@ private
   end
 
   def create_default_contact(onboarding)
-    onboarding_service.record_events(onboarding, :alert_contact_created) do
+    onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,
         name: onboarding.created_user.display_name,
