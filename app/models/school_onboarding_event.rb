@@ -36,7 +36,9 @@ class SchoolOnboardingEvent < ApplicationRecord
     pupil_account_created: 75,
     pupil_account_updated: 76,
     onboarding_complete: 80,
+    onboarding_data_enabled: 81,
     reminder_sent: 90,
-    activation_email_sent: 100
+    activation_email_sent: 100,
+    data_enabled_email_sent: 101,
   }
 end

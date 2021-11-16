@@ -2,6 +2,8 @@ class SchoolCreator
   include OnboardingHelper
   include Wisper::Publisher
 
+  class Error < StandardError; end
+
   def initialize(school)
     @school = school
   end
@@ -42,6 +44,7 @@ class SchoolCreator
   end
 
   def make_data_enabled!
+    raise Error.new('School must be visible before enabling data') unless @school.visible
     @school.update!(data_enabled: true)
     record_event(@school.school_onboarding, :onboarding_data_enabled)
     broadcast(:school_made_data_enabled, @school)

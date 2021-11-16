@@ -101,6 +101,37 @@ describe SchoolCreator, :schools, type: :service do
     end
   end
 
+  describe 'make_data_enabled!' do
+    let(:visible) { true }
+    let(:school) { create :school, data_enabled: false, visible: visible }
+    let!(:school_onboarding){ create :school_onboarding, school: school}
+
+    it 'broadcasts message' do
+      expect {
+        service.make_data_enabled!
+      }.to broadcast(:school_made_data_enabled)
+    end
+
+    it 'updates data enabled status' do
+      service.make_data_enabled!
+      expect(school.data_enabled).to be_truthy
+    end
+
+    it 'records event' do
+      service.make_data_enabled!
+      expect(school.has_school_onboarding_event?(:onboarding_data_enabled)).to be_truthy
+    end
+
+    context 'where the school is not visible' do
+      let(:visible) { false }
+      it 'rejects call' do
+        expect {
+          service.make_data_enabled!
+        }.to raise_error SchoolCreator::Error
+      end
+    end
+  end
+
   describe 'make_visible!' do
     let(:school){ create :school, visible: false}
 
