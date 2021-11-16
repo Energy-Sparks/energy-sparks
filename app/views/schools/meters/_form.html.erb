@@ -26,9 +26,9 @@
 
   <div class="form-group">
 
-    <p class="alert alert-warning">Experimental features for n3rgy integration</p>
-
     <% if show_dcc_fields %>
+
+      <p class="alert alert-warning">Admin only experimental features for n3rgy integration</p>
 
       <% if meter_is_dcc %>
         <p class="alert alert-success">This meter is available via n3rgy</p>
@@ -41,17 +41,17 @@
         <%= form.label :dcc_meter, 'DCC Smart Meter', class: "custom-control-label"  %>
       </div>
 
+      <div class="custom-control custom-checkbox">
+        <%= form.check_box :sandbox, class: 'custom-control-input' %>
+        <%= form.label :sandbox, class: "custom-control-label" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :earliest_available_data %>
+        <%= date_field(:meter, :earliest_available_data, max: Time.zone.today, min: Date.parse("2012-01-01")) %>
+      </div>
+
     <% end %>
-
-    <div class="custom-control custom-checkbox">
-      <%= form.check_box :sandbox, class: 'custom-control-input' %>
-      <%= form.label :sandbox, class: "custom-control-label" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :earliest_available_data %>
-      <%= date_field(:meter, :earliest_available_data, max: Time.zone.today, min: Date.parse("2012-01-01")) %>
-    </div>
 
   </div>
 
