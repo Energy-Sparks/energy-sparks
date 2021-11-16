@@ -1,5 +1,4 @@
 class SchoolCreator
-  include OnboardingHelper
   include Wisper::Publisher
 
   class Error < StandardError; end
@@ -12,16 +11,16 @@ class SchoolCreator
     if @school.valid?
       @school.transaction do
         copy_onboarding_details_to_school(onboarding)
-        record_event(onboarding, :school_admin_created) do
+        onboarding_service.record_event(onboarding, :school_admin_created) do
           add_school(onboarding.created_user, @school)
         end
-        record_events(onboarding, :default_school_times_added) do
+        onboarding_service.record_events(onboarding, :default_school_times_added) do
           process_new_school!
         end
         create_default_contact(onboarding)
         process_new_configuration!
-        record_event(onboarding, :school_calendar_created) if @school.calendar
-        record_event(onboarding, :school_details_created) do
+        onboarding_service.record_event(onboarding, :school_calendar_created) if @school.calendar
+        onboarding_service.record_event(onboarding, :school_details_created) do
           onboarding.update!(school: @school)
         end
       end
@@ -36,9 +35,9 @@ class SchoolCreator
 
   def make_visible!
     @school.update!(visible: true)
-    if should_complete_onboarding?(@school)
+    if onboarding_service.should_complete_onboarding?(@school)
       users = @school.users.reject(&:pupil?)
-      complete_onboarding(@school.school_onboarding, users)
+      onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
     broadcast(:school_made_visible, @school)
   end
@@ -46,7 +45,7 @@ class SchoolCreator
   def make_data_enabled!
     raise Error.new('School must be visible before enabling data') unless @school.visible
     @school.update!(data_enabled: true)
-    record_event(@school.school_onboarding, :onboarding_data_enabled)
+    onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
     broadcast(:school_made_data_enabled, @school)
   end
 
@@ -79,7 +78,7 @@ private
   end
 
   def create_default_contact(onboarding)
-    record_events(onboarding, :alert_contact_created) do
+    onboarding_service.record_events(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,
         name: onboarding.created_user.display_name,
@@ -101,5 +100,9 @@ private
   def generate_configuration
     return if @school.configuration
     Schools::Configuration.create!(school: @school)
+  end
+
+  def onboarding_service
+    @onboarding_service ||= Onboarding::Service.new
   end
 end

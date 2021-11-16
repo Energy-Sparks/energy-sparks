@@ -1,6 +1,4 @@
 class OnboardedEmailSender
-  include OnboardingHelper
-
   def initialize(school)
     @school = school
   end
@@ -10,8 +8,14 @@ class OnboardedEmailSender
       to = @school.activation_email_list
       if to.any?
         OnboardingMailer.with(to: to, school: @school).onboarded_email.deliver_now
-        record_event(@school.school_onboarding, :onboarded_email_sent)
+        onboarding_service.record_event(@school.school_onboarding, :onboarded_email_sent)
       end
     end
+  end
+
+  private
+
+  def onboarding_service
+    @onboarding_service ||= Onboarding::Service.new
   end
 end
