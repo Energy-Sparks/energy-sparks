@@ -43,9 +43,11 @@ RSpec.describe "onboarding", :schools, type: :system do
 
     let(:wisper_subscriber) { Onboarding::OnboardingListener.new }
 
+    before  { Wisper.subscribe(wisper_subscriber) }
+    after   { Wisper.clear }
+
     context 'completing onboarding' do
       before(:each) do
-        Wisper.subscribe(wisper_subscriber)
         visit onboarding_path(onboarding)
       end
 
