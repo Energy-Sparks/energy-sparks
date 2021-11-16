@@ -52,7 +52,7 @@ DEPENDENCIES
   rubyzip
 
 RUBY VERSION
-   ruby 2.5.3p105
+   ruby 2.7.2p137
 
 BUNDLED WITH
-   1.17.3
+   2.1.4
