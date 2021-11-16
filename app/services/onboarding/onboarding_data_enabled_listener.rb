@@ -4,7 +4,7 @@ module Onboarding
       school.update!(data_enabled: false)
       school.update!(visible: true)
       OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
-      ActivationEmailSender.new(school).send
+      OnboardedEmailSender.new(school).send
     end
 
     def school_made_visible(school)
