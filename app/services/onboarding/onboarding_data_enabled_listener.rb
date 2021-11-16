@@ -1,8 +1,8 @@
 module Onboarding
   class OnboardingDataEnabledListener
     def onboarding_completed(school_onboarding)
-      school.update!(visible: true)
       school.update!(data_enabled: false)
+      school.update!(visible: true)
       OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
       ActivationEmailSender.new(school).send
     end
@@ -11,7 +11,7 @@ module Onboarding
     end
 
     def school_made_data_enabled(school)
-      ActivationEmailSender.new(school).send
+      DataEnabledEmailSender.new(school).send
     end
   end
 end
