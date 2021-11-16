@@ -128,11 +128,15 @@ RSpec.describe "meter management", :meters, type: :system do
 
         fill_in 'Meter Point Number', with: '123543'
         fill_in 'Name', with: 'Gas'
+        fill_in_trix '#meter_notes', with: "These are my notes"
         choose 'Gas'
         click_on 'Create Meter'
 
         expect(school.meters.count).to eq(1)
         expect(school.meters.first.mpan_mprn).to eq(123543)
+
+        click_on "Details"
+        expect(page).to have_content("These are my notes")
       end
     end
 

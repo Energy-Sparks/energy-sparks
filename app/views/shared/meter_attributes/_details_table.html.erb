@@ -1,6 +1,7 @@
 <table class="table mt-3">
   <tbody>
     <tr><th scope="row">Type:</th><td><%= safely { meter_attribute.meter_attribute_type.attribute_name } %></td></tr>
+    <tr><th scope="row"><%= meter_attribute.replaces ? 'Updated' : 'Created' %></th><td><%= nice_date_times(meter_attribute.created_at) %></td></tr>
     <% unless meter_attribute.reason.blank? %>
       <tr><th scope="row">Reason:</th><td><%= meter_attribute.reason %></td></tr>
     <% end %>
