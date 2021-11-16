@@ -137,6 +137,9 @@
                   <i class="fas fa-file-download"></i>
                 <% end %>
               <% end %>
+              <% if current_user.admin? && meter.notes.present? %>
+                <%= render 'meter_notes', meter: meter %>
+              <% end %>
             </div>
           </td>
           <td>

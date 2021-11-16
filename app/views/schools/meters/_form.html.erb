@@ -23,6 +23,14 @@
       </div>
     <% end %>
   </div>
+  <% if current_user.admin? %>
+    <div class="form-group">
+      <%= form.label :notes, 'Admin notes' %>
+      <div class="trix-wrapper">
+        <%= form.rich_text_area :notes %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="form-group">
 
