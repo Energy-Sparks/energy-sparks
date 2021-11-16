@@ -319,8 +319,28 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(onboarding.school.has_swimming_pool?).to eq(false)
           expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
           expect(onboarding.school.percentage_free_school_meals).to eq(16)
+          expect(onboarding.school.data_enabled).to be_truthy
         end
 
+        context 'when onboarding with data enabling as later step' do
+
+          before :each do
+            allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+            visit new_onboarding_school_details_path(onboarding)
+          end
+
+          it 'sets data enabled false' do
+            fill_in 'Unique Reference Number', with: '4444244'
+            fill_in 'Address', with: '1 Station Road'
+            fill_in 'Postcode', with: 'A1 2BC'
+            fill_in 'Website', with: 'http://oldfield.sch.uk'
+            click_on 'Save school details'
+
+            onboarding.reload
+            expect(onboarding).to have_event(:school_details_created)
+            expect(onboarding.school.data_enabled).to be_falsey
+          end
+        end
       end
 
       context 'having provided school details' do
