@@ -39,6 +39,7 @@ class SchoolOnboardingEvent < ApplicationRecord
     onboarding_data_enabled: 81,
     reminder_sent: 90,
     activation_email_sent: 100,
-    data_enabled_email_sent: 101,
+    onboarded_email_sent: 101,
+    data_enabled_email_sent: 102,
   }
 end

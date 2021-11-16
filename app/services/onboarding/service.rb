@@ -5,12 +5,12 @@ module Onboarding
 
     def complete_onboarding(school_onboarding, users)
       school_onboarding.events.create(event: :onboarding_complete)
-      school.update!(visible: true) if set_visible_on_completion?
+      school_onboarding.school.update!(visible: true) if set_visible_on_completion?
       send_confirmation_instructions(users)
       create_additional_contacts(school_onboarding, users)
       subscribe_users_to_newsletter(school_onboarding, school_onboarding.school.users)
       enrol_in_default_programme(school_onboarding.school)
-      broadcast(:onboarding_completed, @school_onboarding)
+      broadcast(:onboarding_completed, school_onboarding)
     end
 
     def should_complete_onboarding?(school)
