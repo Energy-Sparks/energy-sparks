@@ -5,6 +5,7 @@ ruby '2.7.2'
 gem 'aws-sdk-s3'
 gem 'mail'
 gem 'rubyzip'
+gem 'faraday'
 
 group :test do
   gem 'rspec'
