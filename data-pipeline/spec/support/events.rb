@@ -55,6 +55,10 @@ module DataPipeline
         file_event(filename: 'sheffield-email-no-attachment.txt', bucket: 'email-bucket')
       end
 
+      def self.imserv_email_with_link_added
+        file_event(filename: 'imserv_email_with_link.txt', bucket: 'email-bucket')
+      end
+
       def self.csv_added
         file_event(filename: 'sheffield/export.csv', bucket: 'file-bucket')
       end

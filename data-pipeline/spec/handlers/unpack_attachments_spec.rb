@@ -4,15 +4,15 @@ require './handler'
 
 describe DataPipeline::Handlers::UnpackAttachments do
 
+  let(:logger){ Logger.new(IO::NULL) }
+  let(:client) { Aws::S3::Client.new(stub_responses: true) }
+  let(:environment) { {'PROCESS_BUCKET' => 'test-bucket' } }
+
   describe '#process' do
 
     let(:sheffield_email) { File.open('spec/support/emails/sheffield_email.txt') }
     let(:sheffield_email_fwd) { File.open('spec/support/emails/sheffield-fwd.txt') }
     let(:sheffield_email_no_attachment) { File.open('spec/support/emails/sheffield_email_no_attachments.txt') }
-
-    let(:logger){ Logger.new(IO::NULL) }
-    let(:client) { Aws::S3::Client.new(stub_responses: true) }
-    let(:environment) { {'PROCESS_BUCKET' => 'test-bucket' } }
 
     let(:handler){ DataPipeline::Handlers::UnpackAttachments }
     let(:response){ DataPipeline::Handler.run(handler: handler, event: event, client: client, environment: environment, logger: logger) }
@@ -89,6 +89,57 @@ describe DataPipeline::Handlers::UnpackAttachments do
       end
     end
 
+    describe 'when the email has no attachments, but an embedded imserv link' do
+
+      let(:event){ DataPipeline::Support::Events.imserv_email_with_link_added }
+
+      let(:handler) { }
+      it 'finds, downloads and stores the CSV file'
+
+      it 'returns a success code'
+
+      it 'returns the code of the files created'
+    end
+  end
+
+  describe '#extract_download_links' do
+    let(:handler){ DataPipeline::Handlers::UnpackAttachments.new(client: client, logger: logger, environment: environment) }
+
+
+    context 'with an imserv email' do
+      let(:imserv_link) { "https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=3rqzVsv6OIY%3D&mode=View" }
+
+      let(:email_file)  {  File.open('spec/support/emails/imserv_email_with_link.txt') }
+      let(:mail) { Mail.new(email_file.read) }
+
+      it 'only finds imserv links' do
+        expect(handler.extract_download_links(mail)).to match_array([imserv_link])
+      end
+    end
+
+    context 'with any other email' do
+      it 'finds no links'
+    end
+  end
+
+  describe '#download_csv_reports' do
+    let(:handler){ DataPipeline::Handlers::UnpackAttachments.new(client: client, logger: logger, environment: environment) }
+    let(:imserv_link) { "https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=3rqzVsv6OIY%3D&mode=View" }
+
+    before do
+      #stub download request
+    end
+
+    context 'when download is successful' do
+      it 'downloads the file and returns an object' do
+        expect( handler.download_csv_reports([imserv_link]) )
+      end
+    end
+
+    context 'when download is unsuccessful' do
+      it 'returns no data'
+      it 'logs to rollbar'
+    end
   end
 
 end

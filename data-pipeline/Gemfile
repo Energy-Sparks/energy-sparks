@@ -10,3 +10,7 @@ group :test do
   gem 'rspec'
   gem 'bundler-audit'
 end
+
+group :development do
+  gem 'fasterer'
+end

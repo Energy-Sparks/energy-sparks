@@ -21,7 +21,6 @@ module DataPipeline
 
         @logger.info("Prefix: #{prefix}")
 
-
         responses = email.attachments.map do |attachment|
           @logger.info("Moving: #{attachment.filename} to: #{@environment['PROCESS_BUCKET']}")
           @client.put_object(
@@ -33,6 +32,15 @@ module DataPipeline
         end
 
         { statusCode: 200, body: JSON.generate(responses: responses) }
+      end
+
+      def extract_download_links(_mail)
+        return []
+      end
+
+      def download_csv_reports(_links)
+        #OpenStruct.new(filename:, body:, mime_type:)
+        return []
       end
     end
   end
