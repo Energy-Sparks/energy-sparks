@@ -105,11 +105,9 @@ describe DataPipeline::Handlers::UnpackAttachments do
   describe '#extract_download_links' do
     let(:handler){ DataPipeline::Handlers::UnpackAttachments.new(client: client, logger: logger, environment: environment) }
 
-
     context 'with an imserv email' do
-      let(:imserv_link) { "https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=3rqzVsv6OIY%3D&mode=View" }
-
       let(:email_file)  {  File.open('spec/support/emails/imserv_email_with_link.txt') }
+      let(:imserv_link) { "https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=1111aaaZZZ%3D&mode=View" }
       let(:mail) { Mail.new(email_file.read) }
 
       it 'only finds imserv links' do
@@ -117,8 +115,23 @@ describe DataPipeline::Handlers::UnpackAttachments do
       end
     end
 
-    context 'with any other email' do
-      it 'finds no links'
+    context 'with an imserv email that was forwarded' do
+      let(:email_file)  {  File.open('spec/support/emails/imserv_email_with_link_fwd.txt') }
+      let(:imserv_link) { "https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=1111aaaZZZ%3D&mode=View" }
+      let(:mail) { Mail.new(email_file.read) }
+
+      it 'only finds imserv links' do
+        expect(handler.extract_download_links(mail)).to match_array([imserv_link])
+      end
+    end
+
+    context 'with other emails' do
+      ["sheffield_email_no_attachments.txt", "sheffield_email.txt", "sheffield-fwd.txt"].each do |email|
+        it "finds no links [#{email}]" do
+          mail = Mail.new(File.open("spec/support/emails/#{email}").read)
+          expect(handler.extract_download_links(mail)).to be_empty
+        end
+      end
     end
   end
 

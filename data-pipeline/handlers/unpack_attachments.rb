@@ -4,6 +4,8 @@ require 'mail'
 module DataPipeline
   module Handlers
     class UnpackAttachments
+      IMSERV_LINK_REGEX = %r{(https\://datavision.imserv.com/imgserver/InternalImage.aspx\?[a-zA-Z0-9&%=]+)}.freeze
+
       def initialize(client:, logger:, environment: {})
         @client = client
         @environment = environment
@@ -34,8 +36,19 @@ module DataPipeline
         { statusCode: 200, body: JSON.generate(responses: responses) }
       end
 
-      def extract_download_links(_mail)
-        return []
+      def extract_download_links(mail)
+        begin
+          if mail.parts.any?
+            to_match = mail.parts.first.decoded
+          else
+            to_match = mail.decoded
+          end
+          to_match.scan(IMSERV_LINK_REGEX).flatten
+        rescue => e
+          @logger.error("Unable to process mail body: #{mail.subject}, #{e.message}")
+          @logger.error(e.backtrace)
+          []
+        end
       end
 
       def download_csv_reports(_links)
