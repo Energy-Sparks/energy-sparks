@@ -1,8 +1,5 @@
 module Onboarding
   class CompletionController < BaseController
-    include NewsletterSubscriber
-    include OnboardingHelper
-
     skip_before_action :check_complete, only: :show
 
     def new
@@ -17,15 +14,8 @@ module Onboarding
     end
 
     def create
-      @school_onboarding.events.create(event: :onboarding_complete)
-
       users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
-
-      send_confirmation_instructions(users)
-      create_additional_contacts(users)
-      subscribe_users_to_newsletter(@school_onboarding.school.users.reject(&:pupil?))
-
-      OnboardingMailer.with(school_onboarding: @school_onboarding).completion_email.deliver_now
+      onboarding_service.complete_onboarding(@school_onboarding, users)
       redirect_to onboarding_completion_path(@school_onboarding)
     end
 
@@ -39,29 +29,8 @@ module Onboarding
 
     private
 
-    def send_confirmation_instructions(users)
-      #confirm other users created during onboarding
-      users.each do |user|
-        user.send_confirmation_instructions unless user.confirmed?
-      end
-    end
-
-    def subscribe_users_to_newsletter(users)
-      users.each do |user|
-        subscribe_newsletter(@school_onboarding.school, user) if user_subscribed_to_newsletter?(@school_onboarding, user)
-      end
-    end
-
-    def create_additional_contacts(users)
-      users.each do |user|
-        @school_onboarding.events.create(event: :alert_contact_created)
-        @school_onboarding.school.contacts.create!(
-          user: user,
-          name: user.display_name,
-          email_address: user.email,
-          description: 'School Energy Sparks contact'
-        )
-      end
+    def onboarding_service
+      @onboarding_service ||= Onboarding::Service.new
     end
   end
 end

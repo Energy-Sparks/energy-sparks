@@ -1,6 +1,6 @@
 module Onboarding
   class AccountController < BaseController
-    include OnboardingHelper
+    include NewsletterSubscriber
 
     skip_before_action :authenticate_user!, only: [:new, :create]
     before_action :redirect_if_logged_in, only: [:new]

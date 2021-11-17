@@ -2,6 +2,7 @@
   <p><%= school.name %> was created on <%= nice_dates(school.created_at) %></p>
 <% end %>
 
+<%= f.hidden_field :data_enabled, value: school.data_enabled %>
 <%= f.input :name, label: 'School name'%>
 <%= f.input :urn, label: 'Unique Reference Number', hint: 'This is your URN in England, SEED in Scotland' %>
 
