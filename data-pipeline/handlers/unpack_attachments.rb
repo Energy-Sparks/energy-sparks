@@ -1,6 +1,7 @@
 require 'aws-sdk-s3'
 require 'mail'
 require 'faraday'
+require 'rollbar'
 
 module DataPipeline
   module Handlers
@@ -11,6 +12,10 @@ module DataPipeline
         @client = client
         @environment = environment
         @logger = logger
+        Rollbar.configure do |config|
+          config.access_token = @environment["ROLLBAR_ACCESS_TOKEN"]
+          config.environment = "data-pipeline"
+        end
       end
 
       def process(key:, bucket:)
@@ -47,8 +52,8 @@ module DataPipeline
 
       def store_downloads(prefix, email)
         @logger.info("Extracting download links")
-        links = extract_download_links(email)
-        results = download_csv_reports(links)
+        links = extract_download_links(email, prefix)
+        results = download_csv_reports(links, prefix)
         responses = results.map do |download|
           @logger.info("Storing: #{download.filename} to: #{@environment['PROCESS_BUCKET']}")
           @client.put_object(
@@ -61,7 +66,7 @@ module DataPipeline
         responses
       end
 
-      def extract_download_links(mail)
+      def extract_download_links(mail, prefix = nil)
         begin
           if mail.parts.any?
             to_match = mail.parts.first.decoded
@@ -72,11 +77,12 @@ module DataPipeline
         rescue => e
           @logger.error("Unable to process mail body: #{mail.subject}, #{e.message}")
           @logger.error(e.backtrace)
+          Rollbar.error(e, subject: mail.subject, prefix: prefix)
           []
         end
       end
 
-      def download_csv_reports(links)
+      def download_csv_reports(links, prefix = nil)
         results = []
         links.each do |link|
           begin
@@ -84,12 +90,14 @@ module DataPipeline
             resp = Faraday.get(link)
             if download_error?(resp)
               @logger.error("Unable to download file #{link}")
+              Rollbar.error("Unable to download file", link: link, prefix: prefix)
             else
               results << OpenStruct.new(filename: filename(resp, link), body: resp.body, mime_type: resp.headers["content-type"])
             end
           rescue => e
             @logger.error("Unable to download file #{link}, #{e.message}")
             @logger.error(e.backtrace)
+            Rollbar.error(e, link: link, prefix: prefix)
           end
         end
         results

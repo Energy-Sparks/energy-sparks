@@ -49,6 +49,7 @@ GEM
       mini_mime (>= 0.1.1)
     mini_mime (1.0.2)
     multipart-post (2.1.1)
+    rollbar (3.3.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -78,6 +79,7 @@ DEPENDENCIES
   faraday
   fasterer
   mail
+  rollbar
   rspec
   rubyzip
 

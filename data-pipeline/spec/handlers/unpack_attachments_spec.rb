@@ -239,7 +239,10 @@ describe DataPipeline::Handlers::UnpackAttachments do
         results = handler.download_csv_reports(links)
         expect(results.length).to eql 0
       end
-      it 'logs to rollbar'
+      it 'logs to rollbar' do
+        expect(Rollbar).to receive(:error).with("Unable to download file", link: "http://example.org/download/1", prefix: nil)
+        results = handler.download_csv_reports(links)
+      end
     end
   end
 
