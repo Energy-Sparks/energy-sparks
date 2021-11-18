@@ -43,6 +43,17 @@ aws_access_key_id = YOURKEYHERE123
 aws_secret_access_key = YOURSECRETHERE123
 ```
 
+The functions log some errors in Rollbar. You need to add the following files:
+
+```
+.env.development
+.env.test
+.env.production
+```
+
+In each one add a `ROLLBAR_ACCESS_TOKEN` environment variable with the right token.
+These should be the same as the live environment.
+
 Run `bundle install` to install the required gems.
 
 ### Testing
