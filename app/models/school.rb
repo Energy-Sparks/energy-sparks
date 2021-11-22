@@ -5,6 +5,7 @@
 #  activation_date                       :date
 #  active                                :boolean          default(TRUE)
 #  address                               :text
+#  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
