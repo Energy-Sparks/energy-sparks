@@ -144,6 +144,7 @@ class School < ApplicationRecord
   scope :data_enabled,       -> { active.where(data_enabled: true) }
   scope :without_group,      -> { active.where(school_group_id: nil) }
   scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
+  scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
