@@ -23,7 +23,8 @@ describe SchoolCreator, :schools, type: :service do
         dark_sky_area: dark_sky_area,
         school_group: school_group,
         scoreboard: scoreboard,
-        weather_station: weather_station
+        weather_station: weather_station,
+        school_will_be_public: true
     end
 
     it 'saves the school' do
@@ -47,6 +48,12 @@ describe SchoolCreator, :schools, type: :service do
       service.onboard_school!(school_onboarding)
       onboarding_user.reload
       expect(onboarding_user.role).to eq('school_admin')
+    end
+
+    it 'sets the public flag' do
+      school_onboarding.update(school_will_be_public: false)
+      service.onboard_school!(school_onboarding)
+      expect(school_onboarding.school.public).to be_falsey
     end
 
     it 'assigns the school to the onboarding user' do

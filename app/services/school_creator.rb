@@ -73,7 +73,8 @@ private
         solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
         dark_sky_area: onboarding.dark_sky_area,
         scoreboard: onboarding.scoreboard,
-        weather_station: onboarding.weather_station
+        weather_station: onboarding.weather_station,
+        public: onboarding.school_will_be_public
       )
   end
 
