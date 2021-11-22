@@ -558,7 +558,18 @@ describe School do
       expect(school.all_school_admins).to match_array([new_admin])
       expect(school.all_adult_school_users).to match_array([new_admin])
     end
+  end
 
+  context '#awaiting_activation' do
+    let(:school){ create :school, visible: true, data_enabled: true }
+
+    it 'returns expected lists' do
+      expect(School.awaiting_activation).to be_empty
+      school.update!(visible: false)
+      expect(School.awaiting_activation).to match_array([school])
+      school.update!(visible: true, data_enabled: false)
+      expect(School.awaiting_activation).to match_array([school])
+    end
 
   end
 end
