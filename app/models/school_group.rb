@@ -60,7 +60,7 @@ class SchoolGroup < ApplicationRecord
   end
 
   def has_schools_awaiting_activation?
-    schools.not_visible.any?
+    schools.awaiting_activation.any?
   end
 
   def safe_destroy
