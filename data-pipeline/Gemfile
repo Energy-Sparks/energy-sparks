@@ -5,8 +5,14 @@ ruby '2.7.2'
 gem 'aws-sdk-s3'
 gem 'mail'
 gem 'rubyzip'
+gem 'faraday'
+gem 'rollbar'
 
 group :test do
   gem 'rspec'
   gem 'bundler-audit'
+end
+
+group :development do
+  gem 'fasterer'
 end

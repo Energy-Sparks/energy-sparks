@@ -3,6 +3,9 @@
 
 service: data-pipeline
 
+useDotenv: true
+unresolvedVariablesNotificationMode: error
+
 custom:
   currentStage: ${opt:stage, 'development'}
   buckets:
@@ -11,7 +14,6 @@ custom:
     compressed_bucket: es-${self:custom.currentStage}-data-uncompressed
     amr_data_bucket: es-${self:custom.currentStage}-data-amr-data
     unprocessable_bucket: es-${self:custom.currentStage}-data-unprocessable
-
 
 provider:
   name: aws
@@ -25,6 +27,7 @@ provider:
     COMPRESSED_BUCKET: ${self:custom.buckets.compressed_bucket}
     AMR_DATA_BUCKET: ${self:custom.buckets.amr_data_bucket}
     UNPROCESSABLE_BUCKET: ${self:custom.buckets.unprocessable_bucket}
+    ROLLBAR_ACCESS_TOKEN: ${env:ROLLBAR_ACCESS_TOKEN}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
