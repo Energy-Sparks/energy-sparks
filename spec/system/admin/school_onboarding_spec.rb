@@ -40,6 +40,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
       fill_in 'School name', with: school_name
       fill_in 'Contact email', with: 'oldfield@test.com'
+      uncheck 'School will be public'
 
       select 'BANES', from: 'Group'
       click_on 'Next'
@@ -58,7 +59,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on "Send setup email"
 
       onboarding = SchoolOnboarding.first
-      expect(onboarding.subscribe_to_newsletter).to eql true
+      expect(onboarding.subscribe_to_newsletter).to be_truthy
+      expect(onboarding.school_will_be_public).to be_falsey
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')

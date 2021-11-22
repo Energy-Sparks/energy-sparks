@@ -17,6 +17,13 @@
     <%= f.text_area :notes, class: 'form-control' %>
   </div>
 
+  <div class="form-group">
+    <div class="form-check form-check-inline">
+      <%= f.check_box :school_will_be_public, class: 'form-check-input' %>
+      <%= f.label :school_will_be_public, class: 'form-check-label' %>
+    </div>
+  </div>
+
   <h2>Scoreboard Group</h2>
   <div class="form-group">
     <%= f.label :school_group_id, 'Group' %>
