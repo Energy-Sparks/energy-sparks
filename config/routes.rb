@@ -317,7 +317,6 @@ Rails.application.routes.draw do
         resource :configuration, only: [:edit, :update], controller: 'configuration'
         resource :email, only: [:new, :create, :edit, :update], controller: 'email'
         resource :reminder, only: [:create], controller: 'reminder'
-        resources :events, only: [:create]
       end
       collection do
         get 'completed'

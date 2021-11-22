@@ -95,10 +95,13 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(school_onboarding).to be_incomplete
 
       click_on 'Manage school onboarding'
-      click_on 'Mark as complete'
+      click_on 'Make visible'
+
+      expect(page).to have_content("School onboardings")
 
       school_onboarding.reload
       expect(school_onboarding).to be_complete
+      expect(school_onboarding.school.visible).to be true
     end
 
     it 'I can download a CSV of onboarding schools' do
