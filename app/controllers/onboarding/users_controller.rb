@@ -1,6 +1,6 @@
 module Onboarding
   class UsersController < BaseController
-    include OnboardingHelper
+    include NewsletterSubscriber
 
     def index
       @users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
