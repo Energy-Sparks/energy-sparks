@@ -12,6 +12,7 @@
 #  school_group_id               :bigint(8)
 #  school_id                     :bigint(8)
 #  school_name                   :string           not null
+#  school_will_be_public         :boolean          default(TRUE)
 #  scoreboard_id                 :bigint(8)
 #  solar_pv_tuos_area_id         :bigint(8)
 #  subscribe_to_newsletter       :boolean          default(TRUE)

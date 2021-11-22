@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_11_113436) do
+ActiveRecord::Schema.define(version: 2021_11_22_130223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1092,6 +1092,7 @@ ActiveRecord::Schema.define(version: 2021_11_11_113436) do
     t.bigint "weather_station_id"
     t.boolean "subscribe_to_newsletter", default: true
     t.bigint "subscribe_users_to_newsletter", default: [], null: false, array: true
+    t.boolean "school_will_be_public", default: true
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
