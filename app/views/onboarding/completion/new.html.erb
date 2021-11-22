@@ -23,15 +23,15 @@
               <tbody>
                 <tr>
                   <th>Name:</th>
-                  <td><%=current_user.name%></td>
+                  <td><%=@school_onboarding.created_user.name%></td>
                 </tr>
                 <tr>
                   <th>Email:</th>
-                  <td><%=current_user.email%></td>
+                  <td><%=@school_onboarding.created_user.email%></td>
                 </tr>
                 <tr>
                   <th>Role:</th>
-                  <td><%=current_user.staff_role.title%></td>
+                  <td><%=@school_onboarding.created_user.staff_role.title%></td>
                 </tr>
                 <tr>
                   <th>Password:</th>
