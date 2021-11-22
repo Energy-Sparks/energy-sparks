@@ -46,13 +46,15 @@ module Onboarding
 
     def create_additional_contacts(school_onboarding, users)
       users.each do |user|
-        school_onboarding.events.create(event: :alert_contact_created)
-        school_onboarding.school.contacts.create!(
-          user: user,
-          name: user.display_name,
-          email_address: user.email,
-          description: 'School Energy Sparks contact'
-        )
+        unless user.contacts.where(school: school_onboarding.school).any?
+          school_onboarding.events.create(event: :alert_contact_created)
+          school_onboarding.school.contacts.create!(
+            user: user,
+            name: user.display_name,
+            email_address: user.email,
+            description: 'School Energy Sparks contact'
+          )
+        end
       end
     end
 

@@ -47,7 +47,7 @@
               <div class="btn-group">
                 <%= button_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm' %>
                 <% if onboarding.school %>
-                  <%= button_to 'Mark as complete', admin_school_onboarding_events_path(onboarding, event: :onboarding_complete), class: 'btn btn-sm' %>
+                  <%= button_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
                 <% else %>
                   <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
                 <% end %>

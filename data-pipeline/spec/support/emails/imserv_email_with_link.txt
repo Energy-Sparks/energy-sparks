@@ -1,0 +1,99 @@
+Delivered-To: data@example.org
+Received: by 2002:ac9:10e3:0:b0:3b4:66cf:9ba0 with SMTP id 90csp196192ocf;
+        Wed, 10 Nov 2021 14:09:48 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJweMcHVU2acfUZyTaBcjB8wk+04nF00O2bt5hW1qOc5W33BnaMhqNYIuvsFPEekx/Jf4++6
+X-Received: by 2002:adf:efc6:: with SMTP id i6mr2990363wrp.428.1636582188020;
+        Wed, 10 Nov 2021 14:09:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1636582188; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Go55I/rzIqwxX8tS8bVMKopyJXHltZ+gbn5knxp0QfJafJo/yv7qBzz7XdeHjFOt8y
+         y3aYvib7z6U4xoUcB6Yzg2Uwp7ca6uat4opVnwJGUyVJpHjTIDjEYfjwZlRYYaNIIoa4
+         f3x9419jlvPbdAB8h6yxGXyDdKpXmJzKPOdrH/krMFiaGqLH3HhbIzHH64kkVR/wtMts
+         EC+uP42nBjnQV/dzvwFFww6A4eL4iO/qZQkhSittnCcfMg0fkP9C97hZB8g8eFohllDq
+         qbSLxVonHcHEy4UFTCmTx4LeiW8fcI2CaZAig/9/et6617G4cbh3IdS06CrfLNWtIvEb
+         x35g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=message-id:subject:date:to:from:mime-version:dkim-signature
+         :content-transfer-encoding;
+        bh=bibMMlNx0jIqFZ2sGpWcY+An4OEE1zwzUyunM+zgfEk=;
+        b=xQgSn4oQqo8u9brHm2NeffGDwP5HBchl60KgjpqSLPCQpdLkNmdQbE3YRFdB3+L+fh
+         iRk46Q00fgADMVOTZ2nI2t6Dzh+3NxZEahaqjHTVPP7+7opzw/EseGObgLjWbJFOKyy8
+         tgnTIGi09qnMgvm7n10cUujESndFpPjIhMYre+HQ+u9VEyZwgAhquw+/4alfS1O2CXpF
+         3+JkwofNCR1XQEhgzvSW9ZPE2w7I7OqZ1M8N5NOiG4HE0DLjwZA5tViI2+cBECRwaRfL
+         NWj0qDc3lf5c+lB413RqvFjOUbEblF5Wt6AqYH+FN84Z4zjj3rljxqz5KlyNnMz3rkbO
+         WG4Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@imserv.com header.s=selector3 header.b=LkhCvvxt;
+       spf=pass (google.com: domain of data@supplier.example.com designates 185.135.59.18 as permitted sender) smtp.mailfrom=data@supplier.example.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=imserv.com
+Return-Path: <data@supplier.example.com>
+Received: from edgesc.im-serv.com (edgesc.im-serv.com. [185.135.59.18])
+        by mx.google.com with ESMTPS id i15si2489920wry.233.2021.11.10.14.09.47
+        for <data@example.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Nov 2021 14:09:47 -0800 (PST)
+Received-SPF: pass (google.com: domain of data@supplier.example.com designates 185.135.59.18 as permitted sender) client-ip=185.135.59.18;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@imserv.com header.s=selector3 header.b=LkhCvvxt;
+       spf=pass (google.com: domain of data@supplier.example.com designates 185.135.59.18 as permitted sender) smtp.mailfrom=data@supplier.example.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=imserv.com
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; d=imserv.com; s=selector3;
+	c=relaxed/relaxed; t=1636582186; h=from:subject:to:date:message-id;
+	bh=bibMMlNx0jIqFZ2sGpWcY+An4OEE1zwzUyunM+zgfEk=;
+	b=LkhCvvxtyK1YSUA5KBsqBXfWy/xMZJHGxIr6q1yOKvWRREOuTPhxpYg7nvv1hLHL4r71dAMp0AO
+	R+Mp58wn5cEQCAEdQ2ORunOIr23lqZD1sL2noiLJlwe098mdU/xCulNFSdfyV/N+qnccrROqOX6sP
+	MsrW8XEM8piDNgTSY/bbxGg61Ge3AK7G8ODxPEOcnUjvhAsnYw+DTbSZMMjsqXygFolrNgoP9l7T3
+	HgWSjkwDchP7ygc3+yJvXP3TNbGsccH78aHKgmF0lyrl80iJKWbCThk0E7iX3dGgvRyDNREyyj+rs
+	ImFbJbKdGbeSaTc24tDpYnKMfC45bDkyqndA==
+Received: from EX01LSC.im-serv.com (10.164.2.211) by EdgeSC.im-serv.com
+ (10.164.45.38) with Microsoft SMTP Server (TLS) id 14.3.498.0; Wed, 10 Nov
+ 2021 22:09:46 +0000
+Received: from EX01LSC.im-serv.com (10.164.2.211) by EX01LSC.im-serv.com
+ (10.164.2.211) with Microsoft SMTP Server (TLS) id 15.0.1497.24; Wed, 10 Nov
+ 2021 22:09:46 +0000
+Received: from RA02LSC (10.164.48.2) by smtp.im-serv.com (10.164.2.192) with
+ Microsoft SMTP Server id 15.0.1497.24 via Frontend Transport; Wed, 10 Nov
+ 2021 22:09:46 +0000
+MIME-Version: 1.0
+From: Data Vision <data@supplier.example.com>
+To: <data@example.org>
+Date: Wed, 10 Nov 2021 22:09:46 +0000
+Subject: Data Extract Report-WC-EnergySparksYesterday
+Message-ID: <2f3db027f34047c8838239696a20236f@EX01LSC.im-serv.com>
+Return-Path: data@supplier.example.com
+
+<!DOCTYPE html>=0D=0A<html xmlns=3D"http://www.w3.org/1999/xhtml"=
+>=0D=0A<head>=0D=0A    <meta http-equiv=3D"content-type" content=3D=
+"text/html; charset=3DUTF-8" />=0D=0A    <title></title>=0D=0A</h=
+ead>=0D=0A<body style=3D"background-color: #f4f4f4; color: #333; =
+font: normal normal 12px/18px Arial, sans-serif;">=0D=0A    <tabl=
+e align=3D"center" cellpadding=3D"0" cellspacing=3D"0" style=3D"b=
+order: 1px solid #cbcbcb; margin-top: 30px; width: 606px; backgro=
+und-color: #fff; border-collapse: collapse; border-spacing: 0px; =
+color: #333; font: normal normal 12px/18px Arial, sans-serif">=0D=0A=
+        <tr>=0D=0A            <td style=3D"width: 606px; padding:=
+ 15px">=0D=0A                <img src=3D"https://datavision.imser=
+v.com/raassets/theme/assets/images/datavision_logo.png" width=3D"=
+auto" height=3D"40" alt=3D"Data vision" border=3D"0" />=0D=0A    =
+        </td>=0D=0A        </tr>=0D=0A        <tr>=0D=0A         =
+   <td height=3D"40" style=3D"width: 606px; height: 40px; padding=
+: 5px 15px; background-color: #007CBA; font: normal 24px/28px Ari=
+al; color: #fff;">=0D=0A				WC-EnergySparksYesterday=0D=0A       =
+     </td>=0D=0A        </tr>=0D=0A        <tr>=0D=0A            =
+<td style=3D"padding: 25px 15px">=0D=0A                <p>Date Ge=
+nerated: 10/11/2021</br>Report Schedule: Daily - Every Day</br>Cr=
+eated by: dcranmer9</br></br>Date Range: 09/11/2021 - 09/11/2021<=
+/br></br>Please <a href=3D"https://datavision.imserv.com/imgserve=
+r/InternalImage.aspx?cbmsimgid=3D1111aaaZZZ%3D&mode=3DView">clic=
+k here</a> to download your report.</p>	=0D=0A                <p =
+style=3D"margin-top: 25px">                =0D=0A                =
+    If you have any questions, please contact Customer Services o=
+n 01908 257529=0D=0A                </p>                =0D=0A   =
+         </td>=0D=0A        </tr>       =0D=0A        <tr>=0D=0A =
+           <td height=3D"56" style=3D"background-color: #f3f3f3; =
+padding: 5px 15px; border-top: solid 1px #CFCFCF">=0D=0A         =
+       This is an automated email sent from DataVision.  Please d=
+o not reply.=0D=0A            </td>=0D=0A        </tr>=0D=0A    <=
+/table>    =0D=0A</body>=0D=0A</html>=0D=0A
