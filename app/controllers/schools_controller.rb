@@ -70,6 +70,8 @@ class SchoolsController < ApplicationController
   # POST /schools.json
   def create
     respond_to do |format|
+      #ensure schools are created as not visible initially
+      @school.visible = false
       if @school.save
         SchoolCreator.new(@school).process_new_school!
         format.html { redirect_to new_school_school_group_path(@school), notice: 'School was successfully created.' }
@@ -151,6 +153,7 @@ private
       :cooks_dinners_for_other_schools,
       :cooks_dinners_for_other_schools_count,
       :enable_targets_feature,
+      :public,
       key_stage_ids: []
     )
   end

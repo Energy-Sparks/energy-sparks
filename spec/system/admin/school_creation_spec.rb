@@ -45,6 +45,7 @@ RSpec.describe "school creation", :schools, type: :system do
 
     choose 'Primary'
     check 'KS1'
+    uncheck 'Public'
 
     click_on 'Next'
 
@@ -69,5 +70,9 @@ RSpec.describe "school creation", :schools, type: :system do
     expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
     expect(school.dark_sky_area).to eq(dark_sky_area)
     expect(school.scoreboard).to eq(scoreboard)
+
+    expect(school.visible).to be false
+    expect(school.public).to be false
   end
+
 end
