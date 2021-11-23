@@ -145,6 +145,7 @@ describe SchoolCreator, :schools, type: :service do
     context 'where the school has not been created via the onboarding process' do
       let!(:school_admin)  { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
+      let!(:consent_grant) { create :consent_grant, school: school }
 
       before(:each) do
         expect {
@@ -160,6 +161,7 @@ describe SchoolCreator, :schools, type: :service do
     context 'where the school has been created as part of the onboarding process' do
       let(:onboarding_user){ create :onboarding_user }
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+      let!(:consent_grant) { create :consent_grant, school: school }
 
       it 'sets visibility' do
         service.make_visible!
