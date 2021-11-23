@@ -409,6 +409,7 @@ RSpec.describe "school", type: :system do
       end
 
       it 'allows visibility management from school page' do
+        create :consent_grant, school: school
         click_on(school_name)
         click_on('Visible')
         school.reload
@@ -416,6 +417,18 @@ RSpec.describe "school", type: :system do
         click_on('Visible')
         school.reload
         expect(school).to be_visible
+      end
+
+      it 'disallows visibility change if school doesnt have consent' do
+        expect(school.consent_up_to_date?).to be false
+        click_on(school_name)
+        click_on('Visible')
+        school.reload
+        expect(school).to_not be_visible
+        click_on('Visible')
+        expect(page).to have_content("School cannot be made visible as we dont have a record of consent")
+        school.reload
+        expect(school).to_not be_visible
       end
 
       it 'allows data process management' do
