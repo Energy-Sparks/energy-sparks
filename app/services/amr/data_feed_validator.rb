@@ -1,4 +1,7 @@
 module Amr
+  class DataFeedValidatorException < RuntimeError
+  end
+
   class DataFeedValidator
     def initialize(config, array_of_rows)
       @config = config
@@ -19,7 +22,11 @@ module Amr
       if array_of_rows.first.join(',') == @config.header_example
         array_of_rows[1, array_of_rows.length]
       elsif @config.number_of_header_rows
-        array_of_rows[@config.number_of_header_rows, array_of_rows.length]
+        if @config.number_of_header_rows > array_of_rows.length
+          raise DataFeedValidatorException.new("Expected #{@config.number_of_header_rows} header rows but file has only #{array_of_rows.length}.")
+        else
+          array_of_rows[@config.number_of_header_rows, array_of_rows.length]
+        end
       else
         array_of_rows
       end

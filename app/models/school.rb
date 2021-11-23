@@ -5,6 +5,7 @@
 #  activation_date                       :date
 #  active                                :boolean          default(TRUE)
 #  address                               :text
+#  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
@@ -144,6 +145,7 @@ class School < ApplicationRecord
   scope :data_enabled,       -> { active.where(data_enabled: true) }
   scope :without_group,      -> { active.where(school_group_id: nil) }
   scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
+  scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
@@ -281,6 +283,16 @@ class School < ApplicationRecord
     all_school_admins + staff
   end
 
+  def activation_email_list
+    users = []
+    if school_onboarding && school_onboarding.created_user.present?
+      users << school_onboarding.created_user
+    end
+    #also email admin, staff and group users
+    users += all_adult_school_users.to_a
+    users.uniq.map(&:email)
+  end
+
   def latest_content
     content_generation_runs.order(created_at: :desc).first
   end
@@ -355,6 +367,10 @@ class School < ApplicationRecord
 
   def has_school_target_event?(event_name)
     school_target_events.where(event: event_name).any?
+  end
+
+  def has_school_onboarding_event?(event_name)
+    school_onboarding && school_onboarding.has_event?(event_name)
   end
 
   def school_target_attributes

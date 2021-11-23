@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'consent documents', type: :system do
 
-  let!(:school)                   { create_active_school(name: "School")}
+  let!(:school)                   { create_active_school(name: "School", bill_requested: true)}
   let(:school_admin)              { create(:school_admin, school: school) }
   let!(:admin)                    { create(:admin) }
 
@@ -45,8 +45,18 @@ describe 'consent documents', type: :system do
       sign_in(school_admin)
     end
 
+    context 'when viewing dashboard' do
+      before(:each) do
+        visit management_school_path(school)
+      end
+      it 'displays a prompt' do
+        expect(page).to have_content("We need you to provide a recent energy bill for your school")
+      end
+    end
+
     context 'when managing consent documents' do
       it 'can create and upload a bill' do
+        expect(school.bill_requested).to eql(true)
         visit school_consent_documents_path(school)
         expect(page).to have_content("You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.")
 
@@ -63,6 +73,9 @@ describe 'consent documents', type: :system do
         expect(page).to have_link 'Upload a new bill'
         expect(page).to have_content "Edit"
         expect(page).to_not have_content "Delete"
+
+        school.reload
+        expect(school.bill_requested).to eql(false)
       end
 
       it 'can update a bill' do
@@ -79,6 +92,9 @@ describe 'consent documents', type: :system do
         expect(page).to have_content "Changed title"
         click_on "Changed title"
         expect(page).to have_content "New description"
+
+        school.reload
+        expect(school.bill_requested).to eql(false)
       end
 
       it 'cannot delete a bill' do

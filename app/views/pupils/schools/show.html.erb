@@ -1,12 +1,36 @@
 <%= content_for :page_title, "Pupil dashboard for #{@school.name}" %>
 
-<%= render 'equivalences', equivalences_content: @equivalences_content, school: @school if @equivalences_content.present? %>
+<% if show_admin_page_switch?(@school) %>
+  <div class="row mt-2 mb-2">
+    <div class="col">
+      <div class="float-right">
+        <% if params[:no_data] %>
+          <%= link_to 'Admin view', pupils_school_path(@school), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
+        <% else %>
+          <%= link_to 'User view', pupils_school_path(@school, no_data: true), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
 
-<h2 class="mt-2">Let's look at the energy use data for your school:</h2>
-<%= render 'pupils/analysis/top_level', school: @school %>
+<% if @show_data_enabled_features %>
+  <%= render 'equivalences', equivalences_content: @equivalences_content, school: @school if @equivalences_content.present? %>
+
+  <h2 class="mt-2">Let's look at the energy use data for your school:</h2>
+  <%= render 'pupils/analysis/top_level', school: @school %>
+<% else %>
+  <%= render 'default_equivalences', equivalences: @default_equivalences, chool: @school %>
+  <%= render 'schools/dashboard/info_bar',
+        colour: 'bg-neutral',
+        icon: 'info-circle fa-3x',
+        content: "We're setting up this school's energy data and will update this page when it is ready to explore",
+        buttons: {}
+  %>
+<% end %>
 
 <h2 class="mt-2">Things to do</h2>
-<% if @dashboard_alerts.any? %>
+<% if @dashboard_alerts && @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
     <%= render 'schools/dashboard/info_bar',
           colour: class_for_alert_colour(content.colour),
@@ -90,3 +114,7 @@
 <br/>
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
+
+<% unless user_signed_in? %>
+  <%= render 'shared/school_login_prompt', school: @school %>
+<% end %>

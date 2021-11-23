@@ -6,6 +6,8 @@ module Schools
       authorize! :change_visibility, @school
       SchoolCreator.new(@school).make_visible!
       redirect_back fallback_location: school_path(@school)
+    rescue SchoolCreator::Error => e
+      redirect_back fallback_location: school_path(@school), notice: e.message
     end
 
     def destroy

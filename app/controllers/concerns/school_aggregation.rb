@@ -4,10 +4,19 @@ module SchoolAggregation
 private
 
   def check_aggregated_school_in_cache
+    return unless show_data_enabled_features?
     unless aggregate_school_service.in_cache_or_cache_off? || request.xhr?
       setup_loading_stats
       @aggregation_path = school_aggregated_meter_collection_path(@school)
       render 'schools/aggregated_meter_collections/show'
+    end
+  end
+
+  def show_data_enabled_features?
+    if current_user && current_user.admin?
+      params[:no_data] ? false : true
+    else
+      @school.data_enabled?
     end
   end
 

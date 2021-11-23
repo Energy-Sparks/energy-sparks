@@ -15,3 +15,15 @@
     color: $new-red;
   }
 }
+
+.school-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 25px;
+  margin-left: 15px;
+  margin-bottom: 15px;
+
+  label {
+    margin-right: 20px;
+  }
+}

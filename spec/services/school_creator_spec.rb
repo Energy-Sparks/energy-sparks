@@ -23,7 +23,8 @@ describe SchoolCreator, :schools, type: :service do
         dark_sky_area: dark_sky_area,
         school_group: school_group,
         scoreboard: scoreboard,
-        weather_station: weather_station
+        weather_station: weather_station,
+        school_will_be_public: true
     end
 
     it 'saves the school' do
@@ -47,6 +48,12 @@ describe SchoolCreator, :schools, type: :service do
       service.onboard_school!(school_onboarding)
       onboarding_user.reload
       expect(onboarding_user.role).to eq('school_admin')
+    end
+
+    it 'sets the public flag' do
+      school_onboarding.update(school_will_be_public: false)
+      service.onboard_school!(school_onboarding)
+      expect(school_onboarding.school.public).to be_falsey
     end
 
     it 'assigns the school to the onboarding user' do
@@ -101,170 +108,70 @@ describe SchoolCreator, :schools, type: :service do
     end
   end
 
+  describe 'make_data_enabled!' do
+    let(:visible) { true }
+    let(:school) { create :school, data_enabled: false, visible: visible }
+    let!(:school_onboarding){ create :school_onboarding, school: school}
+
+    it 'broadcasts message' do
+      expect {
+        service.make_data_enabled!
+      }.to broadcast(:school_made_data_enabled)
+    end
+
+    it 'updates data enabled status' do
+      service.make_data_enabled!
+      expect(school.data_enabled).to be_truthy
+    end
+
+    it 'records event' do
+      service.make_data_enabled!
+      expect(school.has_school_onboarding_event?(:onboarding_data_enabled)).to be_truthy
+    end
+
+    context 'where the school is not visible' do
+      let(:visible) { false }
+      it 'rejects call' do
+        expect {
+          service.make_data_enabled!
+        }.to raise_error SchoolCreator::Error
+      end
+    end
+  end
+
   describe 'make_visible!' do
     let(:school){ create :school, visible: false}
 
     context 'where the school has not been created via the onboarding process' do
       let!(:school_admin)  { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
+      let!(:consent_grant) { create :consent_grant, school: school }
 
       before(:each) do
-        service.make_visible!
+        expect {
+          service.make_visible!
+        }.to broadcast(:school_made_visible)
       end
 
       it 'completes the onboarding process' do
         expect(school.visible).to eq(true)
       end
-
-      it 'sends an activation email to staff and admins' do
-        email = ActionMailer::Base.deliveries.last
-        expect(email).to_not be nil
-        expect(email.subject).to include('is live on Energy Sparks')
-        expect(email.to).to match [school_admin.email, staff.email]
-      end
-
     end
 
     context 'where the school has been created as part of the onboarding process' do
       let(:onboarding_user){ create :onboarding_user }
       let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+      let!(:consent_grant) { create :consent_grant, school: school }
 
-      it 'completes the onboarding process' do
-        expect(school_onboarding).to be_incomplete
+      it 'sets visibility' do
         service.make_visible!
         expect(school.visible).to eq(true)
-        expect(school_onboarding).to be_complete
       end
 
-      context 'when an email has already been sent' do
-        before(:each) do
-          school_onboarding.events.create!(event: :activation_email_sent)
+      it 'broadcasts message' do
+        expect {
           service.make_visible!
-        end
-        it 'doesnt send another' do
-          expect(ActionMailer::Base.deliveries.size).to eq(0)
-        end
-      end
-
-      context 'when sending activation email' do
-
-        it 'sends if one has not been sent' do
-          service.make_visible!
-          email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to include('is live on Energy Sparks')
-          expect(email.to).to eql [onboarding_user.email]
-        end
-
-        it 'records target invite if feature is active and enough data' do
-          allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-          service.make_visible!
-          expect(school.has_school_target_event?(:first_target_sent)).to be true
-        end
-
-        it 'does not records target invite if feature is in active' do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
-          service.make_visible!
-          expect(school.has_school_target_event?(:first_target_sent)).to be false
-        end
-
-        it 'does not records target invite if not enough data is in active' do
-          allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-          service.make_visible!
-          expect(school.has_school_target_event?(:first_target_sent)).to be false
-        end
-
-        it 'records that an email was sent' do
-          service.make_visible!
-          expect(school_onboarding).to have_event(:activation_email_sent)
-        end
-
-        it 'enrols in default programme' do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-          default_programme = create(:programme_type_with_activity_types, default: true)
-          service.make_visible!
-          school.reload
-          expect(school.programmes.any?).to be true
-        end
-
-        context 'when there are staff and admins' do
-          let!(:school_admin)  { create(:school_admin, school: school) }
-          let!(:staff) { create(:staff, school: school) }
-
-          it 'sends the email to staff and admins' do
-            service.make_visible!
-            email = ActionMailer::Base.deliveries.last
-            expect(email.to).to match [onboarding_user.email, school_admin.email, staff.email]
-          end
-
-          context 'but no created user' do
-            #can happen when admin completes process for a school
-            let(:school_onboarding) do
-              create :school_onboarding,
-                created_user: nil,
-                template_calendar: template_calendar,
-                solar_pv_tuos_area: solar_pv_area,
-                dark_sky_area: dark_sky_area,
-                school_group: school_group,
-                scoreboard: scoreboard,
-                weather_station: weather_station
-            end
-            it 'still sends email to staff and admins' do
-              service.make_visible!
-              email = ActionMailer::Base.deliveries.last
-              expect(email.to).to match [school_admin.email, staff.email]
-            end
-          end
-        end
-
-        context 'the email contains' do
-          let(:email) { ActionMailer::Base.deliveries.last }
-
-          let(:email_body) { email.html_part.body.to_s }
-          let(:matcher) { Capybara::Node::Simple.new(email_body.to_s) }
-
-          it 'link to school dashboard' do
-            service.make_visible!
-            expect(matcher).to have_link("View your school dashboard")
-          end
-          it 'links to help content and contact' do
-            service.make_visible!
-            expect(matcher).to have_link("User Guide")
-            expect(matcher).to have_link("Training Videos")
-            expect(matcher).to have_link("Join a webinar")
-            expect(matcher).to have_link("Get in touch")
-          end
-
-          context 'request to set targets' do
-            let(:enough_data) { true }
-            it 'when feature is active and enough data' do
-              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-              allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-              service.make_visible!
-              expect(email_body).to include("Set your first targets")
-              expect(matcher).to have_link("Set your first target")
-            end
-
-            it 'not when feature is inactive' do
-              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-              allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
-              service.make_visible!
-              expect(email_body).to_not include("Set your first targets")
-              expect(matcher).to_not have_link("Set your first target")
-            end
-
-            it 'but not when not enough data' do
-              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-              allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-              service.make_visible!
-              expect(email_body).to_not include("Set your first targets")
-              expect(matcher).to_not have_link("Set your first target")
-            end
-
-          end
-
-        end
+        }.to broadcast(:school_made_visible, school)
       end
     end
   end

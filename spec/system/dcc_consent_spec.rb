@@ -46,7 +46,7 @@ RSpec.describe "DCC consents", type: :system do
           expect_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:grant_trusted_consent).with(1234567890123, meter_review.consent_grant.guid).and_return(true)
           click_on('DCC Consents')
           click_on('1234567890123')
-          expect(page).to have_content('Meter: 1234567890123')
+          expect(page).to have_content('1234567890123')
           click_on('Grant consent')
           expect(page).to have_content('Consent granted for 1234567890123')
           expect(meter_1.reload.consent_granted).to be_truthy
@@ -59,7 +59,7 @@ RSpec.describe "DCC consents", type: :system do
           expect_any_instance_of(MeterReadingsFeeds::N3rgyConsent).to receive(:withdraw_trusted_consent).with(987654321).and_return(true)
           click_on('DCC Consents')
           click_on('987654321')
-          expect(page).to have_content('Meter: 987654321')
+          expect(page).to have_content('987654321')
           click_on('Withdraw consent')
           expect(page).to have_content('Consent withdrawn for 987654321')
           expect(meter_1.reload.consent_granted).to be_falsey

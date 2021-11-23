@@ -1,8 +1,7 @@
 <h1>Schools awaiting activation</h1>
 
 <p>
-  This page lists all schools which are not yet visible on the system. It includes those that were
-  manually setup and those created via the usual onboarding route.
+  This page lists all schools which are awaiting activation. They are either not yet visible on the system or have not had their data feeds set. The list includes those that were manually setup and those created via the usual onboarding route.
 </p>
 
 <p>
@@ -20,15 +19,16 @@
           <tr>
             <th class="name">School name</th>
             <th class="completed">Onboarding completed</th>
+            <th class="visible">Visible?</th>
+            <th class="processing">Process data?</th>
+            <th class="enabled">Data visible?</th>
             <th class="meters">Meters</th>
             <th class="review">Awaiting meter review?</th>
-            <th class="processing">Data processing?</th>
-            <th class="enabled">Data enabled?</th>
             <th class="actions">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <% school_group.schools.not_visible.by_name.each do |school| %>
+          <% school_group.schools.awaiting_activation.by_name.each do |school| %>
             <tr>
               <td><%= link_to school.name, school_path(school) %></td>
               <td>
@@ -38,6 +38,9 @@
                     N/A
                   <% end %>
               </td>
+              <td><%= checkmark(school.visible) %></td>
+              <td><%= checkmark(school.process_data) %></td>
+              <td><%= checkmark(school.data_enabled) %></td>
               <td><%= school.meters.count %></td>
               <td>
                 <%= y_n(school.meters.unreviewed_dcc_meter.any?) %>
@@ -45,8 +48,6 @@
                  <%= link_to "(view)", admin_meter_reviews_path %>
                 <% end %>
               </td>
-              <td><%= y_n(school.process_data) %></td>
-              <td><%= y_n(school.data_enabled) %></td>
               <td>
                 <div class="btn-group">
                   <%= link_to 'Edit details', edit_school_path(school), class: "btn btn-sm" %>

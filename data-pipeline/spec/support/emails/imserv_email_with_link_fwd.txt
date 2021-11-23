@@ -1,0 +1,158 @@
+Delivered-To: text@example.org
+Received: by 2002:a05:7000:3e8f:0:0:0:0 with SMTP id bx15csp266035mab;
+        Wed, 17 Nov 2021 03:27:57 -0800 (PST)
+X-Received: by 2002:a17:906:fb17:: with SMTP id lz23mr20778410ejb.149.1637148477730;
+        Wed, 17 Nov 2021 03:27:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1637148477; cv=none;
+        d=google.com; s=arc-20160816;
+        b=J7qwBu2Z2VSWRVrm49Tk+aQfDkiMq7cmqyDazIqKUfPUTFnQ3yWHHXCJUNQXWUP9hd
+         SyIWRG3yzackVZRuIX7NiBAoFB8mosrhSk/WEUS+gFxTmH6UWfTZEoMwTf8yUxrFnsRC
+         DoVwZ7BH/eHSl15sA62JhR4ea5LuionIaqQTA7E3waWb0OaXj0HvLsVFK6apofmF6xB6
+         xkiHq7uvjEEYhRBxGSsGpW8DLRe9d3f7qJFIkGzgwD5JYNUo6EiWQJz6UFZ7X/sm0KJk
+         fdh/1LY49TmTU2/ga60R9YS7x/kxpjgAwLxSiekMVNUNSe+sk8Qb4u+9xU02+ENHxxMt
+         NwqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=oxQcKWSFH/6LStVOl2BDqRsQavEFkX4GvW2m6RmE9Ps=;
+        b=b1bRBcWEp65KQdoncBGN10D3Fxz4Vu7gH8NtzArIN2w18V7eDXPpA8NAvxPE6Hyeef
+         /ksS3V1L2nnNKB8PHFg3FXXTVfjzDSj37zzIgKuaB58qkJh2Qqu0PFqQqu1s/cli92g5
+         eGryOem2SXrGQKdF1gS13rEDkkXb81xXb3beVLPkqv3H/zD1Kpr3YQqGCQp72nNUIXNx
+         VPUcIZ12VB9hVBWHmR6bdRF3dEmZLIuGLr2nrAh3Pk3dooTmlWzXxMTH8EcHNDMrtEM1
+         YR/myTsNuTRSsMYPwG63m06Op9gmtRp+HO5oK6GRUZaU5LnHK9Q51Jku7c1HvXXRIr6P
+         bU2g==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@energysparks-uk.20210112.gappssmtp.com header.s=20210112 header.b=gU7+f6Ws;
+       spf=pass (google.com: domain of data@example.org designates 209.85.220.41 as permitted sender) smtp.mailfrom=data@example.org;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.org
+Return-Path: <data@example.org>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id r17sor10292014edd.6.2021.11.17.03.27.57
+        for <test@example.org>
+        (Google Transport Security);
+        Wed, 17 Nov 2021 03:27:57 -0800 (PST)
+Received-SPF: pass (google.com: domain of data@example.org designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@energysparks-uk.20210112.gappssmtp.com header.s=20210112 header.b=gU7+f6Ws;
+       spf=pass (google.com: domain of data@example.org designates 209.85.220.41 as permitted sender) smtp.mailfrom=data@example.org;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=energysparks-uk.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=oxQcKWSFH/6LStVOl2BDqRsQavEFkX4GvW2m6RmE9Ps=;
+        b=gU7+f6Ws+m7uBsmpxWHdZ19mb+IIGb6OrDMFYeG2CTWeBGFHVeD7xeG8MKQuV9hwGy
+         SYog40JWWWpoIBA4du6Mu1eCJKXmNEsJ48BUxh5ctdmwRVGkwYmqAz5P1QYiJarhNz2g
+         kMhXirjWYAS3GbbaLNo/IOCRwhw0EsU8iHsJESS/ZLW3XyBTlwnmSorlkIprqidW8Uai
+         NQ59MXIsgqEVy4+zx2SQeK/z4+jIpM+UQQ6U1Tyf7C3aD3yq19arjd177KPVLch+Kdvl
+         zlUi5iQrKOTLERzkRR3nGcOT+SxjQbiGN5XEhPsuIFeXoeKWipEKiHtWKn9etiy5BmiI
+         FlkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=oxQcKWSFH/6LStVOl2BDqRsQavEFkX4GvW2m6RmE9Ps=;
+        b=IQ6oNYFuIGBwzsi6Ccx8oolcm+xMzoKqwdB3JbT/NIrrDzPGdICQrITOu100HT2Xoc
+         jl4sZLTe8xGTL2bibD7NitvUmy7sHVI1SaJgJLaTbLZj6IDeshZ+PrwltuWIq2ScK+K0
+         9yAxh9+Wqnyau2APPyUffBjEQtIm5jwxfFRQznYQDbovCgpqd/idNgxrK3I6TpFcDwvw
+         NbzEcfDC4MK0wjyQZ6hB8lwjnSYa2KMKk1tA6OjUFDP4OFc3yUWRKWLvEcNZodW0Slr4
+         JTUbXHWc1lD96bZpWvmrK8DwuVe5q1jk/XTRKu2qCi/8s4YUN6Z3nKkQKlq8fiR9m8kq
+         Aqpw==
+X-Gm-Message-State: AOAM530TzYOw4tqwjhr63XlKNeTl4cQGd9IYAYKFQ5g6qzsM8i8IZM8q
+	+EyOfiY7CCEKfxtL7XZeULxNYGOYAMniM4B06msKxZlOYtsJ5oM8
+X-Google-Smtp-Source: ABdhPJwyx7DWXkUXMCrBEQDw9WXCfP26dlKx43yi8SiPBomM0v8XTUU5oLbLKZgRaPDXsX+2SD2xHTJTbSPZlPygb6E=
+X-Received: by 2002:a05:6402:653:: with SMTP id u19mr20350016edx.106.1637148477210;
+ Wed, 17 Nov 2021 03:27:57 -0800 (PST)
+MIME-Version: 1.0
+References: <d356ff075fa64d0ba47a71acbf9c8b0b@EX01LSC.im-serv.com>
+In-Reply-To: <d356ff075fa64d0ba47a71acbf9c8b0b@EX01LSC.im-serv.com>
+From: Energy Sparks Data <data@example.org>
+Date: Wed, 17 Nov 2021 11:27:46 +0000
+Message-ID: <CAHdsDGp+4FmzVhRUvtkyqKXdpq_O56LrbTzHMHPHfjzEBhJUHQ@mail.gmail.com>
+Subject: Fwd: Data Extract Report-WC-EnergySparksLast7Days
+To: leigh.dodds@example.org
+Content-Type: multipart/alternative; boundary="0000000000006dd6bb05d0fa5501"
+
+--0000000000006dd6bb05d0fa5501
+Content-Type: text/plain; charset="UTF-8"
+
+---------- Forwarded message ---------
+From: Data Vision <data@supplier.example.com>
+Date: Tue, Nov 16, 2021 at 10:07 PM
+Subject: Data Extract Report-WC-EnergySparksLast7Days
+To: <data@example.org>
+
+
+[image: Data vision]
+WC-EnergySparksLast7Days
+
+Date Generated: 16/11/2021Report Schedule: Daily - Every DayCreated by:
+dcranmer9Date Range: 09/11/2021 - 15/11/2021Please click here
+<https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=1111aaaZZZ%3D&mode=View>
+to download your report.
+
+If you have any questions, please contact Customer Services on 01908 257529
+This is an automated email sent from DataVision. Please do not reply.
+
+--0000000000006dd6bb05d0fa5501
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">---------- Forwarded message ---------<br>From: <strong cla=
+ss=3D"gmail_sendername" dir=3D"auto">Data Vision</strong> <span dir=3D"auto=
+">&lt;<a href=3D"mailto:data@supplier.example.com">data@supplier.example.com</a>&gt=
+;</span><br>Date: Tue, Nov 16, 2021 at 10:07 PM<br>Subject: Data Extract Re=
+port-WC-EnergySparksLast7Days<br>To:  &lt;<a href=3D"mailto:data@energyspar=
+ks.uk">data@example.org</a>&gt;<br></div><br><br><u></u>
+
+
+   =20
+   =20
+
+<div style=3D"background-color:#f4f4f4;color:#333;font:normal normal 12px/1=
+8px Arial,sans-serif">
+    <table align=3D"center" cellpadding=3D"0" cellspacing=3D"0" style=3D"bo=
+rder:1px solid #cbcbcb;margin-top:30px;width:606px;background-color:#fff;bo=
+rder-collapse:collapse;border-spacing:0px;color:#333;font:normal normal 12p=
+x/18px Arial,sans-serif">
+        <tbody><tr>
+            <td style=3D"width:606px;padding:15px">
+                <img src=3D"https://datavision.imserv.com/raassets/theme/as=
+sets/images/datavision_logo.png" width=3D"auto" height=3D"40" alt=3D"Data v=
+ision" border=3D"0">
+            </td>
+        </tr>
+        <tr>
+            <td height=3D"40" style=3D"width:606px;height:40px;padding:5px =
+15px;background-color:#007cba;font:normal 24px/28px Arial;color:#fff">
+				WC-EnergySparksLast7Days
+            </td>
+        </tr>
+        <tr>
+            <td style=3D"padding:25px 15px">
+                <p>Date Generated: 16/11/2021Report Schedule: Daily - Every=
+ DayCreated by: dcranmer9Date Range: 09/11/2021 - 15/11/2021Please <a href=
+=3D"https://datavision.imserv.com/imgserver/InternalImage.aspx?cbmsimgid=3D=
+1111aaaZZZ%3D&amp;mode=3DView" target=3D"_blank">click here</a> to downloa=
+d your report.</p>=09
+                <p style=3D"margin-top:25px">               =20
+                    If you have any questions, please contact Customer Serv=
+ices on 01908 257529
+                </p>               =20
+            </td>
+        </tr>      =20
+        <tr>
+            <td height=3D"56" style=3D"background-color:#f3f3f3;padding:5px=
+ 15px;border-top:solid 1px #cfcfcf">
+                This is an automated email sent from DataVision.  Please do=
+ not reply.
+            </td>
+        </tr>
+    </tbody></table>   =20
+</div>
+
+
+
+</div></div>
+
+--0000000000006dd6bb05d0fa5501--

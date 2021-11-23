@@ -3,13 +3,13 @@ require 'rails_helper'
 describe 'CADs', type: :system do
 
   let!(:school)           { create_active_school(name: "Big School")}
-  let!(:school_admin)     { create(:school_admin, school: school) }
+  let!(:admin)            { create(:admin) }
 
-  context 'as a school admin' do
+  context 'as an admin' do
 
     before(:each) do
-      sign_in(school_admin)
-      visit root_path
+      sign_in(admin)
+      visit school_path(school)
     end
 
     it 'allows CAD to be created, edited, deleted' do

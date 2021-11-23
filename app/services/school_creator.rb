@@ -1,4 +1,8 @@
 class SchoolCreator
+  include Wisper::Publisher
+
+  class Error < StandardError; end
+
   def initialize(school)
     @school = school
   end
@@ -7,16 +11,16 @@ class SchoolCreator
     if @school.valid?
       @school.transaction do
         copy_onboarding_details_to_school(onboarding)
-        record_event(onboarding, :school_admin_created) do
+        onboarding_service.record_event(onboarding, :school_admin_created) do
           add_school(onboarding.created_user, @school)
         end
-        record_events(onboarding, :default_school_times_added) do
+        onboarding_service.record_event(onboarding, :default_school_times_added) do
           process_new_school!
         end
         create_default_contact(onboarding)
         process_new_configuration!
-        record_event(onboarding, :school_calendar_created) if @school.calendar
-        record_event(onboarding, :school_details_created) do
+        onboarding_service.record_event(onboarding, :school_calendar_created) if @school.calendar
+        onboarding_service.record_event(onboarding, :school_details_created) do
           onboarding.update!(school: @school)
         end
       end
@@ -30,19 +34,20 @@ class SchoolCreator
   end
 
   def make_visible!
+    raise Error.new("School cannot be made visible as we dont have a record of consent") unless @school.consent_grants.any?
     @school.update!(visible: true)
-    record_event(@school.school_onboarding, :onboarding_complete) if should_complete_onboarding?
-    if should_send_activation_email?
-      to = activation_email_list(@school)
-      if to.any?
-        target_prompt = include_target_prompt_in_email?
-        OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now
-
-        record_event(@school.school_onboarding, :activation_email_sent) unless @school.school_onboarding.nil?
-        record_target_event(@school, :first_target_sent) if target_prompt
-      end
-      enrol_in_default_programme
+    if onboarding_service.should_complete_onboarding?(@school)
+      users = @school.users.reject(&:pupil?)
+      onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
+    broadcast(:school_made_visible, @school)
+  end
+
+  def make_data_enabled!
+    raise Error.new('School must be visible before enabling data') unless @school.visible
+    @school.update!(data_enabled: true)
+    onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
+    broadcast(:school_made_data_enabled, @school)
   end
 
   def add_school_times
@@ -57,16 +62,6 @@ class SchoolCreator
 
 private
 
-  def activation_email_list(school)
-    users = []
-    if school.school_onboarding && school.school_onboarding.created_user.present?
-      users << school.school_onboarding.created_user
-    end
-    #also email admin, staff and group users
-    users += school.all_adult_school_users.to_a
-    users.uniq.map(&:email)
-  end
-
   def add_school(user, school)
     user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
@@ -79,12 +74,13 @@ private
         solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
         dark_sky_area: onboarding.dark_sky_area,
         scoreboard: onboarding.scoreboard,
-        weather_station: onboarding.weather_station
+        weather_station: onboarding.weather_station,
+        public: onboarding.school_will_be_public
       )
   end
 
   def create_default_contact(onboarding)
-    record_events(onboarding, :alert_contact_created) do
+    onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,
         name: onboarding.created_user.display_name,
@@ -92,22 +88,6 @@ private
         description: 'School Energy Sparks contact'
       )
     end
-  end
-
-  def should_send_activation_email?
-    @school.school_onboarding.nil? || @school.school_onboarding && !@school.school_onboarding.has_event?(:activation_email_sent)
-  end
-
-  def include_target_prompt_in_email?
-    return Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
-  end
-
-  def enrol_in_default_programme
-    Programmes::Enroller.new.enrol(@school)
-  end
-
-  def should_complete_onboarding?
-    @school.school_onboarding && @school.school_onboarding.incomplete?
   end
 
   def generate_calendar
@@ -124,16 +104,7 @@ private
     Schools::Configuration.create!(school: @school)
   end
 
-  def record_event(onboarding, *events)
-    result = yield if block_given?
-    events.each do |event|
-      onboarding.events.create(event: event)
-    end
-    result
-  end
-  alias_method :record_events, :record_event
-
-  def record_target_event(school, event)
-    school.school_target_events.create(event: event)
+  def onboarding_service
+    @onboarding_service ||= Onboarding::Service.new
   end
 end

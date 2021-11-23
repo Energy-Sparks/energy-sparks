@@ -3,7 +3,6 @@ module Management
     load_and_authorize_resource
 
     include SchoolAggregation
-    include DashboardSetup
     include DashboardEnergyCharts
     include DashboardAlerts
     include DashboardTimeline
@@ -31,6 +30,8 @@ module Management
       @observations = setup_timeline(@school.observations)
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
+      @prompt_training = !@show_data_enabled_features || current_user.confirmed_at < 60.days.ago
+      @prompt_for_bill = @school.bill_requested && can?(:index, ConsentDocument)
     end
 
     def setup_data_enabled_features

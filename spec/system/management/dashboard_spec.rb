@@ -90,6 +90,13 @@ describe 'Management dashboard' do
         expect(page).to have_content("Adult Dashboard")
       end
 
+
+      it 'shows the expected prompts' do
+        expect(page).to have_link("View your programmes")
+        expect(page).to have_link("Record a pupil activity")
+        expect(page).to have_link("Record an action")
+      end
+
       it 'shows data-enabled features' do
         #management table
         expect(page).to have_content("Your annual usage")
@@ -266,44 +273,10 @@ describe 'Management dashboard' do
           expect(page).to have_content('Recorded temperatures in')
           expect(page).to have_content('Upgraded insulation')
           expect(page).to have_content('Completed an activity')
-          click_on 'View all actions'
+          click_on 'View all events'
           expect(page).to have_content('Recorded temperatures in')
           expect(page).to have_content('Upgraded insulation')
           expect(page).to have_content('Completed an activity')
-        end
-      end
-
-      describe 'has a loading page which redirects to the right place', js: true do
-        before(:each) do
-          allow(AggregateSchoolService).to receive(:caching_off?).and_return(false, true)
-          allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-          allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
-        end
-
-        context 'with a successful load' do
-          before(:each) do
-            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
-            school.configuration.update(gas_dashboard_chart_type: Schools::Configuration::TEACHERS_GAS_SIMPLE)
-          end
-          it 'renders a loading page and then back to the dashboard page once complete' do
-            visit management_school_path(school)
-
-            expect(page).to have_content('Adult Dashboard')
-            # if redirect fails it will still be processing
-            expect(page).to_not have_content('processing')
-            expect(page).to_not have_content("we're having trouble processing your energy data today")
-          end
-        end
-
-        context 'with a loading error' do
-          before(:each) do
-            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
-          end
-
-          it 'shows an error message', errors_expected: true do
-            visit management_school_path(school)
-            expect(page).to have_content("we're having trouble processing your energy data today")
-          end
         end
       end
 
@@ -355,6 +328,13 @@ describe 'Management dashboard' do
         expect(page).to have_content("Adult Dashboard")
       end
 
+      it 'shows the expected prompts' do
+        expect(page).to have_link("Find training")
+        expect(page).to have_link("View your programmes")
+        expect(page).to have_link("Record a pupil activity")
+        expect(page).to have_link("Record an action")
+      end
+
       it 'shows temperature observations' do
         #this is from the default observation created above
         expect(page).to have_content("Recorded temperatures")
@@ -362,6 +342,10 @@ describe 'Management dashboard' do
 
       it 'does not show data-enabled features' do
         expect(page).to_not have_content("Your annual usage")
+      end
+
+      it 'shows placeholder chart' do
+        expect(page).to have_css(".chart-placeholder-image")
       end
 
       it 'does not show data-enabled links' do

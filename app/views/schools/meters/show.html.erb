@@ -1,61 +1,92 @@
-<h1>Meter: <%= @meter.mpan_mprn %></h1>
-<h2><%= @meter.name %></h2>
-<p><%= link_to 'School meter management', school_meters_path(@school) %></p>
-<p>
-  <%= link_to "Download CSV of Validated Readings", school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
-  <%= link_to 'Edit', edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
-  <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
-    <%= link_to 'Report', admin_reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
-  <% end %>
-  <% if can?(:view_meter_attributes, @meter) %>
-    <%= link_to 'Attributes', admin_school_single_meter_attribute_path(@school, @meter), class: 'btn btn-sm' %>
-  <% end %>
-  <% if @meter.active? %>
-    <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
-  <% else %>
-    <%= link_to 'Activate', activate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
-  <% end %>
-  <% if @meter.dcc_meter? %>
-    <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
-      <%= link_to 'Withdraw consent', admin_withdraw_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
-    <% end %>
-    <% if @meter.can_grant_consent? && can?(:grant_consent, @meter) %>
-      <%= link_to 'Grant consent', admin_grant_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
-    <% end %>
-    <% if can?(:view_inventory, @meter) %>
-      <%= link_to 'Inventory', inventory_school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
-    <% end %>
-    <% if can?(:view_tariff_reports, @meter)%>
-      <%= link_to 'Tariff Report', admin_reports_tariff_path(@meter), class: 'btn btn-info btn-sm' %>
-    <% end %>
-  <% end %>
-  </p>
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= @meter.name.present? ? @meter.name : 'Meter' %> (<%= @meter.mpan_mprn %>)</h1>
+  <div class="h5">
+    <%= link_to 'School meter management', school_meters_path(@school), class: 'btn btn-outline-dark round-pill' %>
+  </div>
+</div>
 
-<dl class="row">
-  <dt class="col-sm-3">Type</dt>
-  <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
-  <dt class="col-sm-3">Serial Number</dt>
-  <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
-  <dt class="col-sm-3">Created</dt>
-  <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
-  <dt class="col-sm-3">Last updated</dt>
-  <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
-  <dt class="col-sm-3">Status</dt>
-  <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
-  <dt class="col-sm-3">DCC Meter?</dt>
-  <dd class="col-sm-9"><%= @meter.dcc_meter? %></dd>
-  <dt class="col-sm-3">User Consented?</dt>
-  <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
-  <dt class="col-sm-3">DCC Consented?</dt>
-  <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
-  <dt class="col-sm-3">Sandbox?</dt>
-  <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
-  <dt class="col-sm-3">Earliest Available Data</dt>
-  <dd class="col-sm-9"><%= @meter.earliest_available_data %></dd>
-  <dt class="col-sm-3">n3rgy API Status</dt>
-  <dd class="col-sm-9"><%= @n3rgy_status %></dd>
-  <dt class="col-sm-3">DCC last checked</dt>
-  <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
-  <dt class="col-sm-3">Meter Elements</dt>
-  <dd class="col-sm-9"><%= @elements %></dd>
-</dl>
+<div class="mb-2 alert alert-secondary row">
+  <div class="col-md-6">
+    <%= link_to "Download readings", school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
+    <%= link_to 'Edit', edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
+    <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
+      <%= link_to 'Report', admin_reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
+    <% end %>
+    <% if can?(:view_meter_attributes, @meter) %>
+      <%= link_to 'Attributes', admin_school_single_meter_attribute_path(@school, @meter), class: 'btn btn-sm' %>
+    <% end %>
+    <% if @meter.active? %>
+      <%= link_to 'Deactivate', deactivate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+    <% else %>
+      <%= link_to 'Activate', activate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <% if @meter.dcc_meter? %>
+      <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
+        <%= link_to 'Withdraw consent', admin_withdraw_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
+      <% end %>
+      <% if @meter.can_grant_consent? && can?(:grant_consent, @meter) %>
+        <%= link_to 'Grant consent', admin_grant_dcc_consent_path(mpxn: @meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
+      <% end %>
+      <% if can?(:view_inventory, @meter) %>
+        <%= link_to 'Inventory', inventory_school_meter_path(@school, @meter), class: 'btn btn-info btn-sm' %>
+      <% end %>
+      <% if can?(:view_tariff_reports, @meter)%>
+        <%= link_to 'Tariff Report', admin_reports_tariff_path(@meter), class: 'btn btn-info btn-sm' %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Basic information</h3>
+    <dl class="row">
+      <dt class="col-sm-3">MPAN/MPRN</dt>
+      <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
+      <dt class="col-sm-3">Serial Number</dt>
+      <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
+      <dt class="col-sm-3">Type</dt>
+      <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
+      <dt class="col-sm-3">Status</dt>
+      <dd class="col-sm-9"><%= @meter.active ? 'Active' : 'Inactive' %></dd>
+      <dt class="col-sm-3">Created</dt>
+      <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
+      <dt class="col-sm-3">Last updated</dt>
+      <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <h3>DCC information</h3>
+    <% if @meter.dcc_meter? %>
+      <dl class="row">
+        <dt class="col-sm-3">DCC last checked</dt>
+        <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
+        <dt class="col-sm-3">Sandbox?</dt>
+        <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
+        <dt class="col-sm-3">n3rgy API Status</dt>
+        <dd class="col-sm-9"><%= @n3rgy_status %></dd>
+        <dt class="col-sm-3">User Consented?</dt>
+        <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
+        <dt class="col-sm-3">DCC Consented?</dt>
+        <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
+        <dt class="col-sm-3">Earliest Available Data</dt>
+        <dd class="col-sm-9"><%= @meter.earliest_available_data %></dd>
+        <dt class="col-sm-3">Meter Elements</dt>
+        <dd class="col-sm-9"><%= @elements %></dd>
+      </dl>
+    <% else %>
+      <p>Not a DCC meter</p>
+      <dl class="row">
+        <dt class="col-sm-3">DCC last checked</dt>
+        <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
+      </dl>
+    <% end %>
+  </div>
+</div>
+
+<% if current_user.admin? && @meter.notes.present? %>
+  <h3>Admin notes</h3>
+  <%= @meter.notes %>
+<% end %>

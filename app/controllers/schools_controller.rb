@@ -2,7 +2,6 @@ class SchoolsController < ApplicationController
   include SchoolAggregation
   include ActivityTypeFilterable
   include AnalysisPages
-  include DashboardSetup
   include DashboardEnergyCharts
   include DashboardAlerts
   include DashboardTimeline
@@ -42,6 +41,7 @@ class SchoolsController < ApplicationController
     if go_to_specific_dashboard?
       redirect_to_specific_dashboard
     else
+      redirect_to pupils_school_path(@school) unless @school.data_enabled
       authorize! :show, @school
       @show_data_enabled_features = show_data_enabled_features?
       setup_default_features
@@ -70,6 +70,8 @@ class SchoolsController < ApplicationController
   # POST /schools.json
   def create
     respond_to do |format|
+      #ensure schools are created as not visible initially
+      @school.visible = false
       if @school.save
         SchoolCreator.new(@school).process_new_school!
         format.html { redirect_to new_school_school_group_path(@school), notice: 'School was successfully created.' }
@@ -151,6 +153,7 @@ private
       :cooks_dinners_for_other_schools,
       :cooks_dinners_for_other_schools_count,
       :enable_targets_feature,
+      :public,
       key_stage_ids: []
     )
   end

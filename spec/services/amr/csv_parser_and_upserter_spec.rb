@@ -155,6 +155,20 @@ module Amr
         end
         FakeFS.activate!
       end
+
+      it 'record exception when file is truncated' do
+        FakeFS.deactivate!
+          ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
+          expect(AmrDataFeedReading.count).to be 0
+          importer = CsvParserAndUpserter.new(highlands_config, 'empty.csv')
+          importer.perform
+
+          expect(AmrDataFeedReading.count).to be 0
+          expect(importer.inserted_record_count).to be 0
+          expect(AmrDataFeedImportLog.last.error_messages).to_not be_nil
+        end
+        FakeFS.activate!
+      end
     end
 
     context 'sheffield' do

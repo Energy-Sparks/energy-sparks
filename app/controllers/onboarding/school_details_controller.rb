@@ -7,7 +7,8 @@ module Onboarding
 
     def new
       @school = School.new(
-        name: @school_onboarding.school_name
+        name: @school_onboarding.school_name,
+        data_enabled: !EnergySparks::FeatureFlags.active?(:data_enabled_onboarding)
       )
     end
 
@@ -47,6 +48,7 @@ module Onboarding
       params.require(:school).permit(
         :name,
         :school_type,
+        :data_enabled,
         :address,
         :postcode,
         :website,
