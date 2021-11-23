@@ -5,7 +5,7 @@ describe Onboarding::Service, type: :service do
   let(:admin)       { create(:admin) }
   let(:school)      { create(:school, visible: false) }
 
-  let(:onboarding) do
+  let!(:onboarding) do
     create(
       :school_onboarding,
       school: school,
@@ -24,6 +24,16 @@ describe Onboarding::Service, type: :service do
   let(:school_user_2) { create(:user, school: school) }
 
   subject { Onboarding::Service.new }
+
+  context '#should_complete_onboarding?' do
+    it 'true if onboarding not complete yet' do
+      expect(subject.should_complete_onboarding?(school)).to be_truthy
+    end
+    it 'false if onboarding complete already' do
+      subject.record_event(onboarding, :onboarding_complete)
+      expect(subject.should_complete_onboarding?(school)).to be_falsey
+    end
+  end
 
   context '#complete_onboarding' do
     it 'records event' do
