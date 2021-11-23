@@ -38,7 +38,6 @@ module Onboarding
     end
 
     def send_confirmation_instructions(users)
-      #confirm other users created during onboarding
       users.each do |user|
         user.send_confirmation_instructions unless user.confirmed?
       end
