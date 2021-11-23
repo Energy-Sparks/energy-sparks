@@ -5,9 +5,6 @@ module Onboarding
       OnboardedEmailSender.new(school_onboarding.school).send
     end
 
-    def school_made_visible(school)
-    end
-
     def school_made_data_enabled(school)
       DataEnabledEmailSender.new(school).send
     end
