@@ -46,6 +46,13 @@ RSpec.describe "onboarding", :schools, type: :system do
     before  { Wisper.subscribe(wisper_subscriber) }
     after   { Wisper.clear }
 
+    # ensure we have control of env vars during tests
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_DATA_ENABLED_ONBOARDING: nil do
+        example.run
+      end
+    end
+
     context 'completing onboarding' do
       before(:each) do
         visit onboarding_path(onboarding)
