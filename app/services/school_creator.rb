@@ -34,6 +34,7 @@ class SchoolCreator
   end
 
   def make_visible!
+    raise Error.new("School cannot be made visible as we dont have a record of consent") unless @school.consent_grants.any?
     @school.update!(visible: true)
     if onboarding_service.should_complete_onboarding?(@school)
       users = @school.users.reject(&:pupil?)

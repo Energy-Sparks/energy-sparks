@@ -3,6 +3,7 @@ module EnergySparksDataHelpers
     create(:school, *args).tap do |school|
       template_calendar = create(:regional_calendar)
       school.template_calendar = template_calendar
+      create :consent_grant, school: school
       school_creator = SchoolCreator.new(school)
       school_creator.process_new_school!
       school_creator.process_new_configuration!

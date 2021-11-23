@@ -4,12 +4,10 @@ module Schools
 
     def create
       authorize! :change_visibility, @school
-      if @school.consent_grants.any?
-        SchoolCreator.new(@school).make_visible!
-      else
-        flash[:notice] = "School cannot be made visible as we dont have a record of consent"
-      end
+      SchoolCreator.new(@school).make_visible!
       redirect_back fallback_location: school_path(@school)
+    rescue SchoolCreator::Error => e
+      redirect_back fallback_location: school_path(@school), notice: e.message
     end
 
     def destroy
