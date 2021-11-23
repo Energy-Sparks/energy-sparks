@@ -411,4 +411,46 @@ RSpec.describe 'school targets', type: :system do
       expect(page).to have_link("Choose another activity")
     end
   end
+
+  context 'as a staff user' do
+    let!(:staff)      { create(:staff, school: school) }
+
+    before(:each) do
+      sign_in(staff)
+      visit school_path(school)
+    end
+
+    context "with no target" do
+
+      context "with all fuel types" do
+        before(:each) do
+          visit school_school_targets_path(school)
+        end
+
+        it "prompts to create first target" do
+          expect(page).to have_content("Set your first energy saving target")
+        end
+
+        context "and all fuel types" do
+          it "allows all targets to be set" do
+            expect(page).to_not have_content("Start date")
+            expect(page).to_not have_content("Target date")
+
+            fill_in "Reducing electricity usage by", with: 15
+            fill_in "Reducing gas usage by", with: 15
+            fill_in "Reducing storage heater usage by", with: 25
+
+            click_on 'Set this target'
+
+            expect(page).to have_content('Target successfully created')
+            expect(page).to have_content("We are calculating your targets")
+            expect(school.has_current_target?).to eql(true)
+            expect(school.current_target.electricity).to eql 15.0
+            expect(school.current_target.gas).to eql 15.0
+            expect(school.current_target.storage_heaters).to eql 25.0
+          end
+        end
+      end
+    end
+  end
 end

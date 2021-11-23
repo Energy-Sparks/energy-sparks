@@ -1,7 +1,7 @@
 module Schools
   class SchoolTargetsController < ApplicationController
     load_and_authorize_resource :school
-    load_and_authorize_resource :school_target, via: :school
+    load_and_authorize_resource :school_target, through: :school
 
     include SchoolAggregation
     include SchoolProgress
@@ -36,7 +36,7 @@ module Schools
     def new
       if @school.has_current_target?
         redirect_to school_school_target_path(@school, @school.current_target)
-      elsif @school.has_target?
+      elsif @school.school_targets.any?(&:persisted?)
         @previous_school_target = @school.most_recent_target
         @school_target = target_service.build_target
         render :new
