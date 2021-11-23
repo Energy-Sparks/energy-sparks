@@ -92,18 +92,31 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(onboarding.template_calendar).to eq(other_template_calendar)
     end
 
-    it 'allows an onboarding to be completed for a school' do
-      school_onboarding = create :school_onboarding, :with_school
-      expect(school_onboarding).to be_incomplete
 
-      click_on 'Manage school onboarding'
-      click_on 'Make visible'
+    context 'completing an onboarding for a school' do
 
-      expect(page).to have_content("School onboardings")
+      it 'allows the school to be made visible' do
+        school_onboarding = create :school_onboarding, :with_school
+        create :consent_grant, school: school_onboarding.school
 
-      school_onboarding.reload
-      expect(school_onboarding).to be_complete
-      expect(school_onboarding.school.visible).to be true
+        expect(school_onboarding).to be_incomplete
+
+        click_on 'Manage school onboarding'
+        click_on 'Make visible'
+
+        expect(page).to have_content("School onboardings")
+
+        school_onboarding.reload
+        expect(school_onboarding).to be_complete
+        expect(school_onboarding.school.visible).to be true
+      end
+
+      it 'doesnt allow school to be made visible if consent hasnt been given' do
+        school_onboarding = create :school_onboarding, :with_school
+        click_on 'Manage school onboarding'
+        expect(page).to_not have_selector(:link_or_button, "Make visible")
+      end
+
     end
 
     it 'I can download a CSV of onboarding schools' do
