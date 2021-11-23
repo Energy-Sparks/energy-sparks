@@ -35,6 +35,14 @@ describe Onboarding::Service, type: :service do
     end
   end
 
+  context '#record_event' do
+    it 'executes block and returns result as well as recording event' do
+      result = subject.record_event(onboarding, :email_sent) { 42 }
+      expect(result).to eq(42)
+      expect(onboarding.has_event?(:email_sent)).to be_truthy
+    end
+  end
+
   context '#complete_onboarding' do
     it 'records event' do
       subject.complete_onboarding(onboarding, [])
