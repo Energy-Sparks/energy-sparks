@@ -6,6 +6,7 @@ FactoryBot.define do
     school_type     { :primary }
     visible         { true }
     process_data    { true }
+    data_enabled    { true }
     address         { '1 Station Road' }
     postcode        { 'ab1 2cd' }
     floor_area      { BigDecimal("1234.567")}
