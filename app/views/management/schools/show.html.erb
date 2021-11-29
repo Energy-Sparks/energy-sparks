@@ -7,6 +7,20 @@
   <%= render 'overview_table', overview_table: @overview_table %>
 <% end %>
 
+<% if @overview_data %>
+  <h2>Your annual usage</h2>
+  <%= render 'overview_data', overview_data: @overview_data %>
+  <div class="float-right">
+    <div class="info-message">
+      <p>
+        <%= format_overview_dates(@overview_data) %>
+        <%= link_to 'More information', '#' %>
+        <%= fa_icon("info-circle") %>
+      </p>
+    </div>
+  </div>
+<% end %>
+
 <h3>Act on your energy usage</h3>
 
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>

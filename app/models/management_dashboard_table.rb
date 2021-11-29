@@ -30,4 +30,52 @@ class ManagementDashboardTable < ApplicationRecord
   def table
     alert.table_data['summary_table']
   end
+
+  def data
+    # alert.table_data['summary_data']
+    dummy_data
+  end
+
+  private
+
+  # TODO remove, obv.
+  def dummy_data
+    {
+      :electricity => {
+        :start_date => '2016-10-01',
+        :end_date => '2021-11-01',
+        :year => {
+          :kwh => 108_827.5394000001,
+          :co2 => 21_333.057423499995,
+          :£ => 16_324.130910000014,
+          :savings_£ => 967.8809100000144,
+          :percent_change => 0.11050720181070751
+        },
+        :workweek => {
+          # :recent => "No recent data",
+          :recent => "",
+          :kwh => 1205.2192,
+          :co2 => 150.84771050000003,
+          :£ => 180.78288,
+          :savings_£ => "-",
+          :percent_change => "-"
+        }
+      },
+      :gas => {
+        :start_date => '2021-04-13',
+        :end_date => '2021-10-28',
+        :year => {
+          :available_from => "Data available from Apr 2022"
+        },
+        :workweek => {
+          :recent => "No recent data",
+          :kwh => 4930.7751,
+          :co2 => 1035.462771,
+          :£ => 147.923253,
+          :savings_£ => "-",
+          :percent_change => "-"
+        }
+      }
+    }
+  end
 end
