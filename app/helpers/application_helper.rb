@@ -320,4 +320,37 @@ module ApplicationHelper
       utm_campaign: campaign
     }
   end
+
+  def format_overview_number(value, units)
+    format_target(value.to_f, units)
+  end
+
+  def format_percent(value)
+    if value.present?
+      FormatEnergyUnit.format(:relative_percent, value.to_f, :html, false, true, :target)
+    end
+  end
+
+  def valid_overview_data?(overview_data, fuel_type, key)
+    overview_data[fuel_type] && overview_data[fuel_type][key] &&
+      !overview_data[fuel_type][key][:available_from].present? && !overview_data[fuel_type][key][:recent].present?
+  end
+
+  def overview_dates(overview_data)
+    [Date.parse(overview_data[:start_date]), Date.parse(overview_data[:end_date])] rescue []
+  end
+
+  def format_overview_dates(overview_data)
+    parts = []
+    overview_data.each do |fuel_type, data|
+      start_date, end_date = overview_dates(data)
+      parts << "#{fuel_type.to_s.humanize} data: #{start_date.to_s(:es_month_year)} - #{end_date.to_s(:es_month_year)}."
+    end
+    parts.join(' ')
+  end
+
+  def overview_availability(overview_data, fuel_type, period)
+    return overview_data[fuel_type][period][:recent] if overview_data[fuel_type][period][:recent].present?
+    return overview_data[fuel_type][period][:available_from] if overview_data[fuel_type][period][:available_from].present?
+  end
 end

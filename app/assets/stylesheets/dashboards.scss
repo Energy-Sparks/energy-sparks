@@ -183,6 +183,13 @@ table.management-priorities {
   .fa-arrow-circle-up {
     color: $new-red;
   }
+  .icon {
+    width: 10px;
+  }
+}
+
+.info-message {
+  font-weight: lighter;
 }
 
 .chart-placeholder-image {
