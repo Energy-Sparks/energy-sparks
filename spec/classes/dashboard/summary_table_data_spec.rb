@@ -4,7 +4,8 @@ describe Dashboard::SummaryTableData do
 
   subject { described_class.new(template_data) }
 
-  # let(:template_data) do
+  # Format of the template_data from the analtyics ManagementSummaryTable should be:
+  #
   #   {
   #     :electricity => {
   #       :start_date => '2016-10-01',
@@ -17,7 +18,6 @@ describe Dashboard::SummaryTableData do
   #         :percent_change => 0.11050720181070751
   #       },
   #       :workweek => {
-  #         # :recent => "No recent data",
   #         :recent => "",
   #         :kwh => 1205.2192,
   #         :co2 => 150.84771050000003,
@@ -42,7 +42,6 @@ describe Dashboard::SummaryTableData do
   #       }
   #     }
   #   }
-  # end
 
   describe 'when time period valid' do
     let(:template_data) do
