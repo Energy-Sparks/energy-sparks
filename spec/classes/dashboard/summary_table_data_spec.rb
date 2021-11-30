@@ -149,6 +149,14 @@ describe Dashboard::SummaryTableData do
         expect(subject.date_ranges).to eq('')
       end
     end
+    context 'when missing date field' do
+      let(:template_data) do
+        { electricity: { start_date: '', end_date: '2021-11-23' } }
+      end
+      it 'handles the error and does its best' do
+        expect(subject.date_ranges).to eq('Electricity data:  - Nov 2021.')
+      end
+    end
     context 'when one fuel type' do
       let(:template_data) do
         { electricity: { start_date: '2020-01-09', end_date: '2021-11-23' } }
