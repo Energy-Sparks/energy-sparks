@@ -13,36 +13,36 @@
       </tr>
     </thead>
     <tbody>
-      <% overview_data.keys.each do |fuel_type| %>
-        <tr>
-          <td class="icon"><%= fa_icon fuel_type_icon(fuel_type) %></td>
-          <td class="text-left"><%= fuel_type.to_s.humanize %></td>
-          <td class="text-left">Last week</td>
-          <% if valid_overview_data?(overview_data, fuel_type, :workweek) %>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:workweek][:kwh], :kwh) %></td>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:workweek][:co2], :kg) %></td>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:workweek][:£], :£).html_safe %></td>
-            <td class="text-right"> - </td>
-            <td class="text-right"><%= up_downify(format_percent(overview_data[fuel_type][:workweek][:percent_change])) %></td>
-          <% else %>
-            <td class="text-center partial-month info-message" colspan='5'><%= overview_availability(overview_data, fuel_type, :workweek) %></td>
-          <% end %>
-        </tr>
-        <tr>
-          <td class="icon"></td>
-          <td class="text-left"></td>
-          <td class="text-left">Annual</td>
-          <% if valid_overview_data?(overview_data, fuel_type, :year) %>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:year][:kwh], :kwh) %></td>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:year][:co2], :kg) %></td>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:year][:£], :£).html_safe %></td>
-            <td class="text-right"><%= format_overview_number(overview_data[fuel_type][:year][:savings_£], :£).html_safe %></td>
-            <td class="text-right"><%= up_downify(format_percent(overview_data[fuel_type][:year][:percent_change])) %></td>
-          <% else %>
-            <td class="text-center  info-message" colspan='5'><%= overview_availability(overview_data, fuel_type, :year) %></td>
-          <% end %>
-        </tr>
+
+    <% overview_data.by_fuel_type.each do |data| %>
+      <tr>
+        <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
+        <td class="text-left"><%= data.fuel_type.to_s.humanize %></td>
+        <td class="text-left">Last week</td>
+        <% if data.workweek_valid %>
+          <td class="text-right"><%= data.workweek_usage %></td>
+          <td class="text-right"><%= data.workweek_co2 %></td>
+          <td class="text-right"><%= data.workweek_cost %></td>
+          <td class="text-right"><%= data.workweek_savings %></td>
+          <td class="text-right"><%= up_downify(data.workweek_change) %></td>
+        <% else %>
+          <td class="text-center partial-month info-message" colspan='5'><%= data.workweek_message %></td>
         <% end %>
-    </tbody>
+      </tr>
+      <tr>
+        <td class="icon"></td>
+        <td class="text-left"></td>
+        <td class="text-left">Annual</td>
+        <% if data.annual_valid %>
+          <td class="text-right"><%= data.annual_usage %></td>
+          <td class="text-right"><%= data.annual_co2 %></td>
+          <td class="text-right"><%= data.annual_cost %></td>
+          <td class="text-right"><%= data.annual_savings %></td>
+          <td class="text-right"><%= up_downify(data.annual_change) %></td>
+        <% else %>
+          <td class="text-center partial-month info-message" colspan='5'><%= data.annual_message %></td>
+        <% end %>
+      </tr>
+    <% end %>
   </table>
 </div>
