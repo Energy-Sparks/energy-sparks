@@ -38,8 +38,11 @@ module Management
       @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
       @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
       @overview_charts = setup_energy_overview_charts(@school.configuration)
-      @overview_table = progress_service.management_table
-      @overview_data = progress_service.management_data
+      if EnergySparks::FeatureFlags.active?(:use_management_data)
+        @overview_data = progress_service.management_data
+      else
+        @overview_table = progress_service.management_table
+      end
       @progress_summary = progress_service.progress_summary
       @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
       @add_targets = prompt_for_target?

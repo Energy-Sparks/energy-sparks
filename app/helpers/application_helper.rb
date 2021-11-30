@@ -3,8 +3,6 @@ require 'pagy/extras/bootstrap'
 module ApplicationHelper
   include Pagy::Frontend
 
-  MONTH_YEAR_FORMAT = '%b %Y'.freeze
-
   def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
@@ -336,20 +334,6 @@ module ApplicationHelper
   def valid_overview_data?(overview_data, fuel_type, key)
     overview_data[fuel_type] && overview_data[fuel_type][key] &&
       !overview_data[fuel_type][key][:available_from].present? && !overview_data[fuel_type][key][:recent].present?
-  end
-
-  def overview_date(data, key)
-    if (date = Date.parse(data[key]))
-      date.strftime(MONTH_YEAR_FORMAT)
-    end
-  end
-
-  def format_overview_dates(overview_data)
-    parts = []
-    overview_data.each do |fuel_type, data|
-      parts << "#{fuel_type.to_s.humanize} data: #{overview_date(data, :start_date)} - #{overview_date(data, :end_date)}."
-    end
-    parts.join(' ')
   end
 
   def overview_availability(overview_data, fuel_type, period)
