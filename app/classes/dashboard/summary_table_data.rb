@@ -13,7 +13,9 @@ module Dashboard
     end
 
     def date_ranges
-      format_dates(@template_data)
+      fuel_types.map do |fuel_type|
+        "#{fuel_type.to_s.humanize} data: #{format_date(fetch(fuel_type, :start_date))} - #{format_date(fetch(fuel_type, :end_date))}."
+      end.join(' ')
     end
 
     private
@@ -36,10 +38,6 @@ module Dashboard
       )
     end
 
-    def format_period(period)
-      period == :workweek ? 'Last week' : 'Annual'
-    end
-
     def data_valid?(fuel_type, period)
       !data_validity_message(fuel_type, period).present?
     end
@@ -51,18 +49,16 @@ module Dashboard
       return message if message.present?
     end
 
-    def format_dates(template_data)
-      parts = []
-      template_data.each do |fuel_type, data|
-        parts << "#{fuel_type.to_s.humanize} data: #{format_date(data, :start_date)} - #{format_date(data, :end_date)}."
-      end
-      parts.join(' ')
+    def format_period(period)
+      period == :workweek ? 'Last week' : 'Annual'
     end
 
-    def format_date(data, key)
-      if (date = Date.parse(data[key]))
+    def format_date(value)
+      if (date = Date.parse(value))
         date.strftime(MONTH_YEAR_FORMAT)
       end
+    rescue
+      value
     end
 
     def format_number(value, units)
@@ -73,8 +69,12 @@ module Dashboard
       value
     end
 
-    def fetch(fuel_type, period, item)
-      @template_data[fuel_type][period][item] if @template_data[fuel_type] && @template_data[fuel_type][period]
+    def fetch(fuel_type, period, item = nil)
+      if item && @template_data[fuel_type] && @template_data[fuel_type][period]
+        @template_data[fuel_type][period][item]
+      elsif @template_data[fuel_type]
+        @template_data[fuel_type][period]
+      end
     end
   end
 end

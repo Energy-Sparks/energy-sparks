@@ -10,7 +10,7 @@
 <% if @overview_data %>
   <h2>Your annual usage</h2>
   <%= render 'overview_data', overview_data: @overview_data %>
-  <div class="float-right">
+  <div class="float-right ">
     <div class="info-message">
       <p>
         <%= @overview_data.date_ranges %>
@@ -19,6 +19,7 @@
       </p>
     </div>
   </div>
+  <br/>
 <% end %>
 
 <h3>Act on your energy usage</h3>
