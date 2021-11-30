@@ -25,7 +25,6 @@ module Dashboard
     def summary_data_for(fuel_type, period)
       OpenStruct.new(
         fuel_type: fuel_type,
-        valid: data_valid?(fuel_type, period),
         period: format_period(period),
         usage: format_number(fetch(fuel_type, period, :kwh), :kwh),
         co2: format_number(fetch(fuel_type, period, :co2), :kg),
@@ -33,6 +32,7 @@ module Dashboard
         savings: format_number(fetch(fuel_type, period, :savings_£), :£),
         change: format_number(fetch(fuel_type, period, :percent_change), :relative_percent),
         message: data_validity_message(fuel_type, period),
+        valid: data_valid?(fuel_type, period)
       )
     end
 
@@ -45,12 +45,10 @@ module Dashboard
     end
 
     def data_validity_message(fuel_type, period)
-      return @template_data[fuel_type][period][:recent] if fetch(fuel_type, period, :recent).present?
-      return @template_data[fuel_type][period][:available_from] if fetch(fuel_type, period, :available_from).present?
-    end
-
-    def fetch(fuel_type, period, item)
-      @template_data[fuel_type][period][item] if @template_data[fuel_type] && @template_data[fuel_type][period]
+      message = fetch(fuel_type, period, :recent)
+      return message if message.present?
+      message = fetch(fuel_type, period, :available_from)
+      return message if message.present?
     end
 
     def format_dates(template_data)
@@ -68,7 +66,15 @@ module Dashboard
     end
 
     def format_number(value, units)
-      FormatEnergyUnit.format(units, value.to_f, :html, false, true, :target).html_safe
+      if Float(value)
+        FormatEnergyUnit.format(units, value.to_f, :html, false, true, :target).html_safe
+      end
+    rescue
+      value
     end
+  end
+
+  def fetch(fuel_type, period, item)
+    @template_data[fuel_type][period][item] if @template_data[fuel_type] && @template_data[fuel_type][period]
   end
 end

@@ -45,7 +45,7 @@ describe Dashboard::SummaryTableData do
 
   describe 'when time period valid' do
     let(:template_data) do
-      { electricity: { year: { available_from: '' }, workweek: { recent: ''} } }
+      { electricity: { year: { available_from: '  ' }, workweek: { recent: '  '} } }
     end
     it 'shows annual valid' do
       expect(subject.by_fuel_type.first.valid).to be_truthy
@@ -128,6 +128,15 @@ describe Dashboard::SummaryTableData do
     it 'formats percentage' do
       expect(subject.by_fuel_type.first.change).to eq('+11.1%')
       expect(subject.by_fuel_type.second.change).to eq('-9.23%')
+    end
+  end
+
+  describe 'percent change not calculable' do
+    let(:template_data) do
+      { electricity: { year: { :percent_change => '-' } } }
+    end
+    it 'formats percentage' do
+      expect(subject.by_fuel_type.first.change).to eq('-')
     end
   end
 
