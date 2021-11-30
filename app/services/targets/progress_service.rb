@@ -30,6 +30,11 @@ module Targets
       return dashboard_table.table if dashboard_table.present?
     end
 
+    def management_data
+      dashboard_table = @school.latest_management_dashboard_tables.first
+      return dashboard_table.data if dashboard_table.present?
+    end
+
     def progress_summary
       if Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
         ProgressSummary.new(

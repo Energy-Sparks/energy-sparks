@@ -1,0 +1,38 @@
+<div class="table-responsive-sm">
+  <table class="table management-overview">
+    <thead>
+      <tr>
+        <th class="icon"></th>
+        <th class="text-left"></th>
+        <th class="text-left"></th>
+        <th class="text-right">Use (kWh)</th>
+        <th class="text-right">CO2 (kg)</th>
+        <th class="text-right">Cost</th>
+        <th class="text-right">Potential savings</th>
+        <th class="text-right">% Change</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% overview_data.by_fuel_type.each do |data| %>
+      <tr>
+        <% if data.period == 'Annual' %>
+          <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
+          <td class="text-left"><%= data.fuel_type.to_s.humanize %></td>
+        <% else %>
+          <td></td>
+          <td></td>
+        <% end %>
+        <td class="text-left"><%= data.period %></td>
+        <% if data.valid %>
+          <td class="text-right"><%= data.usage %></td>
+          <td class="text-right"><%= data.co2 %></td>
+          <td class="text-right"><%= data.cost %></td>
+          <td class="text-right"><%= data.savings %></td>
+          <td class="text-right"><%= up_downify(data.change) %></td>
+        <% else %>
+          <td class="text-center partial-month info-message" colspan='5'><%= data.message %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
