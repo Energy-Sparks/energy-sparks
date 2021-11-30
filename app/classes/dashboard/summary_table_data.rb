@@ -8,8 +8,8 @@ module Dashboard
 
     def by_fuel_type
       fuel_types.map do |fuel_type|
-        summary_data_for(fuel_type, @template_data[fuel_type])
-      end
+        [summary_data_for(fuel_type, :year), summary_data_for(fuel_type, :workweek)]
+      end.flatten
     end
 
     def date_ranges
@@ -22,37 +22,35 @@ module Dashboard
       @template_data.keys
     end
 
-    def summary_data_for(fuel_type, data)
+    def summary_data_for(fuel_type, period)
       OpenStruct.new(
         fuel_type: fuel_type,
-        workweek_valid: data_valid?(data, :workweek),
-        workweek_usage: format_number(fetch(data, :workweek, :kwh), :kwh),
-        workweek_co2: format_number(fetch(data, :workweek, :co2), :kg),
-        workweek_cost: format_number(fetch(data, :workweek, :£), :£),
-        workweek_savings: format_number(fetch(data, :workweek, :savings_£), :£),
-        workweek_change: format_number(fetch(data, :workweek, :percent_change), :relative_percent),
-        workweek_message: data_validity_message(data, :workweek),
-        annual_valid: data_valid?(data, :year),
-        annual_usage: format_number(fetch(data, :year, :kwh), :kwh),
-        annual_co2: format_number(fetch(data, :year, :co2), :kg),
-        annual_cost: format_number(fetch(data, :year, :£), :£),
-        annual_savings: format_number(fetch(data, :year, :savings_£), :£),
-        annual_change: format_number(fetch(data, :year, :percent_change), :relative_percent),
-        annual_message: data_validity_message(data, :year)
+        valid: data_valid?(fuel_type, period),
+        period: format_period(period),
+        usage: format_number(fetch(fuel_type, period, :kwh), :kwh),
+        co2: format_number(fetch(fuel_type, period, :co2), :kg),
+        cost: format_number(fetch(fuel_type, period, :£), :£),
+        savings: format_number(fetch(fuel_type, period, :savings_£), :£),
+        change: format_number(fetch(fuel_type, period, :percent_change), :relative_percent),
+        message: data_validity_message(fuel_type, period),
       )
     end
 
-    def data_valid?(data, key)
-      !data_validity_message(data, key).present?
+    def format_period(period)
+      period == :workweek ? 'Last week' : 'Annual'
     end
 
-    def data_validity_message(data, key)
-      return data[key][:recent] if fetch(data, key, :recent).present?
-      return data[key][:available_from] if fetch(data, key, :available_from).present?
+    def data_valid?(fuel_type, period)
+      !data_validity_message(fuel_type, period).present?
     end
 
-    def fetch(data, period, item)
-      data[period][item] if data[period]
+    def data_validity_message(fuel_type, period)
+      return @template_data[fuel_type][period][:recent] if fetch(fuel_type, period, :recent).present?
+      return @template_data[fuel_type][period][:available_from] if fetch(fuel_type, period, :available_from).present?
+    end
+
+    def fetch(fuel_type, period, item)
+      @template_data[fuel_type][period][item] if @template_data[fuel_type] && @template_data[fuel_type][period]
     end
 
     def format_dates(template_data)
