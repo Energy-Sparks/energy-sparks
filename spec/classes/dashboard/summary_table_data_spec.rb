@@ -43,6 +43,18 @@ describe Dashboard::SummaryTableData do
   #     }
   #   }
 
+  describe 'handles no data' do
+    let(:template_data) do
+      {}
+    end
+    it 'returns empty list' do
+      expect(subject.by_fuel_type).to eq([])
+    end
+    it 'handles date_ranges' do
+      expect(subject.date_ranges).to eq('')
+    end
+  end
+
   describe 'when time period valid' do
     let(:template_data) do
       { electricity: { year: { available_from: '  ' }, workweek: { recent: '  '} } }

@@ -21,7 +21,7 @@ module Dashboard
     private
 
     def fuel_types
-      @template_data.keys
+      @template_data.blank? ? [] : @template_data.keys
     end
 
     def summary_data_for(fuel_type, period)
