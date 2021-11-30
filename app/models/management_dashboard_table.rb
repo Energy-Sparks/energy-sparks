@@ -32,7 +32,7 @@ class ManagementDashboardTable < ApplicationRecord
   end
 
   def data
-    # alert.table_data['summary_data']
+    # eval(alert.template_data['summary_data'])
     dummy_data
   end
 

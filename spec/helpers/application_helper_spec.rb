@@ -1,4 +1,9 @@
 require 'rails_helper'
+# require 'active_support/core_ext/time/conversions'
+# require “#{Rails.root}/config/initializers/date_formats”
+# require '../config/initializers/date_formats'
+
+require File.expand_path('../../../config/initializers/date_formats', __FILE__)
 
 describe ApplicationHelper do
 
@@ -98,15 +103,15 @@ describe ApplicationHelper do
 
   describe 'format_overview_dates' do
     it 'formats electricity dates' do
-      data = { electricity: { start_date: Date.parse('2020-01-09'), end_date: Date.parse('2021-11-23') }}
+      data = { electricity: { start_date: '2020-01-09', end_date: '2021-11-23' }}
       expect(helper.format_overview_dates(data)).to eq('Electricity data: Jan 2020 - Nov 2021.')
     end
     it 'formats gas and electricity dates' do
       data = {
-        electricity: { start_date: Date.parse('2020-01-09'), end_date: Date.parse('2021-11-23') },
-        gas: { start_date: Date.parse('2018-06-09'), end_date: Date.parse('2019-07-23') }
+        electricity: { start_date: '2020-01-09', end_date: '2021-11-23' },
+        gas: { start_date: '2018-06-09', end_date: '2019-07-23' }
       }
-      expect(helper.format_overview_dates(data)).to eq('Gas data: Jun 2018 - Jul 2019. Electricity data: Jan 2020 - Nov 2021.')
+      expect(helper.format_overview_dates(data)).to eq('Electricity data: Jan 2020 - Nov 2021. Gas data: Jun 2018 - Jul 2019.')
     end
   end
 end
