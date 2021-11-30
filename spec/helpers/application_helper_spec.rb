@@ -83,16 +83,4 @@ describe ApplicationHelper do
       expect(helper.progress_as_percent(10, 0)).to eq(nil)
     end
   end
-
-  describe 'format_percent' do
-    it 'formats decimal as relative percent' do
-      expect(helper.format_percent(-0.073)).to eq('-7.3%')
-    end
-    it 'formats string as relative percent' do
-      expect(helper.format_percent('-0.073')).to eq('-7.3%')
-    end
-    it 'handles missing value' do
-      expect(helper.format_percent('')).to be_nil
-    end
-  end
 end

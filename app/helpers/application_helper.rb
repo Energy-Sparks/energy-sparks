@@ -320,24 +320,4 @@ module ApplicationHelper
       utm_campaign: campaign
     }
   end
-
-  def format_overview_number(value, units)
-    format_target(value.to_f, units)
-  end
-
-  def format_percent(value)
-    if value.present?
-      FormatEnergyUnit.format(:relative_percent, value.to_f, :html, false, true, :target)
-    end
-  end
-
-  def valid_overview_data?(overview_data, fuel_type, key)
-    overview_data[fuel_type] && overview_data[fuel_type][key] &&
-      !overview_data[fuel_type][key][:available_from].present? && !overview_data[fuel_type][key][:recent].present?
-  end
-
-  def overview_availability(overview_data, fuel_type, period)
-    return overview_data[fuel_type][period][:recent] if overview_data[fuel_type][period][:recent].present?
-    return overview_data[fuel_type][period][:available_from] if overview_data[fuel_type][period][:available_from].present?
-  end
 end
