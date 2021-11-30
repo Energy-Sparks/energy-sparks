@@ -72,9 +72,9 @@ module Dashboard
     rescue
       value
     end
-  end
 
-  def fetch(fuel_type, period, item)
-    @template_data[fuel_type][period][item] if @template_data[fuel_type] && @template_data[fuel_type][period]
+    def fetch(fuel_type, period, item)
+      @template_data[fuel_type][period][item] if @template_data[fuel_type] && @template_data[fuel_type][period]
+    end
   end
 end
