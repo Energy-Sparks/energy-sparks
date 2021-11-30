@@ -13,34 +13,24 @@
       </tr>
     </thead>
     <tbody>
-
     <% overview_data.by_fuel_type.each do |data| %>
       <tr>
-        <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
-        <td class="text-left"><%= data.fuel_type.to_s.humanize %></td>
-        <td class="text-left">Last week</td>
-        <% if data.workweek_valid %>
-          <td class="text-right"><%= data.workweek_usage %></td>
-          <td class="text-right"><%= data.workweek_co2 %></td>
-          <td class="text-right"><%= data.workweek_cost %></td>
-          <td class="text-right"><%= data.workweek_savings %></td>
-          <td class="text-right"><%= up_downify(data.workweek_change) %></td>
+        <% if data.period == 'Annual' %>
+          <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
+          <td class="text-left"><%= data.fuel_type.to_s.humanize %></td>
         <% else %>
-          <td class="text-center partial-month info-message" colspan='5'><%= data.workweek_message %></td>
+          <td></td>
+          <td></td>
         <% end %>
-      </tr>
-      <tr>
-        <td class="icon"></td>
-        <td class="text-left"></td>
-        <td class="text-left">Annual</td>
-        <% if data.annual_valid %>
-          <td class="text-right"><%= data.annual_usage %></td>
-          <td class="text-right"><%= data.annual_co2 %></td>
-          <td class="text-right"><%= data.annual_cost %></td>
-          <td class="text-right"><%= data.annual_savings %></td>
-          <td class="text-right"><%= up_downify(data.annual_change) %></td>
+        <td class="text-left"><%= data.period %></td>
+        <% if data.valid %>
+          <td class="text-right"><%= data.usage %></td>
+          <td class="text-right"><%= data.co2 %></td>
+          <td class="text-right"><%= data.cost %></td>
+          <td class="text-right"><%= data.savings %></td>
+          <td class="text-right"><%= up_downify(data.change) %></td>
         <% else %>
-          <td class="text-center partial-month info-message" colspan='5'><%= data.annual_message %></td>
+          <td class="text-center partial-month info-message" colspan='5'><%= data.message %></td>
         <% end %>
       </tr>
     <% end %>
