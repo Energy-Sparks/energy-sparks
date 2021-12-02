@@ -57,12 +57,12 @@ RSpec.describe Schools::BillRequestService do
         end
 
         it 'should include the school name' do
-          email_body = @email.html_part.body.to_s
+          email_body = @email.body.to_s
           expect(email_body).to include(school.name)
         end
 
         it 'should include a link to the upload a bill page' do
-          email_body = @email.html_part.body.to_s
+          email_body = @email.body.to_s
           node = Capybara::Node::Simple.new(email_body.to_s)
           expect(node).to have_link('Upload your bill')
         end
@@ -76,7 +76,7 @@ RSpec.describe Schools::BillRequestService do
       it 'should include the requested MPANs' do
         service.request_documentation!([school_admin], [electricity_meter, gas_meter])
         @email = ActionMailer::Base.deliveries.last
-        email_body = @email.html_part.body.to_s
+        email_body = @email.body.to_s
         expect(email_body).to include(electricity_meter.mpan_mprn.to_s)
         expect(email_body).to include(gas_meter.mpan_mprn.to_s)
       end
