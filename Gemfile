@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.6.5'
+ruby '~> 2.7.4'
 
 # Rails/Core
 gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -10,8 +10,8 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
 gem "image_processing", "~> 1.2"
 
-# Freeze until ElasticBeanstalk rebuild
-gem 'puma', '4.3.9' # Use Puma as the app server
+# Bumped from 4.3.9 for ElasticBeanstalk platform upgrade
+gem 'puma', '5.5.2' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 
