@@ -76,7 +76,7 @@ describe RollbarNotifierService do
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Custom Error Reports')
-      email_body = email.html_part.body.to_s
+      email_body = email.body.to_s
       expect(email_body).to include("Custom Error Reports")
     end
 
@@ -85,7 +85,7 @@ describe RollbarNotifierService do
 
       results = RollbarNotifierService.new(rql_jobs).perform
       email = ActionMailer::Base.deliveries.last
-      email_body = email.html_part.body.to_s
+      email_body = email.body.to_s
       RollbarNotifierService::REPORTS.each do |key, report|
         expect(email_body).to include(report[:title])
       end
@@ -95,7 +95,7 @@ describe RollbarNotifierService do
       allow(rql_jobs).to receive(:run_query).and_return(job_result)
       results = RollbarNotifierService.new(rql_jobs).perform
       email = ActionMailer::Base.deliveries.last
-      email_body = email.html_part.body.to_s
+      email_body = email.body.to_s
       expect(email_body).to include("Thu 10th Dec 2020")
     end
 
@@ -104,7 +104,7 @@ describe RollbarNotifierService do
         allow(rql_jobs).to receive(:run_query).and_return(job_result)
         results = RollbarNotifierService.new(rql_jobs).perform
         email = ActionMailer::Base.deliveries.last
-        email_body = email.html_part.body.to_s
+        email_body = email.body.to_s
         expect(email_body).to match(/href="https:\/\/rollbar.com\/energysparks\/EnergySparksTestEnvironment\/items\/564\/occurrences\/145051707090"/)
       end
     end

@@ -159,7 +159,7 @@ RSpec.describe Targets::TargetMailerService do
     let(:enough_data) { true }
 
     let(:email)       { ActionMailer::Base.deliveries.last }
-    let(:email_body)  { email.html_part.body.to_s }
+    let(:email_body)  { email.body.to_s }
     let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
     it 'sends an email' do
@@ -210,7 +210,7 @@ RSpec.describe Targets::TargetMailerService do
     let(:enough_data) { true }
 
     let(:email)       { ActionMailer::Base.deliveries.last }
-    let(:email_body)  { email.html_part.body.to_s }
+    let(:email_body)  { email.body.to_s }
     let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
     it 'sends an email' do
@@ -262,7 +262,7 @@ RSpec.describe Targets::TargetMailerService do
     let(:enough_data) { true }
 
     let(:email)       { ActionMailer::Base.deliveries.last }
-    let(:email_body)  { email.html_part.body.to_s }
+    let(:email_body)  { email.body.to_s }
     let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
 
     it 'sends an email' do

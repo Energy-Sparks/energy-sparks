@@ -91,7 +91,7 @@ describe ImportNotifier do
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Energy Sparks import')
-      email_body = email.html_part.body.to_s
+      email_body = email.body.to_s
       expect(email_body).to include("Data issues")
     end
 
@@ -104,7 +104,7 @@ describe ImportNotifier do
       email = ActionMailer::Base.deliveries.last
 
       expect(email.subject).to include('Energy Sparks import')
-      email_body = email.html_part.body.to_s
+      email_body = email.body.to_s
       expect(email_body).to include(meter_1.mpan_mprn.to_s)
       expect(email_body).to include(meter_1.school_name)
       expect(email_body).to include(meter_2.mpan_mprn.to_s)
