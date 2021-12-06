@@ -53,7 +53,8 @@ describe SchoolOnboardingDeletor, type: :service do
 
     it 'keeps the onboarding user' do
       service.delete!
-      expect { onboarding_user.reload }.not_to raise_error ActiveRecord::RecordNotFound
+      #spec will fail with a RecordNotFound exception if the user has been deleted
+      onboarding_user.reload
     end
 
     it 'removes consent grants' do
