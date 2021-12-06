@@ -1,13 +1,13 @@
 <div class="table-responsive-sm">
   <table class="table management-overview">
-    <thead>
+    <thead class="thead-dark">
       <tr>
         <th class="icon"></th>
         <th class="text-left"></th>
         <th class="text-left"></th>
         <th class="text-right">Use (kWh)</th>
         <th class="text-right">CO2 (kg)</th>
-        <th class="text-right">Cost</th>
+        <th class="text-right">Cost (£)</th>
         <th class="text-right">Potential savings</th>
         <th class="text-right">% Change</th>
       </tr>
@@ -23,14 +23,14 @@
           <td></td>
         <% end %>
         <td class="text-left"><%= data.period %></td>
-        <% if data.valid %>
-          <td class="text-right"><%= data.usage %></td>
-          <td class="text-right"><%= data.co2 %></td>
-          <td class="text-right"><%= data.cost %></td>
-          <td class="text-right"><%= data.savings %></td>
+        <% if data.has_data %>
+          <td class="text-right <%= data.message_class %>"><%= data.usage %></td>
+          <td class="text-right <%= data.message_class %>"><%= data.co2 %></td>
+          <td class="text-right <%= data.message_class %>"><%= data.cost %></td>
+          <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
           <td class="text-right"><%= up_downify(data.change) %></td>
         <% else %>
-          <td class="text-center partial-month info-message" colspan='5'><%= data.message %></td>
+          <td class="text-center info-message <%= data.message_class %>" colspan='5'><%= data.message %></td>
         <% end %>
       </tr>
     <% end %>

@@ -190,7 +190,15 @@ table.management-priorities {
 
 .info-message {
   font-weight: lighter;
-  margin-bottom: 20px;
+}
+
+.management-overview-caption {
+  margin-bottom: 40px;
+}
+
+.old-data {
+  background: white;
+  color: $bg-negative;
 }
 
 .chart-placeholder-image {

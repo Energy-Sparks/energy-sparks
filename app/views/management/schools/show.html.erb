@@ -8,18 +8,13 @@
 <% end %>
 
 <% if @overview_data %>
-  <h2>Your annual usage</h2>
+  <h2>Summary of recent energy usage</h2>
   <%= render 'overview_data', overview_data: @overview_data %>
-  <div class="float-right ">
-    <div class="info-message">
-      <p>
-        <%= @overview_data.date_ranges %>
-        <%= link_to 'More information', '#' %>
-        <%= fa_icon("info-circle") %>
-      </p>
-    </div>
+  <div class="text-right management-overview-caption">
+    <%= @overview_data.date_ranges %>
+    <%= link_to 'More information', '#' %>
+    <%= fa_icon("info-circle") %>
   </div>
-  <br/>
 <% end %>
 
 <h3>Act on your energy usage</h3>

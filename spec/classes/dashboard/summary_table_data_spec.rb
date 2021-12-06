@@ -55,31 +55,34 @@ describe Dashboard::SummaryTableData do
     end
   end
 
-  describe 'when time period valid' do
+  describe 'when period does not have data' do
     let(:template_data) do
-      { electricity: { year: { available_from: '  ' }, workweek: { recent: '  '} } }
+      { electricity: { year: { available_from: 'Feb 2022' } } }
     end
-    it 'shows annual valid' do
-      expect(subject.by_fuel_type.first.valid).to be_truthy
-      expect(subject.by_fuel_type.first.message).to be_nil
-    end
-    it 'shows workweek valid' do
-      expect(subject.by_fuel_type.second.valid).to be_truthy
-      expect(subject.by_fuel_type.second.message).to be_nil
+    it 'shows status and message' do
+      expect(subject.by_fuel_type.first.has_data).to be_falsey
+      expect(subject.by_fuel_type.first.message).to eq('Feb 2022')
     end
   end
 
-  describe 'when one time period not valid' do
+  describe 'when period has data' do
     let(:template_data) do
-      { electricity: { year: { available_from: '' }, workweek: { recent: 'no recent data'} } }
+      { electricity: { year: { kwh: '123' }, workweek: { co2: '456' } } }
     end
-    it 'shows annual valid' do
-      expect(subject.by_fuel_type.first.valid).to be_truthy
-      expect(subject.by_fuel_type.first.message).to be_nil
+    it 'shows status' do
+      expect(subject.by_fuel_type.first.has_data).to be_truthy
+      expect(subject.by_fuel_type.second.has_data).to be_truthy
     end
-    it 'shows workweek not valid' do
-      expect(subject.by_fuel_type.second.valid).to be_falsey
-      expect(subject.by_fuel_type.second.message).to eq('no recent data')
+  end
+
+  describe 'when data is not recent' do
+    let(:template_data) do
+      { electricity: { year: { kwh: '123', recent: 'no recent data'} } }
+    end
+    it 'shows status, message and class' do
+      expect(subject.by_fuel_type.first.has_data).to be_truthy
+      expect(subject.by_fuel_type.first.message).to eq('no recent data')
+      expect(subject.by_fuel_type.first.message_class).to eq('old-data')
     end
   end
 
@@ -166,7 +169,7 @@ describe Dashboard::SummaryTableData do
         { electricity: { start_date: '', end_date: '2021-11-23' } }
       end
       it 'handles the error and does its best' do
-        expect(subject.date_ranges).to eq('Electricity data:  - Nov 2021.')
+        expect(subject.date_ranges).to eq('Electricity data:  - 23rd Nov 2021.')
       end
     end
     context 'when one fuel type' do
@@ -174,7 +177,7 @@ describe Dashboard::SummaryTableData do
         { electricity: { start_date: '2020-01-09', end_date: '2021-11-23' } }
       end
       it 'formats dates' do
-        expect(subject.date_ranges).to eq('Electricity data: Jan 2020 - Nov 2021.')
+        expect(subject.date_ranges).to eq('Electricity data: 9th Jan 2020 - 23rd Nov 2021.')
       end
     end
     context 'when multiple fuel types' do
@@ -185,7 +188,7 @@ describe Dashboard::SummaryTableData do
         }
       end
       it 'formats dates' do
-        expect(subject.date_ranges).to eq('Electricity data: Jan 2020 - Nov 2021. Gas data: Jun 2018 - Jul 2019.')
+        expect(subject.date_ranges).to eq('Electricity data: 9th Jan 2020 - 23rd Nov 2021. Gas data: 9th Jun 2018 - 23rd Jul 2019.')
       end
     end
   end
