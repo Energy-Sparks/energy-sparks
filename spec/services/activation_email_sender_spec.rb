@@ -97,8 +97,8 @@ describe ActivationEmailSender, :schools, type: :service do
         context 'the email contains' do
           let(:email) { ActionMailer::Base.deliveries.last }
 
-          let(:email_body) { email.body.to_s }
-          let(:matcher) { Capybara::Node::Simple.new(email_body.to_s) }
+          let(:email_body) { email.html_part.body.to_s }
+          let(:matcher) { Capybara::Node::Simple.new(email_body) }
 
           before :each do
             school.update(data_enabled: false)
