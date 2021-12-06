@@ -193,6 +193,11 @@ table.management-priorities {
   margin-bottom: 20px;
 }
 
+.no-data {
+  background: white;
+  color: $bg-negative;
+}
+
 .chart-placeholder-image {
     background-image: image-url('graph-placeholder.png');
     background-position: center center;

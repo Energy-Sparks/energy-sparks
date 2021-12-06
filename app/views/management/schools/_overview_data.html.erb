@@ -1,6 +1,6 @@
 <div class="table-responsive-sm">
-  <table class="table management-overview">
-    <thead>
+  <table class="table mb-5 management-overview">
+    <thead class="thead-dark">
       <tr>
         <th class="icon"></th>
         <th class="text-left"></th>
@@ -30,7 +30,7 @@
           <td class="text-right"><%= data.savings %></td>
           <td class="text-right"><%= up_downify(data.change) %></td>
         <% else %>
-          <td class="text-center partial-month info-message" colspan='5'><%= data.message %></td>
+          <td class="text-center info-message <%= data.message_class %>" colspan='5'><%= data.message %></td>
         <% end %>
       </tr>
     <% end %>
