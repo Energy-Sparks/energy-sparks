@@ -150,11 +150,11 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
-    bootstrap-email (1.1.0)
-      htmlbeautifier (~> 1.3)
+    bootstrap-email (0.3.4)
+      actionmailer (>= 3)
       nokogiri (~> 1.6)
-      premailer (~> 1.7)
-      sassc (~> 2.0)
+      premailer-rails (~> 1.9)
+      rails (>= 3)
     bootstrap4-datetime-picker-rails (0.3.1)
       jquery-rails (~> 4.2, >= 4.2.0)
       moment-timezone-rails (~> 1.0)
@@ -273,7 +273,6 @@ GEM
     html-table (1.5.2)
       strongtyping
       structured_warnings (~> 0.3.0)
-    htmlbeautifier (1.4.0)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.4)
@@ -382,6 +381,9 @@ GEM
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
+    premailer-rails (1.11.1)
+      actionmailer (>= 3)
+      premailer (~> 1.7, >= 1.7.9)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -637,7 +639,7 @@ DEPENDENCIES
   binding_of_caller
   bootsnap
   bootstrap (~> 4.3.0)
-  bootstrap-email
+  bootstrap-email (= 0.3.4)
   bootstrap4-datetime-picker-rails
   brakeman
   bullet
