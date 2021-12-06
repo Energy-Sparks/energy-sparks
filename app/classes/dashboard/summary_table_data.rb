@@ -1,7 +1,5 @@
 module Dashboard
   class SummaryTableData
-    MONTH_YEAR_FORMAT = '%b %Y'.freeze
-
     def initialize(template_data)
       @template_data = template_data
     end
@@ -61,7 +59,7 @@ module Dashboard
 
     def format_date(value)
       if (date = Date.parse(value))
-        date.strftime(MONTH_YEAR_FORMAT)
+        date.strftime("#{date.day.ordinalize} %b %Y")
       end
     rescue
       value

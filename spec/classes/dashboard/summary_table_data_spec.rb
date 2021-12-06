@@ -182,7 +182,7 @@ describe Dashboard::SummaryTableData do
         { electricity: { start_date: '', end_date: '2021-11-23' } }
       end
       it 'handles the error and does its best' do
-        expect(subject.date_ranges).to eq('Electricity data:  - Nov 2021.')
+        expect(subject.date_ranges).to eq('Electricity data:  - 23rd Nov 2021.')
       end
     end
     context 'when one fuel type' do
@@ -190,7 +190,7 @@ describe Dashboard::SummaryTableData do
         { electricity: { start_date: '2020-01-09', end_date: '2021-11-23' } }
       end
       it 'formats dates' do
-        expect(subject.date_ranges).to eq('Electricity data: Jan 2020 - Nov 2021.')
+        expect(subject.date_ranges).to eq('Electricity data: 9th Jan 2020 - 23rd Nov 2021.')
       end
     end
     context 'when multiple fuel types' do
@@ -201,7 +201,7 @@ describe Dashboard::SummaryTableData do
         }
       end
       it 'formats dates' do
-        expect(subject.date_ranges).to eq('Electricity data: Jan 2020 - Nov 2021. Gas data: Jun 2018 - Jul 2019.')
+        expect(subject.date_ranges).to eq('Electricity data: 9th Jan 2020 - 23rd Nov 2021. Gas data: 9th Jun 2018 - 23rd Jul 2019.')
       end
     end
   end
