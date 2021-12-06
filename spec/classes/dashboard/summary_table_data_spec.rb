@@ -55,47 +55,34 @@ describe Dashboard::SummaryTableData do
     end
   end
 
-  describe 'when time period valid' do
+  describe 'when period does not have data' do
     let(:template_data) do
-      { electricity: { year: { available_from: '  ' }, workweek: { recent: '  '} } }
+      { electricity: { year: { available_from: 'Feb 2022' } } }
     end
-    it 'shows annual valid' do
-      expect(subject.by_fuel_type.first.valid).to be_truthy
-      expect(subject.by_fuel_type.first.message).to be_nil
-    end
-    it 'shows workweek valid' do
-      expect(subject.by_fuel_type.second.valid).to be_truthy
-      expect(subject.by_fuel_type.second.message).to be_nil
-    end
-  end
-
-  describe 'when workweek not valid' do
-    let(:template_data) do
-      { electricity: { year: { available_from: '' }, workweek: { recent: 'no recent data'} } }
-    end
-    it 'shows annual valid' do
-      expect(subject.by_fuel_type.first.valid).to be_truthy
-      expect(subject.by_fuel_type.first.message).to be_nil
-    end
-    it 'shows workweek not valid' do
-      expect(subject.by_fuel_type.second.valid).to be_falsey
-      expect(subject.by_fuel_type.second.message).to eq('no recent data')
-      expect(subject.by_fuel_type.second.message_class).to eq('no-data')
-    end
-  end
-
-  describe 'when year not valid' do
-    let(:template_data) do
-      { electricity: { year: { available_from: 'Feb 2022' }, workweek: { recent: ''} } }
-    end
-    it 'shows annual valid' do
-      expect(subject.by_fuel_type.first.valid).to be_falsey
+    it 'shows status and message' do
+      expect(subject.by_fuel_type.first.has_data).to be_falsey
       expect(subject.by_fuel_type.first.message).to eq('Feb 2022')
-      expect(subject.by_fuel_type.first.message_class).to be_nil
     end
-    it 'shows workweek valid' do
-      expect(subject.by_fuel_type.second.valid).to be_truthy
-      expect(subject.by_fuel_type.second.message).to be_nil
+  end
+
+  describe 'when period has data' do
+    let(:template_data) do
+      { electricity: { year: { kwh: '123' }, workweek: { co2: '456' } } }
+    end
+    it 'shows status' do
+      expect(subject.by_fuel_type.first.has_data).to be_truthy
+      expect(subject.by_fuel_type.second.has_data).to be_truthy
+    end
+  end
+
+  describe 'when data is not recent' do
+    let(:template_data) do
+      { electricity: { year: { kwh: '123', recent: 'no recent data'} } }
+    end
+    it 'shows status, message and class' do
+      expect(subject.by_fuel_type.first.has_data).to be_truthy
+      expect(subject.by_fuel_type.first.message).to eq('no recent data')
+      expect(subject.by_fuel_type.first.message_class).to eq('old-data')
     end
   end
 

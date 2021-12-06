@@ -23,11 +23,11 @@
           <td></td>
         <% end %>
         <td class="text-left"><%= data.period %></td>
-        <% if data.valid %>
-          <td class="text-right"><%= data.usage %></td>
-          <td class="text-right"><%= data.co2 %></td>
-          <td class="text-right"><%= data.cost %></td>
-          <td class="text-right"><%= data.savings %></td>
+        <% if data.has_data %>
+          <td class="text-right <%= data.message_class %>"><%= data.usage %></td>
+          <td class="text-right <%= data.message_class %>"><%= data.co2 %></td>
+          <td class="text-right <%= data.message_class %>"><%= data.cost %></td>
+          <td class="text-right <%= data.message_class %>"><%= data.savings %></td>
           <td class="text-right"><%= up_downify(data.change) %></td>
         <% else %>
           <td class="text-center info-message <%= data.message_class %>" colspan='5'><%= data.message %></td>

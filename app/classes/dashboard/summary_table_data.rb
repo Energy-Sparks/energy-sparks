@@ -33,24 +33,24 @@ module Dashboard
         change: format_number(fetch(fuel_type, period, :percent_change), :relative_percent),
         message: data_validity_message(fuel_type, period),
         message_class: data_validity_class(fuel_type, period),
-        valid: data_valid?(fuel_type, period)
+        has_data: has_data?(fuel_type, period)
       )
     end
 
-    def data_valid?(fuel_type, period)
-      !data_validity_message(fuel_type, period).present?
+    def has_data?(fuel_type, period)
+      [:kwh, :co2, :£].any? { |item| fetch(fuel_type, period, item).present? }
     end
 
     def data_validity_message(fuel_type, period)
-      message = fetch(fuel_type, period, :recent)
-      return message if message.present?
       message = fetch(fuel_type, period, :available_from)
+      return message if message.present?
+      message = fetch(fuel_type, period, :recent)
       return message if message.present?
     end
 
     def data_validity_class(fuel_type, period)
       message = fetch(fuel_type, period, :recent)
-      return 'no-data' if message.present?
+      return 'old-data' if message.present?
     end
 
     def format_period(period)
