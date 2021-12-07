@@ -6,7 +6,7 @@ module Dashboard
 
     def by_fuel_type
       fuel_types.map do |fuel_type|
-        [summary_data_for(fuel_type, :year), summary_data_for(fuel_type, :workweek)]
+        [summary_data_for(fuel_type, :workweek), summary_data_for(fuel_type, :year)]
       end.flatten
     end
 
@@ -54,12 +54,12 @@ module Dashboard
     end
 
     def format_period(period)
-      period == :workweek ? 'Last week' : 'Annual'
+      period == :workweek ? 'Last week' : 'Last year'
     end
 
     def format_date(value)
       if (date = Date.parse(value))
-        date.strftime("#{date.day.ordinalize} %b %Y")
+        date.strftime("%-d %b %Y")
       end
     rescue
       value
