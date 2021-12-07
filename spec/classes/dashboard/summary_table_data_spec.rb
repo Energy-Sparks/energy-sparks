@@ -60,8 +60,8 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { available_from: 'Feb 2022' } } }
     end
     it 'shows status and message' do
-      expect(subject.by_fuel_type.first.has_data).to be_falsey
-      expect(subject.by_fuel_type.first.message).to eq('Feb 2022')
+      expect(subject.by_fuel_type.second.has_data).to be_falsey
+      expect(subject.by_fuel_type.second.message).to eq('Feb 2022')
     end
   end
 
@@ -80,9 +80,9 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { kwh: '123', recent: 'no recent data'} } }
     end
     it 'shows status, message and class' do
-      expect(subject.by_fuel_type.first.has_data).to be_truthy
-      expect(subject.by_fuel_type.first.message).to eq('no recent data')
-      expect(subject.by_fuel_type.first.message_class).to eq('old-data')
+      expect(subject.by_fuel_type.second.has_data).to be_truthy
+      expect(subject.by_fuel_type.second.message).to eq('no recent data')
+      expect(subject.by_fuel_type.second.message_class).to eq('old-data')
     end
   end
 
@@ -94,10 +94,10 @@ describe Dashboard::SummaryTableData do
       expect(subject.by_fuel_type.count).to eq(2)
     end
     it 'gives annual data' do
-      expect(subject.by_fuel_type.first.period).to eq('Annual')
+      expect(subject.by_fuel_type.second.period).to eq('Last year')
     end
     it 'gives last week data' do
-      expect(subject.by_fuel_type.second.period).to eq('Last week')
+      expect(subject.by_fuel_type.first.period).to eq('Last week')
     end
   end
 
@@ -109,12 +109,12 @@ describe Dashboard::SummaryTableData do
       expect(subject.by_fuel_type.count).to eq(4)
     end
     it 'gives annual data' do
-      expect(subject.by_fuel_type[0].period).to eq('Annual')
-      expect(subject.by_fuel_type[2].period).to eq('Annual')
+      expect(subject.by_fuel_type[1].period).to eq('Last year')
+      expect(subject.by_fuel_type[3].period).to eq('Last year')
     end
     it 'gives last week data' do
-      expect(subject.by_fuel_type[1].period).to eq('Last week')
-      expect(subject.by_fuel_type[3].period).to eq('Last week')
+      expect(subject.by_fuel_type[0].period).to eq('Last week')
+      expect(subject.by_fuel_type[2].period).to eq('Last week')
     end
   end
 
@@ -123,16 +123,16 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
     end
     it 'shows usage' do
-      expect(subject.by_fuel_type.first.usage).to eq('12.3')
+      expect(subject.by_fuel_type.second.usage).to eq('12.3')
     end
     it 'shows cost' do
-      expect(subject.by_fuel_type.first.cost).to eq('&pound;6.66')
+      expect(subject.by_fuel_type.second.cost).to eq('&pound;6.66')
     end
     it 'shows co2' do
-      expect(subject.by_fuel_type.first.co2).to eq('45.6')
+      expect(subject.by_fuel_type.second.co2).to eq('45.6')
     end
     it 'shows savings' do
-      expect(subject.by_fuel_type.first.savings).to eq('&pound;7.77')
+      expect(subject.by_fuel_type.second.savings).to eq('&pound;7.77')
     end
   end
 
@@ -141,8 +141,8 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } }
     end
     it 'formats percentage' do
-      expect(subject.by_fuel_type.first.change).to eq('+11.1%')
-      expect(subject.by_fuel_type.second.change).to eq('-9.23%')
+      expect(subject.by_fuel_type.first.change).to eq('-9.23%')
+      expect(subject.by_fuel_type.second.change).to eq('+11.1%')
     end
   end
 
@@ -151,7 +151,7 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { :percent_change => '-' } } }
     end
     it 'formats percentage' do
-      expect(subject.by_fuel_type.first.change).to eq('-')
+      expect(subject.by_fuel_type.second.change).to eq('-')
     end
   end
 
