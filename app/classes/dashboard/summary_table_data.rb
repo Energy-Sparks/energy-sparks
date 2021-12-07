@@ -59,7 +59,7 @@ module Dashboard
 
     def format_date(value)
       if (date = Date.parse(value))
-        date.strftime("#{date.day.ordinalize} %b %Y")
+        date.strftime("%-d %b %Y")
       end
     rescue
       value
