@@ -19,7 +19,7 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 class Audit < ApplicationRecord
-  belongs_to :school, inverse_of: :activities
+  belongs_to :school, inverse_of: :audits
   has_one_attached :file
   has_rich_text :description
 
