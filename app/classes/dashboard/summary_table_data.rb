@@ -1,0 +1,84 @@
+module Dashboard
+  class SummaryTableData
+    def initialize(template_data)
+      @template_data = template_data
+    end
+
+    def by_fuel_type
+      fuel_types.map do |fuel_type|
+        [summary_data_for(fuel_type, :workweek), summary_data_for(fuel_type, :year)]
+      end.flatten
+    end
+
+    def date_ranges
+      fuel_types.map do |fuel_type|
+        "#{fuel_type.to_s.humanize} data: #{format_date(fetch(fuel_type, :start_date))} - #{format_date(fetch(fuel_type, :end_date))}."
+      end.join(' ')
+    end
+
+    private
+
+    def fuel_types
+      @template_data.blank? ? [] : @template_data.keys
+    end
+
+    def summary_data_for(fuel_type, period)
+      OpenStruct.new(
+        fuel_type: fuel_type,
+        period: format_period(period),
+        usage: format_number(fetch(fuel_type, period, :kwh), :kwh),
+        co2: format_number(fetch(fuel_type, period, :co2), :kg),
+        cost: format_number(fetch(fuel_type, period, :£), :£),
+        savings: format_number(fetch(fuel_type, period, :savings_£), :£),
+        change: format_number(fetch(fuel_type, period, :percent_change), :relative_percent),
+        message: data_validity_message(fuel_type, period),
+        message_class: data_validity_class(fuel_type, period),
+        has_data: has_data?(fuel_type, period)
+      )
+    end
+
+    def has_data?(fuel_type, period)
+      [:kwh, :co2, :£].any? { |item| fetch(fuel_type, period, item).present? }
+    end
+
+    def data_validity_message(fuel_type, period)
+      message = fetch(fuel_type, period, :available_from)
+      return message if message.present?
+      message = fetch(fuel_type, period, :recent)
+      return message if message.present?
+    end
+
+    def data_validity_class(fuel_type, period)
+      message = fetch(fuel_type, period, :recent)
+      return 'old-data' if message.present?
+    end
+
+    def format_period(period)
+      period == :workweek ? 'Last week' : 'Last year'
+    end
+
+    def format_date(value)
+      if (date = Date.parse(value))
+        date.strftime("%-d %b %Y")
+      end
+    rescue
+      value
+    end
+
+    def format_number(value, units)
+      if Float(value)
+        FormatEnergyUnit.format(units, value.to_f, :html, false, true, :target).html_safe
+      end
+    rescue
+      value
+    end
+
+    def fetch(fuel_type, period, item = nil)
+      if item && @template_data[fuel_type] && @template_data[fuel_type][period]
+        @template_data[fuel_type][period][item]
+      elsif @template_data[fuel_type]
+        @template_data[fuel_type][period]
+      end
+    end
+  end
+end
