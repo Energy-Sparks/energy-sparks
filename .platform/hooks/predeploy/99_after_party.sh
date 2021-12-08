@@ -14,4 +14,10 @@ EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
 
 cd $EB_APP_STAGING_DIR
 
-su -s /bin/bash -c "leader_only bundle exec rails after_party:run" $EB_APP_USER
+echo "LEADER?"
+echo $EB_IS_COMMAND_LEADER
+
+if [ "$EB_IS_COMMAND_LEADER" = "true" ]; then
+  echo "LEADER"
+  su -s /bin/bash -c "bundle exec rails after_party:run" $EB_APP_USER
+fi
