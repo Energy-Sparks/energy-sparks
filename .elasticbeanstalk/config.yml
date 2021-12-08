@@ -4,11 +4,14 @@ branch-defaults:
   aws-eb-test:
     environment: test-2-11-1
     group_suffix: null
+  aws-3-4-0:
+    environment: test-3-4-0
+    group_suffix: null
 global:
   application_name: energy-sparks
   branch: null
   default_ec2_keyname: EnergySparksTestEC2
-  default_platform: Ruby 2.5 (Puma)
+  default_platform: Ruby 2.7
   default_region: eu-west-2
   include_git_submodules: true
   instance_profile: null
