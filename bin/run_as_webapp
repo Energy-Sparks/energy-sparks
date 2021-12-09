@@ -6,5 +6,7 @@ EB_APP_USER=$(sudo /opt/elasticbeanstalk/bin/get-config platformconfig -k AppUse
 #. $EB_SCRIPT_DIR/use-app-ruby.sh
 
 #envvars
+set +x
 export $(sudo cat /opt/elasticbeanstalk/deployment/env | xargs)
+set -x
 su -s /bin/bash -c "${*}" $EB_APP_USER
