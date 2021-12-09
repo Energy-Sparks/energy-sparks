@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 set -xe
 
-#EB_SCRIPT_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k script_dir)
 EB_APP_STAGING_DIR=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppStagingDir)
 EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
-#EB_SUPPORT_DIR=$(/opt/elasticbeanstalk/bin/get-config container -k support_dir)
 
-#. $EB_SUPPORT_DIR/envvars-wrapper.sh
-
-#RAKE_TASK="after_party:run"
-
-#. $EB_SCRIPT_DIR/use-app-ruby.sh
+set +x
+export $(cat /opt/elasticbeanstalk/deployment/env | xargs)
+set -x
 
 cd $EB_APP_STAGING_DIR
 
