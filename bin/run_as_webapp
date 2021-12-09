@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -xe
-EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
+EB_APP_USER=$(sudo /opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
 
 #. $EB_SUPPORT_DIR/envvars-wrapper.sh
 #. $EB_SCRIPT_DIR/use-app-ruby.sh
