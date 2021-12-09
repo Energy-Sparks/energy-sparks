@@ -89,6 +89,7 @@ class School < ApplicationRecord
   has_many :user_tariffs,         inverse_of: :school
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
+  has_many :audits,               inverse_of: :school
 
   has_many :programmes,               inverse_of: :school
   has_many :programme_activity_types, through: :programmes, source: :activity_types
