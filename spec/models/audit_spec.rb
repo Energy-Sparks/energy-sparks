@@ -31,7 +31,7 @@ describe Audit do
   end
 
   context 'when using factory' do
-    it 'factory has multiple activities and interventions' do
+    it 'creates audit with multiple activities and interventions' do
       audit = create(:audit, :with_activity_and_intervention_types)
       expect(audit.activity_types.count).to eq(3)
       expect(audit.intervention_types.count).to eq(3)
