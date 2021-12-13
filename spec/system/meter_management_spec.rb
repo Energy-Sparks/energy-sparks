@@ -115,7 +115,11 @@ RSpec.describe "meter management", :meters, type: :system do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
         click_on 'Manage meters'
         click_on 'Edit'
-        expect(page).to have_content('This meter is available via n3rgy')
+        check "DCC Smart Meter"
+        check "Sandbox"
+        click_on 'Update Meter'
+        meter.reload
+        expect(meter.dcc_meter).to be true
       end
     end
 

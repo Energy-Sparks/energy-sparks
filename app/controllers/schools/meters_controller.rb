@@ -39,8 +39,6 @@ module Schools
     end
 
     def edit
-      manager = MeterManagement.new(@meter)
-      @meter_is_dcc = manager.check_n3rgy_status
     end
 
     def update
