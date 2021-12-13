@@ -27,6 +27,7 @@ class Audit < ApplicationRecord
 
   has_many :audit_activity_types
   has_many :activity_types, through: :audit_activity_types
+  accepts_nested_attributes_for :audit_activity_types, allow_destroy: true
 
   has_many :audit_intervention_types
   has_many :intervention_types, through: :audit_intervention_types

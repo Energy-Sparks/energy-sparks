@@ -1,6 +1,7 @@
 module Admin
   class AuditsController < AdminController
-    load_and_authorize_resource
+    load_resource :school
+    load_and_authorize_resource through: :school
 
     def index
       @audits = @audits.by_title
@@ -13,30 +14,30 @@ module Admin
     end
 
     def create
-      if @programme_type.save
-        redirect_to admin_programme_types_path, notice: 'Programme type created'
+      if @audit.save!
+        redirect_to admin_audits_path, notice: 'Audit created'
       else
         render :new
       end
     end
 
     def update
-      if @programme_type.update(programme_type_params)
-        redirect_to admin_programme_types_path, notice: 'Programme type updated'
+      if @audit.update!(audit_params)
+        redirect_to admin_audits_path, notice: 'Audit updated'
       else
         render :edit
       end
     end
 
     def destroy
-      @programme_type.destroy
-      redirect_to admin_programme_types_path, notice: "Programme type was successfully deleted."
+      @audit.destroy
+      redirect_to admin_audits_path, notice: "Audit was successfully deleted."
     end
 
   private
 
-    def programme_type_params
-      params.require(:programme_type).permit(:title, :description, :short_description, :document_link, :active, :default, :image)
+    def audit_params
+      params.require(:audit).permit(:school_id, :title, :description, :published, audit_activity_types_attributes: [:id, :activity_type_id, :activity_type, :notes, :_destroy])
     end
   end
 end

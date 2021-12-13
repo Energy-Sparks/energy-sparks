@@ -5,14 +5,14 @@
 
 <h2>Activities</h2>
 <ol class="activities">
-  <% @audit.activity_types.order(:position).each do |activity_type| %>
+  <% @audit.activity_types.by_name.each do |activity_type| %>
     <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
   <% end %>
 </ol>
 
 <h2>Interventions</h2>
 <ol class="activities">
-  <% @audit.intervention_types.order(:position).each do |intervention_type| %>
+  <% @audit.intervention_types.by_title.order(:position).each do |intervention_type| %>
     <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
   <% end %>
 </ol>
