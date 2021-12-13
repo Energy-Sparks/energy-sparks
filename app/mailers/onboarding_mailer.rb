@@ -9,7 +9,7 @@ class OnboardingMailer < ApplicationMailer
   def completion_email
     @school_onboarding = params[:school_onboarding]
     if @school_onboarding.created_by
-      make_bootstrap_mail(to: @school_onboarding.created_by.email, subject: "#{@school_onboarding.school_name} has completed the onboarding process")
+      make_bootstrap_mail(to: 'operations@energysparks.uk', subject: "#{@school_onboarding.school_name} has completed the onboarding process")
     end
   end
 
