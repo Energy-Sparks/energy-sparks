@@ -21,6 +21,7 @@
 //= require handlebars
 
 //= require activity_types
+//= require audits
 //= require usage_charts
 //= require bullet_charts
 //= require schools

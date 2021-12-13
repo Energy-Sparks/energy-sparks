@@ -260,6 +260,13 @@ Rails.application.routes.draw do
     resources :activity_types
     resource :activity_type_preview, only: :create
 
+    resources :audits do
+      scope module: :audits do
+        resource :activity_types, only: [:show, :update]
+        resource :intervention_types, only: [:show, :update]
+      end
+    end
+
     resources :intervention_type_groups, except: [:destroy]
     resources :intervention_types
 

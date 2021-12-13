@@ -1,0 +1,45 @@
+<%= simple_form_for([:admin, audit], html: { id: :audit_form } ) do |f| %>
+  <%= f.input :title %>
+
+  <%= f.label 'Description', for: :description %>
+
+  <div class="trix-wrapper">
+    <%= f.rich_text_area :description %>
+  </div>
+
+  <%= f.input :published %>
+
+  <h2>Activities</h2>
+
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <label for="firstName">Activity Type</label>
+    </div>
+    <div class="col-md-1 mb-3">
+      <label for="lastName">Delete?</label>
+    </div>
+  </div>
+
+  <%= f.simple_fields_for @audit.audit_activity_types do |fields| %>
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <%= fields.select(
+                :name,
+                grouped_options_for_select(
+                    ActivityCategory.listed_with_activity_types.map{|category, types| [category.name, types.map {|type| [type.name_with_key_stages, type.id]}]},
+                    fields.object ? '' : ''
+                ),
+                { include_blank: true },
+                { class: 'form-control select2'}
+            )
+        %>
+      </div>
+      <div class="col-md-1 mb-3">
+        <%#= suggestion.check_box :_destroy, class: 'form-control' %>
+      </div>
+    </div>
+  <% end %>
+
+
+  <%= f.submit 'Save', class: 'btn btn-success' %>
+<% end %>

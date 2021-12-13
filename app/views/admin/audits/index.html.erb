@@ -1,0 +1,33 @@
+<h1>Audits</h1>
+
+<div class="row padded-row">
+  <div class="col">
+    <% if @audits.any? %>
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Activities in Audit</th>
+            <th>Interventions in Audit</th>
+            <th>Published?</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @audits.each do |audit| %>
+            <tr>
+              <td><%= link_to audit.title, admin_audit_path(audit) %></td>
+              <td><%= audit.activity_types.count %></td>
+              <td><%= audit.intervention_types.count %></td>
+              <td><%= y_n(audit.published) %></td>
+              <td><%= link_to 'Edit', edit_admin_audit_path(audit), class: 'btn btn-warning btn-sm' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>There are no audit</p>
+    <% end %>
+    <%= link_to 'New Audit', new_admin_audit_path, class: 'btn btn-primary btn-sm'%>
+  </div>
+</div>

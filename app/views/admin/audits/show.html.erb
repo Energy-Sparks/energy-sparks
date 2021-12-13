@@ -1,0 +1,20 @@
+<h1><%= @audit.title %></h1>
+
+<h2>Description</h2>
+<p><%= @audit.description %></p>
+
+<h2>Activities</h2>
+<ol class="activities">
+  <% @audit.activity_types.order(:position).each do |activity_type| %>
+    <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+  <% end %>
+</ol>
+
+<h2>Interventions</h2>
+<ol class="activities">
+  <% @audit.intervention_types.order(:position).each do |intervention_type| %>
+    <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
+  <% end %>
+</ol>
+
+<p><%= link_to 'All audits', admin_audits_path, class: 'btn btn-primary' %></p>

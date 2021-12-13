@@ -30,4 +30,6 @@ class Audit < ApplicationRecord
 
   has_many :audit_intervention_types
   has_many :intervention_types, through: :audit_intervention_types
+
+  scope :by_title, -> { order(title: :asc) }
 end
