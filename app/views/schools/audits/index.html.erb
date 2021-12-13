@@ -7,8 +7,8 @@
         <thead>
           <tr>
             <th>Title</th>
-            <th>Activities in Audit</th>
-            <th>Interventions in Audit</th>
+            <th>Activities</th>
+            <th>Actions</th>
             <th>Published?</th>
             <th></th>
           </tr>
@@ -22,7 +22,7 @@
               <td><%= y_n(audit.published) %></td>
               <td>
                 <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
-                <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, class: 'btn btn-warning btn-sm' %>
+                <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
               </td>
             </tr>
           <% end %>

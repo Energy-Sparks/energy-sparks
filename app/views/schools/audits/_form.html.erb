@@ -34,11 +34,11 @@
   <br/>
   <br/>
 
-  <h2>Interventions</h2>
+  <h2>Actions</h2>
 
   <div class="row">
     <div class="col-md-5 mb-3">
-      <label for="firstName">Intervention Type</label>
+      <label for="firstName">Action Type</label>
     </div>
     <div class="col-md-5 mb-3">
       <label for="lastName">Notes</label>
@@ -52,7 +52,7 @@
       <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
     <% end %>
     <div class="links">
-      <%= link_to_add_association 'Add intervention', f, :audit_intervention_types, class: 'btn' %>
+      <%= link_to_add_association 'Add action', f, :audit_intervention_types, class: 'btn' %>
     </div>
   </div>
 
