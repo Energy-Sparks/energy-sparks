@@ -16,18 +16,21 @@
         <tbody>
           <% @audits.each do |audit| %>
             <tr>
-              <td><%= link_to audit.title, admin_audit_path(audit) %></td>
+              <td><%= link_to audit.title, school_audit_path(@school, audit) %></td>
               <td><%= audit.activity_types.count %></td>
               <td><%= audit.intervention_types.count %></td>
               <td><%= y_n(audit.published) %></td>
-              <td><%= link_to 'Edit', edit_admin_audit_path(audit), class: 'btn btn-warning btn-sm' %></td>
+              <td>
+                <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
+                <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, class: 'btn btn-warning btn-sm' %>
+              </td>
             </tr>
           <% end %>
         </tbody>
       </table>
     <% else %>
-      <p>There are no audit</p>
+      <p>There are no audits</p>
     <% end %>
-    <%= link_to 'New Audit', new_admin_audit_path, class: 'btn btn-primary btn-sm'%>
+    <%= link_to 'New Audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
   </div>
 </div>

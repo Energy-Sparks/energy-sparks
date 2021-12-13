@@ -112,6 +112,7 @@ Rails.application.routes.draw do
       resources :programmes, only: [:create]
 
       resource :action, only: [:new]
+      resources :audits
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
@@ -259,13 +260,6 @@ Rails.application.routes.draw do
     resources :activity_categories, except: [:destroy]
     resources :activity_types
     resource :activity_type_preview, only: :create
-
-    resources :audits do
-      scope module: :audits do
-        resource :activity_types, only: [:show, :update]
-        resource :intervention_types, only: [:show, :update]
-      end
-    end
 
     resources :intervention_type_groups, except: [:destroy]
     resources :intervention_types

@@ -1,6 +1,4 @@
-<%= simple_form_for([:admin, audit], html: { id: :audit_form } ) do |f| %>
-  <%= f.input :school_id, as: :hidden, value: @school.id %>
-
+<%= simple_form_for([@school, audit], html: { id: :audit_form } ) do |f| %>
   <%= f.input :title %>
 
   <%= f.label 'Description', for: :description %>

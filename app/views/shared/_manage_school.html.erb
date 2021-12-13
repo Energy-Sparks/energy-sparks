@@ -17,6 +17,7 @@
     <%= link_to 'Batch reports', school_reports_path(school), class: 'dropdown-item' if can? :view_content_reports, school %>
     <%= link_to 'Review targets', school_school_targets_path(school), class: 'dropdown-item' if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
     <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
+    <%= link_to 'Audits', school_audits_path(school), class: 'dropdown-item' if can? :manage, Audit %>
     <%= link_to 'Remove school', removal_admin_school_path(school), class: 'dropdown-item' if can? :remove_school, school %>
   </div>
 </li>

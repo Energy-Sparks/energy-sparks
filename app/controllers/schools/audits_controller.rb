@@ -1,5 +1,5 @@
-module Admin
-  class AuditsController < AdminController
+module Schools
+  class AuditsController < ApplicationController
     load_resource :school
     load_and_authorize_resource through: :school
 
@@ -14,16 +14,16 @@ module Admin
     end
 
     def create
-      if @audit.save!
-        redirect_to admin_audits_path, notice: 'Audit created'
+      if @audit.save
+        redirect_to school_audits_path(@school), notice: 'Audit created'
       else
         render :new
       end
     end
 
     def update
-      if @audit.update!(audit_params)
-        redirect_to admin_audits_path, notice: 'Audit updated'
+      if @audit.update(audit_params)
+        redirect_to school_audits_path(@school), notice: 'Audit updated'
       else
         render :edit
       end
@@ -31,7 +31,7 @@ module Admin
 
     def destroy
       @audit.destroy
-      redirect_to admin_audits_path, notice: "Audit was successfully deleted."
+      redirect_to school_audits_path(@school), notice: "Audit was successfully deleted."
     end
 
   private
