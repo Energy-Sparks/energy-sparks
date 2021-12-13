@@ -237,6 +237,7 @@ Rails.application.routes.draw do
     resources :newsletters
     resources :resource_file_types
     resources :resource_files
+    resources :jobs
     resources :videos
     resources :school_groups do
       scope module: :school_groups do

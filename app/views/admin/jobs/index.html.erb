@@ -1,0 +1,42 @@
+<h1>Jobs</h1>
+
+<% if @jobs.any? %>
+<table class="table mt-2">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Voluntary?</th>
+      <th>Description</th>
+      <th>File</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td><%= job.title %></td>
+        <td><%= y_n(job.voluntary) %></td>
+        <td><%= job.description %></td>
+        <td>
+          <% if job.file.attached? %>
+            <%= link_to 'File', url_for(job.file) %>
+          <% else %>
+            No file attached
+          <% end %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_job_path(job), class: 'btn' %>
+            <%= link_to 'Delete', admin_job_path(job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% else %>
+  <p>There are no jobs in the system</p>
+<% end %>
+
+<p><%= link_to 'New Job', new_admin_job_path, class: 'btn'%></p>
