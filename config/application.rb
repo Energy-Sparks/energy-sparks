@@ -39,5 +39,7 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
+
+    config.autoloader = :classic
   end
 end
