@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <h2>Scoreboard Group</h2>
+  <h2>School Group</h2>
   <div class="form-group">
     <%= f.label :school_group_id, 'Group' %>
     <%= f.select :school_group_id, options_from_collection_for_select(SchoolGroup.order(:name), 'id', 'name', (school_onboarding.school_group_id)), {include_blank: true}, {class: 'form-control'} %>
