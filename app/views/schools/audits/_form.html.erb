@@ -19,7 +19,6 @@
       <label for="lastName">Notes</label>
     </div>
     <div class="col-md-2 mb-3">
-      <label for="lastName">Delete?</label>
     </div>
   </div>
 
@@ -29,6 +28,31 @@
     <% end %>
     <div class="links">
       <%= link_to_add_association 'Add activity', f, :audit_activity_types, class: 'btn' %>
+    </div>
+  </div>
+
+  <br/>
+  <br/>
+
+  <h2>Interventions</h2>
+
+  <div class="row">
+    <div class="col-md-5 mb-3">
+      <label for="firstName">Intervention Type</label>
+    </div>
+    <div class="col-md-5 mb-3">
+      <label for="lastName">Notes</label>
+    </div>
+    <div class="col-md-2 mb-3">
+    </div>
+  </div>
+
+  <div id="audit-intervention-types">
+    <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types.by_title do |audit_intervention_type| %>
+      <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add intervention', f, :audit_intervention_types, class: 'btn' %>
     </div>
   </div>
 

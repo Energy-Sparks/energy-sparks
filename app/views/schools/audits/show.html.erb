@@ -5,16 +5,25 @@
 
 <h2>Activities</h2>
 <ol class="activities">
-  <% @audit.activity_types.by_name.each do |activity_type| %>
-    <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+  <% @audit.audit_activity_types.by_name.each do |audit_activity_type| %>
+    <li>
+      <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
+      <%= " (#{audit_activity_type.notes})" %>
+    </li>
   <% end %>
 </ol>
 
 <h2>Interventions</h2>
 <ol class="activities">
-  <% @audit.intervention_types.by_title.order(:position).each do |intervention_type| %>
-    <li><%= link_to intervention_type.title, intervention_type_path(intervention_type) %></li>
+  <% @audit.audit_intervention_types.by_title.each do |audit_intervention_type| %>
+    <li>
+      <%= link_to audit_intervention_type.intervention_title, intervention_type_path(audit_intervention_type.intervention_type) %>
+      <%= " (#{audit_intervention_type.notes})" %>
+    </li>
   <% end %>
 </ol>
+
+<br/>
+<br/>
 
 <p><%= link_to 'All audits', school_audits_path(@school), class: 'btn btn-primary' %></p>
