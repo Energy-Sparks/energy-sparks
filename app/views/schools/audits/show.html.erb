@@ -8,7 +8,7 @@
   <% @audit.audit_activity_types.by_name.each do |audit_activity_type| %>
     <li>
       <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
-      <%= " (#{audit_activity_type.notes})" %>
+      <%= " (#{audit_activity_type.notes})" if audit_activity_type.notes.present? %>
     </li>
   <% end %>
 </ol>
@@ -18,7 +18,7 @@
   <% @audit.audit_intervention_types.by_title.each do |audit_intervention_type| %>
     <li>
       <%= link_to audit_intervention_type.intervention_title, intervention_type_path(audit_intervention_type.intervention_type) %>
-      <%= " (#{audit_intervention_type.notes})" %>
+      <%= " (#{audit_intervention_type.notes})" if audit_intervention_type.notes.present? %>
     </li>
   <% end %>
 </ol>
