@@ -1,0 +1,39 @@
+<h1>Jobs</h1>
+
+<% if @jobs.any? %>
+  <p>
+    The following jobs and voluntary positions are currently available.
+  </p>
+  <table class="table mt-2">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Voluntary?</th>
+        <th>Closing Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @jobs.each do |job| %>
+        <tr>
+          <td><%= job.title %></td>
+          <td><%= job.description %></td>
+          <td><%= y_n(job.voluntary) %></td>
+          <td><%= nice_dates(job.closing_date) %></td>
+          <td>
+            <% if job.file.attached? %>
+              <%= link_to 'More information', controller: :jobs, action: :download, serve: :inline, id: job.id %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>
+    We currently have no jobs or voluntary positions available.
+  </p>
+<% end %>

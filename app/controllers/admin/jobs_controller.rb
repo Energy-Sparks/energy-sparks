@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @jobs = Job.all.order(:created_at)
+      @jobs = Job.all.by_created_date
     end
 
     def show
