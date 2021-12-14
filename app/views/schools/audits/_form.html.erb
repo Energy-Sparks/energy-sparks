@@ -7,7 +7,21 @@
     <%= f.rich_text_area :description %>
   </div>
 
-  <%= f.input :file, label: 'Report' %>
+  <h2>Report</h2>
+
+  <% if audit.file.attached? %>
+    <%= link_to 'Current file', url_for(@audit.file), target: '_blank' %>
+  <% else %>
+    No file attached yet
+  <% end %>
+
+  <br/>
+  <br/>
+
+  <%= f.input :file, label: false %>
+
+  <br/>
+  <br/>
 
   <%= f.input :published %>
 
