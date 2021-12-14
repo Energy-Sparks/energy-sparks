@@ -40,7 +40,7 @@ class Job < ApplicationRecord
         "name" => "UK"
       },
       "jobLocationType" => "TELECOMMUTE",
-      "employmentType" => voluntary ? "VOLUNTEER" : "OTHER",
+      "employmentType" => voluntary ? "VOLUNTEER" : "OTHER"
     }
   end
 end
