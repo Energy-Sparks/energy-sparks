@@ -23,6 +23,7 @@ if ENV.key?('GENERATE_SITEMAP')
     add newsletters_path
     add user_guide_videos_path
     add resources_path
+    add jobs_path
 
     add schools_path
     add scoreboards_path
