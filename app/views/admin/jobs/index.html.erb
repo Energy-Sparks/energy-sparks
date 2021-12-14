@@ -6,6 +6,7 @@
     <tr>
       <th>Title</th>
       <th>Voluntary?</th>
+      <th>Closing Date</th>
       <th>Description</th>
       <th>File</th>
       <th>Actions</th>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= job.title %></td>
         <td><%= y_n(job.voluntary) %></td>
+        <td><%= nice_dates(job.closing_date) %></td>
         <td><%= job.description %></td>
         <td>
           <% if job.file.attached? %>
