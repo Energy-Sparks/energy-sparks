@@ -37,7 +37,7 @@ module Schools
   private
 
     def audit_params
-      params.require(:audit).permit(:school_id, :title, :description, :published, audit_activity_types_attributes: audit_activity_types_attributes, audit_intervention_types_attributes: audit_intervention_types_attributes)
+      params.require(:audit).permit(:school_id, :title, :description, :file, :published, audit_activity_types_attributes: audit_activity_types_attributes, audit_intervention_types_attributes: audit_intervention_types_attributes)
     end
 
     def audit_activity_types_attributes

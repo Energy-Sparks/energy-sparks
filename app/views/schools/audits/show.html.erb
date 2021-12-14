@@ -3,6 +3,16 @@
 <h2>Description</h2>
 <p><%= @audit.description %></p>
 
+<h2>Report</h2>
+<% if @audit.file.attached? %>
+  <%= link_to 'Report', url_for(@audit.file), target: '_blank' %>
+<% else %>
+  No report
+<% end %>
+
+<br/>
+<br/>
+
 <h2>Activities</h2>
 <ol class="activities">
   <% @audit.audit_activity_types.by_name.each do |audit_activity_type| %>

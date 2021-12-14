@@ -7,6 +7,7 @@
         <thead>
           <tr>
             <th>Title</th>
+            <th>Report</th>
             <th>Activities</th>
             <th>Actions</th>
             <th>Published?</th>
@@ -17,6 +18,13 @@
           <% @audits.each do |audit| %>
             <tr>
               <td><%= link_to audit.title, school_audit_path(@school, audit) %></td>
+              <td>
+                <% if audit.file.attached? %>
+                  <%= link_to 'Report', url_for(audit.file), target: '_blank' %>
+                <% else %>
+                  No report
+                <% end %>
+              </td>
               <td><%= audit.activity_types.count %></td>
               <td><%= audit.intervention_types.count %></td>
               <td><%= y_n(audit.published) %></td>
