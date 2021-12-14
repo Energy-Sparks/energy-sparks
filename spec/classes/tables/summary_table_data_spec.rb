@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Dashboard::SummaryTableData do
+describe Tables::SummaryTableData do
 
   subject { described_class.new(template_data) }
 

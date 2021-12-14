@@ -1,4 +1,4 @@
-module Dashboard
+module Tables
   class SummaryTableData
     def initialize(template_data)
       @template_data = template_data
