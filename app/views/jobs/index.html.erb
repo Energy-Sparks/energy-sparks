@@ -32,6 +32,10 @@
       <% end %>
     </tbody>
   </table>
+
+  <script type="application/ld+json">
+    <%= @jobs.map { |job| job.to_job_posting.to_json }.join(",").html_safe %>
+  </script>
 <% else %>
   <p>
     We currently have no jobs or voluntary positions available.
