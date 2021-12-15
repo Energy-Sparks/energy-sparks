@@ -163,7 +163,7 @@
   <div class="card bg-light mb-3">
     <div class="card-header"><h4>Add meter</h4></div>
     <div class="card-body">
-      <%= render 'form', school: @school, meter: @meter, show_dcc_fields: current_user.admin?, meter_is_dcc: false %>
+      <%= render 'form', school: @school, meter: @meter, show_dcc_fields: current_user.admin? %>
     </div>
   </div>
 <% end %>

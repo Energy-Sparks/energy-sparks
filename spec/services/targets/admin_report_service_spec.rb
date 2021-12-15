@@ -96,7 +96,7 @@ describe Targets::AdminReportService, type: :service do
     end
 
     it 'should have right recipient' do
-      expect(email.to).to contain_exactly("services@energysparks.uk")
+      expect(email.to).to contain_exactly("operations@energysparks.uk")
     end
 
     it 'should have the right subject' do

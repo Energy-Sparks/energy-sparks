@@ -124,7 +124,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(ActionMailer::Base.deliveries.count).to eq(2)
 
           email = ActionMailer::Base.deliveries.first
-          expect(email.to).to include(school_onboarding.created_by.email)
+          expect(email.to).to include('operations@energysparks.uk')
           expect(email.subject).to eq("#{school_onboarding.school.name} has completed the onboarding process")
 
           email = ActionMailer::Base.deliveries.last
@@ -158,7 +158,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(ActionMailer::Base.deliveries.count).to eq(3)
 
           email = ActionMailer::Base.deliveries.first
-          expect(email.to).to include(school_onboarding.created_by.email)
+          expect(email.to).to include('operations@energysparks.uk')
           expect(email.subject).to eq("#{school_onboarding.school.name} has completed the onboarding process")
 
           email = ActionMailer::Base.deliveries.second

@@ -69,7 +69,7 @@ module Targets
     end
 
     def to
-      'services@energysparks.uk'
+      'operations@energysparks.uk'
     end
 
     def target_summary

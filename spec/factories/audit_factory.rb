@@ -1,5 +1,21 @@
 FactoryBot.define do
   factory :audit do
+    sequence(:title) {|n| "Audit #{n}"}
     school
+
+    trait :with_activity_and_intervention_types do
+      transient do
+        count { 3 }
+      end
+
+      after(:create) do |audit, evaluator|
+        evaluator.count.times.each do |counter|
+          activity_type = create(:activity_type)
+          AuditActivityType.create(audit: audit, activity_type: activity_type, position: counter)
+          intervention_type = create(:intervention_type)
+          AuditInterventionType.create(audit: audit, intervention_type: intervention_type, position: counter)
+        end
+      end
+    end
   end
 end

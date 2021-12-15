@@ -125,7 +125,7 @@ describe 'consent documents', type: :system do
 
           it 'sends an email' do
             expect(deliveries).to eq 1
-            expect(email.to).to contain_exactly("services@energysparks.uk")
+            expect(email.to).to contain_exactly("operations@energysparks.uk")
             expect(email.subject).to include "#{school.name} has uploaded a bill"
             expect(matcher).to have_link("View bill")
             expect(matcher).to have_link("Perform review")
@@ -146,7 +146,7 @@ describe 'consent documents', type: :system do
 
           it 'sends an email' do
             expect(deliveries).to eq 1
-            expect(email.to).to contain_exactly("services@energysparks.uk")
+            expect(email.to).to contain_exactly("operations@energysparks.uk")
             expect(email.subject).to include "#{school.name} has updated a bill"
             expect(matcher).to have_link("View bill")
             expect(matcher).to have_link("Perform review")
