@@ -43,7 +43,7 @@ RSpec.describe "school removal", :schools, type: :system do
 
       expect(page).to have_content('My High School')
       expect(page).to have_content(Time.zone.today.to_s(:es_full))
-      expect(page).to have_link(electricity_meter.mpan_mprn)
+      expect(page).to have_link(electricity_meter.mpan_mprn.to_s)
     end
   end
 end

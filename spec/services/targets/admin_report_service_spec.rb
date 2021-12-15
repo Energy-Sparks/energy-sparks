@@ -88,6 +88,7 @@ describe Targets::AdminReportService, type: :service do
     end
 
     let(:email)       { ActionMailer::Base.deliveries.last }
+    #use html_part here as this is a multi-part mime message with attachment
     let(:email_body)  { email.html_part.body.to_s }
     let(:today)       { Time.zone.now.strftime("%Y-%m-%d") }
     it 'should send an email' do

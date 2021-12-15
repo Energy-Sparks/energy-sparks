@@ -1,6 +1,10 @@
 #!/bin/bash
 echo `date -u` "Getting any files"
 
+set +x
+export $(cat /opt/elasticbeanstalk/deployment/env | xargs)
+set -x
+
 cd tmp
 
 if [ ! -d banes_data_feed_files ]; then
