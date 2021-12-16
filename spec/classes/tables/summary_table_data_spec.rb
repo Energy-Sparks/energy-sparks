@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Dashboard::SummaryTableData do
+describe Tables::SummaryTableData do
 
   subject { described_class.new(template_data) }
 
@@ -80,7 +80,7 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { kwh: '123', recent: 'no recent data'} } }
     end
     it 'shows status, message and class' do
-      expect(subject.by_fuel_type.second.has_data).to be_truthy
+      expect(subject.by_fuel_type.second.has_data).to be false
       expect(subject.by_fuel_type.second.message).to eq('no recent data')
       expect(subject.by_fuel_type.second.message_class).to eq('old-data')
     end
@@ -141,8 +141,8 @@ describe Dashboard::SummaryTableData do
       { electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } }
     end
     it 'formats percentage' do
-      expect(subject.by_fuel_type.first.change).to eq('-9.23%')
-      expect(subject.by_fuel_type.second.change).to eq('+11.1%')
+      expect(subject.by_fuel_type.first.change).to eq('-9.2%')
+      expect(subject.by_fuel_type.second.change).to eq('+11%')
     end
   end
 

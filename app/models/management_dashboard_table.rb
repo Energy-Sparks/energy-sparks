@@ -41,6 +41,6 @@ class ManagementDashboardTable < ApplicationRecord
       summary_data = eval(alert.template_data['summary_data'])
       # rubocop:enable Security/Eval
     end
-    Dashboard::SummaryTableData.new(summary_data)
+    Tables::SummaryTableData.new(summary_data)
   end
 end

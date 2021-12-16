@@ -296,7 +296,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           click_on "Complete setup", match: :first
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to include("#{school_name} has completed the onboarding process")
-          expect(email.to).to include(admin.email)
+          expect(email.to).to include('operations@energysparks.uk')
         end
 
         it 'sends confirmation emails after completion' do
@@ -332,7 +332,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             click_on "Complete setup", match: :first
             email = ActionMailer::Base.deliveries[-2]
             expect(email.subject).to include("#{school_name} has completed the onboarding process")
-            expect(email.to).to include(admin.email)
+            expect(email.to).to include('operations@energysparks.uk')
           end
 
           it 'sends onboarded emails after completion' do

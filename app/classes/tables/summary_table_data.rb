@@ -1,4 +1,4 @@
-module Dashboard
+module Tables
   class SummaryTableData
     def initialize(template_data)
       @template_data = template_data
@@ -30,7 +30,7 @@ module Dashboard
         co2: format_number(fetch(fuel_type, period, :co2), :kg),
         cost: format_number(fetch(fuel_type, period, :£), :£),
         savings: format_number(fetch(fuel_type, period, :savings_£), :£),
-        change: format_number(fetch(fuel_type, period, :percent_change), :relative_percent),
+        change: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         message: data_validity_message(fuel_type, period),
         message_class: data_validity_class(fuel_type, period),
         has_data: has_data?(fuel_type, period)
@@ -38,7 +38,12 @@ module Dashboard
     end
 
     def has_data?(fuel_type, period)
-      [:kwh, :co2, :£].any? { |item| fetch(fuel_type, period, item).present? }
+      !no_recent_data?(fuel_type, period) && [:kwh, :co2, :£].any? { |item| fetch(fuel_type, period, item).present? }
+    end
+
+    def no_recent_data?(fuel_type, period)
+      message = fetch(fuel_type, period, :recent)
+      message.present? && message == "no recent data"
     end
 
     def data_validity_message(fuel_type, period)
@@ -65,9 +70,9 @@ module Dashboard
       value
     end
 
-    def format_number(value, units)
+    def format_number(value, units, medium = :html)
       if Float(value)
-        FormatEnergyUnit.format(units, value.to_f, :html, false, true, :target).html_safe
+        FormatEnergyUnit.format(units, value.to_f, medium, false, true, :target).html_safe
       end
     rescue
       value

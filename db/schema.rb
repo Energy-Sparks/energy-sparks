@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_162703) do
+ActiveRecord::Schema.define(version: 2021_12_07_143428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -450,6 +450,32 @@ ActiveRecord::Schema.define(version: 2021_11_22_162703) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.integer "back_fill_years", default: 4
+  end
+
+  create_table "audit_activity_types", force: :cascade do |t|
+    t.bigint "audit_id", null: false
+    t.bigint "activity_type_id", null: false
+    t.integer "position", default: 0, null: false
+    t.text "notes"
+    t.index ["audit_id", "activity_type_id"], name: "audit_activity_type_uniq", unique: true
+  end
+
+  create_table "audit_intervention_types", force: :cascade do |t|
+    t.bigint "audit_id", null: false
+    t.bigint "intervention_type_id", null: false
+    t.integer "position", default: 0, null: false
+    t.text "notes"
+    t.index ["audit_id", "intervention_type_id"], name: "audit_intervention_type_uniq", unique: true
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.string "title", null: false
+    t.date "completed_on"
+    t.boolean "published", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_audits_on_school_id"
   end
 
   create_table "benchmark_result_errors", force: :cascade do |t|
@@ -1499,6 +1525,7 @@ ActiveRecord::Schema.define(version: 2021_11_22_162703) do
   add_foreign_key "analysis_pages", "alert_type_rating_content_versions", on_delete: :restrict
   add_foreign_key "analysis_pages", "alerts", on_delete: :cascade
   add_foreign_key "analysis_pages", "content_generation_runs", on_delete: :cascade
+  add_foreign_key "audits", "schools", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_result_errors", "benchmark_result_school_generation_runs", on_delete: :cascade
   add_foreign_key "benchmark_result_school_generation_runs", "benchmark_result_generation_runs", on_delete: :cascade

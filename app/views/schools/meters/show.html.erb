@@ -77,10 +77,12 @@
         <dd class="col-sm-9"><%= @elements %></dd>
       </dl>
     <% else %>
-      <p>Not a DCC meter</p>
+      <p>Not configured as a DCC meter</p>
       <dl class="row">
         <dt class="col-sm-3">DCC last checked</dt>
         <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
+        <dt class="col-sm-3">n3rgy API Status</dt>
+        <dd class="col-sm-9"><%= @n3rgy_status %></dd>
       </dl>
     <% end %>
   </div>
