@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_07_143428) do
+ActiveRecord::Schema.define(version: 2021_12_13_170612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -795,6 +795,14 @@ ActiveRecord::Schema.define(version: 2021_12_07_143428) do
     t.boolean "active", default: true
     t.string "summary"
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "title", null: false
+    t.boolean "voluntary", default: false
+    t.date "closing_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "key_stages", force: :cascade do |t|
