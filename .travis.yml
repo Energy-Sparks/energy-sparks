@@ -3,7 +3,7 @@ cache:
   directories:
   - node_modules
   yarn: false
-  bundler: true
+  bundler: true`
 env:
   global:
   - NODE_ENV=test
@@ -18,6 +18,8 @@ addons:
     packages:
     - google-chrome-stable
 sudo: required
+before_install:
+- gem install bundler -v 2.2.32
 before_script:
 - cp config/database.travis.yml config/database.yml
 script:

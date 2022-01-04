@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.6.5'
+ruby '~> 2.7.4'
 
 # Rails/Core
 gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -10,8 +10,8 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
 gem "image_processing", "~> 1.2"
 
-# Freeze until ElasticBeanstalk rebuild
-gem 'puma', '4.3.9' # Use Puma as the app server
+# Bumped from 4.3.9 for ElasticBeanstalk platform upgrade
+gem 'puma', '5.5.2' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 
@@ -22,9 +22,9 @@ gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.28.1'
-# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'management-dashboard-summary-table-v2'
-# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.27.5'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'ruby-2.7-eb-platform-upgrade'
+#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
@@ -48,7 +48,7 @@ gem 'rgeo-geojson'
 gem 'aws-sdk-s3'
 
 # Assets for Emails
-gem 'bootstrap-email'
+gem 'bootstrap-email', '0.3.4'
 
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
