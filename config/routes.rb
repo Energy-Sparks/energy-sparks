@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
   get 'resources/:id/:serve', to: 'resource_files#download'
+  get 'jobs', to: 'jobs#index', as: :jobs
+  get 'jobs/:id/:serve', to: 'jobs#download'
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
@@ -237,6 +239,7 @@ Rails.application.routes.draw do
     resources :newsletters
     resources :resource_file_types
     resources :resource_files
+    resources :jobs
     resources :videos
     resources :school_groups do
       scope module: :school_groups do
