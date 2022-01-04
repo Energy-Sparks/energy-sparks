@@ -20,3 +20,6 @@ fi
 mkdir -p "${app}/tmp/cache";
 chown webapp:webapp "${app}/tmp/cache"
 ln -s /var/cache/assets "${app}/tmp/cache";
+
+mkdir -p "${app}/tmp/amr_files_bucket";
+chown webapp:webapp "${app}/tmp";
