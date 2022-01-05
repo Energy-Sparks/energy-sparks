@@ -4,8 +4,6 @@ branch-defaults:
   aws-eb-test:
     environment: test-3-4-0
     group_suffix: null
-  puma-tests:
-    environment: test-3-4-0
 global:
   application_name: energy-sparks
   branch: null
