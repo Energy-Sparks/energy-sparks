@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 43e4d5e4fbf63c52c8b80f69421acf8683e067a4
-  branch: ruby-2.7-eb-platform-upgrade
+  revision: 6a1b0e593ba8ce7955fef095b45896396ec01a07
+  tag: 1.28.2
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
