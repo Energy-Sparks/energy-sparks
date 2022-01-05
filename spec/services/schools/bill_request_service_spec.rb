@@ -63,7 +63,7 @@ RSpec.describe Schools::BillRequestService do
 
         it 'should include a link to the upload a bill page' do
           email_body = @email.html_part.body.to_s
-          node = Capybara::Node::Simple.new(email_body.to_s)
+          node = Capybara::Node::Simple.new(email_body)
           expect(node).to have_link('Upload your bill')
         end
 

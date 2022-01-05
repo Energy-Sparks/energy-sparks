@@ -10,9 +10,9 @@ if [ -f $BIGSWAPFILE ]; then
   echo "Big swapfile $BIGSWAPFILE found, assuming already setup"
   if [[ $(swapon -s) ]]
   then
-    echo "Big wapfile $SWAPFILE found, and already setup"
+    echo "Big swapfile $SWAPFILE found, and already setup"
   else
-    echo "Big wapfile $SWAPFILE found, but not enabled, enable now"
+    echo "Big swapfile $SWAPFILE found, but not enabled, enable now"
     /sbin/swapon $BIGSWAPFILE
   fi
   exit;
@@ -25,7 +25,7 @@ else
 fi
 
 if [ -f $SWAPFILE ]; then
-  echo "Swapfile $SWAPFILE found, assuming already setup, swith off swap and delete"
+  echo "Swapfile $SWAPFILE found, assuming already setup, switch off swap and delete"
   if [[ $(swapon -s) ]]
   then
     echo "Swapfile $SWAPFILE found, switch off swap"

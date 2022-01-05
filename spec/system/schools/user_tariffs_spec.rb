@@ -116,7 +116,7 @@ describe 'user tariffs', type: :system do
 
         expect(page).to have_content('Select meters for this tariff')
         expect(page).to have_content(electricity_meter.mpan_mprn)
-        uncheck(electricity_meter.mpan_mprn)
+        uncheck(electricity_meter.mpan_mprn.to_s)
         click_button('Next')
 
         expect(page).to have_content('Select meters for this tariff')

@@ -26,15 +26,15 @@ RSpec.configure do |config|
     #   sets default window size in case the smaller default size is not enough
     #   we do not want max either, so this is a good compromise
 
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: { args: %w[headless no-sandbox disable-gpu disable-dev-shm-usage window-size=1400,10000], w3c: false}
-    )
-
-    Capybara::Selenium::Driver.new(
-      app,
-      browser:              :chrome,
-      desired_capabilities: capabilities
-    )
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('headless')
+    options.add_argument('no-sandbox')
+    options.add_argument('disable-gpu')
+    options.add_argument('disable-dev-shm-usage')
+    options.add_argument('window-size=1400,10000')
+    #now needs to be true, to get a session id?
+    options.add_option('w3c', true)
+    Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: options)
   end
 
   config.before(:each, type: :system, js: true) do
@@ -46,7 +46,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each, type: :system, js: true) do |example|
-    errors = page.driver.browser.manage.logs.get(:browser)
+    errors = page.driver.browser.logs.get(:browser)
     if errors.present? && !example.metadata.has_key?(:errors_expected)
       aggregate_failures 'javascript errors' do
         errors.each do |error|
