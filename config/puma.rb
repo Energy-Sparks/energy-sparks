@@ -6,7 +6,8 @@
 #
 max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
-threads min_threads_count, max_threads_count
+#threads min_threads_count, max_threads_count
+threads 5, 5
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
@@ -23,7 +24,8 @@ threads min_threads_count, max_threads_count
 # processes).
 #
 # workers ENV.fetch("WEB_CONCURRENCY") { 2 }
-workers %x(grep -c processor /proc/cpuinfo)
+#workers %x(grep -c processor /proc/cpuinfo)
+workers 2
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
