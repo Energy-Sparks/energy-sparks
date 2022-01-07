@@ -41,6 +41,7 @@ namespace :utility do
 
   desc 'Save aggregate schools to S3'
   task save_aggregate_schools_to_s3: :environment do
+    puts "#{DateTime.now.utc} save_aggregate_schools_to_s3 start"
     require 'energy_sparks/s3_yaml'
     target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
     abort("No S3 bucket configured") if target_bucket.blank?
@@ -53,10 +54,12 @@ namespace :utility do
       Rails.logger.error "There was an error for aggregated #{school.name} - #{e.message}"
       Rollbar.error(e, job: :save_aggregate_schools_to_s3, school_id: school.id, school: school.name)
     end
+    puts "#{DateTime.now.utc} save_aggregate_schools_to_s3 end"
   end
 
   desc 'Save unvalidated  schools to S3'
   task save_unvalidated_schools_to_s3: :environment do
+    puts "#{DateTime.now.utc} save_unvalidated_schools_to_s3 start"
     require 'energy_sparks/s3_yaml'
     target_bucket = ENV['UNVALIDATED_SCHOOL_CACHE_BUCKET']
     abort("No S3 bucket configured") if target_bucket.blank?
@@ -69,6 +72,7 @@ namespace :utility do
       Rails.logger.error "There was an error for unvalidated #{school.name} - #{e.message}"
       Rollbar.error(e, job: :save_unvalidated_schools_to_s3, school_id: school.id, school: school.name)
     end
+    puts "#{DateTime.now.utc} save_unvalidated_schools_to_s3 end"
   end
 
   desc 'Send custom rollbar reports'

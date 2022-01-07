@@ -1,6 +1,7 @@
 namespace :data_feeds do
   desc 'Backfill meteostat data'
   task meteostat_back_fill: :environment do
+    puts "#{DateTime.now.utc} meteostat_back_fill start"
 
     MINIMUM_READINGS_PER_YEAR = 365
 
@@ -26,5 +27,8 @@ namespace :data_feeds do
         end
       end
     end
+
+    puts "#{DateTime.now.utc} meteostat_back_fill end"
+
   end
 end
