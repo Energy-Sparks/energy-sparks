@@ -38,6 +38,8 @@ preload_app!
 plugin :tmp_restart
 
 #Taken from /opt/elasticbeanstalk/config/private/pumaconf.rb
-directory '/var/app/current'
-bind 'unix:///var/run/puma/my_app.sock'
-stdout_redirect '/var/log/puma/puma.log', '/var/log/puma/puma.log', true
+if ENV["RAILS_ENV"] == "production"
+ directory '/var/app/current'
+ bind 'unix:///var/run/puma/my_app.sock'
+ stdout_redirect '/var/log/puma/puma.log', '/var/log/puma/puma.log', true
+end
