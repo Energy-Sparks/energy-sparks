@@ -1,7 +1,7 @@
 namespace :data_feeds do
   desc 'Backfill dark sky temperature data'
   task dark_sky_back_fill: :environment do
-
+    puts "#{DateTime.now.utc} dark_sky_back_fill start"
     MINIMUM_READINGS_PER_YEAR = 365
 
     DarkSkyArea.by_title.each do |dark_sky_area|
@@ -26,5 +26,8 @@ namespace :data_feeds do
         end
       end
     end
+
+    puts "#{DateTime.now.utc} dark_sky_back_fill end"
+
   end
 end
