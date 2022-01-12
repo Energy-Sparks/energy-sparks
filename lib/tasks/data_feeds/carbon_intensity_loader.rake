@@ -3,10 +3,12 @@ require 'dashboard'
 namespace :data_feeds do
   desc 'Load carbon intensity data'
   task :carbon_intensity_loader, [:start_date, :end_date] => :environment do |_t, args|
+    puts "#{DateTime.now.utc} carbon_intensity_loader start"
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 1
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : Date.yesterday
 
     rake_process_carbon_feed(start_date, end_date)
+    puts "#{DateTime.now.utc} carbon_intensity_loader end"
   end
 
   def rake_process_carbon_feed(start_date, end_date)
