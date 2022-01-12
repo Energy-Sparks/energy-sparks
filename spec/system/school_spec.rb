@@ -17,8 +17,14 @@ RSpec.describe "school", type: :system do
     ]
   }
 
+  let(:management_data) {
+    Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
+  }
+
   before(:each) do
     allow_any_instance_of(Targets::ProgressService).to receive(:management_table).and_return(management_table)
+    allow_any_instance_of(Targets::ProgressService).to receive(:management_data).and_return(management_data)
+
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
@@ -44,8 +50,14 @@ RSpec.describe "school", type: :system do
     end
 
     it 'shows data-enabled features' do
-      visit school_path(school)
-      expect(page).to have_content("Annual usage summary")
+      ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
+        visit school_path(school)
+        expect(page).to have_content("Annual usage summary")
+      end
+      ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
+        visit school_path(school)
+        expect(page).to have_content("Summary of recent energy usage")
+      end
     end
 
     it 'shows data-enabled links' do
