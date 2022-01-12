@@ -1,4 +1,4 @@
-<h1>Audits</h1>
+<h1>Energy audits</h1>
 
 <div class="row padded-row">
   <div class="col">
@@ -37,8 +37,14 @@
         </tbody>
       </table>
     <% else %>
-      <p>There are no audits</p>
+      <p>The Energy Sparks team have not carried out an energy audit for your school.</p>
+      <%= render "audit_offer" %>
     <% end %>
-    <%= link_to 'New Audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
   </div>
 </div>
+
+<% if can? :manage, Audit %>
+  <div class="row mt-2">
+    <%= link_to 'New Audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
+  </div>
+<% end %>

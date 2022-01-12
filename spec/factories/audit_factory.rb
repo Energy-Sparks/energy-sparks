@@ -11,9 +11,9 @@ FactoryBot.define do
       after(:create) do |audit, evaluator|
         evaluator.count.times.each do |counter|
           activity_type = create(:activity_type)
-          AuditActivityType.create(audit: audit, activity_type: activity_type, position: counter)
+          AuditActivityType.create(audit: audit, activity_type: activity_type, position: counter, notes: "Audit #{audit.id}, Activity #{counter} notes")
           intervention_type = create(:intervention_type)
-          AuditInterventionType.create(audit: audit, intervention_type: intervention_type, position: counter)
+          AuditInterventionType.create(audit: audit, intervention_type: intervention_type, position: counter, notes: "Audit #{audit.id}, Action #{counter} notes")
         end
       end
     end

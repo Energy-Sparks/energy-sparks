@@ -14,6 +14,7 @@
       <% if EnergySparks::FeatureFlags.active?(:live_data) %>
         <%= link_to 'Live energy data', school_live_data_path(current_user.school), class: 'dropdown-item' if current_user.school.has_live_data? %>
       <% end %>
+      <%= link_to 'Energy audits', school_audits_path(current_user.school), class: 'dropdown-item' %>
       <%= link_to 'Energy analysis', school_analysis_index_path(current_user.school), class: 'dropdown-item' %>
       <%= link_to 'Review targets', school_school_targets_path(current_user.school), class: 'dropdown-item' if Targets::SchoolTargetService.targets_enabled?(current_user.school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(current_user.school).enough_data? %>
     <% end %>

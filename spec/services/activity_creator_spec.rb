@@ -92,4 +92,8 @@ describe ActivityCreator do
       expect(programme.activities.count).to eq 1
     end
   end
+
+  context 'with an audit' do
+    it 'completes the activity in the programme'
+  end
 end
