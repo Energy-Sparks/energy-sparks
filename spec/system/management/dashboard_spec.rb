@@ -20,8 +20,13 @@ describe 'Management dashboard' do
     ]
   }
 
+  let(:management_data) {
+    Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
+  }
+
   before(:each) do
     allow_any_instance_of(Targets::ProgressService).to receive(:management_table).and_return(management_table)
+    allow_any_instance_of(Targets::ProgressService).to receive(:management_data).and_return(management_data)
   end
 
   describe 'when not logged in' do
@@ -82,27 +87,34 @@ describe 'Management dashboard' do
     context 'and logged in as staff' do
       before(:each) do
         sign_in(staff)
-        visit management_school_path(school)
       end
 
       it 'allows access to dashboard' do
+        visit management_school_path(school)
         expect(page).to have_content("#{school.name}")
         expect(page).to have_content("Adult Dashboard")
       end
 
-
       it 'shows the expected prompts' do
+        visit management_school_path(school)
         expect(page).to have_link("View your programmes")
         expect(page).to have_link("Record a pupil activity")
         expect(page).to have_link("Record an action")
       end
 
       it 'shows data-enabled features' do
-        #management table
-        expect(page).to have_content("Your annual usage")
+        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
+          visit management_school_path(school)
+          expect(page).to have_content("Your annual usage")
+        end
+        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
+          visit management_school_path(school)
+          expect(page).to have_content("Summary of recent energy usage")
+        end
       end
 
       it 'shows data-enabled links' do
+        visit management_school_path(school)
         expect(page).to have_link("Compare schools")
         expect(page).to have_link("Explore your data")
         expect(page).to have_link("Review your energy analysis")
@@ -110,6 +122,7 @@ describe 'Management dashboard' do
       end
 
       it 'shows temperature observations' do
+        visit management_school_path(school)
         #this is from the default observation created above
         expect(page).to have_content("Recorded temperatures")
       end
@@ -293,15 +306,21 @@ describe 'Management dashboard' do
       let!(:admin)    { create(:admin) }
       before(:each) do
         sign_in(admin)
-        visit management_school_path(school)
       end
 
       it 'overrides flag and shows data-enabled features' do
-        #management table
-        expect(page).to have_content("Your annual usage")
+        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
+          visit management_school_path(school)
+          expect(page).to have_content("Your annual usage")
+        end
+        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
+          visit management_school_path(school)
+          expect(page).to have_content("Summary of recent energy usage")
+        end
       end
 
       it 'overrides flag and shows data-enabled links' do
+        visit management_school_path(school)
         expect(page).to have_link("Compare schools")
         expect(page).to have_link("Explore your data")
         expect(page).to have_link("Review your energy analysis")
@@ -309,6 +328,7 @@ describe 'Management dashboard' do
       end
 
       it 'shows link to user view' do
+        visit management_school_path(school)
         expect(page).to have_link("User view")
         click_on("User view")
         expect(page).to have_link("Admin view")
