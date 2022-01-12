@@ -120,6 +120,7 @@ describe 'Audits', type: :system do
 
   describe 'as a staff member' do
     let!(:staff) { create(:staff, school: school) }
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
     before(:each) do
       sign_in(staff)
@@ -135,11 +136,21 @@ describe 'Audits', type: :system do
 
     it 'displays a link to view audit in timeline'
     it 'shows audit in timeline'
-    it 'lets me view an audit'
+
+    it 'lets me view an audit' do
+      within '#my_school_menu' do
+        click_on 'Energy audits'
+      end
+      click_on "Our audit"
+      expect(page).to have_content("Description of the audit")
+    end
+
   end
 
   describe 'as pupil' do
     let(:pupil)            { create(:pupil, school: school)}
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
+
     before(:each) do
       sign_in(pupil)
       visit school_path(school)
@@ -154,13 +165,32 @@ describe 'Audits', type: :system do
 
     it 'displays a link to view audit in timeline'
     it 'shows audit in timeline'
-    it 'lets me view an audit'
+
+    it 'lets me view an audit' do
+      within '#my_school_menu' do
+        click_on 'Energy audits'
+      end
+      click_on "Our audit"
+      expect(page).to have_content("Description of the audit")
+    end
+
   end
 
   describe 'as a guest user' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
+
     it 'does not display a link to view audit in timeline'
-    it 'does not let me view an audit'
     it 'shows audit in timeline'
+
+    it 'does not let me view list of audits' do
+      visit school_audits_path(school)
+      expect(page).to have_content("You need to sign in")
+    end
+
+    it 'does not let me view an audit' do
+      visit school_audit_path(school, audit)
+      expect(page).to have_content("You need to sign in")
+    end
 
   end
 end
