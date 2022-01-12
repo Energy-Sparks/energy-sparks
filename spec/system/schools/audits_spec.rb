@@ -17,7 +17,7 @@ describe 'Audits', type: :system do
         click_on 'Manage Audits'
       end
       expect(page).to have_content("Energy audits")
-      expect(page).to have_content("New Audit")
+      expect(page).to have_content("New audit")
     end
 
     it 'allows me to create, edit and delete an audit'
@@ -59,10 +59,27 @@ describe 'Audits', type: :system do
     context 'with an audit' do
       let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
+      let!(:other_audit) { create(:audit, :with_activity_and_intervention_types, title: "Unpublished", description: "Description of the audit", school: school, published: false) }
+
       it 'lets me view a list of audits' do
         visit school_audits_path(school)
         expect(page).to_not have_content("The Energy Sparks team have not carried out an energy audit for your school")
         expect(page).to have_content("Our audit")
+        expect(page).to have_content(audit.created_at.strftime("%A, %d %B %Y"))
+      end
+
+      it 'doesnt show unpublished audits' do
+        visit school_audits_path(school)
+        expect(page).to_not have_content("Unpublished")
+      end
+
+      it 'doesnt show admin options' do
+        visit school_audits_path(school)
+        expect(page).to_not have_content("New audit")
+        within '#audits' do
+          expect(page).to_not have_content("Edit")
+          expect(page).to_not have_content("Remove")
+        end
       end
 
       it 'lets me view an audit' do

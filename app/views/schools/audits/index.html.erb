@@ -1,50 +1,55 @@
-<h1>Energy audits</h1>
+<% content_for :page_title, "#{@school.name} Audits" %>
 
-<div class="row padded-row">
-  <div class="col">
-    <% if @audits.any? %>
-      <table class="table table-striped table-sm">
+<div class="row">
+  <div class="col-md-12">
+    <h1>Energy audits</h1>
+  </div>
+</div>
+
+<% if @audits.any? %>
+  <div class="row">
+    <div class="col-md-12">
+      <p>The Energy Sparks team have carried out the following audits at this school.
+      </p>
+
+      <table class="table" id="audits">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Report</th>
-            <th>Activities</th>
-            <th>Actions</th>
-            <th>Published?</th>
-            <th></th>
+            <th>Name</th>
+            <th>Completed on</th>
+            <% if can? :manage, @activity %>
+              <th>Actions</th>
+            <% end %>
           </tr>
         </thead>
         <tbody>
           <% @audits.each do |audit| %>
-            <tr>
+            <tr class="<%= can?(:manage, audit) ? active(audit.published) : '' %>" scope="row">
               <td><%= link_to audit.title, school_audit_path(@school, audit) %></td>
+              <td><%= audit.created_at.strftime("%A, %d %B %Y") %></td>
               <td>
-                <% if audit.file.attached? %>
-                  <%= link_to 'Report', url_for(audit.file), target: '_blank' %>
-                <% else %>
-                  No report
+                <% if can? :manage, audit %>
+                  <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
+                  <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
                 <% end %>
-              </td>
-              <td><%= audit.activity_types.count %></td>
-              <td><%= audit.intervention_types.count %></td>
-              <td><%= y_n(audit.published) %></td>
-              <td>
-                <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
-                <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-    <% else %>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-md-12">
       <p>The Energy Sparks team have not carried out an energy audit for your school.</p>
       <%= render "audit_offer" %>
-    <% end %>
+    </div>
   </div>
-</div>
+<% end %>
 
 <% if can? :manage, Audit %>
   <div class="row mt-2">
-    <%= link_to 'New Audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
+    <%= link_to 'New audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
   </div>
 <% end %>
