@@ -29,7 +29,7 @@
     </div>
 <% end %>
 
-<div class="row padded-row">
+<div class="row mt-2">
   <div class="col-md-9">
     <p><%= @audit.description %></p>
   </div>
@@ -42,22 +42,41 @@
   </div>
 </div>
 
-<h3>Recommended energy saving actions</h3>
-<ol class="activities">
-  <% @audit.audit_intervention_types.by_title.each do |audit_intervention_type| %>
-    <li>
-      <%= link_to audit_intervention_type.intervention_title, intervention_type_path(audit_intervention_type.intervention_type) %>
-      <%= " (#{audit_intervention_type.notes})" if audit_intervention_type.notes.present? %>
-    </li>
-  <% end %>
-</ol>
+<% if @audit.audit_intervention_types.any? %>
+  <h3>Recommended energy saving actions</h3>
 
-<h3>Recommended pupil-lead activities</h3>
-<ol class="activities">
-  <% @audit.audit_activity_types.by_name.each do |audit_activity_type| %>
-    <li>
-      <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
-      <%= " (#{audit_activity_type.notes})" if audit_activity_type.notes.present? %>
-    </li>
+  <% @audit.audit_intervention_types.by_title.each_with_index do |audit_intervention_type, idx| %>
+    <div class="row">
+      <div class="col-sm-2 text-center align-self-center">
+          <span class="h4"><%= idx + 1 %>.</span>
+      </div>
+      <div class="col-sm-10">
+        <h4>
+          <%= link_to audit_intervention_type.intervention_title, intervention_type_path(audit_intervention_type.intervention_type) %>
+        </h4>
+        <p>
+          <%= audit_intervention_type.notes %>
+        </p>
+      </div>
+    </div>
   <% end %>
-</ol>
+<% end %>
+
+<% if @audit.audit_activity_types.any? %>
+  <h3>Recommended pupil-lead activities</h3>
+  <% @audit.audit_activity_types.by_name.each_with_index do |audit_activity_type, idx| %>
+    <div class="row">
+      <div class="col-sm-2 text-center align-self-center">
+          <span class="h4"><%= idx + 1 %>.</span>
+      </div>
+      <div class="col-sm-10">
+        <h4>
+          <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
+        </h4>
+        <p>
+          <%= audit_activity_type.notes %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
