@@ -165,6 +165,8 @@ module ApplicationHelper
       'fire'
     when :solar_pv
       'sun'
+    when :storage_heater, :storage_heaters
+      'fire-alt'
     when :exported_solar_pv
       'arrow-right'
     end
