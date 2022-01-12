@@ -5,6 +5,7 @@
 #  _description         :text
 #  activity_id          :bigint(8)
 #  at                   :datetime         not null
+#  audit_id             :bigint(8)
 #  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
@@ -17,12 +18,14 @@
 # Indexes
 #
 #  index_observations_on_activity_id           (activity_id)
+#  index_observations_on_audit_id              (audit_id)
 #  index_observations_on_intervention_type_id  (intervention_type_id)
 #  index_observations_on_school_id             (school_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (activity_id => activities.id) ON DELETE => nullify
+#  fk_rails_...  (audit_id => audits.id)
 #  fk_rails_...  (intervention_type_id => intervention_types.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
@@ -33,8 +36,8 @@ class Observation < ApplicationRecord
   has_many   :locations, through: :temperature_recordings
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
-
-  enum observation_type: [:temperature, :intervention, :activity, :event]
+  belongs_to :audit, optional: true
+  enum observation_type: [:temperature, :intervention, :activity, :event, :audit]
 
   validates_presence_of :at, :school
   validate :at_date_cannot_be_in_the_future
@@ -42,6 +45,7 @@ class Observation < ApplicationRecord
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
+  validates :audit_id, presence: true, if: :audit?
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 

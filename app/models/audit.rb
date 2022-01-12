@@ -23,6 +23,8 @@ class Audit < ApplicationRecord
   has_one_attached :file
   has_rich_text :description
 
+  has_many :observations, dependent: :destroy
+
   validates_presence_of :school, :title
 
   has_many :audit_activity_types

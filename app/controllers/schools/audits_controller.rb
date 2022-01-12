@@ -14,7 +14,7 @@ module Schools
     end
 
     def create
-      if @audit.save
+      if Audits::AuditService.new(@school).process(@audit)
         redirect_to school_audits_path(@school), notice: 'Audit created'
       else
         render :new
