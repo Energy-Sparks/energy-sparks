@@ -5,7 +5,7 @@
 #  completed_on :date
 #  created_at   :datetime         not null
 #  id           :bigint(8)        not null, primary key
-#  published    :boolean          default(FALSE)
+#  published    :boolean          default(TRUE)
 #  school_id    :bigint(8)        not null
 #  title        :string           not null
 #  updated_at   :datetime         not null

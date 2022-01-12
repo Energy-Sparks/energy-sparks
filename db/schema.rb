@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_13_170612) do
+ActiveRecord::Schema.define(version: 2022_01_12_115714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -472,7 +472,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_170612) do
     t.bigint "school_id", null: false
     t.string "title", null: false
     t.date "completed_on"
-    t.boolean "published", default: false
+    t.boolean "published", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_audits_on_school_id"
