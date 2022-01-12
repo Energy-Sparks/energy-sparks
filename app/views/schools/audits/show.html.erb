@@ -1,29 +1,48 @@
-<h1><%= @audit.title %></h1>
+<% content_for :page_title, "#{@school.name} Audit - #{@audit.title}" %>
 
-<h2>Description</h2>
-<p><%= @audit.description %></p>
+<div class="row padded-row">
+  <div class="col-md-3">
+    <%= image_tag("for-management/top-image.png", class: "img-fluid m-3") %>
+  </div>
+  <div class="col-md-6">
+    <h2><%= @audit.title %></h2>
+    <p>
+      Completed on <%= @audit.created_at.strftime("%A, %d %B %Y") %>.
+    </p>
+  </div>
+  <div class="col-md-3">
+    <%= link_to "View all audits", school_audits_path(@school), class: 'btn btn-secondary float-right' %>
+  </div>
+</div>
 
-<h2>Report</h2>
-<% if @audit.file.attached? %>
-  <%= link_to 'Report', url_for(@audit.file), target: '_blank' %>
-<% else %>
-  No report
+<% if current_user.admin? %>
+    <div class="row" id="audit-admin-tools">
+      <div class="col-md-9">
+        <div class="mb-2 alert <%= @audit.published? ? 'alert-secondary' : active(@audit.published)%>">
+        <%= link_to 'Edit', edit_school_audit_path(@school, @audit), class: 'btn btn-warning btn-sm' %>
+        <%= link_to 'Remove', school_audit_path(@school, @audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
+        <% if !@audit.published? %>
+          <strong>Note</strong>: this audit is not visible to users
+        <% end %>
+        </div>
+      </div>
+    </div>
 <% end %>
 
-<br/>
-<br/>
+<div class="row padded-row">
+  <div class="col-md-9">
+    <p><%= @audit.description %></p>
+  </div>
+  <div class="col-md-3 text-center">
+    <% if @audit.file.attached? %>
+      <%= link_to @audit.file, class: "btn btn-lg", target: '_blank' do %>
+        Download report <%= fa_icon("download") %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 
-<h2>Activities</h2>
-<ol class="activities">
-  <% @audit.audit_activity_types.by_name.each do |audit_activity_type| %>
-    <li>
-      <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
-      <%= " (#{audit_activity_type.notes})" if audit_activity_type.notes.present? %>
-    </li>
-  <% end %>
-</ol>
-
-<h2>Interventions</h2>
+<h3>Recommended energy saving actions</h3>
 <ol class="activities">
   <% @audit.audit_intervention_types.by_title.each do |audit_intervention_type| %>
     <li>
@@ -33,7 +52,12 @@
   <% end %>
 </ol>
 
-<br/>
-<br/>
-
-<p><%= link_to 'All audits', school_audits_path(@school), class: 'btn btn-primary' %></p>
+<h3>Recommended pupil-lead activities</h3>
+<ol class="activities">
+  <% @audit.audit_activity_types.by_name.each do |audit_activity_type| %>
+    <li>
+      <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
+      <%= " (#{audit_activity_type.notes})" if audit_activity_type.notes.present? %>
+    </li>
+  <% end %>
+</ol>

@@ -3,6 +3,8 @@ FactoryBot.define do
     sequence(:title) {|n| "Audit #{n}"}
     school
 
+    file { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'documents', 'fake-bill.pdf'), 'application/pdf')}
+
     trait :with_activity_and_intervention_types do
       transient do
         count { 3 }

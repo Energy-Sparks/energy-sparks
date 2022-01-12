@@ -73,7 +73,7 @@ describe 'Audits', type: :system do
         expect(page).to_not have_content("Unpublished")
       end
 
-      it 'doesnt show admin options' do
+      it 'doesnt show admin options on list of audits' do
         visit school_audits_path(school)
         expect(page).to_not have_content("New audit")
         within '#audits' do
@@ -85,7 +85,32 @@ describe 'Audits', type: :system do
       it 'lets me view an audit' do
         visit school_audits_path(school)
         click_on("Our audit")
+        expect(page).to have_content("Our audit")
         expect(page).to have_content("Description of the audit")
+        expect(page).to have_link("View all audits")
+        expect(page).to have_link(href: rails_blob_path(audit.file))
+      end
+
+      it 'doesnt show admin options when viewing audit' do
+        visit school_audits_path(school)
+        click_on("Our audit")
+        expect(page).to_not have_css("#audit-admin-tools")
+      end
+
+      it 'shows links to all activities' do
+        visit school_audits_path(school)
+        click_on("Our audit")
+        audit.audit_activity_types.each do |at|
+          expect(page).to have_link(at.activity_name, href: activity_type_path(at.activity_type))
+        end
+      end
+
+      it 'shows links to all actions' do
+        visit school_audits_path(school)
+        click_on("Our audit")
+        audit.audit_intervention_types.each do |at|
+          expect(page).to have_link(at.intervention_title, href: intervention_type_path(at.intervention_type))
+        end
       end
 
       it 'shows audit in timeline'

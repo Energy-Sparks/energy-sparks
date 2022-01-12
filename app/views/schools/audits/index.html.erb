@@ -27,12 +27,14 @@
             <tr class="<%= can?(:manage, audit) ? active(audit.published) : '' %>" scope="row">
               <td><%= link_to audit.title, school_audit_path(@school, audit) %></td>
               <td><%= audit.created_at.strftime("%A, %d %B %Y") %></td>
-              <td>
-                <% if can? :manage, audit %>
-                  <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
-                  <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
-                <% end %>
-              </td>
+              <% if can? :manage, audit %>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
+                    <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
+                  </div>
+                </td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>
