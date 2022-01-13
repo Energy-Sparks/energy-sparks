@@ -1,6 +1,6 @@
 <li class="nav-item dropdown mt-2">
   <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage_school" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
-  <div class="dropdown-menu" aria-labelledby="manage_school">
+  <div class="dropdown-menu" aria-labelledby="manage_school" id="manage_school_menu">
     <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
     <%= link_to 'Edit school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
     <%= link_to 'School calendar', calendar_path(school.calendar), class: 'dropdown-item' if school.calendar && can?(:show, school.calendar) %>
@@ -12,8 +12,9 @@
     <% end %>
     <%= link_to 'School configuration', edit_school_configuration_path(school), class: 'dropdown-item' if can? :configure, school %>
     <%= link_to 'Meter attributes', admin_school_meter_attributes_path(school), class: 'dropdown-item' if can? :manage, SchoolMeterAttribute %>
-    <%= link_to 'Manage CADs', school_cads_path(school), class: 'dropdown-item' if can? :manage, Cad %>
+    <%= link_to 'Manage Audits', school_audits_path(school), class: 'dropdown-item' if can? :manage, Audit %>
     <%= link_to 'Manage partners', admin_school_partners_path(school), class: 'dropdown-item' if can? :manage, SchoolPartner %>
+    <%= link_to 'Manage CADs', school_cads_path(school), class: 'dropdown-item' if can? :manage, Cad %>
     <%= link_to 'Batch reports', school_reports_path(school), class: 'dropdown-item' if can? :view_content_reports, school %>
     <%= link_to 'Review targets', school_school_targets_path(school), class: 'dropdown-item' if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
     <%= link_to 'Expert analysis', admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>

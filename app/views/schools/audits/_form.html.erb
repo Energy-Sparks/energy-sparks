@@ -1,0 +1,106 @@
+<%= simple_form_for([@school, audit], html: { id: :audit_form } ) do |f| %>
+  <%= f.input :title %>
+
+  <%= f.label 'Description', for: :description %>
+
+  <div class="trix-wrapper">
+    <%= f.rich_text_area :description %>
+  </div>
+
+  <h2>Report</h2>
+
+  <% if audit.file.attached? %>
+    <%= link_to 'Current file', url_for(@audit.file), target: '_blank' %>
+  <% else %>
+    No file attached yet
+  <% end %>
+
+  <br/>
+  <br/>
+
+  <%= f.input :file, label: false %>
+
+  <br/>
+  <br/>
+
+  <%= f.input :published %>
+  <p class="small">Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline.</p>
+
+  <h2>Activities</h2>
+  <p class="small">
+    Add any number of pupil-lead activities. The full list can be explored from the
+    public <%= link_to "activity pages", activity_categories_path %>
+  </p>
+
+  <p class="small">
+    To add a custom activity, choose "Other" from the appropriate category and include some
+    notes for the user.
+  </p>
+
+  <div class="row">
+    <div class="col-md-5 mb-3">
+      <label for="firstName">Activity Type</label>
+    </div>
+    <div class="col-md-5 mb-3">
+      <label for="lastName">Notes</label>
+    </div>
+    <div class="col-md-2 mb-3">
+    </div>
+  </div>
+
+  <div id="audit-activity-types">
+    <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types.by_name do |audit_activity_type| %>
+      <%= render 'audit_activity_type_fields', f: audit_activity_type %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add activity', f, :audit_activity_types, class: 'btn' %>
+    </div>
+  </div>
+
+  <br/>
+  <br/>
+
+  <h2>Actions</h2>
+
+  <p class="small">
+    Add any number of adult energy saving actions. The full list can be explored from the
+    public <%= link_to "energy saving action pages", intervention_type_groups_path %>
+  </p>
+
+  <p class="small">
+    To add a custom action, choose "Other" from the appropriate category and include some
+    notes for the user.
+  </p>
+
+  <div class="row">
+    <div class="col-md-5 mb-3">
+      <label for="firstName">Action Type</label>
+    </div>
+    <div class="col-md-5 mb-3">
+      <label for="lastName">Notes</label>
+    </div>
+    <div class="col-md-2 mb-3">
+    </div>
+  </div>
+
+  <div id="audit-intervention-types">
+    <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types.by_title do |audit_intervention_type| %>
+      <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
+    <% end %>
+    <div class="links">
+      <%= link_to_add_association 'Add action', f, :audit_intervention_types, class: 'btn' %>
+    </div>
+  </div>
+
+  <br/>
+  <br/>
+
+  <p class="small">
+    Note: once created the school will automatically be awarded points for having received this
+    audit.
+  </p>
+
+  <%= f.submit @audit.persisted? ? 'Update' : 'Create', class: 'btn btn-success' %>
+
+  <%= link_to "Cancel", @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: "btn btn-primary" %>
+<% end %>

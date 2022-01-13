@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_13_170612) do
+ActiveRecord::Schema.define(version: 2022_01_12_170430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -472,7 +472,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_170612) do
     t.bigint "school_id", null: false
     t.string "title", null: false
     t.date "completed_on"
-    t.boolean "published", default: false
+    t.boolean "published", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_audits_on_school_id"
@@ -932,7 +932,9 @@ ActiveRecord::Schema.define(version: 2021_12_13_170612) do
     t.bigint "activity_id"
     t.integer "points"
     t.boolean "visible", default: true
+    t.bigint "audit_id"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
+    t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
   end
@@ -1594,6 +1596,7 @@ ActiveRecord::Schema.define(version: 2021_12_13_170612) do
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
+  add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
