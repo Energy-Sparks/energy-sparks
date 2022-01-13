@@ -4,7 +4,7 @@ module Schools
     load_and_authorize_resource through: :school
 
     def index
-      @audits = can?(:manage, Audit) ? @audits.by_title : @audits.published.by_title
+      @audits = can?(:manage, Audit) ? @audits.by_date : @audits.published.by_date
     end
 
     def show

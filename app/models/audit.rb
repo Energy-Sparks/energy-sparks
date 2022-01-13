@@ -36,5 +36,5 @@ class Audit < ApplicationRecord
   accepts_nested_attributes_for :audit_intervention_types, allow_destroy: true
 
   scope :published, -> { where(published: true) }
-  scope :by_title, -> { order(title: :asc) }
+  scope :by_date,   -> { order(created_at: :desc) }
 end

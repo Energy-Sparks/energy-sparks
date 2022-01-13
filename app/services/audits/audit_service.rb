@@ -6,7 +6,7 @@ module Audits
       @school = school
     end
 
-    def recent_audits
+    def recent_audit
       @school.audits.where("created_at >= ?", 90.days.ago).order(created_at: :desc).first
     end
 

@@ -61,6 +61,11 @@ describe 'Audits', type: :system do
 
       let!(:other_audit) { create(:audit, :with_activity_and_intervention_types, title: "Unpublished", description: "Description of the audit", school: school, published: false) }
 
+      before(:each) do
+        Audits::AuditService.new(school).process(audit)
+        Audits::AuditService.new(school).process(other_audit)
+      end
+
       it 'lets me view a list of audits' do
         visit school_audits_path(school)
         expect(page).to_not have_content("The Energy Sparks team have not carried out an energy audit for your school")
@@ -113,8 +118,12 @@ describe 'Audits', type: :system do
         end
       end
 
-      it 'shows audit in timeline'
-      it 'displays a link to view audit in timeline'
+      it 'shows audit in timeline' do
+        visit school_path(school)
+        expect(page).to have_content("Received an energy audit")
+        expect(page).to have_link(audit.title)
+      end
+
     end
   end
 
@@ -123,6 +132,7 @@ describe 'Audits', type: :system do
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
     before(:each) do
+      Audits::AuditService.new(school).process(audit)
       sign_in(staff)
       visit school_path(school)
     end
@@ -134,8 +144,11 @@ describe 'Audits', type: :system do
       expect(page).to have_content("Energy audits")
     end
 
-    it 'displays a link to view audit in timeline'
-    it 'shows audit in timeline'
+    it 'shows audit in timeline' do
+      visit school_path(school)
+      expect(page).to have_content("Received an energy audit")
+      expect(page).to have_link(audit.title)
+    end
 
     it 'lets me view an audit' do
       within '#my_school_menu' do
@@ -152,6 +165,7 @@ describe 'Audits', type: :system do
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
     before(:each) do
+      Audits::AuditService.new(school).process(audit)
       sign_in(pupil)
       visit school_path(school)
     end
@@ -163,8 +177,11 @@ describe 'Audits', type: :system do
       expect(page).to have_content("Energy audits")
     end
 
-    it 'displays a link to view audit in timeline'
-    it 'shows audit in timeline'
+    it 'shows audit in timeline' do
+      visit school_path(school)
+      expect(page).to have_content("Received an energy audit")
+      expect(page).to have_link(audit.title)
+    end
 
     it 'lets me view an audit' do
       within '#my_school_menu' do
@@ -179,8 +196,15 @@ describe 'Audits', type: :system do
   describe 'as a guest user' do
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
 
-    it 'does not display a link to view audit in timeline'
-    it 'shows audit in timeline'
+    before(:each) do
+      Audits::AuditService.new(school).process(audit)
+    end
+
+    it 'shows audit in timeline' do
+      visit school_path(school)
+      expect(page).to have_content("Received an energy audit")
+      expect(page).to_not have_link(audit.title)
+    end
 
     it 'does not let me view list of audits' do
       visit school_audits_path(school)
