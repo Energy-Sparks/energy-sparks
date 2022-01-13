@@ -20,6 +20,14 @@ private
     @school.most_recent_target.revised_fuel_types
   end
 
+  #small optimisation, avoid fetching the aggregate school unless the school
+  #actually has a target
+  def progress_summary
+    if Targets::SchoolTargetService.targets_enabled?(@school) && @school.most_recent_target.present?
+      return progress_service.progress_summary
+    end
+  end
+
   def progress_service
     @progress_service ||= Targets::ProgressService.new(@school, aggregate_school)
   end
