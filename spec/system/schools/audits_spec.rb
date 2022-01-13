@@ -138,6 +138,9 @@ describe 'Audits', type: :system do
         end
       end
 
+      it 'shows link to action is recorded since audit'
+      it 'shows link to activity if recorded since audit'
+
       it 'shows audit in timeline' do
         visit school_path(school)
         expect(page).to have_content("Received an energy audit")

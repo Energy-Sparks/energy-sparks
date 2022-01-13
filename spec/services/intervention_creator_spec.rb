@@ -27,8 +27,4 @@ describe InterventionCreator do
     InterventionCreator.new(observation).process
     expect(observation.points).to eq(nil)
   end
-
-  context 'with an audit' do
-    it 'marks an action as complete'
-  end
 end

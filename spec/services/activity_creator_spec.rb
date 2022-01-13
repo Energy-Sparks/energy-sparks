@@ -93,7 +93,4 @@ describe ActivityCreator do
     end
   end
 
-  context 'with an audit' do
-    it 'completes the activity in the programme'
-  end
 end
