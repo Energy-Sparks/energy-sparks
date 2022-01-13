@@ -39,8 +39,10 @@ describe 'Audits', type: :system do
       expect(Observation.count).to eql 0
     end
 
-    it 'allows me to add, edit and delete an activity'
-    it 'allows me to add, edit and delete an action'
+    context 'adding recommendations' do
+      it 'allows me to add, edit and delete an activity'
+      it 'allows me to add, edit and delete an action'
+    end
   end
 
   describe 'as a school admin' do

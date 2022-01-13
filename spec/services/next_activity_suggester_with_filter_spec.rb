@@ -195,4 +195,9 @@ describe NextActivitySuggesterWithFilter do
     end
 
   end
+
+  describe '.suggest_from_audits' do
+    it 'suggests from an audit'
+    it 'doesnt suggest if completed'
+  end
 end
