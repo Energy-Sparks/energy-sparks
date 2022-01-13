@@ -24,8 +24,18 @@
   <br/>
 
   <%= f.input :published %>
+  <p class="small">Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline.</p>
 
   <h2>Activities</h2>
+  <p class="small">
+    Add any number of pupil-lead activities. The full list can be explored from the
+    public <%= link_to "activity pages", activity_categories_path %>
+  </p>
+
+  <p class="small">
+    To add a custom activity, choose "Other" from the appropriate category and include some
+    notes for the user.
+  </p>
 
   <div class="row">
     <div class="col-md-5 mb-3">
@@ -52,6 +62,16 @@
 
   <h2>Actions</h2>
 
+  <p class="small">
+    Add any number of adult energy saving actions. The full list can be explored from the
+    public <%= link_to "energy saving action pages", intervention_type_groups_path %>
+  </p>
+
+  <p class="small">
+    To add a custom action, choose "Other" from the appropriate category and include some
+    notes for the user.
+  </p>
+
   <div class="row">
     <div class="col-md-5 mb-3">
       <label for="firstName">Action Type</label>
@@ -75,5 +95,12 @@
   <br/>
   <br/>
 
-  <%= f.submit 'Save', class: 'btn btn-success' %>
+  <p class="small">
+    Note: once created the school will automatically be awarded points for having received this
+    audit.
+  </p>
+
+  <%= f.submit @audit.persisted? ? 'Update' : 'Create', class: 'btn btn-success' %>
+
+  <%= link_to "Cancel", @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: "btn btn-primary" %>
 <% end %>

@@ -25,7 +25,7 @@ class Audit < ApplicationRecord
 
   has_many :observations, dependent: :destroy
 
-  validates_presence_of :school, :title
+  validates_presence_of :school, :title, :file
 
   has_many :audit_activity_types
   has_many :activity_types, through: :audit_activity_types

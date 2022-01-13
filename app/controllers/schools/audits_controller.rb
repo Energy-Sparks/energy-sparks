@@ -15,7 +15,7 @@ module Schools
 
     def create
       if Audits::AuditService.new(@school).process(@audit)
-        redirect_to school_audits_path(@school), notice: 'Audit created'
+        redirect_to school_audit_path(@school, @audit), notice: 'Audit created'
       else
         render :new
       end
@@ -23,7 +23,7 @@ module Schools
 
     def update
       if @audit.update(audit_params)
-        redirect_to school_audits_path(@school), notice: 'Audit updated'
+        redirect_to school_audit_path(@school, @audit), notice: 'Audit updated'
       else
         render :edit
       end

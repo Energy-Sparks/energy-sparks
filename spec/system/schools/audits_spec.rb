@@ -20,7 +20,25 @@ describe 'Audits', type: :system do
       expect(page).to have_content("New audit")
     end
 
-    it 'allows me to create, edit and delete an audit'
+    it 'allows me to create, edit and delete an audit' do
+      visit school_audits_path(school)
+      click_on("New audit")
+      fill_in "Title", with: "New audit"
+      click_on("Create")
+      expect(page).to have_content("can't be blank")
+      attach_file("audit[file]", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+      click_on("Create")
+      expect(page).to have_content("New audit")
+      click_on("Edit")
+      fill_in_trix with: 'Summary of the audit'
+      click_on("Update")
+      expect(page).to have_content("Summary of the audit")
+      click_on("Remove")
+      expect(page).to have_content("Audit was successfully deleted.")
+      expect(Audit.count).to eql 0
+      expect(Observation.count).to eql 0
+    end
+
     it 'allows me to add, edit and delete an activity'
     it 'allows me to add, edit and delete an action'
   end
