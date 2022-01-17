@@ -10,7 +10,7 @@ namespace :targets do
         fuel_types = Targets::GenerateFuelTypes.new(school, aggregate_school).perform
         configuration = Schools::Configuration.where(school: school).first_or_create
         configuration.update!(school_target_fuel_types: fuel_types)
-        Targets::GenerateProgressService.new(school).generate!
+        Targets::GenerateProgressService.new(school, aggregate_school).generate!
       rescue => e
         puts "Generation of feature data for #{school.name} because #{e.message}"
         puts e.backtrace
