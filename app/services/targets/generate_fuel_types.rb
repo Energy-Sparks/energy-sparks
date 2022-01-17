@@ -36,7 +36,7 @@ module Targets
     end
 
     def target_service(fuel_type)
-      ::TargetsService.new(@aggregate_school, fuel_type)
+      ::TargetsService.new(@aggregated_meter_collection, fuel_type)
     end
   end
 end
