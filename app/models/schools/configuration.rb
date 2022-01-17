@@ -10,6 +10,7 @@
 #  id                                  :bigint(8)        not null, primary key
 #  pupil_analysis_charts               :json             not null
 #  school_id                           :bigint(8)        not null
+#  school_target_fuel_types            :string           default([]), not null, is an Array
 #  storage_heater_dashboard_chart_type :integer          default("no_storage_heater_chart"), not null
 #  updated_at                          :datetime         not null
 #
