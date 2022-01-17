@@ -7,7 +7,8 @@ module Targets
     end
 
     def display_progress_for_fuel_type?(fuel_type)
-      has_fuel_type_and_target?(fuel_type) && target_service(fuel_type).enough_data_to_set_target?
+      has_fuel_type_and_target?(fuel_type) &&
+        @school.configuration.school_target_fuel_types.include?(fuel_type.to_s)
     end
 
     def cumulative_progress(fuel_type)
