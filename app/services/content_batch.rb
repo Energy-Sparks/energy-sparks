@@ -53,6 +53,11 @@ class ContentBatch
 
       @logger.info "Generated alert content"
 
+      # Generate target progress
+      Targets::GenerateProgressService.new(school).generate!
+
+      @logger.info "Generated target data"
+
       broadcast(:school_content_generated, school)
     rescue StandardError => e
       @logger.error "There was an error for #{school.name} - #{e.message}"

@@ -4,9 +4,15 @@ describe 'targets', type: :system do
 
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
-  let!(:fuel_electricity)         { Schools::FuelConfiguration.new(has_electricity: true) }
-  let(:school_target_fuel_types) { ["electricity"] }
-  let!(:target)                    { create(:school_target, school: school) }
+
+  let!(:electricity_progress)     { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+  let!(:school_target)            { create(:school_target, school: school, electricity_progress: electricity_progress) }
+
+  let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
+  let(:school_target_fuel_types)  { ["electricity"] }
+
+  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types) }
+
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [1,2] }
@@ -129,6 +135,7 @@ describe 'targets', type: :system do
         expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
       end
     end
+
     context 'with error from analytics' do
 
       before(:each) do

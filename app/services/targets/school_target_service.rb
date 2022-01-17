@@ -25,7 +25,7 @@ module Targets
     def prompt_to_review_target?
       if @school.has_target? && @school.most_recent_target.suggest_revision?
         @school.most_recent_target.revised_fuel_types.each do |fuel_type|
-          return true if @school.configuration.school_target_fuel_types.include?(fuel_type)
+          return true if @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
         end
       end
     end
@@ -43,19 +43,19 @@ module Targets
     end
 
     def enough_data?
-      @school.configuration.school_target_fuel_types.any?
+      @school.configuration.enough_data_to_set_target?
     end
 
     def enough_data_for_electricity?
-      @school.configuration.school_target_fuel_types.include?("electricity")
+      @school.configuration.enough_data_to_set_target_for_fuel_type?(:electricity)
     end
 
     def enough_data_for_gas?
-      @school.configuration.school_target_fuel_types.include?("gas")
+      @school.configuration.enough_data_to_set_target_for_fuel_type?(:gas)
     end
 
     def enough_data_for_storage_heater?
-      @school.configuration.school_target_fuel_types.include?("storage_heater")
+      @school.configuration.enough_data_to_set_target_for_fuel_type?(:storage_heater)
     end
 
     private

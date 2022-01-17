@@ -56,7 +56,7 @@ module Schools
     end
 
     def progress_service
-      Targets::ProgressService.new(@school, aggregate_school)
+      Targets::ProgressService.new(@school)
     end
   end
 end

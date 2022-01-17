@@ -62,6 +62,19 @@ module Schools
       FuelConfiguration.new(**super.symbolize_keys)
     end
 
+    def enough_data_to_set_target?
+      school_target_fuel_types.any?
+    end
+
+    def enough_data_to_set_target_for_fuel_type?(fuel_type)
+      case fuel_type.to_s
+      when "storage_heater", "storage_heaters"
+        school_target_fuel_types.include?("storage_heater")
+      else
+        school_target_fuel_types.include?(fuel_type.to_s)
+      end
+    end
+
     def analysis_charts_as_symbols(charts_field = :analysis_charts)
       configuration = {}
       self[charts_field].each do |page, config|
