@@ -91,14 +91,8 @@ RSpec.describe Targets::SchoolTargetService do
   end
 
   describe '#enough_data?' do
-    before(:each) do
-      allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
-    end
 
     context 'and there isnt enough data' do
-      before(:each) do
-        allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_return(false)
-      end
       it 'returns false' do
         expect(service.enough_data?).to be false
       end
@@ -106,11 +100,21 @@ RSpec.describe Targets::SchoolTargetService do
 
     context 'and there is enough data' do
       before(:each) do
-        allow_any_instance_of(::TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        school.configuration.update!(school_target_fuel_types: ["electricity", "gas", "storage_heater"])
       end
-
       it 'returns true' do
         expect(service.enough_data?).to be true
+      end
+      it 'checks the individual fuel types' do
+        expect(service.enough_data_for_electricity?).to be true
+        expect(service.enough_data_for_gas?).to be true
+        expect(service.enough_data_for_storage_heater?).to be true
+      end
+      it 'handles missing fuel types' do
+        school.configuration.update!(school_target_fuel_types: ["electricity"])
+        expect(service.enough_data_for_electricity?).to be true
+        expect(service.enough_data_for_gas?).to be false
+        expect(service.enough_data_for_storage_heater?).to be false
       end
     end
   end

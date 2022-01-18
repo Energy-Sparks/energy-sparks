@@ -25,8 +25,8 @@ describe 'Management dashboard' do
   }
 
   before(:each) do
-    allow_any_instance_of(Targets::ProgressService).to receive(:management_table).and_return(management_table)
-    allow_any_instance_of(Targets::ProgressService).to receive(:management_data).and_return(management_data)
+    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_table).and_return(management_table)
+    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
   end
 
   describe 'when not logged in' do

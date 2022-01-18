@@ -39,9 +39,9 @@ module Management
       @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
       @overview_charts = setup_energy_overview_charts(@school.configuration)
       if EnergySparks::FeatureFlags.active?(:use_management_data)
-        @overview_data = progress_service.management_data
+        @overview_data = Schools::ManagementTableService.new(@school).management_data
       else
-        @overview_table = progress_service.management_table
+        @overview_table = Schools::ManagementTableService.new(@school).management_table
       end
       @progress_summary = progress_service.progress_summary
       @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
