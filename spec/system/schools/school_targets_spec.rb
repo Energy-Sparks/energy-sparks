@@ -110,7 +110,7 @@ RSpec.describe 'school targets', type: :system do
           has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
 
         before(:each) do
-    school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: ["electricity"])
+          school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: ["electricity"])
           visit school_school_targets_path(school)
         end
 

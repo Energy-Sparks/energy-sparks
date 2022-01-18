@@ -11,8 +11,6 @@ describe 'targets', type: :system do
   let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
   let(:school_target_fuel_types)  { ["electricity"] }
 
-  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types) }
-
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [1,2] }
