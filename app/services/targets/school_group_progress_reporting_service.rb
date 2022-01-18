@@ -8,7 +8,7 @@ module Targets
       school_progress = []
       schools.each do |school|
         begin
-          school_progress << school_target_progress(school, aggregate_school(school))
+          school_progress << school_target_progress(school)
         rescue => e
           Rails.logger.error "Unable to generate progress report for #{school.name}: #{e.message}"
           Rails.logger.error e.backtrace.join("\n")
@@ -24,18 +24,14 @@ module Targets
       @school_group.schools.process_data.by_name
     end
 
-    def aggregate_school(school)
-      AggregateSchoolService.new(school).aggregate_school
-    end
-
-    def school_target_progress(school, aggregated_school)
+    def school_target_progress(school)
       targets_enabled = Targets::SchoolTargetService.targets_enabled?(school)
       if targets_enabled
         Targets::SchoolTargetsProgress.new(
           school: school,
           targets_enabled: targets_enabled,
           enough_data: enough_data?(school),
-          progress_summary: progress_summary(school, aggregated_school)
+          progress_summary: progress_summary(school)
         )
       else
         Targets::SchoolTargetsProgress.new(
@@ -53,12 +49,12 @@ module Targets
       Targets::SchoolTargetService.new(school)
     end
 
-    def progress_summary(school, aggregate_school)
-      progress_service(school, aggregate_school).progress_summary
+    def progress_summary(school)
+      progress_service(school).progress_summary
     end
 
-    def progress_service(school, aggregate_school)
-      Targets::ProgressService.new(school, aggregate_school)
+    def progress_service(school)
+      Targets::ProgressService.new(school)
     end
   end
 end

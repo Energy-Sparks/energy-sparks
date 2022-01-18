@@ -5,6 +5,7 @@
 #  _description         :text
 #  activity_id          :bigint(8)
 #  at                   :datetime         not null
+#  audit_id             :bigint(8)
 #  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
@@ -17,12 +18,14 @@
 # Indexes
 #
 #  index_observations_on_activity_id           (activity_id)
+#  index_observations_on_audit_id              (audit_id)
 #  index_observations_on_intervention_type_id  (intervention_type_id)
 #  index_observations_on_school_id             (school_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (activity_id => activities.id) ON DELETE => nullify
+#  fk_rails_...  (audit_id => audits.id)
 #  fk_rails_...  (intervention_type_id => intervention_types.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #

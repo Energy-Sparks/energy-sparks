@@ -25,13 +25,13 @@ module Targets
     def prompt_to_review_target?
       if @school.has_target? && @school.most_recent_target.suggest_revision?
         @school.most_recent_target.revised_fuel_types.each do |fuel_type|
-          return true if enough_data_for_fuel_type?(fuel_type.to_sym)
+          return true if @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
         end
       end
     end
 
     def refresh_target(target)
-      if target.revised_fuel_types.include?("storage heater") && target.storage_heaters.nil?
+      if target.revised_fuel_types.include?("storage_heater") && target.storage_heaters.nil?
         target.storage_heaters = DEFAULT_STORAGE_HEATER_TARGET
       end
       if target.revised_fuel_types.include?("electricity") && target.electricity.nil?
@@ -43,27 +43,19 @@ module Targets
     end
 
     def enough_data?
-      begin
-        return true if enough_data_for_electricity?
-        return true if enough_data_for_gas?
-        return true if enough_data_for_storage_heater?
-        return false
-      rescue => e
-        Rollbar.error(e, school_id: @school.id, school: @school.name)
-        return false
-      end
+      @school.configuration.enough_data_to_set_target?
     end
 
     def enough_data_for_electricity?
-      @school.has_electricity? && enough_data_for_fuel_type?(:electricity)
+      @school.configuration.enough_data_to_set_target_for_fuel_type?(:electricity)
     end
 
     def enough_data_for_gas?
-      @school.has_gas? && enough_data_for_fuel_type?(:gas)
+      @school.configuration.enough_data_to_set_target_for_fuel_type?(:gas)
     end
 
     def enough_data_for_storage_heater?
-      @school.has_storage_heaters? && enough_data_for_fuel_type?(:storage_heater)
+      @school.configuration.enough_data_to_set_target_for_fuel_type?(:storage_heater)
     end
 
     private
@@ -114,10 +106,6 @@ module Targets
 
     def most_recent_target
       @most_recent_target ||= @school.most_recent_target
-    end
-
-    def enough_data_for_fuel_type?(fuel_type)
-      target_service(aggregate_school, fuel_type).enough_data_to_set_target?
     end
 
     def aggregate_school

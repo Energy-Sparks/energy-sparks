@@ -22,8 +22,8 @@ RSpec.describe "school", type: :system do
   }
 
   before(:each) do
-    allow_any_instance_of(Targets::ProgressService).to receive(:management_table).and_return(management_table)
-    allow_any_instance_of(Targets::ProgressService).to receive(:management_data).and_return(management_data)
+    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_table).and_return(management_table)
+    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
 
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
