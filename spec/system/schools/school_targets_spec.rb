@@ -170,7 +170,11 @@ RSpec.describe 'school targets', type: :system do
     end
 
     context "with target that has been generated" do
-      let!(:target)          { create(:school_target, school: school, storage_heaters: nil) }
+      let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+      let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
+
+      let!(:target)               { create(:school_target, storage_heaters: nil, school: school,
+        electricity_progress: electricity_progress, gas_progress: gas_progress) }
 
       let!(:activity_type)   { create(:activity_type)}
       let!(:intervention_type)   { create(:intervention_type)}
@@ -252,9 +256,11 @@ RSpec.describe 'school targets', type: :system do
       end
 
       context "and fuel types are out of date" do
+        let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15, recent_data: false) }
+        let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17, recent_data: false) }
+
         before(:each) do
           #both gas and electricity will be out of date
-          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
           visit school_school_targets_path(school)
         end
 
@@ -267,8 +273,8 @@ RSpec.describe 'school targets', type: :system do
 
         context "and theres enough data" do
           before(:each) do
-            #allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-            target.update!(revised_fuel_types: ["storage heater"])
+
+            target.update!(revised_fuel_types: ["storage_heater"])
           end
 
           it "displays a prompt to revisit the target" do
@@ -373,7 +379,8 @@ RSpec.describe 'school targets', type: :system do
   end
 
   context 'as a guest user' do
-    let!(:target)          { create(:school_target, school: school) }
+    let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+    let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
     before(:each) do
       visit school_school_targets_path(school)
     end
@@ -393,7 +400,9 @@ RSpec.describe 'school targets', type: :system do
   end
 
   context 'as a pupil' do
-    let!(:target)          { create(:school_target, school: school) }
+    let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+    let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
+
     let(:pupil)            { create(:pupil, school: school)}
     before(:each) do
       sign_in(pupil)

@@ -31,7 +31,7 @@ module Targets
     end
 
     def refresh_target(target)
-      if target.revised_fuel_types.include?("storage heater") && target.storage_heaters.nil?
+      if target.revised_fuel_types.include?("storage_heater") && target.storage_heaters.nil?
         target.storage_heaters = DEFAULT_STORAGE_HEATER_TARGET
       end
       if target.revised_fuel_types.include?("electricity") && target.electricity.nil?
