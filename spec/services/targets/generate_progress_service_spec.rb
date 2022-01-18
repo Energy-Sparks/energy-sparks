@@ -120,6 +120,10 @@ describe Targets::GenerateProgressService do
           expect( target ).to eql school_target
         end
 
+        it 'records when last run' do
+          expect( target.report_last_generated ).to_not be_nil
+        end
+
         it 'includes only that fuel type' do
           expect( target.gas_progress ).to eq({})
           expect( target.storage_heaters_progress ).to eq({})
