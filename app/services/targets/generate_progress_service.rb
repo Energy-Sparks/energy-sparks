@@ -26,7 +26,8 @@ module Targets
         target.update!(
           electricity_progress: fuel_type_progress(:electricity),
           gas_progress: fuel_type_progress(:gas),
-          storage_heaters_progress: fuel_type_progress(:storage_heaters)
+          storage_heaters_progress: fuel_type_progress(:storage_heaters),
+          report_last_generated: Time.zone.now
         )
         return target
       end
