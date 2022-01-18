@@ -144,6 +144,7 @@ describe Tables::SummaryTableData do
     end
     it 'shows status, message and class' do
       expect(subject.by_fuel_type.second.has_data).to be true
+      expect(subject.by_fuel_type.second.message_class).to_not eq('old-data')
     end
   end
 
