@@ -62,6 +62,7 @@ module Tables
 
     def data_validity_class(fuel_type, period)
       value = fetch(fuel_type, period, :recent)
+      return '' if value == true
       return 'old-data' if value == false
       #otherwise its old structure
       return 'old-data' if value.present?
