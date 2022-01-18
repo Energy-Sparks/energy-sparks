@@ -28,6 +28,10 @@ module Schools
       pupil_analysis_charts = analysis_chart_configuration.generate([:pupil_analysis_page])
       configuration.update!(pupil_analysis_charts: pupil_analysis_charts)
 
+      #should come after fuel_configuration
+      school_target_fuel_types = Targets::GenerateFuelTypes.new(@school, @aggregated_meter_collection).perform
+      configuration.update!(school_target_fuel_types: school_target_fuel_types)
+
       configuration
     end
   end

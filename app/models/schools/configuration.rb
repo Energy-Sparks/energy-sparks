@@ -10,6 +10,7 @@
 #  id                                  :bigint(8)        not null, primary key
 #  pupil_analysis_charts               :json             not null
 #  school_id                           :bigint(8)        not null
+#  school_target_fuel_types            :string           default([]), not null, is an Array
 #  storage_heater_dashboard_chart_type :integer          default("no_storage_heater_chart"), not null
 #  updated_at                          :datetime         not null
 #
@@ -59,6 +60,19 @@ module Schools
 
     def fuel_configuration
       FuelConfiguration.new(**super.symbolize_keys)
+    end
+
+    def enough_data_to_set_target?
+      school_target_fuel_types.any?
+    end
+
+    def enough_data_to_set_target_for_fuel_type?(fuel_type)
+      case fuel_type.to_s
+      when "storage_heater", "storage_heaters"
+        school_target_fuel_types.include?("storage_heater")
+      else
+        school_target_fuel_types.include?(fuel_type.to_s)
+      end
     end
 
     def analysis_charts_as_symbols(charts_field = :analysis_charts)

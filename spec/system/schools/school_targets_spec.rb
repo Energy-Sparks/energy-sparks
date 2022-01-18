@@ -9,15 +9,19 @@ RSpec.describe 'school targets', type: :system do
   let(:fuel_configuration)   { Schools::FuelConfiguration.new(
     has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true) }
 
+  let(:school_target_fuel_types) { ["gas", "electricity", "storage_heater"] }
+
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
-    school.configuration.update!(fuel_configuration: fuel_configuration)
+    school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types)
   end
 
   context 'as a school admin' do
@@ -38,7 +42,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it 'has no link if not enough data' do
-        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(false)
+        school.configuration.update!(school_target_fuel_types: [])
         refresh
         expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
       end
@@ -106,7 +110,7 @@ RSpec.describe 'school targets', type: :system do
           has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true) }
 
         before(:each) do
-          school.configuration.update!(fuel_configuration: fuel_configuration)
+          school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: ["electricity"])
           visit school_school_targets_path(school)
         end
 
@@ -129,10 +133,7 @@ RSpec.describe 'school targets', type: :system do
       context "and only enough data for electricity" do
 
         before(:each) do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data_for_gas?).and_return(false)
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data_for_storage_heater?).and_return(false)
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data_for_electricity?).and_return(true)
-          school.configuration.update!(fuel_configuration: fuel_configuration)
+          school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: ["electricity"])
           visit school_school_targets_path(school)
         end
 
@@ -169,7 +170,11 @@ RSpec.describe 'school targets', type: :system do
     end
 
     context "with target that has been generated" do
-      let!(:target)          { create(:school_target, school: school, storage_heaters: nil) }
+      let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+      let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
+
+      let!(:target)               { create(:school_target, storage_heaters: nil, school: school,
+        electricity_progress: electricity_progress, gas_progress: gas_progress) }
 
       let!(:activity_type)   { create(:activity_type)}
       let!(:intervention_type)   { create(:intervention_type)}
@@ -251,9 +256,11 @@ RSpec.describe 'school targets', type: :system do
       end
 
       context "and fuel types are out of date" do
+        let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15, recent_data: false) }
+        let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17, recent_data: false) }
+
         before(:each) do
           #both gas and electricity will be out of date
-          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
           visit school_school_targets_path(school)
         end
 
@@ -266,8 +273,8 @@ RSpec.describe 'school targets', type: :system do
 
         context "and theres enough data" do
           before(:each) do
-            allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-            target.update!(revised_fuel_types: ["storage heater"])
+
+            target.update!(revised_fuel_types: ["storage_heater"])
           end
 
           it "displays a prompt to revisit the target" do
@@ -372,7 +379,8 @@ RSpec.describe 'school targets', type: :system do
   end
 
   context 'as a guest user' do
-    let!(:target)          { create(:school_target, school: school) }
+    let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+    let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
     before(:each) do
       visit school_school_targets_path(school)
     end
@@ -392,7 +400,9 @@ RSpec.describe 'school targets', type: :system do
   end
 
   context 'as a pupil' do
-    let!(:target)          { create(:school_target, school: school) }
+    let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+    let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
+
     let(:pupil)            { create(:pupil, school: school)}
     before(:each) do
       sign_in(pupil)
