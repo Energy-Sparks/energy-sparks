@@ -27,5 +27,4 @@ describe InterventionCreator do
     InterventionCreator.new(observation).process
     expect(observation.points).to eq(nil)
   end
-
 end

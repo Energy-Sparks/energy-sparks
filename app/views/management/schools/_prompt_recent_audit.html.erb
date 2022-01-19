@@ -1,0 +1,6 @@
+<%= render 'schools/dashboard/info_bar',
+  colour: 'bg-neutral',
+  content: "The Energy Sparks team have recently completed an energy audit for this school",
+  icon: 'clipboard-check fa-3x',
+  buttons: {'Review audit' => school_audit_path(@school, @recent_audit)}
+%>

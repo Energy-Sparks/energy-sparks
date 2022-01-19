@@ -1,0 +1,57 @@
+<% content_for :page_title, "#{@school.name} Audits" %>
+
+<div class="row">
+  <div class="col-md-12">
+    <h1>Energy audits</h1>
+  </div>
+</div>
+
+<% if @audits.any? %>
+  <div class="row">
+    <div class="col-md-12">
+      <p>The Energy Sparks team have carried out the following audits at this school.
+      </p>
+
+      <table class="table" id="audits">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Completed on</th>
+            <% if can? :manage, @activity %>
+              <th>Actions</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @audits.each do |audit| %>
+            <tr class="<%= can?(:manage, audit) ? active(audit.published) : '' %>" scope="row">
+              <td><%= link_to audit.title, school_audit_path(@school, audit) %></td>
+              <td><%= audit.created_at.strftime("%A, %d %B %Y") %></td>
+              <% if can? :manage, audit %>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
+                    <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
+                  </div>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-md-12">
+      <p>The Energy Sparks team have not carried out an energy audit for your school.</p>
+      <%= render "audit_offer" %>
+    </div>
+  </div>
+<% end %>
+
+<% if can? :manage, Audit %>
+  <div class="row mt-2">
+    <%= link_to 'New audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
+  </div>
+<% end %>

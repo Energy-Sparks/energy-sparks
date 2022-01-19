@@ -7,7 +7,7 @@ describe Audit do
   let(:activity_type) { create :activity_type }
   let(:intervention_type) { create :intervention_type }
 
-  let(:audit) { Audit.create!(school: school, title: title) }
+  let(:audit) { create(:audit, school: school, title: title) }
 
   context 'when no title' do
     let(:title) { '' }

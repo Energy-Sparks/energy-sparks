@@ -39,10 +39,23 @@ class NextActivitySuggesterWithFilter
     end
   end
 
+  def suggest_from_audits
+    suggestions = ActivityType.joins(:audit_activity_types, :audits).where(audits: { school: @school })
+    academic_year = @school.academic_year_for(Time.zone.today)
+    if academic_year
+      completed_activities = @school.activities.between(academic_year.start_date, academic_year.end_date)
+      suggestions = suggestions.where.not(id: completed_activities.map(&:activity_type_id).uniq)
+    end
+    suggestions.to_a
+  end
+
   #For school targets page. Selecting activities based on an order of preference
   #filtering based on key stages, with a fallback to other activities
   def suggest_for_school_targets(limit = 5)
-    suggestions = suggest_from_programmes.to_a
+    suggestions = suggest_from_audits
+    return suggestions.take(limit) unless suggestions.length < limit
+
+    top_up_from_list(suggest_from_programmes.to_a, suggestions)
     return suggestions.take(limit) unless suggestions.length < limit
 
     top_up_from_list(suggest_from_find_out_mores, suggestions)

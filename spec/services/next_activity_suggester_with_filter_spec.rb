@@ -195,4 +195,19 @@ describe NextActivitySuggesterWithFilter do
     end
 
   end
+
+  describe '.suggest_from_audits' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, title: "Our audit", description: "Description of the audit", school: school) }
+
+    it 'suggests from an audit' do
+      suggestions = subject.suggest_from_audits
+      expect(suggestions).to match audit.activity_types
+    end
+
+    it 'doesnt suggest if completed' do
+      activity = create(:activity, activity_type: audit.audit_activity_types.first.activity_type, school: school)
+      suggestions = subject.suggest_from_audits
+      expect(suggestions.count).to eql 2
+    end
+  end
 end
