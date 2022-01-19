@@ -24,7 +24,7 @@ module Schools
     end
 
     def storage_heater
-      progress_service.display_progress_for_fuel_type?(:storage_heater) ? index_for(:storage_heater) : missing(:storage_heater)
+      progress_service.display_progress_for_fuel_type?(:storage_heaters) ? index_for(:storage_heater) : missing(:storage_heater)
     end
 
     private

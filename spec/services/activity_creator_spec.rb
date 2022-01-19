@@ -92,4 +92,5 @@ describe ActivityCreator do
       expect(programme.activities.count).to eq 1
     end
   end
+
 end

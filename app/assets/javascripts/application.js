@@ -53,3 +53,4 @@
 //= require map
 //= require live_data
 //= require gtag
+//= require cocoon

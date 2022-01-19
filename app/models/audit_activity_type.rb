@@ -18,6 +18,8 @@ class AuditActivityType < ApplicationRecord
 
   validates :activity_type, :audit, presence: true
 
+  scope :by_name, -> { joins(:activity_type).order('activity_types.name ASC') }
+
   def activity_name
     activity_type.name
   end

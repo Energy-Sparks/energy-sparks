@@ -47,6 +47,7 @@ module Management
       @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
       @add_targets = prompt_for_target?
       @review_targets = prompt_to_review_target?
+      @recent_audit = Audits::AuditService.new(@school).recent_audit
     end
   end
 end

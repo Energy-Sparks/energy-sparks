@@ -100,6 +100,8 @@ class Ability
       cannot :delete, User do |other_user|
         user.id == other_user.id
       end
+
+      can [:show, :read, :index], Audit, related_school_scope
     elsif user.staff? || user.volunteer? || user.pupil?
       #abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
@@ -110,6 +112,7 @@ class Ability
       can [
         :show, :usage, :show_pupils_dash, :suggest_activity
       ], School, { school_group_id: user.school.school_group_id, visible: true }
+      can [:show, :read, :index], Audit, school: { id: user.school_id, visible: true }
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
