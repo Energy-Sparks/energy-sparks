@@ -42,6 +42,25 @@ describe Tables::SummaryTableData do
   #       }
   #     }
   #   }
+  #
+  #
+  #  Recent improvements
+  #
+  #     :gas => {
+  #       :start_date => '2021-04-13',
+  #       :end_date => '2021-10-28',
+  #       :year => {
+  #         :available_from => '2021-10-28'
+  #       },
+  #       :workweek => {
+  #         :recent => false,
+  #         :kwh => 4930.7751,
+  #         :co2 => 1035.462771,
+  #         :£ => 147.923253,
+  #         :savings_£ => "-",
+  #         :percent_change => "-"
+  #       }
+  #     }
 
   describe 'handles no data' do
     let(:template_data) do
@@ -57,11 +76,33 @@ describe Tables::SummaryTableData do
 
   describe 'when period does not have data' do
     let(:template_data) do
-      { electricity: { year: { available_from: 'Feb 2022' } } }
+      { electricity: { year: { available_from: 'Data available from Feb 2022' } } }
     end
     it 'shows status and message' do
       expect(subject.by_fuel_type.second.has_data).to be_falsey
-      expect(subject.by_fuel_type.second.message).to eq('Feb 2022')
+      expect(subject.by_fuel_type.second.message).to eq('Data available from Feb 2022')
+    end
+  end
+
+  describe 'when year period does not have data - new style' do
+    let(:available_date) { Date.today.next_year }
+    let(:template_data) do
+      { electricity: { year: { available_from: available_date.iso8601 } } }
+    end
+    it 'shows status and message' do
+      expect(subject.by_fuel_type.second.has_data).to be_falsey
+      expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime("%b %Y")}")
+    end
+  end
+
+  describe 'when week period does not have data - new style' do
+    let(:available_date) { 7.days.from_now }
+    let(:template_data) do
+      { electricity: { year: { available_from: available_date.iso8601 } } }
+    end
+    it 'shows status and message' do
+      expect(subject.by_fuel_type.second.has_data).to be_falsey
+      expect(subject.by_fuel_type.second.message).to eq("Data available from #{available_date.strftime("%a %d %b %Y")}")
     end
   end
 
@@ -83,6 +124,27 @@ describe Tables::SummaryTableData do
       expect(subject.by_fuel_type.second.has_data).to be false
       expect(subject.by_fuel_type.second.message).to eq('no recent data')
       expect(subject.by_fuel_type.second.message_class).to eq('old-data')
+    end
+  end
+
+  describe 'when data is not recent - new style' do
+    let(:template_data) do
+      { electricity: { year: { kwh: '123', recent: false} } }
+    end
+    it 'shows status, message and class' do
+      expect(subject.by_fuel_type.second.has_data).to be false
+      expect(subject.by_fuel_type.second.message).to eq('no recent data')
+      expect(subject.by_fuel_type.second.message_class).to eq('old-data')
+    end
+  end
+
+  describe 'when data is recent - new style' do
+    let(:template_data) do
+      { electricity: { year: { kwh: '123', recent: true} } }
+    end
+    it 'shows status, message and class' do
+      expect(subject.by_fuel_type.second.has_data).to be true
+      expect(subject.by_fuel_type.second.message_class).to_not eq('old-data')
     end
   end
 

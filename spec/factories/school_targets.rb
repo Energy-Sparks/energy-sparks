@@ -7,5 +7,8 @@ FactoryBot.define do
     gas { rand(1..10) }
     storage_heaters { rand(1..10) }
     report_last_generated { DateTime.now }
+    electricity_progress { {} }
+    gas_progress { {} }
+    storage_heaters_progress { {} }
   end
 end

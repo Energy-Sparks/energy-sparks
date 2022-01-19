@@ -4,8 +4,13 @@ describe 'targets', type: :system do
 
   let(:admin)                     { create(:admin) }
   let(:school)                    { create_active_school(name: "Big School")}
-  let!(:fuel_electricity)         { Schools::FuelConfiguration.new(has_electricity: true) }
-  let!(:target)                    { create(:school_target, school: school) }
+
+  let!(:electricity_progress)     { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+  let!(:school_target)            { create(:school_target, school: school, electricity_progress: electricity_progress) }
+
+  let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
+  let(:school_target_fuel_types)  { ["electricity"] }
+
   let(:months)                    { ['jan', 'feb'] }
   let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [1,2] }
@@ -42,14 +47,13 @@ describe 'targets', type: :system do
 
     before(:each) do
       #update here to avoid duplicating records
-      school.configuration.update!(fuel_configuration: fuel_electricity)
+      school.configuration.update!(fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types)
     end
 
     context 'with calculated progress' do
 
       before(:each) do
         sign_in(admin)
-        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
@@ -108,6 +112,7 @@ describe 'targets', type: :system do
       context 'when school also has storage heaters' do
 
         let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: true) }
+        let(:school_target_fuel_types) { ["electricity", "storage_heater"] }
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
@@ -120,7 +125,6 @@ describe 'targets', type: :system do
     context 'with out of date data' do
       before(:each) do
         sign_in(admin)
-        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(false)
       end
@@ -129,11 +133,11 @@ describe 'targets', type: :system do
         expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
       end
     end
+
     context 'with error from analytics' do
 
       before(:each) do
         sign_in(admin)
-        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
       end
 

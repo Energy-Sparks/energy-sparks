@@ -2,17 +2,20 @@
 #
 # Table name: school_targets
 #
-#  created_at            :datetime         not null
-#  electricity           :float
-#  gas                   :float
-#  id                    :bigint(8)        not null, primary key
-#  report_last_generated :datetime
-#  revised_fuel_types    :string           default([]), not null, is an Array
-#  school_id             :bigint(8)        not null
-#  start_date            :date
-#  storage_heaters       :float
-#  target_date           :date
-#  updated_at            :datetime         not null
+#  created_at               :datetime         not null
+#  electricity              :float
+#  electricity_progress     :json
+#  gas                      :float
+#  gas_progress             :json
+#  id                       :bigint(8)        not null, primary key
+#  report_last_generated    :datetime
+#  revised_fuel_types       :string           default([]), not null, is an Array
+#  school_id                :bigint(8)        not null
+#  start_date               :date
+#  storage_heaters          :float
+#  storage_heaters_progress :json
+#  target_date              :date
+#  updated_at               :datetime         not null
 #
 # Indexes
 #
@@ -61,6 +64,15 @@ class SchoolTarget < ApplicationRecord
 
   def suggest_revision?
     revised_fuel_types.any?
+  end
+
+  def to_progress_summary
+    Targets::ProgressSummary.new(
+      school_target: self,
+      electricity: electricity_progress.any? ? Targets::FuelProgress.new(electricity_progress.symbolize_keys!) : nil,
+      gas: gas_progress.any? ? Targets::FuelProgress.new(gas_progress.symbolize_keys!) : nil,
+      storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(storage_heaters_progress.symbolize_keys!) : nil
+    )
   end
 
   private
