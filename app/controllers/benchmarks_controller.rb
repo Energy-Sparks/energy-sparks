@@ -29,15 +29,6 @@ class BenchmarksController < ApplicationController
     end
   end
 
-  def show_all
-    @title = 'All benchmark results'
-    @form_path = all_benchmarks_path
-
-    sort_content_and_page_groups(@page_groups)
-
-    render :show
-  end
-
 private
 
   def latest_benchmark_run
