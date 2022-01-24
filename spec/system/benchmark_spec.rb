@@ -58,17 +58,6 @@ describe 'Benchmarks' do
     expect(page).to_not have_content(example_content.detect { |a| a[:type] == :table_text }[:content])
   end
 
-  it 'a user can view all the benchmarks' do
-    click_on 'See all on one page'
-    expect(page).to have_content(example_content.detect { |a| a[:type] == :title }[:content])
-    expect(page).to have_content(example_content.detect { |a| a[:type] == :html }[:content])
-    expect(page).to have_content(example_content.detect { |a| a[:type] == :table_composite }[:content][:header].first)
-
-    expect(page).to_not have_content(example_content.detect { |a| a[:type] == :chart_data }[:content])
-    expect(page).to_not have_content(example_content.detect { |a| a[:type] == :analytics_html }[:content])
-    expect(page).to_not have_content(example_content.detect { |a| a[:type] == :table_text }[:content])
-  end
-
   it 'a user can drilldown to an analysis page without any content and get to a sensible page with a message' do
     click_on 'Page A'
     click_on(school_1.name)
