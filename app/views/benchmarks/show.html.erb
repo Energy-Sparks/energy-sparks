@@ -46,19 +46,6 @@
       </fieldset>
     </div>
 
-    <div class="col">
-      <h4>Scoreboards</h4>
-      <fieldset class="form-group col">
-        <%= collection_check_boxes :benchmark, :scoreboard_ids, @scoreboards, :id, :name, { multiple: true } do |b| %>
-          <div class="custom-control custom-checkbox">
-            <%= b.check_box(checked: @benchmark_filter[:scoreboard_ids].include?(b.object.id.to_s), class: "custom-control-input") %>
-            <%= b.label(class: "custom-control-label") do %>
-              <%= b.object.name %>
-            <% end %>
-          </div>
-        <% end %>
-      </fieldset>
-    </div>
   </div>
 
   <div class="row">
