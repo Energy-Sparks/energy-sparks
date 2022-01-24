@@ -161,6 +161,11 @@ function processAnalysisChart(chartContainer, chartConfig){
   }
 }
 
+//Highcharts filters attributes from HTML given as text labels, so add this
+//so we can style the annotation popovers using Bootstrap.
+Highcharts.AST.allowedAttributes.push('data-toggle');
+Highcharts.AST.allowedAttributes.push('data-placement');
+
 function processAnnotations(loaded_annotations, chart){
   var xAxis = chart.xAxis[0];
   var xAxisCategories = xAxis.categories;
