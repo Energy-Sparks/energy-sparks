@@ -7,16 +7,16 @@ class BenchmarksController < ApplicationController
 
   before_action :latest_benchmark_run
   before_action :content_manager
-  before_action :page_groups, only: [:index, :show_all]
-  before_action :load_filter, only: [:index, :show, :show_all]
-  before_action :filter_lists, only: [:show, :show_all]
-
-  before_action :benchmark_results, only: [:show, :show_all]
+  before_action :page_groups, only: [:index]
+  before_action :load_filter, only: [:index, :show]
+  before_action :filter_lists, only: [:show]
 
   def index
   end
 
   def show
+    benchmark_results unless @benchmark_filter[:school_group_ids].empty?
+
     respond_to do |format|
       format.html do
         @page = params.require(:benchmark_type).to_sym
@@ -27,15 +27,6 @@ class BenchmarksController < ApplicationController
       end
       format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
     end
-  end
-
-  def show_all
-    @title = 'All benchmark results'
-    @form_path = all_benchmarks_path
-
-    sort_content_and_page_groups(@page_groups)
-
-    render :show
   end
 
 private
@@ -75,12 +66,10 @@ private
   def load_filter
     @benchmark_filter = {
       school_group_ids: (params.dig(:benchmark, :school_group_ids) || []).reject(&:empty?),
-      scoreboard_ids:   (params.dig(:benchmark, :scoreboard_ids) || []).reject(&:empty?),
       school_types:     (params.dig(:benchmark, :school_types) || all_school_type_ids).reject(&:empty?)
     }
     school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
-    scoreboard_names = Scoreboard.find(@benchmark_filter[:scoreboard_ids]).pluck(:name).join(', ')
-    @filter_names = school_group_names + scoreboard_names
+    @filter_names = school_group_names
   end
 
   def all_school_type_ids
@@ -94,7 +83,6 @@ private
   def filter_lists
     service = ComparisonService.new(current_user)
     @school_groups = service.list_school_groups
-    @scoreboards = service.list_scoreboards
     @school_types = service.list_school_types
   end
 

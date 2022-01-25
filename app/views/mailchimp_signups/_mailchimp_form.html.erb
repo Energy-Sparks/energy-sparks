@@ -48,7 +48,7 @@
               <%= label_tag "interests_#{category.id}_#{interest.id}", interest.name, value: interest.name, class: "form-check-label" %>
             </div>
             <% if interest.name == 'Other' %>
-              <%= text_field_tag "merge_fields[#{other_field_name(category.title)}]", '', class: 'form-control', placeholder: 'Please specify', class: 'hidden' %>
+              <%= text_field_tag "merge_fields[#{other_field_name(category.title)}]", '', class: 'form-control hidden', placeholder: 'Please specify', class: 'hidden' %>
             <% end %>
           <% end %>
         </div>
