@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 7810985d89de2f5c2ed5be6fcc5dd15a780ebc7f
+  revision: a4715b6066c247e912e791fe25b24710acfdb5de
   branch: centrica-v1
   specs:
     energy-sparks_analytics (1.2.1)
