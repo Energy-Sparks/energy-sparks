@@ -26,16 +26,23 @@ function commonChartOptions(clickListener){
       }
     },
     legend: {
-      align: 'center',
+      align: 'left',
       margin: 20,
-      verticalAlign: 'bottom',
+      verticalAlign: 'top',
       floating: false,
       backgroundColor: 'white',
-      shadow: false
+      shadow: false,
+      itemStyle: { fontWeight: 'normal', fontSize: '12.5px' },
+      itemHoverStyle: { fontWeight: 'bold', fontSize: '12.5px' },
+      useHTML: true,
+      title: { text: 'Click to hide data on the chart', style: {fontWeight: 'normal', fontSize: '12.5px'}}
     },
     plotOptions: {
       series: {
         states: {
+          hover: {
+            brightness: -0.1
+          },
           inactive: {
             opacity: 1
           }
@@ -181,7 +188,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       console.log('time of day set');
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 300, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
 
 
 
@@ -202,7 +209,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     }
 
     if (subChartType == 'stacked') {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel, rotation: 0, margin: 20 }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     } else {
       highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }
@@ -231,12 +238,12 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       axisTitle = 'kWh';
       pointFormat = '{point.y:.2f} kWh';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-      axisTitle = 'Brightness of sunshine W/m2';
+      axisTitle = 'Brightness of sunshine<br>W/m2';
       pointFormat = '{point.y:.2f} W/m2';
     } else if (y2AxisLabel == 'rating') {
       axisTitle = 'Rating';
     }
-    highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.addAxis({ title: { text: axisTitle, rotation: 0, margin: 60, useHTML: true }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
     highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
   }
 

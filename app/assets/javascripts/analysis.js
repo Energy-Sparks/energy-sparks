@@ -255,7 +255,7 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
    chartConfig.drilldown_available =  drilldownAvailable;
 
     if(drilldownAvailable){
-      chart.update({subtitle: {text: 'Click on the chart to explore the data'}});
+      chart.update({plotOptions: {series: {cursor: 'pointer'}}, subtitle: {floating: false, text: 'Click on the chart to explore the data', style: {fontWeight: 'bold', fontSize: '15px'} }});
     }
 
     var transformations = chartConfig.transformations;
