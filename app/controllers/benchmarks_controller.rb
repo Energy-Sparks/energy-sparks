@@ -7,16 +7,16 @@ class BenchmarksController < ApplicationController
 
   before_action :latest_benchmark_run
   before_action :content_manager
-  before_action :page_groups, only: [:index, :show_all]
-  before_action :load_filter, only: [:index, :show, :show_all]
-  before_action :filter_lists, only: [:show, :show_all]
-
-  before_action :benchmark_results, only: [:show, :show_all]
+  before_action :page_groups, only: [:index]
+  before_action :load_filter, only: [:index, :show]
+  before_action :filter_lists, only: [:show]
 
   def index
   end
 
   def show
+    benchmark_results unless @benchmark_filter[:school_group_ids].empty?
+
     respond_to do |format|
       format.html do
         @page = params.require(:benchmark_type).to_sym
