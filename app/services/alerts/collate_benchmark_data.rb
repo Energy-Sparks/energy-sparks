@@ -26,7 +26,7 @@ module Alerts
           unless benchmarks[benchmark_result.asof].key?(school_id)
             benchmarks[benchmark_result.asof][school_id] = {}
           end
-          benchmarks[benchmark_result.asof][school_id] = benchmarks[benchmark_result.asof][school_id].merge(benchmark_result.data)
+          benchmarks[benchmark_result.asof][school_id] = benchmarks[benchmark_result.asof][school_id].merge!(benchmark_result.data)
         end
       end
     end
