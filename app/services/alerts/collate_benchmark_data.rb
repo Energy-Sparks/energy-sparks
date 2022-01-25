@@ -7,7 +7,7 @@ module Alerts
     def perform(schools = School.process_data)
       benchmarks = {}
 
-      latest_school_runs = @benchmark_run.benchmark_result_school_generation_runs.where(school: schools).order(id: :asc)
+      latest_school_runs = @benchmark_run.benchmark_result_school_generation_runs.includes(:benchmark_results).where(school: schools).order(id: :asc)
       get_benchmarks_for_latest_run(latest_school_runs, benchmarks)
 
       benchmarks
