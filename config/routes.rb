@@ -37,7 +37,6 @@ Rails.application.routes.draw do
 
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
-  get 'all_benchmarks', to: 'benchmarks#show_all'
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
