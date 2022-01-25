@@ -66,13 +66,15 @@ describe 'Benchmarks' do
 
   it 'school types can be filtered' do
     click_on 'Page A'
+    check school_group.name
+    click_on 'Compare'
     expect(page).to have_content(school_1.name)
     School.school_types.keys.each do |school_type|
       expect(page).to have_checked_field(school_type.humanize)
     end
     uncheck('Primary')
     expect_any_instance_of(Alerts::CollateBenchmarkData).to receive(:perform).with([school_2])
-    click_on('Filter')
+    click_on('Compare')
   end
 
   context 'with analysis page content' do
