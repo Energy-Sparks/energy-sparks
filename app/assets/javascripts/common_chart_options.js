@@ -32,16 +32,14 @@ function commonChartOptions(clickListener){
       floating: false,
       backgroundColor: 'white',
       shadow: false,
-      itemStyle: { fontWeight: 'normal', fontSize: '12.5px' },
-      itemHoverStyle: { fontWeight: 'bold', fontSize: '12.5px' },
-      useHTML: true,
-      title: { text: 'Click to hide data on the chart', style: {fontWeight: 'normal', fontSize: '12.5px'}}
+      itemStyle: { fontWeight: 'normal', fontSize: '18px' },
+      itemHoverStyle: { fontWeight: 'bold', fontSize: '18px' }
     },
     plotOptions: {
       series: {
         states: {
           hover: {
-            brightness: -0.1
+            brightness: -0.2
           },
           inactive: {
             opacity: 1
@@ -209,7 +207,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     }
 
     if (subChartType == 'stacked') {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel, rotation: 0, margin: 20 }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
+      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel, rotation: 0, margin: 20, style: {fontSize: '18px'} }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     } else {
       highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
     }

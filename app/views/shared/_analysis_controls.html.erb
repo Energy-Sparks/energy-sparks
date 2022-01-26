@@ -1,19 +1,39 @@
-<div class='analysis_controls'>
-  <div class="d-flex justify-content-between" role="group">
-    <div>
-      <button class="btn btn-rounded move_back">
-        Back 1 <span class='period'>period</span>
-      </button>
+<div class="chart-controls d-flex justify-content-between pt-4"  style="margin-left: 10px; padding-left: 10px;">
+
+  <div class="axis_controls">
+    <span>Change units </span>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" checked>
+      <label class="custom-control-label" for="customRadioInline2">kWh</label>
     </div>
-    <div>
-      <button class="btn btn-rounded drillup">
-        Up to <span class='period'>period</span> view
-      </button>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+      <label class="custom-control-label" for="customRadioInline1">£</label>
     </div>
-    <div>
-      <button class="btn btn-rounded move_forward">
-        Forward 1 <span class='period'>period</span>
-      </button>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" disabled>
+      <label class="custom-control-label" for="customRadioInline1">CO2</label>
+    </div>
+  </div>
+
+  <div class='analysis_controls'>
+    <div class="d-flex justify-content-between" role="group">
+      <span class="mr-2">Explore</span>
+      <div>
+        <button class="btn btn-sm btn-rounded move_back">
+         <%= fa_icon('backward') %> Back 1 <span class='period'>period</span>
+        </button>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-rounded drillup">
+          <%= fa_icon('eject') %> Up to <span class='period'>period</span> view
+        </button>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-rounded move_forward">
+          <%= fa_icon('forward') %> Forward 1 <span class='period'>period</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

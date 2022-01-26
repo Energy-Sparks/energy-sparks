@@ -7,8 +7,8 @@ div.analysis-chart, div.simulator-chart, div.usage-chart{
   font-size: 14px;
   margin: 0 auto;
   padding-bottom: 50px;
-  padding-top: 50px;
-
+//  padding-top: 50px;
+  padding-top: 10px;
   &.pie-chart {
     height: 550px;
     line-height: 550px;

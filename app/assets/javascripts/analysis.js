@@ -23,9 +23,9 @@ function chartSuccess(chartConfig, chartData, chart) {
   titleH3.text(chartData.title);
 
   if (chartData.subtitle) {
-    titleH5.text(chartData.subtitle);
+//   titleH5.text(chartData.subtitle);
   } else {
-    titleH5.hide();
+//    titleH5.hide();
   }
 
   if (! noAdvice) {
@@ -205,18 +205,20 @@ function processAnnotations(loaded_annotations, chart){
 function setupAnalysisControls(chartContainer, chartConfig){
   var controls = $(chartContainer).parent().find('.analysis_controls');
   if(controls.length){
-    controls.find('.move_back').hide().on('click', function(event){
+//    controls.find('.move_back').hide();
+    controls.find('.move_back').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
       pushTransformation(chartConfig, chartContainer, 'move', -1);
     });
-    controls.find('.move_forward').hide().on('click', function(event){
+//    controls.find('.move_forward').hide();
+    controls.find('.move_forward').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
       pushTransformation(chartConfig, chartContainer, 'move', 1);
     });
 
-    controls.find('.drillup').hide();
+//    controls.find('.drillup').hide();
     controls.find('.drillup').on('click', function(event){
       event.preventDefault();
 
@@ -246,7 +248,7 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
           control.show();
         } else {
           control.prop("disabled", true);
-          control.hide();
+          //control.hide();
         }
         control.find('span.period').html(config.timescale_description);
       });
@@ -255,7 +257,8 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
    chartConfig.drilldown_available =  drilldownAvailable;
 
     if(drilldownAvailable){
-      chart.update({plotOptions: {series: {cursor: 'pointer'}}, subtitle: {floating: false, text: 'Click on the chart to explore the data', style: {fontWeight: 'bold', fontSize: '15px'} }});
+//      chart.update({plotOptions: {series: {cursor: 'pointer'}}, subtitle: {floating: false, text: 'Click on the chart to explore the data', style: {fontWeight: 'bold', fontSize: '15px'} }});
+      chart.update({plotOptions: {series: {cursor: 'pointer'}}});
     }
 
     var transformations = chartConfig.transformations;
@@ -266,7 +269,7 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
       drillup.prop( "disabled", false );
       drillup.show();
     } else {
-      drillup.hide();
+//      drillup.hide();
       drillup.prop( "disabled", true );
     }
   }
