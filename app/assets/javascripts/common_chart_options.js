@@ -40,6 +40,9 @@ function commonChartOptions(clickListener){
         states: {
           inactive: {
             opacity: 1
+          },
+          hover: {
+            brightness: -0.2
           }
         }
       },
