@@ -25,7 +25,11 @@ function chartSuccess(chartConfig, chartData, chart) {
   if (chartData.subtitle) {
     titleH5.text(chartData.subtitle);
   } else {
-    titleH5.hide();
+    if (chartData.drilldown_available) {
+      titleH5.text('Click on the chart to explore the data');
+    } else {
+      titleH5.text('');
+    }
   }
 
   if (! noAdvice) {
@@ -203,20 +207,19 @@ function processAnnotations(loaded_annotations, chart){
 }
 
 function setupAnalysisControls(chartContainer, chartConfig){
-  var controls = $(chartContainer).parent().find('.analysis_controls');
+  var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
-    controls.find('.move_back').hide().on('click', function(event){
+    controls.find('.move_back').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
       pushTransformation(chartConfig, chartContainer, 'move', -1);
     });
-    controls.find('.move_forward').hide().on('click', function(event){
+    controls.find('.move_forward').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
       pushTransformation(chartConfig, chartContainer, 'move', 1);
     });
 
-    controls.find('.drillup').hide();
     controls.find('.drillup').on('click', function(event){
       event.preventDefault();
 
@@ -236,7 +239,7 @@ function setupAnalysisControls(chartContainer, chartConfig){
 
 function processAnalysisOperations(chartConfig, chart, operations, drilldownAvailable, parentTimescaleDescription){
   var chartContainer = $(chart.renderTo);
-  var controls = $(chartContainer).parent().find('.analysis_controls');
+  var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
@@ -246,17 +249,12 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
           control.show();
         } else {
           control.prop("disabled", true);
-          control.hide();
         }
         control.find('span.period').html(config.timescale_description);
       });
     });
 
    chartConfig.drilldown_available =  drilldownAvailable;
-
-    if(drilldownAvailable){
-      chart.update({subtitle: {text: 'Click on the chart to explore the data'}});
-    }
 
     var transformations = chartConfig.transformations;
     var inDrilldown = transformations.some(isDrilldownTransformation);
@@ -266,7 +264,6 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
       drillup.prop( "disabled", false );
       drillup.show();
     } else {
-      drillup.hide();
       drillup.prop( "disabled", true );
     }
   }
@@ -290,7 +287,7 @@ function pushTransformation(chartConfig, chartContainer, transformation_type, tr
 }
 
 function processChartClick(chartConfig, chartContainer, event){
-  var controls = $(chartContainer).parent().find('.analysis_controls');
+  var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
     if(chartConfig.drilldown_available){
       pushTransformation(chartConfig, chartContainer, 'drilldown', event.point.index)

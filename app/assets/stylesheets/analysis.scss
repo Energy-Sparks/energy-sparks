@@ -1,3 +1,12 @@
+div.chart-controls {
+  margin-left: 10px;
+  padding-left: 10px
+}
+
+div.analysis-controls {
+
+}
+
 div.analysis-chart, div.simulator-chart, div.usage-chart{
   height: 700px;
   width: 100%;
@@ -6,7 +15,7 @@ div.analysis-chart, div.simulator-chart, div.usage-chart{
   line-height: 700px;
   font-size: 14px;
   margin: 0 auto;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
   padding-top: 50px;
 
   &.pie-chart {
