@@ -15,7 +15,7 @@ function commonChartOptions(clickListener){
     colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
     title: { text: null },
     xAxis: { showEmpty: false },
-    yAxis: { showEmpty: false },
+    yAxis: { showEmpty: false, title: { rotation: 0, margin: 30, useHTML: true, style: {fontSize: '18px'} } },
     tooltip: {
       backgroundColor: null,
       borderWidth: 0,
@@ -186,10 +186,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       console.log('time of day set');
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 300, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
-
-
-
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
   }
 
   // LINE charts
