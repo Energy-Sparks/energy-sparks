@@ -15,7 +15,7 @@ function commonChartOptions(clickListener){
     colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
     title: { text: null },
     xAxis: { showEmpty: false },
-    yAxis: { showEmpty: false },
+    yAxis: { showEmpty: false, title: { rotation: 0, margin: 30, useHTML: true, style: {fontSize: '18px'} } },
     tooltip: {
       backgroundColor: null,
       borderWidth: 0,
@@ -26,18 +26,23 @@ function commonChartOptions(clickListener){
       }
     },
     legend: {
-      align: 'center',
+      align: 'left',
       margin: 20,
-      verticalAlign: 'bottom',
+      verticalAlign: 'top',
       floating: false,
       backgroundColor: 'white',
-      shadow: false
+      shadow: false,
+      itemStyle: { fontWeight: 'normal', fontSize: '18px' },
+      itemHoverStyle: { fontWeight: 'bold', fontSize: '18px' }
     },
     plotOptions: {
       series: {
         states: {
           inactive: {
             opacity: 1
+          },
+          hover: {
+            brightness: -0.2
           }
         }
       },
@@ -181,10 +186,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       console.log('time of day set');
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 300, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
-
-
-
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
   }
 
   // LINE charts
@@ -217,11 +219,12 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
     console.log('Y2 axis label' + y2AxisLabel);
 
+    axisFontSize = '18px'
     if (y2AxisLabel == 'Temperature') {
       axisTitle = '°C';
       pointFormat = '{point.y:.2f} °C';
     } else if (y2AxisLabel == 'Degree Days') {
-      axisTitle = 'Degree days';
+      axisTitle = '<span>Degree<br>days</span>';
       pointFormat = '{point.y:.2f} Degree days';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
       axisTitle = 'kg/kWh';
@@ -231,12 +234,12 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       axisTitle = 'kWh';
       pointFormat = '{point.y:.2f} kWh';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-      axisTitle = 'Brightness of sunshine W/m2';
+      axisTitle = '<span>Brightness<br>of sunshine<br>W/m2</span>';
       pointFormat = '{point.y:.2f} W/m2';
     } else if (y2AxisLabel == 'rating') {
       axisTitle = 'Rating';
     }
-    highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.addAxis({ title: { text: axisTitle, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
     highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
   }
 

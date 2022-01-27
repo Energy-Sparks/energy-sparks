@@ -8,11 +8,10 @@
 <div class="tab-content" id="management-energy-overview-tabs">
   <% overview_charts.each_with_index do |(energy, chart_config), index| %>
     <div class="tab-pane fade show <%= 'active' if index == 0 %>" id="<%= energy %>-overview" role="tabpanel" aria-labelledby="<%= energy %>-tab">
-      <div id="chart_wrapper_<%= chart_config[:chart].last %>" class="pt-4 chart-wrapper">
+      <div id="chart_wrapper_<%= chart_config[:chart].last %>" class="chart-wrapper">
         <%= render 'shared/analysis_controls' %>
         <%= chart_tag(@school, chart_config[:chart].last, show_advice: false, no_zoom: true, chart_config: {y_axis_units: chart_config[:units]}, wrap: false) %>
       </div>
     </div>
   <% end %>
 </div>
-

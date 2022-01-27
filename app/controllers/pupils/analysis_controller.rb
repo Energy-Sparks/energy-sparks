@@ -14,6 +14,7 @@ module Pupils
 
     def show
       @chart_type = get_chart_config
+      @fuel_type = params.require(:energy)
     end
 
     private
