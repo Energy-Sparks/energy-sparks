@@ -219,11 +219,12 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
     console.log('Y2 axis label' + y2AxisLabel);
 
+    axisFontSize = '18px'
     if (y2AxisLabel == 'Temperature') {
       axisTitle = '°C';
       pointFormat = '{point.y:.2f} °C';
     } else if (y2AxisLabel == 'Degree Days') {
-      axisTitle = 'Degree days';
+      axisTitle = '<span>Degree<br>days</span>';
       pointFormat = '{point.y:.2f} Degree days';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
       axisTitle = 'kg/kWh';
@@ -233,12 +234,12 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       axisTitle = 'kWh';
       pointFormat = '{point.y:.2f} kWh';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-      axisTitle = 'Brightness of sunshine W/m2';
+      axisTitle = '<span>Brightness<br>of sunshine<br>W/m2</span>';
       pointFormat = '{point.y:.2f} W/m2';
     } else if (y2AxisLabel == 'rating') {
       axisTitle = 'Rating';
     }
-    highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.addAxis({ title: { text: axisTitle, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
     highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
   }
 
