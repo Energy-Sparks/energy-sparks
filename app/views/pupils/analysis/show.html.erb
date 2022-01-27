@@ -1,15 +1,15 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Explore the <strong><%= @fuel_type %></strong> data for your school</h1>
+  <div>
+    <%= link_to 'Explore data', pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+  </div>
+</div>
+
 <div id="chart_wrapper_<%= @chart_type %>" class="pt-3 chart-wrapper">
-  <div class="d-flex justify-content-between align-items-center">
-    <div>
-      <%= link_to 'Back', request.referer.present? ? request.referer : pupils_school_analysis_path(@school), class: 'btn btn-rounded mr-5' %>
-    </div>
-    <div>
+  <div>
       <h3></h3>
       <h5></h5>
-    </div>
-    <div></div>
   </div>
-  <hr />
   <%= render 'shared/analysis_controls' %>
   <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false) %>
 </div>
