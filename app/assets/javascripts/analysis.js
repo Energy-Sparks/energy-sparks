@@ -256,6 +256,10 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
 
    chartConfig.drilldown_available =  drilldownAvailable;
 
+   if(drilldownAvailable) {
+     chart.update({plotOptions: {series: {cursor: 'pointer'}}});
+   }
+
     var transformations = chartConfig.transformations;
     var inDrilldown = transformations.some(isDrilldownTransformation);
     var drillup = controls.find('.drillup');
