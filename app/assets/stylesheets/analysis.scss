@@ -3,8 +3,15 @@ div.chart-controls {
   padding-left: 10px
 }
 
-div.analysis-controls {
-
+div.pupil-chart-titles {
+  h3 {
+    margin-left: 10px;
+    padding-left: 10px
+  }
+  h5 {
+    margin-left: 10px;
+    padding-left: 10px
+  }
 }
 
 .explore-button:disabled {
@@ -21,6 +28,8 @@ div.analysis-controls {
   color: $white;
 }
 
+
+
 div.analysis-chart, div.simulator-chart, div.usage-chart{
   height: 700px;
   width: 100%;
@@ -29,8 +38,8 @@ div.analysis-chart, div.simulator-chart, div.usage-chart{
   line-height: 700px;
   font-size: 14px;
   margin: 0 auto;
-  padding-bottom: 10px;
-  padding-top: 50px;
+  padding-bottom: 25px;
+  padding-top: 10px;
 
   &.pie-chart {
     height: 550px;
