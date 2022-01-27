@@ -240,10 +240,12 @@ function setupAnalysisControls(chartContainer, chartConfig){
 function processAnalysisOperations(chartConfig, chart, operations, drilldownAvailable, parentTimescaleDescription){
   var chartContainer = $(chart.renderTo);
   var controls = $(chartContainer).parent().find('.analysis-controls');
+  var anyOperations = false;
   if(controls.length){
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
+        anyOperations |= enabled;
         if(enabled){
           control.prop("disabled", false);
           control.show();
@@ -260,8 +262,16 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
      chart.update({plotOptions: {series: {cursor: 'pointer'}}});
    }
 
-    var transformations = chartConfig.transformations;
-    var inDrilldown = transformations.some(isDrilldownTransformation);
+   var transformations = chartConfig.transformations;
+   var inDrilldown = transformations.some(isDrilldownTransformation);
+
+   //if we're in a drilldown
+   //or there's a drilldown available
+   //or there's any operations available, show the controls
+   if(inDrilldown || drilldownAvailable || anyOperations) {
+     $(controls).show();
+   }
+
     var drillup = controls.find('.drillup');
     if(inDrilldown){
       drillup.find('span.period').html(parentTimescaleDescription);
