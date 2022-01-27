@@ -7,6 +7,20 @@ div.analysis-controls {
 
 }
 
+.explore-button:disabled {
+  color: $grey;
+  border-color: $grey;
+}
+
+.explore-button:hover:disabled {
+  color: $grey;
+  border-color: $grey;
+}
+
+.explore-button:hover {
+  color: $white;
+}
+
 div.analysis-chart, div.simulator-chart, div.usage-chart{
   height: 700px;
   width: 100%;
