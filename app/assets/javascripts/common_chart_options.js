@@ -26,12 +26,14 @@ function commonChartOptions(clickListener){
       }
     },
     legend: {
-      align: 'center',
+      align: 'left',
       margin: 20,
-      verticalAlign: 'bottom',
+      verticalAlign: 'top',
       floating: false,
       backgroundColor: 'white',
-      shadow: false
+      shadow: false,
+      itemStyle: { fontWeight: 'normal', fontSize: '18px' },
+      itemHoverStyle: { fontWeight: 'bold', fontSize: '18px' }
     },
     plotOptions: {
       series: {
