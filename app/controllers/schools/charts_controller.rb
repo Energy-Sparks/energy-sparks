@@ -11,7 +11,6 @@ class Schools::ChartsController < ApplicationController
 
   def show
     @chart_type = params.require(:chart_type).to_sym
-
     respond_to do |format|
       format.html do
         set_measurement_options
