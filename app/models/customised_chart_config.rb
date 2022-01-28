@@ -17,7 +17,9 @@ class CustomisedChartConfig
   private
 
   def customise_y_axis(new_config, overrides)
-    if overrides[:y_axis_units] && @original_config[:yaxis_units] == :kwh
+    #TODO this was originally limited to only setting if original was :kwh
+    #need to instead check if this is a legitimate change by calling analytics
+    if overrides[:y_axis_units] #&& @original_config[:yaxis_units] == :kwh
       new_config[:yaxis_units] = overrides[:y_axis_units] == :gb_pounds ? :£ : overrides[:y_axis_units]
     end
   end

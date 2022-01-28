@@ -28,7 +28,8 @@ class ChartData
       transformations: @transformations,
       allowed_operations: allowed_operations,
       drilldown_available: drilldown_available,
-      parent_timescale_description: parent_timescale_description
+      parent_timescale_description: parent_timescale_description,
+      y1_axis_choices: ChartYAxisManipulation.new(@aggregated_school).y1_axis_choices(transformed_chart_config)
     ).process
 
     values

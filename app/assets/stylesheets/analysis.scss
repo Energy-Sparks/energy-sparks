@@ -29,6 +29,10 @@ div.pupil-chart-titles {
   color: $white;
 }
 
+div.axis-controls label:hover {
+  font-weight: bold;
+}
+
 div.analysis-chart, div.simulator-chart, div.usage-chart{
   height: 700px;
   width: 100%;

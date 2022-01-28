@@ -59,6 +59,8 @@ function chartSuccess(chartConfig, chartData, chart) {
     pie(chartData, chart, seriesData, $chartDiv);
   }
 
+  enableAxisControls($chartWrapper, chartData);
+
   if(chartData.allowed_operations){
     processAnalysisOperations(chartConfig, chart, chartData.allowed_operations, chartData.drilldown_available, chartData.parent_timescale_description)
   }
@@ -105,6 +107,7 @@ function processAnalysisCharts(){
       var chartConfig = $(this).data('chart-config');
       processAnalysisChart(this, chartConfig);
       setupAnalysisControls(this, chartConfig);
+      setupAxisControls(this, chartConfig);
     });
   }
 
@@ -233,6 +236,45 @@ function setupAnalysisControls(chartContainer, chartConfig){
 
       chartConfig.transformations = newTransformtions;
       processAnalysisChart(chartContainer, chartConfig);
+    });
+  }
+}
+
+function setupAxisControls(chartContainer, chartConfig) {
+  var controls = $(chartContainer).parent().find('.axis-controls');
+  if(controls.length){
+    console.log("Setting axis controls");
+    $(controls).find('.axis-choice').on('change', function(event){
+      //manipulate the chartConfig
+      chartConfig['y_axis_units'] = $(this).data("unit");
+      console.log(chartConfig);
+      processAnalysisChart(chartContainer, chartConfig);
+    });
+  }
+}
+
+//call from chartSuccess to enable controls based on chart options
+function enableAxisControls(chartContainer, chartData) {
+  var controls = $(chartContainer).find('.axis-controls');
+  if(controls.length){
+    if(chartData.y1_axis_choices) {
+      controls.show();
+    }
+    console.log('Axis choices: ' + chartData.y1_axis_choices);
+    $(controls).find('.axis-choice').each(function() {
+      if(chartData.y1_axis_choices.includes( $(this).data("unit"))) {
+        $(this).prop('disabled', false);
+      } else {
+        $(this).prop('disabled', true);
+      }
+      label = $("label[for='" + $(this).attr("id") + "']");
+      if(label) {
+        console.log( $(label).text() );
+        console.log( chartData.y_axis_label );
+        if ($(label).text() == chartData.y_axis_label) {
+          $(this).prop('checked', true);
+        }
+      }
     });
   }
 }

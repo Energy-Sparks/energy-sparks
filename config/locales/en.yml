@@ -23,6 +23,9 @@ en:
   application: "Energy Sparks"
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+  kwh: "kWh"
+  co2: "kg CO2"
+  gb_pounds: "£"
   charts:
     hourly-usage-link: "View usage by day"
     weekly-usage-link: "View usage by week"

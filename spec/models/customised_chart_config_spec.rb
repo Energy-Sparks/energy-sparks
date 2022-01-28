@@ -18,11 +18,11 @@ describe CustomisedChartConfig do
       ).to eq( {yaxis_units: :co2})
     end
 
-    it 'does not allow y_axis overrides of other chart units' do
-      expect(
-        CustomisedChartConfig.new({yaxis_units: :kw}).customise({y_axis_units: :co2})
-      ).to eq({yaxis_units: :kw})
-    end
+#    it 'does not allow y_axis overrides of other chart units' do
+#      expect(
+#        CustomisedChartConfig.new({yaxis_units: :kw}).customise({y_axis_units: :co2})
+#      ).to eq({yaxis_units: :kw})
+#    end
 
     it 'swaps gp_pounds for £' do
       expect(
