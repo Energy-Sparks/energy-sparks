@@ -3,7 +3,7 @@ class ChartDataValues
               :y_axis_label, :x_axis_label, :x_axis_categories,
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
-              :uses_time_of_day
+              :uses_time_of_day, :y1_axis_choices
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   MIDDLE_ELECTRICITY = '#02B8FF'.freeze
@@ -48,7 +48,7 @@ class ChartDataValues
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
-  def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil)
+  def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
     if chart
       @chart_type         = chart_type
       @chart              = chart
@@ -73,6 +73,7 @@ class ChartDataValues
       @drilldown_available = drilldown_available
       @parent_timescale_description = parent_timescale_description
       @uses_time_of_day = false
+      @y1_axis_choices = y1_axis_choices
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
@@ -151,7 +152,8 @@ class ChartDataValues
       :drilldown_available,
       :transformations,
       :parent_timescale_description,
-      :uses_time_of_day
+      :uses_time_of_day,
+      :y1_axis_choices
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json
