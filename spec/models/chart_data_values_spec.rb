@@ -16,9 +16,9 @@ describe ChartDataValues do
 
   it 'handles labels properly' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
-    expect(chart_data_values.series_data.first[:name]).to eq "Sun 21/04/2019 - Sat 27/04/2019"
-    expect(chart_data_values.series_data.second[:name]).to eq "Sun 28/04/2019 - Sat 04/05/2019"
-    expect(chart_data_values.x_axis_categories).to eq ["S", "M", "T", "W", "T", "F", "S"]
+    expect(chart_data_values.series_data.first[:name]).to eq "Sun 21 Apr 19 - Sat 27 Apr 19"
+    expect(chart_data_values.series_data.second[:name]).to eq "Sun 28 Apr 19 - Sat 04 May 19"
+    expect(chart_data_values.x_axis_categories).to eq ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   end
 
   it 'sets the teacher-style colours for gas dashboard and pupil analysis charts' do
@@ -68,4 +68,3 @@ describe ChartDataValues do
     expect(cdv.work_out_best_colour(label)).to be nil
   end
 end
-
