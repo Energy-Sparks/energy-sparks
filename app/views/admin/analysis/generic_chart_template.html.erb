@@ -20,7 +20,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
   <div id="chart_wrapper_<%= chart %>" class="chart-wrapper">
     <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
     <div class="advice-header"></div>
-    <%= render 'shared/analysis_controls', chart_type: chart.to_s %>
+    <%= render 'shared/analysis_controls', chart_type: chart.to_s, axis_controls: true, analysis_controls: true %>
     <%= chart_tag(@school, chart.to_s, chart_config: @chart_config, wrap: false) %>
     <div class="advice-footer"></div>
   </div>

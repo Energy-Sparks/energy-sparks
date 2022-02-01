@@ -15,15 +15,15 @@
 
 <div class="row">
 
-  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
     find out how my school's electricity use compares with other schools
   <% end %>
 
-  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Bar', secondary_presentation: 'Week'} do %>
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity', presentation: 'Bar', secondary_presentation: 'Week'} do %>
     find out how much electricity was used last year
   <% end %>
 
-  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity+Solar PV', presentation: 'Bar', secondary_presentation: 'Year'} do %>
+  <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity', presentation: 'Bar', secondary_presentation: 'Year'} do %>
     find out how electricity use has changed long term
   <% end %>
 
