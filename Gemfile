@@ -118,6 +118,7 @@ group :development, :test do
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
+  gem 'scout_apm'
 end
 
 group :development do
