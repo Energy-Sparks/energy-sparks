@@ -15,7 +15,7 @@ with <%= @school.number_of_pupils %> pupils and a floor area of <%= @school.floo
 <div id="chart_wrapper_<%= @chart_type %>" class="chart-wrapper">
   <h3 class="analysis">Loading: <%= @title %></h3>
   <% if params[:control] %>
-    <%= render 'shared/analysis_controls', chart_type: @chart_type.to_s %>
+    <%= render 'shared/analysis_controls', chart_type: @chart_type.to_s, axis_controls: true, analysis_controls: true %>
   <% end %>
   <%= chart_tag(@school, @chart_type.to_s, wrap: false, show_advice: !params[:control].present?, chart_config: {y_axis_units:  @measurement}) %>
 </div>
