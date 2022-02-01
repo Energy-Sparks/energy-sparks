@@ -248,6 +248,7 @@ function setupAxisControls(chartContainer, chartConfig) {
       //manipulate the chartConfig
       chartConfig['y_axis_units'] = $(this).data("unit");
       console.log(chartConfig);
+      $(controls).find('.axis-choice').prop('disabled', true);
       processAnalysisChart(chartContainer, chartConfig);
     });
   }
