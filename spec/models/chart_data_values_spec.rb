@@ -21,22 +21,22 @@ describe ChartDataValues do
     expect(chart_data_values.x_axis_categories).to eq ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   end
 
-  it 'sets the teacher-style colours for gas dashboard and pupil analysis charts' do
+  it 'sets the colours for gas dashboard and pupil analysis charts' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :calendar_picker_gas_day_example_comparison_chart).process
     expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
   end
 
-  it 'sets the teacher-style colours for electricity dashboard and pupil analysis charts' do
+  it 'sets the colours for electricity dashboard and pupil analysis charts' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :calendar_picker_electricity_day_example_comparison_chart).process
     expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
   end
 
-  it 'sets the teacher-style colours for electricity line charts' do
+  it 'sets the colours for electricity line charts' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_electricity_day_example_comparison_chart).process
     expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_ELECTRICITY
   end
 
-  it 'sets the teacher-style colours for gas line charts' do
+  it 'sets the colours for gas line charts' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_gas_day_example_comparison_chart).process
     expect(chart_data_values.series_data.first[:color]).to eq ChartDataValues::DARK_GAS
   end
@@ -52,8 +52,6 @@ describe ChartDataValues do
     colour_key = ChartDataValues::COLOUR_HASH.keys.first
     label = "AB#{colour_key}C"
     colour = ChartDataValues::COLOUR_HASH[colour_key]
-
-
     expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to be colour
   end
 
@@ -61,10 +59,14 @@ describe ChartDataValues do
     colour_key = ChartDataValues::COLOUR_HASH.keys.first
     label = "AB#{colour_key}C"
     colour = ChartDataValues::COLOUR_HASH[colour_key]
-
-
     cdv = ChartDataValues.new({}, :a)
     expect(cdv.work_out_best_colour(label)).to be colour
     expect(cdv.work_out_best_colour(label)).to be nil
+  end
+
+  it 'includes y-axis choices' do
+    y1_axis_choices = [:kwh, :£]
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG.merge(chart1_type: :line), :calendar_picker_gas_day_example_comparison_chart, y1_axis_choices: y1_axis_choices).process
+    expect(chart_data_values.y1_axis_choices).to eql y1_axis_choices
   end
 end
