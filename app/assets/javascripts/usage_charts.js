@@ -6,6 +6,7 @@ $(document).ready(function() {
   //they should have already made any changes to the form we're using, so this just updates
   //the explanation and then triggers the data load
   function updateChart(el) {
+
     var supply = $("#supply").val();
     var period = $("#period").val();
     var config = $("#configuration").data('configuration');
@@ -13,7 +14,7 @@ $(document).ready(function() {
     var chartContainer = $('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
-    var measurement = $('#measurement').val();
+//    var measurement = $('#measurement').val();
     var meter = $("#meter").val();
 
     if (meter) {
@@ -28,11 +29,11 @@ $(document).ready(function() {
       chartConfig.series_breakdown = 'meter';
     }
 
-    chartConfig.y_axis_units = measurement;
+//    chartConfig.y_axis_units = measurement;
     chartConfig.date_ranges = getDateRanges();
 
+    setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
-
   }
 
   function getDateRanges(){
@@ -121,10 +122,6 @@ $(document).ready(function() {
     }
     updateChart($('.charts').first());
   }
-
-  $(document).on('change', '#measurement', function() {
-    updateChart(this);
-  });
 
   $(document).on('change', '#meter', function() {
     updateChart(this);

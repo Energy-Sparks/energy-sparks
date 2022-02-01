@@ -17,8 +17,9 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <%= chart_tag(@school, @chart_config[@period], show_advice: false, no_zoom: true, html_class: 'usage-chart') %>
+    <div class="col-md-12 chart-wrapper" id="chart_wrapper_#{@chart_type}">
+      <%= render 'shared/analysis_controls', chart_type: @chart_type.to_s, analysis_controls: false, axis_controls: @show_measurements %>
+      <%= chart_tag(@school, @chart_config[@period], show_advice: false, no_zoom: true, wrap: false, html_class: 'usage-chart') %>
     </div>
   </div>
 
@@ -81,19 +82,6 @@
           <%= hidden_field_tag :meter, 'all' %>
         <% end %>
       <% end %>
-
-      <% if @show_measurements %>
-        <div class="col-12 col-lg-3 col-md-4">
-          <div class="<%= @supply %>-dark p-2 mb-2">
-            <%= label_tag :measurement, 'Choose measurement'%>
-            <div class="form-group">
-              <%= select_tag :measurement, options_for_select(@measurement_options.map(&:reverse), @measurement), class: "form-control" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-
-
     </div>
   <% end %>
 
