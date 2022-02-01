@@ -271,7 +271,10 @@ function updateChartLabels(data, chart){
 
   if (yAxisLabel) {
     console.log('we have a yAxisLabel ' + yAxisLabel);
-    chart.update({ yAxis: [{ title: { text: yAxisLabel }}]});
+    if(yAxisLabel == 'kg CO2') {
+      yAxisLabel = 'kg<br>CO2';
+    }
+    chart.update({ yAxis: [{ title: { text: yAxisLabel, useHTML: true }}]});
   }
 
   if (xAxisLabel) {
