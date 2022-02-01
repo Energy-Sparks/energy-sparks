@@ -247,7 +247,6 @@ function setupAxisControls(chartContainer, chartConfig) {
     $(controls).find('.axis-choice').on('change', function(event){
       //manipulate the chartConfig
       chartConfig['y_axis_units'] = $(this).data("unit");
-      console.log(chartConfig);
       $(controls).find('.axis-choice').prop('disabled', true);
       processAnalysisChart(chartContainer, chartConfig);
     });
@@ -270,8 +269,6 @@ function enableAxisControls(chartContainer, chartData) {
       }
       label = $("label[for='" + $(this).attr("id") + "']");
       if(label) {
-        console.log( $(label).text() );
-        console.log( chartData.y_axis_label );
         if ($(label).text() == chartData.y_axis_label) {
           $(this).prop('checked', true);
         }
