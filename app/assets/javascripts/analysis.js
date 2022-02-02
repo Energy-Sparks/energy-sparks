@@ -261,19 +261,21 @@ function enableAxisControls(chartContainer, chartData) {
       controls.show();
     }
     console.log('Axis choices: ' + chartData.y1_axis_choices);
-    $(controls).find('.axis-choice').each(function() {
-      if(chartData.y1_axis_choices.includes( $(this).data("unit"))) {
-        $(this).prop('disabled', false);
-      } else {
-        $(this).prop('disabled', true);
-      }
-      label = $("label[for='" + $(this).attr("id") + "']");
-      if(label) {
-        if ($(label).text() == chartData.y_axis_label) {
-          $(this).prop('checked', true);
+    if(chartData.y1_axis_choices) {
+      $(controls).find('.axis-choice').each(function() {
+        if(chartData.y1_axis_choices.includes( $(this).data("unit"))) {
+          $(this).prop('disabled', false);
+        } else {
+          $(this).prop('disabled', true);
         }
-      }
-    });
+        label = $("label[for='" + $(this).attr("id") + "']");
+        if(label) {
+          if ($(label).text() == chartData.y_axis_label) {
+            $(this).prop('checked', true);
+          }
+        }
+      });
+    }
   }
 }
 
