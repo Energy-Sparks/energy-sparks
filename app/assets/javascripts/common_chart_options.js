@@ -118,7 +118,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   var subChartType = chartData.chart1_subtype;
   var chartType = chartData.chart1_type;
 
-  console.log(chartType + ' ' + subChartType);
+  console.log(chartType + ': ' + subChartType);
 
   var xAxisCategories = chartData.x_axis_categories;
   var yAxisLabel = chartData.y_axis_label;
@@ -147,7 +147,6 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Column charts
   if (chartType == 'column') {
-    console.log('column: ' + subChartType);
     if (! noZoom) {
       highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
     }
@@ -155,7 +154,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     if (subChartType == 'stacked') {
       highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     } else {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+
+      if(seriesData[0]['day_format'] && seriesData[0]['day_format']) {
+        highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '', pointFormat: dayAndPointFormat(yAxisLabel)}}}});
+      }
+      else {
+        highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+      }
+
     }
   }
 
@@ -284,6 +290,15 @@ function pie(chartData, highchartsChart, seriesData, $chartDiv) {
   }
   });
   highchartsChart.redraw();
+}
+
+function dayAndPointFormat(label) {
+  var format = '<b>{point.day}</b><br>{point.y:.2f}';
+  if(label == '£'){
+    return label + format;
+  } else {
+    return format + ' ' + label;
+  }
 }
 
 function orderedPointFormat(label){

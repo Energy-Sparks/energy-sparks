@@ -160,12 +160,18 @@ class ChartDataValues
 
 private
 
-  def format_teachers_label(full_label)
+  def start_date_from_label(full_label)
     # Remove leading Energy:
     date_string = tidy_label(full_label)
-    start_date = Date.parse(date_string)
-    end_date = start_date + 6.days
+    Date.parse(date_string)
+  rescue ArgumentError
+    nil
+  end
 
+  def format_teachers_label(full_label)
+    start_date = start_date_from_label(full_label)
+    return full_label unless start_date
+    end_date = start_date + 6.days
     "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
   rescue ArgumentError
     full_label
@@ -174,7 +180,17 @@ private
   def usage_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       colour = teachers_chart_colour(index)
-      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+      #get the start date
+      start_date = start_date_from_label(data_type)
+
+      #run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
+      if start_date
+        data.map!.with_index {|v, i| { y: v, day: start_date.next_day(i).strftime('%a %d/%m/%Y') } }
+      end
+
+      #add some useful cue to the json to indicate it should use an alternate formatter
+      #e.g. pointFormat: :day, :orderedPoint
+      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index, day_format: start_date.present? }
     end
   end
 
