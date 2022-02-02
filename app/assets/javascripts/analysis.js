@@ -215,11 +215,13 @@ function setupAnalysisControls(chartContainer, chartConfig){
     controls.find('.move_back').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
+      logEvent("move_back", chartConfig.type);
       pushTransformation(chartConfig, chartContainer, 'move', -1);
     });
     controls.find('.move_forward').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
+      logEvent("move_forward", chartConfig.type);
       pushTransformation(chartConfig, chartContainer, 'move', 1);
     });
 
@@ -227,6 +229,7 @@ function setupAnalysisControls(chartContainer, chartConfig){
       event.preventDefault();
 
       $(this).prop( "disabled", true );
+      logEvent("drillup", chartConfig.type);
 
       var transformations = chartConfig.transformations;
       var inDrilldown = transformations.some(isDrilldownTransformation);
@@ -243,11 +246,12 @@ function setupAnalysisControls(chartContainer, chartConfig){
 function setupAxisControls(chartContainer, chartConfig) {
   var controls = $(chartContainer).parent().find('.axis-controls');
   if(controls.length){
-    console.log("Setting axis controls");
+    //console.log("Setting axis controls");
     $(controls).find('.axis-choice').on('change', function(event){
       //manipulate the chartConfig
       chartConfig['y_axis_units'] = $(this).data("unit");
       $(controls).find('.axis-choice').prop('disabled', true);
+      logEvent("axis-choice", chartConfig.type);
       processAnalysisChart(chartContainer, chartConfig);
     });
   }
@@ -260,7 +264,7 @@ function enableAxisControls(chartContainer, chartData) {
     if(chartData.y1_axis_choices) {
       controls.show();
     }
-    console.log('Axis choices: ' + chartData.y1_axis_choices);
+    //console.log('Axis choices: ' + chartData.y1_axis_choices);
     if(chartData.y1_axis_choices) {
       $(controls).find('.axis-choice').each(function() {
         if(chartData.y1_axis_choices.includes( $(this).data("unit"))) {
@@ -346,6 +350,7 @@ function processChartClick(chartConfig, chartContainer, event){
   var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
     if(chartConfig.drilldown_available){
+      logEvent("drilldown", chartConfig.type);
       pushTransformation(chartConfig, chartContainer, 'drilldown', event.point.index)
     }
   }
