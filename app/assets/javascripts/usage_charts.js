@@ -94,6 +94,7 @@ $(document).ready(function() {
         datePickerValue = moment(datePickerValue, 'dddd, D MMMM YYYY').startOf('week').format('dddd, D MMMM YYYY');
         $(inputId).val(datePickerValue);
       }
+      logEvent('datetimepicker', '');
       updateChart(this);
     });
   }
@@ -124,6 +125,7 @@ $(document).ready(function() {
   }
 
   $(document).on('change', '#meter', function() {
+    logEvent('meter', '');
     updateChart(this);
   });
 

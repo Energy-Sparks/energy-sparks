@@ -34,6 +34,7 @@ function commonChartOptions(clickListener){
       shadow: false,
       itemStyle: { fontWeight: 'normal', fontSize: '18px' },
       itemHoverStyle: { fontWeight: 'bold', fontSize: '18px' }
+
     },
     plotOptions: {
       series: {
@@ -43,6 +44,12 @@ function commonChartOptions(clickListener){
           },
           hover: {
             brightness: -0.2
+          }
+        },
+        events: {
+          legendItemClick: function(e) {
+            logEvent("legend", e.target.name);
+            return true;
           }
         }
       },
@@ -118,7 +125,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   var subChartType = chartData.chart1_subtype;
   var chartType = chartData.chart1_type;
 
-  console.log(chartType + ': ' + subChartType);
+  //console.log(chartType + ': ' + subChartType);
 
   var xAxisCategories = chartData.x_axis_categories;
   var yAxisLabel = chartData.y_axis_label;
@@ -132,7 +139,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   // BAR Charts
   if (chartType == 'bar') {
     if (chartData.uses_time_of_day) {
-      console.log('time of day set');
+      //console.log('time of day set');
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
     highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
@@ -172,7 +179,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     var max;
     var colour = '#232b49';
 
-    console.log('Y2 axis label' + y2AxisLabel);
+    //console.log('Y2 axis label' + y2AxisLabel);
 
     axisFontSize = '18px'
     if (y2AxisLabel == 'Temperature') {
@@ -199,14 +206,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   }
 
   Object.keys(seriesData).forEach(function (key) {
-    console.log('Series data name: ' + seriesData[key].name);
+    //console.log('Series data name: ' + seriesData[key].name);
 
     if (seriesData[key].name == 'CUSUM') {
       highchartsChart.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
 
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
-      console.log(seriesData[key]);
+      //console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: orderedPointFormat(yAxisLabel) }
     }
     // The false parameter stops it being redrawed after every addition of series data
@@ -225,7 +232,7 @@ function updateChartLabels(data, chart){
   var xAxisLabel = data.x_axis_label;
 
   if (yAxisLabel) {
-    console.log('we have a yAxisLabel ' + yAxisLabel);
+    //console.log('we have a yAxisLabel ' + yAxisLabel);
     if(yAxisLabel == 'kg CO2') {
       yAxisLabel = 'kg<br>CO2';
     }
@@ -233,7 +240,7 @@ function updateChartLabels(data, chart){
   }
 
   if (xAxisLabel) {
-    console.log('we have a xAxisLabel ' + xAxisLabel);
+    //console.log('we have a xAxisLabel ' + xAxisLabel);
     chart.update({ xAxis: [{ title: { text: xAxisLabel }}]});
   }
 }
@@ -253,14 +260,14 @@ function isAStringAndStartsWith(thing, startingWith) {
 }
 
 function scatter(chartData, highchartsChart, seriesData) {
-  console.log('scatter');
+  //console.log('scatter');
 
   updateChartLabels(chartData, highchartsChart);
   highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
 
   Object.keys(seriesData).forEach(function (key) {
-    console.log(seriesData[key].name);
+    //console.log(seriesData[key].name);
     highchartsChart.addSeries(seriesData[key], false);
   });
   normaliseYAxis(highchartsChart);
@@ -340,4 +347,14 @@ function normaliseYAxis(chart){
 function normaliseAxis(axisToChange, axisAExtremes, axisBExtremes){
   var ratio = axisAExtremes.max / axisAExtremes.min;
   axisToChange.setExtremes((axisBExtremes.max / ratio), axisBExtremes.max)
+}
+
+function logEvent(action, label){
+  //console.log("Logging:" + action + " - " + label);
+  if (typeof gtag !== 'undefined') {
+    gtag('event', action, {
+      'event_category': 'Charts',
+      'event_label': label
+    });
+  }
 }
