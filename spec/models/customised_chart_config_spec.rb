@@ -39,6 +39,13 @@ describe CustomisedChartConfig do
         CustomisedChartConfig.new({yaxis_units: :co2}).customise({y_axis_units: :£})
       ).to eq( {yaxis_units: :co2})
     end
+
+    it 'handles when there are no valid options' do
+      allow_any_instance_of(ChartYAxisManipulation).to receive(:y1_axis_choices).and_return(nil)
+      expect(
+        CustomisedChartConfig.new({yaxis_units: :co2}).customise({y_axis_units: :£})
+      ).to eq( {yaxis_units: :co2})
+    end
   end
 
   describe 'meter definition' do

@@ -20,7 +20,7 @@ class CustomisedChartConfig
     if overrides[:y_axis_units]
       overrides[:y_axis_units] = :£ if overrides[:y_axis_units] == :gb_pounds
       valid_choices = ChartYAxisManipulation.new(nil).y1_axis_choices(@original_config)
-      new_config[:yaxis_units] = overrides[:y_axis_units] if valid_choices.include?(overrides[:y_axis_units])
+      new_config[:yaxis_units] = overrides[:y_axis_units] if valid_choices && valid_choices.include?(overrides[:y_axis_units])
     end
   end
 
