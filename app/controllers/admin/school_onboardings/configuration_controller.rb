@@ -10,6 +10,7 @@ module Admin
           @school_onboarding.dark_sky_area = @school_onboarding.school_group.default_dark_sky_area
           @school_onboarding.weather_station = @school_onboarding.school_group.default_weather_station
           @school_onboarding.scoreboard = @school_onboarding.school_group.default_scoreboard
+          @school_onboarding.default_prefer_climate_reporting = @school_onboarding.school_group.default_prefer_climate_reporting
         end
       end
 
@@ -30,7 +31,8 @@ module Admin
           :solar_pv_tuos_area_id,
           :dark_sky_area_id,
           :scoreboard_id,
-          :weather_station_id
+          :weather_station_id,
+          :default_prefer_climate_reporting
         )
       end
     end

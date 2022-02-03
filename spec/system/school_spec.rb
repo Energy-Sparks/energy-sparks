@@ -340,6 +340,18 @@ RSpec.describe "school", type: :system do
           expect(school.key_stages).to_not include(ks3)
         end
 
+        it 'can set climate impact reporting preference' do
+          click_on(school_name)
+          click_on('Edit school details')
+          expect(page.has_checked_field?('Present data in terms of climate impact')).to be_falsey
+
+          check('Present data in terms of climate impact')
+          click_on('Update School')
+          school.reload
+
+          expect(school.prefer_climate_reporting).to be true
+        end
+
         it 'can see when the school was created on Energy Sparks' do
           click_on(school_name)
           click_on('Edit school details')
@@ -407,6 +419,8 @@ RSpec.describe "school", type: :system do
             expect(school.indicated_has_storage_heaters).to be true
           end
         end
+
+        it 'can change climate reporting preference'
 
       end
 

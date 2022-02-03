@@ -27,6 +27,7 @@
 #  number_of_pupils                      :integer
 #  percentage_free_school_meals          :integer
 #  postcode                              :string
+#  prefer_climate_reporting              :boolean          default(FALSE)
 #  process_data                          :boolean          default(FALSE)
 #  public                                :boolean          default(TRUE)
 #  removal_date                          :date
