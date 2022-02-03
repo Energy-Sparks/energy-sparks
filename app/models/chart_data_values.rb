@@ -3,7 +3,7 @@ class ChartDataValues
               :y_axis_label, :x_axis_label, :x_axis_categories,
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
-              :uses_time_of_day
+              :uses_time_of_day, :y1_axis_choices
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   MIDDLE_ELECTRICITY = '#02B8FF'.freeze
@@ -48,7 +48,7 @@ class ChartDataValues
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
-  def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil)
+  def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
     if chart
       @chart_type         = chart_type
       @chart              = chart
@@ -73,6 +73,7 @@ class ChartDataValues
       @drilldown_available = drilldown_available
       @parent_timescale_description = parent_timescale_description
       @uses_time_of_day = false
+      @y1_axis_choices = y1_axis_choices
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
@@ -88,9 +89,7 @@ class ChartDataValues
     @annotations = annotations_configuration
 
     if @chart1_type == :column || @chart1_type == :bar
-      if Schools::Configuration::TEACHERS_DASHBOARD_CHARTS.include?(@chart_type)
-        teachers_column
-      elsif @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
+      if @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_column
       else
         column_or_bar
@@ -151,7 +150,8 @@ class ChartDataValues
       :drilldown_available,
       :transformations,
       :parent_timescale_description,
-      :uses_time_of_day
+      :uses_time_of_day,
+      :y1_axis_choices
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json
@@ -160,12 +160,18 @@ class ChartDataValues
 
 private
 
-  def format_teachers_label(full_label)
+  def start_date_from_label(full_label)
     # Remove leading Energy:
     date_string = tidy_label(full_label)
-    start_date = Date.parse(date_string)
-    end_date = start_date + 6.days
+    Date.parse(date_string)
+  rescue ArgumentError
+    nil
+  end
 
+  def format_teachers_label(full_label)
+    start_date = start_date_from_label(full_label)
+    return full_label unless start_date
+    end_date = start_date + 6.days
     "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
   rescue ArgumentError
     full_label
@@ -174,18 +180,17 @@ private
   def usage_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       colour = teachers_chart_colour(index)
-      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
-    end
-  end
+      #get the start date
+      start_date = start_date_from_label(data_type)
 
-  def teachers_column
-    @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
-      colour = teachers_chart_colour(index)
+      #run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
+      if start_date
+        data.map!.with_index {|v, i| { y: v, day: start_date.next_day(i).strftime('%a %d/%m/%Y') } }
+      end
 
-      # Override Monday, Tuesday etc
-      @x_axis_categories = X_AXIS_CATEGORIES
-
-      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index }
+      #add some useful cue to the json to indicate it should use an alternate formatter
+      #e.g. pointFormat: :day, :orderedPoint
+      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index, day_format: start_date.present? }
     end
   end
 

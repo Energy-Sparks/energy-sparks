@@ -18,12 +18,6 @@ describe CustomisedChartConfig do
       ).to eq( {yaxis_units: :co2})
     end
 
-    it 'does not allow y_axis overrides of other chart units' do
-      expect(
-        CustomisedChartConfig.new({yaxis_units: :kw}).customise({y_axis_units: :co2})
-      ).to eq({yaxis_units: :kw})
-    end
-
     it 'swaps gp_pounds for £' do
       expect(
         CustomisedChartConfig.new({yaxis_units: :kwh}).customise({y_axis_units: :gb_pounds})
@@ -34,8 +28,24 @@ describe CustomisedChartConfig do
       expect(
         CustomisedChartConfig.new({yaxis_units: :kwh}).customise({})
       ).to eq( {yaxis_units: :kwh} )
+      expect(
+        CustomisedChartConfig.new({yaxis_units: :kwh}).customise({yaxis_units: nil})
+      ).to eq( {yaxis_units: :kwh} )
     end
 
+    it 'checks for valid options' do
+      allow_any_instance_of(ChartYAxisManipulation).to receive(:y1_axis_choices).and_return([:co2])
+      expect(
+        CustomisedChartConfig.new({yaxis_units: :co2}).customise({y_axis_units: :£})
+      ).to eq( {yaxis_units: :co2})
+    end
+
+    it 'handles when there are no valid options' do
+      allow_any_instance_of(ChartYAxisManipulation).to receive(:y1_axis_choices).and_return(nil)
+      expect(
+        CustomisedChartConfig.new({yaxis_units: :co2}).customise({y_axis_units: :£})
+      ).to eq( {yaxis_units: :co2})
+    end
   end
 
   describe 'meter definition' do

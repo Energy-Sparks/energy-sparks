@@ -1,20 +1,25 @@
 <% content_for :page_title, t(@title_key) %>
 
-<div class="container charts">
-  <div class="d-flex justify-content-between align-items-center">
-    <div>
-      <%= link_to 'Back', request.referer.present? ? request.referer : pupils_school_analysis_path(@school), class: 'btn btn-rounded mr-5' %>
-    </div>
-    <div>
-      <h3><%= t(@title_key)  %></h3>
-    </div>
-    <div></div>
+<div class="d-flex justify-content-between align-items-center">
+  <% if @split_meters %>
+    <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between different meters</h1>
+  <% else %>
+    <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between two different weeks</h1>
+  <% end %>
+  <div>
+    <%= link_to 'Explore data', pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
   </div>
-  <hr />
+</div>
+
+<div class="charts">
+  <div>
+    <h3><%= t(@title_key)  %></h3>
+  </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <%= chart_tag(@school, @chart_config[@period], show_advice: false, html_class: 'usage-chart') %>
+    <div class="col-md-12 chart-wrapper" id="chart_wrapper_#{@chart_type}">
+      <%= render 'shared/analysis_controls', chart_type: @chart_type.to_s, analysis_controls: false, axis_controls: @show_measurements %>
+      <%= chart_tag(@school, @chart_config[@period], show_advice: false, no_zoom: true, wrap: false, html_class: 'usage-chart') %>
     </div>
   </div>
 
@@ -77,19 +82,6 @@
           <%= hidden_field_tag :meter, 'all' %>
         <% end %>
       <% end %>
-
-      <% if @show_measurements %>
-        <div class="col-12 col-lg-3 col-md-4">
-          <div class="<%= @supply %>-dark p-2 mb-2">
-            <%= label_tag :measurement, 'Choose measurement'%>
-            <div class="form-group">
-              <%= select_tag :measurement, options_for_select(@measurement_options.map(&:reverse), @measurement), class: "form-control" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-
-
     </div>
   <% end %>
 

@@ -15,7 +15,7 @@ function commonChartOptions(clickListener){
     colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
     title: { text: null },
     xAxis: { showEmpty: false },
-    yAxis: { showEmpty: false },
+    yAxis: { showEmpty: false, title: { rotation: 0, margin: 30, useHTML: true, style: {fontSize: '18px'} } },
     tooltip: {
       backgroundColor: null,
       borderWidth: 0,
@@ -26,18 +26,30 @@ function commonChartOptions(clickListener){
       }
     },
     legend: {
-      align: 'center',
+      align: 'left',
       margin: 20,
-      verticalAlign: 'bottom',
+      verticalAlign: 'top',
       floating: false,
       backgroundColor: 'white',
-      shadow: false
+      shadow: false,
+      itemStyle: { fontWeight: 'normal', fontSize: '18px' },
+      itemHoverStyle: { fontWeight: 'bold', fontSize: '18px' }
+
     },
     plotOptions: {
       series: {
         states: {
           inactive: {
             opacity: 1
+          },
+          hover: {
+            brightness: -0.2
+          }
+        },
+        events: {
+          legendItemClick: function(e) {
+            logEvent("legend", e.target.name);
+            return true;
           }
         }
       },
@@ -109,62 +121,11 @@ function commonChartOptions(clickListener){
   };
 }
 
-function teachersChartOptions(pointFormat) {
-  return {
-    legend: {
-      itemStyle: {
-        fontWeight: 'normal'
-      }
-    },
-    plotOptions: {
-      series: {
-        pointPadding: 0.02, groupPadding: 0.07
-      },
-      column: {
-        tooltip: {
-          headerFormat: '<b>{series.name}</b><br>', pointFormat: pointFormat
-        }
-      }
-    },
-    xAxis: {
-      lineWidth: 3, lineColor: 'rgb(151,151,151)'
-    },
-    yAxis: [{
-      title: {
-        text: "£"
-      }
-    }],
-    navigation: {
-      buttonOptions: {
-        enabled: false
-      }
-    }
-  }
-}
-
-function teachersColumn(chartData, chart, seriesData) {
-
-  console.log('Teachers column chart');
-
-  var xAxisCategories = chartData.x_axis_categories;
-  var yAxisLabel = chartData.y_axis_label;
-
-  chart.xAxis[0].setCategories(xAxisCategories);
-  chart.update(teachersChartOptions(orderedPointFormat(yAxisLabel)));
-
-  Object.keys(seriesData).forEach(function (key) {
-    // The false parameter stops it being redrawed after every addition of series data
-    chart.addSeries(seriesData[key], false);
-  });
-
-  chart.redraw();
-}
-
 function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   var subChartType = chartData.chart1_subtype;
   var chartType = chartData.chart1_type;
 
-  console.log(chartType + ' ' + subChartType);
+  //console.log(chartType + ': ' + subChartType);
 
   var xAxisCategories = chartData.x_axis_categories;
   var yAxisLabel = chartData.y_axis_label;
@@ -178,13 +139,10 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   // BAR Charts
   if (chartType == 'bar') {
     if (chartData.uses_time_of_day) {
-      console.log('time of day set');
+      //console.log('time of day set');
       highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
     }
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 300, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
-
-
-
+    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
   }
 
   // LINE charts
@@ -196,7 +154,6 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Column charts
   if (chartType == 'column') {
-    console.log('column: ' + subChartType);
     if (! noZoom) {
       highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
     }
@@ -204,7 +161,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     if (subChartType == 'stacked') {
       highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '#232b49' } } }]});
     } else {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+
+      if(seriesData[0]['day_format'] && seriesData[0]['day_format']) {
+        highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '', pointFormat: dayAndPointFormat(yAxisLabel)}}}});
+      }
+      else {
+        highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+      }
+
     }
   }
 
@@ -215,13 +179,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
     var max;
     var colour = '#232b49';
 
-    console.log('Y2 axis label' + y2AxisLabel);
+    //console.log('Y2 axis label' + y2AxisLabel);
 
+    axisFontSize = '18px'
     if (y2AxisLabel == 'Temperature') {
       axisTitle = '°C';
       pointFormat = '{point.y:.2f} °C';
     } else if (y2AxisLabel == 'Degree Days') {
-      axisTitle = 'Degree days';
+      axisTitle = '<span>Degree<br>days</span>';
       pointFormat = '{point.y:.2f} Degree days';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
       axisTitle = 'kg/kWh';
@@ -231,24 +196,24 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       axisTitle = 'kWh';
       pointFormat = '{point.y:.2f} kWh';
     } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-      axisTitle = 'Brightness of sunshine W/m2';
+      axisTitle = '<span>Brightness<br>of sunshine<br>W/m2</span>';
       pointFormat = '{point.y:.2f} W/m2';
     } else if (y2AxisLabel == 'rating') {
       axisTitle = 'Rating';
     }
-    highchartsChart.addAxis({ title: { text: axisTitle }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.addAxis({ title: { text: axisTitle, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
     highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
   }
 
   Object.keys(seriesData).forEach(function (key) {
-    console.log('Series data name: ' + seriesData[key].name);
+    //console.log('Series data name: ' + seriesData[key].name);
 
     if (seriesData[key].name == 'CUSUM') {
       highchartsChart.update({ plotOptions: { line: { tooltip: { pointFormat: '{point.y:.2f}', valueSuffix: yAxisLabel }}}});
     }
 
     if (isAStringAndStartsWith(seriesData[key].name, 'Energy') && seriesData[key].type == 'line') {
-      console.log(seriesData[key]);
+      //console.log(seriesData[key]);
       seriesData[key].tooltip = { pointFormat: orderedPointFormat(yAxisLabel) }
     }
     // The false parameter stops it being redrawed after every addition of series data
@@ -267,12 +232,15 @@ function updateChartLabels(data, chart){
   var xAxisLabel = data.x_axis_label;
 
   if (yAxisLabel) {
-    console.log('we have a yAxisLabel ' + yAxisLabel);
-    chart.update({ yAxis: [{ title: { text: yAxisLabel }}]});
+    //console.log('we have a yAxisLabel ' + yAxisLabel);
+    if(yAxisLabel == 'kg CO2') {
+      yAxisLabel = 'kg<br>CO2';
+    }
+    chart.update({ yAxis: [{ title: { text: yAxisLabel, useHTML: true }}]});
   }
 
   if (xAxisLabel) {
-    console.log('we have a xAxisLabel ' + xAxisLabel);
+    //console.log('we have a xAxisLabel ' + xAxisLabel);
     chart.update({ xAxis: [{ title: { text: xAxisLabel }}]});
   }
 }
@@ -292,14 +260,14 @@ function isAStringAndStartsWith(thing, startingWith) {
 }
 
 function scatter(chartData, highchartsChart, seriesData) {
-  console.log('scatter');
+  //console.log('scatter');
 
   updateChartLabels(chartData, highchartsChart);
   highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
 
 
   Object.keys(seriesData).forEach(function (key) {
-    console.log(seriesData[key].name);
+    //console.log(seriesData[key].name);
     highchartsChart.addSeries(seriesData[key], false);
   });
   normaliseYAxis(highchartsChart);
@@ -329,6 +297,15 @@ function pie(chartData, highchartsChart, seriesData, $chartDiv) {
   }
   });
   highchartsChart.redraw();
+}
+
+function dayAndPointFormat(label) {
+  var format = '<b>{point.day}</b><br>{point.y:.2f}';
+  if(label == '£'){
+    return label + format;
+  } else {
+    return format + ' ' + label;
+  }
 }
 
 function orderedPointFormat(label){
@@ -370,4 +347,14 @@ function normaliseYAxis(chart){
 function normaliseAxis(axisToChange, axisAExtremes, axisBExtremes){
   var ratio = axisAExtremes.max / axisAExtremes.min;
   axisToChange.setExtremes((axisBExtremes.max / ratio), axisBExtremes.max)
+}
+
+function logEvent(action, label){
+  //console.log("Logging:" + action + " - " + label);
+  if (typeof gtag !== 'undefined') {
+    gtag('event', action, {
+      'event_category': 'Charts',
+      'event_label': label
+    });
+  }
 }

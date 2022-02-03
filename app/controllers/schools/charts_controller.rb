@@ -11,7 +11,6 @@ class Schools::ChartsController < ApplicationController
 
   def show
     @chart_type = params.require(:chart_type).to_sym
-
     respond_to do |format|
       format.html do
         set_measurement_options
@@ -21,10 +20,12 @@ class Schools::ChartsController < ApplicationController
       format.json do
         chart_config = {
           mpan_mprn: params[:mpan_mprn],
-          y_axis_units: params.fetch(:chart_y_axis_units, :kwh).to_sym,
           series_breakdown: params[:series_breakdown],
           date_ranges: get_date_ranges
         }
+        y_axis_units = params[:chart_y_axis_units]
+        chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
+
         output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
         if output
           render json: ChartDataValues.as_chart_json(output)
