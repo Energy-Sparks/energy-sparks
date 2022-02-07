@@ -75,6 +75,6 @@ module ChartHelper
   end
 
   def possible_y1_axis_choices
-    ChartYAxisManipulation.manipulatable_y1_axis_choices
+    %i[kwh £ co2]
   end
 end
