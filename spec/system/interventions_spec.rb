@@ -27,7 +27,7 @@ describe 'viewing and recording action', type: :system do
       end
 
       it 'should display score' do
-        expect(page).to have_content(intervention_type.points)
+        expect(page).to have_content("#{intervention_type.points} points for this action")
       end
 
       it 'should display description' do
