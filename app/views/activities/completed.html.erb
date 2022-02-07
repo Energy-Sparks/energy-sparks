@@ -1,0 +1,64 @@
+<% content_for :page_title, "#{@school.name} Activity" %>
+
+<div class="row">
+  <div class="col-md-12">
+    <h1><%= @activity.display_name %></h1>
+    <div class="row alert info-bar text-dark bg-neutral" role="alert">
+      <div class="col-lg-1 d-none d-lg-block align-self-center">
+        <i class="fas fa-tasks fa-3x"></i>
+      </div>
+      <div class="col-lg-7 col-sm-12 align-self-center">
+        Congratulations! We've recorded your activity and your school has scored <strong><%= @activity.activity_type.score %></strong> points!
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if current_school_podium && current_school_podium.includes_school? && can?(:read, current_school_podium.scoreboard) %>
+  <div class="row">
+      <div class="col-md-12">
+        <div class="row alert alert-secondary info-bar text-dark bg-light" role="alert">
+          <div class="col-lg-1 d-none d-lg-block align-self-center">
+            <%= fa_icon('crown') %>
+          </div>
+          <div class="col-lg-7 col-sm-12 align-self-center">
+            <p>
+              Your school is in <strong><%= current_school_podium.school_position.ordinal %></strong> position
+              on the <%= link_to 'scoreboard', scoreboard_path(current_school_podium.scoreboard) %>,
+              with a total of <strong><%= current_school_podium.school_position.points %></strong> points.
+            </p>
+            <% if current_school_podium.next_school_position %>
+              <p>
+                You could be in <strong><%= current_school_podium.next_school_position.ordinal %></strong> position
+                with <strong><%= current_school_podium.next_school_position.points - current_school_podium.school_position.points + 1 %></strong> more points.
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  </div>
+<% end %>
+
+
+<h3>What you did on <%= @activity.happened_on.strftime("%A, %d %B %Y") %></h3>
+<% if @activity.description %>
+  <div class="row">
+    <div class="col-md-12 activity">
+      <%= @activity.description %>
+    </div>
+  </div>
+  <p></p>
+<% else %>
+  <div class="row">
+    <div class="col-md-12 activity">
+      <p>You haven't entered what you did for this activity, please edit the activitiy and tell us what you did.</p>
+      <p><%= link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
+    </div>
+  </div>
+<% end %>
+
+<p><%= link_to "See the full activity record..", school_activity_path(@school, @activity) %></p>
+
+<h3>How about completing some of these other activities?</h3>
+
+<p><%= link_to "Suggested activities", activity_category_path(@activity.activity_type.activity_category) %></p>

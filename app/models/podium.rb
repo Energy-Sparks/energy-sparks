@@ -78,6 +78,18 @@ class Podium
     @positions.find {|position| position.school == @school}
   end
 
+  def next_school_position
+    idx = @positions.index(school_position)
+    case idx
+    when nil
+      @positions.last
+    when 0
+      nil
+    else
+      @positions[idx - 1]
+    end
+  end
+
   def current_school?(position)
     position.school == @school
   end

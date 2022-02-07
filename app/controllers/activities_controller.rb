@@ -17,6 +17,15 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def completed
+    interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
+    if show_data_enabled_activity?(@activity, @school)
+      @activity_type_content = interpolator.interpolate(:description).description
+    else
+      @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
+  end
+
   def new
     if params[:activity_type_id].present?
       activity_type = ActivityType.find(params[:activity_type_id])
@@ -33,7 +42,7 @@ class ActivitiesController < ApplicationController
   def create
     respond_to do |format|
       if ActivityCreator.new(@activity).process
-        format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully created.' }
+        format.html { redirect_to completed_school_activity_path(@school, @activity)}
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }

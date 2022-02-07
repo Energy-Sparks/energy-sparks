@@ -88,7 +88,11 @@ Rails.application.routes.draw do
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
   resources :schools do
-    resources :activities
+    resources :activities do
+      member do
+        get :completed
+      end
+    end
 
     scope module: :schools do
 
