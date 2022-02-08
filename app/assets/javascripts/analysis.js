@@ -25,7 +25,11 @@ function chartSuccess(chartConfig, chartData, chart) {
   if (chartData.subtitle) {
     titleH5.text(chartData.subtitle);
   } else {
-    titleH5.hide();
+    if (chartData.drilldown_available) {
+      titleH5.text('Click on the chart to explore the data');
+    } else {
+      titleH5.text('');
+    }
   }
 
   if (! noAdvice) {
@@ -54,6 +58,8 @@ function chartSuccess(chartConfig, chartData, chart) {
   } else if (chartType == 'pie') {
     pie(chartData, chart, seriesData, $chartDiv);
   }
+
+  enableAxisControls($chartWrapper, chartData);
 
   if(chartData.allowed_operations){
     processAnalysisOperations(chartConfig, chart, chartData.allowed_operations, chartData.drilldown_available, chartData.parent_timescale_description)
@@ -101,6 +107,7 @@ function processAnalysisCharts(){
       var chartConfig = $(this).data('chart-config');
       processAnalysisChart(this, chartConfig);
       setupAnalysisControls(this, chartConfig);
+      setupAxisControls(this, chartConfig);
     });
   }
 
@@ -203,24 +210,26 @@ function processAnnotations(loaded_annotations, chart){
 }
 
 function setupAnalysisControls(chartContainer, chartConfig){
-  var controls = $(chartContainer).parent().find('.analysis_controls');
+  var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
-    controls.find('.move_back').hide().on('click', function(event){
+    controls.find('.move_back').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
+      logEvent("move_back", chartConfig.type);
       pushTransformation(chartConfig, chartContainer, 'move', -1);
     });
-    controls.find('.move_forward').hide().on('click', function(event){
+    controls.find('.move_forward').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
+      logEvent("move_forward", chartConfig.type);
       pushTransformation(chartConfig, chartContainer, 'move', 1);
     });
 
-    controls.find('.drillup').hide();
     controls.find('.drillup').on('click', function(event){
       event.preventDefault();
 
       $(this).prop( "disabled", true );
+      logEvent("drillup", chartConfig.type);
 
       var transformations = chartConfig.transformations;
       var inDrilldown = transformations.some(isDrilldownTransformation);
@@ -234,19 +243,60 @@ function setupAnalysisControls(chartContainer, chartConfig){
   }
 }
 
+function setupAxisControls(chartContainer, chartConfig) {
+  var controls = $(chartContainer).parent().find('.axis-controls');
+  if(controls.length){
+    //console.log("Setting axis controls");
+    $(controls).find('.axis-choice').on('change', function(event){
+      //manipulate the chartConfig
+      chartConfig['y_axis_units'] = $(this).data("unit");
+      $(controls).find('.axis-choice').prop('disabled', true);
+      logEvent("axis-choice", chartConfig.type);
+      processAnalysisChart(chartContainer, chartConfig);
+    });
+  }
+}
+
+//call from chartSuccess to enable controls based on chart options
+function enableAxisControls(chartContainer, chartData) {
+  var controls = $(chartContainer).find('.axis-controls');
+  if(controls.length){
+    if(chartData.y1_axis_choices) {
+      controls.show();
+    }
+    //console.log('Axis choices: ' + chartData.y1_axis_choices);
+    if(chartData.y1_axis_choices) {
+      $(controls).find('.axis-choice').each(function() {
+        if(chartData.y1_axis_choices.includes( $(this).data("unit"))) {
+          $(this).prop('disabled', false);
+        } else {
+          $(this).prop('disabled', true);
+        }
+        label = $("label[for='" + $(this).attr("id") + "']");
+        if(label) {
+          if ($(label).text() == chartData.y_axis_label) {
+            $(this).prop('checked', true);
+          }
+        }
+      });
+    }
+  }
+}
+
 function processAnalysisOperations(chartConfig, chart, operations, drilldownAvailable, parentTimescaleDescription){
   var chartContainer = $(chart.renderTo);
-  var controls = $(chartContainer).parent().find('.analysis_controls');
+  var controls = $(chartContainer).parent().find('.analysis-controls');
+  var anyOperations = false;
   if(controls.length){
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
+        anyOperations |= enabled;
         if(enabled){
           control.prop("disabled", false);
           control.show();
         } else {
           control.prop("disabled", true);
-          control.hide();
         }
         control.find('span.period').html(config.timescale_description);
       });
@@ -254,19 +304,26 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
 
    chartConfig.drilldown_available =  drilldownAvailable;
 
-    if(drilldownAvailable){
-      chart.update({subtitle: {text: 'Click on the chart to explore the data'}});
-    }
+   if(drilldownAvailable) {
+     chart.update({plotOptions: {series: {cursor: 'pointer'}}});
+   }
 
-    var transformations = chartConfig.transformations;
-    var inDrilldown = transformations.some(isDrilldownTransformation);
+   var transformations = chartConfig.transformations;
+   var inDrilldown = transformations.some(isDrilldownTransformation);
+
+   //if we're in a drilldown
+   //or there's a drilldown available
+   //or there's any operations available, show the controls
+   if(inDrilldown || drilldownAvailable || anyOperations) {
+     $(controls).show();
+   }
+
     var drillup = controls.find('.drillup');
     if(inDrilldown){
       drillup.find('span.period').html(parentTimescaleDescription);
       drillup.prop( "disabled", false );
       drillup.show();
     } else {
-      drillup.hide();
       drillup.prop( "disabled", true );
     }
   }
@@ -290,9 +347,10 @@ function pushTransformation(chartConfig, chartContainer, transformation_type, tr
 }
 
 function processChartClick(chartConfig, chartContainer, event){
-  var controls = $(chartContainer).parent().find('.analysis_controls');
+  var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
     if(chartConfig.drilldown_available){
+      logEvent("drilldown", chartConfig.type);
       pushTransformation(chartConfig, chartContainer, 'drilldown', event.point.index)
     }
   }

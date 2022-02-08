@@ -1,19 +1,39 @@
-<div class='analysis_controls'>
-  <div class="d-flex justify-content-between" role="group">
-    <div>
-      <button class="btn btn-rounded move_back">
-        Back 1 <span class='period'>period</span>
-      </button>
+<div class="chart-controls d-flex justify-content-between pt-4">
+
+  <div>
+    <div class="axis-controls" style='display: none;'>
+      <% if local_assigns[:axis_controls] %>
+        <span class="text-align-center mr-1">Change units </span>
+        <% possible_y1_axis_choices.each do |axis| %>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" name="<%= chart_type %>-y1-axis-choices" id="<%= chart_type %>-y1-axis-choices-<%=axis%>" data-unit="<%= axis %>" class="custom-control-input axis-choice" disabled>
+            <label class="custom-control-label" for="<%= chart_type %>-y1-axis-choices-<%=axis%>" data-toggle="tooltip" data-placement="top" title="Change chart y-axis to <%= axis %>"><%= t(axis) %></label>
+          </div>
+        <% end %>
+      <% end %>
     </div>
-    <div>
-      <button class="btn btn-rounded drillup">
-        Up to <span class='period'>period</span> view
-      </button>
-    </div>
-    <div>
-      <button class="btn btn-rounded move_forward">
-        Forward 1 <span class='period'>period</span>
-      </button>
-    </div>
+  </div>
+
+  <div class='analysis-controls' style='display: none;'>
+    <% if local_assigns[:analysis_controls] %>
+      <div class="d-flex align-items-center justify-content-between" role="group">
+        <span class="mr-2 align-bottom">Explore</span>
+        <div>
+          <button class="btn btn-sm btn-outline-dark rounded-pill explore-button move_back" disabled>
+            <%= fa_icon('backward') %> Back 1 <span class='period'>period</span>
+          </button>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-dark rounded-pill explore-button drillup" disabled>
+            <%= fa_icon('eject') %> Up to <span class='period'>period</span> view
+          </button>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-dark rounded-pill explore-button move_forward" disabled>
+            Forward 1 <span class='period'>period</span> <%= fa_icon('forward') %>
+          </button>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

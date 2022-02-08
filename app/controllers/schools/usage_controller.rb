@@ -3,7 +3,6 @@ module Schools
     include Measurements
     include SchoolAggregation
 
-
     load_and_authorize_resource :school
 
     skip_before_action :authenticate_user!, only: [:show]

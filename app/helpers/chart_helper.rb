@@ -73,4 +73,8 @@ module ChartHelper
   def bullet_chart_number(number, units = :kwh)
     format_target(number, units).delete(",").to_i
   end
+
+  def possible_y1_axis_choices
+    %i[kwh £ co2]
+  end
 end
