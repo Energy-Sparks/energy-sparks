@@ -52,6 +52,7 @@ class Observation < ApplicationRecord
   scope :visible, -> { where(visible: true) }
   scope :by_date, -> { order(at: :desc) }
   scope :for_school, ->(school) { where(school: school) }
+  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
 
   has_rich_text :description
 
