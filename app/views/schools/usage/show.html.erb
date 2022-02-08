@@ -2,9 +2,17 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <% if @split_meters %>
-    <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between different meters</h1>
+    <% if @period == :daily %>
+      <h1>Compare your school's <strong><%= @supply.to_s %></strong> daily usage between different meters</h1>
+    <% else %>
+      <h1>Compare your school's <strong><%= @supply.to_s %></strong> weekly usage between different meters</h1>
+    <% end %>
   <% else %>
-    <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between two different weeks</h1>
+    <% if @period == :daily %>
+      <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between two different days</h1>
+    <% else %>
+      <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between two different weeks</h1>
+    <% end %>
   <% end %>
   <div>
     <%= link_to 'Explore data', pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
