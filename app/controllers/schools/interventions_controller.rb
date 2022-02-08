@@ -15,7 +15,7 @@ module Schools
 
     def create
       if InterventionCreator.new(@observation).process
-        redirect_to school_interventions_path(@school)
+        redirect_to completed_school_intervention_path(@school, @observation)
       else
         render :new
       end
