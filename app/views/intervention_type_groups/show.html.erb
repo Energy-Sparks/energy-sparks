@@ -37,6 +37,8 @@
       </p>
       <% if current_user_school.present? && intervention_type.actions_for_school(current_user_school).any? %>
         <%= render 'intervention_types/previous_records', interventions: intervention_type.actions_for_school(current_user_school).by_date, school: current_user_school %>
+      <% else %>
+        <%= render 'intervention_types/intervention_type_points', intervention_type: intervention_type %>
       <% end %>
     </div>
   </div>

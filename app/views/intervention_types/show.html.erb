@@ -9,6 +9,9 @@
   <div class="col-md-6">
     <h2><%= @intervention_type.title %></h2>
     <p><%= @intervention_type.summary %></p>
+    <div>
+      <%= render 'intervention_types/intervention_type_points', intervention_type: @intervention_type %>
+    </div>
   </div>
   <div class="col-md-3">
     <%= link_to "View #{@intervention_type.intervention_type_group.intervention_types.count} related actions", intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %>
