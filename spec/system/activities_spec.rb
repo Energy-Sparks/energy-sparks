@@ -152,7 +152,7 @@ describe 'viewing and recording activities', type: :system do
         expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
         click_on 'Save activity'
         expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
-        expect(page.has_content?("your school has scored #{activity_type.score} points")).to be true
+        expect(page.has_content?("your school has just scored #{activity_type.score} points")).to be true
         expect(page.has_content?(activity_type_name)).to be true
         expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
       end
@@ -175,7 +175,6 @@ describe 'viewing and recording activities', type: :system do
           click_on 'Save activity'
           expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
           expect(page.has_content?(activity_description)).to be true
-          expect(page.has_content?(other_activity_type_name)).to be false
           expect(page.has_content?(custom_title)).to be true
           expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
         end
