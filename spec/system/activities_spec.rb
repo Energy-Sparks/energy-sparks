@@ -176,7 +176,6 @@ describe 'viewing and recording activities', type: :system do
           expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
           expect(page.has_content?(activity_description)).to be true
           expect(page.has_content?(custom_title)).to be true
-          expect(page.has_content?(Date.today.strftime("%A, %d %B %Y"))).to be true
         end
       end
     end

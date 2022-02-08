@@ -97,9 +97,9 @@
       <div class="card surrounding-schools">
         <div class="card-body">
           <% if current_school_podium.includes_school? %>
-            <%= render 'podium', podium: current_school_podium  %>
+            <%= render 'pupils/schools/podium', podium: current_school_podium  %>
           <% else %>
-            <%= render 'no_points_podium', podium: current_school_podium  %>
+            <%= render 'pupils/schools/no_points_podium', podium: current_school_podium  %>
           <% end %>
         </div>
         <div class="card-footer text-center">
