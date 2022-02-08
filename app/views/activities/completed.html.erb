@@ -2,15 +2,12 @@
 
 <h1 class="text-center">Congratulations! We've recorded your activity.</h1>
 
-<div class="row padded-row">
+<div class="row">
   <div class="col-md-6">
     <div class="col card-deck actions">
       <div class="card surrounding-schools">
         <div class="card-body">
           <%= render 'points', podium: current_school_podium, completed_activities: @completed_activities  %>
-        </div>
-        <div class="card-footer text-center">
-          <h4 class="text-center">Choose your next activity from the suggestions below.</h4>
         </div>
       </div>
     </div>
@@ -26,6 +23,26 @@
               <%= render 'pupils/schools/no_points_podium', podium: current_school_podium  %>
             <% end %>
           </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="col card-deck actions">
+      <div class="card surrounding-schools">
+        <div class="card-footer text-center">
+          <%= link_to 'View your activity', school_activity_path(@school, @activity), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="col card-deck actions">
+      <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
+        <div class="card surrounding-schools">
           <div class="card-footer text-center">
             <%= link_to 'See the scoreboard', scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
           </div>
@@ -35,9 +52,10 @@
   </div>
 </div>
 
+<div class="padded-row"></div>
 
 <% if !@suggested_activities.blank? %>
-  <div class="row bg-light">
+  <div class="row padded-row bg-light">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
         <h4><strong>Recommended for your school</strong></h4>
@@ -50,17 +68,3 @@
   </div>
   <%= render "activity_categories/cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
 <% end %>
-
-<div class="row padded-row">
-  <div class="col-md-12 activity">
-    <h2>Share your activity record</h2>
-    <%= link_to @activity.display_name, school_activity_path(@school, @activity) %>
-    <% if @activity.description %>
-      <p></p>
-      <%= @activity.description %>
-    <% else %>
-      <p>You haven't entered what you did for this activity, please edit the activitiy and tell us what you did.</p>
-      <p><%= link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
-    <% end %>
-  </div>
-</div>
