@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: db086c1bc8cd08824b2b27393ea738bd8647fff4
-  tag: 1.29.4
+  revision: 52ee10f555f7ec986e4a542026a117d9064f4c53
+  branch: temp-fix-for-undefined-method
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
