@@ -12,6 +12,8 @@ RSpec.describe "onboarding", :schools, type: :system do
   let(:scoreboard)                { create(:scoreboard, name: 'BANES scoreboard') }
   let!(:weather_station)          { create(:weather_station, title: 'BANES weather') }
 
+  let!(:default_prefer_climate_reporting) { true }
+
   let!(:school_group) do
     create(
       :school_group,
@@ -20,7 +22,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       default_solar_pv_tuos_area: solar_pv_area,
       default_dark_sky_area: dark_sky_weather_area,
       default_weather_station: weather_station,
-      default_scoreboard: scoreboard
+      default_scoreboard: scoreboard,
+      default_prefer_climate_reporting: default_prefer_climate_reporting
     )
   end
 
@@ -51,6 +54,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page).to have_select('Weather Station', selected: 'BANES weather')
       expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
 
+      expect(page.has_checked_field?('Present data in terms of climate impact')).to be_truthy
+
       click_on 'Next'
 
       expect(page).to have_content(school_name)
@@ -61,6 +66,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       onboarding = SchoolOnboarding.first
       expect(onboarding.subscribe_to_newsletter).to be_truthy
       expect(onboarding.school_will_be_public).to be_falsey
+      expect(onboarding.default_prefer_climate_reporting).to be_truthy
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Set up your school on Energy Sparks')
@@ -86,10 +92,14 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Next'
 
       select 'Oxford calendar', from: 'Template calendar'
+
+      uncheck 'Present data in terms of climate impact'
+
       click_on 'Next'
       onboarding.reload
       expect(onboarding.school_name).to eq('A new name')
       expect(onboarding.template_calendar).to eq(other_template_calendar)
+      expect(onboarding.default_prefer_climate_reporting).to be_falsey
     end
 
     context 'when completing onboarding as admin without consents' do

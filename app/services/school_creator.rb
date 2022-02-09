@@ -75,7 +75,8 @@ private
         dark_sky_area: onboarding.dark_sky_area,
         scoreboard: onboarding.scoreboard,
         weather_station: onboarding.weather_station,
-        public: onboarding.school_will_be_public
+        public: onboarding.school_will_be_public,
+        prefer_climate_reporting: onboarding.default_prefer_climate_reporting
       )
   end
 
