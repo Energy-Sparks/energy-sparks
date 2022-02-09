@@ -11,5 +11,5 @@
       <h5></h5>
   </div>
   <%= render 'shared/analysis_controls', chart_type: @chart_type.to_s, analysis_controls: true %>
-  <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false) %>
+  <%= chart_tag(@school, @chart_type.to_s, show_advice: true, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, @chart_type)) %>
 </div>
