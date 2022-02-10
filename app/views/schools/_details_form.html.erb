@@ -85,9 +85,12 @@
 <h2 id="preferences">Analysis Preferences</h2>
 
 <div class="form-group">
-  <div class="form-check">
-    <%= f.check_box :prefer_climate_reporting, { class: 'form-check-input' } %>
-    <%= f.label :prefer_climate_reporting, 'Present data in terms of climate impact', { class: 'form-check-label'} %>
-  <small class="form-text text-muted">Energy Sparks can display your data in a variety of ways: as a cost, CO2 emissions or usage (kWh).<br>Check this box to have data presented as CO2 emissions or usage by default.</small>
-  </div>
+  <label><%= t("chart_preference.form_group") %></label>
+  <p class="small"><%= t("chart_preference.explanation") %></p>
+  <% School.chart_preferences.keys.each do |preference| %>
+    <div class="form-check">
+      <%= f.radio_button :chart_preference, preference, checked: @school.chart_preference == preference, class: "form-check-input" %>
+      <%= f.label "chart_preference_#{preference.to_sym}", t("chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+    </div>
+  <% end %>
 </div>

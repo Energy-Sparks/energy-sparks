@@ -63,7 +63,7 @@ module Onboarding
         :cooks_dinners_onsite,
         :cooks_dinners_for_other_schools,
         :cooks_dinners_for_other_schools_count,
-        :prefer_climate_reporting,
+        :chart_preference,
         key_stage_ids: []
       )
     end

@@ -343,13 +343,12 @@ RSpec.describe "school", type: :system do
         it 'can set climate impact reporting preference' do
           click_on(school_name)
           click_on('Edit school details')
-          expect(page.has_checked_field?('Present data in terms of climate impact')).to be_falsey
 
-          check('Present data in terms of climate impact')
+          choose('Prefer the display of chart data in kg CO2, where available')
           click_on('Update School')
           school.reload
 
-          expect(school.prefer_climate_reporting).to be true
+          expect(school.chart_preference).to eq "carbon"
         end
 
         it 'can see when the school was created on Energy Sparks' do
@@ -420,7 +419,16 @@ RSpec.describe "school", type: :system do
           end
         end
 
-        it 'can change climate reporting preference'
+        it 'can change climate reporting preference' do
+          school.update!(chart_preference: :usage)
+          click_on(school_name)
+          click_on('Edit school details')
+          choose('Prefer the display of chart data in £, where available')
+          click_on('Update School')
+
+          school.reload
+          expect(school.chart_preference).to eq "cost"
+        end
 
       end
 

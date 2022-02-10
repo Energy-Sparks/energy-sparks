@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Charts::YAxisSelectionService do
 
-  let(:preference)          { false }
-  let(:school)              { create(:school, prefer_climate_reporting: preference) }
+  let(:preference)          { :default }
+  let(:school)              { create(:school, chart_preference: preference) }
   let(:chart_name)          { :gas_longterm_trend }
   let(:service)             { Charts::YAxisSelectionService.new(school, chart_name) }
 
@@ -26,29 +26,50 @@ describe Charts::YAxisSelectionService do
       end
     end
 
-    context 'with preference set' do
-      let(:preference)          { true }
+    context 'with default preference set' do
+      let(:preference)          { :default }
+      it 'returns co2' do
+        expect(service.select_y_axis).to be_nil
+      end
+    end
+
+    context 'with carbon preference set' do
+      let(:preference)          { :carbon }
       it 'returns co2' do
         expect(service.select_y_axis).to eq :co2
       end
     end
 
+    context 'with usage preference set' do
+      let(:preference)          { :usage }
+      it 'returns kwh' do
+        expect(service.select_y_axis).to eq :kwh
+      end
+    end
+
+    context 'with cost preference set' do
+      let(:preference)          { :cost }
+      it 'returns £' do
+        expect(service.select_y_axis).to eq :£
+      end
+    end
+
     context 'when main option not available' do
-      let(:preference)          { true }
+      let(:preference)          { :carbon }
       before(:each) do
         allow_any_instance_of(ChartYAxisManipulation).to receive(:y1_axis_choices).and_return(options)
       end
 
       context 'no co2' do
         let(:options) { [:kwh, :£] }
-        it 'returns kwh' do
-          expect(service.select_y_axis).to eq :kwh
+        it 'returns nil' do
+          expect(service.select_y_axis).to be_nil
         end
       end
 
       context 'only cost' do
         let(:options) { [:£] }
-        it 'returns kwh' do
+        it 'returns nil' do
           expect(service.select_y_axis).to be_nil
         end
       end

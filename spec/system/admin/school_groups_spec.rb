@@ -25,7 +25,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       select 'BANES and Frome', from: 'Default scoreboard'
       select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
 
-      check 'Present data in terms of climate impact'
+      choose 'Display chart data in kwh, where available'
 
       click_on 'Create School group'
 

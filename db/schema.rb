@@ -1077,7 +1077,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_141419) do
     t.bigint "default_template_calendar_id"
     t.bigint "default_weather_station_id"
     t.boolean "public", default: true
-    t.boolean "default_prefer_climate_reporting", default: false
+    t.integer "default_chart_preference", default: 0, null: false
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1131,7 +1131,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_141419) do
     t.boolean "subscribe_to_newsletter", default: true
     t.bigint "subscribe_users_to_newsletter", default: [], null: false, array: true
     t.boolean "school_will_be_public", default: true
-    t.boolean "default_prefer_climate_reporting", default: false
+    t.integer "default_chart_preference", default: 0, null: false
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -1228,7 +1228,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_141419) do
     t.boolean "enable_targets_feature", default: true
     t.boolean "data_enabled", default: false
     t.boolean "bill_requested", default: false
-    t.boolean "prefer_climate_reporting", default: false
+    t.integer "chart_preference", default: 0, null: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

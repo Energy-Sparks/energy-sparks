@@ -19,12 +19,19 @@ module Charts
     #select the appropriate default y-axis for this school
     #may be nil if no preference applies/should be set
     def select_y_axis
-      return nil unless @school.prefer_climate_reporting?
       choices = y1_axis_choices
       return nil if choices.nil?
-      return :co2 if choices.include?(:co2)
-      return :kwh if choices.include?(:kwh)
-      return nil
+      case @school.chart_preference.to_sym
+      when :default
+        return nil
+      when :carbon
+        return :co2 if choices.include?(:co2)
+      when :usage
+        return :kwh if choices.include?(:kwh)
+      when :cost
+        return :£ if choices.include?(:£)
+      end
+      nil
     end
 
     private

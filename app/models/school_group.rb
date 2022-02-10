@@ -2,19 +2,19 @@
 #
 # Table name: school_groups
 #
-#  created_at                       :datetime         not null
-#  default_dark_sky_area_id         :bigint(8)
-#  default_prefer_climate_reporting :boolean          default(FALSE)
-#  default_scoreboard_id            :bigint(8)
-#  default_solar_pv_tuos_area_id    :bigint(8)
-#  default_template_calendar_id     :bigint(8)
-#  default_weather_station_id       :bigint(8)
-#  description                      :string
-#  id                               :bigint(8)        not null, primary key
-#  name                             :string           not null
-#  public                           :boolean          default(TRUE)
-#  slug                             :string           not null
-#  updated_at                       :datetime         not null
+#  created_at                    :datetime         not null
+#  default_chart_preference      :integer          default(0), not null
+#  default_dark_sky_area_id      :bigint(8)
+#  default_scoreboard_id         :bigint(8)
+#  default_solar_pv_tuos_area_id :bigint(8)
+#  default_template_calendar_id  :bigint(8)
+#  default_weather_station_id    :bigint(8)
+#  description                   :string
+#  id                            :bigint(8)        not null, primary key
+#  name                          :string           not null
+#  public                        :boolean          default(TRUE)
+#  slug                          :string           not null
+#  updated_at                    :datetime         not null
 #
 # Indexes
 #
@@ -55,6 +55,8 @@ class SchoolGroup < ApplicationRecord
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true
+
+  enum default_chart_preference: [:default, :carbon, :usage, :cost]
 
   def has_visible_schools?
     schools.visible.any?

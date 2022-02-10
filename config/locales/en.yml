@@ -85,3 +85,17 @@ en:
     attributes:
       temperature_recording:
         centigrade: "Temperature"
+  default_chart_preference:
+    form_group: "Default chart units"
+    explanation: "Choose a default option for how energy usage data is displayed in charts"
+    default: "Use system default options for each chart"
+    carbon: "Display chart data in kg CO2, where available"
+    usage: "Display chart data in kwh, where available"
+    cost: "Display chart data in £, where available"
+  chart_preference:
+    form_group: "Preferred units for chart data"
+    explanation: "Choose a default option for how energy usage data is displayed in charts"
+    default: "Automatically select a sensible default unit for each chart"
+    carbon: "Prefer the display of chart data in kg CO2, where available"
+    usage: "Prefer the display of chart data in kwh, where available"
+    cost: "Prefer the display of chart data in £, where available"
