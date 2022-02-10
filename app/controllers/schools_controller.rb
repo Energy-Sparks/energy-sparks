@@ -158,7 +158,7 @@ private
       :cooks_dinners_for_other_schools_count,
       :enable_targets_feature,
       :public,
-      :prefer_climate_reporting,
+      :chart_preference,
       key_stage_ids: []
     )
   end

@@ -76,7 +76,7 @@ private
         scoreboard: onboarding.scoreboard,
         weather_station: onboarding.weather_station,
         public: onboarding.school_will_be_public,
-        prefer_climate_reporting: onboarding.default_prefer_climate_reporting
+        chart_preference: onboarding.default_chart_preference
       )
   end
 

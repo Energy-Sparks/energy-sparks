@@ -7,6 +7,7 @@
 #  address                               :text
 #  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
+#  chart_preference                      :integer          default("default"), not null
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
@@ -27,7 +28,6 @@
 #  number_of_pupils                      :integer
 #  percentage_free_school_meals          :integer
 #  postcode                              :string
-#  prefer_climate_reporting              :boolean          default(FALSE)
 #  process_data                          :boolean          default(FALSE)
 #  public                                :boolean          default(TRUE)
 #  removal_date                          :date
@@ -138,6 +138,8 @@ class School < ApplicationRecord
   accepts_nested_attributes_for :school_partners, reject_if: proc {|attributes| attributes['position'].blank?}
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
+
+  enum chart_preference: [:default, :carbon, :usage, :cost]
 
   scope :active,             -> { where(active: true) }
   scope :inactive,           -> { where(active: false) }

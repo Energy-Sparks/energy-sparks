@@ -33,13 +33,15 @@
     </div>
   </div>
 
-  <div class="form-row">
-    <div class="form-group col-md-6">
+  <div class="form-group">
+    <label><%= t("default_chart_preference.form_group") %></label>
+    <p class="small"><%= t("default_chart_preference.explanation") %></p>
+    <% SchoolOnboarding.default_chart_preferences.keys.each do |preference| %>
       <div class="form-check">
-        <%= f.check_box :default_prefer_climate_reporting, { class: 'form-check-input' } %>
-        <%= f.label :default_prefer_climate_reporting, 'Present data in terms of climate impact', { class: 'form-check-label'} %>
+        <%= f.radio_button :default_chart_preference, preference, checked: @school_onboarding.default_chart_preference == preference, class: "form-check-input" %>
+        <%= f.label "default_chart_preference_#{preference.to_sym}", t("default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
       </div>
-    </div>
+    <% end %>
   </div>
 
   <div class="actions">

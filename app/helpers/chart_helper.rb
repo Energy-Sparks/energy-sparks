@@ -85,7 +85,7 @@ module ChartHelper
   def create_chart_config(school, chart_name, mpan_mprn = nil)
     config = {}
     config[:mpan_mprn] = mpan_mprn if mpan_mprn.present?
-    y_axis = select_y_axis(school, chart_name.to_sym)
+    y_axis = select_y_axis(school, chart_name)
     config[:y_axis_units] = y_axis if y_axis.present?
     config
   end

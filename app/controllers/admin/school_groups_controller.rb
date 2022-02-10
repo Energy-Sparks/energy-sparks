@@ -45,7 +45,7 @@ module Admin
         :default_dark_sky_area_id,
         :default_solar_pv_tuos_area_id,
         :default_weather_station_id,
-        :default_prefer_climate_reporting,
+        :default_chart_preference,
         :public
       )
     end
