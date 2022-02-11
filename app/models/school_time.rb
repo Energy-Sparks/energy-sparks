@@ -2,11 +2,13 @@
 #
 # Table name: school_times
 #
-#  closing_time :integer          default(1520)
-#  day          :integer
-#  id           :bigint(8)        not null, primary key
-#  opening_time :integer          default(850)
-#  school_id    :bigint(8)        not null
+#  closing_time   :integer          default(1520)
+#  day            :integer
+#  id             :bigint(8)        not null, primary key
+#  opening_time   :integer          default(850)
+#  school_id      :bigint(8)        not null
+#  term_time_only :boolean          default(TRUE), not null
+#  usage_type     :integer          default("school_day"), not null
 #
 # Indexes
 #
@@ -21,6 +23,7 @@ class SchoolTime < ApplicationRecord
   belongs_to :school
 
   enum day: [:monday, :tuesday, :wednesday, :thursday, :friday]
+  enum usage_type: [:school_day, :community_use]
 
   validates :opening_time, :closing_time, presence: true
   validates :opening_time, :closing_time, numericality: {

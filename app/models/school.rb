@@ -7,7 +7,7 @@
 #  address                               :text
 #  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
-#  chart_preference                      :integer          default("default"), not null
+#  chart_preference                      :integer          default(0), not null
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null

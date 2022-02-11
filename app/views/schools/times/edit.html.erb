@@ -1,10 +1,28 @@
+<h2>Manage school opening hours</h2>
+
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
-  <h2>School Times: <%= @school.name %></h2>
   <%= render 'schools/times/form', f: f %>
   <div class="actions">
     <%= f.submit 'Update school times', class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+<div class="row mt-3">
+  <h2>Community use</h2>
+</div>
+
+<div class="row">
+  <p>
+    School premises are often used outside of school hours by your community, e.g. to host events, clubs or other private lettings.
+  </p>
+
+  <p>
+    Use the form below to add any community use periods for your school so that we can provide extra insights into your energy usage during these times.
+  </p>
+</div>
+
+<div class="row">
+</div>
 
 <div class="other-actions">
   <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
