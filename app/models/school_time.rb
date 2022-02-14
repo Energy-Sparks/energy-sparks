@@ -22,7 +22,7 @@
 class SchoolTime < ApplicationRecord
   belongs_to :school
 
-  enum day: [:monday, :tuesday, :wednesday, :thursday, :friday]
+  enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
   enum usage_type: [:school_day, :community_use]
 
   validates :opening_time, :closing_time, presence: true

@@ -3,13 +3,13 @@ module Schools
     before_action :set_school
 
     def edit
-      @school_times = @school.school_times.school_day
+      @school_times = @school.school_times.build(opening_time: nil, closing_time: nil, usage_type: :community_use)
     end
 
     def update
       @school.attributes = school_params
       if @school.save(context: :school_times_update)
-        redirect_to school_path(@school), notice: 'School times updated'
+        redirect_to edit_school_times_path(@school), notice: 'School times updated'
       else
         render :edit
       end

@@ -52,7 +52,7 @@ class SchoolCreator
 
   def add_school_times
     SchoolTime.days.each do |day, _value|
-      @school.school_times.create(day: day)
+      @school.school_times.create(day: day) if day <= 4
     end
   end
 

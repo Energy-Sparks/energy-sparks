@@ -21,8 +21,12 @@
   </p>
 </div>
 
-<div class="row">
-</div>
+<%= form_for(@school, url: school_times_path(@school)) do |f| %>
+  <%= render 'schools/times/community_use_form', f: f %>
+  <div class="actions">
+    <%= f.submit 'Update community use times', class: 'btn btn-primary' %>
+  </div>
+<% end %>
 
 <div class="other-actions">
   <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>

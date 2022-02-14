@@ -11,31 +11,33 @@
     <label for="lastName"><strong>Closing Time</strong></label>
   </div>
 </div>
-<%= f.fields_for :school_times, f.object.school_times.sort_by{|time| SchoolTime.days[time.day]} do |ff| %>
-  <%= ff.hidden_field :id, value: ff.object.id %>
-  <div class="row">
-    <div class="col-md-3 mb-3">
-      <%= ff.hidden_field :day, value: ff.object.day %>
-      <%= ff.hidden_field :term_time_only, value: ff.object.term_time_only %>
-      <%= ff.hidden_field :usage_type, value: ff.object.usage_type %>
-      <strong><%= ff.object.day.capitalize %></strong>
-    </div>
+<%= f.fields_for :school_times, f.object.school_times.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 0 } do |ff| %>
+  <% if ff.object.school_day? %>
+    <%= ff.hidden_field :id, value: ff.object.id %>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <%= ff.hidden_field :day, value: ff.object.day %>
+        <%= ff.hidden_field :term_time_only, value: ff.object.term_time_only %>
+        <%= ff.hidden_field :usage_type, value: ff.object.usage_type %>
+        <strong><%= ff.object.day.capitalize %></strong>
+      </div>
 
-    <div class="col-md-3 mb-3">
-      <%= ff.text_field :opening_time, value: format_school_time(ff.object.opening_time), id: "#{ff.object.day}-opening_time" %>
-      <% if ff.object.errors.has_key?(:opening_time) %>
-        <div class="alert alert-danger mt-2">
-          <%= ff.object.errors.full_messages_for(:opening_time).join(', ') %>
-        </div>
-      <% end %>
+      <div class="col-md-3 mb-3">
+        <%= ff.text_field :opening_time, value: format_school_time(ff.object.opening_time), id: "#{ff.object.day}-opening_time" %>
+        <% if ff.object.errors.has_key?(:opening_time) %>
+          <div class="alert alert-danger mt-2">
+            <%= ff.object.errors.full_messages_for(:opening_time).join(', ') %>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-3 mb-3">
+        <%= ff.text_field :closing_time, value: format_school_time(ff.object.closing_time || 0), id: "#{ff.object.day}-closing_time" %>
+        <% if ff.object.errors.has_key?(:closing_time) %>
+          <div class="alert alert-danger mt-2">
+            <%= ff.object.errors.full_messages_for(:closing_time).join(', ') %>
+          </div>
+        <% end %>
+      </div>
     </div>
-    <div class="col-md-3 mb-3">
-      <%= ff.text_field :closing_time, value: format_school_time(ff.object.closing_time || 0), id: "#{ff.object.day}-closing_time" %>
-      <% if ff.object.errors.has_key?(:closing_time) %>
-        <div class="alert alert-danger mt-2">
-          <%= ff.object.errors.full_messages_for(:closing_time).join(', ') %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <% end %>
 <% end %>
