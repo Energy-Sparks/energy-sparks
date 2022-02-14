@@ -161,7 +161,7 @@ class School < ApplicationRecord
 
   validates_associated :school_times, on: :school_time_update
 
-  accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }
+  accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 

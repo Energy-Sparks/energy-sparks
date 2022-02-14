@@ -21,12 +21,34 @@
   </p>
 </div>
 
-<%= form_for(@school, url: school_times_path(@school)) do |f| %>
-  <%= render 'schools/times/community_use_form', f: f %>
-  <div class="actions">
-    <%= f.submit 'Update community use times', class: 'btn btn-primary' %>
+<div class="row">
+  <div class="col-md-3 mb-3">
+    <label for="day"><strong>Day</strong></label>
   </div>
-<% end %>
+  <div class="col-md-3 mb-3">
+    <label for="opening-time"><strong>Opening Time</strong></label>
+  </div>
+  <div class="col-md-3 mb-3">
+    <label for="closing-time"><strong>Closing Time</strong></label>
+  </div>
+  <div class="col-md-3 mb-3">
+    <label for="term-only"><strong>Term time only?</strong></label>
+  </div>
+</div>
+
+  <%= form_for(@school, url: school_times_path(@school), html: {id: :community_use_form}) do |f| %>
+    <div id="school-times">
+      <%= f.simple_fields_for :school_times, f.object.school_times.community_use.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 99 } do |school_time| %>
+        <%= render 'schools/times/school_time_fields', f: school_time %>
+      <% end %>
+      <div class="links">
+        <%= link_to_add_association 'Add', f, :school_times, partial: 'schools/times/school_time_fields', class: 'btn' %>
+      </div>
+    </div>
+    <div class="actions">
+      <%= f.submit 'Update community use times', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
 
 <div class="other-actions">
   <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>

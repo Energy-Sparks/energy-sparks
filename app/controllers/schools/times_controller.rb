@@ -3,7 +3,6 @@ module Schools
     before_action :set_school
 
     def edit
-      @school_times = @school.school_times.build(opening_time: nil, closing_time: nil, usage_type: :community_use)
     end
 
     def update
@@ -24,7 +23,7 @@ module Schools
 
     def school_params
       params.require(:school).permit(
-        school_times_attributes: [:id, :day, :opening_time, :closing_time, :term_time_only, :usage_type]
+        school_times_attributes: [:id, :day, :opening_time, :closing_time, :term_time_only, :usage_type, :_destroy]
       )
     end
   end

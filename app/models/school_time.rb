@@ -20,7 +20,7 @@
 #
 
 class SchoolTime < ApplicationRecord
-  belongs_to :school
+  belongs_to :school, inverse_of: :school_times
 
   enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
   enum usage_type: [:school_day, :community_use]
