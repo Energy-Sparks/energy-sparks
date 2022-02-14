@@ -3,6 +3,7 @@ module Schools
     before_action :set_school
 
     def edit
+      @school_times = @school.school_times.school_day
     end
 
     def update
@@ -10,7 +11,6 @@ module Schools
       if @school.save(context: :school_times_update)
         redirect_to school_path(@school), notice: 'School times updated'
       else
-        puts @school.errors.keys.inspect
         render :edit
       end
     end

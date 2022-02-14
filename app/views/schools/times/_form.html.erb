@@ -1,4 +1,5 @@
 <p>Please enter the times when pupils arrive and leave the school, including any before or after school clubs. The time should be entered in 24 hour format.</p>
+
 <div class="row">
   <div class="col-md-3 mb-3">
     <label for="firstName"><strong>Day</strong></label>
@@ -10,15 +11,13 @@
     <label for="lastName"><strong>Closing Time</strong></label>
   </div>
 </div>
-<%= times = f.object.school_times %>
-<%= f.fields_for :school_times, times.sort_by{|time| SchoolTime.days[time.day]} do |ff| %>
+<%= f.fields_for :school_times, f.object.school_times.sort_by{|time| SchoolTime.days[time.day]} do |ff| %>
   <%= ff.hidden_field :id, value: ff.object.id %>
   <div class="row">
     <div class="col-md-3 mb-3">
       <%= ff.hidden_field :day, value: ff.object.day %>
       <%= ff.hidden_field :term_time_only, value: ff.object.term_time_only %>
       <%= ff.hidden_field :usage_type, value: ff.object.usage_type %>
-
       <strong><%= ff.object.day.capitalize %></strong>
     </div>
 
