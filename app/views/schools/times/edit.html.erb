@@ -1,37 +1,45 @@
-<h2>Manage school opening hours</h2>
+<h1>School opening hours</h1>
 
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
   <%= render 'schools/times/form', f: f %>
   <div class="actions">
-    <%= f.submit 'Update school times', class: 'btn btn-primary' %>
+    <%= f.submit 'Save changes', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
-<div class="row mt-3">
-  <h2>Community use</h2>
+<div class="row pt-3">
+  <div class="col">
+    <h1>Community use times</h1>
+  </div>
 </div>
 
 <div class="row">
+  <div class="col">
   <p>
-    School premises are often used outside of school hours by your community, e.g. to host events, clubs or other private lettings.
+    School premises are often used outside of school hours by your community. For example to host events, clubs or other private lettings.
   </p>
 
   <p>
-    Use the form below to add any community use periods for your school so that we can provide extra insights into your energy usage during these times.
+    Use the form below to add regular community use times at your school. We can use this information to provide extra insights into your energy usage outside of school hours.
   </p>
+
+  <p>
+  Times should be entered in 24 hour format.
+  </p>
+  </div>
 </div>
 
-<div class="row">
+<div class="row pt-2">
   <div class="col-md-3 mb-3">
     <label for="day"><strong>Day</strong></label>
   </div>
-  <div class="col-md-3 mb-3">
+  <div class="col-md-2 mb-3">
     <label for="opening-time"><strong>Opening Time</strong></label>
   </div>
-  <div class="col-md-3 mb-3">
+  <div class="col-md-2 mb-3">
     <label for="closing-time"><strong>Closing Time</strong></label>
   </div>
-  <div class="col-md-3 mb-3">
+  <div class="col-md-2 mb-3">
     <label for="term-only"><strong>Term time only?</strong></label>
   </div>
 </div>
@@ -42,14 +50,8 @@
         <%= render 'schools/times/school_time_fields', f: school_time %>
       <% end %>
       <div class="links">
-        <%= link_to_add_association 'Add', f, :school_times, partial: 'schools/times/school_time_fields', class: 'btn' %>
+        <%= link_to_add_association 'Add time', f, :school_times, partial: 'schools/times/school_time_fields', class: 'btn' %>
+        <%= f.submit 'Save changes', class: 'btn btn-primary' %>
       </div>
     </div>
-    <div class="actions">
-      <%= f.submit 'Update community use times', class: 'btn btn-primary' %>
-    </div>
   <% end %>
-
-<div class="other-actions">
-  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
-</div>
