@@ -25,7 +25,7 @@ before_script:
 script:
 - bundle exec rails db:prepare
 - bundle exec rubocop app lib data-pipeline/handlers
-- bundle exec bundle-audit check --update
+#- bundle exec bundle-audit check --update
 - nvm install v15
 - node -v
 - yarn
