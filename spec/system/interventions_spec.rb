@@ -117,6 +117,13 @@ describe 'viewing and recording action', type: :system do
         fill_in 'observation_at', with: '01/07/2019'
         click_on 'Record action'
 
+        expect(page).to have_content("Congratulations! We've recorded your action")
+        expect(page).to have_content("You've just scored #{intervention_type.points} points")
+
+        click_on 'View your action'
+
+        expect(page).to have_content('We changed to a more efficient boiler')
+
         observation = school.observations.intervention.first
         expect(observation.intervention_type).to eq(intervention_type)
         expect(observation.at.to_date).to eq(Date.new(2019, 7, 1))

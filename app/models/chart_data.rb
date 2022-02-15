@@ -3,7 +3,8 @@ require 'dashboard'
 class ChartData
   OPERATIONS = %i[move extend contract compare].freeze
 
-  def initialize(aggregated_school, original_chart_type, chart_config, transformations: [], show_benchmark_figures: false)
+  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [], show_benchmark_figures: false)
+    @school = school
     @aggregated_school = aggregated_school
     @original_chart_type = original_chart_type
     @chart_config_overrides = chart_config
@@ -29,7 +30,7 @@ class ChartData
       allowed_operations: allowed_operations,
       drilldown_available: drilldown_available,
       parent_timescale_description: parent_timescale_description,
-      y1_axis_choices: ChartYAxisManipulation.new(@aggregated_school).y1_axis_choices(transformed_chart_config)
+      y1_axis_choices: Charts::YAxisSelectionService.new(@school, transformed_chart_type).y1_axis_choices(transformed_chart_config)
     ).process
 
     values

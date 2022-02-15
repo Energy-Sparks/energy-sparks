@@ -340,6 +340,17 @@ RSpec.describe "school", type: :system do
           expect(school.key_stages).to_not include(ks3)
         end
 
+        it 'can set climate impact reporting preference' do
+          click_on(school_name)
+          click_on('Edit school details')
+
+          choose('Prefer the display of chart data in kg CO2, where available')
+          click_on('Update School')
+          school.reload
+
+          expect(school.chart_preference).to eq "carbon"
+        end
+
         it 'can see when the school was created on Energy Sparks' do
           click_on(school_name)
           click_on('Edit school details')
@@ -406,6 +417,17 @@ RSpec.describe "school", type: :system do
             school.reload
             expect(school.indicated_has_storage_heaters).to be true
           end
+        end
+
+        it 'can change climate reporting preference' do
+          school.update!(chart_preference: :usage)
+          click_on(school_name)
+          click_on('Edit school details')
+          choose('Prefer the display of chart data in £, where available')
+          click_on('Update School')
+
+          school.reload
+          expect(school.chart_preference).to eq "cost"
         end
 
       end

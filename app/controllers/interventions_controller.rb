@@ -10,7 +10,7 @@ class InterventionsController < ApplicationController
     @observation = current_user.school.observations.new(observation_params)
     authorize! :create, @observation
     if InterventionCreator.new(@observation).process
-      redirect_to school_interventions_path(current_user_school)
+      redirect_to completed_school_intervention_path(current_user.school, @observation)
     else
       @intervention_type = @observation.intervention_type
       render :new

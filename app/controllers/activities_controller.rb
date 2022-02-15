@@ -1,4 +1,6 @@
 class ActivitiesController < ApplicationController
+  include ActivityTypeFilterable
+
   load_resource :school
   load_and_authorize_resource through: :school
 
@@ -14,6 +16,13 @@ class ActivitiesController < ApplicationController
       @activity_type_content = interpolator.interpolate(:description).description
     else
       @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
+  end
+
+  def completed
+    if current_user_school
+      @suggested_activities = load_suggested_activities(current_user_school)
+      @completed_activities = load_completed_activities(current_user_school)
     end
   end
 
@@ -33,7 +42,7 @@ class ActivitiesController < ApplicationController
   def create
     respond_to do |format|
       if ActivityCreator.new(@activity).process
-        format.html { redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully created.' }
+        format.html { redirect_to completed_school_activity_path(@school, @activity)}
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -71,5 +80,13 @@ private
 
   def show_data_enabled_activity?(activity, school)
     activity.activity_type.data_driven? && !school.data_enabled?
+  end
+
+  def load_suggested_activities(school)
+    NextActivitySuggesterWithFilter.new(school, activity_type_filter).suggest_for_school_targets(5)
+  end
+
+  def load_completed_activities(school)
+    school.activities_in_academic_year(Time.zone.today)
   end
 end

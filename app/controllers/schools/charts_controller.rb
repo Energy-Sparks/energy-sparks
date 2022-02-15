@@ -26,7 +26,7 @@ class Schools::ChartsController < ApplicationController
         y_axis_units = params[:chart_y_axis_units]
         chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
 
-        output = ChartData.new(aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
+        output = ChartData.new(@school, aggregate_school, @chart_type, chart_config, show_benchmark_figures: show_benchmark_figures?, transformations: get_transformations).data
         if output
           render json: ChartDataValues.as_chart_json(output)
         else

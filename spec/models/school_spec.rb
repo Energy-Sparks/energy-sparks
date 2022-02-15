@@ -572,4 +572,32 @@ describe School do
     end
 
   end
+
+  describe 'with activities' do
+    let(:calendar){ create :school_calendar }
+    let(:academic_year){ calendar.academic_years.last }
+    let(:school){ create :school, calendar: calendar }
+    let(:date_1){ academic_year.start_date + 1.month}
+    let(:date_2){ academic_year.start_date - 1.month}
+    let!(:activity_1){ create :activity, happened_on: date_1, school: school }
+    let!(:activity_2){ create :activity, happened_on: date_2, school: school }
+
+    it 'finds activities from the academic year' do
+      expect(school.activities_in_academic_year(academic_year.start_date + 2.months)).to eq([activity_1])
+    end
+  end
+
+  describe 'with actions' do
+    let(:calendar){ create :school_calendar }
+    let(:academic_year){ calendar.academic_years.last }
+    let(:school){ create :school, calendar: calendar }
+    let(:date_1){ academic_year.start_date + 1.month}
+    let(:date_2){ academic_year.start_date - 1.month}
+    let!(:observation_1){ create :observation, at: date_1, school: school }
+    let!(:observation_2){ create :observation, at: date_2, school: school }
+
+    it 'finds observations from the academic year' do
+      expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1])
+    end
+  end
 end

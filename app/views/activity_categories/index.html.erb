@@ -34,7 +34,7 @@
       <p>Our suggestions based on your school programmes and analysis of your energy data</p>
     </div>
   </div>
-  <%= render "cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
+  <%= render "activity_categories/cards", activity_types: @suggested_activities.first(4), card_deck_css: "bg-light" %>
 <% end %>
 
 <% if !@pupil_categories.blank? %>

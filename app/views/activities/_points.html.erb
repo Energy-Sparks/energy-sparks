@@ -1,0 +1,10 @@
+<h4 class="text-center"><strong>You've just scored <%= points %> points!</strong></h4>
+
+<% if podium && podium.includes_school? && can?(:read, podium.scoreboard) %>
+  <h4 class="text-center">
+    You've recorded <%= pluralize(completed_activities.count, 'activity', 'activities') %> so far this year
+    and need to score <%= podium.next_school_position.points - podium.school_position.points %> points to reach <%= current_school_podium.next_school_position.ordinal %> place.
+  </h4>
+<% end %>
+
+<h4 class="text-center">Choose your next activity from the suggestions below.</h4>

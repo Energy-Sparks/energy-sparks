@@ -7,6 +7,7 @@
 #  address                               :text
 #  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
+#  chart_preference                      :integer          default("default"), not null
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
@@ -138,6 +139,8 @@ class School < ApplicationRecord
 
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
+  enum chart_preference: [:default, :carbon, :usage, :cost]
+
   scope :active,             -> { where(active: true) }
   scope :inactive,           -> { where(active: false) }
   scope :visible,            -> { active.where(visible: true) }
@@ -206,6 +209,18 @@ class School < ApplicationRecord
 
   def academic_year_for(date)
     calendar.academic_year_for(date)
+  end
+
+  def activities_in_academic_year(date)
+    if (academic_year = academic_year_for(date))
+      activities.between(academic_year.start_date, academic_year.end_date)
+    end
+  end
+
+  def observations_in_academic_year(date)
+    if (academic_year = academic_year_for(date))
+      observations.between(academic_year.start_date, academic_year.end_date)
+    end
   end
 
   def national_calendar

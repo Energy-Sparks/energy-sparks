@@ -81,3 +81,16 @@
 <%= f.input :cooks_dinners_onsite, label: 'Dinners are cooked on site', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
 <%= f.input :cooks_dinners_for_other_schools, label: 'The kitchen cooks dinners for other schools', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
 <%= f.input :cooks_dinners_for_other_schools_count, label: 'How many schools does your school cook dinners for?', wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>
+
+<h2 id="preferences">Analysis Preferences</h2>
+
+<div class="form-group">
+  <label><%= t("chart_preference.form_group") %></label>
+  <p class="small"><%= t("chart_preference.explanation") %></p>
+  <% School.chart_preferences.keys.each do |preference| %>
+    <div class="form-check">
+      <%= f.radio_button :chart_preference, preference, checked: @school.chart_preference == preference, class: "form-check-input" %>
+      <%= f.label "chart_preference_#{preference.to_sym}", t("chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+    </div>
+  <% end %>
+</div>

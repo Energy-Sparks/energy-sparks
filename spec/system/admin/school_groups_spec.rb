@@ -25,6 +25,8 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       select 'BANES and Frome', from: 'Default scoreboard'
       select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
 
+      choose 'Display chart data in kwh, where available'
+
       click_on 'Create School group'
 
       expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
