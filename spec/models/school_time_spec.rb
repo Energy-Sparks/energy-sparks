@@ -85,11 +85,11 @@ describe 'SchoolTime' do
   #holidays_only, monday 9-10
   context 'when validating overlaps' do
     context 'of community use' do
-      let!(:day)              { :monday }
-      let!(:usage_type)       { :community_use }
-      let!(:calendar_period)  { :term_time }
-      let!(:opening_time)     { 800 }
-      let!(:closing_time)     { 1200 }
+      let(:day)              { :monday }
+      let(:usage_type)       { :community_use }
+      let(:calendar_period)  { :term_time }
+      let(:opening_time)     { 800 }
+      let(:closing_time)     { 1200 }
 
       let!(:time)  { create(:school_time, school: school, day: day, usage_type: usage_type,
         calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)}
@@ -111,7 +111,7 @@ describe 'SchoolTime' do
           expect( school.school_times.create(day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to be_valid
         end
         it 'allows same times on different calendar period' do
-          expect( school.school_times.create(day: day, calendar_period: :holidays_only, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+          expect( school.school_times.create(day: day, calendar_period: :only_holidays, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
         end
       end
 

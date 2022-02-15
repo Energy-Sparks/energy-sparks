@@ -40,8 +40,6 @@ class SchoolTime < ApplicationRecord
     SchoolTime.where(school: school, day: day, usage_type: usage_type).where('(opening_time <= :start AND closing_time <= :end) OR (opening_time >= :start AND closing_time >= :end) OR (opening_time <= :start AND closing_time >= :end)', :start => opening_time, :end => closing_time)
   }
 
-  after_initialize :community_use_defaults
-
   def opening_time=(time)
     time = time.delete(':') if time.respond_to?(:delete)
     super(time)
