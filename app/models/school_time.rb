@@ -33,6 +33,12 @@ class SchoolTime < ApplicationRecord
     message: 'must be between 0000 and 2359'
   }
 
+  #validate :no_overlaps
+
+  scope :overlapping, ->(school, day, opening_time, closing_time, usage_type) {
+    SchoolTime.where(school: school, day: day, usage_type: usage_type).where('(opening_time <= :start AND closing_time <= :end) OR (opening_time >= :start AND closing_time >= :end) OR (opening_time <= :start AND closing_time >= :end)', :start => opening_time, :end => closing_time)
+  }
+
   after_initialize :community_use_defaults
 
   def opening_time=(time)
@@ -50,6 +56,19 @@ class SchoolTime < ApplicationRecord
       self.opening_time = 1800
       self.closing_time = 2000
     end
+  end
+
+  def overlaps_school_day?
+    overlapping(self.school, self.day, self.opening_time, self.closing_time, :school_day).where.not(id: self.id).exists?
+  end
+
+  def overlaps_other?
+    overlapping(self.school, self.day, self.opening_time, self.closing_time, self.usage_type).where.not(id: self.id).exists?
+  end
+
+  def no_overlaps
+    errors.add(:overlap_error, 'Community use times cannot overlap with school day') if usage_type == :community_use && overlaps_school_day?
+    errors.add(:overlap_error, 'School times cannot overlap each other') if overlaps_other?
   end
 
   def to_analytics

@@ -37,9 +37,9 @@ describe 'SchoolTime' do
     let(:day)   {:monday}
     let(:other_day) {:tuesday}
 
-    let!(:first) { create(:school_time, school: school, day: :day, usage_type: :community_use, opening_time: 1200, closing_time: 1300)}
+    let!(:first) { create(:school_time, school: school, day: day, usage_type: :community_use, opening_time: 1200, closing_time: 1300)}
 
-    let(:second) { create(:school_time, school: school, day: :other_day, usage_type: :community_use, opening_time: 1210, closing_time: 1310)}
+    let(:second) { create(:school_time, school: school, day: other_day, usage_type: :community_use, opening_time: 1210, closing_time: 1310)}
 
     context 'on different days' do
       it 'allows them to overlap' do
