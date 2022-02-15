@@ -461,6 +461,14 @@ class School < ApplicationRecord
     consent_grants.any? && consent_grants.by_date.first.consent_statement.current
   end
 
+  def school_times_to_analytics
+    school_times.school_day.map(&:to_analytics)
+  end
+
+  def community_use_times_to_analytics
+    school_times.community_use.map(&:to_analytics)
+  end
+
   private
 
   def add_joining_observation

@@ -33,6 +33,8 @@ class SchoolTime < ApplicationRecord
     message: 'must be between 0000 and 2359'
   }
 
+  after_initialize :community_use_defaults
+
   def opening_time=(time)
     time = time.delete(':') if time.respond_to?(:delete)
     super(time)
@@ -41,5 +43,30 @@ class SchoolTime < ApplicationRecord
   def closing_time=(time)
     time = time.delete(':') if time.respond_to?(:delete)
     super(time)
+  end
+
+  def community_use_defaults
+    if self.usage_type.to_sym == :community_use
+      self.opening_time = 1800
+      self.closing_time = 2000
+    end
+  end
+
+  def to_analytics
+    {
+      day: self.day.to_sym,
+      usage_type: self.usage_type.to_sym,
+      opening_time: convert_to_time_of_day(self.opening_time),
+      closing_time: convert_to_time_of_day(self.closing_time),
+      term_time_only: self.term_time_only
+    }
+  end
+
+  private
+
+  def convert_to_time_of_day(hours_minutes_as_integer)
+      minutes = hours_minutes_as_integer % 100
+      hours = hours_minutes_as_integer.div 100
+      TimeOfDay.new(hours, minutes)
   end
 end
