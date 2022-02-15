@@ -211,6 +211,18 @@ class School < ApplicationRecord
     calendar.academic_year_for(date)
   end
 
+  def activities_in_academic_year(date)
+    if (academic_year = academic_year_for(date))
+      activities.between(academic_year.start_date, academic_year.end_date)
+    end
+  end
+
+  def observations_in_academic_year(date)
+    if (academic_year = academic_year_for(date))
+      observations.between(academic_year.start_date, academic_year.end_date)
+    end
+  end
+
   def national_calendar
     calendar.based_on.based_on
   end

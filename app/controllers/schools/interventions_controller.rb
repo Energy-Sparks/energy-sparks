@@ -15,7 +15,7 @@ module Schools
 
     def create
       if InterventionCreator.new(@observation).process
-        redirect_to school_interventions_path(@school)
+        redirect_to completed_school_intervention_path(@school, @observation)
       else
         render :new
       end
@@ -40,6 +40,13 @@ module Schools
     def show
     end
 
+    def completed
+      if current_user_school
+        @suggested_actions = load_suggested_actions(current_user_school)
+        @completed_actions = load_completed_actions(current_user_school)
+      end
+    end
+
   private
 
     def load_intervention_types
@@ -53,6 +60,14 @@ module Schools
 
     def observation_params
       params.require(:observation).permit(:description, :at, :intervention_type_id)
+    end
+
+    def load_suggested_actions(school)
+      Interventions::SuggestAction.new(school).suggest(4)
+    end
+
+    def load_completed_actions(school)
+      school.observations_in_academic_year(Time.zone.today)
     end
   end
 end

@@ -1,0 +1,70 @@
+<% content_for :page_title, "#{@school.name} Action" %>
+
+<h1 class="text-center">Congratulations! We've recorded your action.</h1>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="col card-deck actions">
+      <div class="card surrounding-schools">
+        <div class="card-body">
+          <%= render 'points', podium: current_school_podium, completed_actions: @completed_actions, points: @observation.intervention_type.points  %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="col card-deck actions">
+      <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
+        <div class="card surrounding-schools">
+          <div class="card-body">
+            <% if current_school_podium.includes_school? %>
+              <%= render 'pupils/schools/podium', podium: current_school_podium  %>
+            <% else %>
+              <%= render 'pupils/schools/no_points_podium', podium: current_school_podium  %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="col card-deck actions">
+      <div class="card surrounding-schools">
+        <div class="card-footer text-center">
+          <%= link_to 'View your action', school_intervention_path(@school, @observation), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="col card-deck actions">
+      <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
+        <div class="card surrounding-schools">
+          <div class="card-footer text-center">
+            <%= link_to 'See the scoreboard', scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="padded-row"></div>
+
+<% if !@suggested_actions.blank? %>
+  <div class="row padded-row bg-light">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4><strong>Suggested actions for your school</strong></h4>
+        <div>
+          <%= link_to 'View all actions', intervention_type_groups_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+        </div>
+      </div>
+      <p>Our suggestions based on your school programmes and analysis of your energy data</p>
+      <%= render "intervention_type_groups/cards", intervention_types: @suggested_actions, card_deck_css: "" %>
+    </div>
+  </div>
+<% end %>

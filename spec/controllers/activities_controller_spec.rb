@@ -110,8 +110,8 @@ RSpec.describe ActivitiesController, type: :controller do
         expect(assigns(:activity)).to be_persisted
       end
 
-      it "redirects to the activity" do
-        expect(response).to redirect_to(school_activity_path(school, Activity.last))
+      it "redirects to the activity completed" do
+        expect(response).to redirect_to(completed_school_activity_path(school, Activity.last))
       end
 
     end
