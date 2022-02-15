@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'SchoolTime' do
 
-  let(:school)      { create(:school) }
+  let!(:school)      { create(:school) }
 
   context 'basic validation' do
     it 'allows valid objects' do
