@@ -7,6 +7,7 @@
 #  created_by_id                 :bigint(8)
 #  created_user_id               :bigint(8)
 #  dark_sky_area_id              :bigint(8)
+#  default_chart_preference      :integer          default(0), not null
 #  id                            :bigint(8)        not null, primary key
 #  notes                         :text
 #  school_group_id               :bigint(8)
@@ -60,6 +61,8 @@ class SchoolOnboarding < ApplicationRecord
   has_many :events, class_name: 'SchoolOnboardingEvent'
 
   scope :by_name, -> { order(school_name: :asc) }
+
+  enum default_chart_preference: [:default, :carbon, :usage, :cost]
 
   def has_event?(event_name)
     events.where(event: event_name).any?

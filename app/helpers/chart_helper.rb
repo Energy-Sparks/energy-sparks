@@ -75,6 +75,18 @@ module ChartHelper
   end
 
   def possible_y1_axis_choices
-    %i[kwh £ co2]
+    Charts::YAxisSelectionService.possible_y1_axis_choices
+  end
+
+  def select_y_axis(school, chart_name, default = nil)
+    Charts::YAxisSelectionService.new(school, chart_name).select_y_axis || default
+  end
+
+  def create_chart_config(school, chart_name, mpan_mprn = nil)
+    config = {}
+    config[:mpan_mprn] = mpan_mprn if mpan_mprn.present?
+    y_axis = select_y_axis(school, chart_name)
+    config[:y_axis_units] = y_axis if y_axis.present?
+    config
   end
 end

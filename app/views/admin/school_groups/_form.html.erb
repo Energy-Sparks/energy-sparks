@@ -49,6 +49,18 @@
         <%= f.label :default_scoreboard_id, 'Default scoreboard' %>
         <%= f.select :default_scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_group.default_scoreboard_id)), {include_blank: true}, { class: 'form-control' } %>
       </div>
+
+      <div class="form-group">
+        <label><%= t("default_chart_preference.form_group") %></label>
+        <p class="small"><%= t("default_chart_preference.explanation") %></p>
+        <% SchoolGroup.default_chart_preferences.keys.each do |preference| %>
+          <div class="form-check">
+            <%= f.radio_button :default_chart_preference, preference, checked: @school_group.default_chart_preference == preference, class: "form-check-input" %>
+            <%= f.label "default_chart_preference_#{preference.to_sym}", t("default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+
     </div>
   </div>
 
