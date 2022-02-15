@@ -1183,7 +1183,7 @@ ActiveRecord::Schema.define(version: 2022_02_10_171719) do
     t.integer "closing_time", default: 1520
     t.integer "day"
     t.integer "usage_type", default: 0, null: false
-    t.boolean "term_time_only", default: true, null: false
+    t.integer "calendar_period", default: 0, null: false
     t.index ["school_id"], name: "index_school_times_on_school_id"
   end
 

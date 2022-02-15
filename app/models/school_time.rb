@@ -2,13 +2,13 @@
 #
 # Table name: school_times
 #
-#  closing_time   :integer          default(1520)
-#  day            :integer
-#  id             :bigint(8)        not null, primary key
-#  opening_time   :integer          default(850)
-#  school_id      :bigint(8)        not null
-#  term_time_only :boolean          default(TRUE), not null
-#  usage_type     :integer          default("school_day"), not null
+#  calendar_period :integer          default("term_time"), not null
+#  closing_time    :integer          default(1520)
+#  day             :integer
+#  id              :bigint(8)        not null, primary key
+#  opening_time    :integer          default(850)
+#  school_id       :bigint(8)        not null
+#  usage_type      :integer          default("school_day"), not null
 #
 # Indexes
 #
@@ -22,8 +22,9 @@
 class SchoolTime < ApplicationRecord
   belongs_to :school, inverse_of: :school_times
 
-  enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
+  enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :weekdays, :weekends, :everyday]
   enum usage_type: [:school_day, :community_use]
+  enum calendar_period: [:term_time, :only_holidays, :all_year]
 
   validates :opening_time, :closing_time, presence: true
   validates :opening_time, :closing_time, numericality: {
@@ -53,8 +54,8 @@ class SchoolTime < ApplicationRecord
 
   def community_use_defaults
     if self.usage_type.to_sym == :community_use
-      self.opening_time = 1800
-      self.closing_time = 2000
+      self.opening_time = nil
+      self.closing_time = nil
     end
   end
 
@@ -77,7 +78,7 @@ class SchoolTime < ApplicationRecord
       usage_type: self.usage_type.to_sym,
       opening_time: convert_to_time_of_day(self.opening_time),
       closing_time: convert_to_time_of_day(self.closing_time),
-      term_time_only: self.term_time_only
+      calendar_period: self.calendar_period.to_sym
     }
   end
 
